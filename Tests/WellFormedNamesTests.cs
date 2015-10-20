@@ -3,7 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using WellFormedNames;
+using KnowledgeBase.WellFormedNames;
+using KnowledgeBase.WellFormedNames.Exceptions;
 
 namespace UnitTest.WellFormedNames
 {

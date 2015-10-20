@@ -1,10 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System;
 using Utilities;
 
-namespace WellFormedNames
+namespace KnowledgeBase.WellFormedNames
 {
 	//TODO improve implementation (dictionary???)
 	public sealed class SubstitutionSet : IEnumerable<Substitution>

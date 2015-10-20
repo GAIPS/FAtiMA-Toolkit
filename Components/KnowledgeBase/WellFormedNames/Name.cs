@@ -20,13 +20,13 @@
  * Created: 12/07/2006
  * Ported to C#: 17/06/2015
  **/
+
 using System;
-using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities;
 
-namespace WellFormedNames
+namespace KnowledgeBase.WellFormedNames
 {
 	/// <summary>
 	/// Abstract Well Formed Name

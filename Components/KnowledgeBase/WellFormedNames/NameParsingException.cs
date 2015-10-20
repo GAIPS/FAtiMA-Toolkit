@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Exception = KnowledgeBase.WellFormedNames.Exceptions.Exception;
 
-namespace WellFormedNames
+namespace KnowledgeBase.WellFormedNames
 {
 	public class NameParsingException : Exception
 	{
