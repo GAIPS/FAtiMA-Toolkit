@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EmotionalAppraisal
 {
-	public partial class EmotionalAppraisal
+	public partial class EmotionalAppraisalAsset
 	{
 		private class InternalAppraisalFrame : IAppraisalFrame
 		{

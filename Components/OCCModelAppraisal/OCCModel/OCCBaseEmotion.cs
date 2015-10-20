@@ -2,7 +2,7 @@
 using EmotionalAppraisal.Interfaces;
 using WellFormedNames;
 
-namespace EmotionalAppraisal.OCCModel
+namespace OCCModelAppraisal
 {
 	public class OCCBaseEmotion : BaseEmotion
 	{

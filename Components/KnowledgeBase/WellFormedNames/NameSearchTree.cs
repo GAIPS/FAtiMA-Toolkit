@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text;
+using Utilities;
+	
 namespace WellFormedNames
 {
-	using System.Text;
-	using Utilities;
 	//If the tree depth needs to be expanded in the future, just change the precision alias to a number type that allows more depth
 	using Precision = System.Byte;
 

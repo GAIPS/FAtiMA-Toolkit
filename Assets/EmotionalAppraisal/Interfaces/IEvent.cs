@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WellFormedNames;
+
 namespace EmotionalAppraisal.Interfaces
 {
 	public interface IEvent

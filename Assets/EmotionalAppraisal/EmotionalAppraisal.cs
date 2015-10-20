@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace EmotionalAppraisal
 {
-	public sealed partial class EmotionalAppraisal : BaseAsset
+	public sealed partial class EmotionalAppraisalAsset : BaseAsset
 	{
 		private static readonly InternalAppraisalFrame APPRAISAL_FRAME = new InternalAppraisalFrame();
 		private long lastFrameAppraisal = 0;
@@ -59,7 +59,7 @@ namespace EmotionalAppraisal
 			private set;
 		}
 
-		public EmotionalAppraisal(ITime timeKeeper)
+		public EmotionalAppraisalAsset(ITime timeKeeper)
 		{
 			m_timeKeeper = timeKeeper;
 			this.EmotionalState = new ConcreteEmotionalState(timeKeeper);

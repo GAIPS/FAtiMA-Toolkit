@@ -6,7 +6,7 @@ using Utilities;
 
 namespace EmotionalAppraisal
 {
-	public partial class EmotionalAppraisal
+	public partial class EmotionalAppraisalAsset
 	{
 		/// <summary>
 		/// Actual implementation of the agent's emotional state.

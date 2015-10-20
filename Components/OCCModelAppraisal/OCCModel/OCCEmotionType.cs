@@ -1,7 +1,7 @@
 ﻿using EmotionalAppraisal;
 using System.Collections.Generic;
 
-namespace EmotionalAppraisal.OCCModel
+namespace OCCModelAppraisal
 {
 	public sealed class OCCEmotionType
 	{

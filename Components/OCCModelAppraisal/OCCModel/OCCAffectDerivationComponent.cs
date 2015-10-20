@@ -1,11 +1,12 @@
-﻿using EmotionalAppraisal.Components;
+﻿using EmotionalAppraisal;
+using EmotionalAppraisal.Components;
 using EmotionalAppraisal.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using WellFormedNames;
 
-namespace EmotionalAppraisal.OCCModel
+namespace OCCModelAppraisal
 {
 	public class OCCAffectDerivationComponent : IAffectDerivator
 	{
@@ -154,7 +155,7 @@ namespace EmotionalAppraisal.OCCModel
 			return new OCCBaseEmotion(OCCEmotionType.FEAR, prob * goalConduciveness, evt);
 		}
 
-		public IEnumerable<BaseEmotion> AffectDerivation(EmotionalAppraisal emotionalModule, IAppraisalFrame frame)
+		public IEnumerable<BaseEmotion> AffectDerivation(EmotionalAppraisalAsset emotionalModule, IAppraisalFrame frame)
 		{
 			var evt = frame.AppraisedEvent;
 
@@ -235,7 +236,7 @@ namespace EmotionalAppraisal.OCCModel
 			get { return 1; }
 		}
 
-		public void InverseAffectDerivation(EmotionalAppraisal emotionalModule, BaseEmotion emotion, IWritableAppraisalFrame frame)
+		public void InverseAffectDerivation(EmotionalAppraisalAsset emotionalModule, BaseEmotion emotion, IWritableAppraisalFrame frame)
 		{
 			const float MAGIC_VALUE_FOR_LOVE = 1.43f;
 			//TODO improve this code

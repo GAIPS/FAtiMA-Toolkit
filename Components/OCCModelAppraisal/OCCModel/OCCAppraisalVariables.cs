@@ -1,4 +1,4 @@
-﻿namespace EmotionalAppraisal.OCCModel
+﻿namespace OCCModelAppraisal
 {
 	public static class OCCAppraisalVariables
 	{

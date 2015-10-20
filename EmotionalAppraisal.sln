@@ -1,9 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{C971A59A-2DD0-4396-AB70-7CBAC20D6CC9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "Tests\UnitTest.csproj", "{C971A59A-2DD0-4396-AB70-7CBAC20D6CC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalAppraisal", "EmotionalAppraisal\EmotionalAppraisal.csproj", "{0A2A1EE9-BD5D-44AA-A22D-291612488F06}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalAppraisal", "Assets\EmotionalAppraisal\EmotionalAppraisal.csproj", "{0A2A1EE9-BD5D-44AA-A22D-291612488F06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutobiographicalMemory", "Components\AutobiographicalMemory\AutobiographicalMemory.csproj", "{2F1B1044-7D2D-40B0-80C2-12D742F54A7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnowledgeBase", "Components\KnowledgeBase\KnowledgeBase.csproj", "{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OCCModelAppraisal", "Components\OCCModelAppraisal\OCCModelAppraisal.csproj", "{A8BB95FD-C1BC-4C7A-91DA-F19C13BADCCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Components\Utilities\Utilities.csproj", "{2021E828-2F7F-4775-9F02-58C68FD72EDD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,6 +27,22 @@ Global
 		{0A2A1EE9-BD5D-44AA-A22D-291612488F06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A2A1EE9-BD5D-44AA-A22D-291612488F06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A2A1EE9-BD5D-44AA-A22D-291612488F06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F1B1044-7D2D-40B0-80C2-12D742F54A7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F1B1044-7D2D-40B0-80C2-12D742F54A7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F1B1044-7D2D-40B0-80C2-12D742F54A7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F1B1044-7D2D-40B0-80C2-12D742F54A7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8BB95FD-C1BC-4C7A-91DA-F19C13BADCCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8BB95FD-C1BC-4C7A-91DA-F19C13BADCCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8BB95FD-C1BC-4C7A-91DA-F19C13BADCCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8BB95FD-C1BC-4C7A-91DA-F19C13BADCCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2021E828-2F7F-4775-9F02-58C68FD72EDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2021E828-2F7F-4775-9F02-58C68FD72EDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2021E828-2F7F-4775-9F02-58C68FD72EDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2021E828-2F7F-4775-9F02-58C68FD72EDD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
