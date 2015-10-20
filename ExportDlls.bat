@@ -23,12 +23,13 @@ IF EXIST "%targetPath%" (
 )
 MD "%targetPath%"
 
-FOR /D %%i IN (*) DO (
+FOR /D /r %%i IN (*) DO (
 	pushd %%i
 	IF EXIST %exportBat% (
 		CALL %exportBat% %~1 "%targetPath%"
 	)
 	popd
 )
+
 
 popd
