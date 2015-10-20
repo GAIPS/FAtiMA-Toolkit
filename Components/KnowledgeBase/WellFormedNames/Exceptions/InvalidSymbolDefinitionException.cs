@@ -1,4 +1,4 @@
-﻿namespace WellFormedNames
+﻿namespace KnowledgeBase.WellFormedNames.Exceptions
 {
 	public class InvalidSymbolDefinitionException : Exception
 	{

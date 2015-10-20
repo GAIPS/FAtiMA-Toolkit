@@ -1,4 +1,4 @@
-﻿namespace OCCModelAppraisal
+﻿namespace OCCModelAppraisal.OCCModel
 {
 	public static class OCCAppraisalVariables
 	{

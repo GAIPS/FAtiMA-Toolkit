@@ -20,9 +20,10 @@
  * Created: 12/07/2006
  * Ported to C#: 17/06/2015
  **/
+
 using System.Collections.Generic;
 
-namespace WellFormedNames
+namespace KnowledgeBase.WellFormedNames
 {
 	/// <summary>
 	/// Interface that specifies methods applicable to classes that can be grounded,

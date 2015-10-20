@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
+using KnowledgeBase.WellFormedNames.Exceptions;
 
-namespace WellFormedNames
+namespace KnowledgeBase.WellFormedNames
 {
 	/// <summary>
 	/// Represents a specific substitution condition in which a variable cannot have a specified value.

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using KnowledgeBase.WellFormedNames;
 using Utilities;
-using WellFormedNames;
 
 namespace EmotionalAppraisal
 {

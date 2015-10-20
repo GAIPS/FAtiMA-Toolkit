@@ -1,8 +1,8 @@
 ﻿using EmotionalAppraisal;
 using EmotionalAppraisal.Interfaces;
-using WellFormedNames;
+using KnowledgeBase.WellFormedNames;
 
-namespace OCCModelAppraisal
+namespace OCCModelAppraisal.OCCModel
 {
 	public class OCCBaseEmotion : BaseEmotion
 	{

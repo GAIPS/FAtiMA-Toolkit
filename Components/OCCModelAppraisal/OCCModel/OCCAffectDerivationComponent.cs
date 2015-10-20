@@ -1,12 +1,12 @@
-﻿using EmotionalAppraisal;
-using EmotionalAppraisal.Components;
-using EmotionalAppraisal.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using WellFormedNames;
+using EmotionalAppraisal;
+using EmotionalAppraisal.Components;
+using EmotionalAppraisal.Interfaces;
+using KnowledgeBase.WellFormedNames;
 
-namespace OCCModelAppraisal
+namespace OCCModelAppraisal.OCCModel
 {
 	public class OCCAffectDerivationComponent : IAffectDerivator
 	{
