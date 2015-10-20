@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace WellFormedNames
+﻿namespace KnowledgeBase.WellFormedNames.Exceptions
 {
 	/// <summary>
 	/// Base class for FAtiMA exceptions

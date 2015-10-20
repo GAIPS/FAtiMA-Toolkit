@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Text.RegularExpressions;
+using KnowledgeBase.WellFormedNames.Exceptions;
 
-namespace WellFormedNames
+namespace KnowledgeBase.WellFormedNames
 {
 	/// <summary>
 	/// Represents a substitution of a variable for another variable or constant symbol

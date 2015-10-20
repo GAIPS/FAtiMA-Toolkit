@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using Utilities;
 
-namespace WellFormedNames
+namespace KnowledgeBase.WellFormedNames
 {
 	/// <summary>
 	/// Well Formed Name composed by several symbols. 
