@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0A2A1EE9-BD5D-44AA-A22D-291612488F06}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EmotionalAppraisal</RootNamespace>
+    <AssemblyName>EmotionalAppraisal</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="RageAssetManager">
+      <HintPath>..\DllDependencies\RageAssetManager.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActiveEmotion.cs" />
+    <Compile Include="BaseEmotion.cs" />
+    <Compile Include="Components\IAffectDerivator.cs" />
+    <Compile Include="Components\IAppraisalDerivator.cs" />
+    <Compile Include="Components\IEmotionProcessor.cs" />
+    <Compile Include="ConcreteEmotionalState.cs" />
+    <Compile Include="EmotionalAppraisal.cs" />
+    <Compile Include="EmotionalParameters.cs" />
+    <Compile Include="EmotionDisposition.cs" />
+    <Compile Include="IAppraisalFrame.cs" />
+    <Compile Include="IEmotionalState.cs" />
+    <Compile Include="Interfaces\IEventParameter.cs" />
+    <Compile Include="InternalAppraisalFrame.cs" />
+    <Compile Include="IWritableAppraisalFrame.cs" />
+    <Compile Include="OCCModel\OCCAffectDerivationComponent.cs" />
+    <Compile Include="OCCModel\OCCAppraisalVariables.cs" />
+    <Compile Include="OCCModel\OCCBaseEmotion.cs" />
+    <Compile Include="OCCModel\OCCEmotionType.cs" />
+    <Compile Include="Utilities\EventOperations.cs" />
+    <Compile Include="WellFormedNames\Exceptions\BadSubstitutionException.cs" />
+    <Compile Include="WellFormedNames\Exceptions\Exception.cs" />
+    <Compile Include="WellFormedNames\Exceptions\InvalidSymbolDefinitionException.cs" />
+    <Compile Include="WellFormedNames\Exceptions\InvalidVariableDefinitionException.cs" />
+    <Compile Include="Interfaces\IEvent.cs" />
+    <Compile Include="ITime.cs" />
+    <Compile Include="Mood.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\DirtyValue.cs" />
+    <Compile Include="Utilities\LinqExtentions.cs" />
+    <Compile Include="Utilities\ObjectPool.cs" />
+    <Compile Include="Utilities\Tuple.cs" />
+    <Compile Include="WellFormedNames\ComposedName.cs" />
+    <Compile Include="WellFormedNames\IGroundable.cs" />
+    <Compile Include="WellFormedNames\Inequality.cs" />
+    <Compile Include="WellFormedNames\Name.cs" />
+    <Compile Include="WellFormedNames\NameParsingException.cs" />
+    <Compile Include="WellFormedNames\NameSearchTree.cs" />
+    <Compile Include="WellFormedNames\Substitution.cs" />
+    <Compile Include="WellFormedNames\SubstitutionSet.cs" />
+    <Compile Include="WellFormedNames\Symbol.cs" />
+    <Compile Include="WellFormedNames\Unifier.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

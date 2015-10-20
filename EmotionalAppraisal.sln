@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{C971A59A-2DD0-4396-AB70-7CBAC20D6CC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalAppraisal", "EmotionalAppraisal\EmotionalAppraisal.csproj", "{0A2A1EE9-BD5D-44AA-A22D-291612488F06}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C971A59A-2DD0-4396-AB70-7CBAC20D6CC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C971A59A-2DD0-4396-AB70-7CBAC20D6CC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C971A59A-2DD0-4396-AB70-7CBAC20D6CC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C971A59A-2DD0-4396-AB70-7CBAC20D6CC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A2A1EE9-BD5D-44AA-A22D-291612488F06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A2A1EE9-BD5D-44AA-A22D-291612488F06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A2A1EE9-BD5D-44AA-A22D-291612488F06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A2A1EE9-BD5D-44AA-A22D-291612488F06}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
