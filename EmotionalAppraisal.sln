@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "Tests\UnitTest.csproj", "{C971A59A-2DD0-4396-AB70-7CBAC20D6CC9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalAppraisal", "Assets\EmotionalAppraisal\EmotionalAppraisal.csproj", "{0A2A1EE9-BD5D-44AA-A22D-291612488F06}"
@@ -12,6 +14,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OCCModelAppraisal", "Components\OCCModelAppraisal\OCCModelAppraisal.csproj", "{A8BB95FD-C1BC-4C7A-91DA-F19C13BADCCF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Components\Utilities\Utilities.csproj", "{2021E828-2F7F-4775-9F02-58C68FD72EDD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Asset", "Asset", "{CF0EEA5B-F1F9-4462-AA30-891F31612A1A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Components", "Components", "{6FDA1219-9D9E-489F-A258-B797FED50614}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9285D50F-C051-467D-AB2D-165963753EA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,5 +54,13 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C971A59A-2DD0-4396-AB70-7CBAC20D6CC9} = {9285D50F-C051-467D-AB2D-165963753EA5}
+		{0A2A1EE9-BD5D-44AA-A22D-291612488F06} = {CF0EEA5B-F1F9-4462-AA30-891F31612A1A}
+		{2F1B1044-7D2D-40B0-80C2-12D742F54A7B} = {6FDA1219-9D9E-489F-A258-B797FED50614}
+		{A632A90A-0EE6-430F-ACF2-25BB7CED21E7} = {6FDA1219-9D9E-489F-A258-B797FED50614}
+		{A8BB95FD-C1BC-4C7A-91DA-F19C13BADCCF} = {6FDA1219-9D9E-489F-A258-B797FED50614}
+		{2021E828-2F7F-4775-9F02-58C68FD72EDD} = {6FDA1219-9D9E-489F-A258-B797FED50614}
 	EndGlobalSection
 EndGlobal
