@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="RageAssetManager">
-      <HintPath>..\DllDependencies\RageAssetManager.dll</HintPath>
+      <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -58,11 +58,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Components\KnowledgeBase\KnowledgeBase.csproj">
+    <ProjectReference Include="..\Components\KnowledgeBase\KnowledgeBase.csproj">
       <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
       <Name>KnowledgeBase</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Components\Utilities\Utilities.csproj">
+    <ProjectReference Include="..\Components\Utilities\Utilities.csproj">
       <Project>{2021e828-2f7f-4775-9f02-58c68fd72edd}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
