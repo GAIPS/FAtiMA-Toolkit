@@ -1,6 +1,7 @@
 ﻿using AssetPackage;
 using EmotionalAppraisal.Components;
 using EmotionalAppraisal.Interfaces;
+using GAIPS.Serialization.Attributes;
 using System.Collections.Generic;
 
 namespace EmotionalAppraisal
@@ -10,12 +11,16 @@ namespace EmotionalAppraisal
 		private static readonly InternalAppraisalFrame APPRAISAL_FRAME = new InternalAppraisalFrame();
 		private long lastFrameAppraisal = 0;
 
-		private ITime m_timeKeeper;
+		[SerializeField]
+		private ConcreteEmotionalState m_emotionalState;
 
 		#region Component Manager
 
+		[SerializeField]
 		private HashSet<IAppraisalDerivator> m_appraisalDerivators = new HashSet<IAppraisalDerivator>();
+		[SerializeField]
 		private HashSet<IAffectDerivator> m_affectDerivators = new HashSet<IAffectDerivator>();
+		[SerializeField]
 		private HashSet<IEmotionProcessor> m_emotionalProcessors = new HashSet<IEmotionProcessor>();
 
 		public bool AddComponent(IAppraisalDerivator component)
@@ -55,14 +60,15 @@ namespace EmotionalAppraisal
 		/// </summary>
 		public IEmotionalState EmotionalState
 		{
-			get;
-			private set;
+			get
+			{
+				return m_emotionalState;
+			}
 		}
 
-		public EmotionalAppraisalAsset(ITime timeKeeper)
+		public EmotionalAppraisalAsset()
 		{
-			m_timeKeeper = timeKeeper;
-			this.EmotionalState = new ConcreteEmotionalState(timeKeeper);
+			m_emotionalState = new ConcreteEmotionalState();
 		}
 
 		public void AppraiseEvents(IEnumerable<IEvent> events)
@@ -91,7 +97,7 @@ namespace EmotionalAppraisal
 					var emotions = affectDerivator.AffectDerivation(this, frame);
 					foreach (var emotion in emotions)
 					{
-						var activeEmotion = this.EmotionalState.AddEmotion(emotion, m_timeKeeper);
+						var activeEmotion = this.EmotionalState.AddEmotion(emotion);
 						if (activeEmotion != null)
 						{
 							foreach (var processor in m_emotionalProcessors)
@@ -104,6 +110,14 @@ namespace EmotionalAppraisal
 
 				lastFrameAppraisal = frame.LastChange;
 			}
+		}
+
+		public void Update(float deltaTime)
+		{
+			if (deltaTime <= 0)
+				return;
+
+			m_emotionalState.Decay(deltaTime);
 		}
 
 		public void Reappraise()

@@ -450,8 +450,6 @@ namespace UnitTest.WellFormedNames
 				}
 			}
 
-			Dictionary<string, int> t;
-
 			var values = tree.ToList();
 			if (baseSet.Except(values).Any())
 				Assert.Fail("Could not retrieve all expected values within the tree");

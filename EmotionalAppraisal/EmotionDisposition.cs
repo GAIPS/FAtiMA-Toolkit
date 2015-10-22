@@ -1,4 +1,5 @@
-﻿namespace EmotionalAppraisal
+﻿using GAIPS.Serialization.Attributes;
+namespace EmotionalAppraisal
 {
 	/// <summary>
 	/// Represents the character's emotional disposition (Emotional Threshold + Decay Rate) towards an Emotion Type.
@@ -8,34 +9,40 @@
 	/// </summary>
 	public class EmotionDisposition
 	{
+		[SerializeField]
+		private string m_emotion;
+
+		[SerializeField]
+		private int m_decay;
+
+		[SerializeField]
+		private int m_threshold;
+
 		public string Emotion
 		{
-			get;
-			private set;
+			get { return m_emotion; }
 		}
 
 		public int Decay
 		{
-			get;
-			private set;
+			get { return m_decay; }
 		}
 
 		public int Threshold
 		{
-			get;
-			private set;
+			get { return m_threshold; }
 		}
 
 		public EmotionDisposition(string emotion, int decay, int threashold)
 		{
-			this.Emotion = emotion;
-			this.Decay = decay;
-			this.Threshold = threashold;
+			m_emotion = emotion;
+			m_decay = decay;
+			m_threshold = threashold;
 		}
 
 		public override string ToString()
 		{
-			return string.Format("Emotion: {0}, Threashold: {2}, Decay: {1}", Emotion, Decay, Threshold);
+			return string.Format("Emotion: {0}, Threashold: {2}, Decay: {1}", m_emotion,m_threshold,m_decay);
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GAIPS.Serialization.Attributes;
+using System;
 
 namespace EmotionalAppraisal
 {
@@ -7,9 +8,11 @@ namespace EmotionalAppraisal
 	/// </summary>
 	public class Mood
 	{
+		[SerializeField]
 		private float intensityATt0;
-		private ITime timeInstance;
-		private long t0;
+		[SerializeField]
+		private float deltaTimeT0;
+		[SerializeField]
 		private float intensity;
 
 		/// <summary>
@@ -23,44 +26,42 @@ namespace EmotionalAppraisal
 			{
 				return this.intensity;
 			}
-			set
-			{
-				value = value < -10 ? -10 : (value > 10 ? 10 : value);
-				if (Math.Abs(value) < EmotionalParameters.MinimumMoodValue)
-					value = 0;
-
-				this.intensityATt0 = this.intensity = value;
-				this.t0 = this.timeInstance.SimulatedTime;
-			}
 		}
 
-		public Mood(ITime time)
+		public void SetMoodValue(float value)
 		{
-			this.timeInstance = time;
-			MoodValue = 0;
+			value = value < -10 ? -10 : (value > 10 ? 10 : value);
+			if (Math.Abs(value) < EmotionalParameters.MinimumMoodValue)
+				value = 0;
+
+			this.intensityATt0 = this.intensity = value;
+			this.deltaTimeT0 = 0;
+		}
+
+		public Mood()
+		{
+			SetMoodValue(0);
 		}
 
 		/// <summary>
 		/// Decays the mood according to the agent's simulated time
 		/// </summary>
 		/// <returns>the mood's intensity after being decayed</returns>
-		public float DecayMood(ITime time)
+		public void DecayMood(float elapsedTime)
 		{
 			if (this.intensityATt0 == 0)
 			{
 				this.intensity = 0;
-				return 0;
+				return;
 			}
 
-			float deltaT = (time.SimulatedTime - this.t0) / 1000f;
-			intensity = (float)(this.intensityATt0 * Math.Exp(-EmotionalParameters.MoodDecayFactor*deltaT));
+			this.deltaTimeT0 += elapsedTime;
+			intensity = (float)(this.intensityATt0 * Math.Exp(-EmotionalParameters.MoodDecayFactor*deltaTimeT0));
 			if(Math.Abs(this.intensity) < EmotionalParameters.MinimumMoodValue)
 			{
-				this.intensity = 0;
-				this.intensityATt0 = 0;
-				this.t0 = time.SimulatedTime;
+				this.intensity = this.intensityATt0 = 0;
+				this.deltaTimeT0 = 0;
 			}
-			return this.intensity;
 		}
 
 		/// <summary>
@@ -73,7 +74,7 @@ namespace EmotionalAppraisal
 				return;
 
 			float scale = (float)emotion.Valence;
-			MoodValue = this.intensity + scale*(emotion.Intencity*EmotionalParameters.EmotionInfluenceOnMood);
+			SetMoodValue(this.intensity + scale * (emotion.Intencity * EmotionalParameters.EmotionInfluenceOnMood));
 		}
 	}
 }

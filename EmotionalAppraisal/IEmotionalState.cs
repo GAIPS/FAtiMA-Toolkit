@@ -24,7 +24,7 @@ namespace EmotionalAppraisal
 		/// <param name="emotion">the BaseEmotion that creates the ActiveEmotion</param>
 		/// <returns>the ActiveEmotion created if it was added to the EmotionalState.
 		/// Otherwise, if the intensity of the emotion was not enough to be added to the EmotionalState, the method returns null</returns>
-		ActiveEmotion AddEmotion(BaseEmotion emotion, ITime timeInstance);
+		ActiveEmotion AddEmotion(BaseEmotion emotion);
 
 		/// <summary>
 		/// Removes the given active emotion from the EmotionalState
@@ -42,17 +42,12 @@ namespace EmotionalAppraisal
 		/// <param name="potEm">the BaseEmotion that creates the ActiveEmotion</param>
 		/// <returns>the ActiveEmotion created. If the intensity of the emotion was not 
 		/// enough to be created, the method returns null</returns>
-		ActiveEmotion DetermineActiveEmotion(BaseEmotion potEm, ITime time);
+		ActiveEmotion DetermineActiveEmotion(BaseEmotion potEm);
 
 		/// <summary>
 		/// Clears all the emotions in the EmotionalState
 		/// </summary>
 		void Clear();
-
-		/// <summary>
-		/// Decays all emotions, mood and arousal according to the System Time
-		/// </summary>
-		void Decay(ITime time);
 
 		/// <summary>
 		/// Searches for a given emotion in the EmotionalState

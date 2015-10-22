@@ -11,8 +11,7 @@ namespace EmotionalAppraisal
 	public class ActiveEmotion : BaseEmotion
 	{
 		private float intensityATt0;
-		private ITime timeInstance;
-		private long t0;
+		private float deltaTimeT0;
 
 		public int Decay
 		{
@@ -26,26 +25,17 @@ namespace EmotionalAppraisal
 			set;
 		}
 
-		private float intensity;
 		public float Intencity
 		{
-			get
-			{
-				return this.intensity;
-			}
-			set
-			{
-				t0 = this.timeInstance.SimulatedTime;
-				value -= Threashold;
-				this.intensityATt0 = this.intensity = value < -10 ? -10 : (value > 10 ? 10 : value);
-			}
+			get;
+			private set;
 		}
 
 		public new float Potential
 		{
 			get
 			{
-				return this.intensity + this.Threashold;
+				return this.Intencity + this.Threashold;
 			}
 		}
 
@@ -55,6 +45,14 @@ namespace EmotionalAppraisal
 			protected set;
 		}
 
+		internal void SetIntencity(float value)
+		{
+			value -= Threashold;
+			value = value < -10 ? -10 : (value > 10 ? 10 : value);
+			this.intensityATt0 = this.Intencity = value;
+			this.deltaTimeT0 = 0;
+		}
+
 		/// <summary>
 		/// Creates a new ActiveEmotion
 		/// </summary>
@@ -62,12 +60,11 @@ namespace EmotionalAppraisal
 		/// <param name="potential">the potential for the intensity of the emotion</param>
 		/// <param name="threshold">the threshold for the specific emotion</param>
 		/// <param name="decay">the decay rate for the specific emotion</param>
-		public ActiveEmotion(BaseEmotion emotion, ITime time, float potential, int threshold, int decay) : base(emotion)
+		public ActiveEmotion(BaseEmotion emotion, float potential, int threshold, int decay) : base(emotion)
 		{
-			this.timeInstance = time;
 			this.Threashold = threshold;
 			this.Decay = decay;
-			this.Intencity = potential;
+			SetIntencity(potential);
 			this.BaseEmotionType = emotion.GetType();
 		}
 
@@ -75,11 +72,11 @@ namespace EmotionalAppraisal
 		/// Decays the emotion according to the system's time
 		/// </summary>
 		/// <returns>the intensity of the emotion after being decayed</returns>
-		internal void DecayEmotion()
+		internal void DecayEmotion(float elapsedTime)
 		{
-			float deltaT = (this.timeInstance.SimulatedTime - t0) / 1000f;
-			float decay = (float)Math.Exp(-EmotionalParameters.EmotionDecayFactor * this.Decay * deltaT);
-			intensity = intensityATt0 * decay;
+			this.deltaTimeT0 += elapsedTime;
+			float decay = (float)Math.Exp(-EmotionalParameters.EmotionDecayFactor * this.Decay * deltaTimeT0);
+			Intencity = intensityATt0 * decay;
 		}
 
 		/// <summary>
@@ -91,7 +88,7 @@ namespace EmotionalAppraisal
 			this.Intencity = (float)Math.Log(Math.Exp(this.Potential) + Math.Exp(potential));
 		}
 
-		public bool IsRelevante
+		public bool IsRelevant
 		{
 			get
 			{

@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "Tests\UnitTest.csproj", "{C971A59A-2DD0-4396-AB70-7CBAC20D6CC9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutobiographicalMemory", "Components\AutobiographicalMemory\AutobiographicalMemory.csproj", "{2F1B1044-7D2D-40B0-80C2-12D742F54A7B}"
@@ -18,6 +16,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9285D50F-C051-467D-AB2D-165963753EA5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalAppraisal", "EmotionalAppraisal\EmotionalAppraisal.csproj", "{0A2A1EE9-BD5D-44AA-A22D-291612488F06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAIPS.Serialization", "Components\SerializationUtilities\GAIPS.Serialization.csproj", "{7DD831A6-ADCA-455B-B02F-53C3A639E79B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,15 +49,20 @@ Global
 		{0A2A1EE9-BD5D-44AA-A22D-291612488F06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A2A1EE9-BD5D-44AA-A22D-291612488F06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A2A1EE9-BD5D-44AA-A22D-291612488F06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DD831A6-ADCA-455B-B02F-53C3A639E79B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DD831A6-ADCA-455B-B02F-53C3A639E79B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DD831A6-ADCA-455B-B02F-53C3A639E79B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DD831A6-ADCA-455B-B02F-53C3A639E79B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C971A59A-2DD0-4396-AB70-7CBAC20D6CC9} = {9285D50F-C051-467D-AB2D-165963753EA5}
-		{2F1B1044-7D2D-40B0-80C2-12D742F54A7B} = {6FDA1219-9D9E-489F-A258-B797FED50614}
 		{A632A90A-0EE6-430F-ACF2-25BB7CED21E7} = {6FDA1219-9D9E-489F-A258-B797FED50614}
 		{A8BB95FD-C1BC-4C7A-91DA-F19C13BADCCF} = {6FDA1219-9D9E-489F-A258-B797FED50614}
 		{2021E828-2F7F-4775-9F02-58C68FD72EDD} = {6FDA1219-9D9E-489F-A258-B797FED50614}
+		{2F1B1044-7D2D-40B0-80C2-12D742F54A7B} = {6FDA1219-9D9E-489F-A258-B797FED50614}
+		{7DD831A6-ADCA-455B-B02F-53C3A639E79B} = {6FDA1219-9D9E-489F-A258-B797FED50614}
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,5 @@
 ﻿using EmotionalAppraisal.Interfaces;
+using GAIPS.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,17 +20,20 @@ namespace EmotionalAppraisal
 		{
 			private static readonly EmotionDisposition DEFAULT_EMOTIONAL_DISPOSITION = new EmotionDisposition("default", 1, 5);
 
+			[SerializeField]
 			private Dictionary<string, ActiveEmotion> emotionPool;
+			[SerializeField]
 			private Dictionary<string, EmotionDisposition> emotionDispositions;
+			[SerializeField]
 			private Mood mood;
 
 			public event Action<IEmotionalState, ActiveEmotion> OnEmotionCreated;
 
-			public ConcreteEmotionalState(ITime time)
+			public ConcreteEmotionalState()
 			{
 				this.emotionPool = new Dictionary<string, ActiveEmotion>();
 				this.emotionDispositions = new Dictionary<string, EmotionDisposition>();
-				this.mood = new Mood(time);
+				this.mood = new Mood();
 			}
 
 			/// <summary>
@@ -60,7 +64,7 @@ namespace EmotionalAppraisal
 			/// <param name="emotion">the BaseEmotion that creates the ActiveEmotion</param>
 			/// <returns>the ActiveEmotion created if it was added to the EmotionalState.
 			/// Otherwise, if the intensity of the emotion was not enough to be added to the EmotionalState, the method returns null</returns>
-			public ActiveEmotion AddEmotion(BaseEmotion emotion, ITime timeInstance)
+			public ActiveEmotion AddEmotion(BaseEmotion emotion)
 			{
 				if (emotion == null)
 					return null;
@@ -90,7 +94,7 @@ namespace EmotionalAppraisal
 				float potential = DeterminePotential(emotion);
 				if (potential > disposition.Threshold)
 				{
-					auxEmotion = new ActiveEmotion(emotion, timeInstance, potential, disposition.Threshold, decay);
+					auxEmotion = new ActiveEmotion(emotion, potential, disposition.Threshold, decay);
 					emotionPool.Add(emotion.HashString, auxEmotion);
 					if (!reappraisal)
 						this.mood.UpdateMood(auxEmotion);
@@ -118,13 +122,13 @@ namespace EmotionalAppraisal
 				return DEFAULT_EMOTIONAL_DISPOSITION;
 			}
 
-			public ActiveEmotion DetermineActiveEmotion(BaseEmotion potEm, ITime time)
+			public ActiveEmotion DetermineActiveEmotion(BaseEmotion potEm)
 			{
 				EmotionDisposition emotionDisposition = GetEmotionDisposition(potEm.EmotionType);
 				float potential = DeterminePotential(potEm);
 
 				if (potential > emotionDisposition.Threshold)
-					return new ActiveEmotion(potEm,time, potential, emotionDisposition.Threshold, emotionDisposition.Decay);
+					return new ActiveEmotion(potEm, potential, emotionDisposition.Threshold, emotionDisposition.Decay);
 
 				return null;
 			}
@@ -140,16 +144,16 @@ namespace EmotionalAppraisal
 			/// <summary>
 			/// Decays all emotions, mood and arousal according to the System Time
 			/// </summary>
-			public void Decay(ITime time)
+			public void Decay(float elapsedTime)
 			{
-				this.mood.DecayMood(time);
+				this.mood.DecayMood(elapsedTime);
 				HashSet<string> toRemove = ObjectPool<HashSet<string>>.GetObject();
 				using (var it = this.emotionPool.GetEnumerator())
 				{
 					while (it.MoveNext())
 					{
-						it.Current.Value.DecayEmotion();
-						if (!it.Current.Value.IsRelevante)
+						it.Current.Value.DecayEmotion(elapsedTime);
+						if (!it.Current.Value.IsRelevant)
 							toRemove.Add(it.Current.Key);
 					}
 				}
@@ -237,7 +241,7 @@ namespace EmotionalAppraisal
 
 			public override string ToString()
 			{
-				return string.Format("Mood: {0} Emotions: {1}",this.mood,this,emotionPool);
+				return string.Format("Mood: {0} Emotions: {1}",this.mood,this.emotionPool);
 			}
 		}
 	}
