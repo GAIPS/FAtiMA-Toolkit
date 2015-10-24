@@ -1,15 +1,26 @@
-﻿using System;
+﻿using GAIPS.Serialization.SerializationGraph;
+using System;
 using System.Collections.Generic;
 
 namespace GAIPS.Serialization
 {
-	public sealed class ObjectGraphNode : SerializationGraphNode
+	public sealed class ObjectGraphNode : GraphNode
 	{
-		private Dictionary<string, SerializationGraphNode> m_fields = new Dictionary<string, SerializationGraphNode>();
-		private HashSet<SerializationGraphNode> m_referencedBy = new HashSet<SerializationGraphNode>();
+		private Dictionary<string, GraphNode> m_fields = new Dictionary<string, GraphNode>();
+		private HashSet<GraphNode> m_referencedBy = new HashSet<GraphNode>();
+
+		public TypeEntry ObjectType
+		{
+			get;
+			set;
+		}
+
+		public override SerializedDataType DataType
+		{
+			get { return SerializedDataType.Object; }
+		}
 
 		public readonly int RefId;
-		public Type Class;
 		public int ReferenceCount
 		{
 			get
@@ -27,15 +38,15 @@ namespace GAIPS.Serialization
 
 		public ObjectGraphNode(int refId)
 		{
-			this.Class = null;
+			this.ObjectType = null;
 			this.RefId = refId;
 		}
 
-		public SerializationGraphNode this[string fieldName]
+		public GraphNode this[string fieldName]
 		{
 			get
 			{
-				SerializationGraphNode node;
+				GraphNode node;
 				if (m_fields.TryGetValue(fieldName, out node))
 					return node;
 				return null;
@@ -49,12 +60,12 @@ namespace GAIPS.Serialization
 			}
 		}
 
-		public void AddReferencedBy(SerializationGraphNode node)
+		public void AddReferencedBy(GraphNode node)
 		{
 			m_referencedBy.Add(node);
 		}
 
-		public IEnumerator<KeyValuePair<string, SerializationGraphNode>> GetEnumerator()
+		public IEnumerator<KeyValuePair<string, GraphNode>> GetEnumerator()
 		{
 			return m_fields.GetEnumerator();
 		}

@@ -1,11 +1,12 @@
-﻿using System;
+﻿using GAIPS.Serialization.SerializationGraph;
+using System;
 using System.Collections;
 
 namespace GAIPS.Serialization.Surrogates
 {
 	public sealed class DictionarySerializationSurrogate : ISerializationSurrogate
 	{
-		public void GetObjectData(object obj, ObjectGraphNode holder, SerializationGraph graph)
+		public void GetObjectData(object obj, ObjectGraphNode holder, Graph graph)
 		{
 			IDictionary e = (IDictionary)obj;
 			Type objType = e.GetType();
@@ -33,7 +34,7 @@ namespace GAIPS.Serialization.Surrogates
 			//TODO missing add comparer
 		}
 
-		public void SetObjectData(ref object obj, ObjectGraphNode node, SerializationGraph graph)
+		public void SetObjectData(ref object obj, ObjectGraphNode node, Graph graph)
 		{
 			throw new NotImplementedException();
 		}

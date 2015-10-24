@@ -1,4 +1,5 @@
 ﻿using GAIPS.Serialization.Attributes;
+using GAIPS.Serialization.SerializationGraph;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -10,7 +11,7 @@ namespace GAIPS.Serialization.Surrogates
 	{
 		private static readonly IFormatterConverter FORMAT_CONVERTER = new FormatterConverter();
 
-		public void GetObjectData(object obj, ObjectGraphNode holder, SerializationGraph graph)
+		public void GetObjectData(object obj, ObjectGraphNode holder, Graph graph)
 		{
 			Type objType = obj.GetType();
 			if (obj is ISerializable)
@@ -21,7 +22,7 @@ namespace GAIPS.Serialization.Surrogates
 				var it = info.GetEnumerator();
 				while (it.MoveNext())
 				{
-					SerializationGraphNode fieldNode = SerializationServices.BuildNode(it.Current.Value, null, holder, graph);
+					GraphNode fieldNode = SerializationServices.BuildNode(it.Current.Value, null, holder, graph);
 					holder[it.Name] = fieldNode;
 				}
 			}
@@ -51,7 +52,7 @@ namespace GAIPS.Serialization.Surrogates
 			}
 		}
 
-		public void SetObjectData(ref object obj, ObjectGraphNode node, SerializationGraph graph)
+		public void SetObjectData(ref object obj, ObjectGraphNode node, Graph graph)
 		{
 			throw new NotImplementedException();
 		}

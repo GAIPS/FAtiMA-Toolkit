@@ -1,4 +1,6 @@
-﻿using GAIPS.Serialization.Surrogates;
+﻿using GAIPS.Serialization.SerializationGraph;
+using GAIPS.Serialization.SerializationGraph.Nodes;
+using GAIPS.Serialization.Surrogates;
 using System;
 using System.Collections;
 using System.Reflection;
@@ -21,7 +23,7 @@ namespace GAIPS.Serialization
 			return type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
 		}
 
-		public static SerializationGraphNode BuildNode(object obj, Type fieldType, SerializationGraphNode referencedBy, SerializationGraph parentGraph)
+		public static GraphNode BuildNode(object obj, Type fieldType, GraphNode referencedBy, Graph parentGraph)
 		{
 			if (obj == null)
 				return null;
@@ -63,25 +65,25 @@ namespace GAIPS.Serialization
 				}
 			}
 
-			if ((objReturnData.Class == null) && (objType != fieldType))
-				objReturnData.Class = objType;
+			if ((objReturnData.ObjectType == null) && (objType != fieldType))
+				objReturnData.ObjectType = parentGraph.GetTypeEntry(objType);
 
 			return objReturnData;
 		}
 
-		private static SequenceGraphNode ConstructArrayNodes(IEnumerable enumerable, SerializationGraph parentGraph)
+		private static SequenceGraphNode ConstructArrayNodes(IEnumerable enumerable, Graph parentGraph)
 		{
 			SequenceGraphNode array = new SequenceGraphNode();
 			IEnumerator it = enumerable.GetEnumerator();
 			while (it.MoveNext())
 			{
-				SerializationGraphNode elem = BuildNode(it.Current, null, array, parentGraph);
+				GraphNode elem = BuildNode(it.Current, null, array, parentGraph);
 				array.Add(elem);
 			}
 			return array;
 		}
 
-		private static void ExtractSerializationData(object obj, Type objType, ObjectGraphNode holder, SerializationGraph parentGraph)
+		private static void ExtractSerializationData(object obj, Type objType, ObjectGraphNode holder, Graph parentGraph)
 		{
 			var surrogate = SurrogateSelector.GetSurrogate(objType);
 			surrogate.GetObjectData(obj, holder, parentGraph);

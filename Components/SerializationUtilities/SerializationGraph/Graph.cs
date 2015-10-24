@@ -1,16 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace GAIPS.Serialization
+namespace GAIPS.Serialization.SerializationGraph
 {
-	public class SerializationGraph
+	public partial class Graph
 	{
 		private int m_idCounter = 0;
 		private SortedDictionary<long, ObjectGraphNode> m_refs = new SortedDictionary<long, ObjectGraphNode>();
 		private Dictionary<object, long> m_links = new Dictionary<object, long>();
-		public SerializationGraphNode Root { get; set; }
+		public GraphNode Root { get; set; }
+
+		private byte m_typeidCounter = 0;
+		private Dictionary<Type, TypeEntry> m_registedTypes = new Dictionary<Type, TypeEntry>();
+
+		public TypeEntry GetTypeEntry(Type type)
+		{
+			TypeEntry t;
+			if (m_registedTypes.TryGetValue(type, out t))
+				return t;
+
+			t = new TypeEntry(type, m_typeidCounter++);
+			m_registedTypes[type] = t;
+			return t;
+		}
+
+		public IEnumerable<TypeEntry> GetRegistedTypes()
+		{
+			return m_registedTypes.Values;
+		}
 
 		public ObjectGraphNode CreateObjectData()
 		{

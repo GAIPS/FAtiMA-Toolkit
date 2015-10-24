@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GAIPS.Serialization.SerializationGraph;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ namespace GAIPS.Serialization.Surrogates
 {
 	public sealed class EnumerableSerializationSurrogate : ISerializationSurrogate
 	{
-		public void GetObjectData(object obj, ObjectGraphNode holder, SerializationGraph graph)
+		public void GetObjectData(object obj, ObjectGraphNode holder, Graph graph)
 		{
 			IEnumerable e = obj as IEnumerable;
 			Type elemType = typeof(object);
@@ -22,12 +23,12 @@ namespace GAIPS.Serialization.Surrogates
 			IEnumerator it = e.GetEnumerator();
 			while (it.MoveNext())
 			{
-				SerializationGraphNode node = SerializationServices.BuildNode(it.Current, elemType, holder, graph);
+				GraphNode node = SerializationServices.BuildNode(it.Current, elemType, holder, graph);
 				array.Add(node);
 			}
 		}
 
-		public void SetObjectData(ref object obj, ObjectGraphNode node, SerializationGraph graph)
+		public void SetObjectData(ref object obj, ObjectGraphNode node, Graph graph)
 		{
 			throw new NotImplementedException();
 		}
