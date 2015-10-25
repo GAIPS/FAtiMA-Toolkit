@@ -1,7 +1,5 @@
 ﻿using GAIPS.Serialization.SerializationGraph;
-using GAIPS.Serialization.SerializationGraph.Nodes;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Utilities;
@@ -11,232 +9,36 @@ namespace GAIPS.Serialization
 {
 	public class JSONSerializer : BaseSerializer
 	{
-		//#region JSON Parsing
+		private const string TYPES_FIELD = "types";
+		private const string ROOT_FIELD = "root";
+		private const string REFERENCES_FIELD = "references";
 
-		//private JsonToken ReadValue(StreamReader reader)
-		//{
-		//	JsonToken node = null;
-
-		//	readEmptyCharacters(reader);
-		//	char start = (char)reader.Peek();
-		//	switch (start)
-		//	{
-		//		case '{':
-		//			node = ReadObject(reader);
-		//			break;
-		//		case '[':
-		//			node = ReadArray(reader);
-		//			break;
-		//		case '\"':
-		//			{
-		//				string str = ReadString(reader);
-		//				node = new JsonString(str);
-		//			}
-		//			break;
-		//		default:
-		//			node = ReadPrimitive(reader);
-		//			break;
-		//	}
-		//	return node;
-		//}
-
-		//private JsonToken ReadObject(StreamReader reader)
-		//{
-		//	JsonObject obj = new JsonObject();
-		//	reader.Read();	// read '{'
-		//	readEmptyCharacters(reader);
-		//	char c = (char)reader.Peek();
-		//	if (c == '}')
-		//	{
-		//		reader.Read();
-		//		return obj;
-		//	}
-
-		//	while (!reader.EndOfStream)
-		//	{
-		//		if (c != '"')
-		//			throw new IOException("Invalid JSON format");
-
-		//		string field = ReadString(reader);
-		//		readEmptyCharacters(reader);
-		//		c = (char)reader.Read();
-		//		if (c != ':')
-		//			throw new IOException("Invalid JSON format");
-
-		//		JsonToken value = ReadValue(reader);
-		//		readEmptyCharacters(reader);
-
-		//		obj[field] = value;
-
-		//		c = (char)reader.Read();
-		//		if (c == '}')
-		//			return obj;
-
-		//		if (c != ',')
-		//			throw new IOException("Invalid JSON format");
-
-		//		readEmptyCharacters(reader);
-		//		c = (char)reader.Peek();
-		//	}
-
-		//	throw new IOException("End of Stream Reached without finishing parsing object");
-		//}
-
-		//private JsonToken ReadArray(StreamReader reader)
-		//{
-		//	JsonArray array = new JsonArray();
-		//	reader.Read();	// read '['
-		//	readEmptyCharacters(reader);
-		//	while ((char)reader.Peek() != ']')
-		//	{
-		//		JsonToken val = ReadValue(reader);
-		//		array.Add(val);
-
-		//		readEmptyCharacters(reader);
-		//		char c = (char)reader.Peek();
-		//		if (c == ',')
-		//			reader.Read();
-		//		else if (c != ']')
-		//			throw new IOException("Invalid JSON format: Invalid array separator. Expected ',' or ']' - Found'" + c + "'");
-		//	}
-		//	reader.Read(); //Read ']'
-		//	return array;
-		//}
-
-		//private const string NUMBER_PATTERN = @"^-?(0|[1-9]\d*)(\.\d+)?(e(-|\+)?\d+)?$";
-		//private static readonly Regex _numberRegex = new Regex(NUMBER_PATTERN);
-
-		//private JsonToken ReadPrimitive(StreamReader reader)
-		//{
-		//	StringBuilder builder = new StringBuilder();
-		//	while (!reader.EndOfStream)
-		//	{
-		//		char c = (char)reader.Peek();
-		//		if ((c == ',') || (c == ']') || (c == '}') || Char.IsWhiteSpace(c))
-		//			break;
-
-		//		builder.Append((char)reader.Read());
-		//	}
-
-		//	string primitive = builder.ToString().ToLower();
-		//	if (_numberRegex.IsMatch(primitive))
-		//	{
-		//		return new JsonNumber(primitive);
-		//	}
-
-		//	if (primitive == "true")
-		//		return new JsonBool(true);
-
-		//	if (primitive == "false")
-		//		return new JsonBool(false);
-
-		//	if (primitive == "null")
-		//		return null;
-
-		//	throw new IOException("Invalid JSON format: Invalid primitive \"" + primitive + "\"");
-		//}
-
-		//private static readonly char[] hexBuffer = new char[4];
-		//private string ReadString(StreamReader reader)
-		//{
-		//	reader.Read();	// read '"'
-		//	StringBuilder builder = new StringBuilder();
-		//	bool isControl = false;
-		//	while (!reader.EndOfStream)
-		//	{
-		//		char c = (char)reader.Read();
-		//		if (isControl)
-		//		{
-		//			switch (c)
-		//			{
-		//				case '"':
-		//					builder.Append('"');
-		//					break;
-		//				case '\\':
-		//					builder.Append('\\');
-		//					break;
-		//				case '/':
-		//					builder.Append('/');
-		//					break;
-		//				case 'b':
-		//					builder.Append('\b');
-		//					break;
-		//				case 'f':
-		//					builder.Append('\f');
-		//					break;
-		//				case 'n':
-		//					builder.Append('\n');
-		//					break;
-		//				case 'r':
-		//					builder.Append('\r');
-		//					break;
-		//				case 't':
-		//					builder.Append('\t');
-		//					break;
-		//				case 'u':
-		//					{
-		//						if (reader.ReadBlock(hexBuffer, 0, 4) < 4)
-		//							throw new IOException("Invalid JSON format.");
-
-		//						string hexString = new string(hexBuffer);
-		//						long result = long.Parse(hexString, System.Globalization.NumberStyles.HexNumber);
-
-		//						char hexChar = (char)result;
-		//						builder.Append(hexChar);
-		//					}
-
-		//					break;
-		//				default:
-		//					throw new IOException("Invalid JSON format.");
-		//			}
-		//			isControl = false;
-		//		}
-		//		else
-		//		{
-		//			if (c == '"')
-		//				break;
-		//			else if (c == '\\')
-		//			{
-		//				isControl = true;
-		//			}
-		//			else
-		//			{
-		//				builder.Append(c);
-		//			}
-		//		}
-		//	}
-		//	return builder.ToString();
-		//}
-
-		//private void readEmptyCharacters(StreamReader reader)
-		//{
-		//	while (!reader.EndOfStream && Char.IsWhiteSpace((char)reader.Peek()))
-		//	{
-		//		reader.Read();
-		//	}
-		//}
-
-		//#endregion
+		public enum EnumRepresentationMode : byte
+		{
+			Explicit,
+			Numeric
+		}
 
 		public bool AllowIdentation = true;
+		public EnumRepresentationMode EnumRepresentation = EnumRepresentationMode.Explicit;
 
 		#region Serialization
 
 		protected override void SerializeDataGraph(Stream serializationStream, Graph graph)
 		{
-			JsonObject root = new JsonObject();
+			JsonObject json = new JsonObject();
 
 			//Collect types
-			root["types"] = CollectAssemblyData(graph);
+			json[TYPES_FIELD] = CollectAssemblyData(graph);
 
-			root["root"] = ToJson(graph.Root);
+			json[ROOT_FIELD] = ToJson(graph.Root);
 
 			var nodes = graph.GetReferences().Select(n => NodeToJson(n)).Cast<JsonToken>();
 			if (!nodes.IsEmpty())
-				root["references"] = new JsonArray(nodes);
+				json[REFERENCES_FIELD] = new JsonArray(nodes);
 
 			var w = new StreamWriter(serializationStream);
-			root.Write(w, 0, AllowIdentation);
+			json.Write(w, 0, AllowIdentation);
 			w.Flush();
 		}
 
@@ -253,7 +55,7 @@ namespace GAIPS.Serialization
 			return array;
 		}
 
-		private JsonToken ToJson(GraphNode node)
+		private JsonToken ToJson(IGraphNode node)
 		{
 			if (node == null)
 				return null;
@@ -261,24 +63,16 @@ namespace GAIPS.Serialization
 			switch (node.DataType)
 			{
 				case SerializedDataType.Boolean:
-					return new JsonBool((bool)((PrimitiveGraphNode)node).Value);
+					return new JsonBool((bool)((IPrimitiveGraphNode)node).Value);
 				case SerializedDataType.Number:
-					return new JsonNumber((node as PrimitiveGraphNode).Value);
+					return new JsonNumber((node as IPrimitiveGraphNode).Value);
 				case SerializedDataType.String:
-					return new JsonString((node as StringGraphNode).Value);
-				case SerializedDataType.Enum:
-					{
-						Enum e = (node as EnumGraphNode).Value;
-						Type eType = e.GetType();
-						string format = e.ToString().Replace(", ", "|");
-						return new JsonString("enum<" + (eType.AssemblyQualifiedName) + ">:" + format);
-					}
-					break;
+					return new JsonString((node as IStringGraphNode).Value);
 				case SerializedDataType.DataSequence:
-					return new JsonArray((node as SequenceGraphNode).Select(n => ToJson(n)));
+					return new JsonArray((node as ISequenceGraphNode).Select(n => ToJson(n)));
 			}
 
-			ObjectGraphNode objNode = node as ObjectGraphNode;
+			IObjectGraphNode objNode = node as IObjectGraphNode;
 			if (objNode.IsReference)
 			{
 				return new JsonString("refId@" + objNode.RefId.ToString());
@@ -287,7 +81,7 @@ namespace GAIPS.Serialization
 			return NodeToJson(objNode);
 		}
 
-		private JsonObject NodeToJson(ObjectGraphNode node)
+		private JsonObject NodeToJson(IObjectGraphNode node)
 		{
 			JsonObject json = new JsonObject();
 
@@ -306,7 +100,7 @@ namespace GAIPS.Serialization
 			{
 				while (it.MoveNext())
 				{
-					json[it.Current.Key] = ToJson(it.Current.Value);
+					json[it.Current.FieldName] = ToJson(it.Current.FieldNode);
 				}
 			}
 
@@ -315,9 +109,133 @@ namespace GAIPS.Serialization
 
 		#endregion
 
+		#region Deserialization
+
 		protected override Graph DeserializeDataGraph(Stream serializationStream)
 		{
-			throw new System.NotImplementedException();
+			JsonObject json = JsonParser.Parse(serializationStream) as JsonObject;
+			if (json == null)
+				throw new Exception("Unable to deserialize"); //TODO get a better exception
+
+			Graph serGraph = new Graph(this);
+			if (json.ContainsField(TYPES_FIELD))
+			{
+				JsonArray types = json[TYPES_FIELD] as JsonArray;
+				foreach (var t in types)
+				{
+					var typeEntry = t as JsonObject;
+					if (typeEntry == null)
+						throw new Exception("Unable to deserialize"); //TODO get a better exception
+
+					byte typeId = (byte)(typeEntry["TypeId"] as JsonNumber);
+					Type loadedType = Type.GetType((typeEntry["ClassName"] as JsonString).String);
+					serGraph.RegistTypeEntry(loadedType, typeId);
+				}
+			}
+
+			if (json.ContainsField(REFERENCES_FIELD))
+			{
+				JsonArray refs = json[REFERENCES_FIELD] as JsonArray;
+				foreach (var e in refs)
+				{
+					var refEntry = e as JsonObject;
+					if (refEntry == null)
+						throw new Exception("Unable to deserialize"); //TODO get a better exception
+
+					var node = JsonToObjectNode(refEntry, serGraph);
+				}
+			}
+
+			serGraph.Root = JsonToObjectNode(json[ROOT_FIELD] as JsonObject, serGraph);
+			return serGraph;
+		}
+
+		private IObjectGraphNode JsonToObjectNode(JsonObject json, Graph parentGraph)
+		{
+			IObjectGraphNode node;
+			
+			if(json.ContainsField("refId"))
+			{
+				node = parentGraph.GetObjectDataForRefId((int)(json["refId"] as JsonNumber));
+			}
+			else
+				node = parentGraph.CreateObjectData();
+
+			foreach (var field in json)
+			{
+				if (field.Key == "refId")
+					continue;
+
+				if (field.Key == "classId")
+				{
+					var id = (byte)(field.Value as JsonNumber);
+					node.ObjectType = parentGraph.GetTypeEntry(id);
+				}
+				else
+				{
+					node[field.Key] = ReadNode(field.Value, parentGraph);
+				}
+			}
+
+			return node;
+		}
+
+		private IGraphNode ReadNode(JsonToken json, Graph parentGraph)
+		{
+			if (json == null)
+				return null;
+
+			if (json is JsonString)
+			{
+				string val = ((JsonString)json).String;
+				if (val.StartsWith("refId@"))
+				{
+					int id = int.Parse(val.Substring(6));
+					return parentGraph.GetObjectDataForRefId(id);
+				}
+
+				return parentGraph.BuildStringNode(val);
+			}
+
+			if (json is JsonNumber)
+				return parentGraph.BuildPrimitiveNode((json as JsonNumber).Value);
+
+			if (json is JsonBool)
+				return parentGraph.BuildPrimitiveNode((json as JsonBool).Value);
+
+			if (json is JsonArray)
+			{
+				ISequenceGraphNode node = parentGraph.BuildSequenceNode();
+				foreach (JsonToken t in ((JsonArray)json))
+				{
+					var elem = ReadNode(t, parentGraph);
+					node.Add(elem);
+				}
+				return node;
+			}
+
+			return JsonToObjectNode(json as JsonObject, parentGraph);
+		}
+
+		#endregion
+
+		public override IGraphNode EnumToGraphNode(Enum enumValue, Graph serializationGraph)
+		{
+			if (EnumRepresentation == EnumRepresentationMode.Numeric)
+				return serializationGraph.BuildPrimitiveNode((ValueType)Convert.ChangeType(enumValue, enumValue.GetTypeCode()));
+			return serializationGraph.BuildStringNode(enumValue.ToString().Replace(',','|'));
+		}
+
+		public override Enum GraphNodeToEnum(IGraphNode node, Type enumType)
+		{
+			if (node.DataType == SerializedDataType.Number)
+				return (Enum)Convert.ChangeType((node as IPrimitiveGraphNode).Value, enumType);
+			if (node.DataType != SerializedDataType.String)
+				throw new Exception("invalid enum type");	//TODO better exception
+
+			var str = (node as IStringGraphNode).Value;
+			str = str.Replace("|", ",");
+			return (Enum)Enum.Parse(enumType, str, true);
 		}
 	}
 }

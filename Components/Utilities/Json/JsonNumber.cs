@@ -8,11 +8,7 @@ namespace Utilities.Json
 {
 	public class JsonNumber : JsonToken
 	{
-		public string NumberString
-		{
-			get;
-			private set;
-		}
+		public readonly ValueType Value;
 
 		#region Constructors
 
@@ -21,69 +17,124 @@ namespace Utilities.Json
 			if (!value.GetType().IsNumeric())
 				throw new ArgumentException("The give value is not a primitive number data type.", "value");
 
-			this.NumberString = value.ToString();
+			Value = value;
 		}
 
 		public JsonNumber(byte value)
 		{
-			this.NumberString = value.ToString();
+			Value = value;
 		}
 
 		public JsonNumber(sbyte value)
 		{
-			this.NumberString = value.ToString();
+			Value = value;
 		}
 
 		public JsonNumber(short value)
 		{
-			this.NumberString = value.ToString();
+			Value = value;
 		}
 
 		public JsonNumber(int value)
 		{
-			this.NumberString = value.ToString();
+			Value = value;
 		}
 
 		public JsonNumber(long value)
 		{
-			this.NumberString = value.ToString();
+			Value = value;
 		}
 
 		public JsonNumber(ushort value)
 		{
-			this.NumberString = value.ToString();
+			Value = value;
 		}
 
 		public JsonNumber(uint value)
 		{
-			this.NumberString = value.ToString();
+			Value = value;
 		}
 
 		public JsonNumber(ulong value)
 		{
-			this.NumberString = value.ToString();
+			Value = value;
 		}
 
 		public JsonNumber(float value)
 		{
-			this.NumberString = value.ToString();
+			Value = value;
 		}
 
 		public JsonNumber(double value)
 		{
-			this.NumberString = value.ToString();
+			Value = value;
 		}
 
 		public JsonNumber(decimal value)
 		{
-			this.NumberString = value.ToString();
+			Value = value;
 		}
 
 		#endregion
 
+		public static explicit operator byte(JsonNumber json)
+		{
+			return Convert.ToByte(json.Value);
+		}
+
+		public static explicit operator sbyte(JsonNumber json)
+		{
+			return Convert.ToSByte(json.Value);
+		}
+
+		public static explicit operator short(JsonNumber json)
+		{
+			return Convert.ToInt16(json.Value);
+		}
+
+		public static explicit operator int(JsonNumber json)
+		{
+			return Convert.ToInt32(json.Value);
+		}
+
+		public static explicit operator long(JsonNumber json)
+		{
+			return Convert.ToInt64(json.Value);
+		}
+
+		public static explicit operator ushort(JsonNumber json)
+		{
+			return Convert.ToUInt16(json.Value);
+		}
+
+		public static explicit operator uint(JsonNumber json)
+		{
+			return Convert.ToUInt32(json.Value);
+		}
+
+		public static explicit operator ulong(JsonNumber json)
+		{
+			return Convert.ToUInt64(json.Value);
+		}
+
+		public static explicit operator float(JsonNumber json)
+		{
+			return Convert.ToSingle(json.Value);
+		}
+
+		public static explicit operator double(JsonNumber json)
+		{
+			return Convert.ToDouble(json.Value);
+		}
+
+		public static explicit operator decimal(JsonNumber json)
+		{
+			return Convert.ToDecimal(json.Value);
+		}
+
 		public override void Write(TextWriter writer, int ident, bool allowIndent)
 		{
-			writer.Write(NumberString);
+			writer.Write(Value.ToString());
 		}
 	}
 

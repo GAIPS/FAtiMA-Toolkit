@@ -1,18 +1,37 @@
 ﻿using GAIPS.Serialization.SerializationGraph;
-namespace GAIPS.Serialization
+using System;
+
+namespace GAIPS.Serialization.SerializationGraph
 {
-	public sealed class StringGraphNode : GraphNode
+	public interface IStringGraphNode : IGraphNode
 	{
-		public readonly string Value;
+		string Value { get; }
+	}
 
-		public override SerializedDataType DataType
+	public partial class Graph
+	{
+		private sealed class StringGraphNode : BaseGraphNode, IStringGraphNode
 		{
-			get { return SerializationGraph.SerializedDataType.String; }
-		}
+			public string Value
+			{
+				get;
+				private set;
+			}
 
-		public StringGraphNode(string value)
-		{
-			this.Value = value;
+			public override SerializedDataType DataType
+			{
+				get { return SerializedDataType.String; }
+			}
+
+			public StringGraphNode(string value, Graph parent) : base(parent)
+			{
+				this.Value = value;
+			}
+
+			public override object ExtractObject(Type requestedType)
+			{
+				return Value;
+			}
 		}
 	}
 }

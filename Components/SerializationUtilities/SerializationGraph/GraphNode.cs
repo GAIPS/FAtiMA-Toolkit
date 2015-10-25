@@ -1,22 +1,19 @@
-﻿namespace GAIPS.Serialization.SerializationGraph
+﻿using System;
+
+namespace GAIPS.Serialization.SerializationGraph
 {
-	public abstract class GraphNode
+	public interface IGraphNode
 	{
-		public abstract SerializedDataType DataType
+		SerializedDataType DataType
 		{
 			get;
-		}
-		/*
-		protected SerializationGraph ParentGraph
-		{
-			get;
-			private set;
 		}
 
-		protected SerializationGraphNode(SerializationGraph parentGraph)
+		Graph ParentGraph
 		{
-			this.ParentGraph = parentGraph;
+			get;
 		}
-		*/
+
+		object RebuildObject(Type requestedType);
 	}
 }

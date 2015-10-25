@@ -1,11 +1,12 @@
 using GAIPS.Serialization.SerializationGraph;
+using System;
 
 namespace GAIPS.Serialization
 {
 	public interface ISerializationSurrogate
 	{
-		void GetObjectData(object obj, ObjectGraphNode holder, Graph graph);
+		void GetObjectData(object obj, IObjectGraphNode holder);
 
-		void SetObjectData(ref object obj, ObjectGraphNode node, Graph graph);
+		void SetObjectData(ref object obj, IObjectGraphNode node);
 	}
 }

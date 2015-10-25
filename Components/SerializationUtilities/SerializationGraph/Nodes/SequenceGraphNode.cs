@@ -1,35 +1,58 @@
 ﻿using GAIPS.Serialization.SerializationGraph;
+using System;
 using System.Collections.Generic;
 
-namespace GAIPS.Serialization
+namespace GAIPS.Serialization.SerializationGraph
 {
-	public sealed class SequenceGraphNode : GraphNode, IEnumerable<GraphNode>
+	public interface ISequenceGraphNode : IGraphNode, IEnumerable<IGraphNode>
 	{
-		private List<GraphNode> m_elements = new List<GraphNode>();
+		int Length {get;}
+		void Add(IGraphNode node);
+		void AddRange(IEnumerable<IGraphNode> nodes);
+	}
 
-		public override SerializedDataType DataType
+	public partial class Graph
+	{
+		private sealed class SequenceGraphNode : BaseGraphNode, ISequenceGraphNode
 		{
-			get { return SerializedDataType.DataSequence; }
-		}
+			private List<IGraphNode> m_elements = new List<IGraphNode>();
 
-		public int Lenght
-		{
-			get { return m_elements.Count; }
-		}
+			public override SerializedDataType DataType
+			{
+				get { return SerializedDataType.DataSequence; }
+			}
 
-		public void Add(GraphNode node)
-		{
-			m_elements.Add(node);
-		}
+			public SequenceGraphNode(Graph parentGraph) : base(parentGraph){}
 
-		public IEnumerator<GraphNode> GetEnumerator()
-		{
-			return m_elements.GetEnumerator();
-		}
+			public int Length
+			{
+				get { return m_elements.Count; }
+			}
 
-		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-		{
-			return GetEnumerator();
+			public void Add(IGraphNode node)
+			{
+				m_elements.Add(node);
+			}
+
+			public void AddRange(IEnumerable<IGraphNode> nodes)
+			{
+				m_elements.AddRange(nodes);
+			}
+
+			public IEnumerator<IGraphNode> GetEnumerator()
+			{
+				return m_elements.GetEnumerator();
+			}
+
+			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+			{
+				return m_elements.GetEnumerator();
+			}
+
+			public override object ExtractObject(Type requestedType)
+			{
+				throw new NotImplementedException();
+			}
 		}
 	}
 }

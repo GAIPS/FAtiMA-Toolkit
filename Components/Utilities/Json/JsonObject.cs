@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace Utilities.Json
 {
@@ -19,16 +16,17 @@ namespace Utilities.Json
 		{
 			get
 			{
-				JsonToken o;
-				if (m_fields.TryGetValue(key, out o))
-					return o;
-
-				return null;
+				return m_fields[key];
 			}
 			set
 			{
 				m_fields[key] = value;
 			}
+		}
+
+		public bool ContainsField(string key)
+		{
+			return m_fields.ContainsKey(key);
 		}
 
 		public IEnumerator<KeyValuePair<string, JsonToken>> GetEnumerator()

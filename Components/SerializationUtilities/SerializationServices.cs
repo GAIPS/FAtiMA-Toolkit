@@ -1,9 +1,10 @@
 ﻿using GAIPS.Serialization.SerializationGraph;
-using GAIPS.Serialization.SerializationGraph.Nodes;
 using GAIPS.Serialization.Surrogates;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace GAIPS.Serialization
 {
@@ -13,7 +14,7 @@ namespace GAIPS.Serialization
 		{
 			SurrogateSelector = new ChainedSurrogateSelector();
 			SurrogateSelector.AddSurrogate(typeof(IDictionary), new DictionarySerializationSurrogate());
-			SurrogateSelector.AddSurrogate(typeof(IEnumerable), new EnumerableSerializationSurrogate());
+			SurrogateSelector.AddSurrogate(typeof(HashSet<>),new HashSetSerializationSurrogate());
 		}
 
 		public static ChainedSurrogateSelector SurrogateSelector { get; private set; }
@@ -22,72 +23,40 @@ namespace GAIPS.Serialization
 		{
 			return type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
 		}
-
-		public static GraphNode BuildNode(object obj, Type fieldType, GraphNode referencedBy, Graph parentGraph)
-		{
-			if (obj == null)
-				return null;
-
-			var objType = obj.GetType();
-			if (objType.IsArray)
-				return ConstructArrayNodes(obj as IEnumerable, parentGraph);
-
-			if (objType == typeof(string))
-				return new StringGraphNode(obj as string);
-
-			ObjectGraphNode objReturnData = null;
-			if (objType.IsValueType)
-			{
-				if (objType.IsPrimitive)
-					return new PrimitiveGraphNode(obj as ValueType);
-
-				if (objType.IsEnum)
-					return new EnumGraphNode(obj as Enum);
-
-				//Struct type
-				objReturnData = parentGraph.CreateObjectData();
-				ExtractSerializationData(obj, objType, objReturnData, parentGraph);
-			}
-
-			if (objReturnData == null)
-			{
-				if (referencedBy != null)
-				{
-					if (parentGraph.GetObjectNode(obj, out objReturnData))
-						ExtractSerializationData(obj, objType, objReturnData, parentGraph);
-
-					objReturnData.AddReferencedBy(referencedBy);
-				}
-				else
-				{
-					objReturnData = parentGraph.CreateObjectData();
-					ExtractSerializationData(obj, objType, objReturnData, parentGraph);
-				}
-			}
-
-			if ((objReturnData.ObjectType == null) && (objType != fieldType))
-				objReturnData.ObjectType = parentGraph.GetTypeEntry(objType);
-
-			return objReturnData;
-		}
-
-		private static SequenceGraphNode ConstructArrayNodes(IEnumerable enumerable, Graph parentGraph)
-		{
-			SequenceGraphNode array = new SequenceGraphNode();
-			IEnumerator it = enumerable.GetEnumerator();
-			while (it.MoveNext())
-			{
-				GraphNode elem = BuildNode(it.Current, null, array, parentGraph);
-				array.Add(elem);
-			}
-			return array;
-		}
-
-		private static void ExtractSerializationData(object obj, Type objType, ObjectGraphNode holder, Graph parentGraph)
+		/*
+		public static void ExtractSerializationData(object obj, Type objType, IObjectGraphNode holder)
 		{
 			var surrogate = SurrogateSelector.GetSurrogate(objType);
-			surrogate.GetObjectData(obj, holder, parentGraph);
+			surrogate.GetObjectData(obj, holder);
 		}
 
+		public static void PopulateObjectWithNodeData(ref object obj, IObjectGraphNode holder)
+		{
+			var surrogate = SurrogateSelector.GetSurrogate(obj.GetType());
+			surrogate.SetObjectData(ref obj, holder);
+		}
+		*/
+		public static object GetUninitializedObject(Type type)
+		{
+			var c = type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
+			if (c == null)
+				return FormatterServices.GetSafeUninitializedObject(type);
+			return c.Invoke(null);
+		}
+
+		private static Dictionary<Type, object> m_defaultInstances = new Dictionary<Type, object>();
+		public static object GetDefaultValueForType(Type type)
+		{
+			if (!type.IsValueType)
+				return null;
+
+			object instance;
+			if (!m_defaultInstances.TryGetValue(type, out instance))
+			{
+				instance = Activator.CreateInstance(type);
+				m_defaultInstances[type] = instance;
+			}
+			return instance;
+		}
 	}
 }

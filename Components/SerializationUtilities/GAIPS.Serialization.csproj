@@ -36,8 +36,8 @@
   <ItemGroup>
     <Compile Include="Attributes\SerializeFieldAttribute.cs" />
     <Compile Include="BaseSerializer.cs" />
+    <Compile Include="SerializationGraph\Nodes\BaseGraphNode.cs" />
     <Compile Include="SerializationGraph\SerializedDataType.cs" />
-    <Compile Include="SerializationGraph\Nodes\EnumGraphNode.cs" />
     <Compile Include="SerializationGraph\Nodes\ObjectGraphNode.cs" />
     <Compile Include="SerializationGraph\Nodes\PrimitiveGraphNode.cs" />
     <Compile Include="SerializationGraph\Nodes\SequenceGraphNode.cs" />
@@ -52,7 +52,7 @@
     <Compile Include="Surrogates\DefaultSerializationSurrogate.cs" />
     <Compile Include="Surrogates\DictionarySerializationSurrogate.cs" />
     <Compile Include="ChainedSurrogateSelector.cs" />
-    <Compile Include="Surrogates\Enumerables.cs" />
+    <Compile Include="Surrogates\HashSetSerializationSurrogate.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities\Utilities.csproj">

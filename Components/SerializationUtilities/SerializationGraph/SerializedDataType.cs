@@ -10,7 +10,6 @@ namespace GAIPS.Serialization.SerializationGraph
 		Boolean,
 		Number,
 		String,
-		Enum,
 		DataSequence,
 		Object
 	}

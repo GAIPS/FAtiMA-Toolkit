@@ -2,22 +2,40 @@
 using System;
 using Utilities;
 
-namespace GAIPS.Serialization
+namespace GAIPS.Serialization.SerializationGraph
 {
-	public sealed class PrimitiveGraphNode : GraphNode
+	public interface IPrimitiveGraphNode : IGraphNode
 	{
-		private readonly bool m_isNumber;
-		public readonly ValueType Value;
+		ValueType Value {get;}
+	}
 
-		public override SerializedDataType DataType
+	public partial class Graph
+	{
+		private sealed class PrimitiveGraphNode : BaseGraphNode, IPrimitiveGraphNode
 		{
-			get { return m_isNumber ? SerializedDataType.Number : SerializedDataType.Boolean; }
-		}
+			private ValueType m_value;
+			private readonly bool m_isNumber;
 
-		public PrimitiveGraphNode(ValueType value)
-		{
-			this.m_isNumber = value.GetType().IsNumeric();
-			this.Value = value;
+			public PrimitiveGraphNode(ValueType value, Graph parentGraph) : base(parentGraph)
+			{
+				m_isNumber = value.GetType().IsNumeric();
+				m_value = value;
+			}
+
+			public ValueType Value
+			{
+				get { return m_value; }
+			}
+
+			public override SerializedDataType DataType
+			{
+				get { return m_isNumber ? SerializedDataType.Number : SerializedDataType.Boolean; }
+			}
+
+			public override object ExtractObject(Type requestedType)
+			{
+				return Convert.ChangeType(m_value, requestedType);
+			}
 		}
 	}
 }

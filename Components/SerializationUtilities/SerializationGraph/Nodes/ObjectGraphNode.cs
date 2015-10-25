@@ -1,73 +1,138 @@
-﻿using GAIPS.Serialization.SerializationGraph;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace GAIPS.Serialization
+namespace GAIPS.Serialization.SerializationGraph
 {
-	public sealed class ObjectGraphNode : GraphNode
+	public struct FieldEnty
 	{
-		private Dictionary<string, GraphNode> m_fields = new Dictionary<string, GraphNode>();
-		private HashSet<GraphNode> m_referencedBy = new HashSet<GraphNode>();
+		public readonly string FieldName;
+		public readonly IGraphNode FieldNode;
 
-		public TypeEntry ObjectType
+		internal FieldEnty(string fieldName, IGraphNode nodeValue)
+		{
+			this.FieldName = fieldName;
+			this.FieldNode = nodeValue;
+		}
+	}
+
+	public interface IObjectGraphNode : IGraphNode, IEnumerable<FieldEnty>
+	{
+		int RefId { get; }
+		TypeEntry ObjectType
 		{
 			get;
 			set;
 		}
 
-		public override SerializedDataType DataType
-		{
-			get { return SerializedDataType.Object; }
-		}
+		int ReferenceCount{ get; }
+		bool IsReference { get;}
 
-		public readonly int RefId;
-		public int ReferenceCount
+		IGraphNode this[string fieldName]{get;set;}
+	}
+
+	public partial class Graph
+	{
+		private sealed class ObjectGraphNode : BaseGraphNode, IObjectGraphNode
 		{
-			get
+			private Dictionary<string, IGraphNode> m_fields = new Dictionary<string, IGraphNode>();
+			private HashSet<IGraphNode> m_referencedBy = new HashSet<IGraphNode>();
+
+			public ObjectGraphNode(int refId, Graph parentGraph) : base(parentGraph)
 			{
-				return m_referencedBy.Count;
+				this.ObjectType = null;
+				this.RefId = refId;
 			}
-		}
-		public bool IsReference
-		{
-			get
+			
+			public IGraphNode this[string fieldName]
 			{
-				return ReferenceCount > 1;
+				get
+				{
+					IGraphNode node;
+					if (m_fields.TryGetValue(fieldName, out node))
+						return node;
+					return null;
+				}
+				set
+				{
+					if (m_fields.ContainsKey(fieldName))
+						throw new Exception("Duplicated field named " + fieldName);
+
+					m_fields[fieldName] = value;
+
+					if (value is ObjectGraphNode)
+						((ObjectGraphNode)value).m_referencedBy.Add(this);
+				}
 			}
-		}
 
-		public ObjectGraphNode(int refId)
-		{
-			this.ObjectType = null;
-			this.RefId = refId;
-		}
-
-		public GraphNode this[string fieldName]
-		{
-			get
+			public int RefId
 			{
-				GraphNode node;
-				if (m_fields.TryGetValue(fieldName, out node))
-					return node;
-				return null;
+				get;
+				private set;
 			}
-			set
+
+			public TypeEntry ObjectType
 			{
-				if (m_fields.ContainsKey(fieldName))
-					throw new Exception("Duplicated field named " + fieldName);
-
-				m_fields[fieldName] = value;
+				get;
+				set;
 			}
-		}
 
-		public void AddReferencedBy(GraphNode node)
-		{
-			m_referencedBy.Add(node);
-		}
+			public int ReferenceCount
+			{
+				get { return m_referencedBy.Count; }
+			}
 
-		public IEnumerator<KeyValuePair<string, GraphNode>> GetEnumerator()
-		{
-			return m_fields.GetEnumerator();
+			public bool IsReference
+			{
+				get { return ReferenceCount > 1; }
+			}
+
+			public IEnumerator<FieldEnty> GetEnumerator()
+			{
+				return m_fields.Select(p => new FieldEnty(p.Key,p.Value)).GetEnumerator();
+			}
+
+			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+			{
+				return GetEnumerator();
+			}
+
+			public override SerializedDataType DataType
+			{
+				get { return SerializedDataType.Object; }
+			}
+
+			public override object ExtractObject(Type requestedType)
+			{
+				object buildObject;
+				if (IsReference)
+				{
+					if (ParentGraph.TryGetObjectForRefId(RefId, out buildObject))
+						return buildObject;
+				}
+
+				Type typeToBuild = requestedType;
+				if (ObjectType != null)
+				{
+					Type myType = ObjectType.ClassType;
+					if (requestedType != null && !requestedType.IsAssignableFrom(myType))
+						throw new Exception("Unable to build object. Requested on type but data has another type");	//TODO better exception
+					typeToBuild = myType;
+				}
+
+				if (typeToBuild == null)
+					throw new Exception("Missing type information. Unable to build object");	//TODO better exception
+
+				if (typeToBuild.IsAbstract || typeToBuild.IsInterface)
+					throw new Exception("Cannot create a direct instance of a abstract or interface");	//TODO better exception
+
+				buildObject = SerializationServices.GetUninitializedObject(typeToBuild);
+				ParentGraph.LinkObjectToNode(this, buildObject);
+
+				var surrogate = SerializationServices.SurrogateSelector.GetSurrogate(typeToBuild);
+				surrogate.SetObjectData(ref buildObject, this);
+				return buildObject;
+			}
 		}
 	}
 }

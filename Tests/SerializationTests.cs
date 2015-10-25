@@ -97,7 +97,22 @@ namespace UnitTest
 				stream.Seek(0, SeekOrigin.Begin);
 				System.Diagnostics.Trace.Write(new StreamReader(stream).ReadToEnd());
 			}
-			
+		}
+
+		[TestMethod]
+		public void BasicDeserializationTest()
+		{
+			var asset = BuildBaseAsset();
+
+			using (var stream = new MemoryStream())
+			{
+				var formater = new JSONSerializer();
+				formater.Serialize(stream, asset);
+				stream.Seek(0, SeekOrigin.Begin);
+				System.Diagnostics.Trace.Write(new StreamReader(stream).ReadToEnd());
+				stream.Seek(0, SeekOrigin.Begin);
+				var obj = formater.Deserialize(stream);
+			}
 		}
 	}
 }

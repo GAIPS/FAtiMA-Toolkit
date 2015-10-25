@@ -1,6 +1,7 @@
 ﻿using GAIPS.Serialization.Surrogates;
 using System;
 using System.Collections.Generic;
+using Utilities;
 
 namespace GAIPS.Serialization
 {
@@ -19,57 +20,86 @@ namespace GAIPS.Serialization
 				m_surrogate = surrogate;
 			}
 
-			public ChainNode AddNewSurrogate(Type type, ISerializationSurrogate surrogate)
+			private static bool Match(Type baseType, Type type)
+			{
+				bool r = baseType.IsAssignableFrom(type);
+				if (r)
+					return true;
+
+				if (!baseType.IsGenericType)
+					return false;
+
+				if (baseType.IsInterface)
+				{
+					foreach (var i in type.GetInterfaces())
+					{
+						var t = i.IsGenericType ? i.GetGenericTypeDefinition() : i;
+						if (baseType == t)
+							return true;
+					}
+				}
+				else
+				{
+					if (type.IsInterface)
+						return false;
+
+					do
+					{
+						type = type.IsGenericType ? type.GetGenericTypeDefinition() : type;
+						if (baseType == type)
+							return true;
+						type = type.BaseType;
+					}
+					while (type != typeof(object));
+				}
+				return false;
+			}
+
+			public bool AddNewSurrogate(Type type, ISerializationSurrogate surrogate)
 			{
 				if (m_serializationType == type)
 					throw new Exception("Duplicated surrogate type chain: " + type);
 
-				if (m_serializationType.IsAssignableFrom(type))
+				if (Match(m_serializationType,type))
 				{
 					for (int i = 0; i < m_childs.Count; i++)
 					{
-						ChainNode newNode = m_childs[i].AddNewSurrogate(type, surrogate);
-						if (newNode == null)
-							continue;
-
-						m_childs[i] = newNode;
-						return this;
+						var child = m_childs[i];
+						bool r = child.AddNewSurrogate(type, surrogate);
+						if (r)
+							return true;
 					}
 
-					m_childs.Add(new ChainNode(type, surrogate));
-					return this;
+					ChainNode newNode = new ChainNode(type, surrogate);
+					for (int i = 0; i < m_childs.Count; i++)
+					{
+						var child = m_childs[i];
+						if (Match(type,child.m_serializationType))
+						{
+							newNode.m_childs.Add(child);
+							m_childs.RemoveAt(i);
+							i--;
+						}
+					}
+					m_childs.Add(newNode);
+					return true;
 				}
 
-				if (type.IsAssignableFrom(m_serializationType))
-				{
-					return null; //extends from him
-				}
-
-				//another branch (should not be a applied to root)
-				return null;
+				return false;
 			}
 
 			public ISerializationSurrogate GetSurrogate(Type type)
 			{
-				foreach (ChainNode child in m_childs)
+				if (Match(m_serializationType, type))
 				{
-					ISerializationSurrogate surrogate = child.GetSurrogate(type);
-					if (surrogate != null)
-						return surrogate;
-				}
-
-				if (m_serializationType.IsGenericTypeDefinition)
-				{
-					if (!type.IsGenericType)
-						return null;
-
-					if (m_serializationType.IsAssignableFrom(type.GetGenericTypeDefinition()))
-						return m_surrogate;
-				}
-
-				if (m_serializationType.IsAssignableFrom(type))
+					foreach (ChainNode child in m_childs)
+					{
+						ISerializationSurrogate surrogate = child.GetSurrogate(type);
+						if (surrogate != null)
+							return surrogate;
+					}
 					return m_surrogate;
-
+				}
 				return null;
 			}
 		}
@@ -83,7 +113,7 @@ namespace GAIPS.Serialization
 
 		public void AddSurrogate(Type type, ISerializationSurrogate surrogate)
 		{
-			m_root = m_root.AddNewSurrogate(type, surrogate);
+			m_root.AddNewSurrogate(type, surrogate);
 		}
 
 		public ISerializationSurrogate GetSurrogate(Type type)

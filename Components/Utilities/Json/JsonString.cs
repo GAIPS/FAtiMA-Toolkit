@@ -15,6 +15,8 @@ namespace Utilities.Json
 			this.String = str;
 		}
 
+		public JsonString(string format, params object[] args) : this(string.Format(format,args)){}
+
 		public override void Write(TextWriter writer, int ident, bool allowIndent)
 		{
 			writer.Write('\"');
