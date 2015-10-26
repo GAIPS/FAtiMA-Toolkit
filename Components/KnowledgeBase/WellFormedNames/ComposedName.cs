@@ -82,16 +82,6 @@ namespace KnowledgeBase.WellFormedNames
 		}
 
 		/// <summary>
-		/// Creates a new ComposedName, receiving a set of terms to aglomerate.
-		/// The first term must be a symbol and 
-		/// </summary>
-		/// <param name="name">Major symbol</param>
-		/// <param name="literals">A set of parameter symbols</param>
-		public ComposedName(Symbol head, IEnumerable<Name> terms) : this(head,terms.ToArray()){
-			
-		}
-
-		/// <summary>
 		/// Clone Constructor
 		/// </summary>
 		/// <param name="composedName">The composedName to clone</param>

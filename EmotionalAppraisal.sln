@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9285D50F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalAppraisal", "EmotionalAppraisal\EmotionalAppraisal.csproj", "{0A2A1EE9-BD5D-44AA-A22D-291612488F06}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.KnowledgeBase", "Tests.KnowledgeBase\Tests.KnowledgeBase.csproj", "{067456C0-086C-46A8-B37F-1405717B7BFC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{0A2A1EE9-BD5D-44AA-A22D-291612488F06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A2A1EE9-BD5D-44AA-A22D-291612488F06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A2A1EE9-BD5D-44AA-A22D-291612488F06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -59,5 +65,6 @@ Global
 		{A632A90A-0EE6-430F-ACF2-25BB7CED21E7} = {6FDA1219-9D9E-489F-A258-B797FED50614}
 		{A8BB95FD-C1BC-4C7A-91DA-F19C13BADCCF} = {6FDA1219-9D9E-489F-A258-B797FED50614}
 		{2021E828-2F7F-4775-9F02-58C68FD72EDD} = {6FDA1219-9D9E-489F-A258-B797FED50614}
+		{067456C0-086C-46A8-B37F-1405717B7BFC} = {9285D50F-C051-467D-AB2D-165963753EA5}
 	EndGlobalSection
 EndGlobal
