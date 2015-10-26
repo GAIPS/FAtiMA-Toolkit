@@ -102,14 +102,10 @@ namespace KnowledgeBase.WellFormedNames
 		}
 
 		public abstract Name SwapPerspective(string original, string newName);
-
-		public abstract Name ReplaceUnboundVariables(int variableID);
+        public abstract Name ReplaceUnboundVariables(int variableID);
 		public abstract Name MakeGround(IEnumerable<Substitution> bindings);
-		public Name MakeGround(params Substitution[] subst)
-		{
-			return MakeGround((IEnumerable<Substitution>)subst);
-		}
 
+		
 		/// <summary>
 		/// Clones this Name, returning an equal copy.
 		/// If this clone is changed afterwards, the original object remains the same.
@@ -161,21 +157,8 @@ namespace KnowledgeBase.WellFormedNames
 					throw new ArgumentNullException("str");
 				throw new ArgumentException("Cannot parse an empty string","str");
 			}
-				
 			
 			str = str.Trim();
-			bool evaluate = true; //Not used for now
-			switch (str[0])
-			{
-				case '#':
-					str = str.Substring(1);
-					evaluate = false;
-					break;
-				case '?':
-					str = str.Substring(1);
-					break;
-			}
-
 			Name result = ParseName(str);
 			return result;
 		}

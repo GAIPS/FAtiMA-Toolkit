@@ -193,7 +193,7 @@ namespace Tests.KnowledgeBase.WellFormedNames
         {
             var substitution = new Substitution(variableName, variableValue);
             var composedName = new ComposedName(symbolsStrings.Select(s => new Symbol(s)));
-            var groundedClone = composedName.MakeGround(substitution);
+            var groundedClone = composedName.MakeGround(new List<Substitution> {substitution});
   
             Assert.That(!composedName.IsGrounded);
             Assert.That(groundedClone.IsGrounded);
@@ -208,8 +208,8 @@ namespace Tests.KnowledgeBase.WellFormedNames
         {
             var substitution = new Substitution(variableName, variableValue);
             var composedName = new ComposedName(symbolsStrings.Select(s => new Symbol(s)));
-            var groundedClone = composedName.MakeGround(substitution);
-            
+            var groundedClone = composedName.MakeGround(new List<Substitution> { substitution });
+
             Assert.That(!ReferenceEquals(composedName, groundedClone));
             Assert.That(composedName == groundedClone);
         }
