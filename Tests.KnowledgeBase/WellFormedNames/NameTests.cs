@@ -20,7 +20,15 @@ namespace Tests.KnowledgeBase.WellFormedNames
             var name = Name.Parse(nameString);
             Assert.That(name.ToString() == nameString);
         }
-        
+
+       
+        [TestCase("IsPerson(x")]
+        public void Parse_InvalidNameString_NewName(string nameString)
+        {
+            Assert.Throws<NameParsingException>(() => Name.Parse(nameString));
+        }
+
+
         [Test]
         public void Parse_NullNameString_ArgumentNullException()
         {
@@ -73,6 +81,28 @@ namespace Tests.KnowledgeBase.WellFormedNames
             Assert.That(!ReferenceEquals(name,clonedName));
         }
 
+
+        [TestCase("is-person(SELF)", "x", "is-person(x)")]
+        [TestCase("likes(SELF, [x])", "x", "likes(x, [x])")]
+        public void RemovePerspective_NameWithSELF_ClonedNameWithAgentName(string nameString, string namePerspective, string resultName)
+        {
+            var name = Name.Parse(nameString);
+            var clonedName = name.RemovePerspective(namePerspective);
+            Assert.That(clonedName.ToString() == resultName);
+            Assert.That(!ReferenceEquals(name, clonedName));
+        }
+
+        [Test]
+        public void GenerateUniqueGhostVariable_AnyState_NewSymbol()
+        {
+            var ghost1 = Name.GenerateUniqueGhostVariable();
+            var ghost2 = Name.GenerateUniqueGhostVariable();
+
+            Assert.That(ghost1.HasGhostVariable());
+            Assert.That(ghost2.HasGhostVariable());
+
+            Assert.That(ghost1 != ghost2);
+        }
 
     }
 }

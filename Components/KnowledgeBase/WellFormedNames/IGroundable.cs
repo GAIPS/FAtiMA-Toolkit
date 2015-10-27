@@ -41,7 +41,7 @@ namespace KnowledgeBase.WellFormedNames
 		/// Attention, this method modifies the original object.
 		/// </summary>
 		/// <param name="variableID">the identifier to be applied</param>
-		T ReplaceUnboundVariables(int variableID);
+		T ReplaceUnboundVariables(long variableID);
 
 		/// <summary>
 		/// Applies a set of substitutions to the object, grounding it.

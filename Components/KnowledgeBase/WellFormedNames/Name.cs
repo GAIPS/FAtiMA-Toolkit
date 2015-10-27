@@ -44,7 +44,7 @@ namespace KnowledgeBase.WellFormedNames
 	[Serializable]
 	public abstract class Name : IGroundable<Name>, ICloneable
 	{
-		private static int variableIDCounter = 0;
+		private static long variableIDCounter = 0;
 
 		public bool IsGrounded
 		{
@@ -96,13 +96,13 @@ namespace KnowledgeBase.WellFormedNames
 			return SwapPerspective(name, Symbol.SELF_STRING);
 		}
 
-		public Name RemovePerspective(String name)
+		public Name RemovePerspective(string name)
 		{
 			return SwapPerspective(Symbol.SELF_STRING, name);
 		}
 
 		public abstract Name SwapPerspective(string original, string newName);
-        public abstract Name ReplaceUnboundVariables(int variableID);
+        public abstract Name ReplaceUnboundVariables(long variableID);
 		public abstract Name MakeGround(IEnumerable<Substitution> bindings);
 
 		
@@ -232,8 +232,9 @@ namespace KnowledgeBase.WellFormedNames
 		public static Symbol GenerateUniqueGhostVariable()
 		{
 			Symbol ghost = new Symbol("[_]");
-			ghost.ReplaceUnboundVariables(variableIDCounter);
-			return ghost;
+		    variableIDCounter++;
+            ghost = (Symbol) ghost.ReplaceUnboundVariables(variableIDCounter);
+            return ghost;
 		}
 
 		/// <summary>

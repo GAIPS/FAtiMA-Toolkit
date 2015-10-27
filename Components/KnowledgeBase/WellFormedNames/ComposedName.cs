@@ -135,7 +135,7 @@ namespace KnowledgeBase.WellFormedNames
 
 
 
-		public override Name ReplaceUnboundVariables(int variableID)
+		public override Name ReplaceUnboundVariables(long variableID)
 		{
 			if (IsGrounded)
 				return (Name)Clone();
