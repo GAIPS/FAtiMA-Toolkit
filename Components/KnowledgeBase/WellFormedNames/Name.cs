@@ -129,7 +129,7 @@ namespace KnowledgeBase.WellFormedNames
 		/// </summary>
 		public abstract bool SimilarStructure(Name other);
 
-		#region Static Methods
+		
 
 		#region Parsing
 
@@ -237,32 +237,7 @@ namespace KnowledgeBase.WellFormedNames
             return ghost;
 		}
 
-		/// <summary>
-		/// Determines if two Wellformed Name match each other.
-		/// Both Names are matched if all their literals are equal to one another or if a literal matches a universal Symbol
-		/// </summary>
-		/// <returns>True if both Names match one another. False otherwise.</returns>
-		public static bool Match(Name name1, Name name2)
-		{
-			return name1.Match(name2);
-		}
-
-		public static string ApplyPerspective(string name, string agentName)
-		{
-			if (name == agentName)
-				return Symbol.SELF_STRING;
-			return name;
-		}
-
-		public static string RemovePerspective(string name, string agentName)
-		{
-			if (name == Symbol.SELF_STRING)
-				return agentName;
-			return name;
-		}
-
-		#endregion
-
+		
 		#region Operators
 
 		public static explicit operator Name(string definition)
