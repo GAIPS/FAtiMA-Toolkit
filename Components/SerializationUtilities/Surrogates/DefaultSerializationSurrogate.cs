@@ -16,22 +16,19 @@ namespace GAIPS.Serialization.Surrogates
 			Type objType = obj.GetType();
 			if (obj is ISerializable)
 			{
-				throw new NotImplementedException();
-				/*
 				SerializationInfo info = new SerializationInfo(objType, FORMAT_CONVERTER);
 				var ser = obj as ISerializable;
 				ser.GetObjectData(info, new StreamingContext(StreamingContextStates.All));
 				var it = info.GetEnumerator();
 				while (it.MoveNext())
 				{
-					IGraphNode fieldNode = holder.ParentGraph.BuildNode(it.Current.Value, null, holder);
+					IGraphNode fieldNode = holder.ParentGraph.BuildNode(it.Current.Value, it.Current.ObjectType);
 					holder[it.Name] = fieldNode;
 				}
-				*/
 			}
 			else
 			{
-				FieldInfo[] fields = SerializationServices.GetFieldsToSerialize(objType);
+				FieldInfo[] fields = SerializationServices.GetSerializableFields(objType);
 				for (int i = 0; i < fields.Length; i++)
 				{
 					var f = fields[i];
@@ -50,7 +47,7 @@ namespace GAIPS.Serialization.Surrogates
 					if(value == null)
 						continue;
 
-					holder[f.Name] = holder.ParentGraph.BuildNode(value, f.FieldType, holder);
+					holder[f.Name] = holder.ParentGraph.BuildNode(value, f.FieldType);
 				}
 			}
 		}
@@ -60,7 +57,13 @@ namespace GAIPS.Serialization.Surrogates
 			Type objType = obj.GetType();
 			if (obj is ISerializable)
 			{
-				throw new NotImplementedException();
+				SerializationInfo info = new SerializationInfo(objType, FORMAT_CONVERTER);
+				foreach (var entry in node)
+				{
+					info.AddValue(entry.FieldName, entry.FieldNode.RebuildObject(null));
+				}
+				var c = objType.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public, null, new Type[] { typeof(SerializationInfo),typeof(StreamingContext)}, null);
+				c.Invoke(obj, new object[] { info,new StreamingContext()});
 				/*
 				SerializationInfo info = new SerializationInfo(objType, FORMAT_CONVERTER);
 				var ser = obj as ISerializable;
@@ -75,7 +78,7 @@ namespace GAIPS.Serialization.Surrogates
 			}
 			else
 			{
-				FieldInfo[] fields = SerializationServices.GetFieldsToSerialize(objType);
+				FieldInfo[] fields = SerializationServices.GetSerializableFields(objType);
 				for (int i = 0; i < fields.Length; i++)
 				{
 					var f = fields[i];

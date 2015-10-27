@@ -34,6 +34,8 @@ namespace GAIPS.Serialization.SerializationGraph
 
 			public override object ExtractObject(Type requestedType)
 			{
+				if (requestedType == null)
+					return m_value;
 				return Convert.ChangeType(m_value, requestedType);
 			}
 		}

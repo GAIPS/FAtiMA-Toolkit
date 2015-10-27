@@ -19,7 +19,7 @@ namespace GAIPS.Serialization
 
 		public static ChainedSurrogateSelector SurrogateSelector { get; private set; }
 
-		public static FieldInfo[] GetFieldsToSerialize(Type type)
+		public static FieldInfo[] GetSerializableFields(Type type)
 		{
 			return type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy);
 		}

@@ -152,11 +152,20 @@ namespace Utilities.Json
 				if (m.Success)
 				{
 					if (m.Groups[3].Success || m.Groups[4].Success)
-						return new JsonNumber(decimal.Parse(primitive));
+					{
+						decimal vd;
+						if(decimal.TryParse(primitive,out vd))
+							return new JsonNumber(vd);
+						return new JsonNumber(double.Parse(primitive));
+					}
 
 					if(m.Groups[1].Success && m.Groups[1].Value=="-")
 						return new JsonNumber(long.Parse(primitive));
-					return new JsonNumber(ulong.Parse(primitive));
+
+					ulong vl;
+					if(ulong.TryParse(primitive,out vl))
+						return new JsonNumber(vl);
+					return new JsonNumber(decimal.Parse(primitive));
 				}
 
 				throw new IOException("Invalid JSON format: Invalid primitive \"" + primitive + "\"");

@@ -11,7 +11,26 @@ namespace GAIPS.Serialization.SerializationGraph
 		private int m_idCounter = 0;
 		private StrongLinkDictionary<object, int> m_links = new StrongLinkDictionary<object, int>();
 		private SortedDictionary<int, ObjectGraphNode> m_refs = new SortedDictionary<int, ObjectGraphNode>();
-		public IGraphNode Root { get; set; }
+
+		private IGraphNode m_root = null;
+		public IGraphNode Root {
+			get
+			{
+				return m_root;
+			}
+			set
+			{
+				if (m_root != null)
+				{
+					((BaseGraphNode)m_root).isRoot = false;
+				}
+				m_root = value;
+				if (m_root != null)
+				{
+					((BaseGraphNode)m_root).isRoot = true;
+				}
+			}
+		}
 
 		private byte m_typeidCounter = 0;
 		private Dictionary<Type, TypeEntry> m_registedTypes = new Dictionary<Type, TypeEntry>();
@@ -26,7 +45,7 @@ namespace GAIPS.Serialization.SerializationGraph
 		internal Graph(object objectToSerialize, BaseSerializer serializer)
 			: this(serializer)
 		{
-			Root = BuildNode(objectToSerialize, null, null);
+			Root = BuildNode(objectToSerialize, null);
 		}
 
 		public TypeEntry GetTypeEntry(Type type)
@@ -97,7 +116,7 @@ namespace GAIPS.Serialization.SerializationGraph
 
 		public IEnumerable<IObjectGraphNode> GetReferences()
 		{
-			return m_refs.Values.Where(n => n.IsReference).Cast<IObjectGraphNode>();
+			return m_refs.Values.Where(n => n.IsReferedMultipleTimes).Cast<IObjectGraphNode>();
 		}
 
 		public bool TryGetObjectForRefId(int refId, out object linkedObject)
@@ -115,63 +134,80 @@ namespace GAIPS.Serialization.SerializationGraph
 
 		#region Node Builders
 
-		public IGraphNode BuildNode(object obj, Type fieldType, IGraphNode referencedBy)
+		public IGraphNode BuildNode(object obj, Type fieldType)
 		{
 			if (obj == null)
 				return null;
 
-			var objType = obj.GetType();
-			if (objType.IsArray)
+			IGraphNode result;
+			Type objType = obj.GetType();
+			if (objType.IsArray || objType.IsPrimitiveData())
 			{
-				Type elemType = objType.GetElementType();
-				ISequenceGraphNode array = BuildSequenceNode();
-				IEnumerator it = ((IEnumerable)obj).GetEnumerator();
-				while (it.MoveNext())
+				//Boxable Values (arrays, bools, numbers, strings)
+				IGraphNode valueNode;
+				if (objType.IsArray)
 				{
-					IGraphNode elem = BuildNode(it.Current, elemType, null);
-					array.Add(elem);
-				}
-				return array;
-			}
-
-			if (objType == typeof(string))
-				return BuildStringNode(obj as string);
-
-			IObjectGraphNode objReturnData = null;
-			bool extractData = true;
-			if (objType.IsValueType)
-			{
-				if (objType.IsPrimitive)
-					return BuildPrimitiveNode(obj as ValueType);
-
-				if (objType.IsEnum)
-					return m_associatedSerializer.EnumToGraphNode(obj as Enum,this);
-
-				//Struct type
-				objReturnData = CreateObjectData();
-			}
-
-			if (objReturnData == null)
-			{
-				if (referencedBy != null)
-				{
-					if (!GetObjectNode(obj, out objReturnData))
-						extractData = false;
+					Type elemType = objType.GetElementType();
+					ISequenceGraphNode array = BuildSequenceNode();
+					IEnumerator it = ((IEnumerable)obj).GetEnumerator();
+					while (it.MoveNext())
+					{
+						IGraphNode elem = BuildNode(it.Current, elemType);
+						array.Add(elem);
+					}
+					valueNode = array;
 				}
 				else
-					objReturnData = CreateObjectData();
-			}
+				{
+					//Primitive data type
+					if (objType == typeof(string))
+						valueNode = BuildStringNode(obj as string);
+					else if (objType.IsEnum)
+						valueNode = m_associatedSerializer.EnumToGraphNode(obj as Enum, this);
+					else
+						valueNode = BuildPrimitiveNode(obj as ValueType);
+				}
 
-			if (extractData)
+				if (objType != fieldType)
+				{
+					//Value needs to be boxed
+					var boxNode = CreateObjectData();
+					boxNode.ObjectType = GetTypeEntry(objType);
+					boxNode["boxedValue"] = valueNode;
+					valueNode = boxNode;
+				}
+
+				result = valueNode;
+			}
+			else
 			{
-				var surrogate = SerializationServices.SurrogateSelector.GetSurrogate(objType);
-				surrogate.GetObjectData(obj, objReturnData);
+				//Non-Boxable Values (structs and objects)
+				IObjectGraphNode objReturnData;
+				bool extractData=true;
+				if(objType.IsValueType)
+				{
+					//Structure
+					objReturnData = CreateObjectData();
+				}
+				else
+				{
+					//Classes
+					if (!GetObjectNode(obj, out objReturnData))
+						extractData=false;
+				}
+
+				if(extractData)
+				{
+					var surrogate = SerializationServices.SurrogateSelector.GetSurrogate(objType);
+					surrogate.GetObjectData(obj, objReturnData);
+				}
+
+				if ((objReturnData.ObjectType == null) && (objType != fieldType))
+					objReturnData.ObjectType = GetTypeEntry(objType);
+
+				result = objReturnData;
 			}
-
-			if ((objReturnData.ObjectType == null) && (objType != fieldType))
-				objReturnData.ObjectType = GetTypeEntry(objType);
-
-			return objReturnData;
+			return result;
 		}
 
 		public IPrimitiveGraphNode BuildPrimitiveNode(ValueType value)

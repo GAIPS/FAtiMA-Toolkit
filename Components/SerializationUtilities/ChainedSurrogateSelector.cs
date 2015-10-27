@@ -50,7 +50,7 @@ namespace GAIPS.Serialization
 							return true;
 						type = type.BaseType;
 					}
-					while (type != typeof(object));
+					while (type != null);
 				}
 				return false;
 			}

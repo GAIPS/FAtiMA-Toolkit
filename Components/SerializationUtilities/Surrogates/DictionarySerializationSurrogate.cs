@@ -26,8 +26,8 @@ namespace GAIPS.Serialization.Surrogates
 			while (it.MoveNext())
 			{
 				IObjectGraphNode entry = holder.ParentGraph.CreateObjectData();
-				entry["key"] = holder.ParentGraph.BuildNode(it.Key, keyType, holder);
-				entry["value"] = holder.ParentGraph.BuildNode(it.Value, valueType, holder);
+				entry["key"] = holder.ParentGraph.BuildNode(it.Key, keyType);
+				entry["value"] = holder.ParentGraph.BuildNode(it.Value, valueType);
 				elements.Add(entry);
 			}
 

@@ -101,19 +101,26 @@ namespace Utilities.Json
 			ident++;
 			foreach (JsonToken v in m_elements)
 			{
-				if (v is JsonObject)
+				if (v == null)
 				{
-					writer.WriteLine();
-					v.Write(writer, ident - 1, allowIndent);
+					writer.Write("null");
 				}
 				else
 				{
-					if (AllElementsInSeparatedLines)
+					if (v is JsonObject)
 					{
 						writer.WriteLine();
-						writeIdentation(writer, ident);
+						v.Write(writer, ident - 1, allowIndent);
 					}
-					v.Write(writer, ident, allowIndent);
+					else
+					{
+						if (AllElementsInSeparatedLines)
+						{
+							writer.WriteLine();
+							writeIdentation(writer, ident);
+						}
+						v.Write(writer, ident, allowIndent);
+					}
 				}
 
 				cnt++;

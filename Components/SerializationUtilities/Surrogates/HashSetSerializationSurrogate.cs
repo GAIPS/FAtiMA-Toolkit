@@ -22,10 +22,10 @@ namespace GAIPS.Serialization.Surrogates
 			Type comparatorType = comparator.GetType();
 
 			if (!(comparatorType.IsGenericType && (comparatorType.GetGenericTypeDefinition() == DEFAULT_COMPARATOR_TYPE)))
-				holder["comparer"] = holder.ParentGraph.BuildNode(comparator, null, holder);
+				holder["comparer"] = holder.ParentGraph.BuildNode(comparator, null);
 
 			Type elementType = objType.GetGenericArguments()[0];
-			var nodeSequence = (obj as IEnumerable).Cast<object>().Select(o => holder.ParentGraph.BuildNode(o, elementType, holder));
+			var nodeSequence = (obj as IEnumerable).Cast<object>().Select(o => holder.ParentGraph.BuildNode(o, elementType));
 			if (!nodeSequence.IsEmpty())
 			{
 				ISequenceGraphNode sequence = holder.ParentGraph.BuildSequenceNode();

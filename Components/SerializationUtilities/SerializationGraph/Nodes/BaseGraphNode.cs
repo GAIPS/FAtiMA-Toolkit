@@ -9,6 +9,8 @@ namespace GAIPS.Serialization.SerializationGraph
 	{
 		private abstract class BaseGraphNode : IGraphNode
 		{
+			internal bool isRoot = false;
+
 			public abstract SerializedDataType DataType {get;}
 
 			public Graph ParentGraph

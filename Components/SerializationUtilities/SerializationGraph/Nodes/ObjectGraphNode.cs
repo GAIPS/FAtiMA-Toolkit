@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Utilities;
 
 namespace GAIPS.Serialization.SerializationGraph
 {
@@ -26,7 +27,7 @@ namespace GAIPS.Serialization.SerializationGraph
 		}
 
 		int ReferenceCount{ get; }
-		bool IsReference { get;}
+		bool IsReferedMultipleTimes { get;}
 
 		IGraphNode this[string fieldName]{get;set;}
 	}
@@ -82,9 +83,11 @@ namespace GAIPS.Serialization.SerializationGraph
 				get { return m_referencedBy.Count; }
 			}
 
-			public bool IsReference
+			public bool IsReferedMultipleTimes
 			{
-				get { return ReferenceCount > 1; }
+				get {
+					return ReferenceCount > 1 || isRoot;
+				}
 			}
 
 			public IEnumerator<FieldEnty> GetEnumerator()
@@ -105,7 +108,7 @@ namespace GAIPS.Serialization.SerializationGraph
 			public override object ExtractObject(Type requestedType)
 			{
 				object buildObject;
-				if (IsReference)
+				if (IsReferedMultipleTimes)
 				{
 					if (ParentGraph.TryGetObjectForRefId(RefId, out buildObject))
 						return buildObject;
@@ -125,6 +128,13 @@ namespace GAIPS.Serialization.SerializationGraph
 
 				if (typeToBuild.IsAbstract || typeToBuild.IsInterface)
 					throw new Exception("Cannot create a direct instance of a abstract or interface");	//TODO better exception
+
+				if (typeToBuild.IsArray || typeToBuild.IsPrimitiveData())
+				{
+					//Handle Boxed Value Types
+					IGraphNode boxedValue = m_fields["boxedValue"];
+					return boxedValue.RebuildObject(typeToBuild);
+				}
 
 				buildObject = SerializationServices.GetUninitializedObject(typeToBuild);
 				ParentGraph.LinkObjectToNode(this, buildObject);

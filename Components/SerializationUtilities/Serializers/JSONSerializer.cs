@@ -73,7 +73,7 @@ namespace GAIPS.Serialization
 			}
 
 			IObjectGraphNode objNode = node as IObjectGraphNode;
-			if (objNode.IsReference)
+			if (objNode.IsReferedMultipleTimes)
 			{
 				return new JsonString("refId@" + objNode.RefId.ToString());
 			}
@@ -85,7 +85,7 @@ namespace GAIPS.Serialization
 		{
 			JsonObject json = new JsonObject();
 
-			if (node.IsReference)
+			if (node.IsReferedMultipleTimes)
 			{
 				if (node.RefId >= 0)
 					json["refId"] = new JsonNumber(node.RefId);
@@ -146,7 +146,7 @@ namespace GAIPS.Serialization
 				}
 			}
 
-			serGraph.Root = JsonToObjectNode(json[ROOT_FIELD] as JsonObject, serGraph);
+			serGraph.Root = ReadNode(json[ROOT_FIELD] as JsonToken, serGraph);
 			return serGraph;
 		}
 

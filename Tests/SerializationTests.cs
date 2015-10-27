@@ -1,7 +1,9 @@
 ﻿using EmotionalAppraisal;
 using GAIPS.Serialization;
+using GAIPS.Serialization.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using OCCModelAppraisal.OCCModel;
+using System;
 using System.IO;
 
 namespace UnitTest
@@ -9,85 +11,54 @@ namespace UnitTest
 	[TestClass]
 	public class SerializationTests
 	{
-		private static EmotionalAppraisalAsset BuildBaseAsset()
+		private enum SerializationEnumTest
 		{
-			var asset = new EmotionalAppraisalAsset();
-			asset.AddComponent(new OCCAffectDerivationComponent());
+			Ok1,
+			Ok2,
+			Ok3
+		}
 
-			//Dispositions
-			var loveDisposition = new EmotionDisposition(OCCEmotionType.LOVE.Name, 5, 3);
-			asset.EmotionalState.AddEmotionDisposition(loveDisposition);
+		private class SerializationTestClass
+		{
+			[SerializeField]
+			private SerializationTestClass m_nullPointer;
+			[SerializeField]
+			private SerializationTestClass m_circlePoiter;
+			public decimal FloatValue;
+			public double FloatValue2;
+			public ulong NumValue;
+			public byte NumValue2;
 
-			var hateDisposition = new EmotionDisposition(OCCEmotionType.HATE.Name, 5, 3);
-			asset.EmotionalState.AddEmotionDisposition(hateDisposition);
+			public DateTime TimeField;
+			public SerializationEnumTest EnumField;
 
-			var hopeDisposition = new EmotionDisposition(OCCEmotionType.HOPE.Name, 8, 4);
-			asset.EmotionalState.AddEmotionDisposition(hopeDisposition);
+			[SerializeField]
+			private int[] ArrayField1 = new int[] { 4, 5, 3, 2, 7, 5, 8 };
 
-			var fearDisposition = new EmotionDisposition(OCCEmotionType.FEAR.Name, 2, 1);
-			asset.EmotionalState.AddEmotionDisposition(fearDisposition);
+			[SerializeField]
+			private object[] ArrayField2 = new object[] { 4, 5.5, 1m/3, null, "teste", new object(), DateTime.Now, SerializationEnumTest.Ok2, new int[]{4,5,6}};
 
-			var satisfactionDisposition = new EmotionDisposition(OCCEmotionType.SATISFACTION.Name, 8, 5);
-			asset.EmotionalState.AddEmotionDisposition(satisfactionDisposition);
+			[NonSerialized]
+			public string VolatileField = "this string should not be serialized";
 
-			var reliefDisposition = new EmotionDisposition(OCCEmotionType.RELIEF.Name, 5, 3);
-			asset.EmotionalState.AddEmotionDisposition(reliefDisposition);
+			public SerializationTestClass()
+			{
+				NumValue = ulong.MaxValue/3;
+				NumValue2 = 123;
+				FloatValue = 4.565e+25m;
+				FloatValue2 = double.MaxValue / 5;
+				EnumField = SerializationEnumTest.Ok3;
+				TimeField = DateTime.UtcNow;
 
-			var fearsConfirmedDisposition = new EmotionDisposition(OCCEmotionType.FEARS_CONFIRMED.Name, 2, 1);
-			asset.EmotionalState.AddEmotionDisposition(fearsConfirmedDisposition);
-
-			var disapointmentDisposition = new EmotionDisposition(OCCEmotionType.DISAPPOINTMENT.Name, 5, 2);
-			asset.EmotionalState.AddEmotionDisposition(disapointmentDisposition);
-
-			var joyDisposition = new EmotionDisposition(OCCEmotionType.JOY.Name, 2, 3);
-			asset.EmotionalState.AddEmotionDisposition(joyDisposition);
-
-			var distressDisposition = new EmotionDisposition(OCCEmotionType.DISTRESS.Name, 2, 1);
-			asset.EmotionalState.AddEmotionDisposition(distressDisposition);
-
-			var happyForDisposition = new EmotionDisposition(OCCEmotionType.HAPPY_FOR.Name, 5, 2);
-			asset.EmotionalState.AddEmotionDisposition(happyForDisposition);
-
-			var pittyDisposition = new EmotionDisposition(OCCEmotionType.PITTY.Name, 2, 2);
-			asset.EmotionalState.AddEmotionDisposition(pittyDisposition);
-
-			var resentmentDisposition = new EmotionDisposition(OCCEmotionType.RESENTMENT.Name, 2, 3);
-			asset.EmotionalState.AddEmotionDisposition(resentmentDisposition);
-
-			var gloatingDisposition = new EmotionDisposition(OCCEmotionType.GLOATING.Name, 8, 5);
-			asset.EmotionalState.AddEmotionDisposition(gloatingDisposition);
-
-			var prideDisposition = new EmotionDisposition(OCCEmotionType.PRIDE.Name, 5, 5);
-			asset.EmotionalState.AddEmotionDisposition(prideDisposition);
-
-			var shameDisposition = new EmotionDisposition(OCCEmotionType.SHAME.Name, 2, 1);
-			asset.EmotionalState.AddEmotionDisposition(shameDisposition);
-
-			var gratificationDisposition = new EmotionDisposition(OCCEmotionType.GRATIFICATION.Name, 8, 5);
-			asset.EmotionalState.AddEmotionDisposition(gratificationDisposition);
-
-			var remorseDisposition = new EmotionDisposition(OCCEmotionType.REMORSE.Name, 2, 1);
-			asset.EmotionalState.AddEmotionDisposition(remorseDisposition);
-
-			var admirationDisposition = new EmotionDisposition(OCCEmotionType.ADMIRATION.Name, 5, 3);
-			asset.EmotionalState.AddEmotionDisposition(admirationDisposition);
-
-			var reproachDisposition = new EmotionDisposition(OCCEmotionType.REPROACH.Name, 8, 2);
-			asset.EmotionalState.AddEmotionDisposition(reproachDisposition);
-
-			var gratitudeDisposition = new EmotionDisposition(OCCEmotionType.GRATITUDE.Name, 5, 3);
-			asset.EmotionalState.AddEmotionDisposition(gratitudeDisposition);
-
-			var angerDisposition = new EmotionDisposition(OCCEmotionType.ANGER.Name, 5, 3);
-			asset.EmotionalState.AddEmotionDisposition(angerDisposition);
-
-			return asset;
+				m_nullPointer = null;
+				m_circlePoiter = this;
+			}
 		}
 
 		[TestMethod]
 		public void BasicSerializationTest()
 		{
-			var asset = BuildBaseAsset();
+			var asset = new SerializationTestClass();
 
 			using (var stream = new MemoryStream())
 			{
@@ -102,7 +73,7 @@ namespace UnitTest
 		[TestMethod]
 		public void BasicDeserializationTest()
 		{
-			var asset = BuildBaseAsset();
+			var asset = new SerializationTestClass();
 
 			using (var stream = new MemoryStream())
 			{
