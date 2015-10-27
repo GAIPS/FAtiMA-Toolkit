@@ -44,7 +44,7 @@ namespace KnowledgeBase.WellFormedNames
 	[Serializable]
 	public abstract class Name : IGroundable<Name>, ICloneable
 	{
-		private static int variableIDCounter = 0;
+		private static long variableIDCounter = 0;
 
 		public bool IsGrounded
 		{
@@ -96,20 +96,16 @@ namespace KnowledgeBase.WellFormedNames
 			return SwapPerspective(name, Symbol.SELF_STRING);
 		}
 
-		public Name RemovePerspective(String name)
+		public Name RemovePerspective(string name)
 		{
 			return SwapPerspective(Symbol.SELF_STRING, name);
 		}
 
 		public abstract Name SwapPerspective(string original, string newName);
-
-		public abstract Name ReplaceUnboundVariables(int variableID);
+        public abstract Name ReplaceUnboundVariables(long variableID);
 		public abstract Name MakeGround(IEnumerable<Substitution> bindings);
-		public Name MakeGround(params Substitution[] subst)
-		{
-			return MakeGround((IEnumerable<Substitution>)subst);
-		}
 
+		
 		/// <summary>
 		/// Clones this Name, returning an equal copy.
 		/// If this clone is changed afterwards, the original object remains the same.
@@ -133,7 +129,7 @@ namespace KnowledgeBase.WellFormedNames
 		/// </summary>
 		public abstract bool SimilarStructure(Name other);
 
-		#region Static Methods
+		
 
 		#region Parsing
 
@@ -161,21 +157,8 @@ namespace KnowledgeBase.WellFormedNames
 					throw new ArgumentNullException("str");
 				throw new ArgumentException("Cannot parse an empty string","str");
 			}
-				
 			
 			str = str.Trim();
-			bool evaluate = true; //Not used for now
-			switch (str[0])
-			{
-				case '#':
-					str = str.Substring(1);
-					evaluate = false;
-					break;
-				case '?':
-					str = str.Substring(1);
-					break;
-			}
-
 			Name result = ParseName(str);
 			return result;
 		}
@@ -249,36 +232,12 @@ namespace KnowledgeBase.WellFormedNames
 		public static Symbol GenerateUniqueGhostVariable()
 		{
 			Symbol ghost = new Symbol("[_]");
-			ghost.ReplaceUnboundVariables(variableIDCounter);
-			return ghost;
+		    variableIDCounter++;
+            ghost = (Symbol) ghost.ReplaceUnboundVariables(variableIDCounter);
+            return ghost;
 		}
 
-		/// <summary>
-		/// Determines if two Wellformed Name match each other.
-		/// Both Names are matched if all their literals are equal to one another or if a literal matches a universal Symbol
-		/// </summary>
-		/// <returns>True if both Names match one another. False otherwise.</returns>
-		public static bool Match(Name name1, Name name2)
-		{
-			return name1.Match(name2);
-		}
-
-		public static string ApplyPerspective(string name, string agentName)
-		{
-			if (name == agentName)
-				return Symbol.SELF_STRING;
-			return name;
-		}
-
-		public static string RemovePerspective(string name, string agentName)
-		{
-			if (name == Symbol.SELF_STRING)
-				return agentName;
-			return name;
-		}
-
-		#endregion
-
+		
 		#region Operators
 
 		public static explicit operator Name(string definition)

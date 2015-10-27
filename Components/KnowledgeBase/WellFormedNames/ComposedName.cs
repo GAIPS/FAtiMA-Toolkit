@@ -82,20 +82,10 @@ namespace KnowledgeBase.WellFormedNames
 		}
 
 		/// <summary>
-		/// Creates a new ComposedName, receiving a set of terms to aglomerate.
-		/// The first term must be a symbol and 
-		/// </summary>
-		/// <param name="name">Major symbol</param>
-		/// <param name="literals">A set of parameter symbols</param>
-		public ComposedName(Symbol head, IEnumerable<Name> terms) : this(head,terms.ToArray()){
-			
-		}
-
-		/// <summary>
 		/// Clone Constructor
 		/// </summary>
 		/// <param name="composedName">The composedName to clone</param>
-		public ComposedName(ComposedName composedName)
+		protected ComposedName(ComposedName composedName)
 		{
 			this.IsGrounded = composedName.IsGrounded;
 			this.m_rootSymbol = composedName.m_rootSymbol;
@@ -143,10 +133,12 @@ namespace KnowledgeBase.WellFormedNames
 			return new ComposedName(GetTerms().Select(t => t.SwapPerspective(original, newName)));
 		}
 
-		public override Name ReplaceUnboundVariables(int variableID)
+
+
+		public override Name ReplaceUnboundVariables(long variableID)
 		{
 			if (IsGrounded)
-				return this;
+				return (Name)Clone();
 
 			return new ComposedName(GetTerms().Select(t => t.ReplaceUnboundVariables(variableID)));
 		}
@@ -154,9 +146,9 @@ namespace KnowledgeBase.WellFormedNames
 		public override Name MakeGround(IEnumerable<Substitution> bindings)
 		{
 			if (IsGrounded)
-				return this;
+                return (Name)Clone();
 
-			return new ComposedName(GetTerms().Select(t => t.MakeGround(bindings)));
+            return new ComposedName(GetTerms().Select(t => t.MakeGround(bindings)));
 		}
 
 		public override object Clone()
@@ -193,8 +185,14 @@ namespace KnowledgeBase.WellFormedNames
 			if (other == null)
 				return false;
 
+            
 			if (other._terms.Length != this._terms.Length)
 				return false;
+
+		    if (!other.m_rootSymbol.Equals(this.m_rootSymbol))
+		    {
+		        return false;
+		    }
 
 			for (int i = 0; i < this._terms.Length; i++)
 				if (!other._terms[i].Equals(this._terms[i]))
@@ -203,35 +201,38 @@ namespace KnowledgeBase.WellFormedNames
 			return true;
 		}
 
-		public override int GetHashCode()
+        public override bool Match(Name name)
+        {
+       
+            ComposedName other = name as ComposedName;
+            if (other == null)
+                return false;
+
+            if (other._terms.Length != this._terms.Length)
+                return false;
+
+            if (!other.m_rootSymbol.Match(this.m_rootSymbol))
+            {
+                return false;
+            }
+
+            for (int i = 0; i < this._terms.Length; i++)
+                if (!this._terms[i].Match(other._terms[i]))
+                    return false;
+
+            return true;
+        }
+
+
+        public override int GetHashCode()
 		{
 			return GetTerms().Select(t => t.GetHashCode()).Aggregate((h1, h2) => h1 ^ h2);
 		}
 
-		public override bool Match(Name name)
-		{
-			if (name.IsUniversal)
-				return true;
-
-			ComposedName other = name as ComposedName;
-			if (other == null)
-				return false;
-
-			if (other._terms.Length != this._terms.Length)
-				return false;
-
-			for (int i = 0; i < this._terms.Length; i++)
-				if (!this._terms[i].Match(other._terms[i]))
-					return false;
-
-			return true;
-		}
-
+		
+        //Todo: Why is this method needed?
 		public override bool SimilarStructure(Name other)
 		{
-			if (other == null)
-				return false;
-
 			ComposedName name = other as ComposedName;
 			if (name == null)
 				return false;

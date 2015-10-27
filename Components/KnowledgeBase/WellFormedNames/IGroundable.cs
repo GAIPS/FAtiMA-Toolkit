@@ -41,7 +41,7 @@ namespace KnowledgeBase.WellFormedNames
 		/// Attention, this method modifies the original object.
 		/// </summary>
 		/// <param name="variableID">the identifier to be applied</param>
-		T ReplaceUnboundVariables(int variableID);
+		T ReplaceUnboundVariables(long variableID);
 
 		/// <summary>
 		/// Applies a set of substitutions to the object, grounding it.
@@ -52,16 +52,7 @@ namespace KnowledgeBase.WellFormedNames
 		/// <param name="bindings">A set of substitutions of the type "[Variable]/value"</param>
 		T MakeGround(IEnumerable<Substitution> bindings);
 
-		/// <summary>
-		/// Applies a set of substitutions to the object, grounding it.
-		/// Example: Applying the substitution "[X]/John" in the name "Weak([X])" returns "Weak(John)". 
-		/// </summary>
-		/// @warning: this method modifies the original object.
-		/// <see cref="FAtiMA.Core.Substitution"/>
-		/// <param name="subst">a substitution of the type "[Variable]/value"</param>
-		T MakeGround(params Substitution[] subst);
-
-		/// <summary>
+	    /// <summary>
 		/// Indicates if the name is grounded (no unbound variables in it's WFN)
 		/// Example: Stronger(Luke,John) is grounded while Stronger(John,[X]) is not.
 		/// </summary>

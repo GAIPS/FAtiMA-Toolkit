@@ -18,6 +18,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalAppraisal", "EmotionalAppraisal\EmotionalAppraisal.csproj", "{0A2A1EE9-BD5D-44AA-A22D-291612488F06}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAIPS.Serialization", "Components\SerializationUtilities\GAIPS.Serialization.csproj", "{7DD831A6-ADCA-455B-B02F-53C3A639E79B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.KnowledgeBase", "Tests.KnowledgeBase\Tests.KnowledgeBase.csproj", "{067456C0-086C-46A8-B37F-1405717B7BFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +54,10 @@ Global
 		{7DD831A6-ADCA-455B-B02F-53C3A639E79B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DD831A6-ADCA-455B-B02F-53C3A639E79B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DD831A6-ADCA-455B-B02F-53C3A639E79B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,5 +69,6 @@ Global
 		{2021E828-2F7F-4775-9F02-58C68FD72EDD} = {6FDA1219-9D9E-489F-A258-B797FED50614}
 		{2F1B1044-7D2D-40B0-80C2-12D742F54A7B} = {6FDA1219-9D9E-489F-A258-B797FED50614}
 		{7DD831A6-ADCA-455B-B02F-53C3A639E79B} = {6FDA1219-9D9E-489F-A258-B797FED50614}
+		{067456C0-086C-46A8-B37F-1405717B7BFC} = {9285D50F-C051-467D-AB2D-165963753EA5}
 	EndGlobalSection
 EndGlobal

@@ -135,7 +135,7 @@ namespace KnowledgeBase.WellFormedNames
 		/// </summary>
 		/// <remarks>Attention, this method modifies the original object.</remarks>
 		/// <param name="variableID">the identifier to be applied</param>
-		public override Name ReplaceUnboundVariables(int variableID)
+		public override Name ReplaceUnboundVariables(long variableID)
 		{
 			if (IsGrounded)
 				return this;
