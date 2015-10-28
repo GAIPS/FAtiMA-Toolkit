@@ -97,9 +97,17 @@ namespace KnowledgeBase.WellFormedNames
 			return result;
 		}
 
-		#region Private Methods
+        public static IEnumerable<Pair<Name, Name>> GetTerms(Name n1, Name n2, bool allowPartial)
+        {
+            if (!(allowPartial || n1.SimilarStructure(n2)))
+                return null;
 
-		private static IEnumerable<Substitution> FindSubst(Name n1, Name n2, bool allowPartial)
+            return n1.GetTerms().Zip(n2.GetTerms(), (t1, t2) => Tuple.Create(t1, t2));
+        }
+
+        #region Private Methods
+
+        private static IEnumerable<Substitution> FindSubst(Name n1, Name n2, bool allowPartial)
 		{
 			SubstitutionSet bindings = new SubstitutionSet();
 			if (!FindSubst(n1, n2,allowPartial, bindings))
@@ -107,13 +115,7 @@ namespace KnowledgeBase.WellFormedNames
 			return bindings;
 		}
 
-		public static IEnumerable<Pair<Name, Name>> GetTerms(Name n1, Name n2, bool allowPartial)
-		{
-			if (!(allowPartial || n1.SimilarStructure(n2)))
-				return null;
-
-			return n1.GetTerms().Zip(n2.GetTerms(), (t1, t2) => Tuple.Create(t1, t2));
-		}
+		
 
 		private static bool FindSubst(Name n1, Name n2, bool allowPartialTerms, SubstitutionSet bindings)
 		{
