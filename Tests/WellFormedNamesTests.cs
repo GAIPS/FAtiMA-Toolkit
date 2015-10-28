@@ -335,7 +335,7 @@ namespace UnitTest.WellFormedNames
 
 			while (NumOfIterations > 0)
 			{
-				NameSearchTree<int> tree = new NameSearchTree<int>(baseTree);
+				NameSearchTree<int> tree = (NameSearchTree<int>)baseTree.Clone();
 				set = baseSet.OrderBy(e => Guid.NewGuid());
 
 				foreach (var e in set)
