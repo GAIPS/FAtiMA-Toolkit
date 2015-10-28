@@ -1,6 +1,9 @@
-﻿using AssetPackage;
+﻿using System;
+using AssetPackage;
+using EmotionalAppraisal.AppraisalRules;
 using EmotionalAppraisal.Components;
 using EmotionalAppraisal.Interfaces;
+using EmotionalAppraisal.OCCModel;
 using System.Collections.Generic;
 
 namespace EmotionalAppraisal
@@ -8,16 +11,19 @@ namespace EmotionalAppraisal
 	public sealed partial class EmotionalAppraisalAsset : BaseAsset
 	{
 		private static readonly InternalAppraisalFrame APPRAISAL_FRAME = new InternalAppraisalFrame();
-		private long lastFrameAppraisal = 0;
+		[NonSerialized]
+		private long _lastFrameAppraisal = 0;
 
 		private ConcreteEmotionalState m_emotionalState;
-
+		[NonSerialized]
+		private OCCAffectDerivationComponent m_occAffectDerivator;
+		private ReactiveAppraisalDerivator m_appraisalDerivator;
 		#region Component Manager
 
-		private HashSet<IAppraisalDerivator> m_appraisalDerivators = new HashSet<IAppraisalDerivator>();
-		private HashSet<IAffectDerivator> m_affectDerivators = new HashSet<IAffectDerivator>();
+		//private HashSet<IAppraisalDerivator> m_appraisalDerivators = new HashSet<IAppraisalDerivator>();
+		//private HashSet<IAffectDerivator> m_affectDerivators = new HashSet<IAffectDerivator>();
 		private HashSet<IEmotionProcessor> m_emotionalProcessors = new HashSet<IEmotionProcessor>();
-
+		/*
 		public bool AddComponent(IAppraisalDerivator component)
 		{
 			return m_appraisalDerivators.Add(component);
@@ -27,7 +33,7 @@ namespace EmotionalAppraisal
 		{
 			return m_appraisalDerivators.Remove(component);
 		}
-
+		
 		public bool AddComponent(IAffectDerivator component)
 		{
 			return m_affectDerivators.Add(component);
@@ -37,7 +43,7 @@ namespace EmotionalAppraisal
 		{
 			return m_affectDerivators.Remove(component);
 		}
-
+		*/
 		public bool AddComponent(IEmotionProcessor component)
 		{
 			return m_emotionalProcessors.Add(component);
@@ -50,6 +56,8 @@ namespace EmotionalAppraisal
 
 		#endregion
 
+		public string Perspective { get; set; }
+
 		/// <summary>
 		/// Returns the agent's emotional state.
 		/// </summary>
@@ -61,50 +69,49 @@ namespace EmotionalAppraisal
 			}
 		}
 
-		public EmotionalAppraisalAsset()
+		public EmotionalAppraisalAsset() : this(string.Empty){}
+
+		public EmotionalAppraisalAsset(string perspective)
 		{
+			Perspective = perspective;
 			m_emotionalState = new ConcreteEmotionalState();
+			m_occAffectDerivator = new OCCAffectDerivationComponent();
+			m_appraisalDerivator = new ReactiveAppraisalDerivator();
 		}
 
 		public void AppraiseEvents(IEnumerable<IEvent> events)
 		{
-			using (IEnumerator<IEvent> it = events.GetEnumerator())
+			using (var it = events.GetEnumerator())
 			{
 				while (it.MoveNext())
 				{
 					APPRAISAL_FRAME.Reset(it.Current);
-					foreach (var c in m_appraisalDerivators)
-					{
-						var componentFrame = APPRAISAL_FRAME.RequestComponentFrame(c, c.AppraisalWeight);
-						c.Appraisal(this, it.Current, componentFrame);
-						UpdateEmotions(APPRAISAL_FRAME);
-					}
+					var componentFrame = APPRAISAL_FRAME.RequestComponentFrame(m_appraisalDerivator, m_appraisalDerivator.AppraisalWeight);
+					m_appraisalDerivator.Appraisal(this, it.Current, componentFrame);
+					UpdateEmotions(APPRAISAL_FRAME);
 				}
 			}
 		}
 
 		public void UpdateEmotions(IAppraisalFrame frame)
 		{
-			if (lastFrameAppraisal < frame.LastChange)
-			{
-				foreach (var affectDerivator in m_affectDerivators)
-				{
-					var emotions = affectDerivator.AffectDerivation(this, frame);
-					foreach (var emotion in emotions)
-					{
-						var activeEmotion = this.EmotionalState.AddEmotion(emotion);
-						if (activeEmotion != null)
-						{
-							foreach (var processor in m_emotionalProcessors)
-							{
-								processor.EmotionActivation(this, activeEmotion);
-							}
-						}
-					}
-				}
+			if (_lastFrameAppraisal >= frame.LastChange)
+				return;
 
-				lastFrameAppraisal = frame.LastChange;
+			var emotions = m_occAffectDerivator.AffectDerivation(this, frame);
+			foreach (var emotion in emotions)
+			{
+				var activeEmotion = this.EmotionalState.AddEmotion(emotion);
+				if (activeEmotion == null)
+					continue;
+
+				foreach (var processor in m_emotionalProcessors)
+				{
+					processor.EmotionActivation(this, activeEmotion);
+				}
 			}
+
+			_lastFrameAppraisal = frame.LastChange;
 		}
 
 		public void Update(float deltaTime)
@@ -117,12 +124,9 @@ namespace EmotionalAppraisal
 
 		public void Reappraise()
 		{
-			foreach (var c in m_appraisalDerivators)
-			{
-				IAppraisalFrame frame = c.Reappraisal(this);
-				if (frame != null)
-					UpdateEmotions(frame);
-			}
+			var frame = m_appraisalDerivator.Reappraisal(this);
+			if (frame != null)
+				UpdateEmotions(frame);
 		}
 	}
 }
