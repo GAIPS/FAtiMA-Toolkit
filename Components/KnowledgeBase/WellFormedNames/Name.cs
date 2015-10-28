@@ -247,12 +247,16 @@ namespace KnowledgeBase.WellFormedNames
 
 		public static bool operator ==(Name n1, Name n2)
 		{
-			if (object.ReferenceEquals(n1, n2))
+
+            if (object.ReferenceEquals(n1, n2))
 				return true;
 
-			if (n1.GetHashCode() != n1.GetHashCode())
+		    if ((object) n1 == null || (object) n2 == null)
+		        return false;
+            
+            if (n1.GetHashCode() != n2.GetHashCode())
 				return false;
-
+           
 			return n1.Equals(n2);
 		}
 

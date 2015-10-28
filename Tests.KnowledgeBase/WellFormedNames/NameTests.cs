@@ -21,7 +21,22 @@ namespace Tests.KnowledgeBase.WellFormedNames
             Assert.That(name.ToString() == nameString);
         }
 
-       
+
+        [TestCase("[y]")]
+        [TestCase("[x]")]
+        [TestCase("IsPerson(x)")]
+        [TestCase("Likes(x, y)")]
+        [TestCase("Likes([x], y)")]
+        [TestCase("Likes(x, Likes(x, x))")]
+        [TestCase("Likes(x, Likes(y, Hates([y], x)))")]
+        [TestCase("[x]([x], y, z)")]
+        public void ExplicitCastName_CorrectNameString_NewName(string nameString)
+        {
+            var name = (Name)nameString;
+            Assert.That(name.ToString() == nameString);
+        }
+
+
         [TestCase("IsPerson(x")]
         public void Parse_InvalidNameString_NewName(string nameString)
         {
@@ -103,6 +118,9 @@ namespace Tests.KnowledgeBase.WellFormedNames
 
             Assert.That(ghost1 != ghost2);
         }
+
+
+     
 
     }
 }
