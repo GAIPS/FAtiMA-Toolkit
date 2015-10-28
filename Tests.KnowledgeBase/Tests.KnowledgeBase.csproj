@@ -37,6 +37,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WellFormedNames\SubstitutionTests.cs" />
+    <Compile Include="WellFormedNames\InequalityTests.cs" />
+    <Compile Include="WellFormedNames\SymbolTests.cs" />
     <Compile Include="WellFormedNames\NameTests.cs" />
     <Compile Include="WellFormedNames\ComposedNameTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

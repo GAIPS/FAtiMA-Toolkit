@@ -11,7 +11,7 @@ namespace KnowledgeBase.WellFormedNames
 	/// </summary>
 	public class Substitution : ICloneable
 	{
-		private static readonly char[] SUBSTITUTION_SEPARATORS= {'/','\\'};
+		private static readonly char[] SUBSTITUTION_SEPARATORS= {'/'};
 
 		public Symbol Variable
 		{
@@ -49,7 +49,7 @@ namespace KnowledgeBase.WellFormedNames
 		{
 			Validation(variable, value);
 
-			this.Variable = new Symbol(variable);
+			this.Variable = (Symbol)variable.Clone();
 			this.Value = (Name)value.Clone();
 		}
 
@@ -103,9 +103,9 @@ namespace KnowledgeBase.WellFormedNames
 		/// Clone Constructor
 		/// </summary>
 		/// <param name="substitution">The substitution to clone</param>
-		public Substitution(Substitution substitution)
+		protected Substitution(Substitution substitution)
 		{
-			this.Variable = new Symbol(substitution.Variable);
+			this.Variable = (Symbol)substitution.Variable.Clone();
 			this.Value = (Name)substitution.Value.Clone();
 		}
 

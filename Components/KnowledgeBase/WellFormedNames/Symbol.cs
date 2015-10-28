@@ -88,7 +88,7 @@ namespace KnowledgeBase.WellFormedNames
 		/// Clone Constructor
 		/// </summary>
 		/// <param name="symbol">The symbol to clone.</param>
-		public Symbol(Symbol symbol)
+		protected Symbol(Symbol symbol)
 		{
 			this.IsGrounded = symbol.IsGrounded;
 			this.Name = symbol.Name;
@@ -124,7 +124,7 @@ namespace KnowledgeBase.WellFormedNames
 		public override Name SwapPerspective(string original, string newName)
 		{
 			if (this.Name != original)
-				return this;
+				return (Symbol)Clone();
 			return new Symbol(newName);
 		}
 
@@ -138,7 +138,7 @@ namespace KnowledgeBase.WellFormedNames
 		public override Name ReplaceUnboundVariables(long variableID)
 		{
 			if (IsGrounded)
-				return this;
+				return (Symbol)Clone();
 
 			return new Symbol(this.Name.Substring(0, this.Name.Length - 1) + variableID + ']');
 		}

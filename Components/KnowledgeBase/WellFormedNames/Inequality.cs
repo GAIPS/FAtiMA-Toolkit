@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using KnowledgeBase.WellFormedNames.Exceptions;
 
 namespace KnowledgeBase.WellFormedNames
@@ -31,7 +32,7 @@ namespace KnowledgeBase.WellFormedNames
 		{
 			Match m = VALIDATION_REGEX.Match(substitutionDefinition);
 			if (!m.Success)
-				throw new BadSubstitutionException("\""+substitutionDefinition+"\" is not a valid substitution definition");
+				throw new BadSubstitutionException("\""+substitutionDefinition+"\" is not a valid inequality definition");
 
 			this.Variable = new Symbol(m.Groups[0].Value);
 			this.Value = new Symbol(m.Groups[1].Value);
@@ -47,7 +48,7 @@ namespace KnowledgeBase.WellFormedNames
 		/// <param name="substitution">The inequality to clone or a substitution to negate</param>
 		public Inequality(Substitution substitution) : base()
 		{
-			this.Variable = new Symbol(substitution.Variable);
+			this.Variable = (Symbol)substitution.Variable.Clone();
 			this.Value = (Name)substitution.Value.Clone();
 		}
 

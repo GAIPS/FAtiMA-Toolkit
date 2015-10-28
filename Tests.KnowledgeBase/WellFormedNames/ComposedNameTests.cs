@@ -246,7 +246,7 @@ namespace Tests.KnowledgeBase.WellFormedNames
         {
             var composedName1 = new ComposedName(new Symbol(name1term1), new Symbol(name1term2));
             var composedName2 = new ComposedName(new Symbol(name2term1), new Symbol(name2term2), new Symbol(name2term3));
-            Assert.That(composedName1 != composedName2);
+            Assert.That(!(composedName1 == composedName2));
         }
 
         [TestCase("IsPerson","John","IsPerson")]
