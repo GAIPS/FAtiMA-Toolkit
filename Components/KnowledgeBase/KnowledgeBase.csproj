@@ -39,7 +39,6 @@
     <Compile Include="WellFormedNames\Exceptions\BadSubstitutionException.cs" />
     <Compile Include="WellFormedNames\Exceptions\Exception.cs" />
     <Compile Include="WellFormedNames\Exceptions\InvalidSymbolDefinitionException.cs" />
-    <Compile Include="WellFormedNames\Exceptions\InvalidVariableDefinitionException.cs" />
     <Compile Include="WellFormedNames\IGroundable.cs" />
     <Compile Include="WellFormedNames\Inequality.cs" />
     <Compile Include="WellFormedNames\Name.cs" />
