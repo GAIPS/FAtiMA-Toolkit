@@ -12,7 +12,11 @@ namespace GAIPS.Serialization.Surrogates
 
 	public class HashSetSerializationSurrogate : ISerializationSurrogate
 	{
-		private static readonly Type DEFAULT_COMPARATOR_TYPE = Type.GetType("System.Collections.Generic.ObjectEqualityComparer`1");
+		private static readonly Type[] DefaultComparatorTypes = new[]
+		{
+			Type.GetType("System.Collections.Generic.ObjectEqualityComparer`1"),
+			Type.GetType("System.Collections.Generic.GenericEqualityComparer`1")
+		}; 
 
 		public void GetObjectData(object obj, IObjectGraphNode holder)
 		{
@@ -21,12 +25,12 @@ namespace GAIPS.Serialization.Surrogates
 			var comparator = f.GetValue(obj);
 			Type comparatorType = comparator.GetType();
 
-			if (!(comparatorType.IsGenericType && (comparatorType.GetGenericTypeDefinition() == DEFAULT_COMPARATOR_TYPE)))
+			if (!(comparatorType.IsGenericType && DefaultComparatorTypes.Contains(comparatorType.GetGenericTypeDefinition())))
 				holder["comparer"] = holder.ParentGraph.BuildNode(comparator, null);
 
 			Type elementType = objType.GetGenericArguments()[0];
-			var nodeSequence = (obj as IEnumerable).Cast<object>().Select(o => holder.ParentGraph.BuildNode(o, elementType));
-			if (!nodeSequence.IsEmpty())
+			var nodeSequence = ((IEnumerable) obj).Cast<object>().Select(o => holder.ParentGraph.BuildNode(o, elementType));
+			if (!(nodeSequence.IsEmpty()))
 			{
 				ISequenceGraphNode sequence = holder.ParentGraph.BuildSequenceNode();
 				sequence.AddRange(nodeSequence);

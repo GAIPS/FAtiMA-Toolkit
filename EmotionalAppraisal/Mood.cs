@@ -1,4 +1,4 @@
-﻿using GAIPS.Serialization.Attributes;
+﻿using GAIPS.Serialization;
 using System;
 
 namespace EmotionalAppraisal
@@ -8,11 +8,8 @@ namespace EmotionalAppraisal
 	/// </summary>
 	public class Mood
 	{
-		[SerializeField]
 		private float intensityATt0;
-		[SerializeField]
 		private float deltaTimeT0;
-		[SerializeField]
 		private float intensity;
 
 		/// <summary>

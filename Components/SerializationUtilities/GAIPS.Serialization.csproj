@@ -34,16 +34,15 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\SerializeFieldAttribute.cs" />
     <Compile Include="BaseSerializer.cs" />
-    <Compile Include="SerializationGraph\Nodes\BaseGraphNode.cs" />
+    <Compile Include="SerializationGraph\BaseGraphNode.cs" />
     <Compile Include="SerializationGraph\SerializedDataType.cs" />
-    <Compile Include="SerializationGraph\Nodes\ObjectGraphNode.cs" />
-    <Compile Include="SerializationGraph\Nodes\PrimitiveGraphNode.cs" />
-    <Compile Include="SerializationGraph\Nodes\SequenceGraphNode.cs" />
+    <Compile Include="SerializationGraph\ObjectGraphNode.cs" />
+    <Compile Include="SerializationGraph\PrimitiveGraphNode.cs" />
+    <Compile Include="SerializationGraph\SequenceGraphNode.cs" />
     <Compile Include="SerializationGraph\Graph.cs" />
-    <Compile Include="SerializationGraph\GraphNode.cs" />
-    <Compile Include="SerializationGraph\Nodes\StringGraphNode.cs" />
+    <Compile Include="SerializationGraph\IGraphNode.cs" />
+    <Compile Include="SerializationGraph\StringGraphNode.cs" />
     <Compile Include="ISerializationSurrogate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerializationGraph\TypeEntry.cs" />
@@ -60,7 +59,9 @@
       <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Attributes\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

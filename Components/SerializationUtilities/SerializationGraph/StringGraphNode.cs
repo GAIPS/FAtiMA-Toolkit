@@ -1,5 +1,4 @@
-﻿using GAIPS.Serialization.SerializationGraph;
-using System;
+﻿using System;
 
 namespace GAIPS.Serialization.SerializationGraph
 {
@@ -12,20 +11,21 @@ namespace GAIPS.Serialization.SerializationGraph
 	{
 		private sealed class StringGraphNode : BaseGraphNode, IStringGraphNode
 		{
-			public string Value
+			public StringGraphNode(string value, Graph parent) : base(parent)
 			{
-				get;
-				private set;
+				Value = value;
 			}
+
+			public string Value { get; private set; }
 
 			public override SerializedDataType DataType
 			{
 				get { return SerializedDataType.String; }
 			}
 
-			public StringGraphNode(string value, Graph parent) : base(parent)
+			public override bool CanMatchType(Type requestedType)
 			{
-				this.Value = value;
+				return requestedType == null || requestedType.IsAssignableFrom(typeof (string));
 			}
 
 			public override object ExtractObject(Type requestedType)

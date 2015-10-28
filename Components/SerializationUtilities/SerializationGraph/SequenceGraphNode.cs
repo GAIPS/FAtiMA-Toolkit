@@ -49,9 +49,37 @@ namespace GAIPS.Serialization.SerializationGraph
 				return m_elements.GetEnumerator();
 			}
 
+			public override bool CanMatchType(Type requestedType)
+			{
+				return requestedType == null || requestedType.IsArray;
+			}
+
 			public override object ExtractObject(Type requestedType)
 			{
-				throw new NotImplementedException();
+				if(requestedType!=null && !requestedType.IsArray)
+					throw new Exception("requested type is not a array");	//TODO better exception
+
+				Type elementType = requestedType!=null?requestedType.GetElementType():null;
+				object[] elements = new object[Length];
+				for (int i = 0; i < m_elements.Count; i++)
+				{
+					if(m_elements[i]==null)
+						continue;
+					if (elementType != null)
+					{
+						while (elementType != null && !m_elements[i].CanMatchType(elementType))
+						{
+							elementType = elementType.BaseType;
+						}
+					}
+					var o = m_elements[i].RebuildObject(elementType);
+					if(elementType==null)
+						elementType = o.GetType();
+					elements[i] = o;
+				}
+				var a = Array.CreateInstance(elementType, elements.Length);
+				elements.CopyTo(a,0);
+				return a;
 			}
 		}
 	}

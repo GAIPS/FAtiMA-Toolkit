@@ -65,7 +65,9 @@ namespace Utilities
 			using (IEnumerator<T> it = enumerable.GetEnumerator())
 			{
 				while (it.MoveNext())
+				{
 					yield return (T)it.Current.Clone();
+				}
 			}
 		}
 

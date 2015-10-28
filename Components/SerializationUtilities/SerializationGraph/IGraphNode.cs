@@ -14,6 +14,8 @@ namespace GAIPS.Serialization.SerializationGraph
 			get;
 		}
 
+		bool CanMatchType(Type requestedType);
+
 		object RebuildObject(Type requestedType);
 	}
 }

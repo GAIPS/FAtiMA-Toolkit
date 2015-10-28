@@ -1,101 +1,84 @@
-﻿using GAIPS.Serialization.Attributes;
-using GAIPS.Serialization.SerializationGraph;
-using System;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
+using GAIPS.Serialization.SerializationGraph;
 
 namespace GAIPS.Serialization.Surrogates
 {
 	public sealed class DefaultSerializationSurrogate : ISerializationSurrogate
 	{
-		private static readonly IFormatterConverter FORMAT_CONVERTER = new FormatterConverter();
+		private static readonly IFormatterConverter FormatConverter = new FormatterConverter();
+		private static readonly Regex BackingFieldNameRegex = new Regex(@"^<([a-zA-Z_]\w*)>k__BackingField$",RegexOptions.Singleline|RegexOptions.Compiled|RegexOptions.CultureInvariant);
+		private static string FormatFieldName(string fieldName)
+		{
+			var m = BackingFieldNameRegex.Match(fieldName);
+			if (m.Success)
+				return m.Groups[1].Value;
+			return fieldName;
+		}
 
 		public void GetObjectData(object obj, IObjectGraphNode holder)
 		{
-			Type objType = obj.GetType();
+			var objType = obj.GetType();
 			if (obj is ISerializable)
 			{
-				SerializationInfo info = new SerializationInfo(objType, FORMAT_CONVERTER);
-				var ser = obj as ISerializable;
+				//Dictionary<int, int> b;
+				var info = new SerializationInfo(objType, FormatConverter);
+				var ser = (ISerializable) obj;
 				ser.GetObjectData(info, new StreamingContext(StreamingContextStates.All));
 				var it = info.GetEnumerator();
 				while (it.MoveNext())
 				{
-					IGraphNode fieldNode = holder.ParentGraph.BuildNode(it.Current.Value, it.Current.ObjectType);
+					var fieldNode = holder.ParentGraph.BuildNode(it.Current.Value, null);
 					holder[it.Name] = fieldNode;
 				}
 			}
 			else
 			{
-				FieldInfo[] fields = SerializationServices.GetSerializableFields(objType);
-				for (int i = 0; i < fields.Length; i++)
+				var fields = SerializationServices.GetSerializableFields(objType);
+				foreach (var f in fields)
 				{
-					var f = fields[i];
-					if (f.IsPublic)
-					{
-						if (f.IsNotSerialized)
-							continue;
-					}
-					else
-					{
-						if (!f.GetCustomAttributes(typeof(SerializeFieldAttribute), false).Any())
-							continue;
-					}
-
-					var value = f.GetValue(obj);
-					if(value == null)
+					if (f.IsNotSerialized)
 						continue;
 
-					holder[f.Name] = holder.ParentGraph.BuildNode(value, f.FieldType);
+					var value = f.GetValue(obj);
+					if (value == null)
+						continue;
+
+					var fieldName = FormatFieldName(f.Name);
+					holder[fieldName] = holder.ParentGraph.BuildNode(value, f.FieldType);
 				}
 			}
 		}
 
 		public void SetObjectData(ref object obj, IObjectGraphNode node)
 		{
-			Type objType = obj.GetType();
+			var objType = obj.GetType();
 			if (obj is ISerializable)
 			{
-				SerializationInfo info = new SerializationInfo(objType, FORMAT_CONVERTER);
+				var info = new SerializationInfo(objType, FormatConverter);
 				foreach (var entry in node)
 				{
 					info.AddValue(entry.FieldName, entry.FieldNode.RebuildObject(null));
 				}
-				var c = objType.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public, null, new Type[] { typeof(SerializationInfo),typeof(StreamingContext)}, null);
-				c.Invoke(obj, new object[] { info,new StreamingContext()});
-				/*
-				SerializationInfo info = new SerializationInfo(objType, FORMAT_CONVERTER);
-				var ser = obj as ISerializable;
-				ser.GetObjectData(info, new StreamingContext(StreamingContextStates.All));
-				var it = info.GetEnumerator();
-				while (it.MoveNext())
-				{
-					GraphNode fieldNode = SerializationServices.BuildNode(it.Current.Value, null, holder, graph);
-					holder[it.Name] = fieldNode;
-				}
-				*/
+				var c = objType.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public, null,
+					new[] {typeof (SerializationInfo), typeof (StreamingContext)}, null);
+				c.Invoke(obj, new object[] {info, new StreamingContext()});
+				var des = obj as IDeserializationCallback;
+				if (des != null)
+					des.OnDeserialization(this);
 			}
 			else
 			{
-				FieldInfo[] fields = SerializationServices.GetSerializableFields(objType);
-				for (int i = 0; i < fields.Length; i++)
+				var fields = SerializationServices.GetSerializableFields(objType);
+				foreach (var f in fields)
 				{
-					var f = fields[i];
-					if (f.IsPublic)
-					{
-						if (f.IsNotSerialized)
-							continue;
-					}
-					else
-					{
-						if (!f.GetCustomAttributes(typeof(SerializeFieldAttribute), false).Any())
-							continue;
-					}
+					if (f.IsNotSerialized)
+						continue;
 
-					string fieldName = f.Name;
+					var fieldName = FormatFieldName(f.Name);
 					object fieldValue;
-					IGraphNode nodeValue = node[fieldName];
+					var nodeValue = node[fieldName];
 					if (nodeValue == null)
 						fieldValue = SerializationServices.GetDefaultValueForType(f.FieldType);
 					else

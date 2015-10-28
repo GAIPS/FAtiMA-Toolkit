@@ -1,5 +1,4 @@
 ﻿using EmotionalAppraisal.Interfaces;
-using GAIPS.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +19,8 @@ namespace EmotionalAppraisal
 		{
 			private static readonly EmotionDisposition DEFAULT_EMOTIONAL_DISPOSITION = new EmotionDisposition("default", 1, 5);
 
-			[SerializeField]
 			private Dictionary<string, ActiveEmotion> emotionPool;
-			[SerializeField]
 			private Dictionary<string, EmotionDisposition> emotionDispositions;
-			[SerializeField]
 			private Mood mood;
 
 			public event Action<IEmotionalState, ActiveEmotion> OnEmotionCreated;

@@ -22,12 +22,12 @@ namespace GAIPS.Serialization.SerializationGraph
 			{
 				if (m_root != null)
 				{
-					((BaseGraphNode)m_root).isRoot = false;
+					((BaseGraphNode)m_root).IsRoot = false;
 				}
 				m_root = value;
 				if (m_root != null)
 				{
-					((BaseGraphNode)m_root).isRoot = true;
+					((BaseGraphNode)m_root).IsRoot = true;
 				}
 			}
 		}
@@ -236,6 +236,8 @@ namespace GAIPS.Serialization.SerializationGraph
 
 		private object RebuildObject(BaseGraphNode nodeToRebuild, Type requestedType)
 		{
+			if (nodeToRebuild == null)
+				return null;
 			if (requestedType!=null && requestedType.IsEnum)
 				return m_associatedSerializer.GraphNodeToEnum(nodeToRebuild, requestedType);
 			return nodeToRebuild.ExtractObject(requestedType);

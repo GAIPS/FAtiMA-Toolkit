@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace GAIPS.Serialization.SerializationGraph
 {
@@ -9,25 +6,23 @@ namespace GAIPS.Serialization.SerializationGraph
 	{
 		private abstract class BaseGraphNode : IGraphNode
 		{
-			internal bool isRoot = false;
+			internal bool IsRoot;
 
-			public abstract SerializedDataType DataType {get;}
-
-			public Graph ParentGraph
+			protected BaseGraphNode(Graph parentGraph)
 			{
-				get;
-				private set;
+				ParentGraph = parentGraph;
 			}
 
-			public BaseGraphNode(Graph parentGraph)
-			{
-				this.ParentGraph = parentGraph;
-			}
+			public abstract SerializedDataType DataType { get; }
+
+			public Graph ParentGraph { get; private set; }
 
 			public object RebuildObject(Type requestedType)
 			{
 				return ParentGraph.RebuildObject(this, requestedType);
 			}
+
+			public abstract bool CanMatchType(Type requestedType);
 
 			public abstract object ExtractObject(Type requestedType);
 		}

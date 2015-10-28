@@ -13,7 +13,7 @@ namespace GAIPS.Serialization.SerializationGraph
 	{
 		private sealed class PrimitiveGraphNode : BaseGraphNode, IPrimitiveGraphNode
 		{
-			private ValueType m_value;
+			private readonly ValueType m_value;
 			private readonly bool m_isNumber;
 
 			public PrimitiveGraphNode(ValueType value, Graph parentGraph) : base(parentGraph)
@@ -30,6 +30,11 @@ namespace GAIPS.Serialization.SerializationGraph
 			public override SerializedDataType DataType
 			{
 				get { return m_isNumber ? SerializedDataType.Number : SerializedDataType.Boolean; }
+			}
+
+			public override bool CanMatchType(Type requestedType)
+			{
+				return requestedType == null || requestedType.IsNumeric() || Type.GetTypeCode(requestedType) == TypeCode.Boolean;
 			}
 
 			public override object ExtractObject(Type requestedType)

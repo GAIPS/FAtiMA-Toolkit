@@ -1,7 +1,6 @@
 ﻿using AssetPackage;
 using EmotionalAppraisal.Components;
 using EmotionalAppraisal.Interfaces;
-using GAIPS.Serialization.Attributes;
 using System.Collections.Generic;
 
 namespace EmotionalAppraisal
@@ -11,16 +10,12 @@ namespace EmotionalAppraisal
 		private static readonly InternalAppraisalFrame APPRAISAL_FRAME = new InternalAppraisalFrame();
 		private long lastFrameAppraisal = 0;
 
-		[SerializeField]
 		private ConcreteEmotionalState m_emotionalState;
 
 		#region Component Manager
 
-		[SerializeField]
 		private HashSet<IAppraisalDerivator> m_appraisalDerivators = new HashSet<IAppraisalDerivator>();
-		[SerializeField]
 		private HashSet<IAffectDerivator> m_affectDerivators = new HashSet<IAffectDerivator>();
-		[SerializeField]
 		private HashSet<IEmotionProcessor> m_emotionalProcessors = new HashSet<IEmotionProcessor>();
 
 		public bool AddComponent(IAppraisalDerivator component)

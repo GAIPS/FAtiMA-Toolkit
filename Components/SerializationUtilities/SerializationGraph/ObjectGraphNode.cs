@@ -86,7 +86,7 @@ namespace GAIPS.Serialization.SerializationGraph
 			public bool IsReferedMultipleTimes
 			{
 				get {
-					return ReferenceCount > 1 || isRoot;
+					return ReferenceCount > 1 || IsRoot;
 				}
 			}
 
@@ -103,6 +103,17 @@ namespace GAIPS.Serialization.SerializationGraph
 			public override SerializedDataType DataType
 			{
 				get { return SerializedDataType.Object; }
+			}
+
+			public override bool CanMatchType(Type requestedType)
+			{
+				if (requestedType == null)
+					return true;
+
+				if (ObjectType == null)
+					return true;
+
+				return requestedType.IsAssignableFrom(ObjectType.ClassType);
 			}
 
 			public override object ExtractObject(Type requestedType)

@@ -1,4 +1,4 @@
-﻿using GAIPS.Serialization.Attributes;
+﻿
 namespace EmotionalAppraisal
 {
 	/// <summary>
@@ -9,13 +9,8 @@ namespace EmotionalAppraisal
 	/// </summary>
 	public class EmotionDisposition
 	{
-		[SerializeField]
 		private string m_emotion;
-
-		[SerializeField]
 		private int m_decay;
-
-		[SerializeField]
 		private int m_threshold;
 
 		public string Emotion
