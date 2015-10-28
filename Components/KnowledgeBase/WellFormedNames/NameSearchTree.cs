@@ -14,7 +14,7 @@ namespace KnowledgeBase.WellFormedNames
 	/// @author: Pedro Gonçalves
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public class NameSearchTree<T> : IEnumerable<KeyValuePair<Name,T>>
+	public class NameSearchTree<T> : IEnumerable<KeyValuePair<Name,T>>, ICloneable
 	{
 		private EvalNode root;
 
@@ -35,12 +35,17 @@ namespace KnowledgeBase.WellFormedNames
 		/// Clone constructor
 		/// </summary>
 		/// <param name="other"></param>
-		public NameSearchTree(NameSearchTree<T> other)
+		protected NameSearchTree(NameSearchTree<T> other)
 		{
 			this.root = new EvalNode(other.root);
 		}
 
-		public bool Add(Name name, T value)
+        public object Clone()
+        {
+            return new NameSearchTree<T>(this);
+        }
+
+        public bool Add(Name name, T value)
 		{
 			return MethodWrapper(name, (s) => this.root.AddValue(s, value, 0));
 		}
@@ -53,15 +58,6 @@ namespace KnowledgeBase.WellFormedNames
 		public bool Contains(Name name)
 		{
 			return MethodWrapper(name, s => this.root.Contains(s,0));
-		}
-
-		public T Match(Name name)
-		{
-			T value;
-			if (TryMatchValue(name, out value))
-				return value;
-
-			throw new KeyNotFoundException(string.Format(@"Could not find any match for the ""{0}""",name));
 		}
 
 		public bool TryMatchValue(Name name, out T value)
@@ -136,7 +132,9 @@ namespace KnowledgeBase.WellFormedNames
 			}
 		}
 
-		#region Nested Types
+	  
+
+	    #region Nested Types
 
 		private class EvalNode
 		{

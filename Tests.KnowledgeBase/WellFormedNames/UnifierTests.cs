@@ -24,8 +24,55 @@ namespace Tests.KnowledgeBase.WellFormedNames
             IEnumerable<Substitution> bindings = new List<Substitution>();
             var isUnifiable = Unifier.Unify(name1, name2, out bindings);
             Assert.That(isUnifiable);
-            Assert.That(bindings, Is.EquivalentTo(expectedBindings));
+            if (result.Any())
+            {
+                Assert.That(bindings, Is.EquivalentTo(expectedBindings));
+            }
+            else
+            {
+                Assert.That(bindings == null);
+            }
         }
 
+        [TestCase("John", "J")]
+        [TestCase("Strong(John)", "John")]
+        [TestCase("[x]([x])", "IsPerson(John)")]
+        [TestCase("[x](John,Paul)", "Friend(John,[x])")]
+        [TestCase("Like([x],[y])", "Like(John,Strong([y]))")]
+        public void Unify_NonUnifiableNames_False(string n1, string n2)
+        {
+            var name1 = Name.Parse(n1);
+            var name2 = Name.Parse(n2);
+            IEnumerable<Substitution> bindings = new List<Substitution>();
+            var isUnifiable = Unifier.Unify(name1, name2, out bindings);
+            Assert.That(!isUnifiable);
+            Assert.That(bindings == null);
+        }
+        
+
+        [TestCase("x", "x(a)")]
+        [TestCase("x", "[y](a)", "[y]/x")]
+        [TestCase("x(a)", "x")]
+        [TestCase("[y](a)", "x", "[y]/x")]
+        // [TestCase("x(a, b)", "x(a, b, c)")] //todo:check why this fails
+        public void PartialUnify_PartiallyUnifiableNames_True(string n1, string n2, params string[] result)
+        {
+            var name1 = Name.Parse(n1);
+            var name2 = Name.Parse(n2);
+            var expectedBindings = result.Select(s => new Substitution(s));
+
+            IEnumerable<Substitution> bindings = new List<Substitution>();
+            var isPartiallyUnifiable = Unifier.PartialUnify(name1, name2, out bindings);
+
+            Assert.That(isPartiallyUnifiable);
+            if (result.Any())
+            {
+                Assert.That(bindings, Is.EquivalentTo(expectedBindings));
+            }
+            else
+            {
+                Assert.That(bindings == null);
+            }
+        }
     }
 }
