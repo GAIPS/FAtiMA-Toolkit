@@ -34,6 +34,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KnowledgeSlot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WellFormedNames\ComposedName.cs" />
     <Compile Include="WellFormedNames\Exceptions\BadSubstitutionException.cs" />

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EmotionalAppraisal;
 using EmotionalAppraisal.Components;
 using EmotionalAppraisal.Interfaces;
 using KnowledgeBase.WellFormedNames;
 
-namespace OCCModelAppraisal.OCCModel
+namespace EmotionalAppraisal.OCCModel
 {
 	public class OCCAffectDerivationComponent : IAffectDerivator
 	{
@@ -27,12 +26,12 @@ namespace OCCModelAppraisal.OCCModel
 			if(evt.Subject == Symbol.SELF_STRING)
 			{
 				direction = Symbol.SELF_SYMBOL;
-				emoType = (desirability > 0) ? OCCEmotionType.GRATIFICATION : OCCEmotionType.REMORSE;
+				emoType = (desirability > 0) ? OCCEmotionType.Gratification : OCCEmotionType.Remorse;
 			}
 			else
 			{
 				direction = evt.Subject==null?Symbol.UNIVERSAL_SYMBOL:Name.Parse(evt.Subject);
-				emoType = (desirability > 0) ? OCCEmotionType.GRATITUDE : OCCEmotionType.ANGER;
+				emoType = (desirability > 0) ? OCCEmotionType.Gratitude : OCCEmotionType.Anger;
 			}
 
 			return new OCCBaseEmotion(emoType, potential, evt, direction);
@@ -40,8 +39,8 @@ namespace OCCModelAppraisal.OCCModel
 
 		private static OCCBaseEmotion OCCAppraiseWellBeing(IEvent evt, float desirability) {
 			if(desirability >= 0)
-				return new OCCBaseEmotion(OCCEmotionType.JOY, desirability, evt);
-			return new OCCBaseEmotion(OCCEmotionType.DISTRESS, -desirability, evt);
+				return new OCCBaseEmotion(OCCEmotionType.Joy, desirability, evt);
+			return new OCCBaseEmotion(OCCEmotionType.Distress, -desirability, evt);
 		}
 
 		private static OCCBaseEmotion OCCAppraiseFortuneOfOthers(IEvent evt, float desirability, float desirabilityForOther, string target) {
@@ -49,9 +48,9 @@ namespace OCCModelAppraisal.OCCModel
 
 			OCCEmotionType emoType;
 			if (desirability >= 0)
-				emoType = (desirabilityForOther >= 0) ? OCCEmotionType.HAPPY_FOR : OCCEmotionType.GLOATING;
+				emoType = (desirabilityForOther >= 0) ? OCCEmotionType.HappyFor : OCCEmotionType.Gloating;
 			else
-				emoType = (desirabilityForOther >= 0) ? OCCEmotionType.RESENTMENT : OCCEmotionType.PITTY;
+				emoType = (desirabilityForOther >= 0) ? OCCEmotionType.Resentment : OCCEmotionType.Pitty;
 
 			return new OCCBaseEmotion(emoType, potential, evt, string.IsNullOrEmpty(target) ? Symbol.UNIVERSAL_SYMBOL : Name.Parse(target));
 		}
@@ -63,12 +62,12 @@ namespace OCCModelAppraisal.OCCModel
 			if (evt.Subject == Symbol.SELF_STRING)
 			{
 				direction = Symbol.SELF_SYMBOL;
-				emoType = (praiseworthiness >= 0) ? OCCEmotionType.PRIDE : OCCEmotionType.SHAME;
+				emoType = (praiseworthiness >= 0) ? OCCEmotionType.Pride : OCCEmotionType.Shame;
 			}
 			else
 			{
 				direction = evt.Subject==null?Symbol.UNIVERSAL_SYMBOL:Name.Parse(evt.Subject);
-				emoType = (praiseworthiness >= 0) ? OCCEmotionType.ADMIRATION : OCCEmotionType.REPROACH;
+				emoType = (praiseworthiness >= 0) ? OCCEmotionType.Admiration : OCCEmotionType.Reproach;
 			}
 
 			return new OCCBaseEmotion(emoType, Math.Abs(praiseworthiness), evt, direction);
@@ -77,7 +76,7 @@ namespace OCCModelAppraisal.OCCModel
 		private static OCCBaseEmotion OCCAppraiseAttribution(IEvent evt, float like)
 		{
 			const float magicFactor = 0.7f;
-			OCCEmotionType emoType = (like >= 0)?OCCEmotionType.LOVE:OCCEmotionType.HATE;
+			OCCEmotionType emoType = (like >= 0)?OCCEmotionType.Love:OCCEmotionType.Hate;
 			return new OCCBaseEmotion(emoType,Math.Abs(like)*magicFactor,evt,evt.Target==null?Symbol.UNIVERSAL_SYMBOL:Name.Parse(evt.Target));
 		}
 
@@ -117,7 +116,7 @@ namespace OCCModelAppraisal.OCCModel
 		/// <param name="evt">The event that triggered the emotion</param>
 		/// <returns>the emotion created</returns>
 		public static OCCBaseEmotion AppraiseGoalSuccess(ActiveEmotion hopeEmotion, ActiveEmotion fearEmotion, float goalImportance, IEvent evt) {
-			return AppraiseGoalEnd(OCCEmotionType.SATISFACTION,OCCEmotionType.RELIEF,hopeEmotion,fearEmotion,goalImportance,evt);
+			return AppraiseGoalEnd(OCCEmotionType.Satisfaction,OCCEmotionType.Relief,hopeEmotion,fearEmotion,goalImportance,evt);
 		}
 
 		/// <summary>
@@ -129,7 +128,7 @@ namespace OCCModelAppraisal.OCCModel
 		/// <param name="evt">The event that triggered the emotion</param>
 		/// <returns></returns>
 		public static OCCBaseEmotion AppraiseGoalFailure(ActiveEmotion hopeEmotion, ActiveEmotion fearEmotion, float goalImportance, IEvent evt) {
-			return AppraiseGoalEnd(OCCEmotionType.DISAPPOINTMENT,OCCEmotionType.FEARS_CONFIRMED,hopeEmotion,fearEmotion,goalImportance,evt);
+			return AppraiseGoalEnd(OCCEmotionType.Disappointment,OCCEmotionType.FearsConfirmed,hopeEmotion,fearEmotion,goalImportance,evt);
 		}
 
 		/// <summary>
@@ -140,7 +139,7 @@ namespace OCCModelAppraisal.OCCModel
 		/// <param name="prob">probability of sucess</param>
 		/// <returns></returns>
 		public static OCCBaseEmotion AppraiseGoalSuccessProbability(IEvent evt, float goalConduciveness, float prob) {
-			return new OCCBaseEmotion(OCCEmotionType.HOPE, prob * goalConduciveness, evt);
+			return new OCCBaseEmotion(OCCEmotionType.Hope, prob * goalConduciveness, evt);
 		}
 
 		/// <summary>
@@ -152,7 +151,7 @@ namespace OCCModelAppraisal.OCCModel
 		/// <returns></returns>
 		public static OCCBaseEmotion AppraiseGoalFailureProbability(IEvent evt, float goalConduciveness, float prob)
 		{
-			return new OCCBaseEmotion(OCCEmotionType.FEAR, prob * goalConduciveness, evt);
+			return new OCCBaseEmotion(OCCEmotionType.Fear, prob * goalConduciveness, evt);
 		}
 
 		public IEnumerable<BaseEmotion> AffectDerivation(EmotionalAppraisalAsset emotionalModule, IAppraisalFrame frame)
@@ -219,8 +218,8 @@ namespace OCCModelAppraisal.OCCModel
 					else 
 					{
 						//TODO find a better way to retrive the active emotions, without allocating extra memory
-						var fear = emotionalModule.EmotionalState.GetEmotion(new OCCBaseEmotion(OCCEmotionType.FEAR, 0, evt));
-						var hope = emotionalModule.EmotionalState.GetEmotion(new OCCBaseEmotion(OCCEmotionType.HOPE, 0, evt));
+						var fear = emotionalModule.EmotionalState.GetEmotion(new OCCBaseEmotion(OCCEmotionType.Fear, 0, evt));
+						var hope = emotionalModule.EmotionalState.GetEmotion(new OCCBaseEmotion(OCCEmotionType.Hope, 0, evt));
 
 						if (status == GOALCONFIRMED)
 							yield return AppraiseGoalSuccess(hope, fear, goalConduciveness, evt);
@@ -247,55 +246,55 @@ namespace OCCModelAppraisal.OCCModel
 			int threshold = emotionDisposition.Threshold;
 			float potentialValue = emotion.Potential + threshold;
 
-			if(emotion.EmotionType == OCCEmotionType.LOVE.Name)
+			if(emotion.EmotionType == OCCEmotionType.Love.Name)
 			{
 				frame.SetAppraisalVariable(OCCAppraisalVariables.LIKE, potentialValue * MAGIC_VALUE_FOR_LOVE);
 			}
-			else if(emotion.EmotionType == OCCEmotionType.HATE.Name)
+			else if(emotion.EmotionType == OCCEmotionType.Hate.Name)
 			{
 				frame.SetAppraisalVariable(OCCAppraisalVariables.LIKE, potentialValue * -MAGIC_VALUE_FOR_LOVE);
 			}
-			else if (emotion.EmotionType == OCCEmotionType.JOY.Name)
+			else if (emotion.EmotionType == OCCEmotionType.Joy.Name)
 			{
 				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);
 			}
-			else if (emotion.EmotionType == OCCEmotionType.DISTRESS.Name)
+			else if (emotion.EmotionType == OCCEmotionType.Distress.Name)
 			{
 				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, -potentialValue);
 			}
-			else if (emotion.EmotionType == OCCEmotionType.PRIDE.Name)
+			else if (emotion.EmotionType == OCCEmotionType.Pride.Name)
 			{
 				frame.SetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS, potentialValue);
 			}
-			else if (emotion.EmotionType == OCCEmotionType.SHAME.Name)
+			else if (emotion.EmotionType == OCCEmotionType.Shame.Name)
 			{
 				frame.SetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS, -potentialValue);
 			}
-			else if (emotion.EmotionType == OCCEmotionType.GLOATING.Name)
+			else if (emotion.EmotionType == OCCEmotionType.Gloating.Name)
 			{
 				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);
 				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, -potentialValue);
 			}
-			else if (emotion.EmotionType == OCCEmotionType.HAPPY_FOR.Name)
+			else if (emotion.EmotionType == OCCEmotionType.HappyFor.Name)
 			{
 				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);
 				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, potentialValue);
 			}
-			else if (emotion.EmotionType == OCCEmotionType.PITTY.Name)
+			else if (emotion.EmotionType == OCCEmotionType.Pitty.Name)
 			{
 				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, -potentialValue);
 				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, -potentialValue);
 			}
-			else if (emotion.EmotionType == OCCEmotionType.RESENTMENT.Name)
+			else if (emotion.EmotionType == OCCEmotionType.Resentment.Name)
 			{
 				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, potentialValue);
 			}
-			else if (emotion.EmotionType == OCCEmotionType.GRATIFICATION.Name)
+			else if (emotion.EmotionType == OCCEmotionType.Gratification.Name)
 			{
 				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);
 				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, potentialValue);
 			}
-			else if (emotion.EmotionType == OCCEmotionType.ANGER.Name)
+			else if (emotion.EmotionType == OCCEmotionType.Anger.Name)
 			{
 				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, -potentialValue);
 				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, -potentialValue);
