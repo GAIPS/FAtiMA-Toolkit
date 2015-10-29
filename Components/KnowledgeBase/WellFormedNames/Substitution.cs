@@ -111,9 +111,6 @@ namespace KnowledgeBase.WellFormedNames
 
 		public override bool Equals(object obj)
 		{
-			if (obj == null)
-				return false;
-
 			Substitution s = obj as Substitution;
 			if (s == null)
 				return false;

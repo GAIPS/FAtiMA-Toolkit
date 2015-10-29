@@ -40,8 +40,8 @@ namespace KnowledgeBase.WellFormedNames
 		/// if the received ID is 4. 
 		/// Attention, this method modifies the original object.
 		/// </summary>
-		/// <param name="variableID">the identifier to be applied</param>
-		T ReplaceUnboundVariables(long variableID);
+		/// <param name="variableId">the identifier to be applied</param>
+		T ReplaceUnboundVariables(long variableId);
 
 		/// <summary>
 		/// Applies a set of substitutions to the object, grounding it.

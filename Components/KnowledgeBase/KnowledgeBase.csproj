@@ -34,8 +34,11 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="KnowledgeBase.cs" />
     <Compile Include="KnowledgeSlot.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WellFormedNames\Collections\NameSearchTree.cs" />
+    <Compile Include="WellFormedNames\Collections\TreeNode.cs" />
     <Compile Include="WellFormedNames\ComposedName.cs" />
     <Compile Include="WellFormedNames\Exceptions\BadSubstitutionException.cs" />
     <Compile Include="WellFormedNames\Exceptions\Exception.cs" />
@@ -43,8 +46,7 @@
     <Compile Include="WellFormedNames\IGroundable.cs" />
     <Compile Include="WellFormedNames\Inequality.cs" />
     <Compile Include="WellFormedNames\Name.cs" />
-    <Compile Include="WellFormedNames\NameParsingException.cs" />
-    <Compile Include="WellFormedNames\NameSearchTree.cs" />
+    <Compile Include="WellFormedNames\Exceptions\NameParsingException.cs" />
     <Compile Include="WellFormedNames\Substitution.cs" />
     <Compile Include="WellFormedNames\SubstitutionSet.cs" />
     <Compile Include="WellFormedNames\Symbol.cs" />

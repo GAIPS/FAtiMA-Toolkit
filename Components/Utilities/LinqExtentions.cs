@@ -6,17 +6,6 @@ namespace Utilities
 {
 	public static class LinqExtentions
 	{
-		public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
-		{
-			using (IEnumerator<T> it = enumerable.GetEnumerator())
-			{
-				while (it.MoveNext())
-				{
-					action(it.Current);
-				}
-			}
-		}
-
 		public static IEnumerable<T> Append<T>(this IEnumerable<T> enumerable, T element)
 		{
 			using (IEnumerator<T> it = enumerable.GetEnumerator())
@@ -112,12 +101,6 @@ namespace Utilities
 				}
 			}
 			return maxValue;
-		}
-
-		public static IEnumerable<T> ToSequence<T>(params T[] sequence)
-		{
-			for (int i = 0; i < sequence.Length; i++)
-				yield return sequence[i];
 		}
 
 		public static string AggregateToString<T>(this IEnumerable<T> enumerable, string separator, string startBraquet, string endBraquet)

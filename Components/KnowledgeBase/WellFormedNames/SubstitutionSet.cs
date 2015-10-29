@@ -43,7 +43,7 @@ namespace KnowledgeBase.WellFormedNames
 				foreach (var s in substitutions)
 				{
 					bool canAdd;
-					if (!TestConflict(s, buffer, out canAdd))
+					if (TestConflict(s, buffer, out canAdd))
 						throw new ArgumentException("The given substitution set will generate conflicts.", "substitutions");
 
 					if (canAdd)
@@ -114,11 +114,7 @@ namespace KnowledgeBase.WellFormedNames
 			{	        
 				aux1.UnionWith(this.GetGroundedSubstitutions());
 				aux2.UnionWith(other.GetGroundedSubstitutions());
-
-				if(aux1.Count != aux2.Count)
-					return false;
-
-				return aux1.Except(aux2).Any();
+				return aux1.SetEquals(aux2);
 			}
 			finally
 			{

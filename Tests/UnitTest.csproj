@@ -63,10 +63,6 @@
       <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
       <Name>KnowledgeBase</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Components\OCCModelAppraisal\OCCModelAppraisal.csproj">
-      <Project>{a8bb95fd-c1bc-4c7a-91da-f19c13badccf}</Project>
-      <Name>OCCModelAppraisal</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Components\SerializationUtilities\GAIPS.Serialization.csproj">
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
       <Name>GAIPS.Serialization</Name>

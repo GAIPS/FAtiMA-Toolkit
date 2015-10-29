@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using KnowledgeBase.WellFormedNames;
+using KnowledgeBase.WellFormedNames.Collections;
 using KnowledgeBase.WellFormedNames.Exceptions;
+using Exception = System.Exception;
 
 namespace UnitTest.WellFormedNames
 {
@@ -296,17 +298,19 @@ namespace UnitTest.WellFormedNames
 				NameSearchTree<int> tree = new NameSearchTree<int>();
 				foreach (var e in set)
 				{
-					if (!tree.Add(e.name, e.v))
-					{
-						Assert.Fail("Fail to add relation {0} -> {1}", e.name, e.v);
-					}
+					tree.Add(e.name, e.v);
 				}
 
 				foreach (var e in set)
 				{
-					if (tree.Add(e.name, e.v))
+					try
 					{
-						Assert.Fail("Duplicated relation {0} -> {1}", e.name, e.v);
+						tree.Add(e.name, e.v);
+						Assert.Fail("duplicated key added with success.");
+					}
+					catch (Exception)//TODO this must reflect the correct exception thrown
+					{
+						
 					}
 				}
 
@@ -327,10 +331,7 @@ namespace UnitTest.WellFormedNames
 			NameSearchTree<int> baseTree = new NameSearchTree<int>();
 			foreach (var e in set)
 			{
-				if (!baseTree.Add(e.name, e.v))
-				{
-					Assert.Fail("Fail to add relation {0} -> {1}", e.name, e.v);
-				}
+				baseTree.Add(e.name, e.v);
 			}
 
 			while (NumOfIterations > 0)
@@ -361,10 +362,7 @@ namespace UnitTest.WellFormedNames
 			NameSearchTree<int> tree = new NameSearchTree<int>();
 			foreach (var e in baseSet)
 			{
-				if (!tree.Add(e.name, e.v))
-				{
-					Assert.Fail("Fail to add relation {0} -> {1}", e.name, e.v);
-				}
+				tree.Add(e.name, e.v);
 			}
 
 			while (NumOfIterations > 0)
@@ -373,7 +371,7 @@ namespace UnitTest.WellFormedNames
 
 				foreach (var e in set)
 				{
-					if (!tree.Contains(e.name))
+					if (!tree.ContainsKey(e.name))
 					{
 						Assert.Fail("Failed to find a relation with {0}", e.name);
 					}
@@ -390,10 +388,7 @@ namespace UnitTest.WellFormedNames
 			NameSearchTree<int> tree = new NameSearchTree<int>();
 			foreach (var e in baseSet)
 			{
-				if (!tree.Add(e.name, e.v))
-				{
-					Assert.Fail("Fail to add relation {0} -> {1}", e.name, e.v);
-				}
+				tree.Add(e.name, e.v);
 			}
 			var set = _matchEntries.OrderBy(e => Guid.NewGuid());
 
@@ -426,13 +421,10 @@ namespace UnitTest.WellFormedNames
 			NameSearchTree<int> tree = new NameSearchTree<int>();
 			foreach (var e in baseSet)
 			{
-				if (!tree.Add(e.name, e.v))
-				{
-					Assert.Fail("Fail to add relation {0} -> {1}", e.name, e.v);
-				}
+				tree.Add(e.name, e.v);
 			}
 
-			var values = tree.GetValues().ToArray();
+			var values = tree.Values;
 			if (baseSet.Select(s => s.v).Except(values).Any())
 				Assert.Fail("Could not retrieve all expected values within the tree");
 		}
@@ -444,10 +436,7 @@ namespace UnitTest.WellFormedNames
 			NameSearchTree<int> tree = new NameSearchTree<int>();
 			foreach (var e in baseSet)
 			{
-				if (!tree.Add(e.Key, e.Value))
-				{
-					Assert.Fail("Fail to add relation {0} -> {1}", e.Key, e.Value);
-				}
+				tree.Add(e.Key, e.Value);
 			}
 
 			var values = tree.ToList();

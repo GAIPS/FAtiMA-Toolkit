@@ -24,6 +24,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using KnowledgeBase.WellFormedNames.Exceptions;
 using Utilities;
 
 namespace KnowledgeBase.WellFormedNames
@@ -35,8 +36,8 @@ namespace KnowledgeBase.WellFormedNames
 	/// It's syntax is based on first order logic symbols, variables and predicates.
 	/// a Name can be either a Symbol or a ComposedName (composed by several symbols)
 	/// 
-	/// <see cref="WellFormedName.Symbol"/>
-	/// <see cref="WellFormedName.ComposedName"/>
+	/// <see cref="Symbol"/>
+	/// <see cref="ComposedName"/>
 	/// 
 	/// @author: João Dias
 	/// @author: Pedro Gonçalves (C# version)
@@ -44,7 +45,7 @@ namespace KnowledgeBase.WellFormedNames
 	[Serializable]
 	public abstract class Name : IGroundable<Name>, ICloneable
 	{
-		private static long variableIDCounter = 0;
+		private static long _variableIdCounter = 0;
 
 		public bool IsGrounded
 		{
@@ -56,6 +57,11 @@ namespace KnowledgeBase.WellFormedNames
 		{
 			get;
 		}
+
+		/// <summary>
+		/// Returns true if this Name doesn't contain universal or variable Symbols
+		/// </summary>
+		public abstract bool IsConstant { get; }	//TODO: find a better name for this property
 
 		public abstract bool IsVariable
 		{
@@ -102,10 +108,9 @@ namespace KnowledgeBase.WellFormedNames
 		}
 
 		public abstract Name SwapPerspective(string original, string newName);
-        public abstract Name ReplaceUnboundVariables(long variableID);
+        public abstract Name ReplaceUnboundVariables(long variableId);
 		public abstract Name MakeGround(IEnumerable<Substitution> bindings);
 
-		
 		/// <summary>
 		/// Clones this Name, returning an equal copy.
 		/// If this clone is changed afterwards, the original object remains the same.
@@ -120,16 +125,6 @@ namespace KnowledgeBase.WellFormedNames
 		/// <param name="name"></param>
 		/// <returns></returns>
 		public abstract bool Match(Name name);
-
-		/// <summary>
-		/// Determines if a Wellformed Name has a similar structure to the given name template.
-		/// 
-		/// Symbols have a similar struture to other Symbols, while ComposedNames need to match
-		/// the number of literals in order to have a similar structure.
-		/// </summary>
-		public abstract bool SimilarStructure(Name other);
-
-		
 
 		#region Parsing
 
@@ -232,8 +227,7 @@ namespace KnowledgeBase.WellFormedNames
 		public static Symbol GenerateUniqueGhostVariable()
 		{
 			Symbol ghost = new Symbol("[_]");
-		    variableIDCounter++;
-            ghost = (Symbol) ghost.ReplaceUnboundVariables(variableIDCounter);
+            ghost = (Symbol) ghost.ReplaceUnboundVariables(_variableIdCounter++);
             return ghost;
 		}
 

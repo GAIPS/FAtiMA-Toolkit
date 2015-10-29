@@ -2,6 +2,7 @@
 using EmotionalAppraisal.Interfaces;
 using EmotionalAppraisal.OCCModel;
 using KnowledgeBase.WellFormedNames;
+using KnowledgeBase.WellFormedNames.Collections;
 
 namespace EmotionalAppraisal.AppraisalRules
 

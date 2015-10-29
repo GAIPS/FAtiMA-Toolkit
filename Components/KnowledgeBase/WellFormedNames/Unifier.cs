@@ -109,7 +109,7 @@ namespace KnowledgeBase.WellFormedNames
 
 		public static IEnumerable<Pair<Name, Name>> GetTerms(Name n1, Name n2, bool allowPartial)
 		{
-			if (!(allowPartial || n1.SimilarStructure(n2)))
+			if (!(allowPartial || n1.NumberOfTerms == n2.NumberOfTerms))
 				return null;
 
 			return n1.GetTerms().Zip(n2.GetTerms(), (t1, t2) => Tuple.Create(t1, t2));
@@ -126,14 +126,14 @@ namespace KnowledgeBase.WellFormedNames
 			foreach (var p in t)
 			{
 				Substitution candidate = null;
-				bool isVar1 = p.value1.IsVariable;
-				bool isVar2 = p.value2.IsVariable;
+				bool isVar1 = p.Item1.IsVariable;
+				bool isVar2 = p.Item2.IsVariable;
 
 				// Case 1: x = t, where t is not a variable and x is a variable, and create substitution x/t
 				if (isVar1 != isVar2)
 				{
-					Symbol variable = (Symbol)(isVar1 ? p.value1 : p.value2);
-					Name value = isVar1 ? p.value2 : p.value1;
+					Symbol variable = (Symbol)(isVar1 ? p.Item1 : p.Item2);
+					Name value = isVar1 ? p.Item2 : p.Item1;
 					if (value.ContainsVariable(variable))		//Occurs check to prevent cyclical evaluations
 						return false;
 
@@ -142,22 +142,22 @@ namespace KnowledgeBase.WellFormedNames
 				else if (isVar1) //isVar1 == isVar2 == true
 				{
 					//Case 2: x = x, where x is a variable, ignore it. otherwise add the substitution
-					if (!(p.value1 == p.value2))
-						candidate = new Substitution((Symbol)p.value1, p.value2); //TODO in this case, it should return two possible substitutions
+					if (!(p.Item1 == p.Item2))
+						candidate = new Substitution((Symbol)p.Item1, p.Item2); //TODO in this case, it should return two possible substitutions
 				}
 				else //isVar1 == isVar2 == false
 				{
 					// Case 3: t1 = t2, where t1,t2 are not variables.
 					// If they don't contain variables, compare them to see if they are equal. If they are not equal the unification fails.
-					if (p.value1.IsGrounded && p.value2.IsGrounded)
+					if (p.Item1.IsGrounded && p.Item2.IsGrounded)
 					{
-						if (p.value1 == p.value2)
+						if (p.Item1 == p.Item2)
 							continue;
 						return false;
 					}
 
 					//If one or both contain variables, unify the terms
-					if (!FindSubst(p.value1, p.value2,allowPartialTerms, bindings))
+					if (!FindSubst(p.Item1, p.Item2,allowPartialTerms, bindings))
 						return false;
 				}
 

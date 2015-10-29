@@ -12,16 +12,13 @@ namespace KnowledgeBase.WellFormedNames
 	/// the first symbol "S" is called the major symbol and it is followed by a list of
 	/// comma separated parameter symbols (s1,s2,..,sn), which are enclosed in parenthesis.
 	/// 
-	/// <see cref="FAtiMA.Core.WellFormedName.Symbol"/>
-	/// <see cref="FAtiMA.Core.WellFormedName.Name"/>
-	/// 
 	/// @author: João Dias
 	/// @author: Pedro Gonçalves (C# version)
 	/// </summary>
 	public class ComposedName : Name
 	{
-		protected Symbol m_rootSymbol;
-		protected Name[] _terms;
+		protected Symbol RootSymbol;
+		protected Name[] Terms;
 
 		public override bool IsUniversal
 		{
@@ -33,9 +30,14 @@ namespace KnowledgeBase.WellFormedNames
 			get { return false; }
 		}
 
+		public override bool IsConstant
+		{
+			get { return GetTerms().All(t => t.IsConstant); }
+		}
+
 		public override int NumberOfTerms
 		{
-			get { return _terms.Length+1; }
+			get { return Terms.Length+1; }
 		}
 
 		/// <summary>
@@ -49,18 +51,16 @@ namespace KnowledgeBase.WellFormedNames
 			if (terms.Length == 0)
 				throw new ArgumentException("Need at least 1 term to create a composed symbol", "terms");
 
-			init(head,terms);
+			Init(head,terms);
 		}
 
 		/// <summary>
 		/// Creates a new ComposedName, receiving a set of terms to aglomerate.
 		/// The first term must be a symbol and 
 		/// </summary>
-		/// <param name="name">Major symbol</param>
-		/// <param name="literals">A set of parameter symbols</param>
 		public ComposedName(IEnumerable<Name> terms)
 		{
-			List<Name> set = ObjectPool<List<Name>>.GetObject();
+			var set = ObjectPool<List<Name>>.GetObject();
 			try
 			{
 				set.AddRange(terms);
@@ -72,7 +72,7 @@ namespace KnowledgeBase.WellFormedNames
 					throw new ArgumentException("The first term needs to be a Symbol object","terms");
 
 				set.RemoveAt(0);
-				init(head, set.ToArray());
+				Init(head, set.ToArray());
 			}
 			finally
 			{
@@ -87,35 +87,35 @@ namespace KnowledgeBase.WellFormedNames
 		/// <param name="composedName">The composedName to clone</param>
 		protected ComposedName(ComposedName composedName)
 		{
-			this.IsGrounded = composedName.IsGrounded;
-			this.m_rootSymbol = composedName.m_rootSymbol;
-			this._terms = composedName._terms.Clone<Name>().ToArray();
+			IsGrounded = composedName.IsGrounded;
+			RootSymbol = composedName.RootSymbol;
+			Terms = composedName.Terms.Clone<Name>().ToArray();
 		}
 
 		/// <summary>
 		/// Common initialization code between constructors
 		/// </summary>
-		private void init(Symbol head, Name[] literals)
+		private void Init(Symbol head, Name[] literals)
 		{
-			this._terms = literals;
-			this.m_rootSymbol = head;
+			Terms = literals;
+			RootSymbol = head;
 
-			this.IsGrounded =  this.m_rootSymbol.IsGrounded && this._terms.All(l => l.IsGrounded);
+			IsGrounded =  RootSymbol.IsGrounded && Terms.All(l => l.IsGrounded);
 		}
 
 		public override Name GetFirstTerm()
 		{
-			return m_rootSymbol;
+			return RootSymbol;
 		}
 
 		public override IEnumerable<Name> GetTerms()
 		{
-			return this._terms.Prepend(m_rootSymbol);
+			return Terms.Prepend(RootSymbol);
 		}
 
 		public override IEnumerable<Symbol> GetLiterals()
 		{
-			return this._terms.SelectMany(t => t.GetLiterals()).Prepend(m_rootSymbol);
+			return Terms.SelectMany(t => t.GetLiterals()).Prepend(RootSymbol);
 		}
 
 		public override IEnumerable<Symbol> GetVariableList()
@@ -133,14 +133,12 @@ namespace KnowledgeBase.WellFormedNames
 			return new ComposedName(GetTerms().Select(t => t.SwapPerspective(original, newName)));
 		}
 
-
-
-		public override Name ReplaceUnboundVariables(long variableID)
+		public override Name ReplaceUnboundVariables(long variableId)
 		{
 			if (IsGrounded)
 				return (Name)Clone();
 
-			return new ComposedName(GetTerms().Select(t => t.ReplaceUnboundVariables(variableID)));
+			return new ComposedName(GetTerms().Select(t => t.ReplaceUnboundVariables(variableId)));
 		}
 
 		public override Name MakeGround(IEnumerable<Substitution> bindings)
@@ -159,12 +157,12 @@ namespace KnowledgeBase.WellFormedNames
 		public override string ToString()
 		{
 			StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
-			builder.Append(this.m_rootSymbol);
+			builder.Append(RootSymbol);
 			builder.Append('(');
-			for (int i = 0; i < this._terms.Length; i++)
+			for (int i = 0; i < Terms.Length; i++)
 			{
-				builder.Append(this._terms[i]);
-				if (i + 1 < this._terms.Length)
+				builder.Append(Terms[i]);
+				if (i + 1 < Terms.Length)
 					builder.Append(", ");
 			}
 
@@ -178,46 +176,37 @@ namespace KnowledgeBase.WellFormedNames
 
 		public override bool Equals(object obj)
 		{
-			if (obj == null)
-				return false;
-
-			ComposedName other = obj as ComposedName;
+			var other = obj as ComposedName;
 			if (other == null)
 				return false;
-
             
-			if (other._terms.Length != this._terms.Length)
+			if (other.Terms.Length != Terms.Length)
 				return false;
 
-		    if (!other.m_rootSymbol.Equals(this.m_rootSymbol))
+		    if (!other.RootSymbol.Equals(RootSymbol))
 		    {
 		        return false;
 		    }
 
-			for (int i = 0; i < this._terms.Length; i++)
-				if (!other._terms[i].Equals(this._terms[i]))
-					return false;
-
-			return true;
+			return !Terms.Where((t, i) => !other.Terms[i].Equals(t)).Any();
 		}
 
         public override bool Match(Name name)
         {
-       
-            ComposedName other = name as ComposedName;
+            var other = name as ComposedName;
             if (other == null)
                 return false;
 
-            if (other._terms.Length != this._terms.Length)
+            if (other.Terms.Length != Terms.Length)
                 return false;
 
-            if (!other.m_rootSymbol.Match(this.m_rootSymbol))
+            if (!other.RootSymbol.Match(RootSymbol))
             {
                 return false;
             }
 
-            for (int i = 0; i < this._terms.Length; i++)
-                if (!this._terms[i].Match(other._terms[i]))
+            for (int i = 0; i < Terms.Length; i++)
+                if (!Terms[i].Match(other.Terms[i]))
                     return false;
 
             return true;
@@ -227,17 +216,6 @@ namespace KnowledgeBase.WellFormedNames
         public override int GetHashCode()
 		{
 			return GetTerms().Select(t => t.GetHashCode()).Aggregate((h1, h2) => h1 ^ h2);
-		}
-
-		
-        //Todo: Why is this method needed?
-		public override bool SimilarStructure(Name other)
-		{
-			ComposedName name = other as ComposedName;
-			if (name == null)
-				return false;
-
-			return name._terms.Length == this._terms.Length;
 		}
 	}
 }

@@ -62,6 +62,11 @@ namespace KnowledgeBase.WellFormedNames
 			get { return this.Name.StartsWith("["); }
 		}
 
+		public override bool IsConstant
+		{
+			get { return !(IsUniversal || IsVariable); }
+		}
+
 		public override int NumberOfTerms
 		{
 			get { return 1; }
@@ -134,13 +139,13 @@ namespace KnowledgeBase.WellFormedNames
 		/// if the received ID is 4.
 		/// </summary>
 		/// <remarks>Attention, this method modifies the original object.</remarks>
-		/// <param name="variableID">the identifier to be applied</param>
-		public override Name ReplaceUnboundVariables(long variableID)
+		/// <param name="variableId">the identifier to be applied</param>
+		public override Name ReplaceUnboundVariables(long variableId)
 		{
 			if (IsGrounded)
 				return (Symbol)Clone();
 
-			return new Symbol(this.Name.Substring(0, this.Name.Length - 1) + variableID + ']');
+			return new Symbol(this.Name.Substring(0, this.Name.Length - 1) + variableId + ']');
 		}
 
 		/// <summary>
@@ -185,19 +190,16 @@ namespace KnowledgeBase.WellFormedNames
 
 		public override bool Equals(object obj)
 		{
-			if (obj == null)
-				return false;
-
 			Symbol s = obj as Symbol;
 			if (s == null)
 				return false;
 
-			return s.Name == this.Name;
+			return s.Name.Equals(this.Name, StringComparison.InvariantCultureIgnoreCase);
 		}
 
 		public override int GetHashCode()
 		{
-			return this.Name.GetHashCode();
+			return this.Name.ToUpperInvariant().GetHashCode();
 		}
 
 		public override bool Match(Name name)
@@ -209,15 +211,7 @@ namespace KnowledgeBase.WellFormedNames
 			if (other == null)
 				return false;
 
-			return other.Name == this.Name;
-		}
-
-		public override bool SimilarStructure(Name other)
-		{
-			if (other == null)
-				return false;
-
-			return other is Symbol;
+			return other.Name.Equals(Name, StringComparison.InvariantCultureIgnoreCase);
 		}
 
 		/*
