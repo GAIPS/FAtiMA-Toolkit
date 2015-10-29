@@ -38,6 +38,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="WellFormedNames\NameDictionaryTests.cs" />
+    <Compile Include="WellFormedNames\NameSearchTreeTests.cs" />
+    <Compile Include="WellFormedNames\UnifierTests.cs" />
     <Compile Include="WellFormedNames\SubstitutionTests.cs" />
     <Compile Include="WellFormedNames\InequalityTests.cs" />
     <Compile Include="WellFormedNames\SymbolTests.cs" />

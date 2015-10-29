@@ -37,8 +37,10 @@ namespace KnowledgeBase.WellFormedNames
 
 			if (name1.IsGrounded && name2.IsGrounded)
 			{
-				bindings = Enumerable.Empty<Substitution>();
-				return name1.Equals(name2);
+				var result = name1.Equals(name2);
+				if (result)
+					bindings = Enumerable.Empty<Substitution>();
+				return result;
 			}
 
 			bindings = FindSubst(name1, name2,false);
@@ -67,7 +69,7 @@ namespace KnowledgeBase.WellFormedNames
 		/// <returns>True if the names are unifiable, in this case the bindings list will contain the found Substitutions, otherwise it will be empty</returns>
 		public static bool PartialUnify(Name name1, Name name2, out IEnumerable<Substitution> bindings)
 		{
-			bindings = Enumerable.Empty<Substitution>();
+			bindings = null;
 			if (name1 == null || name2 == null)
 				return false;
 
@@ -97,9 +99,10 @@ namespace KnowledgeBase.WellFormedNames
 			return result;
 		}
 
-		#region Private Methods
+	   
+        #region Private Methods
 
-		private static IEnumerable<Substitution> FindSubst(Name n1, Name n2, bool allowPartial)
+        private static IEnumerable<Substitution> FindSubst(Name n1, Name n2, bool allowPartial)
 		{
 			SubstitutionSet bindings = new SubstitutionSet();
 			if (!FindSubst(n1, n2,allowPartial, bindings))
@@ -112,10 +115,11 @@ namespace KnowledgeBase.WellFormedNames
 			if (!(allowPartial || n1.NumberOfTerms == n2.NumberOfTerms))
 				return null;
 
-			return n1.GetTerms().Zip(n2.GetTerms(), (t1, t2) => Tuple.Create(t1, t2));
-		}
+            return n1.GetTerms().Zip(n2.GetTerms(), (t1, t2) => Tuple.Create(t1, t2));
+        }
 
-		private static bool FindSubst(Name n1, Name n2, bool allowPartialTerms, SubstitutionSet bindings)
+
+        private static bool FindSubst(Name n1, Name n2, bool allowPartialTerms, SubstitutionSet bindings)
 		{
 			n1 = n1.MakeGround(bindings);
 			n2 = n2.MakeGround(bindings);
