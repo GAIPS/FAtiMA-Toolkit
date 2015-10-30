@@ -115,16 +115,12 @@ namespace KnowledgeBase.WellFormedNames
 			if (s == null)
 				return false;
 
-			bool b1 = this.Variable.Equals(s.Variable);
-			bool b2 = this.Value.Equals(s.Value);
-			return b1 && b2;
+			return Variable.Equals(s.Variable) && Value.Equals(s.Value);
 		}
 
 		public override int GetHashCode()
 		{
-			int hash = this.Variable.GetHashCode();
-			hash ^= this.Value.GetHashCode();
-			return hash;
+			return Variable.GetHashCode() ^ Value.GetHashCode();
 		}
 
 		public override string ToString()

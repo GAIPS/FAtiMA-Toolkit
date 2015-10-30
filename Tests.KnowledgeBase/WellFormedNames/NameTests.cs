@@ -107,7 +107,23 @@ namespace Tests.KnowledgeBase.WellFormedNames
             Assert.That(clonedName.ToString() == resultName);
             Assert.That(!ReferenceEquals(name, clonedName));
         }
-
+		
+		[TestCase("John", "John")]
+		[TestCase("John", "JOHN")]
+		[TestCase("John", "john")]
+		[TestCase("John", "JoHn")]
+		[TestCase("Albert(Smart)", "Albert(Smart)")]
+		[TestCase("Albert(SMART)", "ALBERT(Smart)")]
+		[TestCase("[_x]", "[_X]")]
+		[TestCase("SELF", "self")]
+		[TestCase("*", "*")]
+		public void Equals_NameWithEquivalentName(string nameString1, string nameString2)
+		{
+			var name1 = Name.Parse(nameString1);
+			var name2 = Name.Parse(nameString2);
+			Assert.That(name1.Equals(name2));
+		}
+		
         [Test]
         public void GenerateUniqueGhostVariable_AnyState_NewSymbol()
         {

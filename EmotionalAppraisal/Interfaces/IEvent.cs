@@ -45,14 +45,5 @@ namespace EmotionalAppraisal.Interfaces
 		{
 			get;
 		}
-
-		Name ToName();
-
-		/// <summary>
-		/// Generates a set of bindings that associate the Variables
-		/// [Subject],[Action],[Target],[P1_Name],[P2_Name],... respectively to the event's subject, action, target and parameters 
-		/// </summary>
-		/// <returns>the mentioned set of substitutions</returns>
-		IEnumerable<Substitution> GenerateBindings();
 	}
 }

@@ -13,10 +13,10 @@ namespace EmotionalAppraisal
 		private static readonly InternalAppraisalFrame APPRAISAL_FRAME = new InternalAppraisalFrame();
 		[NonSerialized]
 		private long _lastFrameAppraisal = 0;
-
-		private ConcreteEmotionalState m_emotionalState;
 		[NonSerialized]
 		private OCCAffectDerivationComponent m_occAffectDerivator;
+
+		private ConcreteEmotionalState m_emotionalState;
 		private ReactiveAppraisalDerivator m_appraisalDerivator;
 		#region Component Manager
 
@@ -66,6 +66,14 @@ namespace EmotionalAppraisal
 			get
 			{
 				return m_emotionalState;
+			}
+		}
+
+		public ReactiveAppraisalDerivator AppraisalRules
+		{
+			get
+			{
+				return m_appraisalDerivator;
 			}
 		}
 

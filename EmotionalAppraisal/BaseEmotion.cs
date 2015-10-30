@@ -102,21 +102,25 @@ namespace EmotionalAppraisal
 		private string calculateHashString()
 		{
 			StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
-
-			builder.Append(Cause.ToString());
-			using (var it = this.AppraisalVariables.GetEnumerator())
+			try
 			{
-				while (it.MoveNext())
+				builder.Append(Cause.ToName().ToString().ToUpper());
+				using (var it = this.AppraisalVariables.GetEnumerator())
 				{
-					builder.Append("-");
-					builder.Append(it.Current);
+					while (it.MoveNext())
+					{
+						builder.Append("-");
+						builder.Append(it.Current);
+					}
 				}
-			}
 
-			var result = builder.ToString();
-			builder.Length = 0;
-			ObjectPool<StringBuilder>.Recycle(builder);
-			return result;
+				return builder.ToString();
+			}
+			finally
+			{
+				builder.Length = 0;
+				ObjectPool<StringBuilder>.Recycle(builder);
+			}
 		}
 
 		/// <summary>
@@ -125,6 +129,8 @@ namespace EmotionalAppraisal
 		/// <param name="other">the emotion to clone</param>
 		public BaseEmotion(BaseEmotion other)
 		{
+			this.hashString = new DirtyValue<string>(calculateHashString);
+
 			this.EmotionType = other.EmotionType;
 			this.Valence = other.Valence;
 			this.AppraisalVariables = other.AppraisalVariables.ToArray();
@@ -142,7 +148,7 @@ namespace EmotionalAppraisal
 		{
 			get
 			{
-				return this.hashString;
+				return hashString;
 			}
 		}
 
@@ -172,7 +178,7 @@ namespace EmotionalAppraisal
 			StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
 			builder.Append(EmotionType);
 			builder.Append(": ");
-			builder.Append(Cause.ToString());
+			builder.Append(Cause.ToName());
 			if (this.Direction != null)
 			{
 				builder.Append(" ");
