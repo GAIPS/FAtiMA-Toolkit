@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using GAIPS.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using KnowledgeBase.WellFormedNames;
 
 namespace UnitTest
 {
@@ -13,7 +14,7 @@ namespace UnitTest
 		[TestMethod]
 		public void BasicSerializationTest()
 		{
-			var asset = new SerializationTestClass();
+			var asset = new SerializationTestClass();//Name.Parse("A(B,C(D,E,f(H)))"); //new SerializationTestClass();
 
 			using (var stream = new MemoryStream())
 			{
@@ -27,7 +28,7 @@ namespace UnitTest
 		[TestMethod]
 		public void BasicDeserializationTest()
 		{
-			var asset = new SerializationTestClass();
+			var asset = Name.Parse("A(B,C(D,E,f(H)))");//new SerializationTestClass();
 
 			using (var stream = new MemoryStream())
 			{
@@ -41,7 +42,7 @@ namespace UnitTest
 		}
 
 		[Flags]
-		private enum SerializationEnumTest
+		private enum SerializationEnumTest : int
 		{
 			Ok1 = 1,
 			Ok2 = 2,
@@ -73,6 +74,8 @@ namespace UnitTest
 
 			public DateTime TimeField;
 
+			public ComposedName NameField;
+
 			[NonSerialized] public string VolatileField = "this string should not be serialized";
 
 			public SerializationTestClass()
@@ -88,6 +91,7 @@ namespace UnitTest
 				TestHash2.Add(new object());
 				TestHash2.Add(3);
 				TestHash2.Add(5);
+				TestHash2.Add(SerializationEnumTest.Ok2);
 
 				TestHash = new HashSet<float>();
 				TestHash.Add(1);
@@ -101,6 +105,8 @@ namespace UnitTest
 
 				m_nullPointer = null;
 				m_circlePoiter = this;
+
+				NameField = (ComposedName)Name.Parse("A(B,C,D(H,E(F)))");
 
 				BackingProperty = "this is a property";
 			}

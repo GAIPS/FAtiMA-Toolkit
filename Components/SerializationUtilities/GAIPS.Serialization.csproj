@@ -34,7 +34,10 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\DefaultSerializationSystemAttribute.cs" />
     <Compile Include="BaseSerializer.cs" />
+    <Compile Include="GraphFormatterSelector.cs" />
+    <Compile Include="IGraphFormatter.cs" />
     <Compile Include="SerializationGraph\BaseGraphNode.cs" />
     <Compile Include="SerializationGraph\SerializedDataType.cs" />
     <Compile Include="SerializationGraph\ObjectGraphNode.cs" />
@@ -50,8 +53,8 @@
     <Compile Include="Serializers\JSONSerializer.cs" />
     <Compile Include="Surrogates\DefaultSerializationSurrogate.cs" />
     <Compile Include="Surrogates\DictionarySerializationSurrogate.cs" />
-    <Compile Include="ChainedSurrogateSelector.cs" />
     <Compile Include="Surrogates\HashSetSerializationSurrogate.cs" />
+    <Compile Include="TypeSelector.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
@@ -59,9 +62,7 @@
       <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Attributes\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

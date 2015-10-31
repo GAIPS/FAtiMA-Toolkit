@@ -1,9 +1,11 @@
 ﻿using GAIPS.Serialization.SerializationGraph;
 using System;
 using System.Collections;
+using GAIPS.Serialization.Attributes;
 
 namespace GAIPS.Serialization.Surrogates
 {
+	[DefaultSerializationSystem(typeof(IDictionary), true)]
 	public sealed class DictionarySerializationSurrogate : ISerializationSurrogate
 	{
 		public void GetObjectData(object obj, IObjectGraphNode holder)

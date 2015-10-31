@@ -22,6 +22,11 @@ namespace GAIPS.Serialization
 		public bool AllowIdentation = true;
 		public EnumRepresentationMode EnumRepresentation = EnumRepresentationMode.Explicit;
 
+		public JSONSerializer()
+		{
+			FormatSelector.AddFormatter(typeof(Enum), true, new EnumGraphFormatter { parent = this });
+		}
+
 		#region Serialization
 
 		protected override void SerializeDataGraph(Stream serializationStream, Graph graph)
@@ -111,13 +116,12 @@ namespace GAIPS.Serialization
 
 		#region Deserialization
 
-		protected override Graph DeserializeDataGraph(Stream serializationStream)
+		protected override void DeserializeDataGraph(Stream serializationStream, Graph serGraph)
 		{
 			JsonObject json = JsonParser.Parse(serializationStream) as JsonObject;
 			if (json == null)
 				throw new Exception("Unable to deserialize"); //TODO get a better exception
 
-			Graph serGraph = new Graph(this);
 			if (json.ContainsField(TYPES_FIELD))
 			{
 				JsonArray types = json[TYPES_FIELD] as JsonArray;
@@ -147,7 +151,6 @@ namespace GAIPS.Serialization
 			}
 
 			serGraph.Root = ReadNode(json[ROOT_FIELD] as JsonToken, serGraph);
-			return serGraph;
 		}
 
 		private IObjectGraphNode JsonToObjectNode(JsonObject json, Graph parentGraph)
@@ -219,23 +222,29 @@ namespace GAIPS.Serialization
 
 		#endregion
 
-		public override IGraphNode EnumToGraphNode(Enum enumValue, Graph serializationGraph)
+		private class EnumGraphFormatter : IGraphFormatter
 		{
-			if (EnumRepresentation == EnumRepresentationMode.Numeric)
-				return serializationGraph.BuildPrimitiveNode((ValueType)Convert.ChangeType(enumValue, enumValue.GetTypeCode()));
-			return serializationGraph.BuildStringNode(enumValue.ToString().Replace(',','|'));
-		}
+			public JSONSerializer parent;
 
-		public override Enum GraphNodeToEnum(IGraphNode node, Type enumType)
-		{
-			if (node.DataType == SerializedDataType.Number)
-				return (Enum)Convert.ChangeType((node as IPrimitiveGraphNode).Value, enumType);
-			if (node.DataType != SerializedDataType.String)
-				throw new Exception("invalid enum type");	//TODO better exception
+			public IGraphNode ObjectToGraphNode(object value, Graph serializationGraph)
+			{
+				Enum enumValue = (Enum)value;
+				if (parent.EnumRepresentation == EnumRepresentationMode.Numeric)
+					return serializationGraph.BuildPrimitiveNode((ValueType)Convert.ChangeType(enumValue, enumValue.GetTypeCode()));
+				return serializationGraph.BuildStringNode(enumValue.ToString().Replace(", ", "|"));
+			}
 
-			var str = (node as IStringGraphNode).Value;
-			str = str.Replace("|", ",");
-			return (Enum)Enum.Parse(enumType, str, true);
+			public object GraphNodeToObject(IGraphNode node, Type objectType)
+			{
+				if (node.DataType == SerializedDataType.Number)
+					return Convert.ChangeType((node as IPrimitiveGraphNode).Value, objectType);
+				if (node.DataType != SerializedDataType.String)
+					throw new Exception("invalid enum type");	//TODO better exception
+
+				var str = (node as IStringGraphNode).Value;
+				str = str.Replace("|", ",");
+				return Enum.Parse(objectType, str, true);
+			}
 		}
 	}
 }

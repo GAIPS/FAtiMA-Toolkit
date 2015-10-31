@@ -1,10 +1,9 @@
-﻿using GAIPS.Serialization.SerializationGraph;
-using GAIPS.Serialization.Surrogates;
-using System;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
+using GAIPS.Serialization.Attributes;
 
 namespace GAIPS.Serialization
 {
@@ -12,12 +11,57 @@ namespace GAIPS.Serialization
 	{
 		static SerializationServices()
 		{
-			SurrogateSelector = new ChainedSurrogateSelector();
-			SurrogateSelector.AddSurrogate(typeof(IDictionary), new DictionarySerializationSurrogate());
-			SurrogateSelector.AddSurrogate(typeof(HashSet<>),new HashSetSerializationSurrogate());
+			_isDirty = true;
+			AppDomain.CurrentDomain.AssemblyLoad += delegate(object sender, AssemblyLoadEventArgs args)
+			{
+				_isDirty = true;
+			};
 		}
 
-		public static ChainedSurrogateSelector SurrogateSelector { get; private set; }
+		private static bool _isDirty;
+		private static TypeSelector<ISerializationSurrogate> _surrogateSelector = new TypeSelector<ISerializationSurrogate>();
+		private static TypeSelector<IGraphFormatter> _formatterSelector = new TypeSelector<IGraphFormatter>();
+		private static readonly Type[] _validTypes = new[] {typeof (ISerializationSurrogate), typeof (IGraphFormatter)};
+
+		private static void UpdateSerializationSystems()
+		{
+			if(!_isDirty)
+				return;
+
+			var allTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()).Where(t => !(t.IsAbstract || t.IsInterface));
+			var candidates = allTypes.ToLookup(t => _validTypes.FirstOrDefault(i => i.IsAssignableFrom(t)));
+		
+			RecalcTypeTrees(_surrogateSelector,candidates);
+			RecalcTypeTrees(_formatterSelector, candidates);
+			_isDirty = false;
+		}
+
+		private static void RecalcTypeTrees<T>(TypeSelector<T> selector, ILookup<Type, Type> group) where T: class
+		{
+			var validDefaults = group[typeof(T)]
+				.Select(t => new{type = t, atts = t.GetCustomAttributes(typeof(DefaultSerializationSystemAttribute),false)})
+				.Where(e => e.atts!=null && e.atts.Length==1);
+
+			selector.Clear();
+			foreach (var entry in validDefaults)
+			{
+				var att = (DefaultSerializationSystemAttribute)entry.atts[0];
+				var ist = Activator.CreateInstance(entry.type);
+				selector.AddValue(att.AssociatedType,att.UseInChildren,(T)ist);
+			}
+		}
+
+		public static ISerializationSurrogate GetDefaultSerializationSurrogate(Type type)
+		{
+			UpdateSerializationSystems();
+			return _surrogateSelector.GetValue(type);
+		}
+
+		public static IGraphFormatter GetDefaultSerializationFormatter(Type type)
+		{
+			UpdateSerializationSystems();
+			return _formatterSelector.GetValue(type);
+		}
 
 		public static FieldInfo[] GetSerializableFields(Type type)
 		{

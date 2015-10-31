@@ -4,12 +4,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using GAIPS.Serialization.Attributes;
 using Utilities;
 
 namespace GAIPS.Serialization.Surrogates
 {
 	//TODO improve this code
 
+	[DefaultSerializationSystem(typeof(HashSet<>), false)]
 	public class HashSetSerializationSurrogate : ISerializationSurrogate
 	{
 		private static readonly Type[] DefaultComparatorTypes = new[]

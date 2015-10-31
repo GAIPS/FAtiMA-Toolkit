@@ -41,7 +41,17 @@ namespace GAIPS.Serialization.SerializationGraph
 			{
 				if (requestedType == null)
 					return m_value;
+
+				if (requestedType.IsEnum)
+					return ConvertEnum(requestedType, m_value);
+
 				return Convert.ChangeType(m_value, requestedType);
+			}
+
+			private static object ConvertEnum(Type enumType, ValueType value)
+			{
+				var r = Enum.Parse(enumType, value.ToString());
+				return r;
 			}
 		}
 	}

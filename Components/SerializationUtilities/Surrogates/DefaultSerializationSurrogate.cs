@@ -1,10 +1,12 @@
 ﻿using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
+using GAIPS.Serialization.Attributes;
 using GAIPS.Serialization.SerializationGraph;
 
 namespace GAIPS.Serialization.Surrogates
 {
+	[DefaultSerializationSystem(typeof(object),true)]
 	public sealed class DefaultSerializationSurrogate : ISerializationSurrogate
 	{
 		private static readonly IFormatterConverter FormatConverter = new FormatterConverter();

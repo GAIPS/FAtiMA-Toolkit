@@ -9,8 +9,21 @@ namespace Utilities
 	//TODO find a better implementation
 	public class StrongLinkDictionary<TKey,TValue> : IDictionary<TKey,TValue>
 	{
-		private Dictionary<TKey, TValue> m_link1 = new Dictionary<TKey, TValue>();
-		private Dictionary<TValue, TKey> m_link2 = new Dictionary<TValue,TKey>();
+		private Dictionary<TKey, TValue> m_link1;
+		private Dictionary<TValue, TKey> m_link2;
+
+		public StrongLinkDictionary(IEqualityComparer<TKey> keyComparer, IEqualityComparer<TValue> valueComparer)
+		{
+			if(keyComparer!=null)
+				m_link1 = new Dictionary<TKey, TValue>(keyComparer);
+			else
+				m_link1 = new Dictionary<TKey, TValue>();
+
+			if(valueComparer!=null)
+				m_link2 = new Dictionary<TValue, TKey>(valueComparer);
+			else
+				m_link2 = new Dictionary<TValue, TKey>();
+		}
 
 		public void Add(TKey key, TValue value)
 		{

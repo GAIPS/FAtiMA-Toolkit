@@ -36,8 +36,8 @@ namespace GAIPS.Serialization.SerializationGraph
 	{
 		private sealed class ObjectGraphNode : BaseGraphNode, IObjectGraphNode
 		{
-			private Dictionary<string, IGraphNode> m_fields = new Dictionary<string, IGraphNode>();
-			private HashSet<IGraphNode> m_referencedBy = new HashSet<IGraphNode>();
+			private readonly Dictionary<string, IGraphNode> m_fields = new Dictionary<string, IGraphNode>();
+			private readonly HashSet<IGraphNode> m_referencedBy = new HashSet<IGraphNode>();
 
 			public ObjectGraphNode(int refId, Graph parentGraph) : base(parentGraph)
 			{
@@ -50,9 +50,7 @@ namespace GAIPS.Serialization.SerializationGraph
 				get
 				{
 					IGraphNode node;
-					if (m_fields.TryGetValue(fieldName, out node))
-						return node;
-					return null;
+					return m_fields.TryGetValue(fieldName, out node) ? node : null;
 				}
 				set
 				{
@@ -61,8 +59,9 @@ namespace GAIPS.Serialization.SerializationGraph
 
 					m_fields[fieldName] = value;
 
-					if (value is ObjectGraphNode)
-						((ObjectGraphNode)value).m_referencedBy.Add(this);
+					var node = value as ObjectGraphNode;
+					if (node != null)
+						node.m_referencedBy.Add(this);
 				}
 			}
 
@@ -86,7 +85,7 @@ namespace GAIPS.Serialization.SerializationGraph
 			public bool IsReferedMultipleTimes
 			{
 				get {
-					return ReferenceCount > 1 || IsRoot;
+					return ReferenceCount > 1 || (ReferenceCount == 1 && IsRoot);
 				}
 			}
 
@@ -150,7 +149,7 @@ namespace GAIPS.Serialization.SerializationGraph
 				buildObject = SerializationServices.GetUninitializedObject(typeToBuild);
 				ParentGraph.LinkObjectToNode(this, buildObject);
 
-				var surrogate = SerializationServices.SurrogateSelector.GetSurrogate(typeToBuild);
+				var surrogate = SerializationServices.GetDefaultSerializationSurrogate(typeToBuild);
 				surrogate.SetObjectData(ref buildObject, this);
 				return buildObject;
 			}

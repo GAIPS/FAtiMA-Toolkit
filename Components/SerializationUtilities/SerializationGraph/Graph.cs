@@ -2,14 +2,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Utilities;
 
 namespace GAIPS.Serialization.SerializationGraph
 {
 	public partial class Graph
 	{
+		private class ReferenceComparer<T> : IEqualityComparer<T>
+		{
+			public bool Equals(T x, T y)
+			{
+				return ReferenceEquals(x, y);
+			}
+
+			public int GetHashCode(T obj)
+			{
+				return RuntimeHelpers.GetHashCode(obj);
+			}
+		}
+
 		private int m_idCounter = 0;
-		private StrongLinkDictionary<object, int> m_links = new StrongLinkDictionary<object, int>();
+		private StrongLinkDictionary<object, int> m_links = new StrongLinkDictionary<object, int>(new ReferenceComparer<object>(), null);
 		private SortedDictionary<int, ObjectGraphNode> m_refs = new SortedDictionary<int, ObjectGraphNode>();
 
 		private IGraphNode m_root = null;
@@ -35,15 +49,15 @@ namespace GAIPS.Serialization.SerializationGraph
 		private byte m_typeidCounter = 0;
 		private Dictionary<Type, TypeEntry> m_registedTypes = new Dictionary<Type, TypeEntry>();
 
-		private BaseSerializer m_associatedSerializer;
+		private GraphFormatterSelector m_formatterSelector = null;
 
-		public Graph(BaseSerializer serializer)
+		public Graph(GraphFormatterSelector formatterSelector)
 		{
-			m_associatedSerializer = serializer;
+			m_formatterSelector = formatterSelector;
 		}
 
-		internal Graph(object objectToSerialize, BaseSerializer serializer)
-			: this(serializer)
+		internal Graph(object objectToSerialize, GraphFormatterSelector formatterSelector)
+			: this(formatterSelector)
 		{
 			Root = BuildNode(objectToSerialize, null);
 		}
@@ -141,6 +155,27 @@ namespace GAIPS.Serialization.SerializationGraph
 
 			IGraphNode result;
 			Type objType = obj.GetType();
+			var formatter = m_formatterSelector.GetFormatter(objType) ?? SerializationServices.GetDefaultSerializationFormatter(objType);
+			if (formatter != null)
+			{
+				var node = formatter.ObjectToGraphNode(obj, this);
+				if (objType != fieldType)
+				{
+					//Value needs to be boxed
+					ObjectGraphNode box = node as ObjectGraphNode;
+					if (box == null)
+					{
+						box = (ObjectGraphNode)CreateObjectData();
+						box["boxedValue"] = node;
+					}
+
+					if (box.ObjectType == null)
+						box.ObjectType = GetTypeEntry(objType);
+					return box;
+				}
+				return node;
+			}
+
 			if (objType.IsArray || objType.IsPrimitiveData())
 			{
 				//Boxable Values (arrays, bools, numbers, strings)
@@ -160,12 +195,15 @@ namespace GAIPS.Serialization.SerializationGraph
 				else
 				{
 					//Primitive data type
-					if (objType == typeof(string))
+					if (objType == typeof (string))
 						valueNode = BuildStringNode(obj as string);
-					else if (objType.IsEnum)
-						valueNode = m_associatedSerializer.EnumToGraphNode(obj as Enum, this);
 					else
+					{
+						if (objType.IsEnum)
+							obj = Convert.ChangeType(obj, ((Enum)obj).GetTypeCode());
+
 						valueNode = BuildPrimitiveNode(obj as ValueType);
+					}
 				}
 
 				if (objType != fieldType)
@@ -198,7 +236,7 @@ namespace GAIPS.Serialization.SerializationGraph
 
 				if(extractData)
 				{
-					var surrogate = SerializationServices.SurrogateSelector.GetSurrogate(objType);
+					var surrogate = SerializationServices.GetDefaultSerializationSurrogate(objType);
 					surrogate.GetObjectData(obj, objReturnData);
 				}
 
@@ -238,9 +276,20 @@ namespace GAIPS.Serialization.SerializationGraph
 		{
 			if (nodeToRebuild == null)
 				return null;
-			if (requestedType!=null && requestedType.IsEnum)
-				return m_associatedSerializer.GraphNodeToEnum(nodeToRebuild, requestedType);
-			return nodeToRebuild.ExtractObject(requestedType);
+
+			if (requestedType == null)
+				return nodeToRebuild.ExtractObject(null);
+
+			var formatter = m_formatterSelector.GetFormatter(requestedType) ??
+			                SerializationServices.GetDefaultSerializationFormatter(requestedType);
+
+			if (formatter == null)
+				return nodeToRebuild.ExtractObject(requestedType);
+
+			var obj = formatter.GraphNodeToObject(nodeToRebuild, requestedType);
+			if (nodeToRebuild.DataType == SerializedDataType.Object)
+				LinkObjectToNode((ObjectGraphNode)nodeToRebuild, obj);
+			return obj;
 		}
 
 		#endregion

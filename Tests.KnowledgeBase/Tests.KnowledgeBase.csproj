@@ -37,7 +37,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WellFormedNames\NameDictionaryTests.cs" />
     <Compile Include="WellFormedNames\NameSearchTreeTests.cs" />
     <Compile Include="WellFormedNames\UnifierTests.cs" />
     <Compile Include="WellFormedNames\SubstitutionTests.cs" />
