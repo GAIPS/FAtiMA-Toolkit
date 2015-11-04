@@ -5,7 +5,6 @@ using KnowledgeBase.WellFormedNames;
 using KnowledgeBase.WellFormedNames.Collections;
 
 namespace EmotionalAppraisal.AppraisalRules
-
 {
 	/// <summary>
 	/// Default reactive module implementation.
@@ -19,12 +18,12 @@ namespace EmotionalAppraisal.AppraisalRules
 		private const short DEFAULT_APPRAISAL_WEIGHT = 1;
 		public const long IGNORE_DURATION = 5000;
 
-		private readonly NameSearchTree<Reaction> _emotionalReactions;
+		private readonly NameSearchTree<Reaction> AppraisalRules;
 
 		public ReactiveAppraisalDerivator()
 		{
 			this.AppraisalWeight = DEFAULT_APPRAISAL_WEIGHT;
-			this._emotionalReactions = new NameSearchTree<Reaction>();
+			this.AppraisalRules = new NameSearchTree<Reaction>();
 		}
 		
 		public Reaction Evaluate(string perspective, IEvent evt)
@@ -32,21 +31,22 @@ namespace EmotionalAppraisal.AppraisalRules
 			Name eventName = evt.ToName();
 			if(!string.IsNullOrEmpty(perspective))
 				eventName = eventName.ApplyPerspective(perspective);
-			Reaction emotionalReaction = _emotionalReactions[eventName];
+			Reaction emotionalReaction = AppraisalRules[eventName];
 			if(emotionalReaction != null)
 			{
 				emotionalReaction = emotionalReaction.MakeGround(evt.GenerateBindings());
 			}
 			return emotionalReaction;
 		}
-		
+
 		/// <summary>
 		/// Adds an emotional reaction to an event
 		/// </summary>
+		/// <param name="evt"></param>
 		/// <param name="emotionalReaction">the Reaction to add</param>
-		public void AddEmotionalReaction(Reaction emotionalReaction)
+		public void AddEmotionalReaction(IEvent evt, Reaction emotionalReaction)
 		{
-			_emotionalReactions.Add(emotionalReaction.ReferencedEvent.ToName(), emotionalReaction);
+			AppraisalRules.Add(evt.ToName(), emotionalReaction);
 		}
 
 		#region IAppraisalDerivator Implementation
@@ -93,10 +93,10 @@ namespace EmotionalAppraisal.AppraisalRules
 
 			if (desirability != 0 || praiseworthiness != 0)
 			{
-				Reaction r = new Reaction(frame.AppraisedEvent);
+				Reaction r = new Reaction();
 				r.Desirability = desirability;
 				r.Praiseworthiness = praiseworthiness;
-				AddEmotionalReaction(r);
+				AddEmotionalReaction(frame.AppraisedEvent, r);
 			}
 		}
 

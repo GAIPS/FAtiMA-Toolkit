@@ -20,7 +20,7 @@ namespace EmotionalAppraisal.AppraisalRules
 		public Reaction()
 		{
 			Desirability = DesirabilityForOther = Praiseworthiness = Like = 0;
-			ReferencedEvent = null;
+			//ReferencedEventName = null;
 			Other = null;
 		}
 
@@ -28,13 +28,13 @@ namespace EmotionalAppraisal.AppraisalRules
 		///     Creates a new empty Emotional Reaction
 		/// </summary>
 		/// <param name="evt">the event that this reaction references</param>
-		public Reaction(IEvent evt)
-		{
-			ReferencedEvent = evt;
-			Desirability = DesirabilityForOther = Praiseworthiness = Like = 0;
-			Other = null;
-		}
-
+		//public Reaction(IEvent evt)
+		//{
+		//	ReferencedEventName = evt.ToName();
+		//	Desirability = DesirabilityForOther = Praiseworthiness = Like = 0;
+		//	Other = null;
+		//}
+		
 		/// <summary>
 		///     Creates a new Emotional Reaction
 		/// </summary>
@@ -49,7 +49,6 @@ namespace EmotionalAppraisal.AppraisalRules
 			Praiseworthiness = praiseworthiness;
 			Other = other;
 			Like = 0;
-			ReferencedEvent = null;
 		}
 
 		/// <summary>
@@ -62,7 +61,7 @@ namespace EmotionalAppraisal.AppraisalRules
 			DesirabilityForOther = other.DesirabilityForOther;
 			Praiseworthiness = other.Praiseworthiness;
 			Like = other.Like;
-			ReferencedEvent = (IEvent) other.Other.Clone();
+			//ReferencedEventName = (Name)other.ReferencedEventName.Clone();
 			if (Other != null)
 				Other = (Name) other.Other.Clone();
 		}
@@ -90,7 +89,7 @@ namespace EmotionalAppraisal.AppraisalRules
 		/// <summary>
 		///     Event referenced by the emotional reaction
 		/// </summary>
-		public IEvent ReferencedEvent { get; set; }
+		//public Name ReferencedEventName { get; private set; }
 
 		/// <summary>
 		///     The name of the character that the appraisal variable DesirabilityForOther refers
@@ -133,19 +132,19 @@ namespace EmotionalAppraisal.AppraisalRules
 			}
 		}
 
-		public bool MatchEvent(IEvent eventPerception)
-		{
-			return EventOperations.MatchEvents(ReferencedEvent, eventPerception);
-		}
+		//public bool MatchEvent(IEvent eventPerception)
+		//{
+		//	return ReferencedEventName.Match(eventPerception.ToName());
+		//}
 
 		public Reaction MakeGround(params Substitution[] subst)
 		{
 			return MakeGround((IEnumerable<Substitution>) subst);
 		}
 
-		public override string ToString()
-		{
-			return string.Format("{0} ({1},{2},{3})", ReferencedEvent, Desirability, DesirabilityForOther, Praiseworthiness);
-		}
+		//public override string ToString()
+		//{
+		//	return string.Format("{0} ({1},{2},{3})", ReferencedEventName, Desirability, DesirabilityForOther, Praiseworthiness);
+		//}
 	}
 }

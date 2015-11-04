@@ -2,7 +2,7 @@
 
 namespace GAIPS.Serialization.Attributes
 {
-	[AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
+	[AttributeUsage(AttributeTargets.Class, Inherited = false)]
 	public class DefaultSerializationSystemAttribute : Attribute
 	{
 		public readonly Type AssociatedType;

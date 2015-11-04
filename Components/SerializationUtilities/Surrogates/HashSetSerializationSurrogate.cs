@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using GAIPS.Serialization.Attributes;
 using Utilities;
 
@@ -14,30 +15,33 @@ namespace GAIPS.Serialization.Surrogates
 	[DefaultSerializationSystem(typeof(HashSet<>), false)]
 	public class HashSetSerializationSurrogate : ISerializationSurrogate
 	{
+		private readonly static Regex CompareRegex = new Regex(@"^\w*comparer\w*$", RegexOptions.IgnoreCase);
 		private static readonly Type[] DefaultComparatorTypes = new[]
 		{
 			Type.GetType("System.Collections.Generic.ObjectEqualityComparer`1"),
-			Type.GetType("System.Collections.Generic.GenericEqualityComparer`1")
+			Type.GetType("System.Collections.Generic.GenericEqualityComparer`1"),
+			Type.GetType("System.Collections.Generic.EqualityComparer`1+DefaultComparer")
 		}; 
 
 		public void GetObjectData(object obj, IObjectGraphNode holder)
 		{
 			Type objType = obj.GetType();
-			var f = objType.GetField("m_comparer", BindingFlags.NonPublic | BindingFlags.Instance);
-			var comparator = f.GetValue(obj);
-			Type comparatorType = comparator.GetType();
+			var allFields = objType.GetFields(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
+			var f = allFields.FirstOrDefault(field => CompareRegex.IsMatch(field.Name));
+			if (f != null)
+			{
+				var comparator = f.GetValue(obj);
+				Type comparatorType = comparator.GetType();
 
-			if (!(comparatorType.IsGenericType && DefaultComparatorTypes.Contains(comparatorType.GetGenericTypeDefinition())))
-				holder["comparer"] = holder.ParentGraph.BuildNode(comparator, null);
+				if (!(comparatorType.IsGenericType && DefaultComparatorTypes.Contains(comparatorType.GetGenericTypeDefinition())))
+					holder["comparer"] = holder.ParentGraph.BuildNode(comparator, null);
+			}
 
 			Type elementType = objType.GetGenericArguments()[0];
 			var nodeSequence = ((IEnumerable) obj).Cast<object>().Select(o => holder.ParentGraph.BuildNode(o, elementType));
-			if (!(nodeSequence.IsEmpty()))
-			{
-				ISequenceGraphNode sequence = holder.ParentGraph.BuildSequenceNode();
-				sequence.AddRange(nodeSequence);
-				holder["elements"] = sequence;
-			}
+			ISequenceGraphNode sequence = holder.ParentGraph.BuildSequenceNode();
+			sequence.AddRange(nodeSequence);
+			holder["elements"] = sequence;
 		}
 
 		public void SetObjectData(ref object obj, IObjectGraphNode node)

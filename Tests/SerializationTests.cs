@@ -28,7 +28,7 @@ namespace UnitTest
 		[TestMethod]
 		public void BasicDeserializationTest()
 		{
-			var asset = Name.Parse("A(B,C(D,E,f(H)))");//new SerializationTestClass();
+			var asset = new SerializationTestClass();
 
 			using (var stream = new MemoryStream())
 			{

@@ -22,11 +22,12 @@ namespace GAIPS.Serialization.Surrogates
 		public void GetObjectData(object obj, IObjectGraphNode holder)
 		{
 			var objType = obj.GetType();
-			if (obj is ISerializable)
+			var serializable = obj as ISerializable;
+			if (serializable != null)
 			{
 				//Dictionary<int, int> b;
 				var info = new SerializationInfo(objType, FormatConverter);
-				var ser = (ISerializable) obj;
+				var ser = serializable;
 				ser.GetObjectData(info, new StreamingContext(StreamingContextStates.All));
 				var it = info.GetEnumerator();
 				while (it.MoveNext())
@@ -40,11 +41,9 @@ namespace GAIPS.Serialization.Surrogates
 				var fields = SerializationServices.GetSerializableFields(objType);
 				foreach (var f in fields)
 				{
-					if (f.IsNotSerialized)
-						continue;
-
 					var value = f.GetValue(obj);
-					if (value == null)
+					var fieldType = f.FieldType;
+					if (value == null || value.Equals(SerializationServices.GetDefaultValueForType(fieldType)))
 						continue;
 
 					var fieldName = FormatFieldName(f.Name);

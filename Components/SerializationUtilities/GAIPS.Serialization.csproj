@@ -37,7 +37,9 @@
     <Compile Include="Attributes\DefaultSerializationSystemAttribute.cs" />
     <Compile Include="BaseSerializer.cs" />
     <Compile Include="GraphFormatterSelector.cs" />
+    <Compile Include="ICustomSerialization.cs" />
     <Compile Include="IGraphFormatter.cs" />
+    <Compile Include="ISerializationData.cs" />
     <Compile Include="SerializationGraph\BaseGraphNode.cs" />
     <Compile Include="SerializationGraph\SerializedDataType.cs" />
     <Compile Include="SerializationGraph\ObjectGraphNode.cs" />
@@ -51,6 +53,7 @@
     <Compile Include="SerializationGraph\TypeEntry.cs" />
     <Compile Include="SerializationServices.cs" />
     <Compile Include="Serializers\JSONSerializer.cs" />
+    <Compile Include="Surrogates\CustomSerializationSurrogate.cs" />
     <Compile Include="Surrogates\DefaultSerializationSurrogate.cs" />
     <Compile Include="Surrogates\DictionarySerializationSurrogate.cs" />
     <Compile Include="Surrogates\HashSetSerializationSurrogate.cs" />

@@ -1,7 +1,6 @@
 ﻿using GAIPS.Serialization.SerializationGraph;
 using System;
 using System.IO;
-using System.Runtime.Serialization;
 
 namespace GAIPS.Serialization
 {
@@ -31,10 +30,7 @@ namespace GAIPS.Serialization
 			Graph serGraph = new Graph(graph,FormatSelector);
 			SerializeDataGraph(serializationStream, serGraph);
 		}
-		/*
-		public abstract IGraphNode EnumToGraphNode(Enum enumValue, Graph serializationGraph);
-		public abstract Enum GraphNodeToEnum(IGraphNode node, Type enumType);
-		*/
+
 		protected abstract void SerializeDataGraph(Stream serializationStream, Graph graph);
 		protected abstract void DeserializeDataGraph(Stream serializationStream, Graph graph);
 	}

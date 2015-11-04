@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Utilities;
 
 namespace EmotionalAppraisal
@@ -52,6 +53,34 @@ namespace EmotionalAppraisal
 			}
 
 			/// <summary>
+			/// unique hash string calculation function
+			/// </summary>
+			/// <param name="emotion"></param>
+			private static string calculateHashString(BaseEmotion emotion)
+			{
+				StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
+				try
+				{
+					builder.Append(emotion.Cause.ToName().ToString().ToUpper());
+					using (var it = emotion.AppraisalVariables.GetEnumerator())
+					{
+						while (it.MoveNext())
+						{
+							builder.Append("-");
+							builder.Append(it.Current);
+						}
+					}
+
+					return builder.ToString();
+				}
+				finally
+				{
+					builder.Length = 0;
+					ObjectPool<StringBuilder>.Recycle(builder);
+				}
+			}
+
+			/// <summary>
 			/// Creates and Adds to the emotional state a new ActiveEmotion based on 
 			/// a received BaseEmotion. However, the ActiveEmotion will be created 
 			/// and added to the emotional state only if the final intensity for 
@@ -73,7 +102,8 @@ namespace EmotionalAppraisal
 				decay = disposition.Decay;
 
 				ActiveEmotion previousEmotion;
-				if (emotionPool.TryGetValue(emotion.HashString,out previousEmotion))
+				string hash = calculateHashString(emotion);
+				if (emotionPool.TryGetValue(hash,out previousEmotion))
 				{
 					//if this test is true, it means that this is 100% a reappraisal of the same event
 					//if not true, it is not a reappraisal, but the appraisal of a new event of the same
@@ -84,14 +114,14 @@ namespace EmotionalAppraisal
 					//in both cases we need to remove the old emotion. In the case of reappraisal it is obvious.
 					//In the case of the appraisal of a similar event, we want to aggregate all the similar resulting 
 					//emotions into only one emotion
-					emotionPool.Remove(emotion.HashString);
+					emotionPool.Remove(hash);
 				}
 
 				float potential = DeterminePotential(emotion);
 				if (potential > disposition.Threshold)
 				{
 					auxEmotion = new ActiveEmotion(emotion, potential, disposition.Threshold, decay);
-					emotionPool.Add(emotion.HashString, auxEmotion);
+					emotionPool.Add(hash, auxEmotion);
 					if (!reappraisal)
 						this.mood.UpdateMood(auxEmotion);
 
@@ -180,13 +210,13 @@ namespace EmotionalAppraisal
 			/// <returns>the found ActiveEmotion if it exists in the EmotionalState, null if the emotion doesn't exist anymore</returns>
 			public ActiveEmotion GetEmotion(BaseEmotion emotion)
 			{
-				return GetEmotion(emotion.HashString);
+				return GetEmotion(calculateHashString(emotion));
 			}
 
 			public void RemoveEmotion(ActiveEmotion em)
 			{
 				if (em != null)
-					this.emotionPool.Remove(em.HashString);
+					this.emotionPool.Remove(calculateHashString(em));
 			}
 
 			public IEnumerable<string> GetEmotionsKeys()
@@ -209,12 +239,12 @@ namespace EmotionalAppraisal
 
 			public ActiveEmotion GetStrongestEmotion()
 			{
-				return this.emotionPool.Values.MaxValue(emo => emo.Intencity);
+				return this.emotionPool.Values.MaxValue(emo => emo.Intensity);
 			}
 
 			public ActiveEmotion GetStrongestEmotion(IEvent cause)
 			{
-				return this.emotionPool.Values.Where(emo => EventOperations.MatchEvents(cause, emo.Cause)).MaxValue(emo => emo.Intencity);
+				return this.emotionPool.Values.Where(emo => EventOperations.MatchEvents(cause,emo.Cause)).MaxValue(emo => emo.Intensity);
 			}
 
 			public void AddEmotionDisposition(EmotionDisposition emotionDisposition)

@@ -1,5 +1,6 @@
 ﻿using GAIPS.Serialization.SerializationGraph;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using Utilities;
@@ -25,6 +26,7 @@ namespace GAIPS.Serialization
 		public JSONSerializer()
 		{
 			FormatSelector.AddFormatter(typeof(Enum), true, new EnumGraphFormatter { parent = this });
+			FormatSelector.AddFormatter(typeof(DateTime),false, new DateTimeFormatter());
 		}
 
 		#region Serialization
@@ -34,13 +36,15 @@ namespace GAIPS.Serialization
 			JsonObject json = new JsonObject();
 
 			//Collect types
-			json[TYPES_FIELD] = CollectAssemblyData(graph);
-
+			var types = CollectAssemblyData(graph);
+			
 			json[ROOT_FIELD] = ToJson(graph.Root);
 
 			var nodes = graph.GetReferences().Select(n => NodeToJson(n)).Cast<JsonToken>();
 			if (!nodes.IsEmpty())
 				json[REFERENCES_FIELD] = new JsonArray(nodes);
+
+			json[TYPES_FIELD] = types;
 
 			var w = new StreamWriter(serializationStream);
 			json.Write(w, 0, AllowIdentation);
@@ -244,6 +248,42 @@ namespace GAIPS.Serialization
 				var str = (node as IStringGraphNode).Value;
 				str = str.Replace("|", ",");
 				return Enum.Parse(objectType, str, true);
+			}
+		}
+
+		private class DateTimeFormatter : IGraphFormatter
+		{
+			private static readonly string[] TIME_FORMATS = {
+				@"d/M/yyyy@H:m:s.fff",
+				@"d/M/yyyy@H:m:s",
+				@"d/M/yyyy@H:m",
+				@"d/M/yyyy",
+			};
+
+			public IGraphNode ObjectToGraphNode(object value, Graph serializationGraph)
+			{
+				DateTime time = (DateTime) value;
+				time = time.ToUniversalTime();
+				string format = @"d/M/yyyy";
+				if (time.Hour > 0 || time.Minute > 0 || time.Second > 0 || time.Millisecond > 0)
+				{
+					format += @"@H:m";
+					if (time.Second > 0 || time.Millisecond > 0)
+					{
+						format += @":s";
+						if (time.Millisecond > 0)
+							format += @".fff";
+					}
+				}
+				string timestamp = time.ToString(format);
+				return serializationGraph.BuildStringNode(timestamp);
+			}
+
+			public object GraphNodeToObject(IGraphNode node, Type objectType)
+			{
+				var timestamp = (IStringGraphNode) node;
+				DateTime t = DateTime.ParseExact(timestamp.Value, TIME_FORMATS, null, DateTimeStyles.None);
+				return DateTime.SpecifyKind(t, DateTimeKind.Utc);
 			}
 		}
 	}

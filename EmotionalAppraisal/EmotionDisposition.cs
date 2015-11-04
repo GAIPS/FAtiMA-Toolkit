@@ -9,35 +9,22 @@ namespace EmotionalAppraisal
 	/// </summary>
 	public class EmotionDisposition
 	{
-		private string m_emotion;
-		private int m_decay;
-		private int m_threshold;
+		public string Emotion { get; private set; }
 
-		public string Emotion
-		{
-			get { return m_emotion; }
-		}
+		public int Decay { get; private set; }
 
-		public int Decay
-		{
-			get { return m_decay; }
-		}
+		public int Threshold { get; private set; }
 
-		public int Threshold
+		public EmotionDisposition(string emotion, int decay, int threshold)
 		{
-			get { return m_threshold; }
-		}
-
-		public EmotionDisposition(string emotion, int decay, int threashold)
-		{
-			m_emotion = emotion;
-			m_decay = decay;
-			m_threshold = threashold;
+			Emotion = emotion;
+			Decay = decay;
+			Threshold = threshold;
 		}
 
 		public override string ToString()
 		{
-			return string.Format("Emotion: {0}, Threashold: {2}, Decay: {1}", m_emotion,m_threshold,m_decay);
+			return string.Format("Emotion: {0}, Threshold: {2}, Decay: {1}", Emotion,Threshold,Decay);
 		}
 	}
 }

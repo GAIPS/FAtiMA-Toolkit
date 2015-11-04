@@ -6,11 +6,11 @@ namespace EmotionalAppraisal
 	/// <summary>
 	/// Class that represents a agent's mood.
 	/// </summary>
-	public class Mood
+	public class Mood : ICustomSerialization
 	{
-		private float intensityATt0;
-		private float deltaTimeT0;
-		private float intensity;
+		private float _intensityATt0;
+		private float _deltaTimeT0;
+		private float _intensity;
 
 		/// <summary>
 		/// value that represents mood.
@@ -21,7 +21,7 @@ namespace EmotionalAppraisal
 		{
 			get
 			{
-				return this.intensity;
+				return this._intensity;
 			}
 		}
 
@@ -31,8 +31,8 @@ namespace EmotionalAppraisal
 			if (Math.Abs(value) < EmotionalParameters.MinimumMoodValue)
 				value = 0;
 
-			this.intensityATt0 = this.intensity = value;
-			this.deltaTimeT0 = 0;
+			this._intensityATt0 = this._intensity = value;
+			this._deltaTimeT0 = 0;
 		}
 
 		public Mood()
@@ -46,18 +46,18 @@ namespace EmotionalAppraisal
 		/// <returns>the mood's intensity after being decayed</returns>
 		public void DecayMood(float elapsedTime)
 		{
-			if (this.intensityATt0 == 0)
+			if (this._intensityATt0 == 0)
 			{
-				this.intensity = 0;
+				this._intensity = 0;
 				return;
 			}
 
-			this.deltaTimeT0 += elapsedTime;
-			intensity = (float)(this.intensityATt0 * Math.Exp(-EmotionalParameters.MoodDecayFactor*deltaTimeT0));
-			if(Math.Abs(this.intensity) < EmotionalParameters.MinimumMoodValue)
+			this._deltaTimeT0 += elapsedTime;
+			_intensity = (float)(this._intensityATt0 * Math.Exp(-EmotionalParameters.MoodDecayFactor*_deltaTimeT0));
+			if(Math.Abs(this._intensity) < EmotionalParameters.MinimumMoodValue)
 			{
-				this.intensity = this.intensityATt0 = 0;
-				this.deltaTimeT0 = 0;
+				this._intensity = this._intensityATt0 = 0;
+				this._deltaTimeT0 = 0;
 			}
 		}
 
@@ -71,7 +71,18 @@ namespace EmotionalAppraisal
 				return;
 
 			float scale = (float)emotion.Valence;
-			SetMoodValue(this.intensity + scale * (emotion.Intencity * EmotionalParameters.EmotionInfluenceOnMood));
+			SetMoodValue(this._intensity + scale * (emotion.Intensity * EmotionalParameters.EmotionInfluenceOnMood));
+		}
+
+		public void GetObjectData(ISerializationData dataHolder)
+		{
+			dataHolder.SetValue("Intensity", _intensity);
+		}
+
+		public void SetObjectData(ISerializationData dataHolder)
+		{
+			_intensity =_intensityATt0 = dataHolder.GetValue<float>("Intensity");
+			_deltaTimeT0 = 0;
 		}
 	}
 }

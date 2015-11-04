@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GAIPS.Serialization;
 using Utilities;
 
 namespace KnowledgeBase.WellFormedNames.Collections
 {
-	public partial class NameSearchTree<T> : IDictionary<Name, T>
+	public partial class NameSearchTree<T> : IDictionary<Name, T>, ICustomSerialization
 	{
 		private readonly TreeNode Root;
 
@@ -202,6 +203,29 @@ namespace KnowledgeBase.WellFormedNames.Collections
 			{
 				stack.Clear();
 				ObjectPool<Stack<Name>>.Recycle(stack);
+			}
+		}
+
+		public void GetObjectData(ISerializationData dataHolder)
+		{
+			var t = typeof (T);
+			foreach (var pairs in this)
+			{
+				var name = pairs.Key.ToString();
+				dataHolder.SetValue(name,pairs.Value,t);
+			}
+		}
+
+		public void SetObjectData(ISerializationData dataHolder)
+		{
+			using (var it = dataHolder.GetEnumerator())
+			{
+				while (it.MoveNext())
+				{
+					Name n = Name.Parse(it.FieldName);
+					var value = it.BuildValue<T>();
+					Add(n,value);
+				}
 			}
 		}
 	}

@@ -30,6 +30,8 @@ namespace GAIPS.Serialization.SerializationGraph
 		bool IsReferedMultipleTimes { get;}
 
 		IGraphNode this[string fieldName]{get;set;}
+		int NumOfFields { get; }
+		bool ContainsField(string fieldName);
 	}
 
 	public partial class Graph
@@ -63,6 +65,16 @@ namespace GAIPS.Serialization.SerializationGraph
 					if (node != null)
 						node.m_referencedBy.Add(this);
 				}
+			}
+
+			public int NumOfFields
+			{
+				get { return m_fields.Count; }
+			}
+
+			public bool ContainsField(string fieldName)
+			{
+				return m_fields.ContainsKey(fieldName);
 			}
 
 			public int RefId
@@ -142,7 +154,7 @@ namespace GAIPS.Serialization.SerializationGraph
 				if (typeToBuild.IsArray || typeToBuild.IsPrimitiveData())
 				{
 					//Handle Boxed Value Types
-					IGraphNode boxedValue = m_fields["boxedValue"];
+					IGraphNode boxedValue = m_fields[DEFAULT_BOXED_VALUE_FIELD_NAME];
 					return boxedValue.RebuildObject(typeToBuild);
 				}
 

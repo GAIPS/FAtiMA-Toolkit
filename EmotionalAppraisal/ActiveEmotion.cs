@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Linq;
+using EmotionalAppraisal.Interfaces;
+using GAIPS.Serialization;
+using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalAppraisal
 {
@@ -8,7 +12,7 @@ namespace EmotionalAppraisal
 	/// </summary>
 	/// @author João Dias
 	/// @author Pedro Gonçalves
-	public class ActiveEmotion : BaseEmotion
+	public class ActiveEmotion : BaseEmotion, ICustomSerialization
 	{
 		private float intensityATt0;
 		private float deltaTimeT0;
@@ -19,13 +23,13 @@ namespace EmotionalAppraisal
 			set;
 		}
 
-		public int Threashold
+		public int Threshold
 		{
 			get;
 			set;
 		}
 
-		public float Intencity
+		public float Intensity
 		{
 			get;
 			private set;
@@ -35,21 +39,15 @@ namespace EmotionalAppraisal
 		{
 			get
 			{
-				return this.Intencity + this.Threashold;
+				return this.Intensity + this.Threshold;
 			}
-		}
-
-		public Type BaseEmotionType
-		{
-			get;
-			protected set;
 		}
 
 		internal void SetIntencity(float value)
 		{
-			value -= Threashold;
+			value -= Threshold;
 			value = value < -10 ? -10 : (value > 10 ? 10 : value);
-			this.intensityATt0 = this.Intencity = value;
+			this.intensityATt0 = this.Intensity = value;
 			this.deltaTimeT0 = 0;
 		}
 
@@ -62,10 +60,9 @@ namespace EmotionalAppraisal
 		/// <param name="decay">the decay rate for the specific emotion</param>
 		public ActiveEmotion(BaseEmotion emotion, float potential, int threshold, int decay) : base(emotion)
 		{
-			this.Threashold = threshold;
+			this.Threshold = threshold;
 			this.Decay = decay;
 			SetIntencity(potential);
-			this.BaseEmotionType = emotion.GetType();
 		}
 
 		/// <summary>
@@ -76,7 +73,7 @@ namespace EmotionalAppraisal
 		{
 			this.deltaTimeT0 += elapsedTime;
 			float decay = (float)Math.Exp(-EmotionalParameters.EmotionDecayFactor * this.Decay * deltaTimeT0);
-			Intencity = intensityATt0 * decay;
+			Intensity = intensityATt0 * decay;
 		}
 
 		/// <summary>
@@ -85,15 +82,44 @@ namespace EmotionalAppraisal
 		/// <param name="potential">the potential for the reinformcement of the emotion's intensity</param>
 		public void ReforceEmotion(float potential)
 		{
-			this.Intencity = (float)Math.Log(Math.Exp(this.Potential) + Math.Exp(potential));
+			this.Intensity = (float)Math.Log(Math.Exp(this.Potential) + Math.Exp(potential));
 		}
 
 		public bool IsRelevant
 		{
 			get
 			{
-				return this.Intencity > 0.1f;
+				return this.Intensity > 0.1f;
 			}
+		}
+
+		public void GetObjectData(ISerializationData dataHolder)
+		{
+			dataHolder.SetValue("Intensity", Intensity);
+			dataHolder.SetValue("Decay",Decay);
+			dataHolder.SetValue("Threshold", Threshold);
+			dataHolder.SetValue("Cause",Cause,typeof(IEvent));
+			if(Direction!=null)
+				dataHolder.SetValue("Direction", Direction.ToString());
+			dataHolder.SetValue("EmotionType",EmotionType);
+			dataHolder.SetValue("Valence",Valence);
+			dataHolder.SetValue("AppraisalVariables", AppraisalVariables.ToArray());
+			dataHolder.SetValue("InfluenceMood",InfluenceMood);
+		}
+
+		public void SetObjectData(ISerializationData dataHolder)
+		{
+			Intensity = intensityATt0 = dataHolder.GetValue<float>("Intensity");
+			deltaTimeT0 = 0;
+			Decay = dataHolder.GetValue<int>("Decay");
+			Threshold = dataHolder.GetValue<int>("Threshold");
+			Cause = dataHolder.GetValue<IEvent>("Cause");
+			var dir = dataHolder.GetValue<string>("Direction");
+			Direction = !string.IsNullOrEmpty(dir) ? Name.Parse(dir) : null;
+			EmotionType = dataHolder.GetValue<string>("EmotionType");
+			Valence = dataHolder.GetValue<EmotionValence>("Valence");
+			AppraisalVariables = dataHolder.GetValue<string[]>("AppraisalVariables");
+			InfluenceMood = dataHolder.GetValue<bool>("InfluenceMood");
 		}
 	}
 }

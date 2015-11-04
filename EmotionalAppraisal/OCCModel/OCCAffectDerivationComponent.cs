@@ -77,7 +77,7 @@ namespace EmotionalAppraisal.OCCModel
 		{
 			const float magicFactor = 0.7f;
 			OCCEmotionType emoType = (like >= 0)?OCCEmotionType.Love:OCCEmotionType.Hate;
-			return new OCCBaseEmotion(emoType,Math.Abs(like)*magicFactor,evt,evt.Target==null?Symbol.UNIVERSAL_SYMBOL:Name.Parse(evt.Target));
+			return new OCCBaseEmotion(emoType,Math.Abs(like)*magicFactor,evt,evt.Subject==null?Symbol.UNIVERSAL_SYMBOL:Name.Parse(evt.Subject));
 		}
 
 		private static OCCBaseEmotion AppraiseGoalEnd(OCCEmotionType hopefullOutcome, OCCEmotionType fearfullOutcome, ActiveEmotion hopeEmotion, ActiveEmotion fearEmotion, float goalImportance, IEvent evt) {
@@ -87,7 +87,7 @@ namespace EmotionalAppraisal.OCCModel
 			finalEmotion = hopefullOutcome;
 		
 			if(hopeEmotion != null) {
-				if(fearEmotion != null && fearEmotion.Intencity > hopeEmotion.Intencity) {
+				if(fearEmotion != null && fearEmotion.Intensity > hopeEmotion.Intensity) {
 					potential = fearEmotion.Potential;
 					finalEmotion = fearfullOutcome;
 				}

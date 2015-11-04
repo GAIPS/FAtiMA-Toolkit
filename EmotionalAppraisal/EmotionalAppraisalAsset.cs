@@ -16,13 +16,15 @@ namespace EmotionalAppraisal
 		[NonSerialized]
 		private OCCAffectDerivationComponent m_occAffectDerivator;
 
+		public string Perspective { get; set; }
+
 		private ConcreteEmotionalState m_emotionalState;
 		private ReactiveAppraisalDerivator m_appraisalDerivator;
 		#region Component Manager
 
 		//private HashSet<IAppraisalDerivator> m_appraisalDerivators = new HashSet<IAppraisalDerivator>();
 		//private HashSet<IAffectDerivator> m_affectDerivators = new HashSet<IAffectDerivator>();
-		private HashSet<IEmotionProcessor> m_emotionalProcessors = new HashSet<IEmotionProcessor>();
+		//private HashSet<IEmotionProcessor> m_emotionalProcessors = new HashSet<IEmotionProcessor>();
 		/*
 		public bool AddComponent(IAppraisalDerivator component)
 		{
@@ -43,7 +45,7 @@ namespace EmotionalAppraisal
 		{
 			return m_affectDerivators.Remove(component);
 		}
-		*/
+		
 		public bool AddComponent(IEmotionProcessor component)
 		{
 			return m_emotionalProcessors.Add(component);
@@ -53,10 +55,8 @@ namespace EmotionalAppraisal
 		{
 			return m_emotionalProcessors.Remove(component);
 		}
-
+		*/
 		#endregion
-
-		public string Perspective { get; set; }
 
 		/// <summary>
 		/// Returns the agent's emotional state.
@@ -113,10 +113,10 @@ namespace EmotionalAppraisal
 				if (activeEmotion == null)
 					continue;
 
-				foreach (var processor in m_emotionalProcessors)
-				{
-					processor.EmotionActivation(this, activeEmotion);
-				}
+				//foreach (var processor in m_emotionalProcessors)
+				//{
+				//	processor.EmotionActivation(this, activeEmotion);
+				//}
 			}
 
 			_lastFrameAppraisal = frame.LastChange;

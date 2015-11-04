@@ -9,6 +9,7 @@ namespace GAIPS.Serialization.SerializationGraph
 {
 	public partial class Graph
 	{
+		private const string DEFAULT_BOXED_VALUE_FIELD_NAME = "boxedValue";
 		private class ReferenceComparer<T> : IEqualityComparer<T>
 		{
 			public bool Equals(T x, T y)
@@ -146,6 +147,11 @@ namespace GAIPS.Serialization.SerializationGraph
 			m_links.Add(targetObject,node.RefId);
 		}
 
+		private IGraphFormatter GetFormatter(Type type)
+		{
+			return m_formatterSelector.GetFormatter(type) ?? SerializationServices.GetDefaultSerializationFormatter(type);
+		}
+
 		#region Node Builders
 
 		public IGraphNode BuildNode(object obj, Type fieldType)
@@ -155,7 +161,7 @@ namespace GAIPS.Serialization.SerializationGraph
 
 			IGraphNode result;
 			Type objType = obj.GetType();
-			var formatter = m_formatterSelector.GetFormatter(objType) ?? SerializationServices.GetDefaultSerializationFormatter(objType);
+			var formatter = GetFormatter(objType);
 			if (formatter != null)
 			{
 				var node = formatter.ObjectToGraphNode(obj, this);
@@ -166,7 +172,7 @@ namespace GAIPS.Serialization.SerializationGraph
 					if (box == null)
 					{
 						box = (ObjectGraphNode)CreateObjectData();
-						box["boxedValue"] = node;
+						box[DEFAULT_BOXED_VALUE_FIELD_NAME] = node;
 					}
 
 					if (box.ObjectType == null)
@@ -211,7 +217,7 @@ namespace GAIPS.Serialization.SerializationGraph
 					//Value needs to be boxed
 					var boxNode = CreateObjectData();
 					boxNode.ObjectType = GetTypeEntry(objType);
-					boxNode["boxedValue"] = valueNode;
+					boxNode[DEFAULT_BOXED_VALUE_FIELD_NAME] = valueNode;
 					valueNode = boxNode;
 				}
 
@@ -277,15 +283,34 @@ namespace GAIPS.Serialization.SerializationGraph
 			if (nodeToRebuild == null)
 				return null;
 
+			if (nodeToRebuild.DataType == SerializedDataType.Object)
+			{
+				//It may be a boxed formatted value
+				var boxed = nodeToRebuild as IObjectGraphNode;
+				var boxedType = boxed.ObjectType;
+				if (boxedType != null)
+				{
+					var t = boxedType.ClassType;
+					var f = GetFormatter(t);
+					if (f != null)
+					{
+						//Is a boxed formatted value
+						if (boxed.NumOfFields == 1 && boxed.ContainsField(DEFAULT_BOXED_VALUE_FIELD_NAME))
+							nodeToRebuild = (BaseGraphNode)boxed[DEFAULT_BOXED_VALUE_FIELD_NAME];
+
+						return f.GraphNodeToObject(nodeToRebuild, t);
+					}
+				}
+			}
+
 			if (requestedType == null)
 				return nodeToRebuild.ExtractObject(null);
 
-			var formatter = m_formatterSelector.GetFormatter(requestedType) ??
-			                SerializationServices.GetDefaultSerializationFormatter(requestedType);
+			var formatter = GetFormatter(requestedType);
 
 			if (formatter == null)
 				return nodeToRebuild.ExtractObject(requestedType);
-
+			
 			var obj = formatter.GraphNodeToObject(nodeToRebuild, requestedType);
 			if (nodeToRebuild.DataType == SerializedDataType.Object)
 				LinkObjectToNode((ObjectGraphNode)nodeToRebuild, obj);

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
+using System;
 
 namespace EmotionalAppraisal
 {
@@ -21,7 +22,6 @@ namespace EmotionalAppraisal
 	public class BaseEmotion
 	{
 		private float potentialValue = 0;
-		private DirtyValue<string> hashString;
 
 		public IEvent Cause
 		{
@@ -80,8 +80,6 @@ namespace EmotionalAppraisal
 		/// <param name="direction">if the emotion is targeted to someone (ex: angry with Luke), this parameter specifies the target</param>
 		protected BaseEmotion(string type, EmotionValence valence, IEnumerable<string> appraisalVariables, float potential, bool influencesMood, IEvent cause, Name direction)
 		{
-			this.hashString = new DirtyValue<string>(calculateHashString);
-
 			this.EmotionType = type;
 			this.Valence = valence;
 			this.AppraisalVariables = appraisalVariables;
@@ -97,40 +95,11 @@ namespace EmotionalAppraisal
 		}
 
 		/// <summary>
-		/// unique hash string calculation function
-		/// </summary>
-		private string calculateHashString()
-		{
-			StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
-			try
-			{
-				builder.Append(Cause.ToName().ToString().ToUpper());
-				using (var it = this.AppraisalVariables.GetEnumerator())
-				{
-					while (it.MoveNext())
-					{
-						builder.Append("-");
-						builder.Append(it.Current);
-					}
-				}
-
-				return builder.ToString();
-			}
-			finally
-			{
-				builder.Length = 0;
-				ObjectPool<StringBuilder>.Recycle(builder);
-			}
-		}
-
-		/// <summary>
 		/// Clone constructor
 		/// </summary>
 		/// <param name="other">the emotion to clone</param>
 		public BaseEmotion(BaseEmotion other)
 		{
-			this.hashString = new DirtyValue<string>(calculateHashString);
-
 			this.EmotionType = other.EmotionType;
 			this.Valence = other.Valence;
 			this.AppraisalVariables = other.AppraisalVariables.ToArray();
@@ -140,21 +109,9 @@ namespace EmotionalAppraisal
 			this.Direction = other.Direction;
 		}
 
-		/// <summary>
-		/// Gets an hask key used to index this BaseEmotion
-		/// </summary>
-		/// <returns></returns>
-		public string HashString
-		{
-			get
-			{
-				return hashString;
-			}
-		}
-
 		public override int GetHashCode()
 		{
-			return HashString.GetHashCode();
+			return AppraisalVariables.Aggregate(Cause.GetHashCode(), (h, s) => h ^ s.GetHashCode());
 		}
 
 		public override bool Equals(object obj)
@@ -163,7 +120,10 @@ namespace EmotionalAppraisal
 			if (em == null)
 				return false;
 
-			return this.HashString == em.HashString;
+			if (Cause.ToName() != em.Cause.ToName())
+				return false;
+
+			return new HashSet<string>(AppraisalVariables).SetEquals(em.AppraisalVariables);
 		}
 
 		public void IncreatePotential(float delta)

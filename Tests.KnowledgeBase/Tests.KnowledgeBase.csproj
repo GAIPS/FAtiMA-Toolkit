@@ -51,6 +51,10 @@
       <Project>{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}</Project>
       <Name>KnowledgeBase</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Components\SerializationUtilities\GAIPS.Serialization.csproj">
+      <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
+      <Name>GAIPS.Serialization</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
