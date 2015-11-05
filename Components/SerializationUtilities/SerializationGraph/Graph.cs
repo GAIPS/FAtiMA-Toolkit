@@ -165,7 +165,8 @@ namespace GAIPS.Serialization.SerializationGraph
 			if (formatter != null)
 			{
 				var node = formatter.ObjectToGraphNode(obj, this);
-				if (objType != fieldType)
+				var fieldTypeFormatter = fieldType!=null?GetFormatter(fieldType):null;
+				if (formatter!=fieldTypeFormatter)
 				{
 					//Value needs to be boxed
 					ObjectGraphNode box = node as ObjectGraphNode;

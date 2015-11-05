@@ -98,7 +98,7 @@ namespace EmotionalAppraisal
 			dataHolder.SetValue("Intensity", Intensity);
 			dataHolder.SetValue("Decay",Decay);
 			dataHolder.SetValue("Threshold", Threshold);
-			dataHolder.SetValue("Cause",Cause,typeof(IEvent));
+			dataHolder.SetValue("Cause",Cause);
 			if(Direction!=null)
 				dataHolder.SetValue("Direction", Direction.ToString());
 			dataHolder.SetValue("EmotionType",EmotionType);
@@ -113,7 +113,7 @@ namespace EmotionalAppraisal
 			deltaTimeT0 = 0;
 			Decay = dataHolder.GetValue<int>("Decay");
 			Threshold = dataHolder.GetValue<int>("Threshold");
-			Cause = dataHolder.GetValue<IEvent>("Cause");
+			Cause = dataHolder.GetValue<EmotionalCause>("Cause");
 			var dir = dataHolder.GetValue<string>("Direction");
 			Direction = !string.IsNullOrEmpty(dir) ? Name.Parse(dir) : null;
 			EmotionType = dataHolder.GetValue<string>("EmotionType");

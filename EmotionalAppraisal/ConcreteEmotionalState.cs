@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GAIPS.Serialization;
 using Utilities;
 
 namespace EmotionalAppraisal
@@ -16,7 +17,8 @@ namespace EmotionalAppraisal
 		/// </summary>
 		/// @author: Pedro Gonçalves
 		/// @author: João Dias
-		private class ConcreteEmotionalState : IEmotionalState
+		[Serializable]
+		private class ConcreteEmotionalState : IEmotionalState, ICustomSerialization
 		{
 			private static readonly EmotionDisposition DEFAULT_EMOTIONAL_DISPOSITION = new EmotionDisposition("default", 1, 5);
 
@@ -61,7 +63,7 @@ namespace EmotionalAppraisal
 				StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
 				try
 				{
-					builder.Append(emotion.Cause.ToName().ToString().ToUpper());
+					builder.Append(emotion.Cause.CauseName.ToString().ToUpper());
 					using (var it = emotion.AppraisalVariables.GetEnumerator())
 					{
 						while (it.MoveNext())
@@ -108,7 +110,7 @@ namespace EmotionalAppraisal
 					//if this test is true, it means that this is 100% a reappraisal of the same event
 					//if not true, it is not a reappraisal, but the appraisal of a new event of the same
 					//type
-					if (previousEmotion.Cause.Timestamp == emotion.Cause.Timestamp)
+					if (previousEmotion.Cause.CauseTimestamp == emotion.Cause.CauseTimestamp)
 						reappraisal = true;
 					
 					//in both cases we need to remove the old emotion. In the case of reappraisal it is obvious.
@@ -244,7 +246,7 @@ namespace EmotionalAppraisal
 
 			public ActiveEmotion GetStrongestEmotion(IEvent cause)
 			{
-				return this.emotionPool.Values.Where(emo => EventOperations.MatchEvents(cause,emo.Cause)).MaxValue(emo => emo.Intensity);
+				return this.emotionPool.Values.Where(emo => cause.ToName().Match(emo.Cause.CauseName)).MaxValue(emo => emo.Intensity);
 			}
 
 			public void AddEmotionDisposition(EmotionDisposition emotionDisposition)
@@ -268,6 +270,28 @@ namespace EmotionalAppraisal
 			public override string ToString()
 			{
 				return string.Format("Mood: {0} Emotions: {1}",this.mood,this.emotionPool);
+			}
+
+			public void GetObjectData(ISerializationData dataHolder)
+			{
+				dataHolder.SetValue("EmotionalPool", emotionPool.Values.ToArray());
+				dataHolder.SetValue("EmotionDispositions",emotionDispositions.Values.ToArray());
+				dataHolder.SetValue("Mood",mood.MoodValue);
+			}
+
+			public void SetObjectData(ISerializationData dataHolder)
+			{
+				mood.SetMoodValue(dataHolder.GetValue<float>("Mood"));
+				var dispositions = dataHolder.GetValue<EmotionDisposition[]>("EmotionDispositions");
+				foreach (var disposition in dispositions)
+					emotionDispositions.Add(disposition.Emotion,disposition);
+
+				var emotions = dataHolder.GetValue<ActiveEmotion[]>("EmotionalPool");
+				foreach (var emotion in emotions)
+				{
+					var hash = calculateHashString(emotion);
+					emotionPool.Add(hash,emotion);
+				}
 			}
 		}
 	}

@@ -5,6 +5,7 @@ using EmotionalAppraisal.Components;
 using EmotionalAppraisal.Interfaces;
 using EmotionalAppraisal.OCCModel;
 using System.Collections.Generic;
+using GAIPS.Serialization;
 
 namespace EmotionalAppraisal
 {

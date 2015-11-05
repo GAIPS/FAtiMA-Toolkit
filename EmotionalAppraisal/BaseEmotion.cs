@@ -23,7 +23,7 @@ namespace EmotionalAppraisal
 	{
 		private float potentialValue = 0;
 
-		public IEvent Cause
+		public EmotionalCause Cause
 		{
 			get;
 			protected set;
@@ -84,7 +84,7 @@ namespace EmotionalAppraisal
 			this.Valence = valence;
 			this.AppraisalVariables = appraisalVariables;
 			this.Potential = potential;
-			this.Cause = cause;
+			this.Cause = new EmotionalCause(cause.ToName(),cause.Timestamp);
 			this.Direction = direction;
 			this.InfluenceMood = influencesMood;
 		}
@@ -111,7 +111,7 @@ namespace EmotionalAppraisal
 
 		public override int GetHashCode()
 		{
-			return AppraisalVariables.Aggregate(Cause.GetHashCode(), (h, s) => h ^ s.GetHashCode());
+			return AppraisalVariables.Aggregate(Cause.CauseName.GetHashCode(), (h, s) => h ^ s.GetHashCode());
 		}
 
 		public override bool Equals(object obj)
@@ -120,7 +120,7 @@ namespace EmotionalAppraisal
 			if (em == null)
 				return false;
 
-			if (Cause.ToName() != em.Cause.ToName())
+			if (Cause.CauseName != em.Cause.CauseName)
 				return false;
 
 			return new HashSet<string>(AppraisalVariables).SetEquals(em.AppraisalVariables);
@@ -138,7 +138,7 @@ namespace EmotionalAppraisal
 			StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
 			builder.Append(EmotionType);
 			builder.Append(": ");
-			builder.Append(Cause.ToName());
+			builder.Append(Cause.CauseName);
 			if (this.Direction != null)
 			{
 				builder.Append(" ");
