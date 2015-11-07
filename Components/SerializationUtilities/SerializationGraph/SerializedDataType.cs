@@ -11,6 +11,7 @@ namespace GAIPS.Serialization.SerializationGraph
 		Number,
 		String,
 		DataSequence,
+		Type,
 		Object
 	}
 }

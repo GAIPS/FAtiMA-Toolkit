@@ -27,7 +27,8 @@ namespace KnowledgeBase.WellFormedNames
 	/// @author: João Dias
 	/// @author: Pedro Gonçalves (C# version)
 	/// </summary>
-	/// <see cref="FAtiMA.Core.WellFormedNames.Name"/>
+	/// <see cref="Name"/>
+	[Serializable]
 	public class Symbol : Name
 	{
 		public const string VARIABLE_SYMBOL_VALIDATION_PATTERN = @"\[[A-Za-z_][\w-]*\]";

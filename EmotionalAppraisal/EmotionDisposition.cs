@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace EmotionalAppraisal
 {
 	/// <summary>
@@ -7,6 +8,7 @@ namespace EmotionalAppraisal
 	/// @author: João Dias
 	/// @author: Pedro Gonçalves (C# version)
 	/// </summary>
+	[Serializable]
 	public class EmotionDisposition
 	{
 		public string Emotion { get; private set; }

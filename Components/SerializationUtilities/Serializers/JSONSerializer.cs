@@ -79,6 +79,8 @@ namespace GAIPS.Serialization
 					return new JsonString((node as IStringGraphNode).Value);
 				case SerializedDataType.DataSequence:
 					return new JsonArray((node as ISequenceGraphNode).Select(n => ToJson(n)));
+				case SerializedDataType.Type:
+					return new JsonString("class@"+(node as ITypeGraphNode).TypeId);
 			}
 
 			IObjectGraphNode objNode = node as IObjectGraphNode;
@@ -199,6 +201,12 @@ namespace GAIPS.Serialization
 				{
 					int id = int.Parse(val.Substring(6));
 					return parentGraph.GetObjectDataForRefId(id);
+				}
+
+				if (val.StartsWith("class@"))
+				{
+					byte id = byte.Parse(val.Substring(6));
+					return parentGraph.GetTypeEntry(id);
 				}
 
 				return parentGraph.BuildStringNode(val);

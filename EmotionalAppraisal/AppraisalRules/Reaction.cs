@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EmotionalAppraisal;
 using EmotionalAppraisal.Interfaces;
 using KnowledgeBase.WellFormedNames;
@@ -12,6 +13,7 @@ namespace EmotionalAppraisal.AppraisalRules
 	/// </summary>
 	/// @author João Dias
 	/// @author Pedro Gonçalves
+	[Serializable]
 	public class Reaction : IGroundable<Reaction>
 	{
 		/// <summary>

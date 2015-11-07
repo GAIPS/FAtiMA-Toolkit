@@ -65,16 +65,16 @@ namespace GAIPS.Serialization
 
 		public static IEnumerable<FieldInfo> GetSerializableFields(Type type)
 		{
-			if (type.BaseType == null)
-				return Enumerable.Empty<FieldInfo>();
+			var result = Enumerable.Empty<FieldInfo>();
 
-			IEnumerable<FieldInfo> result = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-			while (type.BaseType != typeof(object))
+			while (type!=null && type.BaseType!=null && type.IsSerializable)
 			{
+				var fields = type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+				result = result.Union(fields.Where(f => f.FieldType.IsSerializable && !f.IsNotSerialized));
 				type = type.BaseType;
-				result = result.Union(type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic));
 			}
-			return result.Where(f => !f.IsNotSerialized);
+
+			return result;
 		}
 		
 		public static object GetUninitializedObject(Type type)

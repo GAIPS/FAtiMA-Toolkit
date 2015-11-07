@@ -1,4 +1,5 @@
-﻿using EmotionalAppraisal.Components;
+﻿using System;
+using EmotionalAppraisal.Components;
 using EmotionalAppraisal.Interfaces;
 using EmotionalAppraisal.OCCModel;
 using KnowledgeBase.WellFormedNames;
@@ -13,6 +14,7 @@ namespace EmotionalAppraisal.AppraisalRules
 	/// </summary>
 	/// @author João Dias
 	/// @author Pedro Gonçalves
+	[Serializable]
 	public class ReactiveAppraisalDerivator : IAppraisalDerivator
 	{
 		private const short DEFAULT_APPRAISAL_WEIGHT = 1;

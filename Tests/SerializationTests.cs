@@ -49,6 +49,7 @@ namespace UnitTest
 			Ok3 = 4
 		}
 
+		[Serializable]
 		private class SerializationTestClass
 		{
 			private int[] ArrayField1 = {4, 5, 3, 2, 7, 5, 8};
@@ -109,9 +110,13 @@ namespace UnitTest
 				NameField = (ComposedName)Name.Parse("A(B,C,D(H,E(F)))");
 
 				BackingProperty = "this is a property";
+
+				SerializeType = typeof(DateTime);
 			}
 
 			public string BackingProperty { get; set; }
+
+			public Type SerializeType { get; set; }
 		}
 	}
 }

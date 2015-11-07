@@ -15,6 +15,7 @@ namespace KnowledgeBase.WellFormedNames
 	/// @author: João Dias
 	/// @author: Pedro Gonçalves (C# version)
 	/// </summary>
+	[Serializable]
 	public class ComposedName : Name
 	{
 		protected Symbol RootSymbol;

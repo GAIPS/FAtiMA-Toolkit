@@ -8,6 +8,7 @@ using Utilities;
 
 namespace KnowledgeBase.WellFormedNames.Collections
 {
+	[Serializable]
 	public partial class NameSearchTree<T> : IDictionary<Name, T>, ICustomSerialization
 	{
 		private readonly TreeNode Root;

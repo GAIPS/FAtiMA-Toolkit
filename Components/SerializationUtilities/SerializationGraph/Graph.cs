@@ -48,7 +48,7 @@ namespace GAIPS.Serialization.SerializationGraph
 		}
 
 		private byte m_typeidCounter = 0;
-		private Dictionary<Type, TypeEntry> m_registedTypes = new Dictionary<Type, TypeEntry>();
+		private Dictionary<Type, ITypeGraphNode> m_registedTypes = new Dictionary<Type, ITypeGraphNode>();
 
 		private GraphFormatterSelector m_formatterSelector = null;
 
@@ -63,25 +63,25 @@ namespace GAIPS.Serialization.SerializationGraph
 			Root = BuildNode(objectToSerialize, null);
 		}
 
-		public TypeEntry GetTypeEntry(Type type)
+		public ITypeGraphNode GetTypeEntry(Type type)
 		{
-			TypeEntry t;
+			ITypeGraphNode t;
 			if (m_registedTypes.TryGetValue(type, out t))
 				return t;
 
-			t = new TypeEntry(type, m_typeidCounter++);
+			t = new TypeGraphNode(type, m_typeidCounter++,this);
 			m_registedTypes[type] = t;
 			return t;
 		}
 
-		public TypeEntry GetTypeEntry(byte typeId)
+		public ITypeGraphNode GetTypeEntry(byte typeId)
 		{
-			return m_registedTypes.Values.First(t => t.TypeId == typeId);
+			return m_registedTypes.Values.First(t => t.TypeId == typeId);//TODO improve this
 		}
 
 		public void RegistTypeEntry(Type type, byte typeId)
 		{
-			TypeEntry entry;
+			ITypeGraphNode entry;
 			if (m_registedTypes.TryGetValue(type, out entry))
 			{
 				if (entry.TypeId != typeId)
@@ -89,10 +89,10 @@ namespace GAIPS.Serialization.SerializationGraph
 				return;
 			}
 
-			m_registedTypes[type] = new TypeEntry(type, typeId);
+			m_registedTypes[type] = new TypeGraphNode(type, typeId,this);
 		}
 
-		public IEnumerable<TypeEntry> GetRegistedTypes()
+		public IEnumerable<ITypeGraphNode> GetRegistedTypes()
 		{
 			return m_registedTypes.Values;
 		}
@@ -161,6 +161,10 @@ namespace GAIPS.Serialization.SerializationGraph
 
 			IGraphNode result;
 			Type objType = obj.GetType();
+
+			if (typeof (Type).IsAssignableFrom(objType))
+				return GetTypeEntry((Type) obj);
+
 			var formatter = GetFormatter(objType);
 			if (formatter != null)
 			{

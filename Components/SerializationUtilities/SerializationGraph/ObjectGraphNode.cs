@@ -20,7 +20,7 @@ namespace GAIPS.Serialization.SerializationGraph
 	public interface IObjectGraphNode : IGraphNode, IEnumerable<FieldEnty>
 	{
 		int RefId { get; }
-		TypeEntry ObjectType
+		ITypeGraphNode ObjectType
 		{
 			get;
 			set;
@@ -83,7 +83,7 @@ namespace GAIPS.Serialization.SerializationGraph
 				private set;
 			}
 
-			public TypeEntry ObjectType
+			public ITypeGraphNode ObjectType
 			{
 				get;
 				set;

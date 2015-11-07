@@ -27,6 +27,9 @@ namespace GAIPS.Serialization
 
 		public void Serialize(Stream serializationStream, object graph)
 		{
+			if(!graph.GetType().IsSerializable)
+				throw new Exception(string.Format("Instances of {0} are not serializable.",graph.GetType()));	//TODO add a better exception
+
 			Graph serGraph = new Graph(graph,FormatSelector);
 			SerializeDataGraph(serializationStream, serGraph);
 		}
