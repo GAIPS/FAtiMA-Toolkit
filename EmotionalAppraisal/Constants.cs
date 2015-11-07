@@ -1,25 +1,16 @@
-﻿namespace EmotionalAppraisal
+﻿using System;
+
+namespace EmotionalAppraisal
 {
-	public static class EmotionalParameters
-	{	
+	public static class Constants
+	{
+		public const float MinimumDecayTime = 1;
+
 		/// <summary>
-		/// Constant value that defines how fast should a emotion decay over time.
-		/// This value is adjusted so that the slowest decaying emotions takes
-		/// aproximately 15 seconds to decay to half of the original intensity, 
-		/// the fastest decaying emotions take 4 seconds, and the normal ones takes
-		/// 7 seconds.
+		/// The half-life base decay for the exponential decay lambda calculation.
+		/// To calculate the lambda, divide this constant by the required half-life time.
 		/// </summary>
-		public const float EmotionDecayFactor = 0.02f;
-	
-		/// <summary>
-		/// Constant value that defines how fast should mood decay over time.
-		/// This value is adjusted so that mood decays 3 times slower
-		/// than the slowest decaying emotion in order to represent 
-		/// a longer persistence and duration of mood over emotions.
-		/// So, it takes aproximately 60 seconds for the mood to decay to half
-		/// of the initial value.
-		/// </summary>
-		public const float MoodDecayFactor = 0.01f;
+		public static readonly double HalfLifeDecayConstant = Math.Log(0.5);
 
 		/// <summary>
 		/// Defines how strong is the influence of the emotion's intensity

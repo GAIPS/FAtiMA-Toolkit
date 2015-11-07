@@ -28,14 +28,14 @@ namespace EmotionalAppraisal
 		public void SetMoodValue(float value)
 		{
 			value = value < -10 ? -10 : (value > 10 ? 10 : value);
-			if (Math.Abs(value) < EmotionalParameters.MinimumMoodValue)
+			if (Math.Abs(value) < Constants.MinimumMoodValue)
 				value = 0;
 
 			this._intensityATt0 = this._intensity = value;
 			this._deltaTimeT0 = 0;
 		}
 
-		public Mood()
+		internal Mood()
 		{
 			SetMoodValue(0);
 		}
@@ -44,7 +44,7 @@ namespace EmotionalAppraisal
 		/// Decays the mood according to the agent's simulated time
 		/// </summary>
 		/// <returns>the mood's intensity after being decayed</returns>
-		public void DecayMood(float elapsedTime)
+		public void DecayMood(float elapsedTime, EmotionalAppraisalAsset parentAsset)
 		{
 			if (this._intensityATt0 == 0)
 			{
@@ -53,8 +53,9 @@ namespace EmotionalAppraisal
 			}
 
 			this._deltaTimeT0 += elapsedTime;
-			_intensity = (float)(this._intensityATt0 * Math.Exp(-EmotionalParameters.MoodDecayFactor*_deltaTimeT0));
-			if(Math.Abs(this._intensity) < EmotionalParameters.MinimumMoodValue)
+			double lambda = Constants.HalfLifeDecayConstant/parentAsset.MoodHalfLifeDecayTime;
+			_intensity = (float)(this._intensityATt0 * Math.Exp(lambda*_deltaTimeT0));
+			if(Math.Abs(this._intensity) < Constants.MinimumMoodValue)
 			{
 				this._intensity = this._intensityATt0 = 0;
 				this._deltaTimeT0 = 0;
@@ -71,7 +72,7 @@ namespace EmotionalAppraisal
 				return;
 
 			float scale = (float)emotion.Valence;
-			SetMoodValue(this._intensity + scale * (emotion.Intensity * EmotionalParameters.EmotionInfluenceOnMood));
+			SetMoodValue(this._intensity + scale * (emotion.Intensity * Constants.EmotionInfluenceOnMood));
 		}
 
 		public void GetObjectData(ISerializationData dataHolder)

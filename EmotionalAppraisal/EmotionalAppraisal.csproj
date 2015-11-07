@@ -47,7 +47,7 @@
     <Compile Include="ConcreteEmotionalState.cs" />
     <Compile Include="EmotionalAppraisalAsset.cs" />
     <Compile Include="EmotionalCause.cs" />
-    <Compile Include="EmotionalParameters.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="EmotionDisposition.cs" />
     <Compile Include="EventOperations.cs" />
     <Compile Include="IAppraisalFrame.cs" />

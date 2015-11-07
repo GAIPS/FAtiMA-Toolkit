@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using EmotionalAppraisal.Interfaces;
 using GAIPS.Serialization;
 using KnowledgeBase.WellFormedNames;
 
@@ -17,10 +16,11 @@ namespace EmotionalAppraisal
 		private float intensityATt0;
 		private float deltaTimeT0;
 
+		private int m_decay;
 		public int Decay
 		{
-			get;
-			set;
+			get { return m_decay; }
+			set { m_decay = value<0?0:(value>10?10:value);}
 		}
 
 		public int Threshold
@@ -69,10 +69,11 @@ namespace EmotionalAppraisal
 		/// Decays the emotion according to the system's time
 		/// </summary>
 		/// <returns>the intensity of the emotion after being decayed</returns>
-		internal void DecayEmotion(float elapsedTime)
+		internal void DecayEmotion(float elapsedTime, EmotionalAppraisalAsset parentAsset)
 		{
 			this.deltaTimeT0 += elapsedTime;
-			float decay = (float)Math.Exp(-EmotionalParameters.EmotionDecayFactor * this.Decay * deltaTimeT0);
+			double lambda = Constants.HalfLifeDecayConstant/parentAsset.EmotionalHalfLifeDecayTime;
+			float decay = (float)Math.Exp(lambda * this.Decay * deltaTimeT0);
 			Intensity = intensityATt0 * decay;
 		}
 

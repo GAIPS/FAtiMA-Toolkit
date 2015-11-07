@@ -9,6 +9,7 @@ using GAIPS.Serialization;
 
 namespace EmotionalAppraisal
 {
+	[Serializable]
 	public sealed partial class EmotionalAppraisalAsset : BaseAsset
 	{
 		private static readonly InternalAppraisalFrame APPRAISAL_FRAME = new InternalAppraisalFrame();
@@ -18,6 +19,27 @@ namespace EmotionalAppraisal
 		private OCCAffectDerivationComponent m_occAffectDerivator;
 
 		public string Perspective { get; set; }
+
+		private float m_emotionalHalfLifeDecayTime = 15;
+		/// <summary>
+		/// Defines how fast a emotion decay over time.
+		/// This value is the actual time it takes a decay:1 emotion to reach half of its initial intensity
+		/// </summary>
+		public float EmotionalHalfLifeDecayTime
+		{
+			get { return m_emotionalHalfLifeDecayTime; }
+			set { m_emotionalHalfLifeDecayTime = value < Constants.MinimumDecayTime ? Constants.MinimumDecayTime : value; }
+		}
+
+		private float m_moodDecay = 60;
+		/// <summary>
+		/// Defines how fast mood decay over time.
+		/// This value is the actual time it takes the mood to reach half of its initial intensity
+		/// </summary>
+		public float MoodHalfLifeDecayTime {
+			get { return m_moodDecay; }
+			set { m_moodDecay = value < Constants.MinimumDecayTime ? Constants.MinimumDecayTime : value; }
+		}
 
 		private ConcreteEmotionalState m_emotionalState;
 		private ReactiveAppraisalDerivator m_appraisalDerivator;
@@ -128,7 +150,7 @@ namespace EmotionalAppraisal
 			if (deltaTime <= 0)
 				return;
 
-			m_emotionalState.Decay(deltaTime);
+			m_emotionalState.Decay(deltaTime, this);
 		}
 
 		public void Reappraise()

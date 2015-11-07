@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
-using System;
 
 namespace EmotionalAppraisal
 {
@@ -19,7 +18,7 @@ namespace EmotionalAppraisal
 	/// </summary>
 	/// @author: João Dias
 	/// @author: Pedro Gonçalves (C# version)
-	public class BaseEmotion
+	public abstract class BaseEmotion
 	{
 		private float potentialValue = 0;
 
@@ -98,7 +97,7 @@ namespace EmotionalAppraisal
 		/// Clone constructor
 		/// </summary>
 		/// <param name="other">the emotion to clone</param>
-		public BaseEmotion(BaseEmotion other)
+		protected BaseEmotion(BaseEmotion other)
 		{
 			this.EmotionType = other.EmotionType;
 			this.Valence = other.Valence;
@@ -136,14 +135,9 @@ namespace EmotionalAppraisal
 		public override string ToString()
 		{
 			StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
-			builder.Append(EmotionType);
-			builder.Append(": ");
-			builder.Append(Cause.CauseName);
+			builder.AppendFormat("{0}: {1}", EmotionType,Cause.CauseName);
 			if (this.Direction != null)
-			{
-				builder.Append(" ");
-				builder.Append(this.Direction.ToString());
-			}
+				builder.AppendFormat(" {0}", Direction);
 
 			var result = builder.ToString();
 			builder.Length = 0;

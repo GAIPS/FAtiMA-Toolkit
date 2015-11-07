@@ -20,9 +20,10 @@ namespace EmotionalAppraisal
 		[Serializable]
 		private class ConcreteEmotionalState : IEmotionalState, ICustomSerialization
 		{
-			private static readonly EmotionDisposition DEFAULT_EMOTIONAL_DISPOSITION = new EmotionDisposition("default", 1, 5);
+			private static readonly EmotionDisposition DEFAULT_EMOTIONAL_DISPOSITION = new EmotionDisposition("*", 1, 5);
 
 			private Dictionary<string, ActiveEmotion> emotionPool;
+			private EmotionDisposition m_defaultEmotionalDisposition = DEFAULT_EMOTIONAL_DISPOSITION;
 			private Dictionary<string, EmotionDisposition> emotionDispositions;
 			private Mood mood;
 
@@ -50,7 +51,7 @@ namespace EmotionalAppraisal
 				float potetial = emotion.Potential;
 				float scale = (float)emotion.Valence;
 
-				potetial += scale*(this.mood.MoodValue*EmotionalParameters.MoodInfluenceOnEmotion);
+				potetial += scale*(this.mood.MoodValue*Constants.MoodInfluenceOnEmotion);
 				return potetial < 0 ? 0 : potetial;
 			}
 
@@ -146,8 +147,8 @@ namespace EmotionalAppraisal
 				EmotionDisposition disp;
 				if (this.emotionDispositions.TryGetValue(emotionName, out disp))
 					return disp;
-				
-				return DEFAULT_EMOTIONAL_DISPOSITION;
+
+				return m_defaultEmotionalDisposition;
 			}
 
 			public ActiveEmotion DetermineActiveEmotion(BaseEmotion potEm)
@@ -172,15 +173,15 @@ namespace EmotionalAppraisal
 			/// <summary>
 			/// Decays all emotions, mood and arousal according to the System Time
 			/// </summary>
-			public void Decay(float elapsedTime)
+			public void Decay(float elapsedTime, EmotionalAppraisalAsset parentAsset)
 			{
-				this.mood.DecayMood(elapsedTime);
+				this.mood.DecayMood(elapsedTime, parentAsset);
 				HashSet<string> toRemove = ObjectPool<HashSet<string>>.GetObject();
 				using (var it = this.emotionPool.GetEnumerator())
 				{
 					while (it.MoveNext())
 					{
-						it.Current.Value.DecayEmotion(elapsedTime);
+						it.Current.Value.DecayEmotion(elapsedTime, parentAsset);
 						if (!it.Current.Value.IsRelevant)
 							toRemove.Add(it.Current.Key);
 					}
@@ -264,7 +265,7 @@ namespace EmotionalAppraisal
 				EmotionDisposition disp;
 				if (this.emotionDispositions.TryGetValue(emotionName, out disp))
 					return disp;
-				return DEFAULT_EMOTIONAL_DISPOSITION;
+				return m_defaultEmotionalDisposition;
 			}
 
 			public override string ToString()
@@ -275,7 +276,7 @@ namespace EmotionalAppraisal
 			public void GetObjectData(ISerializationData dataHolder)
 			{
 				dataHolder.SetValue("EmotionalPool", emotionPool.Values.ToArray());
-				dataHolder.SetValue("EmotionDispositions",emotionDispositions.Values.ToArray());
+				dataHolder.SetValue("EmotionDispositions", emotionDispositions.Values.Prepend(m_defaultEmotionalDisposition).ToArray());
 				dataHolder.SetValue("Mood",mood.MoodValue);
 			}
 
@@ -283,8 +284,20 @@ namespace EmotionalAppraisal
 			{
 				mood.SetMoodValue(dataHolder.GetValue<float>("Mood"));
 				var dispositions = dataHolder.GetValue<EmotionDisposition[]>("EmotionDispositions");
+				EmotionDisposition defaultDisposition = null;
 				foreach (var disposition in dispositions)
-					emotionDispositions.Add(disposition.Emotion,disposition);
+				{
+					if (string.Equals(disposition.Emotion, "*", StringComparison.InvariantCultureIgnoreCase))
+					{
+						if (defaultDisposition == null)
+							defaultDisposition = disposition;
+					}
+					else
+						emotionDispositions.Add(disposition.Emotion, disposition);
+				}
+				if (defaultDisposition == null)
+					defaultDisposition = DEFAULT_EMOTIONAL_DISPOSITION;
+				m_defaultEmotionalDisposition = defaultDisposition;
 
 				var emotions = dataHolder.GetValue<ActiveEmotion[]>("EmotionalPool");
 				foreach (var emotion in emotions)

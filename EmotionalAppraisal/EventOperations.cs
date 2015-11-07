@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using EmotionalAppraisal.Interfaces;
 using KnowledgeBase.WellFormedNames;
 
@@ -6,19 +8,22 @@ namespace EmotionalAppraisal
 {
     public static class EventOperations
     {
-        public static bool MatchEvents(IEvent matchRule, IEvent eventPerception)
-        {
-            if (matchRule.Action != null && !matchRule.Action.Equals(eventPerception.Action))
-                return false;
+	    private static bool MatchStrings(string str1, string str2)
+	    {
+		    if (str1 == null || str2 == null) return true;
+		    return str1.Equals(str2, StringComparison.InvariantCultureIgnoreCase);
+	    }
 
-            if (matchRule.Subject != null && eventPerception.Subject != null)
-            {
-                if (!matchRule.Subject.Equals(eventPerception.Subject))
-                    return false;
-            }
+	    public static bool MatchEvents(IEvent matchRule, IEvent eventPerception)
+	    {
+		    if (!MatchStrings(matchRule.Action, eventPerception.Action))
+			    return false;
 
-            if (matchRule.Target != null && !matchRule.Target.Equals(eventPerception.Target))
-                return false;
+			if (!MatchStrings(matchRule.Subject, eventPerception.Subject))
+				return false;
+
+			if (!MatchStrings(matchRule.Target, eventPerception.Target))
+				return false;
 
             IEnumerator<IEventParameter> it1 = matchRule.Parameters.GetEnumerator();
             IEnumerator<IEventParameter> it2 = eventPerception.Parameters.GetEnumerator();
@@ -40,19 +45,16 @@ namespace EmotionalAppraisal
 
 	    public static Name ToName(this IEvent evt)
 	    {
-			List<Name> terms = new List<Name>();
-			terms.Add(new Symbol("Event"));
-			terms.Add(new Symbol(evt.Subject));
-			terms.Add(new Symbol(evt.Action));
-			terms.Add(evt.Target==null?Symbol.UNIVERSAL_SYMBOL:new Symbol(evt.Target));
-		    if (evt.Parameters != null)
+		    var terms = new List<Name>
 		    {
-				foreach (var parameter in evt.Parameters)
-				{
-					var p = new ComposedName(new Symbol(parameter.ParameterName), new Symbol(parameter.Value.ToString()));
-					terms.Add(p);
-				}
-		    }
+			    new Symbol("Event"),
+			    new Symbol(evt.Subject),
+			    new Symbol(evt.Action),
+			    evt.Target == null ? Symbol.UNIVERSAL_SYMBOL : new Symbol(evt.Target)
+		    };
+		    if (evt.Parameters != null)
+			    terms.AddRange(evt.Parameters.Select(parameter => new ComposedName(new Symbol(parameter.ParameterName), new Symbol(parameter.Value.ToString()))).Cast<Name>());
+		    
 			return new ComposedName(terms);
 	    }
 
