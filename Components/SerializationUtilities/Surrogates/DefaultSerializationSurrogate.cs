@@ -9,8 +9,15 @@ namespace GAIPS.Serialization.Surrogates
 	[DefaultSerializationSystem(typeof(object),true)]
 	public sealed class DefaultSerializationSurrogate : ISerializationSurrogate
 	{
-		private static readonly IFormatterConverter FormatConverter = new FormatterConverter();
-		private static readonly Regex BackingFieldNameRegex = new Regex(@"^<([a-zA-Z_]\w*)>k__BackingField$",RegexOptions.Singleline|RegexOptions.Compiled|RegexOptions.CultureInvariant);
+		private static readonly IFormatterConverter FormatConverter;
+		private static readonly Regex BackingFieldNameRegex;
+
+		static DefaultSerializationSurrogate()
+		{
+			FormatConverter = new FormatterConverter();
+			BackingFieldNameRegex = new Regex(@"^<([a-zA-Z_]\w*)>k__BackingField$");
+		}
+
 		private static string FormatFieldName(string fieldName)
 		{
 			var m = BackingFieldNameRegex.Match(fieldName);
