@@ -40,7 +40,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 
 		public bool Remove(Name name)
 		{
-			return MethodWrapper(name, s => Root.RemoveValue(s, 0));
+			return MethodWrapper(name, s => Root.RemoveValue(s));
 		}
 
 		public IEnumerator<KeyValuePair<Name, T>> GetEnumerator()
@@ -61,7 +61,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 
 		public bool ContainsKey(Name key)
 		{
-			return MethodWrapper(key, s => Root.Contains(s, 0));
+			return MethodWrapper(key, s => Root.Contains(s));
 		}
 
 		public ICollection<Name> Keys
@@ -179,7 +179,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 		public IEnumerable<SubstitutionSet> GetPosibleBindings(Name name)
 		{
 			List<SubstitutionSet> bindings = new List<SubstitutionSet>();
-			return !MethodWrapper(name, s => Root.Bind(s, 0, bindings)) ? null : bindings;
+			return !MethodWrapper(name, s => Root.Bind(s, bindings)) ? null : bindings;
 		}
 
 		//[Obsolete]

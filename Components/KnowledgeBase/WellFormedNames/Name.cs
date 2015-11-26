@@ -236,22 +236,18 @@ namespace KnowledgeBase.WellFormedNames
 
 		public static explicit operator Name(string definition)
 		{
-			return Name.Parse(definition);
+			return Parse(definition);
 		}
 
 		public static bool operator ==(Name n1, Name n2)
 		{
-
-            if (object.ReferenceEquals(n1, n2))
+            if (ReferenceEquals(n1, n2))
 				return true;
 
 		    if ((object) n1 == null || (object) n2 == null)
 		        return false;
             
-            if (n1.GetHashCode() != n2.GetHashCode())
-				return false;
-           
-			return n1.Equals(n2);
+            return n1.Equals(n2);
 		}
 
 		public static bool operator !=(Name n1, Name n2)

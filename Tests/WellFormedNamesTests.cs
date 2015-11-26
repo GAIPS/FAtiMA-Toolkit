@@ -430,6 +430,21 @@ namespace UnitTest.WellFormedNames
 		}
 
 		[TestMethod]
+		public void NameSearchTree_GetAllKeys()
+		{
+			var baseSet = _searchTreeEntries.Select((n, i) => new { v = i, name = Name.Parse(n) });
+			NameSearchTree<int> tree = new NameSearchTree<int>();
+			foreach (var e in baseSet)
+			{
+				tree.Add(e.name, e.v);
+			}
+
+			var values = tree.Keys;
+			if (baseSet.Select(s => s.name).Except(values).Any())
+				Assert.Fail("Could not retrieve all expected keys within the tree");
+		}
+
+		[TestMethod]
 		public void NameSearchTree_GetAllValuePairs()
 		{
 			var baseSet = _searchTreeEntries.Select((n, i) => new KeyValuePair<Name,int>(Name.Parse(n),i)).OrderBy(p => Guid.NewGuid());
@@ -439,7 +454,10 @@ namespace UnitTest.WellFormedNames
 				tree.Add(e.Key, e.Value);
 			}
 
-			var values = tree.ToList();
+			var values = new List<KeyValuePair<Name, int>>();
+			foreach (var i in tree)
+				values.Add(i);
+
 			if (baseSet.Except(values).Any())
 				Assert.Fail("Could not retrieve all expected values within the tree");
 		}
