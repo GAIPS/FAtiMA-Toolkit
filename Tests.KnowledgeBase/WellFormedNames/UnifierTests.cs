@@ -8,15 +8,15 @@ namespace Tests.KnowledgeBase.WellFormedNames
     [TestFixture]
     public class UnifierTests {
 
-        [TestCase("John", "John")]
-        [TestCase("Strong(John)", "Strong(John)")]
-        [TestCase("John", "[x]", "[x]/John")]
-        [TestCase("Strong([x])", "Strong(John)", "[x]/John")]
-        [TestCase("Likes([x],[y])", "Likes(John, [z])", "[x]/John", "[y]/[z]")]
-        [TestCase("Likes([x],John)", "Likes(John, [x])", "[x]/John")]
-        [TestCase("Likes([x],[y])", "Likes(John, Mary)", "[x]/John", "[y]/Mary")]
-        [TestCase("S([x],k([x],[z]),j([y],k(t(k,l),y)))", "S(t(k,l),k([x],y),j(P,k([x],[z])))", "[x]/t(k,l)", "[z]/y","[y]/P")]
-        public void Unify_UnifiableNames_True(string n1, string n2, params string[] result)
+        [TestCase("John", "John",new string[0])]
+		[TestCase("Strong(John)", "Strong(John)", new string[0])]
+		[TestCase("John", "[x]", new[]{"[x]/John"})]
+		[TestCase("Strong([x])", "Strong(John)", new[]{"[x]/John"})]
+		[TestCase("Likes([x],[y])", "Likes(John, [z])", new[]{"[x]/John", "[y]/[z]"})]
+		[TestCase("Likes([x],John)", "Likes(John, [x])", new[]{"[x]/John"})]
+		[TestCase("Likes([x],[y])", "Likes(John, Mary)", new[]{"[x]/John", "[y]/Mary"})]
+		[TestCase("S([x],k([x],[z]),j([y],k(t(k,l),y)))", "S(t(k,l),k([x],y),j(P,k([x],[z])))", new[]{"[x]/t(k,l)", "[z]/y", "[y]/P"})]
+        public void Unify_UnifiableNames_True(string n1, string n2, string[] result)
         {
             var name1 = Name.Parse(n1);
             var name2 = Name.Parse(n2);
@@ -35,10 +35,10 @@ namespace Tests.KnowledgeBase.WellFormedNames
         }
 
         [TestCase("John", "J")]
-        [TestCase("Strong(John)", "John")]
-        [TestCase("[x]([x])", "IsPerson(John)")]
-        [TestCase("[x](John,Paul)", "Friend(John,[x])")]
-        [TestCase("Like([x],[y])", "Like(John,Strong([y]))")]
+		[TestCase("Strong(John)", "John")]
+		[TestCase("[x]([x])", "IsPerson(John)")]
+		[TestCase("[x](John,Paul)", "Friend(John,[x])")]
+		[TestCase("Like([x],[y])", "Like(John,Strong([y]))")]
         public void Unify_NonUnifiableNames_False(string n1, string n2)
         {
             var name1 = Name.Parse(n1);
@@ -50,12 +50,12 @@ namespace Tests.KnowledgeBase.WellFormedNames
         }
         
 
-        [TestCase("x", "x(a)")]
-        [TestCase("x", "[y](a)", "[y]/x")]
-        [TestCase("x(a)", "x")]
-        [TestCase("[y](a)", "x", "[y]/x")]
-        // [TestCase("x(a, b)", "x(a, b, c)")] //todo:check why this fails
-        public void PartialUnify_PartiallyUnifiableNames_True(string n1, string n2, params string[] result)
+        [TestCase("x", "x(a)",new string[0])]
+		[TestCase("x", "[y](a)", new[]{"[y]/x"})]
+		[TestCase("x(a)", "x", new string[0])]
+		[TestCase("[y](a)", "x", new[]{"[y]/x"})]
+        [TestCase("x(a, b)", "x(a, b, c)",new string[0])]
+        public void PartialUnify_PartiallyUnifiableNames_True(string n1, string n2, string[] result)
         {
             var name1 = Name.Parse(n1);
             var name2 = Name.Parse(n2);

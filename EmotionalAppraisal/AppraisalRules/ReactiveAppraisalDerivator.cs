@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using EmotionalAppraisal.Components;
 using EmotionalAppraisal.Interfaces;
 using EmotionalAppraisal.OCCModel;
@@ -28,12 +29,12 @@ namespace EmotionalAppraisal.AppraisalRules
 			this.AppraisalRules = new NameSearchTree<Reaction>();
 		}
 		
-		public Reaction Evaluate(string perspective, IEvent evt)
+		public Reaction Evaluate(string perspective, IEvent evt, KnowledgeBase.KnowledgeBase kb)
 		{
 			Name eventName = evt.ToName();
 			if(!string.IsNullOrEmpty(perspective))
 				eventName = eventName.ApplyPerspective(perspective);
-			Reaction emotionalReaction = AppraisalRules[eventName];
+			Reaction emotionalReaction = AppraisalRules.MatchAll(eventName).FirstOrDefault(reaction => reaction.ActivationCondition==null || reaction.ActivationCondition.Evaluate(kb));
 			if(emotionalReaction != null)
 			{
 				emotionalReaction = emotionalReaction.MakeGround(evt.GenerateBindings());
@@ -61,7 +62,7 @@ namespace EmotionalAppraisal.AppraisalRules
 
 		public void Appraisal(EmotionalAppraisalAsset emotionalModule, IEvent evt, IWritableAppraisalFrame frame)
 		{
-			Reaction selfEvaluation = Evaluate(emotionalModule.Perspective, evt);
+			Reaction selfEvaluation = Evaluate(emotionalModule.Perspective, evt,emotionalModule.KnowledgeBase);
 			if (selfEvaluation != null)
 			{
 				if (selfEvaluation.Desirability != 0)

@@ -80,7 +80,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 
 		public bool TryGetValue(Name key, out T value)
 		{
-			var result = MethodWrapper(key, s => Root.Retrive(s, 0));
+			var result = MethodWrapper(key, s => Root.Retrive(s));
 			value = result.Item2;
 			return result.Item1;
 		}
@@ -164,9 +164,16 @@ namespace KnowledgeBase.WellFormedNames.Collections
 
 		public bool TryMatchValue(Name name, out T value)
 		{
-			Pair<bool, T> result = MethodWrapper(name, s => Root.Match(s, 0));
+			Pair<bool, T> result = MethodWrapper(name, s => Root.Match(s));
 			value = result.Item2;
 			return result.Item1;
+		}
+
+		public IEnumerable<T> MatchAll(Name name)
+		{
+			List<T> results = new List<T>();
+			MethodWrapper(name, s => Root.MatchAll(s, results));
+			return results;
 		}
 
 		public IEnumerable<SubstitutionSet> GetPosibleBindings(Name name)
@@ -175,21 +182,21 @@ namespace KnowledgeBase.WellFormedNames.Collections
 			return !MethodWrapper(name, s => Root.Bind(s, 0, bindings)) ? null : bindings;
 		}
 
-		[Obsolete]
-		public override string ToString()
-		{
-			var builder = ObjectPool<StringBuilder>.GetObject();
-			try
-			{
-				Root.Write(builder, 0);
-				return builder.ToString();
-			}
-			finally
-			{
-				builder.Length = 0;
-				ObjectPool<StringBuilder>.Recycle(builder);
-			}
-		}
+		//[Obsolete]
+		//public override string ToString()
+		//{
+		//	var builder = ObjectPool<StringBuilder>.GetObject();
+		//	try
+		//	{
+		//		Root.Write(builder, 0);
+		//		return builder.ToString();
+		//	}
+		//	finally
+		//	{
+		//		builder.Length = 0;
+		//		ObjectPool<StringBuilder>.Recycle(builder);
+		//	}
+		//}
 
 		private static TReturn MethodWrapper<TReturn>(Name name, Func<Stack<Name>, TReturn> func)
 		{

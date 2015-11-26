@@ -16,12 +16,16 @@ namespace KnowledgeBase.WellFormedNames.Collections
 		{
 			private readonly Precision m_index;
 			private SortedDictionary<string, TreeNode> m_next;
+			private TreeNode m_universal;
 			private bool m_hasValue;
 			private T m_value;
 
 			public int Depth(int d)
 			{
-				return m_next.Count > 0 ? m_next.Values.Max(n => n.Depth(d + 1)) : d;
+				var nextDepth = m_next.Count > 0 ? m_next.Values.Max(n => n.Depth(d + 1)) : d;
+				if (m_universal != null)
+					nextDepth = Math.Max(nextDepth, m_universal.Depth(d));
+				return nextDepth;
 			}
 
 			public bool IsEmpty
@@ -31,7 +35,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					if (m_hasValue)
 						return false;
 
-					return m_next.Count == 0;
+					return m_next.Count == 0 && m_universal==null;
 				}
 			}
 
@@ -43,6 +47,11 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				m_next = new SortedDictionary<string, TreeNode>();
 				foreach (var pair in other.m_next)
 					m_next[pair.Key] = new TreeNode(pair.Value);
+
+				if (other.m_universal != null)
+					m_universal = new TreeNode(other.m_universal);
+				else
+					m_universal = null;
 			}
 
 			public TreeNode()
@@ -53,6 +62,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 			public void Clear()
 			{
 				m_next.Clear();
+				m_universal = null;
 				m_hasValue = false;
 				m_value = default(T);
 			}
@@ -65,6 +75,9 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					count += m_next.Values.Sum(n => n.Count());
 				}
 
+				if (m_universal != null)
+					count += m_universal.Count();
+
 				if (m_hasValue)
 					count++;
 
@@ -75,6 +88,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 			{
 				m_index = index;
 				m_next = new SortedDictionary<string, TreeNode>();
+				m_universal = null;
 				m_hasValue = false;
 				m_value = default(T);
 			}
@@ -115,7 +129,13 @@ namespace KnowledgeBase.WellFormedNames.Collections
 
 				string key = getKey(term);
 
-				if (!m_next.TryGetValue(key, out nodeToAdd))
+				if (key == Symbol.UNIVERSAL_STRING)
+				{
+					if (m_universal == null)
+						m_universal = new TreeNode((Precision)(m_index + 1));
+					nodeToAdd = m_universal;
+				}
+				else if (!m_next.TryGetValue(key, out nodeToAdd))
 				{
 					nodeToAdd = new TreeNode((Precision)(m_index + 1));
 					m_next[key] = nodeToAdd;
@@ -155,16 +175,31 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				}
 
 				string key = getKey(stack);
-				if (!m_next.TryGetValue(key, out nodeToRemove))
+
+				if (key == Symbol.UNIVERSAL_STRING)
 				{
-					return false;
+					if (m_universal == null)
+						return false;
+
+					if (!m_universal.RemoveValue(terms, processed + 1))
+						return false;
+
+					if (m_universal.IsEmpty)
+						m_universal = null;
 				}
+				else
+				{
+					if (!m_next.TryGetValue(key, out nodeToRemove))
+					{
+						return false;
+					}
 
-				if (!nodeToRemove.RemoveValue(terms, processed + 1))
-					return false;
+					if (!nodeToRemove.RemoveValue(terms, processed + 1))
+						return false;
 
-				if (nodeToRemove.IsEmpty)
-					m_next.Remove(key);
+					if (nodeToRemove.IsEmpty)
+						m_next.Remove(key);
+				}
 
 				return true;
 			}
@@ -194,39 +229,40 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				}
 
 				string key = getKey(term);
-				if (m_next.TryGetValue(key, out nodeToEvaluate))
+				if (key == Symbol.UNIVERSAL_STRING)
 				{
-					return nodeToEvaluate.Contains(stack, processed + 1);
+					if (m_universal != null)
+						return m_universal.Contains(stack, processed + 1);
+				}
+				else
+				{
+					if (m_next.TryGetValue(key, out nodeToEvaluate))
+						return nodeToEvaluate.Contains(stack, processed + 1);
 				}
 				return false;
 			}
 
-			public Pair<bool, T> Match(Stack<Name> stack, int processed)
+			public Pair<bool, T> Match(Stack<Name> stack)
 			{
 				if (stack.Count == 0) //End terms
-				{
-					if (m_index != processed)
-						return Tuple.Create(false, default(T));
-
 					return Tuple.Create(m_hasValue, m_value);
-				}
 
-				TreeNode nodeToEvaluate;
 				Name term = stack.Pop();
-
 				string key = getKey(term);
+				TreeNode nodeToEvaluate;
+
 				if (key == Symbol.UNIVERSAL_STRING)
 				{
-					if (m_next.TryGetValue(Symbol.UNIVERSAL_STRING, out nodeToEvaluate))
+					if (m_universal != null)
 					{
-						var res = nodeToEvaluate.Match(stack, processed + 1);
+						var res = m_universal.Match(stack);
 						if (res.Item1)
 							return res;
 					}
-
+					
 					foreach (var node in m_next.Values)
 					{
-						var res = node.Match(stack, processed + 1);
+						var res = node.Match(stack);
 						if (res.Item1)
 							return res;
 					}
@@ -246,7 +282,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 							}
 						}
 
-						var res = nodeToEvaluate.Match(stack, processed + 1);
+						var res = nodeToEvaluate.Match(stack);
 						if (res.Item1)
 							return res;
 
@@ -258,57 +294,122 @@ namespace KnowledgeBase.WellFormedNames.Collections
 						}
 					}
 
-					if (m_next.TryGetValue(Symbol.UNIVERSAL_STRING, out nodeToEvaluate))
+					if (m_universal != null)
 					{
-						var res = nodeToEvaluate.Match(stack, processed + 1);
+						var res = m_universal.Match(stack);
 						if (res.Item1)
 							return res;
 					}
 				}
 
 				stack.Push(term);
+
 				return Tuple.Create(false, default(T));
 			}
 
-			public Pair<bool, T> Retrive(Stack<Name> stack, int processed)
+			public int MatchAll(Stack<Name> stack, List<T> results)
 			{
 				if (stack.Count == 0) //End terms
 				{
-					if (m_index != processed)
-						return Tuple.Create(false, default(T));
-
-					return Tuple.Create(m_hasValue, m_value);
+					if (!m_hasValue)
+						return 0;
+					results.Add(m_value);
+					return 1;
 				}
+
+				int found = 0;
+				Name term = stack.Pop();
+
+				string key = getKey(term);
+				if (key == Symbol.UNIVERSAL_STRING)
+				{
+					if (m_universal != null)
+						found += m_universal.MatchAll(stack, results);
+
+					foreach (var node in GetNextLevel().SelectMany(t => t.Item2))
+						found += node.MatchAll(stack, results);
+				}
+				else
+				{
+					TreeNode nodeToEvaluate;
+					if (m_next.TryGetValue(key, out nodeToEvaluate))
+					{
+						if (term.NumberOfTerms > 1)
+						{
+							using (var it = term.GetTerms().Reverse().GetEnumerator())
+							{
+								while (it.MoveNext())
+								{
+									stack.Push(it.Current);
+								}
+							}
+						}
+
+						found += nodeToEvaluate.MatchAll(stack, results);
+
+						//Finished evaluating term. reconstruct stack
+						if (term.NumberOfTerms > 1)
+						{
+							for (int i = 0; i < term.NumberOfTerms; i++)
+								stack.Pop();
+						}
+					}
+
+					if (m_universal != null)
+					{
+						found += m_universal.MatchAll(stack, results);
+					}
+				}
+				stack.Push(term);
+				return found;
+			}
+
+			public Pair<bool, T> Retrive(Stack<Name> stack)
+			{
+				if (stack.Count == 0) //End terms
+					return Tuple.Create(m_hasValue, m_value);
 
 				TreeNode nodeToEvaluate;
 				var term = stack.Pop();
 
 				var key = getKey(term);
-				if (m_next.TryGetValue(key, out nodeToEvaluate))
+				if(key==Symbol.UNIVERSAL_STRING)
 				{
-					if (term.NumberOfTerms > 1)
+					if (m_universal != null)
 					{
-						using (var it = term.GetTerms().Reverse().GetEnumerator())
-						{
-							while (it.MoveNext())
-							{
-								stack.Push(it.Current);
-							}
-						}
-					}
-
-					var res = nodeToEvaluate.Match(stack, processed + 1);
-					if (res.Item1)
-						return res;
-
-					//Failed to evaluate, reconstruct stack
-					if (term.NumberOfTerms > 1)
-					{
-						for (int i = 0; i < term.NumberOfTerms; i++)
-							stack.Pop();
+						var res = m_universal.Retrive(stack);
+						if (res.Item1)
+							return res;
 					}
 				}
+				else
+				{
+					if (m_next.TryGetValue(key, out nodeToEvaluate))
+					{
+						if (term.NumberOfTerms > 1)
+						{
+							using (var it = term.GetTerms().Reverse().GetEnumerator())
+							{
+								while (it.MoveNext())
+								{
+									stack.Push(it.Current);
+								}
+							}
+						}
 
+						var res = nodeToEvaluate.Retrive(stack);
+						if (res.Item1)
+							return res;
+
+						//Failed to evaluate, reconstruct stack
+						if (term.NumberOfTerms > 1)
+						{
+							for (int i = 0; i < term.NumberOfTerms; i++)
+								stack.Pop();
+						}
+					}	
+				}
+				
 				stack.Push(term);
 				return Tuple.Create(false, default(T));
 			}
@@ -322,6 +423,9 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				}
 				else
 					result = Enumerable.Empty<T>();
+
+				if (m_universal != null)
+					result = result.Union(m_universal.GetValues());
 
 				if (m_hasValue)
 					result = result.Prepend(m_value);
@@ -366,6 +470,14 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					}
 				}
 
+				if (m_universal != null)
+				{
+					var entryResults = m_universal.GetKeys().ToList();
+					foreach (var r in entryResults)
+						r.Push(Symbol.UNIVERSAL_SYMBOL);
+					result = result.Union(entryResults);
+				}
+
 				if (m_hasValue)
 					result = result.Append(ObjectPool<Stack<Name>>.GetObject());
 
@@ -407,6 +519,14 @@ namespace KnowledgeBase.WellFormedNames.Collections
 						}
 						result = result.Union(entryResults);
 					}
+				}
+
+				if (m_universal != null)
+				{
+					var entryResults = m_universal.GetKeyValuePairs().ToList();
+					foreach (var r in entryResults)
+						r.Item1.Push(Symbol.UNIVERSAL_SYMBOL);
+					result = result.Union(entryResults);
 				}
 
 				if (m_hasValue)
@@ -473,6 +593,24 @@ namespace KnowledgeBase.WellFormedNames.Collections
 						}
 					}
 				}
+
+				if (m_universal != null)
+				{
+					if (level > 1)
+					{
+						foreach (var pair in m_universal.CollectNextLevel(level - 1))
+						{
+							pair.Item1.Push(Symbol.UNIVERSAL_SYMBOL);
+							yield return pair;
+						}
+					}
+					else
+					{
+						var s = ObjectPool<Stack<Name>>.GetObject();
+						s.Push(Symbol.UNIVERSAL_SYMBOL);
+						yield return Tuple.Create(s, (IEnumerable<TreeNode>)new[] { m_universal });
+					}
+				}
 			}
 
 			private IEnumerable<Pair<Name, IEnumerable<TreeNode>>> GetNextLevel()
@@ -509,8 +647,16 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				if (!term.IsVariable)
 				{
 					string key = getKey(term);
-					if (m_next.TryGetValue(key, out nodeToEvaluate))
-						return nodeToEvaluate.Bind(stack, processed + 1, resultsFound);
+					if (key == Symbol.UNIVERSAL_STRING)
+					{
+						if (m_universal != null)
+							return m_universal.Bind(stack, processed + 1, resultsFound);
+					}
+					else
+					{
+						if (m_next.TryGetValue(key, out nodeToEvaluate))
+							return nodeToEvaluate.Bind(stack, processed + 1, resultsFound);
+					}
 
 					return false;
 				}
@@ -545,48 +691,6 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					}
 				}
 
-				//foreach (var entry in m_next)
-				//{
-				//	List<SubstitutionSet> childResults = new List<SubstitutionSet>();
-				//	Stack<Name> stackClone = new Stack<Name>(stack);
-				//	if(!entry.Value.Bind(stackClone,processed+1,childResults))
-				//		continue;
-					
-				//	string key = entry.Key;
-				//	int termsToMerge = 0;
-				//	if ((key[0] == '*') && (key.Length > 1))
-				//	{
-				//		key = key.Substring(2, key.Length - 3);
-				//		termsToMerge = int.Parse(key);
-				//	}
-
-				//	Name name;
-				//	if (termsToMerge > 0)
-				//	{
-				//		throw new NotImplementedException();
-				//	}
-				//	else
-				//		name = new Symbol(key);
-
-				//	var newSubstitution = new Substitution((Symbol)term, name);
-				//	if (childResults.Count > 0)
-				//	{
-				//		foreach (var set in childResults)
-				//		{
-				//			if (set.Conflicts(newSubstitution))
-				//				return false;
-				//			set.AddSubstitution(newSubstitution);
-				//		}
-				//		resultsFound.AddRange(childResults);
-				//	}
-				//	else
-				//	{
-				//		var newSet = new SubstitutionSet();
-				//		newSet.AddSubstitution(newSubstitution);
-				//		resultsFound.Add(newSet);
-				//	}
-				//}
-
 				return true;
 			}
 
@@ -605,9 +709,17 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					builder.AppendFormat("{0} :", p.Key).AppendLine();
 					p.Value.Write(builder, indent + 1);
 				}
+
+				if (m_universal != null)
+				{
+					builder.AppendLine();
+					Indent(builder, indent);
+					builder.AppendLine("* :");
+					m_universal.Write(builder, indent + 1);
+				}
 			}
 
-			private void Indent(StringBuilder builder, int indent)
+			private static void Indent(StringBuilder builder, int indent)
 			{
 				for (int i = 0; i < indent; i++)
 					builder.Append("\t");

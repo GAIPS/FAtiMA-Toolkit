@@ -34,6 +34,11 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Conditions\ConditionSet.cs" />
+    <Compile Include="Conditions\ICondition.cs" />
+    <Compile Include="Conditions\NotCondition.cs" />
+    <Compile Include="Conditions\PredicateCondition.cs" />
+    <Compile Include="Conditions\PropertyCondition.cs" />
     <Compile Include="KnowledgeBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WellFormedNames\Collections\NameSearchTree.cs" />

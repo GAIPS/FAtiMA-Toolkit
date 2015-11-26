@@ -18,7 +18,6 @@ namespace Tests.KnowledgeBase.WellFormedNames
         }
 
         [TestCase("[x]!=John", "[x]", "John")]
-        [Ignore("Check with Pedro why this is not working")]
         public void Inequality_ValidInequalityString_NewInequality(string i, string var , string val)
         {
             var sub = new Inequality(i);

@@ -34,8 +34,8 @@ namespace KnowledgeBase.WellFormedNames
 			if (!m.Success)
 				throw new BadSubstitutionException("\""+substitutionDefinition+"\" is not a valid inequality definition");
 
-			this.Variable = new Symbol(m.Groups[0].Value);
-			this.Value = new Symbol(m.Groups[1].Value);
+			this.Variable = new Symbol(m.Groups[1].Value);
+			this.Value = new Symbol(m.Groups[2].Value);
 		}
 
 		/// <summary>

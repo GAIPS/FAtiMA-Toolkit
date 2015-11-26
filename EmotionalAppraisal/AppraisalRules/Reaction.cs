@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using EmotionalAppraisal;
-using EmotionalAppraisal.Interfaces;
+using KnowledgeBase.Conditions;
 using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalAppraisal.AppraisalRules
@@ -67,6 +66,11 @@ namespace EmotionalAppraisal.AppraisalRules
 			if (Other != null)
 				Other = (Name) other.Other.Clone();
 		}
+
+		/// <summary>
+		/// The conditions that must be matched in the knowledge base in order for the reaction to be activated
+		/// </summary>
+		public ICondition ActivationCondition { get; set; }
 
 		/// <summary>
 		///     Desirability of the event

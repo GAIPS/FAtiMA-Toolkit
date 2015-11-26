@@ -74,8 +74,17 @@ namespace KnowledgeBase.WellFormedNames
 				return false;
 
 			if (name1.IsGrounded && name2.IsGrounded)
-				return (name1.ToString().StartsWith(name2.ToString()))||(name2.ToString().StartsWith(name1.ToString()));
-
+			{
+				var it1 = name1.GetTerms().GetEnumerator();
+				var it2 = name2.GetTerms().GetEnumerator();
+				while (it1.MoveNext() && it2.MoveNext())
+				{
+					if (!it1.Current.Equals(it2.Current))
+						return false;
+				}
+				return true;
+			}
+			
 			bindings = FindSubst(name1, name2,true);
 			return bindings != null;
 		}
