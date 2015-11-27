@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +11,8 @@ namespace KnowledgeBase.WellFormedNames.Collections
 	{
 		protected class TreeNode
 		{
-			private SortedDictionary<string, TreeNode> m_next;
+			private SortedDictionary<string, TreeNode> m_nextSymbol;
+			private SortedDictionary<string, TreeNode> m_nextVariable;
 			private SortedDictionary<int, TreeNode> m_nextComposed;
 			private TreeNode m_universal;
 			private bool m_hasValue;
@@ -20,10 +20,11 @@ namespace KnowledgeBase.WellFormedNames.Collections
 
 			public int Depth(int d)
 			{
-				var nextDepth = m_next.Count > 0 ? m_next.Values.Max(n => n.Depth(d + 1)) : d;
+				var nextDepth = m_nextSymbol.Count > 0 ? m_nextSymbol.Values.Max(n => n.Depth(d + 1)) : d;
+				var nextVarDepth = m_nextVariable.Count > 0 ? m_nextVariable.Values.Max(n => n.Depth(d + 1)) : d;
 				var nextCompDepth = m_nextComposed.Count > 0 ? m_nextComposed.Values.Max(n => n.Depth(d + 1)) : d;
 				var unvDepth = m_universal != null ? m_universal.Depth(d + 1) : d;
-				return Math.Max(nextDepth, Math.Max(nextCompDepth, unvDepth));
+				return Math.Max(nextDepth, Math.Max(nextCompDepth, Math.Max(nextVarDepth, unvDepth)));
 			}
 
 			public bool IsEmpty
@@ -33,7 +34,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					if (m_hasValue)
 						return false;
 
-					return m_next.Count == 0 && m_nextComposed.Count == 0 && m_universal==null;
+					return m_nextSymbol.Count == 0 && m_nextComposed.Count == 0 && m_nextVariable.Count == 0 && m_universal==null;
 				}
 			}
 
@@ -41,9 +42,13 @@ namespace KnowledgeBase.WellFormedNames.Collections
 			{
 				m_hasValue = other.m_hasValue;
 				m_value = other.m_value;
-				m_next = new SortedDictionary<string, TreeNode>(StringComparer.InvariantCultureIgnoreCase);
-				foreach (var pair in other.m_next)
-					m_next[pair.Key] = new TreeNode(pair.Value);
+				m_nextSymbol = new SortedDictionary<string, TreeNode>(StringComparer.InvariantCultureIgnoreCase);
+				foreach (var pair in other.m_nextSymbol)
+					m_nextSymbol[pair.Key] = new TreeNode(pair.Value);
+
+				m_nextVariable = new SortedDictionary<string, TreeNode>(StringComparer.InvariantCultureIgnoreCase);
+				foreach (var pair in other.m_nextVariable)
+					m_nextVariable[pair.Key]=new TreeNode(pair.Value);
 
 				m_nextComposed = new SortedDictionary<int, TreeNode>();
 				foreach (var pair in other.m_nextComposed)
@@ -57,7 +62,8 @@ namespace KnowledgeBase.WellFormedNames.Collections
 
 			public TreeNode()
 			{
-				m_next = new SortedDictionary<string, TreeNode>(StringComparer.InvariantCultureIgnoreCase);
+				m_nextSymbol = new SortedDictionary<string, TreeNode>(StringComparer.InvariantCultureIgnoreCase);
+				m_nextVariable = new SortedDictionary<string, TreeNode>(StringComparer.InvariantCultureIgnoreCase);
 				m_nextComposed = new SortedDictionary<int, TreeNode>();
 				m_universal = null;
 				m_hasValue = false;
@@ -66,7 +72,9 @@ namespace KnowledgeBase.WellFormedNames.Collections
 
 			public void Clear()
 			{
-				m_next.Clear();
+				m_nextSymbol.Clear();
+				m_nextVariable.Clear();
+				m_nextComposed.Clear();
 				m_universal = null;
 				m_hasValue = false;
 				m_value = default(T);
@@ -78,9 +86,14 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				if (m_hasValue)
 					count++;
 
-				if (m_next.Count > 0)
+				if (m_nextSymbol.Count > 0)
 				{
-					count += m_next.Values.Sum(n => n.Count());
+					count += m_nextSymbol.Values.Sum(n => n.Count());
+				}
+
+				if (m_nextComposed.Count > 0)
+				{
+					count += m_nextComposed.Values.Sum(n => n.Count());
 				}
 
 				if (m_nextComposed.Count > 0)
@@ -117,10 +130,14 @@ namespace KnowledgeBase.WellFormedNames.Collections
 							m_universal = new TreeNode();
 						nodeToAdd = m_universal;
 					}
-					else if (!m_next.TryGetValue(key, out nodeToAdd))
+					else
 					{
-						nodeToAdd = new TreeNode();
-						m_next[key] = nodeToAdd;
+						var set = term.IsVariable ? m_nextVariable : m_nextSymbol;
+						if (!set.TryGetValue(key, out nodeToAdd))
+						{
+							nodeToAdd = new TreeNode();
+							set[key] = nodeToAdd;
+						}
 					}
 				}
 				else
@@ -176,7 +193,9 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					}
 					else
 					{
-						if (!m_next.TryGetValue(key, out nodeToRemove))
+						var set = term.IsVariable ? m_nextVariable : m_nextSymbol;
+
+						if (!set.TryGetValue(key, out nodeToRemove))
 						{
 							return false;
 						}
@@ -185,7 +204,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 							return false;
 
 						if (nodeToRemove.IsEmpty)
-							m_next.Remove(key);
+							set.Remove(key);
 					}
 				}
 				else
@@ -230,7 +249,8 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					}
 					else
 					{
-						if (m_next.TryGetValue(key, out nodeToEvaluate))
+						var set = term.IsVariable ? m_nextVariable : m_nextSymbol;
+						if (set.TryGetValue(key, out nodeToEvaluate))
 							return nodeToEvaluate.Contains(stack);
 					}
 				}
@@ -272,7 +292,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 								return res;
 						}
 
-						foreach (var node in m_next.Values)
+						foreach (var node in GetNextLevel().SelectMany(t => t.Item2))
 						{
 							var res = node.Match(stack);
 							if (res.Item1)
@@ -281,7 +301,8 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					}
 					else
 					{
-						if (m_next.TryGetValue(key, out nodeToEvaluate))
+						var set = term.IsVariable ? m_nextVariable : m_nextSymbol;
+						if (set.TryGetValue(key, out nodeToEvaluate))
 						{
 							var res = nodeToEvaluate.Match(stack);
 							if (res.Item1)
@@ -358,7 +379,8 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					}
 					else
 					{
-						if (m_next.TryGetValue(key, out nodeToEvaluate))
+						var set = term.IsVariable ? m_nextVariable : m_nextSymbol;
+						if (set.TryGetValue(key, out nodeToEvaluate))
 							found += nodeToEvaluate.MatchAll(stack, results);
 
 						if (m_universal != null)
@@ -415,7 +437,8 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					}
 					else
 					{
-						if (m_next.TryGetValue(key, out nodeToEvaluate))
+						var set = term.IsVariable ? m_nextVariable : m_nextSymbol;
+						if (set.TryGetValue(key, out nodeToEvaluate))
 						{
 							var res = nodeToEvaluate.Retrive(stack);
 							if (res.Item1)
@@ -454,7 +477,8 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				if (m_hasValue)
 					yield return m_value;
 
-				var set = m_next.Values.Union(m_nextComposed.Values);
+				var set = m_nextSymbol.Values.Union(m_nextVariable.Values);
+				set = set.Union(m_nextComposed.Values);
 				if (m_universal != null)
 					set = set.Append(m_universal);
 
@@ -467,7 +491,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				if (m_hasValue)
 					yield return ObjectPool<Stack<Name>>.GetObject();
 
-				foreach (var entry in m_next)
+				foreach (var entry in m_nextSymbol.Union(m_nextVariable))
 				{
 					var term = new Symbol(entry.Key);
 					var entryResults = entry.Value.GetKeys();
@@ -512,7 +536,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				if (m_hasValue)
 					yield return Tuple.Create(ObjectPool<Stack<Name>>.GetObject(), m_value);
 
-				foreach (var entry in m_next)
+				foreach (var entry in m_nextSymbol.Union(m_nextVariable))
 				{
 					var entryResults = entry.Value.GetKeyValuePairs();
 					Name term = new Symbol(entry.Key);
@@ -554,7 +578,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 
 			private IEnumerable<Pair<Stack<Name>, IEnumerable<TreeNode>>> CollectNextLevel(int level)
 			{
-				foreach (var entry in m_next)
+				foreach (var entry in m_nextSymbol.Union(m_nextVariable))
 				{
 					var key = entry.Key;
 					if (level > 1)
@@ -639,82 +663,221 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				}
 			}
 
-			public bool Bind(Stack<Name> stack, List<SubstitutionSet> resultsFound)
+			public bool Bind(Stack<Name> stack, SubstitutionSet constraints, List<SubstitutionSet> resultsFound)
 			{
 				if (stack.Count == 0) //End stack
 					return true;
 
 				TreeNode nodeToEvaluate;
 				Name term = stack.Pop();
-
-				if (!term.IsVariable)
+				bool found = false;
+				try
 				{
-					int numOfTerms = term.NumberOfTerms;
-					if (numOfTerms == 1)
+					if (!term.IsVariable)
 					{
-						string key = term.ToString();
-						if (key == Symbol.UNIVERSAL_STRING)
+						int numOfTerms = term.NumberOfTerms;
+						if (numOfTerms == 1)
 						{
-							if (m_universal != null)
-								return m_universal.Bind(stack, resultsFound);
+							string key = term.ToString();
+							if (key == Symbol.UNIVERSAL_STRING)
+							{
+								if (m_universal != null)
+								{
+									found |= m_universal.Bind(stack,constraints, resultsFound);
+								}
+
+								foreach (var node in GetNextLevel().SelectMany(p => p.Item2))
+								{
+									found |= node.Bind(stack,constraints, resultsFound);
+								}
+							}
+							else
+							{
+								if (m_nextSymbol.TryGetValue(key, out nodeToEvaluate))
+								{
+									found |= nodeToEvaluate.Bind(stack,constraints, resultsFound);
+								}
+
+								if (m_universal != null)
+								{
+									found |= m_universal.Bind(stack,constraints, resultsFound);
+								}
+							}
 						}
 						else
 						{
-							if (m_next.TryGetValue(key, out nodeToEvaluate))
-								return nodeToEvaluate.Bind(stack, resultsFound);
+							if (m_nextComposed.TryGetValue(numOfTerms, out nodeToEvaluate))
+							{
+								using (var it = term.GetTerms().Reverse().GetEnumerator())
+								{
+									while (it.MoveNext())
+									{
+										stack.Push(it.Current);
+									}
+								}
+
+								found |= nodeToEvaluate.Bind(stack,constraints, resultsFound);
+
+								for (int i = 0; i < term.NumberOfTerms; i++)
+									stack.Pop();
+							}
+						}
+
+						//It was unable to find a proper match. try matching with stored variables
+						foreach (var pair in m_nextVariable)
+						{
+							var sub = new Substitution(new Symbol(pair.Key), term);
+							if(constraints.Conflicts(sub))
+								continue;
+							
+							List<SubstitutionSet> childResults = new List<SubstitutionSet>();
+							if (pair.Value.Bind(stack,constraints, childResults))
+							{
+								if (childResults.Count > 0)
+								{
+									foreach (var set in childResults)
+									{
+										if (!set.Conflicts(sub))
+										{
+											found = true;
+											set.AddSubstitution(sub);
+											resultsFound.Add(set);
+										}
+									}
+								}
+								else
+								{
+									found = true;
+									var newSet = new SubstitutionSet();
+									newSet.AddSubstitution(sub);
+									resultsFound.Add(newSet);
+								}
+							}
 						}
 					}
 					else
 					{
-						if (m_nextComposed.TryGetValue(numOfTerms, out nodeToEvaluate))
+						//Find bindings
+						foreach (var pair in GetNextLevel())
 						{
-							using (var it = term.GetTerms().Reverse().GetEnumerator())
+							var sub = new Substitution((Symbol)term, pair.Item1);
+							if(constraints.Conflicts(sub))
+								continue;
+
+							foreach (var node in pair.Item2)
 							{
-								while (it.MoveNext())
+								List<SubstitutionSet> childResults = new List<SubstitutionSet>();
+								if (!node.Bind(stack,constraints, childResults))
+									continue;
+
+								if (childResults.Count > 0)
 								{
-									stack.Push(it.Current);
+									foreach (var set in childResults)
+									{
+										if (!set.Conflicts(sub))
+										{
+											found = true;
+											set.AddSubstitution(sub);
+											resultsFound.Add(set);
+										}
+									}
+								}
+								else
+								{
+									found = true;
+									var newSet = new SubstitutionSet();
+									newSet.AddSubstitution(sub);
+									resultsFound.Add(newSet);
 								}
 							}
-
-							return nodeToEvaluate.Bind(stack, resultsFound);
 						}
 					}
-
-					return false;
 				}
-
-				//Find bindings
-				foreach (var pair in GetNextLevel())
+				finally
 				{
-					var newSubstitution = new Substitution((Symbol)term, pair.Item1);
-					foreach (var node in pair.Item2)
-					{
-						List<SubstitutionSet> childResults = new List<SubstitutionSet>();
-						Stack<Name> stackClone = new Stack<Name>(stack);
-						if (!node.Bind(stackClone, childResults))
-							continue;
-
-						if (childResults.Count > 0)
-						{
-							foreach (var set in childResults)
-							{
-								if (set.Conflicts(newSubstitution))
-									return false;
-								set.AddSubstitution(newSubstitution);
-							}
-							resultsFound.AddRange(childResults);
-						}
-						else
-						{
-							var newSet = new SubstitutionSet();
-							newSet.AddSubstitution(newSubstitution);
-							resultsFound.Add(newSet);
-						}
-					}
+					stack.Push(term);
 				}
-
-				return true;
+				return found;
 			}
+
+			//public IEnumerable<Pair<T, SubstitutionSet>> Unify(Stack<Name> stack, SubstitutionSet binding)
+			//{
+			//	if (stack.Count == 0)
+			//	{
+			//		if (m_hasValue)
+			//			yield return Tuple.Create(m_value, new SubstitutionSet(binding));
+			//	}
+
+			//	TreeNode nodeToEvaluate;
+			//	Name term = stack.Pop();
+				
+			//	if (!term.IsVariable)
+			//	{
+			//		int numOfTerms = term.NumberOfTerms;
+			//		if (numOfTerms == 1)
+			//		{
+			//			string key = term.ToString();
+			//			if (key == Symbol.UNIVERSAL_STRING)
+			//			{
+			//				if (m_universal != null)
+			//				{
+			//					foreach (var pair in m_universal.Unify(stack, binding))
+			//					{
+			//						yield return pair;
+			//					}
+			//				}
+
+			//				foreach (var node in GetNextLevel())
+			//				{
+			//					throw new NotImplementedException();
+			//					//result = result.Union(node.Unify(stack, binding));
+			//				}
+			//			}
+			//			else
+			//			{
+			//				//if (m_nextSymbol.TryGetValue(key, out nodeToEvaluate))
+			//				//	found += nodeToEvaluate.MatchAll(stack, results);
+
+			//				//if (m_universal != null)
+			//				//	found += m_universal.MatchAll(stack, results);
+			//			}
+			//		}
+			//		else
+			//		{
+			//			if (m_nextComposed.TryGetValue(numOfTerms, out nodeToEvaluate))
+			//			{
+			//				using (var it = term.GetTerms().Reverse().GetEnumerator())
+			//				{
+			//					while (it.MoveNext())
+			//					{
+			//						stack.Push(it.Current);
+			//					}
+			//				}
+
+			//				foreach (var pair in nodeToEvaluate.Unify(stack,binding))
+			//				{
+			//					yield return pair;
+			//				}
+
+			//				for (int i = 0; i < numOfTerms; i++)
+			//					stack.Pop();
+			//			}
+
+			//			if (m_universal != null)
+			//			{
+			//				foreach (var pair in m_universal.Unify(stack,binding))
+			//				{
+			//					yield return pair;
+			//				}
+			//			}
+			//		}
+			//	}
+			//	else
+			//	{
+			//		throw new NotImplementedException("variable term");
+			//	}
+			//	throw new NotImplementedException("end");
+			//}
 
 			public void Write(StringBuilder builder, int indent)
 			{
@@ -724,7 +887,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				else
 					builder.Append("(no value)");
 
-				foreach (var p in m_next)
+				foreach (var p in m_nextSymbol.Union(m_nextVariable))
 				{
 					builder.AppendLine();
 					Indent(builder, indent);

@@ -55,6 +55,10 @@
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
       <Name>GAIPS.Serialization</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Components\Utilities\Utilities.csproj">
+      <Project>{2021e828-2f7f-4775-9f02-58c68fd72edd}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

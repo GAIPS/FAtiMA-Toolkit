@@ -114,7 +114,8 @@ namespace KnowledgeBase.WellFormedNames
 			{	        
 				aux1.UnionWith(this.GetGroundedSubstitutions());
 				aux2.UnionWith(other.GetGroundedSubstitutions());
-				return aux1.SetEquals(aux2);
+				var b = aux1.SetEquals(aux2);
+				return b;
 			}
 			finally
 			{

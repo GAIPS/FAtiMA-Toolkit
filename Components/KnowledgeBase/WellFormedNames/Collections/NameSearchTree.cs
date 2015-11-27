@@ -176,25 +176,35 @@ namespace KnowledgeBase.WellFormedNames.Collections
 			return results;
 		}
 
-		public IEnumerable<SubstitutionSet> GetPosibleBindings(Name name)
+		public IEnumerable<SubstitutionSet> GetPosibleBindings(Name name, SubstitutionSet knowBindings = null)
 		{
 			List<SubstitutionSet> bindings = new List<SubstitutionSet>();
-			return !MethodWrapper(name, s => Root.Bind(s, bindings)) ? null : bindings;
+			var constraints = knowBindings ?? new SubstitutionSet();
+			if (!MethodWrapper(name, s => Root.Bind(s, constraints, bindings)))
+				return null;
+
+			if (knowBindings != null)
+			{
+				foreach (var b in bindings)
+					b.AddSubstitutions(knowBindings);
+			}
+			
+			return bindings;
 		}
 
-		//[Obsolete]
-		//public override string ToString()
+		//public IEnumerable<Pair<T, SubstitutionSet>> Unify(Name predicate, SubstitutionSet bindings)
 		//{
-		//	var builder = ObjectPool<StringBuilder>.GetObject();
+		//	var stack = ObjectPool<Stack<Name>>.GetObject();
 		//	try
 		//	{
-		//		Root.Write(builder, 0);
-		//		return builder.ToString();
+		//		stack.Push(predicate);
+		//		foreach (var pair in Root.Unify(stack,bindings))
+		//			yield return pair;
 		//	}
 		//	finally
 		//	{
-		//		builder.Length = 0;
-		//		ObjectPool<StringBuilder>.Recycle(builder);
+		//		stack.Clear();
+		//		ObjectPool<Stack<Name>>.Recycle(stack);
 		//	}
 		//}
 

@@ -4,6 +4,9 @@ using NUnit.Framework;
 using KnowledgeBase.WellFormedNames.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Utilities;
+
+using Tup = Utilities.Tuple;
 
 namespace Tests.KnowledgeBase.WellFormedNames
 {
@@ -118,9 +121,28 @@ namespace Tests.KnowledgeBase.WellFormedNames
 				"A(D(E,H),J)",
 				"A(D(E,B(O)),K)",
 				"Event(Mary,Kiss,John)",
-				"Event(Mary,Kiss,John, Softly)",
+				"Event([z],Kiss,Justin)",
 				"Event([x],Punch,[y])",
-				"Event([x],Punch,[y],Strength([w]))",
+				"Event([x],Punch,Self)",
+				"Jump(null,null)",
+				"Jump([width],null)",
+				"Jump(null,[height])",
+				"Jump([width],[height])",
+				"Jump(Short,null)",
+				"Jump(Medium,null)",
+				"Jump(Long,null)",
+				"Jump(null,Short)",
+				"Jump(null,Medium)",
+				"Jump(null,LONG)",
+				"Jump(Short,Short)",
+				"Jump(MEDIUM,Short)",
+				"Jump(LonG,Short)",
+				"Jump(Short,Medium)",
+				"Jump(MEDIUM,Medium)",
+				"Jump(LonG,Medium)",
+				"Jump(Short,LONG)",
+				"Jump(MEDIUM,long)",
+				"Jump(LonG,lONg)"
 			};
 
 			private static readonly NameSearchTree<int> baseInput = BuildInput();
@@ -135,36 +157,102 @@ namespace Tests.KnowledgeBase.WellFormedNames
 				return dict;
 			}
 
-			private static HashSet<SubstitutionSet> BuildResult(params string[][] str)
+			private static SubstitutionSet BuildSet(params string[] str)
+			{
+				return new SubstitutionSet(str.Select(s => new Substitution(s)));
+			}
+
+			private static IEnumerable<SubstitutionSet> BuildResult(params string[][] str)
 			{
 				return new HashSet<SubstitutionSet>(str.Select(set => new SubstitutionSet(set.Select(s => new Substitution(s)))));
 			}
 
+			private static IEnumerable<Pair<int, SubstitutionSet>> BuildUnifyResult(
+				params Pair<int, string[]>[] set)
+			{
+				return set.Select(p => Tup.Create(p.Item1, BuildSet(p.Item2)));
+			}
+
 			public static IEnumerable<TestCaseData> TestBindingCases()
 			{
-				yield return new TestCaseData(baseInput, (Name)"Luke([x])", BuildResult(new[] { new[] { "[x]/Name" }, new[] { "[x]/Strength" } }));
-				yield return new TestCaseData(baseInput, (Name)"[x](Strength)", BuildResult(new[] { new[] { "[x]/John" }, new[] { "[x]/Luke" } }));
-				yield return new TestCaseData(baseInput, (Name)"[x]([y])", BuildResult(new[]
+				yield return new TestCaseData(baseInput, (Name)"Luke([x])",null, BuildResult(new[] { new[] { "[x]/Name" }, new[] { "[x]/Strength" } }));
+				yield return new TestCaseData(baseInput, (Name)"[x](Strength)", null, BuildResult(new[] { new[] { "[x]/John" }, new[] { "[x]/Luke" } }));
+				yield return new TestCaseData(baseInput, (Name)"[x]([y])", null, BuildResult(new[]
 				{
 					new[] { "[x]/John", "[y]/Name" }, 
 					new[] { "[x]/John", "[y]/Strength" },
 					new[] { "[x]/Luke", "[y]/Name" }, 
 					new[] { "[x]/Luke", "[y]/Strength" },
 				}));
-				yield return new TestCaseData(baseInput, (Name)"John(Name)", BuildResult());
-				yield return new TestCaseData(baseInput, (Name)"John(Height)", null);
-				yield return new TestCaseData(baseInput, (Name)"Paul([x])", null);
-				yield return new TestCaseData(baseInput, (Name)"A([x],K)", BuildResult(new[]
+				yield return new TestCaseData(baseInput, (Name)"John(Name)", null, BuildResult());
+				yield return new TestCaseData(baseInput, (Name)"John(Height)", null, null);
+				yield return new TestCaseData(baseInput, (Name)"Paul([x])", null, null);
+				yield return new TestCaseData(baseInput, (Name)"A([x],K)", null, BuildResult(new[]
 				{
 					new[] { "[x]/I" },
 					new[] { "[x]/D(E,H)" },
 					new[] { "[x]/D(E,B(O))" }
 				}));
-				yield return new TestCaseData(baseInput, (Name)"A(D(e,[X]),[y])", BuildResult(new[]
+				yield return new TestCaseData(baseInput, (Name)"A(D(e,[X]),[y])", null, BuildResult(new[]
 				{
 					new[] { "[x]/H","[y]/K" },
 					new[] { "[x]/H","[y]/J" },
 					new[] { "[x]/B(o)","[y]/K" },
+				}));
+
+				yield return new TestCaseData(baseInput, (Name)"EVENT(Mary,Kiss,Justin)", null, BuildResult(new[]
+				{
+					new[] { "[z]/Mary"}
+				}));
+				yield return new TestCaseData(baseInput, (Name)"EVENT(Mary,Kiss,[y])", null, BuildResult(new[]
+				{
+					new[] { "[z]/Mary","[y]/Justin"},
+					new[] { "[y]/John"},
+				}));
+				yield return new TestCaseData(baseInput, (Name)"jump(null,[meh])", null, BuildResult(new[]
+				{
+					new[] { "[meh]/NULL"},
+					new[] { "[meh]/Short"},
+					new[] { "[meh]/medium"},
+					new[] { "[meh]/long"},
+					new[] { "[meh]/[height]"},
+					new[] { "[width]/null","[meh]/null"},
+					new[] { "[width]/null","[meh]/[height]"},
+				}));
+				yield return new TestCaseData(baseInput, (Name)"jump(3,67)", null, BuildResult(new[]
+				{
+					new[] { "[width]/3", "[height]/67"}
+				}));
+
+				yield return new TestCaseData(baseInput, (Name)"jump([x],[y])", null, BuildResult(new[]
+				{
+					new[] { "[x]/null", "[y]/null"},
+					new[] { "[x]/[width]", "[y]/null"},
+					new[] { "[x]/null", "[y]/[height]"},
+					new[] { "[x]/[width]", "[y]/[height]"},
+					new[] { "[x]/Short", "[y]/null"},
+					new[] { "[x]/Medium", "[y]/null"},
+					new[] { "[x]/Long", "[y]/null"},
+					new[] { "[x]/null", "[y]/short"},
+					new[] { "[x]/null", "[y]/medium"},
+					new[] { "[x]/null", "[y]/long"},
+					new[] { "[x]/Short", "[y]/short"},
+					new[] { "[x]/Medium", "[y]/short"},
+					new[] { "[x]/long", "[y]/short"},
+					new[] { "[x]/Short", "[y]/medium"},
+					new[] { "[x]/Medium", "[y]/medium"},
+					new[] { "[x]/long", "[y]/medium"},
+					new[] { "[x]/Short", "[y]/long"},
+					new[] { "[x]/Medium", "[y]/long"},
+					new[] { "[x]/long", "[y]/long"},
+				}));
+
+				yield return new TestCaseData(baseInput, (Name)"jump([x],[y])", BuildSet("[y]/SHORT"), BuildResult(new[]
+				{
+					new[] { "[x]/null", "[y]/short"},
+					new[] { "[x]/Short", "[y]/short"},
+					new[] { "[x]/Medium", "[y]/short"},
+					new[] { "[x]/long", "[y]/short"}
 				}));
 			}
 
@@ -183,6 +271,13 @@ namespace Tests.KnowledgeBase.WellFormedNames
 				//yield return new TestCaseData(baseInput, (Name)"Event(Mary,Punch,[y])", new[] { 12 });
 			}
 
+			public static IEnumerable<TestCaseData> TestUnifyCases()
+			{
+
+				yield return new TestCaseData(baseInput, (Name)"Luke([x])", new SubstitutionSet(), BuildUnifyResult(Tup.Create(0, new[] { "[x]/Name" }),
+					Tup.Create(1, new[] { "[x]/Strength" })));
+			}
+
 			//public static IEnumerable<TestCaseData> TestMatchCases()
 			//{
 			//	yield return new TestCaseData(baseInput, (Name)"Event(Mary,Kiss)", 10);
@@ -193,9 +288,9 @@ namespace Tests.KnowledgeBase.WellFormedNames
 		}
 
 		[TestCaseSource(typeof(TestFactory), "TestBindingCases")]
-		public void NameDictionary_Valid_Binds(NameSearchTree<int> dict, Name binder, HashSet<SubstitutionSet> expectedResults)
+		public void NameDictionary_Valid_Binds(NameSearchTree<int> dict, Name binder,SubstitutionSet constraints, HashSet<SubstitutionSet> expectedResults)
 		{
-			var results = dict.GetPosibleBindings(binder);
+			var results = dict.GetPosibleBindings(binder,constraints);
 			if (results == null)
 			{
 				if (expectedResults == null)
@@ -222,12 +317,22 @@ namespace Tests.KnowledgeBase.WellFormedNames
 				Assert.Fail("Matcher didn't returned the expected results.");
 	    }
 
-		//[TestCaseSource(typeof(TestFactory), "TestMatchCases")]
-		//public void NameDictionary_Valid_Match(NameSearchTree<int> dict, Name expression, int expectedResult)
+		//[TestCaseSource(typeof(TestFactory), "TestUnifyCases")]
+		//public void NameDictionary_Valid_Unify(NameSearchTree<int> dict, Name expression, SubstitutionSet bindings,
+		//	IEnumerable<Pair<int, SubstitutionSet>> expectedResults)
 		//{
-		//	int result;
-		//	Assert.That(dict.TryMatchValue(expression, out result));
-		//	Assert.Equals(result, expectedResult);
+		//	var result = dict.Unify(expression, bindings);
+		//	var resultDict = result.ToDictionary(p => p.Item1, p => p.Item2);
+		//	var expectDict = expectedResults.ToDictionary(p => p.Item1, p => p.Item2);
+
+		//	Assert.AreEqual(expectDict.Count, resultDict.Count,"Number of results mismatch");
+
+		//	foreach (var pair in resultDict)
+		//	{
+		//		SubstitutionSet t;
+		//		Assert.That(expectDict.TryGetValue(pair.Key,out t),"Unable to find entry");
+		//		Assert.AreEqual(t, pair.Value, "Binding list is not equal to the expected");
+		//	}
 		//}
     }
 }
