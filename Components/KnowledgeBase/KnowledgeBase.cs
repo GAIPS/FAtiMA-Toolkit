@@ -108,9 +108,19 @@ namespace KnowledgeBase
 		/// </summary>
 		/// <param name="name">a name (that correspond to a predicate or property)</param>
 		/// <returns>a set of SubstitutionSets that make the received name to match predicates or properties that do exist in the KnowledgeBase</returns>
-		public IEnumerable<SubstitutionSet> GetPossibleBindings(Name name)
+		public IEnumerable<SubstitutionSet> Unify(Name name, SubstitutionSet constraints = null)
 		{
-			return m_knowledgeStorage.GetPosibleBindings(name);
+			List<SubstitutionSet> result = null;
+			foreach (var v in m_knowledgeStorage.Unify(name,constraints))
+			{
+				if(result==null)
+					result=new List<SubstitutionSet>();
+				if(v.Item2.Count()==0)
+					continue;
+
+				result.Add(v.Item2);
+			}
+			return result;
 		}
 
 		public void Tell(Name property, object value, bool persistent, KnowledgeVisibility visibility)

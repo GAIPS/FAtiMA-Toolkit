@@ -14,6 +14,10 @@ namespace KnowledgeBase.WellFormedNames
 		public SubstitutionSet() {
 		}
 
+		public SubstitutionSet(params Substitution[] substitutions)
+			: this((IEnumerable<Substitution>)substitutions)
+		{}
+
 		public SubstitutionSet(IEnumerable<Substitution> substitutions)
 		{
 			AddSubstitutions(substitutions);
@@ -27,6 +31,11 @@ namespace KnowledgeBase.WellFormedNames
 
 			if (canAdd)
 				m_substitutions.Add(substitution);
+		}
+
+		public int Count()
+		{
+			return m_substitutions.Count;
 		}
 
 		public void AddSubstitution(params Substitution[] substitutions)
@@ -94,12 +103,25 @@ namespace KnowledgeBase.WellFormedNames
 
 		public IEnumerable<Substitution> GetGroundedSubstitutions()
 		{
-			return m_substitutions.Select(s => s.Value.IsGrounded ? s : new Substitution(s.Variable, s.Value.MakeGround(this))).Distinct();
+			if(m_substitutions.Count>0)
+				return m_substitutions.Select(s => s.Value.IsGrounded ? s : new Substitution(s.Variable, s.Value.MakeGround(this))).Distinct();
+			return m_substitutions;
 		}
 
 		public override int GetHashCode()
 		{
-			return this.GetGroundedSubstitutions().Select(s => s.GetHashCode()).Aggregate((v1, v2) => v1 ^ v2);
+			//This is a random value to represent an empty set,
+			//since it does not have elements to calculate an hash,
+			//and two empty sets are equal.
+			const int emptyHashCode = 0x0fc43f9;
+
+			var set = GetGroundedSubstitutions();
+			if (!set.Any())
+				return emptyHashCode;
+
+			var hashs = set.Select(s => s.GetHashCode());
+			var h = hashs.Aggregate((v1, v2) => v1 ^ v2);
+			return emptyHashCode ^ h;
 		}
 
 		public override bool Equals(object obj)

@@ -162,149 +162,226 @@ namespace Tests.KnowledgeBase.WellFormedNames
 				return new SubstitutionSet(str.Select(s => new Substitution(s)));
 			}
 
-			private static IEnumerable<SubstitutionSet> BuildResult(params string[][] str)
-			{
-				return new HashSet<SubstitutionSet>(str.Select(set => new SubstitutionSet(set.Select(s => new Substitution(s)))));
-			}
-
 			private static IEnumerable<Pair<int, SubstitutionSet>> BuildUnifyResult(
 				params Pair<int, string[]>[] set)
 			{
 				return set.Select(p => Tup.Create(p.Item1, BuildSet(p.Item2)));
 			}
 
-			public static IEnumerable<TestCaseData> TestBindingCases()
+			public static IEnumerable<TestCaseData> TestMatchAllCases_Valid()
 			{
-				yield return new TestCaseData(baseInput, (Name)"Luke([x])",null, BuildResult(new[] { new[] { "[x]/Name" }, new[] { "[x]/Strength" } }));
-				yield return new TestCaseData(baseInput, (Name)"[x](Strength)", null, BuildResult(new[] { new[] { "[x]/John" }, new[] { "[x]/Luke" } }));
-				yield return new TestCaseData(baseInput, (Name)"[x]([y])", null, BuildResult(new[]
-				{
-					new[] { "[x]/John", "[y]/Name" }, 
-					new[] { "[x]/John", "[y]/Strength" },
-					new[] { "[x]/Luke", "[y]/Name" }, 
-					new[] { "[x]/Luke", "[y]/Strength" },
-				}));
-				yield return new TestCaseData(baseInput, (Name)"John(Name)", null, BuildResult());
-				yield return new TestCaseData(baseInput, (Name)"John(Height)", null, null);
-				yield return new TestCaseData(baseInput, (Name)"Paul([x])", null, null);
-				yield return new TestCaseData(baseInput, (Name)"A([x],K)", null, BuildResult(new[]
-				{
-					new[] { "[x]/I" },
-					new[] { "[x]/D(E,H)" },
-					new[] { "[x]/D(E,B(O))" }
-				}));
-				yield return new TestCaseData(baseInput, (Name)"A(D(e,[X]),[y])", null, BuildResult(new[]
-				{
-					new[] { "[x]/H","[y]/K" },
-					new[] { "[x]/H","[y]/J" },
-					new[] { "[x]/B(o)","[y]/K" },
-				}));
+				yield return new TestCaseData(baseInput, (Name)"Luke(*)", new []{0,1});
+				yield return new TestCaseData(baseInput, (Name) "*(Strength)", new[] {1, 3});
+				yield return new TestCaseData(baseInput, (Name) "*(*)", new[] {0, 1, 2, 3});
 
-				yield return new TestCaseData(baseInput, (Name)"EVENT(Mary,Kiss,Justin)", null, BuildResult(new[]
-				{
-					new[] { "[z]/Mary"}
-				}));
-				yield return new TestCaseData(baseInput, (Name)"EVENT(Mary,Kiss,[y])", null, BuildResult(new[]
-				{
-					new[] { "[z]/Mary","[y]/Justin"},
-					new[] { "[y]/John"},
-				}));
-				yield return new TestCaseData(baseInput, (Name)"jump(null,[meh])", null, BuildResult(new[]
-				{
-					new[] { "[meh]/NULL"},
-					new[] { "[meh]/Short"},
-					new[] { "[meh]/medium"},
-					new[] { "[meh]/long"},
-					new[] { "[meh]/[height]"},
-					new[] { "[width]/null","[meh]/null"},
-					new[] { "[width]/null","[meh]/[height]"},
-				}));
-				yield return new TestCaseData(baseInput, (Name)"jump(3,67)", null, BuildResult(new[]
-				{
-					new[] { "[width]/3", "[height]/67"}
-				}));
+				yield return new TestCaseData(baseInput, (Name) "A(D(E,B(O)),K)", new[] {9});
+				yield return new TestCaseData(baseInput, (Name) "A(*,K)", new[] {7, 6, 9});
 
-				yield return new TestCaseData(baseInput, (Name)"jump([x],[y])", null, BuildResult(new[]
-				{
-					new[] { "[x]/null", "[y]/null"},
-					new[] { "[x]/[width]", "[y]/null"},
-					new[] { "[x]/null", "[y]/[height]"},
-					new[] { "[x]/[width]", "[y]/[height]"},
-					new[] { "[x]/Short", "[y]/null"},
-					new[] { "[x]/Medium", "[y]/null"},
-					new[] { "[x]/Long", "[y]/null"},
-					new[] { "[x]/null", "[y]/short"},
-					new[] { "[x]/null", "[y]/medium"},
-					new[] { "[x]/null", "[y]/long"},
-					new[] { "[x]/Short", "[y]/short"},
-					new[] { "[x]/Medium", "[y]/short"},
-					new[] { "[x]/long", "[y]/short"},
-					new[] { "[x]/Short", "[y]/medium"},
-					new[] { "[x]/Medium", "[y]/medium"},
-					new[] { "[x]/long", "[y]/medium"},
-					new[] { "[x]/Short", "[y]/long"},
-					new[] { "[x]/Medium", "[y]/long"},
-					new[] { "[x]/long", "[y]/long"},
-				}));
+				yield return new TestCaseData(baseInput, (Name) "A(D(e,*),*)", new[] {6,8,9});
 
-				yield return new TestCaseData(baseInput, (Name)"jump([x],[y])", BuildSet("[y]/SHORT"), BuildResult(new[]
-				{
-					new[] { "[x]/null", "[y]/short"},
-					new[] { "[x]/Short", "[y]/short"},
-					new[] { "[x]/Medium", "[y]/short"},
-					new[] { "[x]/long", "[y]/short"}
-				}));
+				yield return new TestCaseData(baseInput, (Name)"EVENT(Mary,Kiss,*)", new []{10});
+
+				yield return new TestCaseData(baseInput, (Name) "jump(null,[height])", new[] {16});
+				yield return new TestCaseData(baseInput, (Name) "jump(*,[height])", new[] {16, 17});
+
+				//yield return new TestCaseData(baseInput, (Name)"EVENT(Mary,Kiss,Justin)", null,
+				//	BuildUnifyResult(
+				//		Tup.Create(11, new[] { "[z]/Mary" })
+				//	)
+				//);
+
+				//yield return new TestCaseData(baseInput, (Name)"EVENT(Batman,Punch,Jocker)", null,
+				//	BuildUnifyResult(
+				//		Tup.Create(12, new[] { "[x]/Batman", "[y]/Jocker" })
+				//	)
+				//);
+
+				//yield return new TestCaseData(baseInput, (Name)"EVENT(Batman,Punch,Self)", null,
+				//	BuildUnifyResult(
+				//		Tup.Create(12, new[] { "[x]/Batman", "[y]/Self" }),
+				//		Tup.Create(13, new[] { "[x]/Batman" })
+				//	)
+				//);
+
+				//yield return new TestCaseData(baseInput, (Name)"jump(3,36)", null,
+				//	BuildUnifyResult(
+				//		Tup.Create(17, new[] { "[width]/3", "[height]/36" })
+				//	)
+				//);
 			}
 
-			public static IEnumerable<TestCaseData> TestMatchAllCases()
+			public static IEnumerable<TestCaseData> TestMatchAllCases_Invalid()
 			{
-				yield return new TestCaseData(baseInput,(Name)"Luke(*)",new []{0,1});
-				yield return new TestCaseData(baseInput, (Name)"*(Name)", new[] { 0, 2 });
-				yield return new TestCaseData(baseInput, (Name)"*(*)", new[] { 0, 1, 2, 3});
-				yield return new TestCaseData(baseInput, (Name)"A(*,K)", new[] { 6,7,9 });
-				yield return new TestCaseData(baseInput, (Name)"A(D(E,*),*)", new[] { 6, 8, 9 });
-				yield return new TestCaseData(baseInput, (Name)"A(D(E,H),*)", new[] { 6, 8});
-				yield return new TestCaseData(baseInput, (Name)"A(D(E,H),W)", new int[0]);
-				//yield return new TestCaseData(baseInput, (Name)"Event(Mary,Kiss)", new[] { 10 , 11});
-				//yield return new TestCaseData(baseInput, (Name)"Event(Mary,Punch)", new int[0]);
-				//yield return new TestCaseData(baseInput, (Name)"Event(Mary,Punch,John)", new []{12});
-				//yield return new TestCaseData(baseInput, (Name)"Event(Mary,Punch,[y])", new[] { 12 });
+				yield return new TestCaseData(baseInput, (Name)"EVENT(Mary,Kiss,Justin)");
+				yield return new TestCaseData(baseInput, (Name) "EVENT(Batman,Punch,Jocker)");
+				yield return new TestCaseData(baseInput, (Name)"EVENT(Batman,Punch,Self)");
+				yield return new TestCaseData(baseInput, (Name) "jump(3,36)");
 			}
 
-			public static IEnumerable<TestCaseData> TestUnifyCases()
-			{
 
-				yield return new TestCaseData(baseInput, (Name)"Luke([x])", new SubstitutionSet(), BuildUnifyResult(Tup.Create(0, new[] { "[x]/Name" }),
-					Tup.Create(1, new[] { "[x]/Strength" })));
+			public static IEnumerable<TestCaseData> TestUnifyCases_Valid()
+			{
+				yield return new TestCaseData(baseInput, (Name)"Luke([x])", null,
+					BuildUnifyResult(
+						Tup.Create(0, new[] { "[x]/Name" }),
+						Tup.Create(1, new[] { "[x]/Strength" })
+					)
+				);
+				yield return new TestCaseData(baseInput, (Name)"Luke([x])",
+					BuildSet(
+						"[x]/Name"
+					),
+					BuildUnifyResult(
+						Tup.Create(0, new[] { "[x]/Name" })
+					)
+				);
+
+				yield return new TestCaseData(baseInput, (Name)"[x](Strength)", null,
+					BuildUnifyResult(
+						Tup.Create(1,new []{"[x]/Luke"}),
+						Tup.Create(3,new []{"[x]/John"})
+					)
+				);
+
+				yield return new TestCaseData(baseInput, (Name)"[x]([y])", null, 
+					BuildUnifyResult(
+						Tup.Create(0,new []{"[x]/Luke", "[y]/Name"}),
+						Tup.Create(1,new []{"[x]/Luke", "[y]/Strength"}),
+						Tup.Create(2,new []{"[x]/John", "[y]/Name"}),
+						Tup.Create(3,new []{"[x]/John", "[y]/Strength"})
+					)
+				);
+
+				yield return new TestCaseData(baseInput, (Name)"A(D(E,B(O)),K)", null,
+					BuildUnifyResult( Tup.Create(9,new string[0]))
+				);
+
+				yield return new TestCaseData(baseInput, (Name)"A([x],K)", null, 
+					BuildUnifyResult(
+						Tup.Create(7, new []{"[x]/I"}),
+						Tup.Create(6, new []{"[x]/D(E,H)"}),
+						Tup.Create(9, new []{"[x]/D(E,B(O))"})
+					)
+				);
+
+				yield return new TestCaseData(baseInput, (Name)"A(D(e,[X]),[y])", null, 
+					BuildUnifyResult(
+						Tup.Create(6,new[] { "[x]/H","[y]/K" }),
+						Tup.Create(8,new[] { "[x]/H","[y]/j" }),
+						Tup.Create(9,new[] { "[x]/B(o)","[y]/K" })
+					)
+				);
+
+				yield return new TestCaseData(baseInput, (Name)"EVENT(Mary,Kiss,Justin)", null, 
+					BuildUnifyResult(
+						Tup.Create(11,new[] { "[z]/Mary"})
+					)
+				);
+
+				yield return new TestCaseData(baseInput, (Name)"EVENT(Mary,Kiss,[y])", null,
+					BuildUnifyResult(
+						Tup.Create(11, new[] { "[z]/Mary", "[y]/Justin" }),
+						Tup.Create(10, new[] { "[y]/John" })
+					)
+				);
+
+				yield return new TestCaseData(baseInput, (Name)"EVENT(Batman,Punch,Jocker)", null,
+					BuildUnifyResult(
+						Tup.Create(12, new[] { "[x]/Batman", "[y]/Jocker" })
+					)
+				);
+
+				yield return new TestCaseData(baseInput, (Name)"EVENT(Batman,Punch,Self)", null,
+					BuildUnifyResult(
+						Tup.Create(12, new[] { "[x]/Batman", "[y]/Self" }),
+						Tup.Create(13, new[] { "[x]/Batman"})
+					)
+				);
+
+				//TODO not working for now. Need to improve SubstitutionSet
+				//yield return new TestCaseData(baseInput, (Name)"EVENT(Self,Punch,Self)", new SubstitutionSet(new Inequality("[x]!=[y]")),
+				//	BuildUnifyResult(
+				//		Tup.Create(13, new[] { "[x]/Self" })
+				//	)
+				//);
+
+
+				yield return new TestCaseData(baseInput, (Name)"jump(null,[meh])", null, 
+					BuildUnifyResult(
+						Tup.Create(14,new[] { "[meh]/NULL"}),
+						Tup.Create(21,new[] { "[meh]/Short"}),
+						Tup.Create(22,new[] { "[meh]/medium"}),
+						Tup.Create(23,new[] { "[meh]/long"}),
+						Tup.Create(16,new[] { "[meh]/[height]"}),
+						Tup.Create(15,new[] { "[width]/null","[meh]/null"}),
+						Tup.Create(17,new[] { "[width]/null","[meh]/[height]"})
+					)
+				);
+
+				yield return new TestCaseData(baseInput, (Name) "jump(null,[height])", null,
+					BuildUnifyResult(
+						Tup.Create(14, new[] {"[height]/NULL"}),
+						Tup.Create(21, new[] {"[height]/Short"}),
+						Tup.Create(22, new[] {"[height]/medium"}),
+						Tup.Create(23, new[] {"[height]/long"}),
+						Tup.Create(16, new string[0]),
+						Tup.Create(15, new[] { "[width]/null", "[height]/null" }),
+						Tup.Create(17, new[] { "[width]/null"})
+					)
+				);
+
+				yield return new TestCaseData(baseInput, (Name)"jump(3,36)", null,
+					BuildUnifyResult(
+						Tup.Create(17, new[] { "[width]/3", "[height]/36" })
+					)
+				);
+
+				yield return new TestCaseData(baseInput, (Name)"jump([x],[y])", null,
+					BuildUnifyResult(
+						Tup.Create(14,new []{"[x]/null","[y]/null"}),
+						Tup.Create(15,new []{"[x]/[width]","[y]/null"}),
+						Tup.Create(16,new []{"[x]/null","[y]/[height]"}),
+						Tup.Create(17,new []{"[x]/[width]","[y]/[height]"}),
+						Tup.Create(18,new []{"[x]/short","[y]/null"}),
+						Tup.Create(19,new []{"[x]/medium","[y]/null"}),
+						Tup.Create(20,new []{"[x]/long","[y]/null"}),
+						Tup.Create(21,new []{"[x]/null","[y]/short"}),
+						Tup.Create(22,new []{"[x]/null","[y]/medium"}),
+						Tup.Create(23,new []{"[x]/null","[y]/long"}),
+						Tup.Create(24,new []{"[x]/short","[y]/short"}),
+						Tup.Create(25,new []{"[x]/medium","[y]/short"}),
+						Tup.Create(26,new []{"[x]/long","[y]/short"}),
+						Tup.Create(27,new []{"[x]/short","[y]/medium"}),
+						Tup.Create(28,new []{"[x]/medium","[y]/medium"}),
+						Tup.Create(29,new []{"[x]/long","[y]/medium"}),
+						Tup.Create(30,new []{"[x]/short","[y]/long"}),
+						Tup.Create(31,new []{"[x]/medium","[y]/long"}),
+						Tup.Create(32,new []{"[x]/long","[y]/long"})
+					)
+				);
+
+				yield return new TestCaseData(baseInput, (Name)"jump([x],[y])", 
+					BuildSet(
+						"[y]/Short"
+					),
+					BuildUnifyResult(
+						Tup.Create(21, new[] { "[x]/null", "[y]/short" }),
+						Tup.Create(24, new[] { "[x]/short", "[y]/short" }),
+						Tup.Create(25, new[] { "[x]/medium", "[y]/short" }),
+						Tup.Create(26, new[] { "[x]/long", "[y]/short" })
+					)
+				);
 			}
 
-			//public static IEnumerable<TestCaseData> TestMatchCases()
-			//{
-			//	yield return new TestCaseData(baseInput, (Name)"Event(Mary,Kiss)", 10);
-			//	yield return new TestCaseData(baseInput, (Name)"Event(Mary,Punch, John)", 12);
-			//	yield return new TestCaseData(baseInput, (Name)"Event(Mary,Punch)", 0);
-			//	yield return new TestCaseData(baseInput, (Name)"Event([x],Punch,Mary)", new[] { 12 });
-			//}
+			public static IEnumerable<TestCaseData> TestUnifyCases_Invalid()
+			{
+				yield return new TestCaseData(baseInput, (Name)"John(Height)", null);
+				yield return new TestCaseData(baseInput, (Name)"Paul([x])", null);
+				yield return new TestCaseData(baseInput, (Name)"Paul([x])", null);
+			}
 		}
 
-		[TestCaseSource(typeof(TestFactory), "TestBindingCases")]
-		public void NameDictionary_Valid_Binds(NameSearchTree<int> dict, Name binder,SubstitutionSet constraints, HashSet<SubstitutionSet> expectedResults)
-		{
-			var results = dict.GetPosibleBindings(binder,constraints);
-			if (results == null)
-			{
-				if (expectedResults == null)
-					return;
-				Assert.Fail("Binder failed to find matches");
-			}
-
-			if (results.Count() != expectedResults.Count)
-				Assert.Fail("Binder returned a different number of binds from the expected");
-			if (!new HashSet<SubstitutionSet>(results).SetEquals(expectedResults))
-				Assert.Fail("Binder didn't returned the expected substitutions.");
-		}
-
-		[TestCaseSource(typeof(TestFactory), "TestMatchAllCases")]
+		[TestCaseSource(typeof(TestFactory), "TestMatchAllCases_Valid")]
 		public void NameDictionary_Valid_MatcheAll(NameSearchTree<int> dict, Name expression, IEnumerable<int> expectedResults)
 	    {
 			var result = dict.MatchAll(expression).ToArray();
@@ -317,22 +394,35 @@ namespace Tests.KnowledgeBase.WellFormedNames
 				Assert.Fail("Matcher didn't returned the expected results.");
 	    }
 
-		//[TestCaseSource(typeof(TestFactory), "TestUnifyCases")]
-		//public void NameDictionary_Valid_Unify(NameSearchTree<int> dict, Name expression, SubstitutionSet bindings,
-		//	IEnumerable<Pair<int, SubstitutionSet>> expectedResults)
-		//{
-		//	var result = dict.Unify(expression, bindings);
-		//	var resultDict = result.ToDictionary(p => p.Item1, p => p.Item2);
-		//	var expectDict = expectedResults.ToDictionary(p => p.Item1, p => p.Item2);
+		[TestCaseSource(typeof(TestFactory), "TestMatchAllCases_Invalid")]
+		public void NameDictionary_Invalid_MatcheAll(NameSearchTree<int> dict, Name expression)
+		{
+			Assert.False(dict.MatchAll(expression).Any(), string.Format("Has able to find matches for {0}",expression));
+		}
 
-		//	Assert.AreEqual(expectDict.Count, resultDict.Count,"Number of results mismatch");
+		[TestCaseSource(typeof(TestFactory), "TestUnifyCases_Valid")]
+		public void NameDictionary_Valid_Unify(NameSearchTree<int> dict, Name expression, SubstitutionSet bindings,
+			IEnumerable<Pair<int, SubstitutionSet>> expectedResults)
+		{
+			var result = dict.Unify(expression, bindings);
+			var resultDict = result.ToDictionary(p => p.Item1, p => p.Item2);
+			var expectDict = expectedResults.ToDictionary(p => p.Item1, p => p.Item2);
 
-		//	foreach (var pair in resultDict)
-		//	{
-		//		SubstitutionSet t;
-		//		Assert.That(expectDict.TryGetValue(pair.Key,out t),"Unable to find entry");
-		//		Assert.AreEqual(t, pair.Value, "Binding list is not equal to the expected");
-		//	}
-		//}
+			Assert.AreEqual(expectDict.Count, resultDict.Count, "Number of results mismatch");
+
+			foreach (var pair in resultDict)
+			{
+				SubstitutionSet t;
+				Assert.That(expectDict.TryGetValue(pair.Key, out t), "Unable to find entry");
+				Assert.That(t.Equals(pair.Value), "Binding list is not equal to the expected");
+			}
+		}
+
+		[TestCaseSource(typeof(TestFactory), "TestUnifyCases_Invalid")]
+		public void NameDictionary_Invalid_Unify(NameSearchTree<int> dict, Name expression, SubstitutionSet bindings)
+		{
+			var result = dict.Unify(expression, bindings);
+			Assert.That(!result.Any(),"The unification returned valid results.");
+		}
     }
 }

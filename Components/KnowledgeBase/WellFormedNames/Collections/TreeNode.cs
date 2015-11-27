@@ -271,149 +271,6 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				return false;
 			}
 
-			public Pair<bool, T> Match(Stack<Name> stack)
-			{
-				if (stack.Count == 0) //End stack
-					return Tuple.Create(m_hasValue, m_value);
-
-				Name term = stack.Pop();
-
-				TreeNode nodeToEvaluate;
-				int numOfTerms = term.NumberOfTerms;
-				if (numOfTerms == 1)
-				{
-					string key = term.ToString();
-					if (key == Symbol.UNIVERSAL_STRING)
-					{
-						if (m_universal != null)
-						{
-							var res = m_universal.Match(stack);
-							if (res.Item1)
-								return res;
-						}
-
-						foreach (var node in GetNextLevel().SelectMany(t => t.Item2))
-						{
-							var res = node.Match(stack);
-							if (res.Item1)
-								return res;
-						}
-					}
-					else
-					{
-						var set = term.IsVariable ? m_nextVariable : m_nextSymbol;
-						if (set.TryGetValue(key, out nodeToEvaluate))
-						{
-							var res = nodeToEvaluate.Match(stack);
-							if (res.Item1)
-								return res;
-						}
-
-						if (m_universal != null)
-						{
-							var res = m_universal.Match(stack);
-							if (res.Item1)
-								return res;
-						}
-					}
-				}
-				else
-				{
-					if (m_nextComposed.TryGetValue(numOfTerms, out nodeToEvaluate))
-					{
-						using (var it = term.GetTerms().Reverse().GetEnumerator())
-						{
-							while (it.MoveNext())
-							{
-								stack.Push(it.Current);
-							}
-						}
-
-						var res = nodeToEvaluate.Match(stack);
-						if (res.Item1)
-							return res;
-
-						//Failed to evaluate, reconstruct stack
-						for (int i = 0; i < term.NumberOfTerms; i++)
-							stack.Pop();
-					}
-
-					if (m_universal != null)
-					{
-						var res = m_universal.Match(stack);
-						if (res.Item1)
-							return res;
-					}
-				}
-				
-				stack.Push(term);
-
-				return Tuple.Create(false, default(T));
-			}
-
-			public int MatchAll(Stack<Name> stack, List<T> results)
-			{
-				if (stack.Count == 0) //End stack
-				{
-					if (!m_hasValue)
-						return 0;
-					results.Add(m_value);
-					return 1;
-				}
-
-				int found = 0;
-				Name term = stack.Pop();
-
-				TreeNode nodeToEvaluate;
-				int numOfTerms = term.NumberOfTerms;
-				if (numOfTerms == 1)
-				{
-					string key = term.ToString();
-					if (key == Symbol.UNIVERSAL_STRING)
-					{
-						if (m_universal != null)
-							found += m_universal.MatchAll(stack, results);
-
-						foreach (var node in GetNextLevel().SelectMany(t => t.Item2))
-							found += node.MatchAll(stack, results);
-					}
-					else
-					{
-						var set = term.IsVariable ? m_nextVariable : m_nextSymbol;
-						if (set.TryGetValue(key, out nodeToEvaluate))
-							found += nodeToEvaluate.MatchAll(stack, results);
-
-						if (m_universal != null)
-							found += m_universal.MatchAll(stack, results);
-					}
-				}
-				else
-				{
-					if (m_nextComposed.TryGetValue(numOfTerms, out nodeToEvaluate))
-					{
-						using (var it = term.GetTerms().Reverse().GetEnumerator())
-						{
-							while (it.MoveNext())
-							{
-								stack.Push(it.Current);
-							}
-						}
-
-						found += nodeToEvaluate.MatchAll(stack, results);
-
-						for (int i = 0; i < numOfTerms; i++)
-							stack.Pop();
-					}
-
-					if (m_universal != null)
-						found += m_universal.MatchAll(stack, results);
-				}
-				
-				stack.Push(term);
-
-				return found;
-			}
-
 			public Pair<bool, T> Retrive(Stack<Name> stack)
 			{
 				if (stack.Count == 0) //End stack
@@ -663,221 +520,146 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				}
 			}
 
-			public bool Bind(Stack<Name> stack, SubstitutionSet constraints, List<SubstitutionSet> resultsFound)
+			public IEnumerable<Pair<T, SubstitutionSet>> Unify(Stack<Name> stack, SubstitutionSet binding)
 			{
 				if (stack.Count == 0) //End stack
-					return true;
+				{
+					if (m_hasValue)
+						yield return Tuple.Create(m_value, binding);
+					yield break;
+				}
 
 				TreeNode nodeToEvaluate;
 				Name term = stack.Pop();
-				bool found = false;
-				try
+
+				if (!term.IsVariable)
 				{
-					if (!term.IsVariable)
+					int numOfTerms = term.NumberOfTerms;
+					if (numOfTerms == 1)
 					{
-						int numOfTerms = term.NumberOfTerms;
-						if (numOfTerms == 1)
+						string key = term.ToString();
+						if (key == Symbol.UNIVERSAL_STRING)
 						{
-							string key = term.ToString();
-							if (key == Symbol.UNIVERSAL_STRING)
+							if (m_universal != null)
 							{
-								if (m_universal != null)
-								{
-									found |= m_universal.Bind(stack,constraints, resultsFound);
-								}
-
-								foreach (var node in GetNextLevel().SelectMany(p => p.Item2))
-								{
-									found |= node.Bind(stack,constraints, resultsFound);
-								}
+								foreach (var pair in m_universal.Unify(stack, binding))
+									yield return pair;
 							}
-							else
-							{
-								if (m_nextSymbol.TryGetValue(key, out nodeToEvaluate))
-								{
-									found |= nodeToEvaluate.Bind(stack,constraints, resultsFound);
-								}
 
-								if (m_universal != null)
+							foreach (var node in GetNextLevel().SelectMany(p => p.Item2))
+							{
+								foreach (var pair in node.Unify(stack,binding))
 								{
-									found |= m_universal.Bind(stack,constraints, resultsFound);
+									yield return pair;
 								}
 							}
 						}
 						else
 						{
-							if (m_nextComposed.TryGetValue(numOfTerms, out nodeToEvaluate))
+							if (m_nextSymbol.TryGetValue(key, out nodeToEvaluate))
 							{
-								using (var it = term.GetTerms().Reverse().GetEnumerator())
-								{
-									while (it.MoveNext())
-									{
-										stack.Push(it.Current);
-									}
-								}
+								foreach (var pair in nodeToEvaluate.Unify(stack, binding))
+									yield return pair;
+							}
 
-								found |= nodeToEvaluate.Bind(stack,constraints, resultsFound);
-
-								for (int i = 0; i < term.NumberOfTerms; i++)
-									stack.Pop();
+							if (m_universal != null)
+							{
+								foreach (var pair in m_universal.Unify(stack, binding))
+									yield return pair;
 							}
 						}
+					}
+					else
+					{
+						if (m_nextComposed.TryGetValue(numOfTerms, out nodeToEvaluate))
+						{
+							using (var it = term.GetTerms().Reverse().GetEnumerator())
+							{
+								while (it.MoveNext())
+								{
+									stack.Push(it.Current);
+								}
+							}
 
-						//It was unable to find a proper match. try matching with stored variables
+							foreach (var pair in nodeToEvaluate.Unify(stack,binding))
+								yield return pair;
+
+							for (int i = 0; i < term.NumberOfTerms; i++)
+								stack.Pop();
+						}
+
+						if (m_universal != null)
+						{
+							foreach (var pair in m_universal.Unify(stack,binding))
+								yield return pair;
+						}
+					}
+
+					if (binding != null)
+					{
+						//Find bindings with stored variables
 						foreach (var pair in m_nextVariable)
 						{
 							var sub = new Substitution(new Symbol(pair.Key), term);
-							if(constraints.Conflicts(sub))
+							if (binding.Conflicts(sub))
 								continue;
-							
-							List<SubstitutionSet> childResults = new List<SubstitutionSet>();
-							if (pair.Value.Bind(stack,constraints, childResults))
+
+							var set = new SubstitutionSet(binding);
+							set.AddSubstitution(sub);
+							foreach (var r in pair.Value.Unify(stack, set))
 							{
-								if (childResults.Count > 0)
+								yield return r;
+							}
+						}
+					}
+				}
+				else
+				{
+					//if binding is null, Unify behaves like a "MatchAll"
+					if (binding != null)
+					{
+						var variable = (Symbol) term;
+						//Find bindings
+						foreach (var pair in GetNextLevel())
+						{
+							SubstitutionSet set = binding;
+							if (!pair.Item1.IsVariable || pair.Item1 != variable)
+							{
+								var sub = new Substitution(variable, pair.Item1);
+								if (binding.Conflicts(sub))
+									continue;
+
+								set = new SubstitutionSet(binding);
+								set.AddSubstitution(sub);
+							}
+
+							foreach (var node in pair.Item2)
+							{
+								foreach (var r in node.Unify(stack, set))
 								{
-									foreach (var set in childResults)
-									{
-										if (!set.Conflicts(sub))
-										{
-											found = true;
-											set.AddSubstitution(sub);
-											resultsFound.Add(set);
-										}
-									}
-								}
-								else
-								{
-									found = true;
-									var newSet = new SubstitutionSet();
-									newSet.AddSubstitution(sub);
-									resultsFound.Add(newSet);
+									yield return r;
 								}
 							}
 						}
 					}
 					else
 					{
-						//Find bindings
-						foreach (var pair in GetNextLevel())
+						if (m_nextVariable.TryGetValue(term.ToString(), out nodeToEvaluate))
 						{
-							var sub = new Substitution((Symbol)term, pair.Item1);
-							if(constraints.Conflicts(sub))
-								continue;
+							foreach (var pair in nodeToEvaluate.Unify(stack, null))
+								yield return pair;
+						}
 
-							foreach (var node in pair.Item2)
-							{
-								List<SubstitutionSet> childResults = new List<SubstitutionSet>();
-								if (!node.Bind(stack,constraints, childResults))
-									continue;
-
-								if (childResults.Count > 0)
-								{
-									foreach (var set in childResults)
-									{
-										if (!set.Conflicts(sub))
-										{
-											found = true;
-											set.AddSubstitution(sub);
-											resultsFound.Add(set);
-										}
-									}
-								}
-								else
-								{
-									found = true;
-									var newSet = new SubstitutionSet();
-									newSet.AddSubstitution(sub);
-									resultsFound.Add(newSet);
-								}
-							}
+						if (m_universal != null)
+						{
+							foreach (var pair in m_universal.Unify(stack, null))
+								yield return pair;
 						}
 					}
 				}
-				finally
-				{
-					stack.Push(term);
-				}
-				return found;
+
+				stack.Push(term);
 			}
-
-			//public IEnumerable<Pair<T, SubstitutionSet>> Unify(Stack<Name> stack, SubstitutionSet binding)
-			//{
-			//	if (stack.Count == 0)
-			//	{
-			//		if (m_hasValue)
-			//			yield return Tuple.Create(m_value, new SubstitutionSet(binding));
-			//	}
-
-			//	TreeNode nodeToEvaluate;
-			//	Name term = stack.Pop();
-				
-			//	if (!term.IsVariable)
-			//	{
-			//		int numOfTerms = term.NumberOfTerms;
-			//		if (numOfTerms == 1)
-			//		{
-			//			string key = term.ToString();
-			//			if (key == Symbol.UNIVERSAL_STRING)
-			//			{
-			//				if (m_universal != null)
-			//				{
-			//					foreach (var pair in m_universal.Unify(stack, binding))
-			//					{
-			//						yield return pair;
-			//					}
-			//				}
-
-			//				foreach (var node in GetNextLevel())
-			//				{
-			//					throw new NotImplementedException();
-			//					//result = result.Union(node.Unify(stack, binding));
-			//				}
-			//			}
-			//			else
-			//			{
-			//				//if (m_nextSymbol.TryGetValue(key, out nodeToEvaluate))
-			//				//	found += nodeToEvaluate.MatchAll(stack, results);
-
-			//				//if (m_universal != null)
-			//				//	found += m_universal.MatchAll(stack, results);
-			//			}
-			//		}
-			//		else
-			//		{
-			//			if (m_nextComposed.TryGetValue(numOfTerms, out nodeToEvaluate))
-			//			{
-			//				using (var it = term.GetTerms().Reverse().GetEnumerator())
-			//				{
-			//					while (it.MoveNext())
-			//					{
-			//						stack.Push(it.Current);
-			//					}
-			//				}
-
-			//				foreach (var pair in nodeToEvaluate.Unify(stack,binding))
-			//				{
-			//					yield return pair;
-			//				}
-
-			//				for (int i = 0; i < numOfTerms; i++)
-			//					stack.Pop();
-			//			}
-
-			//			if (m_universal != null)
-			//			{
-			//				foreach (var pair in m_universal.Unify(stack,binding))
-			//				{
-			//					yield return pair;
-			//				}
-			//			}
-			//		}
-			//	}
-			//	else
-			//	{
-			//		throw new NotImplementedException("variable term");
-			//	}
-			//	throw new NotImplementedException("end");
-			//}
 
 			public void Write(StringBuilder builder, int indent)
 			{

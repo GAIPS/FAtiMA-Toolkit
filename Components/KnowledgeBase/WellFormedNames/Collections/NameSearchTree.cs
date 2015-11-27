@@ -164,49 +164,46 @@ namespace KnowledgeBase.WellFormedNames.Collections
 
 		public bool TryMatchValue(Name name, out T value)
 		{
-			Pair<bool, T> result = MethodWrapper(name, s => Root.Match(s));
-			value = result.Item2;
-			return result.Item1;
+			foreach (var m in MatchAll(name))
+			{
+				value = m;
+				return true;
+			}
+			value = default(T);
+			return false;
 		}
 
 		public IEnumerable<T> MatchAll(Name name)
 		{
-			List<T> results = new List<T>();
-			MethodWrapper(name, s => Root.MatchAll(s, results));
-			return results;
-		}
-
-		public IEnumerable<SubstitutionSet> GetPosibleBindings(Name name, SubstitutionSet knowBindings = null)
-		{
-			List<SubstitutionSet> bindings = new List<SubstitutionSet>();
-			var constraints = knowBindings ?? new SubstitutionSet();
-			if (!MethodWrapper(name, s => Root.Bind(s, constraints, bindings)))
-				return null;
-
-			if (knowBindings != null)
+			var stack = ObjectPool<Stack<Name>>.GetObject();
+			try
 			{
-				foreach (var b in bindings)
-					b.AddSubstitutions(knowBindings);
+				stack.Push(name);
+				foreach (var pair in Root.Unify(stack, null))
+					yield return pair.Item1;
 			}
-			
-			return bindings;
+			finally
+			{
+				stack.Clear();
+				ObjectPool<Stack<Name>>.Recycle(stack);
+			}
 		}
 
-		//public IEnumerable<Pair<T, SubstitutionSet>> Unify(Name predicate, SubstitutionSet bindings)
-		//{
-		//	var stack = ObjectPool<Stack<Name>>.GetObject();
-		//	try
-		//	{
-		//		stack.Push(predicate);
-		//		foreach (var pair in Root.Unify(stack,bindings))
-		//			yield return pair;
-		//	}
-		//	finally
-		//	{
-		//		stack.Clear();
-		//		ObjectPool<Stack<Name>>.Recycle(stack);
-		//	}
-		//}
+		public IEnumerable<Pair<T, SubstitutionSet>> Unify(Name predicate, SubstitutionSet bindings=null)
+		{
+			var stack = ObjectPool<Stack<Name>>.GetObject();
+			try
+			{
+				stack.Push(predicate);
+				foreach (var pair in Root.Unify(stack, bindings??new SubstitutionSet()))
+					yield return pair;
+			}
+			finally
+			{
+				stack.Clear();
+				ObjectPool<Stack<Name>>.Recycle(stack);
+			}
+		}
 
 		private static TReturn MethodWrapper<TReturn>(Name name, Func<Stack<Name>, TReturn> func)
 		{
