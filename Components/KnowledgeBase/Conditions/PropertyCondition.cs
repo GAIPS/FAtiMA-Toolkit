@@ -13,7 +13,7 @@ namespace KnowledgeBase.Conditions
 			this.Value = value;
 		}
 
-		public bool Evaluate(KnowledgeBase kb)
+		public bool Evaluate(Memory kb)
 		{
 			object result = kb.AskProperty(Property);
 			if (result == null)

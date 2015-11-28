@@ -136,8 +136,22 @@ namespace Tests.KnowledgeBase.WellFormedNames
             Assert.That(ghost1 != ghost2);
         }
 
-
-     
-
+		[TestCase("A")]
+		[TestCase("[x]")]
+		[TestCase("A(B,C)")]
+		[TestCase("A(B,C(D))")]
+		[TestCase("A(B(C,D,E(F,G)),H(I(J(K)),L,M))")]
+	    public void Fold_Unfold_Test(string name)
+		{
+			var n = (Name) name;
+			Name output;
+			SubstitutionSet set;
+			output = n.Unfold(out set);
+			if (set != null)
+			{
+				output = output.MakeGround(set);
+			}
+			Assert.AreEqual(n,output);
+		}
     }
 }

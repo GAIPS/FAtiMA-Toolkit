@@ -31,14 +31,15 @@ namespace KnowledgeBase.WellFormedNames
 			get { return false; }
 		}
 
-		public override bool IsConstant
-		{
-			get { return GetTerms().All(t => t.IsConstant); }
-		}
-
 		public override int NumberOfTerms
 		{
 			get { return Terms.Length+1; }
+		}
+
+		private bool m_isConstant;
+		public override bool IsConstant
+		{
+			get { return m_isConstant; }
 		}
 
 		/// <summary>
@@ -88,9 +89,7 @@ namespace KnowledgeBase.WellFormedNames
 		/// <param name="composedName">The composedName to clone</param>
 		protected ComposedName(ComposedName composedName)
 		{
-			IsGrounded = composedName.IsGrounded;
-			RootSymbol = composedName.RootSymbol;
-			Terms = composedName.Terms.Clone<Name>().ToArray();
+			Init(composedName.RootSymbol,composedName.Terms.Clone<Name>().ToArray());
 		}
 
 		/// <summary>
@@ -101,7 +100,8 @@ namespace KnowledgeBase.WellFormedNames
 			Terms = literals;
 			RootSymbol = head;
 
-			IsGrounded =  RootSymbol.IsGrounded && Terms.All(l => l.IsGrounded);
+			IsGrounded = RootSymbol.IsGrounded && Terms.All(n => n.IsGrounded);
+			m_isConstant = RootSymbol.IsConstant && Terms.All(n => n.IsConstant);
 		}
 
 		public override Name GetFirstTerm()
@@ -213,8 +213,36 @@ namespace KnowledgeBase.WellFormedNames
             return true;
         }
 
+		public override Name Unfold(out SubstitutionSet set)
+		{
+			Name[] terms = new Name[Terms.Length];
+			set = null;
+			for (int i = 0; i < terms.Length; i++)
+			{
+				Symbol s = Terms[i] as Symbol;
+				if (s == null)
+				{
+					s = Name.GenerateUniqueGhostVariable();
+					SubstitutionSet aux;
+					var sub = new Substitution(s,Terms[i].Unfold(out aux));
 
-        public override int GetHashCode()
+					if (set == null)
+						set = aux ?? new SubstitutionSet();
+					else if (aux != null)
+						set.AddSubstitutions(aux);
+
+					set.AddSubstitution(sub);
+				}
+				
+				terms[i] = s;
+			}
+
+			return new ComposedName(RootSymbol,terms);
+		}
+
+		
+
+		public override int GetHashCode()
 		{
 			return GetTerms().Select(t => t.GetHashCode()).Aggregate((h1, h2) => h1 ^ h2);
 		}

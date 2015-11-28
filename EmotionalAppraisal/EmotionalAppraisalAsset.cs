@@ -41,7 +41,7 @@ namespace EmotionalAppraisal
 			set { m_moodDecay = value < Constants.MinimumDecayTime ? Constants.MinimumDecayTime : value; }
 		}
 
-		private KnowledgeBase.KnowledgeBase m_kb;
+		private KnowledgeBase.Memory m_kb;
 		private ConcreteEmotionalState m_emotionalState;
 		private ReactiveAppraisalDerivator m_appraisalDerivator;
 		#region Component Manager
@@ -101,7 +101,7 @@ namespace EmotionalAppraisal
 			}
 		}
 
-		public KnowledgeBase.KnowledgeBase KnowledgeBase
+		public KnowledgeBase.Memory Memory
 		{
 			get { return m_kb; }
 		}
@@ -111,7 +111,7 @@ namespace EmotionalAppraisal
 		public EmotionalAppraisalAsset(string perspective)
 		{
 			Perspective = perspective;
-			m_kb = new KnowledgeBase.KnowledgeBase();
+			m_kb = new KnowledgeBase.Memory();
 			m_emotionalState = new ConcreteEmotionalState();
 			m_occAffectDerivator = new OCCAffectDerivationComponent();
 			m_appraisalDerivator = new ReactiveAppraisalDerivator();

@@ -108,6 +108,11 @@ namespace KnowledgeBase.WellFormedNames
 			return m_substitutions;
 		}
 
+		public Name GetVariableSubstitution(Symbol variable)
+		{
+			return m_substitutions.Where(s => s.Variable == variable).Select(s => s.Value).FirstOrDefault();
+		}
+
 		public override int GetHashCode()
 		{
 			//This is a random value to represent an empty set,

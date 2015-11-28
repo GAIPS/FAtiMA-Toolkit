@@ -96,8 +96,8 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					count += m_nextComposed.Values.Sum(n => n.Count());
 				}
 
-				if (m_nextComposed.Count > 0)
-					count += m_nextComposed.Values.Sum(n => n.Count());
+				if (m_nextVariable.Count > 0)
+					count += m_nextVariable.Values.Sum(n => n.Count());
 
 				if (m_universal != null)
 					count += m_universal.Count();

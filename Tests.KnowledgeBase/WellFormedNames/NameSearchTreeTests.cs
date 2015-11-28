@@ -218,7 +218,6 @@ namespace Tests.KnowledgeBase.WellFormedNames
 				yield return new TestCaseData(baseInput, (Name) "jump(3,36)");
 			}
 
-
 			public static IEnumerable<TestCaseData> TestUnifyCases_Valid()
 			{
 				yield return new TestCaseData(baseInput, (Name)"Luke([x])", null,
@@ -379,6 +378,11 @@ namespace Tests.KnowledgeBase.WellFormedNames
 				yield return new TestCaseData(baseInput, (Name)"Paul([x])", null);
 				yield return new TestCaseData(baseInput, (Name)"Paul([x])", null);
 			}
+
+			public static IEnumerable<TestCaseData> Test_NameSearchTree_Count_Cases()
+			{
+				yield return new TestCaseData(baseInput,inputStrings.Length);
+			}
 		}
 
 		[TestCaseSource(typeof(TestFactory), "TestMatchAllCases_Valid")]
@@ -424,5 +428,12 @@ namespace Tests.KnowledgeBase.WellFormedNames
 			var result = dict.Unify(expression, bindings);
 			Assert.That(!result.Any(),"The unification returned valid results.");
 		}
+
+		[TestCaseSource(typeof(TestFactory), "Test_NameSearchTree_Count_Cases")]
+	    public void Test_NameSearchTree_Count(NameSearchTree<int> nst, int expectedCount)
+	    {
+			Assert.AreEqual(nst.Count,expectedCount);
+	    }
+
     }
 }

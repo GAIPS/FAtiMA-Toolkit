@@ -126,6 +126,18 @@ namespace KnowledgeBase.WellFormedNames
 		/// <returns></returns>
 		public abstract bool Match(Name name);
 
+		/// <summary>
+		/// Unfolds a name into depth 0 Name with a set of binding.
+		/// Ex:
+		///    A(B,C(D,E(F))) unfolds into A(B,[_0]) with the bindings
+		///    [_0]/C(D,[_1])
+		///    [_1]/E(F)
+		/// 
+		/// </summary>
+		/// <param name="set">The output set of substitutions that fold the name again into it's original form.</param>
+		/// <returns>The unfolded Name.</returns>
+		public abstract Name Unfold(out SubstitutionSet set);
+
 		#region Parsing
 
 		/// <summary>
@@ -231,7 +243,6 @@ namespace KnowledgeBase.WellFormedNames
             return ghost;
 		}
 
-		
 		#region Operators
 
 		public static explicit operator Name(string definition)
@@ -259,10 +270,10 @@ namespace KnowledgeBase.WellFormedNames
 
 		/*
 		/// <summary>
-		/// Evaluates this Name according to the data stored in the KnowledgeBase
+		/// Evaluates this Name according to the data stored in the Memory
 		/// If this clone is changed afterwards, the original object remains the same.
 		/// </summary>
-		/// <param name="m">a reference to the KnowledgeBase</param>
+		/// <param name="m">a reference to the Memory</param>
 		/// <returns>if the name is a symbol, it returns its name, otherwise it returns the value associated to the name in the KB</returns>
 		public abstract Object evaluate(Memory m);
 		*/

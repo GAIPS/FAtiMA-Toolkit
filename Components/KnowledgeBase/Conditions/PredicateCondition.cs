@@ -11,7 +11,7 @@ namespace KnowledgeBase.Conditions
 			this.Predicate = predicate;
 		}
 
-		public bool Evaluate(KnowledgeBase kb)
+		public bool Evaluate(Memory kb)
 		{
 			return kb.AskPredicate(Predicate);
 		}

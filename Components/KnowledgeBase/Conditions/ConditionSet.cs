@@ -18,7 +18,7 @@ namespace KnowledgeBase.Conditions
 			this.operation = operation;
 		}
 
-		public bool Evaluate(KnowledgeBase kb)
+		public bool Evaluate(Memory kb)
 		{
 			return operation == Operation.Or ? this.Any(c => c.Evaluate(kb)) : this.All(c => c.Evaluate(kb));
 		}

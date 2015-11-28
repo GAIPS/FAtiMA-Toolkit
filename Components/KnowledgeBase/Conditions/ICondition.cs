@@ -2,6 +2,6 @@
 {
 	public interface ICondition
 	{
-		bool Evaluate(KnowledgeBase kb);
+		bool Evaluate(Memory kb);
 	}
 }

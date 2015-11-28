@@ -13,7 +13,7 @@ namespace KnowledgeBase
 		Self
 	}
 
-	public class KnowledgeBase
+	public class Memory
 	{
 		private sealed class KnowledgeEntry
 		{
@@ -43,7 +43,7 @@ namespace KnowledgeBase
 		{
 			KnowledgeEntry result;
 			if (!m_knowledgeStorage.TryGetValue(predicate, out result))
-				return true;
+				return false;
 
 			return (result.Value is bool) && (bool)result.Value;
 		}
@@ -107,7 +107,7 @@ namespace KnowledgeBase
 		/// substitution of [x] will match the received name with an existing object.
 		/// </summary>
 		/// <param name="name">a name (that correspond to a predicate or property)</param>
-		/// <returns>a set of SubstitutionSets that make the received name to match predicates or properties that do exist in the KnowledgeBase</returns>
+		/// <returns>a set of SubstitutionSets that make the received name to match predicates or properties that do exist in the Memory</returns>
 		public IEnumerable<SubstitutionSet> Unify(Name name, SubstitutionSet constraints = null)
 		{
 			List<SubstitutionSet> result = null;
@@ -123,15 +123,50 @@ namespace KnowledgeBase
 			return result;
 		}
 
-		public void Tell(Name property, object value, bool persistent, KnowledgeVisibility visibility)
+		public void Tell(Name property, object value, bool persistent=false, KnowledgeVisibility visibility=KnowledgeVisibility.Universal)
 		{
 			if (!property.IsConstant)
 				throw new Exception("The given name is not constant. Only constant names can be stored");	//TODO add a better exception
 
-			if(!(value is Name || value is bool || value.GetType().IsNumeric()))
-				throw new Exception("invalid value type to be stored");	//TODO add a better exception
+			SubstitutionSet set;
+			var fact = property.Unfold(out set);
+			if (set != null)
+			{
+				fact = GroundName(fact, set);
+			}
 
-			m_knowledgeStorage[property] = new KnowledgeEntry(value, persistent, visibility);
+			m_knowledgeStorage[fact] = new KnowledgeEntry(value, persistent, visibility);
+		}
+
+		private static Name ConvertValueToName(object value)
+		{
+			Name v = value as Name;
+			if (v == null)
+			{
+				if (!value.GetType().IsPrimitiveData())
+					throw new Exception("Can only convert primitive types to Well Formed Names");
+
+				v = new Symbol(value.ToString());
+			}
+			return v;
+		}
+
+		private Name GroundName(Name name, SubstitutionSet bindings)
+		{
+			var subs = new SubstitutionSet();
+			foreach (var v in name.GetVariableList())
+			{
+				var value = bindings.GetVariableSubstitution(v);
+				if (!value.IsGrounded)
+					value = GroundName(value, bindings);
+
+				var prop = AskProperty(value);
+				if(prop==null)
+					throw new Exception(string.Format("Knowledge Base could not find a property for {0}",value));
+				var s = new Substitution(v,ConvertValueToName(prop));
+				subs.AddSubstitution(s);
+			}
+			return name.MakeGround(subs);
 		}
 
 		public void RemoveNonPersistent()
@@ -141,6 +176,11 @@ namespace KnowledgeBase
 			{
 				m_knowledgeStorage.Remove(entry);
 			}
+		}
+
+		public int NumOfEntries
+		{
+			get { return m_knowledgeStorage.Count; }
 		}
 	}
 }

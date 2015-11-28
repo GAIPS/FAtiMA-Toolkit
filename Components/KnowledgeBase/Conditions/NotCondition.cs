@@ -9,7 +9,7 @@
 			this.Condition = condition;
 		}
 
-		public bool Evaluate(KnowledgeBase kb)
+		public bool Evaluate(Memory kb)
 		{
 			return !this.Condition.Evaluate(kb);
 		}

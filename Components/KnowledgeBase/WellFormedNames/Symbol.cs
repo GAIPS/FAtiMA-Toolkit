@@ -215,12 +215,18 @@ namespace KnowledgeBase.WellFormedNames
 			return other.Name.Equals(Name, StringComparison.InvariantCultureIgnoreCase);
 		}
 
+		public override Name Unfold(out SubstitutionSet set)
+		{
+			set = null;
+			return this;
+		}
+
 		/*
 		/// <summary>
-		/// Evaluates this Name according to the data stored in the KnowledgeBase
+		/// Evaluates this Name according to the data stored in the Memory
 		/// If this clone is changed afterwards, the original object remains the same.
 		/// </summary>
-		/// <param name="m">a reference to the KnowledgeBase</param>
+		/// <param name="m">a reference to the Memory</param>
 		/// <returns>if the name is a symbol, it returns its name, otherwise it returns the value associated to the name in the KB</returns>
 		public override object evaluate(Memory m)
 		{

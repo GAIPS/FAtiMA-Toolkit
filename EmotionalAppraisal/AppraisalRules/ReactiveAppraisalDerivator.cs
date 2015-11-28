@@ -29,7 +29,7 @@ namespace EmotionalAppraisal.AppraisalRules
 			this.AppraisalRules = new NameSearchTree<Reaction>();
 		}
 		
-		public Reaction Evaluate(string perspective, IEvent evt, KnowledgeBase.KnowledgeBase kb)
+		public Reaction Evaluate(string perspective, IEvent evt, KnowledgeBase.Memory kb)
 		{
 			Name eventName = evt.ToName();
 			if(!string.IsNullOrEmpty(perspective))
@@ -62,7 +62,7 @@ namespace EmotionalAppraisal.AppraisalRules
 
 		public void Appraisal(EmotionalAppraisalAsset emotionalModule, IEvent evt, IWritableAppraisalFrame frame)
 		{
-			Reaction selfEvaluation = Evaluate(emotionalModule.Perspective, evt,emotionalModule.KnowledgeBase);
+			Reaction selfEvaluation = Evaluate(emotionalModule.Perspective, evt,emotionalModule.Memory);
 			if (selfEvaluation != null)
 			{
 				if (selfEvaluation.Desirability != 0)
