@@ -100,13 +100,13 @@ namespace KnowledgeBase.WellFormedNames
 		/// <param name="name2">The second Name</param>
 		/// <param name="bindings">The out paramenter for the founded inequalities</param>
 		/// <returns>True if the names are disunifiable, in this case the bindings list will contain the found Inequalities, otherwise it will be empty</returns>
-		public static bool Disunify(Name name1, Name name2, out IEnumerable<Substitution> bindings)
-		{
-			bool result = Unify(name1, name2, out bindings);
-			if (result)
-				bindings = (IEnumerable<Substitution>)(bindings.Select(s => new Inequality(s)));
-			return result;
-		}
+		//public static bool Disunify(Name name1, Name name2, out IEnumerable<Substitution> bindings)
+		//{
+		//	bool result = Unify(name1, name2, out bindings);
+		//	if (result)
+		//		bindings = (IEnumerable<Substitution>)(bindings.Select(s => new Inequality(s)));
+		//	return result;
+		//}
 
 	   
         #region Private Methods
