@@ -9,6 +9,7 @@ using NUnit.Framework;
 using KnowledgeBase.WellFormedNames;
 using System.IO;
 using GAIPS.Serialization;
+using KnowledgeBase;
 
 namespace Tests.EmotionalAppraisal
 {
@@ -93,17 +94,17 @@ namespace Tests.EmotionalAppraisal
 			Reaction petReaction = new Reaction();
 			petReaction.Desirability = 10;
 			petReaction.Like = 7;
-			m_emotionalAppraisalAsset.AppraisalRules.AddEmotionalReaction(new TestEvent(Symbol.UNIVERSAL_STRING, "Pet", Symbol.SELF_STRING), petReaction);
+			m_emotionalAppraisalAsset.AddEmotionalReaction(new TestEvent(Symbol.UNIVERSAL_STRING, "Pet", Symbol.SELF_STRING), petReaction);
 
 			Reaction slapReaction = new Reaction();
 			slapReaction.Desirability = -10;
 			slapReaction.Like = -15;
-			m_emotionalAppraisalAsset.AppraisalRules.AddEmotionalReaction(new TestEvent(Symbol.UNIVERSAL_STRING, "Slap", Symbol.SELF_STRING), slapReaction);
+			m_emotionalAppraisalAsset.AddEmotionalReaction(new TestEvent(Symbol.UNIVERSAL_STRING, "Slap", Symbol.SELF_STRING), slapReaction);
 
 			Reaction feedReaction = new Reaction();
 			feedReaction.Desirability = 5;
 			feedReaction.Praiseworthiness = 10;
-			m_emotionalAppraisalAsset.AppraisalRules.AddEmotionalReaction(new TestEvent(Symbol.UNIVERSAL_STRING, "Feed", Symbol.SELF_STRING), feedReaction);
+			m_emotionalAppraisalAsset.AddEmotionalReaction(new TestEvent(Symbol.UNIVERSAL_STRING, "Feed", Symbol.SELF_STRING), feedReaction);
 
 			var madScreamEvent = new TestEvent(Symbol.UNIVERSAL_STRING, "Talk", null);
 			var parameters1 = new List<IEventParameter>();
@@ -114,7 +115,7 @@ namespace Tests.EmotionalAppraisal
 			screamMad.Desirability = -7;
 			screamMad.Praiseworthiness = -15;
 			screamMad.Like = -4;
-			m_emotionalAppraisalAsset.AppraisalRules.AddEmotionalReaction(madScreamEvent, screamMad);
+			m_emotionalAppraisalAsset.AddEmotionalReaction(madScreamEvent, screamMad);
 
 			var talkSoftEvent = new TestEvent(Symbol.UNIVERSAL_STRING, "Talk", null);
 			var parameters2 = new List<IEventParameter>();
@@ -124,11 +125,34 @@ namespace Tests.EmotionalAppraisal
 			Reaction talkSoftReaction = new Reaction();
 			talkSoftReaction.Praiseworthiness = 5;
 			talkSoftReaction.Like = 5;
-			m_emotionalAppraisalAsset.AppraisalRules.AddEmotionalReaction(talkSoftEvent, talkSoftReaction);
+			m_emotionalAppraisalAsset.AddEmotionalReaction(talkSoftEvent, talkSoftReaction);
 
 			//Generate emotion
 			var eventToAppraise=new TestEvent("Player","Slap","Test");
 			m_emotionalAppraisalAsset.AppraiseEvents(new []{eventToAppraise});
+
+			//Add knowledge
+			var kb = m_emotionalAppraisalAsset.Kb;
+			kb.Tell((Name)"Strength(John)", (byte)5,true,KnowledgeVisibility.Self);
+			kb.Tell((Name)"Strength(Mary)", (sbyte)3, true, KnowledgeVisibility.Self);
+			kb.Tell((Name)"Strength(Leonidas)", (short)500, true, KnowledgeVisibility.Self);
+			kb.Tell((Name)"Strength(Goku)", (uint)9001f, true, KnowledgeVisibility.Self);
+			kb.Tell((Name)"Strength(SuperMan)", ulong.MaxValue, true, KnowledgeVisibility.Self);
+			kb.Tell((Name)"Strength(Saitama)", float.MaxValue, true, KnowledgeVisibility.Self);
+			kb.Tell((Name)"Race(Saitama)", "human", true, KnowledgeVisibility.Self);
+			kb.Tell((Name)"Race(Superman)", "kriptonian", true, KnowledgeVisibility.Universal);
+			kb.Tell((Name)"Race(Goku)", "sayian",true,KnowledgeVisibility.Self);
+			kb.Tell((Name)"Race(Leonidas)", "human", true, KnowledgeVisibility.Self);
+			kb.Tell((Name)"Race(Mary)", "human", true, KnowledgeVisibility.Self);
+			kb.Tell((Name)"Race(John)", "human", true, KnowledgeVisibility.Self);
+			kb.Tell((Name)"Job(Saitama)", "super-hero",false,KnowledgeVisibility.Self);
+			kb.Tell((Name)"Job(Superman)", "super-hero", true, KnowledgeVisibility.Universal);
+			kb.Tell((Name)"Job(Leonidas)", "Spartan", false, KnowledgeVisibility.Self);
+			kb.Tell((Name)"AKA(Saitama)", "One-Punch_Man", true, KnowledgeVisibility.Self);
+			kb.Tell((Name)"AKA(Superman)", "Clark_Kent", true, KnowledgeVisibility.Self);
+			kb.Tell((Name)"AKA(Goku)", "Kakarot", true, KnowledgeVisibility.Self);
+			kb.Tell((Name)"Hobby(Saitama)", "super-hero", false, KnowledgeVisibility.Self);
+			kb.Tell((Name)"Hobby(Goku)", "training", true, KnowledgeVisibility.Universal);
 
 			return m_emotionalAppraisalAsset;
 		}

@@ -124,7 +124,7 @@ namespace KnowledgeBase.WellFormedNames
 			if (!(allowPartial || n1.NumberOfTerms == n2.NumberOfTerms))
 				return null;
 
-            return n1.GetTerms().Zip(n2.GetTerms(), (t1, t2) => Tuple.Create(t1, t2));
+            return n1.GetTerms().Zip(n2.GetTerms(), Tuple.Create);
         }
 
 
@@ -178,9 +178,8 @@ namespace KnowledgeBase.WellFormedNames
 				{
 					// Step 4: check to see if the newly created substitution conflicts with any of the already created substitution.
 					// If it does, the unification fails.
-					if (bindings.Conflicts(candidate))
+					if (!bindings.AddSubstitution(candidate))
 						return false;
-					bindings.AddSubstitution(candidate);
 				}
 			}
 			return true;

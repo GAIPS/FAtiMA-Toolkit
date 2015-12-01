@@ -114,7 +114,7 @@ namespace EmotionalAppraisal
 			deltaTimeT0 = 0;
 			Decay = dataHolder.GetValue<int>("Decay");
 			Threshold = dataHolder.GetValue<int>("Threshold");
-			Cause = dataHolder.GetValue<EmotionalCause>("Cause");
+			Cause = dataHolder.GetValue<Cause>("Cause");
 			var dir = dataHolder.GetValue<string>("Direction");
 			Direction = !string.IsNullOrEmpty(dir) ? Name.Parse(dir) : null;
 			EmotionType = dataHolder.GetValue<string>("EmotionType");

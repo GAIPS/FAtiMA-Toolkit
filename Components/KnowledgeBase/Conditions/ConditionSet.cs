@@ -1,26 +1,58 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using KnowledgeBase.WellFormedNames;
 
 namespace KnowledgeBase.Conditions
 {
-	public class ConditionSet : HashSet<ICondition>, ICondition
+	[Serializable]
+	public sealed class ConditionSet : HashSet<Condition>, ICondition
 	{
-		public enum Operation : byte
+		public ConditionSet() : base()
 		{
-			And,
-			Or
 		}
 
-		public Operation operation { get; set; }
-
-		public ConditionSet(Operation operation, IEnumerable<ICondition> conditions) : base(conditions)
+		public ConditionSet(IEnumerable<Condition> conditions) : base(conditions)
 		{
-			this.operation = operation;
 		}
 
-		public bool Evaluate(Memory kb)
+		public IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, SubstitutionSet constraints)
 		{
-			return operation == Operation.Or ? this.Any(c => c.Evaluate(kb)) : this.All(c => c.Evaluate(kb));
+			var it = GetEnumerator();
+			if (!it.MoveNext())
+				return new[] {new SubstitutionSet()};
+
+			var result = it.Current.UnifyEvaluate(kb, constraints);
+
+			while (it.MoveNext())
+			{
+				var a = it.Current;
+				result = result.SelectMany(s => 
+					a.UnifyEvaluate(kb, s));
+			}
+			return result;
+		}
+
+		public bool Evaluate(KB kb, SubstitutionSet constraints)
+		{
+			return UnifyEvaluate(kb, constraints).Any();
+		}
+
+		public override int GetHashCode()
+		{
+			const int EMPTY_HASH = 0x33b65725;
+			if (this.Count == 0)
+				return EMPTY_HASH;
+			return EMPTY_HASH ^ this.Select(c => c.GetHashCode()).Aggregate((h1, h2) => h1 ^ h2);
+		}
+
+		public override bool Equals(object obj)
+		{
+			ConditionSet set = obj as ConditionSet;
+			if(set==null)
+				return false;
+
+			return SetEquals(set);
 		}
 	}
 }

@@ -68,11 +68,6 @@ namespace EmotionalAppraisal.AppraisalRules
 		}
 
 		/// <summary>
-		/// The conditions that must be matched in the knowledge base in order for the reaction to be activated
-		/// </summary>
-		public ICondition ActivationCondition { get; set; }
-
-		/// <summary>
 		///     Desirability of the event
 		/// </summary>
 		public float Desirability { get; set; }
@@ -115,7 +110,7 @@ namespace EmotionalAppraisal.AppraisalRules
 			return r;
 		}
 
-		public Reaction MakeGround(IEnumerable<Substitution> bindings)
+		public Reaction MakeGround(SubstitutionSet bindings)
 		{
 			if (IsGrounded)
 				return this;
@@ -143,10 +138,10 @@ namespace EmotionalAppraisal.AppraisalRules
 		//	return ReferencedEventName.Match(eventPerception.ToName());
 		//}
 
-		public Reaction MakeGround(params Substitution[] subst)
-		{
-			return MakeGround((IEnumerable<Substitution>) subst);
-		}
+		//public Reaction MakeGround(params Substitution[] subst)
+		//{
+		//	return MakeGround((IEnumerable<Substitution>) subst);
+		//}
 
 		//public override string ToString()
 		//{

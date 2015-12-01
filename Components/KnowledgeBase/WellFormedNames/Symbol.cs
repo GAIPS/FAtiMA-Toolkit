@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using KnowledgeBase.WellFormedNames.Exceptions;
+using KnowledgeBase.Exceptions;
 
 namespace KnowledgeBase.WellFormedNames
 {
@@ -31,15 +31,19 @@ namespace KnowledgeBase.WellFormedNames
 	[Serializable]
 	public class Symbol : Name
 	{
+		public const string NUMBER_VALIDATION_PATTERN = @"(?:-|\+)?[1-9]\d*(?:\.\d+)?(?:e(?:-|\+)?[1-9]\d*)?";
 		public const string VARIABLE_SYMBOL_VALIDATION_PATTERN = @"\[[A-Za-z_][\w-]*\]";
-		public const string VALUE_SYMBOL_VALIDATION_PATTERN = @"\*|[\w-]+";
+		public const string VALUE_SYMBOL_VALIDATION_PATTERN = @"\*|-|(?:[A-Za-z_][\w-]*)|" + NUMBER_VALIDATION_PATTERN;
 		public const string SYMBOL_VALIDATION_PATTERN = @"(("+VARIABLE_SYMBOL_VALIDATION_PATTERN+")|("+VALUE_SYMBOL_VALIDATION_PATTERN+"))";
-		private readonly static Regex VALIDATION_REGEX = new Regex("^"+SYMBOL_VALIDATION_PATTERN+"$");
+		private static readonly Regex VALIDATION_REGEX = new Regex("^"+SYMBOL_VALIDATION_PATTERN+"$",RegexOptions.IgnoreCase);
+		private static readonly Regex NUMBER_IDENTIFICATION_REGEX = new Regex("^" + NUMBER_VALIDATION_PATTERN + "$",RegexOptions.IgnoreCase);
 
+		public const string NIL_STRING = "-";
 		public const string SELF_STRING = "SELF";
 		public const string UNIVERSAL_STRING = "*";
 		public const string AGENT_STRING = "[AGENT]";
 
+		public static readonly Symbol NIL_SYMBOL = new Symbol(NIL_STRING);
 		public static readonly Symbol SELF_SYMBOL = new Symbol(SELF_STRING);
 		public static readonly Symbol UNIVERSAL_SYMBOL = new Symbol(UNIVERSAL_STRING);
 		public static readonly Symbol AGENT_SYMBOL = new Symbol(AGENT_STRING);
@@ -60,12 +64,17 @@ namespace KnowledgeBase.WellFormedNames
 
 		public override bool IsVariable
 		{
-			get { return this.Name.StartsWith("["); }
+			get { return !IsGrounded; }
 		}
 
 		public override bool IsConstant
 		{
-			get { return !(IsUniversal || IsVariable); }
+			get { return !IsUniversal && IsGrounded; }
+		}
+
+		private bool m_isPrimitive = false;
+		public override bool IsPrimitive {
+			get { return m_isPrimitive; }
 		}
 
 		public override int NumberOfTerms
@@ -84,10 +93,16 @@ namespace KnowledgeBase.WellFormedNames
 		{
 			symbolString = symbolString.Trim();
 			if(!VALIDATION_REGEX.IsMatch(symbolString))
-				throw new InvalidSymbolDefinitionException(symbolString);
+				throw new ParsingException(symbolString+" is not a well formated name definition");
 
 			this.IsGrounded = (symbolString[0] != '[');
-			this.Name = this.IsGrounded?symbolString:symbolString.ToLowerInvariant();
+			if (IsGrounded)
+			{
+				m_isPrimitive = NUMBER_IDENTIFICATION_REGEX.IsMatch(symbolString) ||
+				                string.Equals(symbolString, "true", StringComparison.InvariantCultureIgnoreCase) ||
+				                string.Equals(symbolString, "false", StringComparison.InvariantCultureIgnoreCase);
+			}
+			this.Name = symbolString;
 		}
 
 		/// <summary>
@@ -97,6 +112,7 @@ namespace KnowledgeBase.WellFormedNames
 		protected Symbol(Symbol symbol)
 		{
 			this.IsGrounded = symbol.IsGrounded;
+			this.m_isPrimitive = symbol.m_isPrimitive;
 			this.Name = symbol.Name;
 		}
 
@@ -149,34 +165,18 @@ namespace KnowledgeBase.WellFormedNames
 			return new Symbol(this.Name.Substring(0, this.Name.Length - 1) + variableId + ']');
 		}
 
-		/// <summary>
-		/// Applies a set of substitutions to the object, grounding it.
-		/// Example: Applying the substitution "[X]/John" in the name "Weak([X])" returns
-		/// "Weak(John)". 
-		/// </summary>
-		/// <remarks>Attention, this method modifies the original object.</remarks>
-		/// <param name="bindings">The substitutions of the type "[Variable]/value"</param>
-		/// <see cref="FAtiMA.Core.WellFormedNames.Substitution"/>
-		public override Name MakeGround(IEnumerable<Substitution> bindings)
+		public override Name MakeGround(SubstitutionSet bindings)
 		{
 			if (this.IsGrounded)
 				return this;
 
-			using (IEnumerator<Substitution> it = bindings.GetEnumerator())
-			{
-				while (it.MoveNext())
-				{
-					if (string.Equals(this.Name, it.Current.Variable.Name, StringComparison.InvariantCultureIgnoreCase))
-					{
-						if (it.Current.Value.IsGrounded)
-							return (Name)it.Current.Value.Clone();
-						else
-							return it.Current.Value.MakeGround(bindings);
-					}
-				}
-			}
+			Name n = bindings[this];
+			if (n == null)
+				return this;
 
-			return this;
+			if (n.IsGrounded)
+				return (Name)n.Clone();
+			return n.MakeGround(bindings);
 		}
 
 		public override string ToString()
@@ -223,12 +223,12 @@ namespace KnowledgeBase.WellFormedNames
 
 		/*
 		/// <summary>
-		/// Evaluates this Name according to the data stored in the Memory
+		/// Evaluates this Name according to the data stored in the KB
 		/// If this clone is changed afterwards, the original object remains the same.
 		/// </summary>
-		/// <param name="m">a reference to the Memory</param>
+		/// <param name="m">a reference to the KB</param>
 		/// <returns>if the name is a symbol, it returns its name, otherwise it returns the value associated to the name in the KB</returns>
-		public override object evaluate(Memory m)
+		public override object evaluate(KB m)
 		{
 			return (IsGrounded ? Name : null);
 		}

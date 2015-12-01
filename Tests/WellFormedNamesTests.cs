@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using KnowledgeBase.Exceptions;
 using KnowledgeBase.WellFormedNames;
 using KnowledgeBase.WellFormedNames.Collections;
-using KnowledgeBase.WellFormedNames.Exceptions;
 using Exception = System.Exception;
 
 namespace UnitTest.WellFormedNames
@@ -124,7 +124,7 @@ namespace UnitTest.WellFormedNames
 					Assert.AreEqual(s.IsGrounded, d.isGround);
 					Assert.AreEqual(s.HasGhostVariable(), d.isGhost);
 				}
-				catch (InvalidSymbolDefinitionException e)
+				catch (ParsingException e)
 				{
 					if (d.isValid)
 						throw e;
@@ -210,8 +210,8 @@ namespace UnitTest.WellFormedNames
 						if (result == null)
 							Assert.Fail("Unifier should return a substitution set in case of sucess.");
 
-						var AG = A.MakeGround(result);
-						var BG = B.MakeGround(result);
+						var AG = A.MakeGround(new SubstitutionSet(result));
+						var BG = B.MakeGround(new SubstitutionSet(result));
 						if(!AG.Equals(BG))
 							Assert.Fail("The resulting generated substitutions fail to ground both expressions.");
 

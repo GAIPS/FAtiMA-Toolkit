@@ -43,20 +43,23 @@ namespace EmotionalAppraisal
             return true;
         }
 
-	    public static Name ToName(this IEvent evt)
-	    {
-		    var terms = new List<Name>
-		    {
-			    new Symbol("Event"),
-			    new Symbol(evt.Subject),
-			    new Symbol(evt.Action),
-			    evt.Target == null ? Symbol.UNIVERSAL_SYMBOL : new Symbol(evt.Target)
-		    };
-		    if (evt.Parameters != null)
-			    terms.AddRange(evt.Parameters.Select(parameter => new ComposedName(new Symbol(parameter.ParameterName), new Symbol(parameter.Value.ToString()))).Cast<Name>());
-		    
-			return new ComposedName(terms);
-	    }
+		//public static Name ToName(this IEvent evt)
+		//{
+		//	//if (bindings != null)
+		//	//{
+		//	//	if (evt.Parameters.Any())
+		//	//	{
+		//	//		var subs = evt.Parameters.Select(p => new Substitution(new Symbol(p.ParameterName), Name.Parse(p.Value.ToString())));
+		//	//		bindings.AddSubstitutions(subs);
+		//	//	}
+		//	//}
+
+		//	Name n = new ComposedName(new Symbol("Event"),
+		//		new Symbol(evt.Subject),
+		//		new Symbol(evt.Action),
+		//		evt.Target == null ? Symbol.NIL_SYMBOL : new Symbol(evt.Target));
+		//	return n;
+		//}
 
 	    /// <summary>
 	    /// Generates a set of bindings that associate the Variables

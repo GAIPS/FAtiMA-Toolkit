@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using KnowledgeBase.Exceptions;
 using KnowledgeBase.WellFormedNames;
-using KnowledgeBase.WellFormedNames.Exceptions;
 using NUnit.Framework;
 
 namespace Tests.KnowledgeBase.WellFormedNames

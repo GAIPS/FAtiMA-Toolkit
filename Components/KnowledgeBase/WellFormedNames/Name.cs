@@ -24,7 +24,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using KnowledgeBase.WellFormedNames.Exceptions;
+using KnowledgeBase.Exceptions;
 using Utilities;
 
 namespace KnowledgeBase.WellFormedNames
@@ -68,10 +68,12 @@ namespace KnowledgeBase.WellFormedNames
 			get;
 		}
 
+		public abstract bool IsPrimitive { get; }
+
 		public abstract int NumberOfTerms { get; }
 
-		public override abstract bool Equals(object obj);
-		public override abstract int GetHashCode();
+		public abstract override bool Equals(object obj);
+		public abstract override int GetHashCode();
 
 		public abstract Name GetFirstTerm();
 
@@ -109,7 +111,7 @@ namespace KnowledgeBase.WellFormedNames
 
 		public abstract Name SwapPerspective(string original, string newName);
         public abstract Name ReplaceUnboundVariables(long variableId);
-		public abstract Name MakeGround(IEnumerable<Substitution> bindings);
+		public abstract Name MakeGround(SubstitutionSet bindings);
 
 		/// <summary>
 		/// Clones this Name, returning an equal copy.
@@ -188,7 +190,7 @@ namespace KnowledgeBase.WellFormedNames
 		private static ComposedName ParseComposedName(string str)
 		{
 			if (str[str.Length - 1] != ')')
-				throw new NameParsingException("Failed to parse name. Expected ')', got '{0}'", str[str.Length - 1]);
+				throw new ParsingException("Failed to parse name. Expected ')', got '{0}'", str[str.Length - 1]);
 
 			int index = str.IndexOf('(');
 
@@ -270,12 +272,12 @@ namespace KnowledgeBase.WellFormedNames
 
 		/*
 		/// <summary>
-		/// Evaluates this Name according to the data stored in the Memory
+		/// Evaluates this Name according to the data stored in the KB
 		/// If this clone is changed afterwards, the original object remains the same.
 		/// </summary>
-		/// <param name="m">a reference to the Memory</param>
+		/// <param name="m">a reference to the KB</param>
 		/// <returns>if the name is a symbol, it returns its name, otherwise it returns the value associated to the name in the KB</returns>
-		public abstract Object evaluate(Memory m);
+		public abstract Object evaluate(KB m);
 		*/
 	}
 }

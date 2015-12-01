@@ -217,7 +217,7 @@ namespace EmotionalAppraisal.OCCModel
 					}
 					else 
 					{
-						//TODO find a better way to retrive the active emotions, without allocating extra memory
+						//TODO find a better way to retrive the active emotions, without allocating extra KB
 						var fear = emotionalModule.EmotionalState.GetEmotion(new OCCBaseEmotion(OCCEmotionType.Fear, 0, evt));
 						var hope = emotionalModule.EmotionalState.GetEmotion(new OCCBaseEmotion(OCCEmotionType.Hope, 0, evt));
 

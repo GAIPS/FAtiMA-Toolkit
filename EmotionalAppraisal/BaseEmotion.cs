@@ -22,7 +22,7 @@ namespace EmotionalAppraisal
 	{
 		private float potentialValue = 0;
 
-		public EmotionalCause Cause
+		public Cause Cause
 		{
 			get;
 			protected set;
@@ -83,7 +83,8 @@ namespace EmotionalAppraisal
 			this.Valence = valence;
 			this.AppraisalVariables = appraisalVariables;
 			this.Potential = potential;
-			this.Cause = new EmotionalCause(cause.ToName(),cause.Timestamp);
+
+			this.Cause = new Cause(cause,null);
 			this.Direction = direction;
 			this.InfluenceMood = influencesMood;
 		}

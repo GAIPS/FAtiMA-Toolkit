@@ -2,12 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using GAIPS.Serialization;
 using Utilities;
 
 namespace KnowledgeBase.WellFormedNames.Collections
 {
+	//TODO optimiza count. It should not iterate all elements. Just modify a variable of contained elements at each add/remove
 	[Serializable]
 	public partial class NameSearchTree<T> : IDictionary<Name, T>, ICustomSerialization
 	{
@@ -219,6 +219,29 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				stack.Clear();
 				ObjectPool<Stack<Name>>.Recycle(stack);
 			}
+		}
+
+		public override int GetHashCode()
+		{
+			const int BASE_HASH = 0x27b895b3;
+			int hash = BASE_HASH;
+			var it = this.Select(p => p.Key.GetHashCode() ^ p.Value.GetHashCode()).GetEnumerator();
+			while (it.MoveNext())
+				hash ^= it.Current;
+
+			return hash;
+		}
+
+		public override bool Equals(object obj)
+		{
+			NameSearchTree<T> dic = obj as NameSearchTree<T>;
+			if (dic == null)
+				return false;
+
+			if (Count != dic.Count)
+				return false;
+
+			return this.All(pair => dic.Contains(pair));
 		}
 
 		public void GetObjectData(ISerializationData dataHolder)

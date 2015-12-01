@@ -31,6 +31,11 @@ namespace KnowledgeBase.WellFormedNames
 			get { return false; }
 		}
 
+		public override bool IsPrimitive
+		{
+			get { return false; }
+		}
+
 		public override int NumberOfTerms
 		{
 			get { return Terms.Length+1; }
@@ -142,7 +147,7 @@ namespace KnowledgeBase.WellFormedNames
 			return new ComposedName(GetTerms().Select(t => t.ReplaceUnboundVariables(variableId)));
 		}
 
-		public override Name MakeGround(IEnumerable<Substitution> bindings)
+		public override Name MakeGround(SubstitutionSet bindings)
 		{
 			if (IsGrounded)
                 return (Name)Clone();

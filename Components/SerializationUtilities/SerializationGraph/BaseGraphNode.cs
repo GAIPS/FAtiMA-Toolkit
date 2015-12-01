@@ -22,6 +22,11 @@ namespace GAIPS.Serialization.SerializationGraph
 				return ParentGraph.RebuildObject(this, requestedType);
 			}
 
+			public T RebuildObject<T>()
+			{
+				return (T)RebuildObject(typeof (T));
+			}
+
 			public abstract bool CanMatchType(Type requestedType);
 
 			public abstract object ExtractObject(Type requestedType);

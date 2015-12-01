@@ -9,14 +9,17 @@ namespace GAIPS.Serialization
 		void SetValue(string name, object value);
 		void SetValue<T>(string name, T value);
 		void SetValue(string name, object value, Type expectedType);
-		void SetValue(string name, IGraphNode node);
-
+		
 		object GetValue(string name);
 		T GetValue<T>(string name);
 		object GetValue(string name, Type expectedType);
+
+		void SetValueGraphNode(string name, IGraphNode node);
 		IGraphNode GetValueGraphNode(string name);
 
 		ISerializationFieldEnumerator GetEnumerator();
+
+		Graph ParentGraph { get; }
 	}
 
 	public interface ISerializationFieldEnumerator : IEnumerator<IGraphNode>

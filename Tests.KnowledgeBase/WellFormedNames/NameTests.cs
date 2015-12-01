@@ -1,6 +1,6 @@
 ﻿using System;
+using KnowledgeBase.Exceptions;
 using KnowledgeBase.WellFormedNames;
-using KnowledgeBase.WellFormedNames.Exceptions;
 using NUnit.Framework;
 
 namespace Tests.KnowledgeBase.WellFormedNames
@@ -16,10 +16,29 @@ namespace Tests.KnowledgeBase.WellFormedNames
         [TestCase("Likes(x, Likes(x, x))")]
         [TestCase("Likes(x, Likes(y, Hates([y], x)))")]
         [TestCase("[x]([x], y, z)")]
+		[TestCase("x")]
+		[TestCase("9")]
+		[TestCase("10.56")]
+		[TestCase("-10.56")]
+		[TestCase("-10")]
+		[TestCase("+10")]
+		[TestCase("10.7654e10")]
+		[TestCase("1.7654e-5")]
+		[TestCase("true")]
+		[TestCase("false")]
+		[TestCase("_17654")]
+		[TestCase("[x]")]
+		[TestCase("-")]
+		[TestCase("[_x]")]
+		[TestCase("[x-93]")]
+		[TestCase("Likes([x], 10.7654e10)")]
+		[TestCase(Symbol.UNIVERSAL_STRING)]
+		[TestCase(Symbol.AGENT_STRING)]
+		[TestCase(Symbol.SELF_STRING)]
         public void Parse_CorrectNameString_NewName(string nameString)
         {
             var name = Name.Parse(nameString);
-            Assert.That(name.ToString() == nameString);
+            Assert.That(string.Equals(name.ToString(),nameString,StringComparison.InvariantCultureIgnoreCase));
         }
 
 
@@ -39,9 +58,22 @@ namespace Tests.KnowledgeBase.WellFormedNames
 
 
         [TestCase("IsPerson(x")]
+		[TestCase("@")]
+		[TestCase("/")]
+		[TestCase("(x)")]
+		[TestCase("x)")]
+		[TestCase("(x")]
+		[TestCase("x, y")]
+		[TestCase("1.76.54e-5")]
+		[TestCase("1.76.54")]
+		[TestCase("_1.76")]
+		[TestCase("[x")]
+		[TestCase("x]")]
+		[TestCase("[]")]
+		[TestCase("Likes(-56.34, 1.76.54e-5)")]
         public void Parse_InvalidNameString_NewName(string nameString)
         {
-            Assert.Throws<NameParsingException>(() => Name.Parse(nameString));
+            Assert.Throws<ParsingException>(() => Name.Parse(nameString));
         }
 
 

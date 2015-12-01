@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GAIPS.Serialization;
+using KnowledgeBase.WellFormedNames;
 using Utilities;
 
 namespace EmotionalAppraisal
@@ -131,7 +132,7 @@ namespace EmotionalAppraisal
 					if (OnEmotionCreated != null)
 						OnEmotionCreated(this, auxEmotion);
 					/*
-					TODO implement this code when developing episodic memory
+					TODO implement this code when developing episodic KB
 					am.getMemory().getEpisodicMemory().AssociateEmotionToAction(am.getMemory(),
 							auxEmotion,
 							auxEmotion.GetCause());
@@ -245,9 +246,10 @@ namespace EmotionalAppraisal
 				return this.emotionPool.Values.MaxValue(emo => emo.Intensity);
 			}
 
-			public ActiveEmotion GetStrongestEmotion(IEvent cause)
+			public ActiveEmotion GetStrongestEmotion(Cause cause)
 			{
-				return this.emotionPool.Values.Where(emo => cause.ToName().Match(emo.Cause.CauseName)).MaxValue(emo => emo.Intensity);
+				var set = this.emotionPool.Values.Where(emo => emo.Cause.Match(cause));
+				return set.MaxValue(emo => emo.Intensity);
 			}
 
 			public void AddEmotionDisposition(EmotionDisposition emotionDisposition)

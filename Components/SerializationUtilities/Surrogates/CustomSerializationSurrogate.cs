@@ -43,7 +43,7 @@ namespace GAIPS.Serialization.Surrogates
 				_holder[name] = _holder.ParentGraph.BuildNode(value, expectedType);
 			}
 
-			public void SetValue(string name, IGraphNode node)
+			public void SetValueGraphNode(string name, IGraphNode node)
 			{
 				_holder[name] = node;
 			}
@@ -130,6 +130,12 @@ namespace GAIPS.Serialization.Surrogates
 				{
 					return _it.Current.FieldNode.RebuildObject(type);
 				}
+			}
+
+
+			public Graph ParentGraph
+			{
+				get { return _holder.ParentGraph; }
 			}
 		}
 	}

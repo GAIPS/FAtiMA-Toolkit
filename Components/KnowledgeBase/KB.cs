@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GAIPS.Serialization;
+using GAIPS.Serialization.SerializationGraph;
 using KnowledgeBase.WellFormedNames;
 using KnowledgeBase.WellFormedNames.Collections;
 using Utilities;
@@ -13,7 +15,8 @@ namespace KnowledgeBase
 		Self
 	}
 
-	public class Memory
+	[Serializable]
+	public class KB : ICustomSerialization
 	{
 		private sealed class KnowledgeEntry
 		{
@@ -32,36 +35,102 @@ namespace KnowledgeBase
 		private readonly NameSearchTree<KnowledgeEntry> m_knowledgeStorage = new NameSearchTree<KnowledgeEntry>();
 
 		/// <summary>
-		/// Asks the Memory the Truth value of the received predicate
+		/// Asks the KB the Truth value of the received predicate
 		/// </summary>
-		/// <param name="predicate">The predicate to search in the Memory</param>
+		/// <param name="predicate">The predicate to search in the KB</param>
 		/// <returns>
 		/// Under the Closed World Assumption, the predicate is considered 
-		/// true if it is stored in the Memory and false otherwise.
+		/// true if it is stored in the KB and false otherwise.
 		/// </returns>
-		public bool AskPredicate(Name predicate)
+		public bool AskPredicate(Name predicate, SubstitutionSet constraints = null)
+		{
+			var value = AskProperty(predicate,constraints);
+			return (value is bool) && (bool)value;
+		}
+
+		/// <summary>
+		/// Asks the KB the value of a given property
+		/// </summary>
+		/// <param name="property">the property to search in the KB</param>
+		/// <returns>the value stored inside the property, if the property exists. If the property does not exist, it returns null</returns>
+		public object AskProperty(Name property, SubstitutionSet constraints = null)
+		{
+			if (property.IsPrimitive)
+				return ConvertToPrimitiveValue((Symbol) property);
+
+			if (constraints != null && !property.IsGrounded)
+				property = property.MakeGround(constraints);
+
+			if (!property.IsConstant)
+				throw new Exception("The given name is not constant. Only constant names can be used for queries");	//TODO add a better exception
+
+			SubstitutionSet set;
+			var fact = property.Unfold(out set);
+			if (set != null)
+				fact = GroundName(fact, set);
+
+			return SimpleAskProperty(fact, constraints);
+		}
+
+		private object ConvertToPrimitiveValue(Symbol name)
+		{
+			string str = name.Name;
+
+			if (str.IndexOf('.') < 0)
+			{
+				bool b;
+				if (bool.TryParse(str, out b))
+					return b;
+
+				int i;
+				if (int.TryParse(str, out i))
+					return i;
+
+				long l;
+				if (long.TryParse(str, out l))
+					return l;
+			}
+
+			float f;
+			if (float.TryParse(str, out f))
+				return f;
+
+			double d;
+			if (double.TryParse(str, out d))
+				return d;
+
+			throw new ArgumentException("Unable to parse \""+str+"\" to a primitive value.");
+		}
+
+		private object SimpleAskProperty(Name property, SubstitutionSet constraints)
 		{
 			KnowledgeEntry result;
-			if (!m_knowledgeStorage.TryGetValue(predicate, out result))
-				return false;
+			if (constraints == null)
+			{
+				if (!m_knowledgeStorage.TryGetValue(property, out result))
+					return null;
+			}
+			else
+			{
+				var u = m_knowledgeStorage.Unify(property, constraints).FirstOrDefault();
+				if (u == null)
+					return null;
+				result = u.Item1;
+			}
 
-			return (result.Value is bool) && (bool)result.Value;
-		}
-
-		/// <summary>
-		/// Asks the Memory the value of a given property
-		/// </summary>
-		/// <param name="property">the property to search in the Memory</param>
-		/// <returns>the value stored inside the property, if the property exists. If the property does not exist, it returns null</returns>
-		public object AskProperty(Name property) {
-			KnowledgeEntry result;
-			if (!m_knowledgeStorage.TryGetValue(property, out result))
-				return null;
 			return result.Value;
 		}
-		
+
+		public IEnumerable<Pair<object, SubstitutionSet>> AskPossibleValues(Name property, SubstitutionSet constraints)
+		{
+			if(constraints==null)
+				constraints = new SubstitutionSet();
+
+			return m_knowledgeStorage.Unify(property, constraints).Select(p => Tuple.Create(p.Item1.Value, p.Item2));
+		}
+
 		/// <summary>
-		/// Removes a predicate from the Semantic Memory
+		/// Removes a predicate from the Semantic KB
 		/// </summary>
 		/// <param name="predicate">the predicate to be removed</param>
 		public void Retract(Name predicate)
@@ -107,7 +176,7 @@ namespace KnowledgeBase
 		/// substitution of [x] will match the received name with an existing object.
 		/// </summary>
 		/// <param name="name">a name (that correspond to a predicate or property)</param>
-		/// <returns>a set of SubstitutionSets that make the received name to match predicates or properties that do exist in the Memory</returns>
+		/// <returns>a set of SubstitutionSets that make the received name to match predicates or properties that do exist in the KB</returns>
 		public IEnumerable<SubstitutionSet> Unify(Name name, SubstitutionSet constraints = null)
 		{
 			List<SubstitutionSet> result = null;
@@ -125,8 +194,14 @@ namespace KnowledgeBase
 
 		public void Tell(Name property, object value, bool persistent=false, KnowledgeVisibility visibility=KnowledgeVisibility.Universal)
 		{
+			if(!value.GetType().IsPrimitiveData())
+				throw new ArgumentException("Only primitive values are allowed to be told in the KB","value");
+
 			if (!property.IsConstant)
 				throw new Exception("The given name is not constant. Only constant names can be stored");	//TODO add a better exception
+
+			if(property.IsPrimitive)
+				throw new Exception("The given name is a primitive. Primitive values cannot be changed.");	//TODO add a better exception
 
 			SubstitutionSet set;
 			var fact = property.Unfold(out set);
@@ -156,11 +231,11 @@ namespace KnowledgeBase
 			var subs = new SubstitutionSet();
 			foreach (var v in name.GetVariableList())
 			{
-				var value = bindings.GetVariableSubstitution(v);
+				var value = bindings[v];
 				if (!value.IsGrounded)
 					value = GroundName(value, bindings);
 
-				var prop = AskProperty(value);
+				var prop = SimpleAskProperty(value, bindings);
 				if(prop==null)
 					throw new Exception(string.Format("Knowledge Base could not find a property for {0}",value));
 				var s = new Substitution(v,ConvertValueToName(prop));
@@ -181,6 +256,74 @@ namespace KnowledgeBase
 		public int NumOfEntries
 		{
 			get { return m_knowledgeStorage.Count; }
+		}
+
+		public void GetObjectData(ISerializationData dataHolder)
+		{
+			var self = dataHolder.ParentGraph.CreateObjectData();
+			var universal = dataHolder.ParentGraph.CreateObjectData();
+
+			foreach (var e in m_knowledgeStorage)
+			{
+				if(!e.Value.IsPersistent)
+					continue;
+
+				IGraphNode node;
+				if (e.Value.Value is string)
+					node = dataHolder.ParentGraph.BuildStringNode((string) e.Value.Value);
+				else
+					node = dataHolder.ParentGraph.BuildPrimitiveNode((ValueType) e.Value.Value);
+
+				if(e.Value.Visibility == KnowledgeVisibility.Self)
+					self[e.Key.ToString()]=node;
+				else
+					universal[e.Key.ToString()] = node;
+			}
+
+			if(self.NumOfFields>0)
+				dataHolder.SetValueGraphNode("self",self);
+			if(universal.NumOfFields>0)
+				dataHolder.SetValueGraphNode("universal",universal);
+		}
+
+		public void SetObjectData(ISerializationData dataHolder)
+		{
+			var self = (IObjectGraphNode)dataHolder.GetValueGraphNode("self");
+			if (self != null)
+			{
+				foreach (var e in self)
+				{
+					object value = ToValue(e.FieldNode);
+					if (value == null)
+						continue;
+					Tell(Name.Parse(e.FieldName), value, true, KnowledgeVisibility.Self);
+				}
+			}
+
+			var universal = (IObjectGraphNode)dataHolder.GetValueGraphNode("universal");
+			if (universal != null)
+			{
+				foreach (var e in universal)
+				{
+					object value = ToValue(e.FieldNode);
+					if (value == null)
+						continue;
+					Tell(Name.Parse(e.FieldName), value, true, KnowledgeVisibility.Universal);
+				}
+			}
+		}
+
+		private static object ToValue(IGraphNode node)
+		{
+			switch (node.DataType)
+			{
+				case SerializedDataType.Boolean:
+				case SerializedDataType.Number:
+					return ((IPrimitiveGraphNode) node).Value;
+				case SerializedDataType.String:
+					return ((IStringGraphNode) node).Value;
+			}
+			return null;
 		}
 	}
 }

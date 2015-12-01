@@ -48,9 +48,9 @@ namespace KnowledgeBase.WellFormedNames
 		/// Example: Applying the substitution "[X]/John" in the name "Weak([X])" returns "Weak(John)". 
 		/// </summary>
 		/// @warning: this method modifies the original object.
-		/// <see cref="FAtiMA.Core.WellFormedName.Substitution"/>
-		/// <param name="bindings">A set of substitutions of the type "[Variable]/value"</param>
-		T MakeGround(IEnumerable<Substitution> bindings);
+		/// <see cref="Substitution"/>
+		/// <see cref="SubstitutionSet"/>
+		T MakeGround(SubstitutionSet bindings);
 
 	    /// <summary>
 		/// Indicates if the name is grounded (no unbound variables in it's WFN)

@@ -1,11 +1,11 @@
 ﻿using System;
 using AssetPackage;
 using EmotionalAppraisal.AppraisalRules;
-using EmotionalAppraisal.Components;
 using EmotionalAppraisal.Interfaces;
 using EmotionalAppraisal.OCCModel;
 using System.Collections.Generic;
-using GAIPS.Serialization;
+using KnowledgeBase;
+using KnowledgeBase.Conditions;
 
 namespace EmotionalAppraisal
 {
@@ -41,7 +41,7 @@ namespace EmotionalAppraisal
 			set { m_moodDecay = value < Constants.MinimumDecayTime ? Constants.MinimumDecayTime : value; }
 		}
 
-		private KnowledgeBase.Memory m_kb;
+		private KB m_kb;
 		private ConcreteEmotionalState m_emotionalState;
 		private ReactiveAppraisalDerivator m_appraisalDerivator;
 		#region Component Manager
@@ -93,15 +93,37 @@ namespace EmotionalAppraisal
 			}
 		}
 
-		public ReactiveAppraisalDerivator AppraisalRules
+		//public ReactiveAppraisalDerivator AppraisalRules
+		//{
+		//	get
+		//	{
+		//		return m_appraisalDerivator;
+		//	}
+		//}
+
+		/// <summary>
+		/// Adds an emotional reaction to an event
+		/// </summary>
+		/// <param name="evt"></param>
+		/// <param name="emotionalReaction">the Reaction to add</param>
+		public void AddEmotionalReaction(IEvent evt, Reaction emotionalReaction)
 		{
-			get
-			{
-				return m_appraisalDerivator;
-			}
+			Cause cause = new Cause(evt,Perspective);
+			m_appraisalDerivator.AddEmotionalReaction(cause,null,emotionalReaction);
 		}
 
-		public KnowledgeBase.Memory Memory
+		/// <summary>
+		/// Adds an emotional reaction to an event
+		/// </summary>
+		/// <param name="evt"></param>
+		/// <param name="emotionalReaction">the Reaction to add</param>
+		public void AddEmotionalReaction(IEvent evt, ConditionSet conditions, Reaction emotionalReaction)
+		{
+			Cause cause = new Cause(evt, Perspective);
+			m_appraisalDerivator.AddEmotionalReaction(cause, conditions, emotionalReaction);
+		}
+
+		public KnowledgeBase.KB Kb
 		{
 			get { return m_kb; }
 		}
@@ -111,7 +133,7 @@ namespace EmotionalAppraisal
 		public EmotionalAppraisalAsset(string perspective)
 		{
 			Perspective = perspective;
-			m_kb = new KnowledgeBase.Memory();
+			m_kb = new KnowledgeBase.KB();
 			m_emotionalState = new ConcreteEmotionalState();
 			m_occAffectDerivator = new OCCAffectDerivationComponent();
 			m_appraisalDerivator = new ReactiveAppraisalDerivator();

@@ -3,8 +3,10 @@ using System.Linq;
 using EmotionalAppraisal.Components;
 using EmotionalAppraisal.Interfaces;
 using EmotionalAppraisal.OCCModel;
+using KnowledgeBase;
+using KnowledgeBase.Conditions;
 using KnowledgeBase.WellFormedNames;
-using KnowledgeBase.WellFormedNames.Collections;
+using Utilities;
 
 namespace EmotionalAppraisal.AppraisalRules
 {
@@ -21,25 +23,22 @@ namespace EmotionalAppraisal.AppraisalRules
 		private const short DEFAULT_APPRAISAL_WEIGHT = 1;
 		public const long IGNORE_DURATION = 5000;
 
-		private readonly NameSearchTree<Reaction> AppraisalRules;
+		private readonly ConditionalNST<Reaction> AppraisalRules;
 
 		public ReactiveAppraisalDerivator()
 		{
 			this.AppraisalWeight = DEFAULT_APPRAISAL_WEIGHT;
-			this.AppraisalRules = new NameSearchTree<Reaction>();
+			this.AppraisalRules = new ConditionalNST<Reaction>();
 		}
 		
-		public Reaction Evaluate(string perspective, IEvent evt, KnowledgeBase.Memory kb)
+		public Reaction Evaluate(string perspective, IEvent evt, KB kb)
 		{
-			Name eventName = evt.ToName();
-			if(!string.IsNullOrEmpty(perspective))
-				eventName = eventName.ApplyPerspective(perspective);
-			Reaction emotionalReaction = AppraisalRules.MatchAll(eventName).FirstOrDefault(reaction => reaction.ActivationCondition==null || reaction.ActivationCondition.Evaluate(kb));
-			if(emotionalReaction != null)
-			{
-				emotionalReaction = emotionalReaction.MakeGround(evt.GenerateBindings());
-			}
-			return emotionalReaction;
+			Cause cause = new Cause(evt,perspective);
+			Pair<Reaction,SubstitutionSet> r = AppraisalRules.UnifyAll(cause.CauseName, kb, cause.CauseParameters).FirstOrDefault();
+			if (r == null)
+				return null;
+
+			return r.Item1.MakeGround(r.Item2);
 		}
 
 		/// <summary>
@@ -47,9 +46,15 @@ namespace EmotionalAppraisal.AppraisalRules
 		/// </summary>
 		/// <param name="evt"></param>
 		/// <param name="emotionalReaction">the Reaction to add</param>
-		public void AddEmotionalReaction(IEvent evt, Reaction emotionalReaction)
+		public void AddEmotionalReaction(Cause cause, ConditionSet conditions, Reaction emotionalReaction)
 		{
-			AppraisalRules.Add(evt.ToName(), emotionalReaction);
+			if (cause.CauseParameters != null)
+			{
+				conditions = conditions==null?new ConditionSet() : new ConditionSet(conditions);
+				var conds = cause.CauseParameters.Select(s => new Condition(s.Variable, s.Value, ComparisonOperator.Equal));
+				conditions.UnionWith(conds);
+			}
+			AppraisalRules.Add(cause.CauseName, conditions, emotionalReaction);
 		}
 
 		#region IAppraisalDerivator Implementation
@@ -62,7 +67,7 @@ namespace EmotionalAppraisal.AppraisalRules
 
 		public void Appraisal(EmotionalAppraisalAsset emotionalModule, IEvent evt, IWritableAppraisalFrame frame)
 		{
-			Reaction selfEvaluation = Evaluate(emotionalModule.Perspective, evt,emotionalModule.Memory);
+			Reaction selfEvaluation = Evaluate(emotionalModule.Perspective, evt,emotionalModule.Kb);
 			if (selfEvaluation != null)
 			{
 				if (selfEvaluation.Desirability != 0)
@@ -99,7 +104,8 @@ namespace EmotionalAppraisal.AppraisalRules
 				Reaction r = new Reaction();
 				r.Desirability = desirability;
 				r.Praiseworthiness = praiseworthiness;
-				AddEmotionalReaction(frame.AppraisedEvent, r);
+				Cause c = new Cause(frame.AppraisedEvent,emotionalModule.Perspective);
+				AddEmotionalReaction(c, null, r);
 			}
 		}
 

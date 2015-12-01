@@ -34,24 +34,25 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Conditions\ConditionalNST.cs" />
+    <Compile Include="Conditions\Condition.cs" />
+    <Compile Include="Conditions\ConditionMapper.cs" />
+    <Compile Include="Conditions\Formatters.cs" />
     <Compile Include="Conditions\ConditionSet.cs" />
+    <Compile Include="Conditions\ComparisonOperator.cs" />
     <Compile Include="Conditions\ICondition.cs" />
-    <Compile Include="Conditions\NotCondition.cs" />
-    <Compile Include="Conditions\PredicateCondition.cs" />
-    <Compile Include="Conditions\PropertyCondition.cs" />
-    <Compile Include="Memory.cs" />
+    <Compile Include="KB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util.cs" />
     <Compile Include="WellFormedNames\Collections\NameSearchTree.cs" />
     <Compile Include="WellFormedNames\Collections\TreeNode.cs" />
     <Compile Include="WellFormedNames\ComposedName.cs" />
-    <Compile Include="WellFormedNames\Exceptions\BadSubstitutionException.cs" />
-    <Compile Include="WellFormedNames\Exceptions\Exception.cs" />
-    <Compile Include="WellFormedNames\Exceptions\InvalidSymbolDefinitionException.cs" />
+    <Compile Include="Exceptions\BadSubstitutionException.cs" />
+    <Compile Include="WellFormedNames\Formatters.cs" />
     <Compile Include="WellFormedNames\IGroundable.cs" />
     <Compile Include="WellFormedNames\Inequality.cs" />
     <Compile Include="WellFormedNames\Name.cs" />
-    <Compile Include="WellFormedNames\Exceptions\NameParsingException.cs" />
-    <Compile Include="WellFormedNames\NameSerializationFormatter.cs" />
+    <Compile Include="Exceptions\ParsingException.cs" />
     <Compile Include="WellFormedNames\Substitution.cs" />
     <Compile Include="WellFormedNames\SubstitutionSet.cs" />
     <Compile Include="WellFormedNames\Symbol.cs" />

@@ -1,5 +1,5 @@
 ﻿using System;
-using KnowledgeBase.WellFormedNames.Exceptions;
+using KnowledgeBase.Exceptions;
 
 namespace KnowledgeBase.WellFormedNames
 {
@@ -9,6 +9,7 @@ namespace KnowledgeBase.WellFormedNames
 	/// @author: João Dias
 	/// @author: Pedro Gonçalves (C# version)
 	/// </summary>
+	[Serializable]
 	public class Substitution : ICloneable
 	{
 		private static readonly char[] SUBSTITUTION_SEPARATORS= {'/'};

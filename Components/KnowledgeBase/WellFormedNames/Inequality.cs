@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text.RegularExpressions;
-using KnowledgeBase.WellFormedNames.Exceptions;
 
 namespace KnowledgeBase.WellFormedNames
 {

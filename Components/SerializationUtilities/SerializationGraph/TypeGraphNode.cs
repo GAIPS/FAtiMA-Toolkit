@@ -50,6 +50,11 @@ namespace GAIPS.Serialization.SerializationGraph
 			{
 				return ClassType;
 			}
+			
+			public T RebuildObject<T>()
+			{
+				return (T) RebuildObject(typeof (T));
+			}
 		}
 	}
 }

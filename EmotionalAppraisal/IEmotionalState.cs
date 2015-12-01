@@ -101,7 +101,7 @@ namespace EmotionalAppraisal
 		/// </summary>
 		/// <param name="cause">the event that caused the emotion that we want to retrieve</param>
 		/// <returns>the strongest emotion or null if there is no emotion in the emotional state</returns>
-		ActiveEmotion GetStrongestEmotion(IEvent cause);
+		ActiveEmotion GetStrongestEmotion(Cause cause);
 
 		void AddEmotionDisposition(EmotionDisposition emotionDisposition);
 

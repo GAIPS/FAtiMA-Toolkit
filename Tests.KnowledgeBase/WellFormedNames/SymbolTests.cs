@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using KnowledgeBase.Exceptions;
 using KnowledgeBase.WellFormedNames;
-using KnowledgeBase.WellFormedNames.Exceptions;
 using NUnit.Framework;
 
 namespace Tests.KnowledgeBase.WellFormedNames
@@ -12,9 +12,19 @@ namespace Tests.KnowledgeBase.WellFormedNames
     public class SymbolTests
     {
         [TestCase("x")]
-        [TestCase("9")] 
+        [TestCase("9")]
+		[TestCase("10.56")]
+		[TestCase("-10.56")]
+		[TestCase("-10")]
+		[TestCase("+10")]
+		[TestCase("10.7654e10")]
+		[TestCase("1.7654e-5")]
+		[TestCase("true")]
+		[TestCase("false")]
+		[TestCase("_17654")]
         [TestCase("[x]")]
         [TestCase("-")]
+		[TestCase("1e-46")]
         [TestCase("[_x]")]
         [TestCase("[x-93]")]
         [TestCase(Symbol.UNIVERSAL_STRING)]
@@ -32,12 +42,16 @@ namespace Tests.KnowledgeBase.WellFormedNames
         [TestCase("x)")]
         [TestCase("(x")]
         [TestCase("x, y")]
+		[TestCase("1.76.54e-5")]
+		[TestCase("1.76.54")]
+		[TestCase("1e")]
+		[TestCase("_1.76")]
         [TestCase("[x")]
         [TestCase("x]")]
         [TestCase("[]")]
         public void Symbol_InvalidSymbolString_NewSymbol(string s)
         {
-            Assert.Throws<InvalidSymbolDefinitionException>(() => new Symbol(s));
+            Assert.Throws<ParsingException>(() => new Symbol(s));
         }
 
         [TestCase("x")]

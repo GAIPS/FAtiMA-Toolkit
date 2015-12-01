@@ -2,14 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using GAIPS.Serialization;
 using Utilities;
 
 namespace KnowledgeBase.WellFormedNames
 {
-	//TODO improve implementation (dictionary???)
+	[Serializable]
 	public sealed class SubstitutionSet : IEnumerable<Substitution>
 	{
-		private HashSet<Substitution> m_substitutions = new HashSet<Substitution>();
+		private Dictionary<Symbol,Name> m_substitutions = new Dictionary<Symbol, Name>();
 
 		public SubstitutionSet() {
 		}
@@ -20,17 +22,20 @@ namespace KnowledgeBase.WellFormedNames
 
 		public SubstitutionSet(IEnumerable<Substitution> substitutions)
 		{
-			AddSubstitutions(substitutions);
+			if(!AddSubstitutions(substitutions))
+				throw new ArgumentException("The given substitutions will generate a conflict.", "substitutions5");
 		}
 
-		public void AddSubstitution(Substitution substitution)
+		public Name this[Symbol variable]
 		{
-			bool canAdd;
-			if (TestConflict(substitution, m_substitutions, out canAdd))
-				throw new ArgumentException("The given substitution will generate a conflict.","substitution");
+			get
+			{
+				if (!variable.IsVariable)
+					return null;
 
-			if (canAdd)
-				m_substitutions.Add(substitution);
+				Name r;
+				return m_substitutions.TryGetValue(variable, out r) ? r : null;
+			}
 		}
 
 		public int Count()
@@ -38,79 +43,110 @@ namespace KnowledgeBase.WellFormedNames
 			return m_substitutions.Count;
 		}
 
-		public void AddSubstitution(params Substitution[] substitutions)
+		public bool AddSubstitution(Substitution substitution)
 		{
-			this.AddSubstitutions((IEnumerable<Substitution>)substitutions);
+			bool canAdd;
+			if (TestConflict(substitution, this, out canAdd))
+				return false;
+
+			if (canAdd)
+				m_substitutions.Add(substitution.Variable,substitution.Value);
+
+			return true;
 		}
 
-		public void AddSubstitutions(IEnumerable<Substitution> substitutions)
+		public bool AddSubstitutions(SubstitutionSet substitutions)
 		{
-			HashSet<Substitution> buffer = ObjectPool<HashSet<Substitution>>.GetObject();
-			try
-			{
-				buffer.UnionWith(m_substitutions);
-				foreach (var s in substitutions)
-				{
-					bool canAdd;
-					if (TestConflict(s, buffer, out canAdd))
-						throw new ArgumentException("The given substitution set will generate conflicts.", "substitutions");
+			if (Conflicts(substitutions))
+				return false;
 
-					if (canAdd)
-						buffer.Add(s);
+			foreach (var s in substitutions)
+			{
+				m_substitutions.Add(s.Variable,s.Value);
+			}
+			return true;
+		}
+
+		public bool AddSubstitutions(IEnumerable<Substitution> substitutions)
+		{
+			bool rollback = false;
+			List<Symbol> added = new List<Symbol>(); //TODO Pool?
+
+			foreach (var s in substitutions)
+			{
+				bool canAdd;
+				if (TestConflict(s, this, out canAdd))
+				{
+					rollback = true;
+					break;
 				}
 
-				var tmp = m_substitutions;
-				m_substitutions = buffer;
-				buffer = tmp;
+				if (canAdd)
+				{
+					m_substitutions.Add(s.Variable, s.Value);
+					added.Add(s.Variable);
+				}
 			}
-			finally
+
+			if (rollback)
 			{
-				buffer.Clear();
-				ObjectPool<HashSet<Substitution>>.Recycle(buffer);
+				foreach (var s in added)
+					m_substitutions.Remove(s);
 			}
-			foreach (var s in substitutions)
-				this.AddSubstitution(s);
+
+			return !rollback;
 		}
 
-		private static bool TestConflict(Substitution subs, HashSet<Substitution> substitutions, out bool canAdd)
+		private static bool TestConflict(Substitution subs, SubstitutionSet substitutions, out bool canAdd)
 		{
 			canAdd = true;
-			var res = substitutions.FirstOrDefault(s => s.Variable.Equals(subs.Variable));
-			if (res == null)
+			Name value;
+			if (!substitutions.m_substitutions.TryGetValue(subs.Variable, out value))
 				return false;
 
 			canAdd = false;
-			var G1 = res.Value.MakeGround(substitutions);
+			var G1 = value.MakeGround(substitutions);
 			var G2 = subs.Value.MakeGround(substitutions);
 			return !G1.Equals(G2);	//Conflict!!!
 		}
-
+		
 		public bool Conflicts(Substitution substitution)
 		{
 			bool aux;
-			return TestConflict(substitution,m_substitutions, out aux);
+			return TestConflict(substitution,this, out aux);
 		}
 
+		public bool Conflicts(SubstitutionSet substitutions)
+		{
+			foreach (var pair in substitutions.m_substitutions)
+			{
+				Name value;
+				if (m_substitutions.TryGetValue(pair.Key, out value))
+				{
+					var g1 = pair.Value.MakeGround(substitutions).MakeGround(this);
+					var g2 = value.MakeGround(this).MakeGround(substitutions);
+					if (!g1.Equals(g2))
+						return true;
+				}
+			}
+			return false;
+		}
+		
 		public IEnumerator<Substitution> GetEnumerator()
 		{
-			return m_substitutions.GetEnumerator();
+			return m_substitutions.Select(e => new Substitution(e.Key, e.Value)).GetEnumerator();
 		}
 
-		IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return this.GetEnumerator();
 		}
 
 		public IEnumerable<Substitution> GetGroundedSubstitutions()
 		{
-			if(m_substitutions.Count>0)
-				return m_substitutions.Select(s => s.Value.IsGrounded ? s : new Substitution(s.Variable, s.Value.MakeGround(this))).Distinct();
-			return m_substitutions;
-		}
-
-		public Name GetVariableSubstitution(Symbol variable)
-		{
-			return m_substitutions.Where(s => s.Variable == variable).Select(s => s.Value).FirstOrDefault();
+			if (m_substitutions.Count > 0)
+				return m_substitutions.Select(e => new Substitution(e.Key, e.Value.MakeGround(this)));
+			return Enumerable.Empty<Substitution>();
 		}
 
 		public override int GetHashCode()
@@ -155,7 +191,27 @@ namespace KnowledgeBase.WellFormedNames
 
 		public override string ToString()
 		{
-			return m_substitutions.AggregateToString(", ", "(", ")");
+			StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
+			try
+			{
+				builder.Append("(");
+				bool addComma = false;
+				foreach (var e in m_substitutions)
+				{
+					if (addComma)
+						builder.Append(", ");
+
+					builder.AppendFormat("{0}/{1}", e.Key, e.Value);
+					addComma = true;
+				}
+				builder.Append(")");
+				return builder.ToString();
+			}
+			finally
+			{
+				builder.Length = 0;
+				ObjectPool<StringBuilder>.Recycle(builder);
+			}
 		}
 	}
 }
