@@ -117,10 +117,10 @@ namespace EmotionalAppraisal
 		/// </summary>
 		/// <param name="evt"></param>
 		/// <param name="emotionalReaction">the Reaction to add</param>
-		public void AddEmotionalReaction(IEvent evt, ConditionSet conditions, Reaction emotionalReaction)
+		public void AddEmotionalReaction(IEvent evt, ConditionEvaluatorSet conditionsEvaluator, Reaction emotionalReaction)
 		{
 			Cause cause = new Cause(evt, Perspective);
-			m_appraisalDerivator.AddEmotionalReaction(cause, conditions, emotionalReaction);
+			m_appraisalDerivator.AddEmotionalReaction(cause, conditionsEvaluator, emotionalReaction);
 		}
 
 		public KnowledgeBase.KB Kb

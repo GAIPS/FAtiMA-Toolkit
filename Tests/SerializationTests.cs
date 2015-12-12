@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Principal;
 using GAIPS.Serialization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KnowledgeBase.WellFormedNames;
@@ -75,7 +76,7 @@ namespace UnitTest
 
 			public DateTime TimeField;
 
-			public ComposedName NameField;
+			public Name NameField;
 
 			[NonSerialized] public string VolatileField = "this string should not be serialized";
 
@@ -107,7 +108,7 @@ namespace UnitTest
 				m_nullPointer = null;
 				m_circlePoiter = this;
 
-				NameField = (ComposedName)Name.Parse("A(B,C,D(H,E(F)))");
+				NameField = Name.BuildName("A(B,C,D(H,E(F)))");
 
 				BackingProperty = "this is a property";
 

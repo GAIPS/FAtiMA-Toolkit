@@ -6,7 +6,7 @@ using GAIPS.Serialization.SerializationGraph;
 
 namespace KnowledgeBase.Conditions
 {
-	[DefaultSerializationSystem(typeof(Condition))]
+	[DefaultSerializationSystem(typeof(Condition),true)]
 	sealed class ConditionSerializationFormatter : IGraphFormatter
 	{
 		public IGraphNode ObjectToGraphNode(object value, Graph serializationGraph)
@@ -20,21 +20,21 @@ namespace KnowledgeBase.Conditions
 		}
 	}
 
-	[DefaultSerializationSystem(typeof(ConditionSet))]
+	[DefaultSerializationSystem(typeof(ConditionEvaluatorSet))]
 	sealed class ConditionSetSerializationFormatter : IGraphFormatter
 	{
 		public IGraphNode ObjectToGraphNode(object value, Graph serializationGraph)
 		{
-			ConditionSet set = (ConditionSet) value;
+			ConditionEvaluatorSet evaluatorSet = (ConditionEvaluatorSet) value;
 			ISequenceGraphNode seq = serializationGraph.BuildSequenceNode();
-			seq.AddRange(set.Select(c => serializationGraph.BuildNode(c, typeof (Condition))));
+			seq.AddRange(evaluatorSet.Select(c => serializationGraph.BuildNode(c, typeof (Condition))));
 			return seq;
 		}
 
 		public object GraphNodeToObject(IGraphNode node, Type objectType)
 		{
 			ISequenceGraphNode seq = (ISequenceGraphNode) node;
-			var c = new ConditionSet();
+			var c = new ConditionEvaluatorSet();
 			if (seq.Length != 0)
 				c.UnionWith(seq.Select(n => (Condition)n.RebuildObject(typeof(Condition))));
 			

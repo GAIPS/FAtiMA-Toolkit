@@ -10,11 +10,11 @@ namespace KnowledgeBase.WellFormedNames
 	/// @author: Pedro Gonçalves (C# version)
 	/// </summary>
 	[Serializable]
-	public class Substitution : ICloneable
+	public class Substitution : IVariableRenamer<Substitution>, ICloneable
 	{
 		private static readonly char[] SUBSTITUTION_SEPARATORS= {'/'};
 
-		public Symbol Variable
+		public Name Variable
 		{
 			get;
 			protected set;
@@ -26,13 +26,13 @@ namespace KnowledgeBase.WellFormedNames
 			protected set;
 		}
 
-		private void Validation(Symbol variable, Name value)
+		private void Validation(Name variable, Name value)
 		{
-			if (variable.IsGrounded)
+			if (!variable.IsVariable)
 				throw new BadSubstitutionException(string.Format("{0} is not a valid variable definition.", variable));
 
 			if (value.ContainsVariable(variable))
-				throw new BadSubstitutionException(string.Format("The substitution {0}->{1} while create a cyclical reference.", variable, value));
+				throw new BadSubstitutionException(string.Format("The substitution {0}->{1} will create a cyclical reference.", variable, value));
 		}
 
 		/// <summary>
@@ -46,11 +46,11 @@ namespace KnowledgeBase.WellFormedNames
 		/// <param name="variable">the variable to be replaced</param>
 		/// <param name="value">the new value to apply in the place of the old variable</param>
 		/// <exception cref="FAtiMA.Core.Exceptions.BadSubstitutionException">Thrown if the variable symbol is grounded (ie. is not a valid variable)</exception>
-		public Substitution(Symbol variable, Name value)
+		public Substitution(Name variable, Name value)
 		{
 			Validation(variable, value);
 
-			this.Variable = (Symbol)variable.Clone();
+			this.Variable = (Name)variable.Clone();
 			this.Value = (Name)value.Clone();
 		}
 
@@ -67,8 +67,8 @@ namespace KnowledgeBase.WellFormedNames
 
 			try
 			{
-				var v = new Symbol(elem[0]);
-				var n = Name.Parse(elem[1]);
+				var v = Name.BuildName(elem[0]);
+				var n = Name.BuildName(elem[1]);
 				Validation(v, n);
 				this.Variable = v;
 				this.Value = n;
@@ -92,8 +92,8 @@ namespace KnowledgeBase.WellFormedNames
 		/// <exception cref="FAtiMA.Core.Exceptions.BadSubstitutionException">Thrown if the variable symbol is grounded (ie. is not a valid variable)</exception>
 		public Substitution(string variable, string value)
 		{
-			var v = new Symbol(variable);
-			var n = Name.Parse(value);
+			var v = Name.BuildName(variable);
+			var n = Name.BuildName(value);
 			Validation(v, n);
 
 			this.Variable = v;
@@ -106,7 +106,7 @@ namespace KnowledgeBase.WellFormedNames
 		/// <param name="substitution">The substitution to clone</param>
 		protected Substitution(Substitution substitution)
 		{
-			this.Variable = (Symbol)substitution.Variable.Clone();
+			this.Variable = (Name)substitution.Variable.Clone();
 			this.Value = (Name)substitution.Value.Clone();
 		}
 
@@ -132,6 +132,17 @@ namespace KnowledgeBase.WellFormedNames
 		public virtual object Clone()
 		{
 			return new Substitution(this);
+		}
+
+		public Substitution ReplaceUnboundVariables(string id)
+		{
+			return new Substitution(Variable.ReplaceUnboundVariables(id),Value.ReplaceUnboundVariables(id));
+		}
+
+
+		public Substitution RemoveBoundedVariables(string id)
+		{
+			return new Substitution(Variable.RemoveBoundedVariables(id), Value.RemoveBoundedVariables(id));
 		}
 	}
 }

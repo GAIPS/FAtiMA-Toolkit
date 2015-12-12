@@ -12,7 +12,7 @@ namespace EmotionalAppraisal.AppraisalRules
 {
 	/// <summary>
 	/// Default reactive module implementation.
-	/// It evaluates events through a set of rules, and determines the emotional reaction of that event.
+	/// It evaluates events through a evaluatorSet of rules, and determines the emotional reaction of that event.
 	/// It then generates appropriate actions base on the agent's emotional state.
 	/// </summary>
 	/// @author João Dias
@@ -46,15 +46,16 @@ namespace EmotionalAppraisal.AppraisalRules
 		/// </summary>
 		/// <param name="evt"></param>
 		/// <param name="emotionalReaction">the Reaction to add</param>
-		public void AddEmotionalReaction(Cause cause, ConditionSet conditions, Reaction emotionalReaction)
+		public void AddEmotionalReaction(Cause cause, ConditionEvaluatorSet conditionsEvaluator, Reaction emotionalReaction)
 		{
 			if (cause.CauseParameters != null)
 			{
-				conditions = conditions==null?new ConditionSet() : new ConditionSet(conditions);
-				var conds = cause.CauseParameters.Select(s => new Condition(s.Variable, s.Value, ComparisonOperator.Equal));
-				conditions.UnionWith(conds);
+				conditionsEvaluator = conditionsEvaluator==null?new ConditionEvaluatorSet() : new ConditionEvaluatorSet(conditionsEvaluator);
+				var conds =
+					cause.CauseParameters.Select(s => Condition.BuildCondition(s.Variable, s.Value, ComparisonOperator.Equal));
+				conditionsEvaluator.UnionWith(conds);
 			}
-			AppraisalRules.Add(cause.CauseName, conditions, emotionalReaction);
+			AppraisalRules.Add(cause.CauseName, conditionsEvaluator, emotionalReaction);
 		}
 
 		#region IAppraisalDerivator Implementation

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.InteropServices;
 using GAIPS.Serialization;
 using GAIPS.Serialization.Attributes;
 using GAIPS.Serialization.SerializationGraph;
@@ -17,7 +16,7 @@ namespace KnowledgeBase.WellFormedNames
 
 		public object GraphNodeToObject(IGraphNode node, Type objectType)
 		{
-			return Name.Parse(((IStringGraphNode)node).Value);
+			return Name.BuildName(((IStringGraphNode)node).Value);
 		}
 	}
 

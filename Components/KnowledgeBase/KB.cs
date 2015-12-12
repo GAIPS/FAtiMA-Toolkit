@@ -15,16 +15,18 @@ namespace KnowledgeBase
 		Self
 	}
 
+	public delegate IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> DynamicPropertyCalculator(KB kb, SubstitutionSet args, SubstitutionSet constraints);
+
 	[Serializable]
 	public class KB : ICustomSerialization
 	{
 		private sealed class KnowledgeEntry
 		{
-			public readonly object Value;
+			public readonly PrimitiveValue Value;
 			public readonly bool IsPersistent;
 			public readonly KnowledgeVisibility Visibility;
 
-			public KnowledgeEntry(object value, bool isPersistent, KnowledgeVisibility visibility)
+			public KnowledgeEntry(PrimitiveValue value, bool isPersistent, KnowledgeVisibility visibility)
 			{
 				this.Value = value;
 				this.IsPersistent = isPersistent;
@@ -32,7 +34,36 @@ namespace KnowledgeBase
 			}
 		}
 
+		private sealed class DynamicKnowledgeEntry
+		{
+			public readonly DynamicPropertyCalculator surogate;
+			
+			public DynamicKnowledgeEntry(DynamicPropertyCalculator surogate)
+			{
+				this.surogate = surogate;
+			}
+		}
+
 		private readonly NameSearchTree<KnowledgeEntry> m_knowledgeStorage = new NameSearchTree<KnowledgeEntry>();
+		private readonly NameSearchTree<DynamicKnowledgeEntry> m_dynamicProperties = new NameSearchTree<DynamicKnowledgeEntry>();
+
+		public void RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate)
+		{
+			if(surogate==null)
+				throw new ArgumentNullException("surogate");
+
+			if(propertyTemplate.IsGrounded)
+				throw new ArgumentException("Grounded names cannot be used as dynamic properties", "propertyTemplate");
+
+			var r = m_dynamicProperties.Unify(propertyTemplate).FirstOrDefault();
+			if(r!=null)
+				throw new ArgumentException(string.Format("The given template {0} will collide with already registed {1} dynamic property",propertyTemplate,propertyTemplate.MakeGround(r.Item2)),"propertyTemplate");
+
+			if(m_knowledgeStorage.Unify(propertyTemplate).Any())
+				throw new ArgumentException(string.Format("The given template {0} will collide with stored constant properties", propertyTemplate), "propertyTemplate");
+
+			m_dynamicProperties.Add(propertyTemplate,new DynamicKnowledgeEntry(surogate));
+		}
 
 		/// <summary>
 		/// Asks the KB the Truth value of the received predicate
@@ -45,88 +76,80 @@ namespace KnowledgeBase
 		public bool AskPredicate(Name predicate, SubstitutionSet constraints = null)
 		{
 			var value = AskProperty(predicate,constraints);
-			return (value is bool) && (bool)value;
+			if (value == null)
+				return false;
+			if (value.GetTypeCode() != TypeCode.Boolean)
+				return false;
+			return value;
 		}
 
 		/// <summary>
-		/// Asks the KB the value of a given property
+		/// Asks the KB the value of a given predicate
 		/// </summary>
-		/// <param name="property">the property to search in the KB</param>
-		/// <returns>the value stored inside the property, if the property exists. If the property does not exist, it returns null</returns>
-		public object AskProperty(Name property, SubstitutionSet constraints = null)
+		/// <param name="property">the predicate to search in the KB</param>
+		/// <returns>the value stored inside the predicate, if the predicate exists. If the predicate does not exist, it returns null</returns>
+		public PrimitiveValue AskProperty(Name property, SubstitutionSet constraints = null)
+		{
+			var r = AskPossibleProperties(property, constraints).ToList();
+			if (r.Count==0)
+				return null;
+			if(r.Count>1)
+				throw new Exception("Multiple results found for "+property);
+
+			return r[0].Item1;
+		}
+
+		public IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> AskPossibleProperties(Name property, SubstitutionSet constraints)
 		{
 			if (property.IsPrimitive)
-				return ConvertToPrimitiveValue((Symbol) property);
+				return new[] {Tuples.Create(property.GetPrimitiveValue(), constraints)};
 
 			if (constraints != null && !property.IsGrounded)
 				property = property.MakeGround(constraints);
 
-			if (!property.IsConstant)
-				throw new Exception("The given name is not constant. Only constant names can be used for queries");	//TODO add a better exception
+			var dynamicResult = AskDynamicProperties(property, constraints);
+			if (dynamicResult != null)
+				return dynamicResult;
 
 			SubstitutionSet set;
 			var fact = property.Unfold(out set);
 			if (set != null)
-				fact = GroundName(fact, set);
+				fact = FindConstantLeveledName(fact, set);
 
-			return SimpleAskProperty(fact, constraints);
+			return m_knowledgeStorage.Unify(fact, constraints).Select(p => Tuples.Create(p.Item1.Value, p.Item2));
 		}
 
-		private object ConvertToPrimitiveValue(Symbol name)
+		public IEnumerable<SubstitutionSet> AskPossiblePredicates(Name predicate, SubstitutionSet constraints)
 		{
-			string str = name.Name;
-
-			if (str.IndexOf('.') < 0)
-			{
-				bool b;
-				if (bool.TryParse(str, out b))
-					return b;
-
-				int i;
-				if (int.TryParse(str, out i))
-					return i;
-
-				long l;
-				if (long.TryParse(str, out l))
-					return l;
-			}
-
-			float f;
-			if (float.TryParse(str, out f))
-				return f;
-
-			double d;
-			if (double.TryParse(str, out d))
-				return d;
-
-			throw new ArgumentException("Unable to parse \""+str+"\" to a primitive value.");
+			return AskPossibleProperties(predicate, constraints)
+				.Where(p => p.Item1.GetTypeCode() == TypeCode.Boolean)
+				.Select(p => p.Item2);
 		}
 
-		private object SimpleAskProperty(Name property, SubstitutionSet constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> AskDynamicProperties(Name property, SubstitutionSet constraints)
 		{
-			KnowledgeEntry result;
-			if (constraints == null)
+			const string tmpMarker = "_arg";
+			if (m_dynamicProperties.Count == 0)
+				return null;
+
+			Name tmpPropertyName = property.ReplaceUnboundVariables(tmpMarker);
+			SubstitutionSet tmpConstraints = constraints==null?null:constraints.ReplaceUnboundVariables(tmpMarker);
+
+			var d = m_dynamicProperties.Unify(tmpPropertyName);
+			var results = d.SelectMany(p => p.Item1.surogate(this, p.Item2,tmpConstraints));
+
+			var final = results.ToList();
+			if (final.Count == 0)
+				return null;
+
+			return final.Select(p =>
 			{
-				if (!m_knowledgeStorage.TryGetValue(property, out result))
-					return null;
-			}
-			else
-			{
-				var u = m_knowledgeStorage.Unify(property, constraints).FirstOrDefault();
-				if (u == null)
-					return null;
-				result = u.Item1;
-			}
-
-			return result.Value;
-		}
-
-		public IEnumerable<Pair<object, SubstitutionSet>> AskPossibleValues(Name property, SubstitutionSet constraints)
-		{
-			if(constraints==null)
-				constraints = new SubstitutionSet();
-
-			return m_knowledgeStorage.Unify(property, constraints).Select(p => Tuple.Create(p.Item1.Value, p.Item2));
+				if (p.Item2 == null)
+					p.Item2 = new SubstitutionSet();
+				else
+					p.Item2 = p.Item2.RemoveBoundedVariables(tmpMarker);
+				return p;
+			});
 		}
 
 		/// <summary>
@@ -135,7 +158,22 @@ namespace KnowledgeBase
 		/// <param name="predicate">the predicate to be removed</param>
 		public void Retract(Name predicate)
 		{
-			m_knowledgeStorage.Remove(predicate);
+			if(predicate.IsPrimitive)
+				throw new ArgumentException("Unable to retract primitive value","predicate");
+
+			if (!predicate.IsConstant)
+				throw new ArgumentException("The given name is not constant. Only constant names can be retracted","predicate");
+
+			if(m_dynamicProperties.Unify(predicate).Any())
+				throw new ArgumentException("The given name cannot be retracted as it is a dynamic property.", "predicate");
+
+			SubstitutionSet set;
+			var fact = predicate.Unfold(out set);
+			if (set != null)
+			{
+				fact = FindConstantLeveledName(fact, set);
+			}
+			m_knowledgeStorage.Remove(fact);
 		}
 
 		/// <summary>
@@ -175,70 +213,50 @@ namespace KnowledgeBase
 		/// is returned in the last example, since there is no object named Paul, and therefore no 
 		/// substitution of [x] will match the received name with an existing object.
 		/// </summary>
-		/// <param name="name">a name (that correspond to a predicate or property)</param>
+		/// <param name="name">a name (that correspond to a predicate or predicate)</param>
 		/// <returns>a set of SubstitutionSets that make the received name to match predicates or properties that do exist in the KB</returns>
 		public IEnumerable<SubstitutionSet> Unify(Name name, SubstitutionSet constraints = null)
 		{
-			List<SubstitutionSet> result = null;
-			foreach (var v in m_knowledgeStorage.Unify(name,constraints))
-			{
-				if(result==null)
-					result=new List<SubstitutionSet>();
-				if(v.Item2.Count()==0)
-					continue;
-
-				result.Add(v.Item2);
-			}
-			return result;
+			return m_knowledgeStorage.Unify(name, constraints).Select(p => p.Item2);
 		}
 
-		public void Tell(Name property, object value, bool persistent=false, KnowledgeVisibility visibility=KnowledgeVisibility.Universal)
+		public void Tell(Name property, PrimitiveValue value, bool persistent=false, KnowledgeVisibility visibility=KnowledgeVisibility.Universal)
 		{
-			if(!value.GetType().IsPrimitiveData())
-				throw new ArgumentException("Only primitive values are allowed to be told in the KB","value");
+			if (property.IsPrimitive)
+				throw new Exception("The given name is a primitive. Primitive values cannot be changed.");	//TODO add a better exception
 
 			if (!property.IsConstant)
 				throw new Exception("The given name is not constant. Only constant names can be stored");	//TODO add a better exception
 
-			if(property.IsPrimitive)
-				throw new Exception("The given name is a primitive. Primitive values cannot be changed.");	//TODO add a better exception
+			if (m_dynamicProperties.Unify(property).Any())
+				throw new ArgumentException("The given name will be objuscated by a dynamic property","property");
 
 			SubstitutionSet set;
 			var fact = property.Unfold(out set);
 			if (set != null)
 			{
-				fact = GroundName(fact, set);
+				fact = FindConstantLeveledName(fact, set);
 			}
 
 			m_knowledgeStorage[fact] = new KnowledgeEntry(value, persistent, visibility);
 		}
 
-		private static Name ConvertValueToName(object value)
-		{
-			Name v = value as Name;
-			if (v == null)
-			{
-				if (!value.GetType().IsPrimitiveData())
-					throw new Exception("Can only convert primitive types to Well Formed Names");
-
-				v = new Symbol(value.ToString());
-			}
-			return v;
-		}
-
-		private Name GroundName(Name name, SubstitutionSet bindings)
+		private Name FindConstantLeveledName(Name name, SubstitutionSet bindings)
 		{
 			var subs = new SubstitutionSet();
 			foreach (var v in name.GetVariableList())
 			{
 				var value = bindings[v];
 				if (!value.IsGrounded)
-					value = GroundName(value, bindings);
+					value = FindConstantLeveledName(value, bindings);
 
-				var prop = SimpleAskProperty(value, bindings);
-				if(prop==null)
-					throw new Exception(string.Format("Knowledge Base could not find a property for {0}",value));
-				var s = new Substitution(v,ConvertValueToName(prop));
+				var r = AskPossibleProperties(value, bindings).ToList();
+				if(r.Count==0)
+					throw new Exception(string.Format("Knowledge Base could not find property for {0}", value));
+				if(r.Count>1)
+					throw new Exception(string.Format("Knowledge Base found multiple valid values for {0}", value));
+
+				var s = new Substitution(v, Name.BuildName(r[0].Item1));
 				subs.AddSubstitution(s);
 			}
 			return name.MakeGround(subs);
@@ -268,11 +286,7 @@ namespace KnowledgeBase
 				if(!e.Value.IsPersistent)
 					continue;
 
-				IGraphNode node;
-				if (e.Value.Value is string)
-					node = dataHolder.ParentGraph.BuildStringNode((string) e.Value.Value);
-				else
-					node = dataHolder.ParentGraph.BuildPrimitiveNode((ValueType) e.Value.Value);
+				IGraphNode node = dataHolder.ParentGraph.BuildNode(e.Value.Value, typeof (PrimitiveValue));
 
 				if(e.Value.Visibility == KnowledgeVisibility.Self)
 					self[e.Key.ToString()]=node;
@@ -293,10 +307,10 @@ namespace KnowledgeBase
 			{
 				foreach (var e in self)
 				{
-					object value = ToValue(e.FieldNode);
+					PrimitiveValue value = e.FieldNode.RebuildObject <PrimitiveValue>();
 					if (value == null)
 						continue;
-					Tell(Name.Parse(e.FieldName), value, true, KnowledgeVisibility.Self);
+					Tell(Name.BuildName(e.FieldName), value, true, KnowledgeVisibility.Self);
 				}
 			}
 
@@ -305,25 +319,12 @@ namespace KnowledgeBase
 			{
 				foreach (var e in universal)
 				{
-					object value = ToValue(e.FieldNode);
+					PrimitiveValue value = e.FieldNode.RebuildObject<PrimitiveValue>();
 					if (value == null)
 						continue;
-					Tell(Name.Parse(e.FieldName), value, true, KnowledgeVisibility.Universal);
+					Tell(Name.BuildName(e.FieldName), value, true, KnowledgeVisibility.Universal);
 				}
 			}
-		}
-
-		private static object ToValue(IGraphNode node)
-		{
-			switch (node.DataType)
-			{
-				case SerializedDataType.Boolean:
-				case SerializedDataType.Number:
-					return ((IPrimitiveGraphNode) node).Value;
-				case SerializedDataType.String:
-					return ((IStringGraphNode) node).Value;
-			}
-			return null;
 		}
 	}
 }

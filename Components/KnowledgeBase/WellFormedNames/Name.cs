@@ -24,6 +24,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using KnowledgeBase.Exceptions;
 using Utilities;
 
@@ -43,37 +44,59 @@ namespace KnowledgeBase.WellFormedNames
 	/// @author: Pedro Gonçalves (C# version)
 	/// </summary>
 	[Serializable]
-	public abstract class Name : IGroundable<Name>, ICloneable
+	public abstract partial class Name : IGroundable<Name>, IComparable<Name>, ICloneable
 	{
-		private static long _variableIdCounter = 0;
+		public const string NUMBER_VALIDATION_PATTERN = @"(?:-|\+)?[1-9]\d*(?:\.\d+)?(?:e(?:-|\+)?[1-9]\d*)?";
+		public const string VARIABLE_SYMBOL_VALIDATION_PATTERN = @"^\[([A-Za-z_][\w-]*)\]$";
+		public const string VALUE_SYMBOL_VALIDATION_PATTERN = @"^(?:(?:[A-Za-z_][\w-]*)|(?:" + NUMBER_VALIDATION_PATTERN + @"))$";
+		public static readonly Regex VARIABLE_VALIDATION_PATTERN = new Regex(VARIABLE_SYMBOL_VALIDATION_PATTERN,RegexOptions.IgnoreCase);
+		public static readonly Regex PRIMITIVE_VALIDATION_PATTERN = new Regex(VALUE_SYMBOL_VALIDATION_PATTERN,RegexOptions.IgnoreCase);
 
-		public bool IsGrounded
-		{
-			get;
-			protected set;
+		public const string NIL_STRING = "-";
+		public const string SELF_STRING = "SELF";
+		public const string UNIVERSAL_STRING = "*";
+		public const string AGENT_STRING = "[AGENT]";
+
+		public static readonly Name NIL_SYMBOL = new PrimitiveSymbol(null);
+		public static readonly Name SELF_SYMBOL = new PrimitiveSymbol(SELF_STRING);
+		public static readonly Name UNIVERSAL_SYMBOL = new UniversalSymbol();
+		public static readonly Name AGENT_SYMBOL = new VariableSymbol("AGENT");
+
+		private bool m_isGrounded;
+		public bool IsGrounded {
+			get { return m_isGrounded; }
 		}
 
-		public abstract bool IsUniversal
-		{
-			get;
-		}
+		public readonly bool IsUniversal;
+		/// <summary>
+		/// Does this Name not contain universal or variable Symbols
+		/// </summary>
+		public readonly bool IsConstant;
 
 		/// <summary>
-		/// Returns true if this Name doesn't contain universal or variable Symbols
+		/// Is this name a variable
 		/// </summary>
-		public abstract bool IsConstant { get; }	//TODO: find a better name for this property
+		public readonly bool IsVariable;
 
-		public abstract bool IsVariable
-		{
-			get;
-		}
-
-		public abstract bool IsPrimitive { get; }
+		/// <summary>
+		/// Is this name a primitive value
+		/// </summary>
+		public readonly bool IsPrimitive;
 
 		public abstract int NumberOfTerms { get; }
 
+		private Name(bool IsGrounded, bool IsUniversal, bool IsConstant, bool IsVariable, bool IsPrimitive)
+		{
+			m_isGrounded = IsGrounded;
+			this.IsUniversal = IsUniversal;
+			this.IsConstant = IsConstant;
+			this.IsVariable = IsVariable;
+			this.IsPrimitive = IsPrimitive;
+		}
+		
 		public abstract override bool Equals(object obj);
 		public abstract override int GetHashCode();
+		public abstract override string ToString();
 
 		public abstract Name GetFirstTerm();
 
@@ -85,33 +108,37 @@ namespace KnowledgeBase.WellFormedNames
 		/// <summary>
 		/// Generates a sequence with all Symbols contained inside this Name
 		/// </summary>
-		public abstract IEnumerable<Symbol> GetLiterals();
+		public abstract IEnumerable<Name> GetLiterals();
 
-		public abstract IEnumerable<Symbol> GetVariableList();
+		public abstract IEnumerable<Name> GetVariableList();
 
 		public abstract bool HasGhostVariable();
 
-		public bool ContainsVariable(Symbol variable)
+		public bool ContainsVariable(Name variable)
 		{
-			if (variable.IsGrounded)
-				throw new ArgumentException("The given Symbol is not a variable","variable");
+			if (!variable.IsVariable)
+				throw new ArgumentException("The given Name is not a variable","variable");
 
-			return this.GetVariableList().Any(s => string.Equals(variable.Name,s.Name,StringComparison.InvariantCultureIgnoreCase));
+			var v = (VariableSymbol) variable;
+
+			return this.GetVariableList().Cast<VariableSymbol>().Any(s => s.Equals(v));
 		}
 
 		public Name ApplyPerspective(string name)
 		{
-			return SwapPerspective(name, Symbol.SELF_STRING);
+			return SwapPerspective(BuildName(name), SELF_SYMBOL);
 		}
 
 		public Name RemovePerspective(string name)
 		{
-			return SwapPerspective(Symbol.SELF_STRING, name);
+			return SwapPerspective(SELF_SYMBOL, BuildName(name));
 		}
 
-		public abstract Name SwapPerspective(string original, string newName);
-        public abstract Name ReplaceUnboundVariables(long variableId);
+		protected abstract Name SwapPerspective(Name original, Name newName);
+
 		public abstract Name MakeGround(SubstitutionSet bindings);
+		public abstract Name ReplaceUnboundVariables(string id);
+		public abstract Name RemoveBoundedVariables(string id);
 
 		/// <summary>
 		/// Clones this Name, returning an equal copy.
@@ -140,33 +167,89 @@ namespace KnowledgeBase.WellFormedNames
 		/// <returns>The unfolded Name.</returns>
 		public abstract Name Unfold(out SubstitutionSet set);
 
-		#region Parsing
+		public abstract PrimitiveValue GetPrimitiveValue();
 
-		/// <summary>
-		/// <see cref="FAtiMA.Core.WellFormedName.Symbol"/>
-		/// <see cref="FAtiMA.Core.WellFormedName.ComposedName"/>
-		/// 
-		/// Root			->	(#|\?)?Name
-		/// Name			->	Symbol
-		///						ComposedName
-		///	ComposedName	->	Symbol(NameList)
-		///	NameList		->	Name,NameList
-		///					->	Name
-		///	Symbol			->	*
-		///						[\w-]+
-		///						\[\w[\w-]*\]
-		/// </summary>
-		/// <param name="str">the String to be parsed</param>
-		/// <returns>the parsed Name (can be either a Symbol or a ComposedName)</returns>
-		public static Name Parse(string str)
+		private static ulong _variableIdCounter = 0;
+		public static Name GenerateUniqueGhostVariable()
+		{
+			Name ghost = new VariableSymbol("_");
+            ghost = ghost.ReplaceUnboundVariables(_variableIdCounter.ToString());
+			_variableIdCounter++;
+            return ghost;
+		}
+
+		#region Operators
+
+		public static explicit operator Name(string definition)
+		{
+			return BuildName(definition);
+		}
+
+		public static bool operator ==(Name n1, Name n2)
+		{
+            if (ReferenceEquals(n1, n2))
+				return true;
+
+		    if ((object) n1 == null || (object) n2 == null)
+		        return false;
+            
+            return n1.Equals(n2);
+		}
+
+		public static bool operator !=(Name n1, Name n2)
+		{
+			return !(n1 == n2);
+		}
+
+		#endregion
+
+#region Builders
+
+		public static Name BuildName(Name firstTerm, Name secondTerm, params Name[] otherTerms)
+		{
+			return BuildName(otherTerms.Prepend(secondTerm).Prepend(firstTerm));
+		}
+
+		public static Name BuildName(IEnumerable<Name> terms)
+		{
+			var set = ObjectPool<List<Name>>.GetObject();
+			try
+			{
+				set.AddRange(terms);
+				if (set.Count < 2)
+					throw new ArgumentException("Need at least 2 term to create a composed symbol", "terms");
+
+				Symbol head = set[0] as Symbol;
+				if (head == null)
+					throw new ArgumentException("The first term needs to be a Symbol object", "terms");
+
+				set.RemoveAt(0);
+				return new ComposedName(head,set.ToArray());
+			}
+			finally
+			{
+				set.Clear();
+				ObjectPool<List<Name>>.Recycle(set);
+			}
+		}
+
+		public static Name BuildName(PrimitiveValue value)
+		{
+			if (value.GetTypeCode() == TypeCode.String)
+				return BuildName((string) value);
+
+			return new PrimitiveSymbol(value);
+		}
+
+		public static Name BuildName(string str)
 		{
 			if (string.IsNullOrEmpty(str))
 			{
-				if(str == null)
+				if (str == null)
 					throw new ArgumentNullException("str");
-				throw new ArgumentException("Cannot parse an empty string","str");
+				throw new ArgumentException("Cannot parse an empty string", "str");
 			}
-			
+
 			str = str.Trim();
 			Name result = ParseName(str);
 			return result;
@@ -184,7 +267,24 @@ namespace KnowledgeBase.WellFormedNames
 
 		private static Symbol ParseSymbol(string str)
 		{
-			return new Symbol(str);
+			str = str.Trim();
+			if (str == "*")
+				return (Symbol)UNIVERSAL_SYMBOL;
+			if (str == "-")
+				return (Symbol) NIL_SYMBOL;
+
+			var varMatch = VARIABLE_VALIDATION_PATTERN.Match(str);
+			if (varMatch.Success)
+			{
+				string varName = varMatch.Groups[1].Value;
+				return new VariableSymbol(varName);
+			}
+
+			var primitiveMatch = PRIMITIVE_VALIDATION_PATTERN.Match(str);
+			if (primitiveMatch.Success)
+				return new PrimitiveSymbol(str);
+
+			throw new ParsingException(str + " is not a well formated name definition");
 		}
 
 		private static ComposedName ParseComposedName(string str)
@@ -199,9 +299,8 @@ namespace KnowledgeBase.WellFormedNames
 			{
 				string listString = str.Substring(index + 1, str.Length - index - 2);
 				ParseNameList(listString, names);
-				Symbol headSymbol = new Symbol(str.Substring(0, index));
-				names.Insert(0, headSymbol);
-				return new ComposedName(names);
+				Symbol headSymbol = ParseSymbol(str.Substring(0, index));
+				return new ComposedName(headSymbol, names.ToArray());
 			}
 			finally
 			{
@@ -238,38 +337,6 @@ namespace KnowledgeBase.WellFormedNames
 
 		#endregion
 
-		public static Symbol GenerateUniqueGhostVariable()
-		{
-			Symbol ghost = new Symbol("[_]");
-            ghost = (Symbol) ghost.ReplaceUnboundVariables(_variableIdCounter++);
-            return ghost;
-		}
-
-		#region Operators
-
-		public static explicit operator Name(string definition)
-		{
-			return Parse(definition);
-		}
-
-		public static bool operator ==(Name n1, Name n2)
-		{
-            if (ReferenceEquals(n1, n2))
-				return true;
-
-		    if ((object) n1 == null || (object) n2 == null)
-		        return false;
-            
-            return n1.Equals(n2);
-		}
-
-		public static bool operator !=(Name n1, Name n2)
-		{
-			return !(n1 == n2);
-		}
-
-		#endregion
-
 		/*
 		/// <summary>
 		/// Evaluates this Name according to the data stored in the KB
@@ -279,5 +346,13 @@ namespace KnowledgeBase.WellFormedNames
 		/// <returns>if the name is a symbol, it returns its name, otherwise it returns the value associated to the name in the KB</returns>
 		public abstract Object evaluate(KB m);
 		*/
+
+		public virtual int CompareTo(Name other)
+		{
+			if (other == null)
+				return 1;
+
+			return StringComparer.InvariantCultureIgnoreCase.Compare(ToString(), other.ToString());
+		}
 	}
 }

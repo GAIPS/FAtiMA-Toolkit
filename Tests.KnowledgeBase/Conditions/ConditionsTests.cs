@@ -11,10 +11,10 @@ namespace Tests.KnowledgeBase.Conditions
 	[TestFixture]
 	public class ConditionsTests
 	{
-		[TestCase("Value>4")]
-		[TestCase("Value<  6")]
+		[TestCase("Value(X)>4")]
+		[TestCase("Value(y)<  6")]
 		[TestCase("Prop(Value)  <6")]
-		[TestCase("Value<  -65.54e10")]
+		[TestCase("Value(z)<  -65.54e10")]
 		[TestCase("Prop(Value)  !=  true\t")]
 		[TestCase("\t\t9  >= \t [y]")]
 		[TestCase("[x]<=[y]")]
@@ -59,6 +59,10 @@ namespace Tests.KnowledgeBase.Conditions
 			kb.Tell((Name)"AKA(Goku)", "Kakarot");
 			kb.Tell((Name)"Hobby(Saitama)", "super-hero");
 			kb.Tell((Name)"Hobby(Goku)", "training");
+			kb.Tell((Name)"IsAlive(Leonidas)", false);
+			kb.Tell((Name)"IsAlive(Saitama)", true);
+			kb.Tell((Name)"IsAlive(Superman)", true);
+			kb.Tell((Name)"IsAlive(John)", true);
 
 			return kb;
 		}
@@ -71,10 +75,13 @@ namespace Tests.KnowledgeBase.Conditions
 		[TestCase("Strength([x])>Strength([y])", true)]
 		[TestCase("Race(Saitama)=human", true)]
 		[TestCase("Race(goku)=sayian", true)]
+		[TestCase("IsAlive(Saitama)=true", true)]
+		[TestCase("IsAlive(Goku)!=true", true)]
 		public void Test_Condition(string conditionStr, bool result)
 		{
 			var c = Condition.Parse(conditionStr);
-			Assert.AreEqual(c.Evaluate(_kb, null), result);
+			var v = c.Evaluate(_kb, null);
+			Assert.AreEqual(v, result);
 		}
 
 		[TestCase("Strength(John)","5",ComparisonOperator.Equal)]
@@ -88,8 +95,8 @@ namespace Tests.KnowledgeBase.Conditions
 			var n1 = (Name) str1;
 			var n2 = (Name)str2;
 
-			var c1 = new Condition(n1,n2,op);
-			var c2 = new Condition(n2, n1, op.Mirror());
+			var c1 = Condition.BuildCondition(n1,n2,op);
+			var c2 = Condition.BuildCondition(n2, n1, op.Mirror());
 
 			Assert.AreEqual(c1.GetHashCode(),c2.GetHashCode());
 		}
@@ -105,8 +112,8 @@ namespace Tests.KnowledgeBase.Conditions
 			var n1 = (Name)str1;
 			var n2 = (Name)str2;
 
-			var c1 = new Condition(n1, n2, op);
-			var c2 = new Condition(n2, n1, op.Mirror());
+			var c1 = Condition.BuildCondition(n1, n2, op);
+			var c2 = Condition.BuildCondition(n2, n1, op.Mirror());
 
 			Assert.AreEqual(c1, c2);
 		}
@@ -116,7 +123,7 @@ namespace Tests.KnowledgeBase.Conditions
 		public void Test_ConditionSet(string[] conditions, bool result, string[] constraints)
 		{
 			var set = constraints!=null?new SubstitutionSet(constraints.Select(c => new Substitution(c))):null;
-			var conds = new ConditionSet(conditions.Select(Condition.Parse));
+			var conds = new ConditionEvaluatorSet(conditions.Select(Condition.Parse));
 
 			Assert.AreEqual(result, conds.Evaluate(_kb, set));
 		}

@@ -23,14 +23,14 @@ namespace EmotionalAppraisal.OCCModel
 			Name direction;
 			OCCEmotionType emoType;
 
-			if(evt.Subject == Symbol.SELF_STRING)
+			if(evt.Subject == Name.SELF_STRING)
 			{
-				direction = Symbol.SELF_SYMBOL;
+				direction = Name.SELF_SYMBOL;
 				emoType = (desirability > 0) ? OCCEmotionType.Gratification : OCCEmotionType.Remorse;
 			}
 			else
 			{
-				direction = evt.Subject==null?Symbol.UNIVERSAL_SYMBOL:Name.Parse(evt.Subject);
+				direction = evt.Subject==null?Name.UNIVERSAL_SYMBOL:Name.BuildName(evt.Subject);
 				emoType = (desirability > 0) ? OCCEmotionType.Gratitude : OCCEmotionType.Anger;
 			}
 
@@ -52,21 +52,21 @@ namespace EmotionalAppraisal.OCCModel
 			else
 				emoType = (desirabilityForOther >= 0) ? OCCEmotionType.Resentment : OCCEmotionType.Pitty;
 
-			return new OCCBaseEmotion(emoType, potential, evt, string.IsNullOrEmpty(target) ? Symbol.UNIVERSAL_SYMBOL : Name.Parse(target));
+			return new OCCBaseEmotion(emoType, potential, evt, string.IsNullOrEmpty(target) ? Name.UNIVERSAL_SYMBOL : Name.BuildName(target));
 		}
 
 		private static OCCBaseEmotion OCCAppraisePraiseworthiness(IEvent evt, float praiseworthiness) {
 			Name direction;
 			OCCEmotionType emoType;
 
-			if (evt.Subject == Symbol.SELF_STRING)
+			if (evt.Subject == Name.SELF_STRING)
 			{
-				direction = Symbol.SELF_SYMBOL;
+				direction = Name.SELF_SYMBOL;
 				emoType = (praiseworthiness >= 0) ? OCCEmotionType.Pride : OCCEmotionType.Shame;
 			}
 			else
 			{
-				direction = evt.Subject==null?Symbol.UNIVERSAL_SYMBOL:Name.Parse(evt.Subject);
+				direction = evt.Subject==null?Name.UNIVERSAL_SYMBOL:Name.BuildName(evt.Subject);
 				emoType = (praiseworthiness >= 0) ? OCCEmotionType.Admiration : OCCEmotionType.Reproach;
 			}
 
@@ -77,7 +77,7 @@ namespace EmotionalAppraisal.OCCModel
 		{
 			const float magicFactor = 0.7f;
 			OCCEmotionType emoType = (like >= 0)?OCCEmotionType.Love:OCCEmotionType.Hate;
-			return new OCCBaseEmotion(emoType,Math.Abs(like)*magicFactor,evt,evt.Subject==null?Symbol.UNIVERSAL_SYMBOL:Name.Parse(evt.Subject));
+			return new OCCBaseEmotion(emoType,Math.Abs(like)*magicFactor,evt,evt.Subject==null?Name.UNIVERSAL_SYMBOL:Name.BuildName(evt.Subject));
 		}
 
 		private static OCCBaseEmotion AppraiseGoalEnd(OCCEmotionType hopefullOutcome, OCCEmotionType fearfullOutcome, ActiveEmotion hopeEmotion, ActiveEmotion fearEmotion, float goalImportance, IEvent evt) {

@@ -8,6 +8,7 @@ using NUnit.Framework;
 
 namespace Tests.KnowledgeBase.WellFormedNames
 {
+	/*
     [TestFixture]
     public class SymbolTests
     {
@@ -174,4 +175,5 @@ namespace Tests.KnowledgeBase.WellFormedNames
 
 
     }
+	*/
 }

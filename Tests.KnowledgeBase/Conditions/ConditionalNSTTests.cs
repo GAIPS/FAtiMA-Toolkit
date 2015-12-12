@@ -17,20 +17,20 @@ namespace Tests.KnowledgeBase.Conditions
 		{
 			var map = new ConditionalNST<int>();
 			map.Add((Name)"Event([x],Silence,SELF)",null,0);
-			map.Add((Name)"EVENT([x],Speak,[y])",new ConditionSet(
+			map.Add((Name)"EVENT([x],Speak,[y])",new ConditionEvaluatorSet(
 				new []
 				{
 					Condition.Parse("[type]=Informal"),
 					Condition.Parse("[y]=SELF")
 				}),1);
-			map.Add((Name)"EVENT([x],Speak,[y])", new ConditionSet(
+			map.Add((Name)"EVENT([x],Speak,[y])", new ConditionEvaluatorSet(
 				new[]
 				{
 					Condition.Parse("[type]=Formal"),
 					Condition.Parse("[y]=SELF")
 				}), 2);
-			map.Add((Name)"EVENT(Self,Remind_Problem,-)", new ConditionSet(), 3);
-			map.Add((Name)"EVENT(*,Problem_Solved,*)", new ConditionSet(
+			map.Add((Name)"EVENT(Self,Remind_Problem,-)", new ConditionEvaluatorSet(), 3);
+			map.Add((Name)"EVENT(*,Problem_Solved,*)", new ConditionEvaluatorSet(
 					new []
 					{
 						Condition.Parse("[subject]=Player"),

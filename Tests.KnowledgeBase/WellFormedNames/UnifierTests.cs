@@ -18,8 +18,8 @@ namespace Tests.KnowledgeBase.WellFormedNames
 		[TestCase("S([x],k([x],[z]),j([y],k(t(k,l),y)))", "S(t(k,l),k([x],y),j(P,k([x],[z])))", new[]{"[x]/t(k,l)", "[z]/y", "[y]/P"})]
         public void Unify_UnifiableNames_True(string n1, string n2, string[] result)
         {
-            var name1 = Name.Parse(n1);
-            var name2 = Name.Parse(n2);
+            var name1 = Name.BuildName(n1);
+            var name2 = Name.BuildName(n2);
             var expectedBindings = result.Select(s => new Substitution(s));
 	        IEnumerable<Substitution> bindings;
             var isUnifiable = Unifier.Unify(name1, name2, out bindings);
@@ -41,8 +41,8 @@ namespace Tests.KnowledgeBase.WellFormedNames
 		[TestCase("Like([x],[y])", "Like(John,Strong([y]))")]
         public void Unify_NonUnifiableNames_False(string n1, string n2)
         {
-            var name1 = Name.Parse(n1);
-            var name2 = Name.Parse(n2);
+            var name1 = Name.BuildName(n1);
+            var name2 = Name.BuildName(n2);
             IEnumerable<Substitution> bindings = new List<Substitution>();
             var isUnifiable = Unifier.Unify(name1, name2, out bindings);
             Assert.That(!isUnifiable);
@@ -57,8 +57,8 @@ namespace Tests.KnowledgeBase.WellFormedNames
         [TestCase("x(a, b)", "x(a, b, c)",new string[0])]
         public void PartialUnify_PartiallyUnifiableNames_True(string n1, string n2, string[] result)
         {
-            var name1 = Name.Parse(n1);
-            var name2 = Name.Parse(n2);
+            var name1 = Name.BuildName(n1);
+            var name2 = Name.BuildName(n2);
             var expectedBindings = result.Select(s => new Substitution(s));
 
             IEnumerable<Substitution> bindings = new List<Substitution>();

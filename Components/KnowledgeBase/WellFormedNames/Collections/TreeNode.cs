@@ -9,8 +9,8 @@ namespace KnowledgeBase.WellFormedNames.Collections
 	{
 		protected class TreeNode
 		{
-			private SortedDictionary<string, TreeNode> m_nextSymbol;
-			private SortedDictionary<string, TreeNode> m_nextVariable;
+			private SortedDictionary<Name, TreeNode> m_nextSymbol;
+			private SortedDictionary<Name, TreeNode> m_nextVariable;
 			private SortedDictionary<int, TreeNode> m_nextComposed;
 			private TreeNode m_universal;
 			private bool m_hasValue;
@@ -42,14 +42,14 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				m_value = other.m_value;
 				if (other.m_nextSymbol != null)
 				{
-					m_nextSymbol = new SortedDictionary<string, TreeNode>(StringComparer.InvariantCultureIgnoreCase);
+					m_nextSymbol = new SortedDictionary<Name, TreeNode>();
 					foreach (var pair in other.m_nextSymbol)
 						m_nextSymbol[pair.Key] = new TreeNode(pair.Value);
 				}
 
 				if (other.m_nextVariable != null)
 				{
-					m_nextVariable = new SortedDictionary<string, TreeNode>(StringComparer.InvariantCultureIgnoreCase);
+					m_nextVariable = new SortedDictionary<Name, TreeNode>();
 					foreach (var pair in other.m_nextVariable)
 						m_nextVariable[pair.Key] = new TreeNode(pair.Value);
 				}
@@ -123,8 +123,8 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				int numOfTerms = term.NumberOfTerms;
 				if (numOfTerms == 1)
 				{
-					string key = term.ToString();
-					if (key == Symbol.UNIVERSAL_STRING)
+					Name key = term;
+					if (key.IsUniversal)
 					{
 						if (m_universal == null)
 							m_universal = new TreeNode();
@@ -132,17 +132,17 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					}
 					else
 					{
-						SortedDictionary<string, TreeNode> set;
+						SortedDictionary<Name, TreeNode> set;
 						if (term.IsVariable)
 						{
 							if(m_nextVariable==null)
-								m_nextVariable = new SortedDictionary<string, TreeNode>(StringComparer.InvariantCultureIgnoreCase);
+								m_nextVariable = new SortedDictionary<Name, TreeNode>();
 							set = m_nextVariable;
 						}
 						else
 						{
 							if(m_nextSymbol==null)
-								m_nextSymbol = new SortedDictionary<string, TreeNode>(StringComparer.InvariantCultureIgnoreCase);
+								m_nextSymbol = new SortedDictionary<Name, TreeNode>();
 							set = m_nextSymbol;
 						}
 
@@ -195,8 +195,8 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				int numOfTerms = term.NumberOfTerms;
 				if (numOfTerms == 1)
 				{
-					string key = term.ToString();
-					if (key == Symbol.UNIVERSAL_STRING)
+					Name key = term;
+					if (key.IsUniversal)
 					{
 						if (m_universal == null)
 							return false;
@@ -273,8 +273,8 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				int numOfTerms = term.NumberOfTerms;
 				if (numOfTerms == 1)
 				{
-					string key = term.ToString();
-					if (key == Symbol.UNIVERSAL_STRING)
+					Name key = term;
+					if (key.IsUniversal)
 					{
 						if (m_universal != null)
 							return m_universal.Contains(stack);
@@ -306,7 +306,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 			public Pair<bool, T> Retrive(Stack<Name> stack)
 			{
 				if (stack.Count == 0) //End stack
-					return Tuple.Create(m_hasValue, m_value);
+					return Tuples.Create(m_hasValue, m_value);
 
 				TreeNode nodeToEvaluate;
 				var term = stack.Pop();
@@ -314,8 +314,8 @@ namespace KnowledgeBase.WellFormedNames.Collections
 
 				if (numOfTerms == 1)
 				{
-					string key = term.ToString();
-					if (key == Symbol.UNIVERSAL_STRING)
+					Name key = term;
+					if (key.IsUniversal)
 					{
 						if (m_universal != null)
 						{
@@ -358,7 +358,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				}
 				
 				//stack.Push(term);
-				return Tuple.Create(false, default(T));
+				return Tuples.Create(false, default(T));
 			}
 
 			public IEnumerable<T> GetValues()
@@ -385,14 +385,14 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				if (m_hasValue)
 					yield return ObjectPool<Stack<Name>>.GetObject();
 
-				var set = Enumerable.Empty<KeyValuePair<string, TreeNode>>();
+				var set = Enumerable.Empty<KeyValuePair<Name, TreeNode>>();
 				if (m_nextSymbol != null)
 					set = set.Union(m_nextSymbol);
 				if (m_nextVariable != null)
 					set = set.Union(m_nextVariable);
 				foreach (var entry in set)
 				{
-					var term = new Symbol(entry.Key);
+					var term = entry.Key;
 					var entryResults = entry.Value.GetKeys();
 					foreach (var r in entryResults)
 					{
@@ -412,7 +412,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 							List<Name> tmp = ObjectPool<List<Name>>.GetObject();
 							for (int i = 0; i < termsToMerge; i++)
 								tmp.Add(r.Pop());
-							Name term = new ComposedName(tmp);
+							Name term = Name.BuildName(tmp);
 							tmp.Clear();
 							ObjectPool<List<Name>>.Recycle(tmp);
 
@@ -427,7 +427,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					var entryResults = m_universal.GetKeys();
 					foreach (var r in entryResults)
 					{
-						r.Push(Symbol.UNIVERSAL_SYMBOL);
+						r.Push(Name.UNIVERSAL_SYMBOL);
 						yield return r;
 					}
 				}
@@ -436,9 +436,9 @@ namespace KnowledgeBase.WellFormedNames.Collections
 			public IEnumerable<Pair<Stack<Name>, T>> GetKeyValuePairs()
 			{
 				if (m_hasValue)
-					yield return Tuple.Create(ObjectPool<Stack<Name>>.GetObject(), m_value);
+					yield return Tuples.Create(ObjectPool<Stack<Name>>.GetObject(), m_value);
 
-				var set = Enumerable.Empty<KeyValuePair<string, TreeNode>>();
+				var set = Enumerable.Empty<KeyValuePair<Name, TreeNode>>();
 				if (m_nextSymbol != null)
 					set = set.Union(m_nextSymbol);
 				if (m_nextVariable != null)
@@ -446,7 +446,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				foreach (var entry in set)
 				{
 					var entryResults = entry.Value.GetKeyValuePairs();
-					Name term = new Symbol(entry.Key);
+					Name term = entry.Key;
 					foreach (var r in entryResults)
 					{
 						r.Item1.Push(term);
@@ -465,7 +465,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 							List<Name> tmp = ObjectPool<List<Name>>.GetObject();
 							for (int i = 0; i < termsToMerge; i++)
 								tmp.Add(r.Item1.Pop());
-							Name term = new ComposedName(tmp);
+							Name term = Name.BuildName(tmp);
 							tmp.Clear();
 							ObjectPool<List<Name>>.Recycle(tmp);
 
@@ -480,18 +480,18 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					var entryResults = m_universal.GetKeyValuePairs();
 					foreach (var r in entryResults)
 					{
-						r.Item1.Push(Symbol.UNIVERSAL_SYMBOL);
+						r.Item1.Push(Name.UNIVERSAL_SYMBOL);
 						yield return r;
 					}
 				}
 			}
 
-			public IEnumerable<Pair<T, SubstitutionSet>> Unify(Stack<Name> stack, SubstitutionSet binding)
+			public IEnumerable<Pair<T,SubstitutionSet>> Unify(Stack<Name> stack, SubstitutionSet binding)
 			{
 				if (stack.Count == 0) //End stack
 				{
 					if (m_hasValue)
-						yield return Tuple.Create(m_value, binding);
+						yield return Tuples.Create(m_value,binding);
 					yield break;
 				}
 
@@ -504,8 +504,8 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					if (numOfTerms == 1)
 					{
 						var selectedNodes = Enumerable.Empty<TreeNode>();
-						string key = term.ToString();
-						if (key == Symbol.UNIVERSAL_STRING)
+						Name key = term;
+						if (key.IsUniversal)
 						{
 							if (m_universal != null)
 								selectedNodes = selectedNodes.Append(m_universal);
@@ -552,12 +552,12 @@ namespace KnowledgeBase.WellFormedNames.Collections
 						}
 					}
 
-					if (binding != null && m_nextVariable!=null)
+					if (m_nextVariable!=null)
 					{
 						//Find bindings with stored variables
 						foreach (var pair in m_nextVariable)
 						{
-							var sub = new Substitution(new Symbol(pair.Key), term);
+							var sub = new Substitution(pair.Key, term);
 							if (binding.Conflicts(sub))
 								continue;
 
@@ -572,45 +572,26 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				}
 				else
 				{
-					//if binding is null, Unify behaves like a "MatchAll"
-					if (binding != null)
+					//Find bindings
+					foreach (var pair in GetNextLevel())
 					{
-						var variable = (Symbol)term;
-						//Find bindings
-						foreach (var pair in GetNextLevel())
+						SubstitutionSet set = binding;
+						if (!pair.Item1.IsVariable || pair.Item1 != term)
 						{
-							SubstitutionSet set = binding;
-							if (!pair.Item1.IsVariable || pair.Item1 != variable)
-							{
-								var sub = new Substitution(variable, pair.Item1);
-								if (binding.Conflicts(sub))
-									continue;
+							var sub = new Substitution(term, pair.Item1);
+							if (binding.Conflicts(sub))
+								continue;
 
-								set = new SubstitutionSet(binding);
-								set.AddSubstitution(sub);
-							}
-
-							foreach (var node in pair.Item2)
-							{
-								foreach (var r in node.Unify(stack, set))
-								{
-									yield return r;
-								}
-							}
-						}
-					}
-					else
-					{
-						if (m_nextVariable!=null && m_nextVariable.TryGetValue(term.ToString(), out nodeToEvaluate))
-						{
-							foreach (var pair in nodeToEvaluate.Unify(stack, null))
-								yield return pair;
+							set = new SubstitutionSet(binding);
+							set.AddSubstitution(sub);
 						}
 
-						if (m_universal != null)
+						foreach (var node in pair.Item2)
 						{
-							foreach (var pair in m_universal.Unify(stack, null))
-								yield return pair;
+							foreach (var r in node.Unify(stack, set))
+							{
+								yield return r;
+							}
 						}
 					}
 				}
@@ -620,7 +601,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 
 			private IEnumerable<Pair<Stack<Name>, IEnumerable<TreeNode>>> CollectNextLevel(int level)
 			{
-				var set = Enumerable.Empty<KeyValuePair<string, TreeNode>>();
+				var set = Enumerable.Empty<KeyValuePair<Name, TreeNode>>();
 				if (m_nextSymbol != null)
 					set = set.Union(m_nextSymbol);
 				if (m_nextVariable != null)
@@ -632,15 +613,15 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					{
 						foreach (var pair in entry.Value.CollectNextLevel(level - 1))
 						{
-							pair.Item1.Push(new Symbol(key));
+							pair.Item1.Push(key);
 							yield return pair;
 						}
 					}
 					else
 					{
 						var s = ObjectPool<Stack<Name>>.GetObject();
-						s.Push(new Symbol(key));
-						yield return Tuple.Create(s, (IEnumerable<TreeNode>)new[] { entry.Value });
+						s.Push(key);
+						yield return Tuples.Create(s, (IEnumerable<TreeNode>)new[] { entry.Value });
 					}
 				}
 
@@ -658,7 +639,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 							for (int i = 0; i < nextLevel; i++)
 								tmp.Add(r.Pop());
 
-							newName = new ComposedName(tmp);
+							newName = Name.BuildName(tmp);
 							tmp.Clear();
 							ObjectPool<List<Name>>.Recycle(tmp);
 							subEntry.Item1.Clear();
@@ -677,7 +658,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 						{
 							var s = ObjectPool<Stack<Name>>.GetObject();
 							s.Push(pair.Key);
-							yield return Tuple.Create(s, pair.Value);
+							yield return Tuples.Create(s, pair.Value);
 						}
 					}
 				}
@@ -688,15 +669,15 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					{
 						foreach (var pair in m_universal.CollectNextLevel(level - 1))
 						{
-							pair.Item1.Push(Symbol.UNIVERSAL_SYMBOL);
+							pair.Item1.Push(Name.UNIVERSAL_SYMBOL);
 							yield return pair;
 						}
 					}
 					else
 					{
 						var s = ObjectPool<Stack<Name>>.GetObject();
-						s.Push(Symbol.UNIVERSAL_SYMBOL);
-						yield return Tuple.Create(s, (IEnumerable<TreeNode>)new[] { m_universal });
+						s.Push(Name.UNIVERSAL_SYMBOL);
+						yield return Tuples.Create(s, (IEnumerable<TreeNode>)new[] { m_universal });
 					}
 				}
 			}
@@ -709,7 +690,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 					var name = stack.Pop();
 					stack.Clear();
 					ObjectPool<Stack<Name>>.Recycle(stack);
-					yield return Tuple.Create(name, pair.Item2);
+					yield return Tuples.Create(name, pair.Item2);
 				}
 			}
 		}

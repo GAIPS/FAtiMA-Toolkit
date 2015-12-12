@@ -21,6 +21,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.KnowledgeBase", "Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.EmotionalAppraisal", "Tests.EmotionalAppraisal\Tests.EmotionalAppraisal.csproj", "{12674BD2-DAD3-4DB9-9C81-3FAE233C6838}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{397A6C33-259F-43B8-B68F-56D56853D090}"
+	ProjectSection(SolutionItems) = preProject
+		TODO_and_QA.txt = TODO_and_QA.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

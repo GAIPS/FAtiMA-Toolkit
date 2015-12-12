@@ -10,6 +10,7 @@ using Exception = System.Exception;
 
 namespace UnitTest.WellFormedNames
 {
+	/*
 	[TestClass]
 	public class WellFormedNamesTests
 	{
@@ -464,4 +465,5 @@ namespace UnitTest.WellFormedNames
 
 		#endregion
 	}
+	*/
 }

@@ -14,10 +14,12 @@ namespace EmotionalAppraisal
 
 		public Cause(IEvent evt, string perspective)
 		{
-			Name n = new ComposedName(new Symbol("Event"),
-				new Symbol(evt.Subject),
-				new Symbol(evt.Action),
-				evt.Target == null ? Symbol.NIL_SYMBOL : new Symbol(evt.Target));
+			Name n = Name.BuildName(
+					Name.BuildName("Event"),
+					Name.BuildName(evt.Subject),
+					Name.BuildName(evt.Action),
+					evt.Target==null?Name.NIL_SYMBOL:Name.BuildName(evt.Target)
+				);
 
 			if (!string.IsNullOrEmpty(perspective))
 				n = n.ApplyPerspective(perspective);
@@ -26,7 +28,7 @@ namespace EmotionalAppraisal
 			SubstitutionSet set = null;
 			if (evt.Parameters!=null && evt.Parameters.Any())
 			{
-				var subs = evt.Parameters.Select(p => new Substitution(new Symbol("[" + p.ParameterName + "]"), Name.Parse(p.Value.ToString())));
+				var subs = evt.Parameters.Select(p => new Substitution(Name.BuildName("[" + p.ParameterName + "]"), Name.BuildName(p.Value.ToString())));
 				set = new SubstitutionSet(subs);
 			}
 			CauseParameters = set;

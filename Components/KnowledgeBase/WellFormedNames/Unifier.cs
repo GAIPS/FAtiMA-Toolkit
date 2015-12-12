@@ -124,7 +124,7 @@ namespace KnowledgeBase.WellFormedNames
 			if (!(allowPartial || n1.NumberOfTerms == n2.NumberOfTerms))
 				return null;
 
-            return n1.GetTerms().Zip(n2.GetTerms(), Tuple.Create);
+            return n1.GetTerms().Zip(n2.GetTerms(), Tuples.Create);
         }
 
 
@@ -145,7 +145,7 @@ namespace KnowledgeBase.WellFormedNames
 				// Case 1: x = t, where t is not a variable and x is a variable, and create substitution x/t
 				if (isVar1 != isVar2)
 				{
-					Symbol variable = (Symbol)(isVar1 ? p.Item1 : p.Item2);
+					Name variable = (isVar1 ? p.Item1 : p.Item2);
 					Name value = isVar1 ? p.Item2 : p.Item1;
 					if (value.ContainsVariable(variable))		//Occurs check to prevent cyclical evaluations
 						return false;
@@ -156,7 +156,7 @@ namespace KnowledgeBase.WellFormedNames
 				{
 					//Case 2: x = x, where x is a variable, ignore it. otherwise add the substitution
 					if (!(p.Item1 == p.Item2))
-						candidate = new Substitution((Symbol)p.Item1, p.Item2); //TODO in this case, it should return two possible substitutions
+						candidate = new Substitution(p.Item1, p.Item2); //TODO in this case, it should return two possible substitutions
 				}
 				else //isVar1 == isVar2 == false
 				{

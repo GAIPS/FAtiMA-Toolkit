@@ -6,6 +6,7 @@ using NUnit.Framework;
 
 namespace Tests.KnowledgeBase.WellFormedNames
 {
+	/*
     [TestFixture]
     public class ComposedNameTests
     {
@@ -13,40 +14,36 @@ namespace Tests.KnowledgeBase.WellFormedNames
         [TestCase("IsPerson", "A")]
         public void ComposedName_ValidTerms_NewComposedName(params string[] groundedSymbolStrings)
         {
-            var groundedSymbols = groundedSymbolStrings.Select(s => new Symbol(s));
-            var composedName = new ComposedName(groundedSymbols);
+            var groundedSymbols = groundedSymbolStrings.Select(Name.BuildName);
+            var composedName = Name.BuildName(groundedSymbols);
             Assert.That(composedName.NumberOfTerms == groundedSymbolStrings.Length);
         }
 
         [TestCase("IsPerson", "A")]
         public void ComposedName_FirstTermNotASymbol_ArgumentException(params string[] symbolStrings)
         {
-            var symbols = symbolStrings.Select(s => new Symbol(s));
-            var composedName = new ComposedName(symbols);
+            var symbols = symbolStrings.Select(Name.BuildName);
+            var composedName = Name.BuildName(symbols);
             var symbolsWithName = new List<Name>();
             symbolsWithName.Add(composedName);
             symbolsWithName.AddRange(symbols);
 
-            Assert.Throws<ArgumentException>(() => new ComposedName(symbolsWithName));
-        }
-        
-        [TestCase("IsPerson")]
-        public void ComposedName_OneTerm_ArgumentException(string term1)
-        {
-            Assert.Throws<ArgumentException>(() => new ComposedName(new Symbol(term1)));
+            Assert.Throws<ArgumentException>(() => Name.BuildName(symbolsWithName));
         }
         
         [Test]
         public void ComposedName_NoTerms_ArgumentException()
         {
-            Assert.Throws<ArgumentException>(() => new ComposedName(new List<Name>()));
+            Assert.Throws<ArgumentException>(() => Name.BuildName(new List<Name>()));
         }
 
-       
         [TestCase("IsPerson","A")]
         public void IsUniversal_AnyComposedName_False(string term1, string term2)
         {
-            var composedName = new ComposedName(new Symbol(term1), new Symbol(term2));
+			var composedName = Name.BuildName(
+				Name.BuildName(term1),
+				Name.BuildName(term2)
+				);
             Assert.That(!composedName.IsUniversal);
         }
 
@@ -165,9 +162,9 @@ namespace Tests.KnowledgeBase.WellFormedNames
             Assert.That(composedName == clone);
         }
 
-        [TestCase(1, "x1", "IsPerson", "[x]")]
-        [TestCase(3, "y3", "IsPerson", "[y3]")]
-        public void ReplaceUnboundVariables_ComposedNameWithVariables_ClonedNameWithVariablesReplaced(int variableID, string expectedVariable, params string[] symbolsStrings)
+        [TestCase("1", "x1", "IsPerson", "[x]")]
+        [TestCase("3", "y3", "IsPerson", "[y3]")]
+        public void ReplaceUnboundVariables_ComposedNameWithVariables_ClonedNameWithVariablesReplaced(string variableID, string expectedVariable, params string[] symbolsStrings)
         {
             var composedName = new ComposedName(symbolsStrings.Select(s => new Symbol(s)));
             var nameWithReplacedVariables = composedName.ReplaceUnboundVariables(variableID);
@@ -178,8 +175,8 @@ namespace Tests.KnowledgeBase.WellFormedNames
             Assert.That(composedName == clone);
         }
 
-        [TestCase(1, "IsPerson", "x")]
-        public void ReplaceUnboundVariables_ComposedNameWithNoVariables_Clone(int variableID, params string[] symbolsStrings)
+        [TestCase("1", "IsPerson", "x")]
+        public void ReplaceUnboundVariables_ComposedNameWithNoVariables_Clone(string variableID, params string[] symbolsStrings)
         {
             var composedName = new ComposedName(symbolsStrings.Select(s => new Symbol(s)));
             var clone = composedName.ReplaceUnboundVariables(variableID);
@@ -297,8 +294,6 @@ namespace Tests.KnowledgeBase.WellFormedNames
             Assert.That(!composedName1.Match(composedName2));
             Assert.That(!composedName2.Match(composedName1));
         }
-
-        
-
     }
+	*/
 }

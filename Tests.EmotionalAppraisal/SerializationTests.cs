@@ -94,19 +94,19 @@ namespace Tests.EmotionalAppraisal
 			Reaction petReaction = new Reaction();
 			petReaction.Desirability = 10;
 			petReaction.Like = 7;
-			m_emotionalAppraisalAsset.AddEmotionalReaction(new TestEvent(Symbol.UNIVERSAL_STRING, "Pet", Symbol.SELF_STRING), petReaction);
+			m_emotionalAppraisalAsset.AddEmotionalReaction(new TestEvent(Name.UNIVERSAL_STRING, "Pet", Name.SELF_STRING), petReaction);
 
 			Reaction slapReaction = new Reaction();
 			slapReaction.Desirability = -10;
 			slapReaction.Like = -15;
-			m_emotionalAppraisalAsset.AddEmotionalReaction(new TestEvent(Symbol.UNIVERSAL_STRING, "Slap", Symbol.SELF_STRING), slapReaction);
+			m_emotionalAppraisalAsset.AddEmotionalReaction(new TestEvent(Name.UNIVERSAL_STRING, "Slap", Name.SELF_STRING), slapReaction);
 
 			Reaction feedReaction = new Reaction();
 			feedReaction.Desirability = 5;
 			feedReaction.Praiseworthiness = 10;
-			m_emotionalAppraisalAsset.AddEmotionalReaction(new TestEvent(Symbol.UNIVERSAL_STRING, "Feed", Symbol.SELF_STRING), feedReaction);
+			m_emotionalAppraisalAsset.AddEmotionalReaction(new TestEvent(Name.UNIVERSAL_STRING, "Feed", Name.SELF_STRING), feedReaction);
 
-			var madScreamEvent = new TestEvent(Symbol.UNIVERSAL_STRING, "Talk", null);
+			var madScreamEvent = new TestEvent(Name.UNIVERSAL_STRING, "Talk", null);
 			var parameters1 = new List<IEventParameter>();
 			parameters1.Add(new EventParameter() { ParameterName = "Volume", Value = "High" });
 			parameters1.Add(new EventParameter() { ParameterName = "Tone", Value = "Mad" });
@@ -117,7 +117,7 @@ namespace Tests.EmotionalAppraisal
 			screamMad.Like = -4;
 			m_emotionalAppraisalAsset.AddEmotionalReaction(madScreamEvent, screamMad);
 
-			var talkSoftEvent = new TestEvent(Symbol.UNIVERSAL_STRING, "Talk", null);
+			var talkSoftEvent = new TestEvent(Name.UNIVERSAL_STRING, "Talk", null);
 			var parameters2 = new List<IEventParameter>();
 			parameters2.Add(new EventParameter() { ParameterName = "Volume", Value = "Low" });
 			parameters2.Add(new EventParameter() { ParameterName = "Tone", Value = "Happy" });

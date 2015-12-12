@@ -6,8 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Utilities;
 
-using Tup = Utilities.Tuple;
-
 namespace Tests.KnowledgeBase.WellFormedNames
 {
     [TestFixture]
@@ -16,7 +14,7 @@ namespace Tests.KnowledgeBase.WellFormedNames
         [Test]
         public void Depth_EmptyNameSearchTree_0()
         {
-            var tree = new NameSearchTree<Symbol>();
+            var tree = new NameSearchTree<string>();
             Assert.That(tree.Depth == 0);
         }
 
@@ -26,7 +24,7 @@ namespace Tests.KnowledgeBase.WellFormedNames
         public void Add_EmptyNameSearchTree_True(string name, string value)
         {
             var tree = new NameSearchTree<string>();
-			tree.Add(Name.Parse(name), value);
+			tree.Add(Name.BuildName(name), value);
         }
 
         [TestCase("x", "1")]
@@ -36,8 +34,8 @@ namespace Tests.KnowledgeBase.WellFormedNames
         public void Add_FilledNameSearchTree_False(string name, string value)
         {
             var tree = new NameSearchTree<string>();
-            tree.Add(Name.Parse(name), value);
-			tree.Add(Name.Parse(name), String.Empty);
+            tree.Add(Name.BuildName(name), value);
+			tree.Add(Name.BuildName(name), String.Empty);
         }
 
         [TestCase("x", "1")]
@@ -46,7 +44,7 @@ namespace Tests.KnowledgeBase.WellFormedNames
         public void Remove_EmptyNameSearchTree_False(string name, string value)
         {
             var tree = new NameSearchTree<string>();
-            var removeSuccess = tree.Remove(Name.Parse(name));
+            var removeSuccess = tree.Remove(Name.BuildName(name));
             Assert.That(!removeSuccess);
         }
 
@@ -56,8 +54,8 @@ namespace Tests.KnowledgeBase.WellFormedNames
         public void Remove_NameSearchTreeThatContainsName_True(string name, string value)
         {
             var tree = new NameSearchTree<string>();
-            tree.Add(Name.Parse(name), value);
-            var removeSuccess = tree.Remove(Name.Parse(name));
+            tree.Add(Name.BuildName(name), value);
+            var removeSuccess = tree.Remove(Name.BuildName(name));
             Assert.That(removeSuccess);
         }
 
@@ -67,8 +65,8 @@ namespace Tests.KnowledgeBase.WellFormedNames
         public void Contains_NameSearchTreeThatContainsName_True(string name, string value)
         {
             var tree = new NameSearchTree<string>();
-            tree.Add(Name.Parse(name), value);
-            Assert.That(tree.ContainsKey(Name.Parse(name)));
+            tree.Add(Name.BuildName(name), value);
+            Assert.That(tree.ContainsKey(Name.BuildName(name)));
         }
 
         [TestCase("x", "1")]
@@ -77,16 +75,16 @@ namespace Tests.KnowledgeBase.WellFormedNames
         public void Contains_EmptySearchTree_False(string name, string value)
         {
             var tree = new NameSearchTree<string>();
-            Assert.That(!tree.ContainsKey(Name.Parse(name)));
+            Assert.That(!tree.ContainsKey(Name.BuildName(name)));
         }
-
+		/*
         [TestCase("x", "1")]
         [TestCase("x(a)", "2")]
         [TestCase("x(a, b)", "3")]
         public void TryMatchValue_EmptySearchTree_False(string nameStr, string value)
         {
             var tree = new NameSearchTree<string>();
-            var name = Name.Parse(nameStr);
+            var name = Name.BuildName(nameStr);
             string res;
             Assert.That(!tree.TryMatchValue(name, out res));
             Assert.That(tree[name] == null);
@@ -98,14 +96,14 @@ namespace Tests.KnowledgeBase.WellFormedNames
         public void TryMatchValue_SearchTreeThatContainsName_True(string nameStr, string value)
         {
             var tree = new NameSearchTree<string>();
-            var name = Name.Parse(nameStr);
+            var name = Name.BuildName(nameStr);
             tree.Add(name, value);
             string res;
             Assert.That(tree.TryMatchValue(name, out res));
             Assert.That(res == value);
             Assert.That(tree[name] == value);
         }
-
+		*/
 		private class TestFactory
 		{
 			private static string[] inputStrings = new string[]
@@ -152,7 +150,7 @@ namespace Tests.KnowledgeBase.WellFormedNames
 				NameSearchTree<int> dict = new NameSearchTree<int>();
 				for (int i = 0; i < inputStrings.Length; i++)
 				{
-					dict.Add(Name.Parse(inputStrings[i]), i);
+					dict.Add(Name.BuildName(inputStrings[i]), i);
 				}
 				return dict;
 			}
@@ -165,7 +163,7 @@ namespace Tests.KnowledgeBase.WellFormedNames
 			private static IEnumerable<Pair<int, SubstitutionSet>> BuildUnifyResult(
 				params Pair<int, string[]>[] set)
 			{
-				return set.Select(p => Tup.Create(p.Item1, BuildSet(p.Item2)));
+				return set.Select(p => Tuples.Create(p.Item1, BuildSet(p.Item2)));
 			}
 
 			public static IEnumerable<TestCaseData> TestMatchAllCases_Valid()
@@ -222,8 +220,8 @@ namespace Tests.KnowledgeBase.WellFormedNames
 			{
 				yield return new TestCaseData(baseInput, (Name)"Luke([x])", null,
 					BuildUnifyResult(
-						Tup.Create(0, new[] { "[x]/Name" }),
-						Tup.Create(1, new[] { "[x]/Strength" })
+						Tuples.Create(0, new[] { "[x]/Name" }),
+						Tuples.Create(1, new[] { "[x]/Strength" })
 					)
 				);
 				yield return new TestCaseData(baseInput, (Name)"Luke([x])",
@@ -231,69 +229,69 @@ namespace Tests.KnowledgeBase.WellFormedNames
 						"[x]/Name"
 					),
 					BuildUnifyResult(
-						Tup.Create(0, new[] { "[x]/Name" })
+						Tuples.Create(0, new[] { "[x]/Name" })
 					)
 				);
 
 				yield return new TestCaseData(baseInput, (Name)"[x](Strength)", null,
 					BuildUnifyResult(
-						Tup.Create(1,new []{"[x]/Luke"}),
-						Tup.Create(3,new []{"[x]/John"})
+						Tuples.Create(1,new []{"[x]/Luke"}),
+						Tuples.Create(3,new []{"[x]/John"})
 					)
 				);
 
 				yield return new TestCaseData(baseInput, (Name)"[x]([y])", null, 
 					BuildUnifyResult(
-						Tup.Create(0,new []{"[x]/Luke", "[y]/Name"}),
-						Tup.Create(1,new []{"[x]/Luke", "[y]/Strength"}),
-						Tup.Create(2,new []{"[x]/John", "[y]/Name"}),
-						Tup.Create(3,new []{"[x]/John", "[y]/Strength"})
+						Tuples.Create(0,new []{"[x]/Luke", "[y]/Name"}),
+						Tuples.Create(1,new []{"[x]/Luke", "[y]/Strength"}),
+						Tuples.Create(2,new []{"[x]/John", "[y]/Name"}),
+						Tuples.Create(3,new []{"[x]/John", "[y]/Strength"})
 					)
 				);
 
 				yield return new TestCaseData(baseInput, (Name)"A(D(E,B(O)),K)", null,
-					BuildUnifyResult( Tup.Create(9,new string[0]))
+					BuildUnifyResult( Tuples.Create(9,new string[0]))
 				);
 
 				yield return new TestCaseData(baseInput, (Name)"A([x],K)", null, 
 					BuildUnifyResult(
-						Tup.Create(7, new []{"[x]/I"}),
-						Tup.Create(6, new []{"[x]/D(E,H)"}),
-						Tup.Create(9, new []{"[x]/D(E,B(O))"})
+						Tuples.Create(7, new []{"[x]/I"}),
+						Tuples.Create(6, new []{"[x]/D(E,H)"}),
+						Tuples.Create(9, new []{"[x]/D(E,B(O))"})
 					)
 				);
 
 				yield return new TestCaseData(baseInput, (Name)"A(D(e,[X]),[y])", null, 
 					BuildUnifyResult(
-						Tup.Create(6,new[] { "[x]/H","[y]/K" }),
-						Tup.Create(8,new[] { "[x]/H","[y]/j" }),
-						Tup.Create(9,new[] { "[x]/B(o)","[y]/K" })
+						Tuples.Create(6,new[] { "[x]/H","[y]/K" }),
+						Tuples.Create(8,new[] { "[x]/H","[y]/j" }),
+						Tuples.Create(9,new[] { "[x]/B(o)","[y]/K" })
 					)
 				);
 
 				yield return new TestCaseData(baseInput, (Name)"EVENT(Mary,Kiss,Justin)", null, 
 					BuildUnifyResult(
-						Tup.Create(11,new[] { "[z]/Mary"})
+						Tuples.Create(11,new[] { "[z]/Mary"})
 					)
 				);
 
 				yield return new TestCaseData(baseInput, (Name)"EVENT(Mary,Kiss,[y])", null,
 					BuildUnifyResult(
-						Tup.Create(11, new[] { "[z]/Mary", "[y]/Justin" }),
-						Tup.Create(10, new[] { "[y]/John" })
+						Tuples.Create(11, new[] { "[z]/Mary", "[y]/Justin" }),
+						Tuples.Create(10, new[] { "[y]/John" })
 					)
 				);
 
 				yield return new TestCaseData(baseInput, (Name)"EVENT(Batman,Punch,Jocker)", null,
 					BuildUnifyResult(
-						Tup.Create(12, new[] { "[x]/Batman", "[y]/Jocker" })
+						Tuples.Create(12, new[] { "[x]/Batman", "[y]/Jocker" })
 					)
 				);
 
 				yield return new TestCaseData(baseInput, (Name)"EVENT(Batman,Punch,Self)", null,
 					BuildUnifyResult(
-						Tup.Create(12, new[] { "[x]/Batman", "[y]/Self" }),
-						Tup.Create(13, new[] { "[x]/Batman"})
+						Tuples.Create(12, new[] { "[x]/Batman", "[y]/Self" }),
+						Tuples.Create(13, new[] { "[x]/Batman"})
 					)
 				);
 
@@ -307,55 +305,55 @@ namespace Tests.KnowledgeBase.WellFormedNames
 
 				yield return new TestCaseData(baseInput, (Name)"jump(null,[meh])", null, 
 					BuildUnifyResult(
-						Tup.Create(14,new[] { "[meh]/NULL"}),
-						Tup.Create(21,new[] { "[meh]/Short"}),
-						Tup.Create(22,new[] { "[meh]/medium"}),
-						Tup.Create(23,new[] { "[meh]/long"}),
-						Tup.Create(16,new[] { "[meh]/[height]"}),
-						Tup.Create(15,new[] { "[width]/null","[meh]/null"}),
-						Tup.Create(17,new[] { "[width]/null","[meh]/[height]"})
+						Tuples.Create(14,new[] { "[meh]/NULL"}),
+						Tuples.Create(21,new[] { "[meh]/Short"}),
+						Tuples.Create(22,new[] { "[meh]/medium"}),
+						Tuples.Create(23,new[] { "[meh]/long"}),
+						Tuples.Create(16,new[] { "[meh]/[height]"}),
+						Tuples.Create(15,new[] { "[width]/null","[meh]/null"}),
+						Tuples.Create(17,new[] { "[width]/null","[meh]/[height]"})
 					)
 				);
 
 				yield return new TestCaseData(baseInput, (Name) "jump(null,[height])", null,
 					BuildUnifyResult(
-						Tup.Create(14, new[] {"[height]/NULL"}),
-						Tup.Create(21, new[] {"[height]/Short"}),
-						Tup.Create(22, new[] {"[height]/medium"}),
-						Tup.Create(23, new[] {"[height]/long"}),
-						Tup.Create(16, new string[0]),
-						Tup.Create(15, new[] { "[width]/null", "[height]/null" }),
-						Tup.Create(17, new[] { "[width]/null"})
+						Tuples.Create(14, new[] {"[height]/NULL"}),
+						Tuples.Create(21, new[] {"[height]/Short"}),
+						Tuples.Create(22, new[] {"[height]/medium"}),
+						Tuples.Create(23, new[] {"[height]/long"}),
+						Tuples.Create(16, new string[0]),
+						Tuples.Create(15, new[] { "[width]/null", "[height]/null" }),
+						Tuples.Create(17, new[] { "[width]/null"})
 					)
 				);
 
 				yield return new TestCaseData(baseInput, (Name)"jump(3,36)", null,
 					BuildUnifyResult(
-						Tup.Create(17, new[] { "[width]/3", "[height]/36" })
+						Tuples.Create(17, new[] { "[width]/3", "[height]/36" })
 					)
 				);
 
 				yield return new TestCaseData(baseInput, (Name)"jump([x],[y])", null,
 					BuildUnifyResult(
-						Tup.Create(14,new []{"[x]/null","[y]/null"}),
-						Tup.Create(15,new []{"[x]/[width]","[y]/null"}),
-						Tup.Create(16,new []{"[x]/null","[y]/[height]"}),
-						Tup.Create(17,new []{"[x]/[width]","[y]/[height]"}),
-						Tup.Create(18,new []{"[x]/short","[y]/null"}),
-						Tup.Create(19,new []{"[x]/medium","[y]/null"}),
-						Tup.Create(20,new []{"[x]/long","[y]/null"}),
-						Tup.Create(21,new []{"[x]/null","[y]/short"}),
-						Tup.Create(22,new []{"[x]/null","[y]/medium"}),
-						Tup.Create(23,new []{"[x]/null","[y]/long"}),
-						Tup.Create(24,new []{"[x]/short","[y]/short"}),
-						Tup.Create(25,new []{"[x]/medium","[y]/short"}),
-						Tup.Create(26,new []{"[x]/long","[y]/short"}),
-						Tup.Create(27,new []{"[x]/short","[y]/medium"}),
-						Tup.Create(28,new []{"[x]/medium","[y]/medium"}),
-						Tup.Create(29,new []{"[x]/long","[y]/medium"}),
-						Tup.Create(30,new []{"[x]/short","[y]/long"}),
-						Tup.Create(31,new []{"[x]/medium","[y]/long"}),
-						Tup.Create(32,new []{"[x]/long","[y]/long"})
+						Tuples.Create(14,new []{"[x]/null","[y]/null"}),
+						Tuples.Create(15,new []{"[x]/[width]","[y]/null"}),
+						Tuples.Create(16,new []{"[x]/null","[y]/[height]"}),
+						Tuples.Create(17,new []{"[x]/[width]","[y]/[height]"}),
+						Tuples.Create(18,new []{"[x]/short","[y]/null"}),
+						Tuples.Create(19,new []{"[x]/medium","[y]/null"}),
+						Tuples.Create(20,new []{"[x]/long","[y]/null"}),
+						Tuples.Create(21,new []{"[x]/null","[y]/short"}),
+						Tuples.Create(22,new []{"[x]/null","[y]/medium"}),
+						Tuples.Create(23,new []{"[x]/null","[y]/long"}),
+						Tuples.Create(24,new []{"[x]/short","[y]/short"}),
+						Tuples.Create(25,new []{"[x]/medium","[y]/short"}),
+						Tuples.Create(26,new []{"[x]/long","[y]/short"}),
+						Tuples.Create(27,new []{"[x]/short","[y]/medium"}),
+						Tuples.Create(28,new []{"[x]/medium","[y]/medium"}),
+						Tuples.Create(29,new []{"[x]/long","[y]/medium"}),
+						Tuples.Create(30,new []{"[x]/short","[y]/long"}),
+						Tuples.Create(31,new []{"[x]/medium","[y]/long"}),
+						Tuples.Create(32,new []{"[x]/long","[y]/long"})
 					)
 				);
 
@@ -364,10 +362,10 @@ namespace Tests.KnowledgeBase.WellFormedNames
 						"[y]/Short"
 					),
 					BuildUnifyResult(
-						Tup.Create(21, new[] { "[x]/null", "[y]/short" }),
-						Tup.Create(24, new[] { "[x]/short", "[y]/short" }),
-						Tup.Create(25, new[] { "[x]/medium", "[y]/short" }),
-						Tup.Create(26, new[] { "[x]/long", "[y]/short" })
+						Tuples.Create(21, new[] { "[x]/null", "[y]/short" }),
+						Tuples.Create(24, new[] { "[x]/short", "[y]/short" }),
+						Tuples.Create(25, new[] { "[x]/medium", "[y]/short" }),
+						Tuples.Create(26, new[] { "[x]/long", "[y]/short" })
 					)
 				);
 			}
@@ -384,7 +382,7 @@ namespace Tests.KnowledgeBase.WellFormedNames
 				yield return new TestCaseData(baseInput,inputStrings.Length);
 			}
 		}
-
+		/*
 		[TestCaseSource(typeof(TestFactory), "TestMatchAllCases_Valid")]
 		public void NameDictionary_Valid_MatcheAll(NameSearchTree<int> dict, Name expression, IEnumerable<int> expectedResults)
 	    {
@@ -403,7 +401,7 @@ namespace Tests.KnowledgeBase.WellFormedNames
 		{
 			Assert.False(dict.MatchAll(expression).Any(), string.Format("Has able to find matches for {0}",expression));
 		}
-
+		*/
 		[TestCaseSource(typeof(TestFactory), "TestUnifyCases_Valid")]
 		public void NameDictionary_Valid_Unify(NameSearchTree<int> dict, Name expression, SubstitutionSet bindings,
 			IEnumerable<Pair<int, SubstitutionSet>> expectedResults)

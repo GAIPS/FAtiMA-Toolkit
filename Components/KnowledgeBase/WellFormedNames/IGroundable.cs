@@ -21,41 +21,30 @@
  * Ported to C#: 17/06/2015
  **/
 
-using System.Collections.Generic;
-
 namespace KnowledgeBase.WellFormedNames
 {
 	/// <summary>
-	/// Interface that specifies methods applicable to classes that can be grounded,
-	/// i.e. have WellFormed Names
-	/// 
-	/// @author: João Dias
-	/// @author: Pedro Gonçalves (C# version)
+	///     Interface that specifies methods applicable to classes that can be grounded,
+	///     i.e. have WellFormed Names
+	///     @author: João Dias
+	///     @author: Pedro Gonçalves (C# version)
 	/// </summary>
-	public interface IGroundable<T> where T : IGroundable<T>
+	public interface IGroundable<T> : IVariableRenamer<T>
+		where T : IGroundable<T>
 	{
 		/// <summary>
-		/// Replaces all unbound variables in the object by applying a numeric
-		/// identifier to each one. For example, the variable [x] becomes [x4]
-		/// if the received ID is 4. 
-		/// Attention, this method modifies the original object.
-		/// </summary>
-		/// <param name="variableId">the identifier to be applied</param>
-		T ReplaceUnboundVariables(long variableId);
-
-		/// <summary>
-		/// Applies a set of substitutions to the object, grounding it.
-		/// Example: Applying the substitution "[X]/John" in the name "Weak([X])" returns "Weak(John)". 
-		/// </summary>
-		/// @warning: this method modifies the original object.
-		/// <see cref="Substitution"/>
-		/// <see cref="SubstitutionSet"/>
-		T MakeGround(SubstitutionSet bindings);
-
-	    /// <summary>
-		/// Indicates if the name is grounded (no unbound variables in it's WFN)
-		/// Example: Stronger(Luke,John) is grounded while Stronger(John,[X]) is not.
+		///     Indicates if the name is grounded (no unbound variables in it's WFN)
+		///     Example: Stronger(Luke,John) is grounded while Stronger(John,[X]) is not.
 		/// </summary>
 		bool IsGrounded { get; }
+
+		/// <summary>
+		///     Applies a set of substitutions to the object, grounding it.
+		///     Example: Applying the substitution "[X]/John" in the name "Weak([X])" returns "Weak(John)".
+		/// </summary>
+		/// @warning: this method modifies the original object.
+		/// <see cref="Substitution" />
+		/// <see cref="SubstitutionSet" />
+		T MakeGround(SubstitutionSet bindings);
 	}
 }

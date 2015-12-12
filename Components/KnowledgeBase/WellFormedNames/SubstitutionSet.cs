@@ -3,15 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GAIPS.Serialization;
 using Utilities;
 
 namespace KnowledgeBase.WellFormedNames
 {
 	[Serializable]
-	public sealed class SubstitutionSet : IEnumerable<Substitution>
+	public sealed class SubstitutionSet : IVariableRenamer<SubstitutionSet>, IEnumerable<Substitution>
 	{
-		private Dictionary<Symbol,Name> m_substitutions = new Dictionary<Symbol, Name>();
+		private Dictionary<Name,Name> m_substitutions = new Dictionary<Name, Name>();
 
 		public SubstitutionSet() {
 		}
@@ -23,10 +22,10 @@ namespace KnowledgeBase.WellFormedNames
 		public SubstitutionSet(IEnumerable<Substitution> substitutions)
 		{
 			if(!AddSubstitutions(substitutions))
-				throw new ArgumentException("The given substitutions will generate a conflict.", "substitutions5");
+				throw new ArgumentException("The given substitutions will generate a conflict.", "substitutions");
 		}
 
-		public Name this[Symbol variable]
+		public Name this[Name variable]
 		{
 			get
 			{
@@ -70,7 +69,7 @@ namespace KnowledgeBase.WellFormedNames
 		public bool AddSubstitutions(IEnumerable<Substitution> substitutions)
 		{
 			bool rollback = false;
-			List<Symbol> added = new List<Symbol>(); //TODO Pool?
+			List<Name> added = new List<Name>(); //TODO Pool?
 
 			foreach (var s in substitutions)
 			{
@@ -212,6 +211,17 @@ namespace KnowledgeBase.WellFormedNames
 				builder.Length = 0;
 				ObjectPool<StringBuilder>.Recycle(builder);
 			}
+		}
+
+		public SubstitutionSet ReplaceUnboundVariables(string id)
+		{
+			return new SubstitutionSet(this.Select(s => s.ReplaceUnboundVariables(id)));
+		}
+
+
+		public SubstitutionSet RemoveBoundedVariables(string id)
+		{
+			return new SubstitutionSet(this.Select(s => s.RemoveBoundedVariables(id)));
 		}
 	}
 }

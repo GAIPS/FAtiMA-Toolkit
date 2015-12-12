@@ -116,7 +116,7 @@ namespace EmotionalAppraisal
 			Threshold = dataHolder.GetValue<int>("Threshold");
 			Cause = dataHolder.GetValue<Cause>("Cause");
 			var dir = dataHolder.GetValue<string>("Direction");
-			Direction = !string.IsNullOrEmpty(dir) ? Name.Parse(dir) : null;
+			Direction = !string.IsNullOrEmpty(dir) ? Name.BuildName(dir) : null;
 			EmotionType = dataHolder.GetValue<string>("EmotionType");
 			Valence = dataHolder.GetValue<EmotionValence>("Valence");
 			AppraisalVariables = dataHolder.GetValue<string[]>("AppraisalVariables");

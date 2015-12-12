@@ -15,10 +15,10 @@ namespace Tests.KnowledgeBase.WellFormedNames
         public void Substitution_ValidVariableAndValidValue_NewSubstitution(string var, string val)
         {
             var sub = new Substitution(var, val);
-            Assert.That(sub.Variable.Name == var);
+            Assert.That(sub.Variable.ToString() == var);
             Assert.That(sub.Value.ToString() == val);
 
-            var sub2 = new Substitution(new Symbol(var), Name.Parse(val));
+            var sub2 = new Substitution(Name.BuildName(var),Name.BuildName(val));
             Assert.That(sub2.Equals(sub));
         }
 
@@ -34,7 +34,7 @@ namespace Tests.KnowledgeBase.WellFormedNames
         public void Substitution_ValidSubstitutionString_NewSubstitution(string s, string var, string val)
         {
             var sub = new Substitution(s);
-            Assert.That(sub.Variable.Name == var);
+            Assert.That(sub.Variable.ToString() == var);
             Assert.That(sub.Value.ToString() == val);
         }
 

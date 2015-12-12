@@ -46,7 +46,7 @@
     <Compile Include="ObjectPool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StrongLinkDictionary.cs" />
-    <Compile Include="Tuple.cs" />
+    <Compile Include="Tuples.cs" />
     <Compile Include="TypeUtilities.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

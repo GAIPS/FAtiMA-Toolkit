@@ -4,7 +4,7 @@ using KnowledgeBase.WellFormedNames;
 
 namespace KnowledgeBase.Conditions
 {
-	public interface ICondition
+	public interface IConditionEvaluator
 	{
 		IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, SubstitutionSet constraints);
 

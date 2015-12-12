@@ -16,7 +16,7 @@ namespace KnowledgeBase
 	{
 		private NameSearchTree<ConditionMapper<T>> m_dictionary=new NameSearchTree<ConditionMapper<T>>();
 
-		public void Add(Name name, ConditionSet conditions, T value)
+		public void Add(Name name, ConditionEvaluatorSet conditionsEvaluator, T value)
 		{
 			ConditionMapper<T> conds;
 			if (!m_dictionary.TryGetValue(name, out conds))
@@ -25,16 +25,16 @@ namespace KnowledgeBase
 				m_dictionary[name] = conds;
 			}
 
-			conds.Add(conditions,value);
+			conds.Add(conditionsEvaluator,value);
 		}
 
-		public bool Remove(Name name, ConditionSet conditions)
+		public bool Remove(Name name, ConditionEvaluatorSet conditionsEvaluator)
 		{
 			ConditionMapper<T> conds;
 			if (!m_dictionary.TryGetValue(name, out conds))
 				return false;
 
-			if (!conds.Remove(conditions))
+			if (!conds.Remove(conditionsEvaluator))
 				return false;
 
 			if (conds.Count == 0)
@@ -52,7 +52,7 @@ namespace KnowledgeBase
 			var p2 = p1.SelectMany(p => p.Item1.MatchConditions(knowledgeBase, p.Item2));
 			return p2.Select(p => new {v = p.Item1, c = p.Item2.FirstOrDefault()})
 				.Where(r => r.c != null)
-				.Select(r => Tuple.Create(r.v, r.c));
+				.Select(r => Tuples.Create(r.v, r.c));
 		}
 
 		public override int GetHashCode()
@@ -82,7 +82,7 @@ namespace KnowledgeBase
 					node["key"] = dataHolder.ParentGraph.BuildNode(pair.Key, typeof (Name));
 					if (v.Key != null && v.Key.Count > 0)
 					{
-						node["conditions"] = dataHolder.ParentGraph.BuildNode(v.Key, typeof (ConditionSet));
+						node["conditions"] = dataHolder.ParentGraph.BuildNode(v.Key, typeof (ConditionEvaluatorSet));
 					}
 					node["value"] = dataHolder.ParentGraph.BuildNode(v.Value, typeof (T));
 					seq.Add(node);
@@ -111,11 +111,11 @@ namespace KnowledgeBase
 
 				Name key = keyNode.RebuildObject<Name>();
 				T value = valueNode.RebuildObject<T>();
-				ConditionSet cond = null;
+				ConditionEvaluatorSet cond = null;
 
 				var condNode = node["conditions"];
 				if (condNode != null)
-					cond = condNode.RebuildObject<ConditionSet>();
+					cond = condNode.RebuildObject<ConditionEvaluatorSet>();
 
 				Add(key,cond,value);
 			}

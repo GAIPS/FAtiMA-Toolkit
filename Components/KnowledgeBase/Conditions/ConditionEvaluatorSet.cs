@@ -6,13 +6,13 @@ using KnowledgeBase.WellFormedNames;
 namespace KnowledgeBase.Conditions
 {
 	[Serializable]
-	public sealed class ConditionSet : HashSet<Condition>, ICondition
+	public sealed class ConditionEvaluatorSet : HashSet<Condition>, IConditionEvaluator
 	{
-		public ConditionSet() : base()
+		public ConditionEvaluatorSet() : base()
 		{
 		}
 
-		public ConditionSet(IEnumerable<Condition> conditions) : base(conditions)
+		public ConditionEvaluatorSet(IEnumerable<Condition> conditions) : base(conditions)
 		{
 		}
 
@@ -48,11 +48,11 @@ namespace KnowledgeBase.Conditions
 
 		public override bool Equals(object obj)
 		{
-			ConditionSet set = obj as ConditionSet;
-			if(set==null)
+			ConditionEvaluatorSet evaluatorSet = obj as ConditionEvaluatorSet;
+			if(evaluatorSet==null)
 				return false;
 
-			return SetEquals(set);
+			return SetEquals(evaluatorSet);
 		}
 	}
 }

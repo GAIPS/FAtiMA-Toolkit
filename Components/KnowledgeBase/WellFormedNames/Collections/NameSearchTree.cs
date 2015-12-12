@@ -152,7 +152,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 			Remove(item.Key);
 			return true;
 		}
-
+		/*
 		public T Match(Name name)
 		{
 			T value;
@@ -172,7 +172,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 			value = default(T);
 			return false;
 		}
-
+		
 		public IEnumerable<T> MatchAll(Name name)
 		{
 			var stack = ObjectPool<Stack<Name>>.GetObject();
@@ -188,14 +188,14 @@ namespace KnowledgeBase.WellFormedNames.Collections
 				ObjectPool<Stack<Name>>.Recycle(stack);
 			}
 		}
-
+		*/
 		public IEnumerable<Pair<T, SubstitutionSet>> Unify(Name predicate, SubstitutionSet bindings=null)
 		{
 			var stack = ObjectPool<Stack<Name>>.GetObject();
 			try
 			{
 				stack.Push(predicate);
-				foreach (var pair in Root.Unify(stack, bindings??new SubstitutionSet()))
+				foreach (var pair in Root.Unify(stack, bindings ?? new SubstitutionSet()))
 					yield return pair;
 			}
 			finally
@@ -260,7 +260,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 			{
 				while (it.MoveNext())
 				{
-					Name n = Name.Parse(it.FieldName);
+					Name n = Name.BuildName(it.FieldName);
 					var value = it.BuildValue<T>();
 					Add(n,value);
 				}

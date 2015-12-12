@@ -7,25 +7,25 @@ using Utilities;
 namespace KnowledgeBase.Conditions
 {
 	[Serializable]
-	public class ConditionMapper<T> : IEnumerable<KeyValuePair<ConditionSet,T>>
+	public class ConditionMapper<T> : IEnumerable<KeyValuePair<ConditionEvaluatorSet,T>>
 	{
-		private Dictionary<ConditionSet, T> m_dict = new Dictionary<ConditionSet, T>();
+		private Dictionary<ConditionEvaluatorSet, T> m_dict = new Dictionary<ConditionEvaluatorSet, T>();
 
 		public int Count
 		{
 			get { return m_dict.Count; }
 		}
 
-		public void Add(ConditionSet condition, T value)
+		public void Add(ConditionEvaluatorSet conditionEvaluator, T value)
 		{
-			if(condition==null)
-				condition=new ConditionSet();
-			m_dict.Add(condition,value);
+			if(conditionEvaluator==null)
+				conditionEvaluator=new ConditionEvaluatorSet();
+			m_dict.Add(conditionEvaluator,value);
 		}
 
-		public bool Remove(ConditionSet condition)
+		public bool Remove(ConditionEvaluatorSet conditionEvaluator)
 		{
-			return m_dict.Remove(condition);
+			return m_dict.Remove(conditionEvaluator);
 		}
 
 		public void Clear()
@@ -35,10 +35,10 @@ namespace KnowledgeBase.Conditions
 
 		public IEnumerable<Pair<T,IEnumerable<SubstitutionSet>>> MatchConditions(KB kb, SubstitutionSet constraints)
 		{
-			return from e in m_dict let set = e.Key.UnifyEvaluate(kb, constraints) where set.Any() select Tuple.Create(e.Value, set);
+			return from e in m_dict let set = e.Key.UnifyEvaluate(kb, constraints) where set.Any() select Tuples.Create(e.Value, set);
 		}
 
-		public IEnumerator<KeyValuePair<ConditionSet, T>> GetEnumerator()
+		public IEnumerator<KeyValuePair<ConditionEvaluatorSet, T>> GetEnumerator()
 		{
 			return m_dict.GetEnumerator();
 		}

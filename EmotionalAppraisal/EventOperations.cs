@@ -70,7 +70,7 @@ namespace EmotionalAppraisal
 	    {
 			yield return new Substitution("[Subject]", evt.Subject);
 			yield return new Substitution("[Action]", evt.Action);
-			yield return new Substitution("[Target]", evt.Target ?? Symbol.UNIVERSAL_STRING);
+			yield return new Substitution("[Target]", evt.Target ?? Name.UNIVERSAL_STRING);
 
 			foreach (var p in evt.Parameters)
 			{

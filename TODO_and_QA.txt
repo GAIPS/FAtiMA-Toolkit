@@ -1,0 +1,4 @@
+- Na NST, elementos com variaveis, tipo a([x],b) e a([y],b) são considerados iguais?
+	- Não
+- Na NST, elementos com variaveis, tipo a([x],[x]) e a([y],[x]) são considerados diferentes?
+	- Sim, caso generico

@@ -97,7 +97,7 @@ namespace EmotionalAppraisal.AppraisalRules
 		/// </summary>
 		public Name Other { get; private set; }
 
-		public Reaction ReplaceUnboundVariables(long variableId)
+		public Reaction ReplaceUnboundVariables(string id)
 		{
 			if (IsGrounded)
 				return this;
@@ -106,7 +106,20 @@ namespace EmotionalAppraisal.AppraisalRules
 			Other = null;
 			var r = new Reaction(this);
 			Other = o;
-			r.Other = o.ReplaceUnboundVariables(variableId);
+			r.Other = o.ReplaceUnboundVariables(id);
+			return r;
+		}
+
+		public Reaction RemoveBoundedVariables(string id)
+		{
+			if (IsGrounded)
+				return this;
+
+			var o = Other;
+			Other = null;
+			var r = new Reaction(this);
+			Other = o;
+			r.Other = o.RemoveBoundedVariables(id);
 			return r;
 		}
 
@@ -132,20 +145,5 @@ namespace EmotionalAppraisal.AppraisalRules
 				return Other.IsGrounded;
 			}
 		}
-
-		//public bool MatchEvent(IEvent eventPerception)
-		//{
-		//	return ReferencedEventName.Match(eventPerception.ToName());
-		//}
-
-		//public Reaction MakeGround(params Substitution[] subst)
-		//{
-		//	return MakeGround((IEnumerable<Substitution>) subst);
-		//}
-
-		//public override string ToString()
-		//{
-		//	return string.Format("{0} ({1},{2},{3})", ReferencedEventName, Desirability, DesirabilityForOther, Praiseworthiness);
-		//}
 	}
 }
