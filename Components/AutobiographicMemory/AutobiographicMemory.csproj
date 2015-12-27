@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2F1B1044-7D2D-40B0-80C2-12D742F54A7B}</ProjectGuid>
+    <ProjectGuid>{C1CC38C5-72F5-4545-B4F7-C65B2883909C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AutobiographicalMemory</RootNamespace>
-    <AssemblyName>AutobiographicalMemory</AssemblyName>
+    <RootNamespace>AutobiographicMemory</RootNamespace>
+    <AssemblyName>AutobiographicMemory</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -31,15 +31,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="AM.cs" />
+    <Compile Include="Cause.cs" />
+    <Compile Include="EventOperations.cs" />
+    <Compile Include="Interfaces\IEvent.cs" />
+    <Compile Include="Interfaces\IEventParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KnowledgeBase\KnowledgeBase.csproj">
       <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
       <Name>KnowledgeBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SerializationUtilities\GAIPS.Serialization.csproj">
+      <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
+      <Name>GAIPS.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{2021e828-2f7f-4775-9f02-58c68fd72edd}</Project>
+      <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using KnowledgeBase.WellFormedNames;
 
-namespace EmotionalAppraisal.Interfaces
+namespace AutobiographicMemory.Interfaces
 {
 	public interface IEvent
 	{

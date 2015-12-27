@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using EmotionalAppraisal.Interfaces;
+using AutobiographicMemory.Interfaces;
 using KnowledgeBase.WellFormedNames;
 
-namespace EmotionalAppraisal
+namespace AutobiographicMemory
 {
     public static class EventOperations
     {
@@ -60,6 +59,11 @@ namespace EmotionalAppraisal
 		//		evt.Target == null ? Symbol.NIL_SYMBOL : new Symbol(evt.Target));
 		//	return n;
 		//}
+
+	    public static Name ToIdentifierName(this IEvent evt)
+	    {
+		    return Name.BuildName((Name) "Event", (Name) evt.Subject, (Name) evt.Action, (Name) evt.Target);
+	    }
 
 	    /// <summary>
 	    /// Generates a set of bindings that associate the Variables

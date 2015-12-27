@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EmotionalAppraisal.Interfaces
+namespace AutobiographicMemory.Interfaces
 {
 	public interface IEventParameter : ICloneable
 	{

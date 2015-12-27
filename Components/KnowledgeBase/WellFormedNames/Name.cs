@@ -246,7 +246,8 @@ namespace KnowledgeBase.WellFormedNames
 			if (string.IsNullOrEmpty(str))
 			{
 				if (str == null)
-					throw new ArgumentNullException("str");
+					return NIL_SYMBOL;
+
 				throw new ArgumentException("Cannot parse an empty string", "str");
 			}
 

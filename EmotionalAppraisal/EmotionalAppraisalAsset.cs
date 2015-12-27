@@ -1,16 +1,18 @@
 ﻿using System;
 using AssetPackage;
 using EmotionalAppraisal.AppraisalRules;
-using EmotionalAppraisal.Interfaces;
 using EmotionalAppraisal.OCCModel;
 using System.Collections.Generic;
+using AutobiographicMemory;
+using AutobiographicMemory.Interfaces;
+using GAIPS.Serialization;
 using KnowledgeBase;
 using KnowledgeBase.Conditions;
 
 namespace EmotionalAppraisal
 {
 	[Serializable]
-	public sealed partial class EmotionalAppraisalAsset : BaseAsset
+	public sealed partial class EmotionalAppraisalAsset : BaseAsset, ICustomSerialization
 	{
 		private static readonly InternalAppraisalFrame APPRAISAL_FRAME = new InternalAppraisalFrame();
 		[NonSerialized]
@@ -42,6 +44,7 @@ namespace EmotionalAppraisal
 		}
 
 		private KB m_kb;
+		private AM m_am;
 		private ConcreteEmotionalState m_emotionalState;
 		private ReactiveAppraisalDerivator m_appraisalDerivator;
 		#region Component Manager
@@ -123,20 +126,28 @@ namespace EmotionalAppraisal
 			m_appraisalDerivator.AddEmotionalReaction(cause, conditionsEvaluator, emotionalReaction);
 		}
 
-		public KnowledgeBase.KB Kb
+		public KB Kb
 		{
 			get { return m_kb; }
 		}
 
-		public EmotionalAppraisalAsset() : this(string.Empty){}
-
 		public EmotionalAppraisalAsset(string perspective)
 		{
 			Perspective = perspective;
-			m_kb = new KnowledgeBase.KB();
+			m_kb = new KB();
+			m_am = new AM();
+			m_am.BindCalls(m_kb);
+
 			m_emotionalState = new ConcreteEmotionalState();
+			m_emotionalState.OnEmotionCreated+=OnEmotionCreated;
+
 			m_occAffectDerivator = new OCCAffectDerivationComponent();
 			m_appraisalDerivator = new ReactiveAppraisalDerivator();
+		}
+
+		private void OnEmotionCreated(IEmotionalState emotionalState, ActiveEmotion activeEmotion)
+		{
+			m_am.RecordEvent(activeEmotion.Cause, activeEmotion.EmotionType);
 		}
 
 		public void AppraiseEvents(IEnumerable<IEvent> events)
@@ -188,5 +199,37 @@ namespace EmotionalAppraisal
 			if (frame != null)
 				UpdateEmotions(frame);
 		}
+
+		#region ICustomSerialization
+
+		public void GetObjectData(ISerializationData dataHolder)
+		{
+			dataHolder.SetValue("Perspective",Perspective);
+			dataHolder.SetValue("EmotionalHalfLifeDecayTime",m_emotionalHalfLifeDecayTime);
+			dataHolder.SetValue("MoodHalfLifeDecayTime", m_moodDecay);
+			dataHolder.SetValue("KnowledgeBase",m_kb);
+			dataHolder.SetValue("AutobiographicMemory",m_am);
+			dataHolder.SetValue("EmotionalState", m_emotionalState);
+			dataHolder.SetValue("AppraisalRules", m_appraisalDerivator);
+		}
+
+		public void SetObjectData(ISerializationData dataHolder)
+		{
+			Perspective = dataHolder.GetValue<string>("Perspective");
+			m_emotionalHalfLifeDecayTime = dataHolder.GetValue<float>("EmotionalHalfLifeDecayTime");
+			m_moodDecay = dataHolder.GetValue<float>("MoodHalfLifeDecayTime");
+			m_kb = dataHolder.GetValue<KB>("KnowledgeBase");
+			m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
+			m_am.BindCalls(m_kb);
+
+			m_emotionalState = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
+			m_emotionalState.OnEmotionCreated += OnEmotionCreated;
+
+			m_appraisalDerivator = dataHolder.GetValue<ReactiveAppraisalDerivator>("AppraisalRules");
+
+			m_occAffectDerivator = new OCCAffectDerivationComponent();
+		}
+
+		#endregion
 	}
 }

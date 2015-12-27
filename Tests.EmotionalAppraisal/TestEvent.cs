@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using EmotionalAppraisal.Interfaces;
+using AutobiographicMemory.Interfaces;
 
 namespace Tests.EmotionalAppraisal
 {

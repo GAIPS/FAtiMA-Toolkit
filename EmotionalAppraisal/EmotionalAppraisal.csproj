@@ -46,16 +46,12 @@
     <Compile Include="Components\IEmotionProcessor.cs" />
     <Compile Include="ConcreteEmotionalState.cs" />
     <Compile Include="EmotionalAppraisalAsset.cs" />
-    <Compile Include="Cause.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="EmotionDisposition.cs" />
-    <Compile Include="EventOperations.cs" />
     <Compile Include="IAppraisalFrame.cs" />
     <Compile Include="IEmotionalState.cs" />
-    <Compile Include="Interfaces\IEventParameter.cs" />
     <Compile Include="InternalAppraisalFrame.cs" />
     <Compile Include="IWritableAppraisalFrame.cs" />
-    <Compile Include="Interfaces\IEvent.cs" />
     <Compile Include="Mood.cs" />
     <Compile Include="OCCModel\OCCAffectDerivationComponent.cs" />
     <Compile Include="OCCModel\OCCAppraisalVariables.cs" />
@@ -64,6 +60,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Components\AutobiographicMemory\AutobiographicMemory.csproj">
+      <Project>{c1cc38c5-72f5-4545-b4f7-c65b2883909c}</Project>
+      <Name>AutobiographicMemory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Components\KnowledgeBase\KnowledgeBase.csproj">
       <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
       <Name>KnowledgeBase</Name>

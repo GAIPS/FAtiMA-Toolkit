@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
+using AutobiographicMemory;
+using AutobiographicMemory.Interfaces;
 using EmotionalAppraisal.Components;
-using EmotionalAppraisal.Interfaces;
 using EmotionalAppraisal.OCCModel;
 using KnowledgeBase;
 using KnowledgeBase.Conditions;
@@ -23,18 +24,18 @@ namespace EmotionalAppraisal.AppraisalRules
 		private const short DEFAULT_APPRAISAL_WEIGHT = 1;
 		public const long IGNORE_DURATION = 5000;
 
-		private readonly ConditionalNST<Reaction> AppraisalRules;
+		private readonly ConditionalNST<Reaction> Rules;
 
 		public ReactiveAppraisalDerivator()
 		{
 			this.AppraisalWeight = DEFAULT_APPRAISAL_WEIGHT;
-			this.AppraisalRules = new ConditionalNST<Reaction>();
+			this.Rules = new ConditionalNST<Reaction>();
 		}
 		
 		public Reaction Evaluate(string perspective, IEvent evt, KB kb)
 		{
 			Cause cause = new Cause(evt,perspective);
-			Pair<Reaction,SubstitutionSet> r = AppraisalRules.UnifyAll(cause.CauseName, kb, cause.CauseParameters).FirstOrDefault();
+			Pair<Reaction,SubstitutionSet> r = Rules.UnifyAll(cause.CauseName, kb, cause.CauseParameters).FirstOrDefault();
 			if (r == null)
 				return null;
 
@@ -55,7 +56,7 @@ namespace EmotionalAppraisal.AppraisalRules
 					cause.CauseParameters.Select(s => Condition.BuildCondition(s.Variable, s.Value, ComparisonOperator.Equal));
 				conditionsEvaluator.UnionWith(conds);
 			}
-			AppraisalRules.Add(cause.CauseName, conditionsEvaluator, emotionalReaction);
+			Rules.Add(cause.CauseName, conditionsEvaluator, emotionalReaction);
 		}
 
 		#region IAppraisalDerivator Implementation

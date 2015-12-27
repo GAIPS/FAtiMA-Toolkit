@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using EmotionalAppraisal.Interfaces;
+using AutobiographicMemory.Interfaces;
 using KnowledgeBase.WellFormedNames;
 
-namespace EmotionalAppraisal
+namespace AutobiographicMemory
 {
 	[Serializable]
 	public class Cause

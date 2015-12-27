@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using EmotionalAppraisal;
 using EmotionalAppraisal.AppraisalRules;
-using EmotionalAppraisal.Interfaces;
 using EmotionalAppraisal.OCCModel;
 using NUnit.Framework;
 using KnowledgeBase.WellFormedNames;
 using System.IO;
+using AutobiographicMemory.Interfaces;
 using GAIPS.Serialization;
 using KnowledgeBase;
 
@@ -18,7 +18,7 @@ namespace Tests.EmotionalAppraisal
 	{
 		private static EmotionalAppraisalAsset BuildTestAsset()
 		{//Emotional System Setup
-			var m_emotionalAppraisalAsset = new EmotionalAppraisalAsset();
+			var m_emotionalAppraisalAsset = new EmotionalAppraisalAsset("Agent");
 			m_emotionalAppraisalAsset.Perspective = "Test";
 
 			//Setup Emotional Disposition

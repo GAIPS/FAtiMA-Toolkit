@@ -42,6 +42,13 @@ namespace Tests.KnowledgeBase.WellFormedNames
             Assert.That(string.Equals(name.ToString(),nameString,StringComparison.InvariantCultureIgnoreCase));
         }
 
+		[Test]
+		public void Parse_CorrectNameString_Null()
+		{
+			var name = Name.BuildName((string)null);
+			Assert.That(string.Equals(name.ToString(), "-", StringComparison.InvariantCultureIgnoreCase));
+		}
+
 
         [TestCase("[y]")]
         [TestCase("[x]")]
@@ -75,13 +82,6 @@ namespace Tests.KnowledgeBase.WellFormedNames
         public void Parse_InvalidNameString_NewName(string nameString)
         {
             Assert.Throws<ParsingException>(() => Name.BuildName(nameString));
-        }
-
-
-        [Test]
-        public void Parse_NullNameString_ArgumentNullException()
-        {
-			Assert.Throws<ArgumentNullException>(() => Name.BuildName((string)null));
         }
 
         [Test]

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutobiographicMemory.Interfaces;
 using EmotionalAppraisal.Components;
-using EmotionalAppraisal.Interfaces;
 using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalAppraisal.OCCModel
@@ -115,7 +115,7 @@ namespace EmotionalAppraisal.OCCModel
 		/// <param name="goalImportance">how important is the goal to the agent</param>
 		/// <param name="evt">The event that triggered the emotion</param>
 		/// <returns>the emotion created</returns>
-		public static OCCBaseEmotion AppraiseGoalSuccess(ActiveEmotion hopeEmotion, ActiveEmotion fearEmotion, float goalImportance, IEvent evt) {
+		private static OCCBaseEmotion AppraiseGoalSuccess(ActiveEmotion hopeEmotion, ActiveEmotion fearEmotion, float goalImportance, IEvent evt) {
 			return AppraiseGoalEnd(OCCEmotionType.Satisfaction,OCCEmotionType.Relief,hopeEmotion,fearEmotion,goalImportance,evt);
 		}
 

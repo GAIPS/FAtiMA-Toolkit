@@ -1,7 +1,8 @@
-﻿using EmotionalAppraisal.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using AutobiographicMemory;
+using AutobiographicMemory.Interfaces;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
 
