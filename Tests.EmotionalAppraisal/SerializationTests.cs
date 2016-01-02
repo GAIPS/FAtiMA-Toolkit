@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using EmotionalAppraisal;
 using EmotionalAppraisal.AppraisalRules;
 using EmotionalAppraisal.OCCModel;
