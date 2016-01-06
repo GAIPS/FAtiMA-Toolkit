@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AutobiographicMemory.Interfaces;
 using KnowledgeBase.WellFormedNames;
 
@@ -29,10 +30,10 @@ namespace AutobiographicMemory
 
             while (it1.MoveNext() && it2.MoveNext())
             {
-                if (!it1.Current.ParameterName.Equals(it2.Current.ParameterName))
+				if (!string.Equals(it1.Current.ParameterName, it2.Current.ParameterName, StringComparison.InvariantCultureIgnoreCase))
                     return false;
 
-                if (!it1.Current.Value.Equals("*") && !it1.Current.Value.Equals(it2.Current.Value))
+                if (!it1.Current.Value.Match(it2.Current.Value))
                     return false;
             }
 
@@ -81,5 +82,39 @@ namespace AutobiographicMemory
 				yield return new Substitution("[" + p.ParameterName + "]", p.Value.ToString());
 			}
 	    }
+
+		public static IEnumerable<Substitution> GenerateParameterBindings(this IEvent evt)
+		{
+			return evt.Parameters.Select(p => new Substitution("[" + p.ParameterName + "]", p.Value.ToString()));
+		}
+
+	    public static IEvent ApplyPerspective(IEvent evt, string perspective)
+	    {
+			return new internalEventDef(evt,perspective);
+	    }
+
+		private class internalEventDef : IEvent
+		{
+			public internalEventDef(IEvent evt, string perspective)
+			{
+				Action = evt.Action;
+				Subject = Name.ApplyPerspective(evt.Subject, perspective);
+				Target = evt.Target == null ? null : Name.ApplyPerspective(evt.Target, perspective);
+				Timestamp = evt.Timestamp;
+				this.Parameters = null;
+				if (evt.Parameters != null && evt.Parameters.Any())
+					this.Parameters = evt.Parameters.ToArray();
+			}
+
+			public string Action { get; private set; }
+
+			public string Subject { get; private set; }
+
+			public string Target { get; private set; }
+
+			public DateTime Timestamp { get; private set; }
+
+			public IEnumerable<IEventParameter> Parameters { get; private set; }
+		}
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using AutobiographicMemory;
+using AutobiographicMemory.Interfaces;
 using GAIPS.Serialization;
 using KnowledgeBase.WellFormedNames;
 
@@ -44,7 +44,7 @@ namespace EmotionalAppraisal
 			}
 		}
 
-		internal void SetIntencity(float value)
+		private void SetIntencity(float value)
 		{
 			value -= Threshold;
 			value = value < -10 ? -10 : (value > 10 ? 10 : value);
@@ -115,7 +115,7 @@ namespace EmotionalAppraisal
 			deltaTimeT0 = 0;
 			Decay = dataHolder.GetValue<int>("Decay");
 			Threshold = dataHolder.GetValue<int>("Threshold");
-			Cause = dataHolder.GetValue<Cause>("Cause");
+			Cause = dataHolder.GetValue<IEventRecord>("Cause");
 			var dir = dataHolder.GetValue<string>("Direction");
 			Direction = !string.IsNullOrEmpty(dir) ? Name.BuildName(dir) : null;
 			EmotionType = dataHolder.GetValue<string>("EmotionType");

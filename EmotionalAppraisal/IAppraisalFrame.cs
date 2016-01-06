@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
+using AutobiographicMemory;
 using AutobiographicMemory.Interfaces;
 
 namespace EmotionalAppraisal
 {
 	public interface IAppraisalFrame
 	{
-		IEvent AppraisedEvent { get; }
+		IEventRecord AppraisedEvent { get; }
 		IEnumerable<string> AppraisalVariables { get; }
 		bool IsEmpty { get; }
 		long LastChange { get; }

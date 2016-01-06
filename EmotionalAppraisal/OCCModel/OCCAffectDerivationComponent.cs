@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutobiographicMemory;
 using AutobiographicMemory.Interfaces;
 using EmotionalAppraisal.Components;
 using KnowledgeBase.WellFormedNames;
@@ -13,7 +14,7 @@ namespace EmotionalAppraisal.OCCModel
 		public const int GOALUNCONFIRMED = 0;
 		public const int GOALDISCONFIRMED = 2;
 
-		private static OCCBaseEmotion OCCAppraiseCompoundEmotions(IEvent evt, float desirability, float praiseworthiness)
+		private static OCCBaseEmotion OCCAppraiseCompoundEmotions(IEventRecord evt, float desirability, float praiseworthiness)
 		{
 			if ((desirability == 0) || (praiseworthiness == 0) || ((desirability > 0) != (praiseworthiness > 0)))
 				return null;
@@ -37,13 +38,13 @@ namespace EmotionalAppraisal.OCCModel
 			return new OCCBaseEmotion(emoType, potential, evt, direction);
 		}
 
-		private static OCCBaseEmotion OCCAppraiseWellBeing(IEvent evt, float desirability) {
+		private static OCCBaseEmotion OCCAppraiseWellBeing(IEventRecord evt, float desirability) {
 			if(desirability >= 0)
 				return new OCCBaseEmotion(OCCEmotionType.Joy, desirability, evt);
 			return new OCCBaseEmotion(OCCEmotionType.Distress, -desirability, evt);
 		}
 
-		private static OCCBaseEmotion OCCAppraiseFortuneOfOthers(IEvent evt, float desirability, float desirabilityForOther, string target) {
+		private static OCCBaseEmotion OCCAppraiseFortuneOfOthers(IEventRecord evt, float desirability, float desirabilityForOther, string target) {
 			float potential = (Math.Abs(desirabilityForOther) + Math.Abs(desirability))*0.5f;
 
 			OCCEmotionType emoType;
@@ -55,7 +56,7 @@ namespace EmotionalAppraisal.OCCModel
 			return new OCCBaseEmotion(emoType, potential, evt, string.IsNullOrEmpty(target) ? Name.UNIVERSAL_SYMBOL : Name.BuildName(target));
 		}
 
-		private static OCCBaseEmotion OCCAppraisePraiseworthiness(IEvent evt, float praiseworthiness) {
+		private static OCCBaseEmotion OCCAppraisePraiseworthiness(IEventRecord evt, float praiseworthiness) {
 			Name direction;
 			OCCEmotionType emoType;
 
@@ -73,14 +74,14 @@ namespace EmotionalAppraisal.OCCModel
 			return new OCCBaseEmotion(emoType, Math.Abs(praiseworthiness), evt, direction);
 		}
 
-		private static OCCBaseEmotion OCCAppraiseAttribution(IEvent evt, float like)
+		private static OCCBaseEmotion OCCAppraiseAttribution(IEventRecord evt, float like)
 		{
 			const float magicFactor = 0.7f;
 			OCCEmotionType emoType = (like >= 0)?OCCEmotionType.Love:OCCEmotionType.Hate;
 			return new OCCBaseEmotion(emoType,Math.Abs(like)*magicFactor,evt,evt.Subject==null?Name.UNIVERSAL_SYMBOL:Name.BuildName(evt.Subject));
 		}
 
-		private static OCCBaseEmotion AppraiseGoalEnd(OCCEmotionType hopefullOutcome, OCCEmotionType fearfullOutcome, ActiveEmotion hopeEmotion, ActiveEmotion fearEmotion, float goalImportance, IEvent evt) {
+		private static OCCBaseEmotion AppraiseGoalEnd(OCCEmotionType hopefullOutcome, OCCEmotionType fearfullOutcome, ActiveEmotion hopeEmotion, ActiveEmotion fearEmotion, float goalImportance, IEventRecord evt) {
 
 			OCCEmotionType finalEmotion;
 			float potential = goalImportance;
@@ -115,7 +116,7 @@ namespace EmotionalAppraisal.OCCModel
 		/// <param name="goalImportance">how important is the goal to the agent</param>
 		/// <param name="evt">The event that triggered the emotion</param>
 		/// <returns>the emotion created</returns>
-		private static OCCBaseEmotion AppraiseGoalSuccess(ActiveEmotion hopeEmotion, ActiveEmotion fearEmotion, float goalImportance, IEvent evt) {
+		private static OCCBaseEmotion AppraiseGoalSuccess(ActiveEmotion hopeEmotion, ActiveEmotion fearEmotion, float goalImportance, IEventRecord evt) {
 			return AppraiseGoalEnd(OCCEmotionType.Satisfaction,OCCEmotionType.Relief,hopeEmotion,fearEmotion,goalImportance,evt);
 		}
 
@@ -127,7 +128,7 @@ namespace EmotionalAppraisal.OCCModel
 		/// <param name="goalImportance">how important is the goal to the agent</param>
 		/// <param name="evt">The event that triggered the emotion</param>
 		/// <returns></returns>
-		public static OCCBaseEmotion AppraiseGoalFailure(ActiveEmotion hopeEmotion, ActiveEmotion fearEmotion, float goalImportance, IEvent evt) {
+		public static OCCBaseEmotion AppraiseGoalFailure(ActiveEmotion hopeEmotion, ActiveEmotion fearEmotion, float goalImportance, IEventRecord evt) {
 			return AppraiseGoalEnd(OCCEmotionType.Disappointment,OCCEmotionType.FearsConfirmed,hopeEmotion,fearEmotion,goalImportance,evt);
 		}
 
@@ -138,7 +139,7 @@ namespace EmotionalAppraisal.OCCModel
 		/// <param name="goalConduciveness">???????</param>
 		/// <param name="prob">probability of sucess</param>
 		/// <returns></returns>
-		public static OCCBaseEmotion AppraiseGoalSuccessProbability(IEvent evt, float goalConduciveness, float prob) {
+		public static OCCBaseEmotion AppraiseGoalSuccessProbability(IEventRecord evt, float goalConduciveness, float prob) {
 			return new OCCBaseEmotion(OCCEmotionType.Hope, prob * goalConduciveness, evt);
 		}
 
@@ -149,7 +150,7 @@ namespace EmotionalAppraisal.OCCModel
 		/// <param name="goalConduciveness">???????</param>
 		/// <param name="prob">probability of failure</param>
 		/// <returns></returns>
-		public static OCCBaseEmotion AppraiseGoalFailureProbability(IEvent evt, float goalConduciveness, float prob)
+		public static OCCBaseEmotion AppraiseGoalFailureProbability(IEventRecord evt, float goalConduciveness, float prob)
 		{
 			return new OCCBaseEmotion(OCCEmotionType.Fear, prob * goalConduciveness, evt);
 		}

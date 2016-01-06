@@ -91,6 +91,17 @@ namespace KnowledgeBase.WellFormedNames
 				return Terms.Prepend(RootSymbol);
 			}
 
+			public override Name GetNTerm(int index)
+			{
+				if(index<0 || index>Terms.Length)
+					throw new IndexOutOfRangeException();
+
+				if (index == 0)
+					return RootSymbol;
+				index--;
+				return Terms[index];
+			}
+
 			public override IEnumerable<Name> GetLiterals()
 			{
 				return Terms.SelectMany(t => t.GetLiterals()).Prepend(RootSymbol);

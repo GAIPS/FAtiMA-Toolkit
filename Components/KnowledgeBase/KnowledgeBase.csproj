@@ -41,6 +41,7 @@
     <Compile Include="Conditions\ConditionEvaluatorSet.cs" />
     <Compile Include="Conditions\ComparisonOperator.cs" />
     <Compile Include="Conditions\IConditionEvaluator.cs" />
+    <Compile Include="Conditions\Implementation\EqualityDefinitionCondition.cs" />
     <Compile Include="Conditions\Implementation\PredicateCondition.cs" />
     <Compile Include="Conditions\Implementation\PrimitiveComparisonCondition.cs" />
     <Compile Include="Conditions\Implementation\PropertyComparisonCondition.cs" />

@@ -1,16 +1,17 @@
-﻿using AutobiographicMemory.Interfaces;
+﻿using AutobiographicMemory;
+using AutobiographicMemory.Interfaces;
 using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalAppraisal.OCCModel
 {
 	public class OCCBaseEmotion : BaseEmotion
 	{
-		public OCCBaseEmotion(OCCEmotionType type, float potential, IEvent cause, Name direction)
+		public OCCBaseEmotion(OCCEmotionType type, float potential, IEventRecord cause, Name direction)
 			: base(type.Name,type.Valence,type.AppraisalVariables,potential,type.InfluencesMood,cause,direction)
 		{
 		}
 
-		public OCCBaseEmotion(OCCEmotionType type, float potential, IEvent cause)
+		public OCCBaseEmotion(OCCEmotionType type, float potential, IEventRecord cause)
 			: base(type.Name, type.Valence, type.AppraisalVariables, potential, type.InfluencesMood, cause)
 		{
 		}

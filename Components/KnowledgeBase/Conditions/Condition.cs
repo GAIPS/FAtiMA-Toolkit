@@ -10,7 +10,7 @@ namespace KnowledgeBase.Conditions
 	[Serializable]
 	public abstract partial class Condition : IConditionEvaluator
 	{
-		private const string REGEX_PATTERN = @"^\s*([\w-\(\)\.\,\[\]]+)\s*(=|!=|<|<=|>|>=)\s*([\w-\(\)\.\,\[\]]+)\s*$";
+		private const string REGEX_PATTERN = @"^\s*([\w\s-\(\)\.\,\[\]]+)\s*(=|!=|<|<=|>|>=)\s*([\w\s-\(\)\.\,\[\]]+)\s*$";
 		private static readonly Regex REGEX_PARSER = new Regex(REGEX_PATTERN,RegexOptions.Singleline);
 
 		private Condition()
@@ -119,6 +119,16 @@ namespace KnowledgeBase.Conditions
 
 			if (v1 == v2)
 				throw new InvalidOperationException("Both given property names are intrinsically equal. Condition would always return a constant result.");
+
+			if (op == ComparisonOperator.Equal)
+			{
+				//May be a definition
+				if (v1.IsVariable)
+					return new EqualityDefinitionCondition(v1,v2);
+
+				if (v2.IsVariable)
+					return new EqualityDefinitionCondition(v2,v1);
+			}
 
 			if (v1.IsPrimitive != v2.IsPrimitive)
 			{

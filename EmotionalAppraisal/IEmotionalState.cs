@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutobiographicMemory;
+using AutobiographicMemory.Interfaces;
 
 namespace EmotionalAppraisal
 {
@@ -11,11 +12,6 @@ namespace EmotionalAppraisal
 	/// @author: João Dias
 	public interface IEmotionalState
 	{
-		/// <summary>
-		/// Event dispatched whenever a new emotion is created.
-		/// </summary>
-		event Action<IEmotionalState, ActiveEmotion> OnEmotionCreated;
-
 		/// <summary>
 		/// Creates and Adds to the emotional state a new ActiveEmotion based on a received BaseEmotion.
 		/// However, the ActiveEmotion will be created and added to the emotional state only if the final
@@ -101,7 +97,7 @@ namespace EmotionalAppraisal
 		/// </summary>
 		/// <param name="cause">the event that caused the emotion that we want to retrieve</param>
 		/// <returns>the strongest emotion or null if there is no emotion in the emotional state</returns>
-		ActiveEmotion GetStrongestEmotion(Cause cause);
+		ActiveEmotion GetStrongestEmotion(IEvent cause);
 
 		void AddEmotionDisposition(EmotionDisposition emotionDisposition);
 

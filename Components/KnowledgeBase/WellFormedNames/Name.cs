@@ -106,6 +106,12 @@ namespace KnowledgeBase.WellFormedNames
 		public abstract IEnumerable<Name> GetTerms();
 
 		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="index"></param>
+		public abstract Name GetNTerm(int index);
+
+		/// <summary>
 		/// Generates a sequence with all Symbols contained inside this Name
 		/// </summary>
 		public abstract IEnumerable<Name> GetLiterals();
@@ -348,7 +354,21 @@ namespace KnowledgeBase.WellFormedNames
 		public abstract Object evaluate(KB m);
 		*/
 
-		public virtual int CompareTo(Name other)
+		public static string ApplyPerspective(string name, string me)
+		{
+			if (string.Compare(name, me, StringComparison.InvariantCultureIgnoreCase) == 0)
+				return SELF_STRING;
+			return name;
+		}
+
+		public static string RemovePerspective(string name, string me)
+		{
+			if (string.Compare(name, SELF_STRING, StringComparison.InvariantCultureIgnoreCase) == 0)
+				return me;
+			return name;
+		}
+
+		public int CompareTo(Name other)
 		{
 			if (other == null)
 				return 1;

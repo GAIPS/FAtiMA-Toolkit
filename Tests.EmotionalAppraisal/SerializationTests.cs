@@ -107,8 +107,8 @@ namespace Tests.EmotionalAppraisal
 
 			var madScreamEvent = new TestEvent(Name.UNIVERSAL_STRING, "Talk", null);
 			var parameters1 = new List<IEventParameter>();
-			parameters1.Add(new EventParameter() { ParameterName = "Volume", Value = "High" });
-			parameters1.Add(new EventParameter() { ParameterName = "Tone", Value = "Mad" });
+			parameters1.Add(new EventParameter() { ParameterName = "Volume", Value = (Name)"High" });
+			parameters1.Add(new EventParameter() { ParameterName = "Tone", Value = (Name)"Mad" });
 			madScreamEvent.Parameters = parameters1;
 			Reaction screamMad = new Reaction();
 			screamMad.Desirability = -7;
@@ -118,8 +118,8 @@ namespace Tests.EmotionalAppraisal
 
 			var talkSoftEvent = new TestEvent(Name.UNIVERSAL_STRING, "Talk", null);
 			var parameters2 = new List<IEventParameter>();
-			parameters2.Add(new EventParameter() { ParameterName = "Volume", Value = "Low" });
-			parameters2.Add(new EventParameter() { ParameterName = "Tone", Value = "Happy" });
+			parameters2.Add(new EventParameter() { ParameterName = "Volume", Value = (Name)"Low" });
+			parameters2.Add(new EventParameter() { ParameterName = "Tone", Value = (Name)"Happy" });
 			talkSoftEvent.Parameters = parameters2;
 			Reaction talkSoftReaction = new Reaction();
 			talkSoftReaction.Praiseworthiness = 5;
@@ -128,6 +128,7 @@ namespace Tests.EmotionalAppraisal
 
 			//Generate emotion
 			var eventToAppraise=new TestEvent("Player","Slap","Test");
+			eventToAppraise.Parameters=new []{new EventParameter(){ParameterName = "Strength",Value = (Name)"Hard"}};
 			m_emotionalAppraisalAsset.AppraiseEvents(new []{eventToAppraise});
 
 			//Add knowledge

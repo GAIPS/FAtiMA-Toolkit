@@ -23,7 +23,7 @@ namespace EmotionalAppraisal
 	{
 		private float potentialValue = 0;
 
-		public Cause Cause
+		public IEventRecord Cause
 		{
 			get;
 			protected set;
@@ -78,19 +78,19 @@ namespace EmotionalAppraisal
 		/// <param name="potential">the potential value for the intensity of the emotion</param>
 		/// <param name="cause">the event that caused the emotion</param>
 		/// <param name="direction">if the emotion is targeted to someone (ex: angry with Luke), this parameter specifies the target</param>
-		protected BaseEmotion(string type, EmotionValence valence, IEnumerable<string> appraisalVariables, float potential, bool influencesMood, IEvent cause, Name direction)
+		protected BaseEmotion(string type, EmotionValence valence, IEnumerable<string> appraisalVariables, float potential, bool influencesMood, IEventRecord cause, Name direction)
 		{
 			this.EmotionType = type;
 			this.Valence = valence;
 			this.AppraisalVariables = appraisalVariables;
 			this.Potential = potential;
 
-			this.Cause = new Cause(cause,null);
+			this.Cause = cause;
 			this.Direction = direction;
 			this.InfluenceMood = influencesMood;
 		}
 
-		protected BaseEmotion(string type, EmotionValence valence, IEnumerable<string> appraisalVariables, float potential, bool influencesMood, IEvent cause) :
+		protected BaseEmotion(string type, EmotionValence valence, IEnumerable<string> appraisalVariables, float potential, bool influencesMood, IEventRecord cause) :
 			this(type, valence, appraisalVariables, potential, influencesMood, cause, null)
 		{
 		}
@@ -112,7 +112,7 @@ namespace EmotionalAppraisal
 
 		public override int GetHashCode()
 		{
-			return AppraisalVariables.Aggregate(Cause.CauseName.GetHashCode(), (h, s) => h ^ s.GetHashCode());
+			return AppraisalVariables.Aggregate(Cause.ToIdentifierName().GetHashCode(), (h, s) => h ^ s.GetHashCode());
 		}
 
 		public override bool Equals(object obj)
@@ -121,7 +121,7 @@ namespace EmotionalAppraisal
 			if (em == null)
 				return false;
 
-			if (Cause.CauseName != em.Cause.CauseName)
+			if (Cause.ToIdentifierName() != em.Cause.ToIdentifierName())
 				return false;
 
 			return new HashSet<string>(AppraisalVariables).SetEquals(em.AppraisalVariables);
@@ -137,7 +137,7 @@ namespace EmotionalAppraisal
 		public override string ToString()
 		{
 			StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
-			builder.AppendFormat("{0}: {1}", EmotionType,Cause.CauseName);
+			builder.AppendFormat("{0}: {1}", EmotionType,Cause.ToIdentifierName());
 			if (this.Direction != null)
 				builder.AppendFormat(" {0}", Direction);
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutobiographicMemory.Interfaces;
+using KnowledgeBase.WellFormedNames;
 
 namespace Tests.EmotionalAppraisal
 {
@@ -27,10 +28,9 @@ namespace Tests.EmotionalAppraisal
 
 	public class EventParameter : IEventParameter
 	{
-
 		public string ParameterName { get; set; }
 
-		public object Value { get; set; }
+		public Name Value { get; set; }
 
 		public object Clone()
 		{

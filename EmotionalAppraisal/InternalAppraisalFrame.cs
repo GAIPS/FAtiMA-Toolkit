@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutobiographicMemory;
 using AutobiographicMemory.Interfaces;
 
 namespace EmotionalAppraisal
@@ -12,11 +13,7 @@ namespace EmotionalAppraisal
 			private Dictionary<object, ComponentAppraisalFrame> nestedFrames = new Dictionary<object, ComponentAppraisalFrame>();
 			private Dictionary<string, AppraisalVariable> appraisalVariables = new Dictionary<string, AppraisalVariable>();
 
-			public IEvent AppraisedEvent
-			{
-				get;
-				private set;
-			}
+			public IEventRecord AppraisedEvent { get; private set; }
 
 			public IEnumerable<string> AppraisalVariables
 			{
@@ -40,9 +37,9 @@ namespace EmotionalAppraisal
 				LastChange = 0;
 			}
 
-			public void Reset(IEvent eventToAppraise)
+			public void Reset(IEventRecord evt)
 			{
-				this.AppraisedEvent = eventToAppraise;
+				this.AppraisedEvent = evt;
 				this.LastChange = 0;
 				this.nestedFrames.Clear();
 				this.appraisalVariables.Clear();
@@ -153,7 +150,7 @@ namespace EmotionalAppraisal
 				private object component;
 				private short weight;
 
-				public IEvent AppraisedEvent
+				public IEventRecord AppraisedEvent
 				{
 					get {
 						return this.parentFrame.AppraisedEvent;

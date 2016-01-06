@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AutobiographicMemory;
+using AutobiographicMemory.Interfaces;
 using GAIPS.Serialization;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
@@ -27,8 +28,6 @@ namespace EmotionalAppraisal
 			private EmotionDisposition m_defaultEmotionalDisposition = DEFAULT_EMOTIONAL_DISPOSITION;
 			private Dictionary<string, EmotionDisposition> emotionDispositions;
 			private Mood mood;
-
-			public event Action<IEmotionalState, ActiveEmotion> OnEmotionCreated;
 
 			public ConcreteEmotionalState()
 			{
@@ -65,7 +64,7 @@ namespace EmotionalAppraisal
 				StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
 				try
 				{
-					builder.Append(emotion.Cause.CauseName.ToString().ToUpper());
+					builder.Append(emotion.Cause.ToIdentifierName().ToString().ToUpper());
 					using (var it = emotion.AppraisalVariables.GetEnumerator())
 					{
 						while (it.MoveNext())
@@ -112,7 +111,7 @@ namespace EmotionalAppraisal
 					//if this test is true, it means that this is 100% a reappraisal of the same event
 					//if not true, it is not a reappraisal, but the appraisal of a new event of the same
 					//type
-					if (previousEmotion.Cause.CauseTimestamp == emotion.Cause.CauseTimestamp)
+					if (previousEmotion.Cause.Timestamp == emotion.Cause.Timestamp)
 						reappraisal = true;
 					
 					//in both cases we need to remove the old emotion. In the case of reappraisal it is obvious.
@@ -129,16 +128,8 @@ namespace EmotionalAppraisal
 					if (!reappraisal)
 						this.mood.UpdateMood(auxEmotion);
 
-					if (OnEmotionCreated != null)
-						OnEmotionCreated(this, auxEmotion);
-					/*
-					TODO implement this code when developing episodic KB
-					am.getMemory().getEpisodicMemory().AssociateEmotionToAction(am.getMemory(),
-							auxEmotion,
-							auxEmotion.GetCause());
-					*/
+					auxEmotion.Cause.LinkEmotion(auxEmotion.EmotionType);
 				}
-
 
 				return auxEmotion;
 			}
@@ -246,9 +237,9 @@ namespace EmotionalAppraisal
 				return this.emotionPool.Values.MaxValue(emo => emo.Intensity);
 			}
 
-			public ActiveEmotion GetStrongestEmotion(Cause cause)
+			public ActiveEmotion GetStrongestEmotion(IEvent cause)
 			{
-				var set = this.emotionPool.Values.Where(emo => emo.Cause.Match(cause));
+				var set = this.emotionPool.Values.Where(emo => EventOperations.MatchEvents(emo.Cause,cause));
 				return set.MaxValue(emo => emo.Intensity);
 			}
 

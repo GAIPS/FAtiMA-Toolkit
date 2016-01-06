@@ -34,8 +34,8 @@ namespace EmotionalAppraisal.AppraisalRules
 		
 		public Reaction Evaluate(string perspective, IEvent evt, KB kb)
 		{
-			Cause cause = new Cause(evt,perspective);
-			Pair<Reaction,SubstitutionSet> r = Rules.UnifyAll(cause.CauseName, kb, cause.CauseParameters).FirstOrDefault();
+			evt = EventOperations.ApplyPerspective(evt, perspective);
+			Pair<Reaction,SubstitutionSet> r = Rules.UnifyAll(evt.ToIdentifierName(), kb, new SubstitutionSet(evt.GenerateBindings())).FirstOrDefault();
 			if (r == null)
 				return null;
 
@@ -47,16 +47,15 @@ namespace EmotionalAppraisal.AppraisalRules
 		/// </summary>
 		/// <param name="evt"></param>
 		/// <param name="emotionalReaction">the Reaction to add</param>
-		public void AddEmotionalReaction(Cause cause, ConditionEvaluatorSet conditionsEvaluator, Reaction emotionalReaction)
+		public void AddEmotionalReaction(IEvent cause, ConditionEvaluatorSet conditionsEvaluator, Reaction emotionalReaction)
 		{
-			if (cause.CauseParameters != null)
+			if (cause.Parameters!=null && cause.Parameters.Any())
 			{
 				conditionsEvaluator = conditionsEvaluator==null?new ConditionEvaluatorSet() : new ConditionEvaluatorSet(conditionsEvaluator);
-				var conds =
-					cause.CauseParameters.Select(s => Condition.BuildCondition(s.Variable, s.Value, ComparisonOperator.Equal));
+				var conds = cause.GenerateParameterBindings().Select(s => Condition.BuildCondition(s.Variable, s.Value, ComparisonOperator.Equal));
 				conditionsEvaluator.UnionWith(conds);
 			}
-			Rules.Add(cause.CauseName, conditionsEvaluator, emotionalReaction);
+			Rules.Add(cause.ToIdentifierName(), conditionsEvaluator, emotionalReaction);
 		}
 
 		#region IAppraisalDerivator Implementation
@@ -106,7 +105,7 @@ namespace EmotionalAppraisal.AppraisalRules
 				Reaction r = new Reaction();
 				r.Desirability = desirability;
 				r.Praiseworthiness = praiseworthiness;
-				Cause c = new Cause(frame.AppraisedEvent,emotionalModule.Perspective);
+				var c = EventOperations.ApplyPerspective(frame.AppraisedEvent, emotionalModule.Perspective);
 				AddEmotionalReaction(c, null, r);
 			}
 		}

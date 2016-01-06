@@ -1,4 +1,5 @@
 ﻿using System;
+using KnowledgeBase.WellFormedNames;
 
 namespace AutobiographicMemory.Interfaces
 {
@@ -9,7 +10,7 @@ namespace AutobiographicMemory.Interfaces
 			get;
 		}
 
-		object Value
+		Name Value
 		{
 			get;
 		}

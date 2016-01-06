@@ -52,6 +52,14 @@ namespace KnowledgeBase.WellFormedNames
 				yield return this;
 			}
 
+			public sealed override Name GetNTerm(int index)
+			{
+				if(index!=0)
+					throw new IndexOutOfRangeException();
+
+				return this;
+			}
+
 			public sealed override IEnumerable<Name> GetLiterals()
 			{
 				yield return this;

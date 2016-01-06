@@ -49,6 +49,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="EmotionDisposition.cs" />
     <Compile Include="IAppraisalFrame.cs" />
+    <Compile Include="IEmotion.cs" />
     <Compile Include="IEmotionalState.cs" />
     <Compile Include="InternalAppraisalFrame.cs" />
     <Compile Include="IWritableAppraisalFrame.cs" />
