@@ -59,7 +59,7 @@ namespace EmotionalAppraisal
 			/// unique hash string calculation function
 			/// </summary>
 			/// <param name="emotion"></param>
-			private static string calculateHashString(BaseEmotion emotion)
+			private static string calculateHashString(IEmotion emotion)
 			{
 				StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
 				try

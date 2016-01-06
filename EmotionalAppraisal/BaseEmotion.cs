@@ -19,7 +19,7 @@ namespace EmotionalAppraisal
 	/// </summary>
 	/// @author: João Dias
 	/// @author: Pedro Gonçalves (C# version)
-	public abstract class BaseEmotion
+	public abstract class BaseEmotion : IEmotion
 	{
 		private float potentialValue = 0;
 
@@ -41,7 +41,7 @@ namespace EmotionalAppraisal
 			{
 				return potentialValue;
 			}
-			set
+			protected set
 			{
 				potentialValue = value < 0 ? 0 : value;
 			}

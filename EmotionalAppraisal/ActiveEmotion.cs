@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutobiographicMemory.Interfaces;
 using GAIPS.Serialization;
@@ -12,10 +13,24 @@ namespace EmotionalAppraisal
 	/// </summary>
 	/// @author João Dias
 	/// @author Pedro Gonçalves
-	public class ActiveEmotion : BaseEmotion, ICustomSerialization
+	public class ActiveEmotion : IEmotion, ICustomSerialization
 	{
 		private float intensityATt0;
 		private float deltaTimeT0;
+
+		public IEventRecord Cause { get; private set; }
+
+		public Name Direction
+		{
+			get; private set; }
+
+		public string EmotionType { get; private set; }
+
+		public EmotionValence Valence { get; private set; }
+
+		public IEnumerable<string> AppraisalVariables { get; private set; }
+
+		public bool InfluenceMood { get; private set; }
 
 		private int m_decay;
 		public int Decay
@@ -36,7 +51,7 @@ namespace EmotionalAppraisal
 			private set;
 		}
 
-		public new float Potential
+		public float Potential
 		{
 			get
 			{
@@ -59,8 +74,15 @@ namespace EmotionalAppraisal
 		/// <param name="potential">the potential for the intensity of the emotion</param>
 		/// <param name="threshold">the threshold for the specific emotion</param>
 		/// <param name="decay">the decay rate for the specific emotion</param>
-		public ActiveEmotion(BaseEmotion emotion, float potential, int threshold, int decay) : base(emotion)
+		public ActiveEmotion(IEmotion other, float potential, int threshold, int decay)
 		{
+			this.EmotionType = other.EmotionType;
+			this.Valence = other.Valence;
+			this.AppraisalVariables = other.AppraisalVariables.ToArray();
+			this.InfluenceMood = other.InfluenceMood;
+			this.Cause = other.Cause;
+			this.Direction = other.Direction;
+
 			this.Threshold = threshold;
 			this.Decay = decay;
 			SetIntencity(potential);
