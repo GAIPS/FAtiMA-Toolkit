@@ -82,8 +82,7 @@ namespace KnowledgeBase
 			var r = m_dynamicProperties.Unify(propertyTemplate).FirstOrDefault();
 			if (r != null)
 			{
-				if(!r.Item2.Any(s => s.Value.IsComposed))
-					throw new ArgumentException(string.Format("The given template {0} will collide with already registed {1} dynamic property", propertyTemplate, propertyTemplate.MakeGround(r.Item2)), "propertyTemplate");
+				throw new ArgumentException(string.Format("The given template {0} will collide with already registed {1} dynamic property", propertyTemplate, propertyTemplate.MakeGround(r.Item2)), "propertyTemplate");
 			}
 
 			if(m_knowledgeStorage.Unify(propertyTemplate).Any())
@@ -141,7 +140,9 @@ namespace KnowledgeBase
 			SubstitutionSet set;
 			var fact = property.Unfold(out set);
 			if (set != null)
-				fact = FindConstantLeveledName(fact, set);
+				fact = FindConstantLeveledName(fact, set,false);
+			if (fact == null)
+				return Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
 
 			return m_knowledgeStorage.Unify(fact, constraints).Select(p => Tuples.Create(p.Item1.Value, p.Item2));
 		}
@@ -162,12 +163,14 @@ namespace KnowledgeBase
 			Name tmpPropertyName = property.ReplaceUnboundVariables(tmpMarker);
 			SubstitutionSet tmpConstraints = constraints==null?null:constraints.ReplaceUnboundVariables(tmpMarker);
 
-			var d = m_dynamicProperties.Unify(tmpPropertyName);
-			var results = d.SelectMany(p => p.Item1.surogate(this, p.Item2,tmpConstraints));
+			var d = m_dynamicProperties.Unify(tmpPropertyName).ToList();
+			if (d.Count == 0)
+				return null;
 
+			var results = d.SelectMany(p => p.Item1.surogate(this, p.Item2,tmpConstraints));
 			var final = results.ToList();
 			if (final.Count == 0)
-				return null;
+				return Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
 
 			return final.Select(p =>
 			{
@@ -198,7 +201,7 @@ namespace KnowledgeBase
 			var fact = predicate.Unfold(out set);
 			if (set != null)
 			{
-				fact = FindConstantLeveledName(fact, set);
+				fact = FindConstantLeveledName(fact, set,true);
 			}
 			m_knowledgeStorage.Remove(fact);
 		}
@@ -262,26 +265,36 @@ namespace KnowledgeBase
 			var fact = property.Unfold(out set);
 			if (set != null)
 			{
-				fact = FindConstantLeveledName(fact, set);
+				fact = FindConstantLeveledName(fact, set,true);
 			}
 
 			m_knowledgeStorage[fact] = new KnowledgeEntry(value, persistent, visibility);
 		}
 
-		private Name FindConstantLeveledName(Name name, SubstitutionSet bindings)
+		private Name FindConstantLeveledName(Name name, SubstitutionSet bindings,bool throwException)
 		{
 			var subs = new SubstitutionSet();
 			foreach (var v in name.GetVariableList())
 			{
 				var value = bindings[v];
 				if (!value.IsGrounded)
-					value = FindConstantLeveledName(value, bindings);
+					value = FindConstantLeveledName(value, bindings,throwException);
+				if (!throwException && value == null)
+					return null;
 
 				var r = AskPossibleProperties(value, bindings).ToList();
-				if(r.Count==0)
-					throw new Exception(string.Format("Knowledge Base could not find property for {0}", value));
-				if(r.Count>1)
-					throw new Exception(string.Format("Knowledge Base found multiple valid values for {0}", value));
+				if (r.Count != 1)
+				{
+					if (throwException)
+					{
+						if (r.Count == 0)
+							throw new Exception(string.Format("Knowledge Base could not find property for {0}", value));
+						if (r.Count > 1)
+							throw new Exception(string.Format("Knowledge Base found multiple valid values for {0}", value));
+					}
+					else
+						return null;
+				}
 
 				var s = new Substitution(v, Name.BuildName(r[0].Item1));
 				subs.AddSubstitution(s);

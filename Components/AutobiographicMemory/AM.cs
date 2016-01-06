@@ -23,7 +23,6 @@ namespace AutobiographicMemory
 			kb.RegistDynamicProperty(EVENT_PROPERTY_ID_TEMPLATE, EventIdPropertyCalculator);
 			kb.RegistDynamicProperty(EVENT_PARAMETER_PROPERTY_TEMPLATE, EventParameterPropertyCalculator);
 			kb.RegistDynamicProperty(EVENT_AGE_PROPERTY_TEMPLATE, EventAgePropertyCalculator);
-			kb.RegistDynamicProperty(EVENT_COUNT_PROPERTY_TEMPLATE,CountEventPropertyCalculator);
 		}
 
 		public IEventRecord RecordEvent(IEvent evt,string perspective)
@@ -62,7 +61,7 @@ namespace AutobiographicMemory
 		private static readonly Name EVENT_PROPERTY_ID_TEMPLATE = Name.BuildName((Name)"ID",EVENT_TEMPLATE);
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventIdPropertyCalculator(KB kb, SubstitutionSet args, SubstitutionSet constraints)
 		{
-			var key = EVENT_PROPERTY_ID_TEMPLATE.MakeGround(args);
+			var key = EVENT_TEMPLATE.MakeGround(args);
 			return m_typeIndexes.Unify(key, constraints).SelectMany(p => p.Item1.Select(id => Tuples.Create((PrimitiveValue) id, p.Item2)));
 		}
 
@@ -215,15 +214,6 @@ namespace AutobiographicMemory
 				var value = (DateTime.UtcNow - record.Timestamp).TotalSeconds;
 				yield return Tuples.Create((PrimitiveValue)value, newSet);
 			}
-		}
-
-		//Count Event
-		private static readonly Name EVENT_COUNT_PROPERTY_TEMPLATE = Name.BuildName((Name)"Count",EVENT_TEMPLATE);
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> CountEventPropertyCalculator(KB kb, SubstitutionSet args,
-			SubstitutionSet constraints)
-		{
-			var key = EVENT_TEMPLATE.MakeGround(args);
-			return m_typeIndexes.Unify(key, constraints).Select(p => Tuples.Create((PrimitiveValue) p.Item1.Count, p.Item2));
 		}
 
 		#endregion
