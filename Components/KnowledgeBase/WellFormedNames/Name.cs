@@ -236,7 +236,7 @@ namespace KnowledgeBase.WellFormedNames
 					throw new ArgumentException("The first term needs to be a Symbol object", "terms");
 
 				set.RemoveAt(0);
-				return new ComposedName(head,set.ToArray());
+				return new ComposedName(head,set.Select(n => n??NIL_SYMBOL).ToArray());
 			}
 			finally
 			{

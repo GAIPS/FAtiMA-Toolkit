@@ -12,7 +12,7 @@ namespace GAIPS.Serialization.Surrogates
 {
 	//TODO improve this code
 
-	[DefaultSerializationSystem(typeof(HashSet<>), false)]
+	[DefaultSerializationSystem(typeof(HashSet<>), true)]
 	public class HashSetSerializationSurrogate : ISerializationSurrogate
 	{
 		private readonly static Regex CompareRegex = new Regex(@"^\w*comparer\w*$", RegexOptions.IgnoreCase);

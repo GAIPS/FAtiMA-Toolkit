@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using AutobiographicMemory.Interfaces;
 using GAIPS.Serialization;
 using KnowledgeBase;
@@ -23,7 +24,6 @@ namespace AutobiographicMemory
 			kb.RegistDynamicProperty(EVENT_PROPERTY_ID_TEMPLATE, EventIdPropertyCalculator);
 			kb.RegistDynamicProperty(EVENT_PARAMETER_PROPERTY_TEMPLATE, EventParameterPropertyCalculator);
 			kb.RegistDynamicProperty(EVENT_AGE_PROPERTY_TEMPLATE, EventAgePropertyCalculator);
-			kb.RegistDynamicProperty(EVENT_COUNT_PROPERTY_TEMPLATE,CountEventPropertyCalculator);
 		}
 
 		public IEventRecord RecordEvent(IEvent evt,string perspective)
@@ -60,170 +60,128 @@ namespace AutobiographicMemory
 		//Event
 		private static readonly Name EVENT_TEMPLATE = Name.BuildName("EVENT([subject],[action],[target])");
 		private static readonly Name EVENT_PROPERTY_ID_TEMPLATE = Name.BuildName((Name)"ID",EVENT_TEMPLATE);
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventIdPropertyCalculator(KB kb, SubstitutionSet args, SubstitutionSet constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventIdPropertyCalculator(KB kb, IDictionary<string,Name> args, SubstitutionSet constraints)
 		{
-			var key = EVENT_PROPERTY_ID_TEMPLATE.MakeGround(args);
-			return m_typeIndexes.Unify(key, constraints).SelectMany(p => p.Item1.Select(id => Tuples.Create((PrimitiveValue) id, p.Item2)));
+			Name subject,action,target;
+			args.TryGetValue("subject", out subject);
+			args.TryGetValue("action", out action);
+			args.TryGetValue("target", out target);
+
+			var key = Name.BuildName((Name)"Event", subject, action, target);
+			return m_typeIndexes.Unify(key,constraints).SelectMany(p => p.Item1.Select(id => Tuples.Create((PrimitiveValue) id, p.Item2)));
 		}
 
 		//EventParameter
 		private static readonly Name EVENT_PARAMETER_PROPERTY_TEMPLATE = Name.BuildName("EventParameter([id],[paramName])");
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventParameterPropertyCalculator(KB kb, SubstitutionSet args, SubstitutionSet constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventParameterPropertyCalculator(KB kb, IDictionary<string, Name> args, SubstitutionSet constraints)
 		{
-			var idName = args[(Name)"[id]"];
-			var paramName = args[(Name)"[paramName]"];
+			var idName = args["id"];
+			var paramName = args["paramName"];
 
-			if (idName.IsConstant)
+			IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> result = Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
+			if (idName.IsVariable)
 			{
-				var idValue = kb.AskProperty(idName,constraints);
-				if (idValue == null || !idValue.GetTypeCode().IsUnsignedNumeric())
-					yield break;
-
-				var record = m_registry[idValue];
-
-				if (paramName.IsConstant)
+				foreach (var rec in m_registry.Values)
 				{
-					//Known event id and param name. Return param value.
-					var paramValue = kb.AskProperty(paramName,constraints);
-					if (paramValue == null || paramValue.GetTypeCode() != TypeCode.String)
-						yield break;
-
-					var valueName = (record.Parameters.ToLookup(p => p.ParameterName, p => p.Value)[paramValue]) as Name;
-					if (valueName == null)
-						yield break;
-
-					var value = kb.AskProperty(valueName,constraints);
-					if (value == null)
-						yield break;
-
-					yield return Tuples.Create(value, constraints);
-				}
-				else
-				{
-					if(!paramName.IsVariable)
-						throw new Exception("paramName argument needs to be a constant value or a variable");
-
-					//Known event id and unknown param name. Return all parameters for that event
-					foreach (var r in GetAllParameters(record, paramName, kb, constraints))
-						yield return r;
-				}
-				yield break;
-			}
-
-			if (!idName.IsVariable)
-				throw new Exception("id argument needs to be a constant value or a variable");
-
-			if (paramName.IsConstant)
-			{
-				//Known param name and unknown event id. Return all events that have the know param.
-				var paramValue = kb.AskProperty(paramName,constraints);
-				if (paramValue == null || paramValue.GetTypeCode() != TypeCode.String)
-					yield break;
-
-				foreach (var entry in m_registry.Values)
-				{
-					var valueName = entry[paramValue];
-					if (valueName == null)
-						continue;
-
-					var value = kb.AskProperty(valueName,constraints);
-					if (value == null)
-						continue;
-
-					var newSub = new Substitution(idName,Name.BuildName(entry.Id));
+					var newSub = new Substitution(idName, Name.BuildName(rec.Id));
 					if(constraints.Conflicts(newSub))
 						continue;
 
-					var newSet = new SubstitutionSet(constraints);
-					newSet.AddSubstitution(newSub);
-
-					yield return Tuples.Create(value, newSet);
+					var newConstraint = new SubstitutionSet(constraints);
+					newConstraint.AddSubstitution(newSub);
+					result = result.Union(GetParameter(rec, paramName, kb,newConstraint));
 				}
-
-				yield break;
 			}
-
-			if (!paramName.IsVariable)
-				throw new Exception("paramName argument needs to be a constant value or a variable");
-
-			//Unknown event id and param name. Return all parameters for all events
-			foreach (var entry in m_registry.Values)
+			else
 			{
-				var idSub = new Substitution(idName, Name.BuildName(entry.Id));
-				if (constraints.Conflicts(idSub))
-					continue;
+				foreach (var idPairs in kb.AskPossibleProperties(idName, constraints))
+				{
+					var idValue = idPairs.Item1;
+					if (!idValue.GetTypeCode().IsUnsignedNumeric())
+						continue;
 
-				var newSet = new SubstitutionSet(constraints);
-				newSet.AddSubstitution(idSub);
+					var rec = m_registry[idValue];
+					if(rec==null)
+						continue;
 
-				foreach (var result in GetAllParameters(entry, paramName, kb, newSet))
-					yield return result;
+					result = result.Union(GetParameter(rec, paramName, kb,idPairs.Item2));
+				}
 			}
+
+			return result;
 		}
 
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> GetAllParameters(EventRecord record, Name paramVariable, KB kb,
-			SubstitutionSet constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> GetParameter(EventRecord record, Name paramName, KB kb, SubstitutionSet constraints)
 		{
-			foreach (var s in record.Parameters)
+			IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> result = Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
+			if (paramName.IsVariable)
 			{
-				var value = kb.AskProperty(s.Value, constraints);
-				if (value == null)
-					continue;
+				foreach (var p in record.Parameters)
+				{
+					var newSub = new Substitution(paramName, Name.BuildName(p.ParameterName));
+					if (constraints.Conflicts(newSub))
+						continue;
 
-				var newSub = new Substitution(paramVariable, (Name)s.ParameterName);
-				if (constraints.Conflicts(newSub))
-					continue;
+					var newConstraint = new SubstitutionSet(constraints);
+					newConstraint.AddSubstitution(newSub);
 
-				var newSet = new SubstitutionSet(constraints);
-				newSet.AddSubstitution(newSub);
-				yield return Tuples.Create(value, newSet);
+					result = result.Union(kb.AskPossibleProperties(p.Value, newConstraint));
+				}
 			}
+			else
+			{
+				var lookup = record.Parameters.ToDictionary(p => p.ParameterName, p => p.Value);
+				foreach (var paramPairs in kb.AskPossibleProperties(paramName,constraints))
+				{
+					var paramValue = paramPairs.Item1;
+					if (paramValue.GetTypeCode() != TypeCode.String)
+						continue;
+
+					var value = lookup[paramValue];
+					if(value==null)
+						continue;
+
+					result = result.Union(kb.AskPossibleProperties(value, paramPairs.Item2));
+				}
+			}
+			return result;
 		}
 
 		//EventAge
 		private static readonly Name EVENT_AGE_PROPERTY_TEMPLATE = Name.BuildName("EventAge([id])");
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventAgePropertyCalculator(KB kb, SubstitutionSet args, SubstitutionSet constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventAgePropertyCalculator(KB kb, IDictionary<string,Name> args, SubstitutionSet constraints)
 		{
-			var idName = args[(Name)"[id]"];
+			var idName = args["id"];
 			if(idName==null)
 				yield break;
 
-			if (idName.IsConstant)
+			if (idName.IsVariable)
 			{
-				var idValue = kb.AskProperty(idName, constraints);
-				if (idValue == null || !idValue.GetTypeCode().IsUnsignedNumeric())
-					yield break;
+				foreach (var record in m_registry.Values)
+				{
+					var idSub = new Substitution(idName, Name.BuildName(record.Id));
+					if (constraints.Conflicts(idSub))
+						continue;
 
-				var record = m_registry[idValue];
-				var value = (DateTime.UtcNow - record.Timestamp).TotalSeconds;
-				yield return Tuples.Create((PrimitiveValue) value, constraints);
+					var newSet = new SubstitutionSet(constraints);
+					newSet.AddSubstitution(idSub);
+
+					var value = (DateTime.UtcNow - record.Timestamp).TotalSeconds;
+					yield return Tuples.Create((PrimitiveValue)value, newSet);
+				}
 				yield break;
 			}
 
-			if (!idName.IsVariable)
-				throw new Exception("id argument needs to be a constant value or a variable");
-
-			foreach (var record in m_registry.Values)
+			foreach (var pair in kb.AskPossibleProperties(idName,constraints))
 			{
-				var idSub = new Substitution(idName, Name.BuildName(record.Id));
-				if (constraints.Conflicts(idSub))
+				var idValue = pair.Item1;
+				if(!idValue.GetTypeCode().IsUnsignedNumeric())
 					continue;
 
-				var newSet = new SubstitutionSet(constraints);
-				newSet.AddSubstitution(idSub);
-
+				var record = m_registry[idValue];
 				var value = (DateTime.UtcNow - record.Timestamp).TotalSeconds;
-				yield return Tuples.Create((PrimitiveValue)value, newSet);
+				yield return Tuples.Create((PrimitiveValue)value, pair.Item2);
 			}
-		}
-
-		//Count Event
-		private static readonly Name EVENT_COUNT_PROPERTY_TEMPLATE = Name.BuildName((Name)"Count",EVENT_TEMPLATE);
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> CountEventPropertyCalculator(KB kb, SubstitutionSet args,
-			SubstitutionSet constraints)
-		{
-			var key = EVENT_TEMPLATE.MakeGround(args);
-			return m_typeIndexes.Unify(key, constraints).Select(p => Tuples.Create((PrimitiveValue) p.Item1.Count, p.Item2));
 		}
 
 		#endregion

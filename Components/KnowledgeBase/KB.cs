@@ -15,7 +15,7 @@ namespace KnowledgeBase
 		Self
 	}
 
-	public delegate IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> DynamicPropertyCalculator(KB kb, SubstitutionSet args, SubstitutionSet constraints);
+	public delegate IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> DynamicPropertyCalculator(KB kb, IDictionary<string,Name> args, SubstitutionSet constraints);
 
 	[Serializable]
 	public class KB : ICustomSerialization
@@ -61,9 +61,9 @@ namespace KnowledgeBase
 
 		//Count
 		private static readonly Name COUNT_TEMPLATE = Name.BuildName("Count([x])");
-		private static IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> CountPropertyCalculator(KB kb, SubstitutionSet args, SubstitutionSet constraints)
+		private static IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> CountPropertyCalculator(KB kb, IDictionary<string,Name> args, SubstitutionSet constraints)
 		{
-			var arg = args[(Name)"[x]"];
+			var arg = args["x"];
 			var r = kb.AskPossibleProperties(arg, constraints).ToList();
 			PrimitiveValue c = r.Count;
 			return new[] { Tuples.Create(c, constraints) };
@@ -82,8 +82,7 @@ namespace KnowledgeBase
 			var r = m_dynamicProperties.Unify(propertyTemplate).FirstOrDefault();
 			if (r != null)
 			{
-				if(!r.Item2.Any(s => s.Value.IsComposed))
-					throw new ArgumentException(string.Format("The given template {0} will collide with already registed {1} dynamic property", propertyTemplate, propertyTemplate.MakeGround(r.Item2)), "propertyTemplate");
+				throw new ArgumentException(string.Format("The given template {0} will collide with already registed {1} dynamic property", propertyTemplate, propertyTemplate.MakeGround(r.Item2)), "propertyTemplate");
 			}
 
 			if(m_knowledgeStorage.Unify(propertyTemplate).Any())
@@ -100,6 +99,7 @@ namespace KnowledgeBase
 		/// Under the Closed World Assumption, the predicate is considered 
 		/// true if it is stored in the KB and false otherwise.
 		/// </returns>
+		/*
 		public bool AskPredicate(Name predicate, SubstitutionSet constraints = null)
 		{
 			var value = AskProperty(predicate,constraints);
@@ -109,12 +109,13 @@ namespace KnowledgeBase
 				return false;
 			return value;
 		}
-
+		*/
 		/// <summary>
 		/// Asks the KB the value of a given predicate
 		/// </summary>
 		/// <param name="property">the predicate to search in the KB</param>
 		/// <returns>the value stored inside the predicate, if the predicate exists. If the predicate does not exist, it returns null</returns>
+		/*
 		public PrimitiveValue AskProperty(Name property, SubstitutionSet constraints = null)
 		{
 			var r = AskPossibleProperties(property, constraints).ToList();
@@ -125,7 +126,7 @@ namespace KnowledgeBase
 
 			return r[0].Item1;
 		}
-
+		*/
 		public IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> AskPossibleProperties(Name property, SubstitutionSet constraints)
 		{
 			if (property.IsPrimitive)
@@ -141,7 +142,9 @@ namespace KnowledgeBase
 			SubstitutionSet set;
 			var fact = property.Unfold(out set);
 			if (set != null)
-				fact = FindConstantLeveledName(fact, set);
+				fact = FindConstantLeveledName(fact, set,false);
+			if (fact == null)
+				return Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
 
 			return m_knowledgeStorage.Unify(fact, constraints).Select(p => Tuples.Create(p.Item1.Value, p.Item2));
 		}
@@ -160,21 +163,41 @@ namespace KnowledgeBase
 				return null;
 
 			Name tmpPropertyName = property.ReplaceUnboundVariables(tmpMarker);
-			SubstitutionSet tmpConstraints = constraints==null?null:constraints.ReplaceUnboundVariables(tmpMarker);
 
-			var d = m_dynamicProperties.Unify(tmpPropertyName);
-			var results = d.SelectMany(p => p.Item1.surogate(this, p.Item2,tmpConstraints));
+			var d = m_dynamicProperties.Unify(tmpPropertyName).ToList();
+			if (d.Count == 0)
+				return null;
+
+			var results = d.SelectMany(p =>
+			{
+				var args = new Dictionary<string, Name>();
+				foreach (var s in p.Item2)
+				{
+					var paramName = s.Variable.ToString();
+					paramName = paramName.Substring(1, paramName.Length - 2);
+					args[paramName] = s.Value.RemoveBoundedVariables(tmpMarker);
+					if (s.Value.IsVariable)
+					{
+						//Unify can mix parameter Name with it's value, if the value is a variable.
+						//In this case, flip a duplicate of the argument entry
+						paramName = s.Value.ToString();
+						paramName = paramName.Substring(1, paramName.Length - 2);
+						args[paramName] = s.Variable.RemoveBoundedVariables(tmpMarker);
+					}
+				}
+				return p.Item1.surogate(this, args, constraints);
+			});
 
 			var final = results.ToList();
 			if (final.Count == 0)
-				return null;
+				return Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
 
 			return final.Select(p =>
 			{
 				if (p.Item2 == null)
 					p.Item2 = new SubstitutionSet();
-				else
-					p.Item2 = p.Item2.RemoveBoundedVariables(tmpMarker);
+				//else
+				//	p.Item2 = p.Item2.RemoveBoundedVariables(tmpMarker);
 				return p;
 			});
 		}
@@ -198,7 +221,7 @@ namespace KnowledgeBase
 			var fact = predicate.Unfold(out set);
 			if (set != null)
 			{
-				fact = FindConstantLeveledName(fact, set);
+				fact = FindConstantLeveledName(fact, set,true);
 			}
 			m_knowledgeStorage.Remove(fact);
 		}
@@ -262,26 +285,36 @@ namespace KnowledgeBase
 			var fact = property.Unfold(out set);
 			if (set != null)
 			{
-				fact = FindConstantLeveledName(fact, set);
+				fact = FindConstantLeveledName(fact, set,true);
 			}
 
 			m_knowledgeStorage[fact] = new KnowledgeEntry(value, persistent, visibility);
 		}
 
-		private Name FindConstantLeveledName(Name name, SubstitutionSet bindings)
+		private Name FindConstantLeveledName(Name name, SubstitutionSet bindings,bool throwException)
 		{
 			var subs = new SubstitutionSet();
 			foreach (var v in name.GetVariableList())
 			{
 				var value = bindings[v];
 				if (!value.IsGrounded)
-					value = FindConstantLeveledName(value, bindings);
+					value = FindConstantLeveledName(value, bindings,throwException);
+				if (!throwException && value == null)
+					return null;
 
 				var r = AskPossibleProperties(value, bindings).ToList();
-				if(r.Count==0)
-					throw new Exception(string.Format("Knowledge Base could not find property for {0}", value));
-				if(r.Count>1)
-					throw new Exception(string.Format("Knowledge Base found multiple valid values for {0}", value));
+				if (r.Count != 1)
+				{
+					if (throwException)
+					{
+						if (r.Count == 0)
+							throw new Exception(string.Format("Knowledge Base could not find property for {0}", value));
+						if (r.Count > 1)
+							throw new Exception(string.Format("Knowledge Base found multiple valid values for {0}", value));
+					}
+					else
+						return null;
+				}
 
 				var s = new Substitution(v, Name.BuildName(r[0].Item1));
 				subs.AddSubstitution(s);

@@ -31,10 +31,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Action.cs" />
+    <Compile Include="ActionTendency.cs" />
     <Compile Include="EmotionalDecisionMakingAsset.cs" />
+    <Compile Include="IAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReactiveActions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Components\AutobiographicMemory\AutobiographicMemory.csproj">
+      <Project>{c1cc38c5-72f5-4545-b4f7-c65b2883909c}</Project>
+      <Name>AutobiographicMemory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Components\KnowledgeBase\KnowledgeBase.csproj">
       <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
       <Name>KnowledgeBase</Name>
@@ -42,6 +50,10 @@
     <ProjectReference Include="..\Components\SerializationUtilities\GAIPS.Serialization.csproj">
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
       <Name>GAIPS.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Components\Utilities\Utilities.csproj">
+      <Project>{2021e828-2f7f-4775-9f02-58c68fd72edd}</Project>
+      <Name>Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\EmotionalAppraisal\EmotionalAppraisal.csproj">
       <Project>{0a2a1ee9-bd5d-44aa-a22d-291612488f06}</Project>

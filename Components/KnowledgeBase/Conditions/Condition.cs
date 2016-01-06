@@ -10,7 +10,7 @@ namespace KnowledgeBase.Conditions
 	[Serializable]
 	public abstract partial class Condition : IConditionEvaluator
 	{
-		private const string REGEX_PATTERN = @"^\s*([\w\s-\(\)\.\,\[\]]+)\s*(=|!=|<|<=|>|>=)\s*([\w\s-\(\)\.\,\[\]]+)\s*$";
+		private const string REGEX_PATTERN = @"^\s*([\w\s-\(\)\.\,\[\]\*]+)\s*(=|!=|<|<=|>|>=)\s*([\w\s-\(\)\.\,\[\]\*]+)\s*$";
 		private static readonly Regex REGEX_PARSER = new Regex(REGEX_PATTERN,RegexOptions.Singleline);
 
 		private Condition()

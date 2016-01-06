@@ -35,7 +35,15 @@ namespace KnowledgeBase.Conditions
 
 		public IEnumerable<Pair<T,IEnumerable<SubstitutionSet>>> MatchConditions(KB kb, SubstitutionSet constraints)
 		{
-			return from e in m_dict let set = e.Key.UnifyEvaluate(kb, constraints) where set.Any() select Tuples.Create(e.Value, set);
+			foreach (var e in m_dict)
+			{
+				var c = new SubstitutionSet(constraints);
+				var set = e.Key.UnifyEvaluate(kb, c);
+				if(!set.Any())
+					continue;
+
+				yield return Tuples.Create(e.Value, set);
+			}
 		}
 
 		public IEnumerator<KeyValuePair<ConditionEvaluatorSet, T>> GetEnumerator()

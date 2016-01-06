@@ -24,6 +24,15 @@ namespace KnowledgeBase.Conditions
 				if (constraints == null)
 					constraints = new SubstitutionSet();
 
+				foreach (var pair in kb.AskPossibleProperties(Property1, constraints))
+				{
+					foreach (var crossPair in kb.AskPossibleProperties(Property2, pair.Item2))
+					{
+						if (CompareValues(pair.Item1, crossPair.Item1, Operator))
+							yield return crossPair.Item2;
+					}
+				}
+				/*
 				Name p1 = Property1;
 				if (!p1.IsGrounded)
 					p1 = p1.MakeGround(constraints);
@@ -49,14 +58,7 @@ namespace KnowledgeBase.Conditions
 					}
 					else
 					{
-						foreach (var pair in kb.AskPossibleProperties(p1, constraints))
-						{
-							foreach (var crossPair in kb.AskPossibleProperties(p2, pair.Item2))
-							{
-								if (CompareValues(pair.Item1, crossPair.Item1, Operator))
-									yield return crossPair.Item2;
-							}
-						}
+						
 					}
 				}
 				else
@@ -72,6 +74,7 @@ namespace KnowledgeBase.Conditions
 							yield return pair.Item2;
 					}
 				}
+				*/
 			}
 
 			public override bool Equals(object obj)
