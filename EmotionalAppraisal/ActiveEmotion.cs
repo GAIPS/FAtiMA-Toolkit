@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using AutobiographicMemory;
 using AutobiographicMemory.Interfaces;
 using GAIPS.Serialization;
 using KnowledgeBase.WellFormedNames;
+using Utilities;
 
 namespace EmotionalAppraisal
 {
@@ -13,12 +16,12 @@ namespace EmotionalAppraisal
 	/// </summary>
 	/// @author João Dias
 	/// @author Pedro Gonçalves
-	public class ActiveEmotion : IEmotion, ICustomSerialization
+	public class ActiveEmotion : IActiveEmotion, ICustomSerialization
 	{
 		private float intensityATt0;
 		private float deltaTimeT0;
 
-		public IEventRecord Cause { get; private set; }
+		public uint CauseId { get; private set; }
 
 		public Name Direction
 		{
@@ -74,14 +77,14 @@ namespace EmotionalAppraisal
 		/// <param name="potential">the potential for the intensity of the emotion</param>
 		/// <param name="threshold">the threshold for the specific emotion</param>
 		/// <param name="decay">the decay rate for the specific emotion</param>
-		public ActiveEmotion(IEmotion other, float potential, int threshold, int decay)
+		public ActiveEmotion(IEmotion emotion, float potential, int threshold, int decay)
 		{
-			this.EmotionType = other.EmotionType;
-			this.Valence = other.Valence;
-			this.AppraisalVariables = other.AppraisalVariables.ToArray();
-			this.InfluenceMood = other.InfluenceMood;
-			this.Cause = other.Cause;
-			this.Direction = other.Direction;
+			this.EmotionType = emotion.EmotionType;
+			this.Valence = emotion.Valence;
+			this.AppraisalVariables = emotion.AppraisalVariables.ToArray();
+			this.InfluenceMood = emotion.InfluenceMood;
+			this.CauseId = emotion.CauseId;
+			this.Direction = emotion.Direction;
 
 			this.Threshold = threshold;
 			this.Decay = decay;
@@ -117,12 +120,47 @@ namespace EmotionalAppraisal
 			}
 		}
 
+		public override int GetHashCode()
+		{
+			return AppraisalVariables.Aggregate(CauseId.GetHashCode(), (h, s) => h ^ s.GetHashCode());
+		}
+
+		public override bool Equals(object obj)
+		{
+			var em = obj as IEmotion;
+			if (em == null)
+				return false;
+
+			if (CauseId != em.CauseId)
+				return false;
+
+			return new HashSet<string>(AppraisalVariables).SetEquals(em.AppraisalVariables);
+		}
+
+		public IEventRecord GetCause(AM am)
+		{
+			return am.RecallEvent(CauseId);
+		}
+
+		public string ToString(AM am)
+		{
+			StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
+			builder.AppendFormat("{0}: {1}", EmotionType, am.RecallEvent(CauseId).ToIdentifierName());
+			if (this.Direction != null)
+				builder.AppendFormat(" {0}", Direction);
+
+			var result = builder.ToString();
+			builder.Length = 0;
+			ObjectPool<StringBuilder>.Recycle(builder);
+			return result;
+		}
+
 		public void GetObjectData(ISerializationData dataHolder)
 		{
 			dataHolder.SetValue("Intensity", Intensity);
 			dataHolder.SetValue("Decay",Decay);
 			dataHolder.SetValue("Threshold", Threshold);
-			dataHolder.SetValue("Cause",Cause);
+			dataHolder.SetValue("CauseId",CauseId);
 			if(Direction!=null)
 				dataHolder.SetValue("Direction", Direction.ToString());
 			dataHolder.SetValue("EmotionType",EmotionType);
@@ -137,7 +175,7 @@ namespace EmotionalAppraisal
 			deltaTimeT0 = 0;
 			Decay = dataHolder.GetValue<int>("Decay");
 			Threshold = dataHolder.GetValue<int>("Threshold");
-			Cause = dataHolder.GetValue<IEventRecord>("Cause");
+			CauseId = dataHolder.GetValue<uint>("CauseId");
 			var dir = dataHolder.GetValue<string>("Direction");
 			Direction = !string.IsNullOrEmpty(dir) ? Name.BuildName(dir) : null;
 			EmotionType = dataHolder.GetValue<string>("EmotionType");

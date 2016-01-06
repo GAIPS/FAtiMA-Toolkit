@@ -7,11 +7,11 @@ namespace KnowledgeBase.WellFormedNames
 	{
 		private class PrimitiveSymbol : Symbol
 		{
-			private string m_value;
+			private PrimitiveValue m_value;
 
-			public PrimitiveSymbol(string value) : base(true,false,true,false,true)
+			public PrimitiveSymbol(PrimitiveValue value) : base(true,false,true,false,true)
 			{
-				m_value = value??"-";
+				m_value = value;
 			}
 			
 			public override bool Equals(object obj)
@@ -20,12 +20,20 @@ namespace KnowledgeBase.WellFormedNames
 				if (s == null)
 					return false;
 
-				return string.Equals(m_value, s.m_value,StringComparison.InvariantCultureIgnoreCase);
+				if (m_value == s.m_value)
+					return true;
+
+				if (m_value == null || s.m_value == null)
+					return false;
+
+				return string.Equals(m_value.ToString(), s.m_value.ToString(),StringComparison.InvariantCultureIgnoreCase);
 			}
 
 			public override int GetHashCode()
 			{
-				return m_value.ToUpperInvariant().GetHashCode();
+				if (m_value == null)
+					return 0;
+				return m_value.ToString().ToUpperInvariant().GetHashCode();
 			}
 
 			public override IEnumerable<Name> GetVariableList()
@@ -71,17 +79,23 @@ namespace KnowledgeBase.WellFormedNames
 				if (s == null)
 					return false;
 
-				return string.Equals(m_value, s.m_value, StringComparison.InvariantCultureIgnoreCase);
+				if (m_value == s.m_value)
+					return true;
+
+				if (m_value == null || s.m_value == null)
+					return false;
+
+				return string.Equals(m_value.ToString(), s.m_value.ToString(), StringComparison.InvariantCultureIgnoreCase);
 			}
 
 			public override PrimitiveValue GetPrimitiveValue()
 			{
-				return PrimitiveValue.Parse(m_value);
+				return m_value;
 			}
 
 			public override string ToString()
 			{
-				return m_value??"-";
+				return (m_value == null) ? "-" : m_value.ToString();
 			}
 		}
 	}

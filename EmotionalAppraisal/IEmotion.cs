@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using AutobiographicMemory;
 using AutobiographicMemory.Interfaces;
 using KnowledgeBase.WellFormedNames;
 
@@ -6,7 +7,7 @@ namespace EmotionalAppraisal
 {
 	public interface IEmotion
 	{
-		IEventRecord Cause { get; }
+		uint CauseId { get; }
 
 		Name Direction { get; }
 
@@ -19,5 +20,9 @@ namespace EmotionalAppraisal
 		IEnumerable<string> AppraisalVariables { get; }
 
 		bool InfluenceMood { get; }
+
+		string ToString(AM am);
+
+		IEventRecord GetCause(AM am);
 	}
 }

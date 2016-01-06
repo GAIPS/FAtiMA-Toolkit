@@ -33,7 +33,7 @@ namespace KnowledgeBase.WellFormedNames
 		private abstract class Symbol : Name
 		{
 			protected Symbol(bool isGrounded, bool isUniversal, bool isConstant, bool isVariable, bool isPrimitive)
-				: base(isGrounded, isUniversal, isConstant, isVariable, isPrimitive)
+				: base(isGrounded, isUniversal, isConstant, isVariable, isPrimitive,false)
 			{
 			}
 

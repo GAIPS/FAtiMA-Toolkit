@@ -110,7 +110,7 @@ namespace EmotionalAppraisal
 		/// <param name="emotionalReaction">the Reaction to add</param>
 		public void AddEmotionalReaction(IEvent evt, Reaction emotionalReaction)
 		{
-			m_appraisalDerivator.AddEmotionalReaction(evt,null,emotionalReaction);
+			AddEmotionalReaction(evt,null,emotionalReaction);
 		}
 
 		/// <summary>
@@ -120,8 +120,7 @@ namespace EmotionalAppraisal
 		/// <param name="emotionalReaction">the Reaction to add</param>
 		public void AddEmotionalReaction(IEvent evt, ConditionEvaluatorSet conditionsEvaluator, Reaction emotionalReaction)
 		{
-			evt = EventOperations.ApplyPerspective(evt, Perspective);
-			m_appraisalDerivator.AddEmotionalReaction(evt, conditionsEvaluator, emotionalReaction);
+			m_appraisalDerivator.AddEmotionalReaction(evt,Perspective, conditionsEvaluator, emotionalReaction);
 		}
 
 		public KB Kb
@@ -136,14 +135,9 @@ namespace EmotionalAppraisal
 			m_am = new AM();
 			m_am.BindCalls(m_kb);
 
-			m_emotionalState = new ConcreteEmotionalState();
+			m_emotionalState = new ConcreteEmotionalState(this);
 			m_occAffectDerivator = new OCCAffectDerivationComponent();
 			m_appraisalDerivator = new ReactiveAppraisalDerivator();
-		}
-
-		private void OnEmotionCreated(IEmotionalState emotionalState, ActiveEmotion activeEmotion)
-		{
-			m_am.RecordEvent(activeEmotion.Cause, activeEmotion.EmotionType);
 		}
 
 		public void AppraiseEvents(IEnumerable<IEvent> events)

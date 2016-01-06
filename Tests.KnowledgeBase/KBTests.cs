@@ -154,19 +154,11 @@ namespace Tests.KnowledgeBase
 			Assert.That(Equals(value,expect));
 		}
 
-		[TestCaseSource(typeof(TestFactory), "Test_OperatorRegist_Cases")]
-		public void Test_OperatorRegist(KB kb, Name template, DynamicPropertyCalculator func, Name test, SubstitutionSet constaints)
-		{
-			kb.RegistDynamicProperty(template,func);
-			var result = kb.AskProperty(test,constaints);
-		}
-
 		[Test]
 		[ExpectedException(typeof(ArgumentException))]
 		public void Test_OperatorRegist_Fail_Duplicate()
 		{
 			var kb = new KB();
-			kb.RegistDynamicProperty((Name)"Count([x])",((kb1, args, constraints) => null));
 			kb.RegistDynamicProperty((Name)"Count([y])", ((kb1, args, constraints) => null));
 		}
 
@@ -175,7 +167,6 @@ namespace Tests.KnowledgeBase
 		public void Test_OperatorRegist_Fail_Same_Template()
 		{
 			var kb = new KB();
-			kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, args, constraints) => null));
 			kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, args, constraints) => null));
 		}
 

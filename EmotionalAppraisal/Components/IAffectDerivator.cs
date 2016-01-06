@@ -6,7 +6,7 @@ namespace EmotionalAppraisal.Components
 	public interface IAffectDerivator
 	{
 		short AffectDerivationWeight { get; }
-		IEnumerable<BaseEmotion> AffectDerivation(EmotionalAppraisalAsset emotionalModule, IAppraisalFrame frame);
-		void InverseAffectDerivation(EmotionalAppraisalAsset emotionalModule, BaseEmotion emotion, IWritableAppraisalFrame frame);
+		IEnumerable<IEmotion> AffectDerivation(EmotionalAppraisalAsset emotionalModule, IAppraisalFrame frame);
+		void InverseAffectDerivation(EmotionalAppraisalAsset emotionalModule, IEmotion emotion, IWritableAppraisalFrame frame);
 	}
 }

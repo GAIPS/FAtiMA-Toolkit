@@ -63,7 +63,7 @@ namespace KnowledgeBase.WellFormedNames
 			public ComposedName(Symbol head, Name[] terms)
 				: base(
 					head.IsGrounded && terms.All(n=>n.IsGrounded),false,
-					head.IsConstant && terms.All(n=>n.IsConstant),false,false
+					head.IsConstant && terms.All(n=>n.IsConstant),false,false,true
 				)
 			{
 				RootSymbol = head;
@@ -75,7 +75,7 @@ namespace KnowledgeBase.WellFormedNames
 			/// </summary>
 			/// <param name="composedName">The composedName to clone</param>
 			private ComposedName(ComposedName composedName)
-				: base(composedName.IsGrounded,false,composedName.IsConstant,false,false)
+				: base(composedName.IsGrounded,false,composedName.IsConstant,false,false,true)
 			{
 				RootSymbol = composedName.RootSymbol;
 				Terms = composedName.Terms.Clone<Name>().ToArray();

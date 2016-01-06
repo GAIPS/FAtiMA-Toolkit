@@ -23,6 +23,7 @@ namespace AutobiographicMemory
 			kb.RegistDynamicProperty(EVENT_PROPERTY_ID_TEMPLATE, EventIdPropertyCalculator);
 			kb.RegistDynamicProperty(EVENT_PARAMETER_PROPERTY_TEMPLATE, EventParameterPropertyCalculator);
 			kb.RegistDynamicProperty(EVENT_AGE_PROPERTY_TEMPLATE, EventAgePropertyCalculator);
+			kb.RegistDynamicProperty(EVENT_COUNT_PROPERTY_TEMPLATE,CountEventPropertyCalculator);
 		}
 
 		public IEventRecord RecordEvent(IEvent evt,string perspective)
@@ -57,7 +58,8 @@ namespace AutobiographicMemory
 		#region Dynamic Properties
 
 		//Event
-		private static readonly Name EVENT_PROPERTY_ID_TEMPLATE = Name.BuildName("EVENT([subject],[action],[target])");
+		private static readonly Name EVENT_TEMPLATE = Name.BuildName("EVENT([subject],[action],[target])");
+		private static readonly Name EVENT_PROPERTY_ID_TEMPLATE = Name.BuildName((Name)"ID",EVENT_TEMPLATE);
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventIdPropertyCalculator(KB kb, SubstitutionSet args, SubstitutionSet constraints)
 		{
 			var key = EVENT_PROPERTY_ID_TEMPLATE.MakeGround(args);
@@ -66,12 +68,10 @@ namespace AutobiographicMemory
 
 		//EventParameter
 		private static readonly Name EVENT_PARAMETER_PROPERTY_TEMPLATE = Name.BuildName("EventParameter([id],[paramName])");
-		private static readonly Name EVENT_PARAMETER_PROPERTY_ID_VARIABLE = Name.BuildName("[id]");
-		private static readonly Name EVENT_PARAMETER_PROPERTY_PARAM_NAME_VARIABLE = Name.BuildName("[paramName]");
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventParameterPropertyCalculator(KB kb, SubstitutionSet args, SubstitutionSet constraints)
 		{
-			var idName = args[EVENT_PARAMETER_PROPERTY_ID_VARIABLE];
-			var paramName = args[EVENT_PARAMETER_PROPERTY_PARAM_NAME_VARIABLE];
+			var idName = args[(Name)"[id]"];
+			var paramName = args[(Name)"[paramName]"];
 
 			if (idName.IsConstant)
 			{
@@ -182,10 +182,9 @@ namespace AutobiographicMemory
 
 		//EventAge
 		private static readonly Name EVENT_AGE_PROPERTY_TEMPLATE = Name.BuildName("EventAge([id])");
-		private static readonly Name EVENT_AGE_PROPERTY_ID_VARIABLE = Name.BuildName("[id]");
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventAgePropertyCalculator(KB kb, SubstitutionSet args, SubstitutionSet constraints)
 		{
-			var idName = args[EVENT_AGE_PROPERTY_ID_VARIABLE];
+			var idName = args[(Name)"[id]"];
 			if(idName==null)
 				yield break;
 
@@ -216,7 +215,15 @@ namespace AutobiographicMemory
 				var value = (DateTime.UtcNow - record.Timestamp).TotalSeconds;
 				yield return Tuples.Create((PrimitiveValue)value, newSet);
 			}
+		}
 
+		//Count Event
+		private static readonly Name EVENT_COUNT_PROPERTY_TEMPLATE = Name.BuildName((Name)"Count",EVENT_TEMPLATE);
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> CountEventPropertyCalculator(KB kb, SubstitutionSet args,
+			SubstitutionSet constraints)
+		{
+			var key = EVENT_TEMPLATE.MakeGround(args);
+			return m_typeIndexes.Unify(key, constraints).Select(p => Tuples.Create((PrimitiveValue) p.Item1.Count, p.Item2));
 		}
 
 		#endregion

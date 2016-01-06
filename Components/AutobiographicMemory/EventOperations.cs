@@ -87,12 +87,12 @@ namespace AutobiographicMemory
 		{
 			return evt.Parameters.Select(p => new Substitution("[" + p.ParameterName + "]", p.Value.ToString()));
 		}
-
+		/*
 	    public static IEvent ApplyPerspective(IEvent evt, string perspective)
 	    {
 			return new internalEventDef(evt,perspective);
 	    }
-
+		
 		private class internalEventDef : IEvent
 		{
 			public internalEventDef(IEvent evt, string perspective)
@@ -116,5 +116,6 @@ namespace AutobiographicMemory
 
 			public IEnumerable<IEventParameter> Parameters { get; private set; }
 		}
+		*/
     }
 }

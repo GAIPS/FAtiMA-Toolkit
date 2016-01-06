@@ -24,29 +24,25 @@ namespace EmotionalAppraisal
 		{
 			private static readonly EmotionDisposition DEFAULT_EMOTIONAL_DISPOSITION = new EmotionDisposition("*", 1, 5);
 
+			private EmotionalAppraisalAsset m_parent = null;
 			private Dictionary<string, ActiveEmotion> emotionPool;
 			private EmotionDisposition m_defaultEmotionalDisposition = DEFAULT_EMOTIONAL_DISPOSITION;
 			private Dictionary<string, EmotionDisposition> emotionDispositions;
 			private Mood mood;
 
-			public ConcreteEmotionalState()
+			private ConcreteEmotionalState()
 			{
 				this.emotionPool = new Dictionary<string, ActiveEmotion>();
 				this.emotionDispositions = new Dictionary<string, EmotionDisposition>();
 				this.mood = new Mood();
 			}
 
-			/// <summary>
-			/// Clone constructor
-			/// </summary>
-			/// <param name="other">EmotionalState to clone</param>
-			public ConcreteEmotionalState(ConcreteEmotionalState other)
+			public ConcreteEmotionalState(EmotionalAppraisalAsset parent) : this()
 			{
-				this.emotionPool = new Dictionary<string, ActiveEmotion>(other.emotionPool);
-				this.emotionDispositions = new Dictionary<string, EmotionDisposition>(other.emotionDispositions);
+				m_parent = parent;
 			}
 
-			private float DeterminePotential(BaseEmotion emotion)
+			private float DeterminePotential(IEmotion emotion)
 			{
 				float potetial = emotion.Potential;
 				float scale = (float)emotion.Valence;
@@ -59,12 +55,12 @@ namespace EmotionalAppraisal
 			/// unique hash string calculation function
 			/// </summary>
 			/// <param name="emotion"></param>
-			private static string calculateHashString(IEmotion emotion)
+			private static string calculateHashString(IEmotion emotion,AM am)
 			{
 				StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
 				try
 				{
-					builder.Append(emotion.Cause.ToIdentifierName().ToString().ToUpper());
+					builder.Append(emotion.GetCause(am).ToIdentifierName().ToString().ToUpper());
 					using (var it = emotion.AppraisalVariables.GetEnumerator())
 					{
 						while (it.MoveNext())
@@ -92,7 +88,7 @@ namespace EmotionalAppraisal
 			/// <param name="emotion">the BaseEmotion that creates the ActiveEmotion</param>
 			/// <returns>the ActiveEmotion created if it was added to the EmotionalState.
 			/// Otherwise, if the intensity of the emotion was not enough to be added to the EmotionalState, the method returns null</returns>
-			public ActiveEmotion AddEmotion(BaseEmotion emotion)
+			public IActiveEmotion AddEmotion(IEmotion emotion)
 			{
 				if (emotion == null)
 					return null;
@@ -105,13 +101,13 @@ namespace EmotionalAppraisal
 				decay = disposition.Decay;
 
 				ActiveEmotion previousEmotion;
-				string hash = calculateHashString(emotion);
+				string hash = calculateHashString(emotion,m_parent.m_am);
 				if (emotionPool.TryGetValue(hash,out previousEmotion))
 				{
 					//if this test is true, it means that this is 100% a reappraisal of the same event
 					//if not true, it is not a reappraisal, but the appraisal of a new event of the same
 					//type
-					if (previousEmotion.Cause.Timestamp == emotion.Cause.Timestamp)
+					if (previousEmotion.CauseId == emotion.CauseId)
 						reappraisal = true;
 					
 					//in both cases we need to remove the old emotion. In the case of reappraisal it is obvious.
@@ -128,7 +124,7 @@ namespace EmotionalAppraisal
 					if (!reappraisal)
 						this.mood.UpdateMood(auxEmotion);
 
-					auxEmotion.Cause.LinkEmotion(auxEmotion.EmotionType);
+					auxEmotion.GetCause(m_parent.m_am).LinkEmotion(auxEmotion.EmotionType);
 				}
 
 				return auxEmotion;
@@ -143,7 +139,7 @@ namespace EmotionalAppraisal
 				return m_defaultEmotionalDisposition;
 			}
 
-			public ActiveEmotion DetermineActiveEmotion(BaseEmotion potEm)
+			public IActiveEmotion DetermineActiveEmotion(IEmotion potEm)
 			{
 				EmotionDisposition emotionDisposition = GetEmotionDisposition(potEm.EmotionType);
 				float potential = DeterminePotential(potEm);
@@ -190,7 +186,7 @@ namespace EmotionalAppraisal
 			/// </summary>
 			/// <param name="emotionKey">a string that corresponds to a hashkey that represents the emotion in the EmotionalState</param>
 			/// <returns>the found ActiveEmotion if it exists in the EmotionalState, null if the emotion doesn't exist anymore</returns>
-			public ActiveEmotion GetEmotion(String emotionKey)
+			public IActiveEmotion GetEmotion(String emotionKey)
 			{
 				ActiveEmotion emo;
 				if (this.emotionPool.TryGetValue(emotionKey, out emo))
@@ -203,15 +199,15 @@ namespace EmotionalAppraisal
 			/// </summary>
 			/// <param name="emotionKey">a BaseEmotion that serves as a template to find the active emotion in the EmotionalState</param>
 			/// <returns>the found ActiveEmotion if it exists in the EmotionalState, null if the emotion doesn't exist anymore</returns>
-			public ActiveEmotion GetEmotion(BaseEmotion emotion)
+			public IActiveEmotion GetEmotion(IEmotion emotion)
 			{
-				return GetEmotion(calculateHashString(emotion));
+				return GetEmotion(calculateHashString(emotion,m_parent.m_am));
 			}
 
-			public void RemoveEmotion(ActiveEmotion em)
+			public void RemoveEmotion(IActiveEmotion em)
 			{
 				if (em != null)
-					this.emotionPool.Remove(calculateHashString(em));
+					this.emotionPool.Remove(calculateHashString(em,m_parent.m_am));
 			}
 
 			public IEnumerable<string> GetEmotionsKeys()
@@ -219,9 +215,9 @@ namespace EmotionalAppraisal
 				return this.emotionPool.Keys;
 			}
 
-			public IEnumerable<ActiveEmotion> GetAllEmotions()
+			public IEnumerable<IActiveEmotion> GetAllEmotions()
 			{
-				return this.emotionPool.Values;
+				return this.emotionPool.Values.Cast<IActiveEmotion>();
 			}
 
 			public float Mood
@@ -232,14 +228,14 @@ namespace EmotionalAppraisal
 				}
 			}
 
-			public ActiveEmotion GetStrongestEmotion()
+			public IActiveEmotion GetStrongestEmotion()
 			{
 				return this.emotionPool.Values.MaxValue(emo => emo.Intensity);
 			}
 
-			public ActiveEmotion GetStrongestEmotion(IEvent cause)
+			public IActiveEmotion GetStrongestEmotion(IEvent cause)
 			{
-				var set = this.emotionPool.Values.Where(emo => EventOperations.MatchEvents(emo.Cause,cause));
+				var set = this.emotionPool.Values.Where(emo => EventOperations.MatchEvents(emo.GetCause(m_parent.m_am),cause));
 				return set.MaxValue(emo => emo.Intensity);
 			}
 
@@ -268,6 +264,7 @@ namespace EmotionalAppraisal
 
 			public void GetObjectData(ISerializationData dataHolder)
 			{
+				dataHolder.SetValue("Parent",m_parent);
 				dataHolder.SetValue("EmotionalPool", emotionPool.Values.ToArray());
 				dataHolder.SetValue("EmotionDispositions", emotionDispositions.Values.Prepend(m_defaultEmotionalDisposition).ToArray());
 				dataHolder.SetValue("Mood",mood.MoodValue);
@@ -275,6 +272,7 @@ namespace EmotionalAppraisal
 
 			public void SetObjectData(ISerializationData dataHolder)
 			{
+				m_parent = dataHolder.GetValue<EmotionalAppraisalAsset>("Parent");
 				mood.SetMoodValue(dataHolder.GetValue<float>("Mood"));
 				var dispositions = dataHolder.GetValue<EmotionDisposition[]>("EmotionDispositions");
 				EmotionDisposition defaultDisposition = null;
@@ -295,7 +293,7 @@ namespace EmotionalAppraisal
 				var emotions = dataHolder.GetValue<ActiveEmotion[]>("EmotionalPool");
 				foreach (var emotion in emotions)
 				{
-					var hash = calculateHashString(emotion);
+					var hash = calculateHashString(emotion,m_parent.m_am);
 					emotionPool.Add(hash,emotion);
 				}
 			}

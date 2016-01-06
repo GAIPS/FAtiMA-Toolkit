@@ -47,6 +47,30 @@ namespace KnowledgeBase
 		private readonly NameSearchTree<KnowledgeEntry> m_knowledgeStorage = new NameSearchTree<KnowledgeEntry>();
 		private readonly NameSearchTree<DynamicKnowledgeEntry> m_dynamicProperties = new NameSearchTree<DynamicKnowledgeEntry>();
 
+		public KB()
+		{
+			RegistNativeDynamicProperties(this);
+		}
+
+#region Native Dynamic Properties
+
+		private static void RegistNativeDynamicProperties(KB kb)
+		{
+			kb.RegistDynamicProperty(COUNT_TEMPLATE,CountPropertyCalculator);
+		}
+
+		//Count
+		private static readonly Name COUNT_TEMPLATE = Name.BuildName("Count([x])");
+		private static IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> CountPropertyCalculator(KB kb, SubstitutionSet args, SubstitutionSet constraints)
+		{
+			var arg = args[(Name)"[x]"];
+			var r = kb.AskPossibleProperties(arg, constraints).ToList();
+			PrimitiveValue c = r.Count;
+			return new[] { Tuples.Create(c, constraints) };
+		}
+
+#endregion
+
 		public void RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate)
 		{
 			if(surogate==null)
@@ -56,8 +80,11 @@ namespace KnowledgeBase
 				throw new ArgumentException("Grounded names cannot be used as dynamic properties", "propertyTemplate");
 
 			var r = m_dynamicProperties.Unify(propertyTemplate).FirstOrDefault();
-			if(r!=null)
-				throw new ArgumentException(string.Format("The given template {0} will collide with already registed {1} dynamic property",propertyTemplate,propertyTemplate.MakeGround(r.Item2)),"propertyTemplate");
+			if (r != null)
+			{
+				if(!r.Item2.Any(s => s.Value.IsComposed))
+					throw new ArgumentException(string.Format("The given template {0} will collide with already registed {1} dynamic property", propertyTemplate, propertyTemplate.MakeGround(r.Item2)), "propertyTemplate");
+			}
 
 			if(m_knowledgeStorage.Unify(propertyTemplate).Any())
 				throw new ArgumentException(string.Format("The given template {0} will collide with stored constant properties", propertyTemplate), "propertyTemplate");
