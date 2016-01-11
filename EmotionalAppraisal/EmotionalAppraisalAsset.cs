@@ -119,8 +119,7 @@ namespace EmotionalAppraisal
 		/// <param name="emotionalReaction">the Reaction to add</param>
 		public void AddEmotionalReaction(IEvent evt, Reaction emotionalReaction)
 		{
-			Cause cause = new Cause(evt,Perspective);
-			m_appraisalDerivator.AddEmotionalReaction(cause,null,emotionalReaction);
+			AddEmotionalReaction(evt,null,emotionalReaction);
 		}
 
 		/// <summary>
@@ -130,8 +129,7 @@ namespace EmotionalAppraisal
 		/// <param name="emotionalReaction">the Reaction to add</param>
 		public void AddEmotionalReaction(IEvent evt, ConditionEvaluatorSet conditionsEvaluator, Reaction emotionalReaction)
 		{
-			Cause cause = new Cause(evt, Perspective);
-			m_appraisalDerivator.AddEmotionalReaction(cause, conditionsEvaluator, emotionalReaction);
+			m_appraisalDerivator.AddEmotionalReaction(evt,Perspective, conditionsEvaluator, emotionalReaction);
 		}
 
 		public KB Kb
@@ -146,25 +144,20 @@ namespace EmotionalAppraisal
 			m_am = new AM();
 			m_am.BindCalls(m_kb);
 
-			m_emotionalState = new ConcreteEmotionalState();
-			m_emotionalState.OnEmotionCreated+=OnEmotionCreated;
-
+			m_emotionalState = new ConcreteEmotionalState(this);
 			m_occAffectDerivator = new OCCAffectDerivationComponent();
 			m_appraisalDerivator = new ReactiveAppraisalDerivator();
 		}
 
-		private void OnEmotionCreated(IEmotionalState emotionalState, ActiveEmotion activeEmotion)
-		{
-			m_am.RecordEvent(activeEmotion.Cause, activeEmotion.EmotionType);
-		}
-
 		public void AppraiseEvents(IEnumerable<IEvent> events)
 		{
+			var APPRAISAL_FRAME = new InternalAppraisalFrame();
 			using (var it = events.GetEnumerator())
 			{
 				while (it.MoveNext())
 				{
-					APPRAISAL_FRAME.Reset(it.Current);
+					var evt = m_am.RecordEvent(it.Current,Perspective);
+					APPRAISAL_FRAME.Reset(evt);
 					var componentFrame = APPRAISAL_FRAME.RequestComponentFrame(m_appraisalDerivator, m_appraisalDerivator.AppraisalWeight);
 					m_appraisalDerivator.Appraisal(this, it.Current, componentFrame);
 					UpdateEmotions(APPRAISAL_FRAME);
@@ -239,8 +232,6 @@ namespace EmotionalAppraisal
 			m_am.BindCalls(m_kb);
 
 			m_emotionalState = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
-			m_emotionalState.OnEmotionCreated += OnEmotionCreated;
-
 			m_appraisalDerivator = dataHolder.GetValue<ReactiveAppraisalDerivator>("AppraisalRules");
 
 			m_occAffectDerivator = new OCCAffectDerivationComponent();

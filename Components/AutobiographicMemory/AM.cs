@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutobiographicMemory.Interfaces;
 using GAIPS.Serialization;
 using KnowledgeBase;
 using KnowledgeBase.WellFormedNames;
@@ -10,7 +11,7 @@ using Utilities;
 namespace AutobiographicMemory
 {
 	[Serializable]
-	public sealed class AM : ICustomSerialization
+	public sealed partial class AM : ICustomSerialization
 	{
 		//Indexes
 		private uint m_eventGUIDCounter = 0;
@@ -24,22 +25,31 @@ namespace AutobiographicMemory
 			kb.RegistDynamicProperty(EVENT_AGE_PROPERTY_TEMPLATE, EventAgePropertyCalculator);
 		}
 
-		public uint RecordEvent(Cause cause, string linkedEmotion)
+		public IEventRecord RecordEvent(IEvent evt,string perspective)
 		{
 			var id = m_eventGUIDCounter++;
-			var rec = new EventRecord(id,cause,linkedEmotion);
+			var rec = new EventRecord(id,evt,perspective);
 			AddRecord(rec);
-			return id;
+			return rec;
+		}
+
+		public IEventRecord RecallEvent(uint eventId)
+		{
+			EventRecord r;
+			if (m_registry.TryGetValue(eventId, out r))
+				return r;
+			return null;
 		}
 
 		private void AddRecord(EventRecord record)
 		{
 			m_registry.Add(record.Id,record);
 			List<uint> ids;
-			if (!m_typeIndexes.TryGetValue(record.Cause.CauseName, out ids))
+			var name = record.CauseName;
+			if (!m_typeIndexes.TryGetValue(name, out ids))
 			{
 				ids = new List<uint>();
-				m_typeIndexes[record.Cause.CauseName] = ids;
+				m_typeIndexes[name] = ids;
 			}
 			ids.Add(record.Id);
 		}
@@ -47,21 +57,20 @@ namespace AutobiographicMemory
 		#region Dynamic Properties
 
 		//Event
-		private static readonly Name EVENT_PROPERTY_ID_TEMPLATE = Name.BuildName("EVENT([subject],[action],[target])");
+		private static readonly Name EVENT_TEMPLATE = Name.BuildName("EVENT([subject],[action],[target])");
+		private static readonly Name EVENT_PROPERTY_ID_TEMPLATE = Name.BuildName((Name)"ID",EVENT_TEMPLATE);
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventIdPropertyCalculator(KB kb, SubstitutionSet args, SubstitutionSet constraints)
 		{
-			var key = EVENT_PROPERTY_ID_TEMPLATE.MakeGround(args);
+			var key = EVENT_TEMPLATE.MakeGround(args);
 			return m_typeIndexes.Unify(key, constraints).SelectMany(p => p.Item1.Select(id => Tuples.Create((PrimitiveValue) id, p.Item2)));
 		}
 
 		//EventParameter
 		private static readonly Name EVENT_PARAMETER_PROPERTY_TEMPLATE = Name.BuildName("EventParameter([id],[paramName])");
-		private static readonly Name EVENT_PARAMETER_PROPERTY_ID_VARIABLE = Name.BuildName("[id]");
-		private static readonly Name EVENT_PARAMETER_PROPERTY_PARAM_NAME_VARIABLE = Name.BuildName("[paramName]");
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventParameterPropertyCalculator(KB kb, SubstitutionSet args, SubstitutionSet constraints)
 		{
-			var idName = args[EVENT_PARAMETER_PROPERTY_ID_VARIABLE];
-			var paramName = args[EVENT_PARAMETER_PROPERTY_PARAM_NAME_VARIABLE];
+			var idName = args[(Name)"[id]"];
+			var paramName = args[(Name)"[paramName]"];
 
 			if (idName.IsConstant)
 			{
@@ -78,7 +87,7 @@ namespace AutobiographicMemory
 					if (paramValue == null || paramValue.GetTypeCode() != TypeCode.String)
 						yield break;
 
-					var valueName = record.Cause.CauseParameters[Name.BuildName("[" + paramValue + "]")];
+					var valueName = (record.Parameters.ToLookup(p => p.ParameterName, p => p.Value)[paramValue]) as Name;
 					if (valueName == null)
 						yield break;
 
@@ -110,10 +119,9 @@ namespace AutobiographicMemory
 				if (paramValue == null || paramValue.GetTypeCode() != TypeCode.String)
 					yield break;
 
-				var searchVar = Name.BuildName("[" + paramValue + "]");
 				foreach (var entry in m_registry.Values)
 				{
-					var valueName = entry.Cause.CauseParameters[searchVar];
+					var valueName = entry[paramValue];
 					if (valueName == null)
 						continue;
 
@@ -155,13 +163,13 @@ namespace AutobiographicMemory
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> GetAllParameters(EventRecord record, Name paramVariable, KB kb,
 			SubstitutionSet constraints)
 		{
-			foreach (var s in record.Cause.CauseParameters)
+			foreach (var s in record.Parameters)
 			{
 				var value = kb.AskProperty(s.Value, constraints);
 				if (value == null)
 					continue;
 
-				var newSub = new Substitution(paramVariable, VariableToSymbol(s.Variable));
+				var newSub = new Substitution(paramVariable, (Name)s.ParameterName);
 				if (constraints.Conflicts(newSub))
 					continue;
 
@@ -171,18 +179,14 @@ namespace AutobiographicMemory
 			}
 		}
 
-		private static Name VariableToSymbol(Name variable)
-		{
-			var str = variable.ToString();
-			return Name.BuildName(str.Substring(1, str.Length - 2));
-		}
-
 		//EventAge
 		private static readonly Name EVENT_AGE_PROPERTY_TEMPLATE = Name.BuildName("EventAge([id])");
-		private static readonly Name EVENT_AGE_PROPERTY_ID_VARIABLE = Name.BuildName("[id]");
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventAgePropertyCalculator(KB kb, SubstitutionSet args, SubstitutionSet constraints)
 		{
-			var idName = args[EVENT_AGE_PROPERTY_ID_VARIABLE];
+			var idName = args[(Name)"[id]"];
+			if(idName==null)
+				yield break;
+
 			if (idName.IsConstant)
 			{
 				var idValue = kb.AskProperty(idName, constraints);
@@ -190,7 +194,7 @@ namespace AutobiographicMemory
 					yield break;
 
 				var record = m_registry[idValue];
-				var value = (DateTime.UtcNow - record.Cause.CauseTimestamp).TotalSeconds;
+				var value = (DateTime.UtcNow - record.Timestamp).TotalSeconds;
 				yield return Tuples.Create((PrimitiveValue) value, constraints);
 				yield break;
 			}
@@ -207,10 +211,9 @@ namespace AutobiographicMemory
 				var newSet = new SubstitutionSet(constraints);
 				newSet.AddSubstitution(idSub);
 
-				var value = (DateTime.UtcNow - record.Cause.CauseTimestamp).TotalSeconds;
+				var value = (DateTime.UtcNow - record.Timestamp).TotalSeconds;
 				yield return Tuples.Create((PrimitiveValue)value, newSet);
 			}
-
 		}
 
 		#endregion
@@ -245,21 +248,6 @@ namespace AutobiographicMemory
 				AddRecord(r);
 			}
 			m_eventGUIDCounter++;
-		}
-
-		[Serializable]
-		private class EventRecord
-		{
-			public readonly uint Id;
-			public readonly Cause Cause;
-			public readonly string EmotionType;
-
-			public EventRecord(uint id, Cause cause, string emotionType)
-			{
-				Id = id;
-				Cause = cause;
-				EmotionType = emotionType;
-			}
 		}
 	}
 }

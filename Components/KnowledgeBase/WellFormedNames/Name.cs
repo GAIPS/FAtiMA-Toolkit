@@ -46,7 +46,7 @@ namespace KnowledgeBase.WellFormedNames
 	[Serializable]
 	public abstract partial class Name : IGroundable<Name>, IComparable<Name>, ICloneable
 	{
-		public const string NUMBER_VALIDATION_PATTERN = @"(?:-|\+)?[1-9]\d*(?:\.\d+)?(?:e(?:-|\+)?[1-9]\d*)?";
+		public const string NUMBER_VALIDATION_PATTERN = @"(?:-|\+)?\d+(?:\.\d+)?(?:e(?:-|\+)?[1-9]\d*)?";
 		public const string VARIABLE_SYMBOL_VALIDATION_PATTERN = @"^\[([A-Za-z_][\w-]*)\]$";
 		public const string VALUE_SYMBOL_VALIDATION_PATTERN = @"^(?:(?:[A-Za-z_][\w-]*)|(?:" + NUMBER_VALIDATION_PATTERN + @"))$";
 		public static readonly Regex VARIABLE_VALIDATION_PATTERN = new Regex(VARIABLE_SYMBOL_VALIDATION_PATTERN,RegexOptions.IgnoreCase);
@@ -83,15 +83,21 @@ namespace KnowledgeBase.WellFormedNames
 		/// </summary>
 		public readonly bool IsPrimitive;
 
+		/// <summary>
+		/// Is this name composed
+		/// </summary>
+		public readonly bool IsComposed;
+
 		public abstract int NumberOfTerms { get; }
 
-		private Name(bool IsGrounded, bool IsUniversal, bool IsConstant, bool IsVariable, bool IsPrimitive)
+		private Name(bool IsGrounded, bool IsUniversal, bool IsConstant, bool IsVariable, bool IsPrimitive, bool IsComposed)
 		{
 			m_isGrounded = IsGrounded;
 			this.IsUniversal = IsUniversal;
 			this.IsConstant = IsConstant;
 			this.IsVariable = IsVariable;
 			this.IsPrimitive = IsPrimitive;
+			this.IsComposed = IsComposed;
 		}
 		
 		public abstract override bool Equals(object obj);
@@ -104,6 +110,12 @@ namespace KnowledgeBase.WellFormedNames
 		/// Generates a sequence with all Names contained inside this Name
 		/// </summary>
 		public abstract IEnumerable<Name> GetTerms();
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="index"></param>
+		public abstract Name GetNTerm(int index);
 
 		/// <summary>
 		/// Generates a sequence with all Symbols contained inside this Name
@@ -283,7 +295,7 @@ namespace KnowledgeBase.WellFormedNames
 
 			var primitiveMatch = PRIMITIVE_VALIDATION_PATTERN.Match(str);
 			if (primitiveMatch.Success)
-				return new PrimitiveSymbol(str);
+				return new PrimitiveSymbol(PrimitiveValue.Parse(str));
 
 			throw new ParsingException(str + " is not a well formated name definition");
 		}
@@ -348,7 +360,21 @@ namespace KnowledgeBase.WellFormedNames
 		public abstract Object evaluate(KB m);
 		*/
 
-		public virtual int CompareTo(Name other)
+		public static string ApplyPerspective(string name, string me)
+		{
+			if (string.Compare(name, me, StringComparison.InvariantCultureIgnoreCase) == 0)
+				return SELF_STRING;
+			return name;
+		}
+
+		public static string RemovePerspective(string name, string me)
+		{
+			if (string.Compare(name, SELF_STRING, StringComparison.InvariantCultureIgnoreCase) == 0)
+				return me;
+			return name;
+		}
+
+		public int CompareTo(Name other)
 		{
 			if (other == null)
 				return 1;

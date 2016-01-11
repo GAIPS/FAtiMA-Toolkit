@@ -63,7 +63,7 @@ namespace KnowledgeBase.WellFormedNames
 			public ComposedName(Symbol head, Name[] terms)
 				: base(
 					head.IsGrounded && terms.All(n=>n.IsGrounded),false,
-					head.IsConstant && terms.All(n=>n.IsConstant),false,false
+					head.IsConstant && terms.All(n=>n.IsConstant),false,false,true
 				)
 			{
 				RootSymbol = head;
@@ -75,7 +75,7 @@ namespace KnowledgeBase.WellFormedNames
 			/// </summary>
 			/// <param name="composedName">The composedName to clone</param>
 			private ComposedName(ComposedName composedName)
-				: base(composedName.IsGrounded,false,composedName.IsConstant,false,false)
+				: base(composedName.IsGrounded,false,composedName.IsConstant,false,false,true)
 			{
 				RootSymbol = composedName.RootSymbol;
 				Terms = composedName.Terms.Clone<Name>().ToArray();
@@ -89,6 +89,17 @@ namespace KnowledgeBase.WellFormedNames
 			public override IEnumerable<Name> GetTerms()
 			{
 				return Terms.Prepend(RootSymbol);
+			}
+
+			public override Name GetNTerm(int index)
+			{
+				if(index<0 || index>Terms.Length)
+					throw new IndexOutOfRangeException();
+
+				if (index == 0)
+					return RootSymbol;
+				index--;
+				return Terms[index];
 			}
 
 			public override IEnumerable<Name> GetLiterals()

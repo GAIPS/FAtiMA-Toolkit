@@ -18,6 +18,9 @@ namespace Tests.KnowledgeBase.WellFormedNames
         [TestCase("[x]([x], y, z)")]
 		[TestCase("x")]
 		[TestCase("9")]
+		[TestCase("0")]
+		[TestCase("0000")]
+		[TestCase("0010")]
 		[TestCase("10.56")]
 		[TestCase("-10.56")]
 		[TestCase("-10")]
@@ -38,8 +41,7 @@ namespace Tests.KnowledgeBase.WellFormedNames
 		[TestCase(Name.NIL_STRING)]
         public void Parse_CorrectNameString_NewName(string nameString)
         {
-            var name = Name.BuildName(nameString);
-            Assert.That(string.Equals(name.ToString(),nameString,StringComparison.InvariantCultureIgnoreCase));
+            Name.BuildName(nameString);
         }
 
 		[Test]
@@ -150,6 +152,9 @@ namespace Tests.KnowledgeBase.WellFormedNames
 		[TestCase("[_x]", "[_X]")]
 		[TestCase("SELF", "self")]
 		[TestCase("*", "*")]
+		[TestCase("0", "000")]
+		[TestCase("34", "00034")]
+		[TestCase("34", "34.000")]
 		public void Equals_NameWithEquivalentName(string nameString1, string nameString2)
 		{
 			var name1 = Name.BuildName(nameString1);

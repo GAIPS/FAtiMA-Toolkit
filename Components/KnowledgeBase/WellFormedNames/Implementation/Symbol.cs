@@ -33,7 +33,7 @@ namespace KnowledgeBase.WellFormedNames
 		private abstract class Symbol : Name
 		{
 			protected Symbol(bool isGrounded, bool isUniversal, bool isConstant, bool isVariable, bool isPrimitive)
-				: base(isGrounded, isUniversal, isConstant, isVariable, isPrimitive)
+				: base(isGrounded, isUniversal, isConstant, isVariable, isPrimitive,false)
 			{
 			}
 
@@ -50,6 +50,14 @@ namespace KnowledgeBase.WellFormedNames
 			public sealed override IEnumerable<Name> GetTerms()
 			{
 				yield return this;
+			}
+
+			public sealed override Name GetNTerm(int index)
+			{
+				if(index!=0)
+					throw new IndexOutOfRangeException();
+
+				return this;
 			}
 
 			public sealed override IEnumerable<Name> GetLiterals()

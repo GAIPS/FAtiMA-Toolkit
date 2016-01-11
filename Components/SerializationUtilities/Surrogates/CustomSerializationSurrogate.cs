@@ -68,8 +68,8 @@ namespace GAIPS.Serialization.Surrogates
 				var node = _holder[name];
 				if (node == null)
 					return expectedType == null ? null : SerializationServices.GetDefaultValueForType(expectedType);
-				
-				return _holder[name].RebuildObject(expectedType);
+
+				return node.RebuildObject(expectedType);
 			}
 
 			public ISerializationFieldEnumerator GetEnumerator()

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutobiographicMemory;
+using AutobiographicMemory.Interfaces;
 
 namespace EmotionalAppraisal
 {
@@ -12,11 +13,6 @@ namespace EmotionalAppraisal
 	public interface IEmotionalState
 	{
 		/// <summary>
-		/// Event dispatched whenever a new emotion is created.
-		/// </summary>
-		event Action<IEmotionalState, ActiveEmotion> OnEmotionCreated;
-
-		/// <summary>
 		/// Creates and Adds to the emotional state a new ActiveEmotion based on a received BaseEmotion.
 		/// However, the ActiveEmotion will be created and added to the emotional state only if the final
 		/// intensity for the emotion surpasses the threshold for the emotion type. 
@@ -24,13 +20,13 @@ namespace EmotionalAppraisal
 		/// <param name="emotion">the BaseEmotion that creates the ActiveEmotion</param>
 		/// <returns>the ActiveEmotion created if it was added to the EmotionalState.
 		/// Otherwise, if the intensity of the emotion was not enough to be added to the EmotionalState, the method returns null</returns>
-		ActiveEmotion AddEmotion(BaseEmotion emotion);
+		IActiveEmotion AddEmotion(IEmotion emotion);
 
 		/// <summary>
 		/// Removes the given active emotion from the EmotionalState
 		/// </summary>
 		/// <param name="em">the active emotion to be removed</param>
-		void RemoveEmotion(ActiveEmotion em);
+		void RemoveEmotion(IActiveEmotion em);
 
 		/// <summary>
 		/// Creates a new ActiveEmotion based on a received BaseEmotion.
@@ -42,7 +38,7 @@ namespace EmotionalAppraisal
 		/// <param name="potEm">the BaseEmotion that creates the ActiveEmotion</param>
 		/// <returns>the ActiveEmotion created. If the intensity of the emotion was not 
 		/// enough to be created, the method returns null</returns>
-		ActiveEmotion DetermineActiveEmotion(BaseEmotion potEm);
+		IActiveEmotion DetermineActiveEmotion(IEmotion potEm);
 
 		/// <summary>
 		/// Clears all the emotions in the EmotionalState
@@ -54,14 +50,14 @@ namespace EmotionalAppraisal
 		/// </summary>
 		/// <param name="emotionKey">a string that corresponds to a hashkey that represents the emotion in the EmotionalState</param>
 		/// <returns>the found ActiveEmotion if it exists in the EmotionalState, null if the emotion doesn't exist anymore</returns>
-		ActiveEmotion GetEmotion(string emotionKey);
+		IActiveEmotion GetEmotion(string emotionKey);
 
 		/// <summary>
 		/// Searches for a given emotion in the EmotionalState
 		/// </summary>
 		/// <param name="emotionKey">a BaseEmotion that serves as a template to find the active emotion in the EmotionalState</param>
 		/// <returns>the found ActiveEmotion if it exists in the EmotionalState, null if the emotion doesn't exist anymore</returns>
-		ActiveEmotion GetEmotion(BaseEmotion emotion);
+		IActiveEmotion GetEmotion(IEmotion emotion);
 
 		/// <summary>
 		/// Gets a set that contains all the keys for the emotions
@@ -72,7 +68,7 @@ namespace EmotionalAppraisal
 		/// <summary>
 		/// Gets a set of all active emotions present in the emotional state
 		/// </summary>
-		IEnumerable<ActiveEmotion> GetAllEmotions();
+		IEnumerable<IActiveEmotion> GetAllEmotions();
 
 		/// <summary>
 		/// Gets a float value that represents the characters mood.
@@ -94,14 +90,14 @@ namespace EmotionalAppraisal
 		/// Gets the current strongest emotion (the one with highest intensity) in the character's emotional state
 		/// </summary>
 		/// <returns>the strongest emotion or null if there is no emotion in the emotional state</returns>
-		ActiveEmotion GetStrongestEmotion();
+		IActiveEmotion GetStrongestEmotion();
 
 		/// <summary>
 		/// Gets the current strongest emotion (the one with highest intensity) in the character's emotional state, which was triggered by the received event 
 		/// </summary>
 		/// <param name="cause">the event that caused the emotion that we want to retrieve</param>
 		/// <returns>the strongest emotion or null if there is no emotion in the emotional state</returns>
-		ActiveEmotion GetStrongestEmotion(Cause cause);
+		IActiveEmotion GetStrongestEmotion(IEvent cause);
 
 		void AddEmotionDisposition(EmotionDisposition emotionDisposition);
 

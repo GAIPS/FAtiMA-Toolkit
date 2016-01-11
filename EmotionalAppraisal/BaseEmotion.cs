@@ -19,15 +19,11 @@ namespace EmotionalAppraisal
 	/// </summary>
 	/// @author: João Dias
 	/// @author: Pedro Gonçalves (C# version)
-	public abstract class BaseEmotion
+	public abstract class BaseEmotion : IEmotion
 	{
 		private float potentialValue = 0;
 
-		public Cause Cause
-		{
-			get;
-			protected set;
-		}
+		public uint CauseId { get; protected set; }
 
 		public Name Direction
 		{
@@ -41,7 +37,7 @@ namespace EmotionalAppraisal
 			{
 				return potentialValue;
 			}
-			set
+			protected set
 			{
 				potentialValue = value < 0 ? 0 : value;
 			}
@@ -78,20 +74,20 @@ namespace EmotionalAppraisal
 		/// <param name="potential">the potential value for the intensity of the emotion</param>
 		/// <param name="cause">the event that caused the emotion</param>
 		/// <param name="direction">if the emotion is targeted to someone (ex: angry with Luke), this parameter specifies the target</param>
-		protected BaseEmotion(string type, EmotionValence valence, IEnumerable<string> appraisalVariables, float potential, bool influencesMood, IEvent cause, Name direction)
+		protected BaseEmotion(string type, EmotionValence valence, IEnumerable<string> appraisalVariables, float potential, bool influencesMood, uint causeId, Name direction)
 		{
 			this.EmotionType = type;
 			this.Valence = valence;
 			this.AppraisalVariables = appraisalVariables;
 			this.Potential = potential;
 
-			this.Cause = new Cause(cause,null);
+			this.CauseId = causeId;
 			this.Direction = direction;
 			this.InfluenceMood = influencesMood;
 		}
 
-		protected BaseEmotion(string type, EmotionValence valence, IEnumerable<string> appraisalVariables, float potential, bool influencesMood, IEvent cause) :
-			this(type, valence, appraisalVariables, potential, influencesMood, cause, null)
+		protected BaseEmotion(string type, EmotionValence valence, IEnumerable<string> appraisalVariables, float potential, bool influencesMood, uint causeId) :
+			this(type, valence, appraisalVariables, potential, influencesMood, causeId, null)
 		{
 		}
 
@@ -106,22 +102,22 @@ namespace EmotionalAppraisal
 			this.AppraisalVariables = other.AppraisalVariables.ToArray();
 			this.Potential = other.Potential;
 			this.InfluenceMood = other.InfluenceMood;
-			this.Cause = other.Cause;
+			this.CauseId = other.CauseId;
 			this.Direction = other.Direction;
 		}
 
 		public override int GetHashCode()
 		{
-			return AppraisalVariables.Aggregate(Cause.CauseName.GetHashCode(), (h, s) => h ^ s.GetHashCode());
+			return AppraisalVariables.Aggregate(CauseId.GetHashCode(), (h, s) => h ^ s.GetHashCode());
 		}
 
 		public override bool Equals(object obj)
 		{
-			BaseEmotion em = obj as BaseEmotion;
+			var em = obj as IEmotion;
 			if (em == null)
 				return false;
 
-			if (Cause.CauseName != em.Cause.CauseName)
+			if (CauseId != em.CauseId)
 				return false;
 
 			return new HashSet<string>(AppraisalVariables).SetEquals(em.AppraisalVariables);
@@ -134,10 +130,15 @@ namespace EmotionalAppraisal
 				this.Potential = 0;
 		}
 
-		public override string ToString()
+		public IEventRecord GetCause(AM am)
+		{
+			return am.RecallEvent(CauseId);
+		}
+
+		public string ToString(AM am)
 		{
 			StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
-			builder.AppendFormat("{0}: {1}", EmotionType,Cause.CauseName);
+			builder.AppendFormat("{0}: {1}", EmotionType,am.RecallEvent(CauseId).ToIdentifierName());
 			if (this.Direction != null)
 				builder.AppendFormat(" {0}", Direction);
 
