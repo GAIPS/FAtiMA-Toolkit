@@ -3,6 +3,7 @@ using AssetPackage;
 using EmotionalAppraisal.AppraisalRules;
 using EmotionalAppraisal.OCCModel;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.CompilerServices;
 using AutobiographicMemory;
 using AutobiographicMemory.Interfaces;
@@ -20,6 +21,17 @@ namespace EmotionalAppraisal
         public static string[] GetKnowledgeVisibilities()
         {
             return Enum.GetNames(typeof(KnowledgeVisibility));
+        }
+
+        public static EmotionalAppraisalAsset LoadFromFile(string filename)
+        {
+            EmotionalAppraisalAsset ea;
+            using (var f = File.Open(filename, FileMode.Open, FileAccess.Read))
+            {
+                var serializer = new JSONSerializer();
+                ea = serializer.Deserialize<EmotionalAppraisalAsset>(f);
+            }
+            return ea;
         }
 
         private static readonly InternalAppraisalFrame APPRAISAL_FRAME = new InternalAppraisalFrame();
@@ -207,9 +219,18 @@ namespace EmotionalAppraisal
 	        this.Kb.Tell(Name.BuildName(name), PrimitiveValue.Parse(value), false, visibilityEnum);
 	    }
 
+	    public void SaveToFile(string filename)
+	    {
+            using (var f = File.Open(filename, FileMode.Create, FileAccess.Write))
+            {
+                var serializer = new JSONSerializer();
+                serializer.Serialize(f, this);
+            }
+        }
+
 	    
 
-        #region ICustomSerialization
+	    #region ICustomSerialization
 
         public void GetObjectData(ISerializationData dataHolder)
 		{

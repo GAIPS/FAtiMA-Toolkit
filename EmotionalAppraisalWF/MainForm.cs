@@ -1,30 +1,73 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using EmotionalAppraisal;
+using EmotionalAppraisalWF.Properties;
 
 namespace EmotionalAppraisalWF
 {
     public partial class MainForm : Form
     {
-        private EmotionalAppraisalAsset m_emotionalAppraisalAsset;
+        private EmotionalAppraisalAsset _emotionalAppraisalAsset;
+        private string _saveFileName;
         
         public MainForm()
         {
             InitializeComponent();
-            this.m_emotionalAppraisalAsset = new EmotionalAppraisalAsset("SELF");
+            this.Text = Resources.MainFormPrincipalTitle;
+            this._emotionalAppraisalAsset = new EmotionalAppraisalAsset("SELF");
 
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Text = Resources.MainFormPrincipalTitle;
+            this._emotionalAppraisalAsset = new EmotionalAppraisalAsset("SELF");
+        }
+
+        private void saveHelper(bool newSaveFile)
+        {
+            if (newSaveFile)
+            {
+                var sfd = new SaveFileDialog();
+                sfd.Filter = "JSON File|*.json";
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    if (!string.IsNullOrWhiteSpace(sfd.FileName))
+                    {
+                        _saveFileName = sfd.FileName;
+                    }
+                }
+                else
+                {
+                    return;
+                }
+            }
+            try
+            {
+                _emotionalAppraisalAsset.SaveToFile(_saveFileName);
+                this.Text = Resources.MainFormPrincipalTitle + Resources.TitleSeparator + _saveFileName;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show(Resources.UnableToSaveFileError, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-          
+            if (string.IsNullOrEmpty(_saveFileName))
+            {
+                saveHelper(true);
+            }
+            else
+            {
+                saveHelper(false);
+            }
+        }
+
+        private void saveAsStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveHelper(true);
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -34,12 +77,23 @@ namespace EmotionalAppraisalWF
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
+            var ofd = new OpenFileDialog();
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                var emotionaAppraisalFile = ofd.FileName;
+                try
+                {
+                    _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(ofd.FileName);
+                    _saveFileName = ofd.FileName;
+                    this.Text = Resources.MainFormPrincipalTitle + Resources.TitleSeparator + ofd.FileName;
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show(Resources.InvalidFileError, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                } 
             }
         }
+
+
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -89,6 +143,8 @@ namespace EmotionalAppraisalWF
             }
         }
 
+
+
         private void mainMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
@@ -109,6 +165,11 @@ namespace EmotionalAppraisalWF
 
         }
 
-       
+        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 }

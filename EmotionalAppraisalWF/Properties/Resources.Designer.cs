@@ -79,11 +79,57 @@ namespace EmotionalAppraisalWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string ErrorDialogTitle {
+            get {
+                return ResourceManager.GetString("ErrorDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid file.
+        /// </summary>
+        internal static string InvalidFileError {
+            get {
+                return ResourceManager.GetString("InvalidFileError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Emotional Appraisal Asset
+        ///.
+        /// </summary>
+        internal static string MainFormPrincipalTitle {
+            get {
+                return ResourceManager.GetString("MainFormPrincipalTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Field is Required.
         /// </summary>
         internal static string RequiredFieldError {
             get {
                 return ResourceManager.GetString("RequiredFieldError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  - .
+        /// </summary>
+        internal static string TitleSeparator {
+            get {
+                return ResourceManager.GetString("TitleSeparator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to save file..
+        /// </summary>
+        internal static string UnableToSaveFileError {
+            get {
+                return ResourceManager.GetString("UnableToSaveFileError", resourceCulture);
             }
         }
     }
