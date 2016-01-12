@@ -194,6 +194,11 @@ namespace KnowledgeBase
 			});
 		}
 
+	    public bool BeliefExists(Name name)
+	    {
+	        return m_knowledgeStorage.ContainsKey(name);
+	    }
+
 		/// <summary>
 		/// Removes a predicate from the Semantic KB
 		/// </summary>

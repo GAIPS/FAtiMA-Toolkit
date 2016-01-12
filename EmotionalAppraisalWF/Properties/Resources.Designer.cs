@@ -79,6 +79,15 @@ namespace EmotionalAppraisalWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Belief already exists, use the edit function..
+        /// </summary>
+        internal static string BeliefAlreadyExistsExceptionMessage {
+            get {
+                return ResourceManager.GetString("BeliefAlreadyExistsExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         internal static string ErrorDialogTitle {
@@ -97,8 +106,7 @@ namespace EmotionalAppraisalWF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Emotional Appraisal Asset
-        ///.
+        ///   Looks up a localized string similar to Emotional Appraisal Asset.
         /// </summary>
         internal static string MainFormPrincipalTitle {
             get {
@@ -107,7 +115,7 @@ namespace EmotionalAppraisalWF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Field is Required.
+        ///   Looks up a localized string similar to Field is required.
         /// </summary>
         internal static string RequiredFieldError {
             get {

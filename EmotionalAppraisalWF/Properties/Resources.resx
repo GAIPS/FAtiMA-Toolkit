@@ -124,7 +124,7 @@
     <value>Update</value>
   </data>
   <data name="RequiredFieldError" xml:space="preserve">
-    <value>Field is Required</value>
+    <value>Field is required</value>
   </data>
   <data name="InvalidFileError" xml:space="preserve">
     <value>Invalid file</value>
@@ -139,7 +139,9 @@
     <value>Unable to save file.</value>
   </data>
   <data name="MainFormPrincipalTitle" xml:space="preserve">
-    <value>Emotional Appraisal Asset
-</value>
+    <value>Emotional Appraisal Asset</value>
+  </data>
+  <data name="BeliefAlreadyExistsExceptionMessage" xml:space="preserve">
+    <value>Belief already exists, use the edit function.</value>
   </data>
 </root>

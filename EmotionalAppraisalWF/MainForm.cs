@@ -71,7 +71,7 @@ namespace EmotionalAppraisalWF
             }
             try
             {
-                using (var file = File.OpenWrite(_saveFileName))
+                using (var file = File.Create(_saveFileName))
                 {
                     _emotionalAppraisalAsset.SaveToFile(file);
                 }
@@ -169,6 +169,7 @@ namespace EmotionalAppraisalWF
         {
             foreach (ListViewItem eachItem in beliefsListView.SelectedItems)
             {
+                _emotionalAppraisalAsset.RemoveBelief(eachItem.Text);
                 beliefsListView.Items.Remove(eachItem);
             }
         }
@@ -200,6 +201,9 @@ namespace EmotionalAppraisalWF
 
         }
 
-        
+        private void beliefsListView_ItemActivate(object sender, EventArgs e)
+        {
+            this.editButton_Click(sender, e);
+        }
     }
 }

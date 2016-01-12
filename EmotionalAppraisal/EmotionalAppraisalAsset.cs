@@ -213,20 +213,27 @@ namespace EmotionalAppraisal
 				UpdateEmotions(frame);
 		}
 
-        public void AddBelief(string name, string value, string visibility)
+        public void AddOrUpdateBelief(string name, string value, string visibility)
 	    {
 	        var visibilityEnum = (KnowledgeVisibility) Enum.Parse(typeof(KnowledgeVisibility),visibility);
-	        this.Kb.Tell(Name.BuildName(name), PrimitiveValue.Parse(value), false, visibilityEnum);
+	        this.Kb.Tell(Name.BuildName(name), PrimitiveValue.Parse(value), true, visibilityEnum);
 	    }
 
-       
-	    public void SaveToFile(Stream file)
+        public bool BeliefExists(string name)
+        {
+            return this.Kb.BeliefExists(Name.BuildName(name));
+        }
+
+        public void RemoveBelief(string name)
+        {
+            this.Kb.Retract(Name.BuildName(name));
+        }
+
+        public void SaveToFile(Stream file)
 	    {
             var serializer = new JSONSerializer();
             serializer.Serialize(file, this);
         }
-
-	    
 
 	    #region ICustomSerialization
 

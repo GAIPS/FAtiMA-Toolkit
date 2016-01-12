@@ -41,7 +41,12 @@ namespace EmotionalAppraisalWF
 
             try
             {
-                _emotionalAppraisalAsset.AddBelief(this.beliefNameTextBox.Text, this.beliefValueTextBox.Text, this.beliefVisibilityComboBox.Text);
+                if(!_editMode && _emotionalAppraisalAsset.BeliefExists(this.beliefNameTextBox.Text))
+                {
+                    throw new Exception(Resources.BeliefAlreadyExistsExceptionMessage);
+                }
+                
+                _emotionalAppraisalAsset.AddOrUpdateBelief(this.beliefNameTextBox.Text, this.beliefValueTextBox.Text, this.beliefVisibilityComboBox.Text);
             }
             catch (Exception ex)
             {
@@ -51,8 +56,8 @@ namespace EmotionalAppraisalWF
             
             var beliefItem = new ListViewItem(new string[]
                 {
-                    this.beliefNameTextBox.Text,
-                    this.beliefValueTextBox.Text,
+                    this.beliefNameTextBox.Text.Trim(),
+                    this.beliefValueTextBox.Text.Trim(),
                     this.beliefVisibilityComboBox.Text
                 });
 
@@ -60,10 +65,14 @@ namespace EmotionalAppraisalWF
             
             if (_editMode)
             {
+                if (beliefNameTextBox.Text != _beliefsListView.SelectedItems[0].Text)
+                {
+                    // the name of the belief was changed so the old belief must be removed from the KB
+                    _emotionalAppraisalAsset.RemoveBelief(_beliefsListView.SelectedItems[0].Text);
+                }
                 _beliefsListView.SelectedItems[0].Remove();
                 this.Close();
             }
-
         }
 
         private void label1_Click(object sender, EventArgs e)
