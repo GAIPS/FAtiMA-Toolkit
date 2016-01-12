@@ -14,8 +14,8 @@ namespace KnowledgeBase
 		Universal,
 		Self
 	}
-
-	public delegate IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> DynamicPropertyCalculator(KB kb, SubstitutionSet args, SubstitutionSet constraints);
+    
+    public delegate IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> DynamicPropertyCalculator(KB kb, SubstitutionSet args, SubstitutionSet constraints);
 
 	[Serializable]
 	public class KB : ICustomSerialization
@@ -108,6 +108,18 @@ namespace KnowledgeBase
 				return false;
 			return value;
 		}
+
+	    public IEnumerable<Belief> GetAllBeliefs()
+	    {
+	        return m_knowledgeStorage.Keys.Select(beliefName => 
+                new Belief
+                {
+    	            Name = beliefName,
+                    IsPersistent = m_knowledgeStorage[beliefName].IsPersistent,
+                    Visibility = m_knowledgeStorage[beliefName].Visibility,
+                    Value = m_knowledgeStorage[beliefName].Value
+	            });
+	    }
 
 		/// <summary>
 		/// Asks the KB the value of a given predicate

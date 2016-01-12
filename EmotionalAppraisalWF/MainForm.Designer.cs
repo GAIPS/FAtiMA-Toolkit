@@ -33,6 +33,7 @@
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.appraisalRulesTagePage = new System.Windows.Forms.TabPage();
@@ -49,7 +50,6 @@
             this.valueColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.visibilityColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.autobiographicalMemoryTabPage = new System.Windows.Forms.TabPage();
-            this.saveAsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainMenu.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.knowledgeBaseTabPage.SuspendLayout();
@@ -103,6 +103,13 @@
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // saveAsStripMenuItem
+            // 
+            this.saveAsStripMenuItem.Name = "saveAsStripMenuItem";
+            this.saveAsStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveAsStripMenuItem.Text = "Save &As...";
+            this.saveAsStripMenuItem.Click += new System.EventHandler(this.saveAsStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
@@ -275,13 +282,6 @@
             this.autobiographicalMemoryTabPage.TabIndex = 2;
             this.autobiographicalMemoryTabPage.Text = "Autobiographical Memory";
             this.autobiographicalMemoryTabPage.UseVisualStyleBackColor = true;
-            // 
-            // saveAsStripMenuItem
-            // 
-            this.saveAsStripMenuItem.Name = "saveAsStripMenuItem";
-            this.saveAsStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.saveAsStripMenuItem.Text = "Save &As...";
-            this.saveAsStripMenuItem.Click += new System.EventHandler(this.saveAsStripMenuItem_Click);
             // 
             // MainForm
             // 

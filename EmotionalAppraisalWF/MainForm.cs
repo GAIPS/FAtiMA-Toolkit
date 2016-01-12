@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using EmotionalAppraisal;
 using EmotionalAppraisalWF.Properties;
@@ -9,19 +10,44 @@ namespace EmotionalAppraisalWF
     {
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
         private string _saveFileName;
-        
+
+
+        private void Reset(bool newFile)
+        {
+            if (newFile)
+            {
+                this.Text = Resources.MainFormPrincipalTitle;
+                this._emotionalAppraisalAsset = new EmotionalAppraisalAsset("SELF");
+            }
+            else
+            {
+                this.Text = Resources.MainFormPrincipalTitle + Resources.TitleSeparator + _saveFileName;
+            }
+
+            beliefsListView.Items.Clear();
+
+            if (!newFile)
+            {
+                foreach (var b in _emotionalAppraisalAsset.Kb.GetAllBeliefs())
+                {
+                    var listItem = new ListViewItem(new string[]{b.Name.ToString(), b.Value.ToString(), b.Visibility.ToString()});
+                    beliefsListView.Items.Add(listItem);
+                }
+            }
+
+         
+
+        }
+
         public MainForm()
         {
             InitializeComponent();
-            this.Text = Resources.MainFormPrincipalTitle;
-            this._emotionalAppraisalAsset = new EmotionalAppraisalAsset("SELF");
-
+            Reset(true);
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Text = Resources.MainFormPrincipalTitle;
-            this._emotionalAppraisalAsset = new EmotionalAppraisalAsset("SELF");
+            Reset(true);
         }
 
         private void saveHelper(bool newSaveFile)
@@ -84,9 +110,9 @@ namespace EmotionalAppraisalWF
                 {
                     _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(ofd.FileName);
                     _saveFileName = ofd.FileName;
-                    this.Text = Resources.MainFormPrincipalTitle + Resources.TitleSeparator + ofd.FileName;
+                    Reset(false);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
                     MessageBox.Show(Resources.InvalidFileError, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 } 
