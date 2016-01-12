@@ -167,7 +167,6 @@ namespace KnowledgeBase
 			var d = m_dynamicProperties.Unify(tmpPropertyName).ToList();
 			if (d.Count == 0)
 				return null;
-
 			var results = d.SelectMany(p =>
 			{
 				var args = new Dictionary<string, Name>();

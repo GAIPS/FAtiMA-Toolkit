@@ -3,17 +3,26 @@ using AssetPackage;
 using EmotionalAppraisal.AppraisalRules;
 using EmotionalAppraisal.OCCModel;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using AutobiographicMemory;
 using AutobiographicMemory.Interfaces;
 using GAIPS.Serialization;
 using KnowledgeBase;
 using KnowledgeBase.Conditions;
+using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalAppraisal
 {
 	[Serializable]
 	public sealed partial class EmotionalAppraisalAsset : BaseAsset, ICustomSerialization
 	{
+
+        public static string[] GetKnowledgeVisibilities()
+        {
+            return Enum.GetNames(typeof(KnowledgeVisibility));
+        }
+
+        private static readonly InternalAppraisalFrame APPRAISAL_FRAME = new InternalAppraisalFrame();
 		[NonSerialized]
 		private long _lastFrameAppraisal = 0;
 		[NonSerialized]
@@ -21,7 +30,7 @@ namespace EmotionalAppraisal
 
 		public string Perspective { get; set; }
 
-		private float m_emotionalHalfLifeDecayTime = 15;
+        private float m_emotionalHalfLifeDecayTime = 15;
 		/// <summary>
 		/// Defines how fast a emotion decay over time.
 		/// This value is the actual time it takes a decay:1 emotion to reach half of its initial intensity
@@ -42,7 +51,7 @@ namespace EmotionalAppraisal
 			set { m_moodDecay = value < Constants.MinimumDecayTime ? Constants.MinimumDecayTime : value; }
 		}
 
-		private KB m_kb;
+        private KB m_kb;
 		private AM m_am;
 		private ConcreteEmotionalState m_emotionalState;
 		private ReactiveAppraisalDerivator m_appraisalDerivator;
@@ -130,7 +139,7 @@ namespace EmotionalAppraisal
 
 		public EmotionalAppraisalAsset(string perspective)
 		{
-			Perspective = perspective;
+            Perspective = perspective;
 			m_kb = new KB();
 			m_am = new AM();
 			m_am.BindCalls(m_kb);
@@ -192,9 +201,17 @@ namespace EmotionalAppraisal
 				UpdateEmotions(frame);
 		}
 
-		#region ICustomSerialization
+        public void AddBelief(string name, string value, string visibility)
+	    {
+	        var visibilityEnum = (KnowledgeVisibility) Enum.Parse(typeof(KnowledgeVisibility),visibility);
+	        this.Kb.Tell(Name.BuildName(name), PrimitiveValue.Parse(value), false, visibilityEnum);
+	    }
 
-		public void GetObjectData(ISerializationData dataHolder)
+	    
+
+        #region ICustomSerialization
+
+        public void GetObjectData(ISerializationData dataHolder)
 		{
 			dataHolder.SetValue("Perspective",Perspective);
 			dataHolder.SetValue("EmotionalHalfLifeDecayTime",m_emotionalHalfLifeDecayTime);
