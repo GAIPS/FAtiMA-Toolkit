@@ -64,7 +64,7 @@
             this.fileToolStripMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-            this.mainMenu.Size = new System.Drawing.Size(434, 24);
+            this.mainMenu.Size = new System.Drawing.Size(473, 24);
             this.mainMenu.TabIndex = 0;
             this.mainMenu.Text = "mainMenu";
             this.mainMenu.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.mainMenu_ItemClicked);
@@ -131,7 +131,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 27);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(410, 367);
+            this.tabControl1.Size = new System.Drawing.Size(449, 367);
             this.tabControl1.TabIndex = 1;
             // 
             // appraisalRulesTagePage
@@ -139,7 +139,7 @@
             this.appraisalRulesTagePage.Location = new System.Drawing.Point(4, 25);
             this.appraisalRulesTagePage.Name = "appraisalRulesTagePage";
             this.appraisalRulesTagePage.Padding = new System.Windows.Forms.Padding(3);
-            this.appraisalRulesTagePage.Size = new System.Drawing.Size(402, 338);
+            this.appraisalRulesTagePage.Size = new System.Drawing.Size(441, 338);
             this.appraisalRulesTagePage.TabIndex = 3;
             this.appraisalRulesTagePage.Text = "Appraisal Rules";
             this.appraisalRulesTagePage.UseVisualStyleBackColor = true;
@@ -149,7 +149,7 @@
             this.emotionalStateTabPage.Location = new System.Drawing.Point(4, 25);
             this.emotionalStateTabPage.Name = "emotionalStateTabPage";
             this.emotionalStateTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.emotionalStateTabPage.Size = new System.Drawing.Size(402, 338);
+            this.emotionalStateTabPage.Size = new System.Drawing.Size(441, 338);
             this.emotionalStateTabPage.TabIndex = 0;
             this.emotionalStateTabPage.Text = "Emotional State";
             this.emotionalStateTabPage.UseVisualStyleBackColor = true;
@@ -160,7 +160,7 @@
             this.knowledgeBaseTabPage.Location = new System.Drawing.Point(4, 25);
             this.knowledgeBaseTabPage.Name = "knowledgeBaseTabPage";
             this.knowledgeBaseTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.knowledgeBaseTabPage.Size = new System.Drawing.Size(402, 338);
+            this.knowledgeBaseTabPage.Size = new System.Drawing.Size(441, 338);
             this.knowledgeBaseTabPage.TabIndex = 1;
             this.knowledgeBaseTabPage.Text = "Knowledge Base";
             this.knowledgeBaseTabPage.UseVisualStyleBackColor = true;
@@ -171,7 +171,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(396, 332);
+            this.groupBox1.Size = new System.Drawing.Size(435, 332);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Beliefs";
@@ -188,7 +188,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(390, 313);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(429, 313);
             this.tableLayoutPanel1.TabIndex = 7;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
@@ -207,7 +207,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(384, 31);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(423, 31);
             this.tableLayoutPanel2.TabIndex = 3;
             this.tableLayoutPanel2.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
             // 
@@ -251,7 +251,7 @@
             this.beliefsListView.FullRowSelect = true;
             this.beliefsListView.Location = new System.Drawing.Point(3, 38);
             this.beliefsListView.Name = "beliefsListView";
-            this.beliefsListView.Size = new System.Drawing.Size(384, 281);
+            this.beliefsListView.Size = new System.Drawing.Size(423, 281);
             this.beliefsListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.beliefsListView.TabIndex = 2;
             this.beliefsListView.UseCompatibleStateImageBehavior = false;
@@ -261,7 +261,7 @@
             // nameColumnHeader
             // 
             this.nameColumnHeader.Text = "Name";
-            this.nameColumnHeader.Width = 107;
+            this.nameColumnHeader.Width = 150;
             // 
             // valueColumnHeader
             // 
@@ -271,14 +271,14 @@
             // visibilityColumnHeader
             // 
             this.visibilityColumnHeader.Text = "Visibility";
-            this.visibilityColumnHeader.Width = 192;
+            this.visibilityColumnHeader.Width = 153;
             // 
             // autobiographicalMemoryTabPage
             // 
             this.autobiographicalMemoryTabPage.Location = new System.Drawing.Point(4, 25);
             this.autobiographicalMemoryTabPage.Name = "autobiographicalMemoryTabPage";
             this.autobiographicalMemoryTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.autobiographicalMemoryTabPage.Size = new System.Drawing.Size(402, 338);
+            this.autobiographicalMemoryTabPage.Size = new System.Drawing.Size(441, 338);
             this.autobiographicalMemoryTabPage.TabIndex = 2;
             this.autobiographicalMemoryTabPage.Text = "Autobiographical Memory";
             this.autobiographicalMemoryTabPage.UseVisualStyleBackColor = true;
@@ -287,7 +287,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(434, 406);
+            this.ClientSize = new System.Drawing.Size(473, 406);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.mainMenu);
             this.MainMenuStrip = this.mainMenu;

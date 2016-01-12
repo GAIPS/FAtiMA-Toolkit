@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using EmotionalAppraisal;
@@ -70,7 +71,10 @@ namespace EmotionalAppraisalWF
             }
             try
             {
-                _emotionalAppraisalAsset.SaveToFile(_saveFileName);
+                using (var file = File.OpenWrite(_saveFileName))
+                {
+                    _emotionalAppraisalAsset.SaveToFile(file);
+                }
                 this.Text = Resources.MainFormPrincipalTitle + Resources.TitleSeparator + _saveFileName;
             }
             catch (Exception)
@@ -148,7 +152,7 @@ namespace EmotionalAppraisalWF
 
         private void addBeliefButton_Click(object sender, EventArgs e)
         {
-            var addBeliefForm = new AddOrEditBeliefForm(beliefsListView);
+            var addBeliefForm = new AddOrEditBeliefForm(beliefsListView, _emotionalAppraisalAsset);
             addBeliefForm.ShowDialog();
         }
 
@@ -156,7 +160,7 @@ namespace EmotionalAppraisalWF
         {
             if (beliefsListView.SelectedItems.Count == 1)
             {
-                var addBeliefForm = new AddOrEditBeliefForm(beliefsListView, true);
+                var addBeliefForm = new AddOrEditBeliefForm(beliefsListView, _emotionalAppraisalAsset, true);
                 addBeliefForm.ShowDialog();
             }
         }

@@ -52,7 +52,7 @@ namespace EmotionalAppraisal
 			get { return m_emotionalHalfLifeDecayTime; }
 			set { m_emotionalHalfLifeDecayTime = value < Constants.MinimumDecayTime ? Constants.MinimumDecayTime : value; }
 		}
-
+        
 		private float m_moodDecay = 60;
 		/// <summary>
 		/// Defines how fast mood decay over time.
@@ -220,13 +220,10 @@ namespace EmotionalAppraisal
 	    }
 
        
-	    public void SaveToFile(string filename)
+	    public void SaveToFile(Stream file)
 	    {
-            using (var f = File.Open(filename, FileMode.Create, FileAccess.Write))
-            {
-                var serializer = new JSONSerializer();
-                serializer.Serialize(f, this);
-            }
+            var serializer = new JSONSerializer();
+            serializer.Serialize(file, this);
         }
 
 	    

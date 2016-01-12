@@ -1,23 +1,26 @@
 ﻿using System;
 using System.Windows.Forms;
+using EmotionalAppraisal;
 using EmotionalAppraisalWF.Properties;
 
 namespace EmotionalAppraisalWF
 {
     public partial class AddOrEditBeliefForm : Form
     {
+        private EmotionalAppraisalAsset _emotionalAppraisalAsset;
         private ListView _beliefsListView;
         private bool _editMode;
 
-        public AddOrEditBeliefForm(ListView beliefsListView, bool editMode = false)
+        public AddOrEditBeliefForm(ListView beliefsListView, EmotionalAppraisalAsset emotionalAppraisalAsset, bool editMode = false)
         {
             InitializeComponent();
 
             _beliefsListView = beliefsListView;
+            _emotionalAppraisalAsset = emotionalAppraisalAsset;
             _editMode = editMode;
 
             //Default Values 
-            beliefVisibilityComboBox.DataSource = EmotionalAppraisal.EmotionalAppraisalAsset.GetKnowledgeVisibilities();
+            beliefVisibilityComboBox.DataSource = EmotionalAppraisalAsset.GetKnowledgeVisibilities();
             beliefVisibilityComboBox.SelectedIndex = 0;
 
             if (_editMode)
@@ -31,86 +34,33 @@ namespace EmotionalAppraisalWF
             }
         }
 
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void addBeliefButton_Click(object sender, EventArgs e)
-        {
-           
-
-          
-        }
-
-        private void beliefVisibilityComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
         private void addOrEditBeliefButton_Click(object sender, EventArgs e)
         {
-            
-
             //clear errors
             addBeliefErrorProvider.Clear();
 
-            //Check for errors:
-            if (string.IsNullOrWhiteSpace(this.beliefNameTextBox.Text))
+            try
             {
-                beliefNameTextBox.Focus();
-                addBeliefErrorProvider.SetError(beliefNameTextBox, Resources.RequiredFieldError);
+                _emotionalAppraisalAsset.AddBelief(this.beliefNameTextBox.Text, this.beliefValueTextBox.Text, this.beliefVisibilityComboBox.Text);
+            }
+            catch (Exception ex)
+            {
+                addBeliefErrorProvider.SetError(beliefNameTextBox, ex.Message);
                 return;
-            }
-
-            if (string.IsNullOrWhiteSpace(this.beliefValueTextBox.Text))
-            {
-                beliefNameTextBox.Focus();
-                addBeliefErrorProvider.SetError(beliefValueTextBox, Resources.RequiredFieldError);
-                return;
-            }
-
-            if (!_editMode)
-            {
-                var lvi = new ListViewItem(this.beliefNameTextBox.Text);
-                lvi.SubItems.Add(this.beliefValueTextBox.Text);
-                lvi.SubItems.Add(this.beliefVisibilityComboBox.Text);
-                _beliefsListView.Items.Add(lvi);
-
-
-
-            }
-            else
-            {
-                _beliefsListView.SelectedItems[0].Text = beliefNameTextBox.Text;
-                _beliefsListView.SelectedItems[0].SubItems[1].Text = beliefValueTextBox.Text;
-                _beliefsListView.SelectedItems[0].SubItems[2].Text = beliefVisibilityComboBox.Text;
             }
             
+            var beliefItem = new ListViewItem(new string[]
+                {
+                    this.beliefNameTextBox.Text,
+                    this.beliefValueTextBox.Text,
+                    this.beliefVisibilityComboBox.Text
+                });
 
+            _beliefsListView.Items.Add(beliefItem);
+            
             if (_editMode)
             {
+                _beliefsListView.SelectedItems[0].Remove();
                 this.Close();
             }
 
