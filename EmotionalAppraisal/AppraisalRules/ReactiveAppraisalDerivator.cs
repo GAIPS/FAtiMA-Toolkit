@@ -74,24 +74,24 @@ namespace EmotionalAppraisal.AppraisalRules
 				if (selfEvaluation.Desirability != 0)
 					frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, selfEvaluation.Desirability);
 
-				if (selfEvaluation.DesirabilityForOther != 0)
-				{
-					string other;
-					if (selfEvaluation.Other != null)
-						other = selfEvaluation.Other.ToString();
-					else if (evt.Target != null)
-						other = evt.Target;
-					else
-						other = evt.Subject;
+				//if (selfEvaluation.DesirabilityForOther != 0)
+				//{
+				//	string other;
+				//	if (selfEvaluation.Other != null)
+				//		other = selfEvaluation.Other.ToString();
+				//	else if (evt.Target != null)
+				//		other = evt.Target;
+				//	else
+				//		other = evt.Subject;
 
-					frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER + other, selfEvaluation.DesirabilityForOther);
-				}
+				//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER + other, selfEvaluation.DesirabilityForOther);
+				//}
 
 				if (selfEvaluation.Praiseworthiness != 0)
 					frame.SetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS, selfEvaluation.Praiseworthiness);
 
-				if (selfEvaluation.Like != 0)
-					frame.SetAppraisalVariable(OCCAppraisalVariables.LIKE, selfEvaluation.Like);
+				//if (selfEvaluation.Like != 0)
+				//	frame.SetAppraisalVariable(OCCAppraisalVariables.LIKE, selfEvaluation.Like);
 			}
 		}
 

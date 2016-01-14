@@ -20,7 +20,7 @@ namespace EmotionalAppraisal.AppraisalRules
 		/// </summary>
 		public Reaction()
 		{
-			Desirability = DesirabilityForOther = Praiseworthiness = Like = 0;
+			Desirability = Praiseworthiness = 0;//DesirabilityForOther = Like = 0;
 			//ReferencedEventName = null;
 			Other = null;
 		}
@@ -46,10 +46,10 @@ namespace EmotionalAppraisal.AppraisalRules
 		public Reaction(float desirability, float desirabilityForOther, float praiseworthiness, Name other)
 		{
 			Desirability = desirability;
-			DesirabilityForOther = desirabilityForOther;
+			//DesirabilityForOther = desirabilityForOther;
 			Praiseworthiness = praiseworthiness;
 			Other = other;
-			Like = 0;
+			//Like = 0;
 		}
 
 		/// <summary>
@@ -59,9 +59,9 @@ namespace EmotionalAppraisal.AppraisalRules
 		public Reaction(Reaction other)
 		{
 			Desirability = other.Desirability;
-			DesirabilityForOther = other.DesirabilityForOther;
+			//DesirabilityForOther = other.DesirabilityForOther;
 			Praiseworthiness = other.Praiseworthiness;
-			Like = other.Like;
+			//Like = other.Like;
 			//ReferencedEventName = (Name)other.ReferencedEventName.Clone();
 			if (Other != null)
 				Other = (Name) other.Other.Clone();
@@ -75,12 +75,12 @@ namespace EmotionalAppraisal.AppraisalRules
 		/// <summary>
 		///     Desirability For Other of the event
 		/// </summary>
-		public float DesirabilityForOther { get; set; }
+		//public float DesirabilityForOther { get; set; }
 
 		/// <summary>
 		///     Like value of the event
 		/// </summary>
-		public float Like { get; set; }
+		//public float Like { get; set; }
 
 		/// <summary>
 		///     Praiseworthiness of the event
