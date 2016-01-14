@@ -55,6 +55,7 @@
     <Compile Include="AddOrEditBeliefForm.Designer.cs">
       <DependentUpon>AddOrEditBeliefForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Emotion.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

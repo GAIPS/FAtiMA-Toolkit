@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -9,8 +11,20 @@ namespace EmotionalAppraisalWF
 {
     public partial class MainForm : Form
     {
+
+
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
         private string _saveFileName;
+
+        private BindingList<EmotionListItem> _emotionList;
+        
+        public class EmotionListItem
+        {
+            public string Type { get; set; }
+            public double Intensity { get; set; }
+            public string Event { get; set; }
+
+        }
 
 
         private void Reset(bool newFile)
@@ -36,13 +50,37 @@ namespace EmotionalAppraisalWF
                 }
             }
 
-         
-
         }
 
         public MainForm()
         {
             InitializeComponent();
+
+            _emotionList = new BindingList<EmotionListItem>()
+            {
+                new EmotionListItem {Event = "Event(Player, Speak, Self, Self, Self, Jonas)", Intensity = 2.3, Type = "Reproach"},
+                new EmotionListItem {Event = "Event(Player, Speak, Self)", Intensity = 2.5, Type = "Admiration"},
+                new EmotionListItem {Event = "Event(Player, Speak, Self)", Intensity = 2, Type = "Fears-Confirmed"},
+            };
+
+            emotionListItemBindingSource.Add(new EmotionListItem()
+            {
+                Event = "1Event(Player, Speak, Self, Self, Self, Jonas)",
+                Intensity = 2.3,
+                Type = "Reproach"
+            });
+
+
+            emotionListItemBindingSource.Add(new EmotionListItem()
+            {
+                Event = "Event(Player, Speak, Self, Self, Self, Jonas)",
+                Intensity = 2.3,
+                Type = "Adeproach"
+            });
+
+          
+            //this.refreshDataGridView(emotionsDataGridView, _emotionList);
+
             Reset(true);
         }
 
@@ -204,6 +242,90 @@ namespace EmotionalAppraisalWF
         private void beliefsListView_ItemActivate(object sender, EventArgs e)
         {
             this.editButton_Click(sender, e);
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick_2(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void trackBar1_Scroll_1(object sender, EventArgs e)
+        {
+            var moodValue = (double)moodTrackBar.Value;
+
+           moodValueLabel.Text = moodValue.ToString();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void moodGroupBox_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            
+            
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void addEmotionButton_Click(object sender, EventArgs e)
+        {
+            this._emotionList.Add(new EmotionListItem {Type = "Distress", Intensity = 2, Event = "Event(Jonas, JOnas, Jonas)"});
+            //refreshDataGridView(emotionsDataGridView, _emotionList);
+        }
+
+        private void emotionListItemBindingSource_CurrentChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox4_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
