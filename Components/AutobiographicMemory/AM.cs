@@ -23,7 +23,8 @@ namespace AutobiographicMemory
 		{
 			kb.RegistDynamicProperty(EVENT_PROPERTY_ID_TEMPLATE, EventIdPropertyCalculator);
 			kb.RegistDynamicProperty(EVENT_PARAMETER_PROPERTY_TEMPLATE, EventParameterPropertyCalculator);
-			kb.RegistDynamicProperty(EVENT_AGE_PROPERTY_TEMPLATE, EventAgePropertyCalculator);
+			kb.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE, EventAgePropertyCalculator);
+			kb.RegistDynamicProperty(LAST_EVENT_TEMPLATE,LastEventPropertyCalculator);
 		}
 
 		public IEventRecord RecordEvent(IEvent evt,string perspective)
@@ -67,8 +68,14 @@ namespace AutobiographicMemory
 			args.TryGetValue("action", out action);
 			args.TryGetValue("target", out target);
 
+			List<Pair<PrimitiveValue, SubstitutionSet>> results = new List<Pair<PrimitiveValue, SubstitutionSet>>();
 			var key = Name.BuildName((Name)"Event", subject, action, target);
-			return m_typeIndexes.Unify(key,constraints).SelectMany(p => p.Item1.Select(id => Tuples.Create((PrimitiveValue) id, p.Item2)));
+			foreach (var pair in m_typeIndexes.Unify(key, constraints))
+			{
+				foreach (var id in pair.Item1)
+					results.Add(Tuples.Create((PrimitiveValue)id, new SubstitutionSet(pair.Item2)));
+			}
+			return results;
 		}
 
 		//EventParameter
@@ -97,7 +104,7 @@ namespace AutobiographicMemory
 				foreach (var idPairs in kb.AskPossibleProperties(idName, constraints))
 				{
 					var idValue = idPairs.Item1;
-					if (!idValue.GetTypeCode().IsUnsignedNumeric())
+					if (!idValue.TypeCode.IsUnsignedNumeric())
 						continue;
 
 					var rec = m_registry[idValue];
@@ -134,21 +141,21 @@ namespace AutobiographicMemory
 				foreach (var paramPairs in kb.AskPossibleProperties(paramName,constraints))
 				{
 					var paramValue = paramPairs.Item1;
-					if (paramValue.GetTypeCode() != TypeCode.String)
+					if (paramValue.TypeCode != TypeCode.String)
 						continue;
 
-					var value = lookup[paramValue];
-					if(value==null)
-						continue;
-
-					result = result.Union(kb.AskPossibleProperties(value, paramPairs.Item2));
+					Name value;
+					if (lookup.TryGetValue(paramValue, out value))
+					{
+						result = result.Union(kb.AskPossibleProperties(value, paramPairs.Item2));
+					}
 				}
 			}
 			return result;
 		}
 
-		//EventAge
-		private static readonly Name EVENT_AGE_PROPERTY_TEMPLATE = Name.BuildName("EventAge([id])");
+		//EventElapseTime
+		private static readonly Name EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE = Name.BuildName("EventElapsedTime([id])");
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventAgePropertyCalculator(KB kb, IDictionary<string,Name> args, SubstitutionSet constraints)
 		{
 			var idName = args["id"];
@@ -175,13 +182,37 @@ namespace AutobiographicMemory
 			foreach (var pair in kb.AskPossibleProperties(idName,constraints))
 			{
 				var idValue = pair.Item1;
-				if(!idValue.GetTypeCode().IsUnsignedNumeric())
+				if(!idValue.TypeCode.IsUnsignedNumeric())
 					continue;
 
 				var record = m_registry[idValue];
 				var value = (DateTime.UtcNow - record.Timestamp).TotalSeconds;
 				yield return Tuples.Create((PrimitiveValue)value, pair.Item2);
 			}
+		}
+
+		//LastEvent
+		private static readonly Name LAST_EVENT_TEMPLATE = Name.BuildName((Name)"LastEvent", EVENT_TEMPLATE);
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> LastEventPropertyCalculator(KB kb, IDictionary<string, Name> args, SubstitutionSet constraints)
+		{
+			Name subject, action, target;
+			args.TryGetValue("subject", out subject);
+			args.TryGetValue("action", out action);
+			args.TryGetValue("target", out target);
+
+			var key = Name.BuildName((Name)"Event", subject, action, target);
+			List<Pair<PrimitiveValue, SubstitutionSet>> results = new List<Pair<PrimitiveValue, SubstitutionSet>>();
+			
+			foreach (var pair in m_typeIndexes.Unify(key, constraints))
+			{
+				var recordList = pair.Item1.Select(id => m_registry[id]).OrderByDescending(r => r.Timestamp).ToList();
+				var recentRecord = recordList.FirstOrDefault();
+				if(recentRecord==null)
+					continue;
+
+				results.Add(Tuples.Create((PrimitiveValue)recentRecord.Id, new SubstitutionSet(pair.Item2)));
+			}
+			return results;
 		}
 
 		#endregion

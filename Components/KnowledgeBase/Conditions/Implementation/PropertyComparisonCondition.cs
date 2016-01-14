@@ -32,49 +32,6 @@ namespace KnowledgeBase.Conditions
 							yield return crossPair.Item2;
 					}
 				}
-				/*
-				Name p1 = Property1;
-				if (!p1.IsGrounded)
-					p1 = p1.MakeGround(constraints);
-
-				Name p2 = Property2;
-				if (!p2.IsGrounded)
-					p2 = p2.MakeGround(constraints);
-
-				if (p1.IsGrounded == p2.IsGrounded)
-				{
-					if (p1.IsGrounded)
-					{
-						var v1 = kb.AskProperty(p1);
-						if (v1 != null)
-						{
-							var v2 = kb.AskProperty(p2);
-							if (v2 != null)
-							{
-								if (CompareValues(v1, v2, Operator))
-									yield return constraints;
-							}
-						}
-					}
-					else
-					{
-						
-					}
-				}
-				else
-				{
-					Name ungrounded = p1.IsGrounded ? p2 : p1;
-					Name grounded = p1.IsGrounded ? p1 : p2;
-					ComparisonOperator op = p1.IsGrounded ? Operator : Operator.Mirror();
-
-					var value = kb.AskProperty(grounded) ?? grounded.ToString();
-					foreach (var pair in kb.AskPossibleProperties(ungrounded, constraints))
-					{
-						if (CompareValues(value, pair.Item1, op))
-							yield return pair.Item2;
-					}
-				}
-				*/
 			}
 
 			public override bool Equals(object obj)

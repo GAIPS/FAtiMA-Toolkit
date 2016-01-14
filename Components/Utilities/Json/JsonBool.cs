@@ -13,7 +13,7 @@ namespace Utilities.Json
 
 		public override void Write(TextWriter writer, int ident, bool allowIndent)
 		{
-			writer.Write(Value.ToString());
+			writer.Write(Value.ToString().ToLowerInvariant());
 		}
 	}
 }

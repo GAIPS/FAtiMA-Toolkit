@@ -2,6 +2,7 @@
 using System.IO;
 using EmotionalDecisionMaking;
 using GAIPS.Serialization;
+using KnowledgeBase.WellFormedNames;
 using NUnit.Framework;
 
 namespace Tests.EmotionalDecisionMaking
@@ -12,12 +13,13 @@ namespace Tests.EmotionalDecisionMaking
 		private ReactiveActions BuildTestAsset()
 		{
 			var r = new ReactiveActions();
-			
-			var d = new ActionTendency("Speak");
-			d.ActivationCooldown = 2;
-			d.AddParameter("target");
-			d.AddParameter("speachType");
 
+			var d = new ActionTendency((Name)"Speak(target([x]),speachType([y]))");
+			d.ActivationCooldown = 2;
+			r.AddReactiveAction(d);
+
+			d = new ActionTendency((Name)"Speak(target([x]),speachType(formal))");
+			d.ActivationCooldown = 5;
 			r.AddReactiveAction(d);
 			return r;
 		}

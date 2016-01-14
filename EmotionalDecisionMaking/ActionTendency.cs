@@ -1,56 +1,90 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GAIPS.Serialization;
 using KnowledgeBase.Conditions;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
 
 namespace EmotionalDecisionMaking
 {
-	[Serializable]
-	public class ActionTendency : ICloneable, ICustomSerialization
+	public partial class ActionTendency : ICloneable
 	{
-		private const float DEFAULT_ACTIVATION_COOLDOWN = 5f;
-		private HashSet<Name> m_parameters = new HashSet<Name>();
+		private const float DEFAULT_ACTIVATION_COOLDOWN = 1f;
+		private Dictionary<Name, Name> m_parameters;
 		private DateTime m_lastActivationTimestamp;
 
-		public string ActionName { get; private set; }
+		public Name ActionName { get; private set; }
 		public float ActivationCooldown { get; set; }
-		public IEnumerable<Name> Parameters
-		{
-			get { return m_parameters; }
-		}
+
 		public ConditionEvaluatorSet ActivationConditions { get; private set; }
 		public bool IsCoolingdown
 		{
 			get { return (DateTime.UtcNow - m_lastActivationTimestamp).TotalSeconds <= ActivationCooldown; }
 		}
 
-		public ActionTendency(string actionName)
+		public ActionTendency(Name actionName) : this(actionName,Enumerable.Empty<Condition>()) {}
+
+		public ActionTendency(Name actionName, IEnumerable<Condition> activationConditions)
 		{
-			ActionName = actionName;
+			var terms = actionName.GetTerms().ToArray();
+			var name = terms[0];
+			if (!name.IsPrimitive)
+				throw new Exception("ActionName name needs to be a primitive value Name");
+
 			ActivationCooldown = DEFAULT_ACTIVATION_COOLDOWN;
-			ActivationConditions = new ConditionEvaluatorSet();
+			ActivationConditions = new ConditionEvaluatorSet(activationConditions);
+			ActionName = name;
+
+			if (terms.Length > 1)
+			{
+				m_parameters = new Dictionary<Name, Name>();
+				for (int i = 1; i < terms.Length; i++)
+				{
+					var p = terms[i];
+					m_parameters.Add(p.GetFirstTerm(), p.GetNTerm(1));
+				}
+			}
 		}
 
-		public void AddParameter(string parameterName)
+		public void AddParameter(string parameterName, Name value)
 		{
-			var variable = (Name) ("[" + parameterName + "]");
-			m_parameters.Add(variable);
+			var name = (Name) parameterName;
+			if(!name.IsPrimitive)
+				throw new Exception("Invalid parameter name");
+
+			if(m_parameters==null)
+				m_parameters=new Dictionary<Name, Name>();
+
+			m_parameters.Add(name,value);
 		}
 
 		private ActionTendency(ActionTendency other)
 		{
 			ActionName = other.ActionName;
 			ActivationCooldown = other.ActivationCooldown;
-			m_parameters.UnionWith(other.m_parameters);
 			ActivationConditions = new ConditionEvaluatorSet(other.ActivationConditions);
+
+			if (other.m_parameters != null)
+				m_parameters = new Dictionary<Name, Name>(other.m_parameters);
 		}
 
-		public void Activate()
+		public IAction GenerateAction(SubstitutionSet constraints)
 		{
-			m_lastActivationTimestamp=DateTime.UtcNow;
+			List<IActionParameter> validParameters = new List<IActionParameter>();
+			if (m_parameters != null)
+			{
+				foreach (var p in m_parameters)
+				{
+					var value = p.Value.MakeGround(constraints);
+					if (!value.IsGrounded)
+						return null;
+
+					var parameter = new ActionParameter(p.Key.ToString(), value);
+					validParameters.Add(parameter);
+				}
+			}
+			m_lastActivationTimestamp = DateTime.UtcNow;
+			return new Action(ActionName, validParameters);
 		}
 
 		public object Clone()
@@ -58,29 +92,12 @@ namespace EmotionalDecisionMaking
 			return new ActionTendency(this);
 		}
 
-		public void GetObjectData(ISerializationData dataHolder)
+		public Name ToName()
 		{
-			var actionName = Name.BuildName(m_parameters.Prepend((Name) ActionName));
-			dataHolder.SetValue("Action",actionName);
-			dataHolder.SetValue("Conditions",ActivationConditions);
-			dataHolder.SetValue("Cooldown", ActivationCooldown);
-		}
-
-		public void SetObjectData(ISerializationData dataHolder)
-		{
-			var actionName = dataHolder.GetValue<Name>("Action");
-			var terms = actionName.GetTerms().ToArray();
-			if(!terms.Skip(1).All(t=>t.IsVariable))
-				throw new Exception("Action parameteres can only be variables");
-
-			if(terms[0].IsVariable)
-				throw new Exception("Action name cannot be a variable");
-
-			ActivationCooldown = dataHolder.GetValue<float>("Cooldown");
-			ActivationConditions = dataHolder.GetValue<ConditionEvaluatorSet>("Conditions");
-			ActionName = terms[0].ToString();
-			m_parameters = new HashSet<Name>();
-			m_parameters.UnionWith(terms.Skip(1));
+			var actionName = (Name)ActionName;
+			if (m_parameters != null)
+				actionName = Name.BuildName(m_parameters.Select(pair => Name.BuildName(pair.Key, pair.Value)).Prepend(actionName));
+			return actionName;
 		}
 	}
 }

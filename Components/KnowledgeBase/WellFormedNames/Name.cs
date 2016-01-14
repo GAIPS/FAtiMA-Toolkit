@@ -247,7 +247,7 @@ namespace KnowledgeBase.WellFormedNames
 
 		public static Name BuildName(PrimitiveValue value)
 		{
-			if (value.GetTypeCode() == TypeCode.String)
+			if (value.TypeCode == TypeCode.String)
 				return BuildName((string) value);
 
 			return new PrimitiveSymbol(value);

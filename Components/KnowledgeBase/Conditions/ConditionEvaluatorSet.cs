@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using KnowledgeBase.WellFormedNames;
+using Utilities;
 
 namespace KnowledgeBase.Conditions
 {
@@ -18,19 +19,23 @@ namespace KnowledgeBase.Conditions
 
 		public IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, SubstitutionSet constraints)
 		{
-			var it = GetEnumerator();
-			if (!it.MoveNext())
-				return new[] {new SubstitutionSet()};
-
-			var result = it.Current.UnifyEvaluate(kb, constraints);
-
-			while (it.MoveNext())
+			List<SubstitutionSet> sets = new List<SubstitutionSet>();
+			List<SubstitutionSet> aux = new List<SubstitutionSet>();
+			sets.Add(constraints);
+			using (var it = GetEnumerator())
 			{
-				var a = it.Current;
-				result = result.SelectMany(s => 
-					a.UnifyEvaluate(kb, s));
+				while (it.MoveNext())
+				{
+					var condition = it.Current;
+					foreach (var s in sets)
+						aux.AddRange(condition.UnifyEvaluate(kb, s));
+					Util.Swap(ref sets,ref aux);
+					aux.Clear();
+					if(sets.Count==0)
+						break;
+				}
 			}
-			return result;
+			return sets;
 		}
 
 		public bool Evaluate(KB kb, SubstitutionSet constraints)

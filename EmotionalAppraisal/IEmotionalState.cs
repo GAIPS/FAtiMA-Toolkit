@@ -45,7 +45,9 @@ namespace EmotionalAppraisal
 		/// </summary>
 		void Clear();
 
-		/// <summary>
+		IEnumerable<IActiveEmotion> GetEmotionsByType(string emotionType);
+
+			/// <summary>
 		/// Searches for a given emotion in the EmotionalState
 		/// </summary>
 		/// <param name="emotionKey">a string that corresponds to a hashkey that represents the emotion in the EmotionalState</param>

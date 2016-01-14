@@ -64,9 +64,23 @@ namespace KnowledgeBase
 		private static IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> CountPropertyCalculator(KB kb, IDictionary<string,Name> args, SubstitutionSet constraints)
 		{
 			var arg = args["x"];
-			var r = kb.AskPossibleProperties(arg, constraints).ToList();
-			PrimitiveValue c = r.Count;
-			return new[] { Tuples.Create(c, constraints) };
+
+			List<Pair<PrimitiveValue, SubstitutionSet>> results = new List<Pair<PrimitiveValue, SubstitutionSet>>();
+			var set = kb.AskPossibleProperties(arg, constraints).ToList();
+			if (!set.Any())
+			{
+				results.Add(Tuples.Create((PrimitiveValue)0,constraints));
+			}
+			else
+			{
+				var groups = set.GroupBy(r => r.Item2);
+				foreach (var r in groups)
+				{
+					PrimitiveValue c = r.Count();
+					results.Add(Tuples.Create(c, r.Key));
+				}	
+			}
+			return results;
 		}
 
 #endregion
@@ -91,49 +105,13 @@ namespace KnowledgeBase
 			m_dynamicProperties.Add(propertyTemplate,new DynamicKnowledgeEntry(surogate));
 		}
 
-		/// <summary>
-		/// Asks the KB the Truth value of the received predicate
-		/// </summary>
-		/// <param name="predicate">The predicate to search in the KB</param>
-		/// <returns>
-		/// Under the Closed World Assumption, the predicate is considered 
-		/// true if it is stored in the KB and false otherwise.
-		/// </returns>
-		/*
-		public bool AskPredicate(Name predicate, SubstitutionSet constraints = null)
-		{
-			var value = AskProperty(predicate,constraints);
-			if (value == null)
-				return false;
-			if (value.GetTypeCode() != TypeCode.Boolean)
-				return false;
-			return value;
-		}
-		*/
-		/// <summary>
-		/// Asks the KB the value of a given predicate
-		/// </summary>
-		/// <param name="property">the predicate to search in the KB</param>
-		/// <returns>the value stored inside the predicate, if the predicate exists. If the predicate does not exist, it returns null</returns>
-		/*
-		public PrimitiveValue AskProperty(Name property, SubstitutionSet constraints = null)
-		{
-			var r = AskPossibleProperties(property, constraints).ToList();
-			if (r.Count==0)
-				return null;
-			if(r.Count>1)
-				throw new Exception("Multiple results found for "+property);
-
-			return r[0].Item1;
-		}
-		*/
 		public IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> AskPossibleProperties(Name property, SubstitutionSet constraints)
 		{
-			if (property.IsPrimitive)
-				return new[] {Tuples.Create(property.GetPrimitiveValue(), constraints)};
-
 			if (constraints != null && !property.IsGrounded)
 				property = property.MakeGround(constraints);
+
+			if (property.IsPrimitive)
+				return new[] {Tuples.Create(property.GetPrimitiveValue(), constraints)};
 
 			var dynamicResult = AskDynamicProperties(property, constraints);
 			if (dynamicResult != null)
@@ -148,14 +126,14 @@ namespace KnowledgeBase
 
 			return m_knowledgeStorage.Unify(fact, constraints).Select(p => Tuples.Create(p.Item1.Value, p.Item2));
 		}
-
+		/*
 		public IEnumerable<SubstitutionSet> AskPossiblePredicates(Name predicate, SubstitutionSet constraints)
 		{
 			return AskPossibleProperties(predicate, constraints)
-				.Where(p => p.Item1.GetTypeCode() == TypeCode.Boolean)
+				.Where(p => p.Item1 == true)
 				.Select(p => p.Item2);
 		}
-
+		*/
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> AskDynamicProperties(Name property, SubstitutionSet constraints)
 		{
 			const string tmpMarker = "_arg";
@@ -184,7 +162,7 @@ namespace KnowledgeBase
 						args[paramName] = s.Variable.RemoveBoundedVariables(tmpMarker);
 					}
 				}
-				return p.Item1.surogate(this, args, constraints);
+				return p.Item1.surogate(this, args, new SubstitutionSet(constraints));
 			});
 
 			var final = results.ToList();
@@ -296,7 +274,7 @@ namespace KnowledgeBase
 			foreach (var v in name.GetVariableList())
 			{
 				var value = bindings[v];
-				if (!value.IsGrounded)
+				if (value!=null && !value.IsGrounded)
 					value = FindConstantLeveledName(value, bindings,throwException);
 				if (!throwException && value == null)
 					return null;
@@ -334,6 +312,8 @@ namespace KnowledgeBase
 		{
 			get { return m_knowledgeStorage.Count; }
 		}
+
+#region Serialization
 
 		public void GetObjectData(ISerializationData dataHolder)
 		{
@@ -385,5 +365,7 @@ namespace KnowledgeBase
 				}
 			}
 		}
+
+#endregion
 	}
 }

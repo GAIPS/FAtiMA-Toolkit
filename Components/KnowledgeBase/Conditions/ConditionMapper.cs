@@ -1,54 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
 
 namespace KnowledgeBase.Conditions
 {
 	[Serializable]
-	public class ConditionMapper<T> : IEnumerable<KeyValuePair<ConditionEvaluatorSet,T>>
+	public class ConditionMapper<T> : IEnumerable<Pair<ConditionEvaluatorSet,T>>
 	{
-		private Dictionary<ConditionEvaluatorSet, T> m_dict = new Dictionary<ConditionEvaluatorSet, T>();
+		private static readonly IEqualityComparer<Pair<ConditionEvaluatorSet, T>> EQUALITY_COMPARER = new ConditionMapperEquality();
+		private HashSet<Pair<ConditionEvaluatorSet, T>> m_conditions = new HashSet<Pair<ConditionEvaluatorSet, T>>(EQUALITY_COMPARER);
 
 		public int Count
 		{
-			get { return m_dict.Count; }
+			get { return m_conditions.Count; }
 		}
 
-		public void Add(ConditionEvaluatorSet conditionEvaluator, T value)
+		public bool Add(ConditionEvaluatorSet conditionEvaluator, T value)
 		{
-			if(conditionEvaluator==null)
-				conditionEvaluator=new ConditionEvaluatorSet();
-			m_dict.Add(conditionEvaluator,value);
+			if (conditionEvaluator!=null && conditionEvaluator.Count == 0)
+				conditionEvaluator = null;
+
+			return m_conditions.Add(Tuples.Create(conditionEvaluator, value));
 		}
 
-		public bool Remove(ConditionEvaluatorSet conditionEvaluator)
+		public bool Remove(ConditionEvaluatorSet conditionEvaluator, T value)
 		{
-			return m_dict.Remove(conditionEvaluator);
+			if (conditionEvaluator.Count == 0)
+				conditionEvaluator = null;
+
+			return m_conditions.Remove(Tuples.Create(conditionEvaluator, value));
 		}
 
 		public void Clear()
 		{
-			m_dict.Clear();
+			m_conditions.Clear();
 		}
 
-		public IEnumerable<Pair<T,IEnumerable<SubstitutionSet>>> MatchConditions(KB kb, SubstitutionSet constraints)
+		public IEnumerable<Pair<T,SubstitutionSet>> MatchConditions(KB kb, SubstitutionSet constraints)
 		{
-			foreach (var e in m_dict)
+			foreach (var e in m_conditions)
 			{
-				var c = new SubstitutionSet(constraints);
-				var set = e.Key.UnifyEvaluate(kb, c);
-				if(!set.Any())
+				if (e.Item1 == null)
+				{
+					yield return Tuples.Create(e.Item2, new SubstitutionSet(constraints));
 					continue;
+				}
 
-				yield return Tuples.Create(e.Value, set);
+				foreach (var set in e.Item1.UnifyEvaluate(kb, constraints))
+					yield return Tuples.Create(e.Item2, set);
 			}
 		}
 
-		public IEnumerator<KeyValuePair<ConditionEvaluatorSet, T>> GetEnumerator()
+		public IEnumerator<Pair<ConditionEvaluatorSet, T>> GetEnumerator()
 		{
-			return m_dict.GetEnumerator();
+			return m_conditions.GetEnumerator();
 		}
 
 		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
@@ -58,7 +66,8 @@ namespace KnowledgeBase.Conditions
 
 		public override int GetHashCode()
 		{
-			return m_dict.GetHashCode();
+			const int BASE_HASHCODE = 0x3a74ed8a;
+			return m_conditions.Aggregate(BASE_HASHCODE, (hash, pair) => hash ^ EQUALITY_COMPARER.GetHashCode(pair));
 		}
 
 		public override bool Equals(object obj)
@@ -67,19 +76,20 @@ namespace KnowledgeBase.Conditions
 			if (map == null)
 				return false;
 
-			if (m_dict.Count != map.m_dict.Count)
-				return false;
+			return m_conditions.SetEquals(map.m_conditions);
+		}
 
-			foreach (var p in map.m_dict)
+		private class ConditionMapperEquality : IEqualityComparer<Pair<ConditionEvaluatorSet,T>>
+		{
+			public bool Equals(Pair<ConditionEvaluatorSet, T> x, Pair<ConditionEvaluatorSet, T> y)
 			{
-				T v;
-				if (!m_dict.TryGetValue(p.Key, out v))
-					return false;
-
-				if (!p.Value.Equals(v))
-					return false;
+				return object.Equals(x.Item1, y.Item1) && object.Equals(x.Item2, y.Item2);
 			}
-			return true;
+
+			public int GetHashCode(Pair<ConditionEvaluatorSet, T> obj)
+			{
+				return obj.Item1 == null ? 0 : obj.Item1.GetHashCode() ^ obj.Item2.GetHashCode();
+			}
 		}
 	}
 }

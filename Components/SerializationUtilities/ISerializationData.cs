@@ -14,6 +14,8 @@ namespace GAIPS.Serialization
 		T GetValue<T>(string name);
 		object GetValue(string name, Type expectedType);
 
+		bool ContainsField(string name);
+
 		void SetValueGraphNode(string name, IGraphNode node);
 		IGraphNode GetValueGraphNode(string name);
 

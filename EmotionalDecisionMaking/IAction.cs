@@ -5,9 +5,7 @@ namespace EmotionalDecisionMaking
 {
 	public interface IAction
 	{
-		string Subject { get; }
-		string Action { get; }
-		string Target { get; }
+		Name ActionName { get; }
 		IEnumerable<IActionParameter> Parameters { get; }
 
 		Name this[string parameterName] { get; }

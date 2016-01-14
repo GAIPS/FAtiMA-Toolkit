@@ -8,7 +8,7 @@ using Utilities;
 namespace KnowledgeBase.WellFormedNames
 {
 	[Serializable]
-	public sealed class SubstitutionSet : IVariableRenamer<SubstitutionSet>, IEnumerable<Substitution>
+	public sealed class SubstitutionSet : IEnumerable<Substitution>
 	{
 		private Dictionary<Name,Name> m_substitutions = new Dictionary<Name, Name>();
 
@@ -211,17 +211,6 @@ namespace KnowledgeBase.WellFormedNames
 				builder.Length = 0;
 				ObjectPool<StringBuilder>.Recycle(builder);
 			}
-		}
-
-		public SubstitutionSet ReplaceUnboundVariables(string id)
-		{
-			return new SubstitutionSet(this.Select(s => s.ReplaceUnboundVariables(id)));
-		}
-
-
-		public SubstitutionSet RemoveBoundedVariables(string id)
-		{
-			return new SubstitutionSet(this.Select(s => s.RemoveBoundedVariables(id)));
 		}
 	}
 }

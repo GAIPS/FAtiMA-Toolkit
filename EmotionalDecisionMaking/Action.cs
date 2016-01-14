@@ -1,34 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutobiographicMemory.Interfaces;
 using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalDecisionMaking
 {
-	public sealed partial class ReactiveActions
+	public sealed partial class ActionTendency
 	{
-		private class Action_impl : IAction
+		private class Action : IAction
 		{
 			private Dictionary<string, Name> m_parameters;
 
-			public string Action{ get; private set; }
-
-			public string Subject { get; private set; }
-
-			public string Target { get; private set; }
+			public Name ActionName{ get; private set; }
 
 			public IEnumerable<IActionParameter> Parameters
 			{
 				get { return m_parameters.Select(p => new ActionParameter(p.Key, p.Value)).Cast<IActionParameter>(); }
 			}
 
-			public Action_impl(string actionName, string subject, string target, IEnumerable<IActionParameter> parameters)
+			public Action(Name actionNameName, IEnumerable<IActionParameter> parameters)
 			{
-				Action = actionName;
-				Subject = subject;
-				Target = target;
-				m_parameters = parameters.ToDictionary(p => p.ParameterName, p => p.Value);
+				ActionName = actionNameName;
+				m_parameters = parameters.ToDictionary(p => p.ParameterName, p => p.Value,StringComparer.InvariantCultureIgnoreCase);
 			}
 
 			public Name this[string parameterName]
@@ -37,7 +30,7 @@ namespace EmotionalDecisionMaking
 				{
 					Name value;
 					if (!m_parameters.TryGetValue(parameterName, out value))
-						return null;
+						return Name.NIL_SYMBOL;
 					return value;
 				}
 			}

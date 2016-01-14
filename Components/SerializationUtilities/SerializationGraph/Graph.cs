@@ -154,6 +154,11 @@ namespace GAIPS.Serialization.SerializationGraph
 
 		#region Node Builders
 
+		public IGraphNode BuildNode<T>(T obj)
+		{
+			return BuildNode(obj, typeof (T));
+		}
+
 		public IGraphNode BuildNode(object obj, Type fieldType)
 		{
 			if (obj == null)

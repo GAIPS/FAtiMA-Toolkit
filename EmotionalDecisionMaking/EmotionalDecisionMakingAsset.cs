@@ -1,4 +1,5 @@
-﻿using AssetPackage;
+﻿using System.Collections.Generic;
+using AssetPackage;
 using EmotionalAppraisal;
 
 namespace EmotionalDecisionMaking
@@ -14,12 +15,12 @@ namespace EmotionalDecisionMaking
 			m_emotionalDecisionMaking = eaa;
 		}
 
-		public IAction Decide()
+		public IEnumerable<IAction> Decide()
 		{
 			if (ReactiveActions == null)
 				return null;
 
-			return ReactiveActions.MakeAction(m_emotionalDecisionMaking.Perspective, m_emotionalDecisionMaking.Kb);
+			return ReactiveActions.MakeAction(m_emotionalDecisionMaking.Kb);
 		}
 	}
 }

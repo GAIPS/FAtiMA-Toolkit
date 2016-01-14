@@ -65,11 +65,16 @@ namespace GAIPS.Serialization.Surrogates
 
 			public object GetValue(string name, Type expectedType)
 			{
-				var node = _holder[name];
-				if (node == null)
-					return expectedType == null ? null : SerializationServices.GetDefaultValueForType(expectedType);
+				IGraphNode node;
+				if (_holder.TryGetField(name, out node))
+					return node.RebuildObject(expectedType);
 
-				return node.RebuildObject(expectedType);
+				return expectedType == null ? null : SerializationServices.GetDefaultValueForType(expectedType);
+			}
+
+			public bool ContainsField(string name)
+			{
+				return _holder.ContainsField(name);
 			}
 
 			public ISerializationFieldEnumerator GetEnumerator()

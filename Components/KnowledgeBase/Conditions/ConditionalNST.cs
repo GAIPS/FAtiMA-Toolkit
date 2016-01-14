@@ -16,7 +16,7 @@ namespace KnowledgeBase
 	{
 		private NameSearchTree<ConditionMapper<T>> m_dictionary=new NameSearchTree<ConditionMapper<T>>();
 
-		public void Add(Name name, ConditionEvaluatorSet conditionsEvaluator, T value)
+		public bool Add(Name name, ConditionEvaluatorSet conditionsEvaluator, T value)
 		{
 			ConditionMapper<T> conds;
 			if (!m_dictionary.TryGetValue(name, out conds))
@@ -25,16 +25,16 @@ namespace KnowledgeBase
 				m_dictionary[name] = conds;
 			}
 
-			conds.Add(conditionsEvaluator,value);
+			return conds.Add(conditionsEvaluator,value);
 		}
 
-		public bool Remove(Name name, ConditionEvaluatorSet conditionsEvaluator)
+		public bool Remove(Name name, ConditionEvaluatorSet conditionsEvaluator, T value)
 		{
 			ConditionMapper<T> conds;
 			if (!m_dictionary.TryGetValue(name, out conds))
 				return false;
 
-			if (!conds.Remove(conditionsEvaluator))
+			if (!conds.Remove(conditionsEvaluator, value))
 				return false;
 
 			if (conds.Count == 0)
@@ -49,10 +49,7 @@ namespace KnowledgeBase
 				bindings=new SubstitutionSet();
 
 			var p1 = m_dictionary.Unify(expression, bindings);
-			var p2 = p1.SelectMany(p => p.Item1.MatchConditions(knowledgeBase, p.Item2));
-			return p2.Select(p => new {v = p.Item1, c = p.Item2.FirstOrDefault()})
-				.Where(r => r.c != null)
-				.Select(r => Tuples.Create(r.v, r.c));
+			return p1.SelectMany(p => p.Item1.MatchConditions(knowledgeBase, p.Item2));
 		}
 
 		public override int GetHashCode()
@@ -79,12 +76,12 @@ namespace KnowledgeBase
 				foreach (var v in pair.Value)
 				{
 					var node = dataHolder.ParentGraph.CreateObjectData();
-					node["key"] = dataHolder.ParentGraph.BuildNode(pair.Key, typeof (Name));
-					if (v.Key != null && v.Key.Count > 0)
+					node["key"] = dataHolder.ParentGraph.BuildNode(pair.Key);
+					if (v.Item1 != null && v.Item1.Count > 0)
 					{
-						node["conditions"] = dataHolder.ParentGraph.BuildNode(v.Key, typeof (ConditionEvaluatorSet));
+						node["conditions"] = dataHolder.ParentGraph.BuildNode(v.Item1);
 					}
-					node["value"] = dataHolder.ParentGraph.BuildNode(v.Value, typeof (T));
+					node["value"] = dataHolder.ParentGraph.BuildNode(v.Item2);
 					seq.Add(node);
 				}
 			}

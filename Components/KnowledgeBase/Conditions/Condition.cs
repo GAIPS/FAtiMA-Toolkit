@@ -136,7 +136,7 @@ namespace KnowledgeBase.Conditions
 				PrimitiveValue value = (v1.IsPrimitive ? v1 : v2).GetPrimitiveValue();
 				op = v1.IsPrimitive ? op.Mirror() : op;
 
-				if (value.GetTypeCode() == TypeCode.Boolean)
+				if (value.TypeCode == TypeCode.Boolean)
 				{
 					switch (op)
 					{
