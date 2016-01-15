@@ -23,23 +23,10 @@ namespace KnowledgeBase.Conditions
 				if (constraints == null)
 					constraints = new SubstitutionSet();
 
-				var p = m_property.MakeGround(constraints);
-				if (p.IsGrounded)
+				foreach (var pair in kb.AskPossibleProperties(m_property, constraints))
 				{
-					var pValue = kb.AskProperty(p);
-					if (pValue != null)
-					{
-						if (CompareValues(pValue, m_value, m_operation))
-							yield return constraints;
-					}
-				}
-				else
-				{
-					foreach (var pair in kb.AskPossibleProperties(p, constraints))
-					{
-						if (CompareValues(pair.Item1, m_value, m_operation))
-							yield return pair.Item2;
-					}
+					if (CompareValues(pair.Item1, m_value, m_operation))
+						yield return pair.Item2;
 				}
 			}
 

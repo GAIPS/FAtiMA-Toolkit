@@ -5,20 +5,21 @@ using EmotionalAppraisal.OCCModel;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
+using System.Linq;
 using AutobiographicMemory;
 using AutobiographicMemory.Interfaces;
 using GAIPS.Serialization;
 using KnowledgeBase;
 using KnowledgeBase.Conditions;
 using KnowledgeBase.WellFormedNames;
+using Utilities;
 
 namespace EmotionalAppraisal
 {
 	[Serializable]
 	public sealed partial class EmotionalAppraisalAsset : BaseAsset, ICustomSerialization
 	{
-
-        public static string[] GetKnowledgeVisibilities()
+		public static string[] GetKnowledgeVisibilities()
         {
             return Enum.GetNames(typeof(KnowledgeVisibility));
         }
@@ -159,6 +160,7 @@ namespace EmotionalAppraisal
 			m_emotionalState = new ConcreteEmotionalState(this);
 			m_occAffectDerivator = new OCCAffectDerivationComponent();
 			m_appraisalDerivator = new ReactiveAppraisalDerivator();
+			BindCalls(m_kb);
 		}
 
 		public void AppraiseEvents(IEnumerable<IEvent> events)
@@ -223,13 +225,127 @@ namespace EmotionalAppraisal
         {
             return this.Kb.BeliefExists(Name.BuildName(name));
         }
+		private void BindCalls(KB kb)
+		{
+			kb.RegistDynamicProperty(MOOD_TEMPLATE,MoodPropertyCalculator);
+			kb.RegistDynamicProperty(STRONGEST_EMOTION_TEMPLATE,StrongestEmotionCalculator);
+			kb.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE,EmotionIntensityPropertyCalculator);
+		}
 
         public void RemoveBelief(string name)
         {
             this.Kb.Retract(Name.BuildName(name));
         }
+		#region Dynamic Properties
 
-        public void SaveToFile(Stream file)
+		private static readonly Name MOOD_TEMPLATE = (Name)"Mood([x])";
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> MoodPropertyCalculator(KB kb, IDictionary<string, Name> args, SubstitutionSet constraints)
+		{
+			Name arg = args["x"];
+			if (arg.IsVariable)
+			{
+				var sub = new Substitution(arg, Name.SELF_SYMBOL);
+				if (constraints.AddSubstitution(sub))
+					yield return Tuples.Create((PrimitiveValue) EmotionalState.Mood, constraints);
+			}
+			else
+			{
+				foreach (var resultPair in kb.AskPossibleProperties(arg, constraints))
+				{
+					var name = Name.BuildName(resultPair.Item1);
+					if (name == Name.SELF_SYMBOL)
+						yield return Tuples.Create((PrimitiveValue)EmotionalState.Mood, resultPair.Item2);
+				}
+			}
+		}
+
+		private static readonly Name STRONGEST_EMOTION_TEMPLATE = (Name)"StrongestEmotion([x])";
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> StrongestEmotionCalculator(KB kb, IDictionary<string, Name> args, SubstitutionSet constraints)
+		{
+			Name arg = args["x"];
+			if (arg.IsVariable)
+			{
+				var sub = new Substitution(arg, Name.SELF_SYMBOL);
+				if (constraints.AddSubstitution(sub))
+				{
+					var emo = EmotionalState.GetStrongestEmotion();
+					if(emo!=null)
+						yield return Tuples.Create((PrimitiveValue)emo.EmotionType, constraints);
+				}
+			}
+			else
+			{
+				foreach (var resultPair in kb.AskPossibleProperties(arg, constraints))
+				{
+					var name = Name.BuildName(resultPair.Item1);
+					if (name == Name.SELF_SYMBOL)
+					{
+						var emo = EmotionalState.GetStrongestEmotion();
+						if(emo!=null)
+							yield return Tuples.Create((PrimitiveValue)emo.EmotionType, resultPair.Item2);
+					}
+				}
+			}
+		}
+
+		private static readonly Name EMOTION_INTENSITY_TEMPLATE = (Name) "EmotionIntensity([x],[y])";
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EmotionIntensityPropertyCalculator(KB kb, IDictionary<string, Name> args, SubstitutionSet constraints)
+		{
+			Name entity = args["x"];
+			Name emotionName = args["y"];
+
+			List<Pair<PrimitiveValue, SubstitutionSet>> result = new List<Pair<PrimitiveValue, SubstitutionSet>>();
+			if (entity.IsVariable)
+			{
+				var newSub = new Substitution(entity,Name.SELF_SYMBOL);
+				if (constraints.AddSubstitution(newSub))
+					result.AddRange(GetEmotionsForEntity(EmotionalState, emotionName, kb, constraints));
+			}
+			else
+			{
+				foreach (var resultPair in kb.AskPossibleProperties(entity,constraints))
+				{
+					Name entityName = Name.BuildName(resultPair.Item1);
+					if(entityName==Name.SELF_SYMBOL)
+						result.AddRange(GetEmotionsForEntity(EmotionalState, emotionName, kb, resultPair.Item2));
+				}
+			}
+			return result;
+		}
+
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> GetEmotionsForEntity(IEmotionalState state,
+			Name emotionName, KB kb, SubstitutionSet constraints)
+		{
+			if (emotionName.IsVariable)
+			{
+				foreach (var emotion in state.GetAllEmotions())
+				{
+					var sub = new Substitution(emotionName,(Name)emotion.EmotionType);
+					if(constraints.Conflicts(sub))
+						continue;
+
+					var newConstraints = new SubstitutionSet(constraints);
+					newConstraints.AddSubstitution(sub);
+					yield return Tuples.Create((PrimitiveValue) emotion.Intensity, newConstraints);
+				}
+			}
+			else
+			{
+				foreach (var resultPair in kb.AskPossibleProperties(emotionName,constraints))
+				{
+					string emotionKey = resultPair.Item1.ToString();
+					var emotion = state.GetEmotionsByType(emotionKey).OrderByDescending(e => e.Intensity).FirstOrDefault();
+					if(emotion==null)
+						yield return Tuples.Create((PrimitiveValue)0, resultPair.Item2);
+
+					yield return Tuples.Create((PrimitiveValue)emotion.Intensity, resultPair.Item2);
+				}
+			}
+		}
+
+		#endregion
+
+		public void SaveToFile(Stream file)
 	    {
             var serializer = new JSONSerializer();
             serializer.Serialize(file, this);
@@ -261,6 +377,7 @@ namespace EmotionalAppraisal
 			m_appraisalDerivator = dataHolder.GetValue<ReactiveAppraisalDerivator>("AppraisalRules");
 
 			m_occAffectDerivator = new OCCAffectDerivationComponent();
+			BindCalls(m_kb);
 		}
 
 		#endregion

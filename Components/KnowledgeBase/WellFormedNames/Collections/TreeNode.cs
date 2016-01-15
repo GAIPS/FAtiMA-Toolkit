@@ -552,7 +552,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 						}
 					}
 
-					if (m_nextVariable!=null)
+					if (m_nextVariable != null)
 					{
 						//Find bindings with stored variables
 						foreach (var pair in m_nextVariable)

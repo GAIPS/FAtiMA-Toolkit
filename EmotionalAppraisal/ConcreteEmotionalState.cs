@@ -181,12 +181,17 @@ namespace EmotionalAppraisal
 				ObjectPool<HashSet<string>>.Recycle(toRemove);
 			}
 
+			public IEnumerable<IActiveEmotion> GetEmotionsByType(string emotionType)
+			{
+				return emotionPool.Values.Where(emotion => string.Equals(emotion.EmotionType, emotionType, StringComparison.CurrentCultureIgnoreCase)).Cast<IActiveEmotion>();
+			}
+
 			/// <summary>
 			/// Searches for a given emotion in the EmotionalState
 			/// </summary>
 			/// <param name="emotionKey">a string that corresponds to a hashkey that represents the emotion in the EmotionalState</param>
 			/// <returns>the found ActiveEmotion if it exists in the EmotionalState, null if the emotion doesn't exist anymore</returns>
-			public IActiveEmotion GetEmotion(String emotionKey)
+			public IActiveEmotion GetEmotion(string emotionKey)
 			{
 				ActiveEmotion emo;
 				if (this.emotionPool.TryGetValue(emotionKey, out emo))

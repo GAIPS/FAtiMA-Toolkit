@@ -32,6 +32,7 @@ namespace GAIPS.Serialization.SerializationGraph
 		IGraphNode this[string fieldName]{get;set;}
 		int NumOfFields { get; }
 		bool ContainsField(string fieldName);
+		bool TryGetField(string fieldName, out IGraphNode node);
 	}
 
 	public partial class Graph
@@ -75,6 +76,11 @@ namespace GAIPS.Serialization.SerializationGraph
 			public bool ContainsField(string fieldName)
 			{
 				return m_fields.ContainsKey(fieldName);
+			}
+
+			public bool TryGetField(string fieldName, out IGraphNode node)
+			{
+				return m_fields.TryGetValue(fieldName, out node);
 			}
 
 			public int RefId

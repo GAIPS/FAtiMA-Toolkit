@@ -24,52 +24,12 @@ namespace KnowledgeBase.Conditions
 				if (constraints == null)
 					constraints = new SubstitutionSet();
 
-				Name p1 = Property1;
-				if (!p1.IsGrounded)
-					p1 = p1.MakeGround(constraints);
-
-				Name p2 = Property2;
-				if (!p2.IsGrounded)
-					p2 = p2.MakeGround(constraints);
-
-				if (p1.IsGrounded == p2.IsGrounded)
+				foreach (var pair in kb.AskPossibleProperties(Property1, constraints))
 				{
-					if (p1.IsGrounded)
+					foreach (var crossPair in kb.AskPossibleProperties(Property2, pair.Item2))
 					{
-						var v1 = kb.AskProperty(p1);
-						if (v1 != null)
-						{
-							var v2 = kb.AskProperty(p2);
-							if (v2 != null)
-							{
-								if (CompareValues(v1, v2, Operator))
-									yield return constraints;
-							}
-						}
-					}
-					else
-					{
-						foreach (var pair in kb.AskPossibleProperties(p1, constraints))
-						{
-							foreach (var crossPair in kb.AskPossibleProperties(p2, pair.Item2))
-							{
-								if (CompareValues(pair.Item1, crossPair.Item1, Operator))
-									yield return crossPair.Item2;
-							}
-						}
-					}
-				}
-				else
-				{
-					Name ungrounded = p1.IsGrounded ? p2 : p1;
-					Name grounded = p1.IsGrounded ? p1 : p2;
-					ComparisonOperator op = p1.IsGrounded ? Operator : Operator.Mirror();
-
-					var value = kb.AskProperty(grounded) ?? grounded.ToString();
-					foreach (var pair in kb.AskPossibleProperties(ungrounded, constraints))
-					{
-						if (CompareValues(value, pair.Item1, op))
-							yield return pair.Item2;
+						if (CompareValues(pair.Item1, crossPair.Item1, Operator))
+							yield return crossPair.Item2;
 					}
 				}
 			}

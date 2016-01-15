@@ -22,29 +22,29 @@ namespace Tests.EmotionalAppraisal
 
 			//Setup Emotional Disposition
 
-			var loveDisposition = new EmotionDisposition(OCCEmotionType.Love.Name, 5, 3);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(loveDisposition);
+			//var loveDisposition = new EmotionDisposition(OCCEmotionType.Love.Name, 5, 3);
+			//m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(loveDisposition);
 
-			var hateDisposition = new EmotionDisposition(OCCEmotionType.Hate.Name, 5, 3);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(hateDisposition);
+			//var hateDisposition = new EmotionDisposition(OCCEmotionType.Hate.Name, 5, 3);
+			//m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(hateDisposition);
 
-			var hopeDisposition = new EmotionDisposition(OCCEmotionType.Hope.Name, 8, 4);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(hopeDisposition);
+			//var hopeDisposition = new EmotionDisposition(OCCEmotionType.Hope.Name, 8, 4);
+			//m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(hopeDisposition);
 
-			var fearDisposition = new EmotionDisposition(OCCEmotionType.Fear.Name, 2, 1);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(fearDisposition);
+			//var fearDisposition = new EmotionDisposition(OCCEmotionType.Fear.Name, 2, 1);
+			//m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(fearDisposition);
 
-			var satisfactionDisposition = new EmotionDisposition(OCCEmotionType.Satisfaction.Name, 8, 5);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(satisfactionDisposition);
+			//var satisfactionDisposition = new EmotionDisposition(OCCEmotionType.Satisfaction.Name, 8, 5);
+			//m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(satisfactionDisposition);
 
-			var reliefDisposition = new EmotionDisposition(OCCEmotionType.Relief.Name, 5, 3);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(reliefDisposition);
+			//var reliefDisposition = new EmotionDisposition(OCCEmotionType.Relief.Name, 5, 3);
+			//m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(reliefDisposition);
 
-			var fearsConfirmedDisposition = new EmotionDisposition(OCCEmotionType.FearsConfirmed.Name, 2, 1);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(fearsConfirmedDisposition);
+			//var fearsConfirmedDisposition = new EmotionDisposition(OCCEmotionType.FearsConfirmed.Name, 2, 1);
+			//m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(fearsConfirmedDisposition);
 
-			var disapointmentDisposition = new EmotionDisposition(OCCEmotionType.Disappointment.Name, 5, 2);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(disapointmentDisposition);
+			//var disapointmentDisposition = new EmotionDisposition(OCCEmotionType.Disappointment.Name, 5, 2);
+			//m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(disapointmentDisposition);
 
 			var joyDisposition = new EmotionDisposition(OCCEmotionType.Joy.Name, 2, 3);
 			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(joyDisposition);
@@ -52,17 +52,17 @@ namespace Tests.EmotionalAppraisal
 			var distressDisposition = new EmotionDisposition(OCCEmotionType.Distress.Name, 2, 1);
 			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(distressDisposition);
 
-			var happyForDisposition = new EmotionDisposition(OCCEmotionType.HappyFor.Name, 5, 2);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(happyForDisposition);
+			//var happyForDisposition = new EmotionDisposition(OCCEmotionType.HappyFor.Name, 5, 2);
+			//m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(happyForDisposition);
 
-			var pittyDisposition = new EmotionDisposition(OCCEmotionType.Pitty.Name, 2, 2);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(pittyDisposition);
+			//var pittyDisposition = new EmotionDisposition(OCCEmotionType.Pitty.Name, 2, 2);
+			//m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(pittyDisposition);
 
-			var resentmentDisposition = new EmotionDisposition(OCCEmotionType.Resentment.Name, 2, 3);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(resentmentDisposition);
+			//var resentmentDisposition = new EmotionDisposition(OCCEmotionType.Resentment.Name, 2, 3);
+			//m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(resentmentDisposition);
 
-			var gloatingDisposition = new EmotionDisposition(OCCEmotionType.Gloating.Name, 8, 5);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(gloatingDisposition);
+			//var gloatingDisposition = new EmotionDisposition(OCCEmotionType.Gloating.Name, 8, 5);
+			//m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(gloatingDisposition);
 
 			var prideDisposition = new EmotionDisposition(OCCEmotionType.Pride.Name, 5, 5);
 			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(prideDisposition);
@@ -92,12 +92,12 @@ namespace Tests.EmotionalAppraisal
 
 			Reaction petReaction = new Reaction();
 			petReaction.Desirability = 10;
-			petReaction.Like = 7;
+			//petReaction.Like = 7;
 			m_emotionalAppraisalAsset.AddEmotionalReaction(new TestEvent(Name.UNIVERSAL_STRING, "Pet", Name.SELF_STRING), petReaction);
 
 			Reaction slapReaction = new Reaction();
 			slapReaction.Desirability = -10;
-			slapReaction.Like = -15;
+			//slapReaction.Like = -15;
 			m_emotionalAppraisalAsset.AddEmotionalReaction(new TestEvent(Name.UNIVERSAL_STRING, "Slap", Name.SELF_STRING), slapReaction);
 
 			Reaction feedReaction = new Reaction();
@@ -113,7 +113,7 @@ namespace Tests.EmotionalAppraisal
 			Reaction screamMad = new Reaction();
 			screamMad.Desirability = -7;
 			screamMad.Praiseworthiness = -15;
-			screamMad.Like = -4;
+			//screamMad.Like = -4;
 			m_emotionalAppraisalAsset.AddEmotionalReaction(madScreamEvent, screamMad);
 
 			var talkSoftEvent = new TestEvent(Name.UNIVERSAL_STRING, "Talk", null);
@@ -123,7 +123,7 @@ namespace Tests.EmotionalAppraisal
 			talkSoftEvent.Parameters = parameters2;
 			Reaction talkSoftReaction = new Reaction();
 			talkSoftReaction.Praiseworthiness = 5;
-			talkSoftReaction.Like = 5;
+			//talkSoftReaction.Like = 5;
 			m_emotionalAppraisalAsset.AddEmotionalReaction(talkSoftEvent, talkSoftReaction);
 
 			//Generate emotion

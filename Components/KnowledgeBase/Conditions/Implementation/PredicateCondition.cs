@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using KnowledgeBase.WellFormedNames;
 
@@ -22,11 +23,25 @@ namespace KnowledgeBase.Conditions
 				if(constraints==null)
 					constraints = new SubstitutionSet();
 
-				var r = kb.AskPossiblePredicates(m_predicate, constraints).ToList();
-				if (m_invert)
-					return r.Count == 0 ? new[] { constraints } : new SubstitutionSet[0];
+				List<SubstitutionSet> results = new List<SubstitutionSet>();
+				var sets = kb.AskPossibleProperties(m_predicate, constraints).ToList();
+				if (sets.Count == 0 && m_invert)
+				{
+					results.Add(constraints);
+				}
+				else
+				{
+					foreach (var pair in sets)
+					{
+						if (pair.Item1.TypeCode != TypeCode.Boolean)
+							continue;
 
-				return r;
+						if (((bool)pair.Item1) != m_invert)
+							results.Add(pair.Item2);
+					}	
+				}
+
+				return results;
 			}
 
 			public override string ToString()

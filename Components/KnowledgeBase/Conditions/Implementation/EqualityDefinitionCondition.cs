@@ -22,16 +22,21 @@ namespace KnowledgeBase.Conditions
 				if (m_other.IsVariable || m_other.IsPrimitive)
 				{
 					var sub = new Substitution(m_variable,m_other);
-					if (constraints.AddSubstitution(sub))
-						yield return constraints;
-					yield break;
+					if (!constraints.Conflicts(sub))
+					{
+						var c = new SubstitutionSet(constraints);
+						c.AddSubstitution(sub);
+						yield return c;
+					}
 				}
-
-				foreach (var result in kb.AskPossibleProperties(m_other, constraints))
+				else
 				{
-					var sub = new Substitution(m_variable, Name.BuildName(result.Item1));
-					if (result.Item2.AddSubstitution(sub))
-						yield return result.Item2;
+					foreach (var result in kb.AskPossibleProperties(m_other, constraints))
+					{
+						var sub = new Substitution(m_variable, Name.BuildName(result.Item1));
+						if (result.Item2.AddSubstitution(sub))
+							yield return result.Item2;
+					}	
 				}
 			}
 

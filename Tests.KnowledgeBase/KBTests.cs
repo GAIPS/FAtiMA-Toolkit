@@ -25,7 +25,7 @@ namespace Tests.KnowledgeBase
 			{
 				DynamicPropertyCalculator p = (kb2, args,subs) =>
 				{
-					var arg = args[Name.BuildName("[x]")];
+					var arg = args["x"];
 					var r = kb2.AskPossibleProperties(arg, subs).ToList();
 					PrimitiveValue c = r.Count;
 					return new[] {Utilities.Tuples.Create(c,subs)};
@@ -138,21 +138,21 @@ namespace Tests.KnowledgeBase
 			Assert.AreEqual(kb.NumOfEntries,n);
 		}
 
-		[TestCase("35",35)]
-		[TestCase("-9223372036854775807", -9223372036854775807)]
-		[TestCase("-9.43",-9.43)]
-		[TestCase("-9.43e-1", -9.43e-1)]
-		[TestCase("true",true)]
-		[TestCase("FALSE",false)]
-		[TestCase("3.40282347E+39", 3.40282347E+39)]
-		public void Test_PrimitiveValuesAsk(string str,object expect)
-		{
-			Name v = (Name) str;
-			KB kb = new KB();
-			var value = kb.AskProperty(v);
-			Assert.NotNull(value);
-			Assert.That(Equals(value,expect));
-		}
+		//[TestCase("35",35)]
+		//[TestCase("-9223372036854775807", -9223372036854775807)]
+		//[TestCase("-9.43",-9.43)]
+		//[TestCase("-9.43e-1", -9.43e-1)]
+		//[TestCase("true",true)]
+		//[TestCase("FALSE",false)]
+		//[TestCase("3.40282347E+39", 3.40282347E+39)]
+		//public void Test_PrimitiveValuesAsk(string str,object expect)
+		//{
+		//	Name v = (Name) str;
+		//	KB kb = new KB();
+		//	var value = kb.AskProperty(v);
+		//	Assert.NotNull(value);
+		//	Assert.That(Equals(value,expect));
+		//}
 
 		[Test]
 		[ExpectedException(typeof(ArgumentException))]
