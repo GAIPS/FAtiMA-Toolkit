@@ -67,7 +67,11 @@ namespace GAIPS.Serialization.Surrogates
 			{
 				IGraphNode node;
 				if (_holder.TryGetField(name, out node))
+				{
+					if (node == null)
+						return null;
 					return node.RebuildObject(expectedType);
+				}
 
 				return expectedType == null ? null : SerializationServices.GetDefaultValueForType(expectedType);
 			}
