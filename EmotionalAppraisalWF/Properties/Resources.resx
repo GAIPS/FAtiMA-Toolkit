@@ -144,4 +144,10 @@
   <data name="BeliefAlreadyExistsExceptionMessage" xml:space="preserve">
     <value>Belief already exists, use the edit function.</value>
   </data>
+  <data name="ErrorHalfLifeDecay" xml:space="preserve">
+    <value>Invalid Decay</value>
+  </data>
+  <data name="TooltipEmotionalHalflife" xml:space="preserve">
+    <value>Defines how fast an emotion decays over time. The value is the actual time it takes a decay:1 emotion to reach half of its initial intensity.</value>
+  </data>
 </root>

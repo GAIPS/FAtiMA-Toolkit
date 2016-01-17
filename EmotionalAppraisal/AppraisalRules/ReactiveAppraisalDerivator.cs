@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutobiographicMemory;
 using AutobiographicMemory.Interfaces;
@@ -58,6 +59,12 @@ namespace EmotionalAppraisal.AppraisalRules
 			Rules.Add(cause.ToIdentifierName().ApplyPerspective(perspective), conditionsEvaluator, emotionalReaction);
 		}
 
+	    public IEnumerable<Name> GetAppraisalRuleNames()
+	    {
+
+	        return Rules.GetNames();
+	    }
+        
 		#region IAppraisalDerivator Implementation
 
 		public short AppraisalWeight

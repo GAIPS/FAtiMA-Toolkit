@@ -22,19 +22,19 @@ namespace EmotionalAppraisal
 		[Serializable]
 		private class ConcreteEmotionalState : IEmotionalState, ICustomSerialization
 		{
-			private static readonly EmotionDisposition DEFAULT_EMOTIONAL_DISPOSITION = new EmotionDisposition("*", 1, 5);
-
 			private EmotionalAppraisalAsset m_parent = null;
 			private Dictionary<string, ActiveEmotion> emotionPool;
-			private EmotionDisposition m_defaultEmotionalDisposition = DEFAULT_EMOTIONAL_DISPOSITION;
+            private EmotionDisposition m_defaultEmotionalDisposition;
 			private Dictionary<string, EmotionDisposition> emotionDispositions;
 			private Mood mood;
 
 			private ConcreteEmotionalState()
 			{
+                this.m_defaultEmotionalDisposition = new EmotionDisposition("*", 1, 1);
 				this.emotionPool = new Dictionary<string, ActiveEmotion>();
 				this.emotionDispositions = new Dictionary<string, EmotionDisposition>();
 				this.mood = new Mood();
+                
 			}
 
 			public ConcreteEmotionalState(EmotionalAppraisalAsset parent) : this()
@@ -139,7 +139,25 @@ namespace EmotionalAppraisal
 				return m_defaultEmotionalDisposition;
 			}
 
-			public IActiveEmotion DetermineActiveEmotion(IEmotion potEm)
+		    public int DefaultEmotionDispositionThreshold
+		    {
+		        get { return m_defaultEmotionalDisposition.Threshold;}
+		        set
+		        {
+		            m_defaultEmotionalDisposition = new EmotionDisposition("*", m_defaultEmotionalDisposition.Decay, value);
+		        } 
+		    }
+
+            public int DefaultEmotionDispositionDecay
+            {
+                get { return m_defaultEmotionalDisposition.Decay; }
+                set
+                {
+                    m_defaultEmotionalDisposition = new EmotionDisposition("*", value, m_defaultEmotionalDisposition.Threshold);
+                }
+            }
+
+            public IActiveEmotion DetermineActiveEmotion(IEmotion potEm)
 			{
 				EmotionDisposition emotionDisposition = GetEmotionDisposition(potEm.EmotionType);
 				float potential = DeterminePotential(potEm);
@@ -233,6 +251,11 @@ namespace EmotionalAppraisal
 				}
 			}
 
+		    public void SetMood(float value)
+		    {
+		        this.mood.SetMoodValue(value);
+		    }
+
 			public IActiveEmotion GetStrongestEmotion()
 			{
 				return this.emotionPool.Values.MaxValue(emo => emo.Intensity);
@@ -292,7 +315,7 @@ namespace EmotionalAppraisal
 						emotionDispositions.Add(disposition.Emotion, disposition);
 				}
 				if (defaultDisposition == null)
-					defaultDisposition = DEFAULT_EMOTIONAL_DISPOSITION;
+					defaultDisposition = new EmotionDisposition("*",1,1);
 				m_defaultEmotionalDisposition = defaultDisposition;
 
 				var emotions = dataHolder.GetValue<ActiveEmotion[]>("EmotionalPool");

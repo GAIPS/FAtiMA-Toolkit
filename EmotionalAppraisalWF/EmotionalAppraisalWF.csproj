@@ -64,6 +64,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SortableBindingList.cs" />
     <EmbeddedResource Include="AddOrEditBeliefForm.resx">
       <DependentUpon>AddOrEditBeliefForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -94,6 +95,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Components\AutobiographicMemory\AutobiographicMemory.csproj">
+      <Project>{c1cc38c5-72f5-4545-b4f7-c65b2883909c}</Project>
+      <Name>AutobiographicMemory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Components\KnowledgeBase\KnowledgeBase.csproj">
       <Project>{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}</Project>
       <Name>KnowledgeBase</Name>

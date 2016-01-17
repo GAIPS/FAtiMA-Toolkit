@@ -135,7 +135,7 @@ namespace EmotionalAppraisal
 			AddEmotionalReaction(evt,null,emotionalReaction);
 		}
 
-		/// <summary>
+        /// <summary>
 		/// Adds an emotional reaction to an event
 		/// </summary>
 		/// <param name="evt"></param>
@@ -145,7 +145,13 @@ namespace EmotionalAppraisal
 			m_appraisalDerivator.AddEmotionalReaction(evt,Perspective, conditionsEvaluator, emotionalReaction);
 		}
 
-		public KB Kb
+        public IEnumerable<Name> GetAllAppraisalRuleNames()
+        {
+            return this.m_appraisalDerivator.GetAppraisalRuleNames();
+        }
+
+
+        public KB Kb
 		{
 			get { return m_kb; }
 		}
@@ -236,6 +242,12 @@ namespace EmotionalAppraisal
         {
             this.Kb.Retract(Name.BuildName(name));
         }
+
+	    public void SetMood(float value)
+	    {
+	       this.m_emotionalState.SetMood(value);
+	    }
+
 		#region Dynamic Properties
 
 		private static readonly Name MOOD_TEMPLATE = (Name)"Mood([x])";

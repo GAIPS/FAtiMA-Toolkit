@@ -97,6 +97,15 @@ namespace EmotionalAppraisalWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid Decay.
+        /// </summary>
+        internal static string ErrorHalfLifeDecay {
+            get {
+                return ResourceManager.GetString("ErrorHalfLifeDecay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid file.
         /// </summary>
         internal static string InvalidFileError {
@@ -129,6 +138,15 @@ namespace EmotionalAppraisalWF.Properties {
         internal static string TitleSeparator {
             get {
                 return ResourceManager.GetString("TitleSeparator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Defines how fast an emotion decays over time. The value is the actual time it takes a decay:1 emotion to reach half of its initial intensity..
+        /// </summary>
+        internal static string TooltipEmotionalHalflife {
+            get {
+                return ResourceManager.GetString("TooltipEmotionalHalflife", resourceCulture);
             }
         }
         

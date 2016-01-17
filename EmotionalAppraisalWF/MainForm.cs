@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -11,13 +12,12 @@ namespace EmotionalAppraisalWF
 {
     public partial class MainForm : Form
     {
-
-
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
         private string _saveFileName;
 
-        private BindingList<EmotionListItem> _emotionList;
-        
+        private SortableBindingList<EmotionListItem> _emotionList;
+        private SortableBindingList<AppraisalRuleListItem> _appraisalRuleList;
+
         public class EmotionListItem
         {
             public string Type { get; set; }
@@ -26,6 +26,69 @@ namespace EmotionalAppraisalWF
 
         }
 
+        public class AppraisalRuleListItem
+        {
+            public string Name { get; set; }
+            public int Desirability { get; set; }
+            public int Praiseworthiness { get; set; }
+        }
+
+        private void ResetEmotionalTab()
+        {
+            this.moodValueLabel.Text = Math.Round(_emotionalAppraisalAsset.EmotionalState.Mood).ToString();
+            this.moodTrackBar.Value = int.Parse(this.moodValueLabel.Text);
+            this.emotionalHalfLifeTextBox.Text = ((int)_emotionalAppraisalAsset.EmotionalHalfLifeDecayTime).ToString();
+            this.moodHalfLifeTextBox.Text = ((int)_emotionalAppraisalAsset.MoodHalfLifeDecayTime).ToString();
+
+            _emotionList =
+                new SortableBindingList<EmotionListItem>(
+                    _emotionalAppraisalAsset.EmotionalState.GetEmotionsKeys().Select(key => new EmotionListItem
+                    {
+                        Event = key
+                    }));
+
+            foreach (var emotion in _emotionList)
+            {
+                emotion.Type = _emotionalAppraisalAsset.EmotionalState.GetEmotion(emotion.Event).EmotionType;
+                emotion.Intensity = _emotionalAppraisalAsset.EmotionalState.GetEmotion(emotion.Event).Intensity;
+            }
+
+            emotionsDataGridView.DataSource = _emotionList;
+            adjustColumnSizeGrid(emotionsDataGridView);
+        }
+
+        private void ResetEmotionDispositionsTab()
+        {
+            comboBoxDefaultDecay.SelectedIndex = comboBoxDefaultDecay.FindString(_emotionalAppraisalAsset.EmotionalState.DefaultEmotionDispositionDecay.ToString());
+            comboBoxDefaultThreshold.SelectedIndex = comboBoxDefaultThreshold.FindString(_emotionalAppraisalAsset.EmotionalState.DefaultEmotionDispositionThreshold.ToString());
+            dataGridViewEmotionDispositions.DataSource = new SortableBindingList<EmotionDisposition>(_emotionalAppraisalAsset.EmotionalState.GetEmotionDispositions());
+        }
+
+        private void ResetAppraisalRulesTab()
+        {
+            _appraisalRuleList =
+                new SortableBindingList<AppraisalRuleListItem>(
+                    _emotionalAppraisalAsset.GetAllAppraisalRuleNames().Select(name => new AppraisalRuleListItem
+                    {
+                        Name = name.ToString()
+                    }));
+            
+            dataGridViewAppraisalRules.DataSource = _appraisalRuleList;
+            adjustColumnSizeGrid(dataGridViewAppraisalRules);
+        }
+
+        private void adjustColumnSizeGrid(DataGridView grid)
+        {
+            if (grid.ColumnCount > 1)
+            {
+                for (int i = 0; i < grid.ColumnCount - 1; i++)
+                {
+                    grid.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                }
+            }
+
+            grid.Columns[grid.ColumnCount-1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+        }
 
         private void Reset(bool newFile)
         {
@@ -39,6 +102,11 @@ namespace EmotionalAppraisalWF
                 this.Text = Resources.MainFormPrincipalTitle + Resources.TitleSeparator + _saveFileName;
             }
 
+            ResetEmotionalTab();
+            ResetEmotionDispositionsTab();
+            ResetAppraisalRulesTab();
+
+            //Belief Tab
             beliefsListView.Items.Clear();
 
             if (!newFile)
@@ -55,32 +123,10 @@ namespace EmotionalAppraisalWF
         public MainForm()
         {
             InitializeComponent();
-
-            _emotionList = new BindingList<EmotionListItem>()
-            {
-                new EmotionListItem {Event = "Event(Player, Speak, Self, Self, Self, Jonas)", Intensity = 2.3, Type = "Reproach"},
-                new EmotionListItem {Event = "Event(Player, Speak, Self)", Intensity = 2.5, Type = "Admiration"},
-                new EmotionListItem {Event = "Event(Player, Speak, Self)", Intensity = 2, Type = "Fears-Confirmed"},
-            };
-
-            emotionListItemBindingSource.Add(new EmotionListItem()
-            {
-                Event = "1Event(Player, Speak, Self, Self, Self, Jonas)",
-                Intensity = 2.3,
-                Type = "Reproach"
-            });
-
-
-            emotionListItemBindingSource.Add(new EmotionListItem()
-            {
-                Event = "Event(Player, Speak, Self, Self, Self, Jonas)",
-                Intensity = 2.3,
-                Type = "Adeproach"
-            });
-
-          
-            //this.refreshDataGridView(emotionsDataGridView, _emotionList);
-
+            
+            //Tooltips:
+            toolTip.SetToolTip(emotionalHalfLifeLabel, Resources.TooltipEmotionalHalflife);
+            
             Reset(true);
         }
 
@@ -260,10 +306,9 @@ namespace EmotionalAppraisalWF
         }
 
         private void trackBar1_Scroll_1(object sender, EventArgs e)
-        {
-            var moodValue = (double)moodTrackBar.Value;
-
-           moodValueLabel.Text = moodValue.ToString();
+        {        
+            moodValueLabel.Text = moodTrackBar.Value.ToString();
+            _emotionalAppraisalAsset.SetMood(moodTrackBar.Value);
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -309,8 +354,7 @@ namespace EmotionalAppraisalWF
 
         private void addEmotionButton_Click(object sender, EventArgs e)
         {
-            this._emotionList.Add(new EmotionListItem {Type = "Distress", Intensity = 2, Event = "Event(Jonas, JOnas, Jonas)"});
-            //refreshDataGridView(emotionsDataGridView, _emotionList);
+            
         }
 
         private void emotionListItemBindingSource_CurrentChanged(object sender, EventArgs e)
@@ -326,6 +370,75 @@ namespace EmotionalAppraisalWF
         private void label9_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void toolTip1_Popup(object sender, PopupEventArgs e)
+        {
+
+        }
+
+        private void toolTip1_Popup_1(object sender, PopupEventArgs e)
+        {
+
+        }
+
+        private void groupBox3_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void emotionalHalfLifeTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void emotionalHalfLifeTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            this.validateDecayHelper(this.emotionalHalfLifeTextBox, e);
+        }
+
+        private void emotionalHalfLifeTextBox_Validated(object sender, EventArgs e)
+        {
+            decayErrorProvider.SetError(this.emotionalHalfLifeTextBox, string.Empty);
+            _emotionalAppraisalAsset.EmotionalHalfLifeDecayTime = float.Parse(this.emotionalHalfLifeTextBox.Text);
+        }
+
+        private void validateDecayHelper(TextBox textBoxDecay, CancelEventArgs e)
+        {
+            try
+            {
+                var newDecay = int.Parse(textBoxDecay.Text);
+                if (newDecay < Constants.MinimumDecayTime)
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                decayErrorProvider.SetError(textBoxDecay, Resources.ErrorHalfLifeDecay);
+                e.Cancel = true;
+            }
+        }
+
+        private void moodHalfLifeTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            this.validateDecayHelper(this.moodHalfLifeTextBox, e);
+        }
+
+        private void moodHalfLifeTextBox_Validated(object sender, EventArgs e)
+        {
+            decayErrorProvider.SetError(this.moodHalfLifeTextBox, string.Empty);
+            _emotionalAppraisalAsset.MoodHalfLifeDecayTime = float.Parse(this.moodHalfLifeTextBox.Text);
+        }
+
+        private void comboBoxDefaultDecay_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _emotionalAppraisalAsset.EmotionalState.DefaultEmotionDispositionDecay = int.Parse(comboBoxDefaultDecay.Text);
+        }
+
+        private void comboBoxDefaultThreshold_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _emotionalAppraisalAsset.EmotionalState.DefaultEmotionDispositionThreshold = int.Parse(comboBoxDefaultThreshold.Text);
         }
     }
 }

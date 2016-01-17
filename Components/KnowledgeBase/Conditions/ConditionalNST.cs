@@ -28,6 +28,8 @@ namespace KnowledgeBase
 			return conds.Add(conditionsEvaluator,value);
 		}
 
+        
+
 		public bool Remove(Name name, ConditionEvaluatorSet conditionsEvaluator, T value)
 		{
 			ConditionMapper<T> conds;
@@ -117,5 +119,10 @@ namespace KnowledgeBase
 				Add(key,cond,value);
 			}
 		}
+
+	    public IEnumerable<Name> GetNames()
+	    {
+	        return m_dictionary.Keys;
+	    }
 	}
 }

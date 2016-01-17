@@ -15,7 +15,9 @@ namespace EmotionalAppraisal.AppraisalRules
 	[Serializable]
 	public class Reaction : IGroundable<Reaction>
 	{
-		/// <summary>
+        public Name Event { get; set; }
+        
+        /// <summary>
 		///     Creates a new empty Emotional Reaction
 		/// </summary>
 		public Reaction()
