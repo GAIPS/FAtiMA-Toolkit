@@ -80,7 +80,7 @@ namespace AutobiographicMemory
 		    var parameters = evt.Parameters;
 		    if (parameters != null)
 		    {
-				foreach (var p in evt.Parameters)
+				foreach (var p in parameters)
 				{
 					yield return new Substitution("[" + p.ParameterName + "]", p.Value.ToString());
 				}
