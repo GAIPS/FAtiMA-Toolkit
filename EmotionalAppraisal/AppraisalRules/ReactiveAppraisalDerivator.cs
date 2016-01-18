@@ -5,8 +5,8 @@ using AutobiographicMemory;
 using AutobiographicMemory.Interfaces;
 using EmotionalAppraisal.Components;
 using EmotionalAppraisal.OCCModel;
+using GAIPS.Serialization;
 using KnowledgeBase;
-using KnowledgeBase.Conditions;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
 
@@ -20,49 +20,42 @@ namespace EmotionalAppraisal.AppraisalRules
 	/// @author João Dias
 	/// @author Pedro Gonçalves
 	[Serializable]
-	public class ReactiveAppraisalDerivator : IAppraisalDerivator
+	public class ReactiveAppraisalDerivator : IAppraisalDerivator, ICustomSerialization
 	{
 		private const short DEFAULT_APPRAISAL_WEIGHT = 1;
 		public const long IGNORE_DURATION = 5000;
 
-		private readonly ConditionalNST<Reaction> Rules;
+		private readonly ConditionalNST<AppraisalRule> Rules;
 
 		public ReactiveAppraisalDerivator()
 		{
 			this.AppraisalWeight = DEFAULT_APPRAISAL_WEIGHT;
-			this.Rules = new ConditionalNST<Reaction>();
+			this.Rules = new ConditionalNST<AppraisalRule>();
 		}
 		
-		public Reaction Evaluate(string perspective, IEvent evt, KB kb)
+		public AppraisalRule Evaluate(string perspective, IEvent evt, KB kb)
 		{
 			var name = evt.ToIdentifierName().ApplyPerspective(perspective);
-			Pair<Reaction,SubstitutionSet> r = Rules.UnifyAll(name, kb, new SubstitutionSet(evt.GenerateBindings())).FirstOrDefault();
+			Pair<AppraisalRule,SubstitutionSet> r = Rules.UnifyAll(name, kb, new SubstitutionSet(evt.GenerateBindings())).FirstOrDefault();
 			if (r == null)
 				return null;
 
-			return r.Item1.MakeGround(r.Item2);
+			return r.Item1;//.MakeGround(r.Item2);
 		}
 
 		/// <summary>
 		/// Adds an emotional reaction to an event
 		/// </summary>
 		/// <param name="evt"></param>
-		/// <param name="emotionalReaction">the Reaction to add</param>
-		public void AddEmotionalReaction(IEvent cause, string perspective, ConditionEvaluatorSet conditionsEvaluator, Reaction emotionalReaction)
+		/// <param name="emotionalAppraisalRule">the AppraisalRule to add</param>
+		public void AddEmotionalReaction(string perspective, AppraisalRule emotionalAppraisalRule)
 		{
-			if (cause.Parameters!=null && cause.Parameters.Any())
-			{
-				conditionsEvaluator = conditionsEvaluator==null?new ConditionEvaluatorSet() : new ConditionEvaluatorSet(conditionsEvaluator);
-				var conds = cause.GenerateParameterBindings().Select(s => Condition.BuildCondition(s.Variable, s.Value, ComparisonOperator.Equal));
-				conditionsEvaluator.UnionWith(conds);
-			}
-			Rules.Add(cause.ToIdentifierName().ApplyPerspective(perspective), conditionsEvaluator, emotionalReaction);
+			Rules.Add(emotionalAppraisalRule.EventName.ApplyPerspective(perspective), emotionalAppraisalRule.Conditions, emotionalAppraisalRule);
 		}
 
-	    public IEnumerable<Name> GetAppraisalRuleNames()
+	    public IEnumerable<AppraisalRule> GetAppraisalRules()
 	    {
-
-	        return Rules.GetNames();
+		    return Rules.Values;
 	    }
         
 		#region IAppraisalDerivator Implementation
@@ -75,7 +68,7 @@ namespace EmotionalAppraisal.AppraisalRules
 
 		public void Appraisal(EmotionalAppraisalAsset emotionalModule, IEvent evt, IWritableAppraisalFrame frame)
 		{
-			Reaction selfEvaluation = Evaluate(emotionalModule.Perspective, evt,emotionalModule.Kb);
+			AppraisalRule selfEvaluation = Evaluate(emotionalModule.Perspective, evt,emotionalModule.Kb);
 			if (selfEvaluation != null)
 			{
 				if (selfEvaluation.Desirability != 0)
@@ -109,16 +102,36 @@ namespace EmotionalAppraisal.AppraisalRules
 
 			if (desirability != 0 || praiseworthiness != 0)
 			{
-				Reaction r = new Reaction();
+				AppraisalRule r = new AppraisalRule(frame.AppraisedEvent);
 				r.Desirability = desirability;
 				r.Praiseworthiness = praiseworthiness;
-				AddEmotionalReaction(frame.AppraisedEvent,emotionalModule.Perspective, null, r);
+				//r.EventName = frame.AppraisedEvent.ToIdentifierName().RemovePerspective(emotionalModule.Perspective);
+				AddEmotionalReaction(emotionalModule.Perspective, r);
 			}
 		}
 
 		public IAppraisalFrame Reappraisal(EmotionalAppraisalAsset emotionalModule)
 		{
 			return null;
+		}
+
+		#endregion
+
+		#region Custom Serializer
+
+		public void GetObjectData(ISerializationData dataHolder)
+		{
+			dataHolder.SetValue("AppraisalWeight",AppraisalWeight);
+			dataHolder.SetValue("Rules",Rules.Values.ToArray());
+		}
+
+		public void SetObjectData(ISerializationData dataHolder)
+		{
+			AppraisalWeight = dataHolder.GetValue<short>("AppraisalWeight");
+			var rules = dataHolder.GetValue<AppraisalRule[]>("Rules");
+			Rules.Clear();
+			foreach (var r in rules)
+				Rules.Add(r.EventName, r.Conditions, r);
 		}
 
 		#endregion

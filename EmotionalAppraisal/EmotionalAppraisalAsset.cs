@@ -125,29 +125,19 @@ namespace EmotionalAppraisal
 		//	}
 		//}
 
-		/// <summary>
-		/// Adds an emotional reaction to an event
-		/// </summary>
-		/// <param name="evt"></param>
-		/// <param name="emotionalReaction">the Reaction to add</param>
-		public void AddEmotionalReaction(IEvent evt, Reaction emotionalReaction)
-		{
-			AddEmotionalReaction(evt,null,emotionalReaction);
-		}
-
         /// <summary>
 		/// Adds an emotional reaction to an event
 		/// </summary>
 		/// <param name="evt"></param>
-		/// <param name="emotionalReaction">the Reaction to add</param>
-		public void AddEmotionalReaction(IEvent evt, ConditionEvaluatorSet conditionsEvaluator, Reaction emotionalReaction)
+		/// <param name="emotionalAppraisalRule">the AppraisalRule to add</param>
+		public void AddEmotionalReaction(AppraisalRule emotionalAppraisalRule)
 		{
-			m_appraisalDerivator.AddEmotionalReaction(evt,Perspective, conditionsEvaluator, emotionalReaction);
+			m_appraisalDerivator.AddEmotionalReaction(Perspective, emotionalAppraisalRule);
 		}
 
-        public IEnumerable<Name> GetAllAppraisalRuleNames()
+        public IEnumerable<AppraisalRule> GetAllAppraisalRules()
         {
-            return this.m_appraisalDerivator.GetAppraisalRuleNames();
+            return this.m_appraisalDerivator.GetAppraisalRules();
         }
 
 

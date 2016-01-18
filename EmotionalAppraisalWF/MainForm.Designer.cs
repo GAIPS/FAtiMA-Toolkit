@@ -881,7 +881,7 @@
             this.groupBox4.Size = new System.Drawing.Size(534, 390);
             this.groupBox4.TabIndex = 0;
             this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Event Records";
+            this.groupBox4.Text = "EventName Records";
             this.groupBox4.Enter += new System.EventHandler(this.groupBox4_Enter);
             // 
             // dataGridView1

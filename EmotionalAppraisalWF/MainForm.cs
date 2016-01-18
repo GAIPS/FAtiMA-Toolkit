@@ -68,9 +68,9 @@ namespace EmotionalAppraisalWF
         {
             _appraisalRuleList =
                 new SortableBindingList<AppraisalRuleListItem>(
-                    _emotionalAppraisalAsset.GetAllAppraisalRuleNames().Select(name => new AppraisalRuleListItem
+                    _emotionalAppraisalAsset.GetAllAppraisalRules().Select(rule => new AppraisalRuleListItem
                     {
-                        Name = name.ToString()
+                        Name = rule.EventName.ToString()
                     }));
             
             dataGridViewAppraisalRules.DataSource = _appraisalRuleList;

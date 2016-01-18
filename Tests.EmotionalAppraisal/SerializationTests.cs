@@ -90,41 +90,46 @@ namespace Tests.EmotionalAppraisal
 
 			//Setup appraisal rules
 
-			Reaction petReaction = new Reaction();
-			petReaction.Desirability = 10;
-			//petReaction.Like = 7;
-			m_emotionalAppraisalAsset.AddEmotionalReaction(new TestEvent(Name.UNIVERSAL_STRING, "Pet", Name.SELF_STRING), petReaction);
+			var evt = new TestEvent(Name.UNIVERSAL_STRING, "Pet", Name.SELF_STRING);
+			AppraisalRule petAppraisalRule = new AppraisalRule(evt);
+			petAppraisalRule.Desirability = 10;
+			//petAppraisalRule.Like = 7;
+			m_emotionalAppraisalAsset.AddEmotionalReaction(petAppraisalRule);
 
-			Reaction slapReaction = new Reaction();
-			slapReaction.Desirability = -10;
-			//slapReaction.Like = -15;
-			m_emotionalAppraisalAsset.AddEmotionalReaction(new TestEvent(Name.UNIVERSAL_STRING, "Slap", Name.SELF_STRING), slapReaction);
+			evt = new TestEvent(Name.UNIVERSAL_STRING, "Slap", Name.SELF_STRING);
+			AppraisalRule slapAppraisalRule = new AppraisalRule(evt);
+			slapAppraisalRule.Desirability = -10;
+			//slapAppraisalRule.Like = -15;
+			m_emotionalAppraisalAsset.AddEmotionalReaction(slapAppraisalRule);
 
-			Reaction feedReaction = new Reaction();
-			feedReaction.Desirability = 5;
-			feedReaction.Praiseworthiness = 10;
-			m_emotionalAppraisalAsset.AddEmotionalReaction(new TestEvent(Name.UNIVERSAL_STRING, "Feed", Name.SELF_STRING), feedReaction);
+			evt = new TestEvent(Name.UNIVERSAL_STRING, "Feed", Name.SELF_STRING);
+			AppraisalRule feedAppraisalRule = new AppraisalRule(evt);
+			feedAppraisalRule.Desirability = 5;
+			feedAppraisalRule.Praiseworthiness = 10;
+			m_emotionalAppraisalAsset.AddEmotionalReaction(feedAppraisalRule);
 
 			var madScreamEvent = new TestEvent(Name.UNIVERSAL_STRING, "Talk", null);
 			var parameters1 = new List<IEventParameter>();
 			parameters1.Add(new EventParameter() { ParameterName = "Volume", Value = (Name)"High" });
 			parameters1.Add(new EventParameter() { ParameterName = "Tone", Value = (Name)"Mad" });
 			madScreamEvent.Parameters = parameters1;
-			Reaction screamMad = new Reaction();
+
+			AppraisalRule screamMad = new AppraisalRule(madScreamEvent);
 			screamMad.Desirability = -7;
 			screamMad.Praiseworthiness = -15;
 			//screamMad.Like = -4;
-			m_emotionalAppraisalAsset.AddEmotionalReaction(madScreamEvent, screamMad);
+			m_emotionalAppraisalAsset.AddEmotionalReaction(screamMad);
 
 			var talkSoftEvent = new TestEvent(Name.UNIVERSAL_STRING, "Talk", null);
 			var parameters2 = new List<IEventParameter>();
 			parameters2.Add(new EventParameter() { ParameterName = "Volume", Value = (Name)"Low" });
 			parameters2.Add(new EventParameter() { ParameterName = "Tone", Value = (Name)"Happy" });
 			talkSoftEvent.Parameters = parameters2;
-			Reaction talkSoftReaction = new Reaction();
-			talkSoftReaction.Praiseworthiness = 5;
-			//talkSoftReaction.Like = 5;
-			m_emotionalAppraisalAsset.AddEmotionalReaction(talkSoftEvent, talkSoftReaction);
+
+			AppraisalRule talkSoftAppraisalRule = new AppraisalRule(talkSoftEvent);
+			talkSoftAppraisalRule.Praiseworthiness = 5;
+			//talkSoftAppraisalRule.Like = 5;
+			m_emotionalAppraisalAsset.AddEmotionalReaction(talkSoftAppraisalRule);
 
 			//Generate emotion
 			var eventToAppraise=new TestEvent("Player","Slap","Test");
