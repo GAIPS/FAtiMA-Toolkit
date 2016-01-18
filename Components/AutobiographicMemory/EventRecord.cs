@@ -59,6 +59,9 @@ namespace AutobiographicMemory
 			{
 				get
 				{
+					if (m_parameters == null)
+						return null;
+
 					return m_parameters.Select(e => (IEventParameter)(new CauseParameter() { ParameterName = e.Key, Value = e.Value }));
 				}
 			}
