@@ -77,10 +77,14 @@ namespace AutobiographicMemory
 			yield return new Substitution("[Action]", evt.Action);
 			yield return new Substitution("[Target]", evt.Target ?? Name.UNIVERSAL_STRING);
 
-			foreach (var p in evt.Parameters)
-			{
-				yield return new Substitution("[" + p.ParameterName + "]", p.Value.ToString());
-			}
+		    var parameters = evt.Parameters;
+		    if (parameters != null)
+		    {
+				foreach (var p in evt.Parameters)
+				{
+					yield return new Substitution("[" + p.ParameterName + "]", p.Value.ToString());
+				}
+		    }
 	    }
 
 		public static IEnumerable<Substitution> GenerateParameterBindings(this IEvent evt)

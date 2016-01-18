@@ -28,8 +28,6 @@ namespace KnowledgeBase
 			return conds.Add(conditionsEvaluator,value);
 		}
 
-        
-
 		public bool Remove(Name name, ConditionEvaluatorSet conditionsEvaluator, T value)
 		{
 			ConditionMapper<T> conds;
@@ -52,6 +50,37 @@ namespace KnowledgeBase
 
 			var p1 = m_dictionary.Unify(expression, bindings);
 			return p1.SelectMany(p => p.Item1.MatchConditions(knowledgeBase, p.Item2));
+		}
+
+		public ICollection<Name> Keys
+		{
+			get { return m_dictionary.Keys; }
+		}
+
+		public ICollection<ConditionEvaluatorSet> Conditions
+		{
+			get
+			{
+				var set =
+					m_dictionary.Values.SelectMany(v => v.Select(m => m.Item1))
+						.Distinct()
+						.Select(c => c ?? new ConditionEvaluatorSet());
+				return set.ToList();
+			}
+		}
+
+		public ICollection<T> Values
+		{
+			get
+			{
+				var set = m_dictionary.Values.SelectMany(v => v.Select(m => m.Item2));
+				return set.ToList();
+			}
+		}
+
+		public void Clear()
+		{
+			m_dictionary.Clear();
 		}
 
 		public override int GetHashCode()
@@ -119,10 +148,5 @@ namespace KnowledgeBase
 				Add(key,cond,value);
 			}
 		}
-
-	    public IEnumerable<Name> GetNames()
-	    {
-	        return m_dictionary.Keys;
-	    }
 	}
 }
