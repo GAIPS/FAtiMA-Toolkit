@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using AutobiographicMemory.Interfaces;
 using EmotionalAppraisal;
 using EmotionalAppraisalWF.Properties;
 
@@ -77,6 +78,12 @@ namespace EmotionalAppraisalWF
             adjustColumnSizeGrid(dataGridViewAppraisalRules);
         }
 
+        private void ResetAutoBiographicalMemoryTab()
+        {
+            dataGridViewAM.DataSource = new SortableBindingList<IEvent>(_emotionalAppraisalAsset.GetAllEventRecords());
+        }
+
+
         private void adjustColumnSizeGrid(DataGridView grid)
         {
             if (grid.ColumnCount > 1)
@@ -105,6 +112,7 @@ namespace EmotionalAppraisalWF
             ResetEmotionalTab();
             ResetEmotionDispositionsTab();
             ResetAppraisalRulesTab();
+            ResetAutoBiographicalMemoryTab();
 
             //Belief Tab
             beliefsListView.Items.Clear();
