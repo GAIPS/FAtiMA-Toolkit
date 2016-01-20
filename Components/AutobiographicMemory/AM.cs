@@ -43,7 +43,13 @@ namespace AutobiographicMemory
 			return null;
 		}
 
-		private void AddRecord(EventRecord record)
+	    public IEnumerable<IEventRecord> RecallAllEvents()
+	    {
+	        return m_registry.Keys.Select(key => m_registry[key]).Cast<IEventRecord>().ToList();
+	    }
+
+
+	    private void AddRecord(EventRecord record)
 		{
 			m_registry.Add(record.Id,record);
 			List<uint> ids;

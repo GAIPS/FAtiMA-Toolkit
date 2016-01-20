@@ -140,6 +140,11 @@ namespace EmotionalAppraisal
             return this.m_appraisalDerivator.GetAppraisalRules();
         }
 
+	    public IEnumerable<IEventRecord> GetAllEventRecords()
+	    {
+	        return this.m_am.RecallAllEvents();
+	    } 
+
 
         public KB Kb
 		{
@@ -237,10 +242,9 @@ namespace EmotionalAppraisal
 	    {
 	       this.m_emotionalState.SetMood(value);
 	    }
-
-		#region Dynamic Properties
-
-		private static readonly Name MOOD_TEMPLATE = (Name)"Mood([x])";
+        
+        #region Dynamic Properties
+        private static readonly Name MOOD_TEMPLATE = (Name)"Mood([x])";
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> MoodPropertyCalculator(KB kb, IDictionary<string, Name> args, SubstitutionSet constraints)
 		{
 			Name arg = args["x"];
