@@ -116,6 +116,19 @@ namespace KnowledgeBase
 	            });
 	    }
 
+		public object AskProperty(Name property)
+		{
+			if(!property.IsGrounded)
+				throw new ArgumentException("The given Well Formed Name must be grounded","property");
+
+			var results = AskPossibleProperties(property, null).Select(p => PrimitiveValue.Extract(p.Item1)).ToArray();
+			if (results.Length == 0)
+				return null;
+			if (results.Length == 1)
+				return results[0];
+			return results;
+		}
+
 		public IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> AskPossibleProperties(Name property, SubstitutionSet constraints)
 		{
 			if (constraints != null && !property.IsGrounded)

@@ -92,6 +92,7 @@ namespace Tests.EmotionalAppraisal
 
 			var evt = new TestEvent(Name.UNIVERSAL_STRING, "Pet", Name.SELF_STRING);
 			AppraisalRule petAppraisalRule = new AppraisalRule(evt);
+			petAppraisalRule.TriggersOnFailedActivation = true;
 			petAppraisalRule.Desirability = 10;
 			//petAppraisalRule.Like = 7;
 			m_emotionalAppraisalAsset.AddEmotionalReaction(petAppraisalRule);

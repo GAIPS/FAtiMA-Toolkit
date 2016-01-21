@@ -19,6 +19,7 @@ namespace EmotionalAppraisal.AppraisalRules
 	{
         public Name EventName { get; private set; }
 		public ConditionEvaluatorSet Conditions { get; private set; }
+		public bool TriggersOnFailedActivation { get; set; }
 
 		/// <summary>
 		///     Creates a new empty Emotional AppraisalRule

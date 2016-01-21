@@ -132,7 +132,7 @@ namespace EmotionalAppraisal
 		/// <param name="emotionalAppraisalRule">the AppraisalRule to add</param>
 		public void AddEmotionalReaction(AppraisalRule emotionalAppraisalRule)
 		{
-			m_appraisalDerivator.AddEmotionalReaction(Perspective, emotionalAppraisalRule);
+			m_appraisalDerivator.AddEmotionalReaction(emotionalAppraisalRule);
 		}
 
         public IEnumerable<AppraisalRule> GetAllAppraisalRules()

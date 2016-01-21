@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using GAIPS.Serialization;
 using GAIPS.Serialization.Attributes;
 using GAIPS.Serialization.SerializationGraph;
@@ -12,7 +11,7 @@ namespace KnowledgeBase
 	{
 		#region Holder Classes
 
-		private class ConcreteValue<T> : PrimitiveValue
+		private class ConcreteValue<T> : PrimitiveValue, IOpenable
 		{
 			public readonly T value;
 
@@ -24,6 +23,11 @@ namespace KnowledgeBase
 			public override Type ValueType
 			{
 				get { return typeof(T); }
+			}
+
+			public object Open()
+			{
+				return value;
 			}
 
 			public override TypeCode TypeCode
@@ -61,6 +65,11 @@ namespace KnowledgeBase
 			TResult Cast<TResult>();
 
 			int Diff(INumber other);
+		}
+
+		private interface IOpenable
+		{
+			object Open();
 		}
 
 		private class StringValue : ConcreteValue<string>
@@ -119,16 +128,16 @@ namespace KnowledgeBase
 				var b = tb==castType?other.Value:Convert.ChangeType(other.Value, castType);
 				switch (castType)
 				{
-					case System.TypeCode.SByte:
-					case System.TypeCode.Byte:
-					case System.TypeCode.Int16:
-					case System.TypeCode.UInt16:
-					case System.TypeCode.Int32:
-					case System.TypeCode.UInt32:
-					case System.TypeCode.Int64:
-					case System.TypeCode.UInt64:
+					case TypeCode.SByte:
+					case TypeCode.Byte:
+					case TypeCode.Int16:
+					case TypeCode.UInt16:
+					case TypeCode.Int32:
+					case TypeCode.UInt32:
+					case TypeCode.Int64:
+					case TypeCode.UInt64:
 						return ((IComparable)a).CompareTo(b);
-					case System.TypeCode.Single:
+					case TypeCode.Single:
 						{
 							var diff = (float)a - (float)b;
 							var absDiff = Math.Abs(diff);
@@ -136,7 +145,7 @@ namespace KnowledgeBase
 								return 0;
 							return (int)(diff / absDiff);
 						}
-					case System.TypeCode.Double:
+					case TypeCode.Double:
 						{
 							var diff = (double)a - (double)b;
 							var absDiff = Math.Abs(diff);
@@ -144,7 +153,7 @@ namespace KnowledgeBase
 								return 0;
 							return (int)(diff / absDiff);
 						}
-					case System.TypeCode.Decimal:
+					case TypeCode.Decimal:
 						{
 							var diff = (decimal)a - (decimal)b;
 							var absDiff = Math.Abs(diff);
@@ -176,14 +185,14 @@ namespace KnowledgeBase
 
 				switch (unsignedCode)
 				{
-					case System.TypeCode.Byte:
-						return System.TypeCode.Int16;
-					case System.TypeCode.UInt16:
-						return System.TypeCode.Int32;
-					case System.TypeCode.UInt32:
-						return System.TypeCode.Int64;
+					case TypeCode.Byte:
+						return TypeCode.Int16;
+					case TypeCode.UInt16:
+						return TypeCode.Int32;
+					case TypeCode.UInt32:
+						return TypeCode.Int64;
 				}
-				return System.TypeCode.Double;
+				return TypeCode.Double;
 			}
 		}
 
@@ -203,31 +212,31 @@ namespace KnowledgeBase
 
 			switch (Type.GetTypeCode(v.GetType()))
 			{
-				case System.TypeCode.Boolean:
+				case TypeCode.Boolean:
 					return (bool)v;
-				case System.TypeCode.SByte:
+				case TypeCode.SByte:
 					return (sbyte)v;
-				case System.TypeCode.Byte:
+				case TypeCode.Byte:
 					return (byte)v;
-				case System.TypeCode.Int16:
+				case TypeCode.Int16:
 					return (short)v;
-				case System.TypeCode.UInt16:
+				case TypeCode.UInt16:
 					return (ushort)v;
-				case System.TypeCode.Int32:
+				case TypeCode.Int32:
 					return (int)v;
-				case System.TypeCode.UInt32:
+				case TypeCode.UInt32:
 					return (uint)v;
-				case System.TypeCode.Int64:
+				case TypeCode.Int64:
 					return (long)v;
-				case System.TypeCode.UInt64:
+				case TypeCode.UInt64:
 					return (ulong)v;
-				case System.TypeCode.Single:
+				case TypeCode.Single:
 					return (float)v;
-				case System.TypeCode.Double:
+				case TypeCode.Double:
 					return (double)v;
-				case System.TypeCode.Decimal:
+				case TypeCode.Decimal:
 					return (decimal)v;
-				case System.TypeCode.String:
+				case TypeCode.String:
 					return (string)v;
 			}
 
@@ -289,6 +298,11 @@ namespace KnowledgeBase
 				return m;
 
 			return str;
+		}
+
+		public static object Extract(PrimitiveValue value)
+		{
+			return ((IOpenable) value).Open();
 		}
 
 		private static TResult Open<TResult>(PrimitiveValue value) where TResult : IConvertible
@@ -520,31 +534,31 @@ namespace KnowledgeBase
 				PrimitiveValue v = (PrimitiveValue) value;
 				switch (v.TypeCode)
 				{
-					case System.TypeCode.String:
+					case TypeCode.String:
 						return serializationGraph.BuildStringNode(((ConcreteValue<string>) v).value);
-					case System.TypeCode.Boolean:
+					case TypeCode.Boolean:
 						return serializationGraph.BuildPrimitiveNode(((ConcreteValue<bool>) v).value);
-					case System.TypeCode.SByte:
+					case TypeCode.SByte:
 						return serializationGraph.BuildPrimitiveNode(((ConcreteValue<sbyte>) v).value);
-					case System.TypeCode.Byte:
+					case TypeCode.Byte:
 						return serializationGraph.BuildPrimitiveNode(((ConcreteValue<byte>) v).value);
-					case System.TypeCode.Int16:
+					case TypeCode.Int16:
 						return serializationGraph.BuildPrimitiveNode(((ConcreteValue<short>) v).value);
-					case System.TypeCode.UInt16:
+					case TypeCode.UInt16:
 						return serializationGraph.BuildPrimitiveNode(((ConcreteValue<ushort>) v).value);
-					case System.TypeCode.Int32:
+					case TypeCode.Int32:
 						return serializationGraph.BuildPrimitiveNode(((ConcreteValue<int>) v).value);
-					case System.TypeCode.UInt32:
+					case TypeCode.UInt32:
 						return serializationGraph.BuildPrimitiveNode(((ConcreteValue<uint>) v).value);
-					case System.TypeCode.Int64:
+					case TypeCode.Int64:
 						return serializationGraph.BuildPrimitiveNode(((ConcreteValue<long>) v).value);
-					case System.TypeCode.UInt64:
+					case TypeCode.UInt64:
 						return serializationGraph.BuildPrimitiveNode(((ConcreteValue<ulong>) v).value);
-					case System.TypeCode.Single:
+					case TypeCode.Single:
 						return serializationGraph.BuildPrimitiveNode(((ConcreteValue<float>) v).value);
-					case System.TypeCode.Double:
+					case TypeCode.Double:
 						return serializationGraph.BuildPrimitiveNode(((ConcreteValue<double>) v).value);
-					case System.TypeCode.Decimal:
+					case TypeCode.Decimal:
 						return serializationGraph.BuildPrimitiveNode(((ConcreteValue<decimal>) v).value);
 				}
 				throw new InvalidOperationException("Unexpected PrimitiveValue type. " + v.ValueType + " is not a primitive v.");

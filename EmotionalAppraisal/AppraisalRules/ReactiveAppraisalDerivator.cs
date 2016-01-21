@@ -7,8 +7,9 @@ using EmotionalAppraisal.Components;
 using EmotionalAppraisal.OCCModel;
 using GAIPS.Serialization;
 using KnowledgeBase;
+using KnowledgeBase.Conditions;
 using KnowledgeBase.WellFormedNames;
-using Utilities;
+using KnowledgeBase.WellFormedNames.Collections;
 
 namespace EmotionalAppraisal.AppraisalRules
 {
@@ -25,22 +26,27 @@ namespace EmotionalAppraisal.AppraisalRules
 		private const short DEFAULT_APPRAISAL_WEIGHT = 1;
 		public const long IGNORE_DURATION = 5000;
 
-		private readonly ConditionalNST<AppraisalRule> Rules;
+		private readonly NameSearchTree<HashSet<AppraisalRule>> Rules;
 
 		public ReactiveAppraisalDerivator()
 		{
 			this.AppraisalWeight = DEFAULT_APPRAISAL_WEIGHT;
-			this.Rules = new ConditionalNST<AppraisalRule>();
+			this.Rules = new NameSearchTree<HashSet<AppraisalRule>>();
 		}
 		
 		public AppraisalRule Evaluate(string perspective, IEvent evt, KB kb)
 		{
 			var name = evt.ToIdentifierName().ApplyPerspective(perspective);
-			Pair<AppraisalRule,SubstitutionSet> r = Rules.UnifyAll(name, kb, new SubstitutionSet(evt.GenerateBindings())).FirstOrDefault();
-			if (r == null)
-				return null;
-
-			return r.Item1;//.MakeGround(r.Item2);
+			foreach (var possibleAppraisals in Rules.Unify(name, new SubstitutionSet(evt.GenerateBindings())))
+			{
+				foreach (var appraisal in possibleAppraisals.Item1)
+				{
+					var result = appraisal.Conditions.Evaluate(kb, possibleAppraisals.Item2);
+					if (result == !appraisal.TriggersOnFailedActivation)
+						return appraisal;	
+				}
+			}
+			return null;
 		}
 
 		/// <summary>
@@ -48,14 +54,21 @@ namespace EmotionalAppraisal.AppraisalRules
 		/// </summary>
 		/// <param name="evt"></param>
 		/// <param name="emotionalAppraisalRule">the AppraisalRule to add</param>
-		public void AddEmotionalReaction(string perspective, AppraisalRule emotionalAppraisalRule)
+		public void AddEmotionalReaction(AppraisalRule emotionalAppraisalRule)
 		{
-			Rules.Add(emotionalAppraisalRule.EventName.ApplyPerspective(perspective), emotionalAppraisalRule.Conditions, emotionalAppraisalRule);
+			var name = emotionalAppraisalRule.EventName;
+			HashSet<AppraisalRule> ruleSet;
+			if (!Rules.TryGetValue(name, out ruleSet))
+			{
+				ruleSet=new HashSet<AppraisalRule>();
+				Rules.Add(name,ruleSet);
+			}
+			ruleSet.Add(emotionalAppraisalRule);
 		}
 
 	    public IEnumerable<AppraisalRule> GetAppraisalRules()
 	    {
-		    return Rules.Values;
+		    return Rules.Values.SelectMany(set => set);
 	    }
         
 		#region IAppraisalDerivator Implementation
@@ -102,11 +115,18 @@ namespace EmotionalAppraisal.AppraisalRules
 
 			if (desirability != 0 || praiseworthiness != 0)
 			{
-				AppraisalRule r = new AppraisalRule(frame.AppraisedEvent);
+				var eventName = frame.AppraisedEvent.ToIdentifierName().ApplyPerspective(emotionalModule.Perspective);
+				var conditions = new ConditionEvaluatorSet();
+				if (frame.AppraisedEvent.Parameters != null && frame.AppraisedEvent.Parameters.Any())
+				{
+					conditions.UnionWith(frame.AppraisedEvent.Parameters.Select(
+							p => Condition.BuildCondition((Name)("[" + p.ParameterName + "]"), p.Value, ComparisonOperator.Equal)));
+				}
+				AppraisalRule r = new AppraisalRule(eventName,conditions);
 				r.Desirability = desirability;
 				r.Praiseworthiness = praiseworthiness;
 				//r.EventName = frame.AppraisedEvent.ToIdentifierName().RemovePerspective(emotionalModule.Perspective);
-				AddEmotionalReaction(emotionalModule.Perspective, r);
+				AddEmotionalReaction(r);
 			}
 		}
 
@@ -122,7 +142,7 @@ namespace EmotionalAppraisal.AppraisalRules
 		public void GetObjectData(ISerializationData dataHolder)
 		{
 			dataHolder.SetValue("AppraisalWeight",AppraisalWeight);
-			dataHolder.SetValue("Rules",Rules.Values.ToArray());
+			dataHolder.SetValue("Rules",Rules.Values.SelectMany(set => set).ToArray());
 		}
 
 		public void SetObjectData(ISerializationData dataHolder)
@@ -131,7 +151,7 @@ namespace EmotionalAppraisal.AppraisalRules
 			var rules = dataHolder.GetValue<AppraisalRule[]>("Rules");
 			Rules.Clear();
 			foreach (var r in rules)
-				Rules.Add(r.EventName, r.Conditions, r);
+				AddEmotionalReaction(r);
 		}
 
 		#endregion
