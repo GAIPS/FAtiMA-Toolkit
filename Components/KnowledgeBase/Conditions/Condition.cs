@@ -10,19 +10,28 @@ namespace KnowledgeBase.Conditions
 	[Serializable]
 	public abstract partial class Condition : IConditionEvaluator
 	{
-		private const string REGEX_PATTERN = @"^\s*([\w\s-\(\)\.\,\[\]\*]+)\s*(=|!=|<|<=|>|>=)\s*([\w\s-\(\)\.\,\[\]\*]+)\s*$";
+		private const string WFN_CHARACTERS = @"\w\s-\+\(\)\.\,\[\]\*";
+		private const string REGEX_PATTERN = @"^\s*(#)?(["+WFN_CHARACTERS+@"]+)\s*(=|!=|<|<=|>|>=)\s*(#)?(["+WFN_CHARACTERS+@"]+)\s*$";
 		private static readonly Regex REGEX_PARSER = new Regex(REGEX_PATTERN,RegexOptions.Singleline);
 
 		private Condition()
 		{
 		}
 
-		public abstract IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, SubstitutionSet constraints);
+		public IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, IEnumerable<SubstitutionSet> constraints)
+		{
+			if (constraints == null || !constraints.Any())
+				constraints = new[] { new SubstitutionSet() };
 
-		public bool Evaluate(KB kb, SubstitutionSet constraints)
+			return CheckActivation(kb, constraints).Distinct();
+		}
+
+		public bool Evaluate(KB kb, IEnumerable<SubstitutionSet> constraints)
 		{
 			return UnifyEvaluate(kb, constraints).Any();
 		}
+
+		protected abstract IEnumerable<SubstitutionSet> CheckActivation(KB kb, IEnumerable<SubstitutionSet> constraints);
 
 		public abstract override string ToString();
 
@@ -78,9 +87,11 @@ namespace KnowledgeBase.Conditions
 			if (!m.Success)
 				throw new ParsingException(@"Unable to parse ""{0}"" as a condition", str);
 
-			string str1 = m.Groups[1].Value;
-			string op = m.Groups[2].Value;
-			string str2 = m.Groups[3].Value;
+			string mod1 = m.Groups[1].Value;
+			string str1 = m.Groups[2].Value;
+			string op = m.Groups[3].Value;
+			string mod2 = m.Groups[4].Value;
+			string str2 = m.Groups[5].Value;
 
 			Name v1 = Name.BuildName(str1);
 			Name v2 = Name.BuildName(str2);
@@ -109,31 +120,39 @@ namespace KnowledgeBase.Conditions
 					throw new ParsingException(@"Invalid comparison operator ""{0}"".", op);
 			}
 
-			return BuildCondition(v1,v2,ope);
+			return internal_buildCondition(mod1, v1, mod2, v2, ope);
 		}
 
 		public static Condition BuildCondition(Name v1, Name v2, ComparisonOperator op)
 		{
-			if (v1.IsPrimitive && v2.IsPrimitive)
-				throw new InvalidOperationException("Both given property names are primitive values. Expected at least one non-primitive value.");
+			return internal_buildCondition(null, v1, null, v2, ComparisonOperator.Equal);
+		}
 
-			if (v1 == v2)
+		private static Condition internal_buildCondition(string modifier1, Name v1, string modifier2, Name v2, ComparisonOperator op)
+		{
+			IValueRetriver value1 = ConvertToValueRetriever(modifier1, v1);
+			IValueRetriver value2 = ConvertToValueRetriever(modifier2, v2);
+
+			if (value1.Equals(value2))
 				throw new InvalidOperationException("Both given property names are intrinsically equal. Condition would always return a constant result.");
+
+			if (value1.InnerName.IsPrimitive && value2.InnerName.IsPrimitive && !value1.HasModifier && !value2.HasModifier)
+				throw new InvalidOperationException("Both given property names are primitive values. Expected at least one non-primitive value.");
 
 			if (op == ComparisonOperator.Equal)
 			{
 				//May be a definition
-				if (v1.IsVariable)
-					return new EqualityDefinitionCondition(v1,v2);
+				if (value1.InnerName.IsVariable && !value1.HasModifier)
+					return new EqualityDefinitionCondition(v1, value2);
 
-				if (v2.IsVariable)
-					return new EqualityDefinitionCondition(v2,v1);
+				if (value2.InnerName.IsVariable && !value2.HasModifier)
+					return new EqualityDefinitionCondition(v2, value1);
 			}
 
-			if (v1.IsPrimitive != v2.IsPrimitive)
+			if (value1.InnerName.IsPrimitive != value2.InnerName.IsPrimitive)
 			{
-				Name prop = v1.IsPrimitive ? v2 : v1;
-				PrimitiveValue value = (v1.IsPrimitive ? v1 : v2).GetPrimitiveValue();
+				IValueRetriver prop = value1.InnerName.IsPrimitive ? value2 : value1;
+				PrimitiveValue value = (value1.InnerName.IsPrimitive ? value1.InnerName : value2.InnerName).GetPrimitiveValue();
 				op = v1.IsPrimitive ? op.Mirror() : op;
 
 				if (value.TypeCode == TypeCode.Boolean)
@@ -141,16 +160,32 @@ namespace KnowledgeBase.Conditions
 					switch (op)
 					{
 						case ComparisonOperator.Equal:
-							return new PredicateCondition(prop, value);	
+							return new PredicateCondition(prop, value);
 						case ComparisonOperator.NotEqual:
-							return new PredicateCondition(prop, !value);	
+							return new PredicateCondition(prop, !value);
 					}
 				}
 
-				return new PrimitiveComparisonCondition(prop,value,op);
+				return new PrimitiveComparisonCondition(prop, value, op);
 			}
 
-			return new PropertyComparisonCondition(v1, v2, op);
+			return new PropertyComparisonCondition(value1,value2, op);
+		}
+
+		private static IValueRetriver ConvertToValueRetriever(string modifier, Name name)
+		{
+			if(string.IsNullOrEmpty(modifier))
+				return new PropertyValueRetriver(name);
+
+			if (modifier == "#")
+			{
+				if (name.IsVariable)
+					return new CountValueRetriver(name);
+
+				throw new ParsingException("Count modifier (#) only accepts variables");
+			}
+
+			throw new ParsingException("Unrecognized modifier " + modifier);
 		}
 	}
 }

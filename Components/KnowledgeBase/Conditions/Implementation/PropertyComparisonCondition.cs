@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using KnowledgeBase.WellFormedNames;
 
 namespace KnowledgeBase.Conditions
@@ -9,26 +10,24 @@ namespace KnowledgeBase.Conditions
 		private sealed class PropertyComparisonCondition : Condition
 		{
 			private readonly ComparisonOperator Operator;
-			private readonly Name Property1;
-			private readonly Name Property2;
+			private readonly IValueRetriver Property1;
+			private readonly IValueRetriver Property2;
 
-			public PropertyComparisonCondition(Name property1, Name property2, ComparisonOperator op)
+			public PropertyComparisonCondition(IValueRetriver property1, IValueRetriver property2, ComparisonOperator op)
 			{
 				Property1 = property1;
 				Property2 = property2;
 				Operator = op;
 			}
 
-			public override IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, SubstitutionSet constraints)
+			protected override IEnumerable<SubstitutionSet> CheckActivation(KB kb, IEnumerable<SubstitutionSet> constraints)
 			{
-				if (constraints == null)
-					constraints = new SubstitutionSet();
-
-				foreach (var pair in kb.AskPossibleProperties(Property1, constraints))
+				var r1 = Property1.Retrive(kb, constraints).GroupBy(p => p.Item1, p => p.Item2);
+				foreach (var g in r1)
 				{
-					foreach (var crossPair in kb.AskPossibleProperties(Property2, pair.Item2))
+					foreach (var crossPair in Property2.Retrive(kb, g))
 					{
-						if (CompareValues(pair.Item1, crossPair.Item1, Operator))
+						if (CompareValues(g.Key, crossPair.Item1, Operator))
 							yield return crossPair.Item2;
 					}
 				}
@@ -40,8 +39,8 @@ namespace KnowledgeBase.Conditions
 				if (c == null)
 					return false;
 
-				Name p1 = c.Property1;
-				Name p2 = c.Property2;
+				var p1 = c.Property1;
+				var p2 = c.Property2;
 				var op = c.Operator;
 
 				if (Operator != op)
@@ -54,19 +53,20 @@ namespace KnowledgeBase.Conditions
 					p2 = s;
 				}
 
+				var result = Property1.Equals(p1) && Property2.Equals(p2);
 				switch (op)
 				{
 					case ComparisonOperator.Equal:
 					case ComparisonOperator.NotEqual:
-						return (Property1 == p1 && Property2 == p2) || (Property1 == p2 && Property2 == p1);
+						return result || (Property1.Equals(p2) && Property2.Equals(p1));
 				}
-				return Property1 == p1 && Property2 == p2;
+				return result;
 			}
 
 			public override int GetHashCode()
 			{
-				Name p1 = Property1;
-				Name p2 = Property2;
+				var p1 = Property1;
+				var p2 = Property2;
 				var op = Operator;
 				switch (op)
 				{

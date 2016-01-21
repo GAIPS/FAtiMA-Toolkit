@@ -37,6 +37,14 @@ namespace KnowledgeBase.WellFormedNames
 			}
 		}
 
+		public bool Contains(Name variable)
+		{
+			if (!variable.IsVariable)
+				return false;
+
+			return m_substitutions.ContainsKey(variable);
+		}
+
 		public int Count()
 		{
 			return m_substitutions.Count;

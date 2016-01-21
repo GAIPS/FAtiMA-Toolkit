@@ -46,6 +46,9 @@
     <Compile Include="Conditions\Implementation\PredicateCondition.cs" />
     <Compile Include="Conditions\Implementation\PrimitiveComparisonCondition.cs" />
     <Compile Include="Conditions\Implementation\PropertyComparisonCondition.cs" />
+    <Compile Include="Conditions\Implementation\ValueRetrivers\CountValueRetriver.cs" />
+    <Compile Include="Conditions\Implementation\ValueRetrivers\PropertyValueRetriver.cs" />
+    <Compile Include="Conditions\IValueRetriver.cs" />
     <Compile Include="KB.cs" />
     <Compile Include="PrimitiveValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

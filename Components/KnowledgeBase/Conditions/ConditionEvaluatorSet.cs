@@ -6,6 +6,8 @@ using Utilities;
 
 namespace KnowledgeBase.Conditions
 {
+	//todo remove hashset extention from this class.
+	//todo this class should behave like a value set. any modification to it returns a copy of the object. (ie: the original object remains unchanged)
 	[Serializable]
 	public sealed class ConditionEvaluatorSet : HashSet<Condition>, IConditionEvaluator
 	{
@@ -17,18 +19,20 @@ namespace KnowledgeBase.Conditions
 		{
 		}
 
-		public IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, SubstitutionSet constraints)
+		public IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, IEnumerable<SubstitutionSet> constraints)
 		{
+			if (constraints == null || !constraints.Any())
+				constraints = new[] {new SubstitutionSet()};
+
 			List<SubstitutionSet> sets = new List<SubstitutionSet>();
 			List<SubstitutionSet> aux = new List<SubstitutionSet>();
-			sets.Add(constraints);
+			sets.AddRange(constraints);
 			using (var it = GetEnumerator())
 			{
 				while (it.MoveNext())
 				{
 					var condition = it.Current;
-					foreach (var s in sets)
-						aux.AddRange(condition.UnifyEvaluate(kb, s));
+					aux.AddRange(condition.UnifyEvaluate(kb, sets));
 					Util.Swap(ref sets,ref aux);
 					aux.Clear();
 					if(sets.Count==0)
@@ -38,7 +42,7 @@ namespace KnowledgeBase.Conditions
 			return sets;
 		}
 
-		public bool Evaluate(KB kb, SubstitutionSet constraints)
+		public bool Evaluate(KB kb, IEnumerable<SubstitutionSet> constraints)
 		{
 			return UnifyEvaluate(kb, constraints).Any();
 		}

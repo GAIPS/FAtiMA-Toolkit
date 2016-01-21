@@ -7,27 +7,24 @@ namespace KnowledgeBase.Conditions
 {
 	public partial class Condition
 	{
-		public class PredicateCondition : Condition
+		private class PredicateCondition : Condition
 		{
-			private readonly Name m_predicate;
+			private readonly IValueRetriver m_predicate;
 			private readonly bool m_invert;
 
-			public PredicateCondition(Name p, bool expectedResult)
+			public PredicateCondition(IValueRetriver p, bool expectedResult)
 			{
 				m_predicate = p;
 				m_invert = !expectedResult;
 			}
 
-			public override IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, SubstitutionSet constraints)
+			protected override IEnumerable<SubstitutionSet> CheckActivation(KB kb, IEnumerable<SubstitutionSet> constraints)
 			{
-				if(constraints==null)
-					constraints = new SubstitutionSet();
-
 				List<SubstitutionSet> results = new List<SubstitutionSet>();
-				var sets = kb.AskPossibleProperties(m_predicate, constraints).ToList();
+				var sets = m_predicate.Retrive(kb, constraints).ToList();
 				if (sets.Count == 0 && m_invert)
 				{
-					results.Add(constraints);
+					results.AddRange(constraints);
 				}
 				else
 				{
@@ -38,7 +35,7 @@ namespace KnowledgeBase.Conditions
 
 						if (((bool)pair.Item1) != m_invert)
 							results.Add(pair.Item2);
-					}	
+					}
 				}
 
 				return results;

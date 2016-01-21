@@ -39,9 +39,10 @@ namespace EmotionalAppraisal.AppraisalRules
 			var name = evt.ToIdentifierName().ApplyPerspective(perspective);
 			foreach (var possibleAppraisals in Rules.Unify(name, new SubstitutionSet(evt.GenerateBindings())))
 			{
+				var conditions = new[] {possibleAppraisals.Item2};
 				foreach (var appraisal in possibleAppraisals.Item1)
 				{
-					var result = appraisal.Conditions.Evaluate(kb, possibleAppraisals.Item2);
+					var result = appraisal.Conditions.Evaluate(kb, conditions);
 					if (result == !appraisal.TriggersOnFailedActivation)
 						return appraisal;	
 				}

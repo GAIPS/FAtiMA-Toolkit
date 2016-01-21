@@ -1,0 +1,54 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using KnowledgeBase.WellFormedNames;
+using Utilities;
+
+namespace KnowledgeBase.Conditions
+{
+	public abstract partial class Condition
+	{
+		private class CountValueRetriver : IValueRetriver
+		{
+			private readonly Name m_name;
+
+			public CountValueRetriver(Name name)
+			{
+				m_name = name;
+			}
+
+			public IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> Retrive(KB kb, IEnumerable<SubstitutionSet> constraints)
+			{
+				PrimitiveValue count = constraints.Count(s => s.Contains(m_name));
+				return constraints.Select(s => Tuples.Create(count, s));
+			}
+
+			public Name InnerName
+			{
+				get { return m_name; }
+			}
+
+			public bool HasModifier
+			{
+				get { return true; }
+			}
+
+			public override string ToString()
+			{
+				return "#" + m_name;
+			}
+
+			public override int GetHashCode()
+			{
+				return '#'.GetHashCode() ^ m_name.GetHashCode();
+			}
+
+			public override bool Equals(object obj)
+			{
+				var c = obj as CountValueRetriver;
+				if (c == null)
+					return false;
+				return m_name.Equals(c.m_name);
+			}
+		}
+	}
+}

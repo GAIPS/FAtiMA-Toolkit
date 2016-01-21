@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using AutobiographicMemory.Interfaces;
 using GAIPS.Serialization;
 using KnowledgeBase;
@@ -88,8 +87,9 @@ namespace AutobiographicMemory
 		private static readonly Name EVENT_PARAMETER_PROPERTY_TEMPLATE = Name.BuildName("EventParameter([id],[paramName])");
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventParameterPropertyCalculator(KB kb, IDictionary<string, Name> args, SubstitutionSet constraints)
 		{
-			var idName = args["id"];
-			var paramName = args["paramName"];
+			Name idName, paramName;
+			args.TryGetValue("id",out idName);
+			args.TryGetValue("paramName", out paramName);
 
 			IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> result = Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
 			if (idName.IsVariable)
@@ -141,7 +141,7 @@ namespace AutobiographicMemory
 					result = result.Union(kb.AskPossibleProperties(p.Value, newConstraint));
 				}
 			}
-			else
+			else if(record.HasParameters)
 			{
 				var lookup = record.Parameters.ToDictionary(p => p.ParameterName, p => p.Value);
 				foreach (var paramPairs in kb.AskPossibleProperties(paramName,constraints))
@@ -164,8 +164,8 @@ namespace AutobiographicMemory
 		private static readonly Name EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE = Name.BuildName("EventElapsedTime([id])");
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventAgePropertyCalculator(KB kb, IDictionary<string,Name> args, SubstitutionSet constraints)
 		{
-			var idName = args["id"];
-			if(idName==null)
+			Name idName;
+			if(!args.TryGetValue("id",out idName))
 				yield break;
 
 			if (idName.IsVariable)
@@ -207,18 +207,26 @@ namespace AutobiographicMemory
 			args.TryGetValue("target", out target);
 
 			var key = Name.BuildName((Name)"Event", subject, action, target);
-			List<Pair<PrimitiveValue, SubstitutionSet>> results = new List<Pair<PrimitiveValue, SubstitutionSet>>();
-			
+
+			DateTime bestTime = DateTime.MinValue;
+			Pair<PrimitiveValue, SubstitutionSet> best = null;
 			foreach (var pair in m_typeIndexes.Unify(key, constraints))
 			{
-				var recordList = pair.Item1.Select(id => m_registry[id]).OrderByDescending(r => r.Timestamp).ToList();
-				var recentRecord = recordList.FirstOrDefault();
+				var recentRecord = pair.Item1.Select(id => m_registry[id]).OrderByDescending(r => r.Timestamp).FirstOrDefault();
 				if(recentRecord==null)
 					continue;
 
-				results.Add(Tuples.Create((PrimitiveValue)recentRecord.Id, new SubstitutionSet(pair.Item2)));
+				if (recentRecord.Timestamp > bestTime)
+				{
+					bestTime = recentRecord.Timestamp;
+					best = Tuples.Create((PrimitiveValue)recentRecord.Id, pair.Item2);
+				}
 			}
-			return results;
+
+			if (best == null)
+				return Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
+
+			return new[] {best};
 		}
 
 		#endregion

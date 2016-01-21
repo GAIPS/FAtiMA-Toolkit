@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
 
@@ -41,6 +40,7 @@ namespace KnowledgeBase.Conditions
 
 		public IEnumerable<Pair<T,SubstitutionSet>> MatchConditions(KB kb, SubstitutionSet constraints)
 		{
+			var constraintSet = new[] {constraints};
 			foreach (var e in m_conditions)
 			{
 				if (e.Item1 == null)
@@ -49,7 +49,7 @@ namespace KnowledgeBase.Conditions
 					continue;
 				}
 
-				foreach (var set in e.Item1.UnifyEvaluate(kb, constraints))
+				foreach (var set in e.Item1.UnifyEvaluate(kb, constraintSet))
 					yield return Tuples.Create(e.Item2, set);
 			}
 		}

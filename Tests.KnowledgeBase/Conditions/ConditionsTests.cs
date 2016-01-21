@@ -18,6 +18,8 @@ namespace Tests.KnowledgeBase.Conditions
 		[TestCase("Prop(Value)  !=  true\t")]
 		[TestCase("\t\t9  >= \t [y]")]
 		[TestCase("[x]<=[y]")]
+		[TestCase("#[x]<=#[y]")]
+		[TestCase("#[z]!=4")]
 		public void Condition_Valid_Parse(string str)
 		{
 			var c = Condition.Parse(str);
@@ -28,6 +30,9 @@ namespace Tests.KnowledgeBase.Conditions
 		[TestCase("true!=false", ExpectedException = typeof(InvalidOperationException))]
 		[TestCase("true=false", ExpectedException = typeof(InvalidOperationException))]
 		[TestCase("-65.54e10<-1e", ExpectedException = typeof(ParsingException))]
+		[TestCase("?-65.54e10<+-1e", ExpectedException = typeof(ParsingException))]
+		[TestCase("#Like([x]) = 4", ExpectedException = typeof(ParsingException))]
+		[TestCase("#4 = 4", ExpectedException = typeof(ParsingException))]
 		public void Condition_Invalid_Parse(string str)
 		{
 			var c = Condition.Parse(str);
@@ -77,6 +82,9 @@ namespace Tests.KnowledgeBase.Conditions
 		[TestCase("Race(goku)=sayian", true)]
 		[TestCase("IsAlive(Saitama)=true", true)]
 		[TestCase("IsAlive(Goku)!=true", true)]
+		[TestCase("#[x] = 0", true)]
+		[TestCase("#[x] = #[y]", true)]
+		[TestCase("1 = #[y]", false)]
 		public void Test_Condition(string conditionStr, bool result)
 		{
 			var c = Condition.Parse(conditionStr);
@@ -120,9 +128,10 @@ namespace Tests.KnowledgeBase.Conditions
 
 		[TestCase(new[] { "Strength([x])<=Strength(Saitama)", "Strength([x])>=Strength(Goku)","[x]!=Saitama","[x]!=goku" }, true,null)]
 		[TestCase(new[] { "Race([y])!=Race([x])", "Strength([x])>=Strength([y])", "[x]!=[y]" }, true, null)]
+		[TestCase(new[] { "Race([y])!=Race([x])", "Strength([x])>=Strength([y])", "[x]!=[y]","#[x]=9" }, true, null)]
 		public void Test_ConditionSet(string[] conditions, bool result, string[] constraints)
 		{
-			var set = constraints!=null?new SubstitutionSet(constraints.Select(c => new Substitution(c))):null;
+			var set = constraints!=null?new[]{new SubstitutionSet(constraints.Select(c => new Substitution(c)))}:null;
 			var conds = new ConditionEvaluatorSet(conditions.Select(Condition.Parse));
 
 			Assert.AreEqual(result, conds.Evaluate(_kb, set));
