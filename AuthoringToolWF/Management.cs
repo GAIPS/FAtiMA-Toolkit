@@ -12,10 +12,35 @@ namespace AuthoringToolWF
 {
     public partial class Management : Form
     {
-        public Management()
+
+        private ComboBox _occupationComboBox;
+
+        public ComboBox OccupationComboBox
         {
+            get { return _occupationComboBox; }
+
+            set { _occupationComboBox = value; }
+        }
+
+        public Management(ComboBox occupationComboBox)
+        {
+            _occupationComboBox = occupationComboBox;
             InitializeComponent();
         }
 
+        private void addOccupationButton_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void editOccupationButton_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void removeOccupationButton_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

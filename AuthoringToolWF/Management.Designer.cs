@@ -201,6 +201,7 @@
             this.editOccupationButton.TabIndex = 9;
             this.editOccupationButton.Text = "Edit";
             this.editOccupationButton.UseVisualStyleBackColor = true;
+            this.editOccupationButton.Click += new System.EventHandler(this.editOccupationButton_Click);
             // 
             // addOccupationButton
             // 
@@ -210,6 +211,7 @@
             this.addOccupationButton.TabIndex = 7;
             this.addOccupationButton.Text = "Add";
             this.addOccupationButton.UseVisualStyleBackColor = true;
+            this.addOccupationButton.Click += new System.EventHandler(this.addOccupationButton_Click);
             // 
             // removeOccupationButton
             // 
@@ -219,6 +221,7 @@
             this.removeOccupationButton.TabIndex = 8;
             this.removeOccupationButton.Text = "Remove";
             this.removeOccupationButton.UseVisualStyleBackColor = true;
+            this.removeOccupationButton.Click += new System.EventHandler(this.removeOccupationButton_Click);
             // 
             // dataGridView1
             // 
