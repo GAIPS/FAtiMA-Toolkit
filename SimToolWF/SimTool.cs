@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Collections;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using AutobiographicMemory.Interfaces;
 using EmotionalAppraisal;
+using GAIPS.Serialization;
 
 
 namespace SimToolWF
@@ -18,6 +19,9 @@ namespace SimToolWF
         DEFAULT
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public partial class SimTool : Form
     {
 
@@ -27,7 +31,13 @@ namespace SimToolWF
 
         private string _perspective;
         private INTERNAL_STATE _internalState;
-        private float _thresold;
+        private float _threshold;
+
+        private string _mood, _emotion;
+
+        private string _filePath;
+
+        private bool _loadFromFile;
 
         public string Perspective
         {
@@ -43,28 +53,46 @@ namespace SimToolWF
             set { _internalState = value; }
         }
 
-        public float Thresold
+        public float Threhsold
         {
-            get { return _thresold; }
+            get { return _threshold; }
 
-            set { _thresold = value; }
+            set { _threshold = value; }
         }
 
         public SimTool()
         {
             InitializeComponent();
-            _emotionalAsset = new EmotionalAppraisalAsset(Perspective);
+
+            if(_loadFromFile)
+            {
+                LoadAssetFromJSON();
+            }
+            else _emotionalAsset = new EmotionalAppraisalAsset(_perspective);
+           // AgentDecisionMakingWF();
+        }
+
+        public void LoadAssetFromJSON()
+        {
+            Stream fileToDeserialize = File.OpenRead(_filePath);
+            var serializer = new JSONSerializer();
+            _emotionalAsset = (EmotionalAppraisalAsset)serializer.Deserialize(fileToDeserialize);
         }
 
         private void AgentDecisionMakingWF()
         {
             IActiveEmotion emotion = _emotionalAsset.EmotionalState.GetStrongestEmotion();
 
-            switch(emotion.EmotionType)
+            if (_emotionalAsset.EmotionalState.Mood < _threshold)
             {
-                default:
-                    break;
+                switch (emotion.EmotionType)
+                {
+                    default:
+                       break;
+                }
             }
+
+            ShowResult();
         }
 
         public void EnterDialogLine(string line, IEvent evt = null)
@@ -89,14 +117,15 @@ namespace SimToolWF
             _eventsToAppraise.Add(evt);
         }
 
-        public void ShowResult(string resultLine)
+        public void ShowResult()
         {
-
+            ShowEmotion();
+            ShowMood();
         }
 
         public void SetMood(float newValue)
         {
-
+            _emotionalAsset.SetMood(newValue);
         }
 
         public void SetState(INTERNAL_STATE newState)
@@ -104,10 +133,26 @@ namespace SimToolWF
             _internalState = newState;
         }
 
-        public void SetThresold(float newValue)
+        public void SetThreshold(float newValue)
         {
-
-
+            _threshold = newValue;
         }
+
+        public void ShowEmotion()
+        {
+            emotionLabel.Text = _emotionalAsset.EmotionalState.GetStrongestEmotion().ToString();
+        }
+
+        private void loadFileButton_Click(object sender, EventArgs e)
+        {
+            _filePath = fileTextBox.Text;
+            LoadAssetFromJSON();
+        }
+
+        public void ShowMood()
+        {
+            moodLabel.Text = _emotionalAsset.EmotionalState.Mood.ToString();
+        }
+
     }
 }
