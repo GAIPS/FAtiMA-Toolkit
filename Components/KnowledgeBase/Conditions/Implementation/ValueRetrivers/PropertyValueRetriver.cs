@@ -18,7 +18,11 @@ namespace KnowledgeBase.Conditions
 
 			public IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> Retrive(KB kb, IEnumerable<SubstitutionSet> constraints)
 			{
-				return constraints.SelectMany(c => kb.AskPossibleProperties(m_name, c)).Distinct();
+				foreach (var pair in kb.AskPossibleProperties(m_name, constraints))
+				{
+					foreach (var s in pair.Item2)
+						yield return Tuples.Create(pair.Item1, s);
+				}
 			}
 
 			public Name InnerName

@@ -1,5 +1,6 @@
 ﻿using System;
 using KnowledgeBase.Exceptions;
+using KnowledgeBase.WellFormedNames.Interfaces;
 
 namespace KnowledgeBase.WellFormedNames
 {

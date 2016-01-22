@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using KnowledgeBase.Exceptions;
+using KnowledgeBase.WellFormedNames.Interfaces;
 using Utilities;
 
 namespace KnowledgeBase.WellFormedNames
@@ -44,7 +45,7 @@ namespace KnowledgeBase.WellFormedNames
 	/// @author: Pedro Gonçalves (C# version)
 	/// </summary>
 	[Serializable]
-	public abstract partial class Name : IGroundable<Name>, IComparable<Name>, ICloneable
+	public abstract partial class Name : IGroundable<Name>, IComparable<Name>, IPerspective<Name>, ICloneable
 	{
 		public const string NUMBER_VALIDATION_PATTERN = @"(?:-|\+)?\d+(?:\.\d+)?(?:e(?:-|\+)?[1-9]\d*)?";
 		public const string VARIABLE_SYMBOL_VALIDATION_PATTERN = @"^\[([A-Za-z_][\w-]*)\]$";

@@ -208,7 +208,7 @@ namespace EmotionalAppraisalWF
                     _saveFileName = ofd.FileName;
                     Reset(false);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     MessageBox.Show(Resources.InvalidFileError, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 } 
@@ -421,7 +421,7 @@ namespace EmotionalAppraisalWF
                     throw new Exception();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 decayErrorProvider.SetError(textBoxDecay, Resources.ErrorHalfLifeDecay);
                 e.Cancel = true;

@@ -20,10 +20,10 @@ namespace AutobiographicMemory
 
 		public void BindCalls(KB kb)
 		{
-			kb.RegistDynamicProperty(EVENT_PROPERTY_ID_TEMPLATE, EventIdPropertyCalculator);
-			kb.RegistDynamicProperty(EVENT_PARAMETER_PROPERTY_TEMPLATE, EventParameterPropertyCalculator);
-			kb.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE, EventAgePropertyCalculator);
-			kb.RegistDynamicProperty(LAST_EVENT_TEMPLATE,LastEventPropertyCalculator);
+			kb.RegistDynamicProperty(EVENT_PROPERTY_ID_TEMPLATE, EventIdPropertyCalculator,new []{"subject","action","target"});
+			kb.RegistDynamicProperty(EVENT_PARAMETER_PROPERTY_TEMPLATE, EventParameterPropertyCalculator,new []{"id","paramName"});
+			kb.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE, EventAgePropertyCalculator, new[] { "id" });
+			kb.RegistDynamicProperty(LAST_EVENT_TEMPLATE, LastEventPropertyCalculator, new[] { "subject", "action", "target" });
 		}
 
 		public IEventRecord RecordEvent(IEvent evt,string perspective)
@@ -63,33 +63,49 @@ namespace AutobiographicMemory
 
 		#region Dynamic Properties
 
+		//Helpers
+		private static IEnumerable<SubstitutionSet> AddSubstitutionToAllConstraints(IEnumerable<SubstitutionSet> constraints,
+			Substitution newSub)
+		{
+			foreach (var c in constraints)
+			{
+				if(c.Conflicts(newSub))
+					continue;
+
+				var newConstraint = new SubstitutionSet(c);
+				newConstraint.AddSubstitution(newSub);
+				yield return newConstraint;
+			}
+		}
+
 		//Event
 		private static readonly Name EVENT_TEMPLATE = Name.BuildName("EVENT([subject],[action],[target])");
 		private static readonly Name EVENT_PROPERTY_ID_TEMPLATE = Name.BuildName((Name)"ID",EVENT_TEMPLATE);
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventIdPropertyCalculator(KB kb, IDictionary<string,Name> args, SubstitutionSet constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventIdPropertyCalculator(KB kb, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
-			Name subject,action,target;
-			args.TryGetValue("subject", out subject);
-			args.TryGetValue("action", out action);
-			args.TryGetValue("target", out target);
+			Name subject = args["subject"];
+			Name action = args["action"];
+			Name target = args["target"];
 
 			List<Pair<PrimitiveValue, SubstitutionSet>> results = new List<Pair<PrimitiveValue, SubstitutionSet>>();
 			var key = Name.BuildName((Name)"Event", subject, action, target);
-			foreach (var pair in m_typeIndexes.Unify(key, constraints))
+			foreach (var c in constraints)
 			{
-				foreach (var id in pair.Item1)
-					results.Add(Tuples.Create((PrimitiveValue)id, new SubstitutionSet(pair.Item2)));
+				foreach (var pair in m_typeIndexes.Unify(key, c))
+				{
+					foreach (var id in pair.Item1)
+						results.Add(Tuples.Create((PrimitiveValue)id, new SubstitutionSet(pair.Item2)));
+				}	
 			}
 			return results;
 		}
 
 		//EventParameter
 		private static readonly Name EVENT_PARAMETER_PROPERTY_TEMPLATE = Name.BuildName("EventParameter([id],[paramName])");
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventParameterPropertyCalculator(KB kb, IDictionary<string, Name> args, SubstitutionSet constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventParameterPropertyCalculator(KB kb, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
-			Name idName, paramName;
-			args.TryGetValue("id",out idName);
-			args.TryGetValue("paramName", out paramName);
+			Name idName = args["id"];
+			Name paramName = args["paramName"];
 
 			IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> result = Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
 			if (idName.IsVariable)
@@ -97,12 +113,9 @@ namespace AutobiographicMemory
 				foreach (var rec in m_registry.Values)
 				{
 					var newSub = new Substitution(idName, Name.BuildName(rec.Id));
-					if(constraints.Conflicts(newSub))
-						continue;
-
-					var newConstraint = new SubstitutionSet(constraints);
-					newConstraint.AddSubstitution(newSub);
-					result = result.Union(GetParameter(rec, paramName, kb,newConstraint));
+					var newConstraints = AddSubstitutionToAllConstraints(constraints, newSub);
+					if(newConstraints.Any())
+						result = result.Union(GetParameter(rec, paramName, kb, newConstraints));
 				}
 			}
 			else
@@ -110,38 +123,42 @@ namespace AutobiographicMemory
 				foreach (var idPairs in kb.AskPossibleProperties(idName, constraints))
 				{
 					var idValue = idPairs.Item1;
-					if (!idValue.TypeCode.IsUnsignedNumeric())
-						continue;
+					if (idValue >= 0)
+					{
+						var rec = m_registry[idValue];
+						if (rec == null)
+							continue;
 
-					var rec = m_registry[idValue];
-					if(rec==null)
-						continue;
-
-					result = result.Union(GetParameter(rec, paramName, kb,idPairs.Item2));
+						result = result.Union(GetParameter(rec, paramName, kb, idPairs.Item2));
+					}
 				}
 			}
 
 			return result;
 		}
 
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> GetParameter(EventRecord record, Name paramName, KB kb, SubstitutionSet constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> GetParameter(EventRecord record, Name paramName, KB kb, IEnumerable<SubstitutionSet> constraints)
 		{
-			IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> result = Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
+			if(!record.HasParameters)
+				yield break;
+
 			if (paramName.IsVariable)
 			{
 				foreach (var p in record.Parameters)
 				{
 					var newSub = new Substitution(paramName, Name.BuildName(p.ParameterName));
-					if (constraints.Conflicts(newSub))
-						continue;
-
-					var newConstraint = new SubstitutionSet(constraints);
-					newConstraint.AddSubstitution(newSub);
-
-					result = result.Union(kb.AskPossibleProperties(p.Value, newConstraint));
+					var newContraints = AddSubstitutionToAllConstraints(constraints, newSub);
+					if (newContraints.Any())
+					{
+						foreach (var pair in kb.AskPossibleProperties(p.Value, newContraints))
+						{
+							foreach (var s in pair.Item2)
+								yield return Tuples.Create(pair.Item1, s);
+						}
+					}
 				}
 			}
-			else if(record.HasParameters)
+			else
 			{
 				var lookup = record.Parameters.ToDictionary(p => p.ParameterName, p => p.Value);
 				foreach (var paramPairs in kb.AskPossibleProperties(paramName,constraints))
@@ -151,36 +168,40 @@ namespace AutobiographicMemory
 						continue;
 
 					Name value;
-					if (lookup.TryGetValue(paramValue, out value))
+					if (!lookup.TryGetValue(paramValue, out value))
+						continue;
+
+					foreach (var pair in kb.AskPossibleProperties(value, paramPairs.Item2))
 					{
-						result = result.Union(kb.AskPossibleProperties(value, paramPairs.Item2));
+						foreach (var s in pair.Item2)
+							yield return Tuples.Create(pair.Item1, s);
 					}
 				}
 			}
-			return result;
 		}
 
 		//EventElapseTime
 		private static readonly Name EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE = Name.BuildName("EventElapsedTime([id])");
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventAgePropertyCalculator(KB kb, IDictionary<string,Name> args, SubstitutionSet constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventAgePropertyCalculator(KB kb, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
-			Name idName;
-			if(!args.TryGetValue("id",out idName))
-				yield break;
+			Name idName = args["id"];
 
 			if (idName.IsVariable)
 			{
 				foreach (var record in m_registry.Values)
 				{
 					var idSub = new Substitution(idName, Name.BuildName(record.Id));
-					if (constraints.Conflicts(idSub))
-						continue;
+					foreach (var c in constraints)
+					{
+						if (c.Conflicts(idSub))
+							continue;
 
-					var newSet = new SubstitutionSet(constraints);
-					newSet.AddSubstitution(idSub);
+						var newSet = new SubstitutionSet(c);
+						newSet.AddSubstitution(idSub);
 
-					var value = (DateTime.UtcNow - record.Timestamp).TotalSeconds;
-					yield return Tuples.Create((PrimitiveValue)value, newSet);
+						var value = (DateTime.UtcNow - record.Timestamp).TotalSeconds;
+						yield return Tuples.Create((PrimitiveValue)value, newSet);	
+					}
 				}
 				yield break;
 			}
@@ -192,25 +213,25 @@ namespace AutobiographicMemory
 					continue;
 
 				var record = m_registry[idValue];
-				var value = (DateTime.UtcNow - record.Timestamp).TotalSeconds;
-				yield return Tuples.Create((PrimitiveValue)value, pair.Item2);
+				var value = (PrimitiveValue)((DateTime.UtcNow - record.Timestamp).TotalSeconds);
+				foreach (var c in pair.Item2)
+					yield return Tuples.Create(value, c);
 			}
 		}
 
 		//LastEvent
 		private static readonly Name LAST_EVENT_TEMPLATE = Name.BuildName((Name)"LastEvent", EVENT_TEMPLATE);
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> LastEventPropertyCalculator(KB kb, IDictionary<string, Name> args, SubstitutionSet constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> LastEventPropertyCalculator(KB kb, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
-			Name subject, action, target;
-			args.TryGetValue("subject", out subject);
-			args.TryGetValue("action", out action);
-			args.TryGetValue("target", out target);
+			Name subject = args["subject"];
+			Name action = args["action"];
+			Name target = args["target"];
 
 			var key = Name.BuildName((Name)"Event", subject, action, target);
 
 			DateTime bestTime = DateTime.MinValue;
 			Pair<PrimitiveValue, SubstitutionSet> best = null;
-			foreach (var pair in m_typeIndexes.Unify(key, constraints))
+			foreach (var pair in constraints.SelectMany(c => m_typeIndexes.Unify(key, c)))
 			{
 				var recentRecord = pair.Item1.Select(id => m_registry[id]).OrderByDescending(r => r.Timestamp).FirstOrDefault();
 				if(recentRecord==null)

@@ -1,4 +1,4 @@
-﻿namespace KnowledgeBase.WellFormedNames
+﻿namespace KnowledgeBase.WellFormedNames.Interfaces
 {
 	public interface IVariableRenamer<T> where T : IVariableRenamer<T>
 	{

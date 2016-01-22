@@ -21,7 +21,7 @@
  * Ported to C#: 17/06/2015
  **/
 
-namespace KnowledgeBase.WellFormedNames
+namespace KnowledgeBase.WellFormedNames.Interfaces
 {
 	/// <summary>
 	///     Interface that specifies methods applicable to classes that can be grounded,

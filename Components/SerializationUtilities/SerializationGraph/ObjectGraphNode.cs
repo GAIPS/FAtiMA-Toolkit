@@ -141,7 +141,6 @@ namespace GAIPS.Serialization.SerializationGraph
 					if (ParentGraph.TryGetObjectForRefId(RefId, out buildObject))
 						return buildObject;
 				}
-
 				Type typeToBuild = requestedType;
 				if (ObjectType != null)
 				{
@@ -150,7 +149,6 @@ namespace GAIPS.Serialization.SerializationGraph
 						throw new Exception("Unable to build object. Requested on type but data has another type");	//TODO better exception
 					typeToBuild = myType;
 				}
-
 				if (typeToBuild == null)
 					throw new Exception("Missing type information. Unable to build object");	//TODO better exception
 
@@ -163,12 +161,13 @@ namespace GAIPS.Serialization.SerializationGraph
 					IGraphNode boxedValue = m_fields[DEFAULT_BOXED_VALUE_FIELD_NAME];
 					return boxedValue.RebuildObject(typeToBuild);
 				}
-
+				
 				buildObject = SerializationServices.GetUninitializedObject(typeToBuild);
 				ParentGraph.LinkObjectToNode(this, buildObject);
-
+				
 				var surrogate = SerializationServices.GetDefaultSerializationSurrogate(typeToBuild);
 				surrogate.SetObjectData(ref buildObject, this);
+				
 				return buildObject;
 			}
 		}
