@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SimToolWF.Properties
+namespace RolePlayCharacterWF.Properties
 {
 
 

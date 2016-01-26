@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SimToolWF
+namespace RolePlayCharacterWF
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace SimToolWF
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SimTool());
+            Application.Run(new RolePlayCharacter());
         }
     }
 }

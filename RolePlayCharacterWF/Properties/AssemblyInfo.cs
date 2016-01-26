@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SimToolWF")]
+[assembly: AssemblyTitle("RolePlayCharacterWF")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("SimToolWF")]
+[assembly: AssemblyProduct("RolePlayCharacterWF")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("7242ad30-b2a9-477f-b881-e4d2d9c4cb39")]
+[assembly: Guid("63ec96bc-d3e1-491b-8c55-61a0f5fba210")]
 
 // Version information for an assembly consists of the following four values:
 //

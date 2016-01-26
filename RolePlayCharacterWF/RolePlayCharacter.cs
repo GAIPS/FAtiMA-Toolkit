@@ -8,18 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace AuthoringToolWF
+namespace RolePlayCharacterWF
 {
-    public partial class AddOccupationForm : Form
+    public partial class RolePlayCharacter : Form
     {
-        public AddOccupationForm()
+        public RolePlayCharacter()
         {
             InitializeComponent();
-        }
-
-        private void addOccupationButton_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
