@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace AuthorialAgentsWF
 {
-    public partial class AddEditNPC : Form
+    public partial class AddEditActions : Form
     {
-        public AddEditNPC()
+        public AddEditActions()
         {
             InitializeComponent();
         }

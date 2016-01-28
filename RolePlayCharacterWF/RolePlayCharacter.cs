@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using EmotionalAppraisalWF;
+
+
 
 namespace RolePlayCharacterWF
 {
@@ -15,6 +18,18 @@ namespace RolePlayCharacterWF
         public RolePlayCharacter()
         {
             InitializeComponent();
+        }
+
+        private void addNewEA_Click(object sender, EventArgs e)
+        {
+            var emotionalAppraisalWF = new EmotionalAppraisalWF.MainForm();
+            emotionalAppraisalWF.ShowDialog();
+        }
+
+        private void editEA_Click(object sender, EventArgs e)
+        {
+            var emotionalAppraisalWF = new EmotionalAppraisalWF.MainForm();
+            emotionalAppraisalWF.ShowDialog();
         }
     }
 }

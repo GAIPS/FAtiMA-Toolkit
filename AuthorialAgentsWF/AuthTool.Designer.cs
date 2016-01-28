@@ -99,6 +99,7 @@
             this.removeLearningGoals.TabIndex = 2;
             this.removeLearningGoals.Text = "Remove";
             this.removeLearningGoals.UseVisualStyleBackColor = true;
+            this.removeLearningGoals.Click += new System.EventHandler(this.removeLearningGoals_Click);
             // 
             // editLearningGoals
             // 
@@ -108,6 +109,7 @@
             this.editLearningGoals.TabIndex = 1;
             this.editLearningGoals.Text = "Edit";
             this.editLearningGoals.UseVisualStyleBackColor = true;
+            this.editLearningGoals.Click += new System.EventHandler(this.editLearningGoals_Click);
             // 
             // addLearningGoal
             // 
@@ -117,6 +119,7 @@
             this.addLearningGoal.TabIndex = 0;
             this.addLearningGoal.Text = "Add";
             this.addLearningGoal.UseVisualStyleBackColor = true;
+            this.addLearningGoal.Click += new System.EventHandler(this.addLearningGoal_Click);
             // 
             // tabControl1
             // 
@@ -177,6 +180,7 @@
             this.editActions.TabIndex = 3;
             this.editActions.Text = "Edit Actions";
             this.editActions.UseVisualStyleBackColor = true;
+            this.editActions.Click += new System.EventHandler(this.editActions_Click);
             // 
             // removeScenarios
             // 
@@ -186,6 +190,7 @@
             this.removeScenarios.TabIndex = 2;
             this.removeScenarios.Text = "Remove";
             this.removeScenarios.UseVisualStyleBackColor = true;
+            this.removeScenarios.Click += new System.EventHandler(this.removeScenarios_Click);
             // 
             // editScenarios
             // 
@@ -195,6 +200,7 @@
             this.editScenarios.TabIndex = 1;
             this.editScenarios.Text = "Edit";
             this.editScenarios.UseVisualStyleBackColor = true;
+            this.editScenarios.Click += new System.EventHandler(this.editScenarios_Click);
             // 
             // addScenario
             // 
@@ -204,6 +210,7 @@
             this.addScenario.TabIndex = 0;
             this.addScenario.Text = "Add";
             this.addScenario.UseVisualStyleBackColor = true;
+            this.addScenario.Click += new System.EventHandler(this.addScenario_Click);
             // 
             // AuthTool
             // 
