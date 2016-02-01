@@ -8,8 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using EmotionalAppraisalWF;
-
-
+using System.IO;
 
 namespace RolePlayCharacterWF
 {
@@ -60,6 +59,37 @@ namespace RolePlayCharacterWF
         private void emotionalAppraisalToSelect_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void PopulateListBoxView(ListView lsv, string folder, string fileType)
+        {
+            DirectoryInfo dinfo = new DirectoryInfo(folder);
+            FileInfo[] files = dinfo.GetFiles(fileType);
+            foreach (FileInfo f in files)
+            {
+                lsv.Items.Add(f.Name);
+            }
+        }
+
+        private void PopulateEmotionalAppraisalList()
+        {
+            PopulateListBoxView(emotionalAppraisalView, "", "");
+        }
+
+        private void PopulateEmotionalAppraisalAvailableList()
+        {
+            PopulateListBoxView(emotionalAppraisalSelectionView, "", "");
+        }
+
+        private void PopulateEmotionalDecisionMaKing()
+        {
+
+            PopulateListBoxView(emotionalDecisionMakingView, "", ""); 
+        }
+
+        private void PopulateEmotionalDecisionMakingAvailable()
+        {
+            PopulateListBoxView(emotionalDecisionMakingAvailableView, "", "");
         }
     }
 }

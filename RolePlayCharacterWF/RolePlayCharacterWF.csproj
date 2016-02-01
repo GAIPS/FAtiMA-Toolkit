@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddEditGroups.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddEditGroups.Designer.cs">
+      <DependentUpon>AddEditGroups.cs</DependentUpon>
+    </Compile>
     <Compile Include="RolePlayCharacter.cs">
       <SubType>Form</SubType>
     </Compile>

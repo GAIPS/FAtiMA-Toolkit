@@ -30,7 +30,7 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.emotionalAppraisalSelected = new System.Windows.Forms.ListView();
+            this.emotionalAppraisalSelectionView = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.emotionalAppraisalView = new System.Windows.Forms.ListView();
             this.nameColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -38,19 +38,19 @@
             this.editEA = new System.Windows.Forms.Button();
             this.addNewEA = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.emotionalDecisionMakingAvailableView = new System.Windows.Forms.ListView();
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.emotionalDecisionMakingView = new System.Windows.Forms.ListView();
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.deleteEDM = new System.Windows.Forms.Button();
+            this.editEDM = new System.Windows.Forms.Button();
+            this.addNewEDM = new System.Windows.Forms.Button();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.deleteGroupButton = new System.Windows.Forms.Button();
             this.editGroupButton = new System.Windows.Forms.Button();
             this.addNewGroupButton = new System.Windows.Forms.Button();
-            this.listView2 = new System.Windows.Forms.ListView();
-            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.listView3 = new System.Windows.Forms.ListView();
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.deleteEDM = new System.Windows.Forms.Button();
-            this.editEDM = new System.Windows.Forms.Button();
-            this.addNewEDM = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -72,7 +72,7 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.emotionalAppraisalSelected);
+            this.tabPage1.Controls.Add(this.emotionalAppraisalSelectionView);
             this.tabPage1.Controls.Add(this.emotionalAppraisalView);
             this.tabPage1.Controls.Add(this.deleteEA);
             this.tabPage1.Controls.Add(this.editEA);
@@ -85,18 +85,18 @@
             this.tabPage1.Text = "Emotional Appraisal";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // emotionalAppraisalSelected
+            // emotionalAppraisalSelectionView
             // 
-            this.emotionalAppraisalSelected.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.emotionalAppraisalSelectionView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
-            this.emotionalAppraisalSelected.FullRowSelect = true;
-            this.emotionalAppraisalSelected.Location = new System.Drawing.Point(321, 17);
-            this.emotionalAppraisalSelected.Name = "emotionalAppraisalSelected";
-            this.emotionalAppraisalSelected.Size = new System.Drawing.Size(156, 147);
-            this.emotionalAppraisalSelected.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.emotionalAppraisalSelected.TabIndex = 7;
-            this.emotionalAppraisalSelected.UseCompatibleStateImageBehavior = false;
-            this.emotionalAppraisalSelected.View = System.Windows.Forms.View.Details;
+            this.emotionalAppraisalSelectionView.FullRowSelect = true;
+            this.emotionalAppraisalSelectionView.Location = new System.Drawing.Point(321, 17);
+            this.emotionalAppraisalSelectionView.Name = "emotionalAppraisalSelectionView";
+            this.emotionalAppraisalSelectionView.Size = new System.Drawing.Size(156, 147);
+            this.emotionalAppraisalSelectionView.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.emotionalAppraisalSelectionView.TabIndex = 7;
+            this.emotionalAppraisalSelectionView.UseCompatibleStateImageBehavior = false;
+            this.emotionalAppraisalSelectionView.View = System.Windows.Forms.View.Details;
             // 
             // columnHeader1
             // 
@@ -152,8 +152,8 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.listView2);
-            this.tabPage2.Controls.Add(this.listView3);
+            this.tabPage2.Controls.Add(this.emotionalDecisionMakingAvailableView);
+            this.tabPage2.Controls.Add(this.emotionalDecisionMakingView);
             this.tabPage2.Controls.Add(this.deleteEDM);
             this.tabPage2.Controls.Add(this.editEDM);
             this.tabPage2.Controls.Add(this.addNewEDM);
@@ -164,6 +164,69 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Emotional Decision Making";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // emotionalDecisionMakingAvailableView
+            // 
+            this.emotionalDecisionMakingAvailableView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader2});
+            this.emotionalDecisionMakingAvailableView.FullRowSelect = true;
+            this.emotionalDecisionMakingAvailableView.Location = new System.Drawing.Point(327, 24);
+            this.emotionalDecisionMakingAvailableView.Name = "emotionalDecisionMakingAvailableView";
+            this.emotionalDecisionMakingAvailableView.Size = new System.Drawing.Size(156, 147);
+            this.emotionalDecisionMakingAvailableView.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.emotionalDecisionMakingAvailableView.TabIndex = 12;
+            this.emotionalDecisionMakingAvailableView.UseCompatibleStateImageBehavior = false;
+            this.emotionalDecisionMakingAvailableView.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Name";
+            this.columnHeader2.Width = 150;
+            // 
+            // emotionalDecisionMakingView
+            // 
+            this.emotionalDecisionMakingView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader3});
+            this.emotionalDecisionMakingView.FullRowSelect = true;
+            this.emotionalDecisionMakingView.Location = new System.Drawing.Point(12, 24);
+            this.emotionalDecisionMakingView.Name = "emotionalDecisionMakingView";
+            this.emotionalDecisionMakingView.Size = new System.Drawing.Size(155, 147);
+            this.emotionalDecisionMakingView.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.emotionalDecisionMakingView.TabIndex = 11;
+            this.emotionalDecisionMakingView.UseCompatibleStateImageBehavior = false;
+            this.emotionalDecisionMakingView.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "Name";
+            this.columnHeader3.Width = 150;
+            // 
+            // deleteEDM
+            // 
+            this.deleteEDM.Location = new System.Drawing.Point(440, 186);
+            this.deleteEDM.Name = "deleteEDM";
+            this.deleteEDM.Size = new System.Drawing.Size(75, 23);
+            this.deleteEDM.TabIndex = 10;
+            this.deleteEDM.Text = "Delete";
+            this.deleteEDM.UseVisualStyleBackColor = true;
+            // 
+            // editEDM
+            // 
+            this.editEDM.Location = new System.Drawing.Point(359, 186);
+            this.editEDM.Name = "editEDM";
+            this.editEDM.Size = new System.Drawing.Size(75, 23);
+            this.editEDM.TabIndex = 9;
+            this.editEDM.Text = "Edit";
+            this.editEDM.UseVisualStyleBackColor = true;
+            // 
+            // addNewEDM
+            // 
+            this.addNewEDM.Location = new System.Drawing.Point(278, 186);
+            this.addNewEDM.Name = "addNewEDM";
+            this.addNewEDM.Size = new System.Drawing.Size(75, 23);
+            this.addNewEDM.TabIndex = 8;
+            this.addNewEDM.Text = "New";
+            this.addNewEDM.UseVisualStyleBackColor = true;
             // 
             // tabPage3
             // 
@@ -227,69 +290,6 @@
             this.addNewGroupButton.UseVisualStyleBackColor = true;
             this.addNewGroupButton.Click += new System.EventHandler(this.addNewGroupButton_Click);
             // 
-            // listView2
-            // 
-            this.listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader2});
-            this.listView2.FullRowSelect = true;
-            this.listView2.Location = new System.Drawing.Point(327, 24);
-            this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(156, 147);
-            this.listView2.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.listView2.TabIndex = 12;
-            this.listView2.UseCompatibleStateImageBehavior = false;
-            this.listView2.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader2
-            // 
-            this.columnHeader2.Text = "Name";
-            this.columnHeader2.Width = 150;
-            // 
-            // listView3
-            // 
-            this.listView3.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader3});
-            this.listView3.FullRowSelect = true;
-            this.listView3.Location = new System.Drawing.Point(12, 24);
-            this.listView3.Name = "listView3";
-            this.listView3.Size = new System.Drawing.Size(155, 147);
-            this.listView3.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.listView3.TabIndex = 11;
-            this.listView3.UseCompatibleStateImageBehavior = false;
-            this.listView3.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "Name";
-            this.columnHeader3.Width = 150;
-            // 
-            // deleteEDM
-            // 
-            this.deleteEDM.Location = new System.Drawing.Point(440, 186);
-            this.deleteEDM.Name = "deleteEDM";
-            this.deleteEDM.Size = new System.Drawing.Size(75, 23);
-            this.deleteEDM.TabIndex = 10;
-            this.deleteEDM.Text = "Delete";
-            this.deleteEDM.UseVisualStyleBackColor = true;
-            // 
-            // editEDM
-            // 
-            this.editEDM.Location = new System.Drawing.Point(359, 186);
-            this.editEDM.Name = "editEDM";
-            this.editEDM.Size = new System.Drawing.Size(75, 23);
-            this.editEDM.TabIndex = 9;
-            this.editEDM.Text = "Edit";
-            this.editEDM.UseVisualStyleBackColor = true;
-            // 
-            // addNewEDM
-            // 
-            this.addNewEDM.Location = new System.Drawing.Point(278, 186);
-            this.addNewEDM.Name = "addNewEDM";
-            this.addNewEDM.Size = new System.Drawing.Size(75, 23);
-            this.addNewEDM.TabIndex = 8;
-            this.addNewEDM.Text = "New";
-            this.addNewEDM.UseVisualStyleBackColor = true;
-            // 
             // RolePlayCharacter
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -323,11 +323,11 @@
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.ListView emotionalAppraisalView;
         private System.Windows.Forms.ColumnHeader nameColumnHeader;
-        private System.Windows.Forms.ListView emotionalAppraisalSelected;
+        private System.Windows.Forms.ListView emotionalAppraisalSelectionView;
         private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.ListView emotionalDecisionMakingAvailableView;
         private System.Windows.Forms.ColumnHeader columnHeader2;
-        private System.Windows.Forms.ListView listView3;
+        private System.Windows.Forms.ListView emotionalDecisionMakingView;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.Button deleteEDM;
         private System.Windows.Forms.Button editEDM;
