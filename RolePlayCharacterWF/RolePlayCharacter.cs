@@ -14,6 +14,33 @@ namespace RolePlayCharacterWF
 {
     public partial class RolePlayCharacter : Form
     {
+
+        private string _nameFileNPC;
+        private string _descriptionNPC;
+
+        private ListView _emotionalAppraisalSelectionView;
+
+
+        private ListView.SelectedListViewItemCollection _emotionalAppraisalSelected;
+        private ListView.SelectedListViewItemCollection _emotionalAppraisalToSelected;
+
+        private ListView.SelectedListViewItemCollection _emotionalDecisionMakingSelected;
+        private ListView.SelectedListViewItemCollection _emotionalDecisionMakingToSelected;
+
+        public string NameFileNPC
+        {
+            get { return _nameFileNPC; }
+
+            set { _nameFileNPC = value; }
+        }
+
+        public string DescriptionNPC
+        {
+            get { return _descriptionNPC; }
+
+            set { _descriptionNPC = value; }
+        }
+
         public RolePlayCharacter()
         {
             InitializeComponent();
@@ -31,11 +58,6 @@ namespace RolePlayCharacterWF
             emotionalAppraisalWF.ShowDialog();
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void addNewGroupButton_Click(object sender, EventArgs e)
         {
 
@@ -47,16 +69,6 @@ namespace RolePlayCharacterWF
         }
 
         private void deleteGroupButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void emotionalAppraisalSelected_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void emotionalAppraisalToSelect_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
@@ -90,6 +102,65 @@ namespace RolePlayCharacterWF
         private void PopulateEmotionalDecisionMakingAvailable()
         {
             PopulateListBoxView(emotionalDecisionMakingAvailableView, "", "");
+        }
+
+        private void descriptionTextBox_TextChanged(object sender, EventArgs e)
+        {
+            _descriptionNPC = descriptionTextBox.Text;
+        }
+
+        private void nameTextBox_TextChanged(object sender, EventArgs e)
+        {
+            _nameFileNPC = nameTextBox.Text;
+        }
+
+        private void emotionalAppraisalSelectionView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _emotionalAppraisalSelectionView = emotionalAppraisalSelectionView;
+        }
+
+        private void emotionalDecisionMakingView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_emotionalAppraisalToSelected == null)
+                _emotionalAppraisalToSelected = emotionalAppraisalSelectionView.SelectedItems;
+            else
+                emotionalAppraisalSelectionView.Items.Remove(emotionalAppraisalSelectionView.SelectedItems[0]);
+        }
+
+        private void emotionalAppraisalView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            if (_emotionalAppraisalSelected == null)
+                _emotionalAppraisalSelected = emotionalAppraisalView.SelectedItems;
+            else
+                emotionalAppraisalView.Items.Remove(emotionalAppraisalView.SelectedItems[0]);
+        }
+
+        private void emotionalDecisionMakingAvailableView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _emotionalDecisionMakingToSelected = emotionalDecisionMakingAvailableView.SelectedItems ;
+        }
+
+        private void deleteEA_Click(object sender, EventArgs e)
+        {
+            if(_emotionalAppraisalToSelected != null)
+                emotionalAppraisalSelectionView.Items.Remove(emotionalAppraisalSelectionView.SelectedItems[0]);
+        }
+
+        private void deleteEDM_Click(object sender, EventArgs e)
+        {
+            if (_emotionalDecisionMakingToSelected != null)
+                emotionalDecisionMakingAvailableView.Items.Remove(emotionalDecisionMakingAvailableView.SelectedItems[0]);
+        }
+
+        private void addNewEDM_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void editEDM_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

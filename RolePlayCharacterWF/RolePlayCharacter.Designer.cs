@@ -51,12 +51,27 @@
             this.deleteGroupButton = new System.Windows.Forms.Button();
             this.editGroupButton = new System.Windows.Forms.Button();
             this.addNewGroupButton = new System.Windows.Forms.Button();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
+            this.listBox4 = new System.Windows.Forms.ListBox();
+            this.listBox3 = new System.Windows.Forms.ListBox();
+            this.listBox2 = new System.Windows.Forms.ListBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.GenerateNPC = new System.Windows.Forms.Button();
+            this.descriptionTextBox = new System.Windows.Forms.TextBox();
+            this.nameTextBox = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.tabPage4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -64,10 +79,11 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(528, 281);
+            this.tabControl1.Size = new System.Drawing.Size(613, 281);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
@@ -80,7 +96,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(520, 255);
+            this.tabPage1.Size = new System.Drawing.Size(605, 255);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Emotional Appraisal";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -90,13 +106,14 @@
             this.emotionalAppraisalSelectionView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
             this.emotionalAppraisalSelectionView.FullRowSelect = true;
-            this.emotionalAppraisalSelectionView.Location = new System.Drawing.Point(321, 17);
+            this.emotionalAppraisalSelectionView.Location = new System.Drawing.Point(395, 37);
             this.emotionalAppraisalSelectionView.Name = "emotionalAppraisalSelectionView";
             this.emotionalAppraisalSelectionView.Size = new System.Drawing.Size(156, 147);
             this.emotionalAppraisalSelectionView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.emotionalAppraisalSelectionView.TabIndex = 7;
             this.emotionalAppraisalSelectionView.UseCompatibleStateImageBehavior = false;
             this.emotionalAppraisalSelectionView.View = System.Windows.Forms.View.Details;
+            this.emotionalAppraisalSelectionView.SelectedIndexChanged += new System.EventHandler(this.emotionalAppraisalSelectionView_SelectedIndexChanged);
             // 
             // columnHeader1
             // 
@@ -108,13 +125,14 @@
             this.emotionalAppraisalView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.nameColumnHeader});
             this.emotionalAppraisalView.FullRowSelect = true;
-            this.emotionalAppraisalView.Location = new System.Drawing.Point(6, 17);
+            this.emotionalAppraisalView.Location = new System.Drawing.Point(45, 37);
             this.emotionalAppraisalView.Name = "emotionalAppraisalView";
             this.emotionalAppraisalView.Size = new System.Drawing.Size(154, 147);
             this.emotionalAppraisalView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.emotionalAppraisalView.TabIndex = 6;
             this.emotionalAppraisalView.UseCompatibleStateImageBehavior = false;
             this.emotionalAppraisalView.View = System.Windows.Forms.View.Details;
+            this.emotionalAppraisalView.SelectedIndexChanged += new System.EventHandler(this.emotionalAppraisalView_SelectedIndexChanged);
             // 
             // nameColumnHeader
             // 
@@ -123,16 +141,17 @@
             // 
             // deleteEA
             // 
-            this.deleteEA.Location = new System.Drawing.Point(434, 179);
+            this.deleteEA.Location = new System.Drawing.Point(524, 200);
             this.deleteEA.Name = "deleteEA";
             this.deleteEA.Size = new System.Drawing.Size(75, 23);
             this.deleteEA.TabIndex = 2;
             this.deleteEA.Text = "Delete";
             this.deleteEA.UseVisualStyleBackColor = true;
+            this.deleteEA.Click += new System.EventHandler(this.deleteEA_Click);
             // 
             // editEA
             // 
-            this.editEA.Location = new System.Drawing.Point(353, 179);
+            this.editEA.Location = new System.Drawing.Point(432, 200);
             this.editEA.Name = "editEA";
             this.editEA.Size = new System.Drawing.Size(75, 23);
             this.editEA.TabIndex = 1;
@@ -142,7 +161,7 @@
             // 
             // addNewEA
             // 
-            this.addNewEA.Location = new System.Drawing.Point(272, 179);
+            this.addNewEA.Location = new System.Drawing.Point(339, 200);
             this.addNewEA.Name = "addNewEA";
             this.addNewEA.Size = new System.Drawing.Size(75, 23);
             this.addNewEA.TabIndex = 0;
@@ -160,7 +179,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(520, 255);
+            this.tabPage2.Size = new System.Drawing.Size(605, 255);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Emotional Decision Making";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -170,13 +189,14 @@
             this.emotionalDecisionMakingAvailableView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader2});
             this.emotionalDecisionMakingAvailableView.FullRowSelect = true;
-            this.emotionalDecisionMakingAvailableView.Location = new System.Drawing.Point(327, 24);
+            this.emotionalDecisionMakingAvailableView.Location = new System.Drawing.Point(374, 57);
             this.emotionalDecisionMakingAvailableView.Name = "emotionalDecisionMakingAvailableView";
             this.emotionalDecisionMakingAvailableView.Size = new System.Drawing.Size(156, 147);
             this.emotionalDecisionMakingAvailableView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.emotionalDecisionMakingAvailableView.TabIndex = 12;
             this.emotionalDecisionMakingAvailableView.UseCompatibleStateImageBehavior = false;
             this.emotionalDecisionMakingAvailableView.View = System.Windows.Forms.View.Details;
+            this.emotionalDecisionMakingAvailableView.SelectedIndexChanged += new System.EventHandler(this.emotionalDecisionMakingAvailableView_SelectedIndexChanged);
             // 
             // columnHeader2
             // 
@@ -188,13 +208,14 @@
             this.emotionalDecisionMakingView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader3});
             this.emotionalDecisionMakingView.FullRowSelect = true;
-            this.emotionalDecisionMakingView.Location = new System.Drawing.Point(12, 24);
+            this.emotionalDecisionMakingView.Location = new System.Drawing.Point(22, 57);
             this.emotionalDecisionMakingView.Name = "emotionalDecisionMakingView";
             this.emotionalDecisionMakingView.Size = new System.Drawing.Size(155, 147);
             this.emotionalDecisionMakingView.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.emotionalDecisionMakingView.TabIndex = 11;
             this.emotionalDecisionMakingView.UseCompatibleStateImageBehavior = false;
             this.emotionalDecisionMakingView.View = System.Windows.Forms.View.Details;
+            this.emotionalDecisionMakingView.SelectedIndexChanged += new System.EventHandler(this.emotionalDecisionMakingView_SelectedIndexChanged);
             // 
             // columnHeader3
             // 
@@ -203,30 +224,33 @@
             // 
             // deleteEDM
             // 
-            this.deleteEDM.Location = new System.Drawing.Point(440, 186);
+            this.deleteEDM.Location = new System.Drawing.Point(511, 210);
             this.deleteEDM.Name = "deleteEDM";
             this.deleteEDM.Size = new System.Drawing.Size(75, 23);
             this.deleteEDM.TabIndex = 10;
             this.deleteEDM.Text = "Delete";
             this.deleteEDM.UseVisualStyleBackColor = true;
+            this.deleteEDM.Click += new System.EventHandler(this.deleteEDM_Click);
             // 
             // editEDM
             // 
-            this.editEDM.Location = new System.Drawing.Point(359, 186);
+            this.editEDM.Location = new System.Drawing.Point(408, 210);
             this.editEDM.Name = "editEDM";
             this.editEDM.Size = new System.Drawing.Size(75, 23);
             this.editEDM.TabIndex = 9;
             this.editEDM.Text = "Edit";
             this.editEDM.UseVisualStyleBackColor = true;
+            this.editEDM.Click += new System.EventHandler(this.editEDM_Click);
             // 
             // addNewEDM
             // 
-            this.addNewEDM.Location = new System.Drawing.Point(278, 186);
+            this.addNewEDM.Location = new System.Drawing.Point(312, 210);
             this.addNewEDM.Name = "addNewEDM";
             this.addNewEDM.Size = new System.Drawing.Size(75, 23);
             this.addNewEDM.TabIndex = 8;
             this.addNewEDM.Text = "New";
             this.addNewEDM.UseVisualStyleBackColor = true;
+            this.addNewEDM.Click += new System.EventHandler(this.addNewEDM_Click);
             // 
             // tabPage3
             // 
@@ -238,7 +262,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(520, 255);
+            this.tabPage3.Size = new System.Drawing.Size(605, 255);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Groups";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -258,7 +282,6 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(219, 150);
             this.dataGridView1.TabIndex = 3;
-            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // deleteGroupButton
             // 
@@ -290,10 +313,146 @@
             this.addNewGroupButton.UseVisualStyleBackColor = true;
             this.addNewGroupButton.Click += new System.EventHandler(this.addNewGroupButton_Click);
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.label6);
+            this.tabPage4.Controls.Add(this.label5);
+            this.tabPage4.Controls.Add(this.label4);
+            this.tabPage4.Controls.Add(this.label3);
+            this.tabPage4.Controls.Add(this.listBox4);
+            this.tabPage4.Controls.Add(this.listBox3);
+            this.tabPage4.Controls.Add(this.listBox2);
+            this.tabPage4.Controls.Add(this.listBox1);
+            this.tabPage4.Controls.Add(this.GenerateNPC);
+            this.tabPage4.Controls.Add(this.descriptionTextBox);
+            this.tabPage4.Controls.Add(this.nameTextBox);
+            this.tabPage4.Controls.Add(this.label2);
+            this.tabPage4.Controls.Add(this.label1);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage4.Size = new System.Drawing.Size(605, 255);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Generate";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(525, 90);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(41, 13);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Groups";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(360, 90);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 13);
+            this.label5.TabIndex = 11;
+            this.label5.Text = "Groups";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(167, 90);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(135, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Emotional Decision Making";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(22, 90);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(99, 13);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Emotional Appraisal";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // listBox4
+            // 
+            this.listBox4.FormattingEnabled = true;
+            this.listBox4.Location = new System.Drawing.Point(479, 106);
+            this.listBox4.Name = "listBox4";
+            this.listBox4.Size = new System.Drawing.Size(120, 95);
+            this.listBox4.TabIndex = 8;
+            // 
+            // listBox3
+            // 
+            this.listBox3.FormattingEnabled = true;
+            this.listBox3.Location = new System.Drawing.Point(327, 106);
+            this.listBox3.Name = "listBox3";
+            this.listBox3.Size = new System.Drawing.Size(120, 95);
+            this.listBox3.TabIndex = 7;
+            // 
+            // listBox2
+            // 
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.Location = new System.Drawing.Point(170, 106);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(132, 95);
+            this.listBox2.TabIndex = 6;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(6, 106);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(127, 95);
+            this.listBox1.TabIndex = 5;
+            // 
+            // GenerateNPC
+            // 
+            this.GenerateNPC.Location = new System.Drawing.Point(233, 214);
+            this.GenerateNPC.Name = "GenerateNPC";
+            this.GenerateNPC.Size = new System.Drawing.Size(75, 23);
+            this.GenerateNPC.TabIndex = 4;
+            this.GenerateNPC.Text = "Generate";
+            this.GenerateNPC.UseVisualStyleBackColor = true;
+            // 
+            // descriptionTextBox
+            // 
+            this.descriptionTextBox.Location = new System.Drawing.Point(345, 29);
+            this.descriptionTextBox.Name = "descriptionTextBox";
+            this.descriptionTextBox.Size = new System.Drawing.Size(142, 20);
+            this.descriptionTextBox.TabIndex = 3;
+            this.descriptionTextBox.TextChanged += new System.EventHandler(this.descriptionTextBox_TextChanged);
+            // 
+            // nameTextBox
+            // 
+            this.nameTextBox.Location = new System.Drawing.Point(99, 29);
+            this.nameTextBox.Name = "nameTextBox";
+            this.nameTextBox.Size = new System.Drawing.Size(142, 20);
+            this.nameTextBox.TabIndex = 2;
+            this.nameTextBox.TextChanged += new System.EventHandler(this.nameTextBox_TextChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(268, 29);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(60, 13);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Description";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(22, 29);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Name";
+            // 
             // RolePlayCharacter
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(546, 305);
+            this.ClientSize = new System.Drawing.Size(637, 305);
             this.Controls.Add(this.tabControl1);
             this.Name = "RolePlayCharacter";
             this.Text = "RolePlayCharacter";
@@ -303,6 +462,8 @@
             this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -332,6 +493,20 @@
         private System.Windows.Forms.Button deleteEDM;
         private System.Windows.Forms.Button editEDM;
         private System.Windows.Forms.Button addNewEDM;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ListBox listBox4;
+        private System.Windows.Forms.ListBox listBox3;
+        private System.Windows.Forms.ListBox listBox2;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button GenerateNPC;
+        private System.Windows.Forms.TextBox descriptionTextBox;
+        private System.Windows.Forms.TextBox nameTextBox;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }
 
