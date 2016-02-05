@@ -98,6 +98,7 @@
             this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dataGridViewBeliefs = new System.Windows.Forms.DataGridView();
             this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.label5 = new System.Windows.Forms.Label();
             this.mainMenu.SuspendLayout();
             this.mainFormTab.SuspendLayout();
             this.emotionalStateTabPage.SuspendLayout();
@@ -749,6 +750,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
@@ -926,10 +928,20 @@
             this.dataGridViewBeliefs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewBeliefs.Size = new System.Drawing.Size(542, 330);
             this.dataGridViewBeliefs.TabIndex = 4;
+            this.dataGridViewBeliefs.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridViewBeliefs_CellValidating);
             // 
             // mainFormBindingSource
             // 
             this.mainFormBindingSource.DataSource = typeof(EmotionalAppraisalWF.MainForm);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(244, 3);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(13, 13);
+            this.label5.TabIndex = 8;
+            this.label5.Text = "0";
             // 
             // MainForm
             // 
@@ -966,6 +978,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAppraisalRules)).EndInit();
             this.knowledgeBaseTabPage.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.autobiographicalMemoryTabPage.ResumeLayout(false);
@@ -1051,6 +1064,7 @@
         private System.Windows.Forms.ErrorProvider decayErrorProvider;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.DataGridView dataGridViewBeliefs;
+        private System.Windows.Forms.Label label5;
     }
 }
 

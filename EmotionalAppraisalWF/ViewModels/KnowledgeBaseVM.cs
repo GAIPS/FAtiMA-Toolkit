@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EmotionalAppraisal;
 using EmotionalAppraisalWF.Properties;
@@ -19,12 +20,12 @@ namespace EmotionalAppraisalWF.ViewModels
         private static int _beliefCounter;
 
         private string BASE_BELIEF_NAME = "bel({0})";
-        private string BASE_BELIEF_VALUE = "val";
-        private string BASE_BELIEF_VISIBILITY = KnowledgeVisibility.Universal.ToString();
+        private string BASE_BELIEF_VALUE = "-";
+        private string BASE_BELIEF_VISIBILITY = KnowledgeVisibility.Self.ToString();
 
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
 
-        public BindingListView<BeliefDTO> Beliefs { get;}
+        public BindingListView<BeliefDTO> Beliefs {get;}
 
         public KnowledgeBaseVM(EmotionalAppraisalAsset ea)
         {
@@ -71,6 +72,16 @@ namespace EmotionalAppraisalWF.ViewModels
         public void EditBelief(BeliefDTO belief)
         {
             _emotionalAppraisalAsset.AddOrUpdateBelief(belief.Name, belief.Value, belief.Visibility);
+        }
+
+        public void RemoveBeliefs(IEnumerable<BeliefDTO> beliefs)
+        {
+            foreach (var beliefDto in beliefs)
+            {
+                _emotionalAppraisalAsset.RemoveBelief(beliefDto.Name);
+                Beliefs.DataSource.Remove(beliefDto);
+            }
+            Beliefs.Refresh();
         }
 
     }

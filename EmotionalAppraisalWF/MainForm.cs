@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
@@ -10,6 +11,7 @@ using AutobiographicMemory.Interfaces;
 using EmotionalAppraisal;
 using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
+using Equin.ApplicationFramework;
 
 namespace EmotionalAppraisalWF
 {
@@ -122,13 +124,14 @@ namespace EmotionalAppraisalWF
             
             //Beliefs
             dataGridViewBeliefs.DataSource = _knowledgeBaseVM.Beliefs;
-            string visibility = HelperMethods.GetPropertyName(() => new KnowledgeBaseVM.BeliefDTO().Visibility);
+            var visibilityString = HelperMethods.GetPropertyName(() => new KnowledgeBaseVM.BeliefDTO().Visibility);
+            dataGridViewBeliefs.Columns[visibilityString].Visible = false;
+
             var visibilityComboBox = new DataGridViewComboBoxColumn();
             visibilityComboBox.DataSource = _knowledgeBaseVM.GetKnowledgeVisibilities();
             visibilityComboBox.DataPropertyName = HelperMethods.GetPropertyName(() => new KnowledgeBaseVM.BeliefDTO().Visibility);
             visibilityComboBox.HeaderText = visibilityComboBox.DataPropertyName;
-            
-            //dataGridViewBeliefs.Columns.Add(v);
+            dataGridViewBeliefs.Columns.Add(visibilityComboBox);
 
 
         }
@@ -265,14 +268,14 @@ namespace EmotionalAppraisalWF
 
         private void removeBeliefButton_Click(object sender, EventArgs e)
         {
-           /* foreach (ListViewItem eachItem in beliefsListView.SelectedItems)
+            IList<KnowledgeBaseVM.BeliefDTO> beliefsToRemove = new List<KnowledgeBaseVM.BeliefDTO>();
+            for (int i = 0; i < dataGridViewBeliefs.SelectedRows.Count; i++)
             {
-                _emotionalAppraisalAsset.RemoveBelief(eachItem.Text);
-                beliefsListView.Items.Remove(eachItem);
-            }*/
+                var belief = ((ObjectView<KnowledgeBaseVM.BeliefDTO>)dataGridViewBeliefs.SelectedRows[i].DataBoundItem).Object;
+                beliefsToRemove.Add(belief);
+            }
+            _knowledgeBaseVM.RemoveBeliefs(beliefsToRemove);
         }
-
-
 
         private void mainMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
@@ -453,6 +456,14 @@ namespace EmotionalAppraisalWF
         private void comboBoxDefaultThreshold_SelectedIndexChanged(object sender, EventArgs e)
         {
             _emotionalAppraisalAsset.EmotionalState.DefaultEmotionDispositionThreshold = int.Parse(comboBoxDefaultThreshold.Text);
+        }
+
+        public int validations = 0;
+
+        private void dataGridViewBeliefs_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            label5.Text = validations.ToString();
+            validations++;
         }
     }
 }
