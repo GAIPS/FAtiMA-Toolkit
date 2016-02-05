@@ -87,10 +87,6 @@
             this.editButton = new System.Windows.Forms.Button();
             this.addBeliefButton = new System.Windows.Forms.Button();
             this.removeBeliefButton = new System.Windows.Forms.Button();
-            this.beliefsListView = new System.Windows.Forms.ListView();
-            this.nameColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.valueColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.visibilityColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.autobiographicalMemoryTabPage = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.dataGridViewAM = new System.Windows.Forms.DataGridView();
@@ -100,6 +96,7 @@
             this.decayErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.dataGridViewBeliefs = new System.Windows.Forms.DataGridView();
             this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.mainMenu.SuspendLayout();
             this.mainFormTab.SuspendLayout();
@@ -128,6 +125,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAM)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.decayErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emotionListItemBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBeliefs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mainFormBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -137,7 +135,7 @@
             this.fileToolStripMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-            this.mainMenu.Size = new System.Drawing.Size(572, 24);
+            this.mainMenu.Size = new System.Drawing.Size(592, 24);
             this.mainMenu.TabIndex = 0;
             this.mainMenu.Text = "mainMenu";
             this.mainMenu.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.mainMenu_ItemClicked);
@@ -205,7 +203,7 @@
             this.mainFormTab.Location = new System.Drawing.Point(12, 26);
             this.mainFormTab.Name = "mainFormTab";
             this.mainFormTab.SelectedIndex = 0;
-            this.mainFormTab.Size = new System.Drawing.Size(548, 425);
+            this.mainFormTab.Size = new System.Drawing.Size(568, 425);
             this.mainFormTab.TabIndex = 1;
             // 
             // emotionalStateTabPage
@@ -217,7 +215,7 @@
             this.emotionalStateTabPage.Location = new System.Drawing.Point(4, 25);
             this.emotionalStateTabPage.Name = "emotionalStateTabPage";
             this.emotionalStateTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.emotionalStateTabPage.Size = new System.Drawing.Size(540, 396);
+            this.emotionalStateTabPage.Size = new System.Drawing.Size(560, 396);
             this.emotionalStateTabPage.TabIndex = 0;
             this.emotionalStateTabPage.Text = "Emotional State";
             this.emotionalStateTabPage.UseVisualStyleBackColor = true;
@@ -232,7 +230,7 @@
             this.groupBox3.Controls.Add(this.emotionalHalfLifeTextBox);
             this.groupBox3.Location = new System.Drawing.Point(199, 303);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(335, 68);
+            this.groupBox3.Size = new System.Drawing.Size(355, 68);
             this.groupBox3.TabIndex = 14;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Decay Factors";
@@ -320,7 +318,7 @@
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Location = new System.Drawing.Point(7, 218);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(527, 79);
+            this.groupBox2.Size = new System.Drawing.Size(547, 79);
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Emotion Details";
@@ -395,7 +393,7 @@
             this.emotionGroupBox.Controls.Add(this.emotionsDataGridView);
             this.emotionGroupBox.Location = new System.Drawing.Point(7, 7);
             this.emotionGroupBox.Name = "emotionGroupBox";
-            this.emotionGroupBox.Size = new System.Drawing.Size(527, 201);
+            this.emotionGroupBox.Size = new System.Drawing.Size(547, 201);
             this.emotionGroupBox.TabIndex = 0;
             this.emotionGroupBox.TabStop = false;
             this.emotionGroupBox.Text = "Emotions";
@@ -448,7 +446,7 @@
             this.emotionsDataGridView.RowHeadersVisible = false;
             this.emotionsDataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.emotionsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.emotionsDataGridView.Size = new System.Drawing.Size(515, 141);
+            this.emotionsDataGridView.Size = new System.Drawing.Size(535, 141);
             this.emotionsDataGridView.TabIndex = 2;
             this.emotionsDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick_2);
             // 
@@ -459,7 +457,7 @@
             this.emotionDispositionTabPage.Location = new System.Drawing.Point(4, 25);
             this.emotionDispositionTabPage.Name = "emotionDispositionTabPage";
             this.emotionDispositionTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.emotionDispositionTabPage.Size = new System.Drawing.Size(540, 396);
+            this.emotionDispositionTabPage.Size = new System.Drawing.Size(560, 396);
             this.emotionDispositionTabPage.TabIndex = 4;
             this.emotionDispositionTabPage.Text = "Emotion Dispositions";
             this.emotionDispositionTabPage.UseVisualStyleBackColor = true;
@@ -547,7 +545,7 @@
             this.groupBox5.Controls.Add(this.button8);
             this.groupBox5.Location = new System.Drawing.Point(6, 77);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(534, 298);
+            this.groupBox5.Size = new System.Drawing.Size(554, 298);
             this.groupBox5.TabIndex = 0;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Emotion Dispositions";
@@ -569,7 +567,7 @@
             this.dataGridViewEmotionDispositions.RowHeadersVisible = false;
             this.dataGridViewEmotionDispositions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewEmotionDispositions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewEmotionDispositions.Size = new System.Drawing.Size(522, 249);
+            this.dataGridViewEmotionDispositions.Size = new System.Drawing.Size(542, 249);
             this.dataGridViewEmotionDispositions.TabIndex = 14;
             // 
             // button6
@@ -606,7 +604,7 @@
             this.appraisalRulesTagePage.Location = new System.Drawing.Point(4, 25);
             this.appraisalRulesTagePage.Name = "appraisalRulesTagePage";
             this.appraisalRulesTagePage.Padding = new System.Windows.Forms.Padding(3);
-            this.appraisalRulesTagePage.Size = new System.Drawing.Size(540, 396);
+            this.appraisalRulesTagePage.Size = new System.Drawing.Size(560, 396);
             this.appraisalRulesTagePage.TabIndex = 3;
             this.appraisalRulesTagePage.Text = "Appraisal Rules";
             this.appraisalRulesTagePage.UseVisualStyleBackColor = true;
@@ -622,7 +620,7 @@
             this.groupBox8.Controls.Add(this.dataGridView4);
             this.groupBox8.Location = new System.Drawing.Point(6, 236);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(533, 154);
+            this.groupBox8.Size = new System.Drawing.Size(553, 154);
             this.groupBox8.TabIndex = 10;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Rule Conditions";
@@ -671,7 +669,7 @@
             this.dataGridView4.RowHeadersVisible = false;
             this.dataGridView4.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridView4.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView4.Size = new System.Drawing.Size(521, 100);
+            this.dataGridView4.Size = new System.Drawing.Size(541, 100);
             this.dataGridView4.TabIndex = 2;
             // 
             // groupBox7
@@ -684,7 +682,7 @@
             this.groupBox7.Controls.Add(this.dataGridViewAppraisalRules);
             this.groupBox7.Location = new System.Drawing.Point(6, 6);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(533, 227);
+            this.groupBox7.Size = new System.Drawing.Size(553, 227);
             this.groupBox7.TabIndex = 1;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Rules";
@@ -735,7 +733,7 @@
             this.dataGridViewAppraisalRules.RowHeadersVisible = false;
             this.dataGridViewAppraisalRules.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAppraisalRules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAppraisalRules.Size = new System.Drawing.Size(521, 167);
+            this.dataGridViewAppraisalRules.Size = new System.Drawing.Size(541, 167);
             this.dataGridViewAppraisalRules.TabIndex = 2;
             // 
             // knowledgeBaseTabPage
@@ -744,7 +742,7 @@
             this.knowledgeBaseTabPage.Location = new System.Drawing.Point(4, 25);
             this.knowledgeBaseTabPage.Name = "knowledgeBaseTabPage";
             this.knowledgeBaseTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.knowledgeBaseTabPage.Size = new System.Drawing.Size(540, 396);
+            this.knowledgeBaseTabPage.Size = new System.Drawing.Size(560, 396);
             this.knowledgeBaseTabPage.TabIndex = 1;
             this.knowledgeBaseTabPage.Text = "Knowledge Base";
             this.knowledgeBaseTabPage.UseVisualStyleBackColor = true;
@@ -755,7 +753,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(534, 390);
+            this.groupBox1.Size = new System.Drawing.Size(554, 390);
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Beliefs";
@@ -764,15 +762,15 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.dataGridViewBeliefs, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.beliefsListView, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 16);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(528, 371);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(548, 371);
             this.tableLayoutPanel1.TabIndex = 7;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
@@ -791,7 +789,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(522, 31);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(542, 31);
             this.tableLayoutPanel2.TabIndex = 3;
             this.tableLayoutPanel2.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
             // 
@@ -825,46 +823,13 @@
             this.removeBeliefButton.UseVisualStyleBackColor = true;
             this.removeBeliefButton.Click += new System.EventHandler(this.removeBeliefButton_Click);
             // 
-            // beliefsListView
-            // 
-            this.beliefsListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.nameColumnHeader,
-            this.valueColumnHeader,
-            this.visibilityColumnHeader});
-            this.beliefsListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.beliefsListView.FullRowSelect = true;
-            this.beliefsListView.Location = new System.Drawing.Point(3, 38);
-            this.beliefsListView.Name = "beliefsListView";
-            this.beliefsListView.Size = new System.Drawing.Size(522, 330);
-            this.beliefsListView.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.beliefsListView.TabIndex = 2;
-            this.beliefsListView.UseCompatibleStateImageBehavior = false;
-            this.beliefsListView.View = System.Windows.Forms.View.Details;
-            this.beliefsListView.ItemActivate += new System.EventHandler(this.beliefsListView_ItemActivate);
-            this.beliefsListView.SelectedIndexChanged += new System.EventHandler(this.beliefsListView_SelectedIndexChanged);
-            // 
-            // nameColumnHeader
-            // 
-            this.nameColumnHeader.Text = "Name";
-            this.nameColumnHeader.Width = 150;
-            // 
-            // valueColumnHeader
-            // 
-            this.valueColumnHeader.Text = "Value";
-            this.valueColumnHeader.Width = 146;
-            // 
-            // visibilityColumnHeader
-            // 
-            this.visibilityColumnHeader.Text = "Visibility";
-            this.visibilityColumnHeader.Width = 153;
-            // 
             // autobiographicalMemoryTabPage
             // 
             this.autobiographicalMemoryTabPage.Controls.Add(this.groupBox4);
             this.autobiographicalMemoryTabPage.Location = new System.Drawing.Point(4, 25);
             this.autobiographicalMemoryTabPage.Name = "autobiographicalMemoryTabPage";
             this.autobiographicalMemoryTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.autobiographicalMemoryTabPage.Size = new System.Drawing.Size(540, 396);
+            this.autobiographicalMemoryTabPage.Size = new System.Drawing.Size(560, 396);
             this.autobiographicalMemoryTabPage.TabIndex = 2;
             this.autobiographicalMemoryTabPage.Text = "Autobiographical Memory";
             this.autobiographicalMemoryTabPage.UseVisualStyleBackColor = true;
@@ -878,7 +843,7 @@
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(3, 3);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(534, 390);
+            this.groupBox4.Size = new System.Drawing.Size(554, 390);
             this.groupBox4.TabIndex = 0;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "EventName Records";
@@ -903,7 +868,7 @@
             this.dataGridViewAM.RowHeadersVisible = false;
             this.dataGridViewAM.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAM.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAM.Size = new System.Drawing.Size(522, 335);
+            this.dataGridViewAM.Size = new System.Drawing.Size(542, 335);
             this.dataGridViewAM.TabIndex = 10;
             // 
             // button2
@@ -941,6 +906,27 @@
             // 
             this.toolTip.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup_1);
             // 
+            // dataGridViewBeliefs
+            // 
+            this.dataGridViewBeliefs.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.dataGridViewBeliefs.AllowUserToAddRows = false;
+            this.dataGridViewBeliefs.AllowUserToOrderColumns = true;
+            this.dataGridViewBeliefs.AllowUserToResizeRows = false;
+            this.dataGridViewBeliefs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewBeliefs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewBeliefs.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.dataGridViewBeliefs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewBeliefs.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.dataGridViewBeliefs.Location = new System.Drawing.Point(3, 38);
+            this.dataGridViewBeliefs.Name = "dataGridViewBeliefs";
+            this.dataGridViewBeliefs.RowHeadersVisible = false;
+            this.dataGridViewBeliefs.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewBeliefs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewBeliefs.Size = new System.Drawing.Size(542, 330);
+            this.dataGridViewBeliefs.TabIndex = 4;
+            // 
             // mainFormBindingSource
             // 
             this.mainFormBindingSource.DataSource = typeof(EmotionalAppraisalWF.MainForm);
@@ -949,7 +935,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(572, 464);
+            this.ClientSize = new System.Drawing.Size(592, 464);
             this.Controls.Add(this.mainFormTab);
             this.Controls.Add(this.mainMenu);
             this.MainMenuStrip = this.mainMenu;
@@ -987,6 +973,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAM)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.decayErrorProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emotionListItemBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBeliefs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mainFormBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1006,13 +993,9 @@
         private System.Windows.Forms.TabPage knowledgeBaseTabPage;
         private System.Windows.Forms.TabPage autobiographicalMemoryTabPage;
         private System.Windows.Forms.TabPage appraisalRulesTagePage;
-        private System.Windows.Forms.ListView beliefsListView;
-        private System.Windows.Forms.ColumnHeader nameColumnHeader;
-        private System.Windows.Forms.ColumnHeader valueColumnHeader;
         private System.Windows.Forms.Button addBeliefButton;
         private System.Windows.Forms.Button removeBeliefButton;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.ColumnHeader visibilityColumnHeader;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Button editButton;
@@ -1067,6 +1050,7 @@
         private System.Windows.Forms.DataGridView dataGridView4;
         private System.Windows.Forms.ErrorProvider decayErrorProvider;
         private System.Windows.Forms.ToolTip toolTip;
+        private System.Windows.Forms.DataGridView dataGridViewBeliefs;
     }
 }
 

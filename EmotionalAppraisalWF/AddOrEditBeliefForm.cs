@@ -2,25 +2,25 @@
 using System.Windows.Forms;
 using EmotionalAppraisal;
 using EmotionalAppraisalWF.Properties;
+using EmotionalAppraisalWF.ViewModels;
 
 namespace EmotionalAppraisalWF
 {
     public partial class AddOrEditBeliefForm : Form
     {
-        private EmotionalAppraisalAsset _emotionalAppraisalAsset;
+        private KnowledgeBaseVM _knowledgeBaseVm;
         private ListView _beliefsListView;
         private bool _editMode;
 
-        public AddOrEditBeliefForm(ListView beliefsListView, EmotionalAppraisalAsset emotionalAppraisalAsset, bool editMode = false)
+        public AddOrEditBeliefForm(KnowledgeBaseVM kbVM, bool editMode = false)
         {
             InitializeComponent();
 
-            _beliefsListView = beliefsListView;
-            _emotionalAppraisalAsset = emotionalAppraisalAsset;
+            _knowledgeBaseVm = kbVM;
             _editMode = editMode;
 
             //Default Values 
-            beliefVisibilityComboBox.DataSource = EmotionalAppraisalAsset.GetKnowledgeVisibilities();
+            beliefVisibilityComboBox.DataSource = _knowledgeBaseVm.GetKnowledgeVisibilities();
             beliefVisibilityComboBox.SelectedIndex = 0;
 
             if (_editMode)
@@ -38,15 +38,19 @@ namespace EmotionalAppraisalWF
         {
             //clear errors
             addBeliefErrorProvider.Clear();
+            var newBelief = new KnowledgeBaseVM.BeliefDTO
+            {
+                Name = this.beliefNameTextBox.Text.Trim(),
+                Value = this.beliefValueTextBox.Text.Trim(),
+                Visibility = this.beliefVisibilityComboBox.Text
+            };
 
             try
             {
-                if(!_editMode && _emotionalAppraisalAsset.BeliefExists(this.beliefNameTextBox.Text))
-                {
-                    throw new Exception(Resources.BeliefAlreadyExistsExceptionMessage);
-                }
-                
-                _emotionalAppraisalAsset.AddOrUpdateBelief(this.beliefNameTextBox.Text, this.beliefValueTextBox.Text, this.beliefVisibilityComboBox.Text);
+                if(_editMode)
+                    _knowledgeBaseVm.EditBelief(newBelief);
+                else
+                    _knowledgeBaseVm.AddBelief(newBelief); 
             }
             catch (Exception ex)
             {
@@ -54,16 +58,7 @@ namespace EmotionalAppraisalWF
                 return;
             }
             
-            var beliefItem = new ListViewItem(new string[]
-                {
-                    this.beliefNameTextBox.Text.Trim(),
-                    this.beliefValueTextBox.Text.Trim(),
-                    this.beliefVisibilityComboBox.Text
-                });
-
-            _beliefsListView.Items.Add(beliefItem);
-            
-            if (_editMode)
+            /*if (_editMode)
             {
                 if (beliefNameTextBox.Text != _beliefsListView.SelectedItems[0].Text)
                 {
@@ -72,7 +67,7 @@ namespace EmotionalAppraisalWF
                 }
                 _beliefsListView.SelectedItems[0].Remove();
                 this.Close();
-            }
+            }*/
         }
 
         private void label1_Click(object sender, EventArgs e)

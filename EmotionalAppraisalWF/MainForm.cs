@@ -4,10 +4,12 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using AutobiographicMemory.Interfaces;
 using EmotionalAppraisal;
 using EmotionalAppraisalWF.Properties;
+using EmotionalAppraisalWF.ViewModels;
 
 namespace EmotionalAppraisalWF
 {
@@ -18,7 +20,8 @@ namespace EmotionalAppraisalWF
 
         private SortableBindingList<EmotionListItem> _emotionList;
         private SortableBindingList<AppraisalRuleListItem> _appraisalRuleList;
-
+        private KnowledgeBaseVM _knowledgeBaseVM;
+        
         public class EmotionListItem
         {
             public string Type { get; set; }
@@ -114,17 +117,19 @@ namespace EmotionalAppraisalWF
             ResetAppraisalRulesTab();
             ResetAutoBiographicalMemoryTab();
 
-            //Belief Tab
-            beliefsListView.Items.Clear();
+            _knowledgeBaseVM = new KnowledgeBaseVM(_emotionalAppraisalAsset);
 
-            if (!newFile)
-            {
-                foreach (var b in _emotionalAppraisalAsset.Kb.GetAllBeliefs())
-                {
-                    var listItem = new ListViewItem(new string[]{b.Name.ToString(), b.Value.ToString(), b.Visibility.ToString()});
-                    beliefsListView.Items.Add(listItem);
-                }
-            }
+            
+            //Beliefs
+            dataGridViewBeliefs.DataSource = _knowledgeBaseVM.Beliefs;
+            string visibility = HelperMethods.GetPropertyName(() => new KnowledgeBaseVM.BeliefDTO().Visibility);
+            var visibilityComboBox = new DataGridViewComboBoxColumn();
+            visibilityComboBox.DataSource = _knowledgeBaseVM.GetKnowledgeVisibilities();
+            visibilityComboBox.DataPropertyName = HelperMethods.GetPropertyName(() => new KnowledgeBaseVM.BeliefDTO().Visibility);
+            visibilityComboBox.HeaderText = visibilityComboBox.DataPropertyName;
+            
+            //dataGridViewBeliefs.Columns.Add(v);
+
 
         }
 
@@ -244,26 +249,27 @@ namespace EmotionalAppraisalWF
 
         private void addBeliefButton_Click(object sender, EventArgs e)
         {
-            var addBeliefForm = new AddOrEditBeliefForm(beliefsListView, _emotionalAppraisalAsset);
-            addBeliefForm.ShowDialog();
+           /* var addBeliefForm = new AddOrEditBeliefForm(_knowledgeBaseVM);
+            addBeliefForm.ShowDialog();*/
+            _knowledgeBaseVM.AddBelief(null);
         }
 
         private void editButton_Click(object sender, EventArgs e)
         {
-            if (beliefsListView.SelectedItems.Count == 1)
+           /* if (beliefsListView.SelectedItems.Count == 1)
             {
                 var addBeliefForm = new AddOrEditBeliefForm(beliefsListView, _emotionalAppraisalAsset, true);
                 addBeliefForm.ShowDialog();
-            }
+            }*/
         }
 
         private void removeBeliefButton_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem eachItem in beliefsListView.SelectedItems)
+           /* foreach (ListViewItem eachItem in beliefsListView.SelectedItems)
             {
                 _emotionalAppraisalAsset.RemoveBelief(eachItem.Text);
                 beliefsListView.Items.Remove(eachItem);
-            }
+            }*/
         }
 
 

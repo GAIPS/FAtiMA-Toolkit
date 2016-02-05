@@ -19,10 +19,7 @@ namespace EmotionalAppraisal
 	[Serializable]
 	public sealed partial class EmotionalAppraisalAsset : BaseAsset, ICustomSerialization
 	{
-		public static string[] GetKnowledgeVisibilities()
-        {
-            return Enum.GetNames(typeof(KnowledgeVisibility));
-        }
+		
 
         public static EmotionalAppraisalAsset LoadFromFile(string filename)
         {
