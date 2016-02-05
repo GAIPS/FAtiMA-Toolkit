@@ -46,6 +46,9 @@
     <Compile Include="Conditions\Implementation\PredicateCondition.cs" />
     <Compile Include="Conditions\Implementation\PrimitiveComparisonCondition.cs" />
     <Compile Include="Conditions\Implementation\PropertyComparisonCondition.cs" />
+    <Compile Include="Conditions\Implementation\ValueRetrivers\CountValueRetriver.cs" />
+    <Compile Include="Conditions\Implementation\ValueRetrivers\PropertyValueRetriver.cs" />
+    <Compile Include="Conditions\IValueRetriver.cs" />
     <Compile Include="KB.cs" />
     <Compile Include="PrimitiveValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -54,11 +57,12 @@
     <Compile Include="WellFormedNames\Implementation\ComposedName.cs" />
     <Compile Include="Exceptions\BadSubstitutionException.cs" />
     <Compile Include="WellFormedNames\Formatters.cs" />
-    <Compile Include="WellFormedNames\IGroundable.cs" />
+    <Compile Include="WellFormedNames\Interfaces\IGroundable.cs" />
     <Compile Include="WellFormedNames\Implementation\UniversalSymbol.cs" />
     <Compile Include="WellFormedNames\Implementation\VariableSymbol.cs" />
     <Compile Include="WellFormedNames\Inequality.cs" />
-    <Compile Include="WellFormedNames\IVariableRenamer.cs" />
+    <Compile Include="WellFormedNames\Interfaces\IPerspective.cs" />
+    <Compile Include="WellFormedNames\Interfaces\IVariableRenamer.cs" />
     <Compile Include="WellFormedNames\Name.cs" />
     <Compile Include="Exceptions\ParsingException.cs" />
     <Compile Include="WellFormedNames\Implementation\PrimitiveSymbol.cs" />

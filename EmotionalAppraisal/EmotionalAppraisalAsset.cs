@@ -231,9 +231,9 @@ namespace EmotionalAppraisal
         }
 		private void BindCalls(KB kb)
 		{
-			kb.RegistDynamicProperty(MOOD_TEMPLATE,MoodPropertyCalculator);
-			kb.RegistDynamicProperty(STRONGEST_EMOTION_TEMPLATE,StrongestEmotionCalculator);
-			kb.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE,EmotionIntensityPropertyCalculator);
+			kb.RegistDynamicProperty(MOOD_TEMPLATE, MoodPropertyCalculator, new[] { "x" });
+			kb.RegistDynamicProperty(STRONGEST_EMOTION_TEMPLATE, StrongestEmotionCalculator, new[] { "x" });
+			kb.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator, new[] { "x","y" });
 		}
 
         public void RemoveBelief(string name)
@@ -248,38 +248,16 @@ namespace EmotionalAppraisal
         
         #region Dynamic Properties
         private static readonly Name MOOD_TEMPLATE = (Name)"Mood([x])";
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> MoodPropertyCalculator(KB kb, IDictionary<string, Name> args, SubstitutionSet constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> MoodPropertyCalculator(KB kb, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			Name arg = args["x"];
 			if (arg.IsVariable)
 			{
 				var sub = new Substitution(arg, Name.SELF_SYMBOL);
-				if (constraints.AddSubstitution(sub))
-					yield return Tuples.Create((PrimitiveValue) EmotionalState.Mood, constraints);
-			}
-			else
-			{
-				foreach (var resultPair in kb.AskPossibleProperties(arg, constraints))
+				foreach (var c in constraints)
 				{
-					var name = Name.BuildName(resultPair.Item1);
-					if (name == Name.SELF_SYMBOL)
-						yield return Tuples.Create((PrimitiveValue)EmotionalState.Mood, resultPair.Item2);
-				}
-			}
-		}
-
-		private static readonly Name STRONGEST_EMOTION_TEMPLATE = (Name)"StrongestEmotion([x])";
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> StrongestEmotionCalculator(KB kb, IDictionary<string, Name> args, SubstitutionSet constraints)
-		{
-			Name arg = args["x"];
-			if (arg.IsVariable)
-			{
-				var sub = new Substitution(arg, Name.SELF_SYMBOL);
-				if (constraints.AddSubstitution(sub))
-				{
-					var emo = EmotionalState.GetStrongestEmotion();
-					if(emo!=null)
-						yield return Tuples.Create((PrimitiveValue)emo.EmotionType, constraints);
+					if (c.AddSubstitution(sub))
+						yield return Tuples.Create((PrimitiveValue)EmotionalState.Mood, c);	
 				}
 			}
 			else
@@ -289,16 +267,52 @@ namespace EmotionalAppraisal
 					var name = Name.BuildName(resultPair.Item1);
 					if (name == Name.SELF_SYMBOL)
 					{
-						var emo = EmotionalState.GetStrongestEmotion();
-						if(emo!=null)
-							yield return Tuples.Create((PrimitiveValue)emo.EmotionType, resultPair.Item2);
+						var v = (PrimitiveValue) EmotionalState.Mood;
+						foreach (var c in resultPair.Item2)
+						{
+							yield return Tuples.Create(v, c);
+						}
 					}
 				}
 			}
 		}
 
+		private static readonly Name STRONGEST_EMOTION_TEMPLATE = (Name)"StrongestEmotion([x])";
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> StrongestEmotionCalculator(KB kb, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		{
+			Name arg = args["x"];
+
+			var emo = EmotionalState.GetStrongestEmotion();
+			if(emo==null)
+				yield break;
+
+			var emoValue = (PrimitiveValue) emo.EmotionType;
+
+			if (arg.IsVariable)
+			{
+				var sub = new Substitution(arg, Name.SELF_SYMBOL);
+				foreach (var c in constraints)
+				{
+					if (c.AddSubstitution(sub))
+						yield return Tuples.Create(emoValue, c);
+				}
+			}
+			else
+			{
+				foreach (var resultPair in kb.AskPossibleProperties(arg, constraints))
+				{
+					var name = Name.BuildName(resultPair.Item1);
+					if (name != Name.SELF_SYMBOL)
+						continue;
+
+					foreach (var c in resultPair.Item2)
+						yield return Tuples.Create(emoValue, c);
+				}
+			}
+		}
+
 		private static readonly Name EMOTION_INTENSITY_TEMPLATE = (Name) "EmotionIntensity([x],[y])";
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EmotionIntensityPropertyCalculator(KB kb, IDictionary<string, Name> args, SubstitutionSet constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EmotionIntensityPropertyCalculator(KB kb, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			Name entity = args["x"];
 			Name emotionName = args["y"];
@@ -307,35 +321,40 @@ namespace EmotionalAppraisal
 			if (entity.IsVariable)
 			{
 				var newSub = new Substitution(entity,Name.SELF_SYMBOL);
-				if (constraints.AddSubstitution(newSub))
-					result.AddRange(GetEmotionsForEntity(EmotionalState, emotionName, kb, constraints));
+				var newC = constraints.Where(c => c.AddSubstitution(newSub));
+				if(newC.Any())
+					result.AddRange(GetEmotionsForEntity(EmotionalState, emotionName, kb, newC));
 			}
 			else
 			{
 				foreach (var resultPair in kb.AskPossibleProperties(entity,constraints))
 				{
 					Name entityName = Name.BuildName(resultPair.Item1);
-					if(entityName==Name.SELF_SYMBOL)
-						result.AddRange(GetEmotionsForEntity(EmotionalState, emotionName, kb, resultPair.Item2));
+					if(entityName!=Name.SELF_SYMBOL)
+						continue;
+					result.AddRange(GetEmotionsForEntity(EmotionalState, emotionName, kb, resultPair.Item2));
 				}
 			}
 			return result;
 		}
 
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> GetEmotionsForEntity(IEmotionalState state,
-			Name emotionName, KB kb, SubstitutionSet constraints)
+			Name emotionName, KB kb, IEnumerable<SubstitutionSet> constraints)
 		{
 			if (emotionName.IsVariable)
 			{
 				foreach (var emotion in state.GetAllEmotions())
 				{
 					var sub = new Substitution(emotionName,(Name)emotion.EmotionType);
-					if(constraints.Conflicts(sub))
-						continue;
+					foreach (var c in constraints)
+					{
+						if(c.Conflicts(sub))
+							continue;
 
-					var newConstraints = new SubstitutionSet(constraints);
-					newConstraints.AddSubstitution(sub);
-					yield return Tuples.Create((PrimitiveValue) emotion.Intensity, newConstraints);
+						var newConstraints = new SubstitutionSet(c);
+						newConstraints.AddSubstitution(sub);
+						yield return Tuples.Create((PrimitiveValue)emotion.Intensity, newConstraints);
+					}
 				}
 			}
 			else
@@ -344,10 +363,9 @@ namespace EmotionalAppraisal
 				{
 					string emotionKey = resultPair.Item1.ToString();
 					var emotion = state.GetEmotionsByType(emotionKey).OrderByDescending(e => e.Intensity).FirstOrDefault();
-					if(emotion==null)
-						yield return Tuples.Create((PrimitiveValue)0, resultPair.Item2);
-
-					yield return Tuples.Create((PrimitiveValue)emotion.Intensity, resultPair.Item2);
+					PrimitiveValue value = emotion == null ? 0 : emotion.Intensity;
+					foreach (var c in resultPair.Item2)
+						yield return Tuples.Create(value, c);
 				}
 			}
 		}

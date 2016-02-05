@@ -4,6 +4,7 @@ using System.Linq;
 using KnowledgeBase;
 using KnowledgeBase.WellFormedNames;
 using NUnit.Framework;
+using Utilities;
 
 namespace Tests.KnowledgeBase
 {
@@ -25,10 +26,7 @@ namespace Tests.KnowledgeBase
 			{
 				DynamicPropertyCalculator p = (kb2, args,subs) =>
 				{
-					var arg = args["x"];
-					var r = kb2.AskPossibleProperties(arg, subs).ToList();
-					PrimitiveValue c = r.Count;
-					return new[] {Utilities.Tuples.Create(c,subs)};
+					return Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
 				};
 				yield return new TestCaseData(PopulatedTestMemory(), (Name)"Count([x])", p, (Name)"Count(IsAlive([x]))", null);
 				yield return new TestCaseData(PopulatedTestMemory(), (Name)"Count([x])", p, (Name)"Count([y])", new SubstitutionSet(new Substitution("[y]/IsAlive([x])")));
@@ -159,7 +157,7 @@ namespace Tests.KnowledgeBase
 		public void Test_OperatorRegist_Fail_Duplicate()
 		{
 			var kb = new KB();
-			kb.RegistDynamicProperty((Name)"Count([y])", ((kb1, args, constraints) => null));
+			kb.RegistDynamicProperty((Name)"Count([y])", ((kb1, args, constraints) => null),null);
 		}
 
 		[Test]
@@ -167,7 +165,7 @@ namespace Tests.KnowledgeBase
 		public void Test_OperatorRegist_Fail_Same_Template()
 		{
 			var kb = new KB();
-			kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, args, constraints) => null));
+			kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, args, constraints) => null),null);
 		}
 
 		[Test]
@@ -175,7 +173,7 @@ namespace Tests.KnowledgeBase
 		public void Test_OperatorRegist_Fail_GroundedTemplate()
 		{
 			var kb = new KB();
-			kb.RegistDynamicProperty((Name)"Count(John)", ((kb1, args, constraints) => null));
+			kb.RegistDynamicProperty((Name)"Count(John)", ((kb1, args, constraints) => null),null);
 		}
 
 		[Test]
@@ -183,7 +181,7 @@ namespace Tests.KnowledgeBase
 		public void Test_OperatorRegist_Fail_Null_Surogate()
 		{
 			var kb = new KB();
-			kb.RegistDynamicProperty((Name)"Count(John)", null);
+			kb.RegistDynamicProperty((Name)"Count(John)", null,null);
 		}
 
 		[Test]
@@ -192,7 +190,7 @@ namespace Tests.KnowledgeBase
 		{
 			var kb = new KB();
 			kb.Tell((Name)"Count(John)",3);
-			kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, args, constraints) => null));
+			kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, args, constraints) => null),null);
 		}
 
 		[Test]
@@ -200,7 +198,7 @@ namespace Tests.KnowledgeBase
 		public void Test_Tell_Fail_OperatorRegist()
 		{
 			var kb = new KB();
-			kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, args, constraints) => null));
+			kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, args, constraints) => null),null);
 			kb.Tell((Name)"Count(John)", 3);
 		}
 	}

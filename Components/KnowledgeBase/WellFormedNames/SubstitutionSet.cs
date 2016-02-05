@@ -37,6 +37,14 @@ namespace KnowledgeBase.WellFormedNames
 			}
 		}
 
+		public bool Contains(Name variable)
+		{
+			if (!variable.IsVariable)
+				return false;
+
+			return m_substitutions.ContainsKey(variable);
+		}
+
 		public int Count()
 		{
 			return m_substitutions.Count;
@@ -49,7 +57,7 @@ namespace KnowledgeBase.WellFormedNames
 				return false;
 
 			if (canAdd)
-				m_substitutions.Add(substitution.Variable,substitution.Value);
+				AddSub(substitution.Variable,substitution.Value);
 
 			return true;
 		}
@@ -60,9 +68,8 @@ namespace KnowledgeBase.WellFormedNames
 				return false;
 
 			foreach (var s in substitutions)
-			{
-				m_substitutions.Add(s.Variable,s.Value);
-			}
+				AddSub(s.Variable, s.Value);
+
 			return true;
 		}
 
@@ -82,7 +89,7 @@ namespace KnowledgeBase.WellFormedNames
 
 				if (canAdd)
 				{
-					m_substitutions.Add(s.Variable, s.Value);
+					AddSub(s.Variable, s.Value);
 					added.Add(s.Variable);
 				}
 			}
@@ -108,7 +115,21 @@ namespace KnowledgeBase.WellFormedNames
 			var G2 = subs.Value.MakeGround(substitutions);
 			return !G1.Equals(G2);	//Conflict!!!
 		}
-		
+
+		private void AddSub(Name variable, Name value)
+		{
+			m_substitutions.Add(variable, value);
+			//if(added!=null)
+			//	added.Add(variable);
+
+			//if (value.IsVariable)
+			//{
+			//	m_substitutions.Add(value,variable);
+			//	if (added != null)
+			//		added.Add(value);
+			//}
+		}
+
 		public bool Conflicts(Substitution substitution)
 		{
 			bool aux;

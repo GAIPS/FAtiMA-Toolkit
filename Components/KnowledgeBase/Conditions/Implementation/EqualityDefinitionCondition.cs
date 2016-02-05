@@ -9,34 +9,37 @@ namespace KnowledgeBase.Conditions
 		private sealed class EqualityDefinitionCondition : Condition
 		{
 			private Name m_variable;
-			private Name m_other;
+			private IValueRetriver m_other;
 
-			public EqualityDefinitionCondition(Name variable, Name other)
+			public EqualityDefinitionCondition(Name variable, IValueRetriver other)
 			{
 				m_variable = variable;
 				m_other = other;
 			}
 
-			public override IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, SubstitutionSet constraints)
+			protected override IEnumerable<SubstitutionSet> CheckActivation(KB kb, IEnumerable<SubstitutionSet> constraints)
 			{
-				if (m_other.IsVariable || m_other.IsPrimitive)
+				if (!m_other.HasModifier && (m_other.InnerName.IsVariable || m_other.InnerName.IsPrimitive))
 				{
-					var sub = new Substitution(m_variable,m_other);
-					if (!constraints.Conflicts(sub))
+					foreach (var constraint in constraints)
 					{
-						var c = new SubstitutionSet(constraints);
-						c.AddSubstitution(sub);
-						yield return c;
+						var sub = new Substitution(m_variable, m_other.InnerName);
+						if (!constraint.Conflicts(sub))
+						{
+							var c = new SubstitutionSet(constraint);
+							c.AddSubstitution(sub);
+							yield return c;
+						}	
 					}
 				}
 				else
 				{
-					foreach (var result in kb.AskPossibleProperties(m_other, constraints))
+					foreach (var result in m_other.Retrive(kb, constraints))
 					{
 						var sub = new Substitution(m_variable, Name.BuildName(result.Item1));
 						if (result.Item2.AddSubstitution(sub))
 							yield return result.Item2;
-					}	
+					}
 				}
 			}
 
@@ -51,15 +54,10 @@ namespace KnowledgeBase.Conditions
 				if (d == null)
 					return false;
 
-				if (m_variable.Equals(d.m_variable))
-					return m_other.Equals(d.m_other);
+				if (!m_variable.Equals(d.m_variable))
+					return false;
 
-				if (m_other.IsVariable && d.m_other.IsVariable)
-				{
-					return m_variable.Equals(d.m_other) && m_other.Equals(d.m_variable);
-				}
-
-				return false;
+				return m_other.Equals(d.m_other);
 			}
 
 			public override int GetHashCode()

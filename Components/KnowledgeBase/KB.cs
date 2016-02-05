@@ -14,7 +14,8 @@ namespace KnowledgeBase
 		Universal,
 		Self
 	}
-	public delegate IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> DynamicPropertyCalculator(KB kb, IDictionary<string,Name> args, SubstitutionSet constraints);
+
+	public delegate IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> DynamicPropertyCalculator(KB kb, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints);
 
 	[Serializable]
 	public class KB : ICustomSerialization
@@ -36,10 +37,12 @@ namespace KnowledgeBase
 		private sealed class DynamicKnowledgeEntry
 		{
 			public readonly DynamicPropertyCalculator surogate;
+			public readonly Name[] arguments;
 			
-			public DynamicKnowledgeEntry(DynamicPropertyCalculator surogate)
+			public DynamicKnowledgeEntry(DynamicPropertyCalculator surogate, Name[] arguments)
 			{
 				this.surogate = surogate;
+				this.arguments = arguments;
 			}
 		}
 
@@ -55,36 +58,30 @@ namespace KnowledgeBase
 
 		private static void RegistNativeDynamicProperties(KB kb)
 		{
-			kb.RegistDynamicProperty(COUNT_TEMPLATE,CountPropertyCalculator);
+			kb.RegistDynamicProperty(COUNT_TEMPLATE, CountPropertyCalculator, new[] { "x" });
 		}
 
 		//Count
 		private static readonly Name COUNT_TEMPLATE = Name.BuildName("Count([x])");
-		private static IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> CountPropertyCalculator(KB kb, IDictionary<string,Name> args, SubstitutionSet constraints)
+		private static IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> CountPropertyCalculator(KB kb, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			var arg = args["x"];
 
-			List<Pair<PrimitiveValue, SubstitutionSet>> results = new List<Pair<PrimitiveValue, SubstitutionSet>>();
 			var set = kb.AskPossibleProperties(arg, constraints).ToList();
-			if (!set.Any())
-			{
-				results.Add(Tuples.Create((PrimitiveValue)0,constraints));
-			}
+			PrimitiveValue count = set.Count;
+			IEnumerable<SubstitutionSet> sets;
+			if (set.Count == 0)
+				sets = constraints;
 			else
-			{
-				var groups = set.GroupBy(r => r.Item2);
-				foreach (var r in groups)
-				{
-					PrimitiveValue c = r.Count();
-					results.Add(Tuples.Create(c, r.Key));
-				}	
-			}
-			return results;
+				sets = set.SelectMany(s => s.Item2).Distinct();
+			
+			foreach (var d in sets)
+				yield return Tuples.Create(count, d);
 		}
 
 #endregion
 
-		public void RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate)
+		public void RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate, IEnumerable<string> arguments)
 		{
 			if(surogate==null)
 				throw new ArgumentNullException("surogate");
@@ -101,7 +98,12 @@ namespace KnowledgeBase
 			if(m_knowledgeStorage.Unify(propertyTemplate).Any())
 				throw new ArgumentException(string.Format("The given template {0} will collide with stored constant properties", propertyTemplate), "propertyTemplate");
 
-			m_dynamicProperties.Add(propertyTemplate,new DynamicKnowledgeEntry(surogate));
+			Name[] args;
+			if(arguments==null)
+				args = new Name[0];
+			else
+				args = arguments.Distinct().Select(s => Name.BuildName("[" + s + "]")).ToArray();
+			m_dynamicProperties.Add(propertyTemplate,new DynamicKnowledgeEntry(surogate,args));
 		}
 
 		public IEnumerable<Belief> GetAllBeliefs()
@@ -129,78 +131,100 @@ namespace KnowledgeBase
 			return results;
 		}
 
-		public IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> AskPossibleProperties(Name property, SubstitutionSet constraints)
+		public IEnumerable<Pair<PrimitiveValue, IEnumerable<SubstitutionSet>>> AskPossibleProperties(Name property, IEnumerable<SubstitutionSet> constraints)
 		{
-			if (constraints != null && !property.IsGrounded)
-				property = property.MakeGround(constraints);
+			if (constraints == null)
+				constraints = new[] { new SubstitutionSet() };
 
 			if (property.IsPrimitive)
-				return new[] {Tuples.Create(property.GetPrimitiveValue(), constraints)};
+			{
+				yield return Tuples.Create(property.GetPrimitiveValue(), constraints);
+				yield break;
+			}
 
-			var dynamicResult = AskDynamicProperties(property, constraints);
-			if (dynamicResult != null)
-				return dynamicResult;
+			if (!property.IsVariable)
+			{
+				bool dynamicFound = false;
+				foreach (var r in AskDynamicProperties(property, constraints))
+				{
+					dynamicFound = true;
+					yield return r;
+				}
+				if (dynamicFound)
+					yield break;
+			}
 
-			SubstitutionSet set;
-			var fact = property.Unfold(out set);
-			if (set != null)
-				fact = FindConstantLeveledName(fact, set,false);
-			if (fact == null)
-				return Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
+			var group = constraints.GroupBy(property.MakeGround);
 
-			return m_knowledgeStorage.Unify(fact, constraints).Select(p => Tuples.Create(p.Item1.Value, p.Item2));
+			foreach (var g in group)
+			{
+				if (g.Key.IsPrimitive)
+				{
+					yield return Tuples.Create(g.Key.GetPrimitiveValue(), (IEnumerable<SubstitutionSet>)g);
+					continue;
+				}
+
+				SubstitutionSet set;
+				var fact = g.Key.Unfold(out set);
+				if (set != null)
+					fact = FindConstantLeveledName(fact, set, false);
+				if (fact == null)
+					continue;
+
+				var g2 = g.SelectMany(c => m_knowledgeStorage.Unify(fact, c)).GroupBy(r => r.Item1, r => r.Item2);
+				foreach (var r in g2.Select(p => Tuples.Create(p.Key.Value, p.Distinct())))
+					yield return r;
+			}
 		}
-		/*
-		public IEnumerable<SubstitutionSet> AskPossiblePredicates(Name predicate, SubstitutionSet constraints)
-		{
-			return AskPossibleProperties(predicate, constraints)
-				.Where(p => p.Item1 == true)
-				.Select(p => p.Item2);
-		}
-		*/
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> AskDynamicProperties(Name property, SubstitutionSet constraints)
+
+		private IEnumerable<Pair<PrimitiveValue, IEnumerable<SubstitutionSet>>> AskDynamicProperties(Name property, IEnumerable<SubstitutionSet> constraints)
 		{
 			const string tmpMarker = "_arg";
 			if (m_dynamicProperties.Count == 0)
-				return null;
+				yield break;
 
 			Name tmpPropertyName = property.ReplaceUnboundVariables(tmpMarker);
 
 			var d = m_dynamicProperties.Unify(tmpPropertyName).ToList();
 			if (d.Count == 0)
-				return null;
+				yield break;
+
 			var results = d.SelectMany(p =>
 			{
-				var args = new Dictionary<string, Name>();
-				foreach (var s in p.Item2)
+				var args = ObjectPool<Dictionary<string, Name>>.GetObject();
+				try
 				{
-					var paramName = s.Variable.ToString();
-					paramName = paramName.Substring(1, paramName.Length - 2);
-					args[paramName] = s.Value.RemoveBoundedVariables(tmpMarker);
-					if (s.Value.IsVariable)
+					foreach (var s in p.Item2)
 					{
-						//Unify can mix parameter Name with it's value, if the value is a variable.
-						//In this case, flip a duplicate of the argument entry
-						paramName = s.Value.ToString();
+						var paramName = s.Variable.ToString();
 						paramName = paramName.Substring(1, paramName.Length - 2);
-						args[paramName] = s.Variable.RemoveBoundedVariables(tmpMarker);
+						args[paramName] = s.Value.RemoveBoundedVariables(tmpMarker);
+						if (s.Value.IsVariable)
+						{
+							//Unify can mix parameter Name with it's value, if the value is a variable.
+							//In this case, flip a duplicate of the argument entry
+							paramName = s.Value.ToString();
+							paramName = paramName.Substring(1, paramName.Length - 2);
+							args[paramName] = s.Variable.RemoveBoundedVariables(tmpMarker);
+						}
 					}
+					return p.Item1.surogate(this, args, constraints).ToList();
 				}
-				return p.Item1.surogate(this, args, new SubstitutionSet(constraints));
+				finally
+				{
+					args.Clear();
+					ObjectPool<Dictionary<string, Name>>.Recycle(args);
+				}
 			});
 
-			var final = results.ToList();
-			if (final.Count == 0)
-				return Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
+			//var final = results.ToList();
+			//if (final.Count == 0)
+			//	yield break;
 
-			return final.Select(p =>
+			foreach (var g in results.GroupBy(p => p.Item1, p => p.Item2))
 			{
-				if (p.Item2 == null)
-					p.Item2 = new SubstitutionSet();
-				//else
-				//	p.Item2 = p.Item2.RemoveBoundedVariables(tmpMarker);
-				return p;
-			});
+				yield return Tuples.Create(g.Key, g.Distinct());
+			}
 		}
 
 	    public bool BeliefExists(Name name)
@@ -308,7 +332,7 @@ namespace KnowledgeBase
 				if (!throwException && value == null)
 					return null;
 
-				var r = AskPossibleProperties(value, bindings).ToList();
+				var r = AskPossibleProperties(value, new[] { bindings }).ToList();
 				if (r.Count != 1)
 				{
 					if (throwException)

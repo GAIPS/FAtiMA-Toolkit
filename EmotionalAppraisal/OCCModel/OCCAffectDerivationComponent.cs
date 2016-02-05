@@ -239,7 +239,7 @@ namespace EmotionalAppraisal.OCCModel
 
 		public void InverseAffectDerivation(EmotionalAppraisalAsset emotionalModule, IEmotion emotion, IWritableAppraisalFrame frame)
 		{
-			const float MAGIC_VALUE_FOR_LOVE = 1.43f;
+			//const float MAGIC_VALUE_FOR_LOVE = 1.43f;
 			//TODO improve this code
 
 			//ignoring mood for now

@@ -5,25 +5,22 @@ namespace KnowledgeBase.Conditions
 {
 	public partial class Condition
 	{
-		public sealed class PrimitiveComparisonCondition : Condition
+		private sealed class PrimitiveComparisonCondition : Condition
 		{
-			private readonly Name m_property;
+			private readonly IValueRetriver m_retriver;
 			private readonly PrimitiveValue m_value;
 			private readonly ComparisonOperator m_operation;
 
-			public PrimitiveComparisonCondition(Name prop, PrimitiveValue value, ComparisonOperator op)
+			public PrimitiveComparisonCondition(IValueRetriver prop, PrimitiveValue value, ComparisonOperator op)
 			{
-				m_property = prop;
+				m_retriver = prop;
 				m_value = value;
 				m_operation = op;
 			}
 
-			public override IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, SubstitutionSet constraints)
+			protected override IEnumerable<SubstitutionSet> CheckActivation(KB kb, IEnumerable<SubstitutionSet> constraints)
 			{
-				if (constraints == null)
-					constraints = new SubstitutionSet();
-
-				foreach (var pair in kb.AskPossibleProperties(m_property, constraints))
+				foreach (var pair in m_retriver.Retrive(kb, constraints))
 				{
 					if (CompareValues(pair.Item1, m_value, m_operation))
 						yield return pair.Item2;
@@ -32,7 +29,7 @@ namespace KnowledgeBase.Conditions
 
 			public override string ToString()
 			{
-				return string.Format("{0} {1} {2}", m_property, OperatorRepresentation(m_operation), m_value);
+				return string.Format("{0} {1} {2}", m_retriver, OperatorRepresentation(m_operation), m_value);
 			}
 
 			public override bool Equals(object obj)
@@ -41,12 +38,12 @@ namespace KnowledgeBase.Conditions
 				if (o == null)
 					return false;
 
-				return m_operation == o.m_operation && m_property == o.m_property && m_value == o.m_value;
+				return m_operation == o.m_operation && m_retriver.Equals(o.m_retriver) && m_value == o.m_value;
 			}
 
 			public override int GetHashCode()
 			{
-				return m_property.GetHashCode() ^ m_value.GetHashCode() ^ m_operation.GetHashCode();
+				return m_retriver.GetHashCode() ^ m_value.GetHashCode() ^ m_operation.GetHashCode();
 			}
 		}
 	}
