@@ -222,6 +222,12 @@ namespace EmotionalAppraisal
 	        this.Kb.Tell(Name.BuildName(name), PrimitiveValue.Parse(value), true, visibilityEnum);
 	    }
 
+	    public string GetBeliefValue(string beliefName)
+	    {
+            var result = this.Kb.AskProperty(Name.BuildName(beliefName)).ToString();
+	        return result;
+	    }
+
         public bool BeliefExists(string name)
         {
             return this.Kb.BeliefExists(Name.BuildName(name));
