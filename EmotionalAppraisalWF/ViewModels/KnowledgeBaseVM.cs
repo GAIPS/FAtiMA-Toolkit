@@ -17,16 +17,10 @@ namespace EmotionalAppraisalWF.ViewModels
             public string Visibility { get; set; }
         }
 
-        private static int _beliefCounter;
-
-        private string BASE_BELIEF_NAME = "bel({0})";
-        private string BASE_BELIEF_VALUE = "-";
-        private string BASE_BELIEF_VISIBILITY = KnowledgeVisibility.Self.ToString();
-
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
 
         public BindingListView<BeliefDTO> Beliefs {get;}
-
+        
         public KnowledgeBaseVM(EmotionalAppraisalAsset ea)
         {
             _emotionalAppraisalAsset = ea;
@@ -48,31 +42,30 @@ namespace EmotionalAppraisalWF.ViewModels
       
         public void AddBelief(BeliefDTO belief)
         {
-            var newBelief = new BeliefDTO
-            {
-                Name = string.Format(BASE_BELIEF_NAME, _beliefCounter),
-                Value = BASE_BELIEF_VALUE,
-                Visibility = BASE_BELIEF_VISIBILITY,
-            };
-            _beliefCounter++;
-            _emotionalAppraisalAsset.AddOrUpdateBelief(newBelief.Name, newBelief.Value, newBelief.Visibility);
-            Beliefs.DataSource.Add(newBelief);
-            Beliefs.Refresh();
-            
-            /*
             if (_emotionalAppraisalAsset.BeliefExists(belief.Name))
             {
                 throw new Exception(Resources.BeliefAlreadyExistsExceptionMessage);
             }
             _emotionalAppraisalAsset.AddOrUpdateBelief(belief.Name, belief.Value, belief.Visibility);
             this.Beliefs.DataSource.Add(belief);
-            this.Beliefs.Refresh();*/
+            this.Beliefs.Refresh();
         }
 
-        public void EditBelief(BeliefDTO belief)
+        
+        /*public void EditBelief(BeliefDTO belief)
         {
             _emotionalAppraisalAsset.AddOrUpdateBelief(belief.Name, belief.Value, belief.Visibility);
-        }
+            var previousBelief = this.Beliefs.FirstOrDefault(b => b.Name == belief.Name);
+            if (previousBelief != null)
+            {
+                this.Beliefs.DataSource[this.Beliefs.DataSource.IndexOf(previousBelief)] = belief;
+            }
+            else
+            {
+                this.Beliefs.DataSource.Add(belief);
+            }
+            this.Beliefs.Refresh();
+        }*/
 
         public void RemoveBeliefs(IEnumerable<BeliefDTO> beliefs)
         {
@@ -84,5 +77,7 @@ namespace EmotionalAppraisalWF.ViewModels
             Beliefs.Refresh();
         }
 
+
+        
     }
 }

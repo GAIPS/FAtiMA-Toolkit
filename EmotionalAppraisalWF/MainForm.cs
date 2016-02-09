@@ -119,21 +119,9 @@ namespace EmotionalAppraisalWF
             ResetAppraisalRulesTab();
             ResetAutoBiographicalMemoryTab();
 
+            //KB
             _knowledgeBaseVM = new KnowledgeBaseVM(_emotionalAppraisalAsset);
-
-            
-            //Beliefs
             dataGridViewBeliefs.DataSource = _knowledgeBaseVM.Beliefs;
-            var visibilityString = HelperMethods.GetPropertyName(() => new KnowledgeBaseVM.BeliefDTO().Visibility);
-            dataGridViewBeliefs.Columns[visibilityString].Visible = false;
-
-            var visibilityComboBox = new DataGridViewComboBoxColumn();
-            visibilityComboBox.DataSource = _knowledgeBaseVM.GetKnowledgeVisibilities();
-            visibilityComboBox.DataPropertyName = HelperMethods.GetPropertyName(() => new KnowledgeBaseVM.BeliefDTO().Visibility);
-            visibilityComboBox.HeaderText = visibilityComboBox.DataPropertyName;
-            dataGridViewBeliefs.Columns.Add(visibilityComboBox);
-
-
         }
 
         public MainForm()
@@ -250,32 +238,7 @@ namespace EmotionalAppraisalWF
           
         }
 
-        private void addBeliefButton_Click(object sender, EventArgs e)
-        {
-           /* var addBeliefForm = new AddOrEditBeliefForm(_knowledgeBaseVM);
-            addBeliefForm.ShowDialog();*/
-            _knowledgeBaseVM.AddBelief(null);
-        }
-
-        private void editButton_Click(object sender, EventArgs e)
-        {
-           /* if (beliefsListView.SelectedItems.Count == 1)
-            {
-                var addBeliefForm = new AddOrEditBeliefForm(beliefsListView, _emotionalAppraisalAsset, true);
-                addBeliefForm.ShowDialog();
-            }*/
-        }
-
-        private void removeBeliefButton_Click(object sender, EventArgs e)
-        {
-            IList<KnowledgeBaseVM.BeliefDTO> beliefsToRemove = new List<KnowledgeBaseVM.BeliefDTO>();
-            for (int i = 0; i < dataGridViewBeliefs.SelectedRows.Count; i++)
-            {
-                var belief = ((ObjectView<KnowledgeBaseVM.BeliefDTO>)dataGridViewBeliefs.SelectedRows[i].DataBoundItem).Object;
-                beliefsToRemove.Add(belief);
-            }
-            _knowledgeBaseVM.RemoveBeliefs(beliefsToRemove);
-        }
+      
 
         private void mainMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
@@ -302,11 +265,7 @@ namespace EmotionalAppraisalWF
 
         }
 
-        private void beliefsListView_ItemActivate(object sender, EventArgs e)
-        {
-            this.editButton_Click(sender, e);
-        }
-
+       
         private void groupBox2_Enter(object sender, EventArgs e)
         {
 
@@ -327,87 +286,8 @@ namespace EmotionalAppraisalWF
             moodValueLabel.Text = moodTrackBar.Value.ToString();
             _emotionalAppraisalAsset.SetMood(moodTrackBar.Value);
         }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void moodGroupBox_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label6_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            
-            
-        }
-
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label7_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void addEmotionButton_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void emotionListItemBindingSource_CurrentChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox4_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label9_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void toolTip1_Popup(object sender, PopupEventArgs e)
-        {
-
-        }
-
-        private void toolTip1_Popup_1(object sender, PopupEventArgs e)
-        {
-
-        }
-
-        private void groupBox3_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void emotionalHalfLifeTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
+        
+        #region EmotionalStateTab
 
         private void emotionalHalfLifeTextBox_Validating(object sender, CancelEventArgs e)
         {
@@ -458,12 +338,47 @@ namespace EmotionalAppraisalWF
             _emotionalAppraisalAsset.EmotionalState.DefaultEmotionDispositionThreshold = int.Parse(comboBoxDefaultThreshold.Text);
         }
 
-        public int validations = 0;
 
-        private void dataGridViewBeliefs_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        #endregion
+
+        #region KnowledgeBaseTab
+
+        private void addBeliefButton_Click(object sender, EventArgs e)
         {
-            label5.Text = validations.ToString();
-            validations++;
+            var addBeliefForm = new AddOrEditBeliefForm(_knowledgeBaseVM);
+            addBeliefForm.ShowDialog();
         }
+
+        private void editButton_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewBeliefs.SelectedRows.Count == 1)
+            {
+                var selectedBelief = ((ObjectView<KnowledgeBaseVM.BeliefDTO>)dataGridViewBeliefs.SelectedRows[0].DataBoundItem).Object;
+                var addBeliefForm = new AddOrEditBeliefForm(_knowledgeBaseVM, selectedBelief);
+                addBeliefForm.ShowDialog();
+            }
+        }
+
+        private void removeBeliefButton_Click(object sender, EventArgs e)
+        {
+            IList<KnowledgeBaseVM.BeliefDTO> beliefsToRemove = new List<KnowledgeBaseVM.BeliefDTO>();
+            for (int i = 0; i < dataGridViewBeliefs.SelectedRows.Count; i++)
+            {
+                var belief = ((ObjectView<KnowledgeBaseVM.BeliefDTO>)dataGridViewBeliefs.SelectedRows[i].DataBoundItem).Object;
+                beliefsToRemove.Add(belief);
+            }
+            _knowledgeBaseVM.RemoveBeliefs(beliefsToRemove);
+        }
+
+        private void dataGridViewBeliefs_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex != -1) //exclude header cells
+            {
+                this.editButton_Click(sender, e);
+            }
+        }
+        #endregion
+
+
     }
 }

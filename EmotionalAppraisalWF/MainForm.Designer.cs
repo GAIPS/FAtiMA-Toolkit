@@ -83,6 +83,7 @@
             this.knowledgeBaseTabPage = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.dataGridViewBeliefs = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.editButton = new System.Windows.Forms.Button();
             this.addBeliefButton = new System.Windows.Forms.Button();
@@ -96,9 +97,7 @@
             this.decayErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.dataGridViewBeliefs = new System.Windows.Forms.DataGridView();
             this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.label5 = new System.Windows.Forms.Label();
             this.mainMenu.SuspendLayout();
             this.mainFormTab.SuspendLayout();
             this.emotionalStateTabPage.SuspendLayout();
@@ -120,13 +119,13 @@
             this.knowledgeBaseTabPage.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBeliefs)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
             this.autobiographicalMemoryTabPage.SuspendLayout();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAM)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.decayErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emotionListItemBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBeliefs)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mainFormBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -235,7 +234,6 @@
             this.groupBox3.TabIndex = 14;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Decay Factors";
-            this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
             // 
             // emotionalHalfLifeLabel
             // 
@@ -245,7 +243,6 @@
             this.emotionalHalfLifeLabel.Size = new System.Drawing.Size(98, 13);
             this.emotionalHalfLifeLabel.TabIndex = 18;
             this.emotionalHalfLifeLabel.Text = "Emotional Half Life:";
-            this.emotionalHalfLifeLabel.Click += new System.EventHandler(this.label6_Click);
             // 
             // moodHalfLifeTextBox
             // 
@@ -271,7 +268,6 @@
             this.emotionalHalfLifeTextBox.Name = "emotionalHalfLifeTextBox";
             this.emotionalHalfLifeTextBox.Size = new System.Drawing.Size(39, 20);
             this.emotionalHalfLifeTextBox.TabIndex = 14;
-            this.emotionalHalfLifeTextBox.TextChanged += new System.EventHandler(this.emotionalHalfLifeTextBox_TextChanged);
             this.emotionalHalfLifeTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.emotionalHalfLifeTextBox_Validating);
             this.emotionalHalfLifeTextBox.Validated += new System.EventHandler(this.emotionalHalfLifeTextBox_Validated);
             // 
@@ -286,7 +282,6 @@
             this.moodGroupBox.TabIndex = 13;
             this.moodGroupBox.TabStop = false;
             this.moodGroupBox.Text = "Mood";
-            this.moodGroupBox.Enter += new System.EventHandler(this.moodGroupBox_Enter);
             // 
             // moodValueLabel
             // 
@@ -296,7 +291,6 @@
             this.moodValueLabel.Size = new System.Drawing.Size(13, 13);
             this.moodValueLabel.TabIndex = 5;
             this.moodValueLabel.Text = "0";
-            this.moodValueLabel.Click += new System.EventHandler(this.label8_Click);
             // 
             // moodTrackBar
             // 
@@ -353,7 +347,6 @@
             this.label7.TabIndex = 4;
             this.label7.Text = "4/11/2015@18:41:18.152";
             this.label7.Visible = false;
-            this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // label4
             // 
@@ -381,7 +374,6 @@
             this.label2.Size = new System.Drawing.Size(61, 13);
             this.label2.TabIndex = 1;
             this.label2.Text = "Timestamp:";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // emotionGroupBox
             // 
@@ -417,7 +409,6 @@
             this.addEmotionButton.TabIndex = 7;
             this.addEmotionButton.Text = "Add";
             this.addEmotionButton.UseVisualStyleBackColor = true;
-            this.addEmotionButton.Click += new System.EventHandler(this.addEmotionButton_Click);
             // 
             // button3
             // 
@@ -533,7 +524,6 @@
             this.label9.Size = new System.Drawing.Size(41, 13);
             this.label9.TabIndex = 0;
             this.label9.Text = "Decay:";
-            this.label9.Click += new System.EventHandler(this.label9_Click);
             // 
             // groupBox5
             // 
@@ -750,7 +740,6 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
@@ -775,6 +764,29 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(548, 371);
             this.tableLayoutPanel1.TabIndex = 7;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
+            // 
+            // dataGridViewBeliefs
+            // 
+            this.dataGridViewBeliefs.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.dataGridViewBeliefs.AllowUserToAddRows = false;
+            this.dataGridViewBeliefs.AllowUserToOrderColumns = true;
+            this.dataGridViewBeliefs.AllowUserToResizeRows = false;
+            this.dataGridViewBeliefs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewBeliefs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewBeliefs.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.dataGridViewBeliefs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewBeliefs.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.dataGridViewBeliefs.Location = new System.Drawing.Point(3, 38);
+            this.dataGridViewBeliefs.Name = "dataGridViewBeliefs";
+            this.dataGridViewBeliefs.ReadOnly = true;
+            this.dataGridViewBeliefs.RowHeadersVisible = false;
+            this.dataGridViewBeliefs.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewBeliefs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewBeliefs.Size = new System.Drawing.Size(542, 330);
+            this.dataGridViewBeliefs.TabIndex = 4;
+            this.dataGridViewBeliefs.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewBeliefs_CellMouseDoubleClick);
             // 
             // tableLayoutPanel2
             // 
@@ -849,7 +861,6 @@
             this.groupBox4.TabIndex = 0;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "EventName Records";
-            this.groupBox4.Enter += new System.EventHandler(this.groupBox4_Enter);
             // 
             // dataGridViewAM
             // 
@@ -904,44 +915,9 @@
             // 
             this.decayErrorProvider.ContainerControl = this;
             // 
-            // toolTip
-            // 
-            this.toolTip.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup_1);
-            // 
-            // dataGridViewBeliefs
-            // 
-            this.dataGridViewBeliefs.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.dataGridViewBeliefs.AllowUserToAddRows = false;
-            this.dataGridViewBeliefs.AllowUserToOrderColumns = true;
-            this.dataGridViewBeliefs.AllowUserToResizeRows = false;
-            this.dataGridViewBeliefs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewBeliefs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridViewBeliefs.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
-            this.dataGridViewBeliefs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewBeliefs.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewBeliefs.Location = new System.Drawing.Point(3, 38);
-            this.dataGridViewBeliefs.Name = "dataGridViewBeliefs";
-            this.dataGridViewBeliefs.RowHeadersVisible = false;
-            this.dataGridViewBeliefs.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewBeliefs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewBeliefs.Size = new System.Drawing.Size(542, 330);
-            this.dataGridViewBeliefs.TabIndex = 4;
-            this.dataGridViewBeliefs.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridViewBeliefs_CellValidating);
-            // 
             // mainFormBindingSource
             // 
             this.mainFormBindingSource.DataSource = typeof(EmotionalAppraisalWF.MainForm);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(244, 3);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(13, 13);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "0";
             // 
             // MainForm
             // 
@@ -953,6 +929,7 @@
             this.MainMenuStrip = this.mainMenu;
             this.MinimumSize = new System.Drawing.Size(450, 39);
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
             this.mainFormTab.ResumeLayout(false);
@@ -978,15 +955,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAppraisalRules)).EndInit();
             this.knowledgeBaseTabPage.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBeliefs)).EndInit();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.autobiographicalMemoryTabPage.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAM)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.decayErrorProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emotionListItemBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBeliefs)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mainFormBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1064,7 +1040,6 @@
         private System.Windows.Forms.ErrorProvider decayErrorProvider;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.DataGridView dataGridViewBeliefs;
-        private System.Windows.Forms.Label label5;
     }
 }
 
