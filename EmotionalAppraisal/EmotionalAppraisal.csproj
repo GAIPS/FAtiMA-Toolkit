@@ -40,11 +40,16 @@
     <Compile Include="ActiveEmotion.cs" />
     <Compile Include="AppraisalRules\AppraisalRule.cs" />
     <Compile Include="AppraisalRules\ReactiveAppraisalDerivator.cs" />
+    <Compile Include="BaseDomainObject.cs" />
     <Compile Include="BaseEmotion.cs" />
     <Compile Include="Components\IAffectDerivator.cs" />
     <Compile Include="Components\IAppraisalDerivator.cs" />
     <Compile Include="Components\IEmotionProcessor.cs" />
     <Compile Include="ConcreteEmotionalState.cs" />
+    <Compile Include="DTOs\ConditionDTO.cs" />
+    <Compile Include="DTOs\AppraisalRuleDTO.cs" />
+    <Compile Include="DTOs\BeliefDTO.cs" />
+    <Compile Include="DTOs\BaseDTO.cs" />
     <Compile Include="EmotionalAppraisalAsset.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="EmotionDisposition.cs" />

@@ -60,7 +60,7 @@
       <DependentUpon>AddOrEditBeliefForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Emotion.cs" />
-    <Compile Include="HelperMethods.cs" />
+    <Compile Include="PropertyUtil.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -70,6 +70,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SortableBindingList.cs" />
+    <Compile Include="ViewModels\AppraisalRulesVM.cs" />
     <Compile Include="ViewModels\KnowledgeBaseVM.cs" />
     <EmbeddedResource Include="AddOrEditBeliefForm.resx">
       <DependentUpon>AddOrEditBeliefForm.cs</DependentUpon>

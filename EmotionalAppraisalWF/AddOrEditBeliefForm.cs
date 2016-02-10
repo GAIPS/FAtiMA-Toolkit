@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Windows.Forms;
+using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
+using KnowledgeBase;
 
 namespace EmotionalAppraisalWF
 {
     public partial class AddOrEditBeliefForm : Form
     {
         private KnowledgeBaseVM _knowledgeBaseVm;
-        private KnowledgeBaseVM.BeliefDTO _beliefToEdit;
+        private BeliefDTO _beliefToEdit;
 
-        public AddOrEditBeliefForm(KnowledgeBaseVM kbVM, KnowledgeBaseVM.BeliefDTO beliefToEdit = null)
+        public AddOrEditBeliefForm(KnowledgeBaseVM kbVM, BeliefDTO beliefToEdit = null)
         {
             InitializeComponent();
             
@@ -28,7 +30,7 @@ namespace EmotionalAppraisalWF
 
                 beliefNameTextBox.Text = beliefToEdit.Name;
                 beliefValueTextBox.Text = beliefToEdit.Value;
-                beliefVisibilityComboBox.SelectedIndex = beliefVisibilityComboBox.FindString(beliefToEdit.Visibility);
+                beliefVisibilityComboBox.SelectedIndex = beliefVisibilityComboBox.FindString(beliefToEdit.Visibility.ToString());
             }
         }
 
@@ -36,11 +38,11 @@ namespace EmotionalAppraisalWF
         {
             //clear errors
             addBeliefErrorProvider.Clear();
-            var newBelief = new KnowledgeBaseVM.BeliefDTO
+            var newBelief = new BeliefDTO
             {
                 Name = this.beliefNameTextBox.Text.Trim(),
                 Value = this.beliefValueTextBox.Text.Trim(),
-                Visibility = this.beliefVisibilityComboBox.Text
+                Visibility = (KnowledgeVisibility)Enum.Parse(typeof(KnowledgeVisibility),this.beliefVisibilityComboBox.Text)
             };
 
             try

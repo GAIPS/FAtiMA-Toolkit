@@ -9,6 +9,7 @@ using System.Text;
 using System.Windows.Forms;
 using AutobiographicMemory.Interfaces;
 using EmotionalAppraisal;
+using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
 using Equin.ApplicationFramework;
@@ -23,6 +24,7 @@ namespace EmotionalAppraisalWF
         private SortableBindingList<EmotionListItem> _emotionList;
         private SortableBindingList<AppraisalRuleListItem> _appraisalRuleList;
         private KnowledgeBaseVM _knowledgeBaseVM;
+        private AppraisalRulesVM _appraisalRulesVM;
         
         public class EmotionListItem
         {
@@ -43,9 +45,7 @@ namespace EmotionalAppraisalWF
         {
             this.moodValueLabel.Text = Math.Round(_emotionalAppraisalAsset.EmotionalState.Mood).ToString();
             this.moodTrackBar.Value = int.Parse(this.moodValueLabel.Text);
-            this.emotionalHalfLifeTextBox.Text = ((int)_emotionalAppraisalAsset.EmotionalHalfLifeDecayTime).ToString();
-            this.moodHalfLifeTextBox.Text = ((int)_emotionalAppraisalAsset.MoodHalfLifeDecayTime).ToString();
-
+            
             _emotionList =
                 new SortableBindingList<EmotionListItem>(
                     _emotionalAppraisalAsset.EmotionalState.GetEmotionsKeys().Select(key => new EmotionListItem
@@ -116,20 +116,25 @@ namespace EmotionalAppraisalWF
 
             ResetEmotionalTab();
             ResetEmotionDispositionsTab();
-            ResetAppraisalRulesTab();
+
             ResetAutoBiographicalMemoryTab();
 
+            //Appraisal Rule
+            _appraisalRulesVM = new AppraisalRulesVM(_emotionalAppraisalAsset);
+            dataGridViewAppraisalRules.DataSource = _appraisalRulesVM.AppraisalRules;
+            dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
+            dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<AppraisalRuleDTO>(dto => dto.Conditions)].Visible = false;
+            dataGridViewAppRuleConditions.DataSource = _appraisalRulesVM.CurrentRuleConditions;
+            dataGridViewAppRuleConditions.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
             //KB
             _knowledgeBaseVM = new KnowledgeBaseVM(_emotionalAppraisalAsset);
             dataGridViewBeliefs.DataSource = _knowledgeBaseVM.Beliefs;
+            dataGridViewBeliefs.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
         }
 
         public MainForm()
         {
             InitializeComponent();
-            
-            //Tooltips:
-            toolTip.SetToolTip(emotionalHalfLifeLabel, Resources.TooltipEmotionalHalflife);
             
             Reset(true);
         }
@@ -289,17 +294,7 @@ namespace EmotionalAppraisalWF
         
         #region EmotionalStateTab
 
-        private void emotionalHalfLifeTextBox_Validating(object sender, CancelEventArgs e)
-        {
-            this.validateDecayHelper(this.emotionalHalfLifeTextBox, e);
-        }
-
-        private void emotionalHalfLifeTextBox_Validated(object sender, EventArgs e)
-        {
-            decayErrorProvider.SetError(this.emotionalHalfLifeTextBox, string.Empty);
-            _emotionalAppraisalAsset.EmotionalHalfLifeDecayTime = float.Parse(this.emotionalHalfLifeTextBox.Text);
-        }
-
+        
         private void validateDecayHelper(TextBox textBoxDecay, CancelEventArgs e)
         {
             try
@@ -317,17 +312,6 @@ namespace EmotionalAppraisalWF
             }
         }
 
-        private void moodHalfLifeTextBox_Validating(object sender, CancelEventArgs e)
-        {
-            this.validateDecayHelper(this.moodHalfLifeTextBox, e);
-        }
-
-        private void moodHalfLifeTextBox_Validated(object sender, EventArgs e)
-        {
-            decayErrorProvider.SetError(this.moodHalfLifeTextBox, string.Empty);
-            _emotionalAppraisalAsset.MoodHalfLifeDecayTime = float.Parse(this.moodHalfLifeTextBox.Text);
-        }
-
         private void comboBoxDefaultDecay_SelectedIndexChanged(object sender, EventArgs e)
         {
             _emotionalAppraisalAsset.EmotionalState.DefaultEmotionDispositionDecay = int.Parse(comboBoxDefaultDecay.Text);
@@ -337,7 +321,6 @@ namespace EmotionalAppraisalWF
         {
             _emotionalAppraisalAsset.EmotionalState.DefaultEmotionDispositionThreshold = int.Parse(comboBoxDefaultThreshold.Text);
         }
-
 
         #endregion
 
@@ -353,7 +336,7 @@ namespace EmotionalAppraisalWF
         {
             if (dataGridViewBeliefs.SelectedRows.Count == 1)
             {
-                var selectedBelief = ((ObjectView<KnowledgeBaseVM.BeliefDTO>)dataGridViewBeliefs.SelectedRows[0].DataBoundItem).Object;
+                var selectedBelief = ((ObjectView<BeliefDTO>)dataGridViewBeliefs.SelectedRows[0].DataBoundItem).Object;
                 var addBeliefForm = new AddOrEditBeliefForm(_knowledgeBaseVM, selectedBelief);
                 addBeliefForm.ShowDialog();
             }
@@ -361,10 +344,10 @@ namespace EmotionalAppraisalWF
 
         private void removeBeliefButton_Click(object sender, EventArgs e)
         {
-            IList<KnowledgeBaseVM.BeliefDTO> beliefsToRemove = new List<KnowledgeBaseVM.BeliefDTO>();
+            IList<BeliefDTO> beliefsToRemove = new List<BeliefDTO>();
             for (int i = 0; i < dataGridViewBeliefs.SelectedRows.Count; i++)
             {
-                var belief = ((ObjectView<KnowledgeBaseVM.BeliefDTO>)dataGridViewBeliefs.SelectedRows[i].DataBoundItem).Object;
+                var belief = ((ObjectView<BeliefDTO>)dataGridViewBeliefs.SelectedRows[i].DataBoundItem).Object;
                 beliefsToRemove.Add(belief);
             }
             _knowledgeBaseVM.RemoveBeliefs(beliefsToRemove);
@@ -377,8 +360,29 @@ namespace EmotionalAppraisalWF
                 this.editButton_Click(sender, e);
             }
         }
+
         #endregion
 
+        private void moodValueLabel_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        private void dataGridViewAppRuleConditions_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+          
+        }
+
+        private void dataGridViewAppraisalRules_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridViewAppraisalRules_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            var rule = ((ObjectView<AppraisalRuleDTO>)dataGridViewAppraisalRules.Rows[e.RowIndex].DataBoundItem).Object;
+            _appraisalRulesVM.ChangeCurrentRule(rule);
+            dataGridViewAppRuleConditions.DataSource = _appraisalRulesVM.CurrentRuleConditions;
+        }
     }
 }

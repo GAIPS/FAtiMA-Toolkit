@@ -22,6 +22,7 @@ namespace KnowledgeBase
 	{
 		private sealed class KnowledgeEntry
 		{
+		    public readonly Guid Id;
 			public readonly PrimitiveValue Value;
 			public readonly bool IsPersistent;
 			public readonly KnowledgeVisibility Visibility;

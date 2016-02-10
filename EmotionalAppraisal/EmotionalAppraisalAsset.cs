@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Linq;
 using AutobiographicMemory;
 using AutobiographicMemory.Interfaces;
+using EmotionalAppraisal.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase;
 using KnowledgeBase.Conditions;
@@ -19,8 +20,6 @@ namespace EmotionalAppraisal
 	[Serializable]
 	public sealed partial class EmotionalAppraisalAsset : BaseAsset, ICustomSerialization
 	{
-		
-
         public static EmotionalAppraisalAsset LoadFromFile(string filename)
         {
             EmotionalAppraisalAsset ea;
@@ -33,6 +32,7 @@ namespace EmotionalAppraisal
         }
 
         private static readonly InternalAppraisalFrame APPRAISAL_FRAME = new InternalAppraisalFrame();
+
 		[NonSerialized]
 		private long _lastFrameAppraisal = 0;
 		[NonSerialized]
@@ -41,6 +41,7 @@ namespace EmotionalAppraisal
 		public string Perspective { get; set; }
 
         private float m_emotionalHalfLifeDecayTime = 15;
+
 		/// <summary>
 		/// Defines how fast a emotion decay over time.
 		/// This value is the actual time it takes a decay:1 emotion to reach half of its initial intensity
@@ -65,44 +66,7 @@ namespace EmotionalAppraisal
 		private AM m_am;
 		private ConcreteEmotionalState m_emotionalState;
 		private ReactiveAppraisalDerivator m_appraisalDerivator;
-		#region Component Manager
-
-		//private HashSet<IAppraisalDerivator> m_appraisalDerivators = new HashSet<IAppraisalDerivator>();
-		//private HashSet<IAffectDerivator> m_affectDerivators = new HashSet<IAffectDerivator>();
-		//private HashSet<IEmotionProcessor> m_emotionalProcessors = new HashSet<IEmotionProcessor>();
-		/*
-		public bool AddComponent(IAppraisalDerivator component)
-		{
-			return m_appraisalDerivators.Add(component);
-		}
-
-		public bool RemoveComponent(IAppraisalDerivator component)
-		{
-			return m_appraisalDerivators.Remove(component);
-		}
-		
-		public bool AddComponent(IAffectDerivator component)
-		{
-			return m_affectDerivators.Add(component);
-		}
-
-		public bool RemoveComponent(IAffectDerivator component)
-		{
-			return m_affectDerivators.Remove(component);
-		}
-		
-		public bool AddComponent(IEmotionProcessor component)
-		{
-			return m_emotionalProcessors.Add(component);
-		}
-
-		public bool RemoveComponent(IEmotionProcessor component)
-		{
-			return m_emotionalProcessors.Remove(component);
-		}
-		*/
-		#endregion
-
+	
 		/// <summary>
 		/// Returns the agent's emotional state.
 		/// </summary>
@@ -132,9 +96,17 @@ namespace EmotionalAppraisal
 			m_appraisalDerivator.AddEmotionalReaction(emotionalAppraisalRule);
 		}
 
-        public IEnumerable<AppraisalRule> GetAllAppraisalRules()
+        public IEnumerable<AppraisalRuleDTO> GetAllAppraisalRules()
         {
-            return this.m_appraisalDerivator.GetAppraisalRules();
+            var appraisalRules = this.m_appraisalDerivator.GetAppraisalRules().Select(r => new AppraisalRuleDTO
+            {
+                Id = r.Id,
+                EventName = r.EventName.ToString(),
+                Desirability = r.Desirability,
+                Praiseworthiness = r.Praiseworthiness,
+                Conditions = r.Conditions.Select(c => new ConditionDTO {Condition = c.ToString()})
+            });
+            return appraisalRules;
         }
 
 	    public IEnumerable<IEventRecord> GetAllEventRecords()
@@ -213,10 +185,9 @@ namespace EmotionalAppraisal
 				UpdateEmotions(frame);
 		}
 
-        public void AddOrUpdateBelief(string name, string value, string visibility)
+        public void AddOrUpdateBelief(BeliefDTO belief)
 	    {
-	        var visibilityEnum = (KnowledgeVisibility) Enum.Parse(typeof(KnowledgeVisibility),visibility);
-	        this.Kb.Tell(Name.BuildName(name), PrimitiveValue.Parse(value), true, visibilityEnum);
+	        this.Kb.Tell(Name.BuildName(belief.Name), PrimitiveValue.Parse(belief.Value), true, belief.Visibility);
 	    }
 
 	    public string GetBeliefValue(string beliefName)
