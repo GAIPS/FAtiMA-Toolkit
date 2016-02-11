@@ -95,19 +95,19 @@ namespace Tests.EmotionalAppraisal
 			petAppraisalRule.TriggersOnFailedActivation = true;
 			petAppraisalRule.Desirability = 10;
 			//petAppraisalRule.Like = 7;
-			m_emotionalAppraisalAsset.AddEmotionalReaction(petAppraisalRule);
+			//m_emotionalAppraisalAsset.AddAppraisalRule(petAppraisalRule);
 
 			evt = new TestEvent(Name.UNIVERSAL_STRING, "Slap", Name.SELF_STRING);
 			AppraisalRule slapAppraisalRule = new AppraisalRule(evt);
 			slapAppraisalRule.Desirability = -10;
 			//slapAppraisalRule.Like = -15;
-			m_emotionalAppraisalAsset.AddEmotionalReaction(slapAppraisalRule);
+			//m_emotionalAppraisalAsset.AddAppraisalRule(slapAppraisalRule);
 
 			evt = new TestEvent(Name.UNIVERSAL_STRING, "Feed", Name.SELF_STRING);
 			AppraisalRule feedAppraisalRule = new AppraisalRule(evt);
 			feedAppraisalRule.Desirability = 5;
 			feedAppraisalRule.Praiseworthiness = 10;
-			m_emotionalAppraisalAsset.AddEmotionalReaction(feedAppraisalRule);
+			//m_emotionalAppraisalAsset.AddAppraisalRule(feedAppraisalRule);
 
 			var madScreamEvent = new TestEvent(Name.UNIVERSAL_STRING, "Talk", null);
 			var parameters1 = new List<IEventParameter>();
@@ -119,7 +119,7 @@ namespace Tests.EmotionalAppraisal
 			screamMad.Desirability = -7;
 			screamMad.Praiseworthiness = -15;
 			//screamMad.Like = -4;
-			m_emotionalAppraisalAsset.AddEmotionalReaction(screamMad);
+			//m_emotionalAppraisalAsset.AddAppraisalRule(screamMad);
 
 			var talkSoftEvent = new TestEvent(Name.UNIVERSAL_STRING, "Talk", null);
 			var parameters2 = new List<IEventParameter>();
@@ -130,7 +130,7 @@ namespace Tests.EmotionalAppraisal
 			AppraisalRule talkSoftAppraisalRule = new AppraisalRule(talkSoftEvent);
 			talkSoftAppraisalRule.Praiseworthiness = 5;
 			//talkSoftAppraisalRule.Like = 5;
-			m_emotionalAppraisalAsset.AddEmotionalReaction(talkSoftAppraisalRule);
+			//m_emotionalAppraisalAsset.AddAppraisalRule(talkSoftAppraisalRule);
 
 			//Generate emotion
 			var eventToAppraise=new TestEvent("Player","Slap","Test");

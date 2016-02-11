@@ -88,6 +88,15 @@ namespace EmotionalAppraisalWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Appraisal Rule.
+        /// </summary>
+        internal static string EditAppraisalRuleFormTitle {
+            get {
+                return ResourceManager.GetString("EditAppraisalRuleFormTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         internal static string ErrorDialogTitle {
@@ -156,6 +165,15 @@ namespace EmotionalAppraisalWF.Properties {
         internal static string UnableToSaveFileError {
             get {
                 return ResourceManager.GetString("UnableToSaveFileError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        internal static string UpdateButtonLabel {
+            get {
+                return ResourceManager.GetString("UpdateButtonLabel", resourceCulture);
             }
         }
     }

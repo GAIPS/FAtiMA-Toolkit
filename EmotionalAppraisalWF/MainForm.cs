@@ -95,7 +95,7 @@ namespace EmotionalAppraisalWF
             if (newFile)
             {
                 this.Text = Resources.MainFormPrincipalTitle;
-                this._emotionalAppraisalAsset = new EmotionalAppraisalAsset("SELF");
+                this._emotionalAppraisalAsset = new EmotionalAppraisalAsset("Agent");
             }
             else
             {
@@ -204,9 +204,9 @@ namespace EmotionalAppraisalWF
                     _saveFileName = ofd.FileName;
                     Reset(false);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    MessageBox.Show(Resources.InvalidFileError, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(ex.Message + "-" + ex.StackTrace, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 } 
             }
         }
@@ -378,6 +378,36 @@ namespace EmotionalAppraisalWF
             var rule = ((ObjectView<AppraisalRuleDTO>)dataGridViewAppraisalRules.Rows[e.RowIndex].DataBoundItem).Object;
             _appraisalRulesVM.ChangeCurrentRule(rule);
             dataGridViewAppRuleConditions.DataSource = _appraisalRulesVM.CurrentRuleConditions;
+        }
+
+        private void buttonAddAppraisalRuleCondition_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonAddAppraisalRule_Click(object sender, EventArgs e)
+        {
+            new AddOrEditAppraisalRuleForm(_appraisalRulesVM).ShowDialog();
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click_2(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

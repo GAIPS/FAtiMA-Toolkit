@@ -2,6 +2,7 @@
 using System.Linq;
 using AutobiographicMemory;
 using AutobiographicMemory.Interfaces;
+using EmotionalAppraisal.DTOs;
 using KnowledgeBase.Conditions;
 using KnowledgeBase.WellFormedNames;
 
@@ -46,32 +47,13 @@ namespace EmotionalAppraisal.AppraisalRules
 			Desirability = Praiseworthiness = 0;
 		}
 
-		/// <summary>
-		///     Creates a new empty Emotional AppraisalRule
-		/// </summary>
-		/// <param name="evt">the event that this reaction references</param>
-		//public AppraisalRule(IEvent evt)
-		//{
-		//	ReferencedEventName = evt.ToName();
-		//	Desirability = DesirabilityForOther = Praiseworthiness = Like = 0;
-		//	Other = null;
-		//}
-		
-		/// <summary>
-		///     Creates a new Emotional AppraisalRule
-		/// </summary>
-		/// <param name="desirability">the desirability of the event</param>
-		/// <param name="desirabilityForOther">the desirability of the event for other agents</param>
-		/// <param name="praiseworthiness">the paiseworthiness of the event</param>
-		/// <param name="other">which character does the desirabilityForOther variable reference</param>
-		//public AppraisalRule(float desirability, float desirabilityForOther, float praiseworthiness, Name other)
-		//{
-		//	Desirability = desirability;
-		//	//DesirabilityForOther = desirabilityForOther;
-		//	Praiseworthiness = praiseworthiness;
-		//	Other = other;
-		//	//Like = 0;
-		//}
+	    public AppraisalRule(AppraisalRuleDTO appraisalRuleDTO)
+	    {
+	        EventName = Name.BuildName(appraisalRuleDTO.EventMatchingTemplate);
+	        Desirability = appraisalRuleDTO.Desirability;
+	        Praiseworthiness = appraisalRuleDTO.Praiseworthiness;
+            Conditions = new ConditionEvaluatorSet(appraisalRuleDTO.Conditions.Select(c => Condition.Parse(c.Condition)));
+	    }
 
 		/// <summary>
 		///     Clone Constructor
@@ -93,17 +75,7 @@ namespace EmotionalAppraisal.AppraisalRules
 		/// </summary>
 		public float Desirability { get; set; }
 
-		/// <summary>
-		///     Desirability For Other of the event
-		/// </summary>
-		//public float DesirabilityForOther { get; set; }
-
-		/// <summary>
-		///     Like value of the event
-		/// </summary>
-		//public float Like { get; set; }
-
-		/// <summary>
+	    /// <summary>
 		///     Praiseworthiness of the event
 		/// </summary>
 		public float Praiseworthiness { get; set; }

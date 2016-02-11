@@ -53,6 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddOrEditAppraisalRule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddOrEditAppraisalRule.Designer.cs">
+      <DependentUpon>AddOrEditAppraisalRule.cs</DependentUpon>
+    </Compile>
     <Compile Include="AddOrEditBeliefForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,6 +80,9 @@
     <Compile Include="ViewModels\EmotionDispositionsVM.cs" />
     <Compile Include="ViewModels\AppraisalRulesVM.cs" />
     <Compile Include="ViewModels\KnowledgeBaseVM.cs" />
+    <EmbeddedResource Include="AddOrEditAppraisalRule.resx">
+      <DependentUpon>AddOrEditAppraisalRule.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AddOrEditBeliefForm.resx">
       <DependentUpon>AddOrEditBeliefForm.cs</DependentUpon>
     </EmbeddedResource>

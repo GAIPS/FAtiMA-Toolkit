@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -134,7 +135,8 @@ namespace Utilities.Json
 
 		public override void Write(TextWriter writer, int ident, bool allowIndent)
 		{
-			writer.Write(Value.ToString());
+		    var invariantCultureString = Convert.ToString(Value, CultureInfo.InvariantCulture);
+            writer.Write(invariantCultureString);
 		}
 	}
 

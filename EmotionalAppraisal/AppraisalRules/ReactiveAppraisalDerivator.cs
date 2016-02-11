@@ -4,6 +4,7 @@ using System.Linq;
 using AutobiographicMemory;
 using AutobiographicMemory.Interfaces;
 using EmotionalAppraisal.Components;
+using EmotionalAppraisal.DTOs;
 using EmotionalAppraisal.OCCModel;
 using GAIPS.Serialization;
 using KnowledgeBase;
@@ -24,8 +25,7 @@ namespace EmotionalAppraisal.AppraisalRules
 	public class ReactiveAppraisalDerivator : IAppraisalDerivator, ICustomSerialization
 	{
 		private const short DEFAULT_APPRAISAL_WEIGHT = 1;
-		public const long IGNORE_DURATION = 5000;
-
+		
 		private readonly NameSearchTree<HashSet<AppraisalRule>> Rules;
 
 		public ReactiveAppraisalDerivator()
@@ -53,19 +53,23 @@ namespace EmotionalAppraisal.AppraisalRules
 		/// <summary>
 		/// Adds an emotional reaction to an event
 		/// </summary>
-		/// <param name="evt"></param>
 		/// <param name="emotionalAppraisalRule">the AppraisalRule to add</param>
-		public void AddEmotionalReaction(AppraisalRule emotionalAppraisalRule)
+		public void AddAppraisalRule(AppraisalRuleDTO emotionalAppraisalRuleDTO)
 		{
-			var name = emotionalAppraisalRule.EventName;
-			HashSet<AppraisalRule> ruleSet;
-			if (!Rules.TryGetValue(name, out ruleSet))
-			{
-				ruleSet=new HashSet<AppraisalRule>();
-				Rules.Add(name,ruleSet);
-			}
-			ruleSet.Add(emotionalAppraisalRule);
+            this.AddEmotionalReaction(new AppraisalRule(emotionalAppraisalRuleDTO));
 		}
+
+	    private void AddEmotionalReaction(AppraisalRule appraisalRule)
+	    {
+            var name = appraisalRule.EventName;
+            HashSet<AppraisalRule> ruleSet;
+            if (!Rules.TryGetValue(name, out ruleSet))
+            {
+                ruleSet = new HashSet<AppraisalRule>();
+                Rules.Add(name, ruleSet);
+            }
+            ruleSet.Add(appraisalRule);
+        }
 
 	    public IEnumerable<AppraisalRule> GetAppraisalRules()
 	    {

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using Equin.ApplicationFramework;
@@ -29,6 +31,12 @@ namespace EmotionalAppraisalWF.ViewModels
             }
         }
 
+        public void AddAppraisalRule(AppraisalRuleDTO newRule)
+        {
+            _emotionalAppraisalAsset.AddAppraisalRule(newRule);
+            AppraisalRules.DataSource.Add(newRule);
+            AppraisalRules.Refresh();
+        }
         
     }
 }
