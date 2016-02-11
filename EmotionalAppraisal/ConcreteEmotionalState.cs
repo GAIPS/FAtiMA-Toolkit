@@ -33,21 +33,20 @@ namespace EmotionalAppraisal
                 this.m_defaultEmotionalDisposition = new EmotionDisposition("*", 1, 1);
 				this.emotionPool = new Dictionary<string, ActiveEmotion>();
 				this.emotionDispositions = new Dictionary<string, EmotionDisposition>();
-				this.mood = new Mood();
-                
 			}
 
 			public ConcreteEmotionalState(EmotionalAppraisalAsset parent) : this()
 			{
 				m_parent = parent;
-			}
+                this.mood = new Mood(m_parent.MinimumMoodValueForInfluencingEmotions, m_parent.EmotionInfluenceOnMoodFactor);
+            }
 
 			private float DeterminePotential(IEmotion emotion)
 			{
 				float potetial = emotion.Potential;
 				float scale = (float)emotion.Valence;
 
-				potetial += scale*(this.mood.MoodValue*Constants.MoodInfluenceOnEmotion);
+				potetial += scale*(this.mood.MoodValue*m_parent.MoodInfluenceOnEmotionFactor);
 				return potetial < 0 ? 0 : potetial;
 			}
 

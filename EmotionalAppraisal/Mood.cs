@@ -11,6 +11,8 @@ namespace EmotionalAppraisal
 		private float _intensityATt0;
 		private float _deltaTimeT0;
 		private float _intensity;
+	    private float _minimumMoodValueForInfluencingEmotions;
+	    private float _emotionInfluenceOnMoodFactor;
 
 		/// <summary>
 		/// value that represents mood.
@@ -28,15 +30,17 @@ namespace EmotionalAppraisal
 		public void SetMoodValue(float value)
 		{
 			value = value < -10 ? -10 : (value > 10 ? 10 : value);
-			if (Math.Abs(value) < Constants.MinimumMoodValue)
+			if (Math.Abs(value) < _minimumMoodValueForInfluencingEmotions)
 				value = 0;
 
 			this._intensityATt0 = this._intensity = value;
 			this._deltaTimeT0 = 0;
 		}
 
-		internal Mood()
-		{
+		internal Mood(float minimumMoodValueForInfluencingEmotions, float emotionInfluenceOnMoodFactor)
+        {
+            this._minimumMoodValueForInfluencingEmotions = minimumMoodValueForInfluencingEmotions;
+		    this._emotionInfluenceOnMoodFactor = emotionInfluenceOnMoodFactor;
 			SetMoodValue(0);
 		}
 
@@ -53,9 +57,9 @@ namespace EmotionalAppraisal
 			}
 
 			this._deltaTimeT0 += elapsedTime;
-			double lambda = Constants.HalfLifeDecayConstant/parentAsset.MoodHalfLifeDecayTime;
+			double lambda = Math.Log(parentAsset.HalfLifeDecayConstant)/parentAsset.MoodHalfLifeDecayTime;
 			_intensity = (float)(this._intensityATt0 * Math.Exp(lambda*_deltaTimeT0));
-			if(Math.Abs(this._intensity) < Constants.MinimumMoodValue)
+			if(Math.Abs(this._intensity) < _minimumMoodValueForInfluencingEmotions)
 			{
 				this._intensity = this._intensityATt0 = 0;
 				this._deltaTimeT0 = 0;
@@ -72,7 +76,7 @@ namespace EmotionalAppraisal
 				return;
 
 			float scale = (float)emotion.Valence;
-			SetMoodValue(this._intensity + scale * (emotion.Intensity * Constants.EmotionInfluenceOnMood));
+			SetMoodValue(this._intensity + scale * (emotion.Intensity * _emotionInfluenceOnMoodFactor));
 		}
 
 		public void GetObjectData(ISerializationData dataHolder)

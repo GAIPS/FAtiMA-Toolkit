@@ -487,6 +487,7 @@
             // dataGridViewEmotionDispositions
             // 
             this.dataGridViewEmotionDispositions.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.dataGridViewEmotionDispositions.AllowUserToAddRows = false;
             this.dataGridViewEmotionDispositions.AllowUserToOrderColumns = true;
             this.dataGridViewEmotionDispositions.AllowUserToResizeRows = false;
             this.dataGridViewEmotionDispositions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -498,6 +499,7 @@
             this.dataGridViewEmotionDispositions.ImeMode = System.Windows.Forms.ImeMode.On;
             this.dataGridViewEmotionDispositions.Location = new System.Drawing.Point(6, 49);
             this.dataGridViewEmotionDispositions.Name = "dataGridViewEmotionDispositions";
+            this.dataGridViewEmotionDispositions.ReadOnly = true;
             this.dataGridViewEmotionDispositions.RowHeadersVisible = false;
             this.dataGridViewEmotionDispositions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewEmotionDispositions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;

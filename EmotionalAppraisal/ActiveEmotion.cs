@@ -98,7 +98,7 @@ namespace EmotionalAppraisal
 		internal void DecayEmotion(float elapsedTime, EmotionalAppraisalAsset parentAsset)
 		{
 			this.deltaTimeT0 += elapsedTime;
-			double lambda = Constants.HalfLifeDecayConstant/parentAsset.EmotionalHalfLifeDecayTime;
+			double lambda = Math.Log(parentAsset.HalfLifeDecayConstant)/parentAsset.EmotionalHalfLifeDecayTime;
 			float decay = (float)Math.Exp(lambda * this.Decay * deltaTimeT0);
 			Intensity = intensityATt0 * decay;
 		}

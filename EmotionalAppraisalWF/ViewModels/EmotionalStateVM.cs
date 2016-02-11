@@ -6,14 +6,14 @@ using Equin.ApplicationFramework;
 
 namespace EmotionalAppraisalWF.ViewModels
 {
-    public class AppraisalRulesVM
+    public class EmotionalStateVM
     {
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
 
         public BindingListView<AppraisalRuleDTO> AppraisalRules {get;}
         public BindingListView<ConditionDTO> CurrentRuleConditions { get; set; }
 
-        public AppraisalRulesVM(EmotionalAppraisalAsset ea)
+        public EmotionalStateVM(EmotionalAppraisalAsset ea)
         {
             _emotionalAppraisalAsset = ea;
             

@@ -40,26 +40,76 @@ namespace EmotionalAppraisal
 
 		public string Perspective { get; set; }
 
-        private float m_emotionalHalfLifeDecayTime = 15;
 
-		/// <summary>
-		/// Defines how fast a emotion decay over time.
-		/// This value is the actual time it takes a decay:1 emotion to reach half of its initial intensity
-		/// </summary>
-		public float EmotionalHalfLifeDecayTime
+	    /// <summary>
+	    /// The half-life base decay for the exponential decay lambda calculation.
+	    /// To calculate the lambda, divide this constant by the required half-life time.
+	    /// </summary>
+	    private double m_halfLifeDecayConstant = 0.5;
+        public double HalfLifeDecayConstant
+	    {
+            get { return m_halfLifeDecayConstant; }
+            set { m_halfLifeDecayConstant = value;}
+        }
+        
+        /// <summary>
+        /// Defines how fast a emotion decay over time.
+        /// This value is the actual time it takes a decay:1 emotion to reach half of its initial intensity
+        /// </summary>
+        private float m_emotionalHalfLifeDecayTime = 15;
+        public float EmotionalHalfLifeDecayTime
 		{
 			get { return m_emotionalHalfLifeDecayTime; }
-			set { m_emotionalHalfLifeDecayTime = value < Constants.MinimumDecayTime ? Constants.MinimumDecayTime : value; }
+			set { m_emotionalHalfLifeDecayTime = value < 1 ? 1 : value; }
 		}
+
+        /// <summary>
+        /// Defines how strong is the influence of the emotion's intensity
+        /// on the character's mood. Since we don't want the mood to be very
+        /// volatile, we only take into account 30% of the emotion's intensity
+        /// </summary>
+        private float _mEmotionInfluenceOnMoodFactor = 0.3f;
+        public float EmotionInfluenceOnMoodFactor
+	    {
+	        get { return _mEmotionInfluenceOnMoodFactor;}
+            set { _mEmotionInfluenceOnMoodFactor = value;}    
+	    }
+
+
+	    /// <summary>
+	    /// Defines how strong is the influence of the current mood 
+	    /// in the intensity of the emotion. We don't want the influence
+	    /// of mood to be that great, so we only take into account 30% of 
+	    /// the mood's value
+	    /// </summary>
+	    private float _mMoodInfluenceOnEmotionFactor = 0.3f;
+        public float MoodInfluenceOnEmotionFactor
+	    {
+            get { return _mMoodInfluenceOnEmotionFactor; }
+            set { _mMoodInfluenceOnEmotionFactor = value; }
+        }
         
-		private float m_moodDecay = 60;
-		/// <summary>
-		/// Defines how fast mood decay over time.
-		/// This value is the actual time it takes the mood to reach half of its initial intensity
-		/// </summary>
-		public float MoodHalfLifeDecayTime {
+        /// <summary>
+        /// Defines the minimum absolute value that mood must have,
+        /// in order to be considered for influencing emotions. At the 
+        /// moment, values of mood ranged in ]-0.5;0.5[ are considered
+        /// to be neutral moods that do not infuence emotions
+        /// </summary>
+        public float MMinimumMoodValueForInfluencingEmotions = 0.5f;
+        public float MinimumMoodValueForInfluencingEmotions
+        {
+            get { return MMinimumMoodValueForInfluencingEmotions; }
+            set { MMinimumMoodValueForInfluencingEmotions = value; }
+        }
+
+        /// <summary>
+        /// Defines how fast mood decay over time.
+        /// This value is the actual time it takes the mood to reach half of its initial intensity
+        /// </summary>
+        private float m_moodDecay = 60;
+        public float MoodHalfLifeDecayTime {
 			get { return m_moodDecay; }
-			set { m_moodDecay = value < Constants.MinimumDecayTime ? Constants.MinimumDecayTime : value; }
+			set { m_moodDecay = value < 1 ? 1 : value; }
 		}
 
         private KB m_kb;
@@ -68,7 +118,7 @@ namespace EmotionalAppraisal
 		private ReactiveAppraisalDerivator m_appraisalDerivator;
 	
 		/// <summary>
-		/// Returns the agent's emotional state.
+		/// Returns the agent's emotional state. TODO:remove (cannot return smart objects)
 		/// </summary>
 		public IEmotionalState EmotionalState
 		{
@@ -77,15 +127,7 @@ namespace EmotionalAppraisal
 				return m_emotionalState;
 			}
 		}
-
-		//public ReactiveAppraisalDerivator AppraisalRules
-		//{
-		//	get
-		//	{
-		//		return m_appraisalDerivator;
-		//	}
-		//}
-
+        
         /// <summary>
 		/// Adds an emotional reaction to an event
 		/// </summary>
@@ -95,6 +137,16 @@ namespace EmotionalAppraisal
 		{
 			m_appraisalDerivator.AddEmotionalReaction(emotionalAppraisalRule);
 		}
+
+	    public IEnumerable<EmotionDispositionDTO> GetEmotionDispositions()
+	    {
+	        return this.EmotionalState.GetEmotionDispositions().Select(disp => new EmotionDispositionDTO
+	        {
+	            Emotion = disp.Emotion,
+	            Decay = disp.Decay,
+	            Threshold = disp.Threshold
+	        });
+	    } 
 
         public IEnumerable<AppraisalRuleDTO> GetAllAppraisalRules()
         {
@@ -149,7 +201,8 @@ namespace EmotionalAppraisal
 			}
 		}
 
-		public void UpdateEmotions(IAppraisalFrame frame)
+
+        public void UpdateEmotions(IAppraisalFrame frame)
 		{
 			if (_lastFrameAppraisal >= frame.LastChange)
 				return;

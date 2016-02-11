@@ -23,8 +23,10 @@ namespace EmotionalAppraisalWF
 
         private SortableBindingList<EmotionListItem> _emotionList;
         private SortableBindingList<AppraisalRuleListItem> _appraisalRuleList;
+        private EmotionalStateVM _emotionalStateVM;
         private KnowledgeBaseVM _knowledgeBaseVM;
         private AppraisalRulesVM _appraisalRulesVM;
+        private EmotionDispositionsVM _emotionDispositionsVM;
         
         public class EmotionListItem
         {
@@ -65,24 +67,10 @@ namespace EmotionalAppraisalWF
 
         private void ResetEmotionDispositionsTab()
         {
-            comboBoxDefaultDecay.SelectedIndex = comboBoxDefaultDecay.FindString(_emotionalAppraisalAsset.EmotionalState.DefaultEmotionDispositionDecay.ToString());
-            comboBoxDefaultThreshold.SelectedIndex = comboBoxDefaultThreshold.FindString(_emotionalAppraisalAsset.EmotionalState.DefaultEmotionDispositionThreshold.ToString());
-            dataGridViewEmotionDispositions.DataSource = new SortableBindingList<EmotionDisposition>(_emotionalAppraisalAsset.EmotionalState.GetEmotionDispositions());
-        }
-
-        private void ResetAppraisalRulesTab()
-        {
-            _appraisalRuleList =
-                new SortableBindingList<AppraisalRuleListItem>(
-                    _emotionalAppraisalAsset.GetAllAppraisalRules().Select(rule => new AppraisalRuleListItem
-                    {
-                        Name = rule.EventName.ToString()
-                    }));
             
-            dataGridViewAppraisalRules.DataSource = _appraisalRuleList;
-            adjustColumnSizeGrid(dataGridViewAppraisalRules);
         }
 
+     
         private void ResetAutoBiographicalMemoryTab()
         {
             dataGridViewAM.DataSource = new SortableBindingList<IEvent>(_emotionalAppraisalAsset.GetAllEventRecords());
@@ -115,10 +103,14 @@ namespace EmotionalAppraisalWF
             }
 
             ResetEmotionalTab();
-            ResetEmotionDispositionsTab();
 
-            ResetAutoBiographicalMemoryTab();
 
+            //Emotion Dispositions
+            _emotionDispositionsVM = new EmotionDispositionsVM(_emotionalAppraisalAsset);
+            comboBoxDefaultDecay.SelectedIndex = comboBoxDefaultDecay.FindString(_emotionDispositionsVM.DefaultDecay.ToString());
+            comboBoxDefaultThreshold.SelectedIndex = comboBoxDefaultThreshold.FindString(_emotionDispositionsVM.DefaultThreshold.ToString());
+            dataGridViewEmotionDispositions.DataSource = _emotionDispositionsVM.EmotionDispositions;
+            
             //Appraisal Rule
             _appraisalRulesVM = new AppraisalRulesVM(_emotionalAppraisalAsset);
             dataGridViewAppraisalRules.DataSource = _appraisalRulesVM.AppraisalRules;
@@ -126,10 +118,13 @@ namespace EmotionalAppraisalWF
             dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<AppraisalRuleDTO>(dto => dto.Conditions)].Visible = false;
             dataGridViewAppRuleConditions.DataSource = _appraisalRulesVM.CurrentRuleConditions;
             dataGridViewAppRuleConditions.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
+
             //KB
             _knowledgeBaseVM = new KnowledgeBaseVM(_emotionalAppraisalAsset);
             dataGridViewBeliefs.DataSource = _knowledgeBaseVM.Beliefs;
             dataGridViewBeliefs.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
+
+            ResetAutoBiographicalMemoryTab();
         }
 
         public MainForm()
@@ -300,7 +295,7 @@ namespace EmotionalAppraisalWF
             try
             {
                 var newDecay = int.Parse(textBoxDecay.Text);
-                if (newDecay < Constants.MinimumDecayTime)
+                if (newDecay < 1)
                 {
                     throw new Exception();
                 }
