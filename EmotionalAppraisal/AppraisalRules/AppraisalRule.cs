@@ -15,7 +15,7 @@ namespace EmotionalAppraisal.AppraisalRules
 	/// @author João Dias
 	/// @author Pedro Gonçalves
 	[Serializable]
-	public class AppraisalRule// : IGroundable<AppraisalRule>
+	public class AppraisalRule : BaseDomainObject
 	{
         public Name EventName { get; private set; }
 		public ConditionEvaluatorSet Conditions { get; private set; }
@@ -108,63 +108,5 @@ namespace EmotionalAppraisal.AppraisalRules
 		/// </summary>
 		public float Praiseworthiness { get; set; }
 
-		/// <summary>
-		///     EventName referenced by the emotional reaction
-		/// </summary>
-		//public Name ReferencedEventName { get; private set; }
-
-		/// <summary>
-		///     The name of the character that the appraisal variable DesirabilityForOther refers
-		/// </summary>
-		//public Name Other { get; private set; }
-
-		//public AppraisalRule ReplaceUnboundVariables(string id)
-		//{
-		//	if (IsGrounded)
-		//		return this;
-
-		//	var o = Other;
-		//	Other = null;
-		//	var r = new AppraisalRule(this);
-		//	Other = o;
-		//	r.Other = o.ReplaceUnboundVariables(id);
-		//	return r;
-		//}
-
-		//public AppraisalRule RemoveBoundedVariables(string id)
-		//{
-		//	if (IsGrounded)
-		//		return this;
-
-		//	var o = Other;
-		//	Other = null;
-		//	var r = new AppraisalRule(this);
-		//	Other = o;
-		//	r.Other = o.RemoveBoundedVariables(id);
-		//	return r;
-		//}
-
-		//public AppraisalRule MakeGround(SubstitutionSet bindings)
-		//{
-		//	if (IsGrounded)
-		//		return this;
-
-		//	var o = Other;
-		//	Other = null;
-		//	var r = new AppraisalRule(this);
-		//	Other = o;
-		//	r.Other = o.MakeGround(bindings);
-		//	return r;
-		//}
-
-		//public bool IsGrounded
-		//{
-		//	get
-		//	{
-		//		if (Other == null)
-		//			return true;
-		//		return Other.IsGrounded;
-		//	}
-		//}
 	}
 }

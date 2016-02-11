@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Linq;
 using AutobiographicMemory;
 using AutobiographicMemory.Interfaces;
+using EmotionalAppraisal.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase;
 using KnowledgeBase.Conditions;
@@ -19,8 +20,6 @@ namespace EmotionalAppraisal
 	[Serializable]
 	public sealed partial class EmotionalAppraisalAsset : BaseAsset, ICustomSerialization
 	{
-		
-
         public static EmotionalAppraisalAsset LoadFromFile(string filename)
         {
             EmotionalAppraisalAsset ea;
@@ -33,6 +32,7 @@ namespace EmotionalAppraisal
         }
 
         private static readonly InternalAppraisalFrame APPRAISAL_FRAME = new InternalAppraisalFrame();
+
 		[NonSerialized]
 		private long _lastFrameAppraisal = 0;
 		[NonSerialized]
@@ -40,71 +40,85 @@ namespace EmotionalAppraisal
 
 		public string Perspective { get; set; }
 
+
+	    /// <summary>
+	    /// The half-life base decay for the exponential decay lambda calculation.
+	    /// To calculate the lambda, divide this constant by the required half-life time.
+	    /// </summary>
+	    private double m_halfLifeDecayConstant = 0.5;
+        public double HalfLifeDecayConstant
+	    {
+            get { return m_halfLifeDecayConstant; }
+            set { m_halfLifeDecayConstant = value;}
+        }
+        
+        /// <summary>
+        /// Defines how fast a emotion decay over time.
+        /// This value is the actual time it takes a decay:1 emotion to reach half of its initial intensity
+        /// </summary>
         private float m_emotionalHalfLifeDecayTime = 15;
-		/// <summary>
-		/// Defines how fast a emotion decay over time.
-		/// This value is the actual time it takes a decay:1 emotion to reach half of its initial intensity
-		/// </summary>
-		public float EmotionalHalfLifeDecayTime
+        public float EmotionalHalfLifeDecayTime
 		{
 			get { return m_emotionalHalfLifeDecayTime; }
-			set { m_emotionalHalfLifeDecayTime = value < Constants.MinimumDecayTime ? Constants.MinimumDecayTime : value; }
+			set { m_emotionalHalfLifeDecayTime = value < 1 ? 1 : value; }
 		}
+
+        /// <summary>
+        /// Defines how strong is the influence of the emotion's intensity
+        /// on the character's mood. Since we don't want the mood to be very
+        /// volatile, we only take into account 30% of the emotion's intensity
+        /// </summary>
+        private float _mEmotionInfluenceOnMoodFactor = 0.3f;
+        public float EmotionInfluenceOnMoodFactor
+	    {
+	        get { return _mEmotionInfluenceOnMoodFactor;}
+            set { _mEmotionInfluenceOnMoodFactor = value;}    
+	    }
+
+
+	    /// <summary>
+	    /// Defines how strong is the influence of the current mood 
+	    /// in the intensity of the emotion. We don't want the influence
+	    /// of mood to be that great, so we only take into account 30% of 
+	    /// the mood's value
+	    /// </summary>
+	    private float _mMoodInfluenceOnEmotionFactor = 0.3f;
+        public float MoodInfluenceOnEmotionFactor
+	    {
+            get { return _mMoodInfluenceOnEmotionFactor; }
+            set { _mMoodInfluenceOnEmotionFactor = value; }
+        }
         
-		private float m_moodDecay = 60;
-		/// <summary>
-		/// Defines how fast mood decay over time.
-		/// This value is the actual time it takes the mood to reach half of its initial intensity
-		/// </summary>
-		public float MoodHalfLifeDecayTime {
+        /// <summary>
+        /// Defines the minimum absolute value that mood must have,
+        /// in order to be considered for influencing emotions. At the 
+        /// moment, values of mood ranged in ]-0.5;0.5[ are considered
+        /// to be neutral moods that do not infuence emotions
+        /// </summary>
+        public float MMinimumMoodValueForInfluencingEmotions = 0.5f;
+        public float MinimumMoodValueForInfluencingEmotions
+        {
+            get { return MMinimumMoodValueForInfluencingEmotions; }
+            set { MMinimumMoodValueForInfluencingEmotions = value; }
+        }
+
+        /// <summary>
+        /// Defines how fast mood decay over time.
+        /// This value is the actual time it takes the mood to reach half of its initial intensity
+        /// </summary>
+        private float m_moodDecay = 60;
+        public float MoodHalfLifeDecayTime {
 			get { return m_moodDecay; }
-			set { m_moodDecay = value < Constants.MinimumDecayTime ? Constants.MinimumDecayTime : value; }
+			set { m_moodDecay = value < 1 ? 1 : value; }
 		}
 
         private KB m_kb;
 		private AM m_am;
 		private ConcreteEmotionalState m_emotionalState;
 		private ReactiveAppraisalDerivator m_appraisalDerivator;
-		#region Component Manager
-
-		//private HashSet<IAppraisalDerivator> m_appraisalDerivators = new HashSet<IAppraisalDerivator>();
-		//private HashSet<IAffectDerivator> m_affectDerivators = new HashSet<IAffectDerivator>();
-		//private HashSet<IEmotionProcessor> m_emotionalProcessors = new HashSet<IEmotionProcessor>();
-		/*
-		public bool AddComponent(IAppraisalDerivator component)
-		{
-			return m_appraisalDerivators.Add(component);
-		}
-
-		public bool RemoveComponent(IAppraisalDerivator component)
-		{
-			return m_appraisalDerivators.Remove(component);
-		}
-		
-		public bool AddComponent(IAffectDerivator component)
-		{
-			return m_affectDerivators.Add(component);
-		}
-
-		public bool RemoveComponent(IAffectDerivator component)
-		{
-			return m_affectDerivators.Remove(component);
-		}
-		
-		public bool AddComponent(IEmotionProcessor component)
-		{
-			return m_emotionalProcessors.Add(component);
-		}
-
-		public bool RemoveComponent(IEmotionProcessor component)
-		{
-			return m_emotionalProcessors.Remove(component);
-		}
-		*/
-		#endregion
-
+	
 		/// <summary>
-		/// Returns the agent's emotional state.
+		/// Returns the agent's emotional state. TODO:remove (cannot return smart objects)
 		/// </summary>
 		public IEmotionalState EmotionalState
 		{
@@ -113,15 +127,7 @@ namespace EmotionalAppraisal
 				return m_emotionalState;
 			}
 		}
-
-		//public ReactiveAppraisalDerivator AppraisalRules
-		//{
-		//	get
-		//	{
-		//		return m_appraisalDerivator;
-		//	}
-		//}
-
+        
         /// <summary>
 		/// Adds an emotional reaction to an event
 		/// </summary>
@@ -132,9 +138,27 @@ namespace EmotionalAppraisal
 			m_appraisalDerivator.AddEmotionalReaction(emotionalAppraisalRule);
 		}
 
-        public IEnumerable<AppraisalRule> GetAllAppraisalRules()
+	    public IEnumerable<EmotionDispositionDTO> GetEmotionDispositions()
+	    {
+	        return this.EmotionalState.GetEmotionDispositions().Select(disp => new EmotionDispositionDTO
+	        {
+	            Emotion = disp.Emotion,
+	            Decay = disp.Decay,
+	            Threshold = disp.Threshold
+	        });
+	    } 
+
+        public IEnumerable<AppraisalRuleDTO> GetAllAppraisalRules()
         {
-            return this.m_appraisalDerivator.GetAppraisalRules();
+            var appraisalRules = this.m_appraisalDerivator.GetAppraisalRules().Select(r => new AppraisalRuleDTO
+            {
+                Id = r.Id,
+                EventName = r.EventName.ToString(),
+                Desirability = r.Desirability,
+                Praiseworthiness = r.Praiseworthiness,
+                Conditions = r.Conditions.Select(c => new ConditionDTO {Condition = c.ToString()})
+            });
+            return appraisalRules;
         }
 
 	    public IEnumerable<IEventRecord> GetAllEventRecords()
@@ -177,7 +201,8 @@ namespace EmotionalAppraisal
 			}
 		}
 
-		public void UpdateEmotions(IAppraisalFrame frame)
+
+        public void UpdateEmotions(IAppraisalFrame frame)
 		{
 			if (_lastFrameAppraisal >= frame.LastChange)
 				return;
@@ -213,10 +238,9 @@ namespace EmotionalAppraisal
 				UpdateEmotions(frame);
 		}
 
-        public void AddOrUpdateBelief(string name, string value, string visibility)
+        public void AddOrUpdateBelief(BeliefDTO belief)
 	    {
-	        var visibilityEnum = (KnowledgeVisibility) Enum.Parse(typeof(KnowledgeVisibility),visibility);
-	        this.Kb.Tell(Name.BuildName(name), PrimitiveValue.Parse(value), true, visibilityEnum);
+	        this.Kb.Tell(Name.BuildName(belief.Name), PrimitiveValue.Parse(belief.Value), true, belief.Visibility);
 	    }
 
 	    public string GetBeliefValue(string beliefName)
