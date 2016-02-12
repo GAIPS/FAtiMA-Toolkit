@@ -20,8 +20,6 @@ namespace EmotionalAppraisal
 	[Serializable]
 	public sealed partial class EmotionalAppraisalAsset : BaseAsset, ICustomSerialization
 	{
-
-
         public static EmotionalAppraisalAsset LoadFromFile(string filename)
         {
             EmotionalAppraisalAsset ea;
@@ -34,6 +32,10 @@ namespace EmotionalAppraisal
         }
 
         private static readonly InternalAppraisalFrame APPRAISAL_FRAME = new InternalAppraisalFrame();
+        private KB m_kb;
+        private AM m_am;
+        private ConcreteEmotionalState m_emotionalState;
+        private ReactiveAppraisalDerivator m_appraisalDerivator;
 
         #region Constants
         /// <summary>
@@ -88,42 +90,51 @@ namespace EmotionalAppraisal
         /// </summary>
 		public string Perspective { get; set; }
 
-   
-        private KB m_kb;
-		private AM m_am;
-		private ConcreteEmotionalState m_emotionalState;
-		private ReactiveAppraisalDerivator m_appraisalDerivator;
-	
-		/// <summary>
-		/// Returns the agent's emotional state. TODO:remove (cannot return smart objects)
-		/// </summary>
-		public IEmotionalState EmotionalState
-		{
-			get
-			{
-			    return m_emotionalState;
-			}
-		}
-        
         /// <summary>
-		/// Adds an emotional reaction to an event
-		/// </summary>
-		/// <param name="evt"></param>
-		/// <param name="emotionalAppraisalRule">the AppraisalRule to add</param>
-		public void AddAppraisalRule(AppraisalRuleDTO emotionalAppraisalRule)
+	    /// The emotional mood of the agent, which can vary from -10 to 10
+	    /// </summary>
+	    public float Mood
+	    {
+	        get { return m_emotionalState.Mood; }
+            set { m_emotionalState.Mood = value; }
+	    }
+
+	    public int DefaultEmotionDispositionDecay
+	    {
+	        get{ return m_emotionalState.DefaultEmotionDispositionDecay;}
+	        set { m_emotionalState.DefaultEmotionDispositionDecay = value; }
+	    }
+
+        public int DefaultEmotionDispositionThreshold
+        {
+            get { return m_emotionalState.DefaultEmotionDispositionThreshold; }
+            set { m_emotionalState.DefaultEmotionDispositionThreshold = value; }
+        }
+
+        /// <summary>
+        /// Adds an emotional reaction to an event
+        /// </summary>
+        /// <param name="evt"></param>
+        /// <param name="emotionalAppraisalRule">the AppraisalRule to add</param>
+        public void AddAppraisalRule(AppraisalRuleDTO emotionalAppraisalRule)
 		{
 			m_appraisalDerivator.AddAppraisalRule(emotionalAppraisalRule);
 		}
 
+        public void AddEmotionDisposition(EmotionDispositionDTO emotionDispositionDto)
+	    {
+	        m_emotionalState.AddEmotionDisposition(new EmotionDisposition(emotionDispositionDto));
+	    } 
+
 	    public IEnumerable<EmotionDispositionDTO> GetEmotionDispositions()
 	    {
-	        return this.EmotionalState.GetEmotionDispositions().Select(disp => new EmotionDispositionDTO
-	        {
-	            Emotion = disp.Emotion,
-	            Decay = disp.Decay,
-	            Threshold = disp.Threshold
-	        });
-	    } 
+	        return m_emotionalState.GetEmotionDispositions().Select(disp => disp.ToDto());
+	    }
+
+	    public EmotionDispositionDTO GetEmotionDisposition(string emotionType)
+	    {
+	        return this.m_emotionalState.GetEmotionDisposition(emotionType).ToDto();
+	    }
 
         public IEnumerable<AppraisalRuleDTO> GetAllAppraisalRules()
         {
@@ -142,7 +153,6 @@ namespace EmotionalAppraisal
 	    {
 	        return this.m_am.RecallAllEvents();
 	    } 
-
 
         public KB Kb
 		{
@@ -179,7 +189,7 @@ namespace EmotionalAppraisal
 		}
 
 
-        public void UpdateEmotions(IAppraisalFrame frame)
+	    private void UpdateEmotions(IAppraisalFrame frame)
 		{
 			if (_lastFrameAppraisal >= frame.LastChange)
 				return;
@@ -187,7 +197,7 @@ namespace EmotionalAppraisal
 			var emotions = m_occAffectDerivator.AffectDerivation(this, frame);
 			foreach (var emotion in emotions)
 			{
-				var activeEmotion = this.EmotionalState.AddEmotion(emotion);
+				var activeEmotion = m_emotionalState.AddEmotion(emotion);
 				if (activeEmotion == null)
 					continue;
 
@@ -202,10 +212,7 @@ namespace EmotionalAppraisal
 
 		public void Update(float deltaTime)
 		{
-			if (deltaTime <= 0)
-				return;
-
-			m_emotionalState.Decay(deltaTime, this);
+			m_emotionalState.Decay(deltaTime);
 		}
 
 		public void Reappraise()
@@ -230,6 +237,8 @@ namespace EmotionalAppraisal
         {
             return this.Kb.BeliefExists(Name.BuildName(name));
         }
+
+
 		private void BindCalls(KB kb)
 		{
 			kb.RegistDynamicProperty(MOOD_TEMPLATE, MoodPropertyCalculator, new[] { "x" });
@@ -241,11 +250,7 @@ namespace EmotionalAppraisal
         {
             this.Kb.Retract(Name.BuildName(name));
         }
-
-	    public void SetMood(float value)
-	    {
-	       this.m_emotionalState.SetMood(value);
-	    }
+        
         
         #region Dynamic Properties
         private static readonly Name MOOD_TEMPLATE = (Name)"Mood([x])";
@@ -258,7 +263,7 @@ namespace EmotionalAppraisal
 				foreach (var c in constraints)
 				{
 					if (c.AddSubstitution(sub))
-						yield return Tuples.Create((PrimitiveValue)EmotionalState.Mood, c);	
+						yield return Tuples.Create((PrimitiveValue)m_emotionalState.Mood, c);	
 				}
 			}
 			else
@@ -268,7 +273,7 @@ namespace EmotionalAppraisal
 					var name = Name.BuildName(resultPair.Item1);
 					if (name == Name.SELF_SYMBOL)
 					{
-						var v = (PrimitiveValue) EmotionalState.Mood;
+						var v = (PrimitiveValue)m_emotionalState.Mood;
 						foreach (var c in resultPair.Item2)
 						{
 							yield return Tuples.Create(v, c);
@@ -283,7 +288,7 @@ namespace EmotionalAppraisal
 		{
 			Name arg = args["x"];
 
-			var emo = EmotionalState.GetStrongestEmotion();
+			var emo = m_emotionalState.GetStrongestEmotion();
 			if(emo==null)
 				yield break;
 
@@ -324,7 +329,7 @@ namespace EmotionalAppraisal
 				var newSub = new Substitution(entity,Name.SELF_SYMBOL);
 				var newC = constraints.Where(c => c.AddSubstitution(newSub));
 				if(newC.Any())
-					result.AddRange(GetEmotionsForEntity(EmotionalState, emotionName, kb, newC));
+					result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, kb, newC));
 			}
 			else
 			{
@@ -333,7 +338,7 @@ namespace EmotionalAppraisal
 					Name entityName = Name.BuildName(resultPair.Item1);
 					if(entityName!=Name.SELF_SYMBOL)
 						continue;
-					result.AddRange(GetEmotionsForEntity(EmotionalState, emotionName, kb, resultPair.Item2));
+					result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, kb, resultPair.Item2));
 				}
 			}
 			return result;

@@ -176,17 +176,17 @@ namespace EmotionalAppraisal
 			}
 
 			/// <summary>
-			/// Decays all emotions, mood and arousal according to the System Time
+			/// Decays all emotions, mood and arousal
 			/// </summary>
-			public void Decay(float elapsedTime, EmotionalAppraisalAsset parentAsset)
+			public void Decay(float elapsedTime)
 			{
-				this.mood.DecayMood(elapsedTime, parentAsset);
+				this.mood.DecayMood(elapsedTime);
 				HashSet<string> toRemove = ObjectPool<HashSet<string>>.GetObject();
 				using (var it = this.emotionPool.GetEnumerator())
 				{
 					while (it.MoveNext())
 					{
-						it.Current.Value.DecayEmotion(elapsedTime, parentAsset);
+						it.Current.Value.DecayEmotion(elapsedTime);
 						if (!it.Current.Value.IsRelevant)
 							toRemove.Add(it.Current.Key);
 					}
@@ -248,13 +248,12 @@ namespace EmotionalAppraisal
 				{
 					return this.mood.MoodValue;
 				}
+			    set
+			    {
+                    this.mood.SetMoodValue(value);
+                }
 			}
-
-		    public void SetMood(float value)
-		    {
-		        this.mood.SetMoodValue(value);
-		    }
-
+            
 			public IActiveEmotion GetStrongestEmotion()
 			{
 				return this.emotionPool.Values.MaxValue(emo => emo.Intensity);

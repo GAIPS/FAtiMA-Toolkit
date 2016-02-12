@@ -20,8 +20,8 @@ namespace EmotionalAppraisalWF.ViewModels
         {
             _emotionalAppraisalAsset = ea;
             this.EmotionDispositions = new BindingListView<EmotionDispositionDTO>(ea.GetEmotionDispositions().ToList());
-            this.DefaultDecay = ea.EmotionalState.DefaultEmotionDispositionDecay;
-            this.DefaultThreshold = ea.EmotionalState.DefaultEmotionDispositionThreshold;
+            this.DefaultDecay = ea.DefaultEmotionDispositionDecay;
+            this.DefaultThreshold = ea.DefaultEmotionDispositionThreshold;
         }
         
        

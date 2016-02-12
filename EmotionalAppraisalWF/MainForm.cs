@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using AutobiographicMemory.Interfaces;
 using EmotionalAppraisal;
@@ -21,73 +18,15 @@ namespace EmotionalAppraisalWF
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
         private string _saveFileName;
 
-        private SortableBindingList<EmotionListItem> _emotionList;
-        private SortableBindingList<AppraisalRuleListItem> _appraisalRuleList;
         private EmotionalStateVM _emotionalStateVM;
         private KnowledgeBaseVM _knowledgeBaseVM;
         private AppraisalRulesVM _appraisalRulesVM;
         private EmotionDispositionsVM _emotionDispositionsVM;
-        
-        public class EmotionListItem
+
+        public MainForm()
         {
-            public string Type { get; set; }
-            public double Intensity { get; set; }
-            public string Event { get; set; }
-
-        }
-
-        public class AppraisalRuleListItem
-        {
-            public string Name { get; set; }
-            public int Desirability { get; set; }
-            public int Praiseworthiness { get; set; }
-        }
-
-        private void ResetEmotionalTab()
-        {
-            this.moodValueLabel.Text = Math.Round(_emotionalAppraisalAsset.EmotionalState.Mood).ToString();
-            this.moodTrackBar.Value = int.Parse(this.moodValueLabel.Text);
-            
-            _emotionList =
-                new SortableBindingList<EmotionListItem>(
-                    _emotionalAppraisalAsset.EmotionalState.GetEmotionsKeys().Select(key => new EmotionListItem
-                    {
-                        Event = key
-                    }));
-
-            foreach (var emotion in _emotionList)
-            {
-                emotion.Type = _emotionalAppraisalAsset.EmotionalState.GetEmotion(emotion.Event).EmotionType;
-                emotion.Intensity = _emotionalAppraisalAsset.EmotionalState.GetEmotion(emotion.Event).Intensity;
-            }
-
-            emotionsDataGridView.DataSource = _emotionList;
-            adjustColumnSizeGrid(emotionsDataGridView);
-        }
-
-        private void ResetEmotionDispositionsTab()
-        {
-            
-        }
-
-     
-        private void ResetAutoBiographicalMemoryTab()
-        {
-            dataGridViewAM.DataSource = new SortableBindingList<IEvent>(_emotionalAppraisalAsset.GetAllEventRecords());
-        }
-
-
-        private void adjustColumnSizeGrid(DataGridView grid)
-        {
-            if (grid.ColumnCount > 1)
-            {
-                for (int i = 0; i < grid.ColumnCount - 1; i++)
-                {
-                    grid.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                }
-            }
-
-            grid.Columns[grid.ColumnCount-1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            InitializeComponent();
+            Reset(true);
         }
 
         private void Reset(bool newFile)
@@ -102,9 +41,12 @@ namespace EmotionalAppraisalWF
                 this.Text = Resources.MainFormPrincipalTitle + Resources.TitleSeparator + _saveFileName;
             }
 
-            ResetEmotionalTab();
-
-
+            //Emotional State Tab
+            _emotionalStateVM = new EmotionalStateVM(_emotionalAppraisalAsset);
+            this.moodValueLabel.Text = Math.Round(_emotionalStateVM.Mood).ToString();
+            this.moodTrackBar.Value = int.Parse(this.moodValueLabel.Text);
+            //adjustColumnSizeGrid(emotionsDataGridView); 
+            
             //Emotion Dispositions
             _emotionDispositionsVM = new EmotionDispositionsVM(_emotionalAppraisalAsset);
             comboBoxDefaultDecay.SelectedIndex = comboBoxDefaultDecay.FindString(_emotionDispositionsVM.DefaultDecay.ToString());
@@ -124,14 +66,21 @@ namespace EmotionalAppraisalWF
             dataGridViewBeliefs.DataSource = _knowledgeBaseVM.Beliefs;
             dataGridViewBeliefs.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
 
-            ResetAutoBiographicalMemoryTab();
+            //AM
         }
 
-        public MainForm()
+
+        private void adjustColumnSizeGrid(DataGridView grid)
         {
-            InitializeComponent();
-            
-            Reset(true);
+            if (grid.ColumnCount > 1)
+            {
+                for (int i = 0; i < grid.ColumnCount - 1; i++)
+                {
+                    grid.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                }
+            }
+
+            grid.Columns[grid.ColumnCount - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -284,7 +233,7 @@ namespace EmotionalAppraisalWF
         private void trackBar1_Scroll_1(object sender, EventArgs e)
         {        
             moodValueLabel.Text = moodTrackBar.Value.ToString();
-            _emotionalAppraisalAsset.SetMood(moodTrackBar.Value);
+            _emotionalStateVM.Mood = moodTrackBar.Value;
         }
         
         #region EmotionalStateTab
@@ -309,12 +258,12 @@ namespace EmotionalAppraisalWF
 
         private void comboBoxDefaultDecay_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _emotionalAppraisalAsset.EmotionalState.DefaultEmotionDispositionDecay = int.Parse(comboBoxDefaultDecay.Text);
+            _emotionalAppraisalAsset.DefaultEmotionDispositionDecay = int.Parse(comboBoxDefaultDecay.Text);
         }
 
         private void comboBoxDefaultThreshold_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _emotionalAppraisalAsset.EmotionalState.DefaultEmotionDispositionThreshold = int.Parse(comboBoxDefaultThreshold.Text);
+            _emotionalAppraisalAsset.DefaultEmotionDispositionThreshold = int.Parse(comboBoxDefaultThreshold.Text);
         }
 
         #endregion
@@ -408,6 +357,11 @@ namespace EmotionalAppraisalWF
         private void label4_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBoxPerspective_TextChanged(object sender, EventArgs e)
+        {
+            this._emotionalAppraisalAsset.Perspective = textBoxPerspective.Text;
         }
     }
 }
