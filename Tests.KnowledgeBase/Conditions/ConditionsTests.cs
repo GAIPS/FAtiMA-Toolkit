@@ -25,17 +25,20 @@ namespace Tests.KnowledgeBase.Conditions
 			var c = Condition.Parse(str);
 		}
 
-		[TestCase("A=A",ExpectedException = typeof(InvalidOperationException))]
-		[TestCase("4>3",ExpectedException = typeof(InvalidOperationException))]
-		[TestCase("true!=false", ExpectedException = typeof(InvalidOperationException))]
-		[TestCase("true=false", ExpectedException = typeof(InvalidOperationException))]
-		[TestCase("-65.54e10<-1e", ExpectedException = typeof(ParsingException))]
-		[TestCase("?-65.54e10<+-1e", ExpectedException = typeof(ParsingException))]
-		[TestCase("#Like([x]) = 4", ExpectedException = typeof(ParsingException))]
-		[TestCase("#4 = 4", ExpectedException = typeof(ParsingException))]
-		public void Condition_Invalid_Parse(string str)
+		[TestCase("A=A",typeof(InvalidOperationException))]
+		[TestCase("4>3",typeof(InvalidOperationException))]
+		[TestCase("true!=false",typeof(InvalidOperationException))]
+		[TestCase("true=false",typeof(InvalidOperationException))]
+		[TestCase("-65.54e10<-1e",typeof(ParsingException))]
+		[TestCase("?-65.54e10<+-1e",typeof(ParsingException))]
+		[TestCase("#Like([x]) = 4",typeof(ParsingException))]
+		[TestCase("#4 = 4",typeof(ParsingException))]
+		public void Condition_Invalid_Parse(string str, Type expectedException)
 		{
-			var c = Condition.Parse(str);
+			Assert.Throws(expectedException, () =>
+			{
+				var c = Condition.Parse(str);
+			});
 		}
 
 		//Test KB

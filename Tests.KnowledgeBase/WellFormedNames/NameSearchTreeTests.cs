@@ -30,12 +30,14 @@ namespace Tests.KnowledgeBase.WellFormedNames
         [TestCase("x", "1")]
         [TestCase("x(a)", "2")]
         [TestCase("x(a, b)", "3")]
-		[ExpectedException(typeof(Exception))]
         public void Add_FilledNameSearchTree_False(string name, string value)
         {
             var tree = new NameSearchTree<string>();
-            tree.Add(Name.BuildName(name), value);
-			tree.Add(Name.BuildName(name), String.Empty);
+	        Assert.Throws<Exception>(() =>
+	        {
+				tree.Add(Name.BuildName(name), value);
+				tree.Add(Name.BuildName(name), String.Empty);
+			});
         }
 
         [TestCase("x", "1")]
