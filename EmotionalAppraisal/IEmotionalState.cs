@@ -104,11 +104,5 @@ namespace EmotionalAppraisal
 		void AddEmotionDisposition(EmotionDisposition emotionDisposition);
 
 		IEnumerable<EmotionDisposition> GetEmotionDispositions();
-
-		EmotionDisposition getEmotionDisposition(string emotionName);
-
-	    int DefaultEmotionDispositionThreshold { get; set; }
-
-	    int DefaultEmotionDispositionDecay { get; set; }
     }
 }

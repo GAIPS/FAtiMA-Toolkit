@@ -138,25 +138,13 @@ namespace EmotionalAppraisal
 				return m_defaultEmotionalDisposition;
 			}
 
-		    public int DefaultEmotionDispositionThreshold
+		    public EmotionDisposition DefaultEmotionDisposition
 		    {
-		        get { return m_defaultEmotionalDisposition.Threshold;}
-		        set
-		        {
-		            m_defaultEmotionalDisposition = new EmotionDisposition("*", m_defaultEmotionalDisposition.Decay, value);
-		        } 
+		        get { return m_defaultEmotionalDisposition;}
+		        set { m_defaultEmotionalDisposition = value;} 
 		    }
 
-            public int DefaultEmotionDispositionDecay
-            {
-                get { return m_defaultEmotionalDisposition.Decay; }
-                set
-                {
-                    m_defaultEmotionalDisposition = new EmotionDisposition("*", value, m_defaultEmotionalDisposition.Threshold);
-                }
-            }
-
-            public IActiveEmotion DetermineActiveEmotion(IEmotion potEm)
+           public IActiveEmotion DetermineActiveEmotion(IEmotion potEm)
 			{
 				EmotionDisposition emotionDisposition = GetEmotionDisposition(potEm.EmotionType);
 				float potential = DeterminePotential(potEm);
@@ -273,14 +261,6 @@ namespace EmotionalAppraisal
 			public IEnumerable<EmotionDisposition> GetEmotionDispositions()
 			{
 				return this.emotionDispositions.Values;
-			}
-
-			public EmotionDisposition getEmotionDisposition(string emotionName)
-			{
-				EmotionDisposition disp;
-				if (this.emotionDispositions.TryGetValue(emotionName, out disp))
-					return disp;
-				return m_defaultEmotionalDisposition;
 			}
 
 			public override string ToString()

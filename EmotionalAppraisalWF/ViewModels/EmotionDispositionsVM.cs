@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
@@ -12,18 +13,33 @@ namespace EmotionalAppraisalWF.ViewModels
 
         public BindingListView<EmotionDispositionDTO> EmotionDispositions {get;}
 
-        public int DefaultThreshold { get; private set; }
+        public int DefaultThreshold
+        {
+            get { return _emotionalAppraisalAsset.DefaultEmotionDisposition.Threshold; }
+            set { ChangeDefaultEmotionDisposition(value, DefaultDecay); }
+        }
 
-        public int DefaultDecay { get; private set; }
+        public int DefaultDecay
+        {
+            get { return _emotionalAppraisalAsset.DefaultEmotionDisposition.Decay; }
+            set { ChangeDefaultEmotionDisposition(DefaultThreshold,value); }
+        }
 
         public EmotionDispositionsVM(EmotionalAppraisalAsset ea)
         {
             _emotionalAppraisalAsset = ea;
-            this.EmotionDispositions = new BindingListView<EmotionDispositionDTO>(ea.GetEmotionDispositions().ToList());
-            this.DefaultDecay = ea.DefaultEmotionDispositionDecay;
-            this.DefaultThreshold = ea.DefaultEmotionDispositionThreshold;
+            this.EmotionDispositions = new BindingListView<EmotionDispositionDTO>(ea.EmotionDispositions.ToList());
         }
-        
-       
+
+        private void ChangeDefaultEmotionDisposition(int threshold, int decay)
+        {
+            _emotionalAppraisalAsset.DefaultEmotionDisposition = new EmotionDispositionDTO
+            {
+                Decay = decay,
+                Threshold = threshold,
+                Emotion = "*"
+            };
+        }
+
     }
 }

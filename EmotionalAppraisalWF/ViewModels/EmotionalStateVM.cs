@@ -27,22 +27,7 @@ namespace EmotionalAppraisalWF.ViewModels
         {
             _emotionalAppraisalAsset = ea;
 
-
-            /*_emotionList =
-                new SortableBindingList<EmotionListItem>(
-                    _emotionalAppraisalAsset.EmotionalState.GetEmotionsKeys().Select(key => new EmotionListItem
-                    {
-                        Event = key
-                    }));
-
-            foreach (var emotion in _emotionList)
-            {
-                emotion.Type = _emotionalAppraisalAsset.EmotionalState.GetEmotion(emotion.Event).EmotionType;
-                emotion.Intensity = _emotionalAppraisalAsset.EmotionalState.GetEmotion(emotion.Event).Intensity;
-            }
-
-            emotionsDataGridView.DataSource = _emotionList;*/
-     
+            Emotions = new BindingListView<EmotionDTO>(ea.ActiveEmotions.ToList());
         }
     }
 }

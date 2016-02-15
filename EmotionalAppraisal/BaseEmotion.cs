@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using AutobiographicMemory;
 using AutobiographicMemory.Interfaces;
+using EmotionalAppraisal.DTOs;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
 
@@ -147,5 +148,15 @@ namespace EmotionalAppraisal
 			ObjectPool<StringBuilder>.Recycle(builder);
 			return result;
 		}
-	}
+
+        public EmotionDTO ToDto()
+        {
+            return new EmotionDTO
+            {
+                Type = this.EmotionType,
+                Intensity = this.Potential,
+                CauseEvent = this.CauseId.ToString(),
+            };
+        }
+    }
 }
