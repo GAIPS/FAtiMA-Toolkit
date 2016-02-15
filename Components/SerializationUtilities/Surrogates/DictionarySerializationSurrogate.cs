@@ -1,7 +1,7 @@
-﻿using GAIPS.Serialization.SerializationGraph;
-using System;
+﻿using System;
 using System.Collections;
 using GAIPS.Serialization.Attributes;
+using GAIPS.Serialization.SerializationGraph;
 
 namespace GAIPS.Serialization.Surrogates
 {

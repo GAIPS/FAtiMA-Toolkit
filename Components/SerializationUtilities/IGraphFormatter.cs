@@ -1,5 +1,5 @@
-﻿using GAIPS.Serialization.SerializationGraph;
-using System;
+﻿using System;
+using GAIPS.Serialization.SerializationGraph;
 
 namespace GAIPS.Serialization
 {

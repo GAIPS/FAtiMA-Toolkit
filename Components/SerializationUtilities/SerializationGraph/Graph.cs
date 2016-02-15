@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.Serialization;
 using Utilities;
 
 namespace GAIPS.Serialization.SerializationGraph
@@ -26,6 +27,7 @@ namespace GAIPS.Serialization.SerializationGraph
 		private int m_idCounter = 0;
 		private StrongLinkDictionary<object, int> m_links = new StrongLinkDictionary<object, int>(new ReferenceComparer<object>(), null);
 		private SortedDictionary<int, ObjectGraphNode> m_refs = new SortedDictionary<int, ObjectGraphNode>();
+		private HashSet<IDeserializationCallback> m_deserializeCallbackRegist = new HashSet<IDeserializationCallback>();
 
 		private IGraphNode m_root = null;
 		public IGraphNode Root {
@@ -283,12 +285,26 @@ namespace GAIPS.Serialization.SerializationGraph
 
 		#region Value Builders
 
-		public object RebuildObject(Type requestedType)
+		public object DeserializeObject(Type requestedType)
 		{
-			return RebuildObject((BaseGraphNode)Root, requestedType);
+			var obj = RebuildObject((BaseGraphNode)Root, requestedType);
+			foreach (var callbacks in m_deserializeCallbackRegist)
+				callbacks.OnDeserialization(this);
+
+			return obj;
 		}
 
 		private object RebuildObject(BaseGraphNode nodeToRebuild, Type requestedType)
+		{
+			var obj = internal_RebuildObject(nodeToRebuild, requestedType);
+			var callback = obj as IDeserializationCallback;
+			if (callback != null)
+				m_deserializeCallbackRegist.Add(callback);
+
+			return obj;
+		}
+
+		private object internal_RebuildObject(BaseGraphNode nodeToRebuild, Type requestedType)
 		{
 			if (nodeToRebuild == null)
 				return null;
@@ -320,7 +336,7 @@ namespace GAIPS.Serialization.SerializationGraph
 
 			if (formatter == null)
 				return nodeToRebuild.ExtractObject(requestedType);
-			
+
 			var obj = formatter.GraphNodeToObject(nodeToRebuild, requestedType);
 			if (nodeToRebuild.DataType == SerializedDataType.Object)
 				LinkObjectToNode((ObjectGraphNode)nodeToRebuild, obj);

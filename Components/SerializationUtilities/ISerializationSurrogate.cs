@@ -1,5 +1,4 @@
 using GAIPS.Serialization.SerializationGraph;
-using System;
 
 namespace GAIPS.Serialization
 {

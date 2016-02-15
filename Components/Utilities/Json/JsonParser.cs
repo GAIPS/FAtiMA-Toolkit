@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -154,18 +155,18 @@ namespace Utilities.Json
 					if (m.Groups[3].Success || m.Groups[4].Success)
 					{
 						decimal vd;
-						if(decimal.TryParse(primitive,out vd))
+						if(decimal.TryParse(primitive,NumberStyles.Any,CultureInfo.InvariantCulture,out vd))
 							return new JsonNumber(vd);
-						return new JsonNumber(double.Parse(primitive));
+						return new JsonNumber(double.Parse(primitive, CultureInfo.InvariantCulture));
 					}
 
 					if(m.Groups[1].Success && m.Groups[1].Value=="-")
-						return new JsonNumber(long.Parse(primitive));
+						return new JsonNumber(long.Parse(primitive, CultureInfo.InvariantCulture));
 
 					ulong vl;
-					if(ulong.TryParse(primitive,out vl))
+					if(ulong.TryParse(primitive,NumberStyles.Any, CultureInfo.InvariantCulture, out vl))
 						return new JsonNumber(vl);
-					return new JsonNumber(decimal.Parse(primitive));
+					return new JsonNumber(decimal.Parse(primitive, CultureInfo.InvariantCulture));
 				}
 
 				throw new IOException("Invalid JSON format: Invalid primitive \"" + primitive + "\"");

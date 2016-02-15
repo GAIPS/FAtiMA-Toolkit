@@ -1,12 +1,11 @@
-﻿using GAIPS.Serialization.SerializationGraph;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using GAIPS.Serialization.Attributes;
-using Utilities;
+using GAIPS.Serialization.SerializationGraph;
 
 namespace GAIPS.Serialization.Surrogates
 {

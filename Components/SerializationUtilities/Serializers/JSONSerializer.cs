@@ -1,9 +1,8 @@
-﻿using GAIPS.Serialization.SerializationGraph;
-using System;
+﻿using System;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using Utilities;
+using GAIPS.Serialization.SerializationGraph;
 using Utilities.Json;
 
 namespace GAIPS.Serialization
@@ -41,7 +40,7 @@ namespace GAIPS.Serialization
 			json[ROOT_FIELD] = ToJson(graph.Root);
 
 			var nodes = graph.GetReferences().Select(n => NodeToJson(n)).Cast<JsonToken>();
-			if (!nodes.IsEmpty())
+			if (nodes.Any())
 				json[REFERENCES_FIELD] = new JsonArray(nodes);
 
 			json[TYPES_FIELD] = types;
@@ -152,7 +151,7 @@ namespace GAIPS.Serialization
 					if (refEntry == null)
 						throw new Exception("Unable to deserialize"); //TODO get a better exception
 
-					var node = JsonToObjectNode(refEntry, serGraph);
+					JsonToObjectNode(refEntry, serGraph);
 				}
 			}
 

@@ -1,10 +1,10 @@
-﻿using GAIPS.Serialization.SerializationGraph;
-using System;
+﻿using System;
 using System.IO;
+using GAIPS.Serialization.SerializationGraph;
 
 namespace GAIPS.Serialization
 {
-	public abstract class BaseSerializer
+	public abstract class BaseSerializer : ISerializer
 	{
 		public GraphFormatterSelector FormatSelector { get; private set; }
 
@@ -22,7 +22,7 @@ namespace GAIPS.Serialization
 		{
 			var graph = new Graph(FormatSelector);
 			DeserializeDataGraph(serializationStream,graph);
-			return graph.RebuildObject(returnType);
+			return graph.DeserializeObject(returnType);
 		}
 
 		public void Serialize(Stream serializationStream, object graph)
