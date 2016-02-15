@@ -244,7 +244,7 @@ namespace EmotionalAppraisal.OCCModel
 
 			//ignoring mood for now
 
-			EmotionDisposition emotionDisposition = emotionalModule.EmotionalState.getEmotionDisposition(emotion.EmotionType);
+			EmotionDispositionDTO emotionDisposition = emotionalModule.GetEmotionDisposition(emotion.EmotionType);
 			int threshold = emotionDisposition.Threshold;
 			float potentialValue = emotion.Potential + threshold;
 

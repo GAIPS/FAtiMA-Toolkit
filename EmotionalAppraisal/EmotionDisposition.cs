@@ -17,16 +17,33 @@ namespace EmotionalAppraisal
 
 		public int Threshold { get; private set; }
 
-		public EmotionDisposition(string emotion, int decay, int threshold)
+        public EmotionDisposition(string emotion, int decay, int threshold)
+        {
+            Emotion = emotion;
+            Decay = decay;
+            Threshold = threshold;
+        }
+
+        public EmotionDisposition(EmotionDispositionDTO dispDto)
 		{
-			Emotion = emotion;
-			Decay = decay;
-			Threshold = threshold;
+		    Emotion = dispDto.Emotion;
+			Decay = dispDto.Decay;
+			Threshold = dispDto.Threshold;
 		}
 
 		public override string ToString()
 		{
 			return string.Format("Emotion: {0}, Threshold: {2}, Decay: {1}", Emotion,Threshold,Decay);
 		}
+
+	    public EmotionDispositionDTO ToDto()
+	    {
+	        return new EmotionDispositionDTO
+	        {
+	            Decay = this.Decay,
+	            Emotion = this.Emotion,
+	            Threshold = this.Threshold
+	        };
+	    }
 	}
 }

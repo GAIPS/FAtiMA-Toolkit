@@ -38,10 +38,19 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainFormTab = new System.Windows.Forms.TabControl();
             this.emotionalStateTabPage = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.textBoxPerspective = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.moodGroupBox = new System.Windows.Forms.GroupBox();
             this.moodValueLabel = new System.Windows.Forms.Label();
             this.moodTrackBar = new System.Windows.Forms.TrackBar();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.button11 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.button10 = new System.Windows.Forms.Button();
+            this.button9 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.emotionGroupBox = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -87,19 +96,11 @@
             this.decayErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.button9 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button11 = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
             this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.mainMenu.SuspendLayout();
             this.mainFormTab.SuspendLayout();
             this.emotionalStateTabPage.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.moodGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.moodTrackBar)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -124,7 +125,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAM)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.decayErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emotionListItemBindingSource)).BeginInit();
-            this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainFormBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
@@ -219,6 +219,34 @@
             this.emotionalStateTabPage.Text = "Emotional State";
             this.emotionalStateTabPage.UseVisualStyleBackColor = true;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.textBoxPerspective);
+            this.groupBox3.Controls.Add(this.label1);
+            this.groupBox3.Location = new System.Drawing.Point(7, 6);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(239, 68);
+            this.groupBox3.TabIndex = 14;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Perspective";
+            // 
+            // textBoxPerspective
+            // 
+            this.textBoxPerspective.Location = new System.Drawing.Point(50, 28);
+            this.textBoxPerspective.Name = "textBoxPerspective";
+            this.textBoxPerspective.Size = new System.Drawing.Size(183, 20);
+            this.textBoxPerspective.TabIndex = 10;
+            this.textBoxPerspective.TextChanged += new System.EventHandler(this.textBoxPerspective_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 32);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(38, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Name:";
+            // 
             // moodGroupBox
             // 
             this.moodGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -271,6 +299,61 @@
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Time";
+            // 
+            // textBox2
+            // 
+            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBox2.Location = new System.Drawing.Point(432, 27);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.ReadOnly = true;
+            this.textBox2.Size = new System.Drawing.Size(109, 20);
+            this.textBox2.TabIndex = 9;
+            // 
+            // button11
+            // 
+            this.button11.Location = new System.Drawing.Point(195, 25);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(49, 23);
+            this.button11.TabIndex = 8;
+            this.button11.Text = "Stop";
+            this.button11.UseVisualStyleBackColor = true;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(43, 28);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(109, 20);
+            this.textBox1.TabIndex = 7;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(382, 30);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(44, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "Current:";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(302, 25);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(49, 23);
+            this.button10.TabIndex = 4;
+            this.button10.Text = "Play";
+            this.button10.UseVisualStyleBackColor = true;
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(248, 25);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(49, 23);
+            this.button9.TabIndex = 2;
+            this.button9.Text = "Pause";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // label2
             // 
@@ -831,88 +914,6 @@
             // 
             this.decayErrorProvider.ContainerControl = this;
             // 
-            // button9
-            // 
-            this.button9.Location = new System.Drawing.Point(248, 25);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(49, 23);
-            this.button9.TabIndex = 2;
-            this.button9.Text = "Pause";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
-            // 
-            // button10
-            // 
-            this.button10.Location = new System.Drawing.Point(302, 25);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(49, 23);
-            this.button10.TabIndex = 4;
-            this.button10.Text = "Play";
-            this.button10.UseVisualStyleBackColor = true;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(382, 30);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(44, 13);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Current:";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(43, 28);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(109, 20);
-            this.textBox1.TabIndex = 7;
-            // 
-            // button11
-            // 
-            this.button11.Location = new System.Drawing.Point(195, 25);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(49, 23);
-            this.button11.TabIndex = 8;
-            this.button11.Text = "Stop";
-            this.button11.UseVisualStyleBackColor = true;
-            // 
-            // textBox2
-            // 
-            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox2.Location = new System.Drawing.Point(432, 27);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(109, 20);
-            this.textBox2.TabIndex = 9;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.textBox3);
-            this.groupBox3.Controls.Add(this.label1);
-            this.groupBox3.Location = new System.Drawing.Point(7, 6);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(239, 68);
-            this.groupBox3.TabIndex = 14;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Perspective";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 32);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Name:";
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(50, 28);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(183, 20);
-            this.textBox3.TabIndex = 10;
-            // 
             // mainFormBindingSource
             // 
             this.mainFormBindingSource.DataSource = typeof(EmotionalAppraisalWF.MainForm);
@@ -932,6 +933,8 @@
             this.mainMenu.PerformLayout();
             this.mainFormTab.ResumeLayout(false);
             this.emotionalStateTabPage.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.moodGroupBox.ResumeLayout(false);
             this.moodGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.moodTrackBar)).EndInit();
@@ -959,8 +962,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAM)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.decayErrorProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emotionListItemBindingSource)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainFormBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -1035,7 +1036,7 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.Button button11;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.TextBox textBoxPerspective;
         private System.Windows.Forms.Label label1;
     }
 }

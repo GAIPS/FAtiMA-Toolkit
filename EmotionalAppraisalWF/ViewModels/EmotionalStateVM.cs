@@ -9,26 +9,40 @@ namespace EmotionalAppraisalWF.ViewModels
     public class EmotionalStateVM
     {
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
+        public BindingListView<EmotionDTO> Emotions {get;}
 
-        public BindingListView<AppraisalRuleDTO> AppraisalRules {get;}
-        public BindingListView<ConditionDTO> CurrentRuleConditions { get; set; }
+        public float Mood
+        {
+            get { return _emotionalAppraisalAsset.Mood; }
+            set { _emotionalAppraisalAsset.Mood = value;}
+        }
 
+        public string Perspective
+        {
+            get { return _emotionalAppraisalAsset.Perspective; }
+            set { _emotionalAppraisalAsset.Perspective = value; }
+        }
+          
         public EmotionalStateVM(EmotionalAppraisalAsset ea)
         {
             _emotionalAppraisalAsset = ea;
-            
-            this.AppraisalRules = new BindingListView<AppraisalRuleDTO>(ea.GetAllAppraisalRules().ToList());
-            this.CurrentRuleConditions = new BindingListView<ConditionDTO>(new List<ConditionDTO>());
-        }
 
-        public void ChangeCurrentRule(AppraisalRuleDTO rule)
-        {
-            if (rule != null)
+
+            /*_emotionList =
+                new SortableBindingList<EmotionListItem>(
+                    _emotionalAppraisalAsset.EmotionalState.GetEmotionsKeys().Select(key => new EmotionListItem
+                    {
+                        Event = key
+                    }));
+
+            foreach (var emotion in _emotionList)
             {
-                this.CurrentRuleConditions = new BindingListView<ConditionDTO>(rule.Conditions.ToList());
+                emotion.Type = _emotionalAppraisalAsset.EmotionalState.GetEmotion(emotion.Event).EmotionType;
+                emotion.Intensity = _emotionalAppraisalAsset.EmotionalState.GetEmotion(emotion.Event).Intensity;
             }
-        }
 
-        
+            emotionsDataGridView.DataSource = _emotionList;*/
+     
+        }
     }
 }

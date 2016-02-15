@@ -23,9 +23,7 @@ namespace EmotionalAppraisal
 
 		public uint CauseId { get; private set; }
 
-		public Name Direction
-		{
-			get; private set; }
+		public Name Direction{ get; private set; }
 
 		public string EmotionType { get; private set; }
 
@@ -62,7 +60,7 @@ namespace EmotionalAppraisal
 			}
 		}
 
-		private void SetIntencity(float value)
+		private void SetIntensity(float value)
 		{
 			value -= Threshold;
 			value = value < -10 ? -10 : (value > 10 ? 10 : value);
@@ -88,14 +86,14 @@ namespace EmotionalAppraisal
 
 			this.Threshold = threshold;
 			this.Decay = decay;
-			SetIntencity(potential);
+			SetIntensity(potential);
 		}
 
 		/// <summary>
 		/// Decays the emotion according to the system's time
 		/// </summary>
 		/// <returns>the intensity of the emotion after being decayed</returns>
-		internal void DecayEmotion(float elapsedTime, EmotionalAppraisalAsset parentAsset)
+		internal void DecayEmotion(float elapsedTime)
 		{
 			this.deltaTimeT0 += elapsedTime;
 			double lambda = Math.Log(EmotionalAppraisalAsset.HalfLifeDecayConstant)/EmotionalAppraisalAsset.EmotionalHalfLifeDecayTime;

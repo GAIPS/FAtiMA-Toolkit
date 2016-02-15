@@ -16,8 +16,8 @@ namespace AuthorialAgentsWF
     public partial class AddEditScenario : Form
     {
         /*Strings are just placeholders*/
-        private SortableBindingList<string> _npcListSelected;
-        private SortableBindingList<string> _npcListAvailable;
+        private BindingList<string> _npcListSelected;
+        private BindingList<string> _npcListAvailable;
         private AuthTool _context;
 
         public AddEditScenario(AuthTool context)

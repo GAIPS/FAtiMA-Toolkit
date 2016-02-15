@@ -47,10 +47,10 @@ namespace Tests.EmotionalAppraisal
 			//m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(disapointmentDisposition);
 
 			var joyDisposition = new EmotionDisposition(OCCEmotionType.Joy.Name, 2, 3);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(joyDisposition);
+			m_emotionalAppraisalAsset.AddEmotionDisposition(joyDisposition.ToDto());
 
 			var distressDisposition = new EmotionDisposition(OCCEmotionType.Distress.Name, 2, 1);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(distressDisposition);
+			m_emotionalAppraisalAsset.AddEmotionDisposition(distressDisposition.ToDto());
 
 			//var happyForDisposition = new EmotionDisposition(OCCEmotionType.HappyFor.Name, 5, 2);
 			//m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(happyForDisposition);
@@ -65,28 +65,28 @@ namespace Tests.EmotionalAppraisal
 			//m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(gloatingDisposition);
 
 			var prideDisposition = new EmotionDisposition(OCCEmotionType.Pride.Name, 5, 5);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(prideDisposition);
+			m_emotionalAppraisalAsset.AddEmotionDisposition(prideDisposition.ToDto());
 
 			var shameDisposition = new EmotionDisposition(OCCEmotionType.Shame.Name, 2, 1);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(shameDisposition);
+			m_emotionalAppraisalAsset.AddEmotionDisposition(shameDisposition.ToDto());
 
 			var gratificationDisposition = new EmotionDisposition(OCCEmotionType.Gratification.Name, 8, 5);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(gratificationDisposition);
+			m_emotionalAppraisalAsset.AddEmotionDisposition(gratificationDisposition.ToDto());
 
 			var remorseDisposition = new EmotionDisposition(OCCEmotionType.Remorse.Name, 2, 1);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(remorseDisposition);
+			m_emotionalAppraisalAsset.AddEmotionDisposition(remorseDisposition.ToDto());
 
 			var admirationDisposition = new EmotionDisposition(OCCEmotionType.Admiration.Name, 5, 3);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(admirationDisposition);
+			m_emotionalAppraisalAsset.AddEmotionDisposition(admirationDisposition.ToDto());
 
 			var reproachDisposition = new EmotionDisposition(OCCEmotionType.Reproach.Name, 8, 2);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(reproachDisposition);
+			m_emotionalAppraisalAsset.AddEmotionDisposition(reproachDisposition.ToDto());
 
 			var gratitudeDisposition = new EmotionDisposition(OCCEmotionType.Gratitude.Name, 5, 3);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(gratitudeDisposition);
+			m_emotionalAppraisalAsset.AddEmotionDisposition(gratitudeDisposition.ToDto());
 
 			var angerDisposition = new EmotionDisposition(OCCEmotionType.Anger.Name, 5, 3);
-			m_emotionalAppraisalAsset.EmotionalState.AddEmotionDisposition(angerDisposition);
+			m_emotionalAppraisalAsset.AddEmotionDisposition(angerDisposition.ToDto());
 
 			//Setup appraisal rules
 

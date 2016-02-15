@@ -44,7 +44,7 @@ namespace EmotionalAppraisal
 		/// Decays the mood according to the agent's simulated time
 		/// </summary>
 		/// <returns>the mood's intensity after being decayed</returns>
-		public void DecayMood(float elapsedTime, EmotionalAppraisalAsset parentAsset)
+		public void DecayMood(float elapsedTime)
 		{
 			if (this._intensityATt0 == 0)
 			{
