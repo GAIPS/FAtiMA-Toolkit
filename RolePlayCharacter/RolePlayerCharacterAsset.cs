@@ -12,7 +12,7 @@ using AutobiographicMemory.Interfaces;
 
 namespace RolePlayCharacter
 {
-
+    [Serializable]
     public class GameEvent : IEvent
     {
         public string Action { get; }
@@ -52,6 +52,15 @@ namespace RolePlayCharacter
                 LoadEmotionDecisionMakingAsset(_emotionalAppraisalAsset);
         }
 
+        public RolePlayCharacterAsset (string fileEmotionalAppraisalAsset, string fileEmotionalDecisionMakingAsset)
+        {
+            if (fileEmotionalAppraisalAsset != null)
+                LoadEmotionAppraisalAssetFromFile(fileEmotionalAppraisalAsset);
+
+            if (fileEmotionalDecisionMakingAsset != null)
+                LoadEmotionDecisionMakingAssetFromFile(fileEmotionalDecisionMakingAsset);
+        }
+
         public void SaveToFile(Stream file)
         {
             var serializer = new JSONSerializer();
@@ -78,7 +87,6 @@ namespace RolePlayCharacter
 
         private void AppraisalAndDecideEvent()
         {
-            /***/
 
 
         }
@@ -102,7 +110,7 @@ namespace RolePlayCharacter
         {
             if(name != null)
             {
-                _emotionalDecisionMakingAsset = new EmotionalDecisionMakingAsset(_emotionalAppraisalAsset);
+                _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(name);
             }
         }
 
@@ -110,9 +118,7 @@ namespace RolePlayCharacter
         {
             if(name != null)
             {
-
-
-
+               // _emotionalDecisionMakingAsset = EmotionalDecisionMakingAsset.LoadFromFile(name);
             }
         }
 
@@ -121,8 +127,6 @@ namespace RolePlayCharacter
             _emotionalDecisionMakingAsset = new EmotionalDecisionMakingAsset(eaa);
 
         }
-        public float GetCharacterMood() { return _emotionalAppraisalAsset.EmotionalState.Mood; }
-
-        public IActiveEmotion GetCharacterStrongEmotion() { return _emotionalAppraisalAsset.EmotionalState.GetStrongestEmotion(); }
+        public float GetCharacterMood() { return _emotionalAppraisalAsset.Mood; }
     }
 }
