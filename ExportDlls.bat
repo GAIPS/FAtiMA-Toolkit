@@ -31,5 +31,15 @@ FOR /D /r %%i IN (*) DO (
 	popd
 )
 
-
 popd
+
+if "%~1"=="debug" (
+	if not "%~3"=="" (
+		echo Converting pdb to mdb
+		pushd %targetPath%
+			FOR %%i IN (*.dll) DO (
+				call %3 %%i
+			)
+		popd
+	)
+)

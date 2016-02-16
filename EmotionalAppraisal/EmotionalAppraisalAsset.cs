@@ -130,7 +130,6 @@ namespace EmotionalAppraisal
 	        m_emotionalState.AddEmotionDisposition(new EmotionDisposition(emotionDispositionDto));
 	    } 
 
-
 		public IEnumerable<IActiveEmotion> GetAllActiveEmotions()
 		{
 			return m_emotionalState.GetAllEmotions();

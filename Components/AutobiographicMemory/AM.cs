@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutobiographicMemory;
 using GAIPS.Serialization;
 using KnowledgeBase;
 using KnowledgeBase.WellFormedNames;
@@ -98,15 +97,23 @@ namespace AutobiographicMemory
 		//	}
 		//}
 
+		private static Name GetArgument(IDictionary<string, Name> args, string argName)
+		{
+			Name result;
+			if (!args.TryGetValue(argName, out result))
+				return Name.UNIVERSAL_SYMBOL;
+			return result;
+		}
+
 		//Event
 		private static readonly Name EVENT_TEMPLATE = Name.BuildName("EVENT([type],[subject],[def],[target])");
 		private static readonly Name EVENT_PROPERTY_ID_TEMPLATE = Name.BuildName((Name)"ID",EVENT_TEMPLATE);
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventIdPropertyCalculator(KB kb, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
-			Name type = args["type"];
-			Name subject = args["subject"];
-			Name def = args["def"];
-			Name target = args["target"];
+			Name type = GetArgument(args, "type");
+			Name subject = GetArgument(args, "subject");
+			Name def = GetArgument(args, "def");
+			Name target = GetArgument(args,"target");
 
 			List<Pair<PrimitiveValue, SubstitutionSet>> results = new List<Pair<PrimitiveValue, SubstitutionSet>>();
 			var key = Name.BuildName((Name)"Event", type, subject, def, target);
@@ -116,7 +123,7 @@ namespace AutobiographicMemory
 				{
 					foreach (var id in pair.Item1)
 						results.Add(Tuples.Create((PrimitiveValue)id, new SubstitutionSet(pair.Item2)));
-				}	
+				}
 			}
 			return results;
 		}
