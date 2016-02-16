@@ -45,7 +45,9 @@ namespace EmotionalAppraisalWF
             _emotionalStateVM = new EmotionalStateVM(_emotionalAppraisalAsset);
             this.moodValueLabel.Text = Math.Round(_emotionalStateVM.Mood).ToString();
             this.moodTrackBar.Value = int.Parse(this.moodValueLabel.Text);
-            //adjustColumnSizeGrid(emotionsDataGridView); 
+            this.textBoxStartTick.Text = _emotionalStateVM.Start.ToString();
+            this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
+            
             
             //Emotion Dispositions
             _emotionDispositionsVM = new EmotionDispositionsVM(_emotionalAppraisalAsset);
@@ -362,6 +364,23 @@ namespace EmotionalAppraisalWF
         private void textBoxPerspective_TextChanged(object sender, EventArgs e)
         {
             this._emotionalStateVM.Perspective = textBoxPerspective.Text;
+        }
+
+        private void textBoxStartTick_TextChanged(object sender, EventArgs e)
+        {
+            ulong time;
+            if (ulong.TryParse(textBoxStartTick.Text, out time))
+            {
+                _emotionalStateVM.Start = time;
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (checkBoxUpdate.Checked)
+            {
+                
+            }
         }
     }
 }

@@ -45,12 +45,9 @@
             this.moodValueLabel = new System.Windows.Forms.Label();
             this.moodTrackBar = new System.Windows.Forms.TrackBar();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.button11 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxCurrent = new System.Windows.Forms.TextBox();
+            this.textBoxStartTick = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.button10 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.emotionGroupBox = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -96,7 +93,10 @@
             this.decayErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.button9 = new System.Windows.Forms.Button();
+            this.checkBoxUpdate = new System.Windows.Forms.CheckBox();
             this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.mainMenu.SuspendLayout();
             this.mainFormTab.SuspendLayout();
             this.emotionalStateTabPage.SuspendLayout();
@@ -286,11 +286,10 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.textBox2);
-            this.groupBox2.Controls.Add(this.button11);
-            this.groupBox2.Controls.Add(this.textBox1);
+            this.groupBox2.Controls.Add(this.checkBoxUpdate);
+            this.groupBox2.Controls.Add(this.textBoxCurrent);
+            this.groupBox2.Controls.Add(this.textBoxStartTick);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.button10);
             this.groupBox2.Controls.Add(this.button9);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Location = new System.Drawing.Point(7, 360);
@@ -300,60 +299,35 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Time";
             // 
-            // textBox2
+            // textBoxCurrent
             // 
-            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.textBoxCurrent.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox2.Location = new System.Drawing.Point(432, 27);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(109, 20);
-            this.textBox2.TabIndex = 9;
+            this.textBoxCurrent.Location = new System.Drawing.Point(432, 27);
+            this.textBoxCurrent.Name = "textBoxCurrent";
+            this.textBoxCurrent.ReadOnly = true;
+            this.textBoxCurrent.Size = new System.Drawing.Size(109, 20);
+            this.textBoxCurrent.TabIndex = 9;
+            this.textBoxCurrent.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // button11
+            // textBoxStartTick
             // 
-            this.button11.Location = new System.Drawing.Point(195, 25);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(49, 23);
-            this.button11.TabIndex = 8;
-            this.button11.Text = "Stop";
-            this.button11.UseVisualStyleBackColor = true;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(43, 28);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(109, 20);
-            this.textBox1.TabIndex = 7;
+            this.textBoxStartTick.Location = new System.Drawing.Point(43, 28);
+            this.textBoxStartTick.Name = "textBoxStartTick";
+            this.textBoxStartTick.Size = new System.Drawing.Size(109, 20);
+            this.textBoxStartTick.TabIndex = 7;
+            this.textBoxStartTick.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.textBoxStartTick.TextChanged += new System.EventHandler(this.textBoxStartTick_TextChanged);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(382, 30);
+            this.label4.Location = new System.Drawing.Point(382, 32);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(44, 13);
             this.label4.TabIndex = 6;
             this.label4.Text = "Current:";
             this.label4.Click += new System.EventHandler(this.label4_Click);
-            // 
-            // button10
-            // 
-            this.button10.Location = new System.Drawing.Point(302, 25);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(49, 23);
-            this.button10.TabIndex = 4;
-            this.button10.Text = "Play";
-            this.button10.UseVisualStyleBackColor = true;
-            // 
-            // button9
-            // 
-            this.button9.Location = new System.Drawing.Point(248, 25);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(49, 23);
-            this.button9.TabIndex = 2;
-            this.button9.Text = "Pause";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
             // label2
             // 
@@ -914,9 +888,37 @@
             // 
             this.decayErrorProvider.ContainerControl = this;
             // 
+            // button9
+            // 
+            this.button9.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.decayErrorProvider.SetIconAlignment(this.button9, System.Windows.Forms.ErrorIconAlignment.BottomLeft);
+            this.button9.Location = new System.Drawing.Point(204, 26);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(49, 23);
+            this.button9.TabIndex = 2;
+            this.button9.Text = "Reset";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // checkBoxUpdate
+            // 
+            this.checkBoxUpdate.Appearance = System.Windows.Forms.Appearance.Button;
+            this.checkBoxUpdate.AutoSize = true;
+            this.checkBoxUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.checkBoxUpdate.Location = new System.Drawing.Point(291, 26);
+            this.checkBoxUpdate.Name = "checkBoxUpdate";
+            this.checkBoxUpdate.Size = new System.Drawing.Size(52, 23);
+            this.checkBoxUpdate.TabIndex = 10;
+            this.checkBoxUpdate.Text = "Update";
+            this.checkBoxUpdate.UseVisualStyleBackColor = true;
+            // 
             // mainFormBindingSource
             // 
             this.mainFormBindingSource.DataSource = typeof(EmotionalAppraisalWF.MainForm);
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // MainForm
             // 
@@ -1029,15 +1031,15 @@
         private System.Windows.Forms.ErrorProvider decayErrorProvider;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.DataGridView dataGridViewBeliefs;
-        private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBoxStartTick;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.TextBox textBoxCurrent;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox textBoxPerspective;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.CheckBox checkBoxUpdate;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 
