@@ -48,6 +48,11 @@ namespace KnowledgeBase.WellFormedNames
 				return m_variableName[0] == '_';
 			}
 
+			public override bool HasVariables()
+			{
+				return true;
+			}
+
 			protected override Name SwapPerspective(Name original, Name newName)
 			{
 				return this;

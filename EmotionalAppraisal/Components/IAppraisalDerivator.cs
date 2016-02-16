@@ -1,4 +1,4 @@
-﻿using AutobiographicMemory.Interfaces;
+﻿using AutobiographicMemory;
 using EmotionalAppraisal;
 
 namespace EmotionalAppraisal.Components
@@ -7,7 +7,7 @@ namespace EmotionalAppraisal.Components
 	{
 		short AppraisalWeight { get; }
 
-		void Appraisal(EmotionalAppraisalAsset emotionalModule, IEvent e, IWritableAppraisalFrame frame);
+		void Appraisal(EmotionalAppraisalAsset emotionalModule, IEventRecord e, IWritableAppraisalFrame frame);
 
 		void InverseAppraisal(EmotionalAppraisalAsset emotionalModule, IAppraisalFrame frame);
 

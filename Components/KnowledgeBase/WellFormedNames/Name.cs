@@ -127,6 +127,8 @@ namespace KnowledgeBase.WellFormedNames
 
 		public abstract bool HasGhostVariable();
 
+		public abstract bool HasVariables();
+
 		public bool ContainsVariable(Name variable)
 		{
 			if (!variable.IsVariable)

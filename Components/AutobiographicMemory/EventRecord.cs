@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutobiographicMemory.Interfaces;
+using AutobiographicMemory;
 using GAIPS.Serialization;
 using GAIPS.Serialization.SerializationGraph;
 using KnowledgeBase.WellFormedNames;
@@ -13,23 +13,22 @@ namespace AutobiographicMemory
 		[Serializable]
 		private class EventRecord : IEventRecord, ICustomSerialization
 		{
-			private Dictionary<string, Name> m_parameters = null;
 			private HashSet<string> m_linkedEmotions = new HashSet<string>();
 			/*
-			public readonly Name CauseName;
+			public readonly Name EventName;
 			public readonly SubstitutionSet CauseParameters;
 			*/
-			public EventRecord(uint id, IEvent evt, string perspective)
+			public EventRecord(uint id, Name eventName)
 			{
 				Id = id;
-				Action = evt.Action;
-				Subject = Name.ApplyPerspective(evt.Subject, perspective);
-				Target = evt.Target == null ? null : Name.ApplyPerspective(evt.Target, perspective);
-				Timestamp = evt.Timestamp;
-				if (evt.Parameters != null && evt.Parameters.Any())
-					m_parameters = evt.Parameters.ToDictionary(p => p.ParameterName, p => p.Value);
+				EventType = eventName.GetNTerm(1).ToString();
+				Subject = eventName.GetNTerm(2).ToString();
+				Action = eventName.GetNTerm(3);
 
-				CauseName = this.ToIdentifierName();
+				var targetName = eventName.GetNTerm(4);
+				Target = targetName == Name.NIL_SYMBOL ? null : targetName.ToString();
+				Timestamp = DateTime.UtcNow;
+				EventName = eventName;
 			}
 
 			public uint Id { get; private set; }
@@ -47,7 +46,7 @@ namespace AutobiographicMemory
 				m_linkedEmotions.Add(emotionType);
 			}
 
-			public string Action { get; private set; }
+			public string EventType { get; private set; }
 
 			public string Subject { get; private set; }
 
@@ -55,84 +54,17 @@ namespace AutobiographicMemory
 
 			public DateTime Timestamp { get; private set; }
 
-			public IEnumerable<IEventParameter> Parameters
-			{
-				get
-				{
-					if (m_parameters == null)
-						return null;
+			public Name Action{ get; private set; }
 
-					return m_parameters.Select(e => (IEventParameter)(new CauseParameter() { ParameterName = e.Key, Value = e.Value }));
-				}
-			}
-
-			public Name this[string paramName]
-			{
-				get
-				{
-					if (m_parameters == null)
-						return null;
-
-					Name r;
-					if (m_parameters.TryGetValue(paramName, out r))
-						return r;
-					return null;
-				}
-			}
-
-			public bool HasParameters
-			{
-				get { return m_parameters != null; }
-			}
-
-			public Name CauseName { get; private set; }
-
-			public SubstitutionSet BuildSubstitutions()
-			{
-				if (m_parameters == null)
-					return null;
-
-				var subs = m_parameters.Select(p => new Substitution(Name.BuildName("[" + p.Key + "]"), p.Value));
-				return new SubstitutionSet(subs);
-			}
-
-			private class CauseParameter : IEventParameter
-			{
-				public CauseParameter()
-				{
-				}
-
-				public CauseParameter(IEventParameter other)
-				{
-					ParameterName = other.ParameterName;
-					Value = other.Value;
-				}
-
-				public string ParameterName { get; set; }
-
-				public Name Value { get; set; }
-
-				public object Clone()
-				{
-					return new CauseParameter(this);
-				}
-			}
+			public Name EventName { get; private set; }
 
 			public void GetObjectData(ISerializationData dataHolder)
 			{
 				dataHolder.SetValue("Id", Id);
-				dataHolder.SetValue("Action", Action);
+				dataHolder.SetValue("EventType", EventType);
 				dataHolder.SetValue("Subject", Subject);
 				dataHolder.SetValue("Target", Target);
-
-				if (m_parameters != null)
-				{
-					var p = dataHolder.ParentGraph.CreateObjectData();
-					foreach (var pair in m_parameters)
-						p[pair.Key] = dataHolder.ParentGraph.BuildNode(pair.Value, typeof(Name));
-
-					dataHolder.SetValueGraphNode("Parameters", p);
-				}
+				dataHolder.SetValue("Action",Action);
 
 				dataHolder.SetValue("Timestamp", Timestamp);
 				if (m_linkedEmotions.Count > 0)
@@ -144,13 +76,11 @@ namespace AutobiographicMemory
 			public void SetObjectData(ISerializationData dataHolder)
 			{
 				Id = dataHolder.GetValue<uint>("Id");
-				Action = dataHolder.GetValue<string>("Action");
+				EventType = dataHolder.GetValue<string>("EventType");
 				Subject = dataHolder.GetValue<string>("Subject");
 				Target = dataHolder.GetValue<string>("Target");
+				Action = dataHolder.GetValue<Name>("Action");
 				Timestamp = dataHolder.GetValue<DateTime>("Timestamp");
-				var p = dataHolder.GetValueGraphNode("Parameters");
-				if (p != null)
-					m_parameters = ((IObjectGraphNode)p).ToDictionary(f => f.FieldName, f => f.FieldNode.RebuildObject<Name>());
 
 				if(m_linkedEmotions==null)
 					m_linkedEmotions=new HashSet<string>();
@@ -160,7 +90,7 @@ namespace AutobiographicMemory
 				if(le!=null && le.Length>0)
 					m_linkedEmotions.UnionWith(le);
 
-				CauseName = this.ToIdentifierName();
+				EventName = Name.BuildName(EVT_NAME,(Name)EventType,(Name)Subject,Action,(Name)Target);
 			}
 		}
 	}

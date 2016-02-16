@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutobiographicMemory;
-using AutobiographicMemory.Interfaces;
 using EmotionalAppraisal.Components;
 using KnowledgeBase.WellFormedNames;
 

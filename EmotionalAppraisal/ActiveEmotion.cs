@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AutobiographicMemory;
-using AutobiographicMemory.Interfaces;
 using GAIPS.Serialization;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
@@ -93,10 +92,10 @@ namespace EmotionalAppraisal
 		/// Decays the emotion according to the system's time
 		/// </summary>
 		/// <returns>the intensity of the emotion after being decayed</returns>
-		internal void DecayEmotion(float elapsedTime)
+		internal void DecayEmotion(float elapsedTime, EmotionalAppraisalAsset parent)
 		{
 			this.deltaTimeT0 += elapsedTime;
-			double lambda = Math.Log(EmotionalAppraisalAsset.HalfLifeDecayConstant)/EmotionalAppraisalAsset.EmotionalHalfLifeDecayTime;
+			double lambda = Math.Log(parent.HalfLifeDecayConstant) /parent.EmotionalHalfLifeDecayTime;
 			float decay = (float)Math.Exp(lambda * this.Decay * deltaTimeT0);
 			Intensity = intensityATt0 * decay;
 		}
@@ -143,7 +142,7 @@ namespace EmotionalAppraisal
 		public string ToString(AM am)
 		{
 			StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
-			builder.AppendFormat("{0}: {1}", EmotionType, am.RecallEvent(CauseId).ToIdentifierName());
+			builder.AppendFormat("{0}: {1}", EmotionType, am.RecallEvent(CauseId).EventName);
 			if (this.Direction != null)
 				builder.AppendFormat(" {0}", Direction);
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using AutobiographicMemory;
-using AutobiographicMemory.Interfaces;
 using EmotionalAppraisal.DTOs;
 using KnowledgeBase.Conditions;
 using KnowledgeBase.WellFormedNames;
@@ -22,26 +21,10 @@ namespace EmotionalAppraisal.AppraisalRules
 		public ConditionEvaluatorSet Conditions { get; private set; }
 		public bool TriggersOnFailedActivation { get; set; }
 
-		/// <summary>
-		///     Creates a new empty Emotional AppraisalRule
-		/// </summary>
-		public AppraisalRule(IEvent evt)
+		public AppraisalRule(Name eventName, ConditionEvaluatorSet conditions = null)
 		{
-			EventName = evt.ToIdentifierName();
-			Conditions = new ConditionEvaluatorSet();
-			if (evt.Parameters != null && evt.Parameters.Any())
-			{
-				Conditions.UnionWith(evt.Parameters.Select(
-						p => Condition.BuildCondition((Name)("[" + p.ParameterName + "]"), p.Value, ComparisonOperator.Equal)));
-			}
-
-			Desirability = Praiseworthiness = 0;//DesirabilityForOther = Like = 0;
-			//ReferencedEventName = null;
-			//Other = null;
-		}
-
-		public AppraisalRule(Name eventName, ConditionEvaluatorSet conditions)
-		{
+			if(!AM.IsValidEventName(eventName))
+				throw new Exception("Invalid event name");
 			EventName = eventName;
 			Conditions = conditions ?? new ConditionEvaluatorSet();
 			Desirability = Praiseworthiness = 0;

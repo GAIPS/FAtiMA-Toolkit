@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutobiographicMemory;
-using AutobiographicMemory.Interfaces;
 using EmotionalAppraisal.Components;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisal.OCCModel;
@@ -34,10 +33,9 @@ namespace EmotionalAppraisal.AppraisalRules
 			this.Rules = new NameSearchTree<HashSet<AppraisalRule>>();
 		}
 		
-		public AppraisalRule Evaluate(string perspective, IEvent evt, KB kb)
+		public AppraisalRule Evaluate(IEventRecord evt, KB kb)
 		{
-			var name = evt.ToIdentifierName().ApplyPerspective(perspective);
-			foreach (var possibleAppraisals in Rules.Unify(name, new SubstitutionSet(evt.GenerateBindings())))
+			foreach (var possibleAppraisals in Rules.Unify(evt.EventName))
 			{
 				var conditions = new[] {possibleAppraisals.Item2};
 				foreach (var appraisal in possibleAppraisals.Item1)
@@ -84,9 +82,9 @@ namespace EmotionalAppraisal.AppraisalRules
 			set;
 		}
 
-		public void Appraisal(EmotionalAppraisalAsset emotionalModule, IEvent evt, IWritableAppraisalFrame frame)
+		public void Appraisal(EmotionalAppraisalAsset emotionalModule, IEventRecord evt, IWritableAppraisalFrame frame)
 		{
-			AppraisalRule selfEvaluation = Evaluate(emotionalModule.Perspective, evt,emotionalModule.Kb);
+			AppraisalRule selfEvaluation = Evaluate(evt,emotionalModule.Kb);
 			if (selfEvaluation != null)
 			{
 				if (selfEvaluation.Desirability != 0)
@@ -120,17 +118,11 @@ namespace EmotionalAppraisal.AppraisalRules
 
 			if (desirability != 0 || praiseworthiness != 0)
 			{
-				var eventName = frame.AppraisedEvent.ToIdentifierName().ApplyPerspective(emotionalModule.Perspective);
-				var conditions = new ConditionEvaluatorSet();
-				if (frame.AppraisedEvent.Parameters != null && frame.AppraisedEvent.Parameters.Any())
-				{
-					conditions.UnionWith(frame.AppraisedEvent.Parameters.Select(
-							p => Condition.BuildCondition((Name)("[" + p.ParameterName + "]"), p.Value, ComparisonOperator.Equal)));
-				}
-				AppraisalRule r = new AppraisalRule(eventName,conditions);
+				var eventName = frame.AppraisedEvent.EventName.ApplyPerspective(emotionalModule.Perspective);
+				AppraisalRule r = new AppraisalRule(eventName,null);
 				r.Desirability = desirability;
 				r.Praiseworthiness = praiseworthiness;
-				//r.EventName = frame.AppraisedEvent.ToIdentifierName().RemovePerspective(emotionalModule.Perspective);
+				//r.Action = frame.AppraisedEvent.ToIdentifierName().RemovePerspective(emotionalModule.Perspective);
 				AddEmotionalReaction(r);
 			}
 		}

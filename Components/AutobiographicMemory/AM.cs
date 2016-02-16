@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutobiographicMemory.Interfaces;
+using AutobiographicMemory;
 using GAIPS.Serialization;
 using KnowledgeBase;
 using KnowledgeBase.WellFormedNames;
@@ -20,16 +20,18 @@ namespace AutobiographicMemory
 
 		public void BindCalls(KB kb)
 		{
-			kb.RegistDynamicProperty(EVENT_PROPERTY_ID_TEMPLATE, EventIdPropertyCalculator,new []{"subject","action","target"});
-			kb.RegistDynamicProperty(EVENT_PARAMETER_PROPERTY_TEMPLATE, EventParameterPropertyCalculator,new []{"id","paramName"});
+			kb.RegistDynamicProperty(EVENT_PROPERTY_ID_TEMPLATE, EventIdPropertyCalculator,new []{"type","subject","def","target"});
 			kb.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE, EventAgePropertyCalculator, new[] { "id" });
 			kb.RegistDynamicProperty(LAST_EVENT_TEMPLATE, LastEventPropertyCalculator, new[] { "subject", "action", "target" });
 		}
 
-		public IEventRecord RecordEvent(IEvent evt,string perspective)
+		public IEventRecord RecordEvent(Name eventName,string perspective)
 		{
+			if(!IsValidEventName(eventName))
+				throw new Exception("Invalid event name format");
+
 			var id = m_eventGUIDCounter++;
-			var rec = new EventRecord(id,evt,perspective);
+			var rec = new EventRecord(id, eventName.ApplyPerspective(perspective));
 			AddRecord(rec);
 			return rec;
 		}
@@ -52,7 +54,7 @@ namespace AutobiographicMemory
 		{
 			m_registry.Add(record.Id,record);
 			List<uint> ids;
-			var name = record.CauseName;
+			var name = record.EventName;
 			if (!m_typeIndexes.TryGetValue(name, out ids))
 			{
 				ids = new List<uint>();
@@ -61,34 +63,53 @@ namespace AutobiographicMemory
 			ids.Add(record.Id);
 		}
 
+		private static readonly Name EVT_NAME = (Name)"Event";
+		public static bool IsValidEventName(Name name)
+		{
+			if (name.NumberOfTerms != 5)
+				return false;
+
+			if (name.HasVariables())
+				return false;
+
+			if(name.GetNTerm(0) != EVT_NAME)
+				return false;
+
+			if (name.GetNTerm(1).IsComposed || name.GetNTerm(2).IsComposed || name.GetNTerm(4).IsComposed)
+				return false;
+
+			return true;
+		}
+
 		#region Dynamic Properties
 
 		//Helpers
-		private static IEnumerable<SubstitutionSet> AddSubstitutionToAllConstraints(IEnumerable<SubstitutionSet> constraints,
-			Substitution newSub)
-		{
-			foreach (var c in constraints)
-			{
-				if(c.Conflicts(newSub))
-					continue;
+		//private static IEnumerable<SubstitutionSet> AddSubstitutionToAllConstraints(IEnumerable<SubstitutionSet> constraints,
+		//	Substitution newSub)
+		//{
+		//	foreach (var c in constraints)
+		//	{
+		//		if(c.Conflicts(newSub))
+		//			continue;
 
-				var newConstraint = new SubstitutionSet(c);
-				newConstraint.AddSubstitution(newSub);
-				yield return newConstraint;
-			}
-		}
+		//		var newConstraint = new SubstitutionSet(c);
+		//		newConstraint.AddSubstitution(newSub);
+		//		yield return newConstraint;
+		//	}
+		//}
 
 		//Event
-		private static readonly Name EVENT_TEMPLATE = Name.BuildName("EVENT([subject],[action],[target])");
+		private static readonly Name EVENT_TEMPLATE = Name.BuildName("EVENT([type],[subject],[def],[target])");
 		private static readonly Name EVENT_PROPERTY_ID_TEMPLATE = Name.BuildName((Name)"ID",EVENT_TEMPLATE);
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventIdPropertyCalculator(KB kb, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
+			Name type = args["type"];
 			Name subject = args["subject"];
-			Name action = args["action"];
+			Name def = args["def"];
 			Name target = args["target"];
 
 			List<Pair<PrimitiveValue, SubstitutionSet>> results = new List<Pair<PrimitiveValue, SubstitutionSet>>();
-			var key = Name.BuildName((Name)"Event", subject, action, target);
+			var key = Name.BuildName((Name)"Event", type, subject, def, target);
 			foreach (var c in constraints)
 			{
 				foreach (var pair in m_typeIndexes.Unify(key, c))
@@ -98,86 +119,6 @@ namespace AutobiographicMemory
 				}	
 			}
 			return results;
-		}
-
-		//EventParameter
-		private static readonly Name EVENT_PARAMETER_PROPERTY_TEMPLATE = Name.BuildName("EventParameter([id],[paramName])");
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventParameterPropertyCalculator(KB kb, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
-		{
-			Name idName = args["id"];
-			Name paramName = args["paramName"];
-
-			IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> result = Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
-			if (idName.IsVariable)
-			{
-				foreach (var rec in m_registry.Values)
-				{
-					var newSub = new Substitution(idName, Name.BuildName(rec.Id));
-					var newConstraints = AddSubstitutionToAllConstraints(constraints, newSub);
-					if(newConstraints.Any())
-						result = result.Union(GetParameter(rec, paramName, kb, newConstraints));
-				}
-			}
-			else
-			{
-				foreach (var idPairs in kb.AskPossibleProperties(idName, constraints))
-				{
-					var idValue = idPairs.Item1;
-					if (idValue >= 0)
-					{
-						var rec = m_registry[idValue];
-						if (rec == null)
-							continue;
-
-						result = result.Union(GetParameter(rec, paramName, kb, idPairs.Item2));
-					}
-				}
-			}
-
-			return result;
-		}
-
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> GetParameter(EventRecord record, Name paramName, KB kb, IEnumerable<SubstitutionSet> constraints)
-		{
-			if(!record.HasParameters)
-				yield break;
-
-			if (paramName.IsVariable)
-			{
-				foreach (var p in record.Parameters)
-				{
-					var newSub = new Substitution(paramName, Name.BuildName(p.ParameterName));
-					var newContraints = AddSubstitutionToAllConstraints(constraints, newSub);
-					if (newContraints.Any())
-					{
-						foreach (var pair in kb.AskPossibleProperties(p.Value, newContraints))
-						{
-							foreach (var s in pair.Item2)
-								yield return Tuples.Create(pair.Item1, s);
-						}
-					}
-				}
-			}
-			else
-			{
-				var lookup = record.Parameters.ToDictionary(p => p.ParameterName, p => p.Value);
-				foreach (var paramPairs in kb.AskPossibleProperties(paramName,constraints))
-				{
-					var paramValue = paramPairs.Item1;
-					if (paramValue.TypeCode != TypeCode.String)
-						continue;
-
-					Name value;
-					if (!lookup.TryGetValue(paramValue, out value))
-						continue;
-
-					foreach (var pair in kb.AskPossibleProperties(value, paramPairs.Item2))
-					{
-						foreach (var s in pair.Item2)
-							yield return Tuples.Create(pair.Item1, s);
-					}
-				}
-			}
 		}
 
 		//EventElapseTime

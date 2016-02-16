@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using AutobiographicMemory;
-using AutobiographicMemory.Interfaces;
 using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalAppraisal

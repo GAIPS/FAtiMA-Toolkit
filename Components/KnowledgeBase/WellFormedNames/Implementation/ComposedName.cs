@@ -117,6 +117,11 @@ namespace KnowledgeBase.WellFormedNames
 				return GetTerms().Any(s => s.HasGhostVariable());
 			}
 
+			public override bool HasVariables()
+			{
+				return GetTerms().Any(s => s.HasVariables());
+			}
+
 			protected override Name SwapPerspective(Name original, Name newName)
 			{
 				return new ComposedName((Symbol)RootSymbol.SwapPerspective(original,newName), Terms.Select(t => t.SwapPerspective(original,newName)).ToArray());

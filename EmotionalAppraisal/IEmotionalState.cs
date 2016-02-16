@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using AutobiographicMemory;
-using AutobiographicMemory.Interfaces;
+using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalAppraisal
 {
@@ -47,7 +47,7 @@ namespace EmotionalAppraisal
 
 		IEnumerable<IActiveEmotion> GetEmotionsByType(string emotionType);
 
-			/// <summary>
+		/// <summary>
 		/// Searches for a given emotion in the EmotionalState
 		/// </summary>
 		/// <param name="emotionKey">a string that corresponds to a hashkey that represents the emotion in the EmotionalState</param>
@@ -99,7 +99,7 @@ namespace EmotionalAppraisal
 		/// </summary>
 		/// <param name="cause">the event that caused the emotion that we want to retrieve</param>
 		/// <returns>the strongest emotion or null if there is no emotion in the emotional state</returns>
-		IActiveEmotion GetStrongestEmotion(IEvent cause);
+		IActiveEmotion GetStrongestEmotion(Name cause);
 
 		void AddEmotionDisposition(EmotionDisposition emotionDisposition);
 

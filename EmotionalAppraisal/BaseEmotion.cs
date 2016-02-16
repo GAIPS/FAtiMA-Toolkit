@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Text;
 using AutobiographicMemory;
-using AutobiographicMemory.Interfaces;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
 
@@ -138,7 +137,7 @@ namespace EmotionalAppraisal
 		public string ToString(AM am)
 		{
 			StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
-			builder.AppendFormat("{0}: {1}", EmotionType,am.RecallEvent(CauseId).ToIdentifierName());
+			builder.AppendFormat("{0}: {1}", EmotionType,am.RecallEvent(CauseId).EventName);
 			if (this.Direction != null)
 				builder.AppendFormat(" {0}", Direction);
 

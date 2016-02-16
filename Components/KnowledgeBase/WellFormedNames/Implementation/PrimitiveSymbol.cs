@@ -46,6 +46,11 @@ namespace KnowledgeBase.WellFormedNames
 				return false;
 			}
 
+			public override bool HasVariables()
+			{
+				return false;
+			}
+
 			protected override Name SwapPerspective(Name original, Name newName)
 			{
 				if (original.Equals(this))

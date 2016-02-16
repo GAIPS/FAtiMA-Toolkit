@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AutobiographicMemory;
-using AutobiographicMemory.Interfaces;
 using GAIPS.Serialization;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
@@ -46,7 +45,7 @@ namespace EmotionalAppraisal
 				float potetial = emotion.Potential;
 				float scale = (float)emotion.Valence;
 
-				potetial += scale*(this.mood.MoodValue* EmotionalAppraisalAsset.MoodInfluenceOnEmotionFactor);
+				potetial += scale*(this.mood.MoodValue* m_parent.MoodInfluenceOnEmotionFactor);
 				return potetial < 0 ? 0 : potetial;
 			}
 
@@ -59,7 +58,7 @@ namespace EmotionalAppraisal
 				StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
 				try
 				{
-					builder.Append(emotion.GetCause(am).ToIdentifierName().ToString().ToUpper());
+					builder.Append(emotion.GetCause(am).EventName.ToString().ToUpper());
 					using (var it = emotion.AppraisalVariables.GetEnumerator())
 					{
 						while (it.MoveNext())
@@ -121,7 +120,7 @@ namespace EmotionalAppraisal
 					auxEmotion = new ActiveEmotion(emotion, potential, disposition.Threshold, decay);
 					emotionPool.Add(hash, auxEmotion);
 					if (!reappraisal)
-						this.mood.UpdateMood(auxEmotion);
+						this.mood.UpdateMood(auxEmotion,m_parent);
 
 					auxEmotion.GetCause(m_parent.m_am).LinkEmotion(auxEmotion.EmotionType);
 				}
@@ -180,13 +179,13 @@ namespace EmotionalAppraisal
 			/// </summary>
 			public void Decay(float elapsedTime)
 			{
-				this.mood.DecayMood(elapsedTime);
+				this.mood.DecayMood(elapsedTime,m_parent);
 				HashSet<string> toRemove = ObjectPool<HashSet<string>>.GetObject();
 				using (var it = this.emotionPool.GetEnumerator())
 				{
 					while (it.MoveNext())
 					{
-						it.Current.Value.DecayEmotion(elapsedTime);
+						it.Current.Value.DecayEmotion(elapsedTime,m_parent);
 						if (!it.Current.Value.IsRelevant)
 							toRemove.Add(it.Current.Key);
 					}
@@ -250,7 +249,7 @@ namespace EmotionalAppraisal
 				}
 			    set
 			    {
-                    this.mood.SetMoodValue(value);
+                    this.mood.SetMoodValue(value,m_parent);
                 }
 			}
             
@@ -259,9 +258,9 @@ namespace EmotionalAppraisal
 				return this.emotionPool.Values.MaxValue(emo => emo.Intensity);
 			}
 
-			public IActiveEmotion GetStrongestEmotion(IEvent cause)
+			public IActiveEmotion GetStrongestEmotion(Name cause)
 			{
-				var set = this.emotionPool.Values.Where(emo => EventOperations.MatchEvents(emo.GetCause(m_parent.m_am),cause));
+				var set = this.emotionPool.Values.Where(emo => emo.GetCause(m_parent.m_am).EventName.Match(cause));
 				return set.MaxValue(emo => emo.Intensity);
 			}
 
@@ -299,7 +298,7 @@ namespace EmotionalAppraisal
 			public void SetObjectData(ISerializationData dataHolder)
 			{
 				m_parent = dataHolder.GetValue<EmotionalAppraisalAsset>("Parent");
-				mood.SetMoodValue(dataHolder.GetValue<float>("Mood"));
+				mood.SetMoodValue(dataHolder.GetValue<float>("Mood"), m_parent);
 				var dispositions = dataHolder.GetValue<EmotionDisposition[]>("EmotionDispositions");
 				EmotionDisposition defaultDisposition = null;
 				foreach (var disposition in dispositions)

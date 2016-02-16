@@ -33,10 +33,7 @@
   <ItemGroup>
     <Compile Include="AM.cs" />
     <Compile Include="EventRecord.cs" />
-    <Compile Include="EventOperations.cs" />
-    <Compile Include="Interfaces\IEvent.cs" />
-    <Compile Include="Interfaces\IEventParameter.cs" />
-    <Compile Include="Interfaces\IEventRecord.cs" />
+    <Compile Include="IEventRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
