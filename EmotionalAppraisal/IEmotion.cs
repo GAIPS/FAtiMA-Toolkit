@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutobiographicMemory;
+using EmotionalAppraisal.DTOs;
 using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalAppraisal
@@ -23,5 +24,7 @@ namespace EmotionalAppraisal
 		string ToString(AM am);
 
 		IEventRecord GetCause(AM am);
+
+	    EmotionDTO ToDto();
 	}
 }

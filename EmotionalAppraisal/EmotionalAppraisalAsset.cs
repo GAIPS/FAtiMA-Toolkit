@@ -78,6 +78,8 @@ namespace EmotionalAppraisal
 
         #endregion
 
+
+
         [NonSerialized]
 		private long _lastFrameAppraisal = 0;
 		[NonSerialized]
@@ -97,16 +99,20 @@ namespace EmotionalAppraisal
             set { m_emotionalState.Mood = value; }
 	    }
 
-	    public int DefaultEmotionDispositionDecay
+	    public EmotionDispositionDTO DefaultEmotionDisposition
 	    {
-	        get{ return m_emotionalState.DefaultEmotionDispositionDecay;}
-	        set { m_emotionalState.DefaultEmotionDispositionDecay = value; }
+	        get{ return m_emotionalState.DefaultEmotionDisposition.ToDto();}
+	        set { m_emotionalState.DefaultEmotionDisposition = new EmotionDisposition(value); }
 	    }
 
-        public int DefaultEmotionDispositionThreshold
+	    public IEnumerable<EmotionDTO> ActiveEmotions
+	    {
+	        get { return m_emotionalState.GetAllEmotions().Select(e => e.ToDto());}
+	    }
+
+        public IEnumerable<EmotionDispositionDTO> EmotionDispositions
         {
-            get { return m_emotionalState.DefaultEmotionDispositionThreshold; }
-            set { m_emotionalState.DefaultEmotionDispositionThreshold = value; }
+            get { return m_emotionalState.GetEmotionDispositions().Select(disp => disp.ToDto()); }
         }
 
         /// <summary>
@@ -124,10 +130,6 @@ namespace EmotionalAppraisal
 	        m_emotionalState.AddEmotionDisposition(new EmotionDisposition(emotionDispositionDto));
 	    } 
 
-	    public IEnumerable<EmotionDispositionDTO> GetEmotionDispositions()
-	    {
-	        return m_emotionalState.GetEmotionDispositions().Select(disp => disp.ToDto());
-	    }
 
 		public IEnumerable<IActiveEmotion> GetAllActiveEmotions()
 		{

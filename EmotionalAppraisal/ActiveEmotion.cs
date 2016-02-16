@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AutobiographicMemory;
+using EmotionalAppraisal.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
@@ -151,6 +152,16 @@ namespace EmotionalAppraisal
 			ObjectPool<StringBuilder>.Recycle(builder);
 			return result;
 		}
+
+	    public EmotionDTO ToDto()
+	    {
+	        return new EmotionDTO
+	        {
+                Type = this.EmotionType,
+                Intensity = this.Intensity,
+                CauseEvent =  this.CauseId.ToString(), 
+	        };
+	    }
 
 		public void GetObjectData(ISerializationData dataHolder)
 		{

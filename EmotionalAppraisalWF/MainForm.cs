@@ -258,12 +258,12 @@ namespace EmotionalAppraisalWF
 
         private void comboBoxDefaultDecay_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _emotionalAppraisalAsset.DefaultEmotionDispositionDecay = int.Parse(comboBoxDefaultDecay.Text);
+            _emotionDispositionsVM.DefaultDecay = int.Parse(comboBoxDefaultDecay.Text);
         }
 
         private void comboBoxDefaultThreshold_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _emotionalAppraisalAsset.DefaultEmotionDispositionThreshold = int.Parse(comboBoxDefaultThreshold.Text);
+            _emotionDispositionsVM.DefaultThreshold = int.Parse(comboBoxDefaultThreshold.Text);
         }
 
         #endregion
@@ -361,7 +361,7 @@ namespace EmotionalAppraisalWF
 
         private void textBoxPerspective_TextChanged(object sender, EventArgs e)
         {
-            this._emotionalAppraisalAsset.Perspective = textBoxPerspective.Text;
+            this._emotionalStateVM.Perspective = textBoxPerspective.Text;
         }
     }
 }

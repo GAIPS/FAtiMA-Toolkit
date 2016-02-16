@@ -8,14 +8,27 @@ using EmotionalAppraisal;
 using EmotionalDecisionMaking;
 using Utilities.Json;
 using GAIPS.Serialization;
+using AutobiographicMemory.Interfaces;
 
 namespace RolePlayCharacter
 {
+    [Serializable]
+    public class GameEvent : IEvent
+    {
+        public string Action { get; }
+        public string Target { get; }
+        public string Subject { get;  }
+        public DateTime Timestamp { get; }
+        public IEnumerable<IEventParameter> Parameters { get; }
+    }
+
     [Serializable]
     public sealed partial class RolePlayCharacterAsset
     {
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
         private EmotionalDecisionMakingAsset _emotionalDecisionMakingAsset;
+
+        private List<IEvent> _gameEvents = new List<IEvent>();
 
         public static RolePlayCharacterAsset LoadFromFile(string filename)
         {
@@ -31,12 +44,21 @@ namespace RolePlayCharacter
         public RolePlayCharacterAsset (string name)
         {
             if (name == null)
-                _emotionalAppraisalAsset = new EmotionalAppraisalAsset("SELF");
-            else _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(name);
-            //_emotionalDecisionMakingAsset = EmotionalDecisionMakingAsset.LoadFromFile(name);
+                LoadEmotionAppraisalAsset("SELF");
 
+            else LoadEmotionAppraisalAsset(name);
 
- 
+            if (_emotionalAppraisalAsset != null)
+                LoadEmotionDecisionMakingAsset(_emotionalAppraisalAsset);
+        }
+
+        public RolePlayCharacterAsset (string fileEmotionalAppraisalAsset, string fileEmotionalDecisionMakingAsset)
+        {
+            if (fileEmotionalAppraisalAsset != null)
+                LoadEmotionAppraisalAssetFromFile(fileEmotionalAppraisalAsset);
+
+            if (fileEmotionalDecisionMakingAsset != null)
+                LoadEmotionDecisionMakingAssetFromFile(fileEmotionalDecisionMakingAsset);
         }
 
         public void SaveToFile(Stream file)
@@ -45,37 +67,66 @@ namespace RolePlayCharacter
             serializer.Serialize(file, this);
         }
 
-        public void AddGameEvent()
+        public void AddGameEvent(GameEvent evt)
         {
-
-
-
+            _gameEvents.Add(evt);
         }
 
         public void ReceiveEvent()
         {
             if (_emotionalDecisionMakingAsset == null)
-                SimpleAppraisalEvent();
+                SimpleAppraisalEvents();
 
             else AppraisalAndDecideEvent();
         }
 
-        private void SimpleAppraisalEvent()
+        private void SimpleAppraisalEvents()
         {
-
-
-
+            _emotionalAppraisalAsset.AppraiseEvents(_gameEvents);
         }
 
         private void AppraisalAndDecideEvent()
         {
 
 
+        }
+
+
+        public void RetrieveAction()
+        {
+
+
 
         }
 
-        public float GetCharacterMood() { return _emotionalAppraisalAsset.EmotionalState.Mood; }
 
-        public IActiveEmotion GetCharacterStrongEmotion() { return _emotionalAppraisalAsset.EmotionalState.GetStrongestEmotion(); }
+        private void LoadEmotionAppraisalAsset(string name)
+        {
+            if(name != null)
+                _emotionalAppraisalAsset = new EmotionalAppraisalAsset(name);
+        }
+
+        private void LoadEmotionAppraisalAssetFromFile(string name)
+        {
+            if(name != null)
+            {
+                _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(name);
+            }
+        }
+
+        private void LoadEmotionDecisionMakingAssetFromFile(string name)
+        {
+            if(name != null)
+            {
+               // _emotionalDecisionMakingAsset = EmotionalDecisionMakingAsset.LoadFromFile(name);
+            }
+        }
+
+        private void LoadEmotionDecisionMakingAsset(EmotionalAppraisalAsset eaa)
+        {
+            _emotionalDecisionMakingAsset = new EmotionalDecisionMakingAsset(eaa);
+
+        }
+        public float GetCharacterMood() { return _emotionalAppraisalAsset.Mood; }
     }
 }
