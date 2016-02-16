@@ -22,7 +22,14 @@ namespace EmotionalAppraisalWF.ViewModels
             get { return _emotionalAppraisalAsset.Perspective; }
             set { _emotionalAppraisalAsset.Perspective = value; }
         }
-          
+
+        public ulong Start
+        {
+            get { return _emotionalAppraisalAsset.Tick; }
+            set { _emotionalAppraisalAsset.Tick = value; }
+        }
+
+
         public EmotionalStateVM(EmotionalAppraisalAsset ea)
         {
             _emotionalAppraisalAsset = ea;
