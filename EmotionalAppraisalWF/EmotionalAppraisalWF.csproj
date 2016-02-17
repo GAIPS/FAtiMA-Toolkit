@@ -59,6 +59,12 @@
     <Compile Include="AddOrEditAppraisalRule.Designer.cs">
       <DependentUpon>AddOrEditAppraisalRule.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddOrEditEmotionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddOrEditEmotionForm.Designer.cs">
+      <DependentUpon>AddOrEditEmotionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AddOrEditBeliefForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -81,6 +87,9 @@
     <Compile Include="ViewModels\KnowledgeBaseVM.cs" />
     <EmbeddedResource Include="AddOrEditAppraisalRule.resx">
       <DependentUpon>AddOrEditAppraisalRule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddOrEditEmotionForm.resx">
+      <DependentUpon>AddOrEditEmotionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AddOrEditBeliefForm.resx">
       <DependentUpon>AddOrEditBeliefForm.cs</DependentUpon>

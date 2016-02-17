@@ -15,6 +15,7 @@ namespace EmotionalAppraisalWF
 {
     public partial class MainForm : Form
     {
+        private const string MOOD_FORMAT = "0.00";
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
         private string _saveFileName;
 
@@ -43,9 +44,10 @@ namespace EmotionalAppraisalWF
 
             //Emotional State Tab
             _emotionalStateVM = new EmotionalStateVM(_emotionalAppraisalAsset);
-            this.moodValueLabel.Text = Math.Round(_emotionalStateVM.Mood).ToString();
-            this.moodTrackBar.Value = int.Parse(this.moodValueLabel.Text);
+            this.moodValueLabel.Text = Math.Round(_emotionalStateVM.Mood).ToString(MOOD_FORMAT);
+            this.moodTrackBar.Value = (int)float.Parse(this.moodValueLabel.Text);
             this.textBoxStartTick.Text = _emotionalStateVM.Start.ToString();
+            this.textBoxCurrent.Text = _emotionalStateVM.Start.ToString();
             this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
             
             
@@ -92,6 +94,12 @@ namespace EmotionalAppraisalWF
 
         private void saveHelper(bool newSaveFile)
         {
+            if (string.IsNullOrWhiteSpace(textBoxPerspective.Text))
+            {
+                MessageBox.Show(Resources.EmptyPerspectiveError, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             if (newSaveFile)
             {
                 var sfd = new SaveFileDialog();
@@ -234,7 +242,7 @@ namespace EmotionalAppraisalWF
 
         private void trackBar1_Scroll_1(object sender, EventArgs e)
         {        
-            moodValueLabel.Text = moodTrackBar.Value.ToString();
+            moodValueLabel.Text = moodTrackBar.Value.ToString(MOOD_FORMAT);
             _emotionalStateVM.Mood = moodTrackBar.Value;
         }
         
@@ -346,11 +354,7 @@ namespace EmotionalAppraisalWF
 
         }
 
-        private void button9_Click(object sender, EventArgs e)
-        {
-
-        }
-
+     
         private void label1_Click_2(object sender, EventArgs e)
         {
 
@@ -379,8 +383,34 @@ namespace EmotionalAppraisalWF
         {
             if (checkBoxUpdate.Checked)
             {
-                
+                _emotionalStateVM.Update();
+                this.textBoxCurrent.Text = this._emotionalStateVM.Current.ToString();
+
+                //mood
+                this.moodValueLabel.Text = _emotionalStateVM.Mood.ToString(MOOD_FORMAT);
+                this.moodTrackBar.Value = (int)float.Parse(this.moodValueLabel.Text);
             }
+        }
+        
+
+        private void buttonReset_Click(object sender, EventArgs e)
+        {
+            this._emotionalStateVM.StopUpdate();
+            this.textBoxCurrent.Text = this._emotionalStateVM.Current.ToString();
+        }
+
+        private void checkBoxUpdate_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBoxUpdate.Checked)
+            {
+                _emotionalStateVM.Current = _emotionalStateVM.Start;
+                this.textBoxCurrent.Text = this._emotionalStateVM.Current.ToString();
+            }
+        }
+
+        private void addEmotionButton_Click(object sender, EventArgs e)
+        {
+            new AddOrEditEmotionForm(_emotionalStateVM).ShowDialog();
         }
     }
 }

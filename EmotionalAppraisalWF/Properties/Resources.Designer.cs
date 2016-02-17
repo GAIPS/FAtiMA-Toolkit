@@ -97,6 +97,15 @@ namespace EmotionalAppraisalWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &quot;Perspective&quot; cannot be an empty string.
+        /// </summary>
+        internal static string EmptyPerspectiveError {
+            get {
+                return ResourceManager.GetString("EmptyPerspectiveError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         internal static string ErrorDialogTitle {
