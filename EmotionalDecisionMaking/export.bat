@@ -1,6 +1,6 @@
 @echo off
 SET debugPath=bin\Debug
-SET debugInclude=*.dll *.pdb
+SET debugInclude=*.dll *.pdb *.mdb
 SET releasePath=bin\Release
 SET releaseInclude=*.dll
 
