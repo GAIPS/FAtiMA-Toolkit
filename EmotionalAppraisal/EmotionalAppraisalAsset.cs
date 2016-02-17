@@ -119,6 +119,12 @@ namespace EmotionalAppraisal
             get { return m_emotionalState.GetEmotionDispositions().Select(disp => disp.ToDto()); }
         }
 
+
+	    public IEnumerable<string> EmotionTypes
+	    {
+	        get { return OCCEmotionType.Types; }
+	    } 
+
         /// <summary>
         /// Adds an emotional reaction to an event
         /// </summary>
