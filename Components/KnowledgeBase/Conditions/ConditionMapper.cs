@@ -40,7 +40,7 @@ namespace KnowledgeBase.Conditions
 
 		public IEnumerable<Pair<T,SubstitutionSet>> MatchConditions(KB kb, SubstitutionSet constraints)
 		{
-			var constraintSet = new[] {constraints};
+			var constraintSet = new[] { constraints };
 			foreach (var e in m_conditions)
 			{
 				if (e.Item1 == null)
