@@ -17,7 +17,7 @@ namespace Tests.KnowledgeBase.Conditions
 		{
 			var map = new ConditionalNST<int>();
 			map.Add((Name)"Event([x],Silence,SELF)",null,0);
-			map.Add((Name)"EVENT([x],Speak,[y])",new ConditionEvaluatorSet(
+			map.Add((Name)"EVENT([x],Speak,[y])",new ConditionEvaluatorSet(LogicalQuantifier.Universal,
 				new []
 				{
 					Condition.Parse("[type]=Informal"),
@@ -40,7 +40,7 @@ namespace Tests.KnowledgeBase.Conditions
 			return map;
 		}
 
-		private const string DESERIALIZATION_TEST_CASE = @"{""root"":{""classId"": 0,""values"": [{""key"": ""Event(Self, Remind_Problem, -)"",""value"": 3}, {""key"": ""Event([x], Silence, SELF)"",""value"": 0}, {""key"": ""Event([x], Speak, [y])"",""conditions"": [""[type] = Informal"", ""[y] = SELF""],""value"": 1}, {""key"": ""Event([x], Speak, [y])"",""conditions"": [""[type] = Formal"", ""[y] = SELF""],""value"": 2}, {""key"": ""Event(*, Problem_Solved, *)"",""conditions"": [""[subject] = Player"", ""[TARGET] = Self""],""value"": 4}]},""types"": [{""TypeId"": 0,""ClassName"": ""KnowledgeBase.ConditionalNST`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], KnowledgeBase, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null""}]}";
+		private const string DESERIALIZATION_TEST_CASE = @"{""root"":{""classId"": 0,""values"": [{""key"": ""Event(Self, Remind_Problem, -)"",""value"": 3}, {""key"": ""Event([x], Silence, SELF)"",""value"": 0}, {""key"": ""Event([x], Speak, [y])"",""conditions"":{""m_conditions"":{""elements"": [""Informal = [type]"", ""SELF = [y]""]},""Quantifier"": ""Universal""},""value"": 1}, {""key"": ""Event([x], Speak, [y])"",""conditions"":{""m_conditions"":{""elements"": [""Formal = [type]"", ""SELF = [y]""]}},""value"": 2}, {""key"": ""Event(*, Problem_Solved, *)"",""conditions"":{""m_conditions"":{""elements"": [""Player = [subject]"", ""Self = [TARGET]""]}},""value"": 4}]},""types"": [{""TypeId"": 0,""ClassName"": ""KnowledgeBase.ConditionalNST`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], KnowledgeBase, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null""}]}";
 
 		[Test]
 		public void Test_ConditionalNST_Serialization()

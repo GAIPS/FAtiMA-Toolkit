@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Conditions\ConditionalNSTTests.cs" />
+    <Compile Include="Conditions\ConditionEvaluatorSetTests.cs" />
     <Compile Include="Conditions\ConditionsTests.cs" />
     <Compile Include="KBTests.cs" />
     <Compile Include="WellFormedNames\NameSearchTreeTests.cs" />

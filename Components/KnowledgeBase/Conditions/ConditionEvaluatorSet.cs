@@ -7,6 +7,8 @@ using Utilities;
 
 namespace KnowledgeBase.Conditions
 {
+	using VarDomain = Dictionary<Name, HashSet<Name>>;
+
 	[Serializable]
 	public sealed class ConditionEvaluatorSet : IEnumerable<Condition>, IConditionEvaluator
 	{
@@ -14,7 +16,7 @@ namespace KnowledgeBase.Conditions
 		public LogicalQuantifier Quantifier { get; }
 
 		public int Count {
-			get { return m_conditions.Count; }
+			get { return m_conditions==null?0:m_conditions.Count; }
 		}
 
 		public ConditionEvaluatorSet() : this(LogicalQuantifier.Existential,null)
@@ -122,27 +124,75 @@ namespace KnowledgeBase.Conditions
 
 		private IEnumerable<SubstitutionSet> UniversalEvaluate(KB kb, IEnumerable<SubstitutionSet> constraints)
 		{
-			var lastDomain = constraints.SelectMany(set => set).GroupBy(s => s.Variable, s => s.Value).ToArray();
+			var lastDomain = BuildDomain(constraints);
 			List<SubstitutionSet> sets = new List<SubstitutionSet>(constraints);
 			List<SubstitutionSet> aux = new List<SubstitutionSet>();
-			foreach (var c in m_conditions)
+			try
 			{
-				aux.AddRange(c.UnifyEvaluate(kb, sets));
-				Util.Swap(ref sets, ref aux);
-				aux.Clear();
-				var newDomain = sets.SelectMany(set => set).GroupBy(s => s.Variable, s => s.Value).ToArray();
-				if (!CompareDomains(lastDomain, newDomain))
-					return aux;
+				foreach (var c in m_conditions)
+				{
+					aux.AddRange(c.UnifyEvaluate(kb, sets));
+					Util.Swap(ref sets, ref aux);
+					aux.Clear();
+					var newDomain = BuildDomain(sets);
+					if (!CompareDomains(lastDomain, newDomain))
+					{
+						RecycleDomain(newDomain);
+						return aux;
+					}
 
-				lastDomain = newDomain;
+					RecycleDomain(lastDomain);
+					lastDomain = newDomain;
+				}
+
+				return sets;
 			}
-
-			return sets;
+			finally
+			{
+				RecycleDomain(lastDomain);
+			}
 		}
 
-		private bool CompareDomains(IGrouping<Name, Name>[] oldDomain, IGrouping<Name, Name>[] newDomain)
+		private bool CompareDomains(VarDomain oldDomain, VarDomain newDomain)
 		{
-			throw new NotImplementedException();
+			foreach (var o in oldDomain)
+			{
+				HashSet<Name> domain;
+				if (!newDomain.TryGetValue(o.Key, out domain))
+					return false;
+
+				if (o.Value.Count != domain.Count)
+					return false;
+			}
+			return true;
+		}
+
+		private VarDomain BuildDomain(IEnumerable<SubstitutionSet> constraints)
+		{
+			var domain = ObjectPool<Dictionary<Name, HashSet<Name>>>.GetObject();
+			foreach (var sub in constraints.SelectMany(s => s))
+			{
+				HashSet<Name> set;
+				if (!domain.TryGetValue(sub.Variable, out set))
+				{
+					set = ObjectPool<HashSet<Name>>.GetObject();
+					domain[sub.Variable] = set;
+				}
+
+				set.Add(sub.Value);
+			}
+			return domain;
+		}
+
+		private void RecycleDomain(VarDomain domain)
+		{
+			foreach (var set in domain.Values)
+			{
+				set.Clear();
+				ObjectPool<HashSet<Name>>.Recycle(set);
+			}
+			domain.Clear();
+			ObjectPool<Dictionary<Name, HashSet<Name>>>.Recycle(domain);
 		}
 
 		#endregion
