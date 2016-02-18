@@ -45,9 +45,11 @@
             this.moodValueLabel = new System.Windows.Forms.Label();
             this.moodTrackBar = new System.Windows.Forms.TrackBar();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.checkBoxUpdate = new System.Windows.Forms.CheckBox();
             this.textBoxCurrent = new System.Windows.Forms.TextBox();
             this.textBoxStartTick = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.buttonReset = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.emotionGroupBox = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -93,10 +95,8 @@
             this.decayErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.button9 = new System.Windows.Forms.Button();
-            this.checkBoxUpdate = new System.Windows.Forms.CheckBox();
-            this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.mainMenu.SuspendLayout();
             this.mainFormTab.SuspendLayout();
             this.emotionalStateTabPage.SuspendLayout();
@@ -264,7 +264,7 @@
             // 
             this.moodValueLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.moodValueLabel.AutoSize = true;
-            this.moodValueLabel.Location = new System.Drawing.Point(267, 31);
+            this.moodValueLabel.Location = new System.Drawing.Point(256, 31);
             this.moodValueLabel.Name = "moodValueLabel";
             this.moodValueLabel.Size = new System.Drawing.Size(13, 13);
             this.moodValueLabel.TabIndex = 5;
@@ -290,7 +290,7 @@
             this.groupBox2.Controls.Add(this.textBoxCurrent);
             this.groupBox2.Controls.Add(this.textBoxStartTick);
             this.groupBox2.Controls.Add(this.label4);
-            this.groupBox2.Controls.Add(this.button9);
+            this.groupBox2.Controls.Add(this.buttonReset);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Location = new System.Drawing.Point(7, 360);
             this.groupBox2.Name = "groupBox2";
@@ -298,6 +298,19 @@
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Time";
+            // 
+            // checkBoxUpdate
+            // 
+            this.checkBoxUpdate.Appearance = System.Windows.Forms.Appearance.Button;
+            this.checkBoxUpdate.AutoSize = true;
+            this.checkBoxUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.checkBoxUpdate.Location = new System.Drawing.Point(291, 26);
+            this.checkBoxUpdate.Name = "checkBoxUpdate";
+            this.checkBoxUpdate.Size = new System.Drawing.Size(52, 23);
+            this.checkBoxUpdate.TabIndex = 10;
+            this.checkBoxUpdate.Text = "Update";
+            this.checkBoxUpdate.UseVisualStyleBackColor = true;
+            this.checkBoxUpdate.CheckedChanged += new System.EventHandler(this.checkBoxUpdate_CheckedChanged);
             // 
             // textBoxCurrent
             // 
@@ -328,6 +341,18 @@
             this.label4.TabIndex = 6;
             this.label4.Text = "Current:";
             this.label4.Click += new System.EventHandler(this.label4_Click);
+            // 
+            // buttonReset
+            // 
+            this.buttonReset.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.decayErrorProvider.SetIconAlignment(this.buttonReset, System.Windows.Forms.ErrorIconAlignment.BottomLeft);
+            this.buttonReset.Location = new System.Drawing.Point(204, 26);
+            this.buttonReset.Name = "buttonReset";
+            this.buttonReset.Size = new System.Drawing.Size(49, 23);
+            this.buttonReset.TabIndex = 2;
+            this.buttonReset.Text = "Reset";
+            this.buttonReset.UseVisualStyleBackColor = true;
+            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
             // 
             // label2
             // 
@@ -373,6 +398,7 @@
             this.addEmotionButton.TabIndex = 7;
             this.addEmotionButton.Text = "Add";
             this.addEmotionButton.UseVisualStyleBackColor = true;
+            this.addEmotionButton.Click += new System.EventHandler(this.addEmotionButton_Click);
             // 
             // button3
             // 
@@ -757,7 +783,7 @@
             this.dataGridViewBeliefs.RowHeadersVisible = false;
             this.dataGridViewBeliefs.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewBeliefs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewBeliefs.Size = new System.Drawing.Size(542, 377);
+            this.dataGridViewBeliefs.Size = new System.Drawing.Size(542, 368);
             this.dataGridViewBeliefs.TabIndex = 4;
             this.dataGridViewBeliefs.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewBeliefs_CellMouseDoubleClick);
             // 
@@ -888,37 +914,15 @@
             // 
             this.decayErrorProvider.ContainerControl = this;
             // 
-            // button9
+            // timer1
             // 
-            this.button9.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.decayErrorProvider.SetIconAlignment(this.button9, System.Windows.Forms.ErrorIconAlignment.BottomLeft);
-            this.button9.Location = new System.Drawing.Point(204, 26);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(49, 23);
-            this.button9.TabIndex = 2;
-            this.button9.Text = "Reset";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
-            // 
-            // checkBoxUpdate
-            // 
-            this.checkBoxUpdate.Appearance = System.Windows.Forms.Appearance.Button;
-            this.checkBoxUpdate.AutoSize = true;
-            this.checkBoxUpdate.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.checkBoxUpdate.Location = new System.Drawing.Point(291, 26);
-            this.checkBoxUpdate.Name = "checkBoxUpdate";
-            this.checkBoxUpdate.Size = new System.Drawing.Size(52, 23);
-            this.checkBoxUpdate.TabIndex = 10;
-            this.checkBoxUpdate.Text = "Update";
-            this.checkBoxUpdate.UseVisualStyleBackColor = true;
+            this.timer1.Enabled = true;
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // mainFormBindingSource
             // 
             this.mainFormBindingSource.DataSource = typeof(EmotionalAppraisalWF.MainForm);
-            // 
-            // timer1
-            // 
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // MainForm
             // 
@@ -1037,7 +1041,7 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox textBoxPerspective;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button buttonReset;
         private System.Windows.Forms.CheckBox checkBoxUpdate;
         private System.Windows.Forms.Timer timer1;
     }

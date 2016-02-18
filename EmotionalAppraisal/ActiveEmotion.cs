@@ -159,7 +159,7 @@ namespace EmotionalAppraisal
 	        {
                 Type = this.EmotionType,
                 Intensity = this.Intensity,
-                CauseEvent =  this.CauseId.ToString(), 
+                CauseEvent =  this.CauseId, 
 	        };
 	    }
 

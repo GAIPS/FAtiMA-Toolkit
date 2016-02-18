@@ -26,7 +26,7 @@ namespace KnowledgeBase.Conditions
 
 			List<SubstitutionSet> sets = new List<SubstitutionSet>();
 			List<SubstitutionSet> aux = new List<SubstitutionSet>();
-			sets.AddRange(constraints);
+			sets.AddRange(constraints.Select(c => new SubstitutionSet(c)));
 			using (var it = GetEnumerator())
 			{
 				while (it.MoveNext())

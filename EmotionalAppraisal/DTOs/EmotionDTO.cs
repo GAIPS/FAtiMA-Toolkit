@@ -9,6 +9,6 @@ namespace EmotionalAppraisal.DTOs
     {
         public string Type { get; set; }
         public float Intensity { get; set; }
-        public string CauseEvent { get; set; }
+        public uint CauseEvent { get; set; }
     }
 }

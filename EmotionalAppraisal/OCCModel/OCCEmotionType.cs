@@ -51,6 +51,19 @@ namespace EmotionalAppraisal.OCCModel
 		//public static readonly OCCEmotionType Satisfaction = new OCCEmotionType("Satisfaction", EmotionValence.Positive, true, PositiveProspect);
 		public static readonly OCCEmotionType Shame = new OCCEmotionType("Shame", EmotionValence.Negative, true, Attribution);
 
+	    public static string[] Types =
+	    {
+	        Admiration.Name,
+            Anger.Name,
+            Gratitude.Name,
+            Distress.Name,
+            Gratification.Name,
+            Joy.Name,
+            Pride.Name,
+            Reproach.Name,
+            Shame.Name
+        };
+
 		#region Class Definition
 
 		public readonly string Name;

@@ -156,4 +156,7 @@
   <data name="UpdateButtonLabel" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="EmptyPerspectiveError" xml:space="preserve">
+    <value>"Perspective" cannot be an empty string</value>
+  </data>
 </root>

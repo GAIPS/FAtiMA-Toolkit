@@ -19,9 +19,9 @@ namespace AutobiographicMemory
 
 		public void BindCalls(KB kb)
 		{
-			kb.RegistDynamicProperty(EVENT_PROPERTY_ID_TEMPLATE, EventIdPropertyCalculator,new []{"type","subject","def","target"});
+			kb.RegistDynamicProperty(EVENT_ID_PROPERTY_TEMPLATE, EventIdPropertyCalculator,new []{"type","subject","def","target"});
 			kb.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE, EventAgePropertyCalculator, new[] { "id" });
-			kb.RegistDynamicProperty(LAST_EVENT_TEMPLATE, LastEventPropertyCalculator, new[] { "subject", "action", "target" });
+			kb.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_TEMPLATE, LastEventIdPropertyCalculator, new[] { "type", "subject", "def", "target" });
 		}
 
 		public IEventRecord RecordEvent(Name eventName,string perspective)
@@ -106,8 +106,7 @@ namespace AutobiographicMemory
 		}
 
 		//Event
-		private static readonly Name EVENT_TEMPLATE = Name.BuildName("EVENT([type],[subject],[def],[target])");
-		private static readonly Name EVENT_PROPERTY_ID_TEMPLATE = Name.BuildName((Name)"ID",EVENT_TEMPLATE);
+		private static readonly Name EVENT_ID_PROPERTY_TEMPLATE = Name.BuildName("EventId([type],[subject],[def],[target])");
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventIdPropertyCalculator(KB kb, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			Name type = GetArgument(args, "type");
@@ -116,7 +115,7 @@ namespace AutobiographicMemory
 			Name target = GetArgument(args,"target");
 
 			List<Pair<PrimitiveValue, SubstitutionSet>> results = new List<Pair<PrimitiveValue, SubstitutionSet>>();
-			var key = Name.BuildName((Name)"Event", type, subject, def, target);
+			var key = Name.BuildName(EVT_NAME, type, subject, def, target);
 			foreach (var c in constraints)
 			{
 				foreach (var pair in m_typeIndexes.Unify(key, c))
@@ -168,14 +167,15 @@ namespace AutobiographicMemory
 		}
 
 		//LastEvent
-		private static readonly Name LAST_EVENT_TEMPLATE = Name.BuildName((Name)"LastEvent", EVENT_TEMPLATE);
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> LastEventPropertyCalculator(KB kb, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		private static readonly Name LAST_EVENT_ID_PROPERTY_TEMPLATE = Name.BuildName("LastEventId([type],[subject],[def],[target])");
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> LastEventIdPropertyCalculator(KB kb, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
-			Name subject = args["subject"];
-			Name action = args["action"];
-			Name target = args["target"];
+			Name type = GetArgument(args, "type");
+			Name subject = GetArgument(args, "subject");
+			Name def = GetArgument(args, "def");
+			Name target = GetArgument(args, "target");
 
-			var key = Name.BuildName((Name)"Event", subject, action, target);
+			var key = Name.BuildName(EVT_NAME, type, subject, def, target);
 
 			DateTime bestTime = DateTime.MinValue;
 			Pair<PrimitiveValue, SubstitutionSet> best = null;
