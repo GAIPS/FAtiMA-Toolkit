@@ -28,6 +28,9 @@ namespace RolePlayCharacter
 
         public Name EventName { get; set; }
         public IEnumerable<string> LinkedEmotions { get; set; }
+
+        public Name EventObject { get; set; }
+
         public void LinkEmotion(string emotionType) {}
 
         public void GetObjectData(ISerializationData dataHolder)

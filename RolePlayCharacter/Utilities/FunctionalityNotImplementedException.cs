@@ -10,7 +10,6 @@ namespace RolePlayCharacter.Utilities
     {
         private string _exceptionMessage;
 
-
         public string ExceptionMessage
         {
             get { return _exceptionMessage; }
