@@ -45,11 +45,17 @@
   <ItemGroup>
     <Compile Include="RolePlayerCharacterAsset.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\FunctionalityNotImplementedException.cs" />
+    <Compile Include="Utilities\Messages.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Components\AutobiographicMemory\AutobiographicMemory.csproj">
       <Project>{c1cc38c5-72f5-4545-b4f7-c65b2883909c}</Project>
       <Name>AutobiographicMemory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Components\KnowledgeBase\KnowledgeBase.csproj">
+      <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
+      <Name>KnowledgeBase</Name>
     </ProjectReference>
     <ProjectReference Include="..\Components\SerializationUtilities\GAIPS.Serialization.csproj">
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
@@ -68,6 +74,7 @@
       <Name>EmotionalDecisionMaking</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
