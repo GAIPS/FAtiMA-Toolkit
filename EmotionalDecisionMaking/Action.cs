@@ -9,44 +9,17 @@ namespace EmotionalDecisionMaking
 	{
 		private class Action : IAction
 		{
-			private Dictionary<string, Name> m_parameters;
+			public Name ActionName { get; private set; }
+			public Name Target { get; private set; }
 
-			public Name ActionName{ get; private set; }
+			public IList<Name> Parameters { get; }
 
-			public IEnumerable<IActionParameter> Parameters
-			{
-				get { return m_parameters.Select(p => new ActionParameter(p.Key, p.Value)).Cast<IActionParameter>(); }
-			}
-
-			public Action(Name actionNameName, IEnumerable<IActionParameter> parameters)
+			public Action(Name actionNameName, Name target, IList<Name> parameters)
 			{
 				ActionName = actionNameName;
-				m_parameters = parameters.ToDictionary(p => p.ParameterName, p => p.Value,StringComparer.InvariantCultureIgnoreCase);
+				Target = target;
+				Parameters = parameters;
 			}
-
-			public Name this[string parameterName]
-			{
-				get
-				{
-					Name value;
-					if (!m_parameters.TryGetValue(parameterName, out value))
-						return Name.NIL_SYMBOL;
-					return value;
-				}
-			}
-		}
-
-		private class ActionParameter : IActionParameter
-		{
-			public ActionParameter(string paramName, Name value)
-			{
-				ParameterName = paramName;
-				Value = value;
-			}
-
-			public string ParameterName { get; private set; }
-
-			public Name Value { get; private set; }
 		}
 	}
 }

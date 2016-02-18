@@ -51,10 +51,7 @@ namespace EmotionalDecisionMaking
 			foreach (var action in m_actions.Select(s => s.Item2))
 			{
 				var a = dataHolder.ParentGraph.CreateObjectData();
-				a["Action"] = dataHolder.ParentGraph.BuildNode(action.ToName());
-				a["Conditions"] = dataHolder.ParentGraph.BuildNode(action.ActivationConditions);
-				if(action.ActivationCooldown != m_defaultActionCooldown)
-					dataHolder.SetValue("Cooldown", action.ActivationCooldown);
+				action.GetSerializationData(dataHolder.ParentGraph,a, m_defaultActionCooldown);
 				actions.Add(a);
 			}
 			dataHolder.SetValueGraphNode("ActionTendencies",actions);
@@ -66,17 +63,8 @@ namespace EmotionalDecisionMaking
 			List<ActionTendency> loadedActions = new List<ActionTendency>();
 			var actions = (ISequenceGraphNode) dataHolder.GetValueGraphNode("ActionTendencies");
 			foreach (var actionDef in actions.Cast<IObjectGraphNode>())
-			{
-				var name = actionDef["Action"].RebuildObject<Name>();
-				var conditions = actionDef["Conditions"].RebuildObject<ConditionEvaluatorSet>();
-				var at = new ActionTendency(name,conditions);
-				IGraphNode cooldown;
-				if (actionDef.TryGetField("Cooldown", out cooldown))
-					at.ActivationCooldown = cooldown.RebuildObject<float>();
-				else
-					at.ActivationCooldown = m_defaultActionCooldown;
-				loadedActions.Add(at);
-			}
+				loadedActions.Add(new ActionTendency(actionDef,m_defaultActionCooldown));
+
 			m_actions=new ConditionMapper<ActionTendency>();
 			foreach (var a in loadedActions)
 				m_actions.Add(a.ActivationConditions, a);

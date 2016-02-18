@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using GAIPS.Serialization;
+using GAIPS.Serialization.SerializationGraph;
 using KnowledgeBase.Conditions;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
@@ -10,10 +12,11 @@ namespace EmotionalDecisionMaking
 	public partial class ActionTendency : ICloneable
 	{
 		private const float DEFAULT_ACTIVATION_COOLDOWN = 1f;
-		private Dictionary<Name, Name> m_parameters;
+		private List<Name> m_parameters;
 		private DateTime m_lastActivationTimestamp;
 
 		public Name ActionName { get; private set; }
+		public Name Target { get; private set; }
 		public float ActivationCooldown { get; set; }
 
 		public ConditionEvaluatorSet ActivationConditions { get; private set; }
@@ -29,7 +32,7 @@ namespace EmotionalDecisionMaking
 			var terms = actionName.GetTerms().ToArray();
 			var name = terms[0];
 			if (!name.IsPrimitive)
-				throw new Exception("ActionName name needs to be a primitive value Name");
+				throw new Exception("ActionName name needs to be node primitive value Name");
 
 			ActivationCooldown = DEFAULT_ACTIVATION_COOLDOWN;
 			ActivationConditions = new ConditionEvaluatorSet(activationConditions);
@@ -37,25 +40,17 @@ namespace EmotionalDecisionMaking
 
 			if (terms.Length > 1)
 			{
-				m_parameters = new Dictionary<Name, Name>();
-				for (int i = 1; i < terms.Length; i++)
-				{
-					var p = terms[i];
-					m_parameters.Add(p.GetFirstTerm(), p.GetNTerm(1));
-				}
+				m_parameters = new List<Name>();
+				m_parameters.AddRange(terms.Skip(1));
 			}
 		}
 
-		public void AddParameter(string parameterName, Name value)
+		public void AddParameter(Name value)
 		{
-			var name = (Name) parameterName;
-			if(!name.IsPrimitive)
-				throw new Exception("Invalid parameter name");
-
 			if(m_parameters==null)
-				m_parameters=new Dictionary<Name, Name>();
+				m_parameters=new List<Name>();
 
-			m_parameters.Add(name,value);
+			m_parameters.Add(value);
 		}
 
 		private ActionTendency(ActionTendency other)
@@ -65,26 +60,31 @@ namespace EmotionalDecisionMaking
 			ActivationConditions = new ConditionEvaluatorSet(other.ActivationConditions);
 
 			if (other.m_parameters != null)
-				m_parameters = new Dictionary<Name, Name>(other.m_parameters);
+				m_parameters = new List<Name>(other.m_parameters);
 		}
 
 		public IAction GenerateAction(SubstitutionSet constraints)
 		{
-			List<IActionParameter> validParameters = new List<IActionParameter>();
+			List<Name> validParameters = null;
 			if (m_parameters != null)
 			{
+				validParameters = new List<Name>();
 				foreach (var p in m_parameters)
 				{
-					var value = p.Value.MakeGround(constraints);
+					var value = p.MakeGround(constraints);
 					if (!value.IsGrounded)
 						return null;
 
-					var parameter = new ActionParameter(p.Key.ToString(), value);
-					validParameters.Add(parameter);
+					validParameters.Add(value);
 				}
 			}
+
+			var targetName = Target.MakeGround(constraints);
+			if (!targetName.IsGrounded)
+				return null;
+
 			m_lastActivationTimestamp = DateTime.UtcNow;
-			return new Action(ActionName, validParameters);
+			return new Action(ActionName,targetName, validParameters);
 		}
 
 		public object Clone()
@@ -96,8 +96,42 @@ namespace EmotionalDecisionMaking
 		{
 			var actionName = (Name)ActionName;
 			if (m_parameters != null)
-				actionName = Name.BuildName(m_parameters.Select(pair => Name.BuildName(pair.Key, pair.Value)).Prepend(actionName));
+				actionName = Name.BuildName(m_parameters.Prepend(actionName));
 			return actionName;
+		}
+
+		internal void GetSerializationData(Graph serializationParent, IObjectGraphNode node,float defaultCooldown)
+		{
+			node["Action"] = serializationParent.BuildNode(ToName());
+
+			if (Target != null && Target != Name.NIL_SYMBOL)
+				node["Target"] = serializationParent.BuildNode(Target);
+
+			node["Conditions"] = serializationParent.BuildNode(ActivationConditions);
+			if (ActivationCooldown != defaultCooldown)
+				node["Cooldown"] = serializationParent.BuildNode(ActivationCooldown);
+		}
+
+		/// <summary>
+		/// Deserialization constructor
+		/// </summary>
+		internal ActionTendency(IObjectGraphNode node, float defaultActionCooldown)
+		{
+			var terms = node["Action"].RebuildObject<Name>().GetTerms().ToArray();
+			var name = terms[0];
+			if (!name.IsPrimitive)
+				throw new Exception("ActionName name needs to be node primitive value Name");
+
+			ActionName = terms[0];
+			if (terms.Length > 1)
+			{
+				m_parameters = new List<Name>();
+				m_parameters.AddRange(terms.Skip(1));
+			}
+
+			Target = SerializationServices.GetFieldOrDefault(node, "Target", Name.NIL_SYMBOL);
+			ActivationConditions = node["Conditions"].RebuildObject<ConditionEvaluatorSet>();
+			ActivationCooldown = SerializationServices.GetFieldOrDefault(node, "Cooldown", defaultActionCooldown);
 		}
 	}
 }

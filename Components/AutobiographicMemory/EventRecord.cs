@@ -23,7 +23,7 @@ namespace AutobiographicMemory
 				Id = id;
 				EventType = eventName.GetNTerm(1).ToString();
 				Subject = eventName.GetNTerm(2).ToString();
-				Action = eventName.GetNTerm(3);
+				EventObject = eventName.GetNTerm(3);
 
 				var targetName = eventName.GetNTerm(4);
 				Target = targetName == Name.NIL_SYMBOL ? null : targetName.ToString();
@@ -54,7 +54,7 @@ namespace AutobiographicMemory
 
 			public DateTime Timestamp { get; private set; }
 
-			public Name Action{ get; private set; }
+			public Name EventObject{ get; private set; }
 
 			public Name EventName { get; private set; }
 
@@ -63,8 +63,22 @@ namespace AutobiographicMemory
 				dataHolder.SetValue("Id", Id);
 				dataHolder.SetValue("EventType", EventType);
 				dataHolder.SetValue("Subject", Subject);
-				dataHolder.SetValue("Target", Target);
-				dataHolder.SetValue("Action",Action);
+
+				switch (EventType.ToUpperInvariant())
+				{
+					case "ACTION":
+						dataHolder.SetValue("Action", EventObject);
+						dataHolder.SetValue("Target", Target);
+						break;
+					case "PROPERTY-CHANGE":
+						dataHolder.SetValue("Property", EventObject);
+						dataHolder.SetValue("Value", Target);
+						break;
+					default:
+						dataHolder.SetValue("EventObject", EventObject);
+						dataHolder.SetValue("Target", Target);
+						break;
+				}
 
 				dataHolder.SetValue("Timestamp", Timestamp);
 				if (m_linkedEmotions.Count > 0)
@@ -78,8 +92,23 @@ namespace AutobiographicMemory
 				Id = dataHolder.GetValue<uint>("Id");
 				EventType = dataHolder.GetValue<string>("EventType");
 				Subject = dataHolder.GetValue<string>("Subject");
-				Target = dataHolder.GetValue<string>("Target");
-				Action = dataHolder.GetValue<Name>("Action");
+
+				switch (EventType.ToUpperInvariant())
+				{
+					case "ACTION":
+						EventObject = dataHolder.GetValue<Name>("Action");
+						Target = dataHolder.GetValue<string>("Target");
+						break;
+					case "PROPERTY-CHANGE":
+						EventObject = dataHolder.GetValue<Name>("Property");
+						Target = dataHolder.GetValue<string>("Value");
+						break;
+					default:
+						EventObject = dataHolder.GetValue<Name>("EventObject");
+						Target = dataHolder.GetValue<string>("Target");
+						break;
+				}
+
 				Timestamp = dataHolder.GetValue<DateTime>("Timestamp");
 
 				if(m_linkedEmotions==null)
@@ -90,7 +119,7 @@ namespace AutobiographicMemory
 				if(le!=null && le.Length>0)
 					m_linkedEmotions.UnionWith(le);
 
-				EventName = Name.BuildName(EVT_NAME,(Name)EventType,(Name)Subject,Action,(Name)Target);
+				EventName = Name.BuildName(EVT_NAME,(Name)EventType,(Name)Subject,EventObject,(Name)Target);
 			}
 		}
 	}
