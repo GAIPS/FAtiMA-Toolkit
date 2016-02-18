@@ -30,9 +30,9 @@ namespace AutobiographicMemory
 		}
 
 		/// <summary>
-		/// A WFN of the Action represented by this event
+		/// A WFN of the EventObject represented by this event
 		/// </summary>
-		Name Action { get; }
+		Name EventObject { get; }
 
 		/// <summary>
 		/// The WFN representation of this event record

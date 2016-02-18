@@ -122,7 +122,7 @@ namespace EmotionalAppraisal.AppraisalRules
 				AppraisalRule r = new AppraisalRule(eventName,null);
 				r.Desirability = desirability;
 				r.Praiseworthiness = praiseworthiness;
-				//r.Action = frame.AppraisedEvent.ToIdentifierName().RemovePerspective(emotionalModule.Perspective);
+				//r.EventObject = frame.AppraisedEvent.ToIdentifierName().RemovePerspective(emotionalModule.Perspective);
 				AddEmotionalReaction(r);
 			}
 		}

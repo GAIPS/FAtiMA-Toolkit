@@ -93,7 +93,6 @@ namespace EmotionalAppraisal
 	    /// </summary>
 	    public ulong Tick { get; set; } = 0;
 
-
         /// <summary>
 	    /// The emotional mood of the agent, which can vary from -10 to 10
 	    /// </summary>
@@ -192,6 +191,16 @@ namespace EmotionalAppraisal
 			foreach (var n in eventNames)
 			{
 				var evt = m_am.RecordEvent(n, Perspective);
+				if (evt.EventType.Equals("property-change", StringComparison.InvariantCultureIgnoreCase))
+				{
+					var fact = evt.EventObject;
+					var value = (Name)evt.Target;
+					if(value == Name.NIL_SYMBOL)
+						m_kb.Retract(fact);
+					else
+						m_kb.Tell(fact, value.GetPrimitiveValue(), true, KnowledgeVisibility.Self);
+				}
+
 				APPRAISAL_FRAME.Reset(evt);
 				var componentFrame = APPRAISAL_FRAME.RequestComponentFrame(m_appraisalDerivator, m_appraisalDerivator.AppraisalWeight);
 				m_appraisalDerivator.Appraisal(this, evt, componentFrame);

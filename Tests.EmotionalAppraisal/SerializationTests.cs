@@ -88,36 +88,36 @@ namespace Tests.EmotionalAppraisal
 
 			//Setup appraisal rules
 
-			AppraisalRule petAppraisalRule = new AppraisalRule((Name)"Event(Action,*,Pet,self)");
+			AppraisalRule petAppraisalRule = new AppraisalRule((Name)"Event(EventObject,*,Pet,self)");
 			petAppraisalRule.TriggersOnFailedActivation = true;
 			petAppraisalRule.Desirability = 10;
 			//petAppraisalRule.Like = 7;
 			//m_emotionalAppraisalAsset.AddAppraisalRule(petAppraisalRule);
 
-			AppraisalRule slapAppraisalRule = new AppraisalRule((Name)"Event(Action,*,Slap,self)");
+			AppraisalRule slapAppraisalRule = new AppraisalRule((Name)"Event(EventObject,*,Slap,self)");
 			slapAppraisalRule.Desirability = -10;
 			//slapAppraisalRule.Like = -15;
 			//m_emotionalAppraisalAsset.AddAppraisalRule(slapAppraisalRule);
 
-			AppraisalRule feedAppraisalRule = new AppraisalRule((Name)"Event(Action,*,Feed,self)");
+			AppraisalRule feedAppraisalRule = new AppraisalRule((Name)"Event(EventObject,*,Feed,self)");
 			feedAppraisalRule.Desirability = 5;
 			feedAppraisalRule.Praiseworthiness = 10;
 			//m_emotionalAppraisalAsset.AddAppraisalRule(feedAppraisalRule);
 
-			AppraisalRule screamMad = new AppraisalRule((Name)"Event(Action,*,Talk(High,Mad),self)");
+			AppraisalRule screamMad = new AppraisalRule((Name)"Event(EventObject,*,Talk(High,Mad),self)");
 			screamMad.Desirability = -7;
 			screamMad.Praiseworthiness = -15;
 			//screamMad.Like = -4;
 			//m_emotionalAppraisalAsset.AddAppraisalRule(screamMad);
 
-			AppraisalRule talkSoftAppraisalRule = new AppraisalRule((Name)"Event(Action,*,Talk(Low,Happy),self)");
+			AppraisalRule talkSoftAppraisalRule = new AppraisalRule((Name)"Event(EventObject,*,Talk(Low,Happy),self)");
 			talkSoftAppraisalRule.Praiseworthiness = 5;
 			//talkSoftAppraisalRule.Like = 5;
 			//m_emotionalAppraisalAsset.AddAppraisalRule(talkSoftAppraisalRule);
 
 			//Generate emotion
 
-			m_emotionalAppraisalAsset.AppraiseEvents(new []{ (Name)"Event(Action,*,Slap(Hard),self)" });
+			m_emotionalAppraisalAsset.AppraiseEvents(new []{ (Name)"Event(EventObject,*,Slap(Hard),self)" });
 
 			//Add knowledge
 			var kb = m_emotionalAppraisalAsset.Kb;

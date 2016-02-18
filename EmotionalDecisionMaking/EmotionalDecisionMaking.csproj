@@ -32,7 +32,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Action.cs" />
-    <Compile Include="ActionParameter.cs" />
     <Compile Include="ActionTendency.cs" />
     <Compile Include="EmotionalDecisionMakingAsset.cs" />
     <Compile Include="IAction.cs" />

@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using GAIPS.Serialization.Attributes;
+using GAIPS.Serialization.SerializationGraph;
 
 namespace GAIPS.Serialization
 {
@@ -170,6 +171,14 @@ namespace GAIPS.Serialization
 					f.SetValue(obj, fieldValue);
 				}
 			}
+		}
+
+		public static T GetFieldOrDefault<T>(IObjectGraphNode node, string fieldName, T defaultValue)
+		{
+			IGraphNode target;
+			if (node.TryGetField(fieldName, out target))
+				return target.RebuildObject<T>();
+			return defaultValue;
 		}
 	}
 }
