@@ -10,24 +10,47 @@ using Utilities.Json;
 using GAIPS.Serialization;
 using AutobiographicMemory;
 using KnowledgeBase.WellFormedNames;
+using RolePlayCharacter.Utilities;
 
 namespace RolePlayCharacter
 {
     [Serializable]
-    public class RPCEvent : IEventRecord
+    public class RPCEvent : IEventRecord, ICustomSerialization
     {
-        public string Target { get; }
-        public string Subject { get;  }
-        public DateTime Timestamp { get; }
+        public string Target { get; set; }
+        public string Subject { get; set; }
+        public DateTime Timestamp { get; set; }
 
-        public uint Id { get; }
-        public string EventType { get; }
+        public uint Id { get; set; }
+        public string EventType { get; set; }
 
-        public Name Action { get; }
+        public Name Action { get; set; }
 
-        public Name EventName { get; }
-        public IEnumerable<string> LinkedEmotions { get; }
+        public Name EventName { get; set; }
+        public IEnumerable<string> LinkedEmotions { get; set; }
         public void LinkEmotion(string emotionType) {}
+
+        public void GetObjectData(ISerializationData dataHolder)
+        {
+            Target = dataHolder.GetValue<string>("Target");
+            Subject = dataHolder.GetValue<string>("Subject");
+            Timestamp = dataHolder.GetValue<DateTime>("TimeStamp");
+            Id = dataHolder.GetValue<uint>("ID");
+            EventType = dataHolder.GetValue<string>("EventType");
+            EventName = dataHolder.GetValue<Name>("EventName");
+            Action = dataHolder.GetValue<Name>("Action");
+        }
+
+        public void SetObjectData(ISerializationData dataHolder)
+        {
+            dataHolder.SetValue<string>("Target", Target);
+            dataHolder.SetValue<string>("Subject", Subject);
+            dataHolder.SetValue<DateTime>("TimeStamp", Timestamp);
+            dataHolder.SetValue<uint>("ID", Id);
+            dataHolder.SetValue<string>("EventType", EventType);
+            dataHolder.SetValue<Name>("EventName", EventName);
+            dataHolder.SetValue<Name>("Action", Action);
+        }
     }
 
     [Serializable]
@@ -40,6 +63,23 @@ namespace RolePlayCharacter
         private List<Name> _rpcEventsName = new List<Name>();
 
         private IEnumerable<IAction> _rpcActions;
+
+        private string _emotionalAppraisalPath;
+
+        public string EmotionalAppraisalPath
+        {
+            get { return _emotionalAppraisalPath; }
+            set { _emotionalAppraisalPath = value; }
+        }
+
+        private string _emotionalDecisionMakingPath;
+
+        public string EmotionalDecisionMakingPath
+        {
+            get { return _emotionalDecisionMakingPath; }
+
+            set { _emotionalDecisionMakingPath = value; }
+        }
 
         public static RolePlayCharacterAsset LoadFromFile(string filename)
         {
@@ -57,27 +97,19 @@ namespace RolePlayCharacter
           
         }
 
-        public RolePlayCharacterAsset (string fileEmotionalAppraisalAsset, string fileEmotionalDecisionMakingAsset)
+        public void SetEmotionAppraisalModulePath(string emotionalAppraisalPath)
         {
-           
+            _emotionalAppraisalPath = emotionalAppraisalPath;
         }
 
-        public void SetEmotionAppraisalModulePath()
+        public void SetEmotionalAppraisalModule(string name)
         {
-
-
+            LoadEmotionAppraisalAssetFromFile(name);
         }
 
-        public void SetEmotionalAppraisalModule()
+        public void SetEmotionalDecisionModulePath(string emotionalDecisionPath)
         {
-            _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile("");
-        }
-
-        public void SetEmotionalDecisionModulePath()
-        {
-
-
-
+            _emotionalDecisionMakingPath = emotionalDecisionPath;
         }
 
         public void SetEmotionalDecisionModule()
@@ -99,16 +131,23 @@ namespace RolePlayCharacter
 
         public void PerceiveEvent()
         {
-            if (_emotionalAppraisalAsset != null)
-                _emotionalAppraisalAsset.AppraiseEvents(_rpcEventsName);
+            try
+            {
+                if (_emotionalAppraisalAsset != null)
+                    _emotionalAppraisalAsset.AppraiseEvents(_rpcEventsName);
 
-            if (_emotionalDecisionMakingAsset != null)
-               _rpcActions =  _emotionalDecisionMakingAsset.Decide();     
-        }
+                else throw new FunctionalityNotImplementedException(new Messages().EMOTIONALAPPRAISALNOTIMPLEMENTED().ShowMessage());
 
-        private void SimpleAppraisalEvents()
-        {
-          
+                if (_emotionalDecisionMakingAsset != null)
+                    _rpcActions = _emotionalDecisionMakingAsset.Decide();
+
+                else throw new FunctionalityNotImplementedException(new Messages().EMOTIONDECISIONNOTIMPLEMENTED().ShowMessage());
+            }
+            
+            catch(FunctionalityNotImplementedException exception)
+            {
+                Console.WriteLine(exception.ExceptionMessage);
+            }  
         }
 
         public void RetrieveAction()
@@ -116,12 +155,6 @@ namespace RolePlayCharacter
 
 
 
-        }
-
-        private void LoadEmotionAppraisalAsset(string name)
-        {
-            if(name != null)
-                _emotionalAppraisalAsset = new EmotionalAppraisalAsset(name);
         }
 
         private void LoadEmotionAppraisalAssetFromFile(string name)
@@ -149,6 +182,8 @@ namespace RolePlayCharacter
 
         public void GetObjectData(ISerializationData dataHolder)
         {
+            dataHolder.SetValue("EmotionalAppraisalPath", _emotionalAppraisalPath);
+            dataHolder.SetValue("EmotionalDecisionMakingPath", _emotionalDecisionMakingPath);
             dataHolder.SetValue("RPC_Events", _rpcEvents);
             dataHolder.SetValue("RPC_Actions", _rpcActions);
             dataHolder.SetValue("RPC_Events_Names", _rpcEventsName);
@@ -156,6 +191,8 @@ namespace RolePlayCharacter
 
         public void SetObjectData(ISerializationData dataHolder)
         {
+            _emotionalDecisionMakingPath = dataHolder.GetValue<string>("EmotionalDecisionMakingPath");
+            _emotionalAppraisalPath = dataHolder.GetValue<string>("EmotionalAppraisalPath");
             _rpcEvents = dataHolder.GetValue<List<RPCEvent>>("RPC_Events");
             _rpcEventsName = dataHolder.GetValue<List<Name>>("RPC_Events_Names");
             _rpcActions = dataHolder.GetValue<IEnumerable<IAction>>("RPC_Actions");
