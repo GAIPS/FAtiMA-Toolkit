@@ -20,25 +20,23 @@ namespace KnowledgeBase.Conditions
 		}
 	}
 
-	[DefaultSerializationSystem(typeof(ConditionEvaluatorSet))]
-	sealed class ConditionSetSerializationFormatter : IGraphFormatter
-	{
-		public IGraphNode ObjectToGraphNode(object value, Graph serializationGraph)
-		{
-			ConditionEvaluatorSet evaluatorSet = (ConditionEvaluatorSet) value;
-			ISequenceGraphNode seq = serializationGraph.BuildSequenceNode();
-			seq.AddRange(evaluatorSet.Select(c => serializationGraph.BuildNode(c, typeof (Condition))));
-			return seq;
-		}
+	//[DefaultSerializationSystem(typeof(ConditionEvaluatorSet))]
+	//sealed class ConditionSetSerializationFormatter : IGraphFormatter
+	//{
+	//	public IGraphNode ObjectToGraphNode(object value, Graph serializationGraph)
+	//	{
+	//		ConditionEvaluatorSet evaluatorSet = (ConditionEvaluatorSet) value;
+	//		ISequenceGraphNode seq = serializationGraph.BuildSequenceNode();
+	//		seq.AddRange(evaluatorSet.Select(c => serializationGraph.BuildNode(c, typeof (Condition))));
+	//		return seq;
+	//	}
 
-		public object GraphNodeToObject(IGraphNode node, Type objectType)
-		{
-			ISequenceGraphNode seq = (ISequenceGraphNode) node;
-			var c = new ConditionEvaluatorSet();
-			if (seq.Length != 0)
-				c.UnionWith(seq.Select(n => (Condition)n.RebuildObject(typeof(Condition))));
-			
-			return c;
-		}
-	}
+	//	public object GraphNodeToObject(IGraphNode node, Type objectType)
+	//	{
+	//		ISequenceGraphNode seq = (ISequenceGraphNode) node;
+	//		if (seq.Length > 0)
+	//			return new ConditionEvaluatorSet(seq.Select(n=>n.RebuildObject<Condition>()));
+	//		return new ConditionEvaluatorSet();
+	//	}
+	//}
 }
