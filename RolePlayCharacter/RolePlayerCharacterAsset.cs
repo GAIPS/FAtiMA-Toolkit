@@ -8,18 +8,26 @@ using EmotionalAppraisal;
 using EmotionalDecisionMaking;
 using Utilities.Json;
 using GAIPS.Serialization;
-using AutobiographicMemory.Interfaces;
+using AutobiographicMemory;
+using KnowledgeBase.WellFormedNames;
 
 namespace RolePlayCharacter
 {
     [Serializable]
-    public class GameEvent : IEvent
+    public class RPCEvent : IEventRecord
     {
-        public string Action { get; }
         public string Target { get; }
         public string Subject { get;  }
         public DateTime Timestamp { get; }
-        public IEnumerable<IEventParameter> Parameters { get; }
+
+        public uint Id { get; }
+        public string EventType { get; }
+
+        public Name Action { get; }
+
+        public Name EventName { get; }
+        public IEnumerable<string> LinkedEmotions { get; }
+        public void LinkEmotion(string emotionType) {}
     }
 
     [Serializable]
@@ -28,7 +36,10 @@ namespace RolePlayCharacter
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
         private EmotionalDecisionMakingAsset _emotionalDecisionMakingAsset;
 
-        private List<IEvent> _gameEvents = new List<IEvent>();
+        private List<RPCEvent> _rpcEvents = new List<RPCEvent>();
+        private List<Name> _rpcEventsName = new List<Name>();
+
+        private IEnumerable<IAction> _rpcActions;
 
         public static RolePlayCharacterAsset LoadFromFile(string filename)
         {
@@ -41,24 +52,37 @@ namespace RolePlayCharacter
             return rpc;
         }
 
-        public RolePlayCharacterAsset (string name)
+        public RolePlayCharacterAsset ()
         {
-            if (name == null)
-                LoadEmotionAppraisalAsset("SELF");
-
-            else LoadEmotionAppraisalAsset(name);
-
-            if (_emotionalAppraisalAsset != null)
-                LoadEmotionDecisionMakingAsset(_emotionalAppraisalAsset);
+          
         }
 
         public RolePlayCharacterAsset (string fileEmotionalAppraisalAsset, string fileEmotionalDecisionMakingAsset)
         {
-            if (fileEmotionalAppraisalAsset != null)
-                LoadEmotionAppraisalAssetFromFile(fileEmotionalAppraisalAsset);
+           
+        }
 
-            if (fileEmotionalDecisionMakingAsset != null)
-                LoadEmotionDecisionMakingAssetFromFile(fileEmotionalDecisionMakingAsset);
+        public void SetEmotionAppraisalModulePath()
+        {
+
+
+        }
+
+        public void SetEmotionalAppraisalModule()
+        {
+            _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile("");
+        }
+
+        public void SetEmotionalDecisionModulePath()
+        {
+
+
+
+        }
+
+        public void SetEmotionalDecisionModule()
+        {
+            _emotionalDecisionMakingAsset = new EmotionalDecisionMakingAsset(_emotionalAppraisalAsset);
         }
 
         public void SaveToFile(Stream file)
@@ -67,30 +91,25 @@ namespace RolePlayCharacter
             serializer.Serialize(file, this);
         }
 
-        public void AddGameEvent(GameEvent evt)
+        public void AddRPCEvent(RPCEvent evt)
         {
-            _gameEvents.Add(evt);
+            _rpcEvents.Add(evt);
+            _rpcEventsName.Add(evt.EventName);
         }
 
-        public void ReceiveEvent()
+        public void PerceiveEvent()
         {
-            if (_emotionalDecisionMakingAsset == null)
-                SimpleAppraisalEvents();
+            if (_emotionalAppraisalAsset != null)
+                _emotionalAppraisalAsset.AppraiseEvents(_rpcEventsName);
 
-            else AppraisalAndDecideEvent();
+            if (_emotionalDecisionMakingAsset != null)
+               _rpcActions =  _emotionalDecisionMakingAsset.Decide();     
         }
 
         private void SimpleAppraisalEvents()
         {
-            _emotionalAppraisalAsset.AppraiseEvents(_gameEvents);
+          
         }
-
-        private void AppraisalAndDecideEvent()
-        {
-
-
-        }
-
 
         public void RetrieveAction()
         {
@@ -98,7 +117,6 @@ namespace RolePlayCharacter
 
 
         }
-
 
         private void LoadEmotionAppraisalAsset(string name)
         {
@@ -128,5 +146,19 @@ namespace RolePlayCharacter
 
         }
         public float GetCharacterMood() { return _emotionalAppraisalAsset.Mood; }
+
+        public void GetObjectData(ISerializationData dataHolder)
+        {
+            dataHolder.SetValue("RPC_Events", _rpcEvents);
+            dataHolder.SetValue("RPC_Actions", _rpcActions);
+            dataHolder.SetValue("RPC_Events_Names", _rpcEventsName);
+        }
+
+        public void SetObjectData(ISerializationData dataHolder)
+        {
+            _rpcEvents = dataHolder.GetValue<List<RPCEvent>>("RPC_Events");
+            _rpcEventsName = dataHolder.GetValue<List<Name>>("RPC_Events_Names");
+            _rpcActions = dataHolder.GetValue<IEnumerable<IAction>>("RPC_Actions");
+        }
     }
 }

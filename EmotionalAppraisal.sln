@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RolePlayCharacterWF", "Role
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorialAgentsWF", "AuthorialAgentsWF\AuthorialAgentsWF.csproj", "{15FDC9B4-C348-4561-9E7E-2C278C058BC8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RolePlayCharacter", "RolePlayCharacter\RolePlayCharacter.csproj", "{986EA00A-7AA4-4D9E-B986-E6F290E7AA3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +94,10 @@ Global
 		{15FDC9B4-C348-4561-9E7E-2C278C058BC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15FDC9B4-C348-4561-9E7E-2C278C058BC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15FDC9B4-C348-4561-9E7E-2C278C058BC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{986EA00A-7AA4-4D9E-B986-E6F290E7AA3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{986EA00A-7AA4-4D9E-B986-E6F290E7AA3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{986EA00A-7AA4-4D9E-B986-E6F290E7AA3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{986EA00A-7AA4-4D9E-B986-E6F290E7AA3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
