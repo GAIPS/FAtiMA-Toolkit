@@ -10,6 +10,26 @@ using RolePlayCharacter.Utilities;
 
 namespace RolePlayCharacter
 {
+    public enum LOADTYPE
+    {
+        FROMDATABASE = 0,
+        FROMFILE,
+        NONE
+    }
+
+    public enum FILETYPE
+    {
+        XML = 0,
+        JSON,
+        NONE
+    }
+
+    public static class FILETYPEEXTENSION
+    {
+        public static string XML { get { return ".xml"; } }
+        public static string JSON { get { return ".json"; } }
+    }
+
     [Serializable]
     public class RPCEvent : IEventRecord
     {
@@ -66,6 +86,20 @@ namespace RolePlayCharacter
 
         private IEnumerable<IAction> _rpcActions;
 
+        private static LOADTYPE _loadType = LOADTYPE.NONE;
+        private static FILETYPE _fileType = FILETYPE.NONE;
+
+        private string _assetId;
+
+        public string AssetId
+        {
+            get { return _assetId; }
+
+            set { _assetId = value; }
+        }
+
+        private static string _currentFileAsset;
+
         private string _emotionalAppraisalPath;
 
         public string EmotionalAppraisalPath
@@ -83,15 +117,75 @@ namespace RolePlayCharacter
             set { _emotionalDecisionMakingPath = value; }
         }
 
-        public static RolePlayCharacterAsset LoadFromFile(string filename)
+        private static string GetFileToLoad(string idAsset)
+        {
+            try
+            {
+                if (_fileType == FILETYPE.NONE)
+                    throw new ParameterNotDefiniedException(new Messages().FILEEXTENSIONNOTDEFINED().ShowMessage());
+
+                if (_loadType == LOADTYPE.FROMFILE)
+                    throw new ParameterNotDefiniedException(new Messages().LOADTYPEINCORRECT().ShowMessage());
+
+                return _currentFileAsset;
+            }
+
+            catch (ParameterNotDefiniedException exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+
+            return "Default";
+        }
+
+        public static RolePlayCharacterAsset LoadFromFile(string idAsset)
         {
             RolePlayCharacterAsset rpc;
+           string filename = GetFileToLoad(idAsset);
+           
             using (var f = File.Open(filename, FileMode.Open, FileAccess.Read))
             {
                 var serializer = new JSONSerializer();
                 rpc = serializer.Deserialize<RolePlayCharacterAsset>(f);
             }
             return rpc;
+        }
+
+        public static RolePlayCharacterAsset LoadFromDatabase()
+        {
+            RolePlayCharacterAsset rpc = new RolePlayCharacterAsset();
+            return rpc;
+        }
+
+        public static RolePlayCharacterAsset LoadAsset(LOADTYPE loadType)
+        {
+            RolePlayCharacterAsset rpc = new RolePlayCharacterAsset() ;
+
+            switch(loadType)
+            {
+                case LOADTYPE.FROMFILE:
+                    try
+                    {
+                       return LoadFromFile(_currentFileAsset);
+                    }
+
+                    catch(FileNotFoundException exception)
+                    {
+                        Console.WriteLine(exception.Message);
+                    }
+                    break;
+                case LOADTYPE.FROMDATABASE:
+                    break;
+                default:
+                    break;
+            }
+
+            return rpc;
+        }
+
+        public void SetLoadingType()
+        {
+
         }
 
         public RolePlayCharacterAsset ()
