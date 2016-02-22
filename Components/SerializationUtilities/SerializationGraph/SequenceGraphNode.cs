@@ -64,13 +64,13 @@ namespace GAIPS.Serialization.SerializationGraph
 				{
 					if(m_elements[i]==null)
 						continue;
-					if (elementType != null)
-					{
-						while (elementType != null && !m_elements[i].CanMatchType(elementType))
-						{
-							elementType = elementType.BaseType;
-						}
-					}
+					//if (elementType != null)
+					//{
+					//	while (elementType != null && !m_elements[i].CanMatchType(elementType))
+					//	{
+					//		elementType = elementType.BaseType;
+					//	}
+					//}
 					var o = m_elements[i].RebuildObject(elementType);
 					if(elementType==null)
 						elementType = o.GetType();
