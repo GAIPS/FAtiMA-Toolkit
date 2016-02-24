@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using GAIPS.Serialization;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
 
@@ -10,10 +11,10 @@ namespace KnowledgeBase.Conditions
 	using VarDomain = Dictionary<Name, HashSet<Name>>;
 
 	[Serializable]
-	public sealed class ConditionEvaluatorSet : IEnumerable<Condition>, IConditionEvaluator
+	public sealed class ConditionEvaluatorSet : IEnumerable<Condition>, IConditionEvaluator, ICustomSerialization
 	{
 		private HashSet<Condition> m_conditions;
-		public LogicalQuantifier Quantifier { get; }
+		public LogicalQuantifier Quantifier { get; private set; }
 
 		public int Count {
 			get { return m_conditions==null?0:m_conditions.Count; }
@@ -196,5 +197,19 @@ namespace KnowledgeBase.Conditions
 		}
 
 		#endregion
+
+		public void GetObjectData(ISerializationData dataHolder)
+		{
+			dataHolder.SetValue("Quantifier",Quantifier);
+			dataHolder.SetValue("Set",m_conditions.ToArray());
+		}
+
+		public void SetObjectData(ISerializationData dataHolder)
+		{
+			Quantifier = dataHolder.GetValue<LogicalQuantifier>("Quantifier");
+			var set = dataHolder.GetValue<Condition[]>("Set");
+			if(set!=null)
+				m_conditions = new HashSet<Condition>(set);
+		}
 	}
 }
