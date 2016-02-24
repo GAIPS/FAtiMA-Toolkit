@@ -91,6 +91,27 @@ namespace RolePlayCharacter
 
         private string _assetId;
 
+        private float _mockMood;
+
+        public float Mood
+        {
+            get
+            {
+                if (_emotionalAppraisalAsset != null)
+                    return _emotionalAppraisalAsset.Mood;
+
+                else return _mockMood;
+            }
+
+            set
+            {
+                if (_emotionalAppraisalAsset != null)
+                    _emotionalAppraisalAsset.Mood = value;
+
+                else _mockMood = value;
+            }
+        }
+
         public string AssetId
         {
             get { return _assetId; }
@@ -183,15 +204,12 @@ namespace RolePlayCharacter
             return rpc;
         }
 
-        public void SetLoadingType()
+        public void SetLoadingType(LOADTYPE loadType)
         {
-
+            _loadType = loadType;
         }
 
-        public RolePlayCharacterAsset ()
-        {
-          
-        }
+        public RolePlayCharacterAsset () { }
 
         public void SetEmotionAppraisalModulePath(string emotionalAppraisalPath)
         {
@@ -265,15 +283,16 @@ namespace RolePlayCharacter
         {
             if(name != null)
             {
-               // _emotionalDecisionMakingAsset = EmotionalDecisionMakingAsset.LoadFromFile(name);
+                _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(name);
+                LoadEmotionDecisionMakingAsset(_emotionalAppraisalAsset);
             }
         }
 
         private void LoadEmotionDecisionMakingAsset(EmotionalAppraisalAsset eaa)
         {
             _emotionalDecisionMakingAsset = new EmotionalDecisionMakingAsset(eaa);
-
         }
+
         public float GetCharacterMood() { return _emotionalAppraisalAsset.Mood; }
 
         public void GetObjectData(ISerializationData dataHolder)
