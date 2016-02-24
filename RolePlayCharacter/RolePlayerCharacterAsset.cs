@@ -75,6 +75,15 @@ namespace RolePlayCharacter
   //      }
     }
 
+    public class EmptyAction : IAction
+    {
+        public Name ActionName { get; set; }
+
+        public IList<Name> Parameters { get; set; }
+
+        public Name Target { get; set; }
+    }
+
     [Serializable]
     public sealed partial class RolePlayCharacterAsset
     {
@@ -209,7 +218,18 @@ namespace RolePlayCharacter
             _loadType = loadType;
         }
 
-        public RolePlayCharacterAsset () { }
+        public RolePlayCharacterAsset ()
+        {
+            if (_emotionalAppraisalPath != null && _loadType != LOADTYPE.NONE)
+            {
+                LoadEmotionalAppraisalAssetFromType(_loadType);
+            }
+
+            if(_emotionalDecisionMakingPath != null && _emotionalAppraisalAsset !=null)
+            {
+                LoadEmotionDecisionMakingAsset(_emotionalAppraisalAsset);
+            }
+        }
 
         public void SetEmotionAppraisalModulePath(string emotionalAppraisalPath)
         {
@@ -264,11 +284,12 @@ namespace RolePlayCharacter
             }  
         }
 
-        public void RetrieveAction()
+        public IEnumerable<IAction> RetrieveDecidedAction()
         {
+            if (_emotionalDecisionMakingAsset != null)
+                return _emotionalDecisionMakingAsset.Decide();
 
-
-
+            else return _rpcActions;
         }
 
         private void LoadEmotionAppraisalAssetFromFile(string name)
@@ -276,6 +297,14 @@ namespace RolePlayCharacter
             if(name != null)
             {
                 _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(name);
+            }
+        }
+
+        private void LoadEmotionalAppraisalAssetFromType(LOADTYPE loadType)
+        {
+            if(loadType == LOADTYPE.FROMFILE)
+            {
+                LoadEmotionAppraisalAssetFromFile(_currentFileAsset);
             }
         }
 
