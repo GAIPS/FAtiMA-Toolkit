@@ -42,7 +42,7 @@ namespace AutobiographicMemory
 		/// <summary>
 		/// The time stamp in which the event occured
 		/// </summary>
-		DateTime Timestamp
+		ulong Timestamp
 		{
 			get;
 		}

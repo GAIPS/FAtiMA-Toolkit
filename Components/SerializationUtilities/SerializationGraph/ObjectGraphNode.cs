@@ -34,6 +34,8 @@ namespace GAIPS.Serialization.SerializationGraph
 		bool ContainsField(string fieldName);
 		bool TryGetField(string fieldName, out IGraphNode node);
 		bool RemoveField(string fieldName);
+
+		ISerializationData ToSerializationData();
 	}
 
 	public partial class Graph
@@ -176,6 +178,11 @@ namespace GAIPS.Serialization.SerializationGraph
 				var surrogate = SerializationServices.GetDefaultSerializationSurrogate(typeToBuild);
 				surrogate.SetObjectData(ref buildObject, this);
 				return buildObject;
+			}
+
+			public ISerializationData ToSerializationData()
+			{
+				return new SerializationData(this);
 			}
 		}
 	}

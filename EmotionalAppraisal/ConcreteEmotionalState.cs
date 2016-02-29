@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using AutobiographicMemory;
 using GAIPS.Serialization;
+using GAIPS.Serialization.SerializationGraph;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
 
@@ -117,7 +118,7 @@ namespace EmotionalAppraisal
 				float potential = DeterminePotential(emotion);
 				if (potential > disposition.Threshold)
 				{
-					auxEmotion = new ActiveEmotion(emotion, potential, disposition.Threshold, decay);
+					auxEmotion = new ActiveEmotion(emotion, potential, disposition.Threshold, decay, m_parent.Tick);
 					emotionPool.Add(hash, auxEmotion);
 					if (!reappraisal)
 						this.mood.UpdateMood(auxEmotion,m_parent);
@@ -149,7 +150,7 @@ namespace EmotionalAppraisal
 				float potential = DeterminePotential(potEm);
 
 				if (potential > emotionDisposition.Threshold)
-					return new ActiveEmotion(potEm, potential, emotionDisposition.Threshold, emotionDisposition.Decay);
+					return new ActiveEmotion(potEm, potential, emotionDisposition.Threshold, emotionDisposition.Decay,m_parent.Tick);
 
 				return null;
 			}
@@ -165,15 +166,15 @@ namespace EmotionalAppraisal
 			/// <summary>
 			/// Decays all emotions, mood and arousal
 			/// </summary>
-			public void Decay(float elapsedTime)
+			public void Decay()
 			{
-				this.mood.DecayMood(elapsedTime,m_parent);
+				this.mood.DecayMood(m_parent);
 				HashSet<string> toRemove = ObjectPool<HashSet<string>>.GetObject();
 				using (var it = this.emotionPool.GetEnumerator())
 				{
 					while (it.MoveNext())
 					{
-						it.Current.Value.DecayEmotion(elapsedTime,m_parent);
+						it.Current.Value.DecayEmotion(m_parent);
 						if (!it.Current.Value.IsRelevant)
 							toRemove.Add(it.Current.Key);
 					}
@@ -264,13 +265,22 @@ namespace EmotionalAppraisal
 
 			public override string ToString()
 			{
-				return string.Format("Mood: {0} Emotions: {1}",this.mood,this.emotionPool);
+				return $"Mood: {this.mood} Emotions: {this.emotionPool}";
 			}
 
 			public void GetObjectData(ISerializationData dataHolder)
 			{
 				dataHolder.SetValue("Parent",m_parent);
-				dataHolder.SetValue("EmotionalPool", emotionPool.Values.ToArray());
+
+				var seq = dataHolder.ParentGraph.BuildSequenceNode();
+				foreach (var v in emotionPool.Values)
+				{
+					var o = dataHolder.ParentGraph.CreateObjectData();
+					v.GetObjectData(o.ToSerializationData());
+					seq.Add(o);
+				}
+
+				dataHolder.SetValueGraphNode("EmotionalPool",seq);
 				dataHolder.SetValue("EmotionDispositions", emotionDispositions.Values.Prepend(m_defaultEmotionalDisposition).ToArray());
 				dataHolder.SetValue("Mood",mood.MoodValue);
 			}
@@ -295,11 +305,13 @@ namespace EmotionalAppraisal
 					defaultDisposition = new EmotionDisposition("*",1,1);
 				m_defaultEmotionalDisposition = defaultDisposition;
 
-				var emotions = dataHolder.GetValue<ActiveEmotion[]>("EmotionalPool");
-				foreach (var emotion in emotions)
+				var seq = dataHolder.GetValueGraphNode("EmotionalPool") as ISequenceGraphNode;
+				foreach (var n in seq)
 				{
-					var hash = calculateHashString(emotion,m_parent.m_am);
-					emotionPool.Add(hash,emotion);
+					var data = (n as IObjectGraphNode).ToSerializationData();
+					var emotion = new ActiveEmotion(data,m_parent.Tick);
+					var hash = calculateHashString(emotion, m_parent.m_am);
+					emotionPool.Add(hash, emotion);
 				}
 			}
 		}

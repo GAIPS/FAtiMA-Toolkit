@@ -8,7 +8,7 @@ namespace EmotionalAppraisal
 	internal class Mood
 	{
 		private float _intensityATt0;
-		private float _deltaTimeT0;
+		private ulong _tickT0;
 		private float _intensity;
 	    
 		/// <summary>
@@ -31,20 +31,20 @@ namespace EmotionalAppraisal
 				value = 0;
 
 			this._intensityATt0 = this._intensity = value;
-			this._deltaTimeT0 = 0;
+			this._tickT0 = parent.Tick;
 		}
 
 		internal Mood()
 		{
 			this._intensityATt0 = this._intensity = 0;
-			this._deltaTimeT0 = 0;
+			this._tickT0 = 0;
 		}
 
 		/// <summary>
 		/// Decays the mood according to the agent's simulated time
 		/// </summary>
 		/// <returns>the mood's intensity after being decayed</returns>
-		public void DecayMood(float elapsedTime, EmotionalAppraisalAsset parent)
+		public void DecayMood(EmotionalAppraisalAsset parent)
 		{
 			if (this._intensityATt0 == 0)
 			{
@@ -52,13 +52,13 @@ namespace EmotionalAppraisal
 				return;
 			}
 
-			this._deltaTimeT0 += elapsedTime;
+			var delta = (parent.Tick - this._tickT0);
 			double lambda = Math.Log(parent.HalfLifeDecayConstant)/parent.MoodHalfLifeDecayTime;
-			_intensity = (float)(this._intensityATt0 * Math.Exp(lambda*_deltaTimeT0));
+			_intensity = (float)(this._intensityATt0 * Math.Exp(lambda*delta));
 			if(Math.Abs(this._intensity) < parent.MinimumMoodValueForInfluencingEmotions)
 			{
 				this._intensity = this._intensityATt0 = 0;
-				this._deltaTimeT0 = 0;
+				this._tickT0 = 0;
 			}
 		}
 

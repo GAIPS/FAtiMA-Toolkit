@@ -7,6 +7,7 @@ using KnowledgeBase.WellFormedNames;
 using System.IO;
 using GAIPS.Serialization;
 using KnowledgeBase;
+using KnowledgeBase.Conditions;
 
 namespace Tests.EmotionalAppraisal
 {
@@ -89,7 +90,6 @@ namespace Tests.EmotionalAppraisal
 			//Setup appraisal rules
 
 			AppraisalRule petAppraisalRule = new AppraisalRule((Name)"Event(EventObject,*,Pet,self)");
-			petAppraisalRule.TriggersOnFailedActivation = true;
 			petAppraisalRule.Desirability = 10;
 			//petAppraisalRule.Like = 7;
 			//m_emotionalAppraisalAsset.AddAppraisalRule(petAppraisalRule);
