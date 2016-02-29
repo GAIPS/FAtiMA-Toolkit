@@ -10,6 +10,26 @@ using RolePlayCharacter.Utilities;
 
 namespace RolePlayCharacter
 {
+    public enum LOADTYPE
+    {
+        FROMDATABASE = 0,
+        FROMFILE,
+        NONE
+    }
+
+    public enum FILETYPE
+    {
+        XML = 0,
+        JSON,
+        NONE
+    }
+
+    public static class FILETYPEEXTENSION
+    {
+        public static string XML { get { return ".xml"; } }
+        public static string JSON { get { return ".json"; } }
+    }
+
     [Serializable]
     public class RPCEvent : IEventRecord
     {
@@ -55,6 +75,15 @@ namespace RolePlayCharacter
   //      }
     }
 
+    public class EmptyAction : IAction
+    {
+        public Name ActionName { get; set; }
+
+        public IList<Name> Parameters { get; set; }
+
+        public Name Target { get; set; }
+    }
+
     [Serializable]
     public sealed partial class RolePlayCharacterAsset
     {
@@ -65,6 +94,41 @@ namespace RolePlayCharacter
         private List<Name> _rpcEventsName = new List<Name>();
 
         private IEnumerable<IAction> _rpcActions;
+
+        private static LOADTYPE _loadType = LOADTYPE.NONE;
+        private static FILETYPE _fileType = FILETYPE.NONE;
+
+        private string _assetId;
+
+        private float _mockMood;
+
+        public float Mood
+        {
+            get
+            {
+                if (_emotionalAppraisalAsset != null)
+                    return _emotionalAppraisalAsset.Mood;
+
+                else return _mockMood;
+            }
+
+            set
+            {
+                if (_emotionalAppraisalAsset != null)
+                    _emotionalAppraisalAsset.Mood = value;
+
+                else _mockMood = value;
+            }
+        }
+
+        public string AssetId
+        {
+            get { return _assetId; }
+
+            set { _assetId = value; }
+        }
+
+        private static string _currentFileAsset;
 
         private string _emotionalAppraisalPath;
 
@@ -83,9 +147,32 @@ namespace RolePlayCharacter
             set { _emotionalDecisionMakingPath = value; }
         }
 
-        public static RolePlayCharacterAsset LoadFromFile(string filename)
+        private static string GetFileToLoad(string idAsset)
+        {
+            try
+            {
+                if (_fileType == FILETYPE.NONE)
+                    throw new ParameterNotDefiniedException(new Messages().FILEEXTENSIONNOTDEFINED().ShowMessage());
+
+                if (_loadType == LOADTYPE.FROMFILE)
+                    throw new ParameterNotDefiniedException(new Messages().LOADTYPEINCORRECT().ShowMessage());
+
+                return _currentFileAsset;
+            }
+
+            catch (ParameterNotDefiniedException exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+
+            return "Default";
+        }
+
+        public static RolePlayCharacterAsset LoadFromFile(string idAsset)
         {
             RolePlayCharacterAsset rpc;
+           string filename = GetFileToLoad(idAsset);
+           
             using (var f = File.Open(filename, FileMode.Open, FileAccess.Read))
             {
                 var serializer = new JSONSerializer();
@@ -94,9 +181,54 @@ namespace RolePlayCharacter
             return rpc;
         }
 
+        public static RolePlayCharacterAsset LoadFromDatabase()
+        {
+            RolePlayCharacterAsset rpc = new RolePlayCharacterAsset();
+            return rpc;
+        }
+
+        public static RolePlayCharacterAsset LoadAsset(LOADTYPE loadType)
+        {
+            RolePlayCharacterAsset rpc = new RolePlayCharacterAsset() ;
+
+            switch(loadType)
+            {
+                case LOADTYPE.FROMFILE:
+                    try
+                    {
+                       return LoadFromFile(_currentFileAsset);
+                    }
+
+                    catch(FileNotFoundException exception)
+                    {
+                        Console.WriteLine(exception.Message);
+                    }
+                    break;
+                case LOADTYPE.FROMDATABASE:
+                    break;
+                default:
+                    break;
+            }
+
+            return rpc;
+        }
+
+        public void SetLoadingType(LOADTYPE loadType)
+        {
+            _loadType = loadType;
+        }
+
         public RolePlayCharacterAsset ()
         {
-          
+            if (_emotionalAppraisalPath != null && _loadType != LOADTYPE.NONE)
+            {
+                LoadEmotionalAppraisalAssetFromType(_loadType);
+            }
+
+            if(_emotionalDecisionMakingPath != null && _emotionalAppraisalAsset !=null)
+            {
+                LoadEmotionDecisionMakingAsset(_emotionalAppraisalAsset);
+            }
         }
 
         public void SetEmotionAppraisalModulePath(string emotionalAppraisalPath)
@@ -152,11 +284,12 @@ namespace RolePlayCharacter
             }  
         }
 
-        public void RetrieveAction()
+        public IEnumerable<IAction> RetrieveDecidedAction()
         {
+            if (_emotionalDecisionMakingAsset != null)
+                return _emotionalDecisionMakingAsset.Decide();
 
-
-
+            else return _rpcActions;
         }
 
         private void LoadEmotionAppraisalAssetFromFile(string name)
@@ -167,19 +300,28 @@ namespace RolePlayCharacter
             }
         }
 
+        private void LoadEmotionalAppraisalAssetFromType(LOADTYPE loadType)
+        {
+            if(loadType == LOADTYPE.FROMFILE)
+            {
+                LoadEmotionAppraisalAssetFromFile(_currentFileAsset);
+            }
+        }
+
         private void LoadEmotionDecisionMakingAssetFromFile(string name)
         {
             if(name != null)
             {
-               // _emotionalDecisionMakingAsset = EmotionalDecisionMakingAsset.LoadFromFile(name);
+                _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(name);
+                LoadEmotionDecisionMakingAsset(_emotionalAppraisalAsset);
             }
         }
 
         private void LoadEmotionDecisionMakingAsset(EmotionalAppraisalAsset eaa)
         {
             _emotionalDecisionMakingAsset = new EmotionalDecisionMakingAsset(eaa);
-
         }
+
         public float GetCharacterMood() { return _emotionalAppraisalAsset.Mood; }
 
         public void GetObjectData(ISerializationData dataHolder)

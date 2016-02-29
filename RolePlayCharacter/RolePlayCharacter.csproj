@@ -48,6 +48,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\FunctionalityNotImplementedException.cs" />
     <Compile Include="Utilities\Messages.cs" />
+    <Compile Include="Utilities\ParameterNotDefiniedException.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Components\AutobiographicMemory\AutobiographicMemory.csproj">

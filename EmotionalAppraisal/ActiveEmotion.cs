@@ -95,7 +95,7 @@ namespace EmotionalAppraisal
 		/// <returns>the intensity of the emotion after being decayed</returns>
 		internal void DecayEmotion(EmotionalAppraisalAsset parent)
 		{
-			var delta = parent.Tick - parent.Tick;
+			var delta = parent.Tick - tickATt0;
 			double lambda = Math.Log(parent.HalfLifeDecayConstant) /parent.EmotionalHalfLifeDecayTime;
 			float decay = (float)Math.Exp(lambda * this.Decay * delta);
 			Intensity = intensityATt0 * decay;

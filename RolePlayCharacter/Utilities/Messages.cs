@@ -26,5 +26,23 @@
             _message = "Emotional Decision Making Asset Not Implemented";
             return this;
         }
+
+        public Messages FILEEXTENSIONNOTDEFINED()
+        {
+            _message = "File Extension of File To Load Not Defined";
+            return this;
+        }
+
+        public Messages FILENAMENOTDEFINED()
+        {
+            _message = "Filename Not Defined";
+            return this;
+        }
+
+        public Messages LOADTYPEINCORRECT()
+        {
+            _message = "Type of Loading Incorrect";
+            return this;
+        }
     }
 }
