@@ -11,6 +11,8 @@ namespace EmotionalAppraisalWF.ViewModels
     {
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
 
+        public IEnumerable<string> EmotionTypes { get { return _emotionalAppraisalAsset.EmotionTypes; } }
+
         public BindingListView<EmotionDispositionDTO> EmotionDispositions {get;}
 
         public int DefaultThreshold

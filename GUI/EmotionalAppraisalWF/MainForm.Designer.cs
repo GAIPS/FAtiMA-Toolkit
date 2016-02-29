@@ -65,7 +65,7 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.dataGridViewEmotionDispositions = new System.Windows.Forms.DataGridView();
             this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
+            this.buttonAddEmotionDisposition = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.appraisalRulesTagePage = new System.Windows.Forms.TabPage();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
@@ -522,7 +522,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox5.Controls.Add(this.dataGridViewEmotionDispositions);
             this.groupBox5.Controls.Add(this.button6);
-            this.groupBox5.Controls.Add(this.button7);
+            this.groupBox5.Controls.Add(this.buttonAddEmotionDisposition);
             this.groupBox5.Controls.Add(this.button8);
             this.groupBox5.Location = new System.Drawing.Point(6, 77);
             this.groupBox5.Name = "groupBox5";
@@ -562,14 +562,15 @@
             this.button6.Text = "Edit";
             this.button6.UseVisualStyleBackColor = true;
             // 
-            // button7
+            // buttonAddEmotionDisposition
             // 
-            this.button7.Location = new System.Drawing.Point(6, 20);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(54, 23);
-            this.button7.TabIndex = 11;
-            this.button7.Text = "Add";
-            this.button7.UseVisualStyleBackColor = true;
+            this.buttonAddEmotionDisposition.Location = new System.Drawing.Point(6, 20);
+            this.buttonAddEmotionDisposition.Name = "buttonAddEmotionDisposition";
+            this.buttonAddEmotionDisposition.Size = new System.Drawing.Size(54, 23);
+            this.buttonAddEmotionDisposition.TabIndex = 11;
+            this.buttonAddEmotionDisposition.Text = "Add";
+            this.buttonAddEmotionDisposition.UseVisualStyleBackColor = true;
+            this.buttonAddEmotionDisposition.Click += new System.EventHandler(this.buttonAddEmotionDisposition_Click);
             // 
             // button8
             // 
@@ -1016,7 +1017,7 @@
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.DataGridView dataGridViewEmotionDispositions;
         private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button buttonAddEmotionDisposition;
         private System.Windows.Forms.Button button8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox comboBoxDefaultDecay;

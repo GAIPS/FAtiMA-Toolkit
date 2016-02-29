@@ -412,5 +412,10 @@ namespace EmotionalAppraisalWF
         {
             new AddOrEditEmotionForm(_emotionalStateVM).ShowDialog();
         }
+
+        private void buttonAddEmotionDisposition_Click(object sender, EventArgs e)
+        {
+            new AddOrEditEmotionDispositionForm(_emotionDispositionsVM).ShowDialog();
+        }
     }
 }
