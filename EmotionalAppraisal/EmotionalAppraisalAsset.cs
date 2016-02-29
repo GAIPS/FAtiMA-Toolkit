@@ -91,7 +91,10 @@ namespace EmotionalAppraisal
 	    /// <summary>
 	    /// Indicates the current time tick
 	    /// </summary>
-	    public ulong Tick { get; set; } = 0;
+	    public ulong Tick {
+		    get { return m_am.Tick; }
+		    set { m_am.Tick = value; }
+	    }
 
         /// <summary>
 	    /// The emotional mood of the agent, which can vary from -10 to 10
@@ -190,7 +193,7 @@ namespace EmotionalAppraisal
 			var APPRAISAL_FRAME = new InternalAppraisalFrame();
 			foreach (var n in eventNames)
 			{
-				var evt = m_am.RecordEvent(n, Perspective);
+				var evt = m_am.RecordEvent(n, Perspective,Tick);
 				if (evt.EventType.Equals("property-change", StringComparison.InvariantCultureIgnoreCase))
 				{
 					var fact = evt.EventObject;
@@ -210,7 +213,6 @@ namespace EmotionalAppraisal
 
 		private void UpdateEmotions(IAppraisalFrame frame)
 		{
-            this.Tick++;
             if (_lastFrameAppraisal >= frame.LastChange)
 				return;
 
@@ -230,10 +232,10 @@ namespace EmotionalAppraisal
 			_lastFrameAppraisal = frame.LastChange;
 		}
 
-		public void Update(float deltaTime)
+		public void Update()
 		{
 		    this.Tick++;
-			m_emotionalState.Decay(deltaTime);
+			m_emotionalState.Decay();
 		}
 
 		public void Reappraise()
@@ -410,7 +412,6 @@ namespace EmotionalAppraisal
         public void GetObjectData(ISerializationData dataHolder)
 		{
 			dataHolder.SetValue("Perspective",Perspective);
-            dataHolder.SetValue("Tick", Tick);
             dataHolder.SetValue("EmotionalHalfLifeDecayTime", EmotionalHalfLifeDecayTime);
 			dataHolder.SetValue("MoodHalfLifeDecayTime", MoodHalfLifeDecayTime);
             dataHolder.SetValue("HalfLifeDecayConstant", HalfLifeDecayConstant);
@@ -427,7 +428,6 @@ namespace EmotionalAppraisal
 		public void SetObjectData(ISerializationData dataHolder)
 		{
 			Perspective = dataHolder.GetValue<string>("Perspective");
-            Tick = dataHolder.GetValue<ulong>("Tick");
             EmotionalHalfLifeDecayTime = dataHolder.GetValue<float>("EmotionalHalfLifeDecayTime");
             MoodHalfLifeDecayTime = dataHolder.GetValue<float>("MoodHalfLifeDecayTime");
 		    HalfLifeDecayConstant = dataHolder.GetValue<double>("HalfLifeDecayConstant");

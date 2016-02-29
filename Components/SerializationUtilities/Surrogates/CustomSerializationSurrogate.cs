@@ -8,12 +8,12 @@ namespace GAIPS.Serialization.Surrogates
 	{
 		public void GetObjectData(object obj, IObjectGraphNode holder)
 		{
-			((ICustomSerialization)obj).GetObjectData(new SerializationData(holder));
+			((ICustomSerialization)obj).GetObjectData(holder.ToSerializationData());
 		}
 
 		public void SetObjectData(ref object obj, IObjectGraphNode node)
 		{
-			var data = new SerializationData(node);
+			var data = node.ToSerializationData();
 			((ICustomSerialization)obj).SetObjectData(data);
 		}
 	}

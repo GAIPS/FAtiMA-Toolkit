@@ -19,7 +19,6 @@ namespace EmotionalAppraisal.AppraisalRules
 	{
         public Name EventName { get; private set; }
 		public ConditionEvaluatorSet Conditions { get; private set; }
-		public bool TriggersOnFailedActivation { get; set; }
 
 		public AppraisalRule(Name eventName, ConditionEvaluatorSet conditions = null)
 		{

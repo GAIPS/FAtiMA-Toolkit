@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutobiographicMemory;
 using GAIPS.Serialization;
-using GAIPS.Serialization.SerializationGraph;
 using KnowledgeBase.WellFormedNames;
 
 namespace AutobiographicMemory
@@ -14,23 +12,7 @@ namespace AutobiographicMemory
 		private class EventRecord : IEventRecord, ICustomSerialization
 		{
 			private HashSet<string> m_linkedEmotions = new HashSet<string>();
-			/*
-			public readonly Name EventName;
-			public readonly SubstitutionSet CauseParameters;
-			*/
-			public EventRecord(uint id, Name eventName)
-			{
-				Id = id;
-				EventType = eventName.GetNTerm(1).ToString();
-				Subject = eventName.GetNTerm(2).ToString();
-				EventObject = eventName.GetNTerm(3);
-
-				var targetName = eventName.GetNTerm(4);
-				Target = targetName == Name.NIL_SYMBOL ? null : targetName.ToString();
-				Timestamp = DateTime.UtcNow;
-				EventName = eventName;
-			}
-
+			
 			public uint Id { get; private set; }
 
 			public IEnumerable<string> LinkedEmotions
@@ -41,22 +23,35 @@ namespace AutobiographicMemory
 				}
 			}
 
-			public void LinkEmotion(string emotionType)
-			{
-				m_linkedEmotions.Add(emotionType);
-			}
-
 			public string EventType { get; private set; }
 
 			public string Subject { get; private set; }
 
 			public string Target { get; private set; }
 
-			public DateTime Timestamp { get; private set; }
+			public ulong Timestamp { get; private set; }
 
 			public Name EventObject{ get; private set; }
 
 			public Name EventName { get; private set; }
+
+			public EventRecord(uint id, Name eventName, ulong timestamp)
+			{
+				Id = id;
+				EventType = eventName.GetNTerm(1).ToString();
+				Subject = eventName.GetNTerm(2).ToString();
+				EventObject = eventName.GetNTerm(3);
+
+				var targetName = eventName.GetNTerm(4);
+				Target = targetName == Name.NIL_SYMBOL ? null : targetName.ToString();
+				Timestamp = timestamp;
+				EventName = eventName;
+			}
+
+			public void LinkEmotion(string emotionType)
+			{
+				m_linkedEmotions.Add(emotionType);
+			}
 
 			public void GetObjectData(ISerializationData dataHolder)
 			{
@@ -109,7 +104,7 @@ namespace AutobiographicMemory
 						break;
 				}
 
-				Timestamp = dataHolder.GetValue<DateTime>("Timestamp");
+				Timestamp = dataHolder.GetValue<ulong>("Timestamp");
 
 				if(m_linkedEmotions==null)
 					m_linkedEmotions=new HashSet<string>();

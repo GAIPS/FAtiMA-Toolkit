@@ -17,6 +17,8 @@ namespace AutobiographicMemory
 		private Dictionary<uint, EventRecord> m_registry = new Dictionary<uint, EventRecord>();
 		private NameSearchTree<List<uint>> m_typeIndexes = new NameSearchTree<List<uint>>();
 
+		public ulong Tick { get; set; }
+
 		public void BindCalls(KB kb)
 		{
 			kb.RegistDynamicProperty(EVENT_ID_PROPERTY_TEMPLATE, EventIdPropertyCalculator,new []{"type","subject","def","target"});
@@ -24,13 +26,13 @@ namespace AutobiographicMemory
 			kb.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_TEMPLATE, LastEventIdPropertyCalculator, new[] { "type", "subject", "def", "target" });
 		}
 
-		public IEventRecord RecordEvent(Name eventName,string perspective)
+		public IEventRecord RecordEvent(Name eventName,string perspective, ulong timestamp)
 		{
 			if(!IsValidEventName(eventName))
 				throw new Exception("Invalid event name format");
 
 			var id = m_eventGUIDCounter++;
-			var rec = new EventRecord(id, eventName.ApplyPerspective(perspective));
+			var rec = new EventRecord(id, eventName.ApplyPerspective(perspective),timestamp);
 			AddRecord(rec);
 			return rec;
 		}
@@ -47,7 +49,6 @@ namespace AutobiographicMemory
 	    {
 	        return m_registry.Keys.Select(key => m_registry[key]).Cast<IEventRecord>().ToList();
 	    }
-
 
 	    private void AddRecord(EventRecord record)
 		{
@@ -146,7 +147,7 @@ namespace AutobiographicMemory
 						var newSet = new SubstitutionSet(c);
 						newSet.AddSubstitution(idSub);
 
-						var value = (DateTime.UtcNow - record.Timestamp).TotalSeconds;
+						var value = Tick - record.Timestamp;
 						yield return Tuples.Create((PrimitiveValue)value, newSet);	
 					}
 				}
@@ -160,7 +161,7 @@ namespace AutobiographicMemory
 					continue;
 
 				var record = m_registry[idValue];
-				var value = (PrimitiveValue)((DateTime.UtcNow - record.Timestamp).TotalSeconds);
+				var value = (PrimitiveValue) (Tick - record.Timestamp);
 				foreach (var c in pair.Item2)
 					yield return Tuples.Create(value, c);
 			}
@@ -177,7 +178,7 @@ namespace AutobiographicMemory
 
 			var key = Name.BuildName(EVT_NAME, type, subject, def, target);
 
-			DateTime bestTime = DateTime.MinValue;
+			ulong bestTime = 0;
 			Pair<PrimitiveValue, SubstitutionSet> best = null;
 			foreach (var pair in constraints.SelectMany(c => m_typeIndexes.Unify(key, c)))
 			{
@@ -202,11 +203,14 @@ namespace AutobiographicMemory
 
 		public void GetObjectData(ISerializationData dataHolder)
 		{
+			dataHolder.SetValue("Tick",Tick);
 			dataHolder.SetValue("records", m_registry.Values.ToArray());
 		}
 
 		public void SetObjectData(ISerializationData dataHolder)
 		{
+			Tick = dataHolder.GetValue<ulong>("Tick");
+
 			m_eventGUIDCounter = 0;
 			if (m_registry == null)
 				m_registry = new Dictionary<uint, EventRecord>();

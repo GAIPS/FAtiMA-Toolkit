@@ -15,7 +15,7 @@ namespace RolePlayCharacter
     {
         public string Target { get; set; }
         public string Subject { get; set; }
-        public DateTime Timestamp { get; set; }
+        public ulong Timestamp { get; set; }
 
         public uint Id { get; set; }
         public string EventType { get; set; }

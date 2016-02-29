@@ -16,10 +16,10 @@ namespace EmotionalAppraisal
 	/// </summary>
 	/// @author João Dias
 	/// @author Pedro Gonçalves
-	public class ActiveEmotion : IActiveEmotion, ICustomSerialization
+	internal class ActiveEmotion : IActiveEmotion
 	{
 		private float intensityATt0;
-		private float deltaTimeT0;
+		private ulong tickATt0;
 
 		public uint CauseId { get; private set; }
 
@@ -60,12 +60,12 @@ namespace EmotionalAppraisal
 			}
 		}
 
-		private void SetIntensity(float value)
+		private void SetIntensity(float value, ulong tickStamp)
 		{
 			value -= Threshold;
 			value = value < -10 ? -10 : (value > 10 ? 10 : value);
 			this.intensityATt0 = this.Intensity = value;
-			this.deltaTimeT0 = 0;
+			this.tickATt0 = tickStamp;
 		}
 
 		/// <summary>
@@ -75,7 +75,7 @@ namespace EmotionalAppraisal
 		/// <param name="potential">the potential for the intensity of the emotion</param>
 		/// <param name="threshold">the threshold for the specific emotion</param>
 		/// <param name="decay">the decay rate for the specific emotion</param>
-		public ActiveEmotion(IEmotion emotion, float potential, int threshold, int decay)
+		public ActiveEmotion(IEmotion emotion, float potential, int threshold, int decay, ulong tickStamp)
 		{
 			this.EmotionType = emotion.EmotionType;
 			this.Valence = emotion.Valence;
@@ -86,18 +86,18 @@ namespace EmotionalAppraisal
 
 			this.Threshold = threshold;
 			this.Decay = decay;
-			SetIntensity(potential);
+			SetIntensity(potential,tickStamp);
 		}
 
 		/// <summary>
 		/// Decays the emotion according to the system's time
 		/// </summary>
 		/// <returns>the intensity of the emotion after being decayed</returns>
-		internal void DecayEmotion(float elapsedTime, EmotionalAppraisalAsset parent)
+		internal void DecayEmotion(EmotionalAppraisalAsset parent)
 		{
-			this.deltaTimeT0 += elapsedTime;
+			var delta = parent.Tick - parent.Tick;
 			double lambda = Math.Log(parent.HalfLifeDecayConstant) /parent.EmotionalHalfLifeDecayTime;
-			float decay = (float)Math.Exp(lambda * this.Decay * deltaTimeT0);
+			float decay = (float)Math.Exp(lambda * this.Decay * delta);
 			Intensity = intensityATt0 * decay;
 		}
 
@@ -166,21 +166,19 @@ namespace EmotionalAppraisal
 		public void GetObjectData(ISerializationData dataHolder)
 		{
 			dataHolder.SetValue("Intensity", Intensity);
-			dataHolder.SetValue("Decay",Decay);
+			dataHolder.SetValue("Decay", Decay);
 			dataHolder.SetValue("Threshold", Threshold);
-			dataHolder.SetValue("CauseId",CauseId);
-			if(Direction!=null)
+			dataHolder.SetValue("CauseId", CauseId);
+			if (Direction != null)
 				dataHolder.SetValue("Direction", Direction.ToString());
-			dataHolder.SetValue("EmotionType",EmotionType);
-			dataHolder.SetValue("Valence",Valence);
+			dataHolder.SetValue("EmotionType", EmotionType);
+			dataHolder.SetValue("Valence", Valence);
 			dataHolder.SetValue("AppraisalVariables", AppraisalVariables.ToArray());
-			dataHolder.SetValue("InfluenceMood",InfluenceMood);
+			dataHolder.SetValue("InfluenceMood", InfluenceMood);
 		}
 
-		public void SetObjectData(ISerializationData dataHolder)
+		public ActiveEmotion(ISerializationData dataHolder, ulong tickStamp)
 		{
-			Intensity = intensityATt0 = dataHolder.GetValue<float>("Intensity");
-			deltaTimeT0 = 0;
 			Decay = dataHolder.GetValue<int>("Decay");
 			Threshold = dataHolder.GetValue<int>("Threshold");
 			CauseId = dataHolder.GetValue<uint>("CauseId");
@@ -190,6 +188,9 @@ namespace EmotionalAppraisal
 			Valence = dataHolder.GetValue<EmotionValence>("Valence");
 			AppraisalVariables = dataHolder.GetValue<string[]>("AppraisalVariables");
 			InfluenceMood = dataHolder.GetValue<bool>("InfluenceMood");
+			
+			var i = dataHolder.GetValue<float>("Intensity");
+			SetIntensity(i,tickStamp);
 		}
 	}
 }

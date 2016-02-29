@@ -41,7 +41,7 @@ namespace EmotionalAppraisalWF.ViewModels
         public void Update()
         {
             this.Current++;
-            this._emotionalAppraisalAsset.Update(1);
+            this._emotionalAppraisalAsset.Update();
         }
 
         public void StopUpdate()
