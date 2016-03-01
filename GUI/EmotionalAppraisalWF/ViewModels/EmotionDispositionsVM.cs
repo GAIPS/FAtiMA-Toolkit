@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using EmotionalAppraisal;
-using EmotionalAppraisal.DTOs;
 using Equin.ApplicationFramework;
 
 namespace EmotionalAppraisalWF.ViewModels
@@ -33,6 +31,22 @@ namespace EmotionalAppraisalWF.ViewModels
             this.EmotionDispositions = new BindingListView<EmotionDispositionDTO>(ea.EmotionDispositions.ToList());
         }
 
+
+        public void AddEmotionDisposition(EmotionDispositionDTO disp)
+        {
+            _emotionalAppraisalAsset.AddEmotionDisposition(disp);
+            EmotionDispositions.DataSource = _emotionalAppraisalAsset.EmotionDispositions.ToList();
+            EmotionDispositions.Refresh();
+        }
+
+        public void UpdateEmotionDisposition(EmotionDispositionDTO oldDisp, EmotionDispositionDTO newDisp)
+        {
+            _emotionalAppraisalAsset.RemoveEmotionDisposition(oldDisp.Emotion);
+            _emotionalAppraisalAsset.AddEmotionDisposition(newDisp);
+            EmotionDispositions.DataSource = _emotionalAppraisalAsset.EmotionDispositions.ToList();
+            EmotionDispositions.Refresh();
+        }
+
         private void ChangeDefaultEmotionDisposition(int threshold, int decay)
         {
             _emotionalAppraisalAsset.DefaultEmotionDisposition = new EmotionDispositionDTO
@@ -43,5 +57,14 @@ namespace EmotionalAppraisalWF.ViewModels
             };
         }
 
+        public void RemoveDispositions(IList<EmotionDispositionDTO> dispositionsToRemove)
+        {
+            foreach (var emotionDispositionDto in dispositionsToRemove)
+            {
+                _emotionalAppraisalAsset.RemoveEmotionDisposition(emotionDispositionDto.Emotion);
+            }
+            EmotionDispositions.DataSource = _emotionalAppraisalAsset.EmotionDispositions.ToList();
+            EmotionDispositions.Refresh();
+        }
     }
 }

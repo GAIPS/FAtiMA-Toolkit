@@ -152,6 +152,11 @@ namespace EmotionalAppraisal
 	        return this.m_emotionalState.GetEmotionDisposition(emotionType).ToDto();
 	    }
 
+	    public void RemoveEmotionDisposition(string emotionType)
+	    {
+	        m_emotionalState.RemoveEmotionDisposition(emotionType);
+	    }
+
         public IEnumerable<AppraisalRuleDTO> GetAllAppraisalRules()
         {
             var appraisalRules = this.m_appraisalDerivator.GetAppraisalRules().Select(r => new AppraisalRuleDTO

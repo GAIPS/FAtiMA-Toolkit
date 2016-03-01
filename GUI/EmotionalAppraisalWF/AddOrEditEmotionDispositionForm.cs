@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using EmotionalAppraisal;
+using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
 
 
@@ -15,7 +16,7 @@ namespace EmotionalAppraisalWF
         
         public AddOrEditEmotionDispositionForm(EmotionDispositionsVM emotionDispositionsVM, EmotionDispositionDTO emotionDispositionToEdit = null)
         {
-            IEnumerable<int> seq = Enumerable.Range(1, 10);
+            IEnumerable<int> seq = Enumerable.Range(1, 9);
             InitializeComponent();
 
             _emotionDispositionsVM = emotionDispositionsVM;
@@ -30,15 +31,15 @@ namespace EmotionalAppraisalWF
 
             comboBoxEmotionType.DataSource = _emotionDispositionsVM.EmotionTypes;
 
-            /*if (beliefToEdit != null)
+            if (emotionDispositionToEdit != null)
             {
-                this.Text = Resources.AddOrEditBeliefForm_AddOrEditBeliefForm_Edit_Belief;
-                this.addOrEditButton.Text = Resources.AddOrEditBeliefForm_AddOrEditBeliefForm_Update;
+                this.Text = Resources.EditEmotionDispositionFormTitle;
+                this.addOrEditButton.Text = Resources.UpdateButtonLabel;
 
-                beliefNameTextBox.Text = beliefToEdit.Name;
-                beliefValueTextBox.Text = beliefToEdit.Value;
-                beliefVisibilityComboBox.SelectedIndex = beliefVisibilityComboBox.FindString(beliefToEdit.Visibility.ToString());
-            }*/
+                comboBoxEmotionType.SelectedIndex = comboBoxEmotionType.FindString(emotionDispositionToEdit.Emotion);
+                comboBoxDecay.SelectedIndex = comboBoxDecay.FindString(emotionDispositionToEdit.Decay.ToString());
+                comboBoxThreshold.SelectedIndex = comboBoxThreshold.FindString(emotionDispositionToEdit.Threshold.ToString());
+            }
         }
 
       
@@ -85,7 +86,30 @@ namespace EmotionalAppraisalWF
 
         private void addOrEditButton_Click(object sender, EventArgs e)
         {
+            var newEmotionDisposition = new EmotionDispositionDTO()
+            {
+                Emotion = comboBoxEmotionType.Text,
+                Decay = int.Parse(comboBoxDecay.Text),
+                Threshold = int.Parse(comboBoxThreshold.Text)
+            };
 
+            if (_emotionDispositionToEdit == null)
+            {
+                try
+                {   
+                    this._emotionDispositionsVM.AddEmotionDisposition(newEmotionDisposition);
+                }
+                catch (ArgumentException ex)
+                {
+                    MessageBox.Show(Resources.EmotionDispositionAlreadyExistsExceptionMessage, Resources.ErrorDialogTitle,
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                this._emotionDispositionsVM.UpdateEmotionDisposition(_emotionDispositionToEdit, newEmotionDisposition);
+            }
+            this.Close();
         }
     }
 }

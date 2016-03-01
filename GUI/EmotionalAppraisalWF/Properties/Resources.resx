@@ -159,4 +159,10 @@
   <data name="EmptyPerspectiveError" xml:space="preserve">
     <value>"Perspective" cannot be an empty string</value>
   </data>
+  <data name="EditEmotionDispositionFormTitle" xml:space="preserve">
+    <value>Edit Emotion Disposition</value>
+  </data>
+  <data name="EmotionDispositionAlreadyExistsExceptionMessage" xml:space="preserve">
+    <value>Disposition already exists, use the edit function.</value>
+  </data>
 </root>

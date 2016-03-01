@@ -75,7 +75,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(219, 32);
+            this.label3.Location = new System.Drawing.Point(146, 32);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 13);
             this.label3.TabIndex = 16;
@@ -85,7 +85,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(146, 32);
+            this.label2.Location = new System.Drawing.Point(216, 32);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(57, 13);
             this.label2.TabIndex = 15;
@@ -100,7 +100,7 @@
             // 
             this.comboBoxThreshold.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxThreshold.FormattingEnabled = true;
-            this.comboBoxThreshold.Location = new System.Drawing.Point(146, 53);
+            this.comboBoxThreshold.Location = new System.Drawing.Point(216, 53);
             this.comboBoxThreshold.Name = "comboBoxThreshold";
             this.comboBoxThreshold.Size = new System.Drawing.Size(57, 21);
             this.comboBoxThreshold.TabIndex = 21;
@@ -114,7 +114,7 @@
             // 
             this.comboBoxDecay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxDecay.FormattingEnabled = true;
-            this.comboBoxDecay.Location = new System.Drawing.Point(219, 53);
+            this.comboBoxDecay.Location = new System.Drawing.Point(146, 53);
             this.comboBoxDecay.Name = "comboBoxDecay";
             this.comboBoxDecay.Size = new System.Drawing.Size(60, 21);
             this.comboBoxDecay.TabIndex = 22;

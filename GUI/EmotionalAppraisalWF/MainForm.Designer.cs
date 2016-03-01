@@ -64,9 +64,9 @@
             this.label9 = new System.Windows.Forms.Label();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.dataGridViewEmotionDispositions = new System.Windows.Forms.DataGridView();
-            this.button6 = new System.Windows.Forms.Button();
+            this.buttonEditEmotionDisposition = new System.Windows.Forms.Button();
             this.buttonAddEmotionDisposition = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
+            this.buttonRemoveEmotionDisposition = new System.Windows.Forms.Button();
             this.appraisalRulesTagePage = new System.Windows.Forms.TabPage();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.buttonEditAppraisalRuleCondition = new System.Windows.Forms.Button();
@@ -521,9 +521,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox5.Controls.Add(this.dataGridViewEmotionDispositions);
-            this.groupBox5.Controls.Add(this.button6);
+            this.groupBox5.Controls.Add(this.buttonEditEmotionDisposition);
             this.groupBox5.Controls.Add(this.buttonAddEmotionDisposition);
-            this.groupBox5.Controls.Add(this.button8);
+            this.groupBox5.Controls.Add(this.buttonRemoveEmotionDisposition);
             this.groupBox5.Location = new System.Drawing.Point(6, 77);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(554, 336);
@@ -535,6 +535,7 @@
             // 
             this.dataGridViewEmotionDispositions.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.dataGridViewEmotionDispositions.AllowUserToAddRows = false;
+            this.dataGridViewEmotionDispositions.AllowUserToDeleteRows = false;
             this.dataGridViewEmotionDispositions.AllowUserToOrderColumns = true;
             this.dataGridViewEmotionDispositions.AllowUserToResizeRows = false;
             this.dataGridViewEmotionDispositions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -552,15 +553,18 @@
             this.dataGridViewEmotionDispositions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewEmotionDispositions.Size = new System.Drawing.Size(542, 287);
             this.dataGridViewEmotionDispositions.TabIndex = 14;
+            this.dataGridViewEmotionDispositions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewEmotionDispositions_CellContentClick);
+            this.dataGridViewEmotionDispositions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewEmotionDispositions_CellMouseDoubleClick);
             // 
-            // button6
+            // buttonEditEmotionDisposition
             // 
-            this.button6.Location = new System.Drawing.Point(66, 20);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(70, 23);
-            this.button6.TabIndex = 13;
-            this.button6.Text = "Edit";
-            this.button6.UseVisualStyleBackColor = true;
+            this.buttonEditEmotionDisposition.Location = new System.Drawing.Point(66, 20);
+            this.buttonEditEmotionDisposition.Name = "buttonEditEmotionDisposition";
+            this.buttonEditEmotionDisposition.Size = new System.Drawing.Size(70, 23);
+            this.buttonEditEmotionDisposition.TabIndex = 13;
+            this.buttonEditEmotionDisposition.Text = "Edit";
+            this.buttonEditEmotionDisposition.UseVisualStyleBackColor = true;
+            this.buttonEditEmotionDisposition.Click += new System.EventHandler(this.buttonEditEmotionDisposition_Click);
             // 
             // buttonAddEmotionDisposition
             // 
@@ -572,14 +576,15 @@
             this.buttonAddEmotionDisposition.UseVisualStyleBackColor = true;
             this.buttonAddEmotionDisposition.Click += new System.EventHandler(this.buttonAddEmotionDisposition_Click);
             // 
-            // button8
+            // buttonRemoveEmotionDisposition
             // 
-            this.button8.Location = new System.Drawing.Point(142, 20);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(70, 23);
-            this.button8.TabIndex = 12;
-            this.button8.Text = "Remove";
-            this.button8.UseVisualStyleBackColor = true;
+            this.buttonRemoveEmotionDisposition.Location = new System.Drawing.Point(142, 20);
+            this.buttonRemoveEmotionDisposition.Name = "buttonRemoveEmotionDisposition";
+            this.buttonRemoveEmotionDisposition.Size = new System.Drawing.Size(70, 23);
+            this.buttonRemoveEmotionDisposition.TabIndex = 12;
+            this.buttonRemoveEmotionDisposition.Text = "Remove";
+            this.buttonRemoveEmotionDisposition.UseVisualStyleBackColor = true;
+            this.buttonRemoveEmotionDisposition.Click += new System.EventHandler(this.buttonRemoveEmotionDisposition_Click);
             // 
             // appraisalRulesTagePage
             // 
@@ -1016,9 +1021,9 @@
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.DataGridView dataGridViewEmotionDispositions;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button buttonEditEmotionDisposition;
         private System.Windows.Forms.Button buttonAddEmotionDisposition;
-        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Button buttonRemoveEmotionDisposition;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox comboBoxDefaultDecay;
         private System.Windows.Forms.Label label10;

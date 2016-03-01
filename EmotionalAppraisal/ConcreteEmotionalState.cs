@@ -138,6 +138,11 @@ namespace EmotionalAppraisal
 				return m_defaultEmotionalDisposition;
 			}
 
+		    public void RemoveEmotionDisposition(string emotionName)
+		    {
+		        this.emotionDispositions.Remove(emotionName);
+		    }
+
 		    public EmotionDisposition DefaultEmotionDisposition
 		    {
 		        get { return m_defaultEmotionalDisposition;}
@@ -255,7 +260,7 @@ namespace EmotionalAppraisal
 
 			public void AddEmotionDisposition(EmotionDisposition emotionDisposition)
 			{
-				this.emotionDispositions.Add(emotionDisposition.Emotion, emotionDisposition);
+                this.emotionDispositions.Add(emotionDisposition.Emotion, emotionDisposition);
 			}
 
 			public IEnumerable<EmotionDisposition> GetEmotionDispositions()
