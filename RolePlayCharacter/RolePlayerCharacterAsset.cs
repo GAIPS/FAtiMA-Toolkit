@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
+using GAIPS.Serialization;
+using RolePlayCharacter.Utilities;
 using EmotionalAppraisal;
 using EmotionalDecisionMaking;
-using GAIPS.Serialization;
 using AutobiographicMemory;
 using KnowledgeBase.WellFormedNames;
-using RolePlayCharacter.Utilities;
+using System.Collections.Generic;
 
 namespace RolePlayCharacter
 {
@@ -87,7 +87,11 @@ namespace RolePlayCharacter
     [Serializable]
     public sealed partial class RolePlayCharacterAsset
     {
+        #region RolePlayCharater Fields
+        [NonSerialized]
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
+
+        [NonSerialized]
         private EmotionalDecisionMakingAsset _emotionalDecisionMakingAsset;
 
         private List<RPCEvent> _rpcEvents = new List<RPCEvent>();
@@ -100,7 +104,26 @@ namespace RolePlayCharacter
 
         private string _assetId;
 
-        private float _mockMood;
+        private float _mockMood = 69;
+
+        private string _characterName;
+
+        public string CharacterName
+        {
+            get
+            {
+                if (_emotionalAppraisalAsset != null)
+                    return _emotionalAppraisalAsset.Perspective;
+                else return _characterName;
+            }
+
+            set
+            {
+                if (_emotionalAppraisalAsset != null)
+                    _emotionalAppraisalAsset.Perspective = value;
+                 else   _characterName = value;
+            }
+        }
 
         public float Mood
         {
@@ -147,27 +170,9 @@ namespace RolePlayCharacter
             set { _emotionalDecisionMakingPath = value; }
         }
 
-        private static string GetFileToLoad(string idAsset)
-        {
-            try
-            {
-                if (_fileType == FILETYPE.NONE)
-                    throw new ParameterNotDefiniedException(new Messages().FILEEXTENSIONNOTDEFINED().ShowMessage());
+        #endregion
 
-                if (_loadType == LOADTYPE.FROMFILE)
-                    throw new ParameterNotDefiniedException(new Messages().LOADTYPEINCORRECT().ShowMessage());
-
-                return _currentFileAsset;
-            }
-
-            catch (ParameterNotDefiniedException exception)
-            {
-                Console.WriteLine(exception.Message);
-            }
-
-            return "Default";
-        }
-
+        #region Load Methods
         public static RolePlayCharacterAsset LoadFromFile(string idAsset)
         {
             RolePlayCharacterAsset rpc;
@@ -213,14 +218,32 @@ namespace RolePlayCharacter
             return rpc;
         }
 
-        public void SetLoadingType(LOADTYPE loadType)
+        #endregion
+
+        private static string GetFileToLoad(string idAsset)
         {
-            _loadType = loadType;
+            try
+            {
+                if (_fileType == FILETYPE.NONE)
+                    throw new ParameterNotDefiniedException(new Messages().FILEEXTENSIONNOTDEFINED().ShowMessage());
+
+                if (_loadType == LOADTYPE.FROMFILE)
+                    throw new ParameterNotDefiniedException(new Messages().LOADTYPEINCORRECT().ShowMessage());
+
+                return _currentFileAsset;
+            }
+
+            catch (ParameterNotDefiniedException exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+
+            return "Default";
         }
 
         public RolePlayCharacterAsset ()
         {
-            if (_emotionalAppraisalPath != null && _loadType != LOADTYPE.NONE)
+           if (_emotionalAppraisalPath != null && _loadType != LOADTYPE.NONE)
             {
                 LoadEmotionalAppraisalAssetFromType(_loadType);
             }
@@ -229,6 +252,37 @@ namespace RolePlayCharacter
             {
                 LoadEmotionDecisionMakingAsset(_emotionalAppraisalAsset);
             }
+        }
+
+        #region LoadAndSet Methods
+        private void LoadEmotionAppraisalAssetFromFile(string name)
+        {
+            if (name != null)
+            {
+                _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(name);
+            }
+        }
+
+        private void LoadEmotionalAppraisalAssetFromType(LOADTYPE loadType)
+        {
+            if (loadType == LOADTYPE.FROMFILE)
+            {
+                LoadEmotionAppraisalAssetFromFile(_currentFileAsset);
+            }
+        }
+
+        private void LoadEmotionDecisionMakingAssetFromFile(string name)
+        {
+            if (name != null)
+            {
+                _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(name);
+                LoadEmotionDecisionMakingAsset(_emotionalAppraisalAsset);
+            }
+        }
+
+        private void LoadEmotionDecisionMakingAsset(EmotionalAppraisalAsset eaa)
+        {
+            _emotionalDecisionMakingAsset = new EmotionalDecisionMakingAsset(eaa);
         }
 
         public void SetEmotionAppraisalModulePath(string emotionalAppraisalPath)
@@ -246,21 +300,38 @@ namespace RolePlayCharacter
             _emotionalDecisionMakingPath = emotionalDecisionPath;
         }
 
-        public void SetEmotionalDecisionModule()
+        public void SetEmotionalDecisionModule(string fullPath)
         {
-            _emotionalDecisionMakingAsset = new EmotionalDecisionMakingAsset(_emotionalAppraisalAsset);
+            if (_emotionalAppraisalAsset != null)
+            {
+                _emotionalDecisionMakingAsset = new EmotionalDecisionMakingAsset(_emotionalAppraisalAsset);
+                using (var f = File.Open(fullPath, FileMode.Open, FileAccess.Read))
+                {
+                    var serializer = new JSONSerializer();
+                    _emotionalDecisionMakingAsset.ReactiveActions = serializer.Deserialize<ReactiveActions>(f);
+                }
+
+            }
+
         }
 
-        public void SaveToFile(Stream file)
+        public void SetLoadingType(LOADTYPE loadType)
         {
-            var serializer = new JSONSerializer();
-            serializer.Serialize(file, this);
+            _loadType = loadType;
         }
 
+        #endregion
+
+        #region CharacterMethods
         public void AddRPCEvent(RPCEvent evt)
         {
             _rpcEvents.Add(evt);
             _rpcEventsName.Add(evt.EventName);
+        }
+
+        public void AddEvent(Name eventName)
+        {
+            _rpcEventsName.Add(eventName);
         }
 
         public void PerceiveEvent()
@@ -292,37 +363,52 @@ namespace RolePlayCharacter
             else return _rpcActions;
         }
 
-        private void LoadEmotionAppraisalAssetFromFile(string name)
+        public float GetCharacterMood() { return Mood; }
+
+        public float GetIntensityStrongestEmotion()
         {
-            if(name != null)
+            return GetStrongestActiveEmotion().Intensity;
+        }
+
+        public IActiveEmotion GetStrongestActiveEmotion()
+        {
+            IEnumerable<IActiveEmotion> currentActiveEmotions = _emotionalAppraisalAsset.GetAllActiveEmotions();
+
+            IActiveEmotion activeEmotion = null;
+
+            foreach (IActiveEmotion emotion in currentActiveEmotions)
             {
-                _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(name);
+                if (activeEmotion != null)
+                {
+                    if (activeEmotion.Intensity < emotion.Intensity)
+                        activeEmotion = emotion;
+                }
+
+                else activeEmotion = emotion;
             }
+
+            return activeEmotion;
         }
 
-        private void LoadEmotionalAppraisalAssetFromType(LOADTYPE loadType)
+        public IEnumerable<IActiveEmotion> CharacterEmotions()
         {
-            if(loadType == LOADTYPE.FROMFILE)
-            {
-                LoadEmotionAppraisalAssetFromFile(_currentFileAsset);
-            }
+           return _emotionalAppraisalAsset.GetAllActiveEmotions();
         }
 
-        private void LoadEmotionDecisionMakingAssetFromFile(string name)
+        public void UpdateCharacterState()
         {
-            if(name != null)
-            {
-                _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(name);
-                LoadEmotionDecisionMakingAsset(_emotionalAppraisalAsset);
-            }
+            if (_emotionalAppraisalAsset != null)
+                _emotionalAppraisalAsset.Update();
         }
 
-        private void LoadEmotionDecisionMakingAsset(EmotionalAppraisalAsset eaa)
+        #endregion
+
+        #region Serialization
+        public void SaveToFile(Stream file)
         {
-            _emotionalDecisionMakingAsset = new EmotionalDecisionMakingAsset(eaa);
+            var serializer = new JSONSerializer();
+            serializer.Serialize(file, this);
         }
-
-        public float GetCharacterMood() { return _emotionalAppraisalAsset.Mood; }
 
         public void GetObjectData(ISerializationData dataHolder)
         {
@@ -337,9 +423,10 @@ namespace RolePlayCharacter
         {
             _emotionalDecisionMakingPath = dataHolder.GetValue<string>("EmotionalDecisionMakingPath");
             _emotionalAppraisalPath = dataHolder.GetValue<string>("EmotionalAppraisalPath");
-            _rpcEvents = dataHolder.GetValue<List<RPCEvent>>("RPC_Events");
-            _rpcEventsName = dataHolder.GetValue<List<Name>>("RPC_Events_Names");
-            _rpcActions = dataHolder.GetValue<IEnumerable<IAction>>("RPC_Actions");
+           _rpcEvents = dataHolder.GetValue<List<RPCEvent>>("RPC_Events");
+           _rpcEventsName = dataHolder.GetValue<List<Name>>("RPC_Events_Names");
+           _rpcActions = dataHolder.GetValue<IEnumerable<IAction>>("RPC_Actions");
         }
+        #endregion
     }
 }
