@@ -23,7 +23,7 @@ namespace EmotionalAppraisalWF
 
 
             //Default Values 
-            comboBoxIntensity.SelectedIndex = comboBoxIntensity.FindString("0");
+            comboBoxIntensity.Text = "1";
             comboBoxEmotionType.DataSource = _emotionalStateVm.EmotionTypes;
             // beliefVisibilityComboBox.DataSource = _knowledgeBaseVm.GetKnowledgeVisibilities();
             //beliefVisibilityComboBox.SelectedIndex = 0;

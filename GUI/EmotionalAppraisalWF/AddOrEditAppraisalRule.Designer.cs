@@ -73,7 +73,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(175, 99);
+            this.label3.Location = new System.Drawing.Point(163, 99);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(89, 13);
             this.label3.TabIndex = 16;
@@ -113,9 +113,31 @@
             // 
             this.comboBoxPraiseworthiness.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxPraiseworthiness.FormattingEnabled = true;
-            this.comboBoxPraiseworthiness.Location = new System.Drawing.Point(270, 95);
+            this.comboBoxPraiseworthiness.Items.AddRange(new object[] {
+            "-10",
+            "-9",
+            "-8",
+            "-7",
+            "-6",
+            "-5",
+            "-4",
+            "-3",
+            "-2",
+            "-1",
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10"});
+            this.comboBoxPraiseworthiness.Location = new System.Drawing.Point(256, 95);
             this.comboBoxPraiseworthiness.Name = "comboBoxPraiseworthiness";
-            this.comboBoxPraiseworthiness.Size = new System.Drawing.Size(30, 21);
+            this.comboBoxPraiseworthiness.Size = new System.Drawing.Size(44, 21);
             this.comboBoxPraiseworthiness.TabIndex = 19;
             this.comboBoxPraiseworthiness.SelectedIndexChanged += new System.EventHandler(this.comboBoxPraiseworthiness_SelectedIndexChanged);
             // 
@@ -123,9 +145,31 @@
             // 
             this.comboBoxDesirability.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxDesirability.FormattingEnabled = true;
+            this.comboBoxDesirability.Items.AddRange(new object[] {
+            "-10",
+            "-9",
+            "-8",
+            "-7",
+            "-6",
+            "-5",
+            "-4",
+            "-3",
+            "-2",
+            "-1",
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10"});
             this.comboBoxDesirability.Location = new System.Drawing.Point(106, 95);
             this.comboBoxDesirability.Name = "comboBoxDesirability";
-            this.comboBoxDesirability.Size = new System.Drawing.Size(30, 21);
+            this.comboBoxDesirability.Size = new System.Drawing.Size(46, 21);
             this.comboBoxDesirability.TabIndex = 23;
             this.comboBoxDesirability.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 

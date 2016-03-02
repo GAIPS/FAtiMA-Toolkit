@@ -16,7 +16,7 @@ namespace EmotionalAppraisalWF
         
         public AddOrEditEmotionDispositionForm(EmotionDispositionsVM emotionDispositionsVM, EmotionDispositionDTO emotionDispositionToEdit = null)
         {
-            IEnumerable<int> seq = Enumerable.Range(1, 9);
+            IEnumerable<int> seq = Enumerable.Range(1, 10);
             InitializeComponent();
 
             _emotionDispositionsVM = emotionDispositionsVM;

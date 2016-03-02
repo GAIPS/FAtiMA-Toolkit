@@ -109,17 +109,6 @@
             this.comboBoxIntensity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxIntensity.FormattingEnabled = true;
             this.comboBoxIntensity.Items.AddRange(new object[] {
-            "-10",
-            "-9",
-            "-8",
-            "-7",
-            "-6",
-            "-5",
-            "-4",
-            "-3",
-            "-2",
-            "-1",
-            "0",
             "1",
             "2",
             "3",

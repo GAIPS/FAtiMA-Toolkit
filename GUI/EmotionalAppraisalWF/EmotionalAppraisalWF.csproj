@@ -90,6 +90,7 @@
     <Compile Include="ViewModels\EmotionalStateVM.cs" />
     <Compile Include="ViewModels\EmotionDispositionsVM.cs" />
     <Compile Include="ViewModels\AppraisalRulesVM.cs" />
+    <Compile Include="ViewModels\AutobiographicalMemoryVM.cs" />
     <Compile Include="ViewModels\KnowledgeBaseVM.cs" />
     <EmbeddedResource Include="AddOrEditAppraisalRule.resx">
       <DependentUpon>AddOrEditAppraisalRule.cs</DependentUpon>

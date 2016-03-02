@@ -16,18 +16,14 @@ namespace EmotionalAppraisalWF
         
         public AddOrEditAppraisalRuleForm(AppraisalRulesVM ruleVM, AppraisalRuleDTO ruleToEdit = null)
         {
-            IEnumerable<int> seq = Enumerable.Range(0, 10);
             InitializeComponent();
 
             _appraisalRulesVM = ruleVM;
             _appraisalRuleToEdit = ruleToEdit;
             
             //defaultValues
-            comboBoxDesirability.Items.AddRange(seq.Cast<object>().ToArray());
-            comboBoxDesirability.SelectedIndex = 0;
-
-            comboBoxPraiseworthiness.Items.AddRange(seq.Cast<object>().ToArray());
-            comboBoxPraiseworthiness.SelectedIndex = 0;
+            comboBoxDesirability.Text = "0";
+            comboBoxPraiseworthiness.Text = "0";
 
             if (ruleToEdit != null)
             {

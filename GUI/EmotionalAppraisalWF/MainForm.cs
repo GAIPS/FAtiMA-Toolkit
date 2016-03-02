@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
-using AutobiographicMemory;
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
@@ -23,6 +21,7 @@ namespace EmotionalAppraisalWF
         private KnowledgeBaseVM _knowledgeBaseVM;
         private AppraisalRulesVM _appraisalRulesVM;
         private EmotionDispositionsVM _emotionDispositionsVM;
+        private AutobiographicalMemoryVM _autobiographicalMemoryVM;
 
         public MainForm()
         {
@@ -48,7 +47,6 @@ namespace EmotionalAppraisalWF
             this.moodValueLabel.Text = Math.Round(_emotionalStateVM.Mood).ToString(MOOD_FORMAT);
             this.moodTrackBar.Value = (int) float.Parse(this.moodValueLabel.Text);
             this.textBoxStartTick.Text = _emotionalStateVM.Start.ToString();
-            this.textBoxCurrent.Text = _emotionalStateVM.Start.ToString();
             this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
 
 
@@ -64,8 +62,7 @@ namespace EmotionalAppraisalWF
             _appraisalRulesVM = new AppraisalRulesVM(_emotionalAppraisalAsset);
             dataGridViewAppraisalRules.DataSource = _appraisalRulesVM.AppraisalRules;
             dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
-            dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<AppraisalRuleDTO>(dto => dto.Conditions)].Visible =
-                false;
+            dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<AppraisalRuleDTO>(dto => dto.Conditions)].Visible = false;
             dataGridViewAppRuleConditions.DataSource = _appraisalRulesVM.CurrentRuleConditions;
             dataGridViewAppRuleConditions.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
 
@@ -75,6 +72,8 @@ namespace EmotionalAppraisalWF
             dataGridViewBeliefs.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
 
             //AM
+            _autobiographicalMemoryVM = new AutobiographicalMemoryVM(_emotionalAppraisalAsset);
+            dataGridViewAM.DataSource = _autobiographicalMemoryVM.Events;
         }
 
 
@@ -385,36 +384,7 @@ namespace EmotionalAppraisalWF
                 _emotionalStateVM.Start = time;
             }
         }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            if (checkBoxUpdate.Checked)
-            {
-                _emotionalStateVM.Update();
-                this.textBoxCurrent.Text = this._emotionalStateVM.Current.ToString();
-
-                //mood
-                this.moodValueLabel.Text = _emotionalStateVM.Mood.ToString(MOOD_FORMAT);
-                this.moodTrackBar.Value = (int) float.Parse(this.moodValueLabel.Text);
-            }
-        }
-
-
-        private void buttonReset_Click(object sender, EventArgs e)
-        {
-            this._emotionalStateVM.StopUpdate();
-            this.textBoxCurrent.Text = this._emotionalStateVM.Current.ToString();
-        }
-
-        private void checkBoxUpdate_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxUpdate.Checked)
-            {
-                _emotionalStateVM.Current = _emotionalStateVM.Start;
-                this.textBoxCurrent.Text = this._emotionalStateVM.Current.ToString();
-            }
-        }
-
+        
         private void addEmotionButton_Click(object sender, EventArgs e)
         {
             new AddOrEditEmotionForm(_emotionalStateVM).ShowDialog();

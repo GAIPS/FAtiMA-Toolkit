@@ -121,8 +121,12 @@ namespace EmotionalAppraisal
             get { return m_emotionalState.GetEmotionDispositions().Select(disp => disp.ToDto()); }
         }
 
+        public IEnumerable<EventDTO> EventRecords
+        {
+            get { return this.m_am.RecallAllEvents().Select(e => new EventDTO {Id = e.Id, Event = e.EventName.ToString(), Time = e.Timestamp}); }
+        }
 
-	    public IEnumerable<string> EmotionTypes
+        public IEnumerable<string> EmotionTypes
 	    {
 	        get { return OCCEmotionType.Types; }
 	    } 
@@ -170,11 +174,7 @@ namespace EmotionalAppraisal
             return appraisalRules;
         }
 
-	    public IEnumerable<IEventRecord> GetAllEventRecords()
-	    {
-	        return this.m_am.RecallAllEvents();
-	    } 
-
+	  
         public KB Kb
 		{
 			get { return m_kb; }
