@@ -86,8 +86,8 @@
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.dataGridViewAM = new System.Windows.Forms.DataGridView();
             this.button2 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.buttonAddEventRecord = new System.Windows.Forms.Button();
+            this.buttonRemoveEventRecord = new System.Windows.Forms.Button();
             this.decayErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -800,8 +800,8 @@
             // 
             this.groupBox4.Controls.Add(this.dataGridViewAM);
             this.groupBox4.Controls.Add(this.button2);
-            this.groupBox4.Controls.Add(this.button4);
-            this.groupBox4.Controls.Add(this.button5);
+            this.groupBox4.Controls.Add(this.buttonAddEventRecord);
+            this.groupBox4.Controls.Add(this.buttonRemoveEventRecord);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(3, 3);
             this.groupBox4.Name = "groupBox4";
@@ -841,23 +841,25 @@
             this.button2.Text = "Edit";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // button4
+            // buttonAddEventRecord
             // 
-            this.button4.Location = new System.Drawing.Point(6, 20);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(54, 23);
-            this.button4.TabIndex = 7;
-            this.button4.Text = "Add";
-            this.button4.UseVisualStyleBackColor = true;
+            this.buttonAddEventRecord.Location = new System.Drawing.Point(6, 20);
+            this.buttonAddEventRecord.Name = "buttonAddEventRecord";
+            this.buttonAddEventRecord.Size = new System.Drawing.Size(54, 23);
+            this.buttonAddEventRecord.TabIndex = 7;
+            this.buttonAddEventRecord.Text = "Add";
+            this.buttonAddEventRecord.UseVisualStyleBackColor = true;
+            this.buttonAddEventRecord.Click += new System.EventHandler(this.buttonAddEventRecord_Click);
             // 
-            // button5
+            // buttonRemoveEventRecord
             // 
-            this.button5.Location = new System.Drawing.Point(142, 20);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(70, 23);
-            this.button5.TabIndex = 8;
-            this.button5.Text = "Remove";
-            this.button5.UseVisualStyleBackColor = true;
+            this.buttonRemoveEventRecord.Location = new System.Drawing.Point(142, 20);
+            this.buttonRemoveEventRecord.Name = "buttonRemoveEventRecord";
+            this.buttonRemoveEventRecord.Size = new System.Drawing.Size(70, 23);
+            this.buttonRemoveEventRecord.TabIndex = 8;
+            this.buttonRemoveEventRecord.Text = "Remove";
+            this.buttonRemoveEventRecord.UseVisualStyleBackColor = true;
+            this.buttonRemoveEventRecord.Click += new System.EventHandler(this.buttonRemoveEventRecord_Click);
             // 
             // decayErrorProvider
             // 
@@ -950,8 +952,8 @@
         private System.Windows.Forms.BindingSource emotionListItemBindingSource;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button buttonAddEventRecord;
+        private System.Windows.Forms.Button buttonRemoveEventRecord;
         private System.Windows.Forms.DataGridView dataGridViewAM;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.GroupBox groupBox6;

@@ -113,7 +113,12 @@ namespace EmotionalAppraisal
 
 	    public IEnumerable<EmotionDTO> ActiveEmotions
 	    {
-	        get { return m_emotionalState.GetAllEmotions().Select(e => e.ToDto());}
+	        get { return m_emotionalState.GetAllEmotions().Select(e => e.ToDto(m_am));}
+	    }
+
+	    public EmotionDTO AddActiveEmotion(EmotionDTO emotion)
+	    {
+            return m_emotionalState.AddActiveEmotion(emotion);
 	    }
 
         public IEnumerable<EmotionDispositionDTO> EmotionDispositions
@@ -140,6 +145,12 @@ namespace EmotionalAppraisal
 		{
 			m_appraisalDerivator.AddAppraisalRule(emotionalAppraisalRule);
 		}
+
+
+	    public uint AddEventRecord(EventDTO eventDTO)
+	    {
+	        return this.m_am.RecordEvent(Name.BuildName(eventDTO.Event), this.Perspective, eventDTO.Time).Id;
+	    }
 
         public void AddEmotionDisposition(EmotionDispositionDTO emotionDispositionDto)
 	    {

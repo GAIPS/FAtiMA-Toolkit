@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using AutobiographicMemory;
 using EmotionalAppraisal.DTOs;
+using EmotionalAppraisal.OCCModel;
 using GAIPS.Serialization;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
@@ -83,11 +84,28 @@ namespace EmotionalAppraisal
 			this.InfluenceMood = emotion.InfluenceMood;
 			this.CauseId = emotion.CauseId;
 			this.Direction = emotion.Direction;
-
-			this.Threshold = threshold;
+            this.Threshold = threshold;
 			this.Decay = decay;
 			SetIntensity(potential,tickStamp);
 		}
+
+
+        //TODO: Discuss with Pedro this hierarchy. Problem: ActiveEmotion might be a bit too tied to OCCEmotion
+	    public ActiveEmotion(EmotionDTO emotionDTO, int threshold, int decay)
+	    {
+	        var occType = OCCEmotionType.Parse(emotionDTO.Type);
+            if(occType == null)
+                throw new Exception("Unknown emotion type");
+            this.EmotionType = occType.Name;
+	        this.Valence = occType.Valence;
+	        this.AppraisalVariables = occType.AppraisalVariables.ToArray();
+	        this.InfluenceMood = occType.InfluencesMood;
+	        this.CauseId = emotionDTO.CauseEventId;
+	        this.Direction = null; //TODO: handle direction correctly
+	        this.Threshold = threshold;
+	        this.Decay = decay;
+	        this.Intensity = emotionDTO.Intensity;
+	    }
 
 		/// <summary>
 		/// Decays the emotion according to the system's time
@@ -153,13 +171,14 @@ namespace EmotionalAppraisal
 			return result;
 		}
 
-	    public EmotionDTO ToDto()
+	    public EmotionDTO ToDto(AM am)
 	    {
 	        return new EmotionDTO
 	        {
                 Type = this.EmotionType,
                 Intensity = this.Intensity,
-                CauseEvent =  this.CauseId, 
+                CauseEventId =  this.CauseId, 
+                CauseEventName = am.RecallEvent(this.CauseId).EventName.ToString(),
 	        };
 	    }
 

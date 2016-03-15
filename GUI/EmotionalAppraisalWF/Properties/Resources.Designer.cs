@@ -97,6 +97,15 @@ namespace EmotionalAppraisalWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Event Record.
+        /// </summary>
+        internal static string EditAutobiographicalEventFormTitle {
+            get {
+                return ResourceManager.GetString("EditAutobiographicalEventFormTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Emotion Disposition.
         /// </summary>
         internal static string EditEmotionDispositionFormTitle {

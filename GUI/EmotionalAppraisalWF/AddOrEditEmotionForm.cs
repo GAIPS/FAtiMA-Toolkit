@@ -83,7 +83,21 @@ namespace EmotionalAppraisalWF
 
         private void addOrEditButton_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                var newEmotion = new EmotionDTO
+                {
+                    Type = comboBoxEmotionType.Text,
+                    Intensity = int.Parse(comboBoxIntensity.Text),
+                    CauseEventId = uint.Parse(textBoxCauseId.Text)
+                };
+                _emotionalStateVm.AddEmotion(newEmotion);
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

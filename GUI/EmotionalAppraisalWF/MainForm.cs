@@ -428,5 +428,15 @@ namespace EmotionalAppraisalWF
         {
 
         }
+
+        private void buttonAddEventRecord_Click(object sender, EventArgs e)
+        {
+            new AddOrEditAutobiographicalEventForm(_autobiographicalMemoryVM).ShowDialog();
+        }
+
+        private void buttonRemoveEventRecord_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }

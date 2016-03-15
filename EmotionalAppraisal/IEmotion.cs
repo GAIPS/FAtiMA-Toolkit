@@ -25,6 +25,6 @@ namespace EmotionalAppraisal
 
 		IEventRecord GetCause(AM am);
 
-	    EmotionDTO ToDto();
+	    EmotionDTO ToDto(AM am);
 	}
 }
