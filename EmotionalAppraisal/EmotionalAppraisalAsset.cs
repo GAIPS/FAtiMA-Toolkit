@@ -121,6 +121,11 @@ namespace EmotionalAppraisal
             return m_emotionalState.AddActiveEmotion(emotion);
 	    }
 
+        public void RemoveEmotion(EmotionDTO emotion)
+        {
+            m_emotionalState.RemoveEmotion(emotion);
+        }
+
         public IEnumerable<EmotionDispositionDTO> EmotionDispositions
         {
             get { return m_emotionalState.GetEmotionDispositions().Select(disp => disp.ToDto()); }

@@ -50,7 +50,7 @@
             this.emotionGroupBox = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
             this.addEmotionButton = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.buttonRemoveEmotion = new System.Windows.Forms.Button();
             this.emotionsDataGridView = new System.Windows.Forms.DataGridView();
             this.emotionDispositionTabPage = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
@@ -314,7 +314,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.emotionGroupBox.Controls.Add(this.button1);
             this.emotionGroupBox.Controls.Add(this.addEmotionButton);
-            this.emotionGroupBox.Controls.Add(this.button3);
+            this.emotionGroupBox.Controls.Add(this.buttonRemoveEmotion);
             this.emotionGroupBox.Controls.Add(this.emotionsDataGridView);
             this.emotionGroupBox.Location = new System.Drawing.Point(7, 85);
             this.emotionGroupBox.Name = "emotionGroupBox";
@@ -343,14 +343,15 @@
             this.addEmotionButton.UseVisualStyleBackColor = true;
             this.addEmotionButton.Click += new System.EventHandler(this.addEmotionButton_Click);
             // 
-            // button3
+            // buttonRemoveEmotion
             // 
-            this.button3.Location = new System.Drawing.Point(142, 19);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(70, 23);
-            this.button3.TabIndex = 8;
-            this.button3.Text = "Remove";
-            this.button3.UseVisualStyleBackColor = true;
+            this.buttonRemoveEmotion.Location = new System.Drawing.Point(142, 19);
+            this.buttonRemoveEmotion.Name = "buttonRemoveEmotion";
+            this.buttonRemoveEmotion.Size = new System.Drawing.Size(70, 23);
+            this.buttonRemoveEmotion.TabIndex = 8;
+            this.buttonRemoveEmotion.Text = "Remove";
+            this.buttonRemoveEmotion.UseVisualStyleBackColor = true;
+            this.buttonRemoveEmotion.Click += new System.EventHandler(this.buttonRemoveEmotion_Click);
             // 
             // emotionsDataGridView
             // 
@@ -943,7 +944,7 @@
         private System.Windows.Forms.DataGridView emotionsDataGridView;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button addEmotionButton;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button buttonRemoveEmotion;
         private System.Windows.Forms.TabPage emotionDispositionTabPage;
         private System.Windows.Forms.TrackBar moodTrackBar;
         private System.Windows.Forms.GroupBox moodGroupBox;

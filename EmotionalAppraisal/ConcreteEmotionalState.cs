@@ -98,6 +98,13 @@ namespace EmotionalAppraisal
 		    }
 
 
+		    public void RemoveEmotion(EmotionDTO emotion)
+		    {
+                var activeEmotion = new ActiveEmotion(emotion, this.DefaultEmotionDisposition.Decay,this.DefaultEmotionDisposition.Threshold);
+                string hash = calculateHashString(activeEmotion, m_parent.m_am);
+                emotionPool.Remove(hash);
+		    }
+
 			/// <summary>
 			/// Creates and Adds to the emotional state a new ActiveEmotion based on 
 			/// a received BaseEmotion. However, the ActiveEmotion will be created 

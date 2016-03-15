@@ -43,5 +43,18 @@ namespace EmotionalAppraisalWF.ViewModels
             Emotions.DataSource.Add(resultingEmotion);
             Emotions.Refresh();
         }
+
+
+        public void RemoveEmotions(IList<EmotionDTO> emotionsToRemove)
+        {
+            foreach (var emotion in emotionsToRemove)
+            {
+                _emotionalAppraisalAsset.RemoveEmotion(emotion);
+            }
+            Emotions.DataSource = _emotionalAppraisalAsset.ActiveEmotions.ToList();
+            Emotions.Refresh();
+        }
+
+
     }
 }
