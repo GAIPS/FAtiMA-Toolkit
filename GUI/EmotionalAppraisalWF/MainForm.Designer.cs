@@ -48,7 +48,7 @@
             this.moodValueLabel = new System.Windows.Forms.Label();
             this.moodTrackBar = new System.Windows.Forms.TrackBar();
             this.emotionGroupBox = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonEditEmotion = new System.Windows.Forms.Button();
             this.addEmotionButton = new System.Windows.Forms.Button();
             this.buttonRemoveEmotion = new System.Windows.Forms.Button();
             this.emotionsDataGridView = new System.Windows.Forms.DataGridView();
@@ -312,7 +312,7 @@
             this.emotionGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.emotionGroupBox.Controls.Add(this.button1);
+            this.emotionGroupBox.Controls.Add(this.buttonEditEmotion);
             this.emotionGroupBox.Controls.Add(this.addEmotionButton);
             this.emotionGroupBox.Controls.Add(this.buttonRemoveEmotion);
             this.emotionGroupBox.Controls.Add(this.emotionsDataGridView);
@@ -324,14 +324,15 @@
             this.emotionGroupBox.Text = "Emotions";
             this.emotionGroupBox.Enter += new System.EventHandler(this.groupBox2_Enter);
             // 
-            // button1
+            // buttonEditEmotion
             // 
-            this.button1.Location = new System.Drawing.Point(66, 19);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(70, 23);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Edit";
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonEditEmotion.Location = new System.Drawing.Point(66, 19);
+            this.buttonEditEmotion.Name = "buttonEditEmotion";
+            this.buttonEditEmotion.Size = new System.Drawing.Size(70, 23);
+            this.buttonEditEmotion.TabIndex = 9;
+            this.buttonEditEmotion.Text = "Edit";
+            this.buttonEditEmotion.UseVisualStyleBackColor = true;
+            this.buttonEditEmotion.Click += new System.EventHandler(this.buttonEditEmotion_Click);
             // 
             // addEmotionButton
             // 
@@ -942,7 +943,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveAsStripMenuItem;
         private System.Windows.Forms.GroupBox emotionGroupBox;
         private System.Windows.Forms.DataGridView emotionsDataGridView;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonEditEmotion;
         private System.Windows.Forms.Button addEmotionButton;
         private System.Windows.Forms.Button buttonRemoveEmotion;
         private System.Windows.Forms.TabPage emotionDispositionTabPage;

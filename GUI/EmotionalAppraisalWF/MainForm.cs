@@ -449,5 +449,17 @@ namespace EmotionalAppraisalWF
             }
             _emotionalStateVM.RemoveEmotions(emotionsToRemove);
         }
+
+        private void buttonEditEmotion_Click(object sender, EventArgs e)
+        {
+       
+            if (emotionsDataGridView.SelectedRows.Count == 1)
+            {
+                var selectedEmotion = ((ObjectView<EmotionDTO>)emotionsDataGridView.
+                    SelectedRows[0].DataBoundItem).Object;
+                new AddOrEditEmotionForm(_emotionalStateVM, selectedEmotion).ShowDialog();
+            }
+        
+        }
     }
 }
