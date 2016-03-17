@@ -1,6 +1,6 @@
 ﻿namespace EmotionalAppraisalWF
 {
-    partial class AddOrEditAppraisalRuleForm
+    partial class AddOrEditEmotionDispositionForm
     {
         /// <summary>
         /// Required designer variable.
@@ -31,15 +31,13 @@
             this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.addOrEditButton = new System.Windows.Forms.Button();
-            this.eventTextBox = new System.Windows.Forms.TextBox();
+            this.comboBoxEmotionType = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.addBeliefErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.label4 = new System.Windows.Forms.Label();
-            this.richTextBoxDescription = new System.Windows.Forms.RichTextBox();
-            this.comboBoxPraiseworthiness = new System.Windows.Forms.ComboBox();
-            this.comboBoxDesirability = new System.Windows.Forms.ComboBox();
+            this.comboBoxThreshold = new System.Windows.Forms.ComboBox();
             this.emotionalAppraisalAssetBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.comboBoxDecay = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.addBeliefErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emotionalAppraisalAssetBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -49,110 +47,98 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(40, 32);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(132, 13);
+            this.label1.Size = new System.Drawing.Size(48, 13);
             this.label1.TabIndex = 14;
-            this.label1.Text = "Event Matching Template:";
+            this.label1.Text = "Emotion:";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // addOrEditButton
             // 
-            this.addOrEditButton.Location = new System.Drawing.Point(133, 254);
+            this.addOrEditButton.Location = new System.Drawing.Point(121, 94);
             this.addOrEditButton.Name = "addOrEditButton";
             this.addOrEditButton.Size = new System.Drawing.Size(75, 23);
             this.addOrEditButton.TabIndex = 20;
             this.addOrEditButton.Text = "Add";
             this.addOrEditButton.UseVisualStyleBackColor = true;
-            this.addOrEditButton.Click += new System.EventHandler(this.addOrEditButton_Click_1);
+            this.addOrEditButton.Click += new System.EventHandler(this.addOrEditButton_Click);
             // 
-            // eventTextBox
+            // comboBoxEmotionType
             // 
-            this.eventTextBox.Location = new System.Drawing.Point(40, 58);
-            this.eventTextBox.Name = "eventTextBox";
-            this.eventTextBox.Size = new System.Drawing.Size(260, 20);
-            this.eventTextBox.TabIndex = 17;
+            this.comboBoxEmotionType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxEmotionType.FormattingEnabled = true;
+            this.comboBoxEmotionType.Location = new System.Drawing.Point(40, 53);
+            this.comboBoxEmotionType.Name = "comboBoxEmotionType";
+            this.comboBoxEmotionType.Size = new System.Drawing.Size(88, 21);
+            this.comboBoxEmotionType.TabIndex = 19;
+            this.comboBoxEmotionType.SelectedIndexChanged += new System.EventHandler(this.beliefVisibilityComboBox_SelectedIndexChanged_1);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(175, 99);
+            this.label3.Location = new System.Drawing.Point(146, 32);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(89, 13);
+            this.label3.Size = new System.Drawing.Size(41, 13);
             this.label3.TabIndex = 16;
-            this.label3.Text = "Praiseworthiness:";
+            this.label3.Text = "Decay:";
+            this.label3.Click += new System.EventHandler(this.label3_Click_1);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(40, 99);
+            this.label2.Location = new System.Drawing.Point(216, 32);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 13);
+            this.label2.Size = new System.Drawing.Size(57, 13);
             this.label2.TabIndex = 15;
-            this.label2.Text = "Desirability:";
+            this.label2.Text = "Threshold:";
+            this.label2.Click += new System.EventHandler(this.label2_Click_1);
             // 
             // addBeliefErrorProvider
             // 
             this.addBeliefErrorProvider.ContainerControl = this;
             // 
-            // label4
+            // comboBoxThreshold
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(40, 132);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(63, 13);
-            this.label4.TabIndex = 21;
-            this.label4.Text = "Description:";
-            // 
-            // richTextBoxDescription
-            // 
-            this.richTextBoxDescription.Location = new System.Drawing.Point(40, 162);
-            this.richTextBoxDescription.Name = "richTextBoxDescription";
-            this.richTextBoxDescription.Size = new System.Drawing.Size(257, 79);
-            this.richTextBoxDescription.TabIndex = 22;
-            this.richTextBoxDescription.Text = "";
-            // 
-            // comboBoxPraiseworthiness
-            // 
-            this.comboBoxPraiseworthiness.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxPraiseworthiness.FormattingEnabled = true;
-            this.comboBoxPraiseworthiness.Location = new System.Drawing.Point(270, 95);
-            this.comboBoxPraiseworthiness.Name = "comboBoxPraiseworthiness";
-            this.comboBoxPraiseworthiness.Size = new System.Drawing.Size(30, 21);
-            this.comboBoxPraiseworthiness.TabIndex = 19;
-            this.comboBoxPraiseworthiness.SelectedIndexChanged += new System.EventHandler(this.comboBoxPraiseworthiness_SelectedIndexChanged);
-            // 
-            // comboBoxDesirability
-            // 
-            this.comboBoxDesirability.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxDesirability.FormattingEnabled = true;
-            this.comboBoxDesirability.Location = new System.Drawing.Point(106, 95);
-            this.comboBoxDesirability.Name = "comboBoxDesirability";
-            this.comboBoxDesirability.Size = new System.Drawing.Size(30, 21);
-            this.comboBoxDesirability.TabIndex = 23;
-            this.comboBoxDesirability.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.comboBoxThreshold.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxThreshold.FormattingEnabled = true;
+            this.comboBoxThreshold.Location = new System.Drawing.Point(216, 53);
+            this.comboBoxThreshold.Name = "comboBoxThreshold";
+            this.comboBoxThreshold.Size = new System.Drawing.Size(57, 21);
+            this.comboBoxThreshold.TabIndex = 21;
+            this.comboBoxThreshold.SelectedIndexChanged += new System.EventHandler(this.comboBoxIntensity_SelectedIndexChanged);
             // 
             // emotionalAppraisalAssetBindingSource
             // 
             this.emotionalAppraisalAssetBindingSource.DataSource = typeof(EmotionalAppraisal.EmotionalAppraisalAsset);
             // 
-            // AddOrEditAppraisalRuleForm
+            // comboBoxDecay
             // 
+            this.comboBoxDecay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxDecay.FormattingEnabled = true;
+            this.comboBoxDecay.Location = new System.Drawing.Point(146, 53);
+            this.comboBoxDecay.Name = "comboBoxDecay";
+            this.comboBoxDecay.Size = new System.Drawing.Size(60, 21);
+            this.comboBoxDecay.TabIndex = 22;
+            // 
+            // AddOrEditEmotionDispositionForm
+            // 
+            this.AcceptButton = this.addOrEditButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(340, 301);
-            this.Controls.Add(this.comboBoxDesirability);
-            this.Controls.Add(this.richTextBoxDescription);
-            this.Controls.Add(this.label4);
+            this.ClientSize = new System.Drawing.Size(317, 139);
+            this.Controls.Add(this.comboBoxDecay);
+            this.Controls.Add(this.comboBoxThreshold);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.addOrEditButton);
-            this.Controls.Add(this.comboBoxPraiseworthiness);
-            this.Controls.Add(this.eventTextBox);
+            this.Controls.Add(this.comboBoxEmotionType);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
-            this.Name = "AddOrEditAppraisalRuleForm";
+            this.Name = "AddOrEditEmotionDispositionForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Add Appraisal Rule";
+            this.Text = "Add Emotion Disposition";
+            this.Load += new System.EventHandler(this.AddOrEditBeliefForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.addBeliefErrorProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emotionalAppraisalAssetBindingSource)).EndInit();
             this.ResumeLayout(false);
@@ -164,13 +150,11 @@
         private System.Windows.Forms.BindingSource emotionalAppraisalAssetBindingSource;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button addOrEditButton;
-        private System.Windows.Forms.TextBox eventTextBox;
+        private System.Windows.Forms.ComboBox comboBoxEmotionType;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ErrorProvider addBeliefErrorProvider;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox comboBoxDesirability;
-        private System.Windows.Forms.RichTextBox richTextBoxDescription;
-        private System.Windows.Forms.ComboBox comboBoxPraiseworthiness;
+        private System.Windows.Forms.ComboBox comboBoxThreshold;
+        private System.Windows.Forms.ComboBox comboBoxDecay;
     }
 }

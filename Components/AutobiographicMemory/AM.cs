@@ -28,6 +28,11 @@ namespace AutobiographicMemory
 
 		public IEventRecord RecordEvent(Name eventName,string perspective, ulong timestamp)
 		{
+		    if (string.IsNullOrEmpty(perspective))
+		    {
+		        throw new Exception("Invalid perspective");
+		    }
+
 			if(!IsValidEventName(eventName))
 				throw new Exception("Invalid event name format");
 

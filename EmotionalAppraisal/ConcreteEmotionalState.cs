@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AutobiographicMemory;
+using EmotionalAppraisal.DTOs;
 using GAIPS.Serialization;
 using GAIPS.Serialization.SerializationGraph;
 using KnowledgeBase.WellFormedNames;
@@ -50,33 +51,59 @@ namespace EmotionalAppraisal
 				return potetial < 0 ? 0 : potetial;
 			}
 
-			/// <summary>
-			/// unique hash string calculation function
-			/// </summary>
-			/// <param name="emotion"></param>
-			private static string calculateHashString(IEmotion emotion,AM am)
-			{
-				StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
-				try
-				{
-					builder.Append(emotion.GetCause(am).EventName.ToString().ToUpper());
-					using (var it = emotion.AppraisalVariables.GetEnumerator())
-					{
-						while (it.MoveNext())
-						{
-							builder.Append("-");
-							builder.Append(it.Current);
-						}
-					}
+            /// <summary>
+            /// unique hash string calculation function
+            /// </summary>
+            /// <param name="emotion"></param>
+            private static string calculateHashString(IEmotion emotion, AM am)
+            {
+                StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
+                try
+                {
+                    builder.Append(emotion.GetCause(am).EventName.ToString().ToUpper());
+                    using (var it = emotion.AppraisalVariables.GetEnumerator())
+                    {
+                        while (it.MoveNext())
+                        {
+                            builder.Append("-");
+                            builder.Append(it.Current);
+                        }
+                    }
 
-					return builder.ToString();
-				}
-				finally
-				{
-					builder.Length = 0;
-					ObjectPool<StringBuilder>.Recycle(builder);
-				}
-			}
+                    return builder.ToString();
+                }
+                finally
+                {
+                    builder.Length = 0;
+                    ObjectPool<StringBuilder>.Recycle(builder);
+                }
+            }
+
+            
+            public EmotionDTO AddActiveEmotion(EmotionDTO emotion)
+		    {
+                EmotionDisposition disposition = GetEmotionDisposition(emotion.Type);
+                var activeEmotion = new ActiveEmotion(emotion, disposition.Threshold, disposition.Decay);
+                string hash = calculateHashString(activeEmotion, m_parent.m_am);
+
+                if (emotionPool.ContainsKey(hash))
+                {
+                    throw new Exception("Emotion already exists");
+                }
+
+                emotionPool.Add(hash, activeEmotion);
+                activeEmotion.GetCause(m_parent.m_am).LinkEmotion(activeEmotion.EmotionType);
+
+                return activeEmotion.ToDto(m_parent.m_am);
+		    }
+
+
+		    public void RemoveEmotion(EmotionDTO emotion)
+		    {
+                var activeEmotion = new ActiveEmotion(emotion, this.DefaultEmotionDisposition.Decay,this.DefaultEmotionDisposition.Threshold);
+                string hash = calculateHashString(activeEmotion, m_parent.m_am);
+                emotionPool.Remove(hash);
+		    }
 
 			/// <summary>
 			/// Creates and Adds to the emotional state a new ActiveEmotion based on 
@@ -100,7 +127,7 @@ namespace EmotionalAppraisal
 				decay = disposition.Decay;
 
 				ActiveEmotion previousEmotion;
-				string hash = calculateHashString(emotion,m_parent.m_am);
+				string hash = calculateHashString(emotion, m_parent.m_am);
 				if (emotionPool.TryGetValue(hash,out previousEmotion))
 				{
 					//if this test is true, it means that this is 100% a reappraisal of the same event
@@ -137,6 +164,11 @@ namespace EmotionalAppraisal
 
 				return m_defaultEmotionalDisposition;
 			}
+
+		    public void RemoveEmotionDisposition(string emotionName)
+		    {
+		        this.emotionDispositions.Remove(emotionName);
+		    }
 
 		    public EmotionDisposition DefaultEmotionDisposition
 		    {
@@ -255,7 +287,7 @@ namespace EmotionalAppraisal
 
 			public void AddEmotionDisposition(EmotionDisposition emotionDisposition)
 			{
-				this.emotionDispositions.Add(emotionDisposition.Emotion, emotionDisposition);
+                this.emotionDispositions.Add(emotionDisposition.Emotion, emotionDisposition);
 			}
 
 			public IEnumerable<EmotionDisposition> GetEmotionDispositions()

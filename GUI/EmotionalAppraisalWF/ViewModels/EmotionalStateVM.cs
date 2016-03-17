@@ -9,7 +9,6 @@ namespace EmotionalAppraisalWF.ViewModels
     public class EmotionalStateVM
     {
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
-        private ulong _startTime;
         public BindingListView<EmotionDTO> Emotions {get;}
         
         public float Mood
@@ -28,34 +27,41 @@ namespace EmotionalAppraisalWF.ViewModels
 
         public ulong Start
         {
-            get { return _startTime; }
-            set
-            {
-                _startTime = value;
-                _emotionalAppraisalAsset.Tick = value;
-            }
-        }
-
-        public ulong Current{get; set;}
-
-        public void Update()
-        {
-            this.Current++;
-            this._emotionalAppraisalAsset.Update();
-        }
-
-        public void StopUpdate()
-        {
-            this.Current = this.Start;
-            this._emotionalAppraisalAsset.Tick = _startTime;
+            get { return _emotionalAppraisalAsset.Tick; }
+            set{ _emotionalAppraisalAsset.Tick = value;}
         }
 
         public EmotionalStateVM(EmotionalAppraisalAsset ea)
         {
             _emotionalAppraisalAsset = ea;
-            _startTime = _emotionalAppraisalAsset.Tick;
-            this.Current = this.Start;
             Emotions = new BindingListView<EmotionDTO>(ea.ActiveEmotions.ToList());
         }
+
+        public void AddEmotion(EmotionDTO newEmotion)
+        {
+            var resultingEmotion = _emotionalAppraisalAsset.AddActiveEmotion(newEmotion);
+            Emotions.DataSource.Add(resultingEmotion);
+            Emotions.Refresh();
+        }
+
+        public void UpdateEmotion(EmotionDTO oldEmotion, EmotionDTO newEmotion)
+        {
+            _emotionalAppraisalAsset.RemoveEmotion(oldEmotion);
+            _emotionalAppraisalAsset.AddActiveEmotion(newEmotion);
+            Emotions.DataSource = _emotionalAppraisalAsset.ActiveEmotions.ToList();
+            Emotions.Refresh();
+        }
+
+        public void RemoveEmotions(IList<EmotionDTO> emotionsToRemove)
+        {
+            foreach (var emotion in emotionsToRemove)
+            {
+                _emotionalAppraisalAsset.RemoveEmotion(emotion);
+            }
+            Emotions.DataSource = _emotionalAppraisalAsset.ActiveEmotions.ToList();
+            Emotions.Refresh();
+        }
+
+
     }
 }

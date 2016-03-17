@@ -53,11 +53,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddOrEditAppraisalRule.cs">
+    <Compile Include="AddOrEditAutobiographicalEventForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddOrEditAppraisalRule.Designer.cs">
-      <DependentUpon>AddOrEditAppraisalRule.cs</DependentUpon>
+    <Compile Include="AddOrEditAutobiographicalEventForm.Designer.cs">
+      <DependentUpon>AddOrEditAutobiographicalEventForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddOrEditAppraisalRuleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddOrEditAppraisalRuleForm.Designer.cs">
+      <DependentUpon>AddOrEditAppraisalRuleForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddOrEditEmotionDispositionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddOrEditEmotionDispositionForm.Designer.cs">
+      <DependentUpon>AddOrEditEmotionDispositionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AddOrEditEmotionForm.cs">
       <SubType>Form</SubType>
@@ -84,9 +96,16 @@
     <Compile Include="ViewModels\EmotionalStateVM.cs" />
     <Compile Include="ViewModels\EmotionDispositionsVM.cs" />
     <Compile Include="ViewModels\AppraisalRulesVM.cs" />
+    <Compile Include="ViewModels\AutobiographicalMemoryVM.cs" />
     <Compile Include="ViewModels\KnowledgeBaseVM.cs" />
-    <EmbeddedResource Include="AddOrEditAppraisalRule.resx">
-      <DependentUpon>AddOrEditAppraisalRule.cs</DependentUpon>
+    <EmbeddedResource Include="AddOrEditAutobiographicalEventForm.resx">
+      <DependentUpon>AddOrEditAutobiographicalEventForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddOrEditAppraisalRuleForm.resx">
+      <DependentUpon>AddOrEditAppraisalRuleForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddOrEditEmotionDispositionForm.resx">
+      <DependentUpon>AddOrEditEmotionDispositionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AddOrEditEmotionForm.resx">
       <DependentUpon>AddOrEditEmotionForm.cs</DependentUpon>

@@ -21,22 +21,19 @@ namespace EmotionalAppraisalWF
             _emotionalStateVm = emotionalStateVM;
             _emotionToEdit = emotionToEdit;
 
-
             //Default Values 
-            comboBoxIntensity.SelectedIndex = comboBoxIntensity.FindString("0");
+            comboBoxIntensity.Text = "1";
             comboBoxEmotionType.DataSource = _emotionalStateVm.EmotionTypes;
-            // beliefVisibilityComboBox.DataSource = _knowledgeBaseVm.GetKnowledgeVisibilities();
-            //beliefVisibilityComboBox.SelectedIndex = 0;
-
-            /*if (beliefToEdit != null)
+            
+            if (emotionToEdit != null)
             {
-                this.Text = Resources.AddOrEditBeliefForm_AddOrEditBeliefForm_Edit_Belief;
-                this.addOrEditButton.Text = Resources.AddOrEditBeliefForm_AddOrEditBeliefForm_Update;
+                this.Text = Resources.EditEmotionFormTitle;
+                this.addOrEditButton.Text = Resources.UpdateButtonLabel;
 
-                beliefNameTextBox.Text = beliefToEdit.Name;
-                beliefValueTextBox.Text = beliefToEdit.Value;
-                beliefVisibilityComboBox.SelectedIndex = beliefVisibilityComboBox.FindString(beliefToEdit.Visibility.ToString());
-            }*/
+                comboBoxIntensity.Text = Math.Round(emotionToEdit.Intensity).ToString();
+                comboBoxEmotionType.Text = emotionToEdit.Type;
+                textBoxCauseId.Text = emotionToEdit.CauseEventId.ToString();
+            }
         }
 
       
@@ -83,6 +80,31 @@ namespace EmotionalAppraisalWF
 
         private void addOrEditButton_Click(object sender, EventArgs e)
         {
+
+            var newEmotion = new EmotionDTO
+            {
+                Type = comboBoxEmotionType.Text,
+                Intensity = int.Parse(comboBoxIntensity.Text),
+                CauseEventId = uint.Parse(textBoxCauseId.Text)
+            };
+
+            if (_emotionToEdit == null)
+            {
+                try
+                {
+                    _emotionalStateVm.AddEmotion(newEmotion);
+             
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                this._emotionalStateVm.UpdateEmotion(_emotionToEdit, newEmotion);
+            }
+            Close();
 
         }
     }

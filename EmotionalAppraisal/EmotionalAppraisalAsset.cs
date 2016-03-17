@@ -117,16 +117,30 @@ namespace EmotionalAppraisal
 
 	    public IEnumerable<EmotionDTO> ActiveEmotions
 	    {
-	        get { return m_emotionalState.GetAllEmotions().Select(e => e.ToDto());}
+	        get { return m_emotionalState.GetAllEmotions().Select(e => e.ToDto(m_am));}
 	    }
+
+	    public EmotionDTO AddActiveEmotion(EmotionDTO emotion)
+	    {
+            return m_emotionalState.AddActiveEmotion(emotion);
+	    }
+
+        public void RemoveEmotion(EmotionDTO emotion)
+        {
+            m_emotionalState.RemoveEmotion(emotion);
+        }
 
         public IEnumerable<EmotionDispositionDTO> EmotionDispositions
         {
             get { return m_emotionalState.GetEmotionDispositions().Select(disp => disp.ToDto()); }
         }
 
+        public IEnumerable<EventDTO> EventRecords
+        {
+            get { return this.m_am.RecallAllEvents().Select(e => new EventDTO {Id = e.Id, Event = e.EventName.ToString(), Time = e.Timestamp}); }
+        }
 
-	    public IEnumerable<string> EmotionTypes
+        public IEnumerable<string> EmotionTypes
 	    {
 	        get { return OCCEmotionType.Types; }
 	    } 
@@ -140,6 +154,12 @@ namespace EmotionalAppraisal
 		{
 			m_appraisalDerivator.AddAppraisalRule(emotionalAppraisalRule);
 		}
+
+
+	    public uint AddEventRecord(EventDTO eventDTO)
+	    {
+	        return this.m_am.RecordEvent(Name.BuildName(eventDTO.Event), this.Perspective, eventDTO.Time).Id;
+	    }
 
         public void AddEmotionDisposition(EmotionDispositionDTO emotionDispositionDto)
 	    {
@@ -156,6 +176,11 @@ namespace EmotionalAppraisal
 	        return this.m_emotionalState.GetEmotionDisposition(emotionType).ToDto();
 	    }
 
+	    public void RemoveEmotionDisposition(string emotionType)
+	    {
+	        m_emotionalState.RemoveEmotionDisposition(emotionType);
+	    }
+
         public IEnumerable<AppraisalRuleDTO> GetAllAppraisalRules()
         {
             var appraisalRules = this.m_appraisalDerivator.GetAppraisalRules().Select(r => new AppraisalRuleDTO
@@ -169,11 +194,7 @@ namespace EmotionalAppraisal
             return appraisalRules;
         }
 
-	    public IEnumerable<IEventRecord> GetAllEventRecords()
-	    {
-	        return this.m_am.RecallAllEvents();
-	    } 
-
+	  
         public KB Kb
 		{
 			get { return m_kb; }

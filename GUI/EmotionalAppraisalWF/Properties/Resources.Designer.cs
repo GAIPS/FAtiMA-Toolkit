@@ -97,6 +97,42 @@ namespace EmotionalAppraisalWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Event Record.
+        /// </summary>
+        internal static string EditAutobiographicalEventFormTitle {
+            get {
+                return ResourceManager.GetString("EditAutobiographicalEventFormTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Emotion Disposition.
+        /// </summary>
+        internal static string EditEmotionDispositionFormTitle {
+            get {
+                return ResourceManager.GetString("EditEmotionDispositionFormTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Emotion.
+        /// </summary>
+        internal static string EditEmotionFormTitle {
+            get {
+                return ResourceManager.GetString("EditEmotionFormTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disposition already exists, use the edit function..
+        /// </summary>
+        internal static string EmotionDispositionAlreadyExistsExceptionMessage {
+            get {
+                return ResourceManager.GetString("EmotionDispositionAlreadyExistsExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &quot;Perspective&quot; cannot be an empty string.
         /// </summary>
         internal static string EmptyPerspectiveError {

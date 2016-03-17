@@ -46,6 +46,7 @@
     <Compile Include="Components\IAppraisalDerivator.cs" />
     <Compile Include="Components\IEmotionProcessor.cs" />
     <Compile Include="ConcreteEmotionalState.cs" />
+    <Compile Include="DTOs\EventDTO.cs" />
     <Compile Include="DTOs\EmotionDTO.cs" />
     <Compile Include="DTOs\AppraisalRuleDTO.cs" />
     <Compile Include="DTOs\BeliefDTO.cs" />

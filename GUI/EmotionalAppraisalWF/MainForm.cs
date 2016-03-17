@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
-using AutobiographicMemory;
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
@@ -23,6 +21,7 @@ namespace EmotionalAppraisalWF
         private KnowledgeBaseVM _knowledgeBaseVM;
         private AppraisalRulesVM _appraisalRulesVM;
         private EmotionDispositionsVM _emotionDispositionsVM;
+        private AutobiographicalMemoryVM _autobiographicalMemoryVM;
 
         public MainForm()
         {
@@ -35,7 +34,7 @@ namespace EmotionalAppraisalWF
             if (newFile)
             {
                 this.Text = Resources.MainFormPrincipalTitle;
-                this._emotionalAppraisalAsset = new EmotionalAppraisalAsset("Agent");
+                this._emotionalAppraisalAsset = new EmotionalAppraisalAsset(string.Empty);
             }
             else
             {
@@ -44,19 +43,21 @@ namespace EmotionalAppraisalWF
 
             //Emotional State Tab
             _emotionalStateVM = new EmotionalStateVM(_emotionalAppraisalAsset);
+            this.textBoxPerspective.Text = _emotionalStateVM.Perspective;
             this.moodValueLabel.Text = Math.Round(_emotionalStateVM.Mood).ToString(MOOD_FORMAT);
-            this.moodTrackBar.Value = (int)float.Parse(this.moodValueLabel.Text);
+            this.moodTrackBar.Value = (int) float.Parse(this.moodValueLabel.Text);
             this.textBoxStartTick.Text = _emotionalStateVM.Start.ToString();
-            this.textBoxCurrent.Text = _emotionalStateVM.Start.ToString();
             this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
-            
-            
+
+
             //Emotion Dispositions
             _emotionDispositionsVM = new EmotionDispositionsVM(_emotionalAppraisalAsset);
-            comboBoxDefaultDecay.SelectedIndex = comboBoxDefaultDecay.FindString(_emotionDispositionsVM.DefaultDecay.ToString());
-            comboBoxDefaultThreshold.SelectedIndex = comboBoxDefaultThreshold.FindString(_emotionDispositionsVM.DefaultThreshold.ToString());
+            comboBoxDefaultDecay.SelectedIndex =
+                comboBoxDefaultDecay.FindString(_emotionDispositionsVM.DefaultDecay.ToString());
+            comboBoxDefaultThreshold.SelectedIndex =
+                comboBoxDefaultThreshold.FindString(_emotionDispositionsVM.DefaultThreshold.ToString());
             dataGridViewEmotionDispositions.DataSource = _emotionDispositionsVM.EmotionDispositions;
-            
+
             //Appraisal Rule
             _appraisalRulesVM = new AppraisalRulesVM(_emotionalAppraisalAsset);
             dataGridViewAppraisalRules.DataSource = _appraisalRulesVM.AppraisalRules;
@@ -71,6 +72,8 @@ namespace EmotionalAppraisalWF
             dataGridViewBeliefs.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
 
             //AM
+            _autobiographicalMemoryVM = new AutobiographicalMemoryVM(_emotionalAppraisalAsset);
+            dataGridViewAM.DataSource = _autobiographicalMemoryVM.Events;
         }
 
 
@@ -96,7 +99,8 @@ namespace EmotionalAppraisalWF
         {
             if (string.IsNullOrWhiteSpace(textBoxPerspective.Text))
             {
-                MessageBox.Show(Resources.EmptyPerspectiveError, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.EmptyPerspectiveError, Resources.ErrorDialogTitle, MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
                 return;
             }
 
@@ -126,7 +130,8 @@ namespace EmotionalAppraisalWF
             }
             catch (Exception)
             {
-                MessageBox.Show(Resources.UnableToSaveFileError, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Resources.UnableToSaveFileError, Resources.ErrorDialogTitle, MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
 
@@ -165,8 +170,9 @@ namespace EmotionalAppraisalWF
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message + "-" + ex.StackTrace, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                } 
+                    MessageBox.Show(ex.Message + "-" + ex.StackTrace, Resources.ErrorDialogTitle, MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -194,10 +200,10 @@ namespace EmotionalAppraisalWF
 
         private void button1_Click(object sender, EventArgs e)
         {
-          
+
         }
 
-      
+
 
         private void mainMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
@@ -224,7 +230,7 @@ namespace EmotionalAppraisalWF
 
         }
 
-       
+
         private void groupBox2_Enter(object sender, EventArgs e)
         {
 
@@ -241,14 +247,14 @@ namespace EmotionalAppraisalWF
         }
 
         private void trackBar1_Scroll_1(object sender, EventArgs e)
-        {        
+        {
             moodValueLabel.Text = moodTrackBar.Value.ToString(MOOD_FORMAT);
             _emotionalStateVM.Mood = moodTrackBar.Value;
         }
-        
+
         #region EmotionalStateTab
 
-        
+
         private void validateDecayHelper(TextBox textBoxDecay, CancelEventArgs e)
         {
             try
@@ -290,7 +296,7 @@ namespace EmotionalAppraisalWF
         {
             if (dataGridViewBeliefs.SelectedRows.Count == 1)
             {
-                var selectedBelief = ((ObjectView<BeliefDTO>)dataGridViewBeliefs.SelectedRows[0].DataBoundItem).Object;
+                var selectedBelief = ((ObjectView<BeliefDTO>) dataGridViewBeliefs.SelectedRows[0].DataBoundItem).Object;
                 var addBeliefForm = new AddOrEditBeliefForm(_knowledgeBaseVM, selectedBelief);
                 addBeliefForm.ShowDialog();
             }
@@ -301,7 +307,7 @@ namespace EmotionalAppraisalWF
             IList<BeliefDTO> beliefsToRemove = new List<BeliefDTO>();
             for (int i = 0; i < dataGridViewBeliefs.SelectedRows.Count; i++)
             {
-                var belief = ((ObjectView<BeliefDTO>)dataGridViewBeliefs.SelectedRows[i].DataBoundItem).Object;
+                var belief = ((ObjectView<BeliefDTO>) dataGridViewBeliefs.SelectedRows[i].DataBoundItem).Object;
                 beliefsToRemove.Add(belief);
             }
             _knowledgeBaseVM.RemoveBeliefs(beliefsToRemove);
@@ -324,7 +330,7 @@ namespace EmotionalAppraisalWF
 
         private void dataGridViewAppRuleConditions_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
-          
+
         }
 
         private void dataGridViewAppraisalRules_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -334,7 +340,7 @@ namespace EmotionalAppraisalWF
 
         private void dataGridViewAppraisalRules_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
-            var rule = ((ObjectView<AppraisalRuleDTO>)dataGridViewAppraisalRules.Rows[e.RowIndex].DataBoundItem).Object;
+            var rule = ((ObjectView<AppraisalRuleDTO>) dataGridViewAppraisalRules.Rows[e.RowIndex].DataBoundItem).Object;
             _appraisalRulesVM.ChangeCurrentRule(rule);
             dataGridViewAppRuleConditions.DataSource = _appraisalRulesVM.CurrentRuleConditions;
         }
@@ -354,7 +360,7 @@ namespace EmotionalAppraisalWF
 
         }
 
-     
+
         private void label1_Click_2(object sender, EventArgs e)
         {
 
@@ -378,39 +384,82 @@ namespace EmotionalAppraisalWF
                 _emotionalStateVM.Start = time;
             }
         }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            if (checkBoxUpdate.Checked)
-            {
-                _emotionalStateVM.Update();
-                this.textBoxCurrent.Text = this._emotionalStateVM.Current.ToString();
-
-                //mood
-                this.moodValueLabel.Text = _emotionalStateVM.Mood.ToString(MOOD_FORMAT);
-                this.moodTrackBar.Value = (int)float.Parse(this.moodValueLabel.Text);
-            }
-        }
         
-
-        private void buttonReset_Click(object sender, EventArgs e)
-        {
-            this._emotionalStateVM.StopUpdate();
-            this.textBoxCurrent.Text = this._emotionalStateVM.Current.ToString();
-        }
-
-        private void checkBoxUpdate_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBoxUpdate.Checked)
-            {
-                _emotionalStateVM.Current = _emotionalStateVM.Start;
-                this.textBoxCurrent.Text = this._emotionalStateVM.Current.ToString();
-            }
-        }
-
         private void addEmotionButton_Click(object sender, EventArgs e)
         {
             new AddOrEditEmotionForm(_emotionalStateVM).ShowDialog();
+        }
+
+        private void buttonAddEmotionDisposition_Click(object sender, EventArgs e)
+        {
+            new AddOrEditEmotionDispositionForm(_emotionDispositionsVM).ShowDialog();
+        }
+
+        private void buttonEditEmotionDisposition_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewEmotionDispositions.SelectedRows.Count == 1)
+            {
+                var selectedEmotionDisposition = ((ObjectView<EmotionDispositionDTO>)dataGridViewEmotionDispositions.
+                    SelectedRows[0].DataBoundItem).Object;
+                new AddOrEditEmotionDispositionForm(_emotionDispositionsVM, selectedEmotionDisposition).ShowDialog();
+            }
+        }
+
+        private void dataGridViewEmotionDispositions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex != -1) //exclude header cells
+            {
+                this.buttonEditEmotionDisposition_Click(sender, e);
+            }
+        }
+
+        private void buttonRemoveEmotionDisposition_Click(object sender, EventArgs e)
+        {
+            IList<EmotionDispositionDTO> dispositionsToRemove = new List<EmotionDispositionDTO>();
+            for (int i = 0; i < dataGridViewEmotionDispositions.SelectedRows.Count; i++)
+            {
+                var disposition = ((ObjectView<EmotionDispositionDTO>)dataGridViewEmotionDispositions.SelectedRows[i].DataBoundItem).Object;
+                dispositionsToRemove.Add(disposition);
+            }
+            _emotionDispositionsVM.RemoveDispositions(dispositionsToRemove);
+        }
+
+        private void dataGridViewEmotionDispositions_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void buttonAddEventRecord_Click(object sender, EventArgs e)
+        {
+            new AddOrEditAutobiographicalEventForm(_autobiographicalMemoryVM).ShowDialog();
+        }
+
+        private void buttonRemoveEventRecord_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void buttonRemoveEmotion_Click(object sender, EventArgs e)
+        {
+            IList<EmotionDTO> emotionsToRemove = new List<EmotionDTO>();
+            for (int i = 0; i < emotionsDataGridView.SelectedRows.Count; i++)
+            {
+                var emotion = ((ObjectView<EmotionDTO>)emotionsDataGridView.SelectedRows[i].DataBoundItem).Object;
+                emotionsToRemove.Add(emotion);
+            }
+            _emotionalStateVM.RemoveEmotions(emotionsToRemove);
+        }
+
+        private void buttonEditEmotion_Click(object sender, EventArgs e)
+        {
+       
+            if (emotionsDataGridView.SelectedRows.Count == 1)
+            {
+                var selectedEmotion = ((ObjectView<EmotionDTO>)emotionsDataGridView.
+                    SelectedRows[0].DataBoundItem).Object;
+                new AddOrEditEmotionForm(_emotionalStateVM, selectedEmotion).ShowDialog();
+            }
+        
         }
     }
 }
