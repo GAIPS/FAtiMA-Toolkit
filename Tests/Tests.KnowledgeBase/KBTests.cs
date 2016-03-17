@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using GAIPS.Serialization;
 using KnowledgeBase;
 using KnowledgeBase.WellFormedNames;
 using NUnit.Framework;
@@ -15,16 +17,16 @@ namespace Tests.KnowledgeBase
 		{
 			public static IEnumerable<TestCaseData> Test_Simple_Tell_Valid_Cases()
 			{
-				yield return new TestCaseData((Name)"like(self,john)", true, false, KnowledgeVisibility.Universal);
-				yield return new TestCaseData((Name)"like(self,Amy)", true, true, KnowledgeVisibility.Universal);
-				yield return new TestCaseData((Name)"like(self,Make)", true, false, KnowledgeVisibility.Self);
-				yield return new TestCaseData((Name)"like(self,Steven)", true, true, KnowledgeVisibility.Self);
-				yield return new TestCaseData((Name)"Color(id_2433)", "Blue", true, KnowledgeVisibility.Self);
+				yield return new TestCaseData((Name)"like(Ann,john)", true);
+				yield return new TestCaseData((Name)"like(Ann,Amy)", true);
+				yield return new TestCaseData((Name)"like(Ann,Mike)", true);
+				yield return new TestCaseData((Name)"like(Ann,Steven)", true);
+				yield return new TestCaseData((Name)"Color(id_2433)", "Blue");
 			}
 
 			public static IEnumerable<TestCaseData> Test_OperatorRegist_Cases()
 			{
-				DynamicPropertyCalculator p = (kb2, args,subs) =>
+				DynamicPropertyCalculator p = (kb2,pers, args,subs) =>
 				{
 					return Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
 				};
@@ -60,8 +62,9 @@ namespace Tests.KnowledgeBase
 				yield return new TestCaseData((Name)"IsAlive(John)", true);
 
 				yield return new TestCaseData((Name)"Strength(Name(Self))", 7,typeof(Exception));
-				yield return new TestCaseData((Name)"Name(Self)", "Titus",true);
-				yield return new TestCaseData((Name)"Strength(Name(Self))", 7,false);
+				yield return new TestCaseData((Name)"Name(Self)", "Titus", typeof(Exception));
+				yield return new TestCaseData((Name)"Name(Titus)", "Titus");
+				yield return new TestCaseData((Name)"Strength(Name(Self))", 7);
 			}
 
 			public static IEnumerable<TestCaseData> Test_Simple_Tell_Invalid_Cases()
@@ -85,7 +88,7 @@ namespace Tests.KnowledgeBase
 
 			public static KB PopulatedTestMemory()
 			{
-				KB kb = new KB();
+				KB kb = new KB((Name)"Me");
 				foreach (var t in MemoryData())
 				{
 					try
@@ -97,27 +100,27 @@ namespace Tests.KnowledgeBase
 					}
 					catch (Exception e)
 					{
-						if (t.Arguments[2] != null)
+						if (t.Arguments.Length>2)
 							Assert.AreEqual(e.GetType(), t.Arguments[2]);
 						else
-							Assert.Fail("An exception was thrown unexpectedly.");
+							Assert.Fail($"An exception was thrown unexpectedly: {e}");
 					}
 				}
 				return kb;
 			}
 		}
 
-		[TestCaseSource(typeof(TestFactory), "Test_Simple_Tell_Valid_Cases")]
-		public void Test_Simple_Tell_Valid(Name name,object value, bool isPersitent, KnowledgeVisibility visibility)
+		[TestCaseSource(typeof(TestFactory), nameof(TestFactory.Test_Simple_Tell_Valid_Cases))]
+		public void Test_Simple_Tell_Valid(Name name,object value)
 		{
-			var kb = new KB();
-			kb.Tell(name,PrimitiveValue.Cast(value),isPersitent,visibility);
+			var kb = new KB((Name)"Me");
+			kb.Tell(name,PrimitiveValue.Cast(value));
 		}
 
-		[TestCaseSource(typeof(TestFactory), "Test_Simple_Tell_Invalid_Cases")]
+		[TestCaseSource(typeof(TestFactory), nameof(TestFactory.Test_Simple_Tell_Invalid_Cases))]
 		public void Test_Simple_Tell_Invalid(Name name, object value, Type expectedException)
 		{
-			var kb = new KB();
+			var kb = new KB((Name)"Me");
 			Assert.Throws(expectedException,() => kb.Tell(name, PrimitiveValue.Cast(value)));
 		}
 
@@ -155,52 +158,82 @@ namespace Tests.KnowledgeBase
 		[Test]
 		public void Test_OperatorRegist_Fail_Duplicate()
 		{
-			var kb = new KB();
+			var kb = new KB((Name)"Me");
 			Assert.Throws<ArgumentException>(
-				() => kb.RegistDynamicProperty((Name) "Count([y])", ((kb1, args, constraints) => null), null));
+				() => kb.RegistDynamicProperty((Name) "Count([y])", ((kb1,pers, args, constraints) => null), null));
 		}
 
 		[Test]
 		public void Test_OperatorRegist_Fail_Same_Template()
 		{
-			var kb = new KB();
-			Assert.Throws<ArgumentException>(() => kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, args, constraints) => null), null));
+			var kb = new KB((Name)"Me");
+			Assert.Throws<ArgumentException>(() => kb.RegistDynamicProperty((Name)"Count([x])", ((kb1,p, args, constraints) => null), null));
 		}
 
 		[Test]
 		public void Test_OperatorRegist_Fail_GroundedTemplate()
 		{
-			var kb = new KB();
-			Assert.Throws<ArgumentException>(() => kb.RegistDynamicProperty((Name)"Count(John)", ((kb1, args, constraints) => null), null));
+			var kb = new KB((Name)"Me");
+			Assert.Throws<ArgumentException>(() => kb.RegistDynamicProperty((Name)"Count(John)", ((kb1,p, args, constraints) => null), null));
 		}
 
 		[Test]
 		public void Test_OperatorRegist_Fail_Null_Surogate()
 		{
-			var kb = new KB();
+			var kb = new KB((Name)"Me");
 			Assert.Throws<ArgumentNullException>(() => kb.RegistDynamicProperty((Name)"Count(John)", null, null));
 		}
 
 		[Test]
 		public void Test_OperatorRegist_Fail_ConstantProperties()
 		{
-			var kb = new KB();
+			var kb = new KB((Name)"Me");
 			Assert.Throws<ArgumentException>(() =>
 			{
 				kb.Tell((Name)"Count(John)", 3);
-				kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, args, constraints) => null), null);
+				kb.RegistDynamicProperty((Name)"Count([x])", ((kb1,p, args, constraints) => null), null);
 			});
 		}
 
 		[Test]
 		public void Test_Tell_Fail_OperatorRegist()
 		{
-			var kb = new KB();
+			var kb = new KB((Name)"Me");
 			Assert.Throws<ArgumentException>(() =>
 			{
-				kb.RegistDynamicProperty((Name) "Count([x])", ((kb1, args, constraints) => null), null);
+				kb.RegistDynamicProperty((Name) "Count([x])", ((kb1,p, args, constraints) => null), null);
 				kb.Tell((Name) "Count(John)", 3);
 			});
+		}
+
+		[Test]
+		public void Test_Tell_Fail_Add_Self_To_Universal()
+		{
+			var kb = new KB(Name.BuildName("Matt"));
+			Assert.Throws<Exception>(() => { kb.Tell((Name) "IsPerson(Self)", true, Name.UNIVERSAL_SYMBOL); });
+		}
+
+		[TestCase("Matt", "IsPerson(Matt)", "*", "IsPerson(Matt)", "Self")]
+		[TestCase("Matt", "IsPerson(Matt)", "*", "IsPerson(Matt)", "Mary")]
+		[TestCase("Matt", "IsPerson(Self)", "Self", "IsPerson(Self)", "Self")]
+		[TestCase("Matt", "IsPerson(Matt)", "Self", "IsPerson(Self)", "Matt")]
+		[TestCase("Matt", "IsPerson(Self)", "Mary", "IsPerson(Mary)", "Mary")]
+		[TestCase("Matt", "IsPerson(Self)", "Matt", "IsPerson(Self)", "Matt")]
+		public void Test_Tell_Pass_Add_With_Perspective(string nativePerspective, string tellPerdicate, string tellPerspective, string queryPerdicate, string queryPerspective)
+		{
+			var kb = new KB(Name.BuildName(nativePerspective));
+			kb.Tell(Name.BuildName(tellPerdicate), true,Name.BuildName(tellPerspective));
+
+			using (var stream = new MemoryStream())
+			{
+				var formater = new JSONSerializer();
+				formater.Serialize(stream, kb);
+				stream.Seek(0, SeekOrigin.Begin);
+				Console.WriteLine(new StreamReader(stream).ReadToEnd());
+			}
+
+			var r = kb.AskProperty(Name.BuildName(queryPerdicate), Name.BuildName(queryPerspective)) as bool?;
+			Assert.IsTrue(r);
 		}
 	}
 }

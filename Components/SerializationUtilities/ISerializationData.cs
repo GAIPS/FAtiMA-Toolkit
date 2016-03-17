@@ -117,9 +117,9 @@ namespace GAIPS.Serialization
 
 		private class Enumerator : ISerializationFieldEnumerator
 		{
-			private IEnumerator<FieldEnty> _it;
+			private IEnumerator<FieldEntry> _it;
 
-			public Enumerator(IEnumerator<FieldEnty> it)
+			public Enumerator(IEnumerator<FieldEntry> it)
 			{
 				_it = it;
 			}

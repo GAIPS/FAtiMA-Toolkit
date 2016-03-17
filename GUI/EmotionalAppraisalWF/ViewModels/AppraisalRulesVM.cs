@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using Equin.ApplicationFramework;
+using KnowledgeBase.DTOs.Conditions;
 
 namespace EmotionalAppraisalWF.ViewModels
 {

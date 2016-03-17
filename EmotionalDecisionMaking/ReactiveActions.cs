@@ -31,9 +31,9 @@ namespace EmotionalDecisionMaking
 			m_actions.Add(action.ActivationConditions, (ActionTendency)action.Clone());
 		}
 
-		public IEnumerable<IAction> MakeAction(KB knowledgeBase)
+		public IEnumerable<IAction> MakeAction(KB knowledgeBase, Name perspective)
 		{
-			var validActions = m_actions.MatchConditions(knowledgeBase, new SubstitutionSet());
+			var validActions = m_actions.MatchConditions(knowledgeBase,perspective, new SubstitutionSet());
 			foreach (var action in validActions.Where(a => !a.Item1.IsCoolingdown))
 			{
 				var a = action.Item1.GenerateAction(action.Item2);

@@ -18,14 +18,14 @@ namespace EmotionalAppraisal.AppraisalRules
 	public class AppraisalRule : BaseDomainObject
 	{
         public Name EventName { get; private set; }
-		public ConditionEvaluatorSet Conditions { get; private set; }
+		public ConditionSet Conditions { get; private set; }
 
-		public AppraisalRule(Name eventName, ConditionEvaluatorSet conditions = null)
+		public AppraisalRule(Name eventName, ConditionSet conditions = null)
 		{
 			if(!AM.IsValidEventName(eventName))
 				throw new Exception("Invalid event name");
 			EventName = eventName;
-			Conditions = conditions ?? new ConditionEvaluatorSet();
+			Conditions = conditions ?? new ConditionSet();
 			Desirability = Praiseworthiness = 0;
 		}
 
@@ -34,7 +34,7 @@ namespace EmotionalAppraisal.AppraisalRules
 	        EventName = Name.BuildName(appraisalRuleDTO.EventMatchingTemplate);
 	        Desirability = appraisalRuleDTO.Desirability;
 	        Praiseworthiness = appraisalRuleDTO.Praiseworthiness;
-            Conditions = new ConditionEvaluatorSet(appraisalRuleDTO.Conditions.Select(c => Condition.Parse(c.Condition)));
+            Conditions = new ConditionSet(appraisalRuleDTO.Conditions.Select(c => Condition.Parse(c.Condition)));
 	    }
 
 		/// <summary>

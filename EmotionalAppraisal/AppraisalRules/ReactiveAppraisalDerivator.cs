@@ -7,6 +7,7 @@ using EmotionalAppraisal.DTOs;
 using EmotionalAppraisal.OCCModel;
 using GAIPS.Serialization;
 using KnowledgeBase;
+using KnowledgeBase.WellFormedNames;
 using KnowledgeBase.WellFormedNames.Collections;
 
 namespace EmotionalAppraisal.AppraisalRules
@@ -38,7 +39,7 @@ namespace EmotionalAppraisal.AppraisalRules
 				var conditions = new[] {possibleAppraisals.Item2};
 				foreach (var appraisal in possibleAppraisals.Item1)
 				{
-					if (appraisal.Conditions.Evaluate(kb, conditions))
+					if (appraisal.Conditions.Evaluate(kb,Name.SELF_SYMBOL, conditions))
 						return appraisal;	
 				}
 			}

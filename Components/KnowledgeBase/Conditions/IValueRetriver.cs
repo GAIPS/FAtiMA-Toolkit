@@ -8,7 +8,7 @@ namespace KnowledgeBase.Conditions
 	{
 		private interface IValueRetriver
 		{
-			IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> Retrive(KB kb, IEnumerable<SubstitutionSet> constraints);
+			IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> Retrive(KB kb, Name perpective, IEnumerable<SubstitutionSet> constraints);
 
 			Name InnerName { get; }
 			bool HasModifier { get; }

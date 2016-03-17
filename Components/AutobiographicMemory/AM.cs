@@ -108,14 +108,17 @@ namespace AutobiographicMemory
 
 		//Event
 		private static readonly Name EVENT_ID_PROPERTY_TEMPLATE = Name.BuildName("EventId([type],[subject],[def],[target])");
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventIdPropertyCalculator(KB kb, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventIdPropertyCalculator(KB kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
+			List<Pair<PrimitiveValue, SubstitutionSet>> results = new List<Pair<PrimitiveValue, SubstitutionSet>>();
+			if (!perspective.Match(Name.SELF_SYMBOL))
+				return results;
+
 			Name type = GetArgument(args, "type");
 			Name subject = GetArgument(args, "subject");
 			Name def = GetArgument(args, "def");
 			Name target = GetArgument(args,"target");
-
-			List<Pair<PrimitiveValue, SubstitutionSet>> results = new List<Pair<PrimitiveValue, SubstitutionSet>>();
+			
 			var key = Name.BuildName(EVT_NAME, type, subject, def, target);
 			foreach (var c in constraints)
 			{
@@ -130,8 +133,11 @@ namespace AutobiographicMemory
 
 		//EventElapseTime
 		private static readonly Name EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE = Name.BuildName("EventElapsedTime([id])");
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventAgePropertyCalculator(KB kb, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventAgePropertyCalculator(KB kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
+			if(!perspective.Match(Name.SELF_SYMBOL))
+				yield break;
+
 			Name idName = args["id"];
 
 			if (idName.IsVariable)
@@ -154,7 +160,7 @@ namespace AutobiographicMemory
 				yield break;
 			}
 
-			foreach (var pair in kb.AskPossibleProperties(idName,constraints))
+			foreach (var pair in kb.AskPossibleProperties(idName,perspective,constraints))
 			{
 				var idValue = pair.Item1;
 				if(!idValue.TypeCode.IsUnsignedNumeric())
@@ -169,8 +175,11 @@ namespace AutobiographicMemory
 
 		//LastEvent
 		private static readonly Name LAST_EVENT_ID_PROPERTY_TEMPLATE = Name.BuildName("LastEventId([type],[subject],[def],[target])");
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> LastEventIdPropertyCalculator(KB kb, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> LastEventIdPropertyCalculator(KB kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
+			if(!perspective.Match(Name.SELF_SYMBOL))
+				return Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
+
 			Name type = GetArgument(args, "type");
 			Name subject = GetArgument(args, "subject");
 			Name def = GetArgument(args, "def");

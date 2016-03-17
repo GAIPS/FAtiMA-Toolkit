@@ -6,6 +6,5 @@ namespace EmotionalAppraisal.DTOs
     {
         public string Name { get; set; }
         public string Value { get; set; }
-        public KnowledgeVisibility Visibility { get; set; }
     }
 }

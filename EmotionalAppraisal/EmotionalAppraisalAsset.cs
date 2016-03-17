@@ -9,6 +9,7 @@ using AutobiographicMemory;
 using EmotionalAppraisal.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase;
+using KnowledgeBase.DTOs.Conditions;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
 
@@ -86,7 +87,10 @@ namespace EmotionalAppraisal
         /// <summary>
         /// Indicates the name of the agent that corresponds to "SELF"
         /// </summary>
-		public string Perspective { get; set; }
+		public string Perspective {
+	        get { return m_kb.Perspective.ToString(); }
+	        set { m_kb.Perspective = Name.BuildName(value); }
+		}
 
 	    /// <summary>
 	    /// Indicates the current time tick
@@ -177,8 +181,7 @@ namespace EmotionalAppraisal
 
 		public EmotionalAppraisalAsset(string perspective)
 		{
-            Perspective = perspective;
-			m_kb = new KB();
+			m_kb = new KB((Name)perspective);
 			m_am = new AM();
 			m_am.BindCalls(m_kb);
 
@@ -199,9 +202,9 @@ namespace EmotionalAppraisal
 					var fact = evt.EventObject;
 					var value = (Name)evt.Target;
 					if(value == Name.NIL_SYMBOL)
-						m_kb.Retract(fact);
+						m_kb.Retract(fact,Name.SELF_SYMBOL);
 					else
-						m_kb.Tell(fact, value.GetPrimitiveValue(), true, KnowledgeVisibility.Self);
+						m_kb.Tell(fact, value.GetPrimitiveValue(), Name.SELF_SYMBOL);
 				}
 
 				APPRAISAL_FRAME.Reset(evt);
@@ -247,7 +250,7 @@ namespace EmotionalAppraisal
 
         public void AddOrUpdateBelief(BeliefDTO belief)
 	    {
-	        this.Kb.Tell(Name.BuildName(belief.Name), PrimitiveValue.Parse(belief.Value), true, belief.Visibility);
+	        this.Kb.Tell(Name.BuildName(belief.Name), PrimitiveValue.Parse(belief.Value));
 	    }
 
 	    public string GetBeliefValue(string beliefName)
@@ -271,14 +274,18 @@ namespace EmotionalAppraisal
 
         public void RemoveBelief(string name)
         {
-            this.Kb.Retract(Name.BuildName(name));
+            this.Kb.Retract(Name.BuildName(name),Name.SELF_SYMBOL);
         }
         
         
         #region Dynamic Properties
+
         private static readonly Name MOOD_TEMPLATE = (Name)"Mood([x])";
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> MoodPropertyCalculator(KB kb, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> MoodPropertyCalculator(KB kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
+			if(perspective != Name.SELF_SYMBOL)
+				yield break;
+
 			Name arg = args["x"];
 			if (arg.IsVariable)
 			{
@@ -291,7 +298,7 @@ namespace EmotionalAppraisal
 			}
 			else
 			{
-				foreach (var resultPair in kb.AskPossibleProperties(arg, constraints))
+				foreach (var resultPair in kb.AskPossibleProperties(arg,Name.SELF_SYMBOL, constraints))
 				{
 					var name = Name.BuildName(resultPair.Item1);
 					if (name == Name.SELF_SYMBOL)
@@ -307,10 +314,12 @@ namespace EmotionalAppraisal
 		}
 
 		private static readonly Name STRONGEST_EMOTION_TEMPLATE = (Name)"StrongestEmotion([x])";
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> StrongestEmotionCalculator(KB kb, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> StrongestEmotionCalculator(KB kb,Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
-			Name arg = args["x"];
+			if(perspective != Name.SELF_SYMBOL)
+				yield break;
 
+			Name arg = args["x"];
 			var emo = m_emotionalState.GetStrongestEmotion();
 			if(emo==null)
 				yield break;
@@ -328,7 +337,7 @@ namespace EmotionalAppraisal
 			}
 			else
 			{
-				foreach (var resultPair in kb.AskPossibleProperties(arg, constraints))
+				foreach (var resultPair in kb.AskPossibleProperties(arg,Name.SELF_SYMBOL, constraints))
 				{
 					var name = Name.BuildName(resultPair.Item1);
 					if (name != Name.SELF_SYMBOL)
@@ -341,12 +350,15 @@ namespace EmotionalAppraisal
 		}
 
 		private static readonly Name EMOTION_INTENSITY_TEMPLATE = (Name) "EmotionIntensity([x],[y])";
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EmotionIntensityPropertyCalculator(KB kb, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EmotionIntensityPropertyCalculator(KB kb,Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
+			List<Pair<PrimitiveValue, SubstitutionSet>> result = new List<Pair<PrimitiveValue, SubstitutionSet>>();
+			if (perspective != Name.SELF_SYMBOL)
+				return result;
+
 			Name entity = args["x"];
 			Name emotionName = args["y"];
-
-			List<Pair<PrimitiveValue, SubstitutionSet>> result = new List<Pair<PrimitiveValue, SubstitutionSet>>();
+			
 			if (entity.IsVariable)
 			{
 				var newSub = new Substitution(entity,Name.SELF_SYMBOL);
@@ -356,7 +368,7 @@ namespace EmotionalAppraisal
 			}
 			else
 			{
-				foreach (var resultPair in kb.AskPossibleProperties(entity,constraints))
+				foreach (var resultPair in kb.AskPossibleProperties(entity,Name.SELF_SYMBOL, constraints))
 				{
 					Name entityName = Name.BuildName(resultPair.Item1);
 					if(entityName!=Name.SELF_SYMBOL)
@@ -388,7 +400,7 @@ namespace EmotionalAppraisal
 			}
 			else
 			{
-				foreach (var resultPair in kb.AskPossibleProperties(emotionName,constraints))
+				foreach (var resultPair in kb.AskPossibleProperties(emotionName,Name.SELF_SYMBOL,constraints))
 				{
 					string emotionKey = resultPair.Item1.ToString();
 					var emotion = state.GetEmotionsByType(emotionKey).OrderByDescending(e => e.Intensity).FirstOrDefault();
@@ -411,7 +423,6 @@ namespace EmotionalAppraisal
 
         public void GetObjectData(ISerializationData dataHolder)
 		{
-			dataHolder.SetValue("Perspective",Perspective);
             dataHolder.SetValue("EmotionalHalfLifeDecayTime", EmotionalHalfLifeDecayTime);
 			dataHolder.SetValue("MoodHalfLifeDecayTime", MoodHalfLifeDecayTime);
             dataHolder.SetValue("HalfLifeDecayConstant", HalfLifeDecayConstant);
@@ -427,7 +438,6 @@ namespace EmotionalAppraisal
 
 		public void SetObjectData(ISerializationData dataHolder)
 		{
-			Perspective = dataHolder.GetValue<string>("Perspective");
             EmotionalHalfLifeDecayTime = dataHolder.GetValue<float>("EmotionalHalfLifeDecayTime");
             MoodHalfLifeDecayTime = dataHolder.GetValue<float>("MoodHalfLifeDecayTime");
 		    HalfLifeDecayConstant = dataHolder.GetValue<double>("HalfLifeDecayConstant");

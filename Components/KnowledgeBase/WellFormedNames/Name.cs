@@ -141,12 +141,22 @@ namespace KnowledgeBase.WellFormedNames
 
 		public Name ApplyPerspective(string name)
 		{
-			return SwapPerspective(BuildName(name), SELF_SYMBOL);
+			return ApplyPerspective(BuildName(name));
 		}
 
 		public Name RemovePerspective(string name)
 		{
-			return SwapPerspective(SELF_SYMBOL, BuildName(name));
+			return RemovePerspective(BuildName(name));
+		}
+
+		public Name ApplyPerspective(Name name)
+		{
+			return SwapPerspective(name, SELF_SYMBOL);
+		}
+
+		public Name RemovePerspective(Name name)
+		{
+			return SwapPerspective(SELF_SYMBOL, name);
 		}
 
 		protected abstract Name SwapPerspective(Name original, Name newName);
@@ -306,7 +316,7 @@ namespace KnowledgeBase.WellFormedNames
 		private static ComposedName ParseComposedName(string str)
 		{
 			if (str[str.Length - 1] != ')')
-				throw new ParsingException("Failed to parse name. Expected ')', got '{0}'", str[str.Length - 1]);
+				throw new ParsingException($"Failed to parse name. Expected ')', got '{str[str.Length - 1]}'");
 
 			int index = str.IndexOf('(');
 

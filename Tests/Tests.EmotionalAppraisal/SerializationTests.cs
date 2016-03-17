@@ -121,26 +121,26 @@ namespace Tests.EmotionalAppraisal
 
 			//Add knowledge
 			var kb = m_emotionalAppraisalAsset.Kb;
-			kb.Tell((Name)"Strength(John)", (byte)5,true,KnowledgeVisibility.Self);
-			kb.Tell((Name)"Strength(Mary)", (sbyte)3, true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Strength(Leonidas)", (short)500, true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Strength(Goku)", (uint)9001f, true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Strength(SuperMan)", ulong.MaxValue, true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Strength(Saitama)", float.MaxValue, true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Race(Saitama)", "human", true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Race(Superman)", "kriptonian", true, KnowledgeVisibility.Universal);
-			kb.Tell((Name)"Race(Goku)", "sayian",true,KnowledgeVisibility.Self);
-			kb.Tell((Name)"Race(Leonidas)", "human", true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Race(Mary)", "human", true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Race(John)", "human", true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Job(Saitama)", "super-hero",false,KnowledgeVisibility.Self);
-			kb.Tell((Name)"Job(Superman)", "super-hero", true, KnowledgeVisibility.Universal);
-			kb.Tell((Name)"Job(Leonidas)", "Spartan", false, KnowledgeVisibility.Self);
-			kb.Tell((Name)"AKA(Saitama)", "One-Punch_Man", true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"AKA(Superman)", "Clark_Kent", true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"AKA(Goku)", "Kakarot", true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Hobby(Saitama)", "super-hero", false, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Hobby(Goku)", "training", true, KnowledgeVisibility.Universal);
+			kb.Tell((Name)"Strength(John)", (byte)5);
+			kb.Tell((Name)"Strength(Mary)", (sbyte)3);
+			kb.Tell((Name)"Strength(Leonidas)", (short)500);
+			kb.Tell((Name)"Strength(Goku)", (uint)9001f);
+			kb.Tell((Name)"Strength(SuperMan)", ulong.MaxValue);
+			kb.Tell((Name)"Strength(Saitama)", float.MaxValue);
+			kb.Tell((Name)"Race(Saitama)", "human");
+			kb.Tell((Name)"Race(Superman)", "kriptonian");
+			kb.Tell((Name)"Race(Goku)", "sayian");
+			kb.Tell((Name)"Race(Leonidas)", "human");
+			kb.Tell((Name)"Race(Mary)", "human");
+			kb.Tell((Name)"Race(John)", "human");
+			kb.Tell((Name)"Job(Saitama)", "super-hero");
+			kb.Tell((Name)"Job(Superman)", "super-hero");
+			kb.Tell((Name)"Job(Leonidas)", "Spartan");
+			kb.Tell((Name)"AKA(Saitama)", "One-Punch_Man");
+			kb.Tell((Name)"AKA(Superman)", "Clark_Kent");
+			kb.Tell((Name)"AKA(Goku)", "Kakarot");
+			kb.Tell((Name)"Hobby(Saitama)", "super-hero");
+			kb.Tell((Name)"Hobby(Goku)", "training");
 
 			return m_emotionalAppraisalAsset;
 		}

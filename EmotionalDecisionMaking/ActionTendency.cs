@@ -19,7 +19,7 @@ namespace EmotionalDecisionMaking
 		public Name Target { get; private set; }
 		public float ActivationCooldown { get; set; }
 
-		public ConditionEvaluatorSet ActivationConditions { get; private set; }
+		public ConditionSet ActivationConditions { get; private set; }
 		public bool IsCoolingdown
 		{
 			get { return (DateTime.UtcNow - m_lastActivationTimestamp).TotalSeconds <= ActivationCooldown; }
@@ -35,7 +35,7 @@ namespace EmotionalDecisionMaking
 				throw new Exception("ActionName name needs to be node primitive value Name");
 
 			ActivationCooldown = DEFAULT_ACTIVATION_COOLDOWN;
-			ActivationConditions = new ConditionEvaluatorSet(activationConditions);
+			ActivationConditions = new ConditionSet(activationConditions);
 			ActionName = name;
 
 			if (terms.Length > 1)
@@ -57,7 +57,7 @@ namespace EmotionalDecisionMaking
 		{
 			ActionName = other.ActionName;
 			ActivationCooldown = other.ActivationCooldown;
-			ActivationConditions = new ConditionEvaluatorSet(other.ActivationConditions);
+			ActivationConditions = new ConditionSet(other.ActivationConditions);
 
 			if (other.m_parameters != null)
 				m_parameters = new List<Name>(other.m_parameters);
@@ -130,7 +130,7 @@ namespace EmotionalDecisionMaking
 			}
 
 			Target = SerializationServices.GetFieldOrDefault(node, "Target", Name.NIL_SYMBOL);
-			ActivationConditions = node["Conditions"].RebuildObject<ConditionEvaluatorSet>();
+			ActivationConditions = node["Conditions"].RebuildObject<ConditionSet>();
 			ActivationCooldown = SerializationServices.GetFieldOrDefault(node, "Cooldown", defaultActionCooldown);
 		}
 	}

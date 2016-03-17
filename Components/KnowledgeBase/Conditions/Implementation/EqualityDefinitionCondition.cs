@@ -17,7 +17,7 @@ namespace KnowledgeBase.Conditions
 				m_other = other;
 			}
 
-			protected override IEnumerable<SubstitutionSet> CheckActivation(KB kb, IEnumerable<SubstitutionSet> constraints)
+			protected override IEnumerable<SubstitutionSet> CheckActivation(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
 				if (!m_other.HasModifier && (m_other.InnerName.IsVariable || m_other.InnerName.IsPrimitive))
 				{
@@ -34,7 +34,7 @@ namespace KnowledgeBase.Conditions
 				}
 				else
 				{
-					foreach (var result in m_other.Retrive(kb, constraints))
+					foreach (var result in m_other.Retrive(kb,perspective, constraints))
 					{
 						var sub = new Substitution(m_variable, Name.BuildName(result.Item1));
 						if (result.Item2.AddSubstitution(sub))
@@ -45,7 +45,7 @@ namespace KnowledgeBase.Conditions
 
 			public override string ToString()
 			{
-				return string.Format("{0} = {1}", m_other, m_variable);
+				return $"{m_other} = {m_variable}";
 			}
 
 			public override bool Equals(object obj)
