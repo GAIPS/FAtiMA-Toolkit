@@ -158,7 +158,7 @@ namespace Tests.SocialImportance
 			return si;
 		}
 
-		[TestCase("Matt","Mary",35,35)]
+		[TestCase("Matt", "Mary", 35, 35)]
 		[TestCase("Matt", "Diego", 19, 20)]
 		[TestCase("Matt", "Thomas", 35, 20)]
 		[TestCase("Matt", "Robot", 0, 20)]
@@ -170,8 +170,8 @@ namespace Tests.SocialImportance
 		[TestCase("Thomas", "Robot", 0, 20)]
 		public static void Test_SI_Values(string a, string b, float abSiValue, float baSiValue)
 		{
-			var ab = ASSET_TO_TEST.GetSocialImportance((Name) a, (Name) b);
-			var ba = ASSET_TO_TEST.GetSocialImportance((Name)b, (Name)a);
+			var ab = ASSET_TO_TEST.GetSocialImportance((Name)b, (Name)a); 
+			var ba = ASSET_TO_TEST.GetSocialImportance((Name)a, (Name)b);
 
 			Assert.AreEqual(ab,abSiValue);
 			Assert.AreEqual(ba, baSiValue);

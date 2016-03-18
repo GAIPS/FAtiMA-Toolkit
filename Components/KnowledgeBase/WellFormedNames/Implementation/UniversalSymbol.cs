@@ -26,7 +26,7 @@ namespace KnowledgeBase.WellFormedNames
 				return false;
 			}
 
-			public override bool HasVariables()
+			public override bool HasSelf()
 			{
 				return false;
 			}

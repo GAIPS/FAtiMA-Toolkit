@@ -158,7 +158,7 @@ namespace EmotionalAppraisal
 
 	    public uint AddEventRecord(EventDTO eventDTO)
 	    {
-	        return this.m_am.RecordEvent(Name.BuildName(eventDTO.Event), this.Perspective, eventDTO.Time).Id;
+	        return this.m_am.RecordEvent(Name.BuildName(eventDTO.Event), eventDTO.Time).Id;
 	    }
 
         public void AddEmotionDisposition(EmotionDispositionDTO emotionDispositionDto)
@@ -217,15 +217,14 @@ namespace EmotionalAppraisal
 			var APPRAISAL_FRAME = new InternalAppraisalFrame();
 			foreach (var n in eventNames)
 			{
-				var evt = m_am.RecordEvent(n, Perspective,Tick);
+				var evtN = n.RemovePerspective(Perspective);
+				var evt = m_am.RecordEvent(evtN,Tick);
+
 				if (evt.EventType.Equals("property-change", StringComparison.InvariantCultureIgnoreCase))
 				{
 					var fact = evt.EventObject;
 					var value = (Name)evt.Target;
-					if(value == Name.NIL_SYMBOL)
-						m_kb.Retract(fact,Name.SELF_SYMBOL);
-					else
-						m_kb.Tell(fact, value.GetPrimitiveValue(), Name.SELF_SYMBOL);
+					m_kb.Tell(fact, value.GetPrimitiveValue(), Name.SELF_SYMBOL);
 				}
 
 				APPRAISAL_FRAME.Reset(evt);
@@ -285,7 +284,6 @@ namespace EmotionalAppraisal
             return this.Kb.BeliefExists(Name.BuildName(name));
         }
 
-
 		private void BindCalls(KB kb)
 		{
 			kb.RegistDynamicProperty(MOOD_TEMPLATE, MoodPropertyCalculator, new[] { "x" });
@@ -295,7 +293,7 @@ namespace EmotionalAppraisal
 
         public void RemoveBelief(string name)
         {
-            this.Kb.Retract(Name.BuildName(name),Name.SELF_SYMBOL);
+            this.Kb.Tell(Name.BuildName(name),null,Name.SELF_SYMBOL);
         }
         
         

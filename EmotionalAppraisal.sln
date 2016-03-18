@@ -16,9 +16,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAIPS.Serialization", "Components\SerializationUtilities\GAIPS.Serialization.csproj", "{7DD831A6-ADCA-455B-B02F-53C3A639E79B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{397A6C33-259F-43B8-B68F-56D56853D090}"
-	ProjectSection(SolutionItems) = preProject
-		TODO_and_QA.txt = TODO_and_QA.txt
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutobiographicMemory", "Components\AutobiographicMemory\AutobiographicMemory.csproj", "{C1CC38C5-72F5-4545-B4F7-C65B2883909C}"
 EndProject
@@ -46,7 +43,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialImportance", "SocialI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValueDomains", "Components\ValueDomains\ValueDomains.csproj", "{B439D1F1-11ED-4983-A762-593AD1C0D57E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.SocialImportance", "Tests.SocialImportance\Tests.SocialImportance.csproj", "{B0540CAE-4A84-495D-9207-A347FDC735E9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.SocialImportance", "Tests\Tests.SocialImportance\Tests.SocialImportance.csproj", "{B0540CAE-4A84-495D-9207-A347FDC735E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

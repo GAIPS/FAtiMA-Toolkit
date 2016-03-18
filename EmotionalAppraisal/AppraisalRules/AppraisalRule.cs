@@ -22,8 +22,7 @@ namespace EmotionalAppraisal.AppraisalRules
 
 		public AppraisalRule(Name eventName, ConditionSet conditions = null)
 		{
-			if(!AM.IsValidEventName(eventName))
-				throw new Exception("Invalid event name");
+			AM.AssertEventNameValidity(eventName);
 			EventName = eventName;
 			Conditions = conditions ?? new ConditionSet();
 			Desirability = Praiseworthiness = 0;

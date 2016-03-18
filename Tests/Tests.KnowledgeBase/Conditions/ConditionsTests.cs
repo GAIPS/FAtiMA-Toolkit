@@ -129,7 +129,7 @@ namespace Tests.KnowledgeBase.Conditions
 			Assert.AreEqual(c1, c2);
 		}
 
-		[TestCase(new[] { "Strength([x])<=Strength(Saitama)", "Strength([x])>=Strength(Goku)","[x]!=Saitama","[x]!=goku" }, true,null)]
+		[TestCase(new[] { "Strength([x])<=Strength(Saitama)", "Strength([x])>=Strength(Goku)", "[x]!=Saitama", "[x]!=goku" }, true, null)]
 		[TestCase(new[] { "Race([y])!=Race([x])", "Strength([x])>=Strength([y])", "[x]!=[y]" }, true, null)]
 		[TestCase(new[] { "Race([y])!=Race([x])", "Strength([x])>=Strength([y])", "[x]!=[y]", "#[x]=3" }, true, null)]
 		[TestCase(new[] { "Race([y])!=Race([x])", "Strength([x])>=Strength([y])", "[x]!=[y]", "Count([x])=3", "Count([y])=5" }, true, null)]

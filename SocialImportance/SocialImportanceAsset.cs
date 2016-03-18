@@ -4,6 +4,7 @@ using AssetPackage;
 using EmotionalAppraisal;
 using KnowledgeBase;
 using KnowledgeBase.WellFormedNames;
+using KnowledgeBase.WellFormedNames.Collections;
 using SocialImportance.DTOs;
 
 namespace SocialImportance
@@ -12,6 +13,9 @@ namespace SocialImportance
 	{
 		private KB m_kb;
 		private AttributionRule[] m_attributionRules = new AttributionRule[0];
+
+		//Volatile Statements
+		private NameSearchTree<NameSearchTree<float>> m_cachedSI = new NameSearchTree<NameSearchTree<float>>();
 
 		public SocialImportanceAsset(EmotionalAppraisalAsset EA)
 		{
@@ -31,7 +35,35 @@ namespace SocialImportance
 			//TODO load the rest
 		}
 
-		public float GetSocialImportance(Name perspective, Name target)
+		public float GetSocialImportance(Name target, Name perspective)
+		{
+			if(!target.IsPrimitive)
+				throw new ArgumentException("must be a primitive name",nameof(target));
+
+			var p = m_kb.AssertPerspective(perspective);
+
+			NameSearchTree<float> targetDict;
+			if (!m_cachedSI.TryGetValue(p, out targetDict))
+			{
+				targetDict = new NameSearchTree<float>();
+				m_cachedSI[p] = targetDict;
+			}
+
+			float value;
+			if (!targetDict.TryGetValue(target, out value))
+			{
+				value = CalculateSI(target, p);
+				targetDict[target] = value;
+			}
+			return value;
+		}
+
+		public void InvalidateCachedSI()
+		{
+			m_cachedSI.Clear();
+		}
+
+		private float CalculateSI(Name target, Name perspective)
 		{
 			float value = 0;
 			foreach (var a in m_attributionRules)

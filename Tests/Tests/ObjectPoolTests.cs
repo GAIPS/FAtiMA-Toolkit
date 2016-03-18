@@ -1,13 +1,13 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using NUnit.Framework;
 using Utilities;
 
 namespace UnitTest
 {
-	[TestClass]
+	[TestFixture]
 	public class ObjectPoolTests
 	{
-		[TestMethod]
+		[Test]
 		public void ObjectPoolTest()
 		{
 			const int iterations = 100;

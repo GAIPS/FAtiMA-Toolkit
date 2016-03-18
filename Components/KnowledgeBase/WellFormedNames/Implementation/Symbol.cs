@@ -65,10 +65,9 @@ namespace KnowledgeBase.WellFormedNames
 				yield return this;
 			}
 
-			public sealed override Name Unfold(out SubstitutionSet set)
+			public override Name ApplyToTerms(Func<Name, Name> transformFunction)
 			{
-				set = null;
-				return this;
+				return transformFunction(this);
 			}
 		}
 	}
