@@ -18,20 +18,20 @@ namespace KnowledgeBase.Conditions
 		{
 		}
 
-		public IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, IEnumerable<SubstitutionSet> constraints)
+		public IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
 			if (constraints == null || !constraints.Any())
 				constraints = new[] { new SubstitutionSet() };
 
-			return CheckActivation(kb, constraints).Distinct();
+			return CheckActivation(kb, perspective, constraints).Distinct();
 		}
 
-		public bool Evaluate(KB kb, IEnumerable<SubstitutionSet> constraints)
+		public bool Evaluate(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
-			return UnifyEvaluate(kb, constraints).Any();
+			return UnifyEvaluate(kb,perspective, constraints).Any();
 		}
 
-		protected abstract IEnumerable<SubstitutionSet> CheckActivation(KB kb, IEnumerable<SubstitutionSet> constraints);
+		protected abstract IEnumerable<SubstitutionSet> CheckActivation(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints);
 
 		public abstract override string ToString();
 
@@ -56,7 +56,7 @@ namespace KnowledgeBase.Conditions
 				case ComparisonOperator.GreatherOrEqualThan:
 					return a >= b;
 				default:
-					throw new ArgumentOutOfRangeException("op", op, null);
+					throw new ArgumentOutOfRangeException(nameof(op), op, null);
 			}
 		}
 
@@ -85,7 +85,7 @@ namespace KnowledgeBase.Conditions
 		{
 			var m = REGEX_PARSER.Match(str);
 			if (!m.Success)
-				throw new ParsingException(@"Unable to parse ""{0}"" as a condition", str);
+				throw new ParsingException($"Unable to parse \"{str}\" as a condition");
 
 			string mod1 = m.Groups[1].Value;
 			string str1 = m.Groups[2].Value;
@@ -117,7 +117,7 @@ namespace KnowledgeBase.Conditions
 					ope = ComparisonOperator.GreatherOrEqualThan;
 					break;
 				default:
-					throw new ParsingException(@"Invalid comparison operator ""{0}"".", op);
+					throw new ParsingException($"Invalid comparison operator \"{op}\".");
 			}
 
 			return internal_buildCondition(mod1, v1, mod2, v2, ope);

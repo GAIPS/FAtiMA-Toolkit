@@ -26,18 +26,14 @@ namespace AutobiographicMemory
 			kb.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_TEMPLATE, LastEventIdPropertyCalculator, new[] { "type", "subject", "def", "target" });
 		}
 
-		public IEventRecord RecordEvent(Name eventName,string perspective, ulong timestamp)
+		public IEventRecord RecordEvent(Name eventName, ulong timestamp)
 		{
-		    if (string.IsNullOrEmpty(perspective))
-		    {
-		        throw new Exception("Invalid perspective");
-		    }
-
-			if(!IsValidEventName(eventName))
-				throw new Exception("Invalid event name format");
+			AssertEventNameValidity(eventName);
+			if (eventName.HasSelf())
+				throw new Exception("Cannot record an event name containing \"Self\" keywords");
 
 			var id = m_eventGUIDCounter++;
-			var rec = new EventRecord(id, eventName.ApplyPerspective(perspective),timestamp);
+			var rec = new EventRecord(id, eventName,timestamp);
 			AddRecord(rec);
 			return rec;
 		}
@@ -69,21 +65,26 @@ namespace AutobiographicMemory
 		}
 
 		private static readonly Name EVT_NAME = (Name)"Event";
-		public static bool IsValidEventName(Name name)
+
+		public static void AssertEventNameValidity(Name name)
 		{
 			if (name.NumberOfTerms != 5)
-				return false;
+				throw new Exception("A event name must contain 5 terms");
 
-			if (name.HasVariables())
-				return false;
+			if(!name.IsGrounded)
+				throw new Exception("A event name cannot contain variables");
 
-			if(name.GetNTerm(0) != EVT_NAME)
-				return false;
+			if (name.GetNTerm(0) != EVT_NAME)
+				throw new Exception("The first term of an event name must be \"Event\"");
 
-			if (name.GetNTerm(1).IsComposed || name.GetNTerm(2).IsComposed || name.GetNTerm(4).IsComposed)
-				return false;
+			if (name.GetNTerm(1).IsComposed)
+				throw new Exception("The second term of an event name cannot be a composed name.");
 
-			return true;
+			if (name.GetNTerm(2).IsComposed)
+				throw new Exception("The third term of an event name cannot be a composed name.");
+
+			if (name.GetNTerm(4).IsComposed)
+				throw new Exception("The fifth term of an event name cannot be a composed name.");
 		}
 
 		#region Dynamic Properties
@@ -113,14 +114,17 @@ namespace AutobiographicMemory
 
 		//Event
 		private static readonly Name EVENT_ID_PROPERTY_TEMPLATE = Name.BuildName("EventId([type],[subject],[def],[target])");
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventIdPropertyCalculator(KB kb, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventIdPropertyCalculator(KB kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
+			List<Pair<PrimitiveValue, SubstitutionSet>> results = new List<Pair<PrimitiveValue, SubstitutionSet>>();
+			if (!perspective.Match(Name.SELF_SYMBOL))
+				return results;
+
 			Name type = GetArgument(args, "type");
 			Name subject = GetArgument(args, "subject");
 			Name def = GetArgument(args, "def");
 			Name target = GetArgument(args,"target");
-
-			List<Pair<PrimitiveValue, SubstitutionSet>> results = new List<Pair<PrimitiveValue, SubstitutionSet>>();
+			
 			var key = Name.BuildName(EVT_NAME, type, subject, def, target);
 			foreach (var c in constraints)
 			{
@@ -135,8 +139,11 @@ namespace AutobiographicMemory
 
 		//EventElapseTime
 		private static readonly Name EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE = Name.BuildName("EventElapsedTime([id])");
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventAgePropertyCalculator(KB kb, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventAgePropertyCalculator(KB kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
+			if(!perspective.Match(Name.SELF_SYMBOL))
+				yield break;
+
 			Name idName = args["id"];
 
 			if (idName.IsVariable)
@@ -159,7 +166,7 @@ namespace AutobiographicMemory
 				yield break;
 			}
 
-			foreach (var pair in kb.AskPossibleProperties(idName,constraints))
+			foreach (var pair in kb.AskPossibleProperties(idName,perspective,constraints))
 			{
 				var idValue = pair.Item1;
 				if(!idValue.TypeCode.IsUnsignedNumeric())
@@ -174,8 +181,11 @@ namespace AutobiographicMemory
 
 		//LastEvent
 		private static readonly Name LAST_EVENT_ID_PROPERTY_TEMPLATE = Name.BuildName("LastEventId([type],[subject],[def],[target])");
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> LastEventIdPropertyCalculator(KB kb, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> LastEventIdPropertyCalculator(KB kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
+			if(!perspective.Match(Name.SELF_SYMBOL))
+				return Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
+
 			Name type = GetArgument(args, "type");
 			Name subject = GetArgument(args, "subject");
 			Name def = GetArgument(args, "def");

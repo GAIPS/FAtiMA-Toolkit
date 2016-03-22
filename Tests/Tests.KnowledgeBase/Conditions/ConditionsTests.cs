@@ -45,7 +45,7 @@ namespace Tests.KnowledgeBase.Conditions
 		private static KB _kb = CreateKB();
 		private static KB CreateKB()
 		{
-			var kb = new KB();
+			var kb = new KB((Name)"Me");
 
 			kb.Tell((Name)"Strength(John)",(byte)5);
 			kb.Tell((Name)"Strength(Mary)", (sbyte)3);
@@ -91,7 +91,7 @@ namespace Tests.KnowledgeBase.Conditions
 		public void Test_Condition(string conditionStr, bool result)
 		{
 			var c = Condition.Parse(conditionStr);
-			var v = c.Evaluate(_kb, null);
+			var v = c.Evaluate(_kb, Name.SELF_SYMBOL, null);
 			Assert.AreEqual(v, result);
 		}
 
@@ -129,7 +129,7 @@ namespace Tests.KnowledgeBase.Conditions
 			Assert.AreEqual(c1, c2);
 		}
 
-		[TestCase(new[] { "Strength([x])<=Strength(Saitama)", "Strength([x])>=Strength(Goku)","[x]!=Saitama","[x]!=goku" }, true,null)]
+		[TestCase(new[] { "Strength([x])<=Strength(Saitama)", "Strength([x])>=Strength(Goku)", "[x]!=Saitama", "[x]!=goku" }, true, null)]
 		[TestCase(new[] { "Race([y])!=Race([x])", "Strength([x])>=Strength([y])", "[x]!=[y]" }, true, null)]
 		[TestCase(new[] { "Race([y])!=Race([x])", "Strength([x])>=Strength([y])", "[x]!=[y]", "#[x]=3" }, true, null)]
 		[TestCase(new[] { "Race([y])!=Race([x])", "Strength([x])>=Strength([y])", "[x]!=[y]", "Count([x])=3", "Count([y])=5" }, true, null)]
@@ -137,9 +137,9 @@ namespace Tests.KnowledgeBase.Conditions
 		public void Test_ConditionSet(string[] conditions, bool result, string[] constraints)
 		{
 			var set = constraints!=null?new[]{new SubstitutionSet(constraints.Select(c => new Substitution(c)))}:null;
-			var conds = new ConditionEvaluatorSet(conditions.Select(Condition.Parse));
+			var conds = new ConditionSet(conditions.Select(Condition.Parse));
 
-			Assert.AreEqual(result, conds.Evaluate(_kb, set));
+			Assert.AreEqual(result, conds.Evaluate(_kb, Name.SELF_SYMBOL, set));
 		}
 	}
 }

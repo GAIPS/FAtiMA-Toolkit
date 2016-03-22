@@ -18,10 +18,10 @@ namespace KnowledgeBase.Conditions
 				m_invert = !expectedResult;
 			}
 
-			protected override IEnumerable<SubstitutionSet> CheckActivation(KB kb, IEnumerable<SubstitutionSet> constraints)
+			protected override IEnumerable<SubstitutionSet> CheckActivation(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
 				List<SubstitutionSet> results = new List<SubstitutionSet>();
-				var sets = m_predicate.Retrive(kb, constraints).ToList();
+				var sets = m_predicate.Retrive(kb,perspective, constraints).ToList();
 				if (sets.Count == 0 && m_invert)
 				{
 					results.AddRange(constraints);

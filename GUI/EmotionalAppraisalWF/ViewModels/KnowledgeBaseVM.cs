@@ -21,8 +21,7 @@ namespace EmotionalAppraisalWF.ViewModels
             var beliefList = ea.Kb.GetAllBeliefs().Select(b => new BeliefDTO
             {
                 Name = b.Name.ToString(),
-                Value = b.Value.ToString(),
-                Visibility = (KnowledgeVisibility)Enum.Parse(typeof(KnowledgeVisibility),b.Visibility.ToString())
+                Value = b.Value.ToString()
             }).ToList();
 
             this.Beliefs = new BindingListView<BeliefDTO>(beliefList);
@@ -30,7 +29,7 @@ namespace EmotionalAppraisalWF.ViewModels
 
         public string[] GetKnowledgeVisibilities()
         {
-            return Enum.GetNames(typeof(KnowledgeVisibility));
+            return new string[0];// Enum.GetNames(typeof(KnowledgeVisibility));
         }
 
         public void AddBelief(BeliefDTO belief)

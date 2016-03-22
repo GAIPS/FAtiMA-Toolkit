@@ -13,7 +13,12 @@ namespace KnowledgeBase.WellFormedNames
 			{
 				m_value = value;
 			}
-			
+
+			private bool CompareNameWithString(string str)
+			{
+				return string.Equals(m_value.ToString(), str, StringComparison.InvariantCultureIgnoreCase);
+			}
+
 			public override bool Equals(object obj)
 			{
 				PrimitiveSymbol s = obj as PrimitiveSymbol;
@@ -26,7 +31,7 @@ namespace KnowledgeBase.WellFormedNames
 				if (m_value == null || s.m_value == null)
 					return false;
 
-				return string.Equals(m_value.ToString(), s.m_value.ToString(),StringComparison.InvariantCultureIgnoreCase);
+				return CompareNameWithString(s.m_value.ToString());
 			}
 
 			public override int GetHashCode()
@@ -46,9 +51,9 @@ namespace KnowledgeBase.WellFormedNames
 				return false;
 			}
 
-			public override bool HasVariables()
+			public override bool HasSelf()
 			{
-				return false;
+				return CompareNameWithString(Name.SELF_STRING);
 			}
 
 			protected override Name SwapPerspective(Name original, Name newName)
@@ -90,7 +95,7 @@ namespace KnowledgeBase.WellFormedNames
 				if (m_value == null || s.m_value == null)
 					return false;
 
-				return string.Equals(m_value.ToString(), s.m_value.ToString(), StringComparison.InvariantCultureIgnoreCase);
+				return CompareNameWithString(s.m_value);
 			}
 
 			public override PrimitiveValue GetPrimitiveValue()

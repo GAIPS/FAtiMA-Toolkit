@@ -5,19 +5,19 @@ using Utilities;
 
 namespace GAIPS.Serialization.SerializationGraph
 {
-	public struct FieldEnty
+	public struct FieldEntry
 	{
 		public readonly string FieldName;
 		public readonly IGraphNode FieldNode;
 
-		internal FieldEnty(string fieldName, IGraphNode nodeValue)
+		internal FieldEntry(string fieldName, IGraphNode nodeValue)
 		{
 			this.FieldName = fieldName;
 			this.FieldNode = nodeValue;
 		}
 	}
 
-	public interface IObjectGraphNode : IGraphNode, IEnumerable<FieldEnty>
+	public interface IObjectGraphNode : IGraphNode, IEnumerable<FieldEntry>
 	{
 		int RefId { get; }
 		ITypeGraphNode ObjectType
@@ -115,9 +115,9 @@ namespace GAIPS.Serialization.SerializationGraph
 				}
 			}
 
-			public IEnumerator<FieldEnty> GetEnumerator()
+			public IEnumerator<FieldEntry> GetEnumerator()
 			{
-				return m_fields.Select(p => new FieldEnty(p.Key,p.Value)).GetEnumerator();
+				return m_fields.Select(p => new FieldEntry(p.Key,p.Value)).GetEnumerator();
 			}
 
 			System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()

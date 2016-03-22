@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Security.Principal;
 using GAIPS.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KnowledgeBase.WellFormedNames;
+using NUnit.Framework;
 
 namespace UnitTest
 {
-	[TestClass]
+	[TestFixture]
 	public class SerializationTests
 	{
-		[TestMethod]
+		[Test]
 		public void BasicSerializationTest()
 		{
 			var asset = new SerializationTestClass();//Name.Parse("A(B,C(D,E,f(H)))"); //new SerializationTestClass();
@@ -26,7 +25,7 @@ namespace UnitTest
 			}
 		}
 
-		[TestMethod]
+		[Test]
 		public void BasicDeserializationTest()
 		{
 			var asset = new SerializationTestClass();

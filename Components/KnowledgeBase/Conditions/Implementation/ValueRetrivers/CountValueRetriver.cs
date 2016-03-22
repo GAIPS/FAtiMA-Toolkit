@@ -16,7 +16,7 @@ namespace KnowledgeBase.Conditions
 				m_name = name;
 			}
 
-			public IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> Retrive(KB kb, IEnumerable<SubstitutionSet> constraints)
+			public IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> Retrive(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
 				PrimitiveValue count = constraints.Select(c => c[m_name]).Where(n => n != null).Distinct().Count();
 				return constraints.Select(s => Tuples.Create(count, s));

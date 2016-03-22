@@ -39,7 +39,7 @@
     <Compile Include="Conditions\Condition.cs" />
     <Compile Include="Conditions\ConditionMapper.cs" />
     <Compile Include="Conditions\Formatters.cs" />
-    <Compile Include="Conditions\ConditionEvaluatorSet.cs" />
+    <Compile Include="Conditions\ConditionSet.cs" />
     <Compile Include="Conditions\ComparisonOperator.cs" />
     <Compile Include="Conditions\IConditionEvaluator.cs" />
     <Compile Include="Conditions\Implementation\EqualityDefinitionCondition.cs" />
@@ -50,6 +50,8 @@
     <Compile Include="Conditions\Implementation\ValueRetrivers\PropertyValueRetriver.cs" />
     <Compile Include="Conditions\IValueRetriver.cs" />
     <Compile Include="Conditions\LogicalQuantifier.cs" />
+    <Compile Include="DTOs\Conditions\ConditionDTO.cs" />
+    <Compile Include="DTOs\Conditions\ConditionSetDTO.cs" />
     <Compile Include="KB.cs" />
     <Compile Include="PrimitiveValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
