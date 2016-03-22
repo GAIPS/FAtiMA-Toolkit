@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using KnowledgeBase.DTOs.Conditions;
 
 namespace EmotionalAppraisal.DTOs
 {
