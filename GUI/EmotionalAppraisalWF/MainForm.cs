@@ -14,6 +14,7 @@ namespace EmotionalAppraisalWF
     public partial class MainForm : Form
     {
         private const string MOOD_FORMAT = "0.00";
+        private const string DEFAULT_PERSPECTIVE = "Nameless";
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
         private string _saveFileName;
 
@@ -34,7 +35,7 @@ namespace EmotionalAppraisalWF
             if (newFile)
             {
                 this.Text = Resources.MainFormPrincipalTitle;
-                this._emotionalAppraisalAsset = new EmotionalAppraisalAsset(string.Empty);
+                this._emotionalAppraisalAsset = new EmotionalAppraisalAsset(DEFAULT_PERSPECTIVE);
             }
             else
             {
