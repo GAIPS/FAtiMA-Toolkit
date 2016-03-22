@@ -66,6 +66,27 @@ namespace EmotionalAppraisal.AppraisalRules
             ruleSet.Add(appraisalRule);
         }
 
+	    public void RemoveAppraisalRule(AppraisalRule appraisalRule)
+	    {
+            HashSet<AppraisalRule> ruleSet;
+	        if (Rules.TryGetValue(appraisalRule.EventName, out ruleSet))
+	        {
+	            AppraisalRule ruleToRemove = null;
+	            foreach (var rule in ruleSet)
+	            {
+	                if (rule.Id == appraisalRule.Id)
+	                {
+	                    ruleToRemove = rule;
+	                }
+	            }
+	            if (ruleToRemove != null)
+	            {
+                    ruleSet.Remove(ruleToRemove);
+                }
+	        }
+	    }
+
+
 	    public IEnumerable<AppraisalRule> GetAppraisalRules()
 	    {
 		    return Rules.Values.SelectMany(set => set);

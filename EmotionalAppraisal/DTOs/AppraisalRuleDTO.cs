@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EmotionalAppraisal.DTOs
 {
@@ -9,5 +10,10 @@ namespace EmotionalAppraisal.DTOs
         public float Praiseworthiness { get; set; }
         public string Description { get; set; }
         public IEnumerable<ConditionDTO> Conditions { get; set; }
+
+        public AppraisalRuleDTO()
+        {
+            this.Id = Guid.NewGuid();
+        }
     }
 }

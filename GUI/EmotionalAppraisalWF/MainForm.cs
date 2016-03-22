@@ -347,12 +347,26 @@ namespace EmotionalAppraisalWF
 
         private void buttonAddAppraisalRuleCondition_Click(object sender, EventArgs e)
         {
-
+            if (_appraisalRulesVM.IsRuleSelected)
+            {
+                new AddOrEditConditionForm(this._appraisalRulesVM).ShowDialog();
+            }
         }
 
         private void buttonAddAppraisalRule_Click(object sender, EventArgs e)
         {
             new AddOrEditAppraisalRuleForm(_appraisalRulesVM).ShowDialog();
+        }
+
+        private void buttonRemoveAppraisalRule_Click(object sender, EventArgs e)
+        {
+            IList<AppraisalRuleDTO> rulesToRemove = new List<AppraisalRuleDTO>();
+            for (int i = 0; i < dataGridViewAppraisalRules.SelectedRows.Count; i++)
+            {
+                var rule  = ((ObjectView<AppraisalRuleDTO>)dataGridViewAppraisalRules.SelectedRows[i].DataBoundItem).Object;
+                rulesToRemove.Add(rule);
+            }
+            _appraisalRulesVM.RemoveAppraisalRules(rulesToRemove);
         }
 
         private void label2_Click(object sender, EventArgs e)
@@ -461,5 +475,7 @@ namespace EmotionalAppraisalWF
             }
         
         }
+
+ 
     }
 }
