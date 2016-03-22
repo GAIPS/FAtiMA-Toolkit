@@ -7,7 +7,7 @@ using EmotionalDecisionMaking;
 using AutobiographicMemory;
 using KnowledgeBase.WellFormedNames;
 using System.Collections.Generic;
-using UnityEngine;
+//using UnityEngine;
 
 namespace RolePlayCharacter
 {
@@ -99,7 +99,7 @@ namespace RolePlayCharacter
         private List<Name> _rpcEventsName = new List<Name>();
 
         [NonSerialized]
-        private GameObject _body;
+        /*private GameObject _body;*/
 
         private IEnumerable<IAction> _rpcActions;
 
@@ -183,12 +183,12 @@ namespace RolePlayCharacter
             set { _bodyPath = value; }
         }
 
-        public GameObject Body
+       /* public GameObject Body
         {
             get  { return _body; }
 
             set { _body = value; }
-        }
+        }*/
         #endregion
 
         #region Load Methods
@@ -306,7 +306,7 @@ namespace RolePlayCharacter
 
         private void LoadBody(string name)
         {
-            _body = GameObject.Instantiate(Resources.Load(name)) as GameObject;
+            /*_body = GameObject.Instantiate(Resources.Load(name)) as GameObject;*/
         }
 
         public void GenerateBody(string name)
@@ -361,7 +361,7 @@ namespace RolePlayCharacter
         public void ExpressEmotion(string emotion, float amount)
         {
             object[] parameters = new object[] { emotion, amount };
-            _body.SendMessage("ExpressEmotion", parameters, SendMessageOptions.DontRequireReceiver);
+            /*_body.SendMessage("ExpressEmotion", parameters, SendMessageOptions.DontRequireReceiver);*/
         }
 
         public void AddEvent(Name eventName)
