@@ -7,6 +7,7 @@ using EmotionalDecisionMaking;
 using AutobiographicMemory;
 using KnowledgeBase.WellFormedNames;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace RolePlayCharacter
 {
@@ -97,10 +98,15 @@ namespace RolePlayCharacter
         private List<RPCEvent> _rpcEvents = new List<RPCEvent>();
         private List<Name> _rpcEventsName = new List<Name>();
 
+        [NonSerialized]
+        private GameObject _body;
+
         private IEnumerable<IAction> _rpcActions;
 
         private static LOADTYPE _loadType = LOADTYPE.NONE;
         private static FILETYPE _fileType = FILETYPE.NONE;
+
+        private string _bodyPath;
 
         private string _assetId;
 
@@ -170,6 +176,19 @@ namespace RolePlayCharacter
             set { _emotionalDecisionMakingPath = value; }
         }
 
+        public string BodyPath
+        {
+            get { return _bodyPath; }
+
+            set { _bodyPath = value; }
+        }
+
+        public GameObject Body
+        {
+            get  { return _body; }
+
+            set { _body = value; }
+        }
         #endregion
 
         #region Load Methods
@@ -243,7 +262,7 @@ namespace RolePlayCharacter
 
         public RolePlayCharacterAsset ()
         {
-           if (_emotionalAppraisalPath != null && _loadType != LOADTYPE.NONE)
+          /* if (_emotionalAppraisalPath != null && _loadType != LOADTYPE.NONE)
             {
                 LoadEmotionalAppraisalAssetFromType(_loadType);
             }
@@ -251,7 +270,7 @@ namespace RolePlayCharacter
             if(_emotionalDecisionMakingPath != null && _emotionalAppraisalAsset !=null)
             {
                 LoadEmotionDecisionMakingAsset(_emotionalAppraisalAsset);
-            }
+            }*/
         }
 
         #region LoadAndSet Methods
@@ -283,6 +302,16 @@ namespace RolePlayCharacter
         private void LoadEmotionDecisionMakingAsset(EmotionalAppraisalAsset eaa)
         {
             _emotionalDecisionMakingAsset = new EmotionalDecisionMakingAsset(eaa);
+        }
+
+        private void LoadBody(string name)
+        {
+            _body = GameObject.Instantiate(Resources.Load(name)) as GameObject;
+        }
+
+        public void GenerateBody(string name)
+        {
+            LoadBody(name);
         }
 
         public void SetEmotionAppraisalModulePath(string emotionalAppraisalPath)
@@ -329,6 +358,12 @@ namespace RolePlayCharacter
             _rpcEventsName.Add(evt.EventName);
         }
 
+        public void ExpressEmotion(string emotion, float amount)
+        {
+            object[] parameters = new object[] { emotion, amount };
+            _body.SendMessage("ExpressEmotion", parameters, SendMessageOptions.DontRequireReceiver);
+        }
+
         public void AddEvent(Name eventName)
         {
             _rpcEventsName.Add(eventName);
@@ -343,10 +378,14 @@ namespace RolePlayCharacter
 
                 else throw new FunctionalityNotImplementedException(new Messages().EMOTIONALAPPRAISALNOTIMPLEMENTED().ShowMessage());
 
-                if (_emotionalDecisionMakingAsset != null)
-                    _rpcActions = _emotionalDecisionMakingAsset.Decide();
+                _rpcEvents.Clear();
+                _rpcEventsName.Clear();
 
-                else throw new FunctionalityNotImplementedException(new Messages().EMOTIONDECISIONNOTIMPLEMENTED().ShowMessage());
+               // UpdateCharacterState();
+             //   if (_emotionalDecisionMakingAsset != null)
+               //     _rpcActions = _emotionalDecisionMakingAsset.Decide();
+
+                //else throw new FunctionalityNotImplementedException(new Messages().EMOTIONDECISIONNOTIMPLEMENTED().ShowMessage());
             }
             
             catch(FunctionalityNotImplementedException exception)
@@ -361,6 +400,12 @@ namespace RolePlayCharacter
                 return _emotionalDecisionMakingAsset.Decide();
 
             else return _rpcActions;
+        }
+
+        public IEnumerable<IAction> RetrieveActions()
+        {
+            return _rpcActions;
+
         }
 
         public float GetCharacterMood() { return Mood; }
@@ -404,6 +449,14 @@ namespace RolePlayCharacter
         #endregion
 
         #region Serialization
+        public void SaveAsset(string filename)
+        {
+            using (var file = File.Create(filename))
+            {
+                SaveToFile(file);
+            }
+        }
+
         public void SaveToFile(Stream file)
         {
             var serializer = new JSONSerializer();
