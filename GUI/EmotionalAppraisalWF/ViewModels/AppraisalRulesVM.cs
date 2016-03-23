@@ -15,6 +15,7 @@ namespace EmotionalAppraisalWF.ViewModels
 
         public BindingListView<AppraisalRuleDTO> AppraisalRules {get;}
         public BindingListView<ConditionDTO> CurrentRuleConditions { get; set; }
+        public bool IsRuleSelected { get; set;}
 
         public AppraisalRulesVM(EmotionalAppraisalAsset ea)
         {
@@ -22,6 +23,7 @@ namespace EmotionalAppraisalWF.ViewModels
             
             this.AppraisalRules = new BindingListView<AppraisalRuleDTO>(ea.GetAllAppraisalRules().ToList());
             this.CurrentRuleConditions = new BindingListView<ConditionDTO>(new List<ConditionDTO>());
+            this.IsRuleSelected = false;
         }
 
         public void ChangeCurrentRule(AppraisalRuleDTO rule)
@@ -29,6 +31,7 @@ namespace EmotionalAppraisalWF.ViewModels
             if (rule != null)
             {
                 this.CurrentRuleConditions = new BindingListView<ConditionDTO>(rule.Conditions.ToList());
+                this.IsRuleSelected = true;
             }
         }
 
@@ -38,6 +41,17 @@ namespace EmotionalAppraisalWF.ViewModels
             AppraisalRules.DataSource.Add(newRule);
             AppraisalRules.Refresh();
         }
-        
+
+
+        public void RemoveAppraisalRules(IEnumerable<AppraisalRuleDTO> appraisalRules)
+        {
+            _emotionalAppraisalAsset.RemoveAppraisalRules(appraisalRules);
+            foreach (var appraisalRuleDto in appraisalRules)
+            {
+                this.AppraisalRules.DataSource.Remove(appraisalRuleDto);
+            }
+            AppraisalRules.Refresh();
+        }
+
     }
 }

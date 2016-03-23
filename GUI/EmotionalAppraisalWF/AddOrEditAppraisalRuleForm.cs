@@ -53,7 +53,6 @@ namespace EmotionalAppraisalWF
         {
             var newRule = new AppraisalRuleDTO()
             {
-                Id = new Guid(),
                 EventMatchingTemplate = eventTextBox.Text,
                 Desirability = int.Parse(comboBoxDesirability.Text),
                 Praiseworthiness = int.Parse(comboBoxPraiseworthiness.Text),

@@ -156,6 +156,8 @@ namespace EmotionalAppraisal
 		}
 
 
+
+
 	    public uint AddEventRecord(EventDTO eventDTO)
 	    {
 	        return this.m_am.RecordEvent(Name.BuildName(eventDTO.Event), eventDTO.Time).Id;
@@ -194,7 +196,14 @@ namespace EmotionalAppraisal
             return appraisalRules;
         }
 
-	  
+	    public void RemoveAppraisalRules(IEnumerable<AppraisalRuleDTO> appraisalRules)
+	    {
+	        foreach (var appraisalRuleDto in appraisalRules)
+	        {
+	            m_appraisalDerivator.RemoveAppraisalRule(new AppraisalRule(appraisalRuleDto));
+	        }
+	    } 
+
         public KB Kb
 		{
 			get { return m_kb; }

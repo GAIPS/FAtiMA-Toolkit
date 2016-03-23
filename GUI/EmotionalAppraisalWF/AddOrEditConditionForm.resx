@@ -117,61 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddOrEditBeliefForm_AddOrEditBeliefForm_Edit_Belief" xml:space="preserve">
-    <value>Edit Belief</value>
-  </data>
-  <data name="AddOrEditBeliefForm_AddOrEditBeliefForm_Update" xml:space="preserve">
-    <value>Update</value>
-  </data>
-  <data name="RequiredFieldError" xml:space="preserve">
-    <value>Field is required</value>
-  </data>
-  <data name="InvalidFileError" xml:space="preserve">
-    <value>Invalid file</value>
-  </data>
-  <data name="ErrorDialogTitle" xml:space="preserve">
-    <value>Error</value>
-  </data>
-  <data name="TitleSeparator" xml:space="preserve">
-    <value> - </value>
-  </data>
-  <data name="UnableToSaveFileError" xml:space="preserve">
-    <value>Unable to save file.</value>
-  </data>
-  <data name="MainFormPrincipalTitle" xml:space="preserve">
-    <value>Emotional Appraisal Asset</value>
-  </data>
-  <data name="BeliefAlreadyExistsExceptionMessage" xml:space="preserve">
-    <value>Belief already exists, use the edit function.</value>
-  </data>
-  <data name="ErrorHalfLifeDecay" xml:space="preserve">
-    <value>Invalid Decay</value>
-  </data>
-  <data name="TooltipEmotionalHalflife" xml:space="preserve">
-    <value>Defines how fast an emotion decays over time. The value is the actual time it takes a decay:1 emotion to reach half of its initial intensity.</value>
-  </data>
-  <data name="EditAppraisalRuleFormTitle" xml:space="preserve">
-    <value>Edit Appraisal Rule</value>
-  </data>
-  <data name="EditAutobiographicalEventFormTitle" xml:space="preserve">
-    <value>Edit Event Record</value>
-  </data>
-  <data name="EditConditionEventFormTitle" xml:space="preserve">
-    <value>Edit Event Record</value>
-  </data>
-  <data name="UpdateButtonLabel" xml:space="preserve">
-    <value>Update</value>
-  </data>
-  <data name="EmptyPerspectiveError" xml:space="preserve">
-    <value>"Perspective" cannot be an empty string</value>
-  </data>
-  <data name="EditEmotionFormTitle" xml:space="preserve">
-    <value>Edit Emotion</value>
-  </data>
-  <data name="EditEmotionDispositionFormTitle" xml:space="preserve">
-    <value>Edit Emotion Disposition</value>
-  </data>
-  <data name="EmotionDispositionAlreadyExistsExceptionMessage" xml:space="preserve">
-    <value>Disposition already exists, use the edit function.</value>
-  </data>
+  <metadata name="addBeliefErrorProvider.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>282, 17</value>
+  </metadata>
+  <metadata name="emotionalAppraisalAssetBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
 </root>
