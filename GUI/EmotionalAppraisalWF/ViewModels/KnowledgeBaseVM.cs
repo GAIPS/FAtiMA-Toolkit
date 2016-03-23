@@ -6,6 +6,7 @@ using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using Equin.ApplicationFramework;
 using KnowledgeBase;
+using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalAppraisalWF.ViewModels
 {
@@ -21,6 +22,7 @@ namespace EmotionalAppraisalWF.ViewModels
             var beliefList = ea.Kb.GetAllBeliefs().Select(b => new BeliefDTO
             {
                 Name = b.Name.ToString(),
+				Perspective = b.Perspective.ToString(),
                 Value = b.Value.ToString()
             }).ToList();
 
@@ -29,7 +31,7 @@ namespace EmotionalAppraisalWF.ViewModels
 
         public string[] GetKnowledgeVisibilities()
         {
-            return new string[0];// Enum.GetNames(typeof(KnowledgeVisibility));
+            return new[]{Name.SELF_STRING,Name.UNIVERSAL_STRING};
         }
 
         public void AddBelief(BeliefDTO belief)

@@ -41,6 +41,7 @@ namespace EmotionalAppraisalWF
             var newBelief = new BeliefDTO
             {
                 Name = this.beliefNameTextBox.Text.Trim(),
+				Perspective = this.beliefVisibilityComboBox.Text,
                 Value = this.beliefValueTextBox.Text.Trim()
             };
 

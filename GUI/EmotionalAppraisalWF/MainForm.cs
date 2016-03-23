@@ -34,7 +34,7 @@ namespace EmotionalAppraisalWF
             if (newFile)
             {
                 this.Text = Resources.MainFormPrincipalTitle;
-                this._emotionalAppraisalAsset = new EmotionalAppraisalAsset(string.Empty);
+                this._emotionalAppraisalAsset = new EmotionalAppraisalAsset("Agent");
             }
             else
             {
