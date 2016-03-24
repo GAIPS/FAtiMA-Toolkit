@@ -7,6 +7,7 @@ using EmotionalDecisionMaking;
 using AutobiographicMemory;
 using KnowledgeBase.WellFormedNames;
 using System.Collections.Generic;
+//using MyUnityBridge;
 //using UnityEngine;
 
 namespace RolePlayCharacter
@@ -85,6 +86,39 @@ namespace RolePlayCharacter
         public Name Target { get; set; }
     }
 
+    public interface IRolePlayCharacterBody
+    {
+        void SetExpression(string emotion, float amount);
+        void LoadObject(string name);
+    }
+
+    public class RolePlayCharacterBodyController
+    {
+        IRolePlayCharacterBody m_Controller;
+
+        public IRolePlayCharacterBody Controller
+        {
+            get { return m_Controller; }
+
+            set { m_Controller = value; }
+        }
+
+        public RolePlayCharacterBodyController(IRolePlayCharacterBody bodyControl)
+        {
+            this.m_Controller = bodyControl;
+        }
+
+        public void SetExpression(string emotion, float amount)
+        {
+            m_Controller.SetExpression(emotion, amount);
+        }
+
+        public void LoadObject(string name)
+        {
+            m_Controller.LoadObject(name);
+        }
+    }
+
     [Serializable]
     public sealed partial class RolePlayCharacterAsset
     {
@@ -98,8 +132,7 @@ namespace RolePlayCharacter
         private List<RPCEvent> _rpcEvents = new List<RPCEvent>();
         private List<Name> _rpcEventsName = new List<Name>();
 
-        [NonSerialized]
-        /*private GameObject _body;*/
+        private RolePlayCharacterBodyController _bodyController;
 
         private IEnumerable<IAction> _rpcActions;
 
@@ -183,12 +216,18 @@ namespace RolePlayCharacter
             set { _bodyPath = value; }
         }
 
-       /* public GameObject Body
+        public RolePlayCharacterBodyController BodyController
         {
-            get  { return _body; }
+            get
+            {
+                return _bodyController;
+            }
 
-            set { _body = value; }
-        }*/
+            set
+            {
+                _bodyController = value;
+            }
+        }
         #endregion
 
         #region Load Methods
@@ -260,19 +299,6 @@ namespace RolePlayCharacter
             return "Default";
         }
 
-        public RolePlayCharacterAsset ()
-        {
-          /* if (_emotionalAppraisalPath != null && _loadType != LOADTYPE.NONE)
-            {
-                LoadEmotionalAppraisalAssetFromType(_loadType);
-            }
-
-            if(_emotionalDecisionMakingPath != null && _emotionalAppraisalAsset !=null)
-            {
-                LoadEmotionDecisionMakingAsset(_emotionalAppraisalAsset);
-            }*/
-        }
-
         #region LoadAndSet Methods
         private void LoadEmotionAppraisalAssetFromFile(string name)
         {
@@ -304,15 +330,6 @@ namespace RolePlayCharacter
             _emotionalDecisionMakingAsset = new EmotionalDecisionMakingAsset(eaa);
         }
 
-        private void LoadBody(string name)
-        {
-            /*_body = GameObject.Instantiate(Resources.Load(name)) as GameObject;*/
-        }
-
-        public void GenerateBody(string name)
-        {
-            LoadBody(name);
-        }
 
         public void SetEmotionAppraisalModulePath(string emotionalAppraisalPath)
         {
@@ -349,6 +366,11 @@ namespace RolePlayCharacter
             _loadType = loadType;
         }
 
+        public void SetBodyController(RolePlayCharacterBodyController rpcBodyController)
+        {
+            _bodyController = rpcBodyController;
+        }
+
         #endregion
 
         #region CharacterMethods
@@ -356,12 +378,6 @@ namespace RolePlayCharacter
         {
             _rpcEvents.Add(evt);
             _rpcEventsName.Add(evt.EventName);
-        }
-
-        public void ExpressEmotion(string emotion, float amount)
-        {
-            object[] parameters = new object[] { emotion, amount };
-            /*_body.SendMessage("ExpressEmotion", parameters, SendMessageOptions.DontRequireReceiver);*/
         }
 
         public void AddEvent(Name eventName)
@@ -470,6 +486,7 @@ namespace RolePlayCharacter
             dataHolder.SetValue("RPC_Events", _rpcEvents);
             dataHolder.SetValue("RPC_Actions", _rpcActions);
             dataHolder.SetValue("RPC_Events_Names", _rpcEventsName);
+            dataHolder.SetValue("CharacterName", _characterName);
         }
 
         public void SetObjectData(ISerializationData dataHolder)
@@ -479,6 +496,7 @@ namespace RolePlayCharacter
            _rpcEvents = dataHolder.GetValue<List<RPCEvent>>("RPC_Events");
            _rpcEventsName = dataHolder.GetValue<List<Name>>("RPC_Events_Names");
            _rpcActions = dataHolder.GetValue<IEnumerable<IAction>>("RPC_Actions");
+            _characterName = dataHolder.GetValue<string>("CharacterName");
         }
         #endregion
     }
