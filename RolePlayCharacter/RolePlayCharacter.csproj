@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MyUnityBridge">
+      <HintPath>..\..\Visual Studio 2015\Projects\MyUnityBridge\MyUnityBridge\bin\Debug\MyUnityBridge.dll</HintPath>
+    </Reference>
     <Reference Include="RageAssetManager">
       <HintPath>..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
