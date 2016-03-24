@@ -139,7 +139,6 @@
             this.comboBoxPraiseworthiness.Name = "comboBoxPraiseworthiness";
             this.comboBoxPraiseworthiness.Size = new System.Drawing.Size(44, 21);
             this.comboBoxPraiseworthiness.TabIndex = 19;
-            this.comboBoxPraiseworthiness.SelectedIndexChanged += new System.EventHandler(this.comboBoxPraiseworthiness_SelectedIndexChanged);
             // 
             // comboBoxDesirability
             // 
@@ -171,7 +170,6 @@
             this.comboBoxDesirability.Name = "comboBoxDesirability";
             this.comboBoxDesirability.Size = new System.Drawing.Size(46, 21);
             this.comboBoxDesirability.TabIndex = 23;
-            this.comboBoxDesirability.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // emotionalAppraisalAssetBindingSource
             // 

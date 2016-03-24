@@ -30,24 +30,12 @@ namespace EmotionalAppraisalWF
             {
                 this.Text = Resources.EditAppraisalRuleFormTitle;
                 this.addOrEditButton.Text = Resources.UpdateButtonLabel;
-                /*
-                beliefNameTextBox.Text = beliefToEdit.Name;
-                beliefValueTextBox.Text = beliefToEdit.Value;
-                beliefVisibilityComboBox.SelectedIndex = beliefVisibilityComboBox.FindString(beliefToEdit.Visibility.ToString());*/
+
+                eventTextBox.Text = ruleToEdit.EventMatchingTemplate;
+                comboBoxDesirability.Text = ruleToEdit.Desirability.ToString();
+                comboBoxPraiseworthiness.Text = ruleToEdit.Praiseworthiness.ToString();
             }
         }
-
-       
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBoxPraiseworthiness_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
   
         private void addOrEditButton_Click_1(object sender, EventArgs e)
         {
@@ -59,10 +47,16 @@ namespace EmotionalAppraisalWF
                 Conditions = new List<ConditionDTO>(),
                 Description = richTextBoxDescription.Text
             };
-
+            
             try
             {
-                _appraisalRulesVM.AddAppraisalRule(newRule);
+                if (_appraisalRuleToEdit != null)
+                {
+                    newRule.Id = _appraisalRuleToEdit.Id;
+                }
+
+                _appraisalRulesVM.AddOrUpdateAppraisalRule(newRule);
+            
                 Close();
             }
             catch (Exception ex)

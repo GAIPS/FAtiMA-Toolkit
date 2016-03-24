@@ -35,10 +35,10 @@ namespace EmotionalAppraisalWF.ViewModels
             }
         }
 
-        public void AddAppraisalRule(AppraisalRuleDTO newRule)
+        public void AddOrUpdateAppraisalRule(AppraisalRuleDTO newRule)
         {
-            _emotionalAppraisalAsset.AddAppraisalRule(newRule);
-            AppraisalRules.DataSource.Add(newRule);
+            _emotionalAppraisalAsset.AddOrUpdateAppraisalRule(newRule);
+            this.AppraisalRules.DataSource = _emotionalAppraisalAsset.GetAllAppraisalRules().ToList();
             AppraisalRules.Refresh();
         }
 
@@ -53,5 +53,9 @@ namespace EmotionalAppraisalWF.ViewModels
             AppraisalRules.Refresh();
         }
 
+        public void UpdateAppraisalRule(AppraisalRuleDTO appraisalRuleToEdit, AppraisalRuleDTO newRule)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

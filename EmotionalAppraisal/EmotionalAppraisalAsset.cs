@@ -150,14 +150,12 @@ namespace EmotionalAppraisal
         /// </summary>
         /// <param name="evt"></param>
         /// <param name="emotionalAppraisalRule">the AppraisalRule to add</param>
-        public void AddAppraisalRule(AppraisalRuleDTO emotionalAppraisalRule)
+        public void AddOrUpdateAppraisalRule(AppraisalRuleDTO emotionalAppraisalRule)
 		{
-			m_appraisalDerivator.AddAppraisalRule(emotionalAppraisalRule);
+			m_appraisalDerivator.AddOrUpdateAppraisalRule(emotionalAppraisalRule);
 		}
 
-
-
-
+        
 	    public uint AddEventRecord(EventDTO eventDTO)
 	    {
 	        return this.m_am.RecordEvent(Name.BuildName(eventDTO.Event), eventDTO.Time).Id;

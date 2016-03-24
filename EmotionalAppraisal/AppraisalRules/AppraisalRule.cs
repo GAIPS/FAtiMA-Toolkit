@@ -17,7 +17,7 @@ namespace EmotionalAppraisal.AppraisalRules
 	[Serializable]
 	public class AppraisalRule : BaseDomainObject
 	{
-        public Name EventName { get; private set; }
+        public Name EventName { get; set; }
 		public ConditionSet Conditions { get; private set; }
 
 		public AppraisalRule(Name eventName, ConditionSet conditions = null)

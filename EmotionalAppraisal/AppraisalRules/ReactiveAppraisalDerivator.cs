@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using AutobiographicMemory;
 using EmotionalAppraisal.Components;
 using EmotionalAppraisal.DTOs;
@@ -50,13 +51,27 @@ namespace EmotionalAppraisal.AppraisalRules
 		/// Adds an emotional reaction to an event
 		/// </summary>
 		/// <param name="emotionalAppraisalRule">the AppraisalRule to add</param>
-		public void AddAppraisalRule(AppraisalRuleDTO emotionalAppraisalRuleDTO)
+		public void AddOrUpdateAppraisalRule(AppraisalRuleDTO emotionalAppraisalRuleDTO)
 		{
-            this.AddEmotionalReaction(new AppraisalRule(emotionalAppraisalRuleDTO));
+		    AppraisalRule existingRule = null; 
+            var existingRulePair = findExistingAppraisalRule(emotionalAppraisalRuleDTO.Id, out existingRule);
+
+		    if (existingRule == null)
+		    {
+		        this.AddEmotionalReaction(new AppraisalRule(emotionalAppraisalRuleDTO));
+		    }
+		    else
+		    {
+		        existingRule.Desirability = emotionalAppraisalRuleDTO.Desirability;
+		        existingRule.Praiseworthiness = emotionalAppraisalRuleDTO.Praiseworthiness;
+                existingRule.EventName = Name.BuildName(emotionalAppraisalRuleDTO.EventMatchingTemplate);
+                Rules.Remove(existingRulePair);
+                Rules.Add(existingRule.EventName, existingRulePair.Value);
+		    }
 		}
 
-	    private void AddEmotionalReaction(AppraisalRule appraisalRule)
-	    {
+        private void AddEmotionalReaction(AppraisalRule appraisalRule)
+        {
             var name = appraisalRule.EventName;
             HashSet<AppraisalRule> ruleSet;
             if (!Rules.TryGetValue(name, out ruleSet))
@@ -67,6 +82,27 @@ namespace EmotionalAppraisal.AppraisalRules
             ruleSet.Add(appraisalRule);
         }
 
+
+        //todo: this method is overly complex due to the nature of how rules are stored. with time try to refactor this
+        private KeyValuePair<Name, HashSet<AppraisalRule>> findExistingAppraisalRule(Guid id, out AppraisalRule rule)
+	    {
+	        foreach (var ruleNamePair in Rules)
+	        {
+	            var ruleSet = ruleNamePair.Value;
+	            foreach (var appraisalRule in ruleSet)
+	            {
+                    if (appraisalRule.Id == id)
+                    {
+                        rule = appraisalRule;
+                        return ruleNamePair;
+                    }
+                }
+	        }
+            rule = null;
+            return Rules.FirstOrDefault();
+	    }
+
+	   
 	    public void RemoveAppraisalRule(AppraisalRule appraisalRule)
 	    {
             HashSet<AppraisalRule> ruleSet;

@@ -8,6 +8,7 @@ using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
 using Equin.ApplicationFramework;
+using KnowledgeBase.DTOs.Conditions;
 
 namespace EmotionalAppraisalWF
 {
@@ -359,6 +360,15 @@ namespace EmotionalAppraisalWF
             new AddOrEditAppraisalRuleForm(_appraisalRulesVM).ShowDialog();
         }
 
+        private void buttonEditAppraisalRule_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewAppraisalRules.SelectedRows.Count == 1)
+            {
+                var selectedAppraisalRule = ((ObjectView<AppraisalRuleDTO>)dataGridViewAppraisalRules.SelectedRows[0].DataBoundItem).Object;
+                new AddOrEditAppraisalRuleForm(_appraisalRulesVM, selectedAppraisalRule).ShowDialog();
+            }
+        }
+
         private void buttonRemoveAppraisalRule_Click(object sender, EventArgs e)
         {
             IList<AppraisalRuleDTO> rulesToRemove = new List<AppraisalRuleDTO>();
@@ -477,6 +487,12 @@ namespace EmotionalAppraisalWF
         
         }
 
- 
+        private void dataGridViewAppraisalRules_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex != -1) //exclude header cells
+            {
+                this.buttonEditAppraisalRule_Click(sender, e);
+            }
+        }
     }
 }

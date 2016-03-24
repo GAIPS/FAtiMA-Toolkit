@@ -92,28 +92,28 @@ namespace Tests.EmotionalAppraisal
 			AppraisalRule petAppraisalRule = new AppraisalRule((Name)"Event(EventObject,*,Pet,self)");
 			petAppraisalRule.Desirability = 10;
 			//petAppraisalRule.Like = 7;
-			//m_emotionalAppraisalAsset.AddAppraisalRule(petAppraisalRule);
+			//m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(petAppraisalRule);
 
 			AppraisalRule slapAppraisalRule = new AppraisalRule((Name)"Event(EventObject,*,Slap,self)");
 			slapAppraisalRule.Desirability = -10;
 			//slapAppraisalRule.Like = -15;
-			//m_emotionalAppraisalAsset.AddAppraisalRule(slapAppraisalRule);
+			//m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(slapAppraisalRule);
 
 			AppraisalRule feedAppraisalRule = new AppraisalRule((Name)"Event(EventObject,*,Feed,self)");
 			feedAppraisalRule.Desirability = 5;
 			feedAppraisalRule.Praiseworthiness = 10;
-			//m_emotionalAppraisalAsset.AddAppraisalRule(feedAppraisalRule);
+			//m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(feedAppraisalRule);
 
 			AppraisalRule screamMad = new AppraisalRule((Name)"Event(EventObject,*,Talk(High,Mad),self)");
 			screamMad.Desirability = -7;
 			screamMad.Praiseworthiness = -15;
 			//screamMad.Like = -4;
-			//m_emotionalAppraisalAsset.AddAppraisalRule(screamMad);
+			//m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(screamMad);
 
 			AppraisalRule talkSoftAppraisalRule = new AppraisalRule((Name)"Event(EventObject,*,Talk(Low,Happy),self)");
 			talkSoftAppraisalRule.Praiseworthiness = 5;
 			//talkSoftAppraisalRule.Like = 5;
-			//m_emotionalAppraisalAsset.AddAppraisalRule(talkSoftAppraisalRule);
+			//m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(talkSoftAppraisalRule);
 
 			//Generate emotion
 
