@@ -31,23 +31,17 @@ namespace EmotionalAppraisalWF
         {
             try
             {
-                /*var newCon = new ConditionDTO
+                var newCondition = new ConditionDTO
                 {
-                    Event = textBoxEvent.Text,
-                    Time = ulong.Parse(textBoxTime.Text)
+                    Condition = textBoxEvent.Text
                 };
-                _autobiographicalMemoryVm.AddEventRecord(newEvent);*/
+                _appraisalRulesVM.AddCondition(newCondition);
                 Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

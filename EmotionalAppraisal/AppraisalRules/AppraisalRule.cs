@@ -18,7 +18,7 @@ namespace EmotionalAppraisal.AppraisalRules
 	public class AppraisalRule : BaseDomainObject
 	{
         public Name EventName { get; set; }
-		public ConditionSet Conditions { get; private set; }
+		public ConditionSet Conditions { get; set; }
 
 		public AppraisalRule(Name eventName, ConditionSet conditions = null)
 		{

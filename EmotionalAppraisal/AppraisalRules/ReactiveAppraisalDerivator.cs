@@ -8,8 +8,11 @@ using EmotionalAppraisal.DTOs;
 using EmotionalAppraisal.OCCModel;
 using GAIPS.Serialization;
 using KnowledgeBase;
+using KnowledgeBase.Conditions;
+using KnowledgeBase.DTOs.Conditions;
 using KnowledgeBase.WellFormedNames;
 using KnowledgeBase.WellFormedNames.Collections;
+using Utilities;
 
 namespace EmotionalAppraisal.AppraisalRules
 {
@@ -101,9 +104,19 @@ namespace EmotionalAppraisal.AppraisalRules
             rule = null;
             return Rules.FirstOrDefault();
 	    }
+        
+        //todo: this method is overly complex due to the nature of the "ConditionSet.Add()" method
+        public void AddAppraisalRuleCondition(Guid appraisalRuleId, ConditionDTO conditionDto)
+        {
+            AppraisalRule existingRule = null;
+            findExistingAppraisalRule(appraisalRuleId, out existingRule);
+            if (existingRule != null)
+            {
+                existingRule.Conditions = new ConditionSet(existingRule.Conditions.Add(Condition.Parse(conditionDto.Condition)));
+            }
+        }
 
-	   
-	    public void RemoveAppraisalRule(AppraisalRule appraisalRule)
+        public void RemoveAppraisalRule(AppraisalRule appraisalRule)
 	    {
             HashSet<AppraisalRule> ruleSet;
 	        if (Rules.TryGetValue(appraisalRule.EventName, out ruleSet))
@@ -207,5 +220,6 @@ namespace EmotionalAppraisal.AppraisalRules
 		}
 
 		#endregion
+
 	}
 }

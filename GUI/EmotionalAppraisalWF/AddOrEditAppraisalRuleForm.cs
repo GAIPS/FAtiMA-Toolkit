@@ -53,6 +53,7 @@ namespace EmotionalAppraisalWF
                 if (_appraisalRuleToEdit != null)
                 {
                     newRule.Id = _appraisalRuleToEdit.Id;
+                    newRule.Conditions = _appraisalRuleToEdit.Conditions;
                 }
 
                 _appraisalRulesVM.AddOrUpdateAppraisalRule(newRule);

@@ -15,7 +15,7 @@ namespace EmotionalAppraisalWF.ViewModels
 
         public BindingListView<AppraisalRuleDTO> AppraisalRules {get;}
         public BindingListView<ConditionDTO> CurrentRuleConditions { get; set; }
-        public bool IsRuleSelected { get; set;}
+        public AppraisalRuleDTO AppraisalRuleSelected { get; set;}
 
         public AppraisalRulesVM(EmotionalAppraisalAsset ea)
         {
@@ -23,15 +23,15 @@ namespace EmotionalAppraisalWF.ViewModels
             
             this.AppraisalRules = new BindingListView<AppraisalRuleDTO>(ea.GetAllAppraisalRules().ToList());
             this.CurrentRuleConditions = new BindingListView<ConditionDTO>(new List<ConditionDTO>());
-            this.IsRuleSelected = false;
+            this.AppraisalRuleSelected = null;
         }
 
         public void ChangeCurrentRule(AppraisalRuleDTO rule)
         {
             if (rule != null)
             {
+                this.AppraisalRuleSelected = rule;
                 this.CurrentRuleConditions = new BindingListView<ConditionDTO>(rule.Conditions.ToList());
-                this.IsRuleSelected = true;
             }
         }
 
@@ -53,9 +53,12 @@ namespace EmotionalAppraisalWF.ViewModels
             AppraisalRules.Refresh();
         }
 
-        public void UpdateAppraisalRule(AppraisalRuleDTO appraisalRuleToEdit, AppraisalRuleDTO newRule)
+        public void AddCondition(ConditionDTO newCondition)
         {
-            throw new NotImplementedException();
+            _emotionalAppraisalAsset.AddAppraisalRuleCondition(AppraisalRuleSelected.Id, newCondition);
+            AppraisalRuleSelected.Conditions.Add(newCondition);
+            CurrentRuleConditions.DataSource.Add(newCondition);
+            CurrentRuleConditions.Refresh();
         }
     }
 }

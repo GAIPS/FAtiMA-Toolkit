@@ -349,7 +349,7 @@ namespace EmotionalAppraisalWF
 
         private void buttonAddAppraisalRuleCondition_Click(object sender, EventArgs e)
         {
-            if (_appraisalRulesVM.IsRuleSelected)
+            if (_appraisalRulesVM.AppraisalRuleSelected != null)
             {
                 new AddOrEditConditionForm(this._appraisalRulesVM).ShowDialog();
             }
