@@ -90,6 +90,7 @@ namespace RolePlayCharacter
     {
         void SetExpression(string emotion, float amount);
         void LoadObject(string name);
+        int AmountToLevel(float amount);
     }
 
     public class RolePlayCharacterBodyController
