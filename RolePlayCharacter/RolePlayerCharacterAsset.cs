@@ -88,7 +88,7 @@ namespace RolePlayCharacter
 
     public interface IRolePlayCharacterBody
     {
-        void SetExpression(string emotion, float amount);
+        void SetExpression(string emotion, float amount, string name);
         void LoadObject(string name);
         int AmountToLevel(float amount);
     }
@@ -109,9 +109,9 @@ namespace RolePlayCharacter
             this.m_Controller = bodyControl;
         }
 
-        public void SetExpression(string emotion, float amount)
+        public void SetExpression(string emotion, float amount, string name)
         {
-            m_Controller.SetExpression(emotion, amount);
+            m_Controller.SetExpression(emotion, amount, name);
         }
 
         public void LoadObject(string name)
@@ -152,18 +152,18 @@ namespace RolePlayCharacter
         {
             get
             {
-                if (_emotionalAppraisalAsset != null)
-                    return _emotionalAppraisalAsset.Perspective;
-                else return _characterName;
+                 return _characterName;
             }
 
             set
             {
-                if (_emotionalAppraisalAsset != null)
-                    _emotionalAppraisalAsset.Perspective = value;
-                 else   _characterName = value;
+                _characterName = value;
             }
         }
+
+        private string _perspective;
+
+
 
         public float Mood
         {
@@ -229,6 +229,19 @@ namespace RolePlayCharacter
                 _bodyController = value;
             }
         }
+
+        public string Perspective
+        {
+            get
+            {
+                return _perspective;
+            }
+
+            set
+            {
+                _perspective = value;
+            }
+        }
         #endregion
 
         #region Load Methods
@@ -246,6 +259,7 @@ namespace RolePlayCharacter
 
             rpc.SetEmotionalAppraisalModule(rpc.EmotionalAppraisalPath);
             rpc.SetEmotionalDecisionModule(rpc.EmotionalDecisionMakingPath);
+            rpc.Perspective = rpc._emotionalAppraisalAsset.Perspective;
 
             return rpc;
         }
