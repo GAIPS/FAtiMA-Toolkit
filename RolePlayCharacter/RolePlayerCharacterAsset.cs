@@ -235,13 +235,18 @@ namespace RolePlayCharacter
         public static RolePlayCharacterAsset LoadFromFile(string idAsset)
         {
             RolePlayCharacterAsset rpc;
-           string filename = GetFileToLoad(idAsset);
+            string filename = idAsset;
+          // string filename = GetFileToLoad(idAsset);
            
             using (var f = File.Open(filename, FileMode.Open, FileAccess.Read))
             {
                 var serializer = new JSONSerializer();
                 rpc = serializer.Deserialize<RolePlayCharacterAsset>(f);
             }
+
+            rpc.SetEmotionalAppraisalModule(rpc.EmotionalAppraisalPath);
+            rpc.SetEmotionalDecisionModule(rpc.EmotionalDecisionMakingPath);
+
             return rpc;
         }
 
