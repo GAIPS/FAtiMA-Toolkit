@@ -31,8 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BaseEvent.cs" />
+    <Compile Include="PropertyChangeEvent.cs" />
     <Compile Include="AM.cs" />
-    <Compile Include="EventRecord.cs" />
+    <Compile Include="ActionEvent.cs" />
+    <Compile Include="EventType.cs" />
     <Compile Include="IEventRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -49,6 +52,9 @@
       <Project>{2021e828-2f7f-4775-9f02-58c68fd72edd}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

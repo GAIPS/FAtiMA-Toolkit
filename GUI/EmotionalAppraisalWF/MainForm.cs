@@ -130,7 +130,7 @@ namespace EmotionalAppraisalWF
                 }
                 this.Text = Resources.MainFormPrincipalTitle + Resources.TitleSeparator + _saveFileName;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 MessageBox.Show(Resources.UnableToSaveFileError, Resources.ErrorDialogTitle, MessageBoxButtons.OK,
                     MessageBoxIcon.Error);

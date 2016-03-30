@@ -31,7 +31,7 @@ namespace EmotionalAppraisalWF.ViewModels
 
         public string[] GetKnowledgeVisibilities()
         {
-            return new[]{Name.SELF_STRING,Name.UNIVERSAL_STRING};
+            return _emotionalAppraisalAsset.KnowledgeVisibilities;
         }
 
         public void AddBelief(BeliefDTO belief)

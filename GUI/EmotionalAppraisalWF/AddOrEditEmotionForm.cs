@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Windows.Forms;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
@@ -80,32 +81,30 @@ namespace EmotionalAppraisalWF
 
         private void addOrEditButton_Click(object sender, EventArgs e)
         {
-
-            var newEmotion = new EmotionDTO
+            try
             {
-                Type = comboBoxEmotionType.Text,
-                Intensity = int.Parse(comboBoxIntensity.Text),
-                CauseEventId = uint.Parse(textBoxCauseId.Text)
-            };
+                var newEmotion = new EmotionDTO
+                {
+                    Type = comboBoxEmotionType.Text,
+                    Intensity = int.Parse(comboBoxIntensity.Text),
+                    CauseEventId = uint.Parse(textBoxCauseId.Text)
+                };
 
-            if (_emotionToEdit == null)
-            {
-                try
+                if (_emotionToEdit == null)
                 {
                     _emotionalStateVm.AddEmotion(newEmotion);
-             
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    this._emotionalStateVm.UpdateEmotion(_emotionToEdit, newEmotion);
                 }
+                Close();
             }
-            else
+            catch (Exception ex)
             {
-                this._emotionalStateVm.UpdateEmotion(_emotionToEdit, newEmotion);
+                MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            Close();
-
-        }
+            
+      }
     }
 }
