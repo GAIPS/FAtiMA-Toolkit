@@ -179,6 +179,12 @@ namespace EmotionalAppraisal
 	        return this.m_am.RecordEvent(this.BuildEventName(eventDTO), eventDTO.Time).Id;
 	    }
 
+        public void ForgetEvent(uint eventId)
+        {
+            this.m_am.ForgetEvent(eventId);
+        }
+
+
         public void AddEmotionDisposition(EmotionDispositionDTO emotionDispositionDto)
 	    {
 	        m_emotionalState.AddEmotionDisposition(new EmotionDisposition(emotionDispositionDto));

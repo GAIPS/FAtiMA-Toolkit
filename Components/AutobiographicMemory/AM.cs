@@ -74,6 +74,11 @@ namespace AutobiographicMemory
 	        return m_registry.Keys.Select(key => m_registry[key]).Cast<IEventRecord>().ToList();
 	    }
 
+	    public void ForgetEvent(uint eventId)
+	    {
+	        m_registry.Remove(eventId);
+        }
+
 	    private void AddRecord(BaseEvent record)
 		{
 			m_registry.Add(record.Id, record);
