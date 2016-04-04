@@ -13,7 +13,7 @@ namespace AutobiographicMemory
 		{
             public static bool IsActionEvent(Name eventName)
             {
-                return eventName.GetNTerm(1).ToString() == "Action";
+                return eventName.GetNTerm(1).ToString() == Constants.ACTION_EVENT;
             }
 
             public Name Action { get; private set; }
@@ -23,6 +23,7 @@ namespace AutobiographicMemory
 
 		    public ActionEvent(uint id, Name eventName, ulong timestamp) : base(id, eventName, timestamp)
 			{
+                Type = Constants.ACTION_EVENT;
 				Action = eventName.GetNTerm(3);
                 var targetName = eventName.GetNTerm(4);
 				Target = targetName == Name.NIL_SYMBOL ? null : targetName.ToString();

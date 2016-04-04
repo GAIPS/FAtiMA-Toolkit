@@ -500,5 +500,23 @@ namespace EmotionalAppraisalWF
                 this.buttonEditAppraisalRule_Click(sender, e);
             }
         }
+
+        private void buttonEditEvent_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewAM.SelectedRows.Count == 1)
+            {
+                var selectedEvent = ((ObjectView<EventDTO>)dataGridViewAM.
+                    SelectedRows[0].DataBoundItem).Object;
+                new AddOrEditAutobiographicalEventForm(_autobiographicalMemoryVM, selectedEvent).ShowDialog();
+            }
+        }
+
+        private void dataGridViewAM_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex != -1) //exclude header cells
+            {
+                this.buttonEditEvent_Click(sender, e);
+            }
+        }
     }
 }

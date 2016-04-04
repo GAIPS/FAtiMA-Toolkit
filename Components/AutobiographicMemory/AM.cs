@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using GAIPS.Serialization;
 using KnowledgeBase;
 using KnowledgeBase.WellFormedNames;
@@ -28,31 +29,41 @@ namespace AutobiographicMemory
 
 		public IEventRecord RecordEvent(Name eventName, ulong timestamp)
 		{
-			AssertEventNameValidity(eventName);
-			if (eventName.HasSelf())
-				throw new Exception("Cannot record an event name containing \"Self\" keywords");
+		    return this.SaveEventHelper(m_eventGUIDCounter++, eventName, timestamp);
+		}
 
-			var id = m_eventGUIDCounter++;
-		    BaseEvent eventRecord;
-		    if (ActionEvent.IsActionEvent(eventName))
-		    {
-		        eventRecord = new ActionEvent(id, eventName, timestamp);
+        public IEventRecord UpdateEvent(uint eventId, Name eventName, ulong timestamp)
+        {
+            m_registry.Remove(eventId);
+            return this.SaveEventHelper(eventId, eventName, timestamp);
+        }
+
+	    private IEventRecord SaveEventHelper(uint eventId, Name eventName, ulong timestamp)
+	    {
+            AssertEventNameValidity(eventName);
+            if (eventName.HasSelf())
+                throw new Exception("Cannot record an event name containing \"Self\" keywords");
+
+            BaseEvent eventRecord;
+            if (ActionEvent.IsActionEvent(eventName))
+            {
+                eventRecord = new ActionEvent(eventId, eventName, timestamp);
                 AddRecord(eventRecord);
                 return eventRecord as ActionEvent;
             }
-		    else if (PropertyChangeEvent.IsPropertyChangeEvent(eventName))
-		    {
-                eventRecord = new PropertyChangeEvent(id, eventName, timestamp);
+            else if (PropertyChangeEvent.IsPropertyChangeEvent(eventName))
+            {
+                eventRecord = new PropertyChangeEvent(eventId, eventName, timestamp);
                 AddRecord(eventRecord);
                 return eventRecord as PropertyChangeEvent;
             }
             else
-		    {
-		        throw new Exception("Unknown Event Type");
-		    }
-		}
+            {
+                throw new Exception("Unknown Event Type");
+            }
+        }
 
-		public IEventRecord RecallEvent(uint eventId)
+        public IEventRecord RecallEvent(uint eventId)
 		{
 			BaseEvent r;
 		    if (m_registry.TryGetValue(eventId, out r))

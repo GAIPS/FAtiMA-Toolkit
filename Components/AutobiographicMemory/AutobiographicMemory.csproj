@@ -32,10 +32,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BaseEvent.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="PropertyChangeEvent.cs" />
     <Compile Include="AM.cs" />
     <Compile Include="ActionEvent.cs" />
-    <Compile Include="EventType.cs" />
     <Compile Include="IEventRecord.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

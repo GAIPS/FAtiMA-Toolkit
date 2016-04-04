@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Windows.Forms;
+using AutobiographicMemory;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
@@ -28,6 +29,26 @@ namespace EmotionalAppraisalWF
             {
                 this.Text = Resources.EditAutobiographicalEventFormTitle;
                 this.addOrEditButton.Text = Resources.UpdateButtonLabel;
+
+                _eventToEdit = _autobiographicalMemoryVm.RetrieveEventRecord(_eventToEdit.Id);
+                var propertyEvent = _eventToEdit as PropertyChangeEventDTO;
+                if (propertyEvent != null)
+                { 
+                    comboBoxEventType.Text = Constants.PROPERTY_CHANGE_EVENT;
+                    textBoxSubject.Text = propertyEvent.Subject;
+                    textBoxObject.Text = propertyEvent.Property;
+                    textBoxTarget.Text = propertyEvent.NewValue;
+                    textBoxTime.Text = propertyEvent.Time.ToString();
+                }
+                var actionEvent = _eventToEdit as ActionEventDTO;
+                if (actionEvent != null)
+                {
+                    textBoxSubject.Text = actionEvent.Subject;
+                    textBoxObject.Text = actionEvent.Action;
+                    textBoxTarget.Text = actionEvent.Target;
+                    textBoxTime.Text = actionEvent.Time.ToString();
+                }
+
             }
         }
 
@@ -35,8 +56,9 @@ namespace EmotionalAppraisalWF
         {
             try
             {
+
                 EventDTO newEvent = null;
-                if (comboBoxEventType.Text == "PropertyChange")
+                if (comboBoxEventType.Text == Constants.PROPERTY_CHANGE_EVENT)
                 {
                     newEvent = new PropertyChangeEventDTO
                     {
@@ -46,7 +68,7 @@ namespace EmotionalAppraisalWF
                         Time = ulong.Parse(textBoxTime.Text)
                     };
                 
-                }else if (comboBoxEventType.Text == "Action")
+                }else if (comboBoxEventType.Text == Constants.ACTION_EVENT)
                 {
                     newEvent = new ActionEventDTO()
                     {
@@ -57,7 +79,16 @@ namespace EmotionalAppraisalWF
                     };
                 }
 
-                _autobiographicalMemoryVm.AddEventRecord(newEvent);
+                if (_eventToEdit != null)
+                {
+                    newEvent.Id = _eventToEdit.Id;
+                    _autobiographicalMemoryVm.UpdateEventRecord(newEvent);
+                }
+                else
+                {
+                    _autobiographicalMemoryVm.AddEventRecord(newEvent);
+                }
+                
                 Close();
             }
             catch (Exception ex)
@@ -83,12 +114,12 @@ namespace EmotionalAppraisalWF
 
         private void comboBoxEventType_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (((ComboBox) sender).Text == "PropertyChange")
+            if (((ComboBox) sender).Text == Constants.PROPERTY_CHANGE_EVENT)
             {
                 labelObject.Text = "Property:";
-                labelTarget.Text = "NewValue:";
+                labelTarget.Text = "New Value:";
             }
-            else if (((ComboBox)sender).Text == "Action")
+            else if (((ComboBox)sender).Text == Constants.ACTION_EVENT)
             {
                 labelObject.Text = "Action:";
                 labelTarget.Text = "Target";

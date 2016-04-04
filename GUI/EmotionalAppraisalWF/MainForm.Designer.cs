@@ -85,7 +85,7 @@
             this.autobiographicalMemoryTabPage = new System.Windows.Forms.TabPage();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.dataGridViewAM = new System.Windows.Forms.DataGridView();
-            this.button2 = new System.Windows.Forms.Button();
+            this.buttonEditEvent = new System.Windows.Forms.Button();
             this.buttonAddEventRecord = new System.Windows.Forms.Button();
             this.buttonRemoveEventRecord = new System.Windows.Forms.Button();
             this.decayErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
@@ -804,7 +804,7 @@
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.dataGridViewAM);
-            this.groupBox4.Controls.Add(this.button2);
+            this.groupBox4.Controls.Add(this.buttonEditEvent);
             this.groupBox4.Controls.Add(this.buttonAddEventRecord);
             this.groupBox4.Controls.Add(this.buttonRemoveEventRecord);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -836,15 +836,17 @@
             this.dataGridViewAM.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewAM.Size = new System.Drawing.Size(542, 373);
             this.dataGridViewAM.TabIndex = 10;
+            this.dataGridViewAM.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewAM_CellMouseDoubleClick);
             // 
-            // button2
+            // buttonEditEvent
             // 
-            this.button2.Location = new System.Drawing.Point(66, 20);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(70, 23);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "Edit";
-            this.button2.UseVisualStyleBackColor = true;
+            this.buttonEditEvent.Location = new System.Drawing.Point(66, 20);
+            this.buttonEditEvent.Name = "buttonEditEvent";
+            this.buttonEditEvent.Size = new System.Drawing.Size(70, 23);
+            this.buttonEditEvent.TabIndex = 9;
+            this.buttonEditEvent.Text = "Edit";
+            this.buttonEditEvent.UseVisualStyleBackColor = true;
+            this.buttonEditEvent.Click += new System.EventHandler(this.buttonEditEvent_Click);
             // 
             // buttonAddEventRecord
             // 
@@ -956,7 +958,7 @@
         private System.Windows.Forms.Label moodValueLabel;
         private System.Windows.Forms.BindingSource emotionListItemBindingSource;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonEditEvent;
         private System.Windows.Forms.Button buttonAddEventRecord;
         private System.Windows.Forms.Button buttonRemoveEventRecord;
         private System.Windows.Forms.DataGridView dataGridViewAM;

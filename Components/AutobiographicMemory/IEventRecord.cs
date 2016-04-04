@@ -71,7 +71,9 @@ namespace AutobiographicMemory
 			get;
 		}
 
-		IEnumerable<string> LinkedEmotions { get; }
+        
+        //EventDTO ToDto();
+        IEnumerable<string> LinkedEmotions { get; }
 		void LinkEmotion(string emotionType);
 	}
 }

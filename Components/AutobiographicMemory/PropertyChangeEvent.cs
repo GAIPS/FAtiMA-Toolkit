@@ -13,7 +13,7 @@ namespace AutobiographicMemory
 		{
 		    public static bool IsPropertyChangeEvent(Name eventName)
 		    {
-		        return eventName.GetNTerm(1).ToString() == "Property-Change";
+		        return eventName.GetNTerm(1).ToString() == Constants.PROPERTY_CHANGE_EVENT;
 		    }
 
             public Name Action { get { throw new Exception("Invalid Call");} }
@@ -23,6 +23,7 @@ namespace AutobiographicMemory
     
 			public PropertyChangeEvent(uint id, Name eventName, ulong timestamp) : base(id, eventName, timestamp)
 			{
+			    Type = Constants.PROPERTY_CHANGE_EVENT;
                 Property = eventName.GetNTerm(3);
                 var newValue = eventName.GetNTerm(4);
 				NewValue = newValue == Name.NIL_SYMBOL ? null : newValue.ToString();

@@ -8,7 +8,7 @@ namespace AutobiographicMemory
 {
 	public sealed partial class AM
 	{
-		private class BaseEvent
+		public class BaseEvent
 		{
 			protected HashSet<string> m_linkedEmotions = new HashSet<string>();
 			

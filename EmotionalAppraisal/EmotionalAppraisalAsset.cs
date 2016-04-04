@@ -112,7 +112,7 @@ namespace EmotionalAppraisal
 
 
 	    public string[] KnowledgeVisibilities => new[] {Name.SELF_STRING, Name.UNIVERSAL_STRING};
-        public string[] EventTypes => Enum.GetNames(typeof (EventType));
+        public string[] EventTypes => new [] {Constants.ACTION_EVENT, Constants.PROPERTY_CHANGE_EVENT};
         
 
 	    public EmotionDispositionDTO DefaultEmotionDisposition
@@ -154,6 +154,39 @@ namespace EmotionalAppraisal
             }
         }
 
+	    public EventDTO GetEventDetails (uint eventId)
+	    {
+	        IEventRecord evt = m_am.RecallEvent(eventId);
+	        if (evt.Type == Constants.ACTION_EVENT)
+	        {
+	            return new ActionEventDTO
+	            {
+	                Action = evt.Action.ToString(),
+                    Event = evt.EventName.ToString(),
+                    Id = evt.Id,
+                    Subject = evt.Subject,
+                    Target = evt.Target,
+                    Time = evt.Timestamp
+	            };
+	        }else if (evt.Type == Constants.PROPERTY_CHANGE_EVENT)
+	        {
+	            return new PropertyChangeEventDTO
+	            {
+	                Property = evt.Property.ToString(),
+	                Event = evt.EventName.ToString(),
+	                Id = evt.Id,
+	                Subject = evt.Subject,
+	                NewValue = evt.NewValue,
+	                Time = evt.Timestamp
+	            };
+	        }
+	        else
+	        {
+	            throw new Exception("Invalid Event Type");
+	        }
+
+	    }
+
         public IEnumerable<string> EmotionTypes
 	    {
 	        get { return OCCEmotionType.Types; }
@@ -179,7 +212,12 @@ namespace EmotionalAppraisal
 	        return this.m_am.RecordEvent(this.BuildEventName(eventDTO), eventDTO.Time).Id;
 	    }
 
-        public void ForgetEvent(uint eventId)
+	    public void UpdateEventRecord(EventDTO eventDTO)
+	    {
+	        this.m_am.UpdateEvent(eventDTO.Id,this.BuildEventName(eventDTO), eventDTO.Time);
+	    }
+
+	    public void ForgetEvent(uint eventId)
         {
             this.m_am.ForgetEvent(eventId);
         }

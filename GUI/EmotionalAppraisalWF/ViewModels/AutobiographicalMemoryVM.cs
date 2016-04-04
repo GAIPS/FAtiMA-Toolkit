@@ -19,13 +19,25 @@ namespace EmotionalAppraisalWF.ViewModels
             _emotionalAppraisalAsset = ea;
             this.Events = new BindingListView<EventDTO>(ea.EventRecords.ToList());
         }
-
+     
         public void AddEventRecord(EventDTO newEvent)
         {
-            var id = _emotionalAppraisalAsset.AddEventRecord(newEvent);
-            newEvent.Id = id;
+            _emotionalAppraisalAsset.AddEventRecord(newEvent);
             Events.DataSource = _emotionalAppraisalAsset.EventRecords.ToList();
             Events.Refresh();
+        }
+
+        public void UpdateEventRecord(EventDTO existingEvent)
+        {
+            _emotionalAppraisalAsset.UpdateEventRecord(existingEvent);
+            Events.DataSource = _emotionalAppraisalAsset.EventRecords.ToList();
+            Events.Refresh();
+        }
+
+
+        public EventDTO RetrieveEventRecord(uint id)
+        {
+            return _emotionalAppraisalAsset.GetEventDetails(id);
         }
 
         public void RemoveEventRecords(IEnumerable<EventDTO> events)
