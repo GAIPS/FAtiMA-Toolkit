@@ -90,7 +90,7 @@ namespace EmotionalAppraisal
         /// </summary>
 		public string Perspective {
 	        get { return m_kb.Perspective.ToString(); }
-	        set { m_kb.Perspective = Name.BuildName(value); }
+	        set { m_kb.SetPerspective(Name.BuildName(value)); }
 		}
 
 	    /// <summary>

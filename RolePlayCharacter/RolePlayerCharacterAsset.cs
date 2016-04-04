@@ -7,8 +7,6 @@ using EmotionalDecisionMaking;
 using AutobiographicMemory;
 using KnowledgeBase.WellFormedNames;
 using System.Collections.Generic;
-//using MyUnityBridge;
-//using UnityEngine;
 
 namespace RolePlayCharacter
 {
@@ -90,7 +88,7 @@ namespace RolePlayCharacter
 
     public interface IRolePlayCharacterBody
     {
-        void SetExpression(string emotion, float amount);
+        void SetExpression(string emotion, float amount, string name);
         void LoadObject(string name);
         int AmountToLevel(float amount);
     }
@@ -111,9 +109,9 @@ namespace RolePlayCharacter
             this.m_Controller = bodyControl;
         }
 
-        public void SetExpression(string emotion, float amount)
+        public void SetExpression(string emotion, float amount, string name)
         {
-            m_Controller.SetExpression(emotion, amount);
+            m_Controller.SetExpression(emotion, amount, name);
         }
 
         public void LoadObject(string name)
@@ -154,18 +152,18 @@ namespace RolePlayCharacter
         {
             get
             {
-                if (_emotionalAppraisalAsset != null)
-                    return _emotionalAppraisalAsset.Perspective;
-                else return _characterName;
+                 return _characterName;
             }
 
             set
             {
-                if (_emotionalAppraisalAsset != null)
-                    _emotionalAppraisalAsset.Perspective = value;
-                 else   _characterName = value;
+                _characterName = value;
             }
         }
+
+        private string _perspective;
+
+
 
         public float Mood
         {
@@ -231,6 +229,19 @@ namespace RolePlayCharacter
                 _bodyController = value;
             }
         }
+
+        public string Perspective
+        {
+            get
+            {
+                return _perspective;
+            }
+
+            set
+            {
+                _perspective = value;
+            }
+        }
         #endregion
 
         #region Load Methods
@@ -248,6 +259,7 @@ namespace RolePlayCharacter
 
             rpc.SetEmotionalAppraisalModule(rpc.EmotionalAppraisalPath);
             rpc.SetEmotionalDecisionModule(rpc.EmotionalDecisionMakingPath);
+            rpc.Perspective = rpc._emotionalAppraisalAsset.Perspective;
 
             return rpc;
         }
@@ -382,6 +394,11 @@ namespace RolePlayCharacter
         #endregion
 
         #region CharacterMethods
+     /*   public void LoadBody()
+        {
+            this.BodyController.LoadObject(this.BodyPath);
+        }*/
+
         public void AddRPCEvent(RPCEvent evt)
         {
             _rpcEvents.Add(evt);
@@ -495,6 +512,7 @@ namespace RolePlayCharacter
             dataHolder.SetValue("RPC_Actions", _rpcActions);
             dataHolder.SetValue("RPC_Events_Names", _rpcEventsName);
             dataHolder.SetValue("CharacterName", _characterName);
+            //dataHolder.SetValue("BodyPath", _bodyPath);
         }
 
         public void SetObjectData(ISerializationData dataHolder)
@@ -505,7 +523,29 @@ namespace RolePlayCharacter
            _rpcEventsName = dataHolder.GetValue<List<Name>>("RPC_Events_Names");
            _rpcActions = dataHolder.GetValue<IEnumerable<IAction>>("RPC_Actions");
             _characterName = dataHolder.GetValue<string>("CharacterName");
+           // _bodyPath = dataHolder.GetValue<string>("BodyPath");
         }
         #endregion
+
+
+        #region Logging
+
+        public void SaveLogEmotionalAppraisalAsset(string filePath, string name)
+        {
+            if(_emotionalAppraisalAsset == null)
+                return;
+
+            var filepath = Path.Combine(filePath, name);
+            using (var f = File.Open(filepath, FileMode.Create, FileAccess.Write))
+            {
+                var serializer = new JSONSerializer();
+                serializer.Serialize(f, _emotionalAppraisalAsset);
+            }
+        }
+
+        #endregion
     }
+
+
+
 }

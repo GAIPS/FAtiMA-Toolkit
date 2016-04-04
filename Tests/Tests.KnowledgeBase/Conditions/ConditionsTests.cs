@@ -41,6 +41,15 @@ namespace Tests.KnowledgeBase.Conditions
 			});
 		}
 
+		[Test]
+		public void Test_Fail_FalsePerdicate()
+		{
+			var kb = new KB((Name)"John");
+			var c = Condition.Parse("Likes(Formal) = false");
+
+			Assert.False(c.Evaluate(kb, Name.SELF_SYMBOL, new[] {new SubstitutionSet()}));
+		}
+
 		//Test KB
 		private static KB _kb = CreateKB();
 		private static KB CreateKB()
@@ -84,7 +93,7 @@ namespace Tests.KnowledgeBase.Conditions
 		[TestCase("Race(Saitama)=human", true)]
 		[TestCase("Race(goku)=sayian", true)]
 		[TestCase("IsAlive(Saitama)=true", true)]
-		[TestCase("IsAlive(Goku)!=true", true)]
+		[TestCase("IsAlive(Goku)!=true", false)] //Closed world assumption
 		[TestCase("#[x] = 0", true)]
 		[TestCase("#[x] = #[y]", true)]
 		[TestCase("1 = #[y]", false)]
