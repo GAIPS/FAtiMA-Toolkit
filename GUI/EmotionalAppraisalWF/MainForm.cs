@@ -461,7 +461,13 @@ namespace EmotionalAppraisalWF
 
         private void buttonRemoveEventRecord_Click(object sender, EventArgs e)
         {
-            
+            IList<EventDTO> eventsToRemove = new List<EventDTO>();
+            for (int i = 0; i < dataGridViewAM.SelectedRows.Count; i++)
+            {
+                var evt = ((ObjectView<EventDTO>)dataGridViewAM.SelectedRows[i].DataBoundItem).Object;
+                eventsToRemove.Add(evt);
+            }
+            _autobiographicalMemoryVM.RemoveEventRecords(eventsToRemove);
         }
 
         private void buttonRemoveEmotion_Click(object sender, EventArgs e)

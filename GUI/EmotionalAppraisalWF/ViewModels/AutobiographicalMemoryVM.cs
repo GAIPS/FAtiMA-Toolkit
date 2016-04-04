@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using Equin.ApplicationFramework;
@@ -23,6 +24,17 @@ namespace EmotionalAppraisalWF.ViewModels
         {
             var id = _emotionalAppraisalAsset.AddEventRecord(newEvent);
             newEvent.Id = id;
+            Events.DataSource = _emotionalAppraisalAsset.EventRecords.ToList();
+            Events.Refresh();
+        }
+
+        public void RemoveEventRecords(IEnumerable<EventDTO> events)
+        {
+            foreach (var eventDto in events)
+            {
+                _emotionalAppraisalAsset.ForgetEvent(eventDto.Id);
+            }
+
             Events.DataSource = _emotionalAppraisalAsset.EventRecords.ToList();
             Events.Refresh();
         }
