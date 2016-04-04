@@ -7,8 +7,6 @@ using EmotionalDecisionMaking;
 using AutobiographicMemory;
 using KnowledgeBase.WellFormedNames;
 using System.Collections.Generic;
-//using MyUnityBridge;
-//using UnityEngine;
 
 namespace RolePlayCharacter
 {
@@ -396,6 +394,11 @@ namespace RolePlayCharacter
         #endregion
 
         #region CharacterMethods
+     /*   public void LoadBody()
+        {
+            this.BodyController.LoadObject(this.BodyPath);
+        }*/
+
         public void AddRPCEvent(RPCEvent evt)
         {
             _rpcEvents.Add(evt);
@@ -509,6 +512,7 @@ namespace RolePlayCharacter
             dataHolder.SetValue("RPC_Actions", _rpcActions);
             dataHolder.SetValue("RPC_Events_Names", _rpcEventsName);
             dataHolder.SetValue("CharacterName", _characterName);
+            //dataHolder.SetValue("BodyPath", _bodyPath);
         }
 
         public void SetObjectData(ISerializationData dataHolder)
@@ -519,7 +523,29 @@ namespace RolePlayCharacter
            _rpcEventsName = dataHolder.GetValue<List<Name>>("RPC_Events_Names");
            _rpcActions = dataHolder.GetValue<IEnumerable<IAction>>("RPC_Actions");
             _characterName = dataHolder.GetValue<string>("CharacterName");
+           // _bodyPath = dataHolder.GetValue<string>("BodyPath");
         }
         #endregion
+
+
+        #region Logging
+
+        public void SaveLogEmotionalAppraisalAsset(string filePath, string name)
+        {
+            if(_emotionalAppraisalAsset == null)
+                return;
+
+            var filepath = Path.Combine(filePath, name);
+            using (var f = File.Open(filepath, FileMode.Create, FileAccess.Write))
+            {
+                var serializer = new JSONSerializer();
+                serializer.Serialize(f, _emotionalAppraisalAsset);
+            }
+        }
+
+        #endregion
     }
+
+
+
 }
