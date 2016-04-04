@@ -36,12 +36,14 @@ namespace RolePlayCharacter
     public class RPCEvent : IEventRecord
     {
         public string Target { get; set; }
+        public Name Property { get; }
+        public string NewValue { get; }
+        public string Type { get; }
         public string Subject { get; set; }
         public ulong Timestamp { get; set; }
 
         public uint Id { get; set; }
-        public string EventType { get; set; }
-
+        
         public Name Action { get; set; }
 
         public Name EventName { get; set; }
