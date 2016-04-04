@@ -78,6 +78,11 @@ namespace KnowledgeBase
 				if(m_universal!=null)
 					yield return new KeyValuePair<Name, PrimitiveValue>(Name.UNIVERSAL_SYMBOL, m_universal);
 			}
+
+			public IEnumerable<Name> GetAllStoredPerspectives()
+			{
+				return m_perspectives.Keys.SelectMany(Key2ToMList).Distinct();
+			}
 		}
 
 		private sealed class DynamicKnowledgeEntry
@@ -98,7 +103,7 @@ namespace KnowledgeBase
 		/// <summary>
 		/// Indicates the default mapping of "SELF"
 		/// </summary>
-		public Name Perspective { get; set; }
+		public Name Perspective { get; private set; }
 
 		private KB()
 		{
@@ -108,7 +113,7 @@ namespace KnowledgeBase
 
 		public KB(Name perspective) : this()
 		{
-			Perspective = perspective;
+			SetPerspective(perspective);
 			RegistNativeDynamicProperties(this);
 		}
 
@@ -169,6 +174,31 @@ namespace KnowledgeBase
 
 		#endregion
 
+		public void SetPerspective(Name newPerspective)
+		{
+			if(!newPerspective.IsPrimitive)
+				throw new ArgumentException("Only primitive symbols are allowed to be perspectives.");
+
+			if(newPerspective == Name.NIL_SYMBOL)
+				throw new ArgumentException("NIL symbol cannot be used as a perspective.");
+
+			if (newPerspective == Name.SELF_SYMBOL)
+				throw new ArgumentException("SELF symbol cannot be set as a default a perspectives.");
+
+			if (newPerspective==Perspective)
+				return;
+
+			if(GetAllPerspectives().Contains(newPerspective))
+				throw new ArgumentException($"The is already beliefs containing perspectives for {newPerspective}. Changing to the requested perspective would result in belief conflicts.");
+
+			Perspective = newPerspective;
+		}
+
+		private IEnumerable<Name> GetAllPerspectives()
+		{
+			return m_knowledgeStorage.Values.SelectMany(e => e.GetAllStoredPerspectives()).Distinct();
+		}
+
 		public Name AssertPerspective(Name perspective)
 		{
 			return ToMList2Key(AssertPerspective(perspective, nameof(perspective)));
@@ -198,10 +228,10 @@ namespace KnowledgeBase
 		public object AskProperty(Name property, Name perspective)
 		{
 			if(!property.IsGrounded)
-				throw new ArgumentException("The given Well Formed Name must be grounded","property");
+				throw new ArgumentException("The given Well Formed Name must be grounded",nameof(property));
 
-			var results = AskPossibleProperties(property,perspective, null).Select(p => PrimitiveValue.Extract(p.Item1)).ToArray();
-			if (results.Length == 0)
+			var results = AskPossibleProperties(property, perspective, null).Select(p => PrimitiveValue.Extract(p.Item1)).ToArray();
+			if (results.Length==0)
 				return null;
 			if (results.Length == 1)
 				return results[0];
@@ -216,7 +246,7 @@ namespace KnowledgeBase
 			if (property.IsPrimitive)
 				return new[] { Tuples.Create(property.GetPrimitiveValue(), constraints) };
 
-			perspective = perspective.RemovePerspective(Perspective);
+			perspective = perspective.ApplyPerspective(Perspective);
 			var ToMList = AssertPerspective(perspective, nameof(perspective));
 
 			return internal_AskPossibleProperties(property, ToMList, constraints);
@@ -270,11 +300,7 @@ namespace KnowledgeBase
 
 		private IEnumerable<BeliefPair> internal_AskPossibleProperties(Name property, List<Name> ToMList, IEnumerable<SubstitutionSet> constraints)
 		{
-			var self = ToMList.Last();
-			if (self.IsUniversal && property.HasSelf())
-				throw new InvalidOperationException($"Cannot evaluate SELF perspective within the property, as the current evaluation perspective is Universal");
-
-			property = property.RemovePerspective(self);
+			property = RemovePropertyPerspective(property, ToMList);
 
 			//ToM property shift
 			property = ExtractPropertyFromToM(property, ToMList, nameof(property));
@@ -386,14 +412,9 @@ namespace KnowledgeBase
 			if (!property.IsConstant)
 				throw new ArgumentException("The given property name is not constant. Only constant names can be stored",nameof(property));
 
-			perspective = perspective.RemovePerspective(Perspective);
+			perspective = perspective.ApplyPerspective(Perspective);
 			var ToMList = AssertPerspective(perspective, nameof(perspective));
-			var self = ToMList.Last();
-
-			if (self.IsUniversal && property.HasSelf())
-				throw new InvalidOperationException($"Cannot modify a property containing SELF in the Universal context of the {nameof(KB)}");
-
-			property = property.RemovePerspective(self);
+			property = RemovePropertyPerspective(property, ToMList);
 
 			//ToM property shift
 			property = ExtractPropertyFromToM(property, ToMList, nameof(property));
@@ -414,6 +435,19 @@ namespace KnowledgeBase
 			entry.TellValueFor(mind_key,value);
 		}
 
+		private Name RemovePropertyPerspective(Name property, List<Name> ToMList)
+		{
+			var self = ToMList.Last();
+			if (self.IsUniversal && property.HasSelf())
+				throw new InvalidOperationException($"Cannot evaluate a property containing SELF in the Universal context of the {nameof(KB)}");
+
+			if (self == Name.SELF_SYMBOL)
+				self = Perspective;
+
+			var p = property.RemovePerspective(self);
+			return p;
+		}
+
 		private static Name ToMList2Key(IEnumerable<Name> ToMList)
 		{
 			Name current = null;
@@ -427,6 +461,17 @@ namespace KnowledgeBase
 					current = Name.BuildName(n, current);
 			}
 			return current;
+		}
+
+		private static IEnumerable<Name> Key2ToMList(Name key)
+		{
+			while (key.IsComposed)
+			{
+				var c = key.GetFirstTerm();
+				yield return c;
+				key = key.GetNTerm(1);
+			}
+			yield return key;
 		}
 
 		private Name SimplifyProperty(Name property,List<Name> ToMList)
@@ -468,6 +513,9 @@ namespace KnowledgeBase
 		/// <returns>The ToM sequenceList</returns>
 		private List<Name> AssertPerspective(Name perspective, string argumentName)
 		{
+			if(perspective == Name.NIL_SYMBOL)
+				throw new ArgumentException("Perspectives cannot contain NIL symbol",argumentName);
+
 			List<Name> ToMList = new List<Name>();
 			if (perspective.IsUniversal)
 			{
@@ -475,10 +523,10 @@ namespace KnowledgeBase
 				return ToMList;
 			}
 
-			ToMList.Add(Perspective);
+			ToMList.Add(Name.SELF_SYMBOL);
 			if (perspective.IsPrimitive)
 			{
-				if (perspective != Perspective)
+				if(perspective != Name.SELF_SYMBOL)
 					ToMList.Add(perspective);
 
 				return ToMList;
@@ -488,7 +536,6 @@ namespace KnowledgeBase
 				throw new ArgumentException("The given Theory of the Mind perspective needs to be constant", argumentName);
 
 			//Validate ToM definition and ToM level
-
 			var eval = perspective;
 
 			while (eval.IsComposed)
@@ -509,16 +556,18 @@ namespace KnowledgeBase
 
 		private static void AssetToMList(List<Name> ToMList, Name current, string argName)
 		{
-			if (current != ToMList.Last())
+			if(current==Name.NIL_SYMBOL)
+				throw new ArgumentException("Perspectives cannot contain NIL symbol.", argName);
+
+			if (current == Name.UNIVERSAL_SYMBOL)
+				throw new ArgumentException("Perspectives cannot contain Universal symbol.", argName);
+
+			var last = ToMList.LastOrDefault();
+			if((last==null && current == Name.SELF_SYMBOL) || current!=last)
 				ToMList.Add(current);
 
-			if (ToMLevel(ToMList) > MAX_TOM_LVL)
+			if ((ToMList.Count - 1) > MAX_TOM_LVL)
 				throw new ArgumentException($"Invalid Theory of the Mind level. Max ToM level {MAX_TOM_LVL}.", argName);
-		}
-
-		private static int ToMLevel(List<Name> ToMList)
-		{
-			return ToMList.Count - 1;
 		}
 
 		private static readonly Name TOM_NAME = Name.BuildName("ToM");
@@ -578,19 +627,19 @@ namespace KnowledgeBase
 		//	}
 		//}
 
-		public int NumOfEntries
-		{
-			get { return m_knowledgeStorage.Count; }
-		}
+		//public int NumOfEntries
+		//{
+		//	get { return m_knowledgeStorage.Count; }
+		//}
 
 		#region Serialization
 
 		private string Perspective2String(Name perception)
 		{
 			if (perception.IsUniversal)
-				return "universal";
+				return "Universal";
 
-			return perception.ApplyPerspective(this.Perspective).ToString();
+			return perception.ToString();
 		}
 
 		private Name String2Perspective(string str)
@@ -598,7 +647,7 @@ namespace KnowledgeBase
 			if (string.Equals(str, "universal", StringComparison.InvariantCultureIgnoreCase))
 				return Name.UNIVERSAL_SYMBOL;
 
-			return ((Name)str).RemovePerspective(this.Perspective);
+			return Name.BuildName(str);
 		}
 
 		public void GetObjectData(ISerializationData dataHolder)
@@ -606,7 +655,6 @@ namespace KnowledgeBase
 			dataHolder.SetValue("Perspective",Perspective);
 			var knowledge = dataHolder.ParentGraph.CreateObjectData();
 			dataHolder.SetValueGraphNode("Knowledge",knowledge);
-			//var dict = ObjectPool<Dictionary<string, IObjectGraphNode>>.GetObject();
 			foreach (var entry in m_knowledgeStorage)
 			{
 				foreach (var perspective in entry.Value.GetPerspectives())

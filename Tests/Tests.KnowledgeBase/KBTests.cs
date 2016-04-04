@@ -313,5 +313,55 @@ namespace Tests.KnowledgeBase
 			var r = kb.AskProperty(Name.BuildName(queryPerdicate), Name.BuildName(queryPerspective)) as bool?;
 			Assert.IsTrue(r);
 		}
+
+		[Test]
+		public void Test_Fail_Tell_With_Nil_Perspective()
+		{
+			var kb = new KB(Name.BuildName("Mark"));
+			Assert.Throws<ArgumentException>(() => kb.Tell(Name.BuildName("IsPerson(Self)"), true, Name.NIL_SYMBOL));
+		}
+
+		[Test]
+		public void Test_Tell_Pass_Add_Self_Belief_and_Change_Perspective_01()
+		{
+			var kb = new KB(Name.BuildName("Mark"));
+			kb.Tell(Name.BuildName("IsPerson(Self)"), true);
+
+			kb.SetPerspective(Name.BuildName("Mary"));
+
+			Assert.True((bool?)kb.AskProperty(Name.BuildName("IsPerson(Mark)")));
+		}
+
+		[Test]
+		public void Test_Tell_Pass_Add_Self_Belief_and_Change_Perspective_02()
+		{
+			var kb = new KB(Name.BuildName("Mark"));
+			kb.Tell(Name.BuildName("IsPerson(Self)"), true,Name.BuildName("John(Self)"));
+
+			kb.SetPerspective(Name.BuildName("Mary"));
+
+			Assert.True((bool?)kb.AskProperty(Name.BuildName("IsPerson(Mark)"), Name.BuildName("John(Self)")));
+		}
+
+		[Test]
+		public void Test_Fail_Change_Perspective_Conflict()
+		{
+			var kb = new KB(Name.BuildName("Mark"));
+			kb.Tell(Name.BuildName("IsPerson(Self)"), true, Name.BuildName("John(Self)"));
+
+			Assert.Throws<ArgumentException>(()=> kb.SetPerspective(Name.BuildName("John")));
+		}
+
+		[TestCase("*")]
+		[TestCase("-")]
+		[TestCase("Test(Mark)")]
+		[TestCase("Self")]
+		public void Test_Fail_Change_Perspective_To_Invalid_Perspective(string perspective)
+		{
+			var kb = new KB(Name.BuildName("Mark"));
+			kb.Tell(Name.BuildName("IsPerson(Self)"), true, Name.BuildName("John(Self)"));
+
+			Assert.Throws<ArgumentException>(() => kb.SetPerspective(Name.BuildName(perspective)));
+		}
 	}
 }
