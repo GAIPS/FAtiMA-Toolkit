@@ -8,12 +8,20 @@ namespace AutobiographicMemory
 	{
 		uint Id { get; }
 
-		/// <summary>
-		/// The type of the event
-		/// </summary>
-		string EventType { get; }
+        /// <summary>
+        /// The WFN representation of this event record
+        /// </summary>
+        Name EventName { get; }
 
-		/// <summary>
+        /// <summary>
+        /// The type of the event
+        /// </summary>
+        string Type
+        {
+            get;
+        }
+
+        /// <summary>
 		/// How performed the action
 		/// </summary>
 		string Subject
@@ -21,25 +29,41 @@ namespace AutobiographicMemory
 			get;
 		}
 
-		/// <summary>
-		/// The target of the event
+        /// <summary>
+		/// The action of the event
 		/// </summary>
-		string Target
-		{
-			get;
-		}
+		Name Action
+        {
+            get;
+        }
 
-		/// <summary>
-		/// A WFN of the EventObject represented by this event
+        /// <summary>
+        /// The target of the event
+        /// </summary>
+        string Target
+        {
+            get;
+        }
+
+        /// <summary>
+		/// The property of the event
 		/// </summary>
-		Name EventObject { get; }
+		Name Property
+        {
+            get;
+        }
 
-		/// <summary>
-		/// The WFN representation of this event record
+
+        /// <summary>
+		/// The new value of the property changed
 		/// </summary>
-		Name EventName { get; }
+		string NewValue
+        {
+            get;
+        }
 
-		/// <summary>
+        
+	    /// <summary>
 		/// The time stamp in which the event occured
 		/// </summary>
 		ulong Timestamp

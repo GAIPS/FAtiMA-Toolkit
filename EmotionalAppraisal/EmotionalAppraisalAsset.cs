@@ -3,6 +3,7 @@ using AssetPackage;
 using EmotionalAppraisal.AppraisalRules;
 using EmotionalAppraisal.OCCModel;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using AutobiographicMemory;
@@ -109,6 +110,11 @@ namespace EmotionalAppraisal
             set { m_emotionalState.Mood = value; }
 	    }
 
+
+	    public string[] KnowledgeVisibilities => new[] {Name.SELF_STRING, Name.UNIVERSAL_STRING};
+        public string[] EventTypes => Enum.GetNames(typeof (EventType));
+        
+
 	    public EmotionDispositionDTO DefaultEmotionDisposition
 	    {
 	        get{ return m_emotionalState.DefaultEmotionDisposition.ToDto();}
@@ -137,7 +143,15 @@ namespace EmotionalAppraisal
 
         public IEnumerable<EventDTO> EventRecords
         {
-            get { return this.m_am.RecallAllEvents().Select(e => new EventDTO {Id = e.Id, Event = e.EventName.ToString(), Time = e.Timestamp}); }
+            get
+            {
+                return this.m_am.RecallAllEvents().Select(e => new EventDTO
+                {
+                    Id = e.Id,
+                    Event = e.EventName.ToString(),
+                    Time = e.Timestamp
+                });
+            }
         }
 
         public IEnumerable<string> EmotionTypes
@@ -159,12 +173,17 @@ namespace EmotionalAppraisal
         {
             m_appraisalDerivator.AddAppraisalRuleCondition(appraisalRuleId, conditionDTO);
         }
-
-
+        
         public uint AddEventRecord(EventDTO eventDTO)
 	    {
-	        return this.m_am.RecordEvent(Name.BuildName(eventDTO.Event), eventDTO.Time).Id;
+	        return this.m_am.RecordEvent(this.BuildEventName(eventDTO), eventDTO.Time).Id;
 	    }
+
+        public void ForgetEvent(uint eventId)
+        {
+            this.m_am.ForgetEvent(eventId);
+        }
+
 
         public void AddEmotionDisposition(EmotionDispositionDTO emotionDispositionDto)
 	    {
@@ -199,6 +218,30 @@ namespace EmotionalAppraisal
             return appraisalRules;
         }
 
+	    private Name BuildEventName(EventDTO evt)
+	    {
+	        var actionEvent = evt as ActionEventDTO;
+	        if (actionEvent != null)
+	        {
+                return Name.BuildName(
+	                (Name) "Event",
+	                (Name) "Action",
+	                (Name) actionEvent.Subject,
+	                (Name) actionEvent.Action,
+	                (Name) actionEvent.Target);
+	        }
+	        else
+	        {
+                var pcEvent = evt as PropertyChangeEventDTO;
+                return Name.BuildName(
+                    (Name)"Event",
+                    (Name)"Property-Change",
+                    (Name)pcEvent.Subject,
+                    (Name)pcEvent.Property,
+                    (Name)pcEvent.NewValue);
+            }
+        }
+
 	    public void RemoveAppraisalRules(IEnumerable<AppraisalRuleDTO> appraisalRules)
 	    {
 	        foreach (var appraisalRuleDto in appraisalRules)
@@ -231,13 +274,13 @@ namespace EmotionalAppraisal
 			{
 				var evtN = n.RemovePerspective(Perspective);
 				var evt = m_am.RecordEvent(evtN,Tick);
-
-				if (evt.EventType.Equals("property-change", StringComparison.InvariantCultureIgnoreCase))
+                
+				/*if (evt.EventType.Equals("property-change", StringComparison.InvariantCultureIgnoreCase))
 				{
 					var fact = evt.EventObject;
 					var value = (Name)evt.Target;
 					m_kb.Tell(fact, value.GetPrimitiveValue(), Name.SELF_SYMBOL);
-				}
+				}*/
 
 				APPRAISAL_FRAME.Reset(evt);
 				var componentFrame = APPRAISAL_FRAME.RequestComponentFrame(m_appraisalDerivator, m_appraisalDerivator.AppraisalWeight);

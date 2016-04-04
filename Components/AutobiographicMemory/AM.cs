@@ -14,7 +14,7 @@ namespace AutobiographicMemory
 	{
 		//Indexes
 		private uint m_eventGUIDCounter = 0;
-		private Dictionary<uint, EventRecord> m_registry = new Dictionary<uint, EventRecord>();
+		private Dictionary<uint, BaseEvent> m_registry = new Dictionary<uint, BaseEvent>();
 		private NameSearchTree<List<uint>> m_typeIndexes = new NameSearchTree<List<uint>>();
 
 		public ulong Tick { get; set; }
@@ -33,17 +33,40 @@ namespace AutobiographicMemory
 				throw new Exception("Cannot record an event name containing \"Self\" keywords");
 
 			var id = m_eventGUIDCounter++;
-			var rec = new EventRecord(id, eventName,timestamp);
-			AddRecord(rec);
-			return rec;
+		    BaseEvent eventRecord;
+		    if (ActionEvent.IsActionEvent(eventName))
+		    {
+		        eventRecord = new ActionEvent(id, eventName, timestamp);
+                AddRecord(eventRecord);
+                return eventRecord as ActionEvent;
+            }
+		    else if (PropertyChangeEvent.IsPropertyChangeEvent(eventName))
+		    {
+                eventRecord = new PropertyChangeEvent(id, eventName, timestamp);
+                AddRecord(eventRecord);
+                return eventRecord as PropertyChangeEvent;
+            }
+            else
+		    {
+		        throw new Exception("Unknown Event Type");
+		    }
 		}
 
 		public IEventRecord RecallEvent(uint eventId)
 		{
-			EventRecord r;
-			if (m_registry.TryGetValue(eventId, out r))
-				return r;
-			return null;
+			BaseEvent r;
+		    if (m_registry.TryGetValue(eventId, out r))
+		    {
+		        if (r is ActionEvent)
+		        {
+		            return r as ActionEvent;
+		        }
+		        else if (r is PropertyChangeEvent)
+		        {
+		            return r as PropertyChangeEvent;
+		        }
+		    }
+		    return null;
 		}
 
 	    public IEnumerable<IEventRecord> RecallAllEvents()
@@ -51,9 +74,14 @@ namespace AutobiographicMemory
 	        return m_registry.Keys.Select(key => m_registry[key]).Cast<IEventRecord>().ToList();
 	    }
 
-	    private void AddRecord(EventRecord record)
+	    public void ForgetEvent(uint eventId)
+	    {
+	        m_registry.Remove(eventId);
+        }
+
+	    private void AddRecord(BaseEvent record)
 		{
-			m_registry.Add(record.Id,record);
+			m_registry.Add(record.Id, record);
 			List<uint> ids;
 			var name = record.EventName;
 			if (!m_typeIndexes.TryGetValue(name, out ids))
@@ -228,7 +256,7 @@ namespace AutobiographicMemory
 
 			m_eventGUIDCounter = 0;
 			if (m_registry == null)
-				m_registry = new Dictionary<uint, EventRecord>();
+				m_registry = new Dictionary<uint, BaseEvent>();
 			else
 				m_registry.Clear();
 
@@ -237,7 +265,7 @@ namespace AutobiographicMemory
 			else
 				m_typeIndexes.Clear();
 
-			var recs = dataHolder.GetValue<EventRecord[]>("records");
+			var recs = dataHolder.GetValue<BaseEvent[]>("records");
 			if(recs==null)
 				return;
 			
