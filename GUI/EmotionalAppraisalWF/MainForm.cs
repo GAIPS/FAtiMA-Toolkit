@@ -46,11 +46,12 @@ namespace EmotionalAppraisalWF
             //Emotional State Tab
             _emotionalStateVM = new EmotionalStateVM(_emotionalAppraisalAsset);
             this.textBoxPerspective.Text = _emotionalStateVM.Perspective;
+            this.richTextBoxDescription.Text = _emotionalAppraisalAsset.Description;
             this.moodValueLabel.Text = Math.Round(_emotionalStateVM.Mood).ToString(MOOD_FORMAT);
             this.moodTrackBar.Value = (int) float.Parse(this.moodValueLabel.Text);
             this.textBoxStartTick.Text = _emotionalStateVM.Start.ToString();
             this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
-
+            
 
             //Emotion Dispositions
             _emotionDispositionsVM = new EmotionDispositionsVM(_emotionalAppraisalAsset);
@@ -517,6 +518,16 @@ namespace EmotionalAppraisalWF
             {
                 this.buttonEditEvent_Click(sender, e);
             }
+        }
+
+        private void groupBox2_Enter_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void richTextBoxDescription_TextChanged(object sender, EventArgs e)
+        {
+            this._emotionalAppraisalAsset.Description = richTextBoxDescription.Text;
         }
     }
 }

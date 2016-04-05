@@ -43,7 +43,6 @@ namespace EmotionalAppraisalWF
                 Desirability = int.Parse(comboBoxDesirability.Text),
                 Praiseworthiness = int.Parse(comboBoxPraiseworthiness.Text),
                 Conditions = new List<ConditionDTO>(),
-                Description = richTextBoxDescription.Text
             };
             
             try

@@ -35,8 +35,6 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.addBeliefErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.label4 = new System.Windows.Forms.Label();
-            this.richTextBoxDescription = new System.Windows.Forms.RichTextBox();
             this.comboBoxPraiseworthiness = new System.Windows.Forms.ComboBox();
             this.comboBoxDesirability = new System.Windows.Forms.ComboBox();
             this.emotionalAppraisalAssetBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -55,7 +53,7 @@
             // 
             // addOrEditButton
             // 
-            this.addOrEditButton.Location = new System.Drawing.Point(133, 254);
+            this.addOrEditButton.Location = new System.Drawing.Point(133, 142);
             this.addOrEditButton.Name = "addOrEditButton";
             this.addOrEditButton.Size = new System.Drawing.Size(75, 23);
             this.addOrEditButton.TabIndex = 20;
@@ -92,49 +90,32 @@
             // 
             this.addBeliefErrorProvider.ContainerControl = this;
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(40, 132);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(63, 13);
-            this.label4.TabIndex = 21;
-            this.label4.Text = "Description:";
-            // 
-            // richTextBoxDescription
-            // 
-            this.richTextBoxDescription.Location = new System.Drawing.Point(40, 162);
-            this.richTextBoxDescription.Name = "richTextBoxDescription";
-            this.richTextBoxDescription.Size = new System.Drawing.Size(257, 79);
-            this.richTextBoxDescription.TabIndex = 22;
-            this.richTextBoxDescription.Text = "";
-            // 
             // comboBoxPraiseworthiness
             // 
             this.comboBoxPraiseworthiness.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxPraiseworthiness.FormattingEnabled = true;
             this.comboBoxPraiseworthiness.Items.AddRange(new object[] {
-            "-10",
-            "-9",
-            "-8",
-            "-7",
-            "-6",
-            "-5",
-            "-4",
-            "-3",
-            "-2",
-            "-1",
-            "0",
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
+            "10",
             "9",
-            "10"});
+            "8",
+            "7",
+            "6",
+            "5",
+            "4",
+            "3",
+            "2",
+            "1",
+            "0",
+            "-1",
+            "-2",
+            "-3",
+            "-4",
+            "-5",
+            "-6",
+            "-7",
+            "-8",
+            "-9",
+            "-10"});
             this.comboBoxPraiseworthiness.Location = new System.Drawing.Point(256, 95);
             this.comboBoxPraiseworthiness.Name = "comboBoxPraiseworthiness";
             this.comboBoxPraiseworthiness.Size = new System.Drawing.Size(44, 21);
@@ -145,31 +126,31 @@
             this.comboBoxDesirability.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxDesirability.FormattingEnabled = true;
             this.comboBoxDesirability.Items.AddRange(new object[] {
-            "-10",
-            "-9",
-            "-8",
-            "-7",
-            "-6",
-            "-5",
-            "-4",
-            "-3",
-            "-2",
-            "-1",
-            "0",
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
+            "10",
             "9",
-            "10"});
+            "8",
+            "7",
+            "6",
+            "5",
+            "4",
+            "3",
+            "2",
+            "1",
+            "0",
+            "-1",
+            "-2",
+            "-3",
+            "-4",
+            "-5",
+            "-6",
+            "-7",
+            "-8",
+            "-9",
+            "-10"});
             this.comboBoxDesirability.Location = new System.Drawing.Point(106, 95);
             this.comboBoxDesirability.Name = "comboBoxDesirability";
             this.comboBoxDesirability.Size = new System.Drawing.Size(46, 21);
-            this.comboBoxDesirability.TabIndex = 23;
+            this.comboBoxDesirability.TabIndex = 18;
             // 
             // emotionalAppraisalAssetBindingSource
             // 
@@ -180,10 +161,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(340, 301);
+            this.ClientSize = new System.Drawing.Size(340, 188);
             this.Controls.Add(this.comboBoxDesirability);
-            this.Controls.Add(this.richTextBoxDescription);
-            this.Controls.Add(this.label4);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.addOrEditButton);
             this.Controls.Add(this.comboBoxPraiseworthiness);
@@ -210,9 +189,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ErrorProvider addBeliefErrorProvider;
-        private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox comboBoxDesirability;
-        private System.Windows.Forms.RichTextBox richTextBoxDescription;
         private System.Windows.Forms.ComboBox comboBoxPraiseworthiness;
     }
 }

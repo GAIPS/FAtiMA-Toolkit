@@ -50,6 +50,9 @@ namespace EmotionalAppraisalWF.ViewModels
             {
                 this.AppraisalRules.DataSource.Remove(appraisalRuleDto);
             }
+            this.AppraisalRuleSelected = null;
+            this.CurrentRuleConditions.DataSource.Clear();
+            this.CurrentRuleConditions.Refresh();
             AppraisalRules.Refresh();
         }
 

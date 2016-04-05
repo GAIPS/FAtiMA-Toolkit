@@ -110,8 +110,13 @@ namespace EmotionalAppraisal
             set { m_emotionalState.Mood = value; }
 	    }
 
+        /// <summary>
+	    /// A short description of the asset's configuration
+	    /// </summary>
+	    public string Description { get; set; }
 
-	    public string[] KnowledgeVisibilities => new[] {Name.SELF_STRING, Name.UNIVERSAL_STRING};
+
+        public string[] KnowledgeVisibilities => new[] {Name.SELF_STRING, Name.UNIVERSAL_STRING};
         public string[] EventTypes => new [] {Constants.ACTION_EVENT, Constants.PROPERTY_CHANGE_EVENT};
         
 
@@ -535,13 +540,13 @@ namespace EmotionalAppraisal
 
         public void GetObjectData(ISerializationData dataHolder)
 		{
+            dataHolder.SetValue("Description", Description);
             dataHolder.SetValue("EmotionalHalfLifeDecayTime", EmotionalHalfLifeDecayTime);
 			dataHolder.SetValue("MoodHalfLifeDecayTime", MoodHalfLifeDecayTime);
             dataHolder.SetValue("HalfLifeDecayConstant", HalfLifeDecayConstant);
             dataHolder.SetValue("EmotionInfluenceOnMoodFactor", EmotionInfluenceOnMoodFactor);
             dataHolder.SetValue("MoodInfluenceOnEmotionFactor", MoodInfluenceOnEmotionFactor);
             dataHolder.SetValue("MinimumMoodValueForInfluencingEmotions", MinimumMoodValueForInfluencingEmotions);
-
             dataHolder.SetValue("KnowledgeBase",m_kb);
 			dataHolder.SetValue("AutobiographicMemory",m_am);
 			dataHolder.SetValue("EmotionalState", m_emotionalState);
@@ -550,6 +555,7 @@ namespace EmotionalAppraisal
 
 		public void SetObjectData(ISerializationData dataHolder)
 		{
+            Description = dataHolder.GetValue<string>("Description");
             EmotionalHalfLifeDecayTime = dataHolder.GetValue<float>("EmotionalHalfLifeDecayTime");
             MoodHalfLifeDecayTime = dataHolder.GetValue<float>("MoodHalfLifeDecayTime");
 		    HalfLifeDecayConstant = dataHolder.GetValue<double>("HalfLifeDecayConstant");
