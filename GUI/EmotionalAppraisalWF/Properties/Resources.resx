@@ -157,7 +157,7 @@
     <value>Edit Event Record</value>
   </data>
   <data name="EditConditionEventFormTitle" xml:space="preserve">
-    <value>Edit Event Record</value>
+    <value>Edit Condition</value>
   </data>
   <data name="UpdateButtonLabel" xml:space="preserve">
     <value>Update</value>

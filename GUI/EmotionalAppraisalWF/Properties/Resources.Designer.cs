@@ -106,7 +106,7 @@ namespace EmotionalAppraisalWF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit Event Record.
+        ///   Looks up a localized string similar to Edit Condition.
         /// </summary>
         internal static string EditConditionEventFormTitle {
             get {

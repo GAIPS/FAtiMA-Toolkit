@@ -17,6 +17,9 @@ namespace EmotionalAppraisalWF.ViewModels
         public BindingListView<ConditionDTO> CurrentRuleConditions { get; set; }
         public AppraisalRuleDTO AppraisalRuleSelected { get; set;}
 
+        public string[] QuantifierTypes => _emotionalAppraisalAsset.QuantifierTypes;
+
+
         public AppraisalRulesVM(EmotionalAppraisalAsset ea)
         {
             _emotionalAppraisalAsset = ea;
@@ -61,6 +64,16 @@ namespace EmotionalAppraisalWF.ViewModels
             _emotionalAppraisalAsset.AddAppraisalRuleCondition(AppraisalRuleSelected.Id, newCondition);
             AppraisalRuleSelected.Conditions.Add(newCondition);
             CurrentRuleConditions.DataSource.Add(newCondition);
+            CurrentRuleConditions.Refresh();
+        }
+
+        public void RemoveConditions(IList<ConditionDTO> conditionsToRemove)
+        {
+            foreach (var condition in conditionsToRemove)
+            {
+                _emotionalAppraisalAsset.RemoveAppraisalRuleCondition(AppraisalRuleSelected.Id, condition);
+            }
+            this.CurrentRuleConditions = new BindingListView<ConditionDTO>(AppraisalRuleSelected.Conditions.ToList());
             CurrentRuleConditions.Refresh();
         }
     }

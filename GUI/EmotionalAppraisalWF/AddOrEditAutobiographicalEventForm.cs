@@ -56,7 +56,6 @@ namespace EmotionalAppraisalWF
         {
             try
             {
-
                 EventDTO newEvent = null;
                 if (comboBoxEventType.Text == Constants.PROPERTY_CHANGE_EVENT)
                 {

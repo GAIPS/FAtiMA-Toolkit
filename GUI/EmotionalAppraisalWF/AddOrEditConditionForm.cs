@@ -19,11 +19,11 @@ namespace EmotionalAppraisalWF
             _appraisalRulesVM = appraisalRulesVm;
             _conditionToEditDTO = conditionToEdit;
         
-            
             if (conditionToEdit != null)
             {
                 this.Text = Resources.EditConditionEventFormTitle;
                 this.addOrEditButton.Text = Resources.UpdateButtonLabel;
+                this.textBoxEvent.Text = conditionToEdit.Condition;
             }
         }
 

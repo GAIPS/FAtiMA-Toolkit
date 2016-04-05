@@ -105,7 +105,6 @@ namespace EmotionalAppraisal.AppraisalRules
             return Rules.FirstOrDefault();
 	    }
         
-        //todo: this method is overly complex due to the nature of the "ConditionSet.Add()" method
         public void AddAppraisalRuleCondition(Guid appraisalRuleId, ConditionDTO conditionDto)
         {
             AppraisalRule existingRule = null;
@@ -115,6 +114,23 @@ namespace EmotionalAppraisal.AppraisalRules
                 existingRule.Conditions = new ConditionSet(existingRule.Conditions.Add(Condition.Parse(conditionDto.Condition)));
             }
         }
+
+        
+        public void RemoveAppraisalRuleCondition(Guid appraisalRuleId, ConditionDTO conditionDto)
+        {
+            AppraisalRule existingRule;
+            findExistingAppraisalRule(appraisalRuleId, out existingRule);
+            if (existingRule != null)
+            {
+                Console.WriteLine(existingRule.Conditions.First().ToString());
+                var condition = existingRule.Conditions.FirstOrDefault(c => c.ToString() == conditionDto.Condition);
+                if (condition != null)
+                {
+                    existingRule.Conditions.Remove(condition);
+                }
+            }
+        }
+
 
         public void RemoveAppraisalRule(AppraisalRule appraisalRule)
 	    {
@@ -221,5 +237,6 @@ namespace EmotionalAppraisal.AppraisalRules
 
 		#endregion
 
+	  
 	}
 }

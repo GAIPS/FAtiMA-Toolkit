@@ -28,7 +28,27 @@ namespace EmotionalAppraisalWF
         public MainForm()
         {
             InitializeComponent();
-            Reset(true);
+
+            string[] args = Environment.GetCommandLineArgs();
+
+            if (args.Length <= 1)
+            {
+                Reset(true);
+            }
+            else
+            {
+                _saveFileName = args[1];
+                try
+                {
+                    this._emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile((args[1]));
+                    Reset(false);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Reset(true);
+                }
+            }
         }
 
         private void Reset(bool newFile)
@@ -68,6 +88,7 @@ namespace EmotionalAppraisalWF
             dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<AppraisalRuleDTO>(dto => dto.Conditions)].Visible = false;
             dataGridViewAppRuleConditions.DataSource = _appraisalRulesVM.CurrentRuleConditions;
             dataGridViewAppRuleConditions.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
+            comboBoxQuantifierType.DataSource = _appraisalRulesVM.QuantifierTypes;
 
             //KB
             _knowledgeBaseVM = new KnowledgeBaseVM(_emotionalAppraisalAsset);
@@ -528,6 +549,27 @@ namespace EmotionalAppraisalWF
         private void richTextBoxDescription_TextChanged(object sender, EventArgs e)
         {
             this._emotionalAppraisalAsset.Description = richTextBoxDescription.Text;
+        }
+
+        private void buttonEditAppraisalRuleCondition_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewAppRuleConditions.SelectedRows.Count == 1)
+            {
+                var selectedCondition = ((ObjectView<ConditionDTO>)dataGridViewAppRuleConditions.
+                    SelectedRows[0].DataBoundItem).Object;
+                new AddOrEditConditionForm(_appraisalRulesVM, selectedCondition).ShowDialog();
+            }
+        }
+
+        private void buttonRemoveAppraisalRuleCondition_Click(object sender, EventArgs e)
+        {
+            IList<ConditionDTO> conditionsToRemove = new List<ConditionDTO>();
+            for (int i = 0; i < dataGridViewAppRuleConditions.SelectedRows.Count; i++)
+            {
+                var emotion = ((ObjectView<ConditionDTO>)dataGridViewAppRuleConditions.SelectedRows[i].DataBoundItem).Object;
+                conditionsToRemove.Add(emotion);
+            }
+            _appraisalRulesVM.RemoveConditions(conditionsToRemove);
         }
     }
 }

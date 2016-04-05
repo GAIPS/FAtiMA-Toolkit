@@ -94,6 +94,8 @@
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.label2 = new System.Windows.Forms.Label();
+            this.comboBoxQuantifierType = new System.Windows.Forms.ComboBox();
             this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.mainMenu.SuspendLayout();
             this.mainFormTab.SuspendLayout();
@@ -580,6 +582,8 @@
             this.groupBox8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox8.Controls.Add(this.comboBoxQuantifierType);
+            this.groupBox8.Controls.Add(this.label2);
             this.groupBox8.Controls.Add(this.buttonEditAppraisalRuleCondition);
             this.groupBox8.Controls.Add(this.buttonAddAppraisalRuleCondition);
             this.groupBox8.Controls.Add(this.buttonRemoveAppraisalRuleCondition);
@@ -593,16 +597,17 @@
             // 
             // buttonEditAppraisalRuleCondition
             // 
-            this.buttonEditAppraisalRuleCondition.Location = new System.Drawing.Point(66, 19);
+            this.buttonEditAppraisalRuleCondition.Location = new System.Drawing.Point(66, 18);
             this.buttonEditAppraisalRuleCondition.Name = "buttonEditAppraisalRuleCondition";
             this.buttonEditAppraisalRuleCondition.Size = new System.Drawing.Size(70, 23);
             this.buttonEditAppraisalRuleCondition.TabIndex = 9;
             this.buttonEditAppraisalRuleCondition.Text = "Edit";
             this.buttonEditAppraisalRuleCondition.UseVisualStyleBackColor = true;
+            this.buttonEditAppraisalRuleCondition.Click += new System.EventHandler(this.buttonEditAppraisalRuleCondition_Click);
             // 
             // buttonAddAppraisalRuleCondition
             // 
-            this.buttonAddAppraisalRuleCondition.Location = new System.Drawing.Point(6, 19);
+            this.buttonAddAppraisalRuleCondition.Location = new System.Drawing.Point(6, 18);
             this.buttonAddAppraisalRuleCondition.Name = "buttonAddAppraisalRuleCondition";
             this.buttonAddAppraisalRuleCondition.Size = new System.Drawing.Size(54, 23);
             this.buttonAddAppraisalRuleCondition.TabIndex = 7;
@@ -612,12 +617,13 @@
             // 
             // buttonRemoveAppraisalRuleCondition
             // 
-            this.buttonRemoveAppraisalRuleCondition.Location = new System.Drawing.Point(142, 19);
+            this.buttonRemoveAppraisalRuleCondition.Location = new System.Drawing.Point(142, 18);
             this.buttonRemoveAppraisalRuleCondition.Name = "buttonRemoveAppraisalRuleCondition";
             this.buttonRemoveAppraisalRuleCondition.Size = new System.Drawing.Size(70, 23);
             this.buttonRemoveAppraisalRuleCondition.TabIndex = 8;
             this.buttonRemoveAppraisalRuleCondition.Text = "Remove";
             this.buttonRemoveAppraisalRuleCondition.UseVisualStyleBackColor = true;
+            this.buttonRemoveAppraisalRuleCondition.Click += new System.EventHandler(this.buttonRemoveAppraisalRuleCondition_Click);
             // 
             // dataGridViewAppRuleConditions
             // 
@@ -904,6 +910,24 @@
             // 
             this.decayErrorProvider.ContainerControl = this;
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(338, 23);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(82, 13);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Quantifier Type:";
+            // 
+            // comboBoxQuantifierType
+            // 
+            this.comboBoxQuantifierType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxQuantifierType.FormattingEnabled = true;
+            this.comboBoxQuantifierType.Location = new System.Drawing.Point(426, 19);
+            this.comboBoxQuantifierType.Name = "comboBoxQuantifierType";
+            this.comboBoxQuantifierType.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxQuantifierType.TabIndex = 11;
+            // 
             // mainFormBindingSource
             // 
             this.mainFormBindingSource.DataSource = typeof(EmotionalAppraisalWF.MainForm);
@@ -940,6 +964,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEmotionDispositions)).EndInit();
             this.appraisalRulesTagePage.ResumeLayout(false);
             this.groupBox8.ResumeLayout(false);
+            this.groupBox8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAppRuleConditions)).EndInit();
             this.groupBox7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAppraisalRules)).EndInit();
@@ -1027,6 +1052,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RichTextBox richTextBoxDescription;
+        private System.Windows.Forms.ComboBox comboBoxQuantifierType;
+        private System.Windows.Forms.Label label2;
     }
 }
 

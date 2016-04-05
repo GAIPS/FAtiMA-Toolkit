@@ -10,6 +10,7 @@ namespace EmotionalAppraisal.DTOs
         public float Desirability { get; set; }
         public float Praiseworthiness { get; set; }
         public IList<ConditionDTO> Conditions { get; set; }
+        public string QuantifierType { get; set; }
 
         public AppraisalRuleDTO()
         {

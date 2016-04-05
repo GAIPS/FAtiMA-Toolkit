@@ -10,6 +10,7 @@ using AutobiographicMemory;
 using EmotionalAppraisal.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase;
+using KnowledgeBase.Conditions;
 using KnowledgeBase.DTOs.Conditions;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
@@ -118,6 +119,7 @@ namespace EmotionalAppraisal
 
         public string[] KnowledgeVisibilities => new[] {Name.SELF_STRING, Name.UNIVERSAL_STRING};
         public string[] EventTypes => new [] {Constants.ACTION_EVENT, Constants.PROPERTY_CHANGE_EVENT};
+	    public string[] QuantifierTypes => Enum.GetNames(typeof (LogicalQuantifier));
         
 
 	    public EmotionDispositionDTO DefaultEmotionDisposition
@@ -211,7 +213,12 @@ namespace EmotionalAppraisal
         {
             m_appraisalDerivator.AddAppraisalRuleCondition(appraisalRuleId, conditionDTO);
         }
-        
+
+        public void RemoveAppraisalRuleCondition(Guid appraisalRuleId, ConditionDTO conditionDTO)
+        {
+            m_appraisalDerivator.RemoveAppraisalRuleCondition(appraisalRuleId, conditionDTO);
+        }
+
         public uint AddEventRecord(EventDTO eventDTO)
 	    {
 	        return this.m_am.RecordEvent(this.BuildEventName(eventDTO), eventDTO.Time).Id;
