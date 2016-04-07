@@ -15,6 +15,7 @@ namespace EmotionalAppraisal.DTOs
         public AppraisalRuleDTO()
         {
             this.Id = Guid.NewGuid();
+            this.Conditions = new List<ConditionDTO>();
         }
     }
 }

@@ -86,6 +86,7 @@ namespace EmotionalAppraisalWF
             dataGridViewAppraisalRules.DataSource = _appraisalRulesVM.AppraisalRules;
             dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
             dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<AppraisalRuleDTO>(dto => dto.Conditions)].Visible = false;
+            dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<AppraisalRuleDTO>(dto => dto.QuantifierType)].Visible = false;
             dataGridViewAppRuleConditions.DataSource = _appraisalRulesVM.CurrentRuleConditions;
             dataGridViewAppRuleConditions.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
             comboBoxQuantifierType.DataSource = _appraisalRulesVM.QuantifierTypes;
@@ -371,7 +372,7 @@ namespace EmotionalAppraisalWF
 
         private void buttonAddAppraisalRuleCondition_Click(object sender, EventArgs e)
         {
-            if (_appraisalRulesVM.AppraisalRuleSelected != null)
+            if (_appraisalRulesVM.SelectedRuleId != Guid.Empty)
             {
                 new AddOrEditConditionForm(this._appraisalRulesVM).ShowDialog();
             }

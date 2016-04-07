@@ -35,7 +35,15 @@ namespace EmotionalAppraisalWF
                 {
                     Condition = textBoxEvent.Text
                 };
-                _appraisalRulesVM.AddCondition(newCondition);
+                if (_conditionToEditDTO != null)
+                {
+                    _appraisalRulesVM.UpdateCondition(_conditionToEditDTO, newCondition);
+                }
+                else
+                {
+                    _appraisalRulesVM.AddCondition(newCondition);
+                }
+                
                 Close();
             }
             catch (Exception ex)

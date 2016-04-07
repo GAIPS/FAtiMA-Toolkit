@@ -10,15 +10,20 @@ namespace KnowledgeBase.Conditions
 	[Serializable]
 	public abstract partial class Condition : IConditionEvaluator
 	{
-		private const string WFN_CHARACTERS = @"\w\s-\+\(\)\.\,\[\]\*";
+
+	    public Guid Id { get; set; }
+
+        private const string WFN_CHARACTERS = @"\w\s-\+\(\)\.\,\[\]\*";
 		private const string REGEX_PATTERN = @"^\s*(#)?(["+WFN_CHARACTERS+@"]+)\s*(=|!=|<|<=|>|>=)\s*(#)?(["+WFN_CHARACTERS+@"]+)\s*$";
 		private static readonly Regex REGEX_PARSER = new Regex(REGEX_PATTERN,RegexOptions.Singleline);
 
 		private Condition()
 		{
+		    this.Id = Guid.NewGuid();
 		}
 
-		public IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
+        
+        public IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
 			if (constraints == null || !constraints.Any())
 				constraints = new[] { new SubstitutionSet() };

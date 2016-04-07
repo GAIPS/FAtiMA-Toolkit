@@ -209,9 +209,9 @@ namespace EmotionalAppraisal
 			m_appraisalDerivator.AddOrUpdateAppraisalRule(emotionalAppraisalRule);
 		}
 
-        public void AddAppraisalRuleCondition(Guid appraisalRuleId, ConditionDTO conditionDTO)
+        public Guid AddAppraisalRuleCondition(Guid appraisalRuleId, ConditionDTO conditionDTO)
         {
-            m_appraisalDerivator.AddAppraisalRuleCondition(appraisalRuleId, conditionDTO);
+            return m_appraisalDerivator.AddAppraisalRuleCondition(appraisalRuleId, conditionDTO);
         }
 
         public void RemoveAppraisalRuleCondition(Guid appraisalRuleId, ConditionDTO conditionDTO)
@@ -263,10 +263,19 @@ namespace EmotionalAppraisal
                 EventMatchingTemplate = r.EventName.ToString(),
                 Desirability = r.Desirability,
                 Praiseworthiness = r.Praiseworthiness,
-                Conditions = r.Conditions.Select(c => new ConditionDTO {Condition = c.ToString()}).ToList()
             });
             return appraisalRules;
         }
+
+	    public IEnumerable<ConditionDTO> GetAllAppraisalRuleConditions(Guid ruleId)
+	    {
+	        var rule = this.m_appraisalDerivator.GetAppraisalRules().FirstOrDefault(r => r.Id == ruleId);
+	        if (rule == null)
+	        {
+	            throw new Exception("Rule not found");
+	        }
+	        return rule.Conditions.Select(c => new ConditionDTO {Id = c.Id, Condition = c.ToString()}).ToList();
+	    } 
 
 	    private Name BuildEventName(EventDTO evt)
 	    {
@@ -583,6 +592,5 @@ namespace EmotionalAppraisal
 
 		#endregion
 
-	   
 	}
 }
