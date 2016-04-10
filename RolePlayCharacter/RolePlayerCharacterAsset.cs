@@ -41,22 +41,22 @@ namespace RolePlayCharacter
         public static RolePlayCharacterAsset LoadFromFile(string filename)
         {
             RolePlayCharacterAsset rpc;
+
             using (var f = File.Open(filename, FileMode.Open, FileAccess.Read))
             {
                 var serializer = new JSONSerializer();
                 rpc = serializer.Deserialize<RolePlayCharacterAsset>(f);
             }
-           
 
-            rpc._emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(rpc.EmotionalAppraisalAssetSource);
-            rpc._emotionalDecisionMakingAsset = new EmotionalDecisionMakingAsset(rpc._emotionalAppraisalAsset);
-            return rpc;
-            using (var f = File.Open(rpc.EmotionalDecisionMakingSource, FileMode.Open, FileAccess.Read))
+            if (!string.IsNullOrEmpty(rpc.EmotionalAppraisalAssetSource))
             {
-                var serializer = new JSONSerializer();
-                rpc._emotionalDecisionMakingAsset.ReactiveActions = serializer.Deserialize<ReactiveActions>(f);
+                rpc._emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(rpc.EmotionalAppraisalAssetSource);
+                if (!string.IsNullOrEmpty(rpc.EmotionalDecisionMakingSource))
+                {
+                    rpc._emotionalDecisionMakingAsset = EmotionalDecisionMakingAsset.LoadFromFile(rpc.EmotionalDecisionMakingSource);
+                }
+                rpc._emotionalDecisionMakingAsset.RegisterEmotionalAppraisalAsset(rpc._emotionalAppraisalAsset);
             }
-
             return rpc;
         }
 

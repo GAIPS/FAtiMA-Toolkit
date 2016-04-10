@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnowledgeBase", "Components\KnowledgeBase\KnowledgeBase.csproj", "{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}"
 EndProject
@@ -44,6 +44,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValueDomains", "Components\ValueDomains\ValueDomains.csproj", "{B439D1F1-11ED-4983-A762-593AD1C0D57E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.SocialImportance", "Tests\Tests.SocialImportance\Tests.SocialImportance.csproj", "{B0540CAE-4A84-495D-9207-A347FDC735E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalDecisionMakingWF", "EmotionalDecisionMakingWF\EmotionalDecisionMakingWF.csproj", "{A1727658-04B9-479A-98DB-F04C897488CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -119,6 +121,10 @@ Global
 		{B0540CAE-4A84-495D-9207-A347FDC735E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B0540CAE-4A84-495D-9207-A347FDC735E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B0540CAE-4A84-495D-9207-A347FDC735E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1727658-04B9-479A-98DB-F04C897488CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1727658-04B9-479A-98DB-F04C897488CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1727658-04B9-479A-98DB-F04C897488CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1727658-04B9-479A-98DB-F04C897488CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -137,5 +143,6 @@ Global
 		{63EC96BC-D3E1-491B-8C55-61A0F5FBA210} = {391C60E4-92CE-4EC7-BA86-48D8316365FA}
 		{B439D1F1-11ED-4983-A762-593AD1C0D57E} = {6FDA1219-9D9E-489F-A258-B797FED50614}
 		{B0540CAE-4A84-495D-9207-A347FDC735E9} = {9285D50F-C051-467D-AB2D-165963753EA5}
+		{A1727658-04B9-479A-98DB-F04C897488CC} = {391C60E4-92CE-4EC7-BA86-48D8316365FA}
 	EndGlobalSection
 EndGlobal

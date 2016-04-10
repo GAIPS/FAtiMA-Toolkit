@@ -29,13 +29,13 @@ namespace AuthorialAgentsWF
 
         private void createNewNPC_Click(object sender, EventArgs e)
         {
-            var addEditNPC = new RolePlayCharacterWF.RolePlayCharacter();
+            var addEditNPC = new RolePlayCharacterWF.MainForm();
             addEditNPC.ShowDialog();
         }
 
         private void editNPC_Click(object sender, EventArgs e)
         {
-            var addEditNPC = new RolePlayCharacterWF.RolePlayCharacter();
+            var addEditNPC = new RolePlayCharacterWF.MainForm();
             addEditNPC.ShowDialog();
         }
 

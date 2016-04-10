@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RolePlayCharacterWF.Properties {
+namespace EmotionalDecisionMakingWF.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace RolePlayCharacterWF.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RolePlayCharacterWF.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EmotionalDecisionMakingWF.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace RolePlayCharacterWF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Role Play Virtual Character.
+        ///   Looks up a localized string similar to Emotional Decision Making.
         /// </summary>
         internal static string MainFormTitle {
             get {
