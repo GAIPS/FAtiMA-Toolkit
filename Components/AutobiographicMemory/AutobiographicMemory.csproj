@@ -31,12 +31,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BaseEvent.cs" />
+    <Compile Include="DTOs\ActionEventDTO.cs" />
+    <Compile Include="DTOs\EventDTO.cs" />
+    <Compile Include="DTOs\PropertyChangeEventDTO.cs" />
+    <Compile Include="Event\BaseEvent.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="PropertyChangeEvent.cs" />
+    <Compile Include="Event\PropertyChangeEvent.cs" />
     <Compile Include="AM.cs" />
-    <Compile Include="ActionEvent.cs" />
-    <Compile Include="IEventRecord.cs" />
+    <Compile Include="Event\ActionEvent.cs" />
+    <Compile Include="IBaseEvent.cs" />
+    <Compile Include="IPropertyChangedEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

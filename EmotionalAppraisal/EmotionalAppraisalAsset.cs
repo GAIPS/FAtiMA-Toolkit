@@ -3,10 +3,10 @@ using AssetPackage;
 using EmotionalAppraisal.AppraisalRules;
 using EmotionalAppraisal.OCCModel;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using AutobiographicMemory;
+using AutobiographicMemory.DTOs;
 using EmotionalAppraisal.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase;
@@ -118,7 +118,7 @@ namespace EmotionalAppraisal
 
 
         public string[] KnowledgeVisibilities => new[] {Name.SELF_STRING, Name.UNIVERSAL_STRING};
-        public string[] EventTypes => new [] {Constants.ACTION_EVENT, Constants.PROPERTY_CHANGE_EVENT};
+        public string[] EventTypes => new [] {Constants.ACTION_EVENT.ToString(), Constants.PROPERTY_CHANGE_EVENT.ToString()};
 	    public string[] QuantifierTypes => Enum.GetNames(typeof (LogicalQuantifier));
         
 
@@ -163,35 +163,8 @@ namespace EmotionalAppraisal
 
 	    public EventDTO GetEventDetails (uint eventId)
 	    {
-	        IEventRecord evt = m_am.RecallEvent(eventId);
-	        if (evt.Type == Constants.ACTION_EVENT)
-	        {
-	            return new ActionEventDTO
-	            {
-	                Action = evt.Action.ToString(),
-                    Event = evt.EventName.ToString(),
-                    Id = evt.Id,
-                    Subject = evt.Subject,
-                    Target = evt.Target,
-                    Time = evt.Timestamp
-	            };
-	        }else if (evt.Type == Constants.PROPERTY_CHANGE_EVENT)
-	        {
-	            return new PropertyChangeEventDTO
-	            {
-	                Property = evt.Property.ToString(),
-	                Event = evt.EventName.ToString(),
-	                Id = evt.Id,
-	                Subject = evt.Subject,
-	                NewValue = evt.NewValue,
-	                Time = evt.Timestamp
-	            };
-	        }
-	        else
-	        {
-	            throw new Exception("Invalid Event Type");
-	        }
-
+	        IBaseEvent evt = m_am.RecallEvent(eventId);
+		    return evt.ToDTO();
 	    }
 
         public IEnumerable<string> EmotionTypes
@@ -221,19 +194,18 @@ namespace EmotionalAppraisal
 
         public uint AddEventRecord(EventDTO eventDTO)
 	    {
-	        return this.m_am.RecordEvent(this.BuildEventName(eventDTO), eventDTO.Time).Id;
+	        return this.m_am.RecordEvent(eventDTO).Id;
 	    }
 
 	    public void UpdateEventRecord(EventDTO eventDTO)
 	    {
-	        this.m_am.UpdateEvent(eventDTO.Id,this.BuildEventName(eventDTO), eventDTO.Time);
+	        this.m_am.UpdateEvent(eventDTO);
 	    }
 
 	    public void ForgetEvent(uint eventId)
         {
             this.m_am.ForgetEvent(eventId);
         }
-
 
         public void AddEmotionDisposition(EmotionDispositionDTO emotionDispositionDto)
 	    {
@@ -275,31 +247,7 @@ namespace EmotionalAppraisal
 	            throw new Exception("Rule not found");
 	        }
 	        return rule.Conditions.Select(c => new ConditionDTO {Id = c.Id, Condition = c.ToString()}).ToList();
-	    } 
-
-	    private Name BuildEventName(EventDTO evt)
-	    {
-	        var actionEvent = evt as ActionEventDTO;
-	        if (actionEvent != null)
-	        {
-                return Name.BuildName(
-	                (Name) "Event",
-	                (Name) "Action",
-	                (Name) actionEvent.Subject,
-	                (Name) actionEvent.Action,
-	                (Name) actionEvent.Target);
-	        }
-	        else
-	        {
-                var pcEvent = evt as PropertyChangeEventDTO;
-                return Name.BuildName(
-                    (Name)"Event",
-                    (Name)"Property-Change",
-                    (Name)pcEvent.Subject,
-                    (Name)pcEvent.Property,
-                    (Name)pcEvent.NewValue);
-            }
-        }
+	    }
 
 	    public void RemoveAppraisalRules(IEnumerable<AppraisalRuleDTO> appraisalRules)
 	    {
@@ -333,13 +281,14 @@ namespace EmotionalAppraisal
 			{
 				var evtN = n.RemovePerspective(Perspective);
 				var evt = m_am.RecordEvent(evtN,Tick);
-                
-				/*if (evt.EventType.Equals("property-change", StringComparison.InvariantCultureIgnoreCase))
+
+				var propEvt = evt as IPropertyChangedEvent;
+				if (propEvt != null)
 				{
-					var fact = evt.EventObject;
-					var value = (Name)evt.Target;
+					var fact = propEvt.Property;
+					var value = (Name) propEvt.NewValue;
 					m_kb.Tell(fact, value.GetPrimitiveValue(), Name.SELF_SYMBOL);
-				}*/
+				}
 
 				APPRAISAL_FRAME.Reset(evt);
 				var componentFrame = APPRAISAL_FRAME.RequestComponentFrame(m_appraisalDerivator, m_appraisalDerivator.AppraisalWeight);
@@ -422,7 +371,7 @@ namespace EmotionalAppraisal
 			Name arg = args["x"];
 			if (arg.IsVariable)
 			{
-				var sub = new Substitution(arg, Name.SELF_SYMBOL);
+				var sub = new Substitution(arg, kb.Perspective);
 				foreach (var c in constraints)
 				{
 					if (c.AddSubstitution(sub))
@@ -431,16 +380,12 @@ namespace EmotionalAppraisal
 			}
 			else
 			{
-				foreach (var resultPair in kb.AskPossibleProperties(arg,Name.SELF_SYMBOL, constraints))
+				foreach (var resultPair in kb.AskPossibleProperties(arg,perspective, constraints))
 				{
-					var name = Name.BuildName(resultPair.Item1);
-					if (name == Name.SELF_SYMBOL)
+					var v = (PrimitiveValue)m_emotionalState.Mood;
+					foreach (var c in resultPair.Item2)
 					{
-						var v = (PrimitiveValue)m_emotionalState.Mood;
-						foreach (var c in resultPair.Item2)
-						{
-							yield return Tuples.Create(v, c);
-						}
+						yield return Tuples.Create(v, c);
 					}
 				}
 			}
@@ -461,7 +406,7 @@ namespace EmotionalAppraisal
 
 			if (arg.IsVariable)
 			{
-				var sub = new Substitution(arg, Name.SELF_SYMBOL);
+				var sub = new Substitution(arg, kb.Perspective);
 				foreach (var c in constraints)
 				{
 					if (c.AddSubstitution(sub))
@@ -470,12 +415,8 @@ namespace EmotionalAppraisal
 			}
 			else
 			{
-				foreach (var resultPair in kb.AskPossibleProperties(arg,Name.SELF_SYMBOL, constraints))
+				foreach (var resultPair in kb.AskPossibleProperties(arg,perspective, constraints))
 				{
-					var name = Name.BuildName(resultPair.Item1);
-					if (name != Name.SELF_SYMBOL)
-						continue;
-
 					foreach (var c in resultPair.Item2)
 						yield return Tuples.Create(emoValue, c);
 				}
@@ -494,26 +435,23 @@ namespace EmotionalAppraisal
 			
 			if (entity.IsVariable)
 			{
-				var newSub = new Substitution(entity,Name.SELF_SYMBOL);
+				var newSub = new Substitution(entity,kb.Perspective);
 				var newC = constraints.Where(c => c.AddSubstitution(newSub));
 				if(newC.Any())
-					result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, kb, newC));
+					result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, kb,perspective, newC));
 			}
 			else
 			{
-				foreach (var resultPair in kb.AskPossibleProperties(entity,Name.SELF_SYMBOL, constraints))
+				foreach (var resultPair in kb.AskPossibleProperties(entity,perspective, constraints))
 				{
-					Name entityName = Name.BuildName(resultPair.Item1);
-					if(entityName!=Name.SELF_SYMBOL)
-						continue;
-					result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, kb, resultPair.Item2));
+					result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, kb,perspective, resultPair.Item2));
 				}
 			}
 			return result;
 		}
 
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> GetEmotionsForEntity(IEmotionalState state,
-			Name emotionName, KB kb, IEnumerable<SubstitutionSet> constraints)
+			Name emotionName, KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
 			if (emotionName.IsVariable)
 			{
@@ -533,7 +471,7 @@ namespace EmotionalAppraisal
 			}
 			else
 			{
-				foreach (var resultPair in kb.AskPossibleProperties(emotionName,Name.SELF_SYMBOL,constraints))
+				foreach (var resultPair in kb.AskPossibleProperties(emotionName,perspective,constraints))
 				{
 					string emotionKey = resultPair.Item1.ToString();
 					var emotion = state.GetEmotionsByType(emotionKey).OrderByDescending(e => e.Intensity).FirstOrDefault();

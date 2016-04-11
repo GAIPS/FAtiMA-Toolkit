@@ -13,7 +13,7 @@ namespace EmotionalAppraisal.OCCModel
 		public const int GOALUNCONFIRMED = 0;
 		public const int GOALDISCONFIRMED = 2;
 
-		private static OCCBaseEmotion OCCAppraiseCompoundEmotions(IEventRecord evt, float desirability, float praiseworthiness)
+		private static OCCBaseEmotion OCCAppraiseCompoundEmotions(IBaseEvent evt, float desirability, float praiseworthiness)
 		{
 			if ((desirability == 0) || (praiseworthiness == 0) || ((desirability > 0) != (praiseworthiness > 0)))
 				return null;
@@ -23,14 +23,14 @@ namespace EmotionalAppraisal.OCCModel
 			Name direction;
 			OCCEmotionType emoType;
 
-			if(evt.Subject == Name.SELF_STRING)
+			if(evt.Subject == Name.SELF_SYMBOL)
 			{
 				direction = Name.SELF_SYMBOL;
 				emoType = (desirability > 0) ? OCCEmotionType.Gratification : OCCEmotionType.Remorse;
 			}
 			else
 			{
-				direction = evt.Subject==null?Name.UNIVERSAL_SYMBOL:Name.BuildName(evt.Subject);
+				direction = evt.Subject ?? Name.UNIVERSAL_SYMBOL;
 				emoType = (desirability > 0) ? OCCEmotionType.Gratitude : OCCEmotionType.Anger;
 			}
 
@@ -56,18 +56,18 @@ namespace EmotionalAppraisal.OCCModel
 		//	return new OCCBaseEmotion(emoType, potential, evtId, string.IsNullOrEmpty(target) ? Name.UNIVERSAL_SYMBOL : Name.BuildName(target));
 		//}
 
-		private static OCCBaseEmotion OCCAppraisePraiseworthiness(IEventRecord evt, float praiseworthiness) {
+		private static OCCBaseEmotion OCCAppraisePraiseworthiness(IBaseEvent evt, float praiseworthiness) {
 			Name direction;
 			OCCEmotionType emoType;
 
-			if (evt.Subject == Name.SELF_STRING)
+			if (evt.Subject == Name.SELF_SYMBOL)
 			{
 				direction = Name.SELF_SYMBOL;
 				emoType = (praiseworthiness >= 0) ? OCCEmotionType.Pride : OCCEmotionType.Shame;
 			}
 			else
 			{
-				direction = evt.Subject==null?Name.UNIVERSAL_SYMBOL:Name.BuildName(evt.Subject);
+				direction = evt.Subject ?? Name.UNIVERSAL_SYMBOL;
 				emoType = (praiseworthiness >= 0) ? OCCEmotionType.Admiration : OCCEmotionType.Reproach;
 			}
 

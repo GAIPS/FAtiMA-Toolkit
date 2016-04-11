@@ -117,7 +117,7 @@ namespace Tests.EmotionalAppraisal
 
 			//Generate emotion
 
-			m_emotionalAppraisalAsset.AppraiseEvents(new []{ (Name)"Event(EventObject,*,Slap(Hard),self)" });
+			//m_emotionalAppraisalAsset.AppraiseEvents(new []{ (Name)"Event(EventObject,*,Slap(Hard),self)" });
 
 			//Add knowledge
 			var kb = m_emotionalAppraisalAsset.Kb;

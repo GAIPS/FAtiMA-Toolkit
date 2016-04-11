@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutobiographicMemory.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase.WellFormedNames;
 
@@ -9,16 +10,16 @@ namespace AutobiographicMemory
 	public sealed partial class AM
 	{
 		[Serializable]
-		private class PropertyChangeEvent: BaseEvent, IEventRecord, ICustomSerialization
+		private class PropertyChangeEvent: BaseEvent, IPropertyChangedEvent, ICustomSerialization
 		{
 		    public static bool IsPropertyChangeEvent(Name eventName)
 		    {
-		        return eventName.GetNTerm(1).ToString() == Constants.PROPERTY_CHANGE_EVENT;
+		        return eventName.GetNTerm(1) == Constants.PROPERTY_CHANGE_EVENT;
 		    }
 
-            public Name Action { get { throw new Exception("Invalid Call");} }
-		    public string Target { get {throw new Exception("Invalid Call");} }
-		    public Name Property { get; private set; }
+			public override Name EventType => Constants.PROPERTY_CHANGE_EVENT;
+
+			public Name Property { get; private set; }
     	    public string NewValue { get; private set; }
     
 			public PropertyChangeEvent(uint id, Name eventName, ulong timestamp) : base(id, eventName, timestamp)
@@ -29,8 +30,20 @@ namespace AutobiographicMemory
 				NewValue = newValue == Name.NIL_SYMBOL ? null : newValue.ToString();
             }
 
+			public override EventDTO ToDTO()
+			{
+				return new PropertyChangeEventDTO
+				{
+					Property = Property.ToString(),
+					Event = EventName.ToString(),
+					Id = Id,
+					Subject = Subject.ToString(),
+					NewValue = NewValue,
+					Time = Timestamp
+				};
+			}
 
-            public void GetObjectData(ISerializationData dataHolder)
+			public void GetObjectData(ISerializationData dataHolder)
 			{
 				dataHolder.SetValue("Id", Id);
 				dataHolder.SetValue("Type", Type);
@@ -47,8 +60,8 @@ namespace AutobiographicMemory
 			public void SetObjectData(ISerializationData dataHolder)
 			{
 				Id = dataHolder.GetValue<uint>("Id");
-				Type = dataHolder.GetValue<string>("Type");
-                Subject = dataHolder.GetValue<string>("Subject");
+				Type = dataHolder.GetValue<Name>("Type");
+                Subject = dataHolder.GetValue<Name>("Subject");
                 Property = dataHolder.GetValue<Name>("Property");
                 NewValue = dataHolder.GetValue<string>("NewValue");
 				Timestamp = dataHolder.GetValue<ulong>("Timestamp");

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutobiographicMemory.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase.WellFormedNames;
 
@@ -9,17 +10,22 @@ namespace AutobiographicMemory
 	public sealed partial class AM
 	{
 		[Serializable]
-		private class ActionEvent : BaseEvent, IEventRecord, ICustomSerialization
+		private class ActionEvent : BaseEvent, ICustomSerialization
 		{
             public static bool IsActionEvent(Name eventName)
             {
-                return eventName.GetNTerm(1).ToString() == Constants.ACTION_EVENT;
+                return eventName.GetNTerm(1) == Constants.ACTION_EVENT;
             }
 
-            public Name Action { get; private set; }
+			public override Name EventType {
+				get
+				{
+					return Constants.ACTION_EVENT;
+				}
+			}
+
+			public Name Action { get; private set; }
             public string Target { get; private set; }
-		    public Name Property { get {throw new Exception("Invalid Call");} }
-		    public string NewValue { get {throw new Exception("Invalid Call");} }
 
 		    public ActionEvent(uint id, Name eventName, ulong timestamp) : base(id, eventName, timestamp)
 			{
@@ -29,7 +35,20 @@ namespace AutobiographicMemory
 				Target = targetName == Name.NIL_SYMBOL ? null : targetName.ToString();
 	        }
 
-		    public void GetObjectData(ISerializationData dataHolder)
+			public override EventDTO ToDTO()
+			{
+				return new ActionEventDTO
+				{
+					Action = Action.ToString(),
+					Event = EventName.ToString(),
+					Id = Id,
+					Subject = Subject.ToString(),
+					Target = Target,
+					Time = Timestamp
+				};
+			}
+
+			public void GetObjectData(ISerializationData dataHolder)
 			{
 				dataHolder.SetValue("Id", Id);
 				dataHolder.SetValue("Type", Type);
@@ -46,8 +65,8 @@ namespace AutobiographicMemory
 			public void SetObjectData(ISerializationData dataHolder)
 			{
 				Id = dataHolder.GetValue<uint>("Id");
-				Type = dataHolder.GetValue<string>("Type");
-				Subject = dataHolder.GetValue<string>("Subject");
+				Type = dataHolder.GetValue<Name>("Type");
+				Subject = dataHolder.GetValue<Name>("Subject");
                 Action = dataHolder.GetValue<Name>("Action");
 			    Target = dataHolder.GetValue<string>("Target");
 		        Timestamp = dataHolder.GetValue<ulong>("Timestamp");

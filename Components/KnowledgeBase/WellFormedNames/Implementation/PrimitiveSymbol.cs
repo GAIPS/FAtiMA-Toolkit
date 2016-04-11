@@ -53,6 +53,9 @@ namespace KnowledgeBase.WellFormedNames
 
 			public override bool HasSelf()
 			{
+				if (m_value == null)
+					return false;
+
 				return CompareNameWithString(Name.SELF_STRING);
 			}
 

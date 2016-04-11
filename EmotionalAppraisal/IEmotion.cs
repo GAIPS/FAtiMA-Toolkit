@@ -23,7 +23,7 @@ namespace EmotionalAppraisal
 
 		string ToString(AM am);
 
-		IEventRecord GetCause(AM am);
+		IBaseEvent GetCause(AM am);
 
 	    EmotionDTO ToDto(AM am);
 	}

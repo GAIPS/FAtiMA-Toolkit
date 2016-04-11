@@ -153,7 +153,7 @@ namespace EmotionalAppraisal
 			return new HashSet<string>(AppraisalVariables).SetEquals(em.AppraisalVariables);
 		}
 
-		public IEventRecord GetCause(AM am)
+		public IBaseEvent GetCause(AM am)
 		{
 			return am.RecallEvent(CauseId);
 		}

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Windows.Forms;
 using AutobiographicMemory;
+using AutobiographicMemory.DTOs;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
@@ -34,7 +35,7 @@ namespace EmotionalAppraisalWF
                 var propertyEvent = _eventToEdit as PropertyChangeEventDTO;
                 if (propertyEvent != null)
                 { 
-                    comboBoxEventType.Text = Constants.PROPERTY_CHANGE_EVENT;
+                    comboBoxEventType.Text = Constants.PROPERTY_CHANGE_EVENT.ToString();
                     textBoxSubject.Text = propertyEvent.Subject;
                     textBoxObject.Text = propertyEvent.Property;
                     textBoxTarget.Text = propertyEvent.NewValue;
@@ -57,7 +58,7 @@ namespace EmotionalAppraisalWF
             try
             {
                 EventDTO newEvent = null;
-                if (comboBoxEventType.Text == Constants.PROPERTY_CHANGE_EVENT)
+                if (comboBoxEventType.Text == Constants.PROPERTY_CHANGE_EVENT.ToString())
                 {
                     newEvent = new PropertyChangeEventDTO
                     {
@@ -67,7 +68,7 @@ namespace EmotionalAppraisalWF
                         Time = ulong.Parse(textBoxTime.Text)
                     };
                 
-                }else if (comboBoxEventType.Text == Constants.ACTION_EVENT)
+                }else if (comboBoxEventType.Text == Constants.ACTION_EVENT.ToString())
                 {
                     newEvent = new ActionEventDTO()
                     {
@@ -113,12 +114,12 @@ namespace EmotionalAppraisalWF
 
         private void comboBoxEventType_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (((ComboBox) sender).Text == Constants.PROPERTY_CHANGE_EVENT)
+            if (((ComboBox) sender).Text == Constants.PROPERTY_CHANGE_EVENT.ToString())
             {
                 labelObject.Text = "Property:";
                 labelTarget.Text = "New Value:";
             }
-            else if (((ComboBox)sender).Text == Constants.ACTION_EVENT)
+            else if (((ComboBox)sender).Text == Constants.ACTION_EVENT.ToString())
             {
                 labelObject.Text = "Action:";
                 labelTarget.Text = "Target";

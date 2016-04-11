@@ -22,14 +22,6 @@ namespace KnowledgeBase
 		{
 			private PrimitiveValue m_universal = null;
 			private Dictionary<Name, PrimitiveValue> m_perspectives;
-			//public readonly PrimitiveValue Value;
-			//public readonly bool IsPersistent;
-
-			//public KnowledgeEntry(PrimitiveValue value, bool isPersistent)
-			//{
-			//	this.Value = value;
-			//	this.IsPersistent = isPersistent;
-			//}
 
 			public PrimitiveValue GetValueFor(Name perspective)
 			{
@@ -62,10 +54,10 @@ namespace KnowledgeBase
 					m_perspectives[perspective] = value;
 			}
 
-			public bool IsEmpty()
-			{
-				return (m_perspectives == null) && (m_universal == null);
-			}
+			//public bool IsEmpty()
+			//{
+			//	return (m_perspectives == null) && (m_universal == null);
+			//}
 
 			public IEnumerable<KeyValuePair<Name, PrimitiveValue>> GetPerspectives()
 			{
@@ -109,12 +101,12 @@ namespace KnowledgeBase
 		{
 			m_knowledgeStorage = new NameSearchTree<KnowledgeEntry>();
 			m_dynamicProperties = new NameSearchTree<DynamicKnowledgeEntry>();
+			RegistNativeDynamicProperties(this);
 		}
 
 		public KB(Name perspective) : this()
 		{
 			SetPerspective(perspective);
-			RegistNativeDynamicProperties(this);
 		}
 
 		#region Dynamic Property Registry
@@ -244,7 +236,12 @@ namespace KnowledgeBase
 				constraints = new[] { new SubstitutionSet() };
 
 			if (property.IsPrimitive)
+			{
+				if (property == Name.SELF_SYMBOL)
+					property = Perspective;
+
 				return new[] { Tuples.Create(property.GetPrimitiveValue(), constraints) };
+			}
 
 			perspective = perspective.ApplyPerspective(Perspective);
 			var ToMList = AssertPerspective(perspective, nameof(perspective));
@@ -348,7 +345,6 @@ namespace KnowledgeBase
 				}
 			}
 		}
-
 
 		public bool BeliefExists(Name name)
 	    {

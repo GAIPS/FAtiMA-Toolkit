@@ -130,7 +130,7 @@ namespace EmotionalAppraisal
 				this.Potential = 0;
 		}
 
-		public IEventRecord GetCause(AM am)
+		public IBaseEvent GetCause(AM am)
 		{
 			return am.RecallEvent(CauseId);
 		}

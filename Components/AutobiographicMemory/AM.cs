@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
+using AutobiographicMemory.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase;
 using KnowledgeBase.WellFormedNames;
@@ -27,62 +27,89 @@ namespace AutobiographicMemory
 			kb.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_TEMPLATE, LastEventIdPropertyCalculator, new[] { "type", "subject", "def", "target" });
 		}
 
-		public IEventRecord RecordEvent(Name eventName, ulong timestamp)
+		public IBaseEvent RecordEvent(EventDTO dto)
+		{
+			return RecordEvent(BuildEventName(dto), dto.Time);
+		}
+
+		public IBaseEvent RecordEvent(Name eventName, ulong timestamp)
 		{
 		    return this.SaveEventHelper(m_eventGUIDCounter++, eventName, timestamp);
 		}
 
-        public IEventRecord UpdateEvent(uint eventId, Name eventName, ulong timestamp)
+		public IBaseEvent UpdateEvent(EventDTO dto)
+		{
+			var evtName = BuildEventName(dto);
+			return UpdateEvent(dto.Id, evtName, dto.Time);
+		}
+
+		public IBaseEvent UpdateEvent(uint eventId, Name eventName, ulong timestamp)
         {
             m_registry.Remove(eventId);
             return this.SaveEventHelper(eventId, eventName, timestamp);
         }
 
-	    private IEventRecord SaveEventHelper(uint eventId, Name eventName, ulong timestamp)
+	    private BaseEvent SaveEventHelper(uint eventId, Name eventName, ulong timestamp)
 	    {
             AssertEventNameValidity(eventName);
-            if (eventName.HasSelf())
-                throw new Exception("Cannot record an event name containing \"Self\" keywords");
+			if (eventName.HasSelf())
+				throw new Exception("Cannot record an event name containing \"Self\" keywords");
 
-            BaseEvent eventRecord;
+			BaseEvent eventRecord;
             if (ActionEvent.IsActionEvent(eventName))
             {
                 eventRecord = new ActionEvent(eventId, eventName, timestamp);
-                AddRecord(eventRecord);
-                return eventRecord as ActionEvent;
             }
-            else if (PropertyChangeEvent.IsPropertyChangeEvent(eventName))
-            {
-                eventRecord = new PropertyChangeEvent(eventId, eventName, timestamp);
-                AddRecord(eventRecord);
-                return eventRecord as PropertyChangeEvent;
-            }
-            else
-            {
-                throw new Exception("Unknown Event Type");
-            }
-        }
+			else if (PropertyChangeEvent.IsPropertyChangeEvent(eventName))
+		    {
+			    eventRecord = new PropertyChangeEvent(eventId, eventName, timestamp);
+		    }else
+				throw new Exception("Unknown Event Type");
 
-        public IEventRecord RecallEvent(uint eventId)
+			AddRecord(eventRecord);
+		    return eventRecord;
+	    }
+
+		private Name BuildEventName(EventDTO evt)
+		{
+			var actionEvent = evt as ActionEventDTO;
+			if (actionEvent != null)
+			{
+				return Name.BuildName(
+					(Name)"Event",
+					(Name)"Action",
+					(Name)actionEvent.Subject,
+					(Name)actionEvent.Action,
+					(Name)actionEvent.Target);
+			}
+
+			var pcEvent = evt as PropertyChangeEventDTO;
+			if (pcEvent != null)
+			{
+				return Name.BuildName(
+				(Name)"Event",
+				(Name)"Property-Change",
+				(Name)pcEvent.Subject,
+				(Name)pcEvent.Property,
+				(Name)pcEvent.NewValue);
+			}
+
+			throw new Exception("Unknown Event DTO");
+		}
+
+		public IBaseEvent RecallEvent(uint eventId)
 		{
 			BaseEvent r;
 		    if (m_registry.TryGetValue(eventId, out r))
 		    {
-		        if (r is ActionEvent)
-		        {
-		            return r as ActionEvent;
-		        }
-		        else if (r is PropertyChangeEvent)
-		        {
-		            return r as PropertyChangeEvent;
-		        }
+			    return r;
 		    }
-		    return null;
+	        return null;
 		}
 
-	    public IEnumerable<IEventRecord> RecallAllEvents()
+	    public IEnumerable<IBaseEvent> RecallAllEvents()
 	    {
-	        return m_registry.Keys.Select(key => m_registry[key]).Cast<IEventRecord>().ToList();
+	        return m_registry.Keys.Select(key => m_registry[key]).Cast<IBaseEvent>().ToList();
 	    }
 
 	    public void ForgetEvent(uint eventId)
@@ -277,9 +304,9 @@ namespace AutobiographicMemory
 				m_typeIndexes.Clear();
 
 			var recs = dataHolder.GetValue<BaseEvent[]>("records");
-			if(recs==null)
+			if (recs == null)
 				return;
-			
+
 			foreach (var r in recs)
 			{
 				if (m_eventGUIDCounter < r.Id)

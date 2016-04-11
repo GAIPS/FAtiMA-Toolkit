@@ -36,9 +36,9 @@ namespace EmotionalAppraisal.AppraisalRules
 			this.Rules = new NameSearchTree<HashSet<AppraisalRule>>();
 		}
 		
-		public AppraisalRule Evaluate(IEventRecord evt, KB kb)
+		public AppraisalRule Evaluate(IBaseEvent evt, KB kb)
 		{
-			foreach (var possibleAppraisals in Rules.Unify(evt.EventName))
+			foreach (var possibleAppraisals in Rules.Unify(evt.EventName.ApplyPerspective(kb.Perspective)))
 			{
 				var conditions = new[] {possibleAppraisals.Item2};
 				foreach (var appraisal in possibleAppraisals.Item1)
@@ -167,9 +167,9 @@ namespace EmotionalAppraisal.AppraisalRules
 			set;
 		}
 
-		public void Appraisal(EmotionalAppraisalAsset emotionalModule, IEventRecord evt, IWritableAppraisalFrame frame)
+		public void Appraisal(EmotionalAppraisalAsset emotionalModule, IBaseEvent evt, IWritableAppraisalFrame frame)
 		{
-			AppraisalRule selfEvaluation = Evaluate(evt,emotionalModule.Kb);
+			AppraisalRule selfEvaluation = Evaluate(evt, emotionalModule.Kb);
 			if (selfEvaluation != null)
 			{
 				if (selfEvaluation.Desirability != 0)

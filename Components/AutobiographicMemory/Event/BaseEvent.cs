@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutobiographicMemory.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase.WellFormedNames;
 
@@ -8,7 +9,7 @@ namespace AutobiographicMemory
 {
 	public sealed partial class AM
 	{
-		public class BaseEvent
+		private abstract class BaseEvent: IBaseEvent
 		{
 			protected HashSet<string> m_linkedEmotions = new HashSet<string>();
 			
@@ -22,19 +23,21 @@ namespace AutobiographicMemory
 				}
 			}
 
-			public string Type { get; protected set; }
+			public abstract Name EventType { get; }
 
-		    public string Subject { get; protected set; }
-            
-		    public ulong Timestamp { get; protected set; }
+			public Name Type { get; protected set; }
+
+		    public Name Subject { get; protected set; }
+
+			public ulong Timestamp { get; protected set; }
 
             public Name EventName { get; protected set; }
 
-            public BaseEvent(uint id, Name eventName, ulong timestamp)
+            protected BaseEvent(uint id, Name eventName, ulong timestamp)
 			{
 				Id = id;
-			    Type = eventName.GetNTerm(1).ToString();
-				Subject = eventName.GetNTerm(2).ToString();
+	            Type = eventName.GetNTerm(1);
+	            Subject = eventName.GetNTerm(2);
 				Timestamp = timestamp;
 				EventName = eventName;
 			}
@@ -43,6 +46,8 @@ namespace AutobiographicMemory
 			{
 				m_linkedEmotions.Add(emotionType);
 			}
+
+			public abstract EventDTO ToDTO();
 		}
 	}
 }

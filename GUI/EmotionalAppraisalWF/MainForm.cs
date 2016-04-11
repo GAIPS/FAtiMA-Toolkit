@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Forms;
+using AutobiographicMemory.DTOs;
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
