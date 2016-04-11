@@ -13,6 +13,7 @@ namespace RolePlayCharacterWF
     public partial class MainForm : Form
     {
         private const string EMOTIONAL_APPRAISAL_AUTHORING_TOOL = "EmotionalAppraisalWF.exe";
+        private const string EMOTIONAL_DECISION_MAKING_AUTHORING_TOOL = "EmotionalDecisionMakingWF.exe";
 
         private RolePlayCharacterAsset _rpcAsset;
         private string _saveFileName;
@@ -37,6 +38,8 @@ namespace RolePlayCharacterWF
 
             textBoxCharacterName.Text = _rpcAsset.CharacterName;
             textBoxCharacterBody.Text = _rpcAsset.BodyName;
+            textBoxEmotionalAppraisalSource.Text = _rpcAsset.EmotionalAppraisalAssetSource;
+            textBoxEmotionalDecisionMakingSource.Text = _rpcAsset.EmotionalDecisionMakingSource;
         }
 
 
@@ -173,6 +176,16 @@ namespace RolePlayCharacterWF
             }
 
             Process.Start(EMOTIONAL_APPRAISAL_AUTHORING_TOOL, textBoxEmotionalAppraisalSource.Text);
+        }
+
+        private void buttonEditEmotionalDecisionMaking_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(textBoxEmotionalDecisionMakingSource.Text))
+            {
+                return;
+            }
+
+            Process.Start(EMOTIONAL_DECISION_MAKING_AUTHORING_TOOL, textBoxEmotionalDecisionMakingSource.Text);
         }
     }
 }

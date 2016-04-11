@@ -42,7 +42,7 @@
             this.buttonSetEmotionalAppraisalSource = new System.Windows.Forms.Button();
             this.textBoxEmotionalAppraisalSource = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.button2 = new System.Windows.Forms.Button();
+            this.buttonEditEmotionalDecisionMaking = new System.Windows.Forms.Button();
             this.buttonSetEmotionalDecisionMakingSource = new System.Windows.Forms.Button();
             this.textBoxEmotionalDecisionMakingSource = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -78,35 +78,35 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newToolStripMenuItem.Text = "&New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openToolStripMenuItem.Text = "&Open...";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsStripMenuItem
             // 
             this.saveAsStripMenuItem.Name = "saveAsStripMenuItem";
-            this.saveAsStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.saveAsStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveAsStripMenuItem.Text = "Save &As...";
             this.saveAsStripMenuItem.Click += new System.EventHandler(this.saveAsStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -180,7 +180,7 @@
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.button2);
+            this.groupBox2.Controls.Add(this.buttonEditEmotionalDecisionMaking);
             this.groupBox2.Controls.Add(this.buttonSetEmotionalDecisionMakingSource);
             this.groupBox2.Controls.Add(this.textBoxEmotionalDecisionMakingSource);
             this.groupBox2.Location = new System.Drawing.Point(12, 218);
@@ -190,15 +190,16 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Emotional Decision Making";
             // 
-            // button2
+            // buttonEditEmotionalDecisionMaking
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(304, 26);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(61, 23);
-            this.button2.TabIndex = 15;
-            this.button2.Text = "Edit";
-            this.button2.UseVisualStyleBackColor = true;
+            this.buttonEditEmotionalDecisionMaking.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonEditEmotionalDecisionMaking.Location = new System.Drawing.Point(304, 26);
+            this.buttonEditEmotionalDecisionMaking.Name = "buttonEditEmotionalDecisionMaking";
+            this.buttonEditEmotionalDecisionMaking.Size = new System.Drawing.Size(61, 23);
+            this.buttonEditEmotionalDecisionMaking.TabIndex = 15;
+            this.buttonEditEmotionalDecisionMaking.Text = "Edit";
+            this.buttonEditEmotionalDecisionMaking.UseVisualStyleBackColor = true;
+            this.buttonEditEmotionalDecisionMaking.Click += new System.EventHandler(this.buttonEditEmotionalDecisionMaking_Click);
             // 
             // buttonSetEmotionalDecisionMakingSource
             // 
@@ -286,7 +287,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxCharacterBody;
         private System.Windows.Forms.Button buttonEditEmotionalAppraisal;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button buttonEditEmotionalDecisionMaking;
         private System.Windows.Forms.Button buttonSetEmotionalDecisionMakingSource;
     }
 }
