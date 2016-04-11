@@ -33,6 +33,7 @@
   <ItemGroup>
     <Compile Include="Action.cs" />
     <Compile Include="ActionTendency.cs" />
+    <Compile Include="DTOs\ReactiveActionDTO.cs" />
     <Compile Include="EmotionalDecisionMakingAsset.cs" />
     <Compile Include="IAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -64,6 +65,8 @@
     <Reference Include="RageAssetManager">
       <HintPath>..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

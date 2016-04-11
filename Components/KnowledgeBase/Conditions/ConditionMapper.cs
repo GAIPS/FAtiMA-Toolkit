@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Configuration;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
 
@@ -38,7 +39,7 @@ namespace KnowledgeBase.Conditions
 			m_conditions.Clear();
 		}
 
-		public IEnumerable<Pair<T,SubstitutionSet>> MatchConditions(KB kb, Name perspective, SubstitutionSet constraints)
+	    public IEnumerable<Pair<T,SubstitutionSet>> MatchConditions(KB kb, Name perspective, SubstitutionSet constraints)
 		{
 			var constraintSet = new[] { constraints };
 			foreach (var e in m_conditions)
