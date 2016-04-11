@@ -45,7 +45,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValueDomains", "Components\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.SocialImportance", "Tests\Tests.SocialImportance\Tests.SocialImportance.csproj", "{B0540CAE-4A84-495D-9207-A347FDC735E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalDecisionMakingWF", "EmotionalDecisionMakingWF\EmotionalDecisionMakingWF.csproj", "{A1727658-04B9-479A-98DB-F04C897488CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalDecisionMakingWF", "GUI\EmotionalDecisionMakingWF\EmotionalDecisionMakingWF.csproj", "{A1727658-04B9-479A-98DB-F04C897488CC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

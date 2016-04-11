@@ -84,7 +84,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EmotionalDecisionMaking\EmotionalDecisionMaking.csproj">
+    <ProjectReference Include="..\..\EmotionalDecisionMaking\EmotionalDecisionMaking.csproj">
       <Project>{a1e56f5c-eaac-43e5-a922-5b244168ea5c}</Project>
       <Name>EmotionalDecisionMaking</Name>
     </ProjectReference>

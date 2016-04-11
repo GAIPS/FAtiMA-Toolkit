@@ -30,12 +30,12 @@ namespace RolePlayCharacter
 
         public string EmotionalDecisionMakingSource { get; set; }
 
-        public float Mood { get { return _emotionalAppraisalAsset.Mood; } }
+        public float Mood { get { return _emotionalAppraisalAsset == null ? 0 : _emotionalAppraisalAsset.Mood; } }
 
-        public IEnumerable<IActiveEmotion> Emotions { get { return _emotionalAppraisalAsset.GetAllActiveEmotions(); } }
-    
-        public string Perspective { get { return _emotionalAppraisalAsset.Perspective; } }
-            
+        public IEnumerable<IActiveEmotion> Emotions => _emotionalAppraisalAsset?.GetAllActiveEmotions();
+
+        public string Perspective => _emotionalAppraisalAsset?.Perspective;
+
         #endregion
 
         public static RolePlayCharacterAsset LoadFromFile(string filename)
@@ -96,8 +96,7 @@ namespace RolePlayCharacter
 
             return activeEmotion;
         }
-
-   
+        
 
         public void Update()
         {
@@ -128,7 +127,7 @@ namespace RolePlayCharacter
         }
         #endregion
         
-        public void Save(string filePath, string name)
+        public void SaveOutput(string filePath, string name)
         {
             if(_emotionalAppraisalAsset == null)
                 return;
