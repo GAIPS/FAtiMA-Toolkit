@@ -61,11 +61,29 @@ namespace EmotionalDecisionMakingWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error.
+        /// </summary>
+        internal static string ErrorDialogTitle {
+            get {
+                return ResourceManager.GetString("ErrorDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Emotional Decision Making.
         /// </summary>
         internal static string MainFormTitle {
             get {
                 return ResourceManager.GetString("MainFormTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unable to save to the chosen file..
+        /// </summary>
+        internal static string UnableToSaveFileError {
+            get {
+                return ResourceManager.GetString("UnableToSaveFileError", resourceCulture);
             }
         }
     }

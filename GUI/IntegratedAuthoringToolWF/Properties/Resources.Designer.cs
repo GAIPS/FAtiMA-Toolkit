@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RolePlayCharacterWF.Properties {
+namespace IntegratedAuthoringToolWF.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace RolePlayCharacterWF.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RolePlayCharacterWF.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("IntegratedAuthoringToolWF.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -70,7 +70,7 @@ namespace RolePlayCharacterWF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Role Play Virtual Character.
+        ///   Looks up a localized string similar to Integrated Authoring Tool.
         /// </summary>
         internal static string MainFormTitle {
             get {
@@ -79,7 +79,7 @@ namespace RolePlayCharacterWF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unable to save file.
+        ///   Looks up a localized string similar to Unable to save to the chosen file..
         /// </summary>
         internal static string UnableToSaveFileError {
             get {

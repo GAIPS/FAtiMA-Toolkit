@@ -45,7 +45,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValueDomains", "Components\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.SocialImportance", "Tests\Tests.SocialImportance\Tests.SocialImportance.csproj", "{B0540CAE-4A84-495D-9207-A347FDC735E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalDecisionMakingWF", "EmotionalDecisionMakingWF\EmotionalDecisionMakingWF.csproj", "{A1727658-04B9-479A-98DB-F04C897488CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalDecisionMakingWF", "GUI\EmotionalDecisionMakingWF\EmotionalDecisionMakingWF.csproj", "{A1727658-04B9-479A-98DB-F04C897488CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegratedAuthoringToolWF", "GUI\IntegratedAuthoringToolWF\IntegratedAuthoringToolWF.csproj", "{5C4CD8BB-DE9C-45A0-ADB3-441D420A7200}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegratedAuthoringTool", "IntegratedAuthoringTool\IntegratedAuthoringTool.csproj", "{F6AD95A5-889C-41A4-B613-B81F09A424EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -125,6 +129,14 @@ Global
 		{A1727658-04B9-479A-98DB-F04C897488CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1727658-04B9-479A-98DB-F04C897488CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1727658-04B9-479A-98DB-F04C897488CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C4CD8BB-DE9C-45A0-ADB3-441D420A7200}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C4CD8BB-DE9C-45A0-ADB3-441D420A7200}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C4CD8BB-DE9C-45A0-ADB3-441D420A7200}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C4CD8BB-DE9C-45A0-ADB3-441D420A7200}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6AD95A5-889C-41A4-B613-B81F09A424EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6AD95A5-889C-41A4-B613-B81F09A424EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6AD95A5-889C-41A4-B613-B81F09A424EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6AD95A5-889C-41A4-B613-B81F09A424EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -144,5 +156,6 @@ Global
 		{B439D1F1-11ED-4983-A762-593AD1C0D57E} = {6FDA1219-9D9E-489F-A258-B797FED50614}
 		{B0540CAE-4A84-495D-9207-A347FDC735E9} = {9285D50F-C051-467D-AB2D-165963753EA5}
 		{A1727658-04B9-479A-98DB-F04C897488CC} = {391C60E4-92CE-4EC7-BA86-48D8316365FA}
+		{5C4CD8BB-DE9C-45A0-ADB3-441D420A7200} = {391C60E4-92CE-4EC7-BA86-48D8316365FA}
 	EndGlobalSection
 EndGlobal
