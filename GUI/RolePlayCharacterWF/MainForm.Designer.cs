@@ -38,7 +38,7 @@
             this.textBoxCharacterName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button3 = new System.Windows.Forms.Button();
+            this.buttonEditEmotionalAppraisal = new System.Windows.Forms.Button();
             this.buttonSetEmotionalAppraisalSource = new System.Windows.Forms.Button();
             this.textBoxEmotionalAppraisalSource = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -133,7 +133,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.button3);
+            this.groupBox1.Controls.Add(this.buttonEditEmotionalAppraisal);
             this.groupBox1.Controls.Add(this.buttonSetEmotionalAppraisalSource);
             this.groupBox1.Controls.Add(this.textBoxEmotionalAppraisalSource);
             this.groupBox1.Location = new System.Drawing.Point(12, 126);
@@ -143,15 +143,16 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Emotional Appraisal";
             // 
-            // button3
+            // buttonEditEmotionalAppraisal
             // 
-            this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(304, 28);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(61, 23);
-            this.button3.TabIndex = 13;
-            this.button3.Text = "Edit";
-            this.button3.UseVisualStyleBackColor = true;
+            this.buttonEditEmotionalAppraisal.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonEditEmotionalAppraisal.Location = new System.Drawing.Point(304, 28);
+            this.buttonEditEmotionalAppraisal.Name = "buttonEditEmotionalAppraisal";
+            this.buttonEditEmotionalAppraisal.Size = new System.Drawing.Size(61, 23);
+            this.buttonEditEmotionalAppraisal.TabIndex = 13;
+            this.buttonEditEmotionalAppraisal.Text = "Edit";
+            this.buttonEditEmotionalAppraisal.UseVisualStyleBackColor = true;
+            this.buttonEditEmotionalAppraisal.Click += new System.EventHandler(this.buttonEditEmotionalAppraisal_Click);
             // 
             // buttonSetEmotionalAppraisalSource
             // 
@@ -284,7 +285,7 @@
         private System.Windows.Forms.TextBox textBoxEmotionalDecisionMakingSource;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxCharacterBody;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button buttonEditEmotionalAppraisal;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button buttonSetEmotionalDecisionMakingSource;
     }

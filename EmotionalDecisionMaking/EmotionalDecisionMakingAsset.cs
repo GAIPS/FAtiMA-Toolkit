@@ -26,7 +26,15 @@ namespace EmotionalDecisionMaking
 
         public EmotionalDecisionMakingAsset()
         {
+            ReactiveActions = new ReactiveActions();
         }
+
+        public void SaveToFile(Stream file)
+        {
+            var serializer = new JSONSerializer();
+            serializer.Serialize(file, this.ReactiveActions);
+        }
+
 
         public EmotionalDecisionMakingAsset(EmotionalAppraisalAsset eaa)
 		{

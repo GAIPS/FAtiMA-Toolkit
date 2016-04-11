@@ -1,15 +1,19 @@
 ﻿using System;
 using System.IO;
 using System.Windows.Forms;
+using System.Diagnostics;
 using EmotionalAppraisal;
 using EmotionalDecisionMaking;
 using RolePlayCharacter;
 using RolePlayCharacterWF.Properties;
 
+
 namespace RolePlayCharacterWF
 {
     public partial class MainForm : Form
     {
+        private const string EMOTIONAL_APPRAISAL_AUTHORING_TOOL = "EmotionalAppraisalWF.exe";
+
         private RolePlayCharacterAsset _rpcAsset;
         private string _saveFileName;
 
@@ -159,6 +163,16 @@ namespace RolePlayCharacterWF
                     MessageBox.Show(ex.Message + "-" + ex.StackTrace, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
+
+        private void buttonEditEmotionalAppraisal_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(textBoxEmotionalAppraisalSource.Text))
+            {
+                return;
+            }
+
+            Process.Start(EMOTIONAL_APPRAISAL_AUTHORING_TOOL, textBoxEmotionalAppraisalSource.Text);
         }
     }
 }

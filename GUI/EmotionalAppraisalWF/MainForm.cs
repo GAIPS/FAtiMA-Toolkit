@@ -132,7 +132,7 @@ namespace EmotionalAppraisalWF
             if (newSaveFile)
             {
                 var sfd = new SaveFileDialog();
-                sfd.Filter = "JSON File|*.json";
+                sfd.Filter = "EA File|*.ea";
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
                     if (!string.IsNullOrWhiteSpace(sfd.FileName))

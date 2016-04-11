@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EmotionalDecisionMakingWF.Properties {
+namespace IntegratedAuthoringToolWF.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace EmotionalDecisionMakingWF.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("EmotionalDecisionMakingWF.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("IntegratedAuthoringToolWF.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -70,7 +70,7 @@ namespace EmotionalDecisionMakingWF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Emotional Decision Making.
+        ///   Looks up a localized string similar to Integrated Authoring Tool.
         /// </summary>
         internal static string MainFormTitle {
             get {
