@@ -1,8 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using EmotionalDecisionMaking;
+using EmotionalDecisionMaking.DTOs;
 using EmotionalDecisionMakingWF.Properties;
+using Equin.ApplicationFramework;
+using KnowledgeBase.DTOs.Conditions;
 
 namespace EmotionalDecisionMakingWF
 {
@@ -11,6 +16,9 @@ namespace EmotionalDecisionMakingWF
         private EmotionalDecisionMakingAsset _edmAsset;
         private string _saveFileName;
 
+        private BindingListView<ReactiveActionDTO> _reactiveActions;
+        private BindingListView<ConditionDTO> _conditions; 
+        private Guid _selectedActionId;
 
         public MainForm()
         {
@@ -29,7 +37,28 @@ namespace EmotionalDecisionMakingWF
             {
                 this.Text = Resources.MainFormTitle + " - " + _saveFileName;
             }
+
+            this._reactiveActions = new BindingListView<ReactiveActionDTO>(_edmAsset.GetAllReactiveActions().ToList());
+            dataGridViewReactiveActions.DataSource = this._reactiveActions;
+            dataGridViewReactiveActions.Columns[PropertyUtil.GetName<ReactiveActionDTO>(dto => dto.Id)].Visible = false;
+            dataGridViewReactiveActions.Columns[PropertyUtil.GetName<ReactiveActionDTO>(dto => dto.Conditions)].Visible = false;
+
+
+            if (_reactiveActions.Any())
+            {
+                this._conditions = new BindingListView<ConditionDTO>(_edmAsset.GetReactionsConditions(_reactiveActions.First().Id).ToList());
+            }
+            else
+            {
+                this._conditions = new BindingListView<ConditionDTO>(new List<ConditionDTO>());
+            }
+            
+            dataGridViewReactionConditions.DataSource = this._conditions;
+            dataGridViewReactionConditions.Columns[PropertyUtil.GetName<ConditionDTO>(dto => dto.Id)].Visible = false;
+
+            comboBoxQuantifierType.DataSource = _edmAsset.QuantifierTypes;
         }
+
 
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -111,6 +140,13 @@ namespace EmotionalDecisionMakingWF
             }
         }
 
-        
+        private void dataGridViewReactiveActions_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            var reaction = ((ObjectView<ReactiveActionDTO>)dataGridViewReactiveActions.Rows[e.RowIndex].DataBoundItem).Object;
+            _selectedActionId = reaction.Id;
+
+            _conditions.DataSource = _edmAsset.GetReactionsConditions(_selectedActionId).ToList();
+            _conditions.Refresh();
+        }
     }
 }

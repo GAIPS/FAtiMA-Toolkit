@@ -12,10 +12,12 @@ namespace EmotionalDecisionMaking
 	public partial class ActionTendency : ICloneable
 	{
 		private const float DEFAULT_ACTIVATION_COOLDOWN = 1f;
-		private List<Name> m_parameters;
+        
+		public List<Name> m_parameters;
 		private DateTime m_lastActivationTimestamp;
 
-		public Name ActionName { get; private set; }
+        public Guid Id { get; set; }
+        public Name ActionName { get; private set; }
 		public Name Target { get; private set; }
 		public float ActivationCooldown { get; set; }
 
@@ -29,6 +31,7 @@ namespace EmotionalDecisionMaking
 
 		public ActionTendency(Name actionName, IEnumerable<Condition> activationConditions)
 		{
+            Id = Guid.NewGuid();
 			var terms = actionName.GetTerms().ToArray();
 			var name = terms[0];
 			if (!name.IsPrimitive)
@@ -55,6 +58,7 @@ namespace EmotionalDecisionMaking
 
 		private ActionTendency(ActionTendency other)
 		{
+		    Id = other.Id;
 			ActionName = other.ActionName;
 			ActivationCooldown = other.ActivationCooldown;
 			ActivationConditions = new ConditionSet(other.ActivationConditions);
@@ -117,6 +121,7 @@ namespace EmotionalDecisionMaking
 		/// </summary>
 		internal ActionTendency(IObjectGraphNode node, float defaultActionCooldown)
 		{
+            Id = Guid.NewGuid();
 			var terms = node["Action"].RebuildObject<Name>().GetTerms().ToArray();
 			var name = terms[0];
 			if (!name.IsPrimitive)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AssetPackage;
@@ -6,6 +7,8 @@ using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using EmotionalDecisionMaking.DTOs;
 using GAIPS.Serialization;
+using KnowledgeBase.Conditions;
+using KnowledgeBase.DTOs.Conditions;
 using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalDecisionMaking
@@ -13,6 +16,8 @@ namespace EmotionalDecisionMaking
 	public sealed partial class EmotionalDecisionMakingAsset : BaseAsset
 	{
 		private EmotionalAppraisalAsset m_emotionalDecisionMaking;
+
+        public string[] QuantifierTypes => Enum.GetNames(typeof(LogicalQuantifier));
 
         public static EmotionalDecisionMakingAsset LoadFromFile(string filename)
         {
@@ -56,11 +61,23 @@ namespace EmotionalDecisionMaking
 			return ReactiveActions.MakeAction(m_emotionalDecisionMaking.Kb,Name.SELF_SYMBOL);
 		}
 
+
+	    public IEnumerable<ConditionDTO> GetReactionsConditions(Guid reactionId)
+	    {
+	        var reaction = this.ReactiveActions.GetAllActionTendencies().FirstOrDefault(at => at.Id == reactionId);
+	        if (reaction != null)
+	        {
+	            return reaction.ActivationConditions.Select(c => new ConditionDTO {Id = c.Id, Condition = c.ToString()});
+            }
+            return new List<ConditionDTO>();
+	    }
+
         public IEnumerable<ReactiveActionDTO> GetAllReactiveActions()
         {
             var reactiveActions = this.ReactiveActions.GetAllActionTendencies().Select(at => new ReactiveActionDTO
             {
-                Action = at.ActionName.ToString(),
+                Id = at.Id,
+                Action = at.m_parameters == null ? at.ActionName.ToString() : Name.BuildName(new [] {at.ActionName}.Concat(at.m_parameters)).ToString(),
                 Target = at.Target.ToString(),
                 Cooldown = at.ActivationCooldown
             });

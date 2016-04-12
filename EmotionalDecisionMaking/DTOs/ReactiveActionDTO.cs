@@ -8,6 +8,7 @@ namespace EmotionalDecisionMaking.DTOs
 {
     public class ReactiveActionDTO
     {
+        public Guid Id { get; set; }
         public string Action { get; set; }
         public string Target { get; set; }
         public float Cooldown { get; set; }
