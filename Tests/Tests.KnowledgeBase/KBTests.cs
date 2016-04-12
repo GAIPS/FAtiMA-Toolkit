@@ -90,6 +90,13 @@ namespace Tests.KnowledgeBase
 			kb.Tell((Name) property, true);
 		}
 
+		[Test]
+		public void Test_AskProperty_Self()
+		{
+			var kb = new KB((Name)"John");
+			Assert.Equals(kb.AskProperty(Name.SELF_SYMBOL), kb.Perspective);
+		}
+
 
 		private class TestFactory
 		{
