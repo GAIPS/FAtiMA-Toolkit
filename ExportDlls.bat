@@ -2,6 +2,7 @@
 
 SET exportBat=export.bat
 SET excludeDirectories=tools Tests
+SET pdo2mdbPath=\tools\pdb2mdb\pdb2mdb.exe
 
 IF NOT "%~1" == "debug" (
 	IF NOT "%~1" == "release" (
@@ -20,7 +21,8 @@ SET targetPath=%~f2
 pushd %~p0
 
 IF NOT EXIST "%targetPath%" (
-	exit /B Target folder "%targetPath%" does not exist
+	echo Target folder "%targetPath%" does not exist
+	exit /B 
 )
 
 FOR /F %%i IN ('dir /b /AD ^| findstr /v /x "%excludeDirectories%"') DO (
@@ -30,6 +32,21 @@ FOR /F %%i IN ('dir /b /AD ^| findstr /v /x "%excludeDirectories%"') DO (
 			CALL %exportBat% %~1 "%targetPath%"
 		)
 	popd
+)
+
+IF "%~1" == "debug" (
+	echo Converting PDO to MDB...
+	pushd %targetPath%
+	
+	for /r %%i in (*.dll) do (
+		IF EXIST %%~ni.pdb (
+			echo Converting "%%~i"
+			call "%cd%%pdo2mdbPath%" "%%~i"
+		)
+	)
+	
+	popd
+	echo Convertion Completed!
 )
 
 popd

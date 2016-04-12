@@ -52,7 +52,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="RageAssetManager">
-      <HintPath>..\..\..\rage-demos\Second Demo\Assets\AssetDLLs\RageAssetManager.dll</HintPath>
+      <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>

@@ -10,7 +10,8 @@ set targetFolder=%cd%%destination%
 set repFolder=%cd%\%assetRepositoryFolder%
 
 IF NOT EXIST "%targetFolder%" (
-	exit /B Target folder "%targetFolder%" does not exist
+	echo Target folder "%targetFolder%" does not exist
+	exit /B
 )
 
 del /q /f "%targetFolder%"
