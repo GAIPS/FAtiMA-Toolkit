@@ -89,7 +89,7 @@ namespace KnowledgeBase
 			}
 		}
 
-		private readonly NameSearchTree<KnowledgeEntry> m_knowledgeStorage;
+		private NameSearchTree<KnowledgeEntry> m_knowledgeStorage;
 		private readonly NameSearchTree<DynamicKnowledgeEntry> m_dynamicProperties;
 
 		/// <summary>
@@ -183,6 +183,15 @@ namespace KnowledgeBase
 			if(GetAllPerspectives().Contains(newPerspective))
 				throw new ArgumentException($"The is already beliefs containing perspectives for {newPerspective}. Changing to the requested perspective would result in belief conflicts.");
 
+			//Modify believes to reflect perspective changes
+			var newStorage = new NameSearchTree<KnowledgeEntry>();
+			foreach (var entry in m_knowledgeStorage)
+			{
+				var newProperty = entry.Key.SwapPerspective(Perspective, newPerspective);
+				newStorage.Add(newProperty,entry.Value);
+			}
+			m_knowledgeStorage.Clear();
+			m_knowledgeStorage = newStorage;
 			Perspective = newPerspective;
 		}
 

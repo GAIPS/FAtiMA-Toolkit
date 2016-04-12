@@ -338,7 +338,8 @@ namespace Tests.KnowledgeBase
 
 			kb.SetPerspective(Name.BuildName("Mary"));
 
-			Assert.True((bool?)kb.AskProperty(Name.BuildName("IsPerson(Mark)")));
+			Assert.Null(kb.AskProperty(Name.BuildName("IsPerson(Mark)")));
+			Assert.True((bool?)kb.AskProperty(Name.BuildName("IsPerson(Mary)")));
 		}
 
 		[Test]
@@ -349,7 +350,8 @@ namespace Tests.KnowledgeBase
 
 			kb.SetPerspective(Name.BuildName("Mary"));
 
-			Assert.True((bool?)kb.AskProperty(Name.BuildName("IsPerson(Mark)"), Name.BuildName("John(Self)")));
+			Assert.Null(kb.AskProperty(Name.BuildName("IsPerson(Mark)"), Name.BuildName("John(Self)")));
+			Assert.True((bool?)kb.AskProperty(Name.BuildName("IsPerson(Mary)"), Name.BuildName("John(Self)")));
 		}
 
 		[Test]

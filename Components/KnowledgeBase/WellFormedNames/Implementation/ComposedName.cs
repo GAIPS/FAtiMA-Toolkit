@@ -122,7 +122,7 @@ namespace KnowledgeBase.WellFormedNames
 				return GetTerms().Any(s => s.HasSelf());
 			}
 
-			protected override Name SwapPerspective(Name original, Name newName)
+			public override Name SwapPerspective(Name original, Name newName)
 			{
 				return new ComposedName((Symbol)RootSymbol.SwapPerspective(original,newName), Terms.Select(t => t.SwapPerspective(original,newName)).ToArray());
 			}

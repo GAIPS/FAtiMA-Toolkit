@@ -156,7 +156,7 @@ namespace KnowledgeBase.WellFormedNames
 			return SwapPerspective(SELF_SYMBOL, name);
 		}
 
-		protected abstract Name SwapPerspective(Name original, Name newName);
+		public abstract Name SwapPerspective(Name original, Name newName);
 
 		public abstract Name MakeGround(SubstitutionSet bindings);
 		public abstract Name ReplaceUnboundVariables(string id);

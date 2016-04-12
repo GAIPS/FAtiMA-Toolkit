@@ -139,15 +139,14 @@ namespace Tests.KnowledgeBase.Conditions
 		}
 
 		[TestCase(new[] { "Strength([x])<=Strength(Saitama)", "Strength([x])>=Strength(Goku)", "[x]!=Saitama", "[x]!=goku" }, true, null)]
-		[TestCase(new[] { "Race([y])!=Race([x])", "Strength([x])>=Strength([y])", "[x]!=[y]" }, true, null)]
-		[TestCase(new[] { "Race([y])!=Race([x])", "Strength([x])>=Strength([y])", "[x]!=[y]", "#[x]=3" }, true, null)]
-		[TestCase(new[] { "Race([y])!=Race([x])", "Strength([x])>=Strength([y])", "[x]!=[y]", "Count([x])=3", "Count([y])=5" }, true, null)]
-		[TestCase(new[] { "Count(Like([x]))=0" }, true, null)]
+		//[TestCase(new[] { "Race([y])!=Race([x])", "Strength([x])>=Strength([y])", "[x]!=[y]" }, true, null)]
+		//[TestCase(new[] { "Race([y])!=Race([x])", "Strength([x])>=Strength([y])", "[x]!=[y]", "#[x]=3" }, true, null)]
+		//[TestCase(new[] { "Race([y])!=Race([x])", "Strength([x])>=Strength([y])", "[x]!=[y]", "Count([x])=3", "Count([y])=5" }, true, null)]
+		//[TestCase(new[] { "Count(Like([x]))=0" }, true, null)]
 		public void Test_ConditionSet(string[] conditions, bool result, string[] constraints)
 		{
 			var set = constraints!=null?new[]{new SubstitutionSet(constraints.Select(c => new Substitution(c)))}:null;
 			var conds = new ConditionSet(conditions.Select(Condition.Parse));
-
 			Assert.AreEqual(result, conds.Evaluate(_kb, Name.SELF_SYMBOL, set));
 		}
 	}
