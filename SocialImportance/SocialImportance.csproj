@@ -61,12 +61,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo Converting pdb to mdb
-FOR %25%25i IN (*.dll) DO (
-   IF EXIST %25%25~ni.pdb (
-      call "$(SolutionDir)\tools\pdb2mdb\pdb2mdb.exe" %25%25~i
-   )
-)</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

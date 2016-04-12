@@ -90,6 +90,13 @@ namespace Tests.KnowledgeBase
 			kb.Tell((Name) property, true);
 		}
 
+		[Test]
+		public void Test_AskProperty_Self()
+		{
+			var kb = new KB((Name)"John");
+			var value = Name.BuildName(kb.AskProperty(Name.SELF_SYMBOL).ToString());
+			Assert.AreEqual(value, kb.Perspective);
+		}
 
 		private class TestFactory
 		{
@@ -229,8 +236,10 @@ namespace Tests.KnowledgeBase
 			KB kb = new KB((Name)"Me");
 			var value = kb.AskProperty(v);
 			Assert.NotNull(value);
-			
-			Assert.AreEqual(PrimitiveValue.Cast(value), PrimitiveValue.Cast(expect));
+
+			var v1 = PrimitiveValue.Cast(value);
+			var v2 = PrimitiveValue.Cast(expect);
+			Assert.AreEqual(v1, v2);
 		}
 
 		[Test]

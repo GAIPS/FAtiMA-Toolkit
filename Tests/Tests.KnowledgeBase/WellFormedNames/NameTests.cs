@@ -139,7 +139,7 @@ namespace Tests.KnowledgeBase.WellFormedNames
             Assert.That(clonedName.ToString() == resultName);
             Assert.That(!ReferenceEquals(name, clonedName));
         }
-		
+
 		[TestCase("John", "John")]
 		[TestCase("John", "JOHN")]
 		[TestCase("John", "john")]
