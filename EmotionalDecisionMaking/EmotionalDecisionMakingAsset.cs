@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using AssetPackage;
 using EmotionalAppraisal;
+using EmotionalAppraisal.DTOs;
+using EmotionalDecisionMaking.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase.WellFormedNames;
 
@@ -35,7 +38,6 @@ namespace EmotionalDecisionMaking
             serializer.Serialize(file, this.ReactiveActions);
         }
 
-
         public EmotionalDecisionMakingAsset(EmotionalAppraisalAsset eaa)
 		{
 			m_emotionalDecisionMaking = eaa;
@@ -53,5 +55,16 @@ namespace EmotionalDecisionMaking
 
 			return ReactiveActions.MakeAction(m_emotionalDecisionMaking.Kb,Name.SELF_SYMBOL);
 		}
-	}
+
+        public IEnumerable<ReactiveActionDTO> GetAllReactiveActions()
+        {
+            var reactiveActions = this.ReactiveActions.GetAllActionTendencies().Select(at => new ReactiveActionDTO
+            {
+                Action = at.ActionName.ToString(),
+                Target = at.Target.ToString(),
+                Cooldown = at.ActivationCooldown
+            });
+            return reactiveActions;
+        }
+    }
 }

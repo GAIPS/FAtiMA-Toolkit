@@ -26,7 +26,12 @@ namespace EmotionalDecisionMaking
 			m_actions = new ConditionMapper<ActionTendency>();
 		}
 
-		public void AddReactiveAction(ActionTendency action)
+        public IEnumerable<ActionTendency> GetAllActionTendencies()
+        {
+            return m_actions.Select(action => action.Item2);
+        }
+
+	    public void AddReactiveAction(ActionTendency action)
 		{
 			m_actions.Add(action.ActivationConditions, (ActionTendency)action.Clone());
 		}
