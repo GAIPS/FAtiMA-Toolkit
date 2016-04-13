@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -14,6 +15,8 @@ namespace IntegratedAuthoringToolWF
 {
     public partial class MainForm : Form
     {
+        private readonly string RPC_AUTHORING_TOOL = "RoleplayCharacterWF.exe";
+
         private IntegratedAuthoringToolAsset _iatAsset;
         private string _saveFileName;
 
@@ -156,6 +159,15 @@ namespace IntegratedAuthoringToolWF
             _iatAsset.RemoveCharacters(charactersToRemove);
             _characterSources.DataSource = _iatAsset.GetAllCharacterSources().ToList();
             _characterSources.Refresh();
+        }
+
+        private void buttonEditCharacter_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewCharacters.SelectedRows.Count == 1)
+            {
+                var character = ((ObjectView<CharacterSourceDTO>)dataGridViewCharacters.SelectedRows[0].DataBoundItem).Object;
+                Process.Start(RPC_AUTHORING_TOOL, "\"" + character.Source + "\"");
+            }
         }
     }
 }

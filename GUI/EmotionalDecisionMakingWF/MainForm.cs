@@ -23,7 +23,25 @@ namespace EmotionalDecisionMakingWF
         public MainForm()
         {
             InitializeComponent();
-            Reset(true);
+            string[] args = Environment.GetCommandLineArgs();
+            if (args.Length <= 1)
+            {
+                Reset(true);
+            }
+            else
+            {
+                _saveFileName = args[1];
+                try
+                {
+                    _edmAsset = EmotionalDecisionMakingAsset.LoadFromFile(_saveFileName);
+                    Reset(false);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Reset(true);
+                }
+            }
         }
 
         private void Reset(bool newFile)

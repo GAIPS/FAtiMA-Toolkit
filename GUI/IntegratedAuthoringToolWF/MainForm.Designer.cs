@@ -188,6 +188,7 @@
             this.buttonEditCharacter.TabIndex = 14;
             this.buttonEditCharacter.Text = "Edit";
             this.buttonEditCharacter.UseVisualStyleBackColor = true;
+            this.buttonEditCharacter.Click += new System.EventHandler(this.buttonEditCharacter_Click);
             // 
             // MainForm
             // 

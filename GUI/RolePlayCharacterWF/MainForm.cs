@@ -21,7 +21,25 @@ namespace RolePlayCharacterWF
         public MainForm()
         {
             InitializeComponent();
-            Reset(true);
+            string[] args = Environment.GetCommandLineArgs();
+            if (args.Length <= 1)
+            {
+                Reset(true);
+            }
+            else
+            {
+                _saveFileName = args[1];
+                try
+                {
+                    _rpcAsset = RolePlayCharacterAsset.LoadFromFile((args[1]));
+                    Reset(false);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Reset(true);
+                }
+            }
         }
 
         private void Reset(bool newFile)
@@ -175,7 +193,7 @@ namespace RolePlayCharacterWF
                 return;
             }
 
-            Process.Start(EMOTIONAL_APPRAISAL_AUTHORING_TOOL, textBoxEmotionalAppraisalSource.Text);
+            Process.Start(EMOTIONAL_APPRAISAL_AUTHORING_TOOL, "\"" + textBoxEmotionalAppraisalSource.Text + "\"");
         }
 
         private void buttonEditEmotionalDecisionMaking_Click(object sender, EventArgs e)
@@ -185,7 +203,8 @@ namespace RolePlayCharacterWF
                 return;
             }
 
-            Process.Start(EMOTIONAL_DECISION_MAKING_AUTHORING_TOOL, textBoxEmotionalDecisionMakingSource.Text);
+            Process.Start(EMOTIONAL_DECISION_MAKING_AUTHORING_TOOL, "\"" +textBoxEmotionalDecisionMakingSource.Text + "\"");
+            
         }
     }
 }
