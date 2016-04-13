@@ -91,7 +91,6 @@ namespace EmotionalAppraisal
         /// </summary>
 		public string Perspective {
 	        get { return m_kb.Perspective.ToString(); }
-	        set { m_kb.SetPerspective(Name.BuildName(value)); }
 		}
 
 	    /// <summary>
@@ -116,11 +115,9 @@ namespace EmotionalAppraisal
 	    /// </summary>
 	    public string Description { get; set; }
 
-
         public string[] KnowledgeVisibilities => new[] {Name.SELF_STRING, Name.UNIVERSAL_STRING};
         public string[] EventTypes => new [] {Constants.ACTION_EVENT.ToString(), Constants.PROPERTY_CHANGE_EVENT.ToString()};
 	    public string[] QuantifierTypes => Enum.GetNames(typeof (LogicalQuantifier));
-        
 
 	    public EmotionDispositionDTO DefaultEmotionDisposition
 	    {
@@ -239,14 +236,14 @@ namespace EmotionalAppraisal
             return appraisalRules;
         }
 
-	    public IEnumerable<ConditionDTO> GetAllAppraisalRuleConditions(Guid ruleId)
+	    public ConditionSetDTO GetAllAppraisalRuleConditions(Guid ruleId)
 	    {
 	        var rule = this.m_appraisalDerivator.GetAppraisalRules().FirstOrDefault(r => r.Id == ruleId);
 	        if (rule == null)
 	        {
 	            throw new Exception("Rule not found");
 	        }
-	        return rule.Conditions.Select(c => new ConditionDTO {Id = c.Id, Condition = c.ToString()}).ToList();
+		    return rule.Conditions.ToDTO();
 	    }
 
 	    public void RemoveAppraisalRules(IEnumerable<AppraisalRuleDTO> appraisalRules)
@@ -260,6 +257,11 @@ namespace EmotionalAppraisal
         public KB Kb
 		{
 			get { return m_kb; }
+		}
+
+		public void SetPerspective(Name newPerspective)
+		{
+			m_kb.SetPerspective(newPerspective);
 		}
 
 		public EmotionalAppraisalAsset(string perspective)

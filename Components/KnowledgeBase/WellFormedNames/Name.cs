@@ -120,7 +120,7 @@ namespace KnowledgeBase.WellFormedNames
 		/// </summary>
 		public abstract IEnumerable<Name> GetLiterals();
 
-		public abstract IEnumerable<Name> GetVariableList();
+		public abstract IEnumerable<Name> GetVariables();
 
 		public abstract bool HasGhostVariable();
 
@@ -129,11 +129,11 @@ namespace KnowledgeBase.WellFormedNames
 		public bool ContainsVariable(Name variable)
 		{
 			if (!variable.IsVariable)
-				throw new ArgumentException("The given Name is not a variable","variable");
+				throw new ArgumentException("The given Name is not a variable",nameof(variable));
 
 			var v = (VariableSymbol) variable;
 
-			return this.GetVariableList().Cast<VariableSymbol>().Any(s => s.Equals(v));
+			return this.GetVariables().Cast<VariableSymbol>().Any(s => s.Equals(v));
 		}
 
 		public Name ApplyPerspective(string name)

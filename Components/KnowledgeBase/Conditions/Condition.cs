@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using KnowledgeBase.DTOs.Conditions;
 using KnowledgeBase.Exceptions;
 using KnowledgeBase.WellFormedNames;
 
@@ -10,8 +11,7 @@ namespace KnowledgeBase.Conditions
 	[Serializable]
 	public abstract partial class Condition : IConditionEvaluator
 	{
-
-	    public Guid Id { get; set; }
+		public Guid Id { get; set; }
 
         private const string WFN_CHARACTERS = @"\w\s-\+\(\)\.\,\[\]\*";
 		private const string REGEX_PATTERN = @"^\s*(#)?(["+WFN_CHARACTERS+@"]+)\s*(=|!=|<|<=|>|>=)\s*(#)?(["+WFN_CHARACTERS+@"]+)\s*$";
@@ -22,7 +22,6 @@ namespace KnowledgeBase.Conditions
 		    this.Id = Guid.NewGuid();
 		}
 
-        
         public IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
 			if (constraints == null || !constraints.Any())
@@ -43,6 +42,11 @@ namespace KnowledgeBase.Conditions
 		public abstract override bool Equals(object obj);
 
 		public abstract override int GetHashCode();
+
+		public ConditionDTO ToDTO()
+		{
+			return new ConditionDTO() {Id = Id, Condition = ToString()};
+		}
 
 		private static bool CompareValues(PrimitiveValue a, PrimitiveValue b, ComparisonOperator op)
 		{

@@ -35,8 +35,9 @@ namespace EmotionalAppraisalWF.ViewModels
             this.AppraisalRules.Refresh();
             if (SelectedRuleId != Guid.Empty)
             {
-                this.CurrentRuleConditions.DataSource = _emotionalAppraisalAsset.GetAllAppraisalRuleConditions(SelectedRuleId).ToList();
-                
+	            this.CurrentRuleConditions.DataSource =
+		            _emotionalAppraisalAsset.GetAllAppraisalRuleConditions(SelectedRuleId).Set;
+
             }else if (this.AppraisalRules.Count == 0)
             {
                 this.CurrentRuleConditions.DataSource = new List<ConditionDTO>();
@@ -49,7 +50,8 @@ namespace EmotionalAppraisalWF.ViewModels
             if (rule != null)
             {
                 this.SelectedRuleId = rule.Id;
-                this.CurrentRuleConditions.DataSource = _emotionalAppraisalAsset.GetAllAppraisalRuleConditions(SelectedRuleId).ToList();
+	            this.CurrentRuleConditions.DataSource =
+		            _emotionalAppraisalAsset.GetAllAppraisalRuleConditions(SelectedRuleId).Set;
                 this.CurrentRuleConditions.Refresh();
             }
         }

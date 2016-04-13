@@ -3,6 +3,7 @@ using System.Linq;
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using Equin.ApplicationFramework;
+using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalAppraisalWF.ViewModels
 {
@@ -20,7 +21,7 @@ namespace EmotionalAppraisalWF.ViewModels
         public string Perspective
         {
             get { return _emotionalAppraisalAsset.Perspective; }
-            set { _emotionalAppraisalAsset.Perspective = value; }
+            set { _emotionalAppraisalAsset.SetPerspective((Name)value); }
         }
 
         public IEnumerable<string> EmotionTypes { get { return _emotionalAppraisalAsset.EmotionTypes; } } 

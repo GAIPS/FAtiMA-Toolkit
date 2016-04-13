@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using KnowledgeBase.WellFormedNames;
 
-namespace EmotionalDecisionMaking
+namespace ActionLibrary
 {
 	public interface IAction
 	{

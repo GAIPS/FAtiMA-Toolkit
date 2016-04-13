@@ -47,6 +47,10 @@
     <Compile Include="SerializationTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj">
+      <Project>{e011d502-5c0f-4a3f-9f1a-337ff025eb48}</Project>
+      <Name>ActionLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Components\KnowledgeBase\KnowledgeBase.csproj">
       <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
       <Name>KnowledgeBase</Name>

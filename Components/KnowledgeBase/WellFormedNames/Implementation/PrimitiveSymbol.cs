@@ -41,7 +41,7 @@ namespace KnowledgeBase.WellFormedNames
 				return m_value.ToString().ToUpperInvariant().GetHashCode();
 			}
 
-			public override IEnumerable<Name> GetVariableList()
+			public override IEnumerable<Name> GetVariables()
 			{
 				yield break;
 			}

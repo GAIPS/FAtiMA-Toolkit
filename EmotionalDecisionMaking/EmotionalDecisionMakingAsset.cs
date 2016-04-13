@@ -1,18 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using ActionLibrary;
 using AssetPackage;
 using EmotionalAppraisal;
-using EmotionalAppraisal.DTOs;
 using EmotionalDecisionMaking.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalDecisionMaking
 {
-	public sealed partial class EmotionalDecisionMakingAsset : BaseAsset
+	public sealed class EmotionalDecisionMakingAsset : BaseAsset
 	{
-		private EmotionalAppraisalAsset m_emotionalDecisionMaking;
+		private EmotionalAppraisalAsset m_emotionalDecisionMaking = null;
 
         public static EmotionalDecisionMakingAsset LoadFromFile(string filename)
         {
@@ -38,33 +38,25 @@ namespace EmotionalDecisionMaking
             serializer.Serialize(file, this.ReactiveActions);
         }
 
-        public EmotionalDecisionMakingAsset(EmotionalAppraisalAsset eaa)
-		{
-			m_emotionalDecisionMaking = eaa;
-		}
-
-	    public void RegisterEmotionalAppraisalAsset(EmotionalAppraisalAsset eaa)
+		public void RegisterEmotionalAppraisalAsset(EmotionalAppraisalAsset eaa)
 	    {
 	        m_emotionalDecisionMaking = eaa;
 	    }
         
 		public IEnumerable<IAction> Decide()
 		{
+			if(m_emotionalDecisionMaking==null)
+				throw new Exception($"Unlinked to a {nameof(EmotionalAppraisalAsset)}. Use {nameof(RegisterEmotionalAppraisalAsset)} before calling any method.");
+
 			if (ReactiveActions == null)
 				return null;
 
-			return ReactiveActions.MakeAction(m_emotionalDecisionMaking.Kb,Name.SELF_SYMBOL);
+			return ReactiveActions.SelectAction(m_emotionalDecisionMaking.Kb,Name.SELF_SYMBOL);
 		}
 
-        public IEnumerable<ReactiveActionDTO> GetAllReactiveActions()
+        public IEnumerable<ActionTendenciesDTO> GetAllActionTendencies()
         {
-            var reactiveActions = this.ReactiveActions.GetAllActionTendencies().Select(at => new ReactiveActionDTO
-            {
-                Action = at.ActionName.ToString(),
-                Target = at.Target.ToString(),
-                Cooldown = at.ActivationCooldown
-            });
-            return reactiveActions;
+	        return ReactiveActions.GetAllActionTendencies();
         }
     }
 }

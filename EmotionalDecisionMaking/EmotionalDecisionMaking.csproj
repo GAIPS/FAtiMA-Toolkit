@@ -31,15 +31,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Action.cs" />
     <Compile Include="ActionTendency.cs" />
-    <Compile Include="DTOs\ReactiveActionDTO.cs" />
+    <Compile Include="DTOs\ActionTendenciesDTO.cs" />
     <Compile Include="EmotionalDecisionMakingAsset.cs" />
-    <Compile Include="IAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReactiveActions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Components\ActionLibrary\ActionLibrary.csproj">
+      <Project>{e011d502-5c0f-4a3f-9f1a-337ff025eb48}</Project>
+      <Name>ActionLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Components\AutobiographicMemory\AutobiographicMemory.csproj">
       <Project>{c1cc38c5-72f5-4545-b4f7-c65b2883909c}</Project>
       <Name>AutobiographicMemory</Name>
@@ -66,7 +68,6 @@
       <HintPath>..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Web" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

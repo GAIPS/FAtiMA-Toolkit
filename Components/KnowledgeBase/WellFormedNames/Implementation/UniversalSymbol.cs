@@ -16,7 +16,7 @@ namespace KnowledgeBase.WellFormedNames
 				return "*";
 			}
 
-			public override IEnumerable<Name> GetVariableList()
+			public override IEnumerable<Name> GetVariables()
 			{
 				yield break;
 			}

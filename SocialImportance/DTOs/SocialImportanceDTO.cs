@@ -6,5 +6,6 @@ namespace SocialImportance.DTOs
 	public class SocialImportanceDTO
 	{
 		public AttributionRuleDTO[] AttributionRules;
+		public ClaimDTO[] Claims;
 	}
 }

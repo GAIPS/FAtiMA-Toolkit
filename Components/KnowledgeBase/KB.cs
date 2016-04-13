@@ -137,6 +137,12 @@ namespace KnowledgeBase
 			m_dynamicProperties.Add(propertyTemplate, new DynamicKnowledgeEntry(surogate, args));
 		}
 
+		public void UnregistDynamicProperty(Name propertyTemplate)
+		{
+			if(!m_dynamicProperties.Remove(propertyTemplate))
+				throw new Exception($"Unknown Dynamic Property {propertyTemplate}");
+		}
+
 		#endregion
 
 		#region Native Dynamic Properties

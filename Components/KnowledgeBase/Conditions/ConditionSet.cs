@@ -204,6 +204,11 @@ namespace KnowledgeBase.Conditions
 
 		#endregion
 
+		public ConditionSetDTO ToDTO()
+		{
+			return new ConditionSetDTO() {Quantifier = this.Quantifier,Set = m_conditions.Select(c => c.ToDTO()).ToArray()};
+		}
+
 		public void GetObjectData(ISerializationData dataHolder)
 		{
 			dataHolder.SetValue("Quantifier",Quantifier);

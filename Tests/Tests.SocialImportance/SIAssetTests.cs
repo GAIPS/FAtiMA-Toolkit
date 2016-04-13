@@ -15,7 +15,6 @@ namespace Tests.SocialImportance
 		private static SocialImportanceAsset BuildAsset()
 		{
 			var ea = new EmotionalAppraisalAsset("Matt");
-
 #region Set KB
 
 			ea.Kb.Tell((Name)"IsPerson(Matt)",true,Name.UNIVERSAL_SYMBOL);
@@ -30,8 +29,6 @@ namespace Tests.SocialImportance
 			ea.Kb.Tell((Name)"AreFriends(Self,Thomas)", true, Name.SELF_SYMBOL);
 
 			#endregion
-
-			var si = new SocialImportanceAsset(ea);
 #region SI DTO especification
 			var siDTO = new SocialImportanceDTO
 			{
@@ -153,8 +150,11 @@ namespace Tests.SocialImportance
 					}
 				}
 			};
-#endregion
+			#endregion
+			var si = new SocialImportanceAsset();
 			si.LoadFromDTO(siDTO);
+
+			si.RegisterEmotionalAppraisalAsset(ea);
 			return si;
 		}
 

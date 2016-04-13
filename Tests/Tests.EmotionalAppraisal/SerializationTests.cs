@@ -17,7 +17,7 @@ namespace Tests.EmotionalAppraisal
 		private static EmotionalAppraisalAsset BuildTestAsset()
 		{//Emotional System Setup
 			var m_emotionalAppraisalAsset = new EmotionalAppraisalAsset("Agent");
-			m_emotionalAppraisalAsset.Perspective = "Test";
+			m_emotionalAppraisalAsset.SetPerspective((Name)"Test");
 
 			//Setup Emotional Disposition
 

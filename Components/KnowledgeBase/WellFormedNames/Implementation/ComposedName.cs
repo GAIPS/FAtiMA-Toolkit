@@ -107,9 +107,9 @@ namespace KnowledgeBase.WellFormedNames
 				return Terms.SelectMany(t => t.GetLiterals()).Prepend(RootSymbol);
 			}
 
-			public override IEnumerable<Name> GetVariableList()
+			public override IEnumerable<Name> GetVariables()
 			{
-				return GetTerms().SelectMany(l => l.GetVariableList());
+				return GetTerms().SelectMany(l => l.GetVariables());
 			}
 
 			public override bool HasGhostVariable()

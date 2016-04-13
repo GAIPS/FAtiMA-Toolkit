@@ -38,7 +38,7 @@ namespace KnowledgeBase.WellFormedNames
 				return $"[{m_variableName}]";
 			}
 
-			public override IEnumerable<Name> GetVariableList()
+			public override IEnumerable<Name> GetVariables()
 			{
 				yield return this;
 			}
