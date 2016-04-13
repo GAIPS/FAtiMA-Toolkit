@@ -58,7 +58,7 @@ namespace ActionLibrary
 			if (!targetName.IsGrounded)
 				return null;
 			
-			var a = new Action(ActionName.GetTerms(), targetName);
+			var a = new Action(actionName.GetTerms(), targetName);
 			OnActionGenerated(a);
 			return a;
 		}

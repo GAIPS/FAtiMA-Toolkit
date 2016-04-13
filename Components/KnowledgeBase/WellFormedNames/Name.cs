@@ -229,7 +229,7 @@ namespace KnowledgeBase.WellFormedNames
 			{
 				set.AddRange(terms);
 				if (set.Count < 2)
-					throw new ArgumentException("Need at least 2 term to create a composed symbol", "terms");
+					return set[0];
 
 				Symbol head = set[0] as Symbol;
 				if (head == null)
