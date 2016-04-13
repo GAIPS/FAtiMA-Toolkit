@@ -42,6 +42,11 @@ namespace EmotionalDecisionMaking
 			return m_actionTendencies.GetAllActionDefinitions().Select(at => at.ToDTO());
 		}
 
+		public ActionTendenciesDTO GetDTOFromGUID(Guid id)
+		{
+			return m_actionTendencies.GetActionDefinition(id).ToDTO();
+		}
+
 		public void GetObjectData(ISerializationData dataHolder)
 		{
 			dataHolder.SetValue("DefaultActionCooldown", m_defaultActionCooldown);

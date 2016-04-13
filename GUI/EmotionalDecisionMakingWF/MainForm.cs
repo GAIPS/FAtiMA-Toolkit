@@ -1,8 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using EmotionalDecisionMaking;
+using EmotionalDecisionMaking.DTOs;
 using EmotionalDecisionMakingWF.Properties;
+using Equin.ApplicationFramework;
+using KnowledgeBase.Conditions;
+using KnowledgeBase.DTOs.Conditions;
 
 namespace EmotionalDecisionMakingWF
 {
@@ -11,11 +17,32 @@ namespace EmotionalDecisionMakingWF
         private EmotionalDecisionMakingAsset _edmAsset;
         private string _saveFileName;
 
+        private BindingListView<ActionTendenciesDTO> _reactiveActions;
+        private BindingListView<ConditionDTO> _conditions; 
+        private Guid _selectedActionId;
 
         public MainForm()
         {
             InitializeComponent();
-            Reset(true);
+            string[] args = Environment.GetCommandLineArgs();
+            if (args.Length <= 1)
+            {
+                Reset(true);
+            }
+            else
+            {
+                _saveFileName = args[1];
+                try
+                {
+                    _edmAsset = EmotionalDecisionMakingAsset.LoadFromFile(_saveFileName);
+                    Reset(false);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Reset(true);
+                }
+            }
         }
 
         private void Reset(bool newFile)
@@ -29,7 +56,28 @@ namespace EmotionalDecisionMakingWF
             {
                 this.Text = Resources.MainFormTitle + " - " + _saveFileName;
             }
+
+            this._reactiveActions = new BindingListView<ActionTendenciesDTO>(_edmAsset.GetAllActionTendencies().ToList());
+            dataGridViewReactiveActions.DataSource = this._reactiveActions;
+            dataGridViewReactiveActions.Columns[PropertyUtil.GetName<ActionTendenciesDTO>(dto => dto.Id)].Visible = false;
+            dataGridViewReactiveActions.Columns[PropertyUtil.GetName<ActionTendenciesDTO>(dto => dto.Conditions)].Visible = false;
+
+
+            if (_reactiveActions.Any())
+            {
+                this._conditions = new BindingListView<ConditionDTO>(_edmAsset.GetReactionsConditions(_reactiveActions.First().Id).ToList());
+            }
+            else
+            {
+                this._conditions = new BindingListView<ConditionDTO>(new List<ConditionDTO>());
+            }
+            
+            dataGridViewReactionConditions.DataSource = this._conditions;
+            dataGridViewReactionConditions.Columns[PropertyUtil.GetName<ConditionDTO>(dto => dto.Id)].Visible = false;
+
+            comboBoxQuantifierType.DataSource = Enum.GetNames(typeof(LogicalQuantifier));
         }
+
 
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -111,6 +159,13 @@ namespace EmotionalDecisionMakingWF
             }
         }
 
-        
+        private void dataGridViewReactiveActions_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            var reaction = ((ObjectView<ActionTendenciesDTO>)dataGridViewReactiveActions.Rows[e.RowIndex].DataBoundItem).Object;
+            _selectedActionId = reaction.Id;
+
+            _conditions.DataSource = _edmAsset.GetReactionsConditions(_selectedActionId).ToList();
+            _conditions.Refresh();
+        }
     }
 }

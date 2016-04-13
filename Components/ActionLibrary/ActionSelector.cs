@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ActionLibrary.DTOs;
 using KnowledgeBase;
 using KnowledgeBase.Conditions;
 using KnowledgeBase.WellFormedNames;
@@ -37,6 +36,11 @@ namespace ActionLibrary
 		public IEnumerable<T> GetAllActionDefinitions()
 		{
 			return m_actions.Select(p => p.Item2);
+		}
+
+		public T GetActionDefinition(Guid id)
+		{
+			return m_actions.Select(p => p.Item2).FirstOrDefault(t => t.Id == id);
 		}
 
 		public IEnumerable<IAction> SelectAction(KB knowledgeBase, Name perspective)

@@ -6,6 +6,7 @@ using AssetPackage;
 using EmotionalAppraisal;
 using EmotionalDecisionMaking.DTOs;
 using GAIPS.Serialization;
+using KnowledgeBase.DTOs.Conditions;
 using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalDecisionMaking
@@ -58,5 +59,10 @@ namespace EmotionalDecisionMaking
         {
 	        return ReactiveActions.GetAllActionTendencies();
         }
-    }
+
+		public IEnumerable<ConditionDTO> GetReactionsConditions(Guid id)
+		{
+			return ReactiveActions.GetDTOFromGUID(id).Conditions.Set;
+		}
+	}
 }

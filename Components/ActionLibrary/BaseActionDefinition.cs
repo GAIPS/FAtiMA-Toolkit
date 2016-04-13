@@ -10,6 +10,7 @@ namespace ActionLibrary
 {
 	public abstract class BaseActionDefinition : IActionDefinition
 	{
+		public Guid Id { get; }
 		private Name m_actionTemplate;
 		public Name ActionName {
 			get { return m_actionTemplate.GetFirstTerm(); }
@@ -33,6 +34,7 @@ namespace ActionLibrary
 			if(target.IsComposed)
 				throw new ArgumentException("Action Definition Target must be a symbol definition", nameof(target));
 
+			Id = Guid.NewGuid();
 			m_actionTemplate = actionTemplate;
 			Target = target;
 			ActivationConditions = new ConditionSet(activationConditions);
@@ -40,6 +42,7 @@ namespace ActionLibrary
 
 		protected BaseActionDefinition(BaseActionDefinition other)
 		{
+			Id = other.Id;
 			m_actionTemplate = other.m_actionTemplate;
 			Target = other.Target;
 			ActivationConditions = new ConditionSet(other.ActivationConditions);
@@ -98,6 +101,7 @@ namespace ActionLibrary
 			if (target.IsComposed)
 				throw new ArgumentException("Action Definition Target must be a symbol definition", nameof(target));
 
+			Id = Guid.NewGuid();
 			m_actionTemplate = actionTemplate;
 			Target = target;
 			ActivationConditions = node["Conditions"].RebuildObject<ConditionSet>();

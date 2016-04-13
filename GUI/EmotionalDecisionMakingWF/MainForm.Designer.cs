@@ -39,21 +39,21 @@
             this.buttonEditAppraisalRule = new System.Windows.Forms.Button();
             this.buttonAddAppraisalRule = new System.Windows.Forms.Button();
             this.buttonRemoveAppraisalRule = new System.Windows.Forms.Button();
-            this.dataGridViewAppraisalRules = new System.Windows.Forms.DataGridView();
+            this.dataGridViewReactiveActions = new System.Windows.Forms.DataGridView();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.comboBoxQuantifierType = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.buttonEditAppraisalRuleCondition = new System.Windows.Forms.Button();
             this.buttonAddAppraisalRuleCondition = new System.Windows.Forms.Button();
             this.buttonRemoveAppraisalRuleCondition = new System.Windows.Forms.Button();
-            this.dataGridViewAppRuleConditions = new System.Windows.Forms.DataGridView();
+            this.dataGridViewReactionConditions = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.richTextBoxDescription = new System.Windows.Forms.RichTextBox();
             this.mainMenu.SuspendLayout();
             this.groupBox7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAppraisalRules)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactiveActions)).BeginInit();
             this.groupBox8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAppRuleConditions)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactionConditions)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -123,10 +123,10 @@
             this.groupBox7.Controls.Add(this.buttonEditAppraisalRule);
             this.groupBox7.Controls.Add(this.buttonAddAppraisalRule);
             this.groupBox7.Controls.Add(this.buttonRemoveAppraisalRule);
-            this.groupBox7.Controls.Add(this.dataGridViewAppraisalRules);
+            this.groupBox7.Controls.Add(this.dataGridViewReactiveActions);
             this.groupBox7.Location = new System.Drawing.Point(12, 27);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(450, 240);
+            this.groupBox7.Size = new System.Drawing.Size(450, 265);
             this.groupBox7.TabIndex = 3;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Reactions";
@@ -158,27 +158,28 @@
             this.buttonRemoveAppraisalRule.Text = "Remove";
             this.buttonRemoveAppraisalRule.UseVisualStyleBackColor = true;
             // 
-            // dataGridViewAppraisalRules
+            // dataGridViewReactiveActions
             // 
-            this.dataGridViewAppraisalRules.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.dataGridViewAppraisalRules.AllowUserToAddRows = false;
-            this.dataGridViewAppraisalRules.AllowUserToOrderColumns = true;
-            this.dataGridViewAppraisalRules.AllowUserToResizeRows = false;
-            this.dataGridViewAppraisalRules.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.dataGridViewReactiveActions.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.dataGridViewReactiveActions.AllowUserToAddRows = false;
+            this.dataGridViewReactiveActions.AllowUserToOrderColumns = true;
+            this.dataGridViewReactiveActions.AllowUserToResizeRows = false;
+            this.dataGridViewReactiveActions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewAppraisalRules.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridViewAppraisalRules.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
-            this.dataGridViewAppraisalRules.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewAppraisalRules.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewAppraisalRules.Location = new System.Drawing.Point(6, 54);
-            this.dataGridViewAppraisalRules.Name = "dataGridViewAppraisalRules";
-            this.dataGridViewAppraisalRules.ReadOnly = true;
-            this.dataGridViewAppraisalRules.RowHeadersVisible = false;
-            this.dataGridViewAppraisalRules.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewAppraisalRules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAppraisalRules.Size = new System.Drawing.Size(438, 180);
-            this.dataGridViewAppraisalRules.TabIndex = 2;
+            this.dataGridViewReactiveActions.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewReactiveActions.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.dataGridViewReactiveActions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewReactiveActions.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.dataGridViewReactiveActions.Location = new System.Drawing.Point(6, 54);
+            this.dataGridViewReactiveActions.Name = "dataGridViewReactiveActions";
+            this.dataGridViewReactiveActions.ReadOnly = true;
+            this.dataGridViewReactiveActions.RowHeadersVisible = false;
+            this.dataGridViewReactiveActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewReactiveActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(438, 205);
+            this.dataGridViewReactiveActions.TabIndex = 2;
+            this.dataGridViewReactiveActions.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReactiveActions_RowEnter);
             // 
             // groupBox8
             // 
@@ -189,10 +190,10 @@
             this.groupBox8.Controls.Add(this.buttonEditAppraisalRuleCondition);
             this.groupBox8.Controls.Add(this.buttonAddAppraisalRuleCondition);
             this.groupBox8.Controls.Add(this.buttonRemoveAppraisalRuleCondition);
-            this.groupBox8.Controls.Add(this.dataGridViewAppRuleConditions);
-            this.groupBox8.Location = new System.Drawing.Point(12, 273);
+            this.groupBox8.Controls.Add(this.dataGridViewReactionConditions);
+            this.groupBox8.Location = new System.Drawing.Point(12, 298);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(451, 172);
+            this.groupBox8.Size = new System.Drawing.Size(451, 205);
             this.groupBox8.TabIndex = 11;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Reaction Conditions";
@@ -244,34 +245,34 @@
             this.buttonRemoveAppraisalRuleCondition.Text = "Remove";
             this.buttonRemoveAppraisalRuleCondition.UseVisualStyleBackColor = true;
             // 
-            // dataGridViewAppRuleConditions
+            // dataGridViewReactionConditions
             // 
-            this.dataGridViewAppRuleConditions.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.dataGridViewAppRuleConditions.AllowUserToAddRows = false;
-            this.dataGridViewAppRuleConditions.AllowUserToOrderColumns = true;
-            this.dataGridViewAppRuleConditions.AllowUserToResizeRows = false;
-            this.dataGridViewAppRuleConditions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.dataGridViewReactionConditions.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.dataGridViewReactionConditions.AllowUserToAddRows = false;
+            this.dataGridViewReactionConditions.AllowUserToOrderColumns = true;
+            this.dataGridViewReactionConditions.AllowUserToResizeRows = false;
+            this.dataGridViewReactionConditions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewAppRuleConditions.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridViewAppRuleConditions.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
-            this.dataGridViewAppRuleConditions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewAppRuleConditions.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewAppRuleConditions.Location = new System.Drawing.Point(6, 54);
-            this.dataGridViewAppRuleConditions.Name = "dataGridViewAppRuleConditions";
-            this.dataGridViewAppRuleConditions.ReadOnly = true;
-            this.dataGridViewAppRuleConditions.RowHeadersVisible = false;
-            this.dataGridViewAppRuleConditions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewAppRuleConditions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAppRuleConditions.Size = new System.Drawing.Size(439, 112);
-            this.dataGridViewAppRuleConditions.TabIndex = 2;
+            this.dataGridViewReactionConditions.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewReactionConditions.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.dataGridViewReactionConditions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewReactionConditions.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.dataGridViewReactionConditions.Location = new System.Drawing.Point(6, 54);
+            this.dataGridViewReactionConditions.Name = "dataGridViewReactionConditions";
+            this.dataGridViewReactionConditions.ReadOnly = true;
+            this.dataGridViewReactionConditions.RowHeadersVisible = false;
+            this.dataGridViewReactionConditions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewReactionConditions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewReactionConditions.Size = new System.Drawing.Size(439, 145);
+            this.dataGridViewReactionConditions.TabIndex = 2;
             // 
             // groupBox2
             // 
             this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.richTextBoxDescription);
-            this.groupBox2.Location = new System.Drawing.Point(12, 451);
+            this.groupBox2.Location = new System.Drawing.Point(12, 509);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(450, 71);
             this.groupBox2.TabIndex = 16;
@@ -296,7 +297,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(474, 534);
+            this.ClientSize = new System.Drawing.Size(474, 592);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.groupBox7);
@@ -306,10 +307,10 @@
             this.mainMenu.ResumeLayout(false);
             this.mainMenu.PerformLayout();
             this.groupBox7.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAppraisalRules)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactiveActions)).EndInit();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAppRuleConditions)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactionConditions)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -329,14 +330,14 @@
         private System.Windows.Forms.Button buttonEditAppraisalRule;
         private System.Windows.Forms.Button buttonAddAppraisalRule;
         private System.Windows.Forms.Button buttonRemoveAppraisalRule;
-        private System.Windows.Forms.DataGridView dataGridViewAppraisalRules;
+        private System.Windows.Forms.DataGridView dataGridViewReactiveActions;
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.ComboBox comboBoxQuantifierType;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button buttonEditAppraisalRuleCondition;
         private System.Windows.Forms.Button buttonAddAppraisalRuleCondition;
         private System.Windows.Forms.Button buttonRemoveAppraisalRuleCondition;
-        private System.Windows.Forms.DataGridView dataGridViewAppRuleConditions;
+        private System.Windows.Forms.DataGridView dataGridViewReactionConditions;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RichTextBox richTextBoxDescription;
     }

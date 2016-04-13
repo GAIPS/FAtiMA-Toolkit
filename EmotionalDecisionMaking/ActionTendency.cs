@@ -50,6 +50,7 @@ namespace EmotionalDecisionMaking
 		{
 			return new ActionTendenciesDTO()
 			{
+				Id = Id,
 				Action = GetActionTemplate().ToString(),
 				Target = Target.ToString(),
 				Conditions = ActivationConditions.ToDTO(),
