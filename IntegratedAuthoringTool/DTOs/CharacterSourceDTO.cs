@@ -2,6 +2,7 @@
 
 namespace IntegratedAuthoringTool.DTOs
 {
+    [Serializable]
     public class CharacterSourceDTO
     {
         public string Name { get; set; }

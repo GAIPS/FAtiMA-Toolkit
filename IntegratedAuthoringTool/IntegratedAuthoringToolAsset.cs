@@ -9,7 +9,7 @@ using RolePlayCharacter;
 namespace IntegratedAuthoringTool
 {
     [Serializable]
-    public class IntegratedAuthoringToolAsset
+    public class IntegratedAuthoringToolAsset : ICustomSerialization
     {
         private IList<CharacterSourceDTO> CharacterSources { get; set; }
         private IList<RolePlayCharacterAsset> Characters { get; set; }
@@ -36,6 +36,12 @@ namespace IntegratedAuthoringTool
             return iat;
         }
 
+        public IntegratedAuthoringToolAsset()
+        {
+            this.CharacterSources = new List<CharacterSourceDTO>();
+            this.Characters = new List<RolePlayCharacterAsset>();
+        }
+
         public IEnumerable<CharacterSourceDTO> GetAllCharacterSources()
         {
             return this.CharacterSources;
@@ -49,23 +55,32 @@ namespace IntegratedAuthoringTool
         public void AddCharacter(string filename)
         {
             var character = RolePlayCharacterAsset.LoadFromFile(filename);
+
+            if (this.Characters.Any(c => c.CharacterName == character.CharacterName))
+            {
+                throw new Exception("A character with the same name already exists.");
+            }
+
             this.Characters.Add(character);
             this.CharacterSources.Add(new CharacterSourceDTO {Name = character.CharacterName, Source = filename});
         }
 
-        public void RemoveCharacter(string characterName)
+        public void RemoveCharacters(IList<string> charactersToRemove)
         {
-            var characterSource = CharacterSources.FirstOrDefault(c => c.Name == characterName);
-            var character = Characters.FirstOrDefault(c => c.CharacterName == characterName);
-            if (characterSource != null && character != null)
+            foreach (var characterName in charactersToRemove)
             {
-                this.CharacterSources.Remove(characterSource);
-                this.Characters.Remove(character);
-            }
-            else
-            {
-                throw new Exception("Invalid Operation");
-            }
+                var characterSource = CharacterSources.FirstOrDefault(c => c.Name == characterName);
+                var character = Characters.FirstOrDefault(c => c.CharacterName == characterName);
+                if (characterSource != null && character != null)
+                {
+                    this.CharacterSources.Remove(characterSource);
+                    this.Characters.Remove(character);
+                }
+                else
+                {
+                    throw new Exception("Invalid Operation");
+                }
+            }   
         }
 
         #region Serialization
@@ -78,14 +93,22 @@ namespace IntegratedAuthoringTool
         public void GetObjectData(ISerializationData dataHolder)
         {
             dataHolder.SetValue("ScenarioName", ScenarioName);
-            dataHolder.SetValue("Characters", CharacterSources);
+            if (CharacterSources.Any())
+            {
+                dataHolder.SetValue("Characters", CharacterSources.ToArray());
+            }
         }
 
         public void SetObjectData(ISerializationData dataHolder)
         {
             ScenarioName = dataHolder.GetValue<string>("ScenarioName");
-            CharacterSources = dataHolder.GetValue<List<CharacterSourceDTO>>("Characters");
+            var charArray = dataHolder.GetValue<CharacterSourceDTO[]>("Characters");
+            if (charArray != null)
+            {
+                CharacterSources = new List<CharacterSourceDTO>(charArray);
+            }
         }
         #endregion
+
     }
 }
