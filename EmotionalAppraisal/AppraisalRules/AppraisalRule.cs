@@ -30,7 +30,6 @@ namespace EmotionalAppraisal.AppraisalRules
 
 	    public AppraisalRule(AppraisalRuleDTO appraisalRuleDTO)
 	    {
-	        Id = appraisalRuleDTO.Id;
 	        EventName = Name.BuildName(appraisalRuleDTO.EventMatchingTemplate);
 	        Desirability = appraisalRuleDTO.Desirability;
 	        Praiseworthiness = appraisalRuleDTO.Praiseworthiness;

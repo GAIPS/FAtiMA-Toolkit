@@ -156,7 +156,7 @@ namespace EmotionalAppraisal.AppraisalRules
 
 	    public IEnumerable<AppraisalRule> GetAppraisalRules()
 	    {
-		    return Rules.Values.SelectMany(set => set);
+	        return Rules.Values.SelectMany(set => set);
 	    }
         
 		#region IAppraisalDerivator Implementation
@@ -232,8 +232,13 @@ namespace EmotionalAppraisal.AppraisalRules
 			AppraisalWeight = dataHolder.GetValue<short>("AppraisalWeight");
 			var rules = dataHolder.GetValue<AppraisalRule[]>("Rules");
 			Rules.Clear();
-			foreach (var r in rules)
-				AddEmotionalReaction(r);
+		    foreach (var r in rules)
+		    {
+                r.Id = Guid.NewGuid();
+                AddEmotionalReaction(r);
+            }
+                
+				
 		}
 
 		#endregion

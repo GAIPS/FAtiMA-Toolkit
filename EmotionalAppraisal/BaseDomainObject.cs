@@ -11,7 +11,7 @@ namespace EmotionalAppraisal
 
         public BaseDomainObject()
         {
-            Id = new Guid();
+            Id = Guid.NewGuid();
         }
     }
 }
