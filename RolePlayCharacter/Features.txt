@@ -4,6 +4,14 @@ This asset will receive as input a file containing the a description of a role p
 For now, only accepts one type of file (.json);
 The output of this asset is an instance of a role play character defined by the description.
 
+RegisterCharacterBody receives a body and connect that body to the character.
+
+GetIntensityStrongestEmotion returns the value of the strongest active emotion in the character (if available)
+
+GetStrongestActiveEmotion returns the strongest active emotion present in the character (if available)
+
+SaveOutput
+
 Current Description only accepts the following fields (all strings):
 - A character name
 - A body name
