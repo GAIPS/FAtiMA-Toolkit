@@ -341,8 +341,8 @@ namespace EmotionalAppraisal
 				foreach (var n in seq)
 				{
 					var data = (n as IObjectGraphNode).ToSerializationData();
-					var emotion = new ActiveEmotion(data,m_parent.Tick);
-					var hash = calculateHashString(emotion, m_parent.m_am);
+                    var emotion = new ActiveEmotion(data,m_parent.Tick);
+				    var hash = calculateHashString(emotion, m_parent.m_am);
 					emotionPool.Add(hash, emotion);
 				}
 			}
