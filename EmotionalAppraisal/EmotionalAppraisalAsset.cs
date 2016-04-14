@@ -93,10 +93,15 @@ namespace EmotionalAppraisal
 	        get { return m_kb.Perspective.ToString(); }
 		}
 
-	    /// <summary>
-	    /// Indicates the current time tick
-	    /// </summary>
-	    public ulong Tick {
+		public void SetPerspective(Name newPerspective)
+		{
+			m_kb.SetPerspective(newPerspective);
+		}
+
+		/// <summary>
+		/// Indicates the current time tick
+		/// </summary>
+		public ulong Tick {
 		    get { return m_am.Tick; }
 		    set { m_am.Tick = value; }
 	    }
@@ -117,7 +122,6 @@ namespace EmotionalAppraisal
 
         public string[] KnowledgeVisibilities => new[] {Name.SELF_STRING, Name.UNIVERSAL_STRING};
         public string[] EventTypes => new [] {Constants.ACTION_EVENT.ToString(), Constants.PROPERTY_CHANGE_EVENT.ToString()};
-	    public string[] QuantifierTypes => Enum.GetNames(typeof (LogicalQuantifier));
 
 	    public EmotionDispositionDTO DefaultEmotionDisposition
 	    {
@@ -259,11 +263,6 @@ namespace EmotionalAppraisal
 			get { return m_kb; }
 		}
 
-		public void SetPerspective(Name newPerspective)
-		{
-			m_kb.SetPerspective(newPerspective);
-		}
-
 		public EmotionalAppraisalAsset(string perspective)
 		{
 			m_kb = new KB((Name)perspective);
@@ -360,7 +359,6 @@ namespace EmotionalAppraisal
         {
             this.Kb.Tell(Name.BuildName(name),null,Name.SELF_SYMBOL);
         }
-        
         
         #region Dynamic Properties
 

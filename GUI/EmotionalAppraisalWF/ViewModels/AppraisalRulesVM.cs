@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using Equin.ApplicationFramework;
+using KnowledgeBase.Conditions;
 using KnowledgeBase.DTOs.Conditions;
 
 namespace EmotionalAppraisalWF.ViewModels
@@ -17,10 +18,9 @@ namespace EmotionalAppraisalWF.ViewModels
         public BindingListView<ConditionDTO> CurrentRuleConditions { get; set; }
         public Guid SelectedRuleId { get; set;}
 
-        public string[] QuantifierTypes => _emotionalAppraisalAsset.QuantifierTypes;
+        public string[] QuantifierTypes = Enum.GetNames(typeof(LogicalQuantifier));
 
-        
-        public AppraisalRulesVM(EmotionalAppraisalAsset ea)
+		public AppraisalRulesVM(EmotionalAppraisalAsset ea)
         {
             _emotionalAppraisalAsset = ea;
             this.AppraisalRules = new BindingListView<AppraisalRuleDTO>(new List<AppraisalRuleDTO>());

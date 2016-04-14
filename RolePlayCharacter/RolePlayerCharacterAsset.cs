@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ActionLibrary;
 using KnowledgeBase.WellFormedNames;
+using Utilities;
 
 namespace RolePlayCharacter
 {
@@ -20,10 +21,13 @@ namespace RolePlayCharacter
         [NonSerialized]
         private EmotionalDecisionMakingAsset _emotionalDecisionMakingAsset;
 
-        [NonSerialized]
-        public ICharacterBody CharacterBody;
+	    [NonSerialized]
+		private ICharacterBody _characterBody = null;
+	    public ICharacterBody CharacterBody {
+		    get { return _characterBody; }
+	    }
 
-        public string BodyName { get; set;}
+	    public string BodyName { get; set;}
 
         public string CharacterName { get; set; }
         
@@ -63,7 +67,7 @@ namespace RolePlayCharacter
 
         public void RegisterCharacterBody(ICharacterBody body)
         {
-            this.CharacterBody = body;
+            _characterBody = body;
         }
         
         public IAction PerceptionActionLoop(IEnumerable<Name> events)
@@ -72,34 +76,13 @@ namespace RolePlayCharacter
             return _emotionalDecisionMakingAsset.Decide().FirstOrDefault();
         }
 
-
-        public float GetIntensityStrongestEmotion()
+		public IActiveEmotion GetStrongestActiveEmotion()
         {
-            return GetStrongestActiveEmotion().Intensity;
+			IEnumerable<IActiveEmotion> currentActiveEmotions = _emotionalAppraisalAsset.GetAllActiveEmotions();
+	        return currentActiveEmotions.MaxValue(a => a.Intensity);
         }
 
-        public IActiveEmotion GetStrongestActiveEmotion()
-        {
-            IEnumerable<IActiveEmotion> currentActiveEmotions = _emotionalAppraisalAsset.GetAllActiveEmotions();
-
-            IActiveEmotion activeEmotion = null;
-
-            foreach (IActiveEmotion emotion in currentActiveEmotions)
-            {
-                if (activeEmotion != null)
-                {
-                    if (activeEmotion.Intensity < emotion.Intensity)
-                        activeEmotion = emotion;
-                }
-
-                else activeEmotion = emotion;
-            }
-
-            return activeEmotion;
-        }
-        
-
-        public void Update()
+	    public void Update()
         {
             _emotionalAppraisalAsset.Update();
         }
