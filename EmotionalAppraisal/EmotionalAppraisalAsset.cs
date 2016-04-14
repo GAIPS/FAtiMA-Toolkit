@@ -91,17 +91,9 @@ namespace EmotionalAppraisal
         /// </summary>
 		public string Perspective {
 	        get { return m_kb.Perspective.ToString(); }
+            set { m_kb.Perspective = Name.BuildName(value); }
 		}
 
-		public void SetPerspective(Name newPerspective)
-		{
-			m_kb.SetPerspective(newPerspective);
-		}
-
-		/// <summary>
-		/// Indicates the current time tick
-		/// </summary>
-		public ulong Tick {
 		    get { return m_am.Tick; }
 		    set { m_am.Tick = value; }
 	    }
@@ -261,6 +253,11 @@ namespace EmotionalAppraisal
         public KB Kb
 		{
 			get { return m_kb; }
+		}
+
+		public void UpdateKBAccordingToNewPerspective(Name newPerspective)
+		{
+			m_kb.UpdateKBAccordingToNewPerspective(newPerspective);
 		}
 
 		public EmotionalAppraisalAsset(string perspective)

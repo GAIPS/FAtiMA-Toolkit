@@ -95,7 +95,7 @@ namespace KnowledgeBase
 		/// <summary>
 		/// Indicates the default mapping of "SELF"
 		/// </summary>
-		public Name Perspective { get; private set; }
+		public Name Perspective { get; set; }
 
 		private KB()
 		{
@@ -106,7 +106,7 @@ namespace KnowledgeBase
 
 		public KB(Name perspective) : this()
 		{
-			SetPerspective(perspective);
+			UpdateKBAccordingToNewPerspective(perspective);
 		}
 
 		#region Dynamic Property Registry
@@ -172,7 +172,7 @@ namespace KnowledgeBase
 
 		#endregion
 
-		public void SetPerspective(Name newPerspective)
+		public void UpdateKBAccordingToNewPerspective(Name newPerspective)
 		{
 			if(!newPerspective.IsPrimitive)
 				throw new ArgumentException("Only primitive symbols are allowed to be perspectives.");

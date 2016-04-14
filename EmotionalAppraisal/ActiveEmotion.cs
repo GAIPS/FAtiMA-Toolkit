@@ -64,7 +64,7 @@ namespace EmotionalAppraisal
 		private void SetIntensity(float value, ulong tickStamp)
 		{
 			value -= Threshold;
-			value = value < -10 ? -10 : (value > 10 ? 10 : value);
+			value = value < 0 ? 0 : (value > 10 ? 10 : value);
 			this.intensityATt0 = this.Intensity = value;
 			this.tickATt0 = tickStamp;
 		}
@@ -207,9 +207,8 @@ namespace EmotionalAppraisal
 			Valence = dataHolder.GetValue<EmotionValence>("Valence");
 			AppraisalVariables = dataHolder.GetValue<string[]>("AppraisalVariables");
 			InfluenceMood = dataHolder.GetValue<bool>("InfluenceMood");
-			
-			var i = dataHolder.GetValue<float>("Intensity");
-			SetIntensity(i,tickStamp);
-		}
+			this.intensityATt0 = this.Intensity = dataHolder.GetValue<float>("Intensity");
+            this.tickATt0 = tickStamp;
+        }
 	}
 }

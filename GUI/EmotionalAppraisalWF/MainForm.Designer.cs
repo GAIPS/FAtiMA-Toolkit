@@ -67,6 +67,8 @@
             this.buttonRemoveEmotionDisposition = new System.Windows.Forms.Button();
             this.appraisalRulesTagePage = new System.Windows.Forms.TabPage();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.comboBoxQuantifierType = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.buttonEditAppraisalRuleCondition = new System.Windows.Forms.Button();
             this.buttonAddAppraisalRuleCondition = new System.Windows.Forms.Button();
             this.buttonRemoveAppraisalRuleCondition = new System.Windows.Forms.Button();
@@ -94,8 +96,6 @@
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.label2 = new System.Windows.Forms.Label();
-            this.comboBoxQuantifierType = new System.Windows.Forms.ComboBox();
             this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.mainMenu.SuspendLayout();
             this.mainFormTab.SuspendLayout();
@@ -595,6 +595,24 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Rule Conditions";
             // 
+            // comboBoxQuantifierType
+            // 
+            this.comboBoxQuantifierType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxQuantifierType.FormattingEnabled = true;
+            this.comboBoxQuantifierType.Location = new System.Drawing.Point(426, 19);
+            this.comboBoxQuantifierType.Name = "comboBoxQuantifierType";
+            this.comboBoxQuantifierType.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxQuantifierType.TabIndex = 11;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(338, 23);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(82, 13);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Quantifier Type:";
+            // 
             // buttonEditAppraisalRuleCondition
             // 
             this.buttonEditAppraisalRuleCondition.Location = new System.Drawing.Point(66, 18);
@@ -909,28 +927,6 @@
             // decayErrorProvider
             // 
             this.decayErrorProvider.ContainerControl = this;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(338, 23);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(82, 13);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Quantifier Type:";
-            // 
-            // comboBoxQuantifierType
-            // 
-            this.comboBoxQuantifierType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBoxQuantifierType.FormattingEnabled = true;
-            this.comboBoxQuantifierType.Location = new System.Drawing.Point(426, 19);
-            this.comboBoxQuantifierType.Name = "comboBoxQuantifierType";
-            this.comboBoxQuantifierType.Size = new System.Drawing.Size(121, 21);
-            this.comboBoxQuantifierType.TabIndex = 11;
-            // 
-            // mainFormBindingSource
-            // 
-            this.mainFormBindingSource.DataSource = typeof(EmotionalAppraisalWF.MainForm);
             // 
             // MainForm
             // 
