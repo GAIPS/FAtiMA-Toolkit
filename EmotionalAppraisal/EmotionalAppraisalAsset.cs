@@ -94,6 +94,7 @@ namespace EmotionalAppraisal
             set { m_kb.Perspective = Name.BuildName(value); }
 		}
 
+		public ulong Tick {
 		    get { return m_am.Tick; }
 		    set { m_am.Tick = value; }
 	    }

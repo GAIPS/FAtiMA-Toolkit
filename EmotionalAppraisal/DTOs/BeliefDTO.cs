@@ -1,6 +1,4 @@
-﻿using KnowledgeBase;
-
-namespace EmotionalAppraisal.DTOs
+﻿namespace EmotionalAppraisal.DTOs
 {
     public class BeliefDTO : BaseDTO
     {

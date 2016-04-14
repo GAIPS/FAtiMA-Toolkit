@@ -49,15 +49,19 @@ namespace KnowledgeBase
 				}
 
 				if (value == null)
+				{
 					m_perspectives.Remove(perspective);
+					if (m_perspectives.Count == 0)
+						m_perspectives = null;
+				}
 				else
 					m_perspectives[perspective] = value;
 			}
 
-			//public bool IsEmpty()
-			//{
-			//	return (m_perspectives == null) && (m_universal == null);
-			//}
+			public bool IsEmpty()
+			{
+				return (m_perspectives == null) && (m_universal == null);
+			}
 
 			public IEnumerable<KeyValuePair<Name, PrimitiveValue>> GetPerspectives()
 			{
@@ -444,6 +448,8 @@ namespace KnowledgeBase
 
 			var mind_key = ToMList2Key(ToMList);
 			entry.TellValueFor(mind_key,value);
+			if (entry.IsEmpty())
+				m_knowledgeStorage.Remove(fact);
 		}
 
 		private Name RemovePropertyPerspective(Name property, List<Name> ToMList)
