@@ -91,6 +91,7 @@ namespace EmotionalAppraisal
         /// </summary>
 		public string Perspective {
 	        get { return m_kb.Perspective.ToString(); }
+            set { m_kb.Perspective = Name.BuildName(value); }
 		}
 
 	    /// <summary>
@@ -259,9 +260,9 @@ namespace EmotionalAppraisal
 			get { return m_kb; }
 		}
 
-		public void SetPerspective(Name newPerspective)
+		public void UpdateKBAccordingToNewPerspective(Name newPerspective)
 		{
-			m_kb.SetPerspective(newPerspective);
+			m_kb.UpdateKBAccordingToNewPerspective(newPerspective);
 		}
 
 		public EmotionalAppraisalAsset(string perspective)

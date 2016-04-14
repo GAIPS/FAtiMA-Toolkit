@@ -21,7 +21,7 @@ namespace EmotionalAppraisalWF.ViewModels
         public string Perspective
         {
             get { return _emotionalAppraisalAsset.Perspective; }
-            set { _emotionalAppraisalAsset.SetPerspective((Name)value); }
+            set { _emotionalAppraisalAsset.Perspective = value; }
         }
 
         public IEnumerable<string> EmotionTypes { get { return _emotionalAppraisalAsset.EmotionTypes; } } 

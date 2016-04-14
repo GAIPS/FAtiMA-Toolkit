@@ -928,10 +928,6 @@
             this.comboBoxQuantifierType.Size = new System.Drawing.Size(121, 21);
             this.comboBoxQuantifierType.TabIndex = 11;
             // 
-            // mainFormBindingSource
-            // 
-            this.mainFormBindingSource.DataSource = typeof(EmotionalAppraisalWF.MainForm);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);

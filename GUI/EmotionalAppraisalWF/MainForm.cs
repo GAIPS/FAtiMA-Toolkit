@@ -422,7 +422,10 @@ namespace EmotionalAppraisalWF
 
         private void textBoxPerspective_TextChanged(object sender, EventArgs e)
         {
-            this._emotionalStateVM.Perspective = textBoxPerspective.Text;
+            if (!string.IsNullOrEmpty(textBoxPerspective.Text))
+            {
+                this._emotionalStateVM.Perspective = textBoxPerspective.Text;
+            }
         }
 
         private void textBoxStartTick_TextChanged(object sender, EventArgs e)
