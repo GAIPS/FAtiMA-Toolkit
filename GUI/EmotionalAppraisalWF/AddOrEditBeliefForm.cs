@@ -30,7 +30,7 @@ namespace EmotionalAppraisalWF
 
                 beliefNameTextBox.Text = beliefToEdit.Name;
                 beliefValueTextBox.Text = beliefToEdit.Value;
-	            beliefVisibilityComboBox.SelectedIndex = beliefVisibilityComboBox.FindString("");//beliefToEdit.Visibility.ToString());
+                beliefVisibilityComboBox.Text = beliefToEdit.Perspective;
             }
         }
 

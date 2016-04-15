@@ -49,7 +49,7 @@ namespace EmotionalAppraisalWF.ViewModels
         {
             foreach (var beliefDto in beliefs)
             {
-                _emotionalAppraisalAsset.RemoveBelief(beliefDto.Name);
+                _emotionalAppraisalAsset.RemoveBelief(beliefDto.Name, beliefDto.Perspective);
                 Beliefs.DataSource.Remove(beliefDto);
             }
             Beliefs.Refresh();

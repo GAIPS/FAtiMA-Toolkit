@@ -353,9 +353,19 @@ namespace EmotionalAppraisal
 			kb.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator, new[] { "x","y" });
 		}
 
-        public void RemoveBelief(string name)
+        public void RemoveBelief(string name, string perspective)
         {
-            this.Kb.Tell(Name.BuildName(name),null,Name.SELF_SYMBOL);
+            if (perspective == Name.UNIVERSAL_STRING)
+            {
+                this.Kb.Tell(Name.BuildName(name), null, Name.UNIVERSAL_SYMBOL);
+            }else if (perspective == Name.SELF_STRING)
+            {
+                this.Kb.Tell(Name.BuildName(name), null, Name.SELF_SYMBOL);
+            }
+            else
+            {
+                this.Kb.Tell(Name.BuildName(name), null, (Name)perspective);
+            }
         }
         
         #region Dynamic Properties
