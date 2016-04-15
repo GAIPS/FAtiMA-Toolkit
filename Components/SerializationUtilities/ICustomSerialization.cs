@@ -2,7 +2,7 @@
 {
 	public interface ICustomSerialization
 	{
-		void GetObjectData(ISerializationData dataHolder);
-		void SetObjectData(ISerializationData dataHolder); 
+		void GetObjectData(ISerializationData dataHolder, ISerializationContext context);
+		void SetObjectData(ISerializationData dataHolder, ISerializationContext context); 
 	}
 }

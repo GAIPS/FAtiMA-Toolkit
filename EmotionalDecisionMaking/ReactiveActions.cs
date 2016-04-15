@@ -47,27 +47,24 @@ namespace EmotionalDecisionMaking
 			return m_actionTendencies.GetActionDefinition(id).ToDTO();
 		}
 
-		public void GetObjectData(ISerializationData dataHolder)
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			dataHolder.SetValue("DefaultActionCooldown", m_defaultActionCooldown);
-			
-			var actions = dataHolder.ParentGraph.BuildSequenceNode();
-			foreach (var action in m_actionTendencies.GetAllActionDefinitions())
-			{
-				var a = dataHolder.ParentGraph.CreateObjectData();
-				action.GetSerializationData(dataHolder.ParentGraph, a, m_defaultActionCooldown);
-				actions.Add(a);
-			}
-			dataHolder.SetValueGraphNode("ActionTendencies", actions);
+			context.PushContext();
+			context.Context = m_defaultActionCooldown;
+			dataHolder.SetValue("ActionTendencies", m_actionTendencies.GetAllActionDefinitions().ToArray());
+			context.PopContext();
 		}
 
-		public void SetObjectData(ISerializationData dataHolder)
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			DefaultActionCooldown = dataHolder.GetValue<float>("DefaultActionCooldown");
-			var actions = (ISequenceGraphNode)dataHolder.GetValueGraphNode("ActionTendencies");
-			m_actionTendencies.Clear();
-			foreach (var actionDef in actions.Cast<IObjectGraphNode>())
-				m_actionTendencies.AddActionDefinition(new ActionTendency(actionDef, m_defaultActionCooldown));
+			context.PushContext();
+			context.Context = m_defaultActionCooldown;
+			var ats = dataHolder.GetValue<ActionTendency[]>("ActionTendencies");
+			foreach (var at in ats)
+				m_actionTendencies.AddActionDefinition(at);
+			context.PopContext();
 		}
 	}
 }

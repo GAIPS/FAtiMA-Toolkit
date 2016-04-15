@@ -58,19 +58,20 @@ namespace EmotionalDecisionMaking
 			};
 		}
 
-		public override void GetSerializationData(Graph serializationParent, IObjectGraphNode node, object contextData)
+		public override void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
-			base.GetSerializationData(serializationParent, node, contextData);
-			if (ActivationCooldown != (float)contextData)
-				node["Cooldown"] = serializationParent.BuildNode(ActivationCooldown);
+			base.GetObjectData(dataHolder, context);
+			if(!(context.Context is float) || (ActivationCooldown != (float)context.Context))
+				dataHolder.SetValue("Cooldown", ActivationCooldown);
 		}
 
-		/// <summary>
-		/// Deserialization constructor
-		/// </summary>
-		public ActionTendency(IObjectGraphNode node, object contextData) : base(node,contextData)
+		public override void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
-			ActivationCooldown = SerializationServices.GetFieldOrDefault(node, "Cooldown", (float)contextData);
+			base.SetObjectData(dataHolder, context);
+			if (dataHolder.ContainsField("Cooldown"))
+				ActivationCooldown = dataHolder.GetValue<float>("Cooldown");
+			else
+				ActivationCooldown = context.Context as float? ?? DEFAULT_ACTIVATION_COOLDOWN;
 		}
 	}
 }

@@ -5,6 +5,6 @@ namespace AutobiographicMemory
 	public interface IPropertyChangedEvent : IBaseEvent
 	{
 		Name Property { get;}
-		string NewValue { get; }
+		Name NewValue { get; }
 	}
 }

@@ -14,8 +14,10 @@ namespace KnowledgeBase.Conditions
 	[Serializable]
 	public sealed class ConditionSet : IEnumerable<Condition>, IConditionEvaluator, ICustomSerialization
 	{
-		private HashSet<Condition> m_conditions;
 		public LogicalQuantifier Quantifier { get; private set; }
+
+		[NonSerialized]
+		private HashSet<Condition> m_conditions;
 
 		public int Count {
 			get { return m_conditions==null?0:m_conditions.Count; }
@@ -34,7 +36,7 @@ namespace KnowledgeBase.Conditions
 				m_conditions = new HashSet<Condition>(conditions);
 		}
 
-		public ConditionSet(ConditionSetDTO dto) : this(dto.Quantifier,dto.Set.Select(c => Condition.Parse(c.Condition)))
+		public ConditionSet(ConditionSetDTO dto) : this(dto.Quantifier,dto.Set?.Select(c => Condition.Parse(c.Condition)))
 		{
 
 		}
@@ -73,6 +75,9 @@ namespace KnowledgeBase.Conditions
 		{
 			if (constraints == null || !constraints.Any())
 				constraints = new[] {new SubstitutionSet()};
+
+			if (m_conditions == null)
+				return constraints;
 
 			if(Quantifier == LogicalQuantifier.Existential)
 				return ExistentialEvaluate(kb,perspective, constraints);
@@ -209,15 +214,16 @@ namespace KnowledgeBase.Conditions
 			return new ConditionSetDTO() {Quantifier = this.Quantifier,Set = m_conditions.Select(c => c.ToDTO()).ToArray()};
 		}
 
-		public void GetObjectData(ISerializationData dataHolder)
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
-			dataHolder.SetValue("Quantifier",Quantifier);
-			dataHolder.SetValue("Set",m_conditions.ToArray());
+			SerializationServices.PopulateWithFieldData(dataHolder,this,true,false);
+			dataHolder.SetValue("Set", (m_conditions ?? Enumerable.Empty<Condition>()).ToArray());
 		}
 
-		public void SetObjectData(ISerializationData dataHolder)
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
-			Quantifier = dataHolder.GetValue<LogicalQuantifier>("Quantifier");
+			object o = this;
+			SerializationServices.ExtractFromFieldData(dataHolder,ref o,true);
 			var set = dataHolder.GetValue<Condition[]>("Set");
 			if(set!=null)
 				m_conditions = new HashSet<Condition>(set);

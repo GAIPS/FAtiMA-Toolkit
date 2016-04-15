@@ -300,24 +300,15 @@ namespace EmotionalAppraisal
 				return $"Mood: {this.mood} Emotions: {this.emotionPool}";
 			}
 
-			public void GetObjectData(ISerializationData dataHolder)
+			public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 			{
 				dataHolder.SetValue("Parent",m_parent);
-
-				var seq = dataHolder.ParentGraph.BuildSequenceNode();
-				foreach (var v in emotionPool.Values)
-				{
-					var o = dataHolder.ParentGraph.CreateObjectData();
-					v.GetObjectData(o.ToSerializationData());
-					seq.Add(o);
-				}
-
-				dataHolder.SetValueGraphNode("EmotionalPool",seq);
+				dataHolder.SetValue("EmotionalPool", emotionPool.Values.ToArray());
 				dataHolder.SetValue("EmotionDispositions", emotionDispositions.Values.Prepend(m_defaultEmotionalDisposition).ToArray());
 				dataHolder.SetValue("Mood",mood.MoodValue);
 			}
 
-			public void SetObjectData(ISerializationData dataHolder)
+			public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 			{
 				m_parent = dataHolder.GetValue<EmotionalAppraisalAsset>("Parent");
 				mood.SetMoodValue(dataHolder.GetValue<float>("Mood"), m_parent);
@@ -337,14 +328,18 @@ namespace EmotionalAppraisal
 					defaultDisposition = new EmotionDisposition("*",1,1);
 				m_defaultEmotionalDisposition = defaultDisposition;
 
-				var seq = dataHolder.GetValueGraphNode("EmotionalPool") as ISequenceGraphNode;
-				foreach (var n in seq)
+				context.PushContext();
 				{
-					var data = (n as IObjectGraphNode).ToSerializationData();
-                    var emotion = new ActiveEmotion(data,m_parent.Tick);
-				    var hash = calculateHashString(emotion, m_parent.m_am);
-					emotionPool.Add(hash, emotion);
+					context.Context = m_parent.Tick;
+
+					var emotions = dataHolder.GetValue<ActiveEmotion[]>("EmotionalPool");
+					foreach (var emotion in emotions)
+					{
+						var hash = calculateHashString(emotion, m_parent.m_am);
+						emotionPool.Add(hash, emotion);
+					}
 				}
+				context.PopContext();
 			}
 		}
 	}

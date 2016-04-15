@@ -39,8 +39,10 @@
     <Compile Include="GraphFormatterSelector.cs" />
     <Compile Include="ICustomSerialization.cs" />
     <Compile Include="IGraphFormatter.cs" />
+    <Compile Include="ISerializationContext.cs" />
     <Compile Include="ISerializationData.cs" />
     <Compile Include="ISerializer.cs" />
+    <Compile Include="SerializationContext.cs" />
     <Compile Include="SerializationGraph\BaseGraphNode.cs" />
     <Compile Include="SerializationGraph\SerializedDataType.cs" />
     <Compile Include="SerializationGraph\ObjectGraphNode.cs" />

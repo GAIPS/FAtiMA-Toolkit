@@ -94,7 +94,7 @@ namespace RolePlayCharacter
             serializer.Serialize(file, this);
         }
 
-        public void GetObjectData(ISerializationData dataHolder)
+        public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             dataHolder.SetValue("EmotionalAppraisalAssetSource", EmotionalAppraisalAssetSource);
             dataHolder.SetValue("EmotionalDecisionMakingAssetSource", EmotionalDecisionMakingSource);
@@ -102,7 +102,7 @@ namespace RolePlayCharacter
             dataHolder.SetValue("BodyName", BodyName);
         }
 
-        public void SetObjectData(ISerializationData dataHolder)
+        public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             EmotionalAppraisalAssetSource = dataHolder.GetValue<string>("EmotionalAppraisalAssetSource");
             EmotionalDecisionMakingSource = dataHolder.GetValue<string>("EmotionalDecisionMakingAssetSource");
