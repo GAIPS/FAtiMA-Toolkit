@@ -5,6 +5,8 @@ using EmotionalAppraisal;
 using EmotionalDecisionMaking;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Runtime.CompilerServices;
 using ActionLibrary;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
@@ -35,6 +37,8 @@ namespace RolePlayCharacter
 
         public string EmotionalDecisionMakingSource { get; set; }
 
+        public string ErrorOnLoad { get; set; }
+
         public float Mood { get { return _emotionalAppraisalAsset == null ? 0 : _emotionalAppraisalAsset.Mood; } }
 
         public IEnumerable<IActiveEmotion> Emotions => _emotionalAppraisalAsset?.GetAllActiveEmotions();
@@ -55,10 +59,28 @@ namespace RolePlayCharacter
 
             if (!string.IsNullOrEmpty(rpc.EmotionalAppraisalAssetSource))
             {
-                rpc._emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(rpc.EmotionalAppraisalAssetSource);
+                try
+                {
+                    rpc._emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(rpc.EmotionalAppraisalAssetSource);
+                }
+                catch (Exception ex)
+                {
+                    rpc.ErrorOnLoad = "Unable to load the Emotional Appraisal Asset at " + rpc.EmotionalAppraisalAssetSource + ". Check if the path is correct.";
+                    return rpc;
+                }
+
                 if (!string.IsNullOrEmpty(rpc.EmotionalDecisionMakingSource))
                 {
-                    rpc._emotionalDecisionMakingAsset = EmotionalDecisionMakingAsset.LoadFromFile(rpc.EmotionalDecisionMakingSource);
+                    try
+                    {
+                        rpc._emotionalDecisionMakingAsset = EmotionalDecisionMakingAsset.LoadFromFile(rpc.EmotionalDecisionMakingSource);
+                    }
+                    catch (Exception ex)
+                    {
+                        rpc.ErrorOnLoad = "Unable to load the Emotional Decision Making Asset at " + rpc.EmotionalAppraisalAssetSource + ". Check if the path is correct.";
+                        return rpc;
+                    }
+
                     rpc._emotionalDecisionMakingAsset.RegisterEmotionalAppraisalAsset(rpc._emotionalAppraisalAsset);
                 }
             }

@@ -32,6 +32,10 @@ namespace RolePlayCharacterWF
                 try
                 {
                     _rpcAsset = RolePlayCharacterAsset.LoadFromFile((args[1]));
+                    if (_rpcAsset.ErrorOnLoad != null)
+                    {
+                        MessageBox.Show(_rpcAsset.ErrorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                     Reset(false);
                 }
                 catch (Exception ex)
@@ -130,6 +134,10 @@ namespace RolePlayCharacterWF
                 {
                     _rpcAsset = RolePlayCharacterAsset.LoadFromFile(ofd.FileName);
                     _saveFileName = ofd.FileName;
+                    if (_rpcAsset.ErrorOnLoad != null)
+                    {
+                        MessageBox.Show(_rpcAsset.ErrorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                     Reset(false);
                 }
                 catch (Exception ex)

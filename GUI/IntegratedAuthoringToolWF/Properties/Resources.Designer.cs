@@ -79,6 +79,15 @@ namespace IntegratedAuthoringToolWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error occurred when trying to load one the characters in the scenario..
+        /// </summary>
+        internal static string RPCLoadingError {
+            get {
+                return ResourceManager.GetString("RPCLoadingError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to save to the chosen file..
         /// </summary>
         internal static string UnableToSaveFileError {

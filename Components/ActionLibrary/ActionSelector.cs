@@ -42,8 +42,8 @@ namespace ActionLibrary
 		{
 			return m_actions.Select(p => p.Item2).FirstOrDefault(t => t.Id == id);
 		}
-
-		public IEnumerable<IAction> SelectAction(KB knowledgeBase, Name perspective)
+        
+        public IEnumerable<IAction> SelectAction(KB knowledgeBase, Name perspective)
 		{
 			var validActions = m_actions.MatchConditions(knowledgeBase, perspective, new SubstitutionSet());
 			validActions = validActions.Where(p => m_validator(p.Item1, p.Item2));

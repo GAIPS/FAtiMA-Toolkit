@@ -17,7 +17,7 @@ namespace EmotionalDecisionMakingWF
         private EmotionalDecisionMakingAsset _edmAsset;
         private string _saveFileName;
 
-        private BindingListView<ActionTendenciesDTO> _reactiveActions;
+        private BindingListView<ReactionDTO> _reactiveActions;
         private BindingListView<ConditionDTO> _conditions; 
         private Guid _selectedActionId;
 
@@ -57,10 +57,10 @@ namespace EmotionalDecisionMakingWF
                 this.Text = Resources.MainFormTitle + " - " + _saveFileName;
             }
 
-            this._reactiveActions = new BindingListView<ActionTendenciesDTO>(_edmAsset.GetAllActionTendencies().ToList());
+            this._reactiveActions = new BindingListView<ReactionDTO>(_edmAsset.GetAllReactions().ToList());
             dataGridViewReactiveActions.DataSource = this._reactiveActions;
-            dataGridViewReactiveActions.Columns[PropertyUtil.GetName<ActionTendenciesDTO>(dto => dto.Id)].Visible = false;
-            dataGridViewReactiveActions.Columns[PropertyUtil.GetName<ActionTendenciesDTO>(dto => dto.Conditions)].Visible = false;
+            dataGridViewReactiveActions.Columns[PropertyUtil.GetName<ReactionDTO>(dto => dto.Id)].Visible = false;
+            dataGridViewReactiveActions.Columns[PropertyUtil.GetName<ReactionDTO>(dto => dto.Conditions)].Visible = false;
 
 
             if (_reactiveActions.Any())
@@ -161,11 +161,24 @@ namespace EmotionalDecisionMakingWF
 
         private void dataGridViewReactiveActions_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
-            var reaction = ((ObjectView<ActionTendenciesDTO>)dataGridViewReactiveActions.Rows[e.RowIndex].DataBoundItem).Object;
+            var reaction = ((ObjectView<ReactionDTO>)dataGridViewReactiveActions.Rows[e.RowIndex].DataBoundItem).Object;
             _selectedActionId = reaction.Id;
 
             _conditions.DataSource = _edmAsset.GetReactionsConditions(_selectedActionId).ToList();
             _conditions.Refresh();
+        }
+
+        private void buttonRemoveReaction_Click(object sender, EventArgs e)
+        {
+            IList<ReactionDTO> reactionsToRemove = new List<ReactionDTO>();
+            for (int i = 0; i < dataGridViewReactiveActions.SelectedRows.Count; i++)
+            {
+                var reaction = ((ObjectView<ReactionDTO>)dataGridViewReactiveActions.SelectedRows[i].DataBoundItem).Object;
+                reactionsToRemove.Add(reaction);
+            }
+            _edmAsset.RemoveReactions(reactionsToRemove);
+            _reactiveActions.DataSource = _edmAsset.GetAllReactions().ToList();
+            _reactiveActions.Refresh();
         }
     }
 }

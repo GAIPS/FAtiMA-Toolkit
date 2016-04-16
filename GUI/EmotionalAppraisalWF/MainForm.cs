@@ -576,5 +576,10 @@ namespace EmotionalAppraisalWF
             }
             _appraisalRulesVM.RemoveConditions(conditionsToRemove);
         }
+
+        private void emotionalStateTabPage_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

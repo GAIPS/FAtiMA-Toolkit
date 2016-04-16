@@ -2,7 +2,7 @@
 
 namespace EmotionalDecisionMaking.DTOs
 {
-    public class ActionTendenciesDTO : ActionDefinitionDTO
+    public class ReactionDTO : ActionDefinitionDTO
     {
 	    public float Cooldown { get; set; }
 	}

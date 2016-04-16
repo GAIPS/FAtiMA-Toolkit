@@ -55,7 +55,7 @@ namespace EmotionalDecisionMaking
 			return ReactiveActions.SelectAction(m_emotionalDecisionMaking.Kb,Name.SELF_SYMBOL);
 		}
 
-        public IEnumerable<ActionTendenciesDTO> GetAllActionTendencies()
+        public IEnumerable<ReactionDTO> GetAllReactions()
         {
 	        return ReactiveActions.GetAllActionTendencies();
         }
@@ -64,5 +64,13 @@ namespace EmotionalDecisionMaking
 		{
 			return ReactiveActions.GetDTOFromGUID(id).Conditions.Set;
 		}
+
+	    public void RemoveReactions(IList<ReactionDTO> reactionsToRemove)
+	    {
+	        foreach (var reaction in reactionsToRemove)
+	        {
+	            this.ReactiveActions.RemoveAction(reaction.Id);
+	        }
+	    }
 	}
 }

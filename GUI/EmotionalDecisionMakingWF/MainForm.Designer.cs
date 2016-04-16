@@ -36,16 +36,16 @@
             this.saveAsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.buttonEditAppraisalRule = new System.Windows.Forms.Button();
-            this.buttonAddAppraisalRule = new System.Windows.Forms.Button();
-            this.buttonRemoveAppraisalRule = new System.Windows.Forms.Button();
+            this.buttonEditReaction = new System.Windows.Forms.Button();
+            this.buttonAddReaction = new System.Windows.Forms.Button();
+            this.buttonRemoveReaction = new System.Windows.Forms.Button();
             this.dataGridViewReactiveActions = new System.Windows.Forms.DataGridView();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.comboBoxQuantifierType = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.buttonEditAppraisalRuleCondition = new System.Windows.Forms.Button();
-            this.buttonAddAppraisalRuleCondition = new System.Windows.Forms.Button();
-            this.buttonRemoveAppraisalRuleCondition = new System.Windows.Forms.Button();
+            this.buttonEditReactionCondition = new System.Windows.Forms.Button();
+            this.buttonAddReactionCondition = new System.Windows.Forms.Button();
+            this.buttonRemoveReactionCondition = new System.Windows.Forms.Button();
             this.dataGridViewReactionConditions = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.richTextBoxDescription = new System.Windows.Forms.RichTextBox();
@@ -83,35 +83,35 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.newToolStripMenuItem.Text = "&New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.openToolStripMenuItem.Text = "&Open...";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.saveToolStripMenuItem.Text = "&Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsStripMenuItem
             // 
             this.saveAsStripMenuItem.Name = "saveAsStripMenuItem";
-            this.saveAsStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveAsStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.saveAsStripMenuItem.Text = "Save &As...";
             this.saveAsStripMenuItem.Click += new System.EventHandler(this.saveAsStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click_1);
             // 
@@ -120,9 +120,9 @@
             this.groupBox7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox7.Controls.Add(this.buttonEditAppraisalRule);
-            this.groupBox7.Controls.Add(this.buttonAddAppraisalRule);
-            this.groupBox7.Controls.Add(this.buttonRemoveAppraisalRule);
+            this.groupBox7.Controls.Add(this.buttonEditReaction);
+            this.groupBox7.Controls.Add(this.buttonAddReaction);
+            this.groupBox7.Controls.Add(this.buttonRemoveReaction);
             this.groupBox7.Controls.Add(this.dataGridViewReactiveActions);
             this.groupBox7.Location = new System.Drawing.Point(12, 27);
             this.groupBox7.Name = "groupBox7";
@@ -131,37 +131,39 @@
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Reactions";
             // 
-            // buttonEditAppraisalRule
+            // buttonEditReaction
             // 
-            this.buttonEditAppraisalRule.Location = new System.Drawing.Point(66, 19);
-            this.buttonEditAppraisalRule.Name = "buttonEditAppraisalRule";
-            this.buttonEditAppraisalRule.Size = new System.Drawing.Size(70, 23);
-            this.buttonEditAppraisalRule.TabIndex = 9;
-            this.buttonEditAppraisalRule.Text = "Edit";
-            this.buttonEditAppraisalRule.UseVisualStyleBackColor = true;
+            this.buttonEditReaction.Location = new System.Drawing.Point(66, 19);
+            this.buttonEditReaction.Name = "buttonEditReaction";
+            this.buttonEditReaction.Size = new System.Drawing.Size(70, 23);
+            this.buttonEditReaction.TabIndex = 9;
+            this.buttonEditReaction.Text = "Edit";
+            this.buttonEditReaction.UseVisualStyleBackColor = true;
             // 
-            // buttonAddAppraisalRule
+            // buttonAddReaction
             // 
-            this.buttonAddAppraisalRule.Location = new System.Drawing.Point(6, 19);
-            this.buttonAddAppraisalRule.Name = "buttonAddAppraisalRule";
-            this.buttonAddAppraisalRule.Size = new System.Drawing.Size(54, 23);
-            this.buttonAddAppraisalRule.TabIndex = 7;
-            this.buttonAddAppraisalRule.Text = "Add";
-            this.buttonAddAppraisalRule.UseVisualStyleBackColor = true;
+            this.buttonAddReaction.Location = new System.Drawing.Point(6, 19);
+            this.buttonAddReaction.Name = "buttonAddReaction";
+            this.buttonAddReaction.Size = new System.Drawing.Size(54, 23);
+            this.buttonAddReaction.TabIndex = 7;
+            this.buttonAddReaction.Text = "Add";
+            this.buttonAddReaction.UseVisualStyleBackColor = true;
             // 
-            // buttonRemoveAppraisalRule
+            // buttonRemoveReaction
             // 
-            this.buttonRemoveAppraisalRule.Location = new System.Drawing.Point(142, 19);
-            this.buttonRemoveAppraisalRule.Name = "buttonRemoveAppraisalRule";
-            this.buttonRemoveAppraisalRule.Size = new System.Drawing.Size(70, 23);
-            this.buttonRemoveAppraisalRule.TabIndex = 8;
-            this.buttonRemoveAppraisalRule.Text = "Remove";
-            this.buttonRemoveAppraisalRule.UseVisualStyleBackColor = true;
+            this.buttonRemoveReaction.Location = new System.Drawing.Point(142, 19);
+            this.buttonRemoveReaction.Name = "buttonRemoveReaction";
+            this.buttonRemoveReaction.Size = new System.Drawing.Size(70, 23);
+            this.buttonRemoveReaction.TabIndex = 8;
+            this.buttonRemoveReaction.Text = "Remove";
+            this.buttonRemoveReaction.UseVisualStyleBackColor = true;
+            this.buttonRemoveReaction.Click += new System.EventHandler(this.buttonRemoveReaction_Click);
             // 
             // dataGridViewReactiveActions
             // 
             this.dataGridViewReactiveActions.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.dataGridViewReactiveActions.AllowUserToAddRows = false;
+            this.dataGridViewReactiveActions.AllowUserToDeleteRows = false;
             this.dataGridViewReactiveActions.AllowUserToOrderColumns = true;
             this.dataGridViewReactiveActions.AllowUserToResizeRows = false;
             this.dataGridViewReactiveActions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -187,9 +189,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox8.Controls.Add(this.comboBoxQuantifierType);
             this.groupBox8.Controls.Add(this.label2);
-            this.groupBox8.Controls.Add(this.buttonEditAppraisalRuleCondition);
-            this.groupBox8.Controls.Add(this.buttonAddAppraisalRuleCondition);
-            this.groupBox8.Controls.Add(this.buttonRemoveAppraisalRuleCondition);
+            this.groupBox8.Controls.Add(this.buttonEditReactionCondition);
+            this.groupBox8.Controls.Add(this.buttonAddReactionCondition);
+            this.groupBox8.Controls.Add(this.buttonRemoveReactionCondition);
             this.groupBox8.Controls.Add(this.dataGridViewReactionConditions);
             this.groupBox8.Location = new System.Drawing.Point(12, 298);
             this.groupBox8.Name = "groupBox8";
@@ -218,37 +220,38 @@
             this.label2.TabIndex = 10;
             this.label2.Text = "Quantifier Type:";
             // 
-            // buttonEditAppraisalRuleCondition
+            // buttonEditReactionCondition
             // 
-            this.buttonEditAppraisalRuleCondition.Location = new System.Drawing.Point(66, 18);
-            this.buttonEditAppraisalRuleCondition.Name = "buttonEditAppraisalRuleCondition";
-            this.buttonEditAppraisalRuleCondition.Size = new System.Drawing.Size(70, 23);
-            this.buttonEditAppraisalRuleCondition.TabIndex = 9;
-            this.buttonEditAppraisalRuleCondition.Text = "Edit";
-            this.buttonEditAppraisalRuleCondition.UseVisualStyleBackColor = true;
+            this.buttonEditReactionCondition.Location = new System.Drawing.Point(66, 18);
+            this.buttonEditReactionCondition.Name = "buttonEditReactionCondition";
+            this.buttonEditReactionCondition.Size = new System.Drawing.Size(70, 23);
+            this.buttonEditReactionCondition.TabIndex = 9;
+            this.buttonEditReactionCondition.Text = "Edit";
+            this.buttonEditReactionCondition.UseVisualStyleBackColor = true;
             // 
-            // buttonAddAppraisalRuleCondition
+            // buttonAddReactionCondition
             // 
-            this.buttonAddAppraisalRuleCondition.Location = new System.Drawing.Point(6, 18);
-            this.buttonAddAppraisalRuleCondition.Name = "buttonAddAppraisalRuleCondition";
-            this.buttonAddAppraisalRuleCondition.Size = new System.Drawing.Size(54, 23);
-            this.buttonAddAppraisalRuleCondition.TabIndex = 7;
-            this.buttonAddAppraisalRuleCondition.Text = "Add";
-            this.buttonAddAppraisalRuleCondition.UseVisualStyleBackColor = true;
+            this.buttonAddReactionCondition.Location = new System.Drawing.Point(6, 18);
+            this.buttonAddReactionCondition.Name = "buttonAddReactionCondition";
+            this.buttonAddReactionCondition.Size = new System.Drawing.Size(54, 23);
+            this.buttonAddReactionCondition.TabIndex = 7;
+            this.buttonAddReactionCondition.Text = "Add";
+            this.buttonAddReactionCondition.UseVisualStyleBackColor = true;
             // 
-            // buttonRemoveAppraisalRuleCondition
+            // buttonRemoveReactionCondition
             // 
-            this.buttonRemoveAppraisalRuleCondition.Location = new System.Drawing.Point(142, 18);
-            this.buttonRemoveAppraisalRuleCondition.Name = "buttonRemoveAppraisalRuleCondition";
-            this.buttonRemoveAppraisalRuleCondition.Size = new System.Drawing.Size(70, 23);
-            this.buttonRemoveAppraisalRuleCondition.TabIndex = 8;
-            this.buttonRemoveAppraisalRuleCondition.Text = "Remove";
-            this.buttonRemoveAppraisalRuleCondition.UseVisualStyleBackColor = true;
+            this.buttonRemoveReactionCondition.Location = new System.Drawing.Point(142, 18);
+            this.buttonRemoveReactionCondition.Name = "buttonRemoveReactionCondition";
+            this.buttonRemoveReactionCondition.Size = new System.Drawing.Size(70, 23);
+            this.buttonRemoveReactionCondition.TabIndex = 8;
+            this.buttonRemoveReactionCondition.Text = "Remove";
+            this.buttonRemoveReactionCondition.UseVisualStyleBackColor = true;
             // 
             // dataGridViewReactionConditions
             // 
             this.dataGridViewReactionConditions.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.dataGridViewReactionConditions.AllowUserToAddRows = false;
+            this.dataGridViewReactionConditions.AllowUserToDeleteRows = false;
             this.dataGridViewReactionConditions.AllowUserToOrderColumns = true;
             this.dataGridViewReactionConditions.AllowUserToResizeRows = false;
             this.dataGridViewReactionConditions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -327,16 +330,16 @@
         private System.Windows.Forms.ToolStripMenuItem saveAsStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.Button buttonEditAppraisalRule;
-        private System.Windows.Forms.Button buttonAddAppraisalRule;
-        private System.Windows.Forms.Button buttonRemoveAppraisalRule;
+        private System.Windows.Forms.Button buttonEditReaction;
+        private System.Windows.Forms.Button buttonAddReaction;
+        private System.Windows.Forms.Button buttonRemoveReaction;
         private System.Windows.Forms.DataGridView dataGridViewReactiveActions;
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.ComboBox comboBoxQuantifierType;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button buttonEditAppraisalRuleCondition;
-        private System.Windows.Forms.Button buttonAddAppraisalRuleCondition;
-        private System.Windows.Forms.Button buttonRemoveAppraisalRuleCondition;
+        private System.Windows.Forms.Button buttonEditReactionCondition;
+        private System.Windows.Forms.Button buttonAddReactionCondition;
+        private System.Windows.Forms.Button buttonRemoveReactionCondition;
         private System.Windows.Forms.DataGridView dataGridViewReactionConditions;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RichTextBox richTextBoxDescription;
