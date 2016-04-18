@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using AutobiographicMemory;
 using EmotionalAppraisal.Components;
 using EmotionalAppraisal.DTOs;
@@ -12,7 +11,6 @@ using KnowledgeBase.Conditions;
 using KnowledgeBase.DTOs.Conditions;
 using KnowledgeBase.WellFormedNames;
 using KnowledgeBase.WellFormedNames.Collections;
-using Utilities;
 
 namespace EmotionalAppraisal.AppraisalRules
 {

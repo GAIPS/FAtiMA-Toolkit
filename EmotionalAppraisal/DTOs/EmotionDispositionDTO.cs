@@ -1,7 +1,4 @@
-﻿using System;
-using EmotionalAppraisal.DTOs;
-
-namespace EmotionalAppraisal
+﻿namespace EmotionalAppraisal
 {
 	public class EmotionDispositionDTO 
 	{

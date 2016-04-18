@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using KnowledgeBase.Exceptions;
 
 namespace KnowledgeBase.WellFormedNames
 {

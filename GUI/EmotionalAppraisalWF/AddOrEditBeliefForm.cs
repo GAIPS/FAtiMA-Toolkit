@@ -3,7 +3,6 @@ using System.Windows.Forms;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
-using KnowledgeBase;
 
 namespace EmotionalAppraisalWF
 {

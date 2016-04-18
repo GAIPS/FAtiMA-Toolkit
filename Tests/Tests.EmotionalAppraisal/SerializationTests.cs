@@ -7,8 +7,6 @@ using KnowledgeBase.WellFormedNames;
 using System.IO;
 using EmotionalAppraisal.DTOs;
 using GAIPS.Serialization;
-using KnowledgeBase;
-using KnowledgeBase.Conditions;
 
 namespace Tests.EmotionalAppraisal
 {

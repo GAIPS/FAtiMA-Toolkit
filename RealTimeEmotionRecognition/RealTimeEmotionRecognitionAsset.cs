@@ -1,5 +1,4 @@
-﻿using System;
-using AssetPackage;
+﻿using AssetPackage;
 
 namespace RealTimeEmotionRecognition
 {
