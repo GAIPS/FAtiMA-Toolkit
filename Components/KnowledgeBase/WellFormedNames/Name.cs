@@ -63,10 +63,7 @@ namespace KnowledgeBase.WellFormedNames
 		public static readonly Name UNIVERSAL_SYMBOL = new UniversalSymbol();
 		public static readonly Name AGENT_SYMBOL = new VariableSymbol("AGENT");
 
-		private bool m_isGrounded;
-		public bool IsGrounded {
-			get { return m_isGrounded; }
-		}
+		public bool IsGrounded { get; }
 
 		public readonly bool IsUniversal;
 		/// <summary>
@@ -91,14 +88,14 @@ namespace KnowledgeBase.WellFormedNames
 
 		public abstract int NumberOfTerms { get; }
 
-		private Name(bool IsGrounded, bool IsUniversal, bool IsConstant, bool IsVariable, bool IsPrimitive, bool IsComposed)
+		private Name(bool isGrounded, bool isUniversal, bool isConstant, bool isVariable, bool isPrimitive, bool isComposed)
 		{
-			m_isGrounded = IsGrounded;
-			this.IsUniversal = IsUniversal;
-			this.IsConstant = IsConstant;
-			this.IsVariable = IsVariable;
-			this.IsPrimitive = IsPrimitive;
-			this.IsComposed = IsComposed;
+			this.IsGrounded = isGrounded;
+			this.IsUniversal = isUniversal;
+			this.IsConstant = isConstant;
+			this.IsVariable = isVariable;
+			this.IsPrimitive = isPrimitive;
+			this.IsComposed = isComposed;
 		}
 		
 		public abstract override bool Equals(object obj);
@@ -123,33 +120,43 @@ namespace KnowledgeBase.WellFormedNames
 		/// </summary>
 		public abstract IEnumerable<Name> GetLiterals();
 
-		public abstract IEnumerable<Name> GetVariableList();
+		public abstract IEnumerable<Name> GetVariables();
 
 		public abstract bool HasGhostVariable();
 
-		public abstract bool HasVariables();
+		public abstract bool HasSelf();
 
 		public bool ContainsVariable(Name variable)
 		{
 			if (!variable.IsVariable)
-				throw new ArgumentException("The given Name is not a variable","variable");
+				throw new ArgumentException("The given Name is not a variable",nameof(variable));
 
 			var v = (VariableSymbol) variable;
 
-			return this.GetVariableList().Cast<VariableSymbol>().Any(s => s.Equals(v));
+			return this.GetVariables().Cast<VariableSymbol>().Any(s => s.Equals(v));
 		}
 
 		public Name ApplyPerspective(string name)
 		{
-			return SwapPerspective(BuildName(name), SELF_SYMBOL);
+			return ApplyPerspective(BuildName(name));
 		}
 
 		public Name RemovePerspective(string name)
 		{
-			return SwapPerspective(SELF_SYMBOL, BuildName(name));
+			return RemovePerspective(BuildName(name));
 		}
 
-		protected abstract Name SwapPerspective(Name original, Name newName);
+		public Name ApplyPerspective(Name name)
+		{
+			return SwapPerspective(name, SELF_SYMBOL);
+		}
+
+		public Name RemovePerspective(Name name)
+		{
+			return SwapPerspective(SELF_SYMBOL, name);
+		}
+
+		public abstract Name SwapPerspective(Name original, Name newName);
 
 		public abstract Name MakeGround(SubstitutionSet bindings);
 		public abstract Name ReplaceUnboundVariables(string id);
@@ -170,17 +177,7 @@ namespace KnowledgeBase.WellFormedNames
 		/// <returns></returns>
 		public abstract bool Match(Name name);
 
-		/// <summary>
-		/// Unfolds a name into depth 0 Name with a set of binding.
-		/// Ex:
-		///    A(B,C(D,E(F))) unfolds into A(B,[_0]) with the bindings
-		///    [_0]/C(D,[_1])
-		///    [_1]/E(F)
-		/// 
-		/// </summary>
-		/// <param name="set">The output set of substitutions that fold the name again into it's original form.</param>
-		/// <returns>The unfolded Name.</returns>
-		public abstract Name Unfold(out SubstitutionSet set);
+		public abstract Name ApplyToTerms(Func<Name, Name> transformFunction);
 
 		public abstract PrimitiveValue GetPrimitiveValue();
 
@@ -232,7 +229,7 @@ namespace KnowledgeBase.WellFormedNames
 			{
 				set.AddRange(terms);
 				if (set.Count < 2)
-					throw new ArgumentException("Need at least 2 term to create a composed symbol", "terms");
+					return set[0];
 
 				Symbol head = set[0] as Symbol;
 				if (head == null)
@@ -306,7 +303,7 @@ namespace KnowledgeBase.WellFormedNames
 		private static ComposedName ParseComposedName(string str)
 		{
 			if (str[str.Length - 1] != ')')
-				throw new ParsingException("Failed to parse name. Expected ')', got '{0}'", str[str.Length - 1]);
+				throw new ParsingException($"Failed to parse name. Expected ')', got '{str[str.Length - 1]}'");
 
 			int index = str.IndexOf('(');
 

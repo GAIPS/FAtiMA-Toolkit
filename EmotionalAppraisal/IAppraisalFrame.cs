@@ -5,7 +5,7 @@ namespace EmotionalAppraisal
 {
 	public interface IAppraisalFrame
 	{
-		IEventRecord AppraisedEvent { get; }
+		IBaseEvent AppraisedEvent { get; }
 		IEnumerable<string> AppraisalVariables { get; }
 		bool IsEmpty { get; }
 		long LastChange { get; }

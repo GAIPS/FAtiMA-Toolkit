@@ -1,73 +1,81 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ActionLibrary;
+using EmotionalDecisionMaking.DTOs;
 using GAIPS.Serialization;
 using GAIPS.Serialization.SerializationGraph;
 using KnowledgeBase;
-using KnowledgeBase.Conditions;
 using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalDecisionMaking
 {
 	[Serializable]
-	public sealed partial class ReactiveActions : ICustomSerialization
+	public sealed class ReactiveActions : ICustomSerialization
 	{
 		private float m_defaultActionCooldown = 2;
-		private ConditionMapper<ActionTendency> m_actions = null;
-
 		public float DefaultActionCooldown
 		{
 			get { return m_defaultActionCooldown; }
 			set { m_defaultActionCooldown = value < 0 ? 0 : value; }
 		}
 
+		private ActionSelector<ActionTendency> m_actionTendencies;
+
 		public ReactiveActions()
 		{
-			m_actions = new ConditionMapper<ActionTendency>();
+			m_actionTendencies = new ActionSelector<ActionTendency>((tendency, set) => !tendency.IsCoolingdown);
 		}
 
-		public void AddReactiveAction(ActionTendency action)
+		public void AddActionTendency(ActionTendency at)
 		{
-			m_actions.Add(action.ActivationConditions, (ActionTendency)action.Clone());
+			m_actionTendencies.AddActionDefinition(at);
 		}
 
-		public IEnumerable<IAction> MakeAction(KB knowledgeBase)
+        public void RemoveAction(Guid id)
+        {
+            var action = m_actionTendencies.GetActionDefinition(id);
+            if (action != null)
+            {
+                m_actionTendencies.RemoveActionDefinition(action);
+            }
+        }
+
+        public IEnumerable<IAction> SelectAction(KB kb, Name perspective)
 		{
-			var validActions = m_actions.MatchConditions(knowledgeBase, new SubstitutionSet());
-			foreach (var action in validActions.Where(a => !a.Item1.IsCoolingdown))
-			{
-				var a = action.Item1.GenerateAction(action.Item2);
-				if (a == null)
-					continue;
-
-				yield return a;
-			}
+			return m_actionTendencies.SelectAction(kb, perspective);
 		}
 
-		public void GetObjectData(ISerializationData dataHolder)
+		public IEnumerable<ReactionDTO> GetAllActionTendencies()
 		{
-			dataHolder.SetValue("DefaultActionCooldown",m_defaultActionCooldown);
-			var actions = dataHolder.ParentGraph.BuildSequenceNode();
-			foreach (var action in m_actions.Select(s => s.Item2))
-			{
-				var a = dataHolder.ParentGraph.CreateObjectData();
-				action.GetSerializationData(dataHolder.ParentGraph,a, m_defaultActionCooldown);
-				actions.Add(a);
-			}
-			dataHolder.SetValueGraphNode("ActionTendencies",actions);
+			return m_actionTendencies.GetAllActionDefinitions().Select(at => at.ToDTO());
 		}
 
-		public void SetObjectData(ISerializationData dataHolder)
+		public ReactionDTO GetDTOFromGUID(Guid id)
+		{
+			return m_actionTendencies.GetActionDefinition(id).ToDTO();
+		}
+
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		{
+			dataHolder.SetValue("DefaultActionCooldown", m_defaultActionCooldown);
+			context.PushContext();
+			context.Context = m_defaultActionCooldown;
+			dataHolder.SetValue("ActionTendencies", m_actionTendencies.GetAllActionDefinitions().ToArray());
+			context.PopContext();
+		}
+
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			DefaultActionCooldown = dataHolder.GetValue<float>("DefaultActionCooldown");
-			List<ActionTendency> loadedActions = new List<ActionTendency>();
-			var actions = (ISequenceGraphNode) dataHolder.GetValueGraphNode("ActionTendencies");
-			foreach (var actionDef in actions.Cast<IObjectGraphNode>())
-				loadedActions.Add(new ActionTendency(actionDef,m_defaultActionCooldown));
-
-			m_actions=new ConditionMapper<ActionTendency>();
-			foreach (var a in loadedActions)
-				m_actions.Add(a.ActivationConditions, a);
+			context.PushContext();
+			context.Context = m_defaultActionCooldown;
+			var ats = dataHolder.GetValue<ActionTendency[]>("ActionTendencies");
+			foreach (var at in ats)
+				m_actionTendencies.AddActionDefinition(at);
+			context.PopContext();
 		}
+
+	    
 	}
 }

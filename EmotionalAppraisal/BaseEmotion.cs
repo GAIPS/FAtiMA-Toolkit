@@ -130,7 +130,7 @@ namespace EmotionalAppraisal
 				this.Potential = 0;
 		}
 
-		public IEventRecord GetCause(AM am)
+		public IBaseEvent GetCause(AM am)
 		{
 			return am.RecallEvent(CauseId);
 		}
@@ -148,13 +148,14 @@ namespace EmotionalAppraisal
 			return result;
 		}
 
-        public EmotionDTO ToDto()
+        public EmotionDTO ToDto(AM am)
         {
             return new EmotionDTO
             {
                 Type = this.EmotionType,
                 Intensity = this.Potential,
-                CauseEvent = this.CauseId,
+                CauseEventId = this.CauseId,
+                CauseEventName = am.RecallEvent(this.CauseId).EventName.ToString()
             };
         }
     }

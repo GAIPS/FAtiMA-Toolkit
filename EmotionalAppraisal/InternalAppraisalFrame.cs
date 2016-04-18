@@ -12,7 +12,7 @@ namespace EmotionalAppraisal
 			private Dictionary<object, ComponentAppraisalFrame> nestedFrames = new Dictionary<object, ComponentAppraisalFrame>();
 			private Dictionary<string, AppraisalVariable> appraisalVariables = new Dictionary<string, AppraisalVariable>();
 
-			public IEventRecord AppraisedEvent { get; private set; }
+			public IBaseEvent AppraisedEvent { get; private set; }
 
 			public IEnumerable<string> AppraisalVariables
 			{
@@ -36,7 +36,7 @@ namespace EmotionalAppraisal
 				LastChange = 0;
 			}
 
-			public void Reset(IEventRecord evt)
+			public void Reset(IBaseEvent evt)
 			{
 				this.AppraisedEvent = evt;
 				this.LastChange = 0;
@@ -149,7 +149,7 @@ namespace EmotionalAppraisal
 				private object component;
 				private short weight;
 
-				public IEventRecord AppraisedEvent
+				public IBaseEvent AppraisedEvent
 				{
 					get {
 						return this.parentFrame.AppraisedEvent;

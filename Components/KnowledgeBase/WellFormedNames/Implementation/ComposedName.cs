@@ -107,9 +107,9 @@ namespace KnowledgeBase.WellFormedNames
 				return Terms.SelectMany(t => t.GetLiterals()).Prepend(RootSymbol);
 			}
 
-			public override IEnumerable<Name> GetVariableList()
+			public override IEnumerable<Name> GetVariables()
 			{
-				return GetTerms().SelectMany(l => l.GetVariableList());
+				return GetTerms().SelectMany(l => l.GetVariables());
 			}
 
 			public override bool HasGhostVariable()
@@ -117,12 +117,12 @@ namespace KnowledgeBase.WellFormedNames
 				return GetTerms().Any(s => s.HasGhostVariable());
 			}
 
-			public override bool HasVariables()
+			public override bool HasSelf()
 			{
-				return GetTerms().Any(s => s.HasVariables());
+				return GetTerms().Any(s => s.HasSelf());
 			}
 
-			protected override Name SwapPerspective(Name original, Name newName)
+			public override Name SwapPerspective(Name original, Name newName)
 			{
 				return new ComposedName((Symbol)RootSymbol.SwapPerspective(original,newName), Terms.Select(t => t.SwapPerspective(original,newName)).ToArray());
 			}
@@ -219,31 +219,9 @@ namespace KnowledgeBase.WellFormedNames
 				return null;
 			}
 
-			public override Name Unfold(out SubstitutionSet set)
+			public override Name ApplyToTerms(Func<Name, Name> transformFunction)
 			{
-				Name[] terms = new Name[Terms.Length];
-				set = null;
-				for (int i = 0; i < terms.Length; i++)
-				{
-					Symbol s = Terms[i] as Symbol;
-					if (s == null)
-					{
-						s = (Symbol)GenerateUniqueGhostVariable();
-						SubstitutionSet aux;
-						var sub = new Substitution(s, Terms[i].Unfold(out aux));
-
-						if (set == null)
-							set = aux ?? new SubstitutionSet();
-						else if (aux != null)
-							set.AddSubstitutions(aux);
-
-						set.AddSubstitution(sub);
-					}
-
-					terms[i] = s;
-				}
-
-				return new ComposedName(RootSymbol, terms);
+				return new ComposedName(RootSymbol, Terms.Select(transformFunction).ToArray());
 			}
 
 			public override int GetHashCode()

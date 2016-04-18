@@ -80,13 +80,27 @@ namespace GAIPS.Serialization
 				type = type.BaseType;
 			}
 		}
-		
+
+		private static ConstructorInfo GetBaseConstructor(Type type)
+		{
+			if (type == typeof (object))
+				return null;
+
+			var c = type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
+			if (c != null)
+				return c;
+
+			return GetBaseConstructor(type.BaseType);
+		}
+
 		public static object GetUninitializedObject(Type type)
 		{
-			var c = type.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, Type.EmptyTypes, null);
+			var mem = FormatterServices.GetSafeUninitializedObject(type);
+			var c = GetBaseConstructor(type);
 			if (c == null)
-				return FormatterServices.GetSafeUninitializedObject(type);
-			return c.Invoke(null);
+				return mem;
+			c.Invoke(mem, null);
+			return mem;
 		}
 
 		public static object GetDefaultValueForType(Type type)
@@ -144,10 +158,10 @@ namespace GAIPS.Serialization
 				{
 					while (it.MoveNext())
 					{
-						info.AddValue(it.FieldName, it.BuildValue());	
+						info.AddValue(it.FieldName, it.BuildValue());
 					}
 				}
-				
+
 				var c = objType.GetConstructor(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Public, null,
 					new[] { typeof(SerializationInfo), typeof(StreamingContext) }, null);
 				c.Invoke(obj, new object[] { info, new StreamingContext() });

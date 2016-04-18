@@ -16,7 +16,7 @@ namespace KnowledgeBase.WellFormedNames
 				return "*";
 			}
 
-			public override IEnumerable<Name> GetVariableList()
+			public override IEnumerable<Name> GetVariables()
 			{
 				yield break;
 			}
@@ -26,12 +26,12 @@ namespace KnowledgeBase.WellFormedNames
 				return false;
 			}
 
-			public override bool HasVariables()
+			public override bool HasSelf()
 			{
 				return false;
 			}
 
-			protected override Name SwapPerspective(Name original, Name newName)
+			public override Name SwapPerspective(Name original, Name newName)
 			{
 				return this;
 			}

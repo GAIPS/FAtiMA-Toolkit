@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using KnowledgeBase.DTOs.Conditions;
 
 namespace EmotionalAppraisal.DTOs
 {
@@ -7,7 +7,6 @@ namespace EmotionalAppraisal.DTOs
         public string EventMatchingTemplate { get; set; }
         public float Desirability { get; set; }
         public float Praiseworthiness { get; set; }
-        public string Description { get; set; }
-        public IEnumerable<ConditionDTO> Conditions { get; set; }
+	    public ConditionSetDTO Conditions { get; set; }
     }
 }

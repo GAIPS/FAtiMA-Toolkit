@@ -8,14 +8,13 @@ namespace Tests.KnowledgeBase.WellFormedNames
     [TestFixture]
     public class NameTests
     {
-        [TestCase("[y]")]
-        [TestCase("[x]")]
-        [TestCase("IsPerson(x)")]
-        [TestCase("Likes(x, y)")]
-        [TestCase("Likes([x], y)")]
-        [TestCase("Likes(x, Likes(x, x))")]
-        [TestCase("Likes(x, Likes(y, Hates([y], x)))")]
-        [TestCase("[x]([x], y, z)")]
+		[TestCase("[y]")]
+		[TestCase("IsPerson(x)")]
+		[TestCase("Likes(x, y)")]
+		[TestCase("Likes([x], y)")]
+		[TestCase("Likes(x, Likes(x, x))")]
+		[TestCase("Likes(x, Likes(y, Hates([y], x)))")]
+		[TestCase("[x]([x], y, z)")]
 		[TestCase("x")]
 		[TestCase("9")]
 		[TestCase("0")]
@@ -30,7 +29,6 @@ namespace Tests.KnowledgeBase.WellFormedNames
 		[TestCase("true")]
 		[TestCase("false")]
 		[TestCase("_17654")]
-		[TestCase("[x]")]
 		[TestCase("-")]
 		[TestCase("[_x]")]
 		[TestCase("[x-93]")]
@@ -38,8 +36,7 @@ namespace Tests.KnowledgeBase.WellFormedNames
 		[TestCase(Name.UNIVERSAL_STRING)]
 		[TestCase(Name.AGENT_STRING)]
 		[TestCase(Name.SELF_STRING)]
-		[TestCase(Name.NIL_STRING)]
-        public void Parse_CorrectNameString_NewName(string nameString)
+		public void Parse_CorrectNameString_NewName(string nameString)
         {
             Name.BuildName(nameString);
         }
@@ -142,7 +139,7 @@ namespace Tests.KnowledgeBase.WellFormedNames
             Assert.That(clonedName.ToString() == resultName);
             Assert.That(!ReferenceEquals(name, clonedName));
         }
-		
+
 		[TestCase("John", "John")]
 		[TestCase("John", "JOHN")]
 		[TestCase("John", "john")]
@@ -173,23 +170,5 @@ namespace Tests.KnowledgeBase.WellFormedNames
 
             Assert.That(ghost1 != ghost2);
         }
-
-		[TestCase("A")]
-		[TestCase("[x]")]
-		[TestCase("A(B,C)")]
-		[TestCase("A(B,C(D))")]
-		[TestCase("A(B(C,D,E(F,G)),H(I(J(K)),L,M))")]
-	    public void Fold_Unfold_Test(string name)
-		{
-			var n = (Name) name;
-			Name output;
-			SubstitutionSet set;
-			output = n.Unfold(out set);
-			if (set != null)
-			{
-				output = output.MakeGround(set);
-			}
-			Assert.AreEqual(n,output);
-		}
     }
 }

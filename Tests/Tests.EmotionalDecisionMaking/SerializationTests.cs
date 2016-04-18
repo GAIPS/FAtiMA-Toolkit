@@ -14,13 +14,13 @@ namespace Tests.EmotionalDecisionMaking
 		{
 			var r = new ReactiveActions();
 
-			var d = new ActionTendency((Name)"Speak(target([x]),speachType([y]))");
+			var d = new ActionTendency((Name)"Speak([speachType])",(Name)"[x]");
 			d.ActivationCooldown = 2;
-			r.AddReactiveAction(d);
+			r.AddActionTendency(d);
 
-			d = new ActionTendency((Name)"Speak(target([x]),speachType(formal))");
+			d = new ActionTendency((Name)"Speak(formal)",(Name)"[x]");
 			d.ActivationCooldown = 5;
-			r.AddReactiveAction(d);
+			r.AddActionTendency(d);
 			return r;
 		}
 

@@ -6,11 +6,13 @@ namespace GAIPS.Serialization
 {
 	public abstract class BaseSerializer : ISerializer
 	{
-		public GraphFormatterSelector FormatSelector { get; private set; }
+		public GraphFormatterSelector FormatSelector { get; }
+		public ISerializationContext Context { get; }
 
 		protected BaseSerializer()
 		{
 			FormatSelector = new GraphFormatterSelector();
+			Context = new SerializationContext();
 		}
 
 		public T Deserialize<T>(Stream serializationStream)
@@ -20,17 +22,17 @@ namespace GAIPS.Serialization
 
 		public object Deserialize(Stream serializationStream, Type returnType = null)
 		{
-			var graph = new Graph(FormatSelector);
-			DeserializeDataGraph(serializationStream,graph);
+			var graph = new Graph(FormatSelector,Context);
+			DeserializeDataGraph(serializationStream, graph);
 			return graph.DeserializeObject(returnType);
 		}
 
 		public void Serialize(Stream serializationStream, object graph)
 		{
-			if(!graph.GetType().IsSerializable)
-				throw new Exception(string.Format("Instances of {0} are not serializable.",graph.GetType()));	//TODO add a better exception
+			if (!graph.GetType().IsSerializable)
+				throw new Exception($"Instances of {graph.GetType()} are not serializable.");  //TODO add a better exception
 
-			Graph serGraph = new Graph(graph,FormatSelector);
+			Graph serGraph = new Graph(graph, FormatSelector,Context);
 			SerializeDataGraph(serializationStream, serGraph);
 		}
 

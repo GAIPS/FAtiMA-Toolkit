@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AutobiographicMemory;
+using EmotionalAppraisal.DTOs;
 using GAIPS.Serialization;
 using GAIPS.Serialization.SerializationGraph;
 using KnowledgeBase.WellFormedNames;
@@ -50,33 +51,59 @@ namespace EmotionalAppraisal
 				return potetial < 0 ? 0 : potetial;
 			}
 
-			/// <summary>
-			/// unique hash string calculation function
-			/// </summary>
-			/// <param name="emotion"></param>
-			private static string calculateHashString(IEmotion emotion,AM am)
-			{
-				StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
-				try
-				{
-					builder.Append(emotion.GetCause(am).EventName.ToString().ToUpper());
-					using (var it = emotion.AppraisalVariables.GetEnumerator())
-					{
-						while (it.MoveNext())
-						{
-							builder.Append("-");
-							builder.Append(it.Current);
-						}
-					}
+            /// <summary>
+            /// unique hash string calculation function
+            /// </summary>
+            /// <param name="emotion"></param>
+            private static string calculateHashString(IEmotion emotion, AM am)
+            {
+                StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
+                try
+                {
+                    builder.Append(emotion.GetCause(am).EventName.ToString().ToUpper());
+                    using (var it = emotion.AppraisalVariables.GetEnumerator())
+                    {
+                        while (it.MoveNext())
+                        {
+                            builder.Append("-");
+                            builder.Append(it.Current);
+                        }
+                    }
 
-					return builder.ToString();
-				}
-				finally
-				{
-					builder.Length = 0;
-					ObjectPool<StringBuilder>.Recycle(builder);
-				}
-			}
+                    return builder.ToString();
+                }
+                finally
+                {
+                    builder.Length = 0;
+                    ObjectPool<StringBuilder>.Recycle(builder);
+                }
+            }
+
+            
+            public EmotionDTO AddActiveEmotion(EmotionDTO emotion)
+		    {
+                EmotionDisposition disposition = GetEmotionDisposition(emotion.Type);
+                var activeEmotion = new ActiveEmotion(emotion, disposition.Threshold, disposition.Decay);
+                string hash = calculateHashString(activeEmotion, m_parent.m_am);
+
+                if (emotionPool.ContainsKey(hash))
+                {
+                    throw new Exception("Emotion already exists");
+                }
+
+                emotionPool.Add(hash, activeEmotion);
+                activeEmotion.GetCause(m_parent.m_am).LinkEmotion(activeEmotion.EmotionType);
+
+                return activeEmotion.ToDto(m_parent.m_am);
+		    }
+
+
+		    public void RemoveEmotion(EmotionDTO emotion)
+		    {
+                var activeEmotion = new ActiveEmotion(emotion, this.DefaultEmotionDisposition.Decay,this.DefaultEmotionDisposition.Threshold);
+                string hash = calculateHashString(activeEmotion, m_parent.m_am);
+                emotionPool.Remove(hash);
+		    }
 
 			/// <summary>
 			/// Creates and Adds to the emotional state a new ActiveEmotion based on 
@@ -100,7 +127,7 @@ namespace EmotionalAppraisal
 				decay = disposition.Decay;
 
 				ActiveEmotion previousEmotion;
-				string hash = calculateHashString(emotion,m_parent.m_am);
+				string hash = calculateHashString(emotion, m_parent.m_am);
 				if (emotionPool.TryGetValue(hash,out previousEmotion))
 				{
 					//if this test is true, it means that this is 100% a reappraisal of the same event
@@ -273,24 +300,15 @@ namespace EmotionalAppraisal
 				return $"Mood: {this.mood} Emotions: {this.emotionPool}";
 			}
 
-			public void GetObjectData(ISerializationData dataHolder)
+			public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 			{
 				dataHolder.SetValue("Parent",m_parent);
-
-				var seq = dataHolder.ParentGraph.BuildSequenceNode();
-				foreach (var v in emotionPool.Values)
-				{
-					var o = dataHolder.ParentGraph.CreateObjectData();
-					v.GetObjectData(o.ToSerializationData());
-					seq.Add(o);
-				}
-
-				dataHolder.SetValueGraphNode("EmotionalPool",seq);
+				dataHolder.SetValue("EmotionalPool", emotionPool.Values.ToArray());
 				dataHolder.SetValue("EmotionDispositions", emotionDispositions.Values.Prepend(m_defaultEmotionalDisposition).ToArray());
 				dataHolder.SetValue("Mood",mood.MoodValue);
 			}
 
-			public void SetObjectData(ISerializationData dataHolder)
+			public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 			{
 				m_parent = dataHolder.GetValue<EmotionalAppraisalAsset>("Parent");
 				mood.SetMoodValue(dataHolder.GetValue<float>("Mood"), m_parent);
@@ -310,14 +328,18 @@ namespace EmotionalAppraisal
 					defaultDisposition = new EmotionDisposition("*",1,1);
 				m_defaultEmotionalDisposition = defaultDisposition;
 
-				var seq = dataHolder.GetValueGraphNode("EmotionalPool") as ISequenceGraphNode;
-				foreach (var n in seq)
+				context.PushContext();
 				{
-					var data = (n as IObjectGraphNode).ToSerializationData();
-					var emotion = new ActiveEmotion(data,m_parent.Tick);
-					var hash = calculateHashString(emotion, m_parent.m_am);
-					emotionPool.Add(hash, emotion);
+					context.Context = m_parent.Tick;
+
+					var emotions = dataHolder.GetValue<ActiveEmotion[]>("EmotionalPool");
+					foreach (var emotion in emotions)
+					{
+						var hash = calculateHashString(emotion, m_parent.m_am);
+						emotionPool.Add(hash, emotion);
+					}
 				}
+				context.PopContext();
 			}
 		}
 	}

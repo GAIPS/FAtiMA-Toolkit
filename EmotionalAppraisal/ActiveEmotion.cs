@@ -1,9 +1,11 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using AutobiographicMemory;
 using EmotionalAppraisal.DTOs;
+using EmotionalAppraisal.OCCModel;
 using GAIPS.Serialization;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
@@ -16,7 +18,8 @@ namespace EmotionalAppraisal
 	/// </summary>
 	/// @author João Dias
 	/// @author Pedro Gonçalves
-	internal class ActiveEmotion : IActiveEmotion
+	[Serializable]
+	internal class ActiveEmotion : IActiveEmotion, ICustomSerialization
 	{
 		private float intensityATt0;
 		private ulong tickATt0;
@@ -63,7 +66,7 @@ namespace EmotionalAppraisal
 		private void SetIntensity(float value, ulong tickStamp)
 		{
 			value -= Threshold;
-			value = value < -10 ? -10 : (value > 10 ? 10 : value);
+			value = value < 0 ? 0 : (value > 10 ? 10 : value);
 			this.intensityATt0 = this.Intensity = value;
 			this.tickATt0 = tickStamp;
 		}
@@ -83,11 +86,28 @@ namespace EmotionalAppraisal
 			this.InfluenceMood = emotion.InfluenceMood;
 			this.CauseId = emotion.CauseId;
 			this.Direction = emotion.Direction;
-
-			this.Threshold = threshold;
+            this.Threshold = threshold;
 			this.Decay = decay;
 			SetIntensity(potential,tickStamp);
 		}
+
+
+        //TODO: Discuss with Pedro this hierarchy. Problem: ActiveEmotion might be a bit too tied to OCCEmotion
+	    public ActiveEmotion(EmotionDTO emotionDTO, int threshold, int decay)
+	    {
+	        var occType = OCCEmotionType.Parse(emotionDTO.Type);
+            if(occType == null)
+                throw new Exception("Unknown emotion type");
+            this.EmotionType = occType.Name;
+	        this.Valence = occType.Valence;
+	        this.AppraisalVariables = occType.AppraisalVariables.ToArray();
+	        this.InfluenceMood = occType.InfluencesMood;
+	        this.CauseId = emotionDTO.CauseEventId;
+	        this.Direction = null; //TODO: handle direction correctly
+	        this.Threshold = threshold;
+	        this.Decay = decay;
+	        this.Intensity = emotionDTO.Intensity;
+	    }
 
 		/// <summary>
 		/// Decays the emotion according to the system's time
@@ -135,7 +155,7 @@ namespace EmotionalAppraisal
 			return new HashSet<string>(AppraisalVariables).SetEquals(em.AppraisalVariables);
 		}
 
-		public IEventRecord GetCause(AM am)
+		public IBaseEvent GetCause(AM am)
 		{
 			return am.RecallEvent(CauseId);
 		}
@@ -153,17 +173,47 @@ namespace EmotionalAppraisal
 			return result;
 		}
 
-	    public EmotionDTO ToDto()
+	    public EmotionDTO ToDto(AM am)
 	    {
 	        return new EmotionDTO
 	        {
                 Type = this.EmotionType,
                 Intensity = this.Intensity,
-                CauseEvent =  this.CauseId, 
+                CauseEventId =  this.CauseId, 
+                CauseEventName = am.RecallEvent(this.CauseId).EventName.ToString(),
 	        };
 	    }
 
-		public void GetObjectData(ISerializationData dataHolder)
+		//public void GetObjectData(ISerializationData dataHolder)
+		//{
+		//	dataHolder.SetValue("Intensity", Intensity);
+		//	dataHolder.SetValue("Decay", Decay);
+		//	dataHolder.SetValue("Threshold", Threshold);
+		//	dataHolder.SetValue("CauseId", CauseId);
+		//	if (Direction != null)
+		//		dataHolder.SetValue("Direction", Direction.ToString());
+		//	dataHolder.SetValue("EmotionType", EmotionType);
+		//	dataHolder.SetValue("Valence", Valence);
+		//	dataHolder.SetValue("AppraisalVariables", AppraisalVariables.ToArray());
+		//	dataHolder.SetValue("InfluenceMood", InfluenceMood);
+		//}
+
+		//public ActiveEmotion(ISerializationData dataHolder, ulong tickStamp)
+		//{
+		//	Decay = dataHolder.GetValue<int>("Decay");
+		//	Threshold = dataHolder.GetValue<int>("Threshold");
+		//	CauseId = dataHolder.GetValue<uint>("CauseId");
+		//	var dir = dataHolder.GetValue<string>("Direction");
+		//	Direction = !string.IsNullOrEmpty(dir) ? Name.BuildName(dir) : null;
+		//	EmotionType = dataHolder.GetValue<string>("EmotionType");
+		//	Valence = dataHolder.GetValue<EmotionValence>("Valence");
+		//	AppraisalVariables = dataHolder.GetValue<string[]>("AppraisalVariables");
+		//	InfluenceMood = dataHolder.GetValue<bool>("InfluenceMood");
+		//	this.intensityATt0 = this.Intensity = dataHolder.GetValue<float>("Intensity");
+  //          this.tickATt0 = tickStamp;
+  //      }
+
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			dataHolder.SetValue("Intensity", Intensity);
 			dataHolder.SetValue("Decay", Decay);
@@ -177,7 +227,7 @@ namespace EmotionalAppraisal
 			dataHolder.SetValue("InfluenceMood", InfluenceMood);
 		}
 
-		public ActiveEmotion(ISerializationData dataHolder, ulong tickStamp)
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			Decay = dataHolder.GetValue<int>("Decay");
 			Threshold = dataHolder.GetValue<int>("Threshold");
@@ -188,9 +238,10 @@ namespace EmotionalAppraisal
 			Valence = dataHolder.GetValue<EmotionValence>("Valence");
 			AppraisalVariables = dataHolder.GetValue<string[]>("AppraisalVariables");
 			InfluenceMood = dataHolder.GetValue<bool>("InfluenceMood");
-			
-			var i = dataHolder.GetValue<float>("Intensity");
-			SetIntensity(i,tickStamp);
+			this.intensityATt0 = this.Intensity = dataHolder.GetValue<float>("Intensity");
+			if(!(context.Context is ulong))
+				throw new Exception("Unable to deserialize Active Emotion. Invalid serialization context.");
+			this.tickATt0 = (ulong)context.Context;
 		}
 	}
 }

@@ -97,11 +97,38 @@ namespace EmotionalAppraisalWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Edit Event Record.
+        /// </summary>
+        internal static string EditAutobiographicalEventFormTitle {
+            get {
+                return ResourceManager.GetString("EditAutobiographicalEventFormTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Condition.
+        /// </summary>
+        internal static string EditConditionEventFormTitle {
+            get {
+                return ResourceManager.GetString("EditConditionEventFormTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Emotion Disposition.
         /// </summary>
         internal static string EditEmotionDispositionFormTitle {
             get {
                 return ResourceManager.GetString("EditEmotionDispositionFormTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Emotion.
+        /// </summary>
+        internal static string EditEmotionFormTitle {
+            get {
+                return ResourceManager.GetString("EditEmotionFormTitle", resourceCulture);
             }
         }
         
@@ -147,6 +174,16 @@ namespace EmotionalAppraisalWF.Properties {
         internal static string InvalidFileError {
             get {
                 return ResourceManager.GetString("InvalidFileError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap logo_gaips_rasterized {
+            get {
+                object obj = ResourceManager.GetObject("logo_gaips_rasterized", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

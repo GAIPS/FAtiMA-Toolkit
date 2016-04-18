@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="RageAssetManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,17 +50,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddEditGroups.cs">
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddEditGroups.Designer.cs">
-      <DependentUpon>AddEditGroups.cs</DependentUpon>
-    </Compile>
-    <Compile Include="RolePlayCharacter.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="RolePlayCharacter.Designer.cs">
-      <DependentUpon>RolePlayCharacter.cs</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,9 +66,10 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="RolePlayCharacter.resx">
-      <DependentUpon>RolePlayCharacter.cs</DependentUpon>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -97,6 +96,10 @@
     <ProjectReference Include="..\..\Components\SerializationUtilities\GAIPS.Serialization.csproj">
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
       <Name>GAIPS.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\RolePlayCharacter\RolePlayCharacter.csproj">
+      <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
+      <Name>RolePlayCharacter</Name>
     </ProjectReference>
     <ProjectReference Include="..\EmotionalAppraisalWF\EmotionalAppraisalWF.csproj">
       <Project>{36ef269c-7ab2-4029-bbf4-18f908af46f6}</Project>

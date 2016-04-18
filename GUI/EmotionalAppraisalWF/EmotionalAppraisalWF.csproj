@@ -53,11 +53,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddOrEditAppraisalRule.cs">
+    <Compile Include="AddOrEditConditionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddOrEditAppraisalRule.Designer.cs">
-      <DependentUpon>AddOrEditAppraisalRule.cs</DependentUpon>
+    <Compile Include="AddOrEditConditionForm.Designer.cs">
+      <DependentUpon>AddOrEditConditionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddOrEditAutobiographicalEventForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddOrEditAutobiographicalEventForm.Designer.cs">
+      <DependentUpon>AddOrEditAutobiographicalEventForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddOrEditAppraisalRuleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddOrEditAppraisalRuleForm.Designer.cs">
+      <DependentUpon>AddOrEditAppraisalRuleForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AddOrEditEmotionDispositionForm.cs">
       <SubType>Form</SubType>
@@ -92,8 +104,14 @@
     <Compile Include="ViewModels\AppraisalRulesVM.cs" />
     <Compile Include="ViewModels\AutobiographicalMemoryVM.cs" />
     <Compile Include="ViewModels\KnowledgeBaseVM.cs" />
-    <EmbeddedResource Include="AddOrEditAppraisalRule.resx">
-      <DependentUpon>AddOrEditAppraisalRule.cs</DependentUpon>
+    <EmbeddedResource Include="AddOrEditConditionForm.resx">
+      <DependentUpon>AddOrEditConditionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddOrEditAutobiographicalEventForm.resx">
+      <DependentUpon>AddOrEditAutobiographicalEventForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddOrEditAppraisalRuleForm.resx">
+      <DependentUpon>AddOrEditAppraisalRuleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AddOrEditEmotionDispositionForm.resx">
       <DependentUpon>AddOrEditEmotionDispositionForm.cs</DependentUpon>
@@ -149,7 +167,9 @@
       <Name>EmotionalAppraisal</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\logo-gaips-rasterized.jpg" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

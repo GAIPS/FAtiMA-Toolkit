@@ -35,10 +35,10 @@ namespace KnowledgeBase.WellFormedNames
 
 			public override string ToString()
 			{
-				return string.Format("[{0}]", m_variableName);
+				return $"[{m_variableName}]";
 			}
 
-			public override IEnumerable<Name> GetVariableList()
+			public override IEnumerable<Name> GetVariables()
 			{
 				yield return this;
 			}
@@ -48,12 +48,12 @@ namespace KnowledgeBase.WellFormedNames
 				return m_variableName[0] == '_';
 			}
 
-			public override bool HasVariables()
+			public override bool HasSelf()
 			{
-				return true;
+				return false;
 			}
 
-			protected override Name SwapPerspective(Name original, Name newName)
+			public override Name SwapPerspective(Name original, Name newName)
 			{
 				return this;
 			}

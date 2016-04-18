@@ -46,10 +46,8 @@
     <Compile Include="Components\IAppraisalDerivator.cs" />
     <Compile Include="Components\IEmotionProcessor.cs" />
     <Compile Include="ConcreteEmotionalState.cs" />
-    <Compile Include="DTOs\EventDTO.cs" />
-    <Compile Include="DTOs\EmotionDTO.cs" />
-    <Compile Include="DTOs\ConditionDTO.cs" />
     <Compile Include="DTOs\AppraisalRuleDTO.cs" />
+    <Compile Include="DTOs\EmotionDTO.cs" />
     <Compile Include="DTOs\BeliefDTO.cs" />
     <Compile Include="DTOs\BaseDTO.cs" />
     <Compile Include="DTOs\EmotionDispositionDTO.cs" />
@@ -88,12 +86,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo Converting pdb to mdb
-FOR %25%25i IN (*.dll) DO (
-   IF EXIST %25%25~ni.pdb (
-      call "$(SolutionDir)\tools\pdb2mdb\pdb2mdb.exe" %25%25~i
-   )
-)</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

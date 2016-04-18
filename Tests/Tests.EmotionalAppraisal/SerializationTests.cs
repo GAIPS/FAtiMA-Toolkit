@@ -5,6 +5,7 @@ using EmotionalAppraisal.OCCModel;
 using NUnit.Framework;
 using KnowledgeBase.WellFormedNames;
 using System.IO;
+using EmotionalAppraisal.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase;
 using KnowledgeBase.Conditions;
@@ -17,7 +18,7 @@ namespace Tests.EmotionalAppraisal
 		private static EmotionalAppraisalAsset BuildTestAsset()
 		{//Emotional System Setup
 			var m_emotionalAppraisalAsset = new EmotionalAppraisalAsset("Agent");
-			m_emotionalAppraisalAsset.Perspective = "Test";
+			m_emotionalAppraisalAsset.UpdateKBAccordingToNewPerspective((Name)"Test");
 
 			//Setup Emotional Disposition
 
@@ -89,58 +90,64 @@ namespace Tests.EmotionalAppraisal
 
 			//Setup appraisal rules
 
-			AppraisalRule petAppraisalRule = new AppraisalRule((Name)"Event(EventObject,*,Pet,self)");
-			petAppraisalRule.Desirability = 10;
-			//petAppraisalRule.Like = 7;
-			//m_emotionalAppraisalAsset.AddAppraisalRule(petAppraisalRule);
+			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
+			{
+				EventMatchingTemplate = "Event(Action,*,Pet,self)",
+				Desirability = 10
+			});
 
-			AppraisalRule slapAppraisalRule = new AppraisalRule((Name)"Event(EventObject,*,Slap,self)");
-			slapAppraisalRule.Desirability = -10;
-			//slapAppraisalRule.Like = -15;
-			//m_emotionalAppraisalAsset.AddAppraisalRule(slapAppraisalRule);
+			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
+			{
+				EventMatchingTemplate = "Event(Action,*,Slap,self)",
+				Desirability = -10
+			});
 
-			AppraisalRule feedAppraisalRule = new AppraisalRule((Name)"Event(EventObject,*,Feed,self)");
-			feedAppraisalRule.Desirability = 5;
-			feedAppraisalRule.Praiseworthiness = 10;
-			//m_emotionalAppraisalAsset.AddAppraisalRule(feedAppraisalRule);
+			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
+			{
+				EventMatchingTemplate = "Event(Action, *, Feed, self)",
+				Desirability = 5,
+				Praiseworthiness = 10
+			});
 
-			AppraisalRule screamMad = new AppraisalRule((Name)"Event(EventObject,*,Talk(High,Mad),self)");
-			screamMad.Desirability = -7;
-			screamMad.Praiseworthiness = -15;
-			//screamMad.Like = -4;
-			//m_emotionalAppraisalAsset.AddAppraisalRule(screamMad);
+			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
+			{
+				EventMatchingTemplate = "Event(Action,*,Talk(High,Mad),self)",
+				Desirability = -7,
+				Praiseworthiness = -15
+			});
 
-			AppraisalRule talkSoftAppraisalRule = new AppraisalRule((Name)"Event(EventObject,*,Talk(Low,Happy),self)");
-			talkSoftAppraisalRule.Praiseworthiness = 5;
-			//talkSoftAppraisalRule.Like = 5;
-			//m_emotionalAppraisalAsset.AddAppraisalRule(talkSoftAppraisalRule);
-
+			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
+			{
+				EventMatchingTemplate = "Event(Action,*,Talk(Low,Happy),self)",
+				Praiseworthiness = 5
+			});
+			
 			//Generate emotion
 
-			m_emotionalAppraisalAsset.AppraiseEvents(new []{ (Name)"Event(EventObject,*,Slap(Hard),self)" });
+			m_emotionalAppraisalAsset.AppraiseEvents(new []{ (Name)"Event(Action,Player,Slap,self)" });
 
 			//Add knowledge
 			var kb = m_emotionalAppraisalAsset.Kb;
-			kb.Tell((Name)"Strength(John)", (byte)5,true,KnowledgeVisibility.Self);
-			kb.Tell((Name)"Strength(Mary)", (sbyte)3, true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Strength(Leonidas)", (short)500, true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Strength(Goku)", (uint)9001f, true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Strength(SuperMan)", ulong.MaxValue, true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Strength(Saitama)", float.MaxValue, true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Race(Saitama)", "human", true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Race(Superman)", "kriptonian", true, KnowledgeVisibility.Universal);
-			kb.Tell((Name)"Race(Goku)", "sayian",true,KnowledgeVisibility.Self);
-			kb.Tell((Name)"Race(Leonidas)", "human", true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Race(Mary)", "human", true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Race(John)", "human", true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Job(Saitama)", "super-hero",false,KnowledgeVisibility.Self);
-			kb.Tell((Name)"Job(Superman)", "super-hero", true, KnowledgeVisibility.Universal);
-			kb.Tell((Name)"Job(Leonidas)", "Spartan", false, KnowledgeVisibility.Self);
-			kb.Tell((Name)"AKA(Saitama)", "One-Punch_Man", true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"AKA(Superman)", "Clark_Kent", true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"AKA(Goku)", "Kakarot", true, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Hobby(Saitama)", "super-hero", false, KnowledgeVisibility.Self);
-			kb.Tell((Name)"Hobby(Goku)", "training", true, KnowledgeVisibility.Universal);
+			kb.Tell((Name)"Strength(John)", (byte)5);
+			kb.Tell((Name)"Strength(Mary)", (sbyte)3);
+			kb.Tell((Name)"Strength(Leonidas)", (short)500);
+			kb.Tell((Name)"Strength(Goku)", (uint)9001f);
+			kb.Tell((Name)"Strength(SuperMan)", ulong.MaxValue);
+			kb.Tell((Name)"Strength(Saitama)", float.MaxValue);
+			kb.Tell((Name)"Race(Saitama)", "human");
+			kb.Tell((Name)"Race(Superman)", "kriptonian");
+			kb.Tell((Name)"Race(Goku)", "sayian");
+			kb.Tell((Name)"Race(Leonidas)", "human");
+			kb.Tell((Name)"Race(Mary)", "human");
+			kb.Tell((Name)"Race(John)", "human");
+			kb.Tell((Name)"Job(Saitama)", "super-hero");
+			kb.Tell((Name)"Job(Superman)", "super-hero");
+			kb.Tell((Name)"Job(Leonidas)", "Spartan");
+			kb.Tell((Name)"AKA(Saitama)", "One-Punch_Man");
+			kb.Tell((Name)"AKA(Superman)", "Clark_Kent");
+			kb.Tell((Name)"AKA(Goku)", "Kakarot");
+			kb.Tell((Name)"Hobby(Saitama)", "super-hero");
+			kb.Tell((Name)"Hobby(Goku)", "training");
 
 			return m_emotionalAppraisalAsset;
 		}
@@ -172,6 +179,24 @@ namespace Tests.EmotionalAppraisal
 				Console.WriteLine(new StreamReader(stream).ReadToEnd());
 				stream.Seek(0, SeekOrigin.Begin);
 				var obj = formater.Deserialize(stream);
+			}
+		}
+
+		[TestCase]
+		public void Test()
+		{
+			var e = new AppraisalRule((Name) "Event(Action, Player, Speak([type], *), Self)");
+			Console.WriteLine(e.Id);
+
+			using (var stream = new MemoryStream())
+			{
+				var formater = new JSONSerializer();
+				formater.Serialize(stream, e);
+				stream.Seek(0, SeekOrigin.Begin);
+				Console.WriteLine(new StreamReader(stream).ReadToEnd());
+				stream.Seek(0, SeekOrigin.Begin);
+				var obj = formater.Deserialize<AppraisalRule>(stream);
+				Console.WriteLine(obj.Id);
 			}
 		}
 	}

@@ -18,9 +18,9 @@ namespace KnowledgeBase.Conditions
 				m_operation = op;
 			}
 
-			protected override IEnumerable<SubstitutionSet> CheckActivation(KB kb, IEnumerable<SubstitutionSet> constraints)
+			protected override IEnumerable<SubstitutionSet> CheckActivation(KB kb,Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
-				foreach (var pair in m_retriver.Retrive(kb, constraints))
+				foreach (var pair in m_retriver.Retrive(kb,perspective, constraints))
 				{
 					if (CompareValues(pair.Item1, m_value, m_operation))
 						yield return pair.Item2;

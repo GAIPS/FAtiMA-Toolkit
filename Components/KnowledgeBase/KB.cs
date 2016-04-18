@@ -9,29 +9,75 @@ using Utilities;
 
 namespace KnowledgeBase
 {
-	public enum KnowledgeVisibility
-	{
-		Universal,
-		Self
-	}
+	using BeliefPair = Pair<PrimitiveValue, IEnumerable<SubstitutionSet>>;
 
-	public delegate IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> DynamicPropertyCalculator(KB kb, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints);
+	public delegate IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> DynamicPropertyCalculator(KB kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints);
 
 	[Serializable]
 	public class KB : ICustomSerialization
 	{
+		private const int MAX_TOM_LVL = 2;
+
 		private sealed class KnowledgeEntry
 		{
-		    public readonly Guid Id;
-			public readonly PrimitiveValue Value;
-			public readonly bool IsPersistent;
-			public readonly KnowledgeVisibility Visibility;
+			private PrimitiveValue m_universal = null;
+			private Dictionary<Name, PrimitiveValue> m_perspectives;
 
-			public KnowledgeEntry(PrimitiveValue value, bool isPersistent, KnowledgeVisibility visibility)
+			public PrimitiveValue GetValueFor(Name perspective)
 			{
-				this.Value = value;
-				this.IsPersistent = isPersistent;
-				this.Visibility = visibility;
+				PrimitiveValue value;
+				if ((m_perspectives != null) && m_perspectives.TryGetValue(perspective, out value))
+					return value;
+
+				return m_universal;
+			}
+
+			public void TellValueFor(Name perspective, PrimitiveValue value)
+			{
+				if (perspective.IsUniversal)
+				{
+					m_universal = value;
+					return;
+				}
+
+				if (m_perspectives == null)
+				{
+					if(value==null)
+						return;
+
+					m_perspectives = new Dictionary<Name, PrimitiveValue>();
+				}
+
+				if (value == null)
+				{
+					m_perspectives.Remove(perspective);
+					if (m_perspectives.Count == 0)
+						m_perspectives = null;
+				}
+				else
+					m_perspectives[perspective] = value;
+			}
+
+			public bool IsEmpty()
+			{
+				return (m_perspectives == null) && (m_universal == null);
+			}
+
+			public IEnumerable<KeyValuePair<Name, PrimitiveValue>> GetPerspectives()
+			{
+				if (m_perspectives != null)
+				{
+					foreach (var p in m_perspectives)
+						yield return p;
+				}
+
+				if(m_universal!=null)
+					yield return new KeyValuePair<Name, PrimitiveValue>(Name.UNIVERSAL_SYMBOL, m_universal);
+			}
+
+			public IEnumerable<Name> GetAllStoredPerspectives()
+			{
+				return m_perspectives.Keys.SelectMany(Key2ToMList).Distinct();
 			}
 		}
 
@@ -47,15 +93,63 @@ namespace KnowledgeBase
 			}
 		}
 
-		private readonly NameSearchTree<KnowledgeEntry> m_knowledgeStorage = new NameSearchTree<KnowledgeEntry>();
-		private readonly NameSearchTree<DynamicKnowledgeEntry> m_dynamicProperties = new NameSearchTree<DynamicKnowledgeEntry>();
+		private NameSearchTree<KnowledgeEntry> m_knowledgeStorage;
+		private readonly NameSearchTree<DynamicKnowledgeEntry> m_dynamicProperties;
 
-		public KB()
+		/// <summary>
+		/// Indicates the default mapping of "SELF"
+		/// </summary>
+		public Name Perspective { get; set; }
+
+		private KB()
 		{
+			m_knowledgeStorage = new NameSearchTree<KnowledgeEntry>();
+			m_dynamicProperties = new NameSearchTree<DynamicKnowledgeEntry>();
 			RegistNativeDynamicProperties(this);
 		}
 
-#region Native Dynamic Properties
+		public KB(Name perspective) : this()
+		{
+			UpdateKBAccordingToNewPerspective(perspective);
+		}
+
+		#region Dynamic Property Registry
+
+		public void RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate, IEnumerable<string> arguments)
+		{
+			if (surogate == null)
+				throw new ArgumentNullException(nameof(surogate));
+
+			if (propertyTemplate.IsGrounded)
+				throw new ArgumentException("Grounded names cannot be used as dynamic properties", nameof(propertyTemplate));
+
+			var r = m_dynamicProperties.Unify(propertyTemplate).FirstOrDefault();
+			if (r != null)
+			{
+				throw new ArgumentException(
+					$"The given template {propertyTemplate} will collide with already registed {propertyTemplate.MakeGround(r.Item2)} dynamic property", nameof(propertyTemplate));
+			}
+
+			if (m_knowledgeStorage.Unify(propertyTemplate).Any())
+				throw new ArgumentException($"The given template {propertyTemplate} will collide with stored constant properties", nameof(propertyTemplate));
+
+			Name[] args;
+			if (arguments == null)
+				args = new Name[0];
+			else
+				args = arguments.Distinct().Select(s => Name.BuildName("[" + s + "]")).ToArray();
+			m_dynamicProperties.Add(propertyTemplate, new DynamicKnowledgeEntry(surogate, args));
+		}
+
+		public void UnregistDynamicProperty(Name propertyTemplate)
+		{
+			if(!m_dynamicProperties.Remove(propertyTemplate))
+				throw new Exception($"Unknown Dynamic Property {propertyTemplate}");
+		}
+
+		#endregion
+
+		#region Native Dynamic Properties
 
 		private static void RegistNativeDynamicProperties(KB kb)
 		{
@@ -64,11 +158,11 @@ namespace KnowledgeBase
 
 		//Count
 		private static readonly Name COUNT_TEMPLATE = Name.BuildName("Count([x])");
-		private static IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> CountPropertyCalculator(KB kb, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
+		private static IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> CountPropertyCalculator(KB kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			var arg = args["x"];
 
-			var set = kb.AskPossibleProperties(arg, constraints).ToList();
+			var set = kb.AskPossibleProperties(arg, perspective, constraints).ToList();
 			PrimitiveValue count = set.Count;
 			IEnumerable<SubstitutionSet> sets;
 			if (set.Count == 0)
@@ -80,105 +174,101 @@ namespace KnowledgeBase
 				yield return Tuples.Create(count, d);
 		}
 
-#endregion
+		#endregion
 
-		public void RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate, IEnumerable<string> arguments)
+		public void UpdateKBAccordingToNewPerspective(Name newPerspective)
 		{
-			if(surogate==null)
-				throw new ArgumentNullException("surogate");
+			if(!newPerspective.IsPrimitive)
+				throw new ArgumentException("Only primitive symbols are allowed to be perspectives.");
 
-			if(propertyTemplate.IsGrounded)
-				throw new ArgumentException("Grounded names cannot be used as dynamic properties", "propertyTemplate");
+			if(newPerspective == Name.NIL_SYMBOL)
+				throw new ArgumentException("NIL symbol cannot be used as a perspective.");
 
-			var r = m_dynamicProperties.Unify(propertyTemplate).FirstOrDefault();
-			if (r != null)
+			if (newPerspective == Name.SELF_SYMBOL)
+				throw new ArgumentException("SELF symbol cannot be set as a default a perspectives.");
+
+			if (newPerspective==Perspective)
+				return;
+
+			if(GetAllPerspectives().Contains(newPerspective))
+				throw new ArgumentException($"The is already beliefs containing perspectives for {newPerspective}. Changing to the requested perspective would result in belief conflicts.");
+
+			//Modify believes to reflect perspective changes
+			var newStorage = new NameSearchTree<KnowledgeEntry>();
+			foreach (var entry in m_knowledgeStorage)
 			{
-				throw new ArgumentException(string.Format("The given template {0} will collide with already registed {1} dynamic property", propertyTemplate, propertyTemplate.MakeGround(r.Item2)), "propertyTemplate");
+				var newProperty = entry.Key.SwapPerspective(Perspective, newPerspective);
+				newStorage.Add(newProperty,entry.Value);
 			}
+			m_knowledgeStorage.Clear();
+			m_knowledgeStorage = newStorage;
+			Perspective = newPerspective;
+		}
 
-			if(m_knowledgeStorage.Unify(propertyTemplate).Any())
-				throw new ArgumentException(string.Format("The given template {0} will collide with stored constant properties", propertyTemplate), "propertyTemplate");
+		private IEnumerable<Name> GetAllPerspectives()
+		{
+			return m_knowledgeStorage.Values.SelectMany(e => e.GetAllStoredPerspectives()).Distinct();
+		}
 
-			Name[] args;
-			if(arguments==null)
-				args = new Name[0];
-			else
-				args = arguments.Distinct().Select(s => Name.BuildName("[" + s + "]")).ToArray();
-			m_dynamicProperties.Add(propertyTemplate,new DynamicKnowledgeEntry(surogate,args));
+		public Name AssertPerspective(Name perspective)
+		{
+			return ToMList2Key(AssertPerspective(perspective, nameof(perspective)));
 		}
 
 		public IEnumerable<Belief> GetAllBeliefs()
 	    {
-	        return m_knowledgeStorage.Keys.Select(beliefName => 
-                new Belief
-                {
-    	            Name = beliefName,
-                    IsPersistent = m_knowledgeStorage[beliefName].IsPersistent,
-                    Visibility = m_knowledgeStorage[beliefName].Visibility,
-                    Value = m_knowledgeStorage[beliefName].Value
-	            });
+			foreach (var entry in m_knowledgeStorage)
+			{
+				foreach (var perspective in entry.Value.GetPerspectives())
+				{
+					yield return new Belief()
+					{
+						Name = entry.Key,
+						Perspective = perspective.Key,
+						Value = perspective.Value
+					};
+				}
+			}
 	    }
 
 		public object AskProperty(Name property)
 		{
-			if(!property.IsGrounded)
-				throw new ArgumentException("The given Well Formed Name must be grounded","property");
+			return AskProperty(property, Name.SELF_SYMBOL);
+		}
 
-			var results = AskPossibleProperties(property, null).Select(p => PrimitiveValue.Extract(p.Item1)).ToArray();
-			if (results.Length == 0)
+		public object AskProperty(Name property, Name perspective)
+		{
+			if(!property.IsGrounded)
+				throw new ArgumentException("The given Well Formed Name must be grounded",nameof(property));
+
+			var results = AskPossibleProperties(property, perspective, null).Select(p => PrimitiveValue.Extract(p.Item1)).ToArray();
+			if (results.Length==0)
 				return null;
 			if (results.Length == 1)
 				return results[0];
 			return results;
 		}
 
-		public IEnumerable<Pair<PrimitiveValue, IEnumerable<SubstitutionSet>>> AskPossibleProperties(Name property, IEnumerable<SubstitutionSet> constraints)
+		public IEnumerable<BeliefPair> AskPossibleProperties(Name property, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
 			if (constraints == null)
 				constraints = new[] { new SubstitutionSet() };
 
 			if (property.IsPrimitive)
 			{
-				yield return Tuples.Create(property.GetPrimitiveValue(), constraints);
-				yield break;
+				if (property == Name.SELF_SYMBOL)
+					property = Perspective;
+
+				return new[] { Tuples.Create(property.GetPrimitiveValue(), constraints) };
 			}
 
-			if (!property.IsVariable)
-			{
-				bool dynamicFound = false;
-				foreach (var r in AskDynamicProperties(property, constraints))
-				{
-					dynamicFound = true;
-					yield return r;
-				}
-				if (dynamicFound)
-					yield break;
-			}
+			perspective = perspective.ApplyPerspective(Perspective);
+			var ToMList = AssertPerspective(perspective, nameof(perspective));
 
-			var group = constraints.GroupBy(property.MakeGround);
-
-			foreach (var g in group)
-			{
-				if (g.Key.IsPrimitive)
-				{
-					yield return Tuples.Create(g.Key.GetPrimitiveValue(), (IEnumerable<SubstitutionSet>)g);
-					continue;
-				}
-
-				SubstitutionSet set;
-				var fact = g.Key.Unfold(out set);
-				if (set != null)
-					fact = FindConstantLeveledName(fact, set, false);
-				if (fact == null)
-					continue;
-
-				var g2 = g.SelectMany(c => m_knowledgeStorage.Unify(fact, c)).GroupBy(r => r.Item1, r => r.Item2);
-				foreach (var r in g2.Select(p => Tuples.Create(p.Key.Value, p.Distinct())))
-					yield return r;
-			}
+			return internal_AskPossibleProperties(property, ToMList, constraints);
 		}
 
-		private IEnumerable<Pair<PrimitiveValue, IEnumerable<SubstitutionSet>>> AskDynamicProperties(Name property, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<BeliefPair> AskDynamicProperties(Name property, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
 			const string tmpMarker = "_arg";
 			if (m_dynamicProperties.Count == 0)
@@ -209,7 +299,7 @@ namespace KnowledgeBase
 							args[paramName] = s.Variable.RemoveBoundedVariables(tmpMarker);
 						}
 					}
-					return p.Item1.surogate(this, args, constraints).ToList();
+					return p.Item1.surogate(this, perspective, args, constraints).ToList();
 				}
 				finally
 				{
@@ -218,44 +308,67 @@ namespace KnowledgeBase
 				}
 			});
 
-			//var final = results.ToList();
-			//if (final.Count == 0)
-			//	yield break;
-
 			foreach (var g in results.GroupBy(p => p.Item1, p => p.Item2))
 			{
 				yield return Tuples.Create(g.Key, g.Distinct());
 			}
 		}
 
-	    public bool BeliefExists(Name name)
+		private IEnumerable<BeliefPair> internal_AskPossibleProperties(Name property, List<Name> ToMList, IEnumerable<SubstitutionSet> constraints)
+		{
+			property = RemovePropertyPerspective(property, ToMList);
+
+			//ToM property shift
+			property = ExtractPropertyFromToM(property, ToMList, nameof(property));
+
+			var mind_key = ToMList2Key(ToMList);
+			if (!property.IsVariable)
+			{
+				bool dynamicFound = false;
+				foreach (var r in AskDynamicProperties(property, mind_key, constraints))
+				{
+					dynamicFound = true;
+					yield return r;
+				}
+				if (dynamicFound)
+					yield break;
+			}
+
+			var group = constraints.GroupBy(property.MakeGround);
+
+			foreach (var g in group)
+			{
+				if (g.Key.IsPrimitive)
+				{
+					yield return Tuples.Create(g.Key.GetPrimitiveValue(), (IEnumerable<SubstitutionSet>)g);
+					continue;
+				}
+
+				Name fact;
+				try
+				{
+					fact = property.ApplyToTerms(p => SimplifyProperty(p, ToMList));
+				}
+				catch (Exception)
+				{
+					continue;
+				}
+
+				var g2 = g.SelectMany(c => m_knowledgeStorage.Unify(fact, c)).GroupBy(r => r.Item1, r => r.Item2);
+				foreach (var r in g2)
+				{
+					var value = r.Key.GetValueFor(mind_key);
+					if (value == null)
+						continue;
+					yield return Tuples.Create(value, r.Distinct());
+				}
+			}
+		}
+
+		public bool BeliefExists(Name name)
 	    {
 	        return m_knowledgeStorage.ContainsKey(name);
 	    }
-
-		/// <summary>
-		/// Removes a predicate from the Semantic KB
-		/// </summary>
-		/// <param name="predicate">the predicate to be removed</param>
-		public void Retract(Name predicate)
-		{
-			if(predicate.IsPrimitive)
-				throw new ArgumentException("Unable to retract primitive value","predicate");
-
-			if (!predicate.IsConstant)
-				throw new ArgumentException("The given name is not constant. Only constant names can be retracted","predicate");
-
-			if(m_dynamicProperties.Unify(predicate).Any())
-				throw new ArgumentException("The given name cannot be retracted as it is a dynamic property.", "predicate");
-
-			SubstitutionSet set;
-			var fact = predicate.Unfold(out set);
-			if (set != null)
-			{
-				fact = FindConstantLeveledName(fact, set,true);
-			}
-			m_knowledgeStorage.Remove(fact);
-		}
 
 		/// <summary>
 		/// This method provides a way to search for properties/predicates in the WorkingMemory 
@@ -296,126 +409,304 @@ namespace KnowledgeBase
 		/// </summary>
 		/// <param name="name">a name (that correspond to a predicate or predicate)</param>
 		/// <returns>a set of SubstitutionSets that make the received name to match predicates or properties that do exist in the KB</returns>
-		public IEnumerable<SubstitutionSet> Unify(Name name, SubstitutionSet constraints = null)
+		//public IEnumerable<SubstitutionSet> Unify(Name name, SubstitutionSet constraints = null)
+		//{
+		//	return m_knowledgeStorage.Unify(name, constraints).Select(p => p.Item2);
+		//}
+
+		public void Tell(Name property, PrimitiveValue value)
 		{
-			return m_knowledgeStorage.Unify(name, constraints).Select(p => p.Item2);
+			Tell(property,value,Name.SELF_SYMBOL);
 		}
 
-		public void Tell(Name property, PrimitiveValue value, bool persistent=false, KnowledgeVisibility visibility=KnowledgeVisibility.Universal)
+		public void Tell(Name property, PrimitiveValue value, Name perspective)
 		{
 			if (property.IsPrimitive)
-				throw new Exception("The given name is a primitive. Primitive values cannot be changed.");	//TODO add a better exception
+				throw new ArgumentException("The given property name cannot be a primitive value.",nameof(property));
 
 			if (!property.IsConstant)
-				throw new Exception("The given name is not constant. Only constant names can be stored");	//TODO add a better exception
+				throw new ArgumentException("The given property name is not constant. Only constant names can be stored",nameof(property));
+
+			perspective = perspective.ApplyPerspective(Perspective);
+			var ToMList = AssertPerspective(perspective, nameof(perspective));
+			property = RemovePropertyPerspective(property, ToMList);
+
+			//ToM property shift
+			property = ExtractPropertyFromToM(property, ToMList, nameof(property));
 
 			if (m_dynamicProperties.Unify(property).Any())
-				throw new ArgumentException("The given name will be objuscated by a dynamic property","property");
+				throw new ArgumentException("The given name will be objuscated by a dynamic property", nameof(property));
 
-			SubstitutionSet set;
-			var fact = property.Unfold(out set);
-			if (set != null)
+			var fact = property.ApplyToTerms(p => SimplifyProperty(p, ToMList));
+
+			KnowledgeEntry entry;
+			if (!m_knowledgeStorage.TryGetValue(fact, out entry))
 			{
-				fact = FindConstantLeveledName(fact, set,true);
+				entry = new KnowledgeEntry();
+				m_knowledgeStorage[fact] = entry;
 			}
 
-			m_knowledgeStorage[fact] = new KnowledgeEntry(value, persistent, visibility);
+			var mind_key = ToMList2Key(ToMList);
+			entry.TellValueFor(mind_key,value);
+			if (entry.IsEmpty())
+				m_knowledgeStorage.Remove(fact);
 		}
 
-		private Name FindConstantLeveledName(Name name, SubstitutionSet bindings,bool throwException)
+		private Name RemovePropertyPerspective(Name property, List<Name> ToMList)
 		{
-			var subs = new SubstitutionSet();
-			foreach (var v in name.GetVariableList())
-			{
-				var value = bindings[v];
-				if (value!=null && !value.IsGrounded)
-					value = FindConstantLeveledName(value, bindings,throwException);
-				if (!throwException && value == null)
-					return null;
+			var self = ToMList.Last();
+			if (self.IsUniversal && property.HasSelf())
+				throw new InvalidOperationException($"Cannot evaluate a property containing SELF in the Universal context of the {nameof(KB)}");
 
-				var r = AskPossibleProperties(value, new[] { bindings }).ToList();
+			if (self == Name.SELF_SYMBOL)
+				self = Perspective;
+
+			var p = property.RemovePerspective(self);
+			return p;
+		}
+
+		private static Name ToMList2Key(IEnumerable<Name> ToMList)
+		{
+			Name current = null;
+			foreach (var n in ToMList.Reverse())
+			{
+				if(!(n.IsPrimitive||n.IsUniversal))
+					throw new ArgumentException("The name list can only have primitive or universal symbols",nameof(ToMList));
+				if (current == null)
+					current = n;
+				else
+					current = Name.BuildName(n, current);
+			}
+			return current;
+		}
+
+		private static IEnumerable<Name> Key2ToMList(Name key)
+		{
+			while (key.IsComposed)
+			{
+				var c = key.GetFirstTerm();
+				yield return c;
+				key = key.GetNTerm(1);
+			}
+			yield return key;
+		}
+
+		private Name SimplifyProperty(Name property,List<Name> ToMList)
+		{
+			if (!property.IsComposed)
+				return property;
+
+			var tmpList = ObjectPool<List<Name>>.GetObject();
+			var r = ObjectPool<List<BeliefPair>>.GetObject();
+			try
+			{
+				tmpList.AddRange(ToMList);
+				r.AddRange(internal_AskPossibleProperties(property, tmpList, new[] {new SubstitutionSet()}));
 				if (r.Count != 1)
 				{
-					if (throwException)
+					if (r.Count == 0)
+						throw new Exception($"{nameof(KB)} could not find property value for {property}");
+					if (r.Count > 1)
+						throw new Exception($"{nameof(KB)} found multiple valid values for {property}");
+				}
+
+				return Name.BuildName(r[0].Item1);
+			}
+			finally
+			{
+				r.Clear();
+				ObjectPool<List<BeliefPair>>.Recycle(r);
+				tmpList.Clear();
+				ObjectPool<List<Name>>.Recycle(tmpList);
+			}
+		}
+
+		#region Auxiliary Methods
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="perspective">The perspective to evaluate</param>
+		/// <returns>The ToM sequenceList</returns>
+		private List<Name> AssertPerspective(Name perspective, string argumentName)
+		{
+			if(perspective == Name.NIL_SYMBOL)
+				throw new ArgumentException("Perspectives cannot contain NIL symbol",argumentName);
+
+			List<Name> ToMList = new List<Name>();
+			if (perspective.IsUniversal)
+			{
+				ToMList.Add(Name.UNIVERSAL_SYMBOL);
+				return ToMList;
+			}
+
+			ToMList.Add(Name.SELF_SYMBOL);
+			if (perspective.IsPrimitive)
+			{
+				if(perspective != Name.SELF_SYMBOL)
+					ToMList.Add(perspective);
+
+				return ToMList;
+			}
+
+			if (!perspective.IsConstant)
+				throw new ArgumentException("The given Theory of the Mind perspective needs to be constant", argumentName);
+
+			//Validate ToM definition and ToM level
+			var eval = perspective;
+
+			while (eval.IsComposed)
+			{
+				if (eval.NumberOfTerms > 2)
+					throw new ArgumentException($"Invalid perspective format {perspective}", argumentName);
+
+				var f = eval.GetNTerm(0);
+
+				AssetToMList(ToMList, f, argumentName);
+
+				eval = eval.GetNTerm(1);
+			}
+			AssetToMList(ToMList, eval, argumentName);
+
+			return ToMList;
+		}
+
+		private static void AssetToMList(List<Name> ToMList, Name current, string argName)
+		{
+			if(current==Name.NIL_SYMBOL)
+				throw new ArgumentException("Perspectives cannot contain NIL symbol.", argName);
+
+			if (current == Name.UNIVERSAL_SYMBOL)
+				throw new ArgumentException("Perspectives cannot contain Universal symbol.", argName);
+
+			var last = ToMList.LastOrDefault();
+			if((last==null && current == Name.SELF_SYMBOL) || current!=last)
+				ToMList.Add(current);
+
+			if ((ToMList.Count - 1) > MAX_TOM_LVL)
+				throw new ArgumentException($"Invalid Theory of the Mind level. Max ToM level {MAX_TOM_LVL}.", argName);
+		}
+
+		private static readonly Name TOM_NAME = Name.BuildName("ToM");
+		private Name ExtractPropertyFromToM(Name property, List<Name> ToMList, string argumentName)
+		{
+			if (property.GetFirstTerm() != TOM_NAME)
+				return property;
+
+			if (property.NumberOfTerms != 3)
+				throw new ArgumentException("The property name contains a invalid Theory of the Mind");
+
+			var pers = property.GetNTerm(1);
+			var prop = property.GetNTerm(2);
+
+			AssetToMList(ToMList,pers,argumentName);
+			return ExtractPropertyFromToM(prop, ToMList, argumentName);
+		}
+
+		#endregion
+
+		///// <summary>
+		///// Removes a predicate from the Semantic KB
+		///// </summary>
+		///// <param name="predicate">the predicate to be removed</param>
+		//public void Retract(Name predicate, Name perspective)
+		//{
+		//	if (predicate.IsPrimitive)
+		//		throw new ArgumentException("Unable to retract primitive value", nameof(predicate));
+
+		//	if (!predicate.IsConstant)
+		//		throw new ArgumentException("The given name is not constant. Only constant names can be retracted", nameof(predicate));
+
+		//	if (m_dynamicProperties.Unify(predicate).Any())
+		//		throw new ArgumentException("The given name cannot be retracted as it is a dynamic property.", nameof(predicate));
+
+		//	if (perspective.IsUniversal)
+		//	{
+		//		if (predicate.HasSelf())
+		//			throw new Exception($"Cannot remove a property containing SELF from the Universal context of the {nameof(KB)}");
+		//	}
+
+		//	predicate = predicate.RemovePerspective(perspective.RemovePerspective(Perspective));
+
+		//	SubstitutionSet set;
+		//	var fact = predicate.Unfold(out set);
+		//	if (set != null)
+		//	{
+		//		fact = FindConstantLeveledName(fact, perspective, set, true);
+		//	}
+
+		//	KnowledgeEntry entry;
+		//	if (m_knowledgeStorage.TryGetValue(fact, out entry))
+		//	{
+		//		entry.TellValueFor(perspective, null);
+		//		if (entry.IsEmpty())
+		//			m_knowledgeStorage.Remove(fact);
+		//	}
+		//}
+
+		//public int NumOfEntries
+		//{
+		//	get { return m_knowledgeStorage.Count; }
+		//}
+
+		#region Serialization
+
+		private string Perspective2String(Name perception)
+		{
+			if (perception.IsUniversal)
+				return "Universal";
+
+			return perception.ToString();
+		}
+
+		private Name String2Perspective(string str)
+		{
+			if (string.Equals(str, "universal", StringComparison.InvariantCultureIgnoreCase))
+				return Name.UNIVERSAL_SYMBOL;
+
+			return Name.BuildName(str);
+		}
+
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		{
+			dataHolder.SetValue("Perspective",Perspective);
+			var knowledge = dataHolder.ParentGraph.CreateObjectData();
+			dataHolder.SetValueGraphNode("Knowledge",knowledge);
+			foreach (var entry in m_knowledgeStorage)
+			{
+				foreach (var perspective in entry.Value.GetPerspectives())
+				{
+					var key = Perspective2String(perspective.Key);
+					
+					IGraphNode node;
+					if (!knowledge.TryGetField(key, out node))
 					{
-						if (r.Count == 0)
-							throw new Exception(string.Format("Knowledge Base could not find property for {0}", value));
-						if (r.Count > 1)
-							throw new Exception(string.Format("Knowledge Base found multiple valid values for {0}", value));
+						node = dataHolder.ParentGraph.CreateObjectData();
+						knowledge[key] = node;
 					}
-					else
-						return null;
-				}
 
-				var s = new Substitution(v, Name.BuildName(r[0].Item1));
-				subs.AddSubstitution(s);
-			}
-			return name.MakeGround(subs);
-		}
-
-		public void RemoveNonPersistent()
-		{
-			var nonPersistentEntries = m_knowledgeStorage.Where(p => !p.Value.IsPersistent).Select(p => p.Key).ToList();
-			foreach (var entry in nonPersistentEntries)
-			{
-				m_knowledgeStorage.Remove(entry);
-			}
-		}
-
-		public int NumOfEntries
-		{
-			get { return m_knowledgeStorage.Count; }
-		}
-
-#region Serialization
-
-		public void GetObjectData(ISerializationData dataHolder)
-		{
-			var self = dataHolder.ParentGraph.CreateObjectData();
-			var universal = dataHolder.ParentGraph.CreateObjectData();
-
-			foreach (var e in m_knowledgeStorage)
-			{
-				if(!e.Value.IsPersistent)
-					continue;
-
-				IGraphNode node = dataHolder.ParentGraph.BuildNode(e.Value.Value, typeof (PrimitiveValue));
-
-				if(e.Value.Visibility == KnowledgeVisibility.Self)
-					self[e.Key.ToString()]=node;
-				else
-					universal[e.Key.ToString()] = node;
-			}
-
-			if(self.NumOfFields>0)
-				dataHolder.SetValueGraphNode("self",self);
-			if(universal.NumOfFields>0)
-				dataHolder.SetValueGraphNode("universal",universal);
-		}
-
-		public void SetObjectData(ISerializationData dataHolder)
-		{
-			var self = (IObjectGraphNode)dataHolder.GetValueGraphNode("self");
-			if (self != null)
-			{
-				foreach (var e in self)
-				{
-					PrimitiveValue value = e.FieldNode.RebuildObject <PrimitiveValue>();
-					if (value == null)
-						continue;
-					Tell(Name.BuildName(e.FieldName), value, true, KnowledgeVisibility.Self);
+					((IObjectGraphNode)node)[entry.Key.ToString()] = dataHolder.ParentGraph.BuildNode(perspective.Value);
 				}
 			}
+		}
 
-			var universal = (IObjectGraphNode)dataHolder.GetValueGraphNode("universal");
-			if (universal != null)
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		{
+			Perspective = dataHolder.GetValue<Name>("Perspective");
+			var knowledge = dataHolder.GetValueGraphNode("Knowledge");
+			var it = ((IObjectGraphNode) knowledge).GetEnumerator();
+			while (it.MoveNext())
 			{
-				foreach (var e in universal)
+				var perspective = String2Perspective(it.Current.FieldName);
+				var holder = (IObjectGraphNode) it.Current.FieldNode;
+				foreach (var field in holder)
 				{
-					PrimitiveValue value = e.FieldNode.RebuildObject<PrimitiveValue>();
-					if (value == null)
+					var property = (Name) field.FieldName;
+					var value = field.FieldNode.RebuildObject<PrimitiveValue>();
+					if(value==null)
 						continue;
-					Tell(Name.BuildName(e.FieldName), value, true, KnowledgeVisibility.Universal);
+					
+					Tell(property,value,perspective);
 				}
 			}
 		}

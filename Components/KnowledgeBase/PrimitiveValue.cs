@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using GAIPS.Serialization;
 using GAIPS.Serialization.Attributes;
 using GAIPS.Serialization.SerializationGraph;
@@ -243,6 +244,10 @@ namespace KnowledgeBase
 			return null;
 		}
 
+		private const NumberStyles NUMBER_STYLE_FLAGS =
+			NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent | NumberStyles.AllowLeadingSign;
+		private static readonly IFormatProvider NUMBER_FORMAT = CultureInfo.InvariantCulture.NumberFormat;
+
 		public static PrimitiveValue Parse(string str)
 		{
 			str = str.TrimStart();
@@ -286,15 +291,15 @@ namespace KnowledgeBase
 				return l;
 
 			float f;
-			if (float.TryParse(str, out f))
+			if (float.TryParse(str,NUMBER_STYLE_FLAGS, NUMBER_FORMAT,out f))
 				return f;
 
 			double d;
-			if (double.TryParse(str, out d))
+			if (double.TryParse(str, NUMBER_STYLE_FLAGS, NUMBER_FORMAT, out d))
 				return d;
 
 			decimal m;
-			if (decimal.TryParse(str, out m))
+			if (decimal.TryParse(str, NUMBER_STYLE_FLAGS, NUMBER_FORMAT, out m))
 				return m;
 
 			return str;

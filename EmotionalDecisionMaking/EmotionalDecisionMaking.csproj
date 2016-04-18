@@ -31,14 +31,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Action.cs" />
     <Compile Include="ActionTendency.cs" />
+    <Compile Include="DTOs\ReactionDTO.cs" />
     <Compile Include="EmotionalDecisionMakingAsset.cs" />
-    <Compile Include="IAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReactiveActions.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Components\ActionLibrary\ActionLibrary.csproj">
+      <Project>{e011d502-5c0f-4a3f-9f1a-337ff025eb48}</Project>
+      <Name>ActionLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Components\AutobiographicMemory\AutobiographicMemory.csproj">
       <Project>{c1cc38c5-72f5-4545-b4f7-c65b2883909c}</Project>
       <Name>AutobiographicMemory</Name>
@@ -64,15 +67,12 @@
     <Reference Include="RageAssetManager">
       <HintPath>..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>echo Converting pdb to mdb
-FOR %25%25i IN (*.dll) DO (
-   IF EXIST %25%25~ni.pdb (
-      call "$(SolutionDir)\tools\pdb2mdb\pdb2mdb.exe" %25%25~i
-   )
-)</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

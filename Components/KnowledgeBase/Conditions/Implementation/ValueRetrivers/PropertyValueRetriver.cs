@@ -16,9 +16,9 @@ namespace KnowledgeBase.Conditions
 				m_name = name;
 			}
 
-			public IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> Retrive(KB kb, IEnumerable<SubstitutionSet> constraints)
+			public IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> Retrive(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
-				foreach (var pair in kb.AskPossibleProperties(m_name, constraints))
+				foreach (var pair in kb.AskPossibleProperties(m_name, perspective, constraints))
 				{
 					foreach (var s in pair.Item2)
 						yield return Tuples.Create(pair.Item1, s);

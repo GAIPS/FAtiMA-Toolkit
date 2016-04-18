@@ -1,36 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Configuration;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
 
 namespace KnowledgeBase.Conditions
 {
 	[Serializable]
-	public class ConditionMapper<T> : IEnumerable<Pair<ConditionEvaluatorSet,T>>
+	public class ConditionMapper<T> : IEnumerable<Pair<ConditionSet,T>>
 	{
-		private static readonly IEqualityComparer<Pair<ConditionEvaluatorSet, T>> EQUALITY_COMPARER = new ConditionMapperEquality();
-		private HashSet<Pair<ConditionEvaluatorSet, T>> m_conditions = new HashSet<Pair<ConditionEvaluatorSet, T>>(EQUALITY_COMPARER);
+		private static readonly IEqualityComparer<Pair<ConditionSet, T>> EQUALITY_COMPARER = new ConditionMapperEquality();
+		private HashSet<Pair<ConditionSet, T>> m_conditions = new HashSet<Pair<ConditionSet, T>>(EQUALITY_COMPARER);
 
 		public int Count
 		{
 			get { return m_conditions.Count; }
 		}
 
-		public bool Add(ConditionEvaluatorSet conditionEvaluator, T value)
+		public bool Add(ConditionSet conditionSet, T value)
 		{
-			if (conditionEvaluator!=null && conditionEvaluator.Count == 0)
-				conditionEvaluator = null;
+			if (conditionSet!=null && conditionSet.Count == 0)
+				conditionSet = null;
 
-			return m_conditions.Add(Tuples.Create(conditionEvaluator, value));
+			return m_conditions.Add(Tuples.Create(conditionSet, value));
 		}
 
-		public bool Remove(ConditionEvaluatorSet conditionEvaluator, T value)
+		public bool Remove(ConditionSet conditionSet, T value)
 		{
-			if (conditionEvaluator.Count == 0)
-				conditionEvaluator = null;
+			if (conditionSet.Count == 0)
+				conditionSet = null;
 
-			return m_conditions.Remove(Tuples.Create(conditionEvaluator, value));
+			return m_conditions.Remove(Tuples.Create(conditionSet, value));
 		}
 
 		public void Clear()
@@ -38,7 +39,7 @@ namespace KnowledgeBase.Conditions
 			m_conditions.Clear();
 		}
 
-		public IEnumerable<Pair<T,SubstitutionSet>> MatchConditions(KB kb, SubstitutionSet constraints)
+	    public IEnumerable<Pair<T,SubstitutionSet>> MatchConditions(KB kb, Name perspective, SubstitutionSet constraints)
 		{
 			var constraintSet = new[] { constraints };
 			foreach (var e in m_conditions)
@@ -49,12 +50,12 @@ namespace KnowledgeBase.Conditions
 					continue;
 				}
 
-				foreach (var set in e.Item1.UnifyEvaluate(kb, constraintSet))
+				foreach (var set in e.Item1.UnifyEvaluate(kb,perspective, constraintSet))
 					yield return Tuples.Create(e.Item2, set);
 			}
 		}
 
-		public IEnumerator<Pair<ConditionEvaluatorSet, T>> GetEnumerator()
+		public IEnumerator<Pair<ConditionSet, T>> GetEnumerator()
 		{
 			return m_conditions.GetEnumerator();
 		}
@@ -79,14 +80,14 @@ namespace KnowledgeBase.Conditions
 			return m_conditions.SetEquals(map.m_conditions);
 		}
 
-		private class ConditionMapperEquality : IEqualityComparer<Pair<ConditionEvaluatorSet,T>>
+		private class ConditionMapperEquality : IEqualityComparer<Pair<ConditionSet,T>>
 		{
-			public bool Equals(Pair<ConditionEvaluatorSet, T> x, Pair<ConditionEvaluatorSet, T> y)
+			public bool Equals(Pair<ConditionSet, T> x, Pair<ConditionSet, T> y)
 			{
 				return object.Equals(x.Item1, y.Item1) && object.Equals(x.Item2, y.Item2);
 			}
 
-			public int GetHashCode(Pair<ConditionEvaluatorSet, T> obj)
+			public int GetHashCode(Pair<ConditionSet, T> obj)
 			{
 				return obj.Item1 == null ? 0 : obj.Item1.GetHashCode() ^ obj.Item2.GetHashCode();
 			}

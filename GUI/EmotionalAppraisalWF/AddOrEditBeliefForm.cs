@@ -30,7 +30,7 @@ namespace EmotionalAppraisalWF
 
                 beliefNameTextBox.Text = beliefToEdit.Name;
                 beliefValueTextBox.Text = beliefToEdit.Value;
-                beliefVisibilityComboBox.SelectedIndex = beliefVisibilityComboBox.FindString(beliefToEdit.Visibility.ToString());
+                beliefVisibilityComboBox.Text = beliefToEdit.Perspective;
             }
         }
 
@@ -41,8 +41,8 @@ namespace EmotionalAppraisalWF
             var newBelief = new BeliefDTO
             {
                 Name = this.beliefNameTextBox.Text.Trim(),
-                Value = this.beliefValueTextBox.Text.Trim(),
-                Visibility = (KnowledgeVisibility)Enum.Parse(typeof(KnowledgeVisibility),this.beliefVisibilityComboBox.Text)
+				Perspective = this.beliefVisibilityComboBox.Text,
+                Value = this.beliefValueTextBox.Text.Trim()
             };
 
             try

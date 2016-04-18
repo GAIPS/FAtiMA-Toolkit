@@ -16,7 +16,7 @@ namespace KnowledgeBase
 	{
 		private NameSearchTree<ConditionMapper<T>> m_dictionary=new NameSearchTree<ConditionMapper<T>>();
 
-		public bool Add(Name name, ConditionEvaluatorSet conditionsEvaluator, T value)
+		public bool Add(Name name, ConditionSet conditionSet, T value)
 		{
 			ConditionMapper<T> conds;
 			if (!m_dictionary.TryGetValue(name, out conds))
@@ -25,16 +25,16 @@ namespace KnowledgeBase
 				m_dictionary[name] = conds;
 			}
 
-			return conds.Add(conditionsEvaluator,value);
+			return conds.Add(conditionSet,value);
 		}
 
-		public bool Remove(Name name, ConditionEvaluatorSet conditionsEvaluator, T value)
+		public bool Remove(Name name, ConditionSet conditionSet, T value)
 		{
 			ConditionMapper<T> conds;
 			if (!m_dictionary.TryGetValue(name, out conds))
 				return false;
 
-			if (!conds.Remove(conditionsEvaluator, value))
+			if (!conds.Remove(conditionSet, value))
 				return false;
 
 			if (conds.Count == 0)
@@ -43,13 +43,13 @@ namespace KnowledgeBase
 			return true;
 		}
 
-		public IEnumerable<Pair<T,SubstitutionSet>> UnifyAll(Name expression, KB knowledgeBase, SubstitutionSet bindings)
+		public IEnumerable<Pair<T,SubstitutionSet>> UnifyAll(Name expression, KB knowledgeBase, Name perspective, SubstitutionSet bindings)
 		{
 			if(bindings==null)
 				bindings=new SubstitutionSet();
 
 			var p1 = m_dictionary.Unify(expression, bindings);
-			return p1.SelectMany(p => p.Item1.MatchConditions(knowledgeBase, p.Item2));
+			return p1.SelectMany(p => p.Item1.MatchConditions(knowledgeBase, perspective, p.Item2));
 		}
 
 		public ICollection<Name> Keys
@@ -57,14 +57,14 @@ namespace KnowledgeBase
 			get { return m_dictionary.Keys; }
 		}
 
-		public ICollection<ConditionEvaluatorSet> Conditions
+		public ICollection<ConditionSet> Conditions
 		{
 			get
 			{
 				var set =
 					m_dictionary.Values.SelectMany(v => v.Select(m => m.Item1))
 						.Distinct()
-						.Select(c => c ?? new ConditionEvaluatorSet());
+						.Select(c => c ?? new ConditionSet());
 				return set.ToList();
 			}
 		}
@@ -98,7 +98,7 @@ namespace KnowledgeBase
 			return b;
 		}
 
-		public void GetObjectData(ISerializationData dataHolder)
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			var seq = dataHolder.ParentGraph.BuildSequenceNode();
 
@@ -120,7 +120,7 @@ namespace KnowledgeBase
 			dataHolder.SetValueGraphNode("values",seq);
 		}
 
-		public void SetObjectData(ISerializationData dataHolder)
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			m_dictionary.Clear();
 			var seq = dataHolder.GetValueGraphNode("values") as ISequenceGraphNode;
@@ -139,11 +139,11 @@ namespace KnowledgeBase
 
 				Name key = keyNode.RebuildObject<Name>();
 				T value = valueNode.RebuildObject<T>();
-				ConditionEvaluatorSet cond = null;
+				ConditionSet cond = null;
 
 				var condNode = node["conditions"];
 				if (condNode != null)
-					cond = condNode.RebuildObject<ConditionEvaluatorSet>();
+					cond = condNode.RebuildObject<ConditionSet>();
 
 				Add(key,cond,value);
 			}

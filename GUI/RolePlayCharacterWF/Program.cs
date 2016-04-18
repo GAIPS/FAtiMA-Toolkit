@@ -16,7 +16,7 @@ namespace RolePlayCharacterWF
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new RolePlayCharacter());
+            Application.Run(new MainForm());
         }
     }
 }

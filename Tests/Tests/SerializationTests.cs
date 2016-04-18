@@ -2,17 +2,16 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Security.Principal;
 using GAIPS.Serialization;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KnowledgeBase.WellFormedNames;
+using NUnit.Framework;
 
 namespace UnitTest
 {
-	[TestClass]
+	[TestFixture]
 	public class SerializationTests
 	{
-		[TestMethod]
+		[Test]
 		public void BasicSerializationTest()
 		{
 			var asset = new SerializationTestClass();//Name.Parse("A(B,C(D,E,f(H)))"); //new SerializationTestClass();
@@ -26,7 +25,7 @@ namespace UnitTest
 			}
 		}
 
-		[TestMethod]
+		[Test]
 		public void BasicDeserializationTest()
 		{
 			var asset = new SerializationTestClass();
@@ -53,7 +52,7 @@ namespace UnitTest
 		[Serializable]
 		private class SerializationTestClass
 		{
-			private int[] ArrayField1 = {4, 5, 3, 2, 7, 5, 8};
+			private int[] ArrayField1 = { 4, 5, 3, 2, 7, 5, 8 };
 
 			private object[] ArrayField2 =
 			{
@@ -78,14 +77,15 @@ namespace UnitTest
 
 			public Name NameField;
 
-			[NonSerialized] public string VolatileField = "this string should not be serialized";
+			[NonSerialized]
+			public string VolatileField = "this string should not be serialized";
 
 			public SerializationTestClass()
 			{
-				NumValue = ulong.MaxValue/3;
+				NumValue = ulong.MaxValue / 3;
 				NumValue2 = 123;
 				FloatValue = 4.565e+25m;
-				FloatValue2 = double.MaxValue/5;
+				FloatValue2 = double.MaxValue / 5;
 				EnumField = SerializationEnumTest.Ok3 | SerializationEnumTest.Ok1;
 				TimeField = DateTime.UtcNow;
 

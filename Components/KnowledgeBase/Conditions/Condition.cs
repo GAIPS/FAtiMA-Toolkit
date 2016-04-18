@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using KnowledgeBase.DTOs.Conditions;
 using KnowledgeBase.Exceptions;
 using KnowledgeBase.WellFormedNames;
 
@@ -10,34 +11,42 @@ namespace KnowledgeBase.Conditions
 	[Serializable]
 	public abstract partial class Condition : IConditionEvaluator
 	{
-		private const string WFN_CHARACTERS = @"\w\s-\+\(\)\.\,\[\]\*";
+		public Guid Id { get; set; }
+
+        private const string WFN_CHARACTERS = @"\w\s-\+\(\)\.\,\[\]\*";
 		private const string REGEX_PATTERN = @"^\s*(#)?(["+WFN_CHARACTERS+@"]+)\s*(=|!=|<|<=|>|>=)\s*(#)?(["+WFN_CHARACTERS+@"]+)\s*$";
 		private static readonly Regex REGEX_PARSER = new Regex(REGEX_PATTERN,RegexOptions.Singleline);
 
 		private Condition()
 		{
+		    this.Id = Guid.NewGuid();
 		}
 
-		public IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, IEnumerable<SubstitutionSet> constraints)
+        public IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
 			if (constraints == null || !constraints.Any())
 				constraints = new[] { new SubstitutionSet() };
 
-			return CheckActivation(kb, constraints).Distinct();
+			return CheckActivation(kb, perspective, constraints).Distinct();
 		}
 
-		public bool Evaluate(KB kb, IEnumerable<SubstitutionSet> constraints)
+		public bool Evaluate(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
-			return UnifyEvaluate(kb, constraints).Any();
+			return UnifyEvaluate(kb,perspective, constraints).Any();
 		}
 
-		protected abstract IEnumerable<SubstitutionSet> CheckActivation(KB kb, IEnumerable<SubstitutionSet> constraints);
+		protected abstract IEnumerable<SubstitutionSet> CheckActivation(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints);
 
 		public abstract override string ToString();
 
 		public abstract override bool Equals(object obj);
 
 		public abstract override int GetHashCode();
+
+		public ConditionDTO ToDTO()
+		{
+			return new ConditionDTO() {Id = Id, Condition = ToString()};
+		}
 
 		private static bool CompareValues(PrimitiveValue a, PrimitiveValue b, ComparisonOperator op)
 		{
@@ -56,7 +65,7 @@ namespace KnowledgeBase.Conditions
 				case ComparisonOperator.GreatherOrEqualThan:
 					return a >= b;
 				default:
-					throw new ArgumentOutOfRangeException("op", op, null);
+					throw new ArgumentOutOfRangeException(nameof(op), op, null);
 			}
 		}
 
@@ -85,7 +94,7 @@ namespace KnowledgeBase.Conditions
 		{
 			var m = REGEX_PARSER.Match(str);
 			if (!m.Success)
-				throw new ParsingException(@"Unable to parse ""{0}"" as a condition", str);
+				throw new ParsingException($"Unable to parse \"{str}\" as a condition");
 
 			string mod1 = m.Groups[1].Value;
 			string str1 = m.Groups[2].Value;
@@ -117,7 +126,7 @@ namespace KnowledgeBase.Conditions
 					ope = ComparisonOperator.GreatherOrEqualThan;
 					break;
 				default:
-					throw new ParsingException(@"Invalid comparison operator ""{0}"".", op);
+					throw new ParsingException($"Invalid comparison operator \"{op}\".");
 			}
 
 			return internal_buildCondition(mod1, v1, mod2, v2, ope);

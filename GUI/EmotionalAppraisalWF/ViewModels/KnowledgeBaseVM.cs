@@ -6,6 +6,7 @@ using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using Equin.ApplicationFramework;
 using KnowledgeBase;
+using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalAppraisalWF.ViewModels
 {
@@ -21,8 +22,8 @@ namespace EmotionalAppraisalWF.ViewModels
             var beliefList = ea.Kb.GetAllBeliefs().Select(b => new BeliefDTO
             {
                 Name = b.Name.ToString(),
-                Value = b.Value.ToString(),
-                Visibility = (KnowledgeVisibility)Enum.Parse(typeof(KnowledgeVisibility),b.Visibility.ToString())
+				Perspective = b.Perspective.ToString(),
+                Value = b.Value.ToString()
             }).ToList();
 
             this.Beliefs = new BindingListView<BeliefDTO>(beliefList);
@@ -30,7 +31,7 @@ namespace EmotionalAppraisalWF.ViewModels
 
         public string[] GetKnowledgeVisibilities()
         {
-            return Enum.GetNames(typeof(KnowledgeVisibility));
+            return _emotionalAppraisalAsset.KnowledgeVisibilities;
         }
 
         public void AddBelief(BeliefDTO belief)
@@ -48,7 +49,7 @@ namespace EmotionalAppraisalWF.ViewModels
         {
             foreach (var beliefDto in beliefs)
             {
-                _emotionalAppraisalAsset.RemoveBelief(beliefDto.Name);
+                _emotionalAppraisalAsset.RemoveBelief(beliefDto.Name, beliefDto.Perspective);
                 Beliefs.DataSource.Remove(beliefDto);
             }
             Beliefs.Refresh();

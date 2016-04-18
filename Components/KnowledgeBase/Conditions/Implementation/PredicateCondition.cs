@@ -18,32 +18,21 @@ namespace KnowledgeBase.Conditions
 				m_invert = !expectedResult;
 			}
 
-			protected override IEnumerable<SubstitutionSet> CheckActivation(KB kb, IEnumerable<SubstitutionSet> constraints)
+			protected override IEnumerable<SubstitutionSet> CheckActivation(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
-				List<SubstitutionSet> results = new List<SubstitutionSet>();
-				var sets = m_predicate.Retrive(kb, constraints).ToList();
-				if (sets.Count == 0 && m_invert)
+				foreach (var pair in m_predicate.Retrive(kb, perspective, constraints))
 				{
-					results.AddRange(constraints);
-				}
-				else
-				{
-					foreach (var pair in sets)
-					{
-						if (pair.Item1.TypeCode != TypeCode.Boolean)
-							continue;
+					if (pair.Item1.TypeCode != TypeCode.Boolean)
+						continue;
 
-						if (((bool)pair.Item1) != m_invert)
-							results.Add(pair.Item2);
-					}
+					if (((bool) pair.Item1) != m_invert)
+						yield return pair.Item2;
 				}
-
-				return results;
 			}
 
 			public override string ToString()
 			{
-				return string.Format("{0} = {1}", m_predicate, !m_invert);
+				return $"{m_predicate} = {!m_invert}";
 			}
 
 			public override bool Equals(object obj)
