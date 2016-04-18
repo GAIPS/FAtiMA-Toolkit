@@ -139,6 +139,7 @@
             this.buttonEditReaction.TabIndex = 9;
             this.buttonEditReaction.Text = "Edit";
             this.buttonEditReaction.UseVisualStyleBackColor = true;
+            this.buttonEditReaction.Click += new System.EventHandler(this.buttonEditReaction_Click);
             // 
             // buttonAddReaction
             // 
@@ -148,6 +149,7 @@
             this.buttonAddReaction.TabIndex = 7;
             this.buttonAddReaction.Text = "Add";
             this.buttonAddReaction.UseVisualStyleBackColor = true;
+            this.buttonAddReaction.Click += new System.EventHandler(this.buttonAddReaction_Click);
             // 
             // buttonRemoveReaction
             // 
@@ -181,6 +183,7 @@
             this.dataGridViewReactiveActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewReactiveActions.Size = new System.Drawing.Size(438, 205);
             this.dataGridViewReactiveActions.TabIndex = 2;
+            this.dataGridViewReactiveActions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewReactiveActions_CellMouseDoubleClick);
             this.dataGridViewReactiveActions.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReactiveActions_RowEnter);
             // 
             // groupBox8
@@ -228,6 +231,7 @@
             this.buttonEditReactionCondition.TabIndex = 9;
             this.buttonEditReactionCondition.Text = "Edit";
             this.buttonEditReactionCondition.UseVisualStyleBackColor = true;
+            this.buttonEditReactionCondition.Click += new System.EventHandler(this.buttonEditReactionCondition_Click);
             // 
             // buttonAddReactionCondition
             // 
@@ -237,6 +241,7 @@
             this.buttonAddReactionCondition.TabIndex = 7;
             this.buttonAddReactionCondition.Text = "Add";
             this.buttonAddReactionCondition.UseVisualStyleBackColor = true;
+            this.buttonAddReactionCondition.Click += new System.EventHandler(this.buttonAddReactionCondition_Click);
             // 
             // buttonRemoveReactionCondition
             // 
@@ -246,6 +251,7 @@
             this.buttonRemoveReactionCondition.TabIndex = 8;
             this.buttonRemoveReactionCondition.Text = "Remove";
             this.buttonRemoveReactionCondition.UseVisualStyleBackColor = true;
+            this.buttonRemoveReactionCondition.Click += new System.EventHandler(this.buttonRemoveReactionCondition_Click);
             // 
             // dataGridViewReactionConditions
             // 
@@ -269,6 +275,7 @@
             this.dataGridViewReactionConditions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewReactionConditions.Size = new System.Drawing.Size(439, 145);
             this.dataGridViewReactionConditions.TabIndex = 2;
+            this.dataGridViewReactionConditions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewReactionConditions_CellMouseDoubleClick);
             // 
             // groupBox2
             // 

@@ -17,7 +17,7 @@ namespace ActionLibrary
 		}
 		public Name Target { get; private set; }
 
-		public ConditionSet ActivationConditions { get; private set; }
+		public ConditionSet ActivationConditions { get; set; }
 
 		private void AssertAndInitialize(Name actionTemplate, Name target, ConditionSet activationConditions)
 		{
