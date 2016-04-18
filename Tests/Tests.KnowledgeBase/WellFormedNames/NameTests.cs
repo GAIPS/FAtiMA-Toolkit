@@ -124,7 +124,7 @@ namespace Tests.KnowledgeBase.WellFormedNames
         public void ApplyPerspective_NameWithAgentName_ClonedNameWithSelf(string nameString, string namePerspective, string resultName)
         {
             var name = Name.BuildName(nameString);
-            var clonedName = name.ApplyPerspective(namePerspective);
+            var clonedName = name.ApplyPerspective((Name)namePerspective);
             Assert.That(clonedName.ToString() == resultName);
             Assert.That(!ReferenceEquals(name,clonedName));
         }
@@ -135,7 +135,7 @@ namespace Tests.KnowledgeBase.WellFormedNames
         public void RemovePerspective_NameWithSELF_ClonedNameWithAgentName(string nameString, string namePerspective, string resultName)
         {
             var name = Name.BuildName(nameString);
-            var clonedName = name.RemovePerspective(namePerspective);
+            var clonedName = name.RemovePerspective((Name)namePerspective);
             Assert.That(clonedName.ToString() == resultName);
             Assert.That(!ReferenceEquals(name, clonedName));
         }

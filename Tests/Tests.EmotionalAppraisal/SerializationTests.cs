@@ -16,7 +16,7 @@ namespace Tests.EmotionalAppraisal
 		private static EmotionalAppraisalAsset BuildTestAsset()
 		{//Emotional System Setup
 			var m_emotionalAppraisalAsset = new EmotionalAppraisalAsset("Agent");
-			m_emotionalAppraisalAsset.UpdateKBAccordingToNewPerspective((Name)"Test");
+			m_emotionalAppraisalAsset.SetPerspective((Name)"Test");
 
 			//Setup Emotional Disposition
 
@@ -177,24 +177,6 @@ namespace Tests.EmotionalAppraisal
 				Console.WriteLine(new StreamReader(stream).ReadToEnd());
 				stream.Seek(0, SeekOrigin.Begin);
 				var obj = formater.Deserialize(stream);
-			}
-		}
-
-		[TestCase]
-		public void Test()
-		{
-			var e = new AppraisalRule((Name) "Event(Action, Player, Speak([type], *), Self)");
-			Console.WriteLine(e.Id);
-
-			using (var stream = new MemoryStream())
-			{
-				var formater = new JSONSerializer();
-				formater.Serialize(stream, e);
-				stream.Seek(0, SeekOrigin.Begin);
-				Console.WriteLine(new StreamReader(stream).ReadToEnd());
-				stream.Seek(0, SeekOrigin.Begin);
-				var obj = formater.Deserialize<AppraisalRule>(stream);
-				Console.WriteLine(obj.Id);
 			}
 		}
 	}

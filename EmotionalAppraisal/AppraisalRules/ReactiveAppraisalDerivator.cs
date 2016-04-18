@@ -201,7 +201,7 @@ namespace EmotionalAppraisal.AppraisalRules
 
 			if (desirability != 0 || praiseworthiness != 0)
 			{
-				var eventName = frame.AppraisedEvent.EventName.ApplyPerspective(emotionalModule.Perspective);
+				var eventName = frame.AppraisedEvent.EventName.ApplyPerspective((Name)emotionalModule.Perspective);
 				AppraisalRule r = new AppraisalRule(eventName,null);
 				r.Desirability = desirability;
 				r.Praiseworthiness = praiseworthiness;

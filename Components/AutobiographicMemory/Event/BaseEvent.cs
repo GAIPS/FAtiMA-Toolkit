@@ -3,20 +3,19 @@ using System.Linq;
 using AutobiographicMemory.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase.WellFormedNames;
+using KnowledgeBase.WellFormedNames.Interfaces;
 
 namespace AutobiographicMemory
 {
 	public sealed partial class AM
 	{
-		private abstract class BaseEvent: IBaseEvent, ICustomSerialization
+		private abstract class BaseEvent: IBaseEvent, IPerspective<BaseEvent>, ICustomSerialization
 		{
 			private HashSet<string> m_linkedEmotions = new HashSet<string>();
 			
 			public uint Id { get; protected set; }
 
 			public IEnumerable<string> LinkedEmotions => m_linkedEmotions;
-
-			public abstract Name EventType { get; }
 
 			public Name Type { get; private set; }
 
@@ -43,6 +42,23 @@ namespace AutobiographicMemory
 			public abstract EventDTO ToDTO();
 
 			protected abstract Name BuildEventName();
+
+			public BaseEvent ApplyPerspective(Name name)
+			{
+				return SwapPerspective(name, Name.SELF_SYMBOL);
+			}
+
+			public BaseEvent RemovePerspective(Name name)
+			{
+				return SwapPerspective(Name.SELF_SYMBOL,name);
+			}
+
+			public virtual BaseEvent SwapPerspective(Name oldPerspective, Name newPerspective)
+			{
+				EventName = EventName.SwapPerspective(oldPerspective, newPerspective);
+				Subject = Subject.SwapPerspective(oldPerspective, newPerspective);
+				return this;
+			}
 
 			public virtual void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 			{

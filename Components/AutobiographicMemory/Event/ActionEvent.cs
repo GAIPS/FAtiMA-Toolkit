@@ -15,13 +15,6 @@ namespace AutobiographicMemory
                 return eventName.GetNTerm(1) == Constants.ACTION_EVENT;
             }
 
-			public override Name EventType {
-				get
-				{
-					return Constants.ACTION_EVENT;
-				}
-			}
-
 			public Name Action { get; private set; }
             public Name Target { get; private set; }
 
@@ -47,6 +40,14 @@ namespace AutobiographicMemory
 			protected override Name BuildEventName()
 			{
 				return Name.BuildName(EVT_NAME, (Name)Type, (Name)Subject, Action, (Name)Target);
+			}
+
+			public override BaseEvent SwapPerspective(Name oldPerspective, Name newPerspective)
+			{
+				Action = Action.SwapPerspective(oldPerspective, newPerspective);
+				Target = Target.SwapPerspective(oldPerspective, newPerspective);
+				base.SwapPerspective(oldPerspective, newPerspective);
+				return this;
 			}
 
 			public override void GetObjectData(ISerializationData dataHolder, ISerializationContext context)

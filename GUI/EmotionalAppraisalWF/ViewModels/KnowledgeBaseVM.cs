@@ -5,6 +5,7 @@ using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using Equin.ApplicationFramework;
+using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalAppraisalWF.ViewModels
 {
@@ -13,21 +14,44 @@ namespace EmotionalAppraisalWF.ViewModels
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
 
         public BindingListView<BeliefDTO> Beliefs {get;}
-        
-        public KnowledgeBaseVM(EmotionalAppraisalAsset ea)
+
+		public string Perspective { get; set; }
+
+		public KnowledgeBaseVM(EmotionalAppraisalAsset ea)
         {
             _emotionalAppraisalAsset = ea;
-            var beliefList = ea.Kb.GetAllBeliefs().Select(b => new BeliefDTO
-            {
-                Name = b.Name.ToString(),
-				Perspective = b.Perspective.ToString(),
-                Value = b.Value.ToString()
-            }).ToList();
-
-            this.Beliefs = new BindingListView<BeliefDTO>(beliefList);
+			Perspective = _emotionalAppraisalAsset.Perspective;
+			this.Beliefs = new BindingListView<BeliefDTO>(new List<BeliefDTO>());
+			UpdateBeliefList();
         }
 
-        public string[] GetKnowledgeVisibilities()
+		public void UpdatePerspective()
+		{
+			var n = (Name) Perspective;
+			if((Name)_emotionalAppraisalAsset.Perspective == n)
+				return;
+
+			_emotionalAppraisalAsset.SetPerspective(n);
+			UpdateBeliefList();
+		}
+
+	    public void UpdateBeliefList()
+	    {
+			Beliefs.DataSource.Clear();
+		    var beliefList = _emotionalAppraisalAsset.Kb.GetAllBeliefs().Select(b => new BeliefDTO
+		    {
+			    Name = b.Name.ToString(),
+			    Perspective = b.Perspective.ToString(),
+			    Value = b.Value.ToString()
+		    });
+
+		    foreach (var b in beliefList)
+				Beliefs.DataSource.Add(b);
+
+			Beliefs.Refresh();
+	    }
+
+		public string[] GetKnowledgeVisibilities()
         {
             return _emotionalAppraisalAsset.KnowledgeVisibilities;
         }

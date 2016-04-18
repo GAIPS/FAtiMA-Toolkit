@@ -17,12 +17,6 @@ namespace EmotionalAppraisalWF.ViewModels
             set { _emotionalAppraisalAsset.Mood = value;}
         }
 
-        public string Perspective
-        {
-            get { return _emotionalAppraisalAsset.Perspective; }
-            set { _emotionalAppraisalAsset.Perspective = value; }
-        }
-
         public IEnumerable<string> EmotionTypes { get { return _emotionalAppraisalAsset.EmotionTypes; } } 
 
         public ulong Start
@@ -37,7 +31,7 @@ namespace EmotionalAppraisalWF.ViewModels
             Emotions = new BindingListView<EmotionDTO>(ea.ActiveEmotions.ToList());
         }
 
-        public void AddEmotion(EmotionDTO newEmotion)
+	    public void AddEmotion(EmotionDTO newEmotion)
         {
             var resultingEmotion = _emotionalAppraisalAsset.AddActiveEmotion(newEmotion);
             Emotions.DataSource.Add(resultingEmotion);

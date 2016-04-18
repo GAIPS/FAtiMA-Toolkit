@@ -64,16 +64,6 @@ namespace EmotionalAppraisalWF
                 this.Text = Resources.MainFormPrincipalTitle + Resources.TitleSeparator + _saveFileName;
             }
 
-            //Emotional State Tab
-            _emotionalStateVM = new EmotionalStateVM(_emotionalAppraisalAsset);
-            this.textBoxPerspective.Text = _emotionalStateVM.Perspective;
-            this.richTextBoxDescription.Text = _emotionalAppraisalAsset.Description;
-            this.moodValueLabel.Text = Math.Round(_emotionalStateVM.Mood).ToString(MOOD_FORMAT);
-            this.moodTrackBar.Value = (int) float.Parse(this.moodValueLabel.Text);
-            this.textBoxStartTick.Text = _emotionalStateVM.Start.ToString();
-            this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
-            
-
             //Emotion Dispositions
             _emotionDispositionsVM = new EmotionDispositionsVM(_emotionalAppraisalAsset);
             comboBoxDefaultDecay.SelectedIndex =
@@ -100,7 +90,16 @@ namespace EmotionalAppraisalWF
             //AM
             _autobiographicalMemoryVM = new AutobiographicalMemoryVM(_emotionalAppraisalAsset);
             dataGridViewAM.DataSource = _autobiographicalMemoryVM.Events;
-        }
+
+			//Emotional State Tab
+			_emotionalStateVM = new EmotionalStateVM(_emotionalAppraisalAsset);
+			this.textBoxPerspective.Text = _knowledgeBaseVM.Perspective;
+			this.richTextBoxDescription.Text = _emotionalAppraisalAsset.Description;
+			this.moodValueLabel.Text = Math.Round(_emotionalStateVM.Mood).ToString(MOOD_FORMAT);
+			this.moodTrackBar.Value = (int)float.Parse(this.moodValueLabel.Text);
+			this.textBoxStartTick.Text = _emotionalStateVM.Start.ToString();
+			this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
+		}
 
 
         private void adjustColumnSizeGrid(DataGridView grid)
@@ -148,6 +147,7 @@ namespace EmotionalAppraisalWF
             }
             try
             {
+				_knowledgeBaseVM.UpdatePerspective();
                 using (var file = File.Create(_saveFileName))
                 {
                     _emotionalAppraisalAsset.SaveToFile(file);
@@ -424,7 +424,7 @@ namespace EmotionalAppraisalWF
         {
             if (!string.IsNullOrEmpty(textBoxPerspective.Text))
             {
-                this._emotionalStateVM.Perspective = textBoxPerspective.Text;
+				_knowledgeBaseVM.Perspective = textBoxPerspective.Text;
             }
         }
 
@@ -581,5 +581,10 @@ namespace EmotionalAppraisalWF
         {
 
         }
-    }
+
+		private void OnScreenChanged(object sender, EventArgs e)
+		{
+			_knowledgeBaseVM.UpdatePerspective();
+		}
+	}
 }

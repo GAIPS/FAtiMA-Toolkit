@@ -136,16 +136,6 @@ namespace KnowledgeBase.WellFormedNames
 			return this.GetVariables().Cast<VariableSymbol>().Any(s => s.Equals(v));
 		}
 
-		public Name ApplyPerspective(string name)
-		{
-			return ApplyPerspective(BuildName(name));
-		}
-
-		public Name RemovePerspective(string name)
-		{
-			return RemovePerspective(BuildName(name));
-		}
-
 		public Name ApplyPerspective(Name name)
 		{
 			return SwapPerspective(name, SELF_SYMBOL);
