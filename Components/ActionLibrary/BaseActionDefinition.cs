@@ -2,42 +2,47 @@
 using System.Collections.Generic;
 using System.Linq;
 using GAIPS.Serialization;
-using GAIPS.Serialization.SerializationGraph;
 using KnowledgeBase.Conditions;
 using KnowledgeBase.WellFormedNames;
 
 namespace ActionLibrary
 {
-	public abstract class BaseActionDefinition : IActionDefinition
+	[Serializable]
+	public abstract class BaseActionDefinition : IActionDefinition, ICustomSerialization
 	{
-		public Guid Id { get; }
+		public Guid Id { get; private set; }
 		private Name m_actionTemplate;
 		public Name ActionName {
 			get { return m_actionTemplate.GetFirstTerm(); }
 		}
-		public Name Target { get; }
+		public Name Target { get; private set; }
 
-		public ConditionSet ActivationConditions { get; }
+		public ConditionSet ActivationConditions { get; private set; }
 
-		protected BaseActionDefinition(Name actionTemplate, Name target, IEnumerable<Condition> activationConditions)
+		private void AssertAndInitialize(Name actionTemplate, Name target, ConditionSet activationConditions)
 		{
 			var terms = actionTemplate.GetTerms().ToArray();
 			var name = terms[0];
 			if (!name.IsPrimitive)
 				throw new ArgumentException("Invalid Action Template format", nameof(actionTemplate));
-			for (int i = 1; i < terms.Length;i++)
+			for (int i = 1; i < terms.Length; i++)
 			{
-				if(terms[i].IsComposed)
+				if (terms[i].IsComposed)
 					throw new ArgumentException("Invalid Action Template format", nameof(actionTemplate));
 			}
 
-			if(target.IsComposed)
+			if (target.IsComposed)
 				throw new ArgumentException("Action Definition Target must be a symbol definition", nameof(target));
 
 			Id = Guid.NewGuid();
 			m_actionTemplate = actionTemplate;
 			Target = target;
-			ActivationConditions = new ConditionSet(activationConditions);
+			ActivationConditions = activationConditions;
+		}
+
+		protected BaseActionDefinition(Name actionTemplate, Name target, IEnumerable<Condition> activationConditions)
+		{
+			AssertAndInitialize(actionTemplate,target, new ConditionSet(activationConditions));
 		}
 
 		protected BaseActionDefinition(BaseActionDefinition other)
@@ -72,39 +77,46 @@ namespace ActionLibrary
 			return m_actionTemplate;
 		}
 
-		public virtual void GetSerializationData(Graph serializationParent, IObjectGraphNode node, object contextData)
-		{
-			node["Action"] = serializationParent.BuildNode(GetActionTemplate());
-			if (Target != null && Target != Name.NIL_SYMBOL)
-				node["Target"] = serializationParent.BuildNode(Target);
+		///// <summary>
+		///// Deserialization constructor
+		///// </summary>
+		//protected BaseActionDefinition(IObjectGraphNode node, object contextData)
+		//{
+		//	var actionTemplate = node["Action"].RebuildObject<Name>();
+		//	var terms = actionTemplate.GetTerms().ToArray();
+		//	var name = terms[0];
+		//	if (!name.IsPrimitive)
+		//		throw new Exception("Invalid Action Template format");
+		//	for (int i = 1; i < terms.Length; i++)
+		//	{
+		//		if (terms[i].IsComposed)
+		//			throw new Exception("Invalid Action Template format");
+		//	}
 
-			node["Conditions"] = serializationParent.BuildNode(ActivationConditions);
+		//	var target = SerializationServices.GetFieldOrDefault(node, "Target", Name.NIL_SYMBOL);
+		//	if (target.IsComposed)
+		//		throw new ArgumentException("Action Definition Target must be a symbol definition", nameof(target));
+
+		//	Id = Guid.NewGuid();
+		//	m_actionTemplate = actionTemplate;
+		//	Target = target;
+		//	ActivationConditions = node["Conditions"].RebuildObject<ConditionSet>();
+		//}
+
+		public virtual void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		{
+			dataHolder.SetValue("Action",GetActionTemplate());
+			if (Target != null && Target != Name.NIL_SYMBOL)
+				dataHolder.SetValue("Target",Target);
+			dataHolder.SetValue("Conditions",ActivationConditions);
 		}
 
-		/// <summary>
-		/// Deserialization constructor
-		/// </summary>
-		protected BaseActionDefinition(IObjectGraphNode node, object contextData)
+		public virtual void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
-			var actionTemplate = node["Action"].RebuildObject<Name>();
-			var terms = actionTemplate.GetTerms().ToArray();
-			var name = terms[0];
-			if (!name.IsPrimitive)
-				throw new Exception("Invalid Action Template format");
-			for (int i = 1; i < terms.Length; i++)
-			{
-				if (terms[i].IsComposed)
-					throw new Exception("Invalid Action Template format");
-			}
-
-			var target = SerializationServices.GetFieldOrDefault(node, "Target", Name.NIL_SYMBOL);
-			if (target.IsComposed)
-				throw new ArgumentException("Action Definition Target must be a symbol definition", nameof(target));
-
-			Id = Guid.NewGuid();
-			m_actionTemplate = actionTemplate;
-			Target = target;
-			ActivationConditions = node["Conditions"].RebuildObject<ConditionSet>();
+			var actionTemplate = dataHolder.GetValue<Name>("Action");
+			var target = dataHolder.ContainsField("Target") ? dataHolder.GetValue<Name>("Target") : Name.NIL_SYMBOL;
+			var conditions = dataHolder.GetValue<ConditionSet>("Conditions");
+			AssertAndInitialize(actionTemplate, target, conditions);
 		}
 	}
 }

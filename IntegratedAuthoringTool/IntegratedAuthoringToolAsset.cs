@@ -107,7 +107,7 @@ namespace IntegratedAuthoringTool
             serializer.Serialize(file, this);
         }
 
-        public void GetObjectData(ISerializationData dataHolder)
+        public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             dataHolder.SetValue("ScenarioName", ScenarioName);
             if (CharacterSources.Any())
@@ -116,7 +116,7 @@ namespace IntegratedAuthoringTool
             }
         }
 
-        public void SetObjectData(ISerializationData dataHolder)
+        public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             ScenarioName = dataHolder.GetValue<string>("ScenarioName");
             var charArray = dataHolder.GetValue<CharacterSourceDTO[]>("Characters");

@@ -244,7 +244,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 			return this.All(pair => dic.Contains(pair));
 		}
 
-		public void GetObjectData(ISerializationData dataHolder)
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			var t = typeof (T);
 			foreach (var pairs in this)
@@ -254,7 +254,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 			}
 		}
 
-		public void SetObjectData(ISerializationData dataHolder)
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			using (var it = dataHolder.GetEnumerator())
 			{

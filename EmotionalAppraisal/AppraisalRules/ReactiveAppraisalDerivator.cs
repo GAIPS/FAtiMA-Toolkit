@@ -221,24 +221,21 @@ namespace EmotionalAppraisal.AppraisalRules
 
 		#region Custom Serializer
 
-		public void GetObjectData(ISerializationData dataHolder)
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			dataHolder.SetValue("AppraisalWeight",AppraisalWeight);
 			dataHolder.SetValue("Rules",Rules.Values.SelectMany(set => set).ToArray());
 		}
 
-		public void SetObjectData(ISerializationData dataHolder)
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			AppraisalWeight = dataHolder.GetValue<short>("AppraisalWeight");
 			var rules = dataHolder.GetValue<AppraisalRule[]>("Rules");
 			Rules.Clear();
 		    foreach (var r in rules)
 		    {
-                r.Id = Guid.NewGuid();
                 AddEmotionalReaction(r);
             }
-                
-				
 		}
 
 		#endregion

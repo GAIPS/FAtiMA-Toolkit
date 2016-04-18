@@ -23,6 +23,7 @@ namespace GAIPS.Serialization
 		ISerializationFieldEnumerator GetEnumerator();
 
 		Graph ParentGraph { get; }
+		ISerializationContext Context { get; }
 	}
 
 	public interface ISerializationFieldEnumerator : IEnumerator<IGraphNode>
@@ -173,6 +174,10 @@ namespace GAIPS.Serialization
 		public Graph ParentGraph
 		{
 			get { return _holder.ParentGraph; }
+		}
+
+		public ISerializationContext Context {
+			get { return _holder.ParentGraph.Context; }
 		}
 	}
 }

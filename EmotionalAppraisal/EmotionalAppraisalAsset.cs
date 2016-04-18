@@ -500,7 +500,7 @@ namespace EmotionalAppraisal
 
 	    #region ICustomSerialization
 
-        public void GetObjectData(ISerializationData dataHolder)
+        public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
             dataHolder.SetValue("Description", Description);
             dataHolder.SetValue("EmotionalHalfLifeDecayTime", EmotionalHalfLifeDecayTime);
@@ -515,7 +515,7 @@ namespace EmotionalAppraisal
 			dataHolder.SetValue("AppraisalRules", m_appraisalDerivator);
 		}
 
-		public void SetObjectData(ISerializationData dataHolder)
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
             Description = dataHolder.GetValue<string>("Description");
             EmotionalHalfLifeDecayTime = dataHolder.GetValue<float>("EmotionalHalfLifeDecayTime");

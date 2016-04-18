@@ -1,4 +1,5 @@
-﻿using AutobiographicMemory.DTOs;
+﻿using System.Collections.Generic;
+using AutobiographicMemory.DTOs;
 using KnowledgeBase.WellFormedNames;
 
 namespace AutobiographicMemory
@@ -10,6 +11,8 @@ namespace AutobiographicMemory
 		Name EventName { get; }
 		ulong Timestamp { get; }
 		Name Subject { get; }
+		IEnumerable<string> LinkedEmotions { get; }
+
 		void LinkEmotion(string emotionType);
 
 		EventDTO ToDTO();

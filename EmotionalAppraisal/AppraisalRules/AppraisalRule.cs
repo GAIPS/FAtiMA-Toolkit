@@ -22,7 +22,6 @@ namespace EmotionalAppraisal.AppraisalRules
 
 		public AppraisalRule(Name eventName, ConditionSet conditions = null)
 		{
-			AM.AssertEventNameValidity(eventName);
 			EventName = eventName;
 			Conditions = conditions ?? new ConditionSet();
 			Desirability = Praiseworthiness = 0;
@@ -33,18 +32,20 @@ namespace EmotionalAppraisal.AppraisalRules
 	        EventName = Name.BuildName(appraisalRuleDTO.EventMatchingTemplate);
 	        Desirability = appraisalRuleDTO.Desirability;
 	        Praiseworthiness = appraisalRuleDTO.Praiseworthiness;
-            Conditions = new ConditionSet(appraisalRuleDTO.Conditions.Select(c => Condition.Parse(c.Condition)));
+			Conditions = appraisalRuleDTO.Conditions==null ? new ConditionSet() : new ConditionSet(appraisalRuleDTO.Conditions);
 	    }
 
 		/// <summary>
 		///     Clone Constructor
 		/// </summary>
 		/// <param name="other">the reaction to clone</param>
-		public AppraisalRule(AppraisalRule other)
+		public AppraisalRule(AppraisalRule other) : base(other.Id)
 		{
+			EventName = other.EventName;
+			Conditions = new ConditionSet(other.Conditions);
 			Desirability = other.Desirability;
-			//DesirabilityForOther = other.DesirabilityForOther;
 			Praiseworthiness = other.Praiseworthiness;
+			//DesirabilityForOther = other.DesirabilityForOther;
 			//Like = other.Like;
 			//ReferencedEventName = (Name)other.ReferencedEventName.Clone();
 			//if (Other != null)

@@ -98,7 +98,7 @@ namespace KnowledgeBase
 			return b;
 		}
 
-		public void GetObjectData(ISerializationData dataHolder)
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			var seq = dataHolder.ParentGraph.BuildSequenceNode();
 
@@ -120,7 +120,7 @@ namespace KnowledgeBase
 			dataHolder.SetValueGraphNode("values",seq);
 		}
 
-		public void SetObjectData(ISerializationData dataHolder)
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			m_dictionary.Clear();
 			var seq = dataHolder.GetValueGraphNode("values") as ISequenceGraphNode;

@@ -667,7 +667,7 @@ namespace KnowledgeBase
 			return Name.BuildName(str);
 		}
 
-		public void GetObjectData(ISerializationData dataHolder)
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			dataHolder.SetValue("Perspective",Perspective);
 			var knowledge = dataHolder.ParentGraph.CreateObjectData();
@@ -690,7 +690,7 @@ namespace KnowledgeBase
 			}
 		}
 
-		public void SetObjectData(ISerializationData dataHolder)
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			Perspective = dataHolder.GetValue<Name>("Perspective");
 			var knowledge = dataHolder.GetValueGraphNode("Knowledge");

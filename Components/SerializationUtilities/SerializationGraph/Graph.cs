@@ -54,13 +54,15 @@ namespace GAIPS.Serialization.SerializationGraph
 
 		private GraphFormatterSelector m_formatterSelector = null;
 
-		public Graph(GraphFormatterSelector formatterSelector)
+		public ISerializationContext Context { get; private set; }
+
+		public Graph(GraphFormatterSelector formatterSelector, ISerializationContext context)
 		{
 			m_formatterSelector = formatterSelector;
+			Context = context;
 		}
 
-		internal Graph(object objectToSerialize, GraphFormatterSelector formatterSelector)
-			: this(formatterSelector)
+		internal Graph(object objectToSerialize, GraphFormatterSelector formatterSelector, ISerializationContext context) : this(formatterSelector,context)
 		{
 			Root = BuildNode(objectToSerialize, null);
 		}
@@ -158,7 +160,7 @@ namespace GAIPS.Serialization.SerializationGraph
 
 		public IGraphNode BuildNode<T>(T obj)
 		{
-			return BuildNode(obj, typeof (T));
+			return BuildNode(obj, typeof(T));
 		}
 
 		public IGraphNode BuildNode(object obj, Type fieldType)

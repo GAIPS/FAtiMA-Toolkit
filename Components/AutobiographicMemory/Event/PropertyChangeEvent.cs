@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using AutobiographicMemory.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase.WellFormedNames;
@@ -10,7 +8,7 @@ namespace AutobiographicMemory
 	public sealed partial class AM
 	{
 		[Serializable]
-		private class PropertyChangeEvent: BaseEvent, IPropertyChangedEvent, ICustomSerialization
+		private class PropertyChangeEvent: BaseEvent, IPropertyChangedEvent
 		{
 		    public static bool IsPropertyChangeEvent(Name eventName)
 		    {
@@ -20,15 +18,13 @@ namespace AutobiographicMemory
 			public override Name EventType => Constants.PROPERTY_CHANGE_EVENT;
 
 			public Name Property { get; private set; }
-    	    public string NewValue { get; private set; }
+    	    public Name NewValue { get; private set; }
     
 			public PropertyChangeEvent(uint id, Name eventName, ulong timestamp) : base(id, eventName, timestamp)
 			{
-			    Type = Constants.PROPERTY_CHANGE_EVENT;
                 Property = eventName.GetNTerm(3);
-                var newValue = eventName.GetNTerm(4);
-				NewValue = newValue == Name.NIL_SYMBOL ? null : newValue.ToString();
-            }
+				NewValue = eventName.GetNTerm(4);
+			}
 
 			public override EventDTO ToDTO()
 			{
@@ -38,43 +34,28 @@ namespace AutobiographicMemory
 					Event = EventName.ToString(),
 					Id = Id,
 					Subject = Subject.ToString(),
-					NewValue = NewValue,
+					NewValue = NewValue.ToString(),
 					Time = Timestamp
 				};
 			}
 
-			public void GetObjectData(ISerializationData dataHolder)
+			protected override Name BuildEventName()
 			{
-				dataHolder.SetValue("Id", Id);
-				dataHolder.SetValue("Type", Type);
-				dataHolder.SetValue("Subject", Subject);
-                dataHolder.SetValue("Property", Property);
-			    dataHolder.SetValue("NewValue", NewValue);
-                dataHolder.SetValue("Timestamp", Timestamp);
-				if (m_linkedEmotions.Count > 0)
-				{
-					dataHolder.SetValue("LinkedEmotions",m_linkedEmotions.ToArray());
-				}
+				return Name.BuildName(EVT_NAME, Type, Subject, Property, NewValue);
 			}
 
-			public void SetObjectData(ISerializationData dataHolder)
+			public override void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 			{
-				Id = dataHolder.GetValue<uint>("Id");
-				Type = dataHolder.GetValue<Name>("Type");
-                Subject = dataHolder.GetValue<Name>("Subject");
-                Property = dataHolder.GetValue<Name>("Property");
-                NewValue = dataHolder.GetValue<string>("NewValue");
-				Timestamp = dataHolder.GetValue<ulong>("Timestamp");
+				base.GetObjectData(dataHolder,context);
+				dataHolder.SetValue("Property", Property);
+				dataHolder.SetValue("NewValue", NewValue);
+			}
 
-				if(m_linkedEmotions==null)
-					m_linkedEmotions=new HashSet<string>();
-				else
-					m_linkedEmotions.Clear();
-				var le = dataHolder.GetValue<string[]>("LinkedEmotions");
-				if(le!=null && le.Length>0)
-					m_linkedEmotions.UnionWith(le);
-
-				EventName = Name.BuildName(EVT_NAME,(Name)Type,(Name)Subject,Property,(Name)NewValue);
+			public override void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+			{
+				Property = dataHolder.GetValue<Name>("Property");
+				NewValue = dataHolder.GetValue<Name>("NewValue");
+				base.SetObjectData(dataHolder,context);
 			}
 		}
 	}

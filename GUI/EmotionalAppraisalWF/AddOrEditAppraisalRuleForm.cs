@@ -42,7 +42,7 @@ namespace EmotionalAppraisalWF
                 EventMatchingTemplate = eventTextBox.Text,
                 Desirability = int.Parse(comboBoxDesirability.Text),
                 Praiseworthiness = int.Parse(comboBoxPraiseworthiness.Text),
-                Conditions = new List<ConditionDTO>(),
+				Conditions = new ConditionSetDTO()
             };
             
             try

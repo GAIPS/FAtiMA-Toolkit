@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using KnowledgeBase.DTOs.Conditions;
+﻿using KnowledgeBase.DTOs.Conditions;
 
 namespace EmotionalAppraisal.DTOs
 {
@@ -9,13 +7,6 @@ namespace EmotionalAppraisal.DTOs
         public string EventMatchingTemplate { get; set; }
         public float Desirability { get; set; }
         public float Praiseworthiness { get; set; }
-        public IList<ConditionDTO> Conditions { get; set; }
-        public string QuantifierType { get; set; }
-
-        public AppraisalRuleDTO()
-        {
-            this.Id = Guid.NewGuid();
-            this.Conditions = new List<ConditionDTO>();
-        }
+	    public ConditionSetDTO Conditions { get; set; }
     }
 }

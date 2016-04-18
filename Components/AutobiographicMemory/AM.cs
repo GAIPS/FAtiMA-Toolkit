@@ -282,13 +282,13 @@ namespace AutobiographicMemory
 
 		#endregion
 
-		public void GetObjectData(ISerializationData dataHolder)
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			dataHolder.SetValue("Tick",Tick);
 			dataHolder.SetValue("records", m_registry.Values.ToArray());
 		}
 
-		public void SetObjectData(ISerializationData dataHolder)
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			Tick = dataHolder.GetValue<ulong>("Tick");
 
