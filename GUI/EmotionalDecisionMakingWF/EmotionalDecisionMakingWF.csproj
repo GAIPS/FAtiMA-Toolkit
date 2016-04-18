@@ -53,6 +53,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddOrEditReactionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddOrEditReactionForm.Designer.cs">
+      <DependentUpon>AddOrEditReactionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddOrEditConditionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddOrEditConditionForm.Designer.cs">
+      <DependentUpon>AddOrEditConditionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -62,6 +74,12 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyUtil.cs" />
+    <EmbeddedResource Include="AddOrEditReactionForm.resx">
+      <DependentUpon>AddOrEditReactionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddOrEditConditionForm.resx">
+      <DependentUpon>AddOrEditConditionForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

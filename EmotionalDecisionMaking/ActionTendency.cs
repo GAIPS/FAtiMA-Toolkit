@@ -54,7 +54,7 @@ namespace EmotionalDecisionMaking
 				Action = GetActionTemplate().ToString(),
 				Target = Target.ToString(),
 				Conditions = ActivationConditions.ToDTO(),
-				Cooldown = ActivationCooldown
+				Cooldown = ActivationCooldown.ToString()
 			};
 		}
 

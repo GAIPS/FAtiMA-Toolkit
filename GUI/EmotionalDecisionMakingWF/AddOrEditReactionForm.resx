@@ -117,25 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ErrorDialogTitle" xml:space="preserve">
-    <value>Error</value>
-  </data>
-  <data name="UnableToSaveFileError" xml:space="preserve">
-    <value>Unable to save to the chosen file.</value>
-  </data>
-  <data name="MainFormTitle" xml:space="preserve">
-    <value>Emotional Decision Making</value>
-  </data>
-  <data name="EditConditionFormTitle" xml:space="preserve">
-    <value>Edit Condition</value>
-  </data>
-  <data name="AddReactionFormTitle" xml:space="preserve">
-    <value>Add Reaction</value>
-  </data>
-  <data name="EditReactionFormTitle" xml:space="preserve">
-    <value>Edit Reaction</value>
-  </data>
-  <data name="UpdateButtonLabel" xml:space="preserve">
-    <value>Update</value>
-  </data>
+  <metadata name="emotionalAppraisalAssetBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <metadata name="addBeliefErrorProvider.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>282, 17</value>
+  </metadata>
 </root>

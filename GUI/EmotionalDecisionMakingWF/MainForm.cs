@@ -180,5 +180,76 @@ namespace EmotionalDecisionMakingWF
             _reactiveActions.DataSource = _edmAsset.GetAllReactions().ToList();
             _reactiveActions.Refresh();
         }
+
+        private void buttonAddReactionCondition_Click(object sender, EventArgs e)
+        {
+            if (_selectedActionId != Guid.Empty)
+            {
+                new AddOrEditConditionForm(_edmAsset,_selectedActionId).ShowDialog();
+                _conditions.DataSource = _edmAsset.GetReactionsConditions(_selectedActionId).ToList();
+                _conditions.Refresh();
+            }
+        }
+
+        private void buttonRemoveReactionCondition_Click(object sender, EventArgs e)
+        {
+            IList<ConditionDTO> conditionsToRemove = new List<ConditionDTO>();
+            for (int i = 0; i < dataGridViewReactionConditions.SelectedRows.Count; i++)
+            {
+                var reaction = ((ObjectView<ConditionDTO>)dataGridViewReactionConditions.SelectedRows[i].DataBoundItem).Object;
+                conditionsToRemove.Add(reaction);
+            }
+            _edmAsset.RemoveReactionConditions(_selectedActionId, conditionsToRemove);
+            _reactiveActions.DataSource = _edmAsset.GetAllReactions().ToList();
+            _reactiveActions.Refresh();
+        }
+
+        private void buttonEditReactionCondition_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewReactionConditions.SelectedRows.Count == 1)
+            {
+                var selectedCondition = ((ObjectView<ConditionDTO>)dataGridViewReactionConditions.
+                    SelectedRows[0].DataBoundItem).Object;
+                new AddOrEditConditionForm(_edmAsset, _selectedActionId, selectedCondition).ShowDialog();
+            }
+            _reactiveActions.DataSource = _edmAsset.GetAllReactions().ToList();
+            _reactiveActions.Refresh();
+        }
+
+        private void buttonAddReaction_Click(object sender, EventArgs e)
+        {
+            new AddOrEditReactionForm(_edmAsset).ShowDialog();
+            _reactiveActions.DataSource = _edmAsset.GetAllReactions().ToList();
+            _reactiveActions.Refresh();
+        }
+
+        private void buttonEditReaction_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewReactiveActions.SelectedRows.Count == 1)
+            {
+                var selectedReaction = ((ObjectView<ReactionDTO>)dataGridViewReactiveActions.
+                   SelectedRows[0].DataBoundItem).Object;
+                new AddOrEditReactionForm(_edmAsset,selectedReaction).ShowDialog();
+            }
+            _reactiveActions.DataSource = _edmAsset.GetAllReactions().ToList();
+            _reactiveActions.Refresh();
+        }
+
+      
+        private void dataGridViewReactionConditions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex != -1) //exclude header cells
+            {
+                this.buttonEditReactionCondition_Click(sender, e);
+            }
+        }
+
+        private void dataGridViewReactiveActions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex != -1) //exclude header cells
+            {
+                this.buttonEditReaction_Click(sender, e);
+            }
+        }
     }
 }

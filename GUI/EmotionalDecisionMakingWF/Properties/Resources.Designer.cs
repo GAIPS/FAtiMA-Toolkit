@@ -61,6 +61,33 @@ namespace EmotionalDecisionMakingWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Reaction.
+        /// </summary>
+        internal static string AddReactionFormTitle {
+            get {
+                return ResourceManager.GetString("AddReactionFormTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Condition.
+        /// </summary>
+        internal static string EditConditionFormTitle {
+            get {
+                return ResourceManager.GetString("EditConditionFormTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Edit Reaction.
+        /// </summary>
+        internal static string EditReactionFormTitle {
+            get {
+                return ResourceManager.GetString("EditReactionFormTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error.
         /// </summary>
         internal static string ErrorDialogTitle {
@@ -84,6 +111,15 @@ namespace EmotionalDecisionMakingWF.Properties {
         internal static string UnableToSaveFileError {
             get {
                 return ResourceManager.GetString("UnableToSaveFileError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Update.
+        /// </summary>
+        internal static string UpdateButtonLabel {
+            get {
+                return ResourceManager.GetString("UpdateButtonLabel", resourceCulture);
             }
         }
     }
