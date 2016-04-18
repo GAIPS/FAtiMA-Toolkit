@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Equin.ApplicationFramework;
@@ -142,12 +141,16 @@ namespace IntegratedAuthoringToolWF
             {
                 try
                 {
-                    var character = _iatAsset.LoadAndAddCharacter(ofd.FileName);
-                    if (character.ErrorOnLoad != null)
-                    {
-                        MessageBox.Show("Error when loading character '" + character.CharacterName + "': " + character.ErrorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    _characterSources.DataSource = _iatAsset.GetAllCharacterSources().ToList();
+	                string error;
+	                var character = RolePlayCharacterAsset.LoadFromFile(ofd.FileName, out error);
+	                if (error != null)
+	                {
+						MessageBox.Show($"Error when loading character '{character.CharacterName}': {error}", Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
+	                else
+						_iatAsset.AddCharacter(character);
+
+					_characterSources.DataSource = _iatAsset.GetAllCharacterSources().ToList();
                     _characterSources.Refresh();
                 }
                 catch (Exception ex)

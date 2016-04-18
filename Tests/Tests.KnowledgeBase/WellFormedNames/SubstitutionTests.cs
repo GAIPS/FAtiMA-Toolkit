@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using KnowledgeBase.Exceptions;
+﻿using KnowledgeBase.Exceptions;
 using KnowledgeBase.WellFormedNames;
 using NUnit.Framework;
 

@@ -1,6 +1,4 @@
-﻿using AutobiographicMemory;
-using EmotionalAppraisal.DTOs;
-using KnowledgeBase.WellFormedNames;
+﻿using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalAppraisal.OCCModel
 {

@@ -1,6 +1,4 @@
-﻿using EmotionalAppraisal;
-
-namespace EmotionalAppraisal.Components
+﻿namespace EmotionalAppraisal.Components
 {
 	public interface IEmotionProcessor
 	{

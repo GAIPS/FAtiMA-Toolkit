@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using GAIPS.Serialization;
 using GAIPS.Serialization.Attributes;
 using GAIPS.Serialization.SerializationGraph;

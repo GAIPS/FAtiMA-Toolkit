@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.AccessControl;
 using GAIPS.Rage;
 using GAIPS.Serialization;
 using IntegratedAuthoringTool.DTOs;
@@ -34,9 +33,10 @@ namespace IntegratedAuthoringTool
 
 					if (pair.Value.RPCAsset == null)
 					{
-						pair.Value.RPCAsset = RolePlayCharacterAsset.LoadFromFile(ToAbsolutePath(pair.Value.Source));
-						if (pair.Value.RPCAsset.ErrorOnLoad != null)
-							return pair.Value.RPCAsset.ErrorOnLoad;
+						string errorsOnLoad;
+						pair.Value.RPCAsset = RolePlayCharacterAsset.LoadFromFile(ToAbsolutePath(pair.Value.Source),out errorsOnLoad);
+						if (errorsOnLoad != null)
+							return errorsOnLoad;
 					}
 
 					if (!string.Equals(pair.Key, pair.Value.RPCAsset.CharacterName))
@@ -84,15 +84,12 @@ namespace IntegratedAuthoringTool
 		    return m_characterSources.Values.Select(h => h.RPCAsset);
 	    } 
 
-        public RolePlayCharacterAsset LoadAndAddCharacter(string filename)
+        public void AddCharacter(RolePlayCharacterAsset character)
         {
-            var character = RolePlayCharacterAsset.LoadFromFile(filename);
-
-			if(m_characterSources.ContainsKey(character.CharacterName))
+	        if(m_characterSources.ContainsKey(character.CharacterName))
 				throw new Exception("A character with the same name already exists.");
 
-			m_characterSources.Add(character.CharacterName,new CharacterHolder() {Source = ToRelativePath(filename),RPCAsset = character});
-            return character;
+			m_characterSources.Add(character.CharacterName,new CharacterHolder() {Source = ToRelativePath(character.AssetFilePath),RPCAsset = character});
         }
 
         public void RemoveCharacters(IList<string> charactersToRemove)

@@ -1,5 +1,4 @@
-﻿using EmotionalAppraisal;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace EmotionalAppraisal.Components
 {
