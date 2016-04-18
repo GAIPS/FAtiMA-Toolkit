@@ -7,7 +7,6 @@ using Equin.ApplicationFramework;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
 using IntegratedAuthoringToolWF.Properties;
-using RolePlayCharacter;
 
 
 namespace IntegratedAuthoringToolWF
