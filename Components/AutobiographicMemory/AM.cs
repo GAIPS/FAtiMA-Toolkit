@@ -22,9 +22,9 @@ namespace AutobiographicMemory
 
 		public void BindCalls(KB kb)
 		{
-			kb.RegistDynamicProperty(EVENT_ID_PROPERTY_TEMPLATE, EventIdPropertyCalculator,new []{"type","subject","def","target"});
-			kb.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE, EventAgePropertyCalculator, new[] { "id" });
-			kb.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_TEMPLATE, LastEventIdPropertyCalculator, new[] { "type", "subject", "def", "target" });
+			kb.RegistDynamicProperty(EVENT_ID_PROPERTY_TEMPLATE, EventIdPropertyCalculator);
+			kb.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE, EventAgePropertyCalculator);
+			kb.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_TEMPLATE, LastEventIdPropertyCalculator);
 		}
 
 		public IBaseEvent RecordEvent(EventDTO dto)

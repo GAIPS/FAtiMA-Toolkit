@@ -57,7 +57,7 @@ namespace SocialImportance
 
 		private void PerformKBBindings()
 		{
-			m_ea.Kb.RegistDynamicProperty(SI_DYNAMIC_PROPERTY_TEMPLATE,SIPropertyCalculator,new []{"target"});
+			m_ea.Kb.RegistDynamicProperty(SI_DYNAMIC_PROPERTY_TEMPLATE,SIPropertyCalculator);
 		}
 
 		private void RemoveKBBindings()
