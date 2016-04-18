@@ -46,9 +46,9 @@ namespace EmotionalDecisionMaking
 			return m_actionTendencies.SelectAction(kb, perspective);
 		}
 
-		public IEnumerable<ReactionDTO> GetAllActionTendencies()
+		public IEnumerable<ActionTendency> GetAllActionTendencies()
 		{
-			return m_actionTendencies.GetAllActionDefinitions().Select(at => at.ToDTO());
+			return m_actionTendencies.GetAllActionDefinitions();
 		}
 
 		public ReactionDTO GetDTOFromGUID(Guid id)

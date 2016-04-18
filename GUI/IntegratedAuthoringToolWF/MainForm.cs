@@ -53,19 +53,20 @@ namespace IntegratedAuthoringToolWF
             {
                 try
                 {
-                    _iatAsset = IntegratedAuthoringToolAsset.LoadFromFile(ofd.FileName);
-                    if (_iatAsset.ErrorOnLoad != null)
+	                string errorOnLoad;
+                    _iatAsset = IntegratedAuthoringToolAsset.LoadFromFile(ofd.FileName,out errorOnLoad);
+                    if (errorOnLoad != null)
                     {
-                        MessageBox.Show(_iatAsset.ErrorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK,
+                        MessageBox.Show(errorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                     }
-                    foreach (var character in _iatAsset.GetAllCharacters())
-                    {
-                        if (character.ErrorOnLoad != null)
-                        {
-                            MessageBox.Show("Error when loading character '"+ character.CharacterName +"': "+character.ErrorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
+                    //foreach (var character in _iatAsset.GetAllCharacters())
+                    //{
+                    //    if (character.ErrorOnLoad != null)
+                    //    {
+                    //        MessageBox.Show("Error when loading character '"+ character.CharacterName +"': "+character.ErrorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //    }
+                    //}
 
                     _saveFileName = ofd.FileName;
                     Reset(false);
@@ -120,10 +121,7 @@ namespace IntegratedAuthoringToolWF
             }
             try
             {
-                using (var file = File.Create(_saveFileName))
-                {
-                    _iatAsset.SaveToFile(file);
-                }
+				_iatAsset.SaveToFile(_saveFileName);
                 this.Text = Resources.MainFormTitle + " - " + _saveFileName;
             }
             catch (Exception ex)
@@ -144,7 +142,7 @@ namespace IntegratedAuthoringToolWF
             {
                 try
                 {
-                    var character = _iatAsset.AddCharacter(ofd.FileName);
+                    var character = _iatAsset.LoadAndAddCharacter(ofd.FileName);
                     if (character.ErrorOnLoad != null)
                     {
                         MessageBox.Show("Error when loading character '" + character.CharacterName + "': " + character.ErrorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using ActionLibrary;
 using AssetPackage;
 using EmotionalAppraisal;
@@ -57,7 +58,7 @@ namespace EmotionalDecisionMaking
 
         public IEnumerable<ReactionDTO> GetAllReactions()
         {
-	        return ReactiveActions.GetAllActionTendencies();
+	        return ReactiveActions.GetAllActionTendencies().Select(at => at.ToDTO());
         }
 
 		public IEnumerable<ConditionDTO> GetReactionsConditions(Guid id)
