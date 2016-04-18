@@ -31,6 +31,7 @@
             this.textBoxScenarioName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonEditCharacter = new System.Windows.Forms.Button();
             this.dataGridViewCharacters = new System.Windows.Forms.DataGridView();
             this.buttonAddCharacter = new System.Windows.Forms.Button();
             this.buttonRemoveCharacter = new System.Windows.Forms.Button();
@@ -41,7 +42,6 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buttonEditCharacter = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCharacters)).BeginInit();
             this.mainMenu.SuspendLayout();
@@ -80,10 +80,21 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Characters";
             // 
+            // buttonEditCharacter
+            // 
+            this.buttonEditCharacter.Location = new System.Drawing.Point(66, 19);
+            this.buttonEditCharacter.Name = "buttonEditCharacter";
+            this.buttonEditCharacter.Size = new System.Drawing.Size(54, 23);
+            this.buttonEditCharacter.TabIndex = 14;
+            this.buttonEditCharacter.Text = "Edit";
+            this.buttonEditCharacter.UseVisualStyleBackColor = true;
+            this.buttonEditCharacter.Click += new System.EventHandler(this.buttonEditCharacter_Click);
+            // 
             // dataGridViewCharacters
             // 
             this.dataGridViewCharacters.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.dataGridViewCharacters.AllowUserToAddRows = false;
+            this.dataGridViewCharacters.AllowUserToDeleteRows = false;
             this.dataGridViewCharacters.AllowUserToOrderColumns = true;
             this.dataGridViewCharacters.AllowUserToResizeRows = false;
             this.dataGridViewCharacters.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -179,16 +190,6 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // buttonEditCharacter
-            // 
-            this.buttonEditCharacter.Location = new System.Drawing.Point(66, 19);
-            this.buttonEditCharacter.Name = "buttonEditCharacter";
-            this.buttonEditCharacter.Size = new System.Drawing.Size(54, 23);
-            this.buttonEditCharacter.TabIndex = 14;
-            this.buttonEditCharacter.Text = "Edit";
-            this.buttonEditCharacter.UseVisualStyleBackColor = true;
-            this.buttonEditCharacter.Click += new System.EventHandler(this.buttonEditCharacter_Click);
             // 
             // MainForm
             // 

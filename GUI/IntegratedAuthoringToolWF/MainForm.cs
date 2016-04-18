@@ -54,6 +54,19 @@ namespace IntegratedAuthoringToolWF
                 try
                 {
                     _iatAsset = IntegratedAuthoringToolAsset.LoadFromFile(ofd.FileName);
+                    if (_iatAsset.ErrorOnLoad != null)
+                    {
+                        MessageBox.Show(_iatAsset.ErrorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                    }
+                    foreach (var character in _iatAsset.GetAllCharacters())
+                    {
+                        if (character.ErrorOnLoad != null)
+                        {
+                            MessageBox.Show("Error when loading character '"+ character.CharacterName +"': "+character.ErrorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+
                     _saveFileName = ofd.FileName;
                     Reset(false);
                 }
@@ -131,7 +144,11 @@ namespace IntegratedAuthoringToolWF
             {
                 try
                 {
-                    _iatAsset.AddCharacter(ofd.FileName);
+                    var character = _iatAsset.AddCharacter(ofd.FileName);
+                    if (character.ErrorOnLoad != null)
+                    {
+                        MessageBox.Show("Error when loading character '" + character.CharacterName + "': " + character.ErrorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                     _characterSources.DataSource = _iatAsset.GetAllCharacterSources().ToList();
                     _characterSources.Refresh();
                 }

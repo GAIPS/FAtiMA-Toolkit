@@ -32,17 +32,26 @@ namespace EmotionalDecisionMaking
 			m_actionTendencies.AddActionDefinition(at);
 		}
 
-		public IEnumerable<IAction> SelectAction(KB kb, Name perspective)
+        public void RemoveAction(Guid id)
+        {
+            var action = m_actionTendencies.GetActionDefinition(id);
+            if (action != null)
+            {
+                m_actionTendencies.RemoveActionDefinition(action);
+            }
+        }
+
+        public IEnumerable<IAction> SelectAction(KB kb, Name perspective)
 		{
 			return m_actionTendencies.SelectAction(kb, perspective);
 		}
 
-		public IEnumerable<ActionTendenciesDTO> GetAllActionTendencies()
+		public IEnumerable<ReactionDTO> GetAllActionTendencies()
 		{
 			return m_actionTendencies.GetAllActionDefinitions().Select(at => at.ToDTO());
 		}
 
-		public ActionTendenciesDTO GetDTOFromGUID(Guid id)
+		public ReactionDTO GetDTOFromGUID(Guid id)
 		{
 			return m_actionTendencies.GetActionDefinition(id).ToDTO();
 		}
@@ -66,5 +75,7 @@ namespace EmotionalDecisionMaking
 				m_actionTendencies.AddActionDefinition(at);
 			context.PopContext();
 		}
+
+	    
 	}
 }

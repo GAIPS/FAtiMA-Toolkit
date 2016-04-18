@@ -178,6 +178,16 @@ namespace EmotionalAppraisalWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap logo_gaips_rasterized {
+            get {
+                object obj = ResourceManager.GetObject("logo_gaips_rasterized", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Emotional Appraisal Asset.
         /// </summary>
         internal static string MainFormPrincipalTitle {

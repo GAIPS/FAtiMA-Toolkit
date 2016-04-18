@@ -46,9 +46,9 @@ namespace EmotionalDecisionMaking
 			return new ActionTendency(this);
 		}
 
-		public ActionTendenciesDTO ToDTO()
+		public ReactionDTO ToDTO()
 		{
-			return new ActionTendenciesDTO()
+			return new ReactionDTO()
 			{
 				Id = Id,
 				Action = GetActionTemplate().ToString(),

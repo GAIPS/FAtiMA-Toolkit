@@ -126,4 +126,7 @@
   <data name="MainFormTitle" xml:space="preserve">
     <value>Integrated Authoring Tool</value>
   </data>
+  <data name="RPCLoadingError" xml:space="preserve">
+    <value>An error occurred when trying to load one the characters in the scenario.</value>
+  </data>
 </root>

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Runtime.Versioning;
 using GAIPS.Serialization;
 using IntegratedAuthoringTool.DTOs;
 using RolePlayCharacter;
@@ -15,7 +17,11 @@ namespace IntegratedAuthoringTool
         private IList<RolePlayCharacterAsset> Characters { get; set; }
 
         public string ScenarioName { get; set; }
-        
+
+        public string ErrorOnLoad { get; set; } 
+
+        private CharacterSourceDTO CurrentRpcSource { get; set; }
+
         public static IntegratedAuthoringToolAsset LoadFromFile(string filename)
         {
             IntegratedAuthoringToolAsset iat;
@@ -27,11 +33,21 @@ namespace IntegratedAuthoringTool
             }
 
             iat.Characters = new List<RolePlayCharacterAsset>();
-            foreach (var source in iat.CharacterSources)
+            try
             {
-                var character = RolePlayCharacterAsset.LoadFromFile(source.Source);
-                iat.Characters.Add(character);
+                foreach (var source in iat.CharacterSources)
+                {
+                    iat.CurrentRpcSource = source;
+                    var character = RolePlayCharacterAsset.LoadFromFile(source.Source);
+                    iat.Characters.Add(character);
+                }
             }
+            catch (Exception ex)
+            {
+                iat.ErrorOnLoad = "An error occured when trying to load the RPC "+ iat.CurrentRpcSource.Name + " at " + iat.CurrentRpcSource.Source + ". Please check if the path is correct.";
+                return iat;
+            }
+            
 
             return iat;
         }
@@ -52,7 +68,7 @@ namespace IntegratedAuthoringTool
             return this.Characters;
         } 
 
-        public void AddCharacter(string filename)
+        public RolePlayCharacterAsset AddCharacter(string filename)
         {
             var character = RolePlayCharacterAsset.LoadFromFile(filename);
 
@@ -63,6 +79,8 @@ namespace IntegratedAuthoringTool
 
             this.Characters.Add(character);
             this.CharacterSources.Add(new CharacterSourceDTO {Name = character.CharacterName, Source = filename});
+
+            return character;
         }
 
         public void RemoveCharacters(IList<string> charactersToRemove)
@@ -71,14 +89,13 @@ namespace IntegratedAuthoringTool
             {
                 var characterSource = CharacterSources.FirstOrDefault(c => c.Name == characterName);
                 var character = Characters.FirstOrDefault(c => c.CharacterName == characterName);
-                if (characterSource != null && character != null)
+                if (characterSource != null)
                 {
                     this.CharacterSources.Remove(characterSource);
-                    this.Characters.Remove(character);
                 }
-                else
+                if (character != null)
                 {
-                    throw new Exception("Invalid Operation");
+                    this.Characters.Remove(character);
                 }
             }   
         }
