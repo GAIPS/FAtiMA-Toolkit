@@ -53,6 +53,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "Tests\Tests\Uni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActionLibrary", "Components\ActionLibrary\ActionLibrary.csproj", "{E011D502-5C0F-4A3F-9F1A-337FF025EB48}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDARecognition", "EDARecognition\EDARecognition.csproj", "{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDARecognitionWF", "GUI\EDARecognitionWF\EDARecognitionWF.csproj", "{1CF85D83-9922-4C4C-BC0F-47E6A01B5FEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealTimeEmotionRecognition", "RealTimeEmotionRecognition\RealTimeEmotionRecognition.csproj", "{CC3A5863-E579-4D38-9817-5DC1744703F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -143,6 +149,18 @@ Global
 		{E011D502-5C0F-4A3F-9F1A-337FF025EB48}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E011D502-5C0F-4A3F-9F1A-337FF025EB48}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E011D502-5C0F-4A3F-9F1A-337FF025EB48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CF85D83-9922-4C4C-BC0F-47E6A01B5FEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CF85D83-9922-4C4C-BC0F-47E6A01B5FEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CF85D83-9922-4C4C-BC0F-47E6A01B5FEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CF85D83-9922-4C4C-BC0F-47E6A01B5FEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC3A5863-E579-4D38-9817-5DC1744703F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC3A5863-E579-4D38-9817-5DC1744703F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC3A5863-E579-4D38-9817-5DC1744703F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC3A5863-E579-4D38-9817-5DC1744703F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -164,5 +182,6 @@ Global
 		{5C4CD8BB-DE9C-45A0-ADB3-441D420A7200} = {391C60E4-92CE-4EC7-BA86-48D8316365FA}
 		{C971A59A-2DD0-4396-AB70-7CBAC20D6CC9} = {9285D50F-C051-467D-AB2D-165963753EA5}
 		{E011D502-5C0F-4A3F-9F1A-337FF025EB48} = {6FDA1219-9D9E-489F-A258-B797FED50614}
+		{1CF85D83-9922-4C4C-BC0F-47E6A01B5FEC} = {391C60E4-92CE-4EC7-BA86-48D8316365FA}
 	EndGlobalSection
 EndGlobal
