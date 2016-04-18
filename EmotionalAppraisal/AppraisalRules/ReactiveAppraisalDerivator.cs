@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using AutobiographicMemory;
 using EmotionalAppraisal.Components;
 using EmotionalAppraisal.DTOs;
@@ -12,7 +11,6 @@ using KnowledgeBase.Conditions;
 using KnowledgeBase.DTOs.Conditions;
 using KnowledgeBase.WellFormedNames;
 using KnowledgeBase.WellFormedNames.Collections;
-using Utilities;
 
 namespace EmotionalAppraisal.AppraisalRules
 {
@@ -203,7 +201,7 @@ namespace EmotionalAppraisal.AppraisalRules
 
 			if (desirability != 0 || praiseworthiness != 0)
 			{
-				var eventName = frame.AppraisedEvent.EventName.ApplyPerspective(emotionalModule.Perspective);
+				var eventName = frame.AppraisedEvent.EventName.ApplyPerspective((Name)emotionalModule.Perspective);
 				AppraisalRule r = new AppraisalRule(eventName,null);
 				r.Desirability = desirability;
 				r.Praiseworthiness = praiseworthiness;

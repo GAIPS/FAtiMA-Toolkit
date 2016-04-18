@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using Equin.ApplicationFramework;
@@ -9,7 +8,6 @@ using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
 using IntegratedAuthoringToolWF.Properties;
 using RolePlayCharacter;
-
 
 namespace IntegratedAuthoringToolWF
 {
@@ -53,19 +51,20 @@ namespace IntegratedAuthoringToolWF
             {
                 try
                 {
-                    _iatAsset = IntegratedAuthoringToolAsset.LoadFromFile(ofd.FileName);
-                    if (_iatAsset.ErrorOnLoad != null)
+	                string errorOnLoad;
+                    _iatAsset = IntegratedAuthoringToolAsset.LoadFromFile(ofd.FileName,out errorOnLoad);
+                    if (errorOnLoad != null)
                     {
-                        MessageBox.Show(_iatAsset.ErrorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK,
+                        MessageBox.Show(errorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                     }
-                    foreach (var character in _iatAsset.GetAllCharacters())
-                    {
-                        if (character.ErrorOnLoad != null)
-                        {
-                            MessageBox.Show("Error when loading character '"+ character.CharacterName +"': "+character.ErrorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    }
+                    //foreach (var character in _iatAsset.GetAllCharacters())
+                    //{
+                    //    if (character.ErrorOnLoad != null)
+                    //    {
+                    //        MessageBox.Show("Error when loading character '"+ character.CharacterName +"': "+character.ErrorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //    }
+                    //}
 
                     _saveFileName = ofd.FileName;
                     Reset(false);
@@ -120,10 +119,7 @@ namespace IntegratedAuthoringToolWF
             }
             try
             {
-                using (var file = File.Create(_saveFileName))
-                {
-                    _iatAsset.SaveToFile(file);
-                }
+				_iatAsset.SaveToFile(_saveFileName);
                 this.Text = Resources.MainFormTitle + " - " + _saveFileName;
             }
             catch (Exception ex)
@@ -144,12 +140,16 @@ namespace IntegratedAuthoringToolWF
             {
                 try
                 {
-                    var character = _iatAsset.AddCharacter(ofd.FileName);
-                    if (character.ErrorOnLoad != null)
-                    {
-                        MessageBox.Show("Error when loading character '" + character.CharacterName + "': " + character.ErrorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    _characterSources.DataSource = _iatAsset.GetAllCharacterSources().ToList();
+	                string error;
+	                var character = RolePlayCharacterAsset.LoadFromFile(ofd.FileName, out error);
+	                if (error != null)
+	                {
+						MessageBox.Show($"Error when loading character '{character.CharacterName}': {error}", Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
+	                else
+						_iatAsset.AddCharacter(character);
+
+					_characterSources.DataSource = _iatAsset.GetAllCharacterSources().ToList();
                     _characterSources.Refresh();
                 }
                 catch (Exception ex)

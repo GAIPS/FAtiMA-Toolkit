@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RealTimeEmotionRecognition
+﻿namespace RealTimeEmotionRecognition
 {
     public enum EmotionCombinationPolicyEnum 
     {

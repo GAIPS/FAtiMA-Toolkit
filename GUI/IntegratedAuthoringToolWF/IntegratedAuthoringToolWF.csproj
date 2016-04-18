@@ -37,6 +37,10 @@
       <HintPath>..\..\packages\Equin.ApplicationFramework.BindingListView.1.4.5222.35545\lib\net40-Client\Equin.ApplicationFramework.BindingListView.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RageAssetManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -86,6 +90,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
+      <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
+      <Name>GAIPS.Rage</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Components\SerializationUtilities\GAIPS.Serialization.csproj">
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
       <Name>GAIPS.Serialization</Name>

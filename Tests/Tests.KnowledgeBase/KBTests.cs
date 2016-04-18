@@ -336,7 +336,7 @@ namespace Tests.KnowledgeBase
 			var kb = new KB(Name.BuildName("Mark"));
 			kb.Tell(Name.BuildName("IsPerson(Self)"), true);
 
-			kb.UpdateKBAccordingToNewPerspective(Name.BuildName("Mary"));
+			kb.SetPerspective(Name.BuildName("Mary"));
 
 			Assert.Null(kb.AskProperty(Name.BuildName("IsPerson(Mark)")));
 			Assert.True((bool?)kb.AskProperty(Name.BuildName("IsPerson(Mary)")));
@@ -348,7 +348,7 @@ namespace Tests.KnowledgeBase
 			var kb = new KB(Name.BuildName("Mark"));
 			kb.Tell(Name.BuildName("IsPerson(Self)"), true,Name.BuildName("John(Self)"));
 
-			kb.UpdateKBAccordingToNewPerspective(Name.BuildName("Mary"));
+			kb.SetPerspective(Name.BuildName("Mary"));
 
 			Assert.Null(kb.AskProperty(Name.BuildName("IsPerson(Mark)"), Name.BuildName("John(Self)")));
 			Assert.True((bool?)kb.AskProperty(Name.BuildName("IsPerson(Mary)"), Name.BuildName("John(Self)")));
@@ -360,7 +360,7 @@ namespace Tests.KnowledgeBase
 			var kb = new KB(Name.BuildName("Mark"));
 			kb.Tell(Name.BuildName("IsPerson(Self)"), true, Name.BuildName("John(Self)"));
 
-			Assert.Throws<ArgumentException>(()=> kb.UpdateKBAccordingToNewPerspective(Name.BuildName("John")));
+			Assert.Throws<ArgumentException>(()=> kb.SetPerspective(Name.BuildName("John")));
 		}
 
 		[TestCase("*")]
@@ -372,7 +372,7 @@ namespace Tests.KnowledgeBase
 			var kb = new KB(Name.BuildName("Mark"));
 			kb.Tell(Name.BuildName("IsPerson(Self)"), true, Name.BuildName("John(Self)"));
 
-			Assert.Throws<ArgumentException>(() => kb.UpdateKBAccordingToNewPerspective(Name.BuildName(perspective)));
+			Assert.Throws<ArgumentException>(() => kb.SetPerspective(Name.BuildName(perspective)));
 		}
 	}
 }

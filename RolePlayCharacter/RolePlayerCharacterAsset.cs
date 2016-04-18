@@ -5,97 +5,88 @@ using EmotionalAppraisal;
 using EmotionalDecisionMaking;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Runtime.CompilerServices;
 using ActionLibrary;
+using GAIPS.Rage;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
 
 namespace RolePlayCharacter
 {
     [Serializable]
-    public class RolePlayCharacterAsset : ICustomSerialization
+    public class RolePlayCharacterAsset : LoadableAsset<RolePlayCharacterAsset>, ICustomSerialization
     {
         #region RolePlayCharater Fields
-        [NonSerialized]
-        private EmotionalAppraisalAsset _emotionalAppraisalAsset;
 
-        [NonSerialized]
-        private EmotionalDecisionMakingAsset _emotionalDecisionMakingAsset;
+	    private string _emotionalAppraisalAssetSource = null;
+		private EmotionalAppraisalAsset _emotionalAppraisalAsset;
+		private string _emotionalDecisionMakingAssetSource = null;
+		private EmotionalDecisionMakingAsset _emotionalDecisionMakingAsset;
 
-	    [NonSerialized]
-		private ICharacterBody _characterBody = null;
-	    public ICharacterBody CharacterBody {
-		    get { return _characterBody; }
+	    public ICharacterBody CharacterBody { get; private set; }
+	    public string BodyName { get; set;}
+        public string CharacterName { get; set; }
+
+	    public string EmotionalAppraisalAssetSource {
+		    get { return ToAbsolutePath(_emotionalAppraisalAssetSource); }
+		    set { _emotionalAppraisalAssetSource = ToRelativePath(value); }
+	    }
+	    public string EmotionalDecisionMakingSource {
+		    get { return ToAbsolutePath(_emotionalDecisionMakingAssetSource); }
+		    set { _emotionalDecisionMakingAssetSource = ToRelativePath(value); }
 	    }
 
-	    public string BodyName { get; set;}
-
-        public string CharacterName { get; set; }
-        
-        public string EmotionalAppraisalAssetSource { get; set; }
-
-        public string EmotionalDecisionMakingSource { get; set; }
-
-        public string ErrorOnLoad { get; set; }
-
-        public float Mood { get { return _emotionalAppraisalAsset == null ? 0 : _emotionalAppraisalAsset.Mood; } }
+        public float Mood { get { return _emotionalAppraisalAsset?.Mood ?? 0; } }
 
         public IEnumerable<IActiveEmotion> Emotions => _emotionalAppraisalAsset?.GetAllActiveEmotions();
 
         public string Perspective => _emotionalAppraisalAsset?.Perspective;
 
-        #endregion
+		#endregion
 
-        public static RolePlayCharacterAsset LoadFromFile(string filename)
-        {
-            RolePlayCharacterAsset rpc;
+		protected override string OnAssetLoaded()
+		{
+			if (string.IsNullOrEmpty(EmotionalAppraisalAssetSource))
+				_emotionalAppraisalAsset = new EmotionalAppraisalAsset("Agent");
+			else
+			{
+				try
+				{
+					_emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(ToAbsolutePath(EmotionalAppraisalAssetSource));
+				}
+				catch (Exception)
+				{
+					return $"Unable to load the Emotional Appraisal Asset at \"{EmotionalAppraisalAssetSource}\". Check if the path is correct.";
+				}
+			}
 
-            using (var f = File.Open(filename, FileMode.Open, FileAccess.Read))
-            {
-                var serializer = new JSONSerializer();
-                rpc = serializer.Deserialize<RolePlayCharacterAsset>(f);
-            }
+			if (string.IsNullOrEmpty(EmotionalDecisionMakingSource))
+				_emotionalDecisionMakingAsset = new EmotionalDecisionMakingAsset();
+			else
+			{
+				try
+				{
+					_emotionalDecisionMakingAsset = EmotionalDecisionMakingAsset.LoadFromFile(ToAbsolutePath(EmotionalDecisionMakingSource));
+				}
+				catch (Exception)
+				{
+					return $"Unable to load the Emotional Decision Making Asset at \"{EmotionalDecisionMakingSource}\". Check if the path is correct.";
+				}
+			}
 
-            if (!string.IsNullOrEmpty(rpc.EmotionalAppraisalAssetSource))
-            {
-                try
-                {
-                    rpc._emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(rpc.EmotionalAppraisalAssetSource);
-                }
-                catch (Exception ex)
-                {
-                    rpc.ErrorOnLoad = "Unable to load the Emotional Appraisal Asset at " + rpc.EmotionalAppraisalAssetSource + ". Check if the path is correct.";
-                    return rpc;
-                }
-
-                if (!string.IsNullOrEmpty(rpc.EmotionalDecisionMakingSource))
-                {
-                    try
-                    {
-                        rpc._emotionalDecisionMakingAsset = EmotionalDecisionMakingAsset.LoadFromFile(rpc.EmotionalDecisionMakingSource);
-                    }
-                    catch (Exception ex)
-                    {
-                        rpc.ErrorOnLoad = "Unable to load the Emotional Decision Making Asset at " + rpc.EmotionalAppraisalAssetSource + ". Check if the path is correct.";
-                        return rpc;
-                    }
-
-                    rpc._emotionalDecisionMakingAsset.RegisterEmotionalAppraisalAsset(rpc._emotionalAppraisalAsset);
-                }
-            }
-            return rpc;
-        }
+			_emotionalDecisionMakingAsset.RegisterEmotionalAppraisalAsset(_emotionalAppraisalAsset);
+			return null;
+		}
 
         public void RegisterCharacterBody(ICharacterBody body)
         {
-            _characterBody = body;
+			CharacterBody = body;
         }
         
-        public IAction PerceptionActionLoop(IEnumerable<Name> events)
+        public IEnumerable<IAction> PerceptionActionLoop(IEnumerable<Name> events)
         {
             _emotionalAppraisalAsset.AppraiseEvents(events);
-            return _emotionalDecisionMakingAsset.Decide().FirstOrDefault();
+			_emotionalAppraisalAsset.Update();
+			return _emotionalDecisionMakingAsset.Decide();
         }
 
 		public IActiveEmotion GetStrongestActiveEmotion()
@@ -110,16 +101,11 @@ namespace RolePlayCharacter
         }
         
         #region Serialization
-        public void SaveToFile(Stream file)
-        {
-            var serializer = new JSONSerializer();
-            serializer.Serialize(file, this);
-        }
 
         public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
-            dataHolder.SetValue("EmotionalAppraisalAssetSource", EmotionalAppraisalAssetSource);
-            dataHolder.SetValue("EmotionalDecisionMakingAssetSource", EmotionalDecisionMakingSource);
+            dataHolder.SetValue("EmotionalAppraisalAssetSource", ToRelativePath(_emotionalAppraisalAssetSource));
+            dataHolder.SetValue("EmotionalDecisionMakingAssetSource", ToRelativePath(_emotionalDecisionMakingAssetSource));
             dataHolder.SetValue("CharacterName", CharacterName);
             dataHolder.SetValue("BodyName", BodyName);
         }
@@ -145,6 +131,5 @@ namespace RolePlayCharacter
                 serializer.Serialize(f, _emotionalAppraisalAsset);
             }
         }
-        
     }
 }

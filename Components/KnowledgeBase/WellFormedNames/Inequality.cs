@@ -1,7 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
-
-namespace KnowledgeBase.WellFormedNames
+﻿namespace KnowledgeBase.WellFormedNames
 {
 	/// <summary>
 	/// Represents a specific substitution condition in which a variable cannot have a specified value.

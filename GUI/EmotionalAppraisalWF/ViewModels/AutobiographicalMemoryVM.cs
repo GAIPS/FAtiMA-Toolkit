@@ -2,7 +2,6 @@
 using System.Linq;
 using AutobiographicMemory.DTOs;
 using EmotionalAppraisal;
-using EmotionalAppraisal.DTOs;
 using Equin.ApplicationFramework;
 
 namespace EmotionalAppraisalWF.ViewModels

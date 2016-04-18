@@ -4,7 +4,6 @@ using System.Linq;
 using ActionLibrary;
 using EmotionalDecisionMaking.DTOs;
 using GAIPS.Serialization;
-using GAIPS.Serialization.SerializationGraph;
 using KnowledgeBase;
 using KnowledgeBase.WellFormedNames;
 
@@ -46,9 +45,9 @@ namespace EmotionalDecisionMaking
 			return m_actionTendencies.SelectAction(kb, perspective);
 		}
 
-		public IEnumerable<ReactionDTO> GetAllActionTendencies()
+		public IEnumerable<ActionTendency> GetAllActionTendencies()
 		{
-			return m_actionTendencies.GetAllActionDefinitions().Select(at => at.ToDTO());
+			return m_actionTendencies.GetAllActionDefinitions();
 		}
 
 	    public ActionTendency GetActionTendency(Guid id)

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using AutobiographicMemory;
 using EmotionalAppraisal.DTOs;
 using KnowledgeBase.Conditions;
 using KnowledgeBase.WellFormedNames;

@@ -34,12 +34,6 @@
     <Reference Include="RageAssetManager">
       <HintPath>..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ICharacterBody.cs" />
@@ -55,6 +49,10 @@
     <ProjectReference Include="..\Components\AutobiographicMemory\AutobiographicMemory.csproj">
       <Project>{c1cc38c5-72f5-4545-b4f7-c65b2883909c}</Project>
       <Name>AutobiographicMemory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
+      <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
+      <Name>GAIPS.Rage</Name>
     </ProjectReference>
     <ProjectReference Include="..\Components\KnowledgeBase\KnowledgeBase.csproj">
       <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>

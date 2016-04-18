@@ -1,5 +1,4 @@
 ﻿using AutobiographicMemory;
-using EmotionalAppraisal;
 
 namespace EmotionalAppraisal.Components
 {

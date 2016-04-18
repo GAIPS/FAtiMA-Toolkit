@@ -10,7 +10,6 @@ using AutobiographicMemory.DTOs;
 using EmotionalAppraisal.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase;
-using KnowledgeBase.Conditions;
 using KnowledgeBase.DTOs.Conditions;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
@@ -91,7 +90,6 @@ namespace EmotionalAppraisal
         /// </summary>
 		public string Perspective {
 	        get { return m_kb.Perspective.ToString(); }
-            set { m_kb.Perspective = Name.BuildName(value); }
 		}
 
 		public ulong Tick {
@@ -256,9 +254,13 @@ namespace EmotionalAppraisal
 			get { return m_kb; }
 		}
 
-		public void UpdateKBAccordingToNewPerspective(Name newPerspective)
+		public void SetPerspective(Name newPerspective)
 		{
-			m_kb.UpdateKBAccordingToNewPerspective(newPerspective);
+			if(newPerspective==m_kb.Perspective)
+				return;
+
+			m_am.SwapPerspective(m_kb.Perspective,newPerspective);
+			m_kb.SetPerspective(newPerspective);
 		}
 
 		public EmotionalAppraisalAsset(string perspective)
@@ -278,7 +280,7 @@ namespace EmotionalAppraisal
 			var APPRAISAL_FRAME = new InternalAppraisalFrame();
 			foreach (var n in eventNames)
 			{
-				var evtN = n.RemovePerspective(Perspective);
+				var evtN = n.RemovePerspective((Name)Perspective);
 				var evt = m_am.RecordEvent(evtN,Tick);
 
 				var propEvt = evt as IPropertyChangedEvent;
@@ -332,7 +334,7 @@ namespace EmotionalAppraisal
 
         public void AddOrUpdateBelief(BeliefDTO belief)
 	    {
-	        this.Kb.Tell(Name.BuildName(belief.Name), PrimitiveValue.Parse(belief.Value));
+	        Kb.Tell(Name.BuildName(belief.Name), PrimitiveValue.Parse(belief.Value),Name.BuildName(belief.Perspective));
 	    }
 
 	    public string GetBeliefValue(string beliefName)

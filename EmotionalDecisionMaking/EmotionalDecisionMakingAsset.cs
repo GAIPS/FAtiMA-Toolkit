@@ -84,7 +84,7 @@ namespace EmotionalDecisionMaking
 
         public IEnumerable<ReactionDTO> GetAllReactions()
         {
-            return ReactiveActions.GetAllActionTendencies();
+	        return ReactiveActions.GetAllActionTendencies().Select(at => at.ToDTO());
         }
 
         public ReactionDTO GetReaction(Guid id)
