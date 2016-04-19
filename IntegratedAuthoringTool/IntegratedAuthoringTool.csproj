@@ -33,6 +33,7 @@
   <ItemGroup>
     <Compile Include="DialogStateAction.cs" />
     <Compile Include="DTOs\CharacterSourceDTO.cs" />
+    <Compile Include="DTOs\DialogueStateActionDTO.cs" />
     <Compile Include="IntegratedAuthoringToolAsset.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

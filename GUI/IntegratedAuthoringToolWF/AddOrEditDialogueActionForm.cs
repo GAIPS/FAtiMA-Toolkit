@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace IntegratedAuthoringToolWF
 {
-    public partial class AddOrEditDialogActionForm : Form
+    public partial class AddOrEditDialogueActionForm : Form
     {
-        public AddOrEditDialogActionForm()
+        public AddOrEditDialogueActionForm()
         {
             InitializeComponent();
         }

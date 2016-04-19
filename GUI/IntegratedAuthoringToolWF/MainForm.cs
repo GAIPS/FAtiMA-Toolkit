@@ -194,7 +194,7 @@ namespace IntegratedAuthoringToolWF
 
         private void dialogueEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            new DialogueEditorForm().ShowDialog();
+            new DialogueEditorForm(_iatAsset).ShowDialog();
         }
     }
 }

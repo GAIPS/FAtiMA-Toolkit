@@ -8,16 +8,16 @@ namespace IntegratedAuthoringTool
     public class DialogStateAction : BaseActionDefinition
     {
         public static readonly Name DIALOG_ACTION_NAME = Name.BuildName("Speak");
-        public static readonly Name ACTOR_TYPE_PLAYER = Name.BuildName("Player");
-        public static readonly Name ACTOR_TYPE_AGENT = Name.BuildName("Agent");
+        public static readonly Name SPEAKER_TYPE_PLAYER = Name.BuildName("P");
+        public static readonly Name SPEAKER_TYPE_AGENT = Name.BuildName("A");
 
         public string Utterance { get; private set; }
         
 
-        public DialogStateAction(Name actorType, Name currentState, Name meaning, Name nextState, string utterance) : 
-            base(Name.BuildName(DIALOG_ACTION_NAME, actorType, currentState, nextState, nextState, meaning), Name.NIL_SYMBOL, new ConditionSet())
+        public DialogStateAction(Name speakerType, Name currentState, Name meaning, Name nextState, string utterance) : 
+            base(Name.BuildName(DIALOG_ACTION_NAME, speakerType, currentState, nextState, nextState, meaning), Name.NIL_SYMBOL, new ConditionSet())
         {
-            if (actorType != ACTOR_TYPE_AGENT && actorType != ACTOR_TYPE_PLAYER)
+            if (speakerType != SPEAKER_TYPE_PLAYER && speakerType != SPEAKER_TYPE_AGENT)
             {
                 throw new Exception("Invalid Actor Type");
             }

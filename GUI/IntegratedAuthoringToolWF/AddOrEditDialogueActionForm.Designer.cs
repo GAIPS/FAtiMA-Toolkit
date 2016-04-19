@@ -1,6 +1,6 @@
 ﻿namespace IntegratedAuthoringToolWF
 {
-    partial class AddOrEditDialogActionForm
+    partial class AddOrEditDialogueActionForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,13 +30,13 @@
         {
             this.SuspendLayout();
             // 
-            // AddOrEditDialogActionForm
+            // AddOrEditDialogueActionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(399, 321);
-            this.Name = "AddOrEditDialogActionForm";
-            this.Text = "Add Dialog Action";
+            this.Name = "AddOrEditDialogueActionForm";
+            this.Text = "Add Dialogue Action";
             this.ResumeLayout(false);
 
         }

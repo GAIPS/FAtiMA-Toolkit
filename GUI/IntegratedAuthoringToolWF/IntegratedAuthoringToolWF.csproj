@@ -54,11 +54,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddOrEditDialogActionForm.cs">
+    <Compile Include="AddOrEditDialogueActionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddOrEditDialogActionForm.Designer.cs">
-      <DependentUpon>AddOrEditDialogActionForm.cs</DependentUpon>
+    <Compile Include="AddOrEditDialogueActionForm.Designer.cs">
+      <DependentUpon>AddOrEditDialogueActionForm.cs</DependentUpon>
     </Compile>
     <Compile Include="DialogueEditorForm.cs">
       <SubType>Form</SubType>
@@ -74,8 +74,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AddOrEditDialogActionForm.resx">
-      <DependentUpon>AddOrEditDialogActionForm.cs</DependentUpon>
+    <EmbeddedResource Include="AddOrEditDialogueActionForm.resx">
+      <DependentUpon>AddOrEditDialogueActionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DialogueEditorForm.resx">
       <DependentUpon>DialogueEditorForm.cs</DependentUpon>

@@ -1,20 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
+using Equin.ApplicationFramework;
+using IntegratedAuthoringTool;
+using IntegratedAuthoringTool.DTOs;
 
 namespace IntegratedAuthoringToolWF
 {
     public partial class DialogueEditorForm : Form
     {
-        public DialogueEditorForm()
+        private IntegratedAuthoringToolAsset _iatAsset;
+        private BindingListView<DialogueStateActionDTO> _dialogActions;
+
+        public DialogueEditorForm(IntegratedAuthoringToolAsset iatAsset)
         {
             InitializeComponent();
+
+            this._iatAsset = iatAsset;
+            _dialogActions = new BindingListView<DialogueStateActionDTO>(new List<DialogueStateActionDTO>());
+            this.dataGridViewDialogActions.DataSource = _dialogActions;
+          
         }
     }
 }
