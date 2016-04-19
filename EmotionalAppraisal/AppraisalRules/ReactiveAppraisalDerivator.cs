@@ -54,21 +54,19 @@ namespace EmotionalAppraisal.AppraisalRules
 		/// <param name="emotionalAppraisalRule">the AppraisalRule to add</param>
 		public void AddOrUpdateAppraisalRule(AppraisalRuleDTO emotionalAppraisalRuleDTO)
 		{
-		    AppraisalRule existingRule = null; 
-            var existingRulePair = findExistingAppraisalRule(emotionalAppraisalRuleDTO.Id, out existingRule);
-
-		    if (existingRule == null)
+			AppraisalRule existingRule = GetAppraisalRule(emotionalAppraisalRuleDTO.Id);
+		    if (existingRule != null)
 		    {
-		        this.AddEmotionalReaction(new AppraisalRule(emotionalAppraisalRuleDTO));
+				RemoveAppraisalRule(existingRule);
+				existingRule.Desirability = emotionalAppraisalRuleDTO.Desirability;
+				existingRule.Praiseworthiness = emotionalAppraisalRuleDTO.Praiseworthiness;
+				existingRule.EventName = Name.BuildName(emotionalAppraisalRuleDTO.EventMatchingTemplate);
 		    }
 		    else
 		    {
-		        existingRule.Desirability = emotionalAppraisalRuleDTO.Desirability;
-		        existingRule.Praiseworthiness = emotionalAppraisalRuleDTO.Praiseworthiness;
-                existingRule.EventName = Name.BuildName(emotionalAppraisalRuleDTO.EventMatchingTemplate);
-                Rules.Remove(existingRulePair);
-                Rules.Add(existingRule.EventName, existingRulePair.Value);
+			    existingRule = new AppraisalRule(emotionalAppraisalRuleDTO);
 		    }
+			AddEmotionalReaction(existingRule);
 		}
 
         private void AddEmotionalReaction(AppraisalRule appraisalRule)
@@ -83,50 +81,60 @@ namespace EmotionalAppraisal.AppraisalRules
             ruleSet.Add(appraisalRule);
         }
 
+		private void RemoveEmotionalReaction(AppraisalRule appraisalRule)
+		{
+			var name = appraisalRule.EventName;
+			HashSet<AppraisalRule> ruleSet;
+			if (Rules.TryGetValue(name, out ruleSet))
+			{
+				ruleSet.Remove(appraisalRule);
+				if (ruleSet.Count == 0)
+					Rules.Remove(name);
+			}
+		}
 
-        //todo: this method is overly complex due to the nature of how rules are stored. with time try to refactor this
-        private KeyValuePair<Name, HashSet<AppraisalRule>> findExistingAppraisalRule(Guid id, out AppraisalRule rule)
-	    {
-	        foreach (var ruleNamePair in Rules)
-	        {
-	            var ruleSet = ruleNamePair.Value;
-	            foreach (var appraisalRule in ruleSet)
-	            {
-                    if (appraisalRule.Id == id)
-                    {
-                        rule = appraisalRule;
-                        return ruleNamePair;
-                    }
-                }
-	        }
-            rule = null;
-            return Rules.FirstOrDefault();
-	    }
+		public AppraisalRule GetAppraisalRule(Guid id)
+		{
+			return Rules.SelectMany(r => r.Value).FirstOrDefault(a => a.Id == id);
+		}
+
+
+		////todo: this method is overly complex due to the nature of how rules are stored. with time try to refactor this
+  //      private KeyValuePair<Name, HashSet<AppraisalRule>> findExistingAppraisalRule(Guid id, out AppraisalRule rule)
+	 //   {
+	 //       foreach (var ruleNamePair in Rules)
+	 //       {
+	 //           var ruleSet = ruleNamePair.Value;
+	 //           foreach (var appraisalRule in ruleSet)
+	 //           {
+  //                  if (appraisalRule.Id == id)
+  //                  {
+  //                      rule = appraisalRule;
+  //                      return ruleNamePair;
+  //                  }
+  //              }
+	 //       }
+  //          rule = null;
+  //          return Rules.FirstOrDefault();
+	 //   }
         
-        public Guid AddAppraisalRuleCondition(Guid appraisalRuleId, ConditionDTO conditionDto)
+        public void AddAppraisalRuleCondition(Guid appraisalRuleId, ConditionDTO conditionDto)
         {
-            AppraisalRule existingRule = null;
-            findExistingAppraisalRule(appraisalRuleId, out existingRule);
+	        AppraisalRule existingRule = GetAppraisalRule(appraisalRuleId);
             if (existingRule != null)
             {
                 var condition = Condition.Parse(conditionDto.Condition);
                 existingRule.Conditions = existingRule.Conditions.Add(condition);
-                return condition.Id;
             }
-            return Guid.Empty;
         }
 
         public void RemoveAppraisalRuleCondition(Guid appraisalRuleId, ConditionDTO conditionDto)
         {
-            AppraisalRule existingRule;
-            findExistingAppraisalRule(appraisalRuleId, out existingRule);
+	        AppraisalRule existingRule = GetAppraisalRule(appraisalRuleId);
             if (existingRule != null)
             {
-                var condition = existingRule.Conditions.FirstOrDefault(c => c.Id == conditionDto.Id);
-                if (condition != null)
-                {
-                    existingRule.Conditions = existingRule.Conditions.Remove(condition);
-                }
+				var c = Condition.Parse(conditionDto.Condition);
+	            existingRule.Conditions = existingRule.Conditions.Remove(c);
             }
         }
 
@@ -150,7 +158,6 @@ namespace EmotionalAppraisal.AppraisalRules
                 }
 	        }
 	    }
-
 
 	    public IEnumerable<AppraisalRule> GetAppraisalRules()
 	    {
@@ -237,7 +244,5 @@ namespace EmotionalAppraisal.AppraisalRules
 		}
 
 		#endregion
-
-	  
 	}
 }

@@ -37,7 +37,7 @@
     <Compile Include="BaseActionDefinition.cs" />
     <Compile Include="DTOs\ActionDefinitionDTO.cs" />
     <Compile Include="IAction.cs" />
-    <Compile Include="IActionDefinition.cs" />
+    <Compile Include="IActionSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -73,7 +73,7 @@ namespace EmotionalDecisionMakingWF
             }
             
             dataGridViewReactionConditions.DataSource = this._conditions;
-            dataGridViewReactionConditions.Columns[PropertyUtil.GetName<ConditionDTO>(dto => dto.Id)].Visible = false;
+            //dataGridViewReactionConditions.Columns[PropertyUtil.GetName<ConditionDTO>(dto => dto.Id)].Visible = false;
 
             comboBoxQuantifierType.DataSource = Enum.GetNames(typeof(LogicalQuantifier));
         }
@@ -200,9 +200,9 @@ namespace EmotionalDecisionMakingWF
                 conditionsToRemove.Add(reaction);
             }
             _edmAsset.RemoveReactionConditions(_selectedActionId, conditionsToRemove);
-            _reactiveActions.DataSource = _edmAsset.GetAllReactions().ToList();
-            _reactiveActions.Refresh();
-        }
+			_conditions.DataSource = _edmAsset.GetReactionsConditions(_selectedActionId).ToList();
+			_conditions.Refresh();
+		}
 
         private void buttonEditReactionCondition_Click(object sender, EventArgs e)
         {

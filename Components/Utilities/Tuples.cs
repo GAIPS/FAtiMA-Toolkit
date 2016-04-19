@@ -26,7 +26,7 @@
 
 		public override string ToString()
 		{
-			return string.Format("{{{0}, {1}}}", Item1, Item2);
+			return $"{{{Item1}, {Item2}}}";
 		}
 
 		public override int GetHashCode()
@@ -59,7 +59,7 @@
 
 		public override string ToString()
 		{
-			return string.Format("{{{0}, {1}, {2}}}",Item1,Item2,Item3);
+			return $"{{{Item1}, {Item2}, {Item3}}}";
 		}
 
 		public override int GetHashCode()

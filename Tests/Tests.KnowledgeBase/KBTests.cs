@@ -247,28 +247,28 @@ namespace Tests.KnowledgeBase
 		{
 			var kb = new KB((Name)"Me");
 			Assert.Throws<ArgumentException>(
-				() => kb.RegistDynamicProperty((Name)"Count([y])", ((kb1, pers, args, constraints) => null), null));
+				() => kb.RegistDynamicProperty((Name)"Count([y])", ((kb1, pers, args, constraints) => null)));
 		}
 
 		[Test]
 		public void Test_OperatorRegist_Fail_Same_Template()
 		{
 			var kb = new KB((Name)"Me");
-			Assert.Throws<ArgumentException>(() => kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, p, args, constraints) => null), null));
+			Assert.Throws<ArgumentException>(() => kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, p, args, constraints) => null)));
 		}
 
 		[Test]
 		public void Test_OperatorRegist_Fail_GroundedTemplate()
 		{
 			var kb = new KB((Name)"Me");
-			Assert.Throws<ArgumentException>(() => kb.RegistDynamicProperty((Name)"Count(John)", ((kb1, p, args, constraints) => null), null));
+			Assert.Throws<ArgumentException>(() => kb.RegistDynamicProperty((Name)"Count(John)", ((kb1, p, args, constraints) => null)));
 		}
 
 		[Test]
 		public void Test_OperatorRegist_Fail_Null_Surogate()
 		{
 			var kb = new KB((Name)"Me");
-			Assert.Throws<ArgumentNullException>(() => kb.RegistDynamicProperty((Name)"Count(John)", null, null));
+			Assert.Throws<ArgumentNullException>(() => kb.RegistDynamicProperty((Name)"Count(John)", null));
 		}
 
 		[Test]
@@ -278,7 +278,7 @@ namespace Tests.KnowledgeBase
 			Assert.Throws<ArgumentException>(() =>
 			{
 				kb.Tell((Name)"Count(John)", 3);
-				kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, p, args, constraints) => null), null);
+				kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, p, args, constraints) => null));
 			});
 		}
 
@@ -288,7 +288,7 @@ namespace Tests.KnowledgeBase
 			var kb = new KB((Name)"Me");
 			Assert.Throws<ArgumentException>(() =>
 			{
-				kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, p, args, constraints) => null), null);
+				kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, p, args, constraints) => null));
 				kb.Tell((Name)"Count(John)", 3);
 			});
 		}

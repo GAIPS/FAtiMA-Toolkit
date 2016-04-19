@@ -115,7 +115,23 @@ namespace KnowledgeBase
 
 		#region Dynamic Property Registry
 
+		public void RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate)
+		{
+			internal_RegistDynamicProperty(propertyTemplate, surogate, propertyTemplate.GetVariables().Distinct().ToArray());
+		}
+
 		public void RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate, IEnumerable<string> arguments)
+		{
+			Name[] args;
+			if (arguments == null)
+				args = new Name[0];
+			else
+				args = arguments.Distinct().Select(s => Name.BuildName("[" + s + "]")).ToArray();
+
+			internal_RegistDynamicProperty(propertyTemplate,surogate,args);
+		}
+
+		private void internal_RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate, Name[] argumentVariables)
 		{
 			if (surogate == null)
 				throw new ArgumentNullException(nameof(surogate));
@@ -133,12 +149,7 @@ namespace KnowledgeBase
 			if (m_knowledgeStorage.Unify(propertyTemplate).Any())
 				throw new ArgumentException($"The given template {propertyTemplate} will collide with stored constant properties", nameof(propertyTemplate));
 
-			Name[] args;
-			if (arguments == null)
-				args = new Name[0];
-			else
-				args = arguments.Distinct().Select(s => Name.BuildName("[" + s + "]")).ToArray();
-			m_dynamicProperties.Add(propertyTemplate, new DynamicKnowledgeEntry(surogate, args));
+			m_dynamicProperties.Add(propertyTemplate, new DynamicKnowledgeEntry(surogate, argumentVariables));
 		}
 
 		public void UnregistDynamicProperty(Name propertyTemplate)
@@ -153,7 +164,7 @@ namespace KnowledgeBase
 
 		private static void RegistNativeDynamicProperties(KB kb)
 		{
-			kb.RegistDynamicProperty(COUNT_TEMPLATE, CountPropertyCalculator, new[] { "x" });
+			kb.RegistDynamicProperty(COUNT_TEMPLATE, CountPropertyCalculator);
 		}
 
 		//Count

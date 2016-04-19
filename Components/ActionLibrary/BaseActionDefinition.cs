@@ -8,16 +8,31 @@ using KnowledgeBase.WellFormedNames;
 namespace ActionLibrary
 {
 	[Serializable]
-	public abstract class BaseActionDefinition : IActionDefinition, ICustomSerialization
+	public abstract class BaseActionDefinition : ICustomSerialization
 	{
+		private ConditionSet m_activationConditions = null;
+
 		public Guid Id { get; private set; }
+		public Name Target { get; private set; }
+		internal IActionSelector Manager { get; private set; }
+
 		private Name m_actionTemplate;
 		public Name ActionName {
 			get { return m_actionTemplate.GetFirstTerm(); }
 		}
-		public Name Target { get; private set; }
 
-		public ConditionSet ActivationConditions { get; set; }
+		public ConditionSet ActivationConditions {
+			get { return m_activationConditions; }
+			set
+			{
+				if(m_activationConditions == value)
+					return;
+
+				var old = m_activationConditions;
+				m_activationConditions = value;
+				Manager?.OnConditionsUpdated(this,old);
+			}
+		}
 
 		private void AssertAndInitialize(Name actionTemplate, Name target, ConditionSet activationConditions)
 		{
@@ -40,9 +55,9 @@ namespace ActionLibrary
 			ActivationConditions = activationConditions;
 		}
 
-		protected BaseActionDefinition(Name actionTemplate, Name target, IEnumerable<Condition> activationConditions)
+		protected BaseActionDefinition(Name actionTemplate, Name target, ConditionSet activationConditions)
 		{
-			AssertAndInitialize(actionTemplate,target, new ConditionSet(activationConditions));
+			AssertAndInitialize(actionTemplate,target, activationConditions);
 		}
 
 		protected BaseActionDefinition(BaseActionDefinition other)
@@ -53,7 +68,7 @@ namespace ActionLibrary
 			ActivationConditions = new ConditionSet(other.ActivationConditions);
 		}
 
-		public IAction GenerateAction(SubstitutionSet constraints)
+		internal IAction GenerateAction(SubstitutionSet constraints)
 		{
 			var actionName = m_actionTemplate.MakeGround(constraints);
 			if (!actionName.IsGrounded)
@@ -68,41 +83,31 @@ namespace ActionLibrary
 			return a;
 		}
 
-		protected virtual void OnActionGenerated(IAction action){}
+		internal void OnManagerSet(IActionSelector manager)
+		{
+			Manager = manager;
+		}
 
-		public abstract object Clone();
+		protected virtual void OnActionGenerated(IAction action){}
 
 		public Name GetActionTemplate()
 		{
 			return m_actionTemplate;
 		}
 
-		///// <summary>
-		///// Deserialization constructor
-		///// </summary>
-		//protected BaseActionDefinition(IObjectGraphNode node, object contextData)
-		//{
-		//	var actionTemplate = node["Action"].RebuildObject<Name>();
-		//	var terms = actionTemplate.GetTerms().ToArray();
-		//	var name = terms[0];
-		//	if (!name.IsPrimitive)
-		//		throw new Exception("Invalid Action Template format");
-		//	for (int i = 1; i < terms.Length; i++)
-		//	{
-		//		if (terms[i].IsComposed)
-		//			throw new Exception("Invalid Action Template format");
-		//	}
+		public override int GetHashCode()
+		{
+			return Id.GetHashCode();
+		}
 
-		//	var target = SerializationServices.GetFieldOrDefault(node, "Target", Name.NIL_SYMBOL);
-		//	if (target.IsComposed)
-		//		throw new ArgumentException("Action Definition Target must be a symbol definition", nameof(target));
-
-		//	Id = Guid.NewGuid();
-		//	m_actionTemplate = actionTemplate;
-		//	Target = target;
-		//	ActivationConditions = node["Conditions"].RebuildObject<ConditionSet>();
-		//}
-
+		public override bool Equals(object obj)
+		{
+			var def = obj as BaseActionDefinition;
+			if (def == null)
+				return false;
+			return def.Id == Id;
+		}
+		
 		public virtual void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			dataHolder.SetValue("Action",GetActionTemplate());
