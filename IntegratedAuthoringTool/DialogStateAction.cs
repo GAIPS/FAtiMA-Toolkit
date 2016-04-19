@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using ActionLibrary;
 using KnowledgeBase.Conditions;
 using KnowledgeBase.WellFormedNames;
@@ -17,7 +15,7 @@ namespace IntegratedAuthoringTool
         
 
         public DialogStateAction(Name actorType, Name currentState, Name meaning, Name nextState, string utterance) : 
-            base(Name.BuildName(DIALOG_ACTION_NAME, actorType, currentState, nextState, nextState, meaning), Name.NIL_SYMBOL, Enumerable.Empty<Condition>())
+            base(Name.BuildName(DIALOG_ACTION_NAME, actorType, currentState, nextState, nextState, meaning), Name.NIL_SYMBOL, new ConditionSet())
         {
             if (actorType != ACTOR_TYPE_AGENT && actorType != ACTOR_TYPE_PLAYER)
             {
@@ -25,10 +23,6 @@ namespace IntegratedAuthoringTool
             }
             this.Utterance = utterance;
         }
-        
-        public override object Clone()
-        {
-            throw new System.NotImplementedException();
-        }
+     
     }
 }
