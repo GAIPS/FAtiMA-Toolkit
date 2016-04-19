@@ -11,16 +11,16 @@ namespace KnowledgeBase.Conditions
 	[Serializable]
 	public abstract partial class Condition : IConditionEvaluator
 	{
-		public Guid Id { get; set; }
+		//public Guid Id { get; set; }
 
         private const string WFN_CHARACTERS = @"\w\s-\+\(\)\.\,\[\]\*";
 		private const string REGEX_PATTERN = @"^\s*(#)?(["+WFN_CHARACTERS+@"]+)\s*(=|!=|<|<=|>|>=)\s*(#)?(["+WFN_CHARACTERS+@"]+)\s*$";
 		private static readonly Regex REGEX_PARSER = new Regex(REGEX_PATTERN,RegexOptions.Singleline);
 
-		private Condition()
-		{
-		    this.Id = Guid.NewGuid();
-		}
+		//private Condition()
+		//{
+		//    this.Id = Guid.NewGuid();
+		//}
 
         public IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
@@ -45,7 +45,7 @@ namespace KnowledgeBase.Conditions
 
 		public ConditionDTO ToDTO()
 		{
-			return new ConditionDTO() {Id = Id, Condition = ToString()};
+			return new ConditionDTO() {Condition = ToString()};
 		}
 
 		private static bool CompareValues(PrimitiveValue a, PrimitiveValue b, ComparisonOperator op)
@@ -196,5 +196,21 @@ namespace KnowledgeBase.Conditions
 
 			throw new ParsingException("Unrecognized modifier " + modifier);
 		}
+
+		#region Operators
+
+		public static bool operator ==(Condition c1, Condition c2)
+		{
+			if (object.ReferenceEquals(c1, c2))
+				return true;
+			return c1?.Equals(c2) ?? c2.Equals(null);
+		}
+
+		public static bool operator !=(Condition c1, Condition c2)
+		{
+			return !(c1 == c2);
+		}
+
+		#endregion
 	}
 }

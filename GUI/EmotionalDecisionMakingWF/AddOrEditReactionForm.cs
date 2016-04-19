@@ -33,11 +33,15 @@ namespace EmotionalDecisionMakingWF
         {
             try
             {
+	            float cooldown;
+	            if (!float.TryParse(textBoxCooldown.Text, out cooldown))
+		            cooldown = 0;
+
                 var newReaction = new ReactionDTO
                 {
                     Action = textBoxAction.Text,
                     Target = textBoxTarget.Text,
-                    Cooldown = textBoxCooldown.Text
+                    Cooldown = cooldown
                 };
 
                 if (_reactionToEdit != null)

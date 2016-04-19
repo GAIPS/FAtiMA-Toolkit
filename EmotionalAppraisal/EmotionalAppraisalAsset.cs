@@ -174,9 +174,9 @@ namespace EmotionalAppraisal
 			m_appraisalDerivator.AddOrUpdateAppraisalRule(emotionalAppraisalRule);
 		}
 
-        public Guid AddAppraisalRuleCondition(Guid appraisalRuleId, ConditionDTO conditionDTO)
+        public void AddAppraisalRuleCondition(Guid appraisalRuleId, ConditionDTO conditionDTO)
         {
-            return m_appraisalDerivator.AddAppraisalRuleCondition(appraisalRuleId, conditionDTO);
+            m_appraisalDerivator.AddAppraisalRuleCondition(appraisalRuleId, conditionDTO);
         }
 
         public void RemoveAppraisalRuleCondition(Guid appraisalRuleId, ConditionDTO conditionDTO)

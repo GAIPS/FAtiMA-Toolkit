@@ -4,6 +4,6 @@ namespace EmotionalDecisionMaking.DTOs
 {
     public class ReactionDTO : ActionDefinitionDTO
     {
-	    public string Cooldown { get; set; }
+	    public float Cooldown { get; set; }
 	}
 }

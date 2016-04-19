@@ -14,13 +14,11 @@ namespace KnowledgeBase.Conditions
 	[Serializable]
 	public sealed class ConditionSet : IEnumerable<Condition>, IConditionEvaluator, ICustomSerialization
 	{
-		public LogicalQuantifier Quantifier { get; private set; }
-
-		[NonSerialized]
-		private HashSet<Condition> m_conditions;
+		public LogicalQuantifier Quantifier { get; }
+		private List<Condition> m_conditions;
 
 		public int Count {
-			get { return m_conditions==null?0:m_conditions.Count; }
+			get { return m_conditions?.Count ?? 0; }
 		}
 
 		public ConditionSet() : this(LogicalQuantifier.Existential,null)
@@ -33,7 +31,7 @@ namespace KnowledgeBase.Conditions
 		{
 			Quantifier = quantifier;
 			if(conditions!=null)
-				m_conditions = new HashSet<Condition>(conditions);
+				m_conditions = new List<Condition>(conditions.Distinct());
 		}
 
 		public ConditionSet(ConditionSetDTO dto) : this(dto.Quantifier,dto.Set?.Select(c => Condition.Parse(c.Condition)))
@@ -57,10 +55,7 @@ namespace KnowledgeBase.Conditions
 			if (m_conditions==null || !m_conditions.Contains(condition))
 				return this;
 
-			var c = new ConditionSet(Quantifier,m_conditions);
-			if(m_conditions!=null)
-				c.m_conditions.Remove(condition);
-			return c;
+			return new ConditionSet(Quantifier, m_conditions.Where(c => c != condition));
 		}
 
 		public ConditionSet SetQuantifier(LogicalQuantifier quantifier)
@@ -112,7 +107,7 @@ namespace KnowledgeBase.Conditions
 			if(evaluatorSet==null)
 				return false;
 
-			return m_conditions.SetEquals(evaluatorSet.m_conditions);
+			return m_conditions.SequenceEqual(evaluatorSet.m_conditions);
 		}
 
 		#region Evaluation Methods
@@ -226,7 +221,7 @@ namespace KnowledgeBase.Conditions
 			SerializationServices.ExtractFromFieldData(dataHolder,ref o,true);
 			var set = dataHolder.GetValue<Condition[]>("Set");
 			if(set!=null)
-				m_conditions = new HashSet<Condition>(set);
+				m_conditions = new List<Condition>(set);
 		}
 	}
 }

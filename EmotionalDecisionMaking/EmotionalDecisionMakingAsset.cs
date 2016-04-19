@@ -60,15 +60,7 @@ namespace EmotionalDecisionMaking
 
         public Guid AddReaction(ReactionDTO newReaction)
         {
-            var newActionTendency = new ActionTendency(Name.BuildName(newReaction.Action), Name.BuildName(newReaction.Target));
-            if (!string.IsNullOrEmpty(newReaction.Cooldown))
-            {
-                var coolDown = float.Parse(newReaction.Cooldown);
-                if (coolDown > 0)
-                {
-                    newActionTendency.ActivationCooldown = coolDown;
-                }
-            }
+            var newActionTendency = new ActionTendency(newReaction);
             this.ReactiveActions.AddActionTendency(newActionTendency);
             return newActionTendency.Id;
         }
@@ -112,13 +104,14 @@ namespace EmotionalDecisionMaking
 
         public void RemoveReactionConditions(Guid selectedReactionId, IEnumerable<ConditionDTO> conditionsToRemove)
         {
-            foreach (var condition in conditionsToRemove)
-            {
-                var currentConditions = this.ReactiveActions.GetActionTendency(selectedReactionId).ActivationConditions;
-                var cond = currentConditions.FirstOrDefault(c => c.Id == condition.Id);
-                this.ReactiveActions.GetActionTendency(selectedReactionId).ActivationConditions =
-                    currentConditions.Remove(cond);
+	        var at = this.ReactiveActions.GetActionTendency(selectedReactionId);
+	        var conds = at.ActivationConditions;
+			foreach (var condition in conditionsToRemove)
+			{
+				var c = Condition.Parse(condition.Condition);
+				conds = conds.Remove(c);
             }
+	        at.ActivationConditions = conds;
         }
 
         public void UpdateRectionCondition(Guid selectedReactionID, ConditionDTO conditionToEditDto,
