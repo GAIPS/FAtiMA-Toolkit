@@ -1,6 +1,6 @@
 ﻿namespace IntegratedAuthoringToolWF
 {
-    partial class MainForm
+    partial class DialogueEditorForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBoxScenarioName = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonEditCharacter = new System.Windows.Forms.Button();
             this.dataGridViewCharacters = new System.Windows.Forms.DataGridView();
@@ -37,34 +35,12 @@
             this.buttonRemoveCharacter = new System.Windows.Forms.Button();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dialogueEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCharacters)).BeginInit();
             this.mainMenu.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // textBoxScenarioName
-            // 
-            this.textBoxScenarioName.Location = new System.Drawing.Point(70, 40);
-            this.textBoxScenarioName.Name = "textBoxScenarioName";
-            this.textBoxScenarioName.Size = new System.Drawing.Size(310, 20);
-            this.textBoxScenarioName.TabIndex = 0;
-            this.textBoxScenarioName.TextChanged += new System.EventHandler(this.textBoxScenarioName_TextChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 44);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(52, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Scenario:";
             // 
             // groupBox1
             // 
@@ -75,12 +51,12 @@
             this.groupBox1.Controls.Add(this.dataGridViewCharacters);
             this.groupBox1.Controls.Add(this.buttonAddCharacter);
             this.groupBox1.Controls.Add(this.buttonRemoveCharacter);
-            this.groupBox1.Location = new System.Drawing.Point(12, 79);
+            this.groupBox1.Location = new System.Drawing.Point(12, 27);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(374, 177);
-            this.groupBox1.TabIndex = 2;
+            this.groupBox1.Size = new System.Drawing.Size(490, 393);
+            this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Characters";
+            this.groupBox1.Text = "Dialog Actions";
             // 
             // buttonEditCharacter
             // 
@@ -90,7 +66,6 @@
             this.buttonEditCharacter.TabIndex = 14;
             this.buttonEditCharacter.Text = "Edit";
             this.buttonEditCharacter.UseVisualStyleBackColor = true;
-            this.buttonEditCharacter.Click += new System.EventHandler(this.buttonEditCharacter_Click);
             // 
             // dataGridViewCharacters
             // 
@@ -112,7 +87,7 @@
             this.dataGridViewCharacters.RowHeadersVisible = false;
             this.dataGridViewCharacters.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewCharacters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewCharacters.Size = new System.Drawing.Size(362, 120);
+            this.dataGridViewCharacters.Size = new System.Drawing.Size(478, 336);
             this.dataGridViewCharacters.TabIndex = 13;
             // 
             // buttonAddCharacter
@@ -123,7 +98,6 @@
             this.buttonAddCharacter.TabIndex = 10;
             this.buttonAddCharacter.Text = "Add";
             this.buttonAddCharacter.UseVisualStyleBackColor = true;
-            this.buttonAddCharacter.Click += new System.EventHandler(this.buttonAddCharacter_Click);
             // 
             // buttonRemoveCharacter
             // 
@@ -133,93 +107,48 @@
             this.buttonRemoveCharacter.TabIndex = 11;
             this.buttonRemoveCharacter.Text = "Remove";
             this.buttonRemoveCharacter.UseVisualStyleBackColor = true;
-            this.buttonRemoveCharacter.Click += new System.EventHandler(this.buttonRemoveCharacter_Click);
             // 
             // mainMenu
             // 
             this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.toolsToolStripMenuItem});
+            this.fileToolStripMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-            this.mainMenu.Size = new System.Drawing.Size(396, 24);
-            this.mainMenu.TabIndex = 3;
+            this.mainMenu.Size = new System.Drawing.Size(514, 24);
+            this.mainMenu.TabIndex = 16;
             this.mainMenu.Text = "mainMenu";
             // 
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newToolStripMenuItem,
-            this.openToolStripMenuItem,
-            this.saveToolStripMenuItem,
-            this.saveAsStripMenuItem,
-            this.exitToolStripMenuItem});
+            this.importToolStripMenuItem,
+            this.exportToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.ShortcutKeyDisplayString = "";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "&File";
             // 
-            // newToolStripMenuItem
+            // importToolStripMenuItem
             // 
-            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.newToolStripMenuItem.Text = "&New";
-            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+            this.importToolStripMenuItem.Name = "importToolStripMenuItem";
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.importToolStripMenuItem.Text = "&Import";
             // 
-            // openToolStripMenuItem
+            // exportToolStripMenuItem
             // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.openToolStripMenuItem.Text = "&Open...";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exportToolStripMenuItem.Text = "&Export";
             // 
-            // saveToolStripMenuItem
-            // 
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.saveToolStripMenuItem.Text = "&Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
-            // 
-            // saveAsStripMenuItem
-            // 
-            this.saveAsStripMenuItem.Name = "saveAsStripMenuItem";
-            this.saveAsStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.saveAsStripMenuItem.Text = "Save &As...";
-            this.saveAsStripMenuItem.Click += new System.EventHandler(this.saveAsStripMenuItem_Click);
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-            this.exitToolStripMenuItem.Text = "E&xit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // toolsToolStripMenuItem
-            // 
-            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.dialogueEditorToolStripMenuItem});
-            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
-            this.toolsToolStripMenuItem.Text = "&Tools";
-            // 
-            // dialogueEditorToolStripMenuItem
-            // 
-            this.dialogueEditorToolStripMenuItem.Name = "dialogueEditorToolStripMenuItem";
-            this.dialogueEditorToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.dialogueEditorToolStripMenuItem.Text = "&Dialogue Editor";
-            this.dialogueEditorToolStripMenuItem.Click += new System.EventHandler(this.dialogueEditorToolStripMenuItem_Click);
-            // 
-            // MainForm
+            // DialogueEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(396, 268);
+            this.ClientSize = new System.Drawing.Size(514, 432);
             this.Controls.Add(this.mainMenu);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBoxScenarioName);
-            this.Name = "MainForm";
-            this.Text = "Integrated Authoring Tool";
+            this.Name = "DialogueEditorForm";
+            this.Text = "Dialogue Editor";
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCharacters)).EndInit();
             this.mainMenu.ResumeLayout(false);
@@ -231,22 +160,14 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBoxScenarioName;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.MenuStrip mainMenu;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveAsStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.Button buttonEditCharacter;
+        private System.Windows.Forms.DataGridView dataGridViewCharacters;
         private System.Windows.Forms.Button buttonAddCharacter;
         private System.Windows.Forms.Button buttonRemoveCharacter;
-        private System.Windows.Forms.DataGridView dataGridViewCharacters;
-        private System.Windows.Forms.Button buttonEditCharacter;
-        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem dialogueEditorToolStripMenuItem;
+        private System.Windows.Forms.MenuStrip mainMenu;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
     }
 }
-

@@ -17,6 +17,8 @@ namespace IntegratedAuthoringTool
 		    public RolePlayCharacterAsset RPCAsset;
 	    }
 
+        private IList<DialogStateAction> m_dialogueActions;
+
 	    private Dictionary<string, CharacterHolder> m_characterSources;
         //private IList<RolePlayCharacterAsset> Characters { get; set; }
 
@@ -62,9 +64,10 @@ namespace IntegratedAuthoringTool
 
 	    public IntegratedAuthoringToolAsset()
         {
-			m_characterSources=new Dictionary<string, CharacterHolder>();
+            m_dialogueActions = new List<DialogStateAction>();
+			m_characterSources =new Dictionary<string, CharacterHolder>();
         }
-
+        
         public IEnumerable<CharacterSourceDTO> GetAllCharacterSources()
         {
 	        return m_characterSources.Select(p => new CharacterSourceDTO() {Name = p.Key, Source = ToAbsolutePath(p.Value.Source)});

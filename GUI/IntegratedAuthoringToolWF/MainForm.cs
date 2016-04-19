@@ -186,5 +186,15 @@ namespace IntegratedAuthoringToolWF
                 Process.Start(RPC_AUTHORING_TOOL, "\"" + character.Source + "\"");
             }
         }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dialogueEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new DialogueEditorForm().ShowDialog();
+        }
     }
 }
