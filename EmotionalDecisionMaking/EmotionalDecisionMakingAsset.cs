@@ -75,10 +75,8 @@ namespace EmotionalDecisionMaking
 
         public void UpdateReaction(ReactionDTO reactionToEdit, ReactionDTO newReaction)
         {
+	        newReaction.Conditions = reactionToEdit.Conditions;
             var newId = this.AddReaction(newReaction);
-            var newActionTendency = this.ReactiveActions.GetActionTendency(newId);
-            var oldActionTendency = this.ReactiveActions.GetActionTendency(reactionToEdit.Id);
-            newActionTendency.ActivationConditions = oldActionTendency.ActivationConditions;
             this.RemoveReactions(new []{reactionToEdit});
         }
 

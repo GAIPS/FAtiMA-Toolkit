@@ -77,32 +77,19 @@ namespace ActionLibrary
 			return m_actionTemplate;
 		}
 
-		///// <summary>
-		///// Deserialization constructor
-		///// </summary>
-		//protected BaseActionDefinition(IObjectGraphNode node, object contextData)
-		//{
-		//	var actionTemplate = node["Action"].RebuildObject<Name>();
-		//	var terms = actionTemplate.GetTerms().ToArray();
-		//	var name = terms[0];
-		//	if (!name.IsPrimitive)
-		//		throw new Exception("Invalid Action Template format");
-		//	for (int i = 1; i < terms.Length; i++)
-		//	{
-		//		if (terms[i].IsComposed)
-		//			throw new Exception("Invalid Action Template format");
-		//	}
+		public override int GetHashCode()
+		{
+			return Id.GetHashCode();
+		}
 
-		//	var target = SerializationServices.GetFieldOrDefault(node, "Target", Name.NIL_SYMBOL);
-		//	if (target.IsComposed)
-		//		throw new ArgumentException("Action Definition Target must be a symbol definition", nameof(target));
-
-		//	Id = Guid.NewGuid();
-		//	m_actionTemplate = actionTemplate;
-		//	Target = target;
-		//	ActivationConditions = node["Conditions"].RebuildObject<ConditionSet>();
-		//}
-
+		public override bool Equals(object obj)
+		{
+			var def = obj as BaseActionDefinition;
+			if (def == null)
+				return false;
+			return def.Id == Id;
+		}
+		
 		public virtual void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			dataHolder.SetValue("Action",GetActionTemplate());
