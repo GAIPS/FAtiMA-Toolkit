@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 using Equin.ApplicationFramework;
 using IntegratedAuthoringTool;
@@ -16,9 +17,15 @@ namespace IntegratedAuthoringToolWF
             InitializeComponent();
 
             this._iatAsset = iatAsset;
-            _dialogActions = new BindingListView<DialogueStateActionDTO>(new List<DialogueStateActionDTO>());
+            _dialogActions = new BindingListView<DialogueStateActionDTO>(iatAsset.GetAllDialogActions().ToList());
             this.dataGridViewDialogActions.DataSource = _dialogActions;
-          
+        }
+
+        private void buttonAddDialogueAction_Click(object sender, System.EventArgs e)
+        {
+            new AddOrEditDialogueActionForm(_iatAsset).ShowDialog();
+            _dialogActions.DataSource = _iatAsset.GetAllDialogActions().ToList();
+            _dialogActions.Refresh();
         }
     }
 }

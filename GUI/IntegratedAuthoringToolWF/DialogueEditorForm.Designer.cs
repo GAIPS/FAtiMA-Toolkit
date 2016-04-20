@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.buttonEditCharacter = new System.Windows.Forms.Button();
+            this.buttonEditDialogueAction = new System.Windows.Forms.Button();
             this.dataGridViewDialogActions = new System.Windows.Forms.DataGridView();
-            this.buttonAddCharacter = new System.Windows.Forms.Button();
-            this.buttonRemoveCharacter = new System.Windows.Forms.Button();
+            this.buttonAddDialogueAction = new System.Windows.Forms.Button();
+            this.buttonRemoveDialogueAction = new System.Windows.Forms.Button();
             this.mainMenu = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,10 +47,10 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.buttonEditCharacter);
+            this.groupBox1.Controls.Add(this.buttonEditDialogueAction);
             this.groupBox1.Controls.Add(this.dataGridViewDialogActions);
-            this.groupBox1.Controls.Add(this.buttonAddCharacter);
-            this.groupBox1.Controls.Add(this.buttonRemoveCharacter);
+            this.groupBox1.Controls.Add(this.buttonAddDialogueAction);
+            this.groupBox1.Controls.Add(this.buttonRemoveDialogueAction);
             this.groupBox1.Location = new System.Drawing.Point(12, 27);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(490, 393);
@@ -58,14 +58,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Dialogue Actions";
             // 
-            // buttonEditCharacter
+            // buttonEditDialogueAction
             // 
-            this.buttonEditCharacter.Location = new System.Drawing.Point(66, 19);
-            this.buttonEditCharacter.Name = "buttonEditCharacter";
-            this.buttonEditCharacter.Size = new System.Drawing.Size(54, 23);
-            this.buttonEditCharacter.TabIndex = 14;
-            this.buttonEditCharacter.Text = "Edit";
-            this.buttonEditCharacter.UseVisualStyleBackColor = true;
+            this.buttonEditDialogueAction.Location = new System.Drawing.Point(66, 19);
+            this.buttonEditDialogueAction.Name = "buttonEditDialogueAction";
+            this.buttonEditDialogueAction.Size = new System.Drawing.Size(54, 23);
+            this.buttonEditDialogueAction.TabIndex = 14;
+            this.buttonEditDialogueAction.Text = "Edit";
+            this.buttonEditDialogueAction.UseVisualStyleBackColor = true;
             // 
             // dataGridViewDialogActions
             // 
@@ -90,23 +90,24 @@
             this.dataGridViewDialogActions.Size = new System.Drawing.Size(478, 336);
             this.dataGridViewDialogActions.TabIndex = 13;
             // 
-            // buttonAddCharacter
+            // buttonAddDialogueAction
             // 
-            this.buttonAddCharacter.Location = new System.Drawing.Point(6, 19);
-            this.buttonAddCharacter.Name = "buttonAddCharacter";
-            this.buttonAddCharacter.Size = new System.Drawing.Size(54, 23);
-            this.buttonAddCharacter.TabIndex = 10;
-            this.buttonAddCharacter.Text = "Add";
-            this.buttonAddCharacter.UseVisualStyleBackColor = true;
+            this.buttonAddDialogueAction.Location = new System.Drawing.Point(6, 19);
+            this.buttonAddDialogueAction.Name = "buttonAddDialogueAction";
+            this.buttonAddDialogueAction.Size = new System.Drawing.Size(54, 23);
+            this.buttonAddDialogueAction.TabIndex = 10;
+            this.buttonAddDialogueAction.Text = "Add";
+            this.buttonAddDialogueAction.UseVisualStyleBackColor = true;
+            this.buttonAddDialogueAction.Click += new System.EventHandler(this.buttonAddDialogueAction_Click);
             // 
-            // buttonRemoveCharacter
+            // buttonRemoveDialogueAction
             // 
-            this.buttonRemoveCharacter.Location = new System.Drawing.Point(126, 19);
-            this.buttonRemoveCharacter.Name = "buttonRemoveCharacter";
-            this.buttonRemoveCharacter.Size = new System.Drawing.Size(70, 23);
-            this.buttonRemoveCharacter.TabIndex = 11;
-            this.buttonRemoveCharacter.Text = "Remove";
-            this.buttonRemoveCharacter.UseVisualStyleBackColor = true;
+            this.buttonRemoveDialogueAction.Location = new System.Drawing.Point(126, 19);
+            this.buttonRemoveDialogueAction.Name = "buttonRemoveDialogueAction";
+            this.buttonRemoveDialogueAction.Size = new System.Drawing.Size(70, 23);
+            this.buttonRemoveDialogueAction.TabIndex = 11;
+            this.buttonRemoveDialogueAction.Text = "Remove";
+            this.buttonRemoveDialogueAction.UseVisualStyleBackColor = true;
             // 
             // mainMenu
             // 
@@ -161,10 +162,10 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button buttonEditCharacter;
+        private System.Windows.Forms.Button buttonEditDialogueAction;
         private System.Windows.Forms.DataGridView dataGridViewDialogActions;
-        private System.Windows.Forms.Button buttonAddCharacter;
-        private System.Windows.Forms.Button buttonRemoveCharacter;
+        private System.Windows.Forms.Button buttonAddDialogueAction;
+        private System.Windows.Forms.Button buttonRemoveDialogueAction;
         private System.Windows.Forms.MenuStrip mainMenu;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importToolStripMenuItem;
