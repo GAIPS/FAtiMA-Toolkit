@@ -4,6 +4,7 @@ using System.Linq;
 using GAIPS.Rage;
 using GAIPS.Serialization;
 using IntegratedAuthoringTool.DTOs;
+using KnowledgeBase.WellFormedNames;
 using RolePlayCharacter;
 
 namespace IntegratedAuthoringTool
@@ -16,6 +17,8 @@ namespace IntegratedAuthoringTool
 		    public string Source;
 		    public RolePlayCharacterAsset RPCAsset;
 	    }
+
+        private IList<DialogStateAction> m_dialogueActions;
 
 	    private Dictionary<string, CharacterHolder> m_characterSources;
         //private IList<RolePlayCharacterAsset> Characters { get; set; }
@@ -62,7 +65,23 @@ namespace IntegratedAuthoringTool
 
 	    public IntegratedAuthoringToolAsset()
         {
-			m_characterSources=new Dictionary<string, CharacterHolder>();
+            m_dialogueActions = new List<DialogStateAction>();
+			m_characterSources =new Dictionary<string, CharacterHolder>();
+        }
+
+        public void AddDialogAction(DialogueStateActionDTO dialogueStateActionDTO)
+        {
+            this.m_dialogueActions.Add(new DialogStateAction(dialogueStateActionDTO));
+        }
+
+        public IEnumerable<DialogueStateActionDTO> GetAllDialogActions()
+        {
+            return this.m_dialogueActions.Select(d => d.ToDTO());
+        }
+
+        public IEnumerable<DialogueStateActionDTO> GetAllPlayerActions(string currentState)
+        {
+            return this.m_dialogueActions.Where(d => d.SpeakerType == DialogStateAction.SPEAKER_TYPE_PLAYER && d.CurrentState == currentState).Select(d =>d.ToDTO());
         }
 
         public IEnumerable<CharacterSourceDTO> GetAllCharacterSources()
@@ -105,9 +124,13 @@ namespace IntegratedAuthoringTool
         public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             dataHolder.SetValue("ScenarioName", ScenarioName);
-            if (m_characterSources.Count>0)
+            if (m_characterSources.Count > 0)
             {
 				dataHolder.SetValue("Characters", m_characterSources.Select(p => new CharacterSourceDTO() { Name = p.Key, Source = ToRelativePath(p.Value.Source) }).ToArray());
+            }
+            if (m_dialogueActions.Any())
+            {
+                dataHolder.SetValue("DialogueActions", m_dialogueActions.Select(a => a.ToDTO()).ToArray());
             }
         }
 
@@ -117,6 +140,12 @@ namespace IntegratedAuthoringTool
             var charArray = dataHolder.GetValue<CharacterSourceDTO[]>("Characters");
             if (charArray != null)
 				m_characterSources = charArray.ToDictionary(c => c.Name, c => new CharacterHolder() {Source = c.Source });
+
+            var dialogueArray = dataHolder.GetValue<DialogueStateActionDTO[]>("DialogueActions");
+            if (dialogueArray != null)
+            {
+                m_dialogueActions = new List<DialogStateAction>(dialogueArray.Select(dto => new DialogStateAction(dto)));
+            }
         }
 
         #endregion

@@ -42,6 +42,8 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dialogueEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCharacters)).BeginInit();
             this.mainMenu.SuspendLayout();
@@ -51,7 +53,7 @@
             // 
             this.textBoxScenarioName.Location = new System.Drawing.Point(70, 40);
             this.textBoxScenarioName.Name = "textBoxScenarioName";
-            this.textBoxScenarioName.Size = new System.Drawing.Size(259, 20);
+            this.textBoxScenarioName.Size = new System.Drawing.Size(310, 20);
             this.textBoxScenarioName.TabIndex = 0;
             this.textBoxScenarioName.TextChanged += new System.EventHandler(this.textBoxScenarioName_TextChanged);
             // 
@@ -75,7 +77,7 @@
             this.groupBox1.Controls.Add(this.buttonRemoveCharacter);
             this.groupBox1.Location = new System.Drawing.Point(12, 79);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(317, 197);
+            this.groupBox1.Size = new System.Drawing.Size(374, 177);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Characters";
@@ -110,7 +112,7 @@
             this.dataGridViewCharacters.RowHeadersVisible = false;
             this.dataGridViewCharacters.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewCharacters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewCharacters.Size = new System.Drawing.Size(305, 140);
+            this.dataGridViewCharacters.Size = new System.Drawing.Size(362, 120);
             this.dataGridViewCharacters.TabIndex = 13;
             // 
             // buttonAddCharacter
@@ -136,10 +138,11 @@
             // mainMenu
             // 
             this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.fileToolStripMenuItem,
+            this.toolsToolStripMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-            this.mainMenu.Size = new System.Drawing.Size(339, 24);
+            this.mainMenu.Size = new System.Drawing.Size(396, 24);
             this.mainMenu.TabIndex = 3;
             this.mainMenu.Text = "mainMenu";
             // 
@@ -191,11 +194,26 @@
             this.exitToolStripMenuItem.Text = "E&xit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dialogueEditorToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.toolsToolStripMenuItem.Text = "&Tools";
+            // 
+            // dialogueEditorToolStripMenuItem
+            // 
+            this.dialogueEditorToolStripMenuItem.Name = "dialogueEditorToolStripMenuItem";
+            this.dialogueEditorToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.dialogueEditorToolStripMenuItem.Text = "&Dialogue Editor";
+            this.dialogueEditorToolStripMenuItem.Click += new System.EventHandler(this.dialogueEditorToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(339, 288);
+            this.ClientSize = new System.Drawing.Size(396, 268);
             this.Controls.Add(this.mainMenu);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
@@ -227,6 +245,8 @@
         private System.Windows.Forms.Button buttonRemoveCharacter;
         private System.Windows.Forms.DataGridView dataGridViewCharacters;
         private System.Windows.Forms.Button buttonEditCharacter;
+        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dialogueEditorToolStripMenuItem;
     }
 }
 
