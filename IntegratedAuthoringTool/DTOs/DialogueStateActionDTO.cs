@@ -3,13 +3,13 @@
 namespace IntegratedAuthoringTool.DTOs
 {
     [Serializable]
-    public class DialogueStateActionDTO
+    public class DialogueStateActionDTO 
     {
-        public string SpeakerType { get; set; }
+        public Guid Id { get; set; }
         public string CurrentState { get; set; }
+        public string NextState { get; set; }
         public string Meaning { get; set; }
         public string Style { get; set; }
-        public string NextState { get; set; }
         public string Utterance { get; set; }
     }
 }
