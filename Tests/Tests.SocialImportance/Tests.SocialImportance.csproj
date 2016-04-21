@@ -57,6 +57,14 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj">
+      <Project>{e011d502-5c0f-4a3f-9f1a-337ff025eb48}</Project>
+      <Name>ActionLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
+      <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
+      <Name>GAIPS.Rage</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Components\KnowledgeBase\KnowledgeBase.csproj">
       <Project>{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}</Project>
       <Name>KnowledgeBase</Name>

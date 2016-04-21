@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using ActionLibrary.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase.Conditions;
 using KnowledgeBase.WellFormedNames;
@@ -68,6 +68,11 @@ namespace ActionLibrary
 			ActivationConditions = new ConditionSet(other.ActivationConditions);
 		}
 
+		protected BaseActionDefinition(ActionDefinitionDTO dto)
+		{
+			AssertAndInitialize(Name.BuildName(dto.Action),Name.BuildName(dto.Target),new ConditionSet(dto.Conditions));
+		}
+
 		internal IAction GenerateAction(SubstitutionSet constraints)
 		{
 			var actionName = m_actionTemplate.MakeGround(constraints);
@@ -93,6 +98,15 @@ namespace ActionLibrary
 		public Name GetActionTemplate()
 		{
 			return m_actionTemplate;
+		}
+
+		protected T FillDTO<T>(T dto) where T : ActionDefinitionDTO
+		{
+			dto.Id = Id;
+			dto.Action = m_actionTemplate.ToString();
+			dto.Target = Target.ToString();
+			dto.Conditions = m_activationConditions.ToDTO();
+			return dto;
 		}
 
 		public override int GetHashCode()

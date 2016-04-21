@@ -273,7 +273,6 @@ namespace KnowledgeBase
 				return new[] { Tuples.Create(property.GetPrimitiveValue(), constraints) };
 			}
 
-			perspective = perspective.ApplyPerspective(Perspective);
 			var ToMList = AssertPerspective(perspective, nameof(perspective));
 
 			return internal_AskPossibleProperties(property, ToMList, constraints);
@@ -438,7 +437,6 @@ namespace KnowledgeBase
 			if (!property.IsConstant)
 				throw new ArgumentException("The given property name is not constant. Only constant names can be stored",nameof(property));
 
-			perspective = perspective.ApplyPerspective(Perspective);
 			var ToMList = AssertPerspective(perspective, nameof(perspective));
 			property = RemovePropertyPerspective(property, ToMList);
 
@@ -543,6 +541,8 @@ namespace KnowledgeBase
 		{
 			if(perspective == Name.NIL_SYMBOL)
 				throw new ArgumentException("Perspectives cannot contain NIL symbol",argumentName);
+
+			perspective = perspective.ApplyPerspective(Perspective);
 
 			List<Name> ToMList = new List<Name>();
 			if (perspective.IsUniversal)

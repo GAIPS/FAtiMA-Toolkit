@@ -32,21 +32,11 @@ namespace EmotionalDecisionMaking
 			m_activationCooldown = DEFAULT_ACTIVATION_COOLDOWN;
 		}
 
-		//public ActionTendency(Name actionName,Name target, IEnumerable<Condition> activationConditions) : base(actionName,target,new ConditionSet(activationConditions))
-		//{
-		//	ActivationCooldown = DEFAULT_ACTIVATION_COOLDOWN;
-		//}
-
 		public ActionTendency(ReactionDTO dto)
-			: this(Name.BuildName(dto.Action), Name.BuildName(dto.Target), new ConditionSet(dto.Conditions))
+			: base(dto)
 		{
 			ActivationCooldown = dto.Cooldown;
 		}
-
-		//private ActionTendency(ActionTendency other) : base(other)
-		//{
-		//	ActivationCooldown = other.ActivationCooldown;
-		//}
 
 		protected override void OnActionGenerated(IAction action)
 		{
@@ -55,14 +45,10 @@ namespace EmotionalDecisionMaking
 
 		public ReactionDTO ToDTO()
 		{
-			return new ReactionDTO()
+			return FillDTO(new ReactionDTO()
 			{
-				Id = Id,
-				Action = GetActionTemplate().ToString(),
-				Target = Target.ToString(),
-				Conditions = ActivationConditions.ToDTO(),
 				Cooldown = ActivationCooldown
-			};
+			});
 		}
 
 		public override void GetObjectData(ISerializationData dataHolder, ISerializationContext context)

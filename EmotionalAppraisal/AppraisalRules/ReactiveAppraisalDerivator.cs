@@ -69,7 +69,7 @@ namespace EmotionalAppraisal.AppraisalRules
 			AddEmotionalReaction(existingRule);
 		}
 
-        private void AddEmotionalReaction(AppraisalRule appraisalRule)
+        public void AddEmotionalReaction(AppraisalRule appraisalRule)
         {
             var name = appraisalRule.EventName;
             HashSet<AppraisalRule> ruleSet;
@@ -81,15 +81,23 @@ namespace EmotionalAppraisal.AppraisalRules
             ruleSet.Add(appraisalRule);
         }
 
-		private void RemoveEmotionalReaction(AppraisalRule appraisalRule)
+		public void RemoveAppraisalRule(AppraisalRule appraisalRule)
 		{
-			var name = appraisalRule.EventName;
 			HashSet<AppraisalRule> ruleSet;
-			if (Rules.TryGetValue(name, out ruleSet))
+			if (Rules.TryGetValue(appraisalRule.EventName, out ruleSet))
 			{
-				ruleSet.Remove(appraisalRule);
-				if (ruleSet.Count == 0)
-					Rules.Remove(name);
+				AppraisalRule ruleToRemove = null;
+				foreach (var rule in ruleSet)
+				{
+					if (rule.Id == appraisalRule.Id)
+					{
+						ruleToRemove = rule;
+					}
+				}
+				if (ruleToRemove != null)
+				{
+					ruleSet.Remove(ruleToRemove);
+				}
 			}
 		}
 
@@ -97,7 +105,6 @@ namespace EmotionalAppraisal.AppraisalRules
 		{
 			return Rules.SelectMany(r => r.Value).FirstOrDefault(a => a.Id == id);
 		}
-
 
 		////todo: this method is overly complex due to the nature of how rules are stored. with time try to refactor this
   //      private KeyValuePair<Name, HashSet<AppraisalRule>> findExistingAppraisalRule(Guid id, out AppraisalRule rule)
@@ -137,27 +144,6 @@ namespace EmotionalAppraisal.AppraisalRules
 	            existingRule.Conditions = existingRule.Conditions.Remove(c);
             }
         }
-
-
-        public void RemoveAppraisalRule(AppraisalRule appraisalRule)
-	    {
-            HashSet<AppraisalRule> ruleSet;
-	        if (Rules.TryGetValue(appraisalRule.EventName, out ruleSet))
-	        {
-	            AppraisalRule ruleToRemove = null;
-	            foreach (var rule in ruleSet)
-	            {
-	                if (rule.Id == appraisalRule.Id)
-	                {
-	                    ruleToRemove = rule;
-	                }
-	            }
-	            if (ruleToRemove != null)
-	            {
-                    ruleSet.Remove(ruleToRemove);
-                }
-	        }
-	    }
 
 	    public IEnumerable<AppraisalRule> GetAppraisalRules()
 	    {

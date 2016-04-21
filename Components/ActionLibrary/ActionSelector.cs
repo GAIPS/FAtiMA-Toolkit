@@ -4,16 +4,19 @@ using System.Linq;
 using KnowledgeBase;
 using KnowledgeBase.Conditions;
 using KnowledgeBase.WellFormedNames;
+using Utilities;
 
 namespace ActionLibrary
 {
+	public delegate bool ActionSelectionFunction<T>(T action, Name perspective, SubstitutionSet constraints);
+
 	public class ActionSelector<T> : IActionSelector
 		where T: BaseActionDefinition
 	{
 		private ConditionMapper<T> m_actions = new ConditionMapper<T>();
-		private readonly Func<T, SubstitutionSet, bool> m_validator;
+		private readonly ActionSelectionFunction<T>  m_validator;
 
-		public ActionSelector(Func<T, SubstitutionSet, bool> validationFunction)
+		public ActionSelector(ActionSelectionFunction<T> validationFunction)
 		{
 			m_validator = validationFunction;
 		}
@@ -53,11 +56,11 @@ namespace ActionLibrary
 			return GetAllActionDefinitions().FirstOrDefault(t => t.Id == id);
 		}
         
-        public IEnumerable<IAction> SelectAction(KB knowledgeBase, Name perspective)
+        public IEnumerable<Pair<IAction,T>> SelectAction(KB knowledgeBase, Name perspective)
 		{
 			var validActions = m_actions.MatchConditions(knowledgeBase, perspective, new SubstitutionSet());
-			validActions = validActions.Where(p => m_validator((T)p.Item1, p.Item2));
-			return validActions.Select(p => p.Item1.GenerateAction(p.Item2)).Where(a => a != null);
+			validActions = validActions.Where(p => m_validator((T)p.Item1,perspective, p.Item2));
+			return validActions.Select(p => new Pair<IAction, T>(p.Item1.GenerateAction(p.Item2),p.Item1)).Where(a => a.Item1 != null);
 		}
 
 		public void OnConditionsUpdated(BaseActionDefinition def, ConditionSet oldConditions)

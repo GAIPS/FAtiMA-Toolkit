@@ -7,7 +7,7 @@ namespace SocialImportance.DTOs
 	public class AttributionRuleDTO
 	{
 		public string Target;
-		public float Value;
+		public int Value;
 		public ConditionSetDTO Conditions;
 	}
 }

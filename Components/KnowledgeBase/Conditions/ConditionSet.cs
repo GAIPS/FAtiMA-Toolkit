@@ -34,9 +34,19 @@ namespace KnowledgeBase.Conditions
 				m_conditions = new List<Condition>(conditions.Distinct());
 		}
 
-		public ConditionSet(ConditionSetDTO dto) : this(dto.Quantifier,dto.Set?.Select(c => Condition.Parse(c.Condition)))
+		public ConditionSet(ConditionSetDTO dto)
 		{
+			if (dto == null)
+			{
+				Quantifier=LogicalQuantifier.Existential;
+				m_conditions = null;
+				return;
+			}
 
+			Quantifier = dto.Quantifier;
+			var conditions = dto.Set?.Select(c => Condition.Parse(c.Condition)).Distinct();
+			if (conditions != null)
+				m_conditions = new List<Condition>(conditions);
 		}
 
 		public ConditionSet Add(Condition condition)
