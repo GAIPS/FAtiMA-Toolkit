@@ -46,15 +46,20 @@
             this.buttonEditReactionCondition = new System.Windows.Forms.Button();
             this.buttonAddReactionCondition = new System.Windows.Forms.Button();
             this.buttonRemoveReactionCondition = new System.Windows.Forms.Button();
-            this.dataGridViewReactionConditions = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.richTextBoxDescription = new System.Windows.Forms.RichTextBox();
+            this.dataGridViewReactionConditions = new System.Windows.Forms.DataGridView();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.mainMenu.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactiveActions)).BeginInit();
             this.groupBox8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactionConditions)).BeginInit();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactionConditions)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainMenu
@@ -63,7 +68,7 @@
             this.fileToolStripMenuItem});
             this.mainMenu.Location = new System.Drawing.Point(0, 0);
             this.mainMenu.Name = "mainMenu";
-            this.mainMenu.Size = new System.Drawing.Size(474, 24);
+            this.mainMenu.Size = new System.Drawing.Size(519, 24);
             this.mainMenu.TabIndex = 1;
             this.mainMenu.Text = "mainMenu";
             // 
@@ -117,16 +122,14 @@
             // 
             // groupBox7
             // 
-            this.groupBox7.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox7.Controls.Add(this.buttonEditReaction);
             this.groupBox7.Controls.Add(this.buttonAddReaction);
             this.groupBox7.Controls.Add(this.buttonRemoveReaction);
             this.groupBox7.Controls.Add(this.dataGridViewReactiveActions);
-            this.groupBox7.Location = new System.Drawing.Point(12, 27);
+            this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox7.Location = new System.Drawing.Point(0, 0);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(450, 265);
+            this.groupBox7.Size = new System.Drawing.Size(495, 276);
             this.groupBox7.TabIndex = 3;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Reactions";
@@ -181,14 +184,15 @@
             this.dataGridViewReactiveActions.RowHeadersVisible = false;
             this.dataGridViewReactiveActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewReactiveActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(438, 205);
+            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(483, 216);
             this.dataGridViewReactiveActions.TabIndex = 2;
             this.dataGridViewReactiveActions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewReactiveActions_CellMouseDoubleClick);
             this.dataGridViewReactiveActions.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReactiveActions_RowEnter);
             // 
             // groupBox8
             // 
-            this.groupBox8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupBox8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox8.Controls.Add(this.comboBoxQuantifierType);
             this.groupBox8.Controls.Add(this.label2);
@@ -196,9 +200,9 @@
             this.groupBox8.Controls.Add(this.buttonAddReactionCondition);
             this.groupBox8.Controls.Add(this.buttonRemoveReactionCondition);
             this.groupBox8.Controls.Add(this.dataGridViewReactionConditions);
-            this.groupBox8.Location = new System.Drawing.Point(12, 298);
+            this.groupBox8.Location = new System.Drawing.Point(0, 3);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(451, 205);
+            this.groupBox8.Size = new System.Drawing.Size(495, 171);
             this.groupBox8.TabIndex = 11;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Reaction Conditions";
@@ -208,7 +212,7 @@
             this.comboBoxQuantifierType.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxQuantifierType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxQuantifierType.FormattingEnabled = true;
-            this.comboBoxQuantifierType.Location = new System.Drawing.Point(322, 19);
+            this.comboBoxQuantifierType.Location = new System.Drawing.Point(368, 18);
             this.comboBoxQuantifierType.Name = "comboBoxQuantifierType";
             this.comboBoxQuantifierType.Size = new System.Drawing.Size(121, 21);
             this.comboBoxQuantifierType.TabIndex = 11;
@@ -217,7 +221,7 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(234, 23);
+            this.label2.Location = new System.Drawing.Point(280, 22);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(82, 13);
             this.label2.TabIndex = 10;
@@ -253,6 +257,32 @@
             this.buttonRemoveReactionCondition.UseVisualStyleBackColor = true;
             this.buttonRemoveReactionCondition.Click += new System.EventHandler(this.buttonRemoveReactionCondition_Click);
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.richTextBoxDescription);
+            this.groupBox2.Location = new System.Drawing.Point(0, 180);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(495, 89);
+            this.groupBox2.TabIndex = 16;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Reaction Description";
+            // 
+            // richTextBoxDescription
+            // 
+            this.richTextBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.richTextBoxDescription.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBoxDescription.CausesValidation = false;
+            this.richTextBoxDescription.Location = new System.Drawing.Point(9, 19);
+            this.richTextBoxDescription.Multiline = false;
+            this.richTextBoxDescription.Name = "richTextBoxDescription";
+            this.richTextBoxDescription.Size = new System.Drawing.Size(480, 64);
+            this.richTextBoxDescription.TabIndex = 0;
+            this.richTextBoxDescription.Text = "";
+            // 
             // dataGridViewReactionConditions
             // 
             this.dataGridViewReactionConditions.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
@@ -273,44 +303,37 @@
             this.dataGridViewReactionConditions.RowHeadersVisible = false;
             this.dataGridViewReactionConditions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewReactionConditions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewReactionConditions.Size = new System.Drawing.Size(439, 145);
+            this.dataGridViewReactionConditions.Size = new System.Drawing.Size(483, 111);
             this.dataGridViewReactionConditions.TabIndex = 2;
             this.dataGridViewReactionConditions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewReactionConditions_CellMouseDoubleClick);
             // 
-            // groupBox2
+            // splitContainer1
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.richTextBoxDescription);
-            this.groupBox2.Location = new System.Drawing.Point(12, 509);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(450, 71);
-            this.groupBox2.TabIndex = 16;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Reaction Description";
-            // 
-            // richTextBoxDescription
-            // 
-            this.richTextBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBoxDescription.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBoxDescription.CausesValidation = false;
-            this.richTextBoxDescription.Location = new System.Drawing.Point(9, 19);
-            this.richTextBoxDescription.Multiline = false;
-            this.richTextBoxDescription.Name = "richTextBoxDescription";
-            this.richTextBoxDescription.Size = new System.Drawing.Size(435, 46);
-            this.richTextBoxDescription.TabIndex = 0;
-            this.richTextBoxDescription.Text = "";
+            this.splitContainer1.Location = new System.Drawing.Point(12, 27);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.groupBox7);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.groupBox8);
+            this.splitContainer1.Panel2.Controls.Add(this.groupBox2);
+            this.splitContainer1.Size = new System.Drawing.Size(495, 553);
+            this.splitContainer1.SplitterDistance = 276;
+            this.splitContainer1.TabIndex = 17;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(474, 592);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox8);
-            this.Controls.Add(this.groupBox7);
+            this.ClientSize = new System.Drawing.Size(519, 592);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.mainMenu);
             this.Name = "MainForm";
             this.Text = "Form1";
@@ -320,8 +343,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactiveActions)).EndInit();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactionConditions)).EndInit();
             this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactionConditions)).EndInit();
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -347,9 +374,10 @@
         private System.Windows.Forms.Button buttonEditReactionCondition;
         private System.Windows.Forms.Button buttonAddReactionCondition;
         private System.Windows.Forms.Button buttonRemoveReactionCondition;
-        private System.Windows.Forms.DataGridView dataGridViewReactionConditions;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.RichTextBox richTextBoxDescription;
+        private System.Windows.Forms.DataGridView dataGridViewReactionConditions;
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }
 
