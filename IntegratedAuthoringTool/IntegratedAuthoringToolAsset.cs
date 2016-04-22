@@ -18,6 +18,8 @@ namespace IntegratedAuthoringTool
 		    public RolePlayCharacterAsset RPCAsset;
         }
 
+        public static readonly string INITIAL_DIALOGUE_STATE = "Start";
+        public static readonly string TERMINAL_DIALOGUE_STATE = "End";
         public static readonly string ANY_DIALOGUE_STATE = "*";
         public static readonly string PLAYER = "Player";
         public static readonly string AGENT = "Agent";
@@ -29,6 +31,8 @@ namespace IntegratedAuthoringTool
         //private IList<RolePlayCharacterAsset> Characters { get; set; }
 
         public string ScenarioName { get; set; }
+
+        public string CurrentDialogueState { get; set; }
 
 	    protected override string OnAssetLoaded()
 	    {
@@ -73,6 +77,7 @@ namespace IntegratedAuthoringTool
             m_playerDialogues = new List<DialogStateAction>();
             m_agentDialogues = new List<DialogStateAction>();
 			m_characterSources =new Dictionary<string, CharacterHolder>();
+	        CurrentDialogueState = INITIAL_DIALOGUE_STATE;
         }
 
 
