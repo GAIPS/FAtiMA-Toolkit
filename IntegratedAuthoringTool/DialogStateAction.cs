@@ -22,10 +22,10 @@ namespace IntegratedAuthoringTool
         public DialogStateAction(DialogueStateActionDTO dto) :
             this(Name.BuildName(dto.CurrentState), Name.BuildName(dto.Meaning), Name.BuildName(dto.Style), Name.BuildName(dto.NextState))
         {
-            this.CurrentState = dto.CurrentState;
-            this.Meaning = dto.Meaning;
-            this.Style = dto.Style;
-            this.NextState = dto.NextState;
+            this.CurrentState = Name.BuildName(dto.CurrentState).ToString();
+            this.Meaning = Name.BuildName(dto.Meaning).ToString();
+            this.Style = Name.BuildName(dto.Style).ToString();
+            this.NextState = Name.BuildName(dto.NextState).ToString();
             this.Utterance = dto.Utterance;
         }
 

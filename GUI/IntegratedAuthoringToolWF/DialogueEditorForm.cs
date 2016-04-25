@@ -106,7 +106,7 @@ namespace IntegratedAuthoringToolWF
             if (dataGridViewAgentDialogueActions.SelectedRows.Count == 1)
             {
                 var item = ((ObjectView<DialogueStateActionDTO>)dataGridViewAgentDialogueActions.SelectedRows[0].DataBoundItem).Object;
-                new AddOrEditDialogueActionForm(_iatAsset, true, item).ShowDialog();
+                new AddOrEditDialogueActionForm(_iatAsset, false, item).ShowDialog();
                 _agentDialogs.DataSource = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, IntegratedAuthoringToolAsset.ANY_DIALOGUE_STATE).ToList();
                 _agentDialogs.Refresh();
             }

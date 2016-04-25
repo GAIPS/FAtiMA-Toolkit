@@ -28,16 +28,15 @@ namespace IntegratedAuthoringTool
         private IList<DialogStateAction> m_agentDialogues;
 
         private Dictionary<string, CharacterHolder> m_characterSources;
-        //private IList<RolePlayCharacterAsset> Characters { get; set; }
+        private Dictionary<string, string> m_dialogueStates; 
 
         public string ScenarioName { get; set; }
-
-        public string CurrentDialogueState { get; set; }
-
+        
 	    protected override string OnAssetLoaded()
 	    {
 		    KeyValuePair<string, CharacterHolder> current = new KeyValuePair<string, CharacterHolder>();
-		    try
+            
+            try
 		    {
 				foreach (var pair in m_characterSources)
 				{
@@ -76,14 +75,31 @@ namespace IntegratedAuthoringTool
         {
             m_playerDialogues = new List<DialogStateAction>();
             m_agentDialogues = new List<DialogStateAction>();
-			m_characterSources =new Dictionary<string, CharacterHolder>();
-	        CurrentDialogueState = INITIAL_DIALOGUE_STATE;
+	        m_characterSources = new Dictionary<string, CharacterHolder>();
+            m_dialogueStates = new Dictionary<string, string>();
         }
-
-
+        
         public void AddAgentDialogAction(DialogueStateActionDTO dialogueStateActionDTO)
         {
             this.m_agentDialogues.Add(new DialogStateAction(dialogueStateActionDTO));
+        }
+
+        public string GetCurrentDialogueState(string character)
+        {
+            if (m_dialogueStates.ContainsKey(character))
+            {
+                return m_dialogueStates[character];
+            }
+            else
+            {
+                m_dialogueStates[character] = INITIAL_DIALOGUE_STATE;
+                return INITIAL_DIALOGUE_STATE;
+            }
+        }
+
+        public void SetDialogueState(string character, string state)
+        {
+            m_dialogueStates[character] = state;
         }
 
         public void AddPlayerDialogAction(DialogueStateActionDTO dialogueStateActionDTO)
@@ -99,7 +115,7 @@ namespace IntegratedAuthoringTool
 
         public void EditAgentDialogAction(DialogueStateActionDTO dialogueStateActionToEdit, DialogueStateActionDTO newDialogueAction)
         {
-            this.AddPlayerDialogAction(newDialogueAction);
+            this.AddAgentDialogAction(newDialogueAction);
             this.RemoveDialogueActions(AGENT, new[] {dialogueStateActionToEdit});
         }
 
