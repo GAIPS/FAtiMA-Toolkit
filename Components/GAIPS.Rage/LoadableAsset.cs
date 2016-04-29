@@ -50,7 +50,7 @@ namespace GAIPS.Rage
 				OnAssetPathChanged(old);
 			}
 
-			using (var f = File.Open(filepath, FileMode.OpenOrCreate, FileAccess.Write))
+			using (var f = File.Open(filepath, FileMode.Create, FileAccess.Write))
 			{
 				var serializer = new JSONSerializer();
 				serializer.Serialize(f,this);
