@@ -247,12 +247,16 @@ namespace EmotionalAppraisal
 	        {
 	            m_appraisalDerivator.RemoveAppraisalRule(new AppraisalRule(appraisalRuleDto));
 	        }
-	    } 
+	    }
+
+		/// @cond DEV
 
         public KB Kb
 		{
 			get { return m_kb; }
 		}
+
+		/// @endcond
 
 		public void SetPerspective(Name newPerspective)
 		{
@@ -500,9 +504,10 @@ namespace EmotionalAppraisal
             serializer.Serialize(file, this);
         }
 
-	    #region ICustomSerialization
+		/// @cond DEV
+		#region ICustomSerialization
 
-        public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
             dataHolder.SetValue("Description", Description);
             dataHolder.SetValue("EmotionalHalfLifeDecayTime", EmotionalHalfLifeDecayTime);
@@ -539,6 +544,6 @@ namespace EmotionalAppraisal
 		}
 
 		#endregion
-
+		/// @endcond
 	}
 }
