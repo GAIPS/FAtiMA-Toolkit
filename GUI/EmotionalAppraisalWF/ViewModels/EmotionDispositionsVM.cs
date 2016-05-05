@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EmotionalAppraisal;
+using EmotionalAppraisal.DTOs;
 using Equin.ApplicationFramework;
 
 namespace EmotionalAppraisalWF.ViewModels

@@ -16,6 +16,9 @@ using Utilities;
 
 namespace EmotionalAppraisal
 {
+	/// <summary>
+	/// Main class of the Emotional Appraisal Asset.
+	/// </summary>
 	[Serializable]
 	public sealed partial class EmotionalAppraisalAsset : BaseAsset, ICustomSerialization
 	{
@@ -30,7 +33,7 @@ namespace EmotionalAppraisal
             return ea;
         }
 
-        private static readonly InternalAppraisalFrame APPRAISAL_FRAME = new InternalAppraisalFrame();
+       // private static readonly InternalAppraisalFrame APPRAISAL_FRAME = new InternalAppraisalFrame();
         private KB m_kb;
         private AM m_am;
         private ConcreteEmotionalState m_emotionalState;
@@ -92,6 +95,9 @@ namespace EmotionalAppraisal
 	        get { return m_kb.Perspective.ToString(); }
 		}
 
+		/// <summary>
+		/// The amount of update frames this asset as experienced since its initialization
+		/// </summary>
 		public ulong Tick {
 		    get { return m_am.Tick; }
 		    set { m_am.Tick = value; }
@@ -111,55 +117,72 @@ namespace EmotionalAppraisal
 	    /// </summary>
 	    public string Description { get; set; }
 
-        public string[] KnowledgeVisibilities => new[] {Name.SELF_STRING, Name.UNIVERSAL_STRING};
-        public string[] EventTypes => new [] {Constants.ACTION_EVENT.ToString(), Constants.PROPERTY_CHANGE_EVENT.ToString()};
-
-	    public EmotionDispositionDTO DefaultEmotionDisposition
+		/// <summary>
+		/// Gets/Sets the default emotion disposition parameters.
+		/// </summary>
+        public EmotionDispositionDTO DefaultEmotionDisposition
 	    {
 	        get{ return m_emotionalState.DefaultEmotionDisposition.ToDto();}
 	        set { m_emotionalState.DefaultEmotionDisposition = new EmotionDisposition(value); }
 	    }
 
+		/// <summary>
+		/// Returns the current set of active emotions
+		/// <returns>An enumerable containing the emotion DTOs of the currently active emotions being expressed by the asset.</returns>
+		/// </summary>
 	    public IEnumerable<EmotionDTO> ActiveEmotions
 	    {
 	        get { return m_emotionalState.GetAllEmotions().Select(e => e.ToDto(m_am));}
 	    }
 
-	    public EmotionDTO AddActiveEmotion(EmotionDTO emotion)
+		/// <summary>
+		/// Creates a new <b>Active Emotion</b> and adds it to the asset's currently experiencing emotions set.
+		/// </summary>
+		/// <exception cref="ArgumentException">
+		/// Thrown if the given emotion is already being experienced by the asset.
+		/// This can happend if in the given EmotionDTO the pair of parameters <b>Type</b> and <b>CauseEventId</b>
+		/// are equal to an already existent ActiveEmotion in the asset.
+		/// </exception>
+		/// <param name="emotion">The DTO containing the emotion parameters to be used in the active emotion creation process</param>
+		/// <returns>The DTO representing the actual emotion added to the active emotion set.</returns>
+		public EmotionDTO AddActiveEmotion(EmotionDTO emotion)
 	    {
             return m_emotionalState.AddActiveEmotion(emotion);
 	    }
 
-        public void RemoveEmotion(EmotionDTO emotion)
+		/// <summary>
+		/// Removes the given emotion from the asset's active emotions set.
+		/// </summary>
+		/// <param name="emotion">The DTO containing the emotion parameters to be used to select and remove the requested emotion from the active emotion set.</param>
+		/// <remarks>Note that only the <b>Type</b> and <b>CauseEventId</b> fields are required to select an emotion to be removed.</remarks>
+		public void RemoveEmotion(EmotionDTO emotion)
         {
             m_emotionalState.RemoveEmotion(emotion);
         }
 
+		/// <summary>
+		/// The asset's currently defined Emotion Dispositions.
+		/// </summary>
         public IEnumerable<EmotionDispositionDTO> EmotionDispositions
         {
             get { return m_emotionalState.GetEmotionDispositions().Select(disp => disp.ToDto()); }
         }
 
+		/// <summary>
+		/// Gets all the recorded events experienced by the asset.
+		/// </summary>
         public IEnumerable<EventDTO> EventRecords
         {
             get
             {
-                return this.m_am.RecallAllEvents().Select(e => new EventDTO
-                {
-                    Id = e.Id,
-                    Event = e.EventName.ToString(),
-                    Time = e.Timestamp
-                });
+                return this.m_am.RecallAllEvents().Select(e => e.ToDTO());
             }
         }
 
-	    public EventDTO GetEventDetails (uint eventId)
-	    {
-	        IBaseEvent evt = m_am.RecallEvent(eventId);
-		    return evt.ToDTO();
-	    }
-
-        public IEnumerable<string> EmotionTypes
+		/// <summary>
+		/// The currently supported emotional type keys
+		/// </summary>
+	    public IEnumerable<string> EmotionTypes
 	    {
 	        get { return OCCEmotionType.Types; }
 	    } 
@@ -167,7 +190,6 @@ namespace EmotionalAppraisal
         /// <summary>
         /// Adds an emotional reaction to an event
         /// </summary>
-        /// <param name="evt"></param>
         /// <param name="emotionalAppraisalRule">the AppraisalRule to add</param>
         public void AddOrUpdateAppraisalRule(AppraisalRuleDTO emotionalAppraisalRule)
 		{
@@ -194,7 +216,13 @@ namespace EmotionalAppraisal
 	        this.m_am.UpdateEvent(eventDTO);
 	    }
 
-	    public void ForgetEvent(uint eventId)
+		public EventDTO GetEventDetails(uint eventId)
+		{
+			IBaseEvent evt = m_am.RecallEvent(eventId);
+			return evt.ToDTO();
+		}
+
+		public void ForgetEvent(uint eventId)
         {
             this.m_am.ForgetEvent(eventId);
         }

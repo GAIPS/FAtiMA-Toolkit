@@ -19,7 +19,7 @@ namespace EmotionalAppraisalWF
             _beliefToEdit = beliefToEdit;
 
             //Default Values 
-            beliefVisibilityComboBox.DataSource = _knowledgeBaseVm.GetKnowledgeVisibilities();
+	        beliefVisibilityComboBox.DataSource = KnowledgeBaseVM.KnowledgeVisibilities;
             beliefVisibilityComboBox.SelectedIndex = 0;
 
             if (beliefToEdit != null)

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using AutobiographicMemory;
 using AutobiographicMemory.DTOs;
 using EmotionalAppraisal;
 using Equin.ApplicationFramework;
@@ -11,10 +12,10 @@ namespace EmotionalAppraisalWF.ViewModels
         private readonly EmotionalAppraisalAsset _emotionalAppraisalAsset;
 
         public BindingListView<EventDTO> Events {get;}
-        
-        public string[] EventTypes => _emotionalAppraisalAsset.EventTypes;
 
-        public AutobiographicalMemoryVM(EmotionalAppraisalAsset ea)
+		public static readonly string[] EventTypes = { Constants.ACTION_EVENT.ToString(), Constants.PROPERTY_CHANGE_EVENT.ToString() };
+
+		public AutobiographicalMemoryVM(EmotionalAppraisalAsset ea)
         {
             _emotionalAppraisalAsset = ea;
             this.Events = new BindingListView<EventDTO>(ea.EventRecords.ToList());

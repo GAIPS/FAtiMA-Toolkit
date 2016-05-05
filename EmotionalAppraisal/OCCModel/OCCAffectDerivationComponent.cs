@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutobiographicMemory;
 using EmotionalAppraisal.Components;
+using EmotionalAppraisal.DTOs;
 using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalAppraisal.OCCModel

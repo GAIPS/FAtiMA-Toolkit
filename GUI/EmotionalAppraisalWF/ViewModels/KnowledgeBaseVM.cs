@@ -21,7 +21,7 @@ namespace EmotionalAppraisalWF.ViewModels
         {
             _emotionalAppraisalAsset = ea;
 			Perspective = _emotionalAppraisalAsset.Perspective;
-			this.Beliefs = new BindingListView<BeliefDTO>(new List<BeliefDTO>());
+			Beliefs = new BindingListView<BeliefDTO>(new List<BeliefDTO>());
 			UpdateBeliefList();
         }
 
@@ -51,10 +51,7 @@ namespace EmotionalAppraisalWF.ViewModels
 			Beliefs.Refresh();
 	    }
 
-		public string[] GetKnowledgeVisibilities()
-        {
-            return _emotionalAppraisalAsset.KnowledgeVisibilities;
-        }
+		public static readonly string[] KnowledgeVisibilities = { Name.SELF_STRING, Name.UNIVERSAL_STRING };
 
         public void AddBelief(BeliefDTO belief)
         {
@@ -63,8 +60,8 @@ namespace EmotionalAppraisalWF.ViewModels
                 throw new Exception(Resources.BeliefAlreadyExistsExceptionMessage);
             }
             _emotionalAppraisalAsset.AddOrUpdateBelief(belief);
-            this.Beliefs.DataSource.Add(belief);
-            this.Beliefs.Refresh();
+            Beliefs.DataSource.Add(belief);
+            Beliefs.Refresh();
         }
 
         public void RemoveBeliefs(IEnumerable<BeliefDTO> beliefs)

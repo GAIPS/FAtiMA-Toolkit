@@ -87,7 +87,7 @@ namespace EmotionalAppraisal
 
                 if (emotionPool.ContainsKey(hash))
                 {
-                    throw new Exception("Emotion already exists");
+                    throw new ArgumentException("This given emotion is already related to given cause",nameof(emotion));
                 }
 
                 emotionPool.Add(hash, activeEmotion);

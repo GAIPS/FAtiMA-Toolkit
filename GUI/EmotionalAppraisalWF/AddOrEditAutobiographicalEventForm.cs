@@ -19,7 +19,7 @@ namespace EmotionalAppraisalWF
             _autobiographicalMemoryVm = amVM;
             _eventToEdit = eventToEdit;
 
-            comboBoxEventType.DataSource = _autobiographicalMemoryVm.EventTypes;
+            comboBoxEventType.DataSource = AutobiographicalMemoryVM.EventTypes;
             
             if (eventToEdit != null)
             {
