@@ -85,7 +85,6 @@ namespace RolePlayCharacter
         public IEnumerable<IAction> PerceptionActionLoop(IEnumerable<Name> events)
         {
             _emotionalAppraisalAsset.AppraiseEvents(events);
-			_emotionalAppraisalAsset.Update();
 			return _emotionalDecisionMakingAsset.Decide();
         }
 

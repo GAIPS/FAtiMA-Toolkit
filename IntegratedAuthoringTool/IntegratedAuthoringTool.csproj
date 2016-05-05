@@ -42,6 +42,10 @@
       <Project>{E011D502-5C0F-4A3F-9F1A-337FF025EB48}</Project>
       <Name>ActionLibrary</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Components\AutobiographicMemory\AutobiographicMemory.csproj">
+      <Project>{C1CC38C5-72F5-4545-B4F7-C65B2883909C}</Project>
+      <Name>AutobiographicMemory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
       <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
       <Name>GAIPS.Rage</Name>

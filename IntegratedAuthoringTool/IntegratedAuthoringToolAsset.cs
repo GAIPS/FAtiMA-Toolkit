@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AutobiographicMemory;
 using GAIPS.Rage;
 using GAIPS.Serialization;
 using IntegratedAuthoringTool.DTOs;
@@ -18,6 +19,7 @@ namespace IntegratedAuthoringTool
 		    public RolePlayCharacterAsset RPCAsset;
         }
 
+        public static readonly string VALID_DIALOGUE_PROPERTY = "ValidDialogue";
         public static readonly string INITIAL_DIALOGUE_STATE = "Start";
         public static readonly string TERMINAL_DIALOGUE_STATE = "End";
         public static readonly string ANY_DIALOGUE_STATE = "*";
@@ -46,8 +48,17 @@ namespace IntegratedAuthoringTool
 					{
 						string errorsOnLoad;
 						pair.Value.RPCAsset = RolePlayCharacterAsset.LoadFromFile(ToAbsolutePath(pair.Value.Source),out errorsOnLoad);
-						if (errorsOnLoad != null)
-							return errorsOnLoad;
+					    if (errorsOnLoad != null)
+					        return errorsOnLoad;
+					    else
+					    {
+					        foreach (var d in m_agentDialogues)
+					        {
+					            var validDialoguePropertyEvent =
+					                Name.BuildName($"Event({Constants.PROPERTY_CHANGE_EVENT},World,{VALID_DIALOGUE_PROPERTY}({d.CurrentState},{d.NextState},{d.Meaning},{d.Style}),True)");
+                                pair.Value.RPCAsset.PerceptionActionLoop(new[] {validDialoguePropertyEvent});
+                            }
+					    }
 					}
 
 					if (!string.Equals(pair.Key, pair.Value.RPCAsset.CharacterName))
@@ -55,7 +66,7 @@ namespace IntegratedAuthoringTool
 
 				}
 			}
-		    catch (Exception)
+		    catch (Exception ex)
 		    {
 			    return $"An error occured when trying to load the RPC \"{current.Key}\" at \"{ToAbsolutePath(current.Value.Source)}\". Please check if the path is correct.";
 
