@@ -75,7 +75,7 @@ namespace EmotionalAppraisalWF
             //Appraisal Rule
             _appraisalRulesVM = new AppraisalRulesVM(_emotionalAppraisalAsset);
             dataGridViewAppraisalRules.DataSource = _appraisalRulesVM.AppraisalRules;
-            dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
+            dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<AppraisalRuleDTO>(dto => dto.Id)].Visible = false;
             dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<AppraisalRuleDTO>(dto => dto.Conditions)].Visible = false;
             dataGridViewAppRuleConditions.DataSource = _appraisalRulesVM.CurrentRuleConditions;
             comboBoxQuantifierType.DataSource = _appraisalRulesVM.QuantifierTypes;
@@ -83,7 +83,7 @@ namespace EmotionalAppraisalWF
             //KB
             _knowledgeBaseVM = new KnowledgeBaseVM(_emotionalAppraisalAsset);
             dataGridViewBeliefs.DataSource = _knowledgeBaseVM.Beliefs;
-            dataGridViewBeliefs.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
+            //dataGridViewBeliefs.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
 
             //AM
             _autobiographicalMemoryVM = new AutobiographicalMemoryVM(_emotionalAppraisalAsset);
@@ -558,7 +558,7 @@ namespace EmotionalAppraisalWF
         {
             if (dataGridViewAppRuleConditions.SelectedRows.Count == 1)
             {
-                var selectedCondition = ((ObjectView<ConditionDTO>)dataGridViewAppRuleConditions.
+                var selectedCondition = ((ObjectView<string>)dataGridViewAppRuleConditions.
                     SelectedRows[0].DataBoundItem).Object;
                 new AddOrEditConditionForm(_appraisalRulesVM, selectedCondition).ShowDialog();
             }
@@ -566,10 +566,10 @@ namespace EmotionalAppraisalWF
 
         private void buttonRemoveAppraisalRuleCondition_Click(object sender, EventArgs e)
         {
-            IList<ConditionDTO> conditionsToRemove = new List<ConditionDTO>();
+            IList<string> conditionsToRemove = new List<string>();
             for (int i = 0; i < dataGridViewAppRuleConditions.SelectedRows.Count; i++)
             {
-                var emotion = ((ObjectView<ConditionDTO>)dataGridViewAppRuleConditions.SelectedRows[i].DataBoundItem).Object;
+                var emotion = ((ObjectView<string>)dataGridViewAppRuleConditions.SelectedRows[i].DataBoundItem).Object;
                 conditionsToRemove.Add(emotion);
             }
             _appraisalRulesVM.RemoveConditions(conditionsToRemove);

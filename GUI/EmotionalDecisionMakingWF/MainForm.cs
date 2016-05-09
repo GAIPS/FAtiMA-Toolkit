@@ -18,7 +18,7 @@ namespace EmotionalDecisionMakingWF
         private string _saveFileName;
 
         private BindingListView<ReactionDTO> _reactiveActions;
-        private BindingListView<ConditionDTO> _conditions; 
+        private BindingListView<string> _conditions; 
         private Guid _selectedActionId;
 
         public MainForm()
@@ -65,11 +65,11 @@ namespace EmotionalDecisionMakingWF
 
             if (_reactiveActions.Any())
             {
-                this._conditions = new BindingListView<ConditionDTO>(_edmAsset.GetReactionsConditions(_reactiveActions.First().Id).ToList());
+                this._conditions = new BindingListView<string>(_edmAsset.GetReactionsConditions(_reactiveActions.First().Id).ToList());
             }
             else
             {
-                this._conditions = new BindingListView<ConditionDTO>(new List<ConditionDTO>());
+                this._conditions = new BindingListView<string>(new List<string>());
             }
             
             dataGridViewReactionConditions.DataSource = this._conditions;
@@ -193,10 +193,10 @@ namespace EmotionalDecisionMakingWF
 
         private void buttonRemoveReactionCondition_Click(object sender, EventArgs e)
         {
-            IList<ConditionDTO> conditionsToRemove = new List<ConditionDTO>();
+            IList<string> conditionsToRemove = new List<string>();
             for (int i = 0; i < dataGridViewReactionConditions.SelectedRows.Count; i++)
             {
-                var reaction = ((ObjectView<ConditionDTO>)dataGridViewReactionConditions.SelectedRows[i].DataBoundItem).Object;
+                var reaction = ((ObjectView<string>)dataGridViewReactionConditions.SelectedRows[i].DataBoundItem).Object;
                 conditionsToRemove.Add(reaction);
             }
             _edmAsset.RemoveReactionConditions(_selectedActionId, conditionsToRemove);
@@ -208,7 +208,7 @@ namespace EmotionalDecisionMakingWF
         {
             if (dataGridViewReactionConditions.SelectedRows.Count == 1)
             {
-                var selectedCondition = ((ObjectView<ConditionDTO>)dataGridViewReactionConditions.
+                var selectedCondition = ((ObjectView<string>)dataGridViewReactionConditions.
                     SelectedRows[0].DataBoundItem).Object;
                 new AddOrEditConditionForm(_edmAsset, _selectedActionId, selectedCondition).ShowDialog();
             }

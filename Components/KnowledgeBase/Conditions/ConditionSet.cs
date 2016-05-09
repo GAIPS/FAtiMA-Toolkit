@@ -44,7 +44,7 @@ namespace KnowledgeBase.Conditions
 			}
 
 			Quantifier = dto.Quantifier;
-			var conditions = dto.Set?.Select(c => Condition.Parse(c.Condition)).Distinct();
+			var conditions = dto.ConditionSet?.Select(c => Condition.Parse(c)).Distinct();
 			if (conditions != null)
 				m_conditions = new List<Condition>(conditions);
 		}
@@ -216,7 +216,7 @@ namespace KnowledgeBase.Conditions
 
 		public ConditionSetDTO ToDTO()
 		{
-			return new ConditionSetDTO() {Quantifier = this.Quantifier,Set = m_conditions.Select(c => c.ToDTO()).ToArray()};
+			return new ConditionSetDTO() {Quantifier = this.Quantifier,ConditionSet = m_conditions.Select(c => c.ToString()).ToArray()};
 		}
 
 		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)

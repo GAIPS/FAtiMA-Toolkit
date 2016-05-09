@@ -10,21 +10,21 @@ namespace EmotionalDecisionMakingWF
     {
         private EmotionalDecisionMakingAsset _edmAsset;
         private Guid _selectedReactionId;
-        private ConditionDTO _conditionToEditDTO;
+        private string _conditionToEdit;
         
-        public AddOrEditConditionForm(EmotionalDecisionMakingAsset edmAsset, Guid selectedReactionId, ConditionDTO conditionToEdit = null)
+        public AddOrEditConditionForm(EmotionalDecisionMakingAsset edmAsset, Guid selectedReactionId, string conditionToEdit = null)
         {
             InitializeComponent();
 
             _edmAsset = edmAsset;
-            _conditionToEditDTO = conditionToEdit;
+            _conditionToEdit = conditionToEdit;
             _selectedReactionId = selectedReactionId;
         
             if (conditionToEdit != null)
             {
                 this.Text = Resources.EditConditionFormTitle;
                 this.addOrEditButton.Text = Resources.UpdateButtonLabel;
-                this.textBoxCondition.Text = conditionToEdit.Condition;
+                this.textBoxCondition.Text = conditionToEdit;
             }
         }
 
@@ -32,13 +32,11 @@ namespace EmotionalDecisionMakingWF
         {
             try
             {
-                var newCondition = new ConditionDTO
+	            var newCondition = textBoxCondition.Text;
+
+				if (_conditionToEdit != null)
                 {
-                    Condition = textBoxCondition.Text
-                };
-                if (_conditionToEditDTO != null)
-                {
-                    _edmAsset.UpdateRectionCondition(_selectedReactionId, _conditionToEditDTO, newCondition);
+                    _edmAsset.UpdateRectionCondition(_selectedReactionId, _conditionToEdit, newCondition);
                 }
                 else
                 {

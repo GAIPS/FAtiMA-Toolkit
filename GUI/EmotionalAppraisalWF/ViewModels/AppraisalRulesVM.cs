@@ -14,7 +14,7 @@ namespace EmotionalAppraisalWF.ViewModels
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
 
         public BindingListView<AppraisalRuleDTO> AppraisalRules {get; private set; }
-        public BindingListView<ConditionDTO> CurrentRuleConditions { get; set; }
+        public BindingListView<string> CurrentRuleConditions { get; set; }
         public Guid SelectedRuleId { get; set;}
 
         public string[] QuantifierTypes = Enum.GetNames(typeof(LogicalQuantifier));
@@ -23,7 +23,7 @@ namespace EmotionalAppraisalWF.ViewModels
         {
             _emotionalAppraisalAsset = ea;
             this.AppraisalRules = new BindingListView<AppraisalRuleDTO>(new List<AppraisalRuleDTO>());
-            this.CurrentRuleConditions = new BindingListView<ConditionDTO>(new List<ConditionDTO>());
+            this.CurrentRuleConditions = new BindingListView<string>(new List<string>());
             this.SelectedRuleId = Guid.Empty;
             RefreshData();   
         }
@@ -35,11 +35,11 @@ namespace EmotionalAppraisalWF.ViewModels
             if (SelectedRuleId != Guid.Empty)
             {
 	            this.CurrentRuleConditions.DataSource =
-		            _emotionalAppraisalAsset.GetAllAppraisalRuleConditions(SelectedRuleId).Set;
+		            _emotionalAppraisalAsset.GetAllAppraisalRuleConditions(SelectedRuleId).ConditionSet;
 
             }else if (this.AppraisalRules.Count == 0)
             {
-                this.CurrentRuleConditions.DataSource = new List<ConditionDTO>();
+                this.CurrentRuleConditions.DataSource = new List<string>();
             }
             this.CurrentRuleConditions.Refresh();
         }
@@ -50,7 +50,7 @@ namespace EmotionalAppraisalWF.ViewModels
             {
                 this.SelectedRuleId = rule.Id;
 	            this.CurrentRuleConditions.DataSource =
-		            _emotionalAppraisalAsset.GetAllAppraisalRuleConditions(SelectedRuleId).Set;
+		            _emotionalAppraisalAsset.GetAllAppraisalRuleConditions(SelectedRuleId).ConditionSet;
                 this.CurrentRuleConditions.Refresh();
             }
         }
@@ -68,20 +68,20 @@ namespace EmotionalAppraisalWF.ViewModels
             RefreshData();
         }
 
-        public void AddCondition(ConditionDTO newCondition)
+        public void AddCondition(string newCondition)
         {
             _emotionalAppraisalAsset.AddAppraisalRuleCondition(SelectedRuleId, newCondition);
             RefreshData();
         }
 
-        public void UpdateCondition(ConditionDTO oldCondition, ConditionDTO updatedCondition)
+        public void UpdateCondition(string oldCondition, string updatedCondition)
         {
             _emotionalAppraisalAsset.RemoveAppraisalRuleCondition(SelectedRuleId, oldCondition);
             _emotionalAppraisalAsset.AddAppraisalRuleCondition(SelectedRuleId, updatedCondition);
             RefreshData();
         }
         
-        public void RemoveConditions(IList<ConditionDTO> conditionsToRemove)
+        public void RemoveConditions(IList<String> conditionsToRemove)
         {
             foreach (var condition in conditionsToRemove)
             {

@@ -50,7 +50,6 @@
     <Compile Include="Conditions\Implementation\ValueRetrivers\PropertyValueRetriver.cs" />
     <Compile Include="Conditions\IValueRetriver.cs" />
     <Compile Include="Conditions\LogicalQuantifier.cs" />
-    <Compile Include="DTOs\Conditions\ConditionDTO.cs" />
     <Compile Include="DTOs\Conditions\ConditionSetDTO.cs" />
     <Compile Include="KB.cs" />
     <Compile Include="PrimitiveValue.cs" />

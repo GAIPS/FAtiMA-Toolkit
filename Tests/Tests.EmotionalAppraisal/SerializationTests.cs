@@ -16,7 +16,7 @@ namespace Tests.EmotionalAppraisal
 		private static EmotionalAppraisalAsset BuildTestAsset()
 		{//Emotional System Setup
 			var m_emotionalAppraisalAsset = new EmotionalAppraisalAsset("Agent");
-			m_emotionalAppraisalAsset.SetPerspective((Name)"Test");
+			m_emotionalAppraisalAsset.SetPerspective("Test");
 
 			//Setup Emotional Disposition
 
@@ -122,7 +122,7 @@ namespace Tests.EmotionalAppraisal
 			
 			//Generate emotion
 
-			m_emotionalAppraisalAsset.AppraiseEvents(new []{ (Name)"Event(Action,Player,Slap,self)" });
+			m_emotionalAppraisalAsset.AppraiseEvents(new []{ "Event(Action,Player,Slap,self)" });
 
 			//Add knowledge
 			var kb = m_emotionalAppraisalAsset.Kb;

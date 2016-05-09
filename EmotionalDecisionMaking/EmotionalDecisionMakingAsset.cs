@@ -82,9 +82,9 @@ namespace EmotionalDecisionMaking
             return this.ReactiveActions.GetActionTendency(id).ToDTO();
         }
 
-        public IEnumerable<ConditionDTO> GetReactionsConditions(Guid id)
+        public IEnumerable<string> GetReactionsConditions(Guid id)
         {
-            return GetReaction(id).Conditions.Set;
+            return GetReaction(id).Conditions.ConditionSet;
         }
 
         public void RemoveReactions(IList<ReactionDTO> reactionsToRemove)
@@ -95,29 +95,28 @@ namespace EmotionalDecisionMaking
             }
         }
 
-        public void AddReactionCondition(Guid selectedReactionId, ConditionDTO newCondition)
+        public void AddReactionCondition(Guid selectedReactionId, string newCondition)
         {
             var conditions = this.ReactiveActions.GetActionTendency(selectedReactionId).ActivationConditions;
-            var c = Condition.Parse(newCondition.Condition);
+            var c = Condition.Parse(newCondition);
             this.ReactiveActions.GetActionTendency(selectedReactionId).ActivationConditions = conditions.Add(c);
         }
 
-        public void RemoveReactionConditions(Guid selectedReactionId, IEnumerable<ConditionDTO> conditionsToRemove)
+        public void RemoveReactionConditions(Guid selectedReactionId, IEnumerable<string> conditionsToRemove)
         {
 	        var at = this.ReactiveActions.GetActionTendency(selectedReactionId);
 	        var conds = at.ActivationConditions;
 			foreach (var condition in conditionsToRemove)
 			{
-				var c = Condition.Parse(condition.Condition);
+				var c = Condition.Parse(condition);
 				conds = conds.Remove(c);
             }
 	        at.ActivationConditions = conds;
         }
 
-        public void UpdateRectionCondition(Guid selectedReactionID, ConditionDTO conditionToEditDto,
-            ConditionDTO newCondition)
+        public void UpdateRectionCondition(Guid selectedReactionID, string conditionToEdit, string newCondition)
         {
-            this.RemoveReactionConditions(selectedReactionID, new[] {conditionToEditDto});
+            this.RemoveReactionConditions(selectedReactionID, new[] {conditionToEdit});
             this.AddReactionCondition(selectedReactionID, newCondition);
         }
 

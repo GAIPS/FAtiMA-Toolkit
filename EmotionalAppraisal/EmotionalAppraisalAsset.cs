@@ -22,6 +22,11 @@ namespace EmotionalAppraisal
 	[Serializable]
 	public sealed partial class EmotionalAppraisalAsset : BaseAsset, ICustomSerialization
 	{
+		/// <summary>
+		/// Static method used to load an Emotional Appraisal Asset state from a file.
+		/// </summary>
+		/// <param name="filename">The file path from which to load the asset.</param>
+		/// <returns>The loaded instance of a Emotional Appraisal Asset.</returns>
         public static EmotionalAppraisalAsset LoadFromFile(string filename)
         {
             EmotionalAppraisalAsset ea;
@@ -33,7 +38,6 @@ namespace EmotionalAppraisal
             return ea;
         }
 
-       // private static readonly InternalAppraisalFrame APPRAISAL_FRAME = new InternalAppraisalFrame();
         private KB m_kb;
         private AM m_am;
         private ConcreteEmotionalState m_emotionalState;
@@ -96,7 +100,7 @@ namespace EmotionalAppraisal
 		}
 
 		/// <summary>
-		/// The amount of update frames this asset as experienced since its initialization
+		/// The amount of update ticks this asset as experienced since its initialization
 		/// </summary>
 		public ulong Tick {
 		    get { return m_am.Tick; }
@@ -196,57 +200,97 @@ namespace EmotionalAppraisal
 			m_appraisalDerivator.AddOrUpdateAppraisalRule(emotionalAppraisalRule);
 		}
 
-        public void AddAppraisalRuleCondition(Guid appraisalRuleId, ConditionDTO conditionDTO)
+		/// <summary>
+		/// Adds an evaluation condition to an appraisal rule
+		/// </summary>
+		/// <param name="appraisalRuleId">The unique identifier for the appraisal rule that we want to modify</param>
+		/// <param name="conditionString">The string representation of the condition we want to add to the rule</param>
+        public void AddAppraisalRuleCondition(Guid appraisalRuleId, string conditionString)
         {
-            m_appraisalDerivator.AddAppraisalRuleCondition(appraisalRuleId, conditionDTO);
+            m_appraisalDerivator.AddAppraisalRuleCondition(appraisalRuleId, conditionString);
         }
 
-        public void RemoveAppraisalRuleCondition(Guid appraisalRuleId, ConditionDTO conditionDTO)
+		/// <summary>
+		/// Removes an evaluation condition from an appraisal rule
+		/// </summary>
+		/// <param name="appraisalRuleId">The unique identifier for the appraisal rule that we want to modify</param>
+		/// <param name="conditionString">The string representation of the condition we want to remove from the rule</param>
+		public void RemoveAppraisalRuleCondition(Guid appraisalRuleId, string conditionString)
         {
-            m_appraisalDerivator.RemoveAppraisalRuleCondition(appraisalRuleId, conditionDTO);
+            m_appraisalDerivator.RemoveAppraisalRuleCondition(appraisalRuleId, conditionString);
         }
 
+		/// <summary>
+		/// Add an Event Record to the asset's autobiographical memory
+		/// </summary>
+		/// <param name="eventDTO">The dto containing the information regarding the event to add</param>
+		/// <returns>The unique identifier associated to the event</returns>
         public uint AddEventRecord(EventDTO eventDTO)
 	    {
 	        return this.m_am.RecordEvent(eventDTO).Id;
 	    }
 
-	    public void UpdateEventRecord(EventDTO eventDTO)
+		/// <summary>
+		/// Updates the associated data regarding a recorded event.
+		/// </summary>
+		/// <param name="eventDTO">The dto containing the information regarding the event to update. The Id field of the dto must match the id of the event we want to update.</param>
+		public void UpdateEventRecord(EventDTO eventDTO)
 	    {
 	        this.m_am.UpdateEvent(eventDTO);
 	    }
 
+		/// <summary>
+		/// Returns all the associated information regarding an event
+		/// </summary>
+		/// <param name="eventId">The id of the event to retrieve</param>
+		/// <returns>The dto containing the information of the retrieved event</returns>
 		public EventDTO GetEventDetails(uint eventId)
 		{
 			IBaseEvent evt = m_am.RecallEvent(eventId);
 			return evt.ToDTO();
 		}
 
+		/// <summary>
+		/// Removes and forgets an event
+		/// </summary>
+		/// <param name="eventId">The id of the event to forget.</param>
 		public void ForgetEvent(uint eventId)
         {
             this.m_am.ForgetEvent(eventId);
         }
 
+		/// <summary>
+		/// Creates and adds an emotional disposition to the asset.
+		/// </summary>
+		/// <param name="emotionDispositionDto">The dto containing the parameters to create a new emotional disposition on the asset</param>
         public void AddEmotionDisposition(EmotionDispositionDTO emotionDispositionDto)
 	    {
 	        m_emotionalState.AddEmotionDisposition(new EmotionDisposition(emotionDispositionDto));
 	    } 
 
-		public IEnumerable<IActiveEmotion> GetAllActiveEmotions()
-		{
-			return m_emotionalState.GetAllEmotions();
-		}
-
+		/// <summary>
+		/// Returns the emotional dispotion associated to a given emotion type.
+		/// </summary>
+		/// <param name="emotionType">The emotion type key of the emotional disposition to retrieve</param>
+		/// <returns>The dto containing the retrieved emotional disposition information</returns>
 	    public EmotionDispositionDTO GetEmotionDisposition(string emotionType)
 	    {
 	        return this.m_emotionalState.GetEmotionDisposition(emotionType).ToDto();
 	    }
 
-	    public void RemoveEmotionDisposition(string emotionType)
+		/// <summary>
+		/// Removes an emotional disposition from the asset.
+		/// </summary>
+		/// <param name="emotionType">The emotion type key of the emotional disposition to remove</param>
+		public void RemoveEmotionDisposition(string emotionType)
 	    {
 	        m_emotionalState.RemoveEmotionDisposition(emotionType);
 	    }
 
+		/// <summary>
+		/// Returns all the appraisal rules
+		/// </summary>
+		/// <returns>The set of dtos containing the information for all the appraisal rules</returns>
         public IEnumerable<AppraisalRuleDTO> GetAllAppraisalRules()
         {
             var appraisalRules = this.m_appraisalDerivator.GetAppraisalRules().Select(r => new AppraisalRuleDTO
@@ -255,20 +299,30 @@ namespace EmotionalAppraisal
                 EventMatchingTemplate = r.EventName.ToString(),
                 Desirability = r.Desirability,
                 Praiseworthiness = r.Praiseworthiness,
+				Conditions = r.Conditions.ToDTO()
             });
             return appraisalRules;
         }
 
+		/// <summary>
+		/// Returns the condition set used for evaluating a particular appraisal rule set.
+		/// </summary>
+		/// <param name="ruleId">The unique identifier of the appraisal rule.</param>
+		/// <returns>The dto of the condition set associated to the requested appraisal rule.</returns>
+		/// <exception cref="ArgumentException">Thrown if the requested appraisal rule could not be found.</exception>
 	    public ConditionSetDTO GetAllAppraisalRuleConditions(Guid ruleId)
-	    {
-	        var rule = this.m_appraisalDerivator.GetAppraisalRules().FirstOrDefault(r => r.Id == ruleId);
-	        if (rule == null)
-	        {
-	            throw new Exception("Rule not found");
-	        }
+		{
+			var rule = m_appraisalDerivator.GetAppraisalRule(ruleId);
+			if (rule == null)
+				throw new ArgumentException($"Could not found requested appraisal rule for the id \"{ruleId}\"",nameof(ruleId));
+
 		    return rule.Conditions.ToDTO();
 	    }
 
+		/// <summary>
+		/// Removes appraisal rules from the asset.
+		/// </summary>
+		/// <param name="appraisalRules">A dto set of the appraisal rules to remove</param>
 	    public void RemoveAppraisalRules(IEnumerable<AppraisalRuleDTO> appraisalRules)
 	    {
 	        foreach (var appraisalRuleDto in appraisalRules)
@@ -279,22 +333,38 @@ namespace EmotionalAppraisal
 
 		/// @cond DEV
 
-        public KB Kb
+		public IEnumerable<IActiveEmotion> GetAllActiveEmotions()
+		{
+			return m_emotionalState.GetAllEmotions();
+		}
+
+		public KB Kb
 		{
 			get { return m_kb; }
 		}
 
 		/// @endcond
 
-		public void SetPerspective(Name newPerspective)
+		/// <summary>
+		/// Change the perspective of the memories of the asset.
+		/// Use this to change "name" which the asset identifies as itself.
+		/// </summary>
+		/// <param name="newPerspective">The string containing the new perspective of the asset.</param>
+		public void SetPerspective(string newPerspective)
 		{
-			if(newPerspective==m_kb.Perspective)
+			var p = (Name) newPerspective;
+			if(p==m_kb.Perspective)
 				return;
 
-			m_am.SwapPerspective(m_kb.Perspective,newPerspective);
-			m_kb.SetPerspective(newPerspective);
+			m_am.SwapPerspective(m_kb.Perspective,p);
+			m_kb.SetPerspective(p);
 		}
 
+		/// <summary>
+		/// Asset constructor.
+		/// Creates a new empty Emotional Appraisal Asset.
+		/// </summary>
+		/// <param name="perspective">The initial perspective of the asset.</param>
 		public EmotionalAppraisalAsset(string perspective)
 		{
 			m_kb = new KB((Name)perspective);
@@ -307,10 +377,19 @@ namespace EmotionalAppraisal
 			BindCalls(m_kb);
 		}
 
-		public void AppraiseEvents(IEnumerable<Name> eventNames)
+		/// <summary>
+		/// Appraises a set of event strings.
+		/// 
+		/// Durring appraisal, the events will be recorded in the asset's autobiographical memory,
+		/// and Property Change Events will update the asset's knowledge about the world, allowing
+		/// the asset to use the new information derived from the events to appraise the correspondent
+		/// emotions.
+		/// </summary>
+		/// <param name="eventNames">A set of string representation of the events to appraise</param>
+		public void AppraiseEvents(IEnumerable<string> eventNames)
 		{
 			var APPRAISAL_FRAME = new InternalAppraisalFrame();
-			foreach (var n in eventNames)
+			foreach (var n in eventNames.Select(Name.BuildName))
 			{
 				var evtN = n.RemovePerspective((Name)Perspective);
 				var evt = m_am.RecordEvent(evtN,Tick);
@@ -330,9 +409,82 @@ namespace EmotionalAppraisal
 			}
 		}
 
+		/// <summary>
+		/// Updates the assets internal clock of the asset and updates emotional decay
+		/// </summary>
+		public void Update()
+		{
+		    this.Tick++;
+			m_emotionalState.Decay();
+		}
+
+		/// <summary>
+		/// Reappraise the assets current emotional status
+		/// </summary>
+		/// <remarks>Currently this method is not fully developed. As such it will not create any changes to the asset's emotional state</remarks>
+		public void Reappraise()
+		{
+			var frame = m_appraisalDerivator.Reappraisal(this);
+			if (frame != null)
+				UpdateEmotions(frame);
+		}
+
+		/// <summary>
+		/// Adds a new belief to the asset's knowledge base.
+		/// If the belief already exists, its value is updated.
+		/// </summary>
+		/// <param name="belief">The dto containing the parameters for the belief to add or update.</param>
+        public void AddOrUpdateBelief(BeliefDTO belief)
+	    {
+	        Kb.Tell(Name.BuildName(belief.Name), PrimitiveValue.Parse(belief.Value),Name.BuildName(belief.Perspective));
+	    }
+
+		/// <summary>
+		/// Return the value associated to a belief.
+		/// Only returns believes regarding a SELF perspective.
+		/// </summary>
+		/// <param name="beliefName">The name of the belief to return</param>
+		/// <returns>The string value of the belief, or null if no belief exists.</returns>
+	    public string GetBeliefValue(string beliefName)
+	    {
+            var result = this.Kb.AskProperty(Name.BuildName(beliefName))?.ToString();
+	        return result;
+	    }
+
+		/// <summary>
+		/// Asks if the asset has a specific belief.
+		/// </summary>
+		/// <param name="name">The belief name to determine if any value is associated to it.</param>
+		/// <returns>True if the requested belief has a value. False otherwise.</returns>
+        public bool BeliefExists(string name)
+        {
+            return this.Kb.BeliefExists(Name.BuildName(name));
+        }
+
+		/// <summary>
+		/// Removes a belief from the asset's knowledge base.
+		/// </summary>
+		/// <param name="name">The name of the belief to remove.</param>
+		/// <param name="perspective">The perspective of the belief to remove</param>
+		public void RemoveBelief(string name, string perspective)
+		{
+			var p = (Name) perspective;
+			this.Kb.Tell(Name.BuildName(name), null, p);
+        }
+
+		/// <summary>
+		/// Save the asset in a data stream
+		/// </summary>
+		/// <param name="stream">the stream to which to save the asset</param>
+		public void SaveToFile(Stream stream)
+		{
+			var serializer = new JSONSerializer();
+			serializer.Serialize(stream, this);
+		}
+
 		private void UpdateEmotions(IAppraisalFrame frame)
 		{
-            if (_lastFrameAppraisal >= frame.LastChange)
+			if (_lastFrameAppraisal >= frame.LastChange)
 				return;
 
 			var emotions = m_occAffectDerivator.AffectDerivation(this, frame);
@@ -351,35 +503,6 @@ namespace EmotionalAppraisal
 			_lastFrameAppraisal = frame.LastChange;
 		}
 
-		public void Update()
-		{
-		    this.Tick++;
-			m_emotionalState.Decay();
-		}
-
-		public void Reappraise()
-		{
-			var frame = m_appraisalDerivator.Reappraisal(this);
-			if (frame != null)
-				UpdateEmotions(frame);
-		}
-
-        public void AddOrUpdateBelief(BeliefDTO belief)
-	    {
-	        Kb.Tell(Name.BuildName(belief.Name), PrimitiveValue.Parse(belief.Value),Name.BuildName(belief.Perspective));
-	    }
-
-	    public string GetBeliefValue(string beliefName)
-	    {
-            var result = this.Kb.AskProperty(Name.BuildName(beliefName)).ToString();
-	        return result;
-	    }
-
-        public bool BeliefExists(string name)
-        {
-            return this.Kb.BeliefExists(Name.BuildName(name));
-        }
-
 		private void BindCalls(KB kb)
 		{
 			kb.RegistDynamicProperty(MOOD_TEMPLATE, MoodPropertyCalculator, new[] { "x" });
@@ -387,24 +510,9 @@ namespace EmotionalAppraisal
 			kb.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator);
 		}
 
-        public void RemoveBelief(string name, string perspective)
-        {
-            if (perspective == Name.UNIVERSAL_STRING)
-            {
-                this.Kb.Tell(Name.BuildName(name), null, Name.UNIVERSAL_SYMBOL);
-            }else if (perspective == Name.SELF_STRING)
-            {
-                this.Kb.Tell(Name.BuildName(name), null, Name.SELF_SYMBOL);
-            }
-            else
-            {
-                this.Kb.Tell(Name.BuildName(name), null, (Name)perspective);
-            }
-        }
-        
-        #region Dynamic Properties
+		#region Dynamic Properties
 
-        private static readonly Name MOOD_TEMPLATE = (Name)"Mood([x])";
+		private static readonly Name MOOD_TEMPLATE = (Name)"Mood([x])";
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> MoodPropertyCalculator(KB kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			if(perspective != Name.SELF_SYMBOL)
@@ -525,12 +633,6 @@ namespace EmotionalAppraisal
 		}
 
 		#endregion
-
-		public void SaveToFile(Stream file)
-	    {
-            var serializer = new JSONSerializer();
-            serializer.Serialize(file, this);
-        }
 
 		/// @cond DEV
 		#region ICustomSerialization

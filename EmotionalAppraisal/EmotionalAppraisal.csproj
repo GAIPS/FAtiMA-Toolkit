@@ -49,10 +49,10 @@
     <Compile Include="DTOs\AppraisalRuleDTO.cs" />
     <Compile Include="DTOs\EmotionDTO.cs" />
     <Compile Include="DTOs\BeliefDTO.cs" />
-    <Compile Include="DTOs\BaseDTO.cs" />
     <Compile Include="DTOs\EmotionDispositionDTO.cs" />
     <Compile Include="EmotionalAppraisalAsset.cs" />
     <Compile Include="EmotionDisposition.cs" />
+    <Compile Include="EmotionValence.cs" />
     <Compile Include="IActiveEmotion.cs" />
     <Compile Include="IAppraisalFrame.cs" />
     <Compile Include="IEmotion.cs" />

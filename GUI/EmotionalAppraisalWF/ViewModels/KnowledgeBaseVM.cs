@@ -31,7 +31,7 @@ namespace EmotionalAppraisalWF.ViewModels
 			if((Name)_emotionalAppraisalAsset.Perspective == n)
 				return;
 
-			_emotionalAppraisalAsset.SetPerspective(n);
+			_emotionalAppraisalAsset.SetPerspective(Perspective);
 			UpdateBeliefList();
 		}
 

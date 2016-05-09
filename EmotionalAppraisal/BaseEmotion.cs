@@ -8,12 +8,6 @@ using Utilities;
 
 namespace EmotionalAppraisal
 {
-	public enum EmotionValence : sbyte
-	{
-		Positive = 1,
-		Negative = -1
-	}
-
 	/// <summary>
 	/// Represents an emotion, which is an instance of a particular Emotion Type
 	/// </summary>

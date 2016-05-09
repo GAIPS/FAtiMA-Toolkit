@@ -43,11 +43,6 @@ namespace KnowledgeBase.Conditions
 
 		public abstract override int GetHashCode();
 
-		public ConditionDTO ToDTO()
-		{
-			return new ConditionDTO() {Condition = ToString()};
-		}
-
 		private static bool CompareValues(PrimitiveValue a, PrimitiveValue b, ComparisonOperator op)
 		{
 			switch (op)

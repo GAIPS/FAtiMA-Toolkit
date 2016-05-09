@@ -36,10 +36,6 @@ namespace KnowledgeBase.WellFormedNames
 	/// A well formed name is used to specify goal/action names, objects, properties,
 	/// constants, and relations.
 	/// It's syntax is based on first order logic symbols, variables and predicates.
-	/// a Name can be either a Symbol or a ComposedName (composed by several symbols)
-	/// 
-	/// <see cref="Symbol"/>
-	/// <see cref="ComposedName"/>
 	/// 
 	/// @author: João Dias
 	/// @author: Pedro Gonçalves (C# version)

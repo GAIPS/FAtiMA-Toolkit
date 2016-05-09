@@ -125,22 +125,22 @@ namespace EmotionalAppraisal.AppraisalRules
   //          return Rules.FirstOrDefault();
 	 //   }
         
-        public void AddAppraisalRuleCondition(Guid appraisalRuleId, ConditionDTO conditionDto)
+        public void AddAppraisalRuleCondition(Guid appraisalRuleId, string conditionString)
         {
 	        AppraisalRule existingRule = GetAppraisalRule(appraisalRuleId);
             if (existingRule != null)
             {
-                var condition = Condition.Parse(conditionDto.Condition);
+                var condition = Condition.Parse(conditionString);
                 existingRule.Conditions = existingRule.Conditions.Add(condition);
             }
         }
 
-        public void RemoveAppraisalRuleCondition(Guid appraisalRuleId, ConditionDTO conditionDto)
+        public void RemoveAppraisalRuleCondition(Guid appraisalRuleId, string conditionString)
         {
 	        AppraisalRule existingRule = GetAppraisalRule(appraisalRuleId);
             if (existingRule != null)
             {
-				var c = Condition.Parse(conditionDto.Condition);
+				var c = Condition.Parse(conditionString);
 	            existingRule.Conditions = existingRule.Conditions.Remove(c);
             }
         }

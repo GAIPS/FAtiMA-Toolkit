@@ -43,16 +43,10 @@ namespace Tests.SocialImportance
 						Value = 20,
 						Conditions = new ConditionSetDTO()
 						{
-							Set = new []
+							ConditionSet = new []
 							{
-								new ConditionDTO()
-								{
-									Condition = "IsPerson([target]) = true"
-								},
-								new ConditionDTO()
-								{
-									Condition = "[target] != Self"
-								}
+								"IsPerson([target]) = true",
+								"[target] != Self"
 							}
 						}
 					},
@@ -62,16 +56,10 @@ namespace Tests.SocialImportance
 						Value = -1,
 						Conditions = new ConditionSetDTO()
 						{
-							Set = new []
+							ConditionSet = new []
 							{
-								new ConditionDTO()
-								{
-									Condition = "IsOutsider([target]) = true"
-								},
-								new ConditionDTO()
-								{
-									Condition = "[target] != Self"
-								}
+								"IsOutsider([target]) = true",
+								"[target] != Self"
 							}
 						}
 					},
@@ -81,12 +69,9 @@ namespace Tests.SocialImportance
 						Value = 15,
 						Conditions = new ConditionSetDTO()
 						{
-							Set = new []
+							ConditionSet = new []
 							{
-								new ConditionDTO()
-								{
-									Condition = "AreFriends(Self,[target]) = true"
-								}
+								"AreFriends(Self,[target]) = true"
 							}
 						}
 					},
@@ -96,20 +81,11 @@ namespace Tests.SocialImportance
 						Value = 10,
 						Conditions = new ConditionSetDTO()
 						{
-							Set = new []
+							ConditionSet = new []
 							{
-								new ConditionDTO()
-								{
-									Condition = "IsClient([target]) = true"
-								},
-								new ConditionDTO()
-								{
-									Condition = "IsBartender(Self) = true"
-								},
-								new ConditionDTO()
-								{
-									Condition = "[target] != Self"
-								}
+								"IsClient([target]) = true",
+								"IsBartender(Self) = true",
+								"[target] != Self"
 							}
 						}
 					},
@@ -119,16 +95,10 @@ namespace Tests.SocialImportance
 						Value = 1,
 						Conditions = new ConditionSetDTO()
 						{
-							Set = new []
+							ConditionSet = new []
 							{
-								new ConditionDTO()
-								{
-									Condition = "IsElder([target]) = true"
-								},
-								new ConditionDTO()
-								{
-									Condition = "IsElder(Self) = false"
-								}
+								"IsElder([target]) = true",
+								"IsElder(Self) = false"
 							}
 						}
 					},
@@ -138,16 +108,10 @@ namespace Tests.SocialImportance
 						Value = -1,
 						Conditions = new ConditionSetDTO()
 						{
-							Set = new []
+							ConditionSet = new []
 							{
-								new ConditionDTO()
-								{
-									Condition = "IsElder([target]) = false"
-								},
-								new ConditionDTO()
-								{
-									Condition = "IsElder(Self) = true"
-								}
+								"IsElder([target]) = false",
+								"IsElder(Self) = true"
 							}
 						}
 					}
@@ -161,12 +125,9 @@ namespace Tests.SocialImportance
 						Target = "[x]",
 						Conditions = new ConditionSetDTO()
 						{
-							Set = new []
+							ConditionSet = new []
 							{
-								new ConditionDTO()
-								{
-									Condition = "AskedDrink([x])=true"
-								}
+								"AskedDrink([x])=true"
 							}
 						}
 					},
@@ -177,12 +138,9 @@ namespace Tests.SocialImportance
 						Target = "[x]",
 						Conditions = new ConditionSetDTO()
 						{
-							Set = new []
+							ConditionSet = new []
 							{
-								new ConditionDTO()
-								{
-									Condition = "AskedDrink([x])=true"
-								}
+								"AskedDrink([x])=true"
 							}
 						}
 					}
