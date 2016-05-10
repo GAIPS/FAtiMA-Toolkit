@@ -34,7 +34,6 @@ namespace Tests.KnowledgeBase.WellFormedNames
 		[TestCase("[x-93]")]
 		[TestCase("Likes([x], 10.7654e10)")]
 		[TestCase(Name.UNIVERSAL_STRING)]
-		[TestCase(Name.AGENT_STRING)]
 		[TestCase(Name.SELF_STRING)]
 		public void Parse_CorrectNameString_NewName(string nameString)
         {

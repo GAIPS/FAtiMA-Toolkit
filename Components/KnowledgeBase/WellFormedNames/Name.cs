@@ -32,56 +32,116 @@ using Utilities;
 namespace KnowledgeBase.WellFormedNames
 {
 	/// <summary>
-	/// Abstract Well Formed Name
-	/// A well formed name is used to specify goal/action names, objects, properties,
-	/// constants, and relations.
-	/// It's syntax is based on first order logic symbols, variables and predicates.
-	/// 
-	/// @author: João Dias
-	/// @author: Pedro Gonçalves (C# version)
+	/// Well Formed Name Class.
 	/// </summary>
+	/// <remarks>
+	/// <para>
+	///  A well formed name is used to specify goal/action names, objects, properties,
+	/// constants, and relations.
+	/// 
+	/// Its syntax is based on first order logic symbols, variables and predicates.
+	/// </para>
+	/// <para>
+	/// Names can be generated from strings, or from composition with other names.
+	/// All names are case-insensitive.
+	/// </para>
+	/// Even though the Name is class type, its underlying behaviour is similar to a value type structure.
+	/// This means that every modification to its values, returns a new instance of a Name object,
+	/// preserving the state of the original one.
+	/// </remarks>
+	/// <example>
+	/// By default, Names separated in the following categories:
+	///		- Primitives
+	///			- John
+	///			- Dog
+	///			- Blue
+	///			- 34.5
+	///		- Variables
+	///			- [x]
+	///			- [strength]
+	///		- Composed Names
+	///			- Color(Sky)
+	///			- Likes(John)
+	///			- Size(Ball)
+	///			- Kick(Hard, Low)
+	/// </example>
 	[Serializable]
 	public abstract partial class Name : IGroundable<Name>, IComparable<Name>, IPerspective<Name>, ICloneable
 	{
-		public const string NUMBER_VALIDATION_PATTERN = @"(?:-|\+)?\d+(?:\.\d+)?(?:e(?:-|\+)?[1-9]\d*)?";
-		public const string VARIABLE_SYMBOL_VALIDATION_PATTERN = @"^\[([A-Za-z_][\w-]*)\]$";
-		public const string VALUE_SYMBOL_VALIDATION_PATTERN = @"^(?:(?:[A-Za-z_][\w-]*)|(?:" + NUMBER_VALIDATION_PATTERN + @"))$";
-		public static readonly Regex VARIABLE_VALIDATION_PATTERN = new Regex(VARIABLE_SYMBOL_VALIDATION_PATTERN,RegexOptions.IgnoreCase);
-		public static readonly Regex PRIMITIVE_VALIDATION_PATTERN = new Regex(VALUE_SYMBOL_VALIDATION_PATTERN,RegexOptions.IgnoreCase);
+		private const string NUMBER_VALIDATION_PATTERN = @"(?:-|\+)?\d+(?:\.\d+)?(?:e(?:-|\+)?[1-9]\d*)?";
+		private const string VARIABLE_SYMBOL_VALIDATION_PATTERN = @"^\[([A-Za-z_][\w-]*)\]$";
+		private const string VALUE_SYMBOL_VALIDATION_PATTERN = @"^(?:(?:[A-Za-z_][\w-]*)|(?:" + NUMBER_VALIDATION_PATTERN + @"))$";
+		private static readonly Regex VARIABLE_VALIDATION_PATTERN = new Regex(VARIABLE_SYMBOL_VALIDATION_PATTERN,RegexOptions.IgnoreCase);
+		private static readonly Regex PRIMITIVE_VALIDATION_PATTERN = new Regex(VALUE_SYMBOL_VALIDATION_PATTERN,RegexOptions.IgnoreCase);
 
+#region Constants
+
+		/// <summary>
+		/// The string representation of a <b>NIL</b> value Name.
+		/// </summary>
 		public const string NIL_STRING = "-";
+		/// <summary>
+		/// The string representation of the <b>"SELF"</b> primitive Name.
+		/// </summary>
 		public const string SELF_STRING = "SELF";
+		/// <summary>
+		/// The string representation of the Universal matching Name.
+		/// </summary>
 		public const string UNIVERSAL_STRING = "*";
-		public const string AGENT_STRING = "[AGENT]";
-
+		
+		/// <summary>
+		/// A constant containing an instance of a NIL Name
+		/// </summary>
+		/// @hideinitializer
 		public static readonly Name NIL_SYMBOL = new PrimitiveSymbol(null);
+		/// <summary>
+		/// A constant containing an instance of a SELF Name
+		/// </summary>
+		/// @hideinitializer
 		public static readonly Name SELF_SYMBOL = new PrimitiveSymbol(SELF_STRING);
+		/// <summary>
+		/// A constant containing an instance of a Universal matching Name
+		/// </summary>
+		/// @hideinitializer
 		public static readonly Name UNIVERSAL_SYMBOL = new UniversalSymbol();
-		public static readonly Name AGENT_SYMBOL = new VariableSymbol("AGENT");
 
+#endregion
+
+		/// <summary>
+		/// Tells if this name is grounded.
+		/// A grounded Name is one that do not contain variables.
+		/// </summary>
 		public bool IsGrounded { get; }
 
-		public readonly bool IsUniversal;
 		/// <summary>
-		/// Does this Name not contain universal or variable Symbols
+		/// Tells if this is name the Universal Matching Symbol
+		/// </summary>
+		public readonly bool IsUniversal;
+
+		/// <summary>
+		/// Tells if this name does not contain universal or variable Symbols
 		/// </summary>
 		public readonly bool IsConstant;
 
 		/// <summary>
-		/// Is this name a variable
+		/// Tells if this name is a variable definition
 		/// </summary>
 		public readonly bool IsVariable;
 
 		/// <summary>
-		/// Is this name a primitive value
+		/// Tells if this name is a primitive value
 		/// </summary>
 		public readonly bool IsPrimitive;
 
 		/// <summary>
-		/// Is this name composed
+		/// Tells if this name is a composition of other names
 		/// </summary>
 		public readonly bool IsComposed;
 
+		/// <summary>
+		/// The number of terms that compose this name.
+		/// Primitive and Variable Names will always return 1.
+		/// </summary>
 		public abstract int NumberOfTerms { get; }
 
 		private Name(bool isGrounded, bool isUniversal, bool isConstant, bool isVariable, bool isPrimitive, bool isComposed)
@@ -93,35 +153,61 @@ namespace KnowledgeBase.WellFormedNames
 			this.IsPrimitive = isPrimitive;
 			this.IsComposed = isComposed;
 		}
-		
+
+		/// @cond DOXYGEN_SHOULD_SKIP_THIS
 		public abstract override bool Equals(object obj);
 		public abstract override int GetHashCode();
 		public abstract override string ToString();
+		/// @endcond
 
+		/// <summary>
+		/// Returns the first term of this Name.
+		/// Primitive and Variable Names will always return them selfs.
+		/// </summary>
 		public abstract Name GetFirstTerm();
 
 		/// <summary>
-		/// Generates a sequence with all Names contained inside this Name
+		/// Return all terms contained inside this Name.
 		/// </summary>
 		public abstract IEnumerable<Name> GetTerms();
 
 		/// <summary>
-		/// 
+		/// Return the term at the specified index.
 		/// </summary>
-		/// <param name="index"></param>
+		/// <param name="index">The zero-based index of the term to get.</param>
+		/// <exception cref="IndexOutOfRangeException">Thrown if the given index is out of bounds.</exception>
+		/// <remarks>
+		/// - For Primitive or Variable Names, any index different from 0, will throw an IndexOutOfRangeException.
+		/// - Using this method with a 0 index is the same as using GetFirstTerm()
+		/// </remarks>
 		public abstract Name GetNTerm(int index);
 
 		/// <summary>
-		/// Generates a sequence with all Symbols contained inside this Name
+		/// Generates a sequence of all Names contained inside this Name.
 		/// </summary>
 		public abstract IEnumerable<Name> GetLiterals();
 
+		/// <summary>
+		/// Generates a sequence of all variables contained inside this Name.
+		/// </summary>
 		public abstract IEnumerable<Name> GetVariables();
 
+		/// <summary>
+		/// Tells if this name contains a Ghost variable
+		/// </summary>
+		/// <see cref="GenerateUniqueGhostVariable()"/>
 		public abstract bool HasGhostVariable();
 
+		/// <summary>
+		/// Tells if this name contains a SELF primitive.
+		/// </summary>
 		public abstract bool HasSelf();
 
+		/// <summary>
+		/// Verifies if a specific variable is contained inside this Name.
+		/// </summary>
+		/// <param name="variable">The variable Name we want to verify</param>
+		/// <exception cref="ArgumentException">Thrown if the given argument is not a variable definition.</exception>
 		public bool ContainsVariable(Name variable)
 		{
 			if (!variable.IsVariable)
@@ -129,23 +215,70 @@ namespace KnowledgeBase.WellFormedNames
 
 			var v = (VariableSymbol) variable;
 
-			return this.GetVariables().Cast<VariableSymbol>().Any(s => s.Equals(v));
+			return GetVariables().Cast<VariableSymbol>().Any(s => s.Equals(v));
 		}
 
+		/// <summary>
+		/// Swaps every instance of the given Name with the SELF primitive.
+		/// </summary>
+		/// <param name="name">The Name instance to swap from.</param>
+		/// <returns>A new instance, which is a clone of this Name, but with every instance of the given Name swaped with SELF.</returns>
 		public Name ApplyPerspective(Name name)
 		{
 			return SwapPerspective(name, SELF_SYMBOL);
 		}
 
+		/// <summary>
+		/// Swaps every instance of the SELF primitive with the given Name.
+		/// </summary>
+		/// <param name="name">The Name instance to swap to.</param>
+		/// <returns>A new instance, which is a clone of this Name, but with every instance of SELF swaped with the given Name.</returns>
 		public Name RemovePerspective(Name name)
 		{
 			return SwapPerspective(SELF_SYMBOL, name);
 		}
 
+		/// <summary>
+		/// Swaps every instance of the requested Name with another.
+		/// </summary>
+		/// <param name="original">The Name instance to swap from.</param>
+		/// <param name="newName">The Name instance to swap to.</param>
+		/// <returns>A new instance, which is a clone of this Name, but with every instance of the original Name swaped with the new one.</returns>
 		public abstract Name SwapPerspective(Name original, Name newName);
 
+		/// <summary>
+		/// Given a SubstitutionSet, tries to ground this Name by substituting every variable with the corresponding value.
+		/// </summary>
+		/// <param name="bindings">The SubstitutionSet to be used to ground this Name.</param>
+		/// <returns>A new instance, which is a clone of this Name, but grounded as much as possible.</returns>
+		/// <remarks>
+		/// - If this instance is already grounded before calling this method, it will just return the same Name.
+		/// - This method does not warrant that this Name will be fully grounded, as the given SubstitutionSet
+		/// may not contain the substitution variables needed to perform the task.
+		/// </remarks>
 		public abstract Name MakeGround(SubstitutionSet bindings);
+
+		/// <summary>
+		/// Adds a tag to the end of every variable inside this Name,
+		/// effectively modifying their identifier.
+		/// </summary>
+		/// <param name="id">The tag to add to every variable.</param>
+		/// <returns>A new instance, which is a clone of this Name, but with every variable identifier changed in order to include the new tag.</returns>
+		/// /// <remarks>
+		/// - If this instance is already grounded before calling this method, it will just return the same Name.
+		/// </remarks>
 		public abstract Name ReplaceUnboundVariables(string id);
+
+		/// <summary>
+		/// Removes a tag from the end of every variable inside this Name,
+		/// effectively modifying their identifier.
+		/// </summary>
+		/// <param name="id">The tag to remove from every variable.</param>
+		/// <returns>A new instance, which is a clone of this Name, but with every variable identifier changed in order to exclude the requested tag.</returns>
+		/// /// <remarks>
+		/// - If this instance is already grounded before calling this method, it will just return the same Name.
+		/// - The tag is only removed if, and only if, the variable identifier ends with the requested tag.
+		/// </remarks>
 		public abstract Name RemoveBoundedVariables(string id);
 
 		/// <summary>
@@ -156,18 +289,32 @@ namespace KnowledgeBase.WellFormedNames
 		public abstract object Clone();
 
 		/// <summary>
-		/// Determines if a Wellformed Name matches the given name template.
-		/// Both Names are matched to each other if all their Symbols are equal to one another or if a Symbol matches a universal Symbol
+		/// Determines if this matches the given name template.
+		/// Both Names are matched to each other if all their Symbols are equal to one another or if a Symbol matches a universal Symbol.
 		/// </summary>
-		/// <param name="name"></param>
-		/// <returns></returns>
+		/// <param name="name">The Name to match with this instance.</param>
+		/// <returns>True if both Names match with each other, false otherwise.</returns>
 		public abstract bool Match(Name name);
 
+		/// <summary>
+		/// Apply a transformation function to this Name.
+		/// 
+		/// The function will receive every term of this name,
+		/// and should return a name to be swapped with the old one.
+		/// </summary>
+		/// <param name="transformFunction">The function we want to apply to this Name.</param>
+		/// <returns>A new Name instance, which is the original one with the transformed function applied.</returns>
 		public abstract Name ApplyToTerms(Func<Name, Name> transformFunction);
 
+		/// @cond DOXYGEN_SHOULD_SKIP_THIS
 		public abstract PrimitiveValue GetPrimitiveValue();
-
+		/// @endcond
+		
 		private static ulong _variableIdCounter = 0;
+		/// <summary>
+		/// Creates a new Name, representing a variable without a proper human readable identifier.
+		/// Usefull to create temporary substitution variables.
+		/// </summary>
 		public static Name GenerateUniqueGhostVariable()
 		{
 			Name ghost = new VariableSymbol("_");
@@ -178,11 +325,19 @@ namespace KnowledgeBase.WellFormedNames
 
 		#region Operators
 
+		/// <summary>
+		/// Explicit cast from a string to a Name.
+		/// Similar from calling Name.Build(string)
+		/// </summary>
 		public static explicit operator Name(string definition)
 		{
 			return BuildName(definition);
 		}
 
+		/// <summary>
+		/// Name comparison operator.
+		/// Tells if two names are equal to one another.
+		/// </summary>
 		public static bool operator ==(Name n1, Name n2)
 		{
             if (ReferenceEquals(n1, n2))
@@ -194,6 +349,10 @@ namespace KnowledgeBase.WellFormedNames
             return n1.Equals(n2);
 		}
 
+		/// <summary>
+		/// Name comparison operator.
+		/// Tells if two names are diferent from one another.
+		/// </summary>
 		public static bool operator !=(Name n1, Name n2)
 		{
 			return !(n1 == n2);
@@ -203,11 +362,23 @@ namespace KnowledgeBase.WellFormedNames
 
 #region Builders
 
-		public static Name BuildName(Name firstTerm, Name secondTerm, params Name[] otherTerms)
+		/// <summary>
+		/// Creates a composed Name, using two or more Names
+		/// </summary>
+		/// <param name="rootTerm">The Name that will be root of the composed Name.</param>
+		/// <param name="firstTerm">The first term of the composed Name.</param>
+		/// <param name="otherTerms">The remaining terms of the composed Name.</param>
+		/// <exception cref="ArgumentException">Thrown if the rootTerm is not a primitive Name.</exception>
+		public static Name BuildName(Name rootTerm, Name firstTerm, params Name[] otherTerms)
 		{
-			return BuildName(otherTerms.Prepend(secondTerm).Prepend(firstTerm));
+			return BuildName(otherTerms.Prepend(firstTerm).Prepend(rootTerm));
 		}
 
+		/// <summary>
+		/// Creates a Name, using a sequence of Names.
+		/// </summary>
+		/// <param name="terms">The Name set used to generate the new one.</param>
+		/// <exception cref="ArgumentException">Thrown if the first element of the set is not a primitive Name.</exception>
 		public static Name BuildName(IEnumerable<Name> terms)
 		{
 			var set = ObjectPool<List<Name>>.GetObject();
@@ -219,7 +390,7 @@ namespace KnowledgeBase.WellFormedNames
 
 				Symbol head = set[0] as Symbol;
 				if (head == null)
-					throw new ArgumentException("The first term needs to be a Symbol object", "terms");
+					throw new ArgumentException("The first term needs to be a Symbol object");
 
 				set.RemoveAt(0);
 				return new ComposedName(head,set.Select(n => n??NIL_SYMBOL).ToArray());
@@ -231,6 +402,7 @@ namespace KnowledgeBase.WellFormedNames
 			}
 		}
 
+		/// @cond DOXYGEN_SHOULD_SKIP_THIS
 		public static Name BuildName(PrimitiveValue value)
 		{
 			if (value.TypeCode == TypeCode.String)
@@ -238,7 +410,13 @@ namespace KnowledgeBase.WellFormedNames
 
 			return new PrimitiveSymbol(value);
 		}
+		/// @endcond
 
+		/// <summary>
+		/// Creates a new Name instance by parsing a string.
+		/// </summary>
+		/// <param name="str">The string to parse.</param>
+		/// <exception cref="ArgumentException">Thrown if the given string is empty.</exception>
 		public static Name BuildName(string str)
 		{
 			if (string.IsNullOrEmpty(str))
@@ -246,7 +424,7 @@ namespace KnowledgeBase.WellFormedNames
 				if (str == null)
 					return NIL_SYMBOL;
 
-				throw new ArgumentException("Cannot parse an empty string", "str");
+				throw new ArgumentException("Cannot parse an empty string", nameof(str));
 			}
 
 			str = str.Trim();
@@ -336,16 +514,7 @@ namespace KnowledgeBase.WellFormedNames
 
 		#endregion
 
-		/*
-		/// <summary>
-		/// Evaluates this Name according to the data stored in the KB
-		/// If this clone is changed afterwards, the original object remains the same.
-		/// </summary>
-		/// <param name="m">a reference to the KB</param>
-		/// <returns>if the name is a symbol, it returns its name, otherwise it returns the value associated to the name in the KB</returns>
-		public abstract Object evaluate(KB m);
-		*/
-
+		/// @cond DOXYGEN_SHOULD_SKIP_THIS
 		public static string ApplyPerspective(string name, string me)
 		{
 			if (string.Compare(name, me, StringComparison.InvariantCultureIgnoreCase) == 0)
@@ -367,5 +536,6 @@ namespace KnowledgeBase.WellFormedNames
 
 			return StringComparer.InvariantCultureIgnoreCase.Compare(ToString(), other.ToString());
 		}
+		/// @endcond
 	}
 }

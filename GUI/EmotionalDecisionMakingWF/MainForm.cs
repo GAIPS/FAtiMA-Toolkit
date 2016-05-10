@@ -65,7 +65,8 @@ namespace EmotionalDecisionMakingWF
 
             if (_reactiveActions.Any())
             {
-                this._conditions = new BindingListView<string>(_edmAsset.GetReactionsConditions(_reactiveActions.First().Id).ToList());
+	            var ra = _edmAsset.GetReaction(_reactiveActions.First().Id);
+				this._conditions = new BindingListView<string>(ra.Conditions.ConditionSet);
             }
             else
             {
@@ -164,19 +165,17 @@ namespace EmotionalDecisionMakingWF
             var reaction = ((ObjectView<ReactionDTO>)dataGridViewReactiveActions.Rows[e.RowIndex].DataBoundItem).Object;
             _selectedActionId = reaction.Id;
 
-            _conditions.DataSource = _edmAsset.GetReactionsConditions(_selectedActionId).ToList();
+	        var ra = _edmAsset.GetReaction(_selectedActionId);
+	        _conditions.DataSource = ra.Conditions.ConditionSet;
             _conditions.Refresh();
         }
 
         private void buttonRemoveReaction_Click(object sender, EventArgs e)
         {
-            IList<ReactionDTO> reactionsToRemove = new List<ReactionDTO>();
-            for (int i = 0; i < dataGridViewReactiveActions.SelectedRows.Count; i++)
-            {
-                var reaction = ((ObjectView<ReactionDTO>)dataGridViewReactiveActions.SelectedRows[i].DataBoundItem).Object;
-                reactionsToRemove.Add(reaction);
-            }
-            _edmAsset.RemoveReactions(reactionsToRemove);
+	        var ids = dataGridViewReactiveActions.SelectedRows.Cast<DataGridViewRow>()
+		        .Select(r => ((ObjectView<ReactionDTO>) r.DataBoundItem).Object.Id).ToList();
+
+			_edmAsset.RemoveReactions(ids);
             _reactiveActions.DataSource = _edmAsset.GetAllReactions().ToList();
             _reactiveActions.Refresh();
         }
@@ -186,8 +185,8 @@ namespace EmotionalDecisionMakingWF
             if (_selectedActionId != Guid.Empty)
             {
                 new AddOrEditConditionForm(_edmAsset,_selectedActionId).ShowDialog();
-                _conditions.DataSource = _edmAsset.GetReactionsConditions(_selectedActionId).ToList();
-                _conditions.Refresh();
+	            _conditions.DataSource = _edmAsset.GetReaction(_selectedActionId).Conditions.ConditionSet;
+				_conditions.Refresh();
             }
         }
 
@@ -200,7 +199,7 @@ namespace EmotionalDecisionMakingWF
                 conditionsToRemove.Add(reaction);
             }
             _edmAsset.RemoveReactionConditions(_selectedActionId, conditionsToRemove);
-			_conditions.DataSource = _edmAsset.GetReactionsConditions(_selectedActionId).ToList();
+	        _conditions.DataSource = _edmAsset.GetReaction(_selectedActionId).Conditions.ConditionSet;
 			_conditions.Refresh();
 		}
 
