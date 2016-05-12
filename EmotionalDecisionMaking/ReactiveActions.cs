@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ActionLibrary;
-using EmotionalDecisionMaking.DTOs;
 using GAIPS.Serialization;
-using GAIPS.Serialization.SerializationGraph;
 using KnowledgeBase;
 using KnowledgeBase.WellFormedNames;
 
@@ -24,7 +22,7 @@ namespace EmotionalDecisionMaking
 
 		public ReactiveActions()
 		{
-			m_actionTendencies = new ActionSelector<ActionTendency>((tendency, set) => !tendency.IsCoolingdown);
+			m_actionTendencies = new ActionSelector<ActionTendency>((tendency,p, set) => !tendency.IsCoolingdown);
 		}
 
 		public void AddActionTendency(ActionTendency at)
@@ -43,19 +41,20 @@ namespace EmotionalDecisionMaking
 
         public IEnumerable<IAction> SelectAction(KB kb, Name perspective)
 		{
-			return m_actionTendencies.SelectAction(kb, perspective);
+			return m_actionTendencies.SelectAction(kb, perspective).Select(p => p.Item1);
 		}
 
-		public IEnumerable<ReactionDTO> GetAllActionTendencies()
+		public IEnumerable<ActionTendency> GetAllActionTendencies()
 		{
-			return m_actionTendencies.GetAllActionDefinitions().Select(at => at.ToDTO());
+			return m_actionTendencies.GetAllActionDefinitions();
 		}
 
-		public ReactionDTO GetDTOFromGUID(Guid id)
-		{
-			return m_actionTendencies.GetActionDefinition(id).ToDTO();
-		}
+	    public ActionTendency GetActionTendency(Guid id)
+	    {
+	        return m_actionTendencies.GetActionDefinition(id);
+	    }
 
+		
 		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			dataHolder.SetValue("DefaultActionCooldown", m_defaultActionCooldown);

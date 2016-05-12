@@ -5,7 +5,6 @@ using System.Text;
 using AutobiographicMemory;
 using EmotionalAppraisal.DTOs;
 using GAIPS.Serialization;
-using GAIPS.Serialization.SerializationGraph;
 using KnowledgeBase.WellFormedNames;
 using Utilities;
 
@@ -88,7 +87,7 @@ namespace EmotionalAppraisal
 
                 if (emotionPool.ContainsKey(hash))
                 {
-                    throw new Exception("Emotion already exists");
+                    throw new ArgumentException("This given emotion is already related to given cause",nameof(emotion));
                 }
 
                 emotionPool.Add(hash, activeEmotion);

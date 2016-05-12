@@ -1,4 +1,6 @@
-﻿using EmotionalAppraisal;
+﻿using System.Runtime.InteropServices.WindowsRuntime;
+using ActionLibrary;
+using EmotionalAppraisal;
 using KnowledgeBase.DTOs.Conditions;
 using KnowledgeBase.WellFormedNames;
 using NUnit.Framework;
@@ -27,9 +29,10 @@ namespace Tests.SocialImportance
 			ea.Kb.Tell((Name)"AreFriends(Self,Mary)", true, Name.SELF_SYMBOL);
 			ea.Kb.Tell((Name)"AreFriends(Self,Matt)", true, (Name)"Mary");
 			ea.Kb.Tell((Name)"AreFriends(Self,Thomas)", true, Name.SELF_SYMBOL);
+			ea.Kb.Tell((Name)"IsBartender(Matt)", true, Name.UNIVERSAL_SYMBOL);
 
 			#endregion
-#region SI DTO especification
+			#region SI DTO especification
 			var siDTO = new SocialImportanceDTO
 			{
 				AttributionRules = new[]
@@ -40,16 +43,10 @@ namespace Tests.SocialImportance
 						Value = 20,
 						Conditions = new ConditionSetDTO()
 						{
-							Set = new []
+							ConditionSet = new []
 							{
-								new ConditionDTO()
-								{
-									Condition = "IsPerson([target]) = true"
-								},
-								new ConditionDTO()
-								{
-									Condition = "[target] != Self"
-								}
+								"IsPerson([target]) = true",
+								"[target] != Self"
 							}
 						}
 					},
@@ -59,16 +56,10 @@ namespace Tests.SocialImportance
 						Value = -1,
 						Conditions = new ConditionSetDTO()
 						{
-							Set = new []
+							ConditionSet = new []
 							{
-								new ConditionDTO()
-								{
-									Condition = "IsOutsider([target]) = true"
-								},
-								new ConditionDTO()
-								{
-									Condition = "[target] != Self"
-								}
+								"IsOutsider([target]) = true",
+								"[target] != Self"
 							}
 						}
 					},
@@ -78,12 +69,9 @@ namespace Tests.SocialImportance
 						Value = 15,
 						Conditions = new ConditionSetDTO()
 						{
-							Set = new []
+							ConditionSet = new []
 							{
-								new ConditionDTO()
-								{
-									Condition = "AreFriends(Self,[target]) = true"
-								}
+								"AreFriends(Self,[target]) = true"
 							}
 						}
 					},
@@ -93,20 +81,11 @@ namespace Tests.SocialImportance
 						Value = 10,
 						Conditions = new ConditionSetDTO()
 						{
-							Set = new []
+							ConditionSet = new []
 							{
-								new ConditionDTO()
-								{
-									Condition = "IsClient([target]) = true"
-								},
-								new ConditionDTO()
-								{
-									Condition = "IsBartender(Self) = true"
-								},
-								new ConditionDTO()
-								{
-									Condition = "[target] != Self"
-								}
+								"IsClient([target]) = true",
+								"IsBartender(Self) = true",
+								"[target] != Self"
 							}
 						}
 					},
@@ -116,16 +95,10 @@ namespace Tests.SocialImportance
 						Value = 1,
 						Conditions = new ConditionSetDTO()
 						{
-							Set = new []
+							ConditionSet = new []
 							{
-								new ConditionDTO()
-								{
-									Condition = "IsElder([target]) = true"
-								},
-								new ConditionDTO()
-								{
-									Condition = "IsElder(Self) = false"
-								}
+								"IsElder([target]) = true",
+								"IsElder(Self) = false"
 							}
 						}
 					},
@@ -135,16 +108,39 @@ namespace Tests.SocialImportance
 						Value = -1,
 						Conditions = new ConditionSetDTO()
 						{
-							Set = new []
+							ConditionSet = new []
 							{
-								new ConditionDTO()
-								{
-									Condition = "IsElder([target]) = false"
-								},
-								new ConditionDTO()
-								{
-									Condition = "IsElder(Self) = true"
-								}
+								"IsElder([target]) = false",
+								"IsElder(Self) = true"
+							}
+						}
+					}
+				},
+				Conferral = new[]
+				{
+					new ConferralDTO()
+					{
+						Action = "Give(Drink)",
+						ConferralSI = 10,
+						Target = "[x]",
+						Conditions = new ConditionSetDTO()
+						{
+							ConditionSet = new []
+							{
+								"AskedDrink([x])=true"
+							}
+						}
+					},
+					new ConferralDTO()
+					{
+						Action = "Give(Best-Drink)",
+						ConferralSI = 23,
+						Target = "[x]",
+						Conditions = new ConditionSetDTO()
+						{
+							ConditionSet = new []
+							{
+								"AskedDrink([x])=true"
 							}
 						}
 					}
@@ -161,20 +157,43 @@ namespace Tests.SocialImportance
 		[TestCase("Matt", "Mary", 35, 35)]
 		[TestCase("Matt", "Diego", 19, 20)]
 		[TestCase("Matt", "Thomas", 35, 20)]
-		[TestCase("Matt", "Robot", 0, 20)]
+		[TestCase("Matt", "Robot", 1, 20)]
 		[TestCase("Mary", "Diego", 19, 20)]
 		[TestCase("Mary", "Thomas", 20, 20)]
-		[TestCase("Mary", "Robot", 0, 20)]
+		[TestCase("Mary", "Robot", 1, 20)]
 		[TestCase("Diego", "Thomas", 20, 19)]
 		[TestCase("Diego", "Robot", 20, 20)]
-		[TestCase("Thomas", "Robot", 0, 20)]
+		[TestCase("Thomas", "Robot", 1, 20)]
 		public static void Test_SI_Values(string a, string b, float abSiValue, float baSiValue)
 		{
+			ASSET_TO_TEST.InvalidateCachedSI();
 			var ab = ASSET_TO_TEST.GetSocialImportance((Name)b, (Name)a); 
 			var ba = ASSET_TO_TEST.GetSocialImportance((Name)a, (Name)b);
 
 			Assert.AreEqual(ab,abSiValue);
 			Assert.AreEqual(ba, baSiValue);
+		}
+
+		[TestCase("Diego","Give(Drink)")]
+		[TestCase("Mary", "Give(Best-Drink)")]
+		[TestCase("Robot", null)]
+		public static void Test_Conferrals(string name, string expectedResult)
+		{
+			var n = Name.BuildName((Name) "AskedDrink", (Name) name);
+			ASSET_TO_TEST.LinkedEA.Kb.Tell(n,true);
+			var a = ASSET_TO_TEST.DecideConferral(Name.SELF_SYMBOL);
+			ASSET_TO_TEST.LinkedEA.Kb.Tell(n,null);
+
+			if (string.IsNullOrEmpty(expectedResult))
+			{
+				if(a==null)
+					Assert.Pass();
+				else
+					Assert.Fail();
+			}
+
+			var an = (Name)expectedResult;
+			Assert.AreEqual(an, a.ToNameRepresentation());
 		}
 	}
 }

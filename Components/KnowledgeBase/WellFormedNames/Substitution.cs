@@ -5,48 +5,48 @@ using KnowledgeBase.WellFormedNames.Interfaces;
 namespace KnowledgeBase.WellFormedNames
 {
 	/// <summary>
-	/// Represents a substitution of a variable for another variable or constant symbol
-	/// 
-	/// @author: João Dias
-	/// @author: Pedro Gonçalves (C# version)
+	/// Represents a substitution of a variable Name for another Name object.
 	/// </summary>
+	/// <remarks>
+	/// The variable can be substituted by any type of Name object, meaning that
+	/// grounding a Name with this substitution will not guarantee a grounded Name.
+	/// </remarks>
 	[Serializable]
-	public class Substitution : IVariableRenamer<Substitution>, ICloneable
+	public sealed class Substitution : IVariableRenamer<Substitution>, ICloneable
 	{
 		private static readonly char[] SUBSTITUTION_SEPARATORS= {'/'};
 
+		/// <summary>
+		/// The Name variable to substitute.
+		/// </summary>
 		public Name Variable
 		{
 			get;
-			protected set;
 		}
 
+		/// <summary>
+		/// The Name value to substitute the variable with.
+		/// </summary>
 		public Name Value
 		{
 			get;
-			protected set;
 		}
 
 		private void Validation(Name variable, Name value)
 		{
 			if (!variable.IsVariable)
-				throw new BadSubstitutionException(string.Format("{0} is not a valid variable definition.", variable));
+				throw new BadSubstitutionException($"{variable} is not a valid variable definition.");
 
 			if (value.ContainsVariable(variable))
-				throw new BadSubstitutionException(string.Format("The substitution {0}->{1} will create a cyclical reference.", variable, value));
+				throw new BadSubstitutionException($"The substitution {variable}->{value} will create a cyclical reference.");
 		}
-
-		/// <summary>
-		/// Base constructor for extended classes
-		/// </summary>
-		protected Substitution(){}
 
 		/// <summary>
 		/// Substitution Constructor
 		/// </summary>
 		/// <param name="variable">the variable to be replaced</param>
 		/// <param name="value">the new value to apply in the place of the old variable</param>
-		/// <exception cref="FAtiMA.Core.Exceptions.BadSubstitutionException">Thrown if the variable symbol is grounded (ie. is not a valid variable)</exception>
+		/// <exception cref="BadSubstitutionException">Thrown if the Name given for the variable, is not an actual variable.</exception>
 		public Substitution(Name variable, Name value)
 		{
 			Validation(variable, value);
@@ -58,7 +58,7 @@ namespace KnowledgeBase.WellFormedNames
 		/// <summary>
 		/// Constructs a Substitution using a string definition
 		/// </summary>
-		/// <param name="substitutionDefinition"></param>
+		/// <param name="substitutionDefinition">The string to be parsed as a Substitution</param>
 		/// <exception cref="FAtiMA.Core.Exceptions.BadSubstitutionException">Thrown if the given definition is not a valid substitution</exception>
 		public Substitution(string substitutionDefinition)
 		{
@@ -80,9 +80,8 @@ namespace KnowledgeBase.WellFormedNames
 			}
 			catch (System.Exception e)
 			{
-				throw new BadSubstitutionException("\"" + substitutionDefinition + "\" is not a valid substitution definition", e);
+				throw new BadSubstitutionException($"\"{substitutionDefinition}\" is not a valid substitution definition", e);
 			}
-			
 		}
 
 		/// <summary>
@@ -105,12 +104,39 @@ namespace KnowledgeBase.WellFormedNames
 		/// Clone Constructor
 		/// </summary>
 		/// <param name="substitution">The substitution to clone</param>
-		protected Substitution(Substitution substitution)
+		private Substitution(Substitution substitution)
 		{
 			this.Variable = (Name)substitution.Variable.Clone();
 			this.Value = (Name)substitution.Value.Clone();
 		}
 
+		/// <summary>
+		/// Adds a tag to the end of every variable inside this Substitution,
+		/// effectively modifying their identifier.
+		/// </summary>
+		/// <param name="id">The tag to add to every variable.</param>
+		/// <returns>A new instance, which is a clone of this Substitution, but with every variable identifier changed in order to include the new tag.</returns>
+		public Substitution ReplaceUnboundVariables(string id)
+		{
+			return new Substitution(Variable.ReplaceUnboundVariables(id),Value.ReplaceUnboundVariables(id));
+		}
+
+		/// <summary>
+		/// Removes a tag from the end of every variable inside this Substitution,
+		/// effectively modifying their identifier.
+		/// </summary>
+		/// <param name="id">The tag to remove from every variable.</param>
+		/// <returns>A new instance, which is a clone of this Substitution, but with every variable identifier changed in order to exclude the requested tag.</returns>
+		/// /// <remarks>
+		/// - The tag is only removed if, and only if, the variable identifier ends with the requested tag.
+		/// </remarks>
+		public Substitution RemoveBoundedVariables(string id)
+		{
+			return new Substitution(Variable.RemoveBoundedVariables(id), Value.RemoveBoundedVariables(id));
+		}
+
+		/// @cond DOXYGEN_SHOULD_SKIP_THIS
+		
 		public override bool Equals(object obj)
 		{
 			Substitution s = obj as Substitution;
@@ -127,23 +153,14 @@ namespace KnowledgeBase.WellFormedNames
 
 		public override string ToString()
 		{
-			return string.Format("{0}/{1}", Variable.ToString(), Value.ToString());
+			return $"{Variable}/{Value}";
 		}
 
-		public virtual object Clone()
+		public object Clone()
 		{
 			return new Substitution(this);
 		}
 
-		public Substitution ReplaceUnboundVariables(string id)
-		{
-			return new Substitution(Variable.ReplaceUnboundVariables(id),Value.ReplaceUnboundVariables(id));
-		}
-
-
-		public Substitution RemoveBoundedVariables(string id)
-		{
-			return new Substitution(Variable.RemoveBoundedVariables(id), Value.RemoveBoundedVariables(id));
-		}
+		/// @endcond
 	}
 }

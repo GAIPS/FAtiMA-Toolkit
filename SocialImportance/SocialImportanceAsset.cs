@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using ActionLibrary;
-using AssetPackage;
 using EmotionalAppraisal;
+using GAIPS.Rage;
 using GAIPS.Serialization;
 using KnowledgeBase;
 using KnowledgeBase.WellFormedNames;
@@ -14,31 +13,28 @@ using Utilities;
 
 namespace SocialImportance
 {
-	public sealed class SocialImportanceAsset: BaseAsset
+	[Serializable]
+	public sealed class SocialImportanceAsset: LoadableAsset<SocialImportanceAsset>, ICustomSerialization
 	{
-		public static SocialImportanceAsset LoadFromFile(string filename)
-		{
-			var asset = new SocialImportanceAsset();
-			using (var f = File.Open(filename, FileMode.Open, FileAccess.Read))
-			{
-				var serializer = new JSONSerializer();
-				asset.LoadFromDTO(serializer.Deserialize<SocialImportanceDTO>(f));
-			}
-			return asset;
-		}
-
-		private EmotionalAppraisalAsset m_ea = null;
-		private AttributionRule[] m_attributionRules = new AttributionRule[0];
-		private NameSearchTree<float> m_claimTree = new NameSearchTree<float>();
+		private EmotionalAppraisalAsset m_ea;
+		private AttributionRule[] m_attributionRules;
+		private NameSearchTree<uint> m_claimTree;
+		private ActionSelector<Conferral> m_conferalActions;
 
 		//Volatile Statements
 		private NameSearchTree<NameSearchTree<float>> m_cachedSI = new NameSearchTree<NameSearchTree<float>>();
+
+		public EmotionalAppraisalAsset LinkedEA {
+			get { return m_ea; }
+		}
 
 		public SocialImportanceAsset()
 		{
 			m_ea = null;
 			m_attributionRules = new AttributionRule[0];
-			m_claimTree = new NameSearchTree<float>();
+			m_claimTree = new NameSearchTree<uint>();
+			m_conferalActions = new ActionSelector<Conferral>(ValidateConferral);
+
 			m_cachedSI = new NameSearchTree<NameSearchTree<float>>();
 		}
 
@@ -57,40 +53,12 @@ namespace SocialImportance
 
 		private void PerformKBBindings()
 		{
-			m_ea.Kb.RegistDynamicProperty(SI_DYNAMIC_PROPERTY_TEMPLATE,SIPropertyCalculator,new []{"target"});
+			m_ea.Kb.RegistDynamicProperty(SI_DYNAMIC_PROPERTY_TEMPLATE,SIPropertyCalculator);
 		}
 
 		private void RemoveKBBindings()
 		{
 			m_ea.Kb.UnregistDynamicProperty(SI_DYNAMIC_PROPERTY_TEMPLATE);
-		}
-
-		public void LoadFromDTO(SocialImportanceDTO dto)
-		{
-			m_attributionRules = dto.AttributionRules.Select(adto => new AttributionRule(adto)).ToArray();
-
-			m_claimTree.Clear();
-			if(dto.Claims!=null)
-			{
-				foreach (var c in dto.Claims)
-				{
-					var n = Name.BuildName(c.ActionTemplate);
-					m_claimTree.Add(n,c.ClaimSI);
-				}
-			}
-
-			//TODO load the rest
-		}
-
-		public SocialImportanceDTO GetDTO()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void SaveToFile(Stream file)
-		{
-			var serializer = new JSONSerializer();
-			serializer.Serialize(file, GetDTO());
 		}
 
 		private void ValidateEALink()
@@ -128,16 +96,18 @@ namespace SocialImportance
 			m_cachedSI.Clear();
 		}
 
-		public IEnumerable<IAction> CalculateConferals(Name perspective)
+		public IAction DecideConferral(Name perspective)
 		{
-			throw new NotImplementedException();
+			ValidateEALink();
+			var a = m_conferalActions.SelectAction(m_ea.Kb, perspective).OrderByDescending(p=>p.Item2.ConferralSI);
+			return FilterActions(perspective, a.Select(p=>p.Item1)).FirstOrDefault();
 		}
 
 		public IEnumerable<IAction> FilterActions(Name perspective, IEnumerable<IAction> actionsToFilter)
 		{
 			foreach (var a in actionsToFilter)
 			{
-				float minSI;
+				uint minSI;
 				if(m_claimTree.TryGetValue(a.ToNameRepresentation(),out minSI))
 					if (GetSocialImportance(a.Target, perspective) < minSI)
 						continue;
@@ -146,17 +116,68 @@ namespace SocialImportance
 			}
 		}
 
-		private float CalculateSI(Name target, Name perspective)
+		private bool ValidateConferral(Conferral c,Name perspective, SubstitutionSet set)
 		{
-			float value = 0;
+			var t = c.Target.MakeGround(set);
+			if (!t.IsGrounded)
+				return false;
+
+			var si = GetSocialImportance(t, perspective);
+			return si >= c.ConferralSI;
+		}
+
+		private uint CalculateSI(Name target, Name perspective)
+		{
+			long value = 0;
 			foreach (var a in m_attributionRules)
 			{
 				var sub = new Substitution(a.Target, target);
 				if (a.Conditions.Evaluate(m_ea.Kb, perspective, new[] { new SubstitutionSet(sub) }))
 					value += a.Value;
 			}
-			return value;
+			return value<1?1:(uint)value;
 		}
+
+		protected override string OnAssetLoaded()
+		{
+			return null;
+		}
+
+		#region DTO operations
+
+		public void LoadFromDTO(SocialImportanceDTO dto)
+		{
+			m_attributionRules = dto.AttributionRules.Select(adto => new AttributionRule(adto)).ToArray();
+
+			m_claimTree.Clear();
+			if (dto.Claims != null)
+			{
+				foreach (var c in dto.Claims)
+				{
+					var n = Name.BuildName(c.ActionTemplate);
+					m_claimTree.Add(n, c.ClaimSI);
+				}
+			}
+
+			m_conferalActions.Clear();
+			if (dto.Conferral != null)
+			{
+				foreach (var con in dto.Conferral.Select(c => new Conferral(c)))
+				{
+					m_conferalActions.AddActionDefinition(con);
+				}
+			}
+		}
+
+		public SocialImportanceDTO GetDTO()
+		{
+			var at = m_attributionRules.Select(a => a.ToDTO()).ToArray();
+			var claims = m_claimTree.Select(p => new ClaimDTO() { ActionTemplate = p.Key.ToString(), ClaimSI = p.Value }).ToArray();
+			var conferrals = m_conferalActions.GetAllActionDefinitions().Select(c => c.ToDTO()).ToArray();
+			return new SocialImportanceDTO() { AttributionRules = at, Claims = claims, Conferral = conferrals };
+		}
+
+		#endregion
 
 		#region Dynamic Properties
 
@@ -174,6 +195,32 @@ namespace SocialImportance
 				foreach (var s in t.Item2)
 					yield return new Pair<PrimitiveValue, SubstitutionSet>(si,s);
 			}
+		}
+
+		#endregion
+
+		#region Serialization
+
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		{
+			dataHolder.SetValue("AttributionRules",m_attributionRules);
+			dataHolder.SetValue("Claims",m_claimTree.Select(p=>new ClaimDTO() {ActionTemplate = p.Key.ToString(),ClaimSI = p.Value}).ToArray());
+			dataHolder.SetValue("Conferrals",m_conferalActions.GetAllActionDefinitions().ToArray());
+		}
+
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		{
+			m_attributionRules = dataHolder.GetValue<AttributionRule[]>("AttributionRules");
+
+			var claims = dataHolder.GetValue<ClaimDTO[]>("Claims");
+			m_claimTree.Clear();
+			foreach (var c in claims)
+				m_claimTree.Add(Name.BuildName(c.ActionTemplate), c.ClaimSI);
+
+			var conferrals = dataHolder.GetValue<Conferral[]>("Conferrals");
+			m_conferalActions.Clear();
+			foreach (var c in conferrals)
+				m_conferalActions.AddActionDefinition(c);
 		}
 
 		#endregion

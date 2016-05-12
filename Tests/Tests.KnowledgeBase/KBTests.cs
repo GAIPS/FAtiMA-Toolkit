@@ -247,28 +247,28 @@ namespace Tests.KnowledgeBase
 		{
 			var kb = new KB((Name)"Me");
 			Assert.Throws<ArgumentException>(
-				() => kb.RegistDynamicProperty((Name)"Count([y])", ((kb1, pers, args, constraints) => null), null));
+				() => kb.RegistDynamicProperty((Name)"Count([y])", ((kb1, pers, args, constraints) => null)));
 		}
 
 		[Test]
 		public void Test_OperatorRegist_Fail_Same_Template()
 		{
 			var kb = new KB((Name)"Me");
-			Assert.Throws<ArgumentException>(() => kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, p, args, constraints) => null), null));
+			Assert.Throws<ArgumentException>(() => kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, p, args, constraints) => null)));
 		}
 
 		[Test]
 		public void Test_OperatorRegist_Fail_GroundedTemplate()
 		{
 			var kb = new KB((Name)"Me");
-			Assert.Throws<ArgumentException>(() => kb.RegistDynamicProperty((Name)"Count(John)", ((kb1, p, args, constraints) => null), null));
+			Assert.Throws<ArgumentException>(() => kb.RegistDynamicProperty((Name)"Count(John)", ((kb1, p, args, constraints) => null)));
 		}
 
 		[Test]
 		public void Test_OperatorRegist_Fail_Null_Surogate()
 		{
 			var kb = new KB((Name)"Me");
-			Assert.Throws<ArgumentNullException>(() => kb.RegistDynamicProperty((Name)"Count(John)", null, null));
+			Assert.Throws<ArgumentNullException>(() => kb.RegistDynamicProperty((Name)"Count(John)", null));
 		}
 
 		[Test]
@@ -278,7 +278,7 @@ namespace Tests.KnowledgeBase
 			Assert.Throws<ArgumentException>(() =>
 			{
 				kb.Tell((Name)"Count(John)", 3);
-				kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, p, args, constraints) => null), null);
+				kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, p, args, constraints) => null));
 			});
 		}
 
@@ -288,7 +288,7 @@ namespace Tests.KnowledgeBase
 			var kb = new KB((Name)"Me");
 			Assert.Throws<ArgumentException>(() =>
 			{
-				kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, p, args, constraints) => null), null);
+				kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, p, args, constraints) => null));
 				kb.Tell((Name)"Count(John)", 3);
 			});
 		}
@@ -336,7 +336,7 @@ namespace Tests.KnowledgeBase
 			var kb = new KB(Name.BuildName("Mark"));
 			kb.Tell(Name.BuildName("IsPerson(Self)"), true);
 
-			kb.UpdateKBAccordingToNewPerspective(Name.BuildName("Mary"));
+			kb.SetPerspective(Name.BuildName("Mary"));
 
 			Assert.Null(kb.AskProperty(Name.BuildName("IsPerson(Mark)")));
 			Assert.True((bool?)kb.AskProperty(Name.BuildName("IsPerson(Mary)")));
@@ -348,7 +348,7 @@ namespace Tests.KnowledgeBase
 			var kb = new KB(Name.BuildName("Mark"));
 			kb.Tell(Name.BuildName("IsPerson(Self)"), true,Name.BuildName("John(Self)"));
 
-			kb.UpdateKBAccordingToNewPerspective(Name.BuildName("Mary"));
+			kb.SetPerspective(Name.BuildName("Mary"));
 
 			Assert.Null(kb.AskProperty(Name.BuildName("IsPerson(Mark)"), Name.BuildName("John(Self)")));
 			Assert.True((bool?)kb.AskProperty(Name.BuildName("IsPerson(Mary)"), Name.BuildName("John(Self)")));
@@ -360,7 +360,7 @@ namespace Tests.KnowledgeBase
 			var kb = new KB(Name.BuildName("Mark"));
 			kb.Tell(Name.BuildName("IsPerson(Self)"), true, Name.BuildName("John(Self)"));
 
-			Assert.Throws<ArgumentException>(()=> kb.UpdateKBAccordingToNewPerspective(Name.BuildName("John")));
+			Assert.Throws<ArgumentException>(()=> kb.SetPerspective(Name.BuildName("John")));
 		}
 
 		[TestCase("*")]
@@ -372,7 +372,7 @@ namespace Tests.KnowledgeBase
 			var kb = new KB(Name.BuildName("Mark"));
 			kb.Tell(Name.BuildName("IsPerson(Self)"), true, Name.BuildName("John(Self)"));
 
-			Assert.Throws<ArgumentException>(() => kb.UpdateKBAccordingToNewPerspective(Name.BuildName(perspective)));
+			Assert.Throws<ArgumentException>(() => kb.SetPerspective(Name.BuildName(perspective)));
 		}
 	}
 }

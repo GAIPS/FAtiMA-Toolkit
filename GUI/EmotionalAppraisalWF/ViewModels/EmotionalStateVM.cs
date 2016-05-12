@@ -3,7 +3,6 @@ using System.Linq;
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using Equin.ApplicationFramework;
-using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalAppraisalWF.ViewModels
 {
@@ -16,12 +15,6 @@ namespace EmotionalAppraisalWF.ViewModels
         {
             get { return _emotionalAppraisalAsset.Mood; }
             set { _emotionalAppraisalAsset.Mood = value;}
-        }
-
-        public string Perspective
-        {
-            get { return _emotionalAppraisalAsset.Perspective; }
-            set { _emotionalAppraisalAsset.Perspective = value; }
         }
 
         public IEnumerable<string> EmotionTypes { get { return _emotionalAppraisalAsset.EmotionTypes; } } 
@@ -38,7 +31,7 @@ namespace EmotionalAppraisalWF.ViewModels
             Emotions = new BindingListView<EmotionDTO>(ea.ActiveEmotions.ToList());
         }
 
-        public void AddEmotion(EmotionDTO newEmotion)
+	    public void AddEmotion(EmotionDTO newEmotion)
         {
             var resultingEmotion = _emotionalAppraisalAsset.AddActiveEmotion(newEmotion);
             Emotions.DataSource.Add(resultingEmotion);

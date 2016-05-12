@@ -1,7 +1,4 @@
-﻿using KnowledgeBase.WellFormedNames;
-using NUnit.Framework;
-
-namespace Tests.KnowledgeBase.WellFormedNames
+﻿namespace Tests.KnowledgeBase.WellFormedNames
 {
 	//[TestFixture]
 	//public class InequalityTests

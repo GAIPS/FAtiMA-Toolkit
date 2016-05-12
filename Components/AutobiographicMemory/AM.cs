@@ -22,14 +22,14 @@ namespace AutobiographicMemory
 
 		public void BindCalls(KB kb)
 		{
-			kb.RegistDynamicProperty(EVENT_ID_PROPERTY_TEMPLATE, EventIdPropertyCalculator,new []{"type","subject","def","target"});
-			kb.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE, EventAgePropertyCalculator, new[] { "id" });
-			kb.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_TEMPLATE, LastEventIdPropertyCalculator, new[] { "type", "subject", "def", "target" });
+			kb.RegistDynamicProperty(EVENT_ID_PROPERTY_TEMPLATE, EventIdPropertyCalculator);
+			kb.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE, EventAgePropertyCalculator);
+			kb.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_TEMPLATE, LastEventIdPropertyCalculator);
 		}
 
 		public IBaseEvent RecordEvent(EventDTO dto)
 		{
-			return RecordEvent(BuildEventName(dto), dto.Time);
+			return RecordEvent(BuildEventNameFromDTO(dto), dto.Time);
 		}
 
 		public IBaseEvent RecordEvent(Name eventName, ulong timestamp)
@@ -39,7 +39,7 @@ namespace AutobiographicMemory
 
 		public IBaseEvent UpdateEvent(EventDTO dto)
 		{
-			var evtName = BuildEventName(dto);
+			var evtName = BuildEventNameFromDTO(dto);
 			return UpdateEvent(dto.Id, evtName, dto.Time);
 		}
 
@@ -70,7 +70,7 @@ namespace AutobiographicMemory
 		    return eventRecord;
 	    }
 
-		private Name BuildEventName(EventDTO evt)
+		private Name BuildEventNameFromDTO(EventDTO evt)
 		{
 			var actionEvent = evt as ActionEventDTO;
 			if (actionEvent != null)
@@ -114,8 +114,16 @@ namespace AutobiographicMemory
 
 	    public void ForgetEvent(uint eventId)
 	    {
-	        m_registry.Remove(eventId);
-        }
+		    BaseEvent evt;
+			if(!m_registry.TryGetValue(eventId,out evt))
+				return;
+
+			m_registry.Remove(eventId);
+		    var evts = m_typeIndexes[evt.EventName];
+		    evts.Remove(eventId);
+		    if (evts.Count == 0)
+				m_typeIndexes.Remove(evt.EventName);
+	    }
 
 	    private void AddRecord(BaseEvent record)
 		{
@@ -151,6 +159,23 @@ namespace AutobiographicMemory
 
 			if (name.GetNTerm(4).IsComposed)
 				throw new Exception("The fifth term of an event name cannot be a composed name.");
+		}
+
+		public void SwapPerspective(Name oldPerspective, Name newPerspective)
+		{
+			foreach (var key in m_registry.Keys)
+			{
+				var evt = m_registry[key];
+				m_registry[key] = evt.SwapPerspective(oldPerspective, newPerspective);
+			}
+
+			var newIndexes = new NameSearchTree<List<uint>>();
+			foreach (var p in m_typeIndexes)
+			{
+				var k = p.Key.SwapPerspective(oldPerspective, newPerspective);
+				newIndexes[k] = p.Value;
+			}
+			m_typeIndexes = newIndexes;
 		}
 
 		#region Dynamic Properties

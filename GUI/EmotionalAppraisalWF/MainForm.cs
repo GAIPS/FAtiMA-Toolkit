@@ -64,16 +64,6 @@ namespace EmotionalAppraisalWF
                 this.Text = Resources.MainFormPrincipalTitle + Resources.TitleSeparator + _saveFileName;
             }
 
-            //Emotional State Tab
-            _emotionalStateVM = new EmotionalStateVM(_emotionalAppraisalAsset);
-            this.textBoxPerspective.Text = _emotionalStateVM.Perspective;
-            this.richTextBoxDescription.Text = _emotionalAppraisalAsset.Description;
-            this.moodValueLabel.Text = Math.Round(_emotionalStateVM.Mood).ToString(MOOD_FORMAT);
-            this.moodTrackBar.Value = (int) float.Parse(this.moodValueLabel.Text);
-            this.textBoxStartTick.Text = _emotionalStateVM.Start.ToString();
-            this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
-            
-
             //Emotion Dispositions
             _emotionDispositionsVM = new EmotionDispositionsVM(_emotionalAppraisalAsset);
             comboBoxDefaultDecay.SelectedIndex =
@@ -85,22 +75,29 @@ namespace EmotionalAppraisalWF
             //Appraisal Rule
             _appraisalRulesVM = new AppraisalRulesVM(_emotionalAppraisalAsset);
             dataGridViewAppraisalRules.DataSource = _appraisalRulesVM.AppraisalRules;
-            dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
+            dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<AppraisalRuleDTO>(dto => dto.Id)].Visible = false;
             dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<AppraisalRuleDTO>(dto => dto.Conditions)].Visible = false;
-           // dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<AppraisalRuleDTO>(dto => dto.Conditions.Quantifier)].Visible = false;
             dataGridViewAppRuleConditions.DataSource = _appraisalRulesVM.CurrentRuleConditions;
-            dataGridViewAppRuleConditions.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
             comboBoxQuantifierType.DataSource = _appraisalRulesVM.QuantifierTypes;
 
             //KB
             _knowledgeBaseVM = new KnowledgeBaseVM(_emotionalAppraisalAsset);
             dataGridViewBeliefs.DataSource = _knowledgeBaseVM.Beliefs;
-            dataGridViewBeliefs.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
+            //dataGridViewBeliefs.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
 
             //AM
             _autobiographicalMemoryVM = new AutobiographicalMemoryVM(_emotionalAppraisalAsset);
             dataGridViewAM.DataSource = _autobiographicalMemoryVM.Events;
-        }
+
+			//Emotional State Tab
+			_emotionalStateVM = new EmotionalStateVM(_emotionalAppraisalAsset);
+			this.textBoxPerspective.Text = _knowledgeBaseVM.Perspective;
+			this.richTextBoxDescription.Text = _emotionalAppraisalAsset.Description;
+			this.moodValueLabel.Text = Math.Round(_emotionalStateVM.Mood).ToString(MOOD_FORMAT);
+			this.moodTrackBar.Value = (int)float.Parse(this.moodValueLabel.Text);
+			this.textBoxStartTick.Text = _emotionalStateVM.Start.ToString();
+			this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
+		}
 
 
         private void adjustColumnSizeGrid(DataGridView grid)
@@ -148,6 +145,7 @@ namespace EmotionalAppraisalWF
             }
             try
             {
+				_knowledgeBaseVM.UpdatePerspective();
                 using (var file = File.Create(_saveFileName))
                 {
                     _emotionalAppraisalAsset.SaveToFile(file);
@@ -424,7 +422,7 @@ namespace EmotionalAppraisalWF
         {
             if (!string.IsNullOrEmpty(textBoxPerspective.Text))
             {
-                this._emotionalStateVM.Perspective = textBoxPerspective.Text;
+				_knowledgeBaseVM.Perspective = textBoxPerspective.Text;
             }
         }
 
@@ -560,7 +558,7 @@ namespace EmotionalAppraisalWF
         {
             if (dataGridViewAppRuleConditions.SelectedRows.Count == 1)
             {
-                var selectedCondition = ((ObjectView<ConditionDTO>)dataGridViewAppRuleConditions.
+                var selectedCondition = ((ObjectView<string>)dataGridViewAppRuleConditions.
                     SelectedRows[0].DataBoundItem).Object;
                 new AddOrEditConditionForm(_appraisalRulesVM, selectedCondition).ShowDialog();
             }
@@ -568,10 +566,10 @@ namespace EmotionalAppraisalWF
 
         private void buttonRemoveAppraisalRuleCondition_Click(object sender, EventArgs e)
         {
-            IList<ConditionDTO> conditionsToRemove = new List<ConditionDTO>();
+            IList<string> conditionsToRemove = new List<string>();
             for (int i = 0; i < dataGridViewAppRuleConditions.SelectedRows.Count; i++)
             {
-                var emotion = ((ObjectView<ConditionDTO>)dataGridViewAppRuleConditions.SelectedRows[i].DataBoundItem).Object;
+                var emotion = ((ObjectView<string>)dataGridViewAppRuleConditions.SelectedRows[i].DataBoundItem).Object;
                 conditionsToRemove.Add(emotion);
             }
             _appraisalRulesVM.RemoveConditions(conditionsToRemove);
@@ -581,5 +579,10 @@ namespace EmotionalAppraisalWF
         {
 
         }
-    }
+
+		private void OnScreenChanged(object sender, EventArgs e)
+		{
+			_knowledgeBaseVM.UpdatePerspective();
+		}
+	}
 }

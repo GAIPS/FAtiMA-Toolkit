@@ -5,7 +5,6 @@ using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using Equin.ApplicationFramework;
-using KnowledgeBase;
 using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalAppraisalWF.ViewModels
@@ -15,24 +14,44 @@ namespace EmotionalAppraisalWF.ViewModels
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
 
         public BindingListView<BeliefDTO> Beliefs {get;}
-        
-        public KnowledgeBaseVM(EmotionalAppraisalAsset ea)
+
+		public string Perspective { get; set; }
+
+		public KnowledgeBaseVM(EmotionalAppraisalAsset ea)
         {
             _emotionalAppraisalAsset = ea;
-            var beliefList = ea.Kb.GetAllBeliefs().Select(b => new BeliefDTO
-            {
-                Name = b.Name.ToString(),
-				Perspective = b.Perspective.ToString(),
-                Value = b.Value.ToString()
-            }).ToList();
-
-            this.Beliefs = new BindingListView<BeliefDTO>(beliefList);
+			Perspective = _emotionalAppraisalAsset.Perspective;
+			Beliefs = new BindingListView<BeliefDTO>(new List<BeliefDTO>());
+			UpdateBeliefList();
         }
 
-        public string[] GetKnowledgeVisibilities()
-        {
-            return _emotionalAppraisalAsset.KnowledgeVisibilities;
-        }
+		public void UpdatePerspective()
+		{
+			var n = (Name) Perspective;
+			if((Name)_emotionalAppraisalAsset.Perspective == n)
+				return;
+
+			_emotionalAppraisalAsset.SetPerspective(Perspective);
+			UpdateBeliefList();
+		}
+
+	    public void UpdateBeliefList()
+	    {
+			Beliefs.DataSource.Clear();
+		    var beliefList = _emotionalAppraisalAsset.Kb.GetAllBeliefs().Select(b => new BeliefDTO
+		    {
+			    Name = b.Name.ToString(),
+			    Perspective = b.Perspective.ToString(),
+			    Value = b.Value.ToString()
+		    });
+
+		    foreach (var b in beliefList)
+				Beliefs.DataSource.Add(b);
+
+			Beliefs.Refresh();
+	    }
+
+		public static readonly string[] KnowledgeVisibilities = { Name.SELF_STRING, Name.UNIVERSAL_STRING };
 
         public void AddBelief(BeliefDTO belief)
         {
@@ -41,8 +60,8 @@ namespace EmotionalAppraisalWF.ViewModels
                 throw new Exception(Resources.BeliefAlreadyExistsExceptionMessage);
             }
             _emotionalAppraisalAsset.AddOrUpdateBelief(belief);
-            this.Beliefs.DataSource.Add(belief);
-            this.Beliefs.Refresh();
+            Beliefs.DataSource.Add(belief);
+            Beliefs.Refresh();
         }
 
         public void RemoveBeliefs(IEnumerable<BeliefDTO> beliefs)

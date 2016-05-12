@@ -19,7 +19,7 @@ namespace EmotionalDecisionMakingWF
         private static string GetPropertyNameCore(Expression propertyRefExpr)
         {
             if (propertyRefExpr == null)
-                throw new ArgumentNullException("propertyRefExpr", "propertyRefExpr is null.");
+                throw new ArgumentNullException(nameof(propertyRefExpr));
 
             MemberExpression memberExpr = propertyRefExpr as MemberExpression;
             if (memberExpr == null)
@@ -32,7 +32,7 @@ namespace EmotionalDecisionMakingWF
             if (memberExpr != null && memberExpr.Member.MemberType == MemberTypes.Property)
                 return memberExpr.Member.Name;
 
-            throw new ArgumentException("No property reference expression was found.","propertyRefExpr");
+            throw new ArgumentException("No property reference expression was found.",nameof(propertyRefExpr));
         }
     }
 }

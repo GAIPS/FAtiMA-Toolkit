@@ -30,20 +30,36 @@ namespace GAIPS.Serialization
 
 		#region Serialization
 
-		protected override void SerializeDataGraph(Stream serializationStream, Graph graph)
+		public JsonObject SerializeToJson(object graph)
+		{
+			if (!graph.GetType().IsSerializable)
+				throw new Exception($"Instances of {graph.GetType()} are not serializable.");  //TODO add a better exception
+
+			Graph serGraph = new Graph(graph, FormatSelector, Context);
+			return (JsonObject)ToJson(serGraph)[ROOT_FIELD];
+		}
+
+		private JsonObject ToJson(Graph graph)
 		{
 			JsonObject json = new JsonObject();
 
 			//Collect types
 			var types = CollectAssemblyData(graph);
-			
+
 			json[ROOT_FIELD] = ToJson(graph.Root);
 
-			var nodes = graph.GetReferences().Select(n => NodeToJson(n)).Cast<JsonToken>();
+			var nodes = graph.GetReferences().Select(NodeToJson).Cast<JsonToken>();
 			if (nodes.Any())
 				json[REFERENCES_FIELD] = new JsonArray(nodes);
 
 			json[TYPES_FIELD] = types;
+
+			return json;
+		}
+
+		protected override void SerializeDataGraph(Stream serializationStream, Graph graph)
+		{
+			JsonObject json = ToJson(graph);
 
 			var w = new StreamWriter(serializationStream);
 			json.Write(w, 0, AllowIdentation);
@@ -121,9 +137,31 @@ namespace GAIPS.Serialization
 
 		#region Deserialization
 
+		public T DeserializeFromJson<T>(JsonObject json)
+		{
+			return (T)DeserializeFromJson(json, typeof(T));
+		}
+
+		public object DeserializeFromJson(JsonObject json, Type returnType)
+		{
+			var baseJson = new JsonObject();
+			baseJson[ROOT_FIELD] = json;
+			var graph = new Graph(FormatSelector, Context);
+			DeserializeDataGraphFromJson(baseJson,graph);
+			return graph.DeserializeObject(returnType);
+		}
+
 		protected override void DeserializeDataGraph(Stream serializationStream, Graph serGraph)
 		{
 			JsonObject json = JsonParser.Parse(serializationStream) as JsonObject;
+			if (json == null)
+				throw new Exception("Unable to deserialize"); //TODO get a better exception
+
+			DeserializeDataGraphFromJson(json,serGraph);
+		}
+
+		private void DeserializeDataGraphFromJson(JsonObject json, Graph serGraph)
+		{
 			if (json == null)
 				throw new Exception("Unable to deserialize"); //TODO get a better exception
 

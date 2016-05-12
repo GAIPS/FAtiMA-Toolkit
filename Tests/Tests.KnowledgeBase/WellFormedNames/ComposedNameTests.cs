@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using KnowledgeBase.WellFormedNames;
-using NUnit.Framework;
-
-namespace Tests.KnowledgeBase.WellFormedNames
+﻿namespace Tests.KnowledgeBase.WellFormedNames
 {
 	/*
     [TestFixture]

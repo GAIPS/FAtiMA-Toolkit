@@ -126,4 +126,16 @@
   <data name="MainFormTitle" xml:space="preserve">
     <value>Emotional Decision Making</value>
   </data>
+  <data name="EditConditionFormTitle" xml:space="preserve">
+    <value>Edit Condition</value>
+  </data>
+  <data name="AddReactionFormTitle" xml:space="preserve">
+    <value>Add Reaction</value>
+  </data>
+  <data name="EditReactionFormTitle" xml:space="preserve">
+    <value>Edit Reaction</value>
+  </data>
+  <data name="UpdateButtonLabel" xml:space="preserve">
+    <value>Update</value>
+  </data>
 </root>

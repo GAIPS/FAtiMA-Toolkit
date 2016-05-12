@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
 using KnowledgeBase.DTOs.Conditions;
@@ -10,20 +9,20 @@ namespace EmotionalAppraisalWF
     public partial class AddOrEditConditionForm : Form
     {
         private AppraisalRulesVM _appraisalRulesVM;
-        private ConditionDTO _conditionToEditDTO;
+        private string _conditionToEdit;
         
-        public AddOrEditConditionForm(AppraisalRulesVM appraisalRulesVm, ConditionDTO conditionToEdit = null)
+        public AddOrEditConditionForm(AppraisalRulesVM appraisalRulesVm, string conditionToEdit = null)
         {
             InitializeComponent();
 
             _appraisalRulesVM = appraisalRulesVm;
-            _conditionToEditDTO = conditionToEdit;
+            _conditionToEdit = conditionToEdit;
         
             if (conditionToEdit != null)
             {
                 this.Text = Resources.EditConditionEventFormTitle;
                 this.addOrEditButton.Text = Resources.UpdateButtonLabel;
-                this.textBoxEvent.Text = conditionToEdit.Condition;
+                this.textBoxEvent.Text = conditionToEdit;
             }
         }
 
@@ -31,13 +30,11 @@ namespace EmotionalAppraisalWF
         {
             try
             {
-                var newCondition = new ConditionDTO
+	            var newCondition = textBoxEvent.Text;
+
+				if (_conditionToEdit != null)
                 {
-                    Condition = textBoxEvent.Text
-                };
-                if (_conditionToEditDTO != null)
-                {
-                    _appraisalRulesVM.UpdateCondition(_conditionToEditDTO, newCondition);
+                    _appraisalRulesVM.UpdateCondition(_conditionToEdit, newCondition);
                 }
                 else
                 {

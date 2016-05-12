@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Windows.Forms;
 using AutobiographicMemory;
 using AutobiographicMemory.DTOs;
-using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
-using KnowledgeBase;
 
 namespace EmotionalAppraisalWF
 {
@@ -24,7 +19,7 @@ namespace EmotionalAppraisalWF
             _autobiographicalMemoryVm = amVM;
             _eventToEdit = eventToEdit;
 
-            comboBoxEventType.DataSource = _autobiographicalMemoryVm.EventTypes;
+            comboBoxEventType.DataSource = AutobiographicalMemoryVM.EventTypes;
             
             if (eventToEdit != null)
             {

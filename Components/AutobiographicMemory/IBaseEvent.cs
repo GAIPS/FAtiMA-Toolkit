@@ -6,7 +6,7 @@ namespace AutobiographicMemory
 {
 	public interface IBaseEvent
 	{
-		Name EventType { get; }
+		Name Type { get; }
 		uint Id { get; }
 		Name EventName { get; }
 		ulong Timestamp { get; }

@@ -31,11 +31,11 @@ namespace RolePlayCharacterWF
                 _saveFileName = args[1];
                 try
                 {
-                    _rpcAsset = RolePlayCharacterAsset.LoadFromFile((args[1]));
-                    if (_rpcAsset.ErrorOnLoad != null)
-                    {
-                        MessageBox.Show(_rpcAsset.ErrorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+	                string error;
+                    _rpcAsset = RolePlayCharacterAsset.LoadFromFile(args[1],out error);
+					if(error!=null)
+						MessageBox.Show(error, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
                     Reset(false);
                 }
                 catch (Exception ex)
@@ -85,10 +85,7 @@ namespace RolePlayCharacterWF
             }
             try
             {
-                using (var file = File.Create(_saveFileName))
-                {
-                    _rpcAsset.SaveToFile(file);
-                }
+				_rpcAsset.SaveToFile(_saveFileName);
                 this.Text = Resources.MainFormTitle + " - " + _saveFileName;
             }
             catch (Exception ex)
@@ -132,13 +129,13 @@ namespace RolePlayCharacterWF
             {
                 try
                 {
-                    _rpcAsset = RolePlayCharacterAsset.LoadFromFile(ofd.FileName);
+	                string error;
+                    _rpcAsset = RolePlayCharacterAsset.LoadFromFile(ofd.FileName,out error);
                     _saveFileName = ofd.FileName;
-                    if (_rpcAsset.ErrorOnLoad != null)
-                    {
-                        MessageBox.Show(_rpcAsset.ErrorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    Reset(false);
+					if(error!=null)
+						MessageBox.Show(error, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+					Reset(false);
                 }
                 catch (Exception ex)
                 {

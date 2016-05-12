@@ -6,6 +6,6 @@ namespace SocialImportance.DTOs
 	public class ClaimDTO
 	{
 		public string ActionTemplate;
-		public float ClaimSI;
+		public uint ClaimSI;
 	}
 }

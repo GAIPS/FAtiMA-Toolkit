@@ -34,7 +34,6 @@ namespace Tests.KnowledgeBase.WellFormedNames
 		[TestCase("[x-93]")]
 		[TestCase("Likes([x], 10.7654e10)")]
 		[TestCase(Name.UNIVERSAL_STRING)]
-		[TestCase(Name.AGENT_STRING)]
 		[TestCase(Name.SELF_STRING)]
 		public void Parse_CorrectNameString_NewName(string nameString)
         {
@@ -124,7 +123,7 @@ namespace Tests.KnowledgeBase.WellFormedNames
         public void ApplyPerspective_NameWithAgentName_ClonedNameWithSelf(string nameString, string namePerspective, string resultName)
         {
             var name = Name.BuildName(nameString);
-            var clonedName = name.ApplyPerspective(namePerspective);
+            var clonedName = name.ApplyPerspective((Name)namePerspective);
             Assert.That(clonedName.ToString() == resultName);
             Assert.That(!ReferenceEquals(name,clonedName));
         }
@@ -135,7 +134,7 @@ namespace Tests.KnowledgeBase.WellFormedNames
         public void RemovePerspective_NameWithSELF_ClonedNameWithAgentName(string nameString, string namePerspective, string resultName)
         {
             var name = Name.BuildName(nameString);
-            var clonedName = name.RemovePerspective(namePerspective);
+            var clonedName = name.RemovePerspective((Name)namePerspective);
             Assert.That(clonedName.ToString() == resultName);
             Assert.That(!ReferenceEquals(name, clonedName));
         }
