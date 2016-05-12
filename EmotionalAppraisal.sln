@@ -59,6 +59,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDARecognitionWF", "GUI\EDA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealTimeEmotionRecognition", "RealTimeEmotionRecognition\RealTimeEmotionRecognition.csproj", "{CC3A5863-E579-4D38-9817-5DC1744703F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechEmotionRecognition", "SpeechEmotionRecognition\SpeechEmotionRecognition.csproj", "{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication1", "ConsoleApplication1\ConsoleApplication1.csproj", "{35C9984B-ED8C-461D-9FF8-4F153BB251E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextEmotionRecognition", "TextEmotionRecognition\TextEmotionRecognition.csproj", "{D6424009-17FD-4BA3-8F97-2069BE13309C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionRecognitionWF", "GUI\EmotionRecognitionWF\EmotionRecognitionWF.csproj", "{72DC878A-DC05-4828-8E84-560D3B4C5F0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -161,6 +169,22 @@ Global
 		{CC3A5863-E579-4D38-9817-5DC1744703F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC3A5863-E579-4D38-9817-5DC1744703F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC3A5863-E579-4D38-9817-5DC1744703F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35C9984B-ED8C-461D-9FF8-4F153BB251E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35C9984B-ED8C-461D-9FF8-4F153BB251E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35C9984B-ED8C-461D-9FF8-4F153BB251E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35C9984B-ED8C-461D-9FF8-4F153BB251E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72DC878A-DC05-4828-8E84-560D3B4C5F0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72DC878A-DC05-4828-8E84-560D3B4C5F0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72DC878A-DC05-4828-8E84-560D3B4C5F0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72DC878A-DC05-4828-8E84-560D3B4C5F0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -183,5 +207,6 @@ Global
 		{C971A59A-2DD0-4396-AB70-7CBAC20D6CC9} = {9285D50F-C051-467D-AB2D-165963753EA5}
 		{E011D502-5C0F-4A3F-9F1A-337FF025EB48} = {6FDA1219-9D9E-489F-A258-B797FED50614}
 		{1CF85D83-9922-4C4C-BC0F-47E6A01B5FEC} = {391C60E4-92CE-4EC7-BA86-48D8316365FA}
+		{72DC878A-DC05-4828-8E84-560D3B4C5F0F} = {391C60E4-92CE-4EC7-BA86-48D8316365FA}
 	EndGlobalSection
 EndGlobal

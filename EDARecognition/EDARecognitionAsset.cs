@@ -4,12 +4,16 @@ using System.Linq;
 using System.Diagnostics;
 using System;
 using System.IO;
+using RealTimeEmotionRecognition;
 
 namespace EDARecognition
 {
-    public class EDARecognitionAsset : BaseAsset
+    public class EDARecognitionAsset : BaseAsset, IAffectRecognitionAsset
     {
         private OpenSignalsSocket Socket { get; set; }
+
+        public const float AVERAGE_SCL = 1.801015f;
+        public const float STD_SCL = 0.509811f;
 
         public float SkinConductanceLevel { get; private set; }
         public float SkinConductanceResponse { get; private set; }
@@ -23,11 +27,13 @@ namespace EDARecognition
         public float StandardSCL { get { return (this.SkinConductanceLevel - this.SCLMinBaseline) / (this.SCLMaxBaseline - this.SCLMinBaseline); } }
         public float StandardSCR { get { return this.SkinConductanceResponse / this.SCRMaxBaseline; } }
 
-        public float SCL_ZScore { get { return this.SCLSamples.MovingZScore; } }
+        public float SCL_ZScore { get { return (this.SkinConductanceLevel - AVERAGE_SCL) / STD_SCL; } }
         public float SCR_ZScore { get { return this.SCRSamples.MovingZScore; } }
 
         public float SCL_MovingAverage { get { return this.SCLSamples.MovingAverage; } }
         public float SCR_MovingAverage { get { return this.SCRSamples.MovingAverage; } }
+
+        public float Arousal { get { return this.SCL_ZScore * 0.2f + 0.5f; } }
 
         public bool Connected { get { return this.Socket.SocketReady; } }
 
@@ -35,6 +41,13 @@ namespace EDARecognition
 
         public bool LogActive { get; set; }
 
+        public string Name
+        {
+            get
+            {
+                return "EDARecognition";
+            }
+        }
 
         private StreamWriter logWriter;
         private Stopwatch baselineWatch;
@@ -187,6 +200,23 @@ namespace EDARecognition
                 }
                 else this.SCRMaxBaseline = 0;
             }
+        }
+
+        public IEnumerable<AffectiveInformation> GetSample()
+        {
+            var arousal = this.Arousal;
+            if(arousal > 1)
+            {
+                arousal = 1;
+            }
+            else if (arousal < 0)
+            {
+                arousal = 0;
+            }
+            return new List<AffectiveInformation>
+            {
+                new AffectiveInformation { Name = "arousal", Score = arousal }
+            };
         }
     }
 }

@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{35C9984B-ED8C-461D-9FF8-4F153BB251E9}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EDARecognition</RootNamespace>
-    <AssemblyName>EDARecognition</AssemblyName>
+    <RootNamespace>ConsoleApplication1</RootNamespace>
+    <AssemblyName>ConsoleApplication1</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -43,15 +46,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EDARecognitionAsset.cs" />
-    <Compile Include="OpenSignalsSocket.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MovingSampleSet.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\RealTimeEmotionRecognition\RealTimeEmotionRecognition.csproj">
-      <Project>{cc3a5863-e579-4d38-9817-5dc1744703f3}</Project>
-      <Name>RealTimeEmotionRecognition</Name>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SpeechEmotionRecognition\SpeechEmotionRecognition.csproj">
+      <Project>{284b89e5-85fb-4b3e-bfb7-8bd871a1a230}</Project>
+      <Name>SpeechEmotionRecognition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TextEmotionRecognition\TextEmotionRecognition.csproj">
+      <Project>{d6424009-17fd-4ba3-8f97-2069be13309c}</Project>
+      <Name>TextEmotionRecognition</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

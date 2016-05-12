@@ -1,37 +1,183 @@
 ﻿using System;
+using System.Text;
+using AssetPackage;
+using System.Net;
+using System.IO;
+using System.Threading.Tasks;
+using RealTimeEmotionRecognition;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AssetPackage;
 
-//namespace SpeechEmotionRecognition
-//{
-//    public class SpeechEmotionRecognitionAsset : BaseAsset
-//    {
-//        public SpeechEmotionRecognitionAsset()
-//        {
-//        }
+namespace SpeechEmotionRecognition
+{
+    public class SpeechEmotionRecognitionAsset : BaseAsset, IAffectRecognitionAsset
+    {
+        //public List<Action<IEnumerable<AffectiveInformation>>> EmotionUpdateActions { get; private set; }
 
-//        public void PlaceHolderMethod()
-//        {
-//            string request = "empty";
-//            Dictionary<string, string> headers = new Dictionary<string, string>();
+        public float DecayWindow { get; set; }
+        private IEnumerable<AffectiveInformation> CurrentSample;
 
-//            headers["Authorization"] = "Basic " + System.Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes("username:password"));
-//            headers["Content-Type"] = "application/xml";
+        private DateTime SampleTime { get; set; }
 
-//            WWW www = new WWW("https://www.l2f.inesc-id.pt/spa/services/dialogAct", System.Text.Encoding.ASCII.GetBytes(request), headers);
-//            yield return www;
-//            if (www.error != null)
-//            {
-//                yield break;
-//            }
+        public string Name
+        {
+            get
+            {
+                return "SpeechEmotionRecognition";
+            }
+        }
 
-//            string o = www.text;
-//            o = o.Remove(0, o.IndexOf("<result>") + 8);
-//            o = o.Remove(o.IndexOf("</result>"), o.Length - o.IndexOf("</result>") - 1);
+        public SpeechEmotionRecognitionAsset()
+        {
+            //this.EmotionUpdateActions = new List<Action<IEnumerable<AffectiveInformation>>>();
+            this.DecayWindow = 5.0f;
+            this.CurrentSample = new List<AffectiveInformation>();
             
-//        }
-//    }
-//}
+        }
+
+        public IEnumerable<AffectiveInformation> ProcessSpeech(byte[] speech)
+        {
+            string result;
+
+            var request = this.CreateRequest(speech);
+
+            try
+            {
+                WebResponse response = request.GetResponse();
+
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+                result = reader.ReadToEnd();
+                reader.Close();
+
+
+                result = result.Remove(0, result.IndexOf("<result>") + 8);
+                result = result.Remove(result.IndexOf("</result>"), result.Length - result.IndexOf("</result>") - 1);
+
+                var finalResult = result.Split(':')[2].Split(' ')[0];
+
+                if (finalResult.StartsWith("Angry"))
+                {
+                    this.CurrentSample = new List<AffectiveInformation> { new AffectiveInformation { Name = "Angry", Score = 1.0f } };
+                }
+                else
+                {
+                    this.CurrentSample = new List<AffectiveInformation> { new AffectiveInformation { Name = "Angry", Score = 0.0f } };
+                }
+
+                this.SampleTime = DateTime.Now;
+
+                //foreach(var action in this.EmotionUpdateActions)
+                //{
+                //    action.Invoke(output);
+                //}
+
+                return this.CurrentSample;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        public async Task<IEnumerable<AffectiveInformation>> ProcessSpeechAsync(byte[] speech)
+        {
+            string result;
+
+            var request = this.CreateRequest(speech);
+
+            try
+            {
+                WebResponse response = await request.GetResponseAsync();
+                
+                StreamReader reader = new StreamReader(response.GetResponseStream());
+                result = reader.ReadToEnd();
+                reader.Close();
+                
+
+                result = result.Remove(0, result.IndexOf("<result>") + 8);
+                result = result.Remove(result.IndexOf("</result>"), result.Length - result.IndexOf("</result>") - 1);
+
+                var finalResult = result.Split(':')[2].Split(' ')[0];
+
+                if (finalResult.StartsWith("angry"))
+                {
+                    this.CurrentSample = new List<AffectiveInformation> { new AffectiveInformation { Name = "angry", Score = 1.0f } };
+                }
+                else
+                {
+                    this.CurrentSample = new List<AffectiveInformation> { new AffectiveInformation { Name = "angry", Score = 0.0f } };
+                }
+
+                this.SampleTime = DateTime.Now;
+
+                //foreach (var action in this.EmotionUpdateActions)
+                //{
+                //    action.Invoke(output);
+                //}
+
+                return this.CurrentSample;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
+        private HttpWebRequest CreateRequest(byte[] speech)
+        {
+            HttpWebRequest request = WebRequest.Create(new Uri("https://www.l2f.inesc-id.pt/spa/services/emotionDetection")) as HttpWebRequest;
+            request.Method = "POST";
+            request.ContentType = "application/xml";
+            request.Headers["Authorization"] = "Basic " + System.Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes("joao.dias@gaips.inesc-id.pt:rage2016"));
+            request.PreAuthenticate = true;
+
+            StringBuilder builder = new StringBuilder();
+            builder.Append("<root><audio>");
+            builder.Append(System.Convert.ToBase64String(speech));
+            builder.Append("</audio></root>");
+
+            byte[] byteData = Encoding.UTF8.GetBytes(builder.ToString());
+
+            request.ContentLength = byteData.Length;
+
+            using (Stream postStream = request.GetRequestStream())
+            {
+                postStream.Write(byteData, 0, byteData.Length);
+                postStream.Flush();
+            }
+
+            return request;
+        }
+
+        
+
+        public async void Test()
+        {
+            IEnumerable<AffectiveInformation> result;
+
+            FileStream speechTestFile = File.Open("D:\\Research\\EU Projects\\RAGE\\WP 2\\Gravacao.wav",FileMode.Open);
+            byte[] speech = new byte[speechTestFile.Length];
+            speechTestFile.Read(speech, 0, speech.Length);
+
+            result = await this.ProcessSpeechAsync(speech);
+
+            speechTestFile = File.Open("D:\\Research\\EU Projects\\RAGE\\WP 2\\anger.wav", FileMode.Open);
+            speech = new byte[speechTestFile.Length];
+            speechTestFile.Read(speech, 0, speech.Length);
+
+            result = await this.ProcessSpeechAsync(speech);
+
+            return;
+        }
+
+        public IEnumerable<AffectiveInformation> GetSample()
+        {
+            if (this.CurrentSample.Count() > 0 && (DateTime.Now - this.SampleTime).Seconds > this.DecayWindow)
+            {
+                this.CurrentSample = new List<AffectiveInformation>();
+            }
+
+            return this.CurrentSample;
+        }
+    }
+}

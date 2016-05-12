@@ -46,6 +46,15 @@
     <Compile Include="SpeechEmotionRecognitionAsset.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RealTimeEmotionRecognition\RealTimeEmotionRecognition.csproj">
+      <Project>{cc3a5863-e579-4d38-9817-5dc1744703f3}</Project>
+      <Name>RealTimeEmotionRecognition</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
