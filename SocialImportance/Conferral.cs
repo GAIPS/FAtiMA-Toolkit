@@ -8,7 +8,7 @@ using SocialImportance.DTOs;
 namespace SocialImportance
 {
 	[Serializable]
-	public class Conferral : BaseActionDefinition
+	internal class Conferral : BaseActionDefinition
 	{
 		public uint ConferralSI { get; set; }
 

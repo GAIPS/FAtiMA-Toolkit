@@ -63,8 +63,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealTimeEmotionRecognition"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechEmotionRecognition", "SpeechEmotionRecognition\SpeechEmotionRecognition.csproj", "{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApplication1", "ConsoleApplication1\ConsoleApplication1.csproj", "{35C9984B-ED8C-461D-9FF8-4F153BB251E9}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextEmotionRecognition", "TextEmotionRecognition\TextEmotionRecognition.csproj", "{D6424009-17FD-4BA3-8F97-2069BE13309C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionRecognitionWF", "GUI\EmotionRecognitionWF\EmotionRecognitionWF.csproj", "{72DC878A-DC05-4828-8E84-560D3B4C5F0F}"
@@ -179,10 +177,6 @@ Global
 		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Release|Any CPU.Build.0 = Release|Any CPU
-		{35C9984B-ED8C-461D-9FF8-4F153BB251E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35C9984B-ED8C-461D-9FF8-4F153BB251E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35C9984B-ED8C-461D-9FF8-4F153BB251E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35C9984B-ED8C-461D-9FF8-4F153BB251E9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Release|Any CPU.ActiveCfg = Release|Any CPU

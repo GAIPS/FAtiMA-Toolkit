@@ -320,7 +320,7 @@ namespace KnowledgeBase
 			if (n != null)
 				return n.Cast<TResult>();
 
-			throw new InvalidCastException(string.Format("Unable to convert {0} to {1}", value.ValueType, typeof(TResult)));
+			throw new InvalidCastException($"Unable to convert {value.ValueType} to {typeof (TResult)}");
 		}
 
 		public abstract bool Equals(PrimitiveValue other);

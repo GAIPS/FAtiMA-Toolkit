@@ -298,8 +298,7 @@ namespace KnowledgeBase.WellFormedNames
 
 		/// <summary>
 		/// Apply a transformation function to this Name.
-		/// 
-		/// The function will receive every term of this name,
+		///  The function will receive every term of this name,
 		/// and should return a name to be swapped with the old one.
 		/// </summary>
 		/// <param name="transformFunction">The function we want to apply to this Name.</param>

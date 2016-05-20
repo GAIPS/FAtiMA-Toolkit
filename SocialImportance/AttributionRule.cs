@@ -6,7 +6,7 @@ using SocialImportance.DTOs;
 namespace SocialImportance
 {
 	[Serializable]
-	public class AttributionRule
+	internal class AttributionRule
 	{
 		public Name Target { get;}
 		public int Value { get; }
