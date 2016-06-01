@@ -8,6 +8,7 @@ using System.Linq;
 using AutobiographicMemory;
 using AutobiographicMemory.DTOs;
 using EmotionalAppraisal.DTOs;
+using GAIPS.Rage;
 using GAIPS.Serialization;
 using KnowledgeBase;
 using KnowledgeBase.DTOs.Conditions;
@@ -20,24 +21,8 @@ namespace EmotionalAppraisal
 	/// Main class of the Emotional Appraisal Asset.
 	/// </summary>
 	[Serializable]
-	public sealed partial class EmotionalAppraisalAsset : BaseAsset, ICustomSerialization
+	public sealed partial class EmotionalAppraisalAsset : LoadableAsset<EmotionalAppraisalAsset>, ICustomSerialization
 	{
-		/// <summary>
-		/// Static method used to load an Emotional Appraisal Asset state from a file.
-		/// </summary>
-		/// <param name="filename">The file path from which to load the asset.</param>
-		/// <returns>The loaded instance of a Emotional Appraisal Asset.</returns>
-        public static EmotionalAppraisalAsset LoadFromFile(string filename)
-        {
-            EmotionalAppraisalAsset ea;
-            using (var f = File.Open(filename, FileMode.Open, FileAccess.Read))
-            {
-                var serializer = new JSONSerializer();
-                ea = serializer.Deserialize<EmotionalAppraisalAsset>(f);
-            }
-            return ea;
-        }
-
         private KB m_kb;
         private AM m_am;
         private ConcreteEmotionalState m_emotionalState;
@@ -135,6 +120,11 @@ namespace EmotionalAppraisal
 	        get{ return m_emotionalState.DefaultEmotionDisposition.ToDto();}
 	        set { m_emotionalState.DefaultEmotionDisposition = new EmotionDisposition(value); }
 	    }
+
+		protected override string OnAssetLoaded()
+		{
+			return null;
+		}
 
 		/// <summary>
 		/// Returns the current set of active emotions
@@ -477,16 +467,6 @@ namespace EmotionalAppraisal
 			var p = (Name) perspective;
 			this.Kb.Tell(Name.BuildName(name), null, p);
         }
-
-		/// <summary>
-		/// Save the asset in a data stream
-		/// </summary>
-		/// <param name="stream">the stream to which to save the asset</param>
-		public void SaveToFile(Stream stream)
-		{
-			var serializer = new JSONSerializer();
-			serializer.Serialize(stream, this);
-		}
 
 		private void UpdateEmotions(IAppraisalFrame frame)
 		{

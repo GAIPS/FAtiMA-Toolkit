@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using EmotionalAppraisal;
 using EmotionalDecisionMaking;
+using GAIPS.Rage;
 using RolePlayCharacter;
 using RolePlayCharacterWF.Properties;
 
@@ -32,7 +33,7 @@ namespace RolePlayCharacterWF
                 try
                 {
 	                string error;
-                    _rpcAsset = RolePlayCharacterAsset.LoadFromFile(args[1],out error);
+                    _rpcAsset = RolePlayCharacterAsset.LoadFromFile(LocalStorageProvider.Instance, args[1],out error);
 					if(error!=null)
 						MessageBox.Show(error, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -85,7 +86,7 @@ namespace RolePlayCharacterWF
             }
             try
             {
-				_rpcAsset.SaveToFile(_saveFileName);
+				_rpcAsset.SaveToFile(LocalStorageProvider.Instance,_saveFileName);
                 this.Text = Resources.MainFormTitle + " - " + _saveFileName;
             }
             catch (Exception ex)
@@ -130,7 +131,7 @@ namespace RolePlayCharacterWF
                 try
                 {
 	                string error;
-                    _rpcAsset = RolePlayCharacterAsset.LoadFromFile(ofd.FileName,out error);
+                    _rpcAsset = RolePlayCharacterAsset.LoadFromFile(LocalStorageProvider.Instance, ofd.FileName,out error);
                     _saveFileName = ofd.FileName;
 					if(error!=null)
 						MessageBox.Show(error, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -162,7 +163,7 @@ namespace RolePlayCharacterWF
             {
                 try
                 {
-                    var ea = EmotionalAppraisalAsset.LoadFromFile(ofd.FileName);
+                    var ea = EmotionalAppraisalAsset.LoadFromFile(LocalStorageProvider.Instance,ofd.FileName);
                     _rpcAsset.EmotionalAppraisalAssetSource = ofd.FileName;
                     textBoxEmotionalAppraisalSource.Text = ofd.FileName;
                 }
@@ -180,7 +181,7 @@ namespace RolePlayCharacterWF
             {
                 try
                 {
-                    var edm = EmotionalDecisionMakingAsset.LoadFromFile(ofd.FileName);
+                    var edm = EmotionalDecisionMakingAsset.LoadFromFile(LocalStorageProvider.Instance, ofd.FileName);
                     _rpcAsset.EmotionalDecisionMakingSource = ofd.FileName;
                     textBoxEmotionalDecisionMakingSource.Text = ofd.FileName;
                 }

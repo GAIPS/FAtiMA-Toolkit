@@ -51,7 +51,7 @@ namespace RolePlayCharacter
 			{
 				try
 				{
-					_emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(ToAbsolutePath(EmotionalAppraisalAssetSource));
+					_emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(CurrentStorageProvider, ToAbsolutePath(EmotionalAppraisalAssetSource));
 				}
 				catch (Exception)
 				{
@@ -65,7 +65,7 @@ namespace RolePlayCharacter
 			{
 				try
 				{
-					_emotionalDecisionMakingAsset = EmotionalDecisionMakingAsset.LoadFromFile(ToAbsolutePath(EmotionalDecisionMakingSource));
+					_emotionalDecisionMakingAsset = EmotionalDecisionMakingAsset.LoadFromFile(CurrentStorageProvider,ToAbsolutePath(EmotionalDecisionMakingSource));
 				}
 				catch (Exception)
 				{
