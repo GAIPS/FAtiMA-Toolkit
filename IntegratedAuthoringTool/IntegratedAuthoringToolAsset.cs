@@ -63,7 +63,7 @@ namespace IntegratedAuthoringTool
 
 				}
 			}
-		    catch (Exception ex)
+		    catch (Exception)
 		    {
 			    return $"An error occured when trying to load the RPC \"{current.Key}\" at \"{currentAbsolutePath}\". Please check if the path is correct.";
 			}

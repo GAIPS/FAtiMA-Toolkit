@@ -22,5 +22,7 @@ namespace ActionLibrary
 		/// defined in the correspondent ActionDefinitionDTO.
 		/// </summary>
 		IList<Name> Parameters { get; }
+
+		float Utility { get; }
 	}
 }

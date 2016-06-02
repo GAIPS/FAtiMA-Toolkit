@@ -169,7 +169,7 @@ namespace EmotionalDecisionMaking
 		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			var defaultActionCooldown = ReactiveActions.DefaultActionCooldown;
-			dataHolder.SetValue("DefaultActionCooldown", defaultActionCooldown);
+			dataHolder.SetValue("DefaultActionPriority", defaultActionCooldown);
 			context.PushContext();
 			context.Context = defaultActionCooldown;
 			dataHolder.SetValue("ActionTendencies", ReactiveActions.GetAllActionTendencies().ToArray());
@@ -178,7 +178,7 @@ namespace EmotionalDecisionMaking
 
 		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
-			ReactiveActions.DefaultActionCooldown = dataHolder.GetValue<float>("DefaultActionCooldown");
+			ReactiveActions.DefaultActionCooldown = dataHolder.GetValue<float>("DefaultActionPriority");
 			context.PushContext();
 			context.Context = ReactiveActions.DefaultActionCooldown;
 			var ats = dataHolder.GetValue<ActionTendency[]>("ActionTendencies");

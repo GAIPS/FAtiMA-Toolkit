@@ -82,10 +82,12 @@ namespace RolePlayCharacter
 			CharacterBody = body;
         }
         
-        public IEnumerable<IAction> PerceptionActionLoop(IEnumerable<string> events)
+        public IAction PerceptionActionLoop(IEnumerable<string> events)
         {
             _emotionalAppraisalAsset.AppraiseEvents(events);
-			return _emotionalDecisionMakingAsset.Decide();
+			var possibleActions = _emotionalDecisionMakingAsset.Decide();
+
+	        return possibleActions.OrderByDescending(a => a.Utility).FirstOrDefault();
         }
 
 		public IActiveEmotion GetStrongestActiveEmotion()

@@ -15,11 +15,9 @@ namespace Tests.EmotionalDecisionMaking
 			var r = new ReactiveActions();
 
 			var d = new ActionTendency((Name)"Speak([speachType])",(Name)"[x]");
-			d.ActivationCooldown = 2;
 			r.AddActionTendency(d);
 
 			d = new ActionTendency((Name)"Speak(formal)",(Name)"[x]");
-			d.ActivationCooldown = 5;
 			r.AddActionTendency(d);
 			return r;
 		}

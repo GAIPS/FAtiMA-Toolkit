@@ -84,6 +84,8 @@ namespace ActionLibrary
 				return null;
 			
 			var a = new Action(actionName.GetTerms(), targetName);
+			float p = CalculateActionUtility(a);
+			a.Utility = p;
 			OnActionGenerated(a);
 			return a;
 		}
@@ -94,6 +96,8 @@ namespace ActionLibrary
 		}
 
 		protected virtual void OnActionGenerated(IAction action){}
+
+		protected abstract float CalculateActionUtility(IAction a);
 
 		public Name GetActionTemplate()
 		{

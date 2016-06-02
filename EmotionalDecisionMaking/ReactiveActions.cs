@@ -20,7 +20,7 @@ namespace EmotionalDecisionMaking
 
 		public ReactiveActions()
 		{
-			m_actionTendencies = new ActionSelector<ActionTendency>((tendency,p, set) => !tendency.IsCoolingdown);
+			m_actionTendencies = new ActionSelector<ActionTendency>(null);
 		}
 
 		public void AddActionTendency(ActionTendency at)
