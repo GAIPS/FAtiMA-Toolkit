@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{35C9984B-ED8C-461D-9FF8-4F153BB251E9}</ProjectGuid>
+    <ProjectGuid>{43E80CC4-1797-42B0-9A4C-E1D0AA297737}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ConsoleApplication1</RootNamespace>
-    <AssemblyName>ConsoleApplication1</AssemblyName>
+    <RootNamespace>EmotionalAppraisalTutorial</RootNamespace>
+    <AssemblyName>EmotionalAppraisalTutorial</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="RageAssetManager">
-      <HintPath>..\DllDependencies\RageAssetManager.dll</HintPath>
+      <HintPath>..\..\..\rage-emotional-appraisal-asset\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -53,13 +53,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SpeechEmotionRecognition\SpeechEmotionRecognition.csproj">
-      <Project>{284b89e5-85fb-4b3e-bfb7-8bd871a1a230}</Project>
-      <Name>SpeechEmotionRecognition</Name>
+    <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
+      <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
+      <Name>GAIPS.Rage</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TextEmotionRecognition\TextEmotionRecognition.csproj">
-      <Project>{d6424009-17fd-4ba3-8f97-2069be13309c}</Project>
-      <Name>TextEmotionRecognition</Name>
+    <ProjectReference Include="..\..\Components\SerializationUtilities\GAIPS.Serialization.csproj">
+      <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
+      <Name>GAIPS.Serialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\EmotionalAppraisal\EmotionalAppraisal.csproj">
+      <Project>{0a2a1ee9-bd5d-44aa-a22d-291612488f06}</Project>
+      <Name>EmotionalAppraisal</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
