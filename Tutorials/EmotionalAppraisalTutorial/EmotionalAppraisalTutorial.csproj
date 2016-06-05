@@ -53,6 +53,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Components\AutobiographicMemory\AutobiographicMemory.csproj">
+      <Project>{c1cc38c5-72f5-4545-b4f7-c65b2883909c}</Project>
+      <Name>AutobiographicMemory</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
       <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
       <Name>GAIPS.Rage</Name>

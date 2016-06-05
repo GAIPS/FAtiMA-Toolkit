@@ -233,8 +233,11 @@ namespace EmotionalDecisionMakingWF
 
 	    private void UpdateConditions(ReactionDTO reaction)
 	    {
-			_conditions.DataSource = reaction.Conditions.ConditionSet.Select(s => new ConditionHolder() {Condition = s}).ToArray();
-			_conditions.Refresh();
+	        if (reaction.Conditions.ConditionSet != null)
+	        {
+                _conditions.DataSource =  reaction.Conditions.ConditionSet.Select(s => new ConditionHolder() { Condition = s }).ToArray();
+                _conditions.Refresh();
+            }
 		}
 
 	    private void dataGridViewReactionConditions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)

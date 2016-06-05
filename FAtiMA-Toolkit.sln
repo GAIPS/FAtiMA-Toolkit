@@ -67,7 +67,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionRecognitionWF", "GUI
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tutorials", "Tutorials", "{2C13F768-C122-4B7F-A08A-9E8AB520F6D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalAppraisalTutorial", "Examples\EmotionalAppraisalTutorial\EmotionalAppraisalTutorial.csproj", "{43E80CC4-1797-42B0-9A4C-E1D0AA297737}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalAppraisalTutorial", "Tutorials\EmotionalAppraisalTutorial\EmotionalAppraisalTutorial.csproj", "{43E80CC4-1797-42B0-9A4C-E1D0AA297737}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalDecisionMakingTutorial", "Tutorials\EmotionalDecisionMakingTutorial\EmotionalDecisionMakingTutorial.csproj", "{CC6CD5AD-EFC5-4CD6-BF6D-FB33D5F186AF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -191,6 +193,10 @@ Global
 		{43E80CC4-1797-42B0-9A4C-E1D0AA297737}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43E80CC4-1797-42B0-9A4C-E1D0AA297737}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{43E80CC4-1797-42B0-9A4C-E1D0AA297737}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC6CD5AD-EFC5-4CD6-BF6D-FB33D5F186AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC6CD5AD-EFC5-4CD6-BF6D-FB33D5F186AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC6CD5AD-EFC5-4CD6-BF6D-FB33D5F186AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC6CD5AD-EFC5-4CD6-BF6D-FB33D5F186AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -216,5 +222,6 @@ Global
 		{1CF85D83-9922-4C4C-BC0F-47E6A01B5FEC} = {391C60E4-92CE-4EC7-BA86-48D8316365FA}
 		{72DC878A-DC05-4828-8E84-560D3B4C5F0F} = {391C60E4-92CE-4EC7-BA86-48D8316365FA}
 		{43E80CC4-1797-42B0-9A4C-E1D0AA297737} = {2C13F768-C122-4B7F-A08A-9E8AB520F6D2}
+		{CC6CD5AD-EFC5-4CD6-BF6D-FB33D5F186AF} = {2C13F768-C122-4B7F-A08A-9E8AB520F6D2}
 	EndGlobalSection
 EndGlobal
