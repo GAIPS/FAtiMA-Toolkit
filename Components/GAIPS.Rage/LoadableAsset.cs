@@ -63,15 +63,20 @@ namespace GAIPS.Rage
 
 		protected string ToRelativePath(string absolutePath)
 		{
-			if (m_assetFilepath == null)
+			if (string.IsNullOrEmpty(absolutePath))
+				return string.Empty;
+			if (string.IsNullOrEmpty(m_assetFilepath))
 				return absolutePath;
 			return CurrentStorageProvider.ToRelativePath(m_assetFilepath, absolutePath);
 		}
 
 		protected string ToAbsolutePath(string relativePath)
 		{
-			if (m_assetFilepath == null)
+			if (string.IsNullOrEmpty(relativePath))
+				return string.Empty;
+			if (string.IsNullOrEmpty(m_assetFilepath))
 				return relativePath;
+
 			return CurrentStorageProvider.ToAbsolutePath(m_assetFilepath, relativePath);
 		}
 	}

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Windows.Forms;
 using AutobiographicMemory.DTOs;
 using EmotionalAppraisal;
@@ -10,7 +9,7 @@ using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
 using Equin.ApplicationFramework;
 using GAIPS.Rage;
-using KnowledgeBase.DTOs.Conditions;
+using WFHelperLib;
 
 namespace EmotionalAppraisalWF
 {

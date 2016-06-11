@@ -52,9 +52,8 @@ namespace IntegratedAuthoringTool
 
 						foreach (var d in m_agentDialogues)
 						{
-							var validDialoguePropertyEvent =
-								$"Event({Constants.PROPERTY_CHANGE_EVENT},World,{VALID_DIALOGUE_PROPERTY}({d.CurrentState},{d.NextState},{d.Meaning},{d.Style}),True)";
-							pair.Value.RPCAsset.PerceptionActionLoop(new[] { validDialoguePropertyEvent });
+							var validDialoguePropertyName =$"{VALID_DIALOGUE_PROPERTY}({d.CurrentState},{d.NextState},{d.Meaning},{d.Style})";
+							pair.Value.RPCAsset.AddBelief(validDialoguePropertyName,"true");
 						}
 					}
 

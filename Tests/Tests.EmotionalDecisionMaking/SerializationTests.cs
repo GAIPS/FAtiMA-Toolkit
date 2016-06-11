@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using EmotionalDecisionMaking;
+using EmotionalDecisionMaking.DTOs;
 using GAIPS.Serialization;
-using KnowledgeBase.WellFormedNames;
 using NUnit.Framework;
 
 namespace Tests.EmotionalDecisionMaking
@@ -10,16 +10,13 @@ namespace Tests.EmotionalDecisionMaking
 	[TestFixture]
 	public class SerializationTests
 	{
-		private ReactiveActions BuildTestAsset()
+		private EmotionalDecisionMakingAsset BuildTestAsset()
 		{
-			var r = new ReactiveActions();
+			var asset = new EmotionalDecisionMakingAsset();
 
-			var d = new ActionTendency((Name)"Speak([speachType])",(Name)"[x]");
-			r.AddActionTendency(d);
-
-			d = new ActionTendency((Name)"Speak(formal)",(Name)"[x]");
-			r.AddActionTendency(d);
-			return r;
+			asset.AddReaction(new ReactionDTO() {Action = "Speak([speachType])", Target = "[x]"});
+			asset.AddReaction(new ReactionDTO() { Action = "Speak(formal)", Target = "[x]" });
+			return asset;
 		}
 
 		[TestCase]

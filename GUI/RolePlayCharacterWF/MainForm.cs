@@ -1,9 +1,5 @@
 ﻿using System;
-using System.IO;
 using System.Windows.Forms;
-using System.Diagnostics;
-using EmotionalAppraisal;
-using EmotionalDecisionMaking;
 using GAIPS.Rage;
 using RolePlayCharacter;
 using RolePlayCharacterWF.Properties;
@@ -13,9 +9,6 @@ namespace RolePlayCharacterWF
 {
     public partial class MainForm : Form
     {
-        private const string EMOTIONAL_APPRAISAL_AUTHORING_TOOL = "EmotionalAppraisalWF.exe";
-        private const string EMOTIONAL_DECISION_MAKING_AUTHORING_TOOL = "EmotionalDecisionMakingWF.exe";
-
         private RolePlayCharacterAsset _rpcAsset;
         private string _saveFileName;
 
@@ -61,12 +54,12 @@ namespace RolePlayCharacterWF
 
             textBoxCharacterName.Text = _rpcAsset.CharacterName;
             textBoxCharacterBody.Text = _rpcAsset.BodyName;
-            textBoxEmotionalAppraisalSource.Text = _rpcAsset.EmotionalAppraisalAssetSource;
-            textBoxEmotionalDecisionMakingSource.Text = _rpcAsset.EmotionalDecisionMakingSource;
+			eaAssetControl1.Path = _rpcAsset.EmotionalAppraisalAssetSource;
+			edmAssetControl1.Path = _rpcAsset.EmotionalDecisionMakingSource;
+	        siAssetControl1.Path = _rpcAsset.SocialImportanceAssetSource;
         }
 
-
-        private void saveHelper(bool newSaveFile)
+		private void saveHelper(bool newSaveFile)
         {
             if (newSaveFile)
             {
@@ -156,61 +149,87 @@ namespace RolePlayCharacterWF
             _rpcAsset.BodyName = textBoxCharacterBody.Text;
         }
 
-        private void buttonSetEmotionalAppraisalSource_Click(object sender, EventArgs e)
-        {
-            var ofd = new OpenFileDialog();
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    var ea = EmotionalAppraisalAsset.LoadFromFile(LocalStorageProvider.Instance,ofd.FileName);
-                    _rpcAsset.EmotionalAppraisalAssetSource = ofd.FileName;
-                    textBoxEmotionalAppraisalSource.Text = ofd.FileName;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message + "-" + ex.StackTrace, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
+		private void eaAssetControl1_OnPathChanged(object sender, EventArgs e)
+		{
+			_rpcAsset.EmotionalAppraisalAssetSource = eaAssetControl1.Path;
+		}
 
-        private void buttonSetEmotionalDecisionMakingSource_Click(object sender, EventArgs e)
-        {
-            var ofd = new OpenFileDialog();
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    var edm = EmotionalDecisionMakingAsset.LoadFromFile(LocalStorageProvider.Instance, ofd.FileName);
-                    _rpcAsset.EmotionalDecisionMakingSource = ofd.FileName;
-                    textBoxEmotionalDecisionMakingSource.Text = ofd.FileName;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message + "-" + ex.StackTrace, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
+		private void edmAssetControl1_OnPathChanged(object sender, EventArgs e)
+		{
+			_rpcAsset.EmotionalDecisionMakingSource = edmAssetControl1.Path;
+		}
 
-        private void buttonEditEmotionalAppraisal_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(textBoxEmotionalAppraisalSource.Text))
-            {
-                return;
-            }
+		private void siAssetControl1_OnPathChanged(object sender, EventArgs e)
+		{
+			_rpcAsset.SocialImportanceAssetSource = siAssetControl1.Path;
+		}
 
-            Process.Start(EMOTIONAL_APPRAISAL_AUTHORING_TOOL, "\"" + textBoxEmotionalAppraisalSource.Text + "\"");
-        }
 
-        private void buttonEditEmotionalDecisionMaking_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(textBoxEmotionalDecisionMakingSource.Text))
-            {
-                return;
-            }
+		//      private void buttonSetEmotionalAppraisalSource_Click(object sender, EventArgs e)
+		//      {
+		//          var ofd = new OpenFileDialog();
+		//          if (ofd.ShowDialog() == DialogResult.OK)
+		//          {
+		//              try
+		//              {
+		//                  var ea = EmotionalAppraisalAsset.LoadFromFile(LocalStorageProvider.Instance,ofd.FileName);
+		//                  _rpcAsset.EmotionalAppraisalAssetSource = ofd.FileName;
+		//                  textBoxEmotionalAppraisalSource.Text = ofd.FileName;
+		//              }
+		//              catch (Exception ex)
+		//              {
+		//                  MessageBox.Show(ex.Message + "-" + ex.StackTrace, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+		//              }
+		//          }
+		//      }
 
-            Process.Start(EMOTIONAL_DECISION_MAKING_AUTHORING_TOOL, "\"" +textBoxEmotionalDecisionMakingSource.Text + "\"");
-            
-        }
-    }
+		//      private void buttonSetEmotionalDecisionMakingSource_Click(object sender, EventArgs e)
+		//      {
+		//       var ofd = new OpenFileDialog();
+		//          if (ofd.ShowDialog() == DialogResult.OK)
+		//          {
+		//              try
+		//              {
+		//                  var edm = EmotionalDecisionMakingAsset.LoadFromFile(LocalStorageProvider.Instance, ofd.FileName);
+		//                  _rpcAsset.EmotionalDecisionMakingSource = ofd.FileName;
+		//                  textBoxEmotionalDecisionMakingSource.Text = ofd.FileName;
+		//              }
+		//              catch (Exception ex)
+		//              {
+		//                  MessageBox.Show(ex.Message + "-" + ex.StackTrace, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+		//              }
+		//          }
+		//      }
+
+		//      private void buttonEditEmotionalAppraisal_Click(object sender, EventArgs e)
+		//      {
+		//          if (string.IsNullOrEmpty(textBoxEmotionalAppraisalSource.Text))
+		//          {
+		//              return;
+		//          }
+
+		//          Process.Start(EMOTIONAL_APPRAISAL_AUTHORING_TOOL, "\"" + textBoxEmotionalAppraisalSource.Text + "\"");
+		//      }
+
+		//   private void buttonEditEmotionalDecisionMaking_Click(object sender, EventArgs e)
+		//   {
+		//    if (string.IsNullOrEmpty(textBoxEmotionalDecisionMakingSource.Text))
+		//    {
+		//	    return;
+		//    }
+
+		//    Process.Start(EMOTIONAL_DECISION_MAKING_AUTHORING_TOOL, "\"" + textBoxEmotionalDecisionMakingSource.Text + "\"");
+
+		//   }
+
+		//private void textBoxEmotionalAppraisalSource_TextChanged(object sender, EventArgs e)
+		//{
+		//	buttonEditEmotionalAppraisal.Enabled = !string.IsNullOrEmpty(textBoxEmotionalAppraisalSource.Text);
+		//}
+
+		//private void textBoxEmotionalDecisionMakingSource_TextChanged(object sender, EventArgs e)
+		//{
+		//	buttonEditEmotionalDecisionMaking.Enabled = !string.IsNullOrEmpty(textBoxEmotionalDecisionMakingSource.Text);
+		//}
+	}
 }
