@@ -28,9 +28,19 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
+			this.SuspendLayout();
+			// 
+			// MainForm
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.Text = "MainForm";
+			this.ClientSize = new System.Drawing.Size(814, 478);
+			this.EditorName = "Social Importance Editor";
+			this.Name = "MainForm";
+			this.Text = "";
+			this.ResumeLayout(false);
+			this.PerformLayout();
+
 		}
 
 		#endregion

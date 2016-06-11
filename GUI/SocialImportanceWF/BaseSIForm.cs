@@ -1,6 +1,6 @@
 ﻿using GAIPS.Rage;
 using SocialImportance;
-using WFHelperLib;
+using GAIPS.AssetEditorTools;
 
 namespace SocialImportanceWF
 {

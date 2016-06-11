@@ -84,10 +84,23 @@ namespace RolePlayCharacter
 		    if (conferralAction != null)
 			    sociallyAcceptedActions.Append(conferralAction);
 
-		    return sociallyAcceptedActions.OrderByDescending(a => a.Utility).FirstOrDefault();
+			return TakeBestActions(sociallyAcceptedActions).Shuffle().FirstOrDefault();
 	    }
 
-		public void Update()
+	    private static IEnumerable<IAction> TakeBestActions(IEnumerable<IAction> enumerable)
+	    {
+			float best = float.NegativeInfinity;
+		    foreach (var a in enumerable.OrderByDescending(a => a.Utility))
+		    {
+			    if (a.Utility < best)
+					break;
+
+				yield return a;
+			    best = a.Utility;
+		    }
+	    }
+
+	    public void Update()
         {
             _emotionalAppraisalAsset.Update();
         }

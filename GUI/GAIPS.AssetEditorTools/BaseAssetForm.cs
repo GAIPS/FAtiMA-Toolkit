@@ -1,22 +1,62 @@
 ﻿using System;
+using System.ComponentModel;
+using System.IO;
 using System.Windows.Forms;
 
-namespace WFHelperLib
+namespace GAIPS.AssetEditorTools
 {
 	public abstract partial class BaseAssetForm<T> : Form
 	{
-		private string _defaultWindowTitle;
-		private bool _wasModified = false;
+		private bool _wasModified;
+
+		[Description("The title name of the editor."),Category("Appearance")]
+		public string EditorName{get; set; }
 
 		protected BaseAssetForm()
 		{
 			InitializeComponent();
-			_defaultWindowTitle = Text;
 		}
 
-		private void BaseAssetForm_Load(object sender, EventArgs e)
+		private void BaseAssetForm_Shown(object sender, EventArgs e)
 		{
-			CreateNewAsset();
+			if(DesignMode)
+				return;
+
+			string[] args = Environment.GetCommandLineArgs();
+			if (args.Length <= 1)
+			{
+				CreateNewAsset();
+				return;
+			}
+
+			var fileName = args[1];
+			try
+			{
+				var fullPath = Path.GetFullPath(fileName);
+				if (File.Exists(fullPath))
+				{
+					if (!OpenAssetAtPath(fullPath))
+					{
+						CreateNewAsset();
+					}
+				}
+				else
+				{
+					CreateNewAsset();
+					SaveAssetToFile(CurrentAsset, fullPath);
+					_wasModified = false;
+					UpdateWindowTitle();
+				}
+			}
+			catch (Exception)
+			{
+				MessageBox.Show(
+					$"\"{fileName}\" is not a valid url path.\nPlease check the path parameter being passed to this application.",
+					"Invalid file path format", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+				CreateNewAsset();
+				return;
+			}
 		}
 
 		private void newToolStripMenuItem_Click(object sender, EventArgs e)
@@ -26,28 +66,15 @@ namespace WFHelperLib
 
 		private void openToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if(!AssetSaveModified())
+			if (!AssetSaveModified())
 				return;
 
 			var ofd = new OpenFileDialog();
-			ofd.Filter = GetAssetFileFilters()+"|All Files|*.*";
-			if(ofd.ShowDialog() != DialogResult.OK)
+			ofd.Filter = GetAssetFileFilters() + "|All Files|*.*";
+			if (ofd.ShowDialog() != DialogResult.OK)
 				return;
 
-			try
-			{
-				var a = LoadAssetFromFile(ofd.FileName);
-				CurrentAsset = a;
-				_wasModified = false;
-				UpdateWindowTitle();
-			}
-			catch (Exception ex)
-			{
-				MessageBox.Show($"{ex.Message}-{ex.StackTrace}", Resource.LoadFileErrorTitle, MessageBoxButtons.OK,MessageBoxIcon.Error);
-				return;
-			}
-
-			LoadAssetData(CurrentAsset);
+			OpenAssetAtPath(ofd.FileName);
 		}
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -92,7 +119,27 @@ namespace WFHelperLib
 		private void UpdateWindowTitle()
 		{
 			var path = GetAssetCurrentPath(CurrentAsset);
-			Text = _defaultWindowTitle + (string.IsNullOrEmpty(path) ? string.Empty : $" - {path}") + (_wasModified?"*":string.Empty);
+			Text = EditorName + (string.IsNullOrEmpty(path) ? string.Empty : $" - {path}") +
+			       (_wasModified ? "*" : string.Empty);
+		}
+
+		private bool OpenAssetAtPath(string path)
+		{
+			try
+			{
+				var a = LoadAssetFromFile(path);
+				CurrentAsset = a;
+				_wasModified = false;
+				UpdateWindowTitle();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show($"{ex.Message}-{ex.StackTrace}", Resource.LoadFileErrorTitle, MessageBoxButtons.OK,
+					MessageBoxIcon.Error);
+				return false;
+			}
+			LoadAssetData(CurrentAsset);
+			return true;
 		}
 
 		#region Protected Members
@@ -101,7 +148,7 @@ namespace WFHelperLib
 
 		protected void CreateNewAsset()
 		{
-			if(!AssetSaveModified())
+			if (!AssetSaveModified())
 				return;
 
 			CurrentAsset = CreateEmptyAsset();

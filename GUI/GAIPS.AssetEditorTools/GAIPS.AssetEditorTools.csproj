@@ -7,8 +7,8 @@
     <ProjectGuid>{C61FB19D-E715-4EB4-AFCA-27FF81A14777}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WFHelperLib</RootNamespace>
-    <AssemblyName>WFHelperLib</AssemblyName>
+    <RootNamespace>GAIPS.AssetEditorTools</RootNamespace>
+    <AssemblyName>GAIPS.AssetEditorTools</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

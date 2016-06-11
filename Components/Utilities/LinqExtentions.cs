@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Utilities
 {
@@ -29,13 +30,13 @@ namespace Utilities
 		public static IEnumerable<R> Zip<T1,T2,R>(this IEnumerable<T1> first, IEnumerable<T2> second, Func<T1, T2, R> zipper)
 		{
 			if (first == null)
-				throw new ArgumentNullException("first");
+				throw new ArgumentNullException(nameof(first));
 
 			if(second == null)
-				throw new ArgumentNullException("second");
+				throw new ArgumentNullException(nameof(second));
 
 			if(zipper == null)
-				throw new ArgumentNullException("zipper");
+				throw new ArgumentNullException(nameof(zipper));
 
 			using (var it1 = first.GetEnumerator())
 			{
@@ -113,12 +114,11 @@ namespace Utilities
 				bool first = true;
 				while (it.MoveNext())
 				{
-					if (first)
-						first = false;
-					else
+					if (!first)
 						builder.Append(separator);
+					first = false;
 
-					builder.Append(it.Current.ToString());
+					builder.Append(it.Current);
 				}
 			}
 			builder.Append(endBraquet);
@@ -137,6 +137,30 @@ namespace Utilities
 		public static string AggregateToString<T>(this IEnumerable<T> enumerable)
 		{
 			return AggregateToString(enumerable, ", ", string.Empty, string.Empty);
+		}
+
+		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> enumerable)
+		{
+			return Shuffle(enumerable, new Random());
+		}
+
+		public static IEnumerable<T> Shuffle<T>(this IEnumerable<T> enumerable, Random random)
+		{
+			if (enumerable == null) throw new ArgumentNullException(nameof(enumerable));
+			if (random == null) throw new ArgumentNullException(nameof(random));
+
+			return internal_shuffle(enumerable, random);
+		}
+
+		private static IEnumerable<T> internal_shuffle<T>(IEnumerable<T> enumerable, Random random)
+		{
+			var buffer = enumerable.ToArray();
+			for (int i = 0; i < buffer.Length; i++)
+			{
+				int j = random.Next(i, buffer.Length);
+				yield return buffer[j];
+				buffer[j] = buffer[i];
+			}
 		}
 	}
 }
