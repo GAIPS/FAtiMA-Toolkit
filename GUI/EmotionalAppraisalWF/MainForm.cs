@@ -8,8 +8,9 @@ using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
 using Equin.ApplicationFramework;
-using GAIPS.Rage;
 using GAIPS.AssetEditorTools;
+using GAIPS.Rage;
+
 
 namespace EmotionalAppraisalWF
 {

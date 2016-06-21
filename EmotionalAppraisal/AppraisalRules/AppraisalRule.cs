@@ -25,7 +25,7 @@ namespace EmotionalAppraisal.AppraisalRules
 			Desirability = Praiseworthiness = 0;
 		}
 
-	    public AppraisalRule(AppraisalRuleDTO appraisalRuleDTO)
+	    public AppraisalRule(AppraisalRuleDTO appraisalRuleDTO) :base(appraisalRuleDTO.Id)
 	    {
 	        EventName = Name.BuildName(appraisalRuleDTO.EventMatchingTemplate);
 	        Desirability = appraisalRuleDTO.Desirability;
