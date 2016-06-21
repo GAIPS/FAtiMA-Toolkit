@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Equin.ApplicationFramework.BindingListView, Version=1.4.5222.35545, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Equin.ApplicationFramework.BindingListView.1.4.5222.35545\lib\net40-Client\Equin.ApplicationFramework.BindingListView.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="RageAssetManager">
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
@@ -60,6 +64,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\AttributionRuleVM.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -72,6 +77,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -89,6 +95,10 @@
     <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
       <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
       <Name>GAIPS.Rage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\KnowledgeBase\KnowledgeBase.csproj">
+      <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
+      <Name>KnowledgeBase</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Components\SerializationUtilities\GAIPS.Serialization.csproj">
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>

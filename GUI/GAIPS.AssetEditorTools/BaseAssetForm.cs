@@ -12,9 +12,17 @@ namespace GAIPS.AssetEditorTools
 		[Description("The title name of the editor."),Category("Appearance")]
 		public string EditorName{get; set; }
 
+		public T CurrentAsset { get; private set; }
+
 		protected BaseAssetForm()
 		{
 			InitializeComponent();
+		}
+
+		public void SetModified()
+		{
+			_wasModified = true;
+			UpdateWindowTitle();
 		}
 
 		private void BaseAssetForm_Shown(object sender, EventArgs e)
@@ -144,15 +152,13 @@ namespace GAIPS.AssetEditorTools
 
 		#region Protected Members
 
-		protected T CurrentAsset { get; private set; }
-
 		protected void CreateNewAsset()
 		{
 			if (!AssetSaveModified())
 				return;
 
 			CurrentAsset = CreateEmptyAsset();
-			_wasModified = true;
+			_wasModified = false;
 			UpdateWindowTitle();
 			LoadAssetData(CurrentAsset);
 		}

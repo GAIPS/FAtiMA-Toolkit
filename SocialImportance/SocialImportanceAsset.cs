@@ -25,7 +25,7 @@ namespace SocialImportance
 	public sealed class SocialImportanceAsset: LoadableAsset<SocialImportanceAsset>, ICustomSerialization
 	{
 		private EmotionalAppraisalAsset m_ea;
-		private AttributionRule[] m_attributionRules;
+		private HashSet<AttributionRule> m_attributionRules;
 		private NameSearchTree<uint> m_claimTree;
 		private ActionSelector<Conferral> m_conferalActions;
 
@@ -42,7 +42,7 @@ namespace SocialImportance
 		public SocialImportanceAsset()
 		{
 			m_ea = null;
-			m_attributionRules = new AttributionRule[0];
+			m_attributionRules = new HashSet<AttributionRule>();
 			m_claimTree = new NameSearchTree<uint>();
 			m_conferalActions = new ActionSelector<Conferral>(ValidateConferral);
 
@@ -230,6 +230,29 @@ namespace SocialImportance
 
 		#region DTO operations
 
+		public IEnumerable<AttributionRuleDTO> GetAttributionRules()
+		{
+			return m_attributionRules.Select(r => r.ToDTO());
+		}
+
+		public AttributionRuleDTO AddAttributionRule(AttributionRuleDTO ruleDefinition)
+		{
+			var at = new AttributionRule(ruleDefinition);
+			if (m_attributionRules.Add(at))
+				return at.ToDTO();
+
+			return null;
+		}
+
+		public void UpdateAttributionRule(AttributionRuleDTO ruleDefinition)
+		{
+			var rule = m_attributionRules.FirstOrDefault(a => a.GUID == ruleDefinition.Id);
+			if(rule==null)
+				throw new Exception("Attribution rule not found");
+
+			rule.SetData(ruleDefinition);
+		}
+
 		/// <summary>
 		/// Load a Social Importance Asset definition from a DTO object.
 		/// </summary>
@@ -241,7 +264,8 @@ namespace SocialImportance
 		/// </param>
 		public void LoadFromDTO(SocialImportanceDTO dto)
 		{
-			m_attributionRules = dto.AttributionRules.Select(adto => new AttributionRule(adto)).ToArray();
+			m_attributionRules.Clear();
+			m_attributionRules.UnionWith(dto.AttributionRules.Select(adto => new AttributionRule(adto)));
 
 			m_claimTree.Clear();
 			if (dto.Claims != null)
@@ -302,14 +326,15 @@ namespace SocialImportance
 
 		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
-			dataHolder.SetValue("AttributionRules",m_attributionRules);
+			dataHolder.SetValue("AttributionRules",m_attributionRules.ToArray());
 			dataHolder.SetValue("Claims",m_claimTree.Select(p=>new ClaimDTO() {ActionTemplate = p.Key.ToString(),ClaimSI = p.Value}).ToArray());
 			dataHolder.SetValue("Conferrals",m_conferalActions.GetAllActionDefinitions().ToArray());
 		}
 
 		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
-			m_attributionRules = dataHolder.GetValue<AttributionRule[]>("AttributionRules");
+			m_attributionRules.Clear();
+			m_attributionRules.UnionWith(dataHolder.GetValue<AttributionRule[]>("AttributionRules"));
 
 			var claims = dataHolder.GetValue<ClaimDTO[]>("Claims");
 			m_claimTree.Clear();

@@ -197,26 +197,6 @@ namespace EmotionalAppraisal
 		}
 
 		/// <summary>
-		/// Adds an evaluation condition to an appraisal rule
-		/// </summary>
-		/// <param name="appraisalRuleId">The unique identifier for the appraisal rule that we want to modify</param>
-		/// <param name="conditionString">The string representation of the condition we want to add to the rule</param>
-        public void AddAppraisalRuleCondition(Guid appraisalRuleId, string conditionString)
-        {
-            m_appraisalDerivator.AddAppraisalRuleCondition(appraisalRuleId, conditionString);
-        }
-
-		/// <summary>
-		/// Removes an evaluation condition from an appraisal rule
-		/// </summary>
-		/// <param name="appraisalRuleId">The unique identifier for the appraisal rule that we want to modify</param>
-		/// <param name="conditionString">The string representation of the condition we want to remove from the rule</param>
-		public void RemoveAppraisalRuleCondition(Guid appraisalRuleId, string conditionString)
-        {
-            m_appraisalDerivator.RemoveAppraisalRuleCondition(appraisalRuleId, conditionString);
-        }
-
-		/// <summary>
 		/// Add an Event Record to the asset's autobiographical memory
 		/// </summary>
 		/// <param name="eventDTO">The dto containing the information regarding the event to add</param>

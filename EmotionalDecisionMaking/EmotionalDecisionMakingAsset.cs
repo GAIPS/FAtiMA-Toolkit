@@ -7,6 +7,7 @@ using EmotionalDecisionMaking.DTOs;
 using GAIPS.Rage;
 using GAIPS.Serialization;
 using KnowledgeBase.Conditions;
+using KnowledgeBase.DTOs.Conditions;
 using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalDecisionMaking
@@ -91,11 +92,20 @@ namespace EmotionalDecisionMaking
 			ReactiveActions.RemoveAction(reactionToEdit.Id);
         }
 
+		public void UpdateReactionConditions(Guid reactionId, ConditionSetDTO conditionSet)
+		{
+			var action = ReactiveActions.GetActionTendency(reactionId);
+			action.ActivationConditions = new ConditionSet(conditionSet);
+
+			ReactiveActions.RemoveAction(reactionId);
+			ReactiveActions.AddActionTendency(action);
+		}
+
 		/// <summary>
 		/// Retrives the definitions of all the stored reactions.
 		/// </summary>
 		/// <returns>A set of DTOs containing the data of all reactions.</returns>
-        public IEnumerable<ReactionDTO> GetAllReactions()
+		public IEnumerable<ReactionDTO> GetAllReactions()
         {
 	        return ReactiveActions.GetAllActionTendencies().Select(at => at.ToDTO());
         }

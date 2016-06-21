@@ -33,12 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AddOrEditConditionForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AddOrEditConditionForm.Designer.cs">
-      <DependentUpon>AddOrEditConditionForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="AddOrEditAutobiographicalEventForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -83,9 +77,6 @@
     <Compile Include="ViewModels\AppraisalRulesVM.cs" />
     <Compile Include="ViewModels\AutobiographicalMemoryVM.cs" />
     <Compile Include="ViewModels\KnowledgeBaseVM.cs" />
-    <EmbeddedResource Include="AddOrEditConditionForm.resx">
-      <DependentUpon>AddOrEditConditionForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="AddOrEditAutobiographicalEventForm.resx">
       <DependentUpon>AddOrEditAutobiographicalEventForm.cs</DependentUpon>
     </EmbeddedResource>
