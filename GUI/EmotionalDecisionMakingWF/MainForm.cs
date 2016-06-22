@@ -64,8 +64,8 @@ namespace EmotionalDecisionMakingWF
 
             this._reactiveActions = new BindingListView<ReactionDTO>(_edmAsset.GetAllReactions().ToList());
             dataGridViewReactiveActions.DataSource = this._reactiveActions;
-            dataGridViewReactiveActions.Columns[PropertyUtil.GetName<ReactionDTO>(dto => dto.Id)].Visible = false;
-            dataGridViewReactiveActions.Columns[PropertyUtil.GetName<ReactionDTO>(dto => dto.Conditions)].Visible = false;
+            dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ReactionDTO>(dto => dto.Id)].Visible = false;
+            dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ReactionDTO>(dto => dto.Conditions)].Visible = false;
 
 			if (_reactiveActions.Any())
 	        {

@@ -7,7 +7,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 {
 	public partial class NameSearchTree<T>
 	{
-		protected class TreeNode
+		private class TreeNode
 		{
 			private SortedDictionary<Name, TreeNode> m_nextSymbol;
 			private SortedDictionary<Name, TreeNode> m_nextVariable;

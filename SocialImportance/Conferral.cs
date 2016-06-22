@@ -32,6 +32,12 @@ namespace SocialImportance
 			return FillDTO(new ConferralDTO() {ConferralSI = ConferralSI});
 		}
 
+		public void SetData(ConferralDTO dto)
+		{
+			ConferralSI = dto.ConferralSI;
+			SetFromDTO(dto);
+		}
+
 		protected override float CalculateActionUtility(IAction a)
 		{
 			return 1;

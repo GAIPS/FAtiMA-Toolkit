@@ -6,6 +6,7 @@ using EmotionalAppraisal;
 using GAIPS.Rage;
 using GAIPS.Serialization;
 using KnowledgeBase;
+using KnowledgeBase.Exceptions;
 using KnowledgeBase.WellFormedNames;
 using KnowledgeBase.WellFormedNames.Collections;
 using SocialImportance.DTOs;
@@ -230,6 +231,8 @@ namespace SocialImportance
 
 		#region DTO operations
 
+		#region Attribution Rules
+
 		public IEnumerable<AttributionRuleDTO> GetAttributionRules()
 		{
 			return m_attributionRules.Select(r => r.ToDTO());
@@ -252,6 +255,96 @@ namespace SocialImportance
 
 			rule.SetData(ruleDefinition);
 		}
+
+		public void RemoveAttributionRuleById(Guid id)
+		{
+			var rule = m_attributionRules.FirstOrDefault(a => a.GUID == id);
+			if (rule == null)
+				throw new Exception("Attribution rule not found");
+
+			m_attributionRules.Remove(rule);
+		}
+
+		#endregion
+
+		#region Claims
+
+		public IEnumerable<ClaimDTO> GetClaims()
+		{
+			return m_claimTree.Select(pair => new ClaimDTO() {ActionTemplate = pair.Key.ToString(), ClaimSI = pair.Value});
+		}
+
+		public void AddClaim(ClaimDTO claim)
+		{
+			Name n = null;
+			try
+			{
+				n = (Name)claim.ActionTemplate;
+				m_claimTree.Add(n, claim.ClaimSI);
+			}
+			catch (DuplicatedKeyException)
+			{
+				throw new Exception($"There is already a claim associated to the action template \"{n}\"");
+			}
+		}
+
+		public void ReplaceClaim(ClaimDTO oldClaim, ClaimDTO newClaim)
+		{
+			var oldN = (Name)oldClaim.ActionTemplate;
+			if(!m_claimTree.ContainsKey(oldN))
+				throw new ArgumentException($"No claim for \"{oldN}\" action template was found.");
+
+			var newN = (Name) newClaim.ActionTemplate;
+			if (oldN == newN)
+			{
+				m_claimTree[oldN] = newClaim.ClaimSI;
+				return;
+			}
+
+			if(m_claimTree.ContainsKey(newN))
+				throw new ArgumentException($"There is already a claim associated to \"{newN}\" action template.");
+
+			m_claimTree.Remove(oldN);
+			m_claimTree.Add(newN,newClaim.ClaimSI);
+		}
+
+		public bool RemoveClaim(string actionTemplate)
+		{
+			var n = (Name) actionTemplate;
+			return m_claimTree.Remove(n);
+		}
+
+		#endregion
+
+		#region Conferrals
+
+		public IEnumerable<ConferralDTO> GetConferrals()
+		{
+			return m_conferalActions.GetAllActionDefinitions().Select(c => c.ToDTO());
+		}
+
+		public ConferralDTO AddConferral(ConferralDTO conferral)
+		{
+			var c = new Conferral(conferral);
+			m_conferalActions.AddActionDefinition(c);
+			return c.ToDTO();
+		}
+
+		public void UpdateConferralData(ConferralDTO conferral)
+		{
+			var c = m_conferalActions.GetActionDefinition(conferral.Id);
+			m_conferalActions.RemoveActionDefinition(c);
+			c.SetData(conferral);
+			m_conferalActions.AddActionDefinition(c);
+		}
+
+		public void RemoveConferralById(Guid id)
+		{
+			var c = m_conferalActions.GetActionDefinition(id);
+			m_conferalActions.RemoveActionDefinition(c);
+		}
+
+		#endregion
 
 		/// <summary>
 		/// Load a Social Importance Asset definition from a DTO object.

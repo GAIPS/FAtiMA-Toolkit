@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -6,20 +7,25 @@ namespace GAIPS.AssetEditorTools
 {
 	public static class PropertyUtil
 	{
-		public static string GetPropertyName<TObject>(this TObject type, Expression<Func<TObject, object>> propertyRefExpr)
+		public static string GetPropertyName<TObject>(Expression<Func<TObject, object>> propertyRefExpr)
 		{
 			return GetPropertyNameCore(propertyRefExpr.Body);
 		}
 
-		public static string GetName<TObject>(Expression<Func<TObject, object>> propertyRefExpr)
+		public static PropertyDescriptor GetPropertyDescriptor<TObject>(Expression<Func<TObject, object>> propertyRefExpr)
 		{
-			return GetPropertyNameCore(propertyRefExpr.Body);
+			return GetPropertyDescriptor<TObject>(GetPropertyNameCore(propertyRefExpr.Body), false);
+		}
+
+		public static PropertyDescriptor GetPropertyDescriptor<TObject>(string propertyName, bool ignoreCase = false)
+		{
+			return TypeDescriptor.GetProperties(typeof (TObject)).Find(propertyName, ignoreCase);
 		}
 
 		private static string GetPropertyNameCore(Expression propertyRefExpr)
 		{
 			if (propertyRefExpr == null)
-				throw new ArgumentNullException(nameof(propertyRefExpr), "propertyRefExpr is null.");
+				throw new ArgumentNullException(nameof(propertyRefExpr));
 
 			var memberExpr = propertyRefExpr as MemberExpression;
 			if (memberExpr == null)

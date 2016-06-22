@@ -113,6 +113,13 @@ namespace ActionLibrary
 			return dto;
 		}
 
+		protected void SetFromDTO<T>(T dto) where T : ActionDefinitionDTO
+		{
+			m_actionTemplate = (Name) dto.Action;
+			Target = (Name) dto.Target;
+			m_activationConditions = new ConditionSet(dto.Conditions);
+		}
+
 		public override int GetHashCode()
 		{
 			return Id.GetHashCode();

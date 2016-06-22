@@ -19,11 +19,11 @@ namespace SocialImportance.DTOs
 		/// <summary>
 		/// The action's name template used for action matching.
 		/// </summary>
-		public string ActionTemplate;
+		public string ActionTemplate { get; set; }
 		/// <summary>
 		/// The maximum Social Importance value the action's target can have,
 		/// before the action is considered socially unacceptable.
 		/// </summary>
-		public uint ClaimSI;
+		public uint ClaimSI { get; set; }
 	}
 }

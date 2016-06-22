@@ -76,8 +76,8 @@ namespace EmotionalAppraisalWF
             //Appraisal Rule
             _appraisalRulesVM = new AppraisalRulesVM(_emotionalAppraisalAsset);
             dataGridViewAppraisalRules.DataSource = _appraisalRulesVM.AppraisalRules;
-            dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<AppraisalRuleDTO>(dto => dto.Id)].Visible = false;
-            dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<AppraisalRuleDTO>(dto => dto.Conditions)].Visible = false;
+            dataGridViewAppraisalRules.Columns[PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Id)].Visible = false;
+            dataGridViewAppraisalRules.Columns[PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Conditions)].Visible = false;
 	        conditionSetEditor.View = _appraisalRulesVM.CurrentRuleConditions;
 
             //KB
