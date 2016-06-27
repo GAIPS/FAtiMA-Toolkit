@@ -55,9 +55,10 @@ namespace RealTimeEmotionRecognition.FusionPolicies.KalmanFilter
                 totalWeight += classifier.Weight;
                 this.H[i, 0] = classifier.Weight;
                 this.R[i, i] = 0.1f;
+                i++;
             }
 
-            this.H = this.H / totalWeight;
+            //this.H = this.H / totalWeight;
             this.H_T = this.H.Transpose();
         }
 
@@ -79,7 +80,7 @@ namespace RealTimeEmotionRecognition.FusionPolicies.KalmanFilter
 
             //if no observation is received by the classifier, use 0 as the default value and higher value for R
             this.Z *= 0;
-            this.R = Matrix<double>.Build.DenseDiagonal(this.Classifiers.Count, 1.0f);
+            this.R = Matrix<double>.Build.DenseDiagonal(this.Classifiers.Count, 0.25f);
 
 
             //get observations
@@ -92,11 +93,15 @@ namespace RealTimeEmotionRecognition.FusionPolicies.KalmanFilter
             }
 
             //Kalman update
-            var S = this.H * this.P * this.H_T + this.R;
-            var K = this.P * this.H_T * S.Inverse();
+            var aux = this.H * this.P * this.H_T;
+            var S = aux + this.R;
+            var S_Inverse = S.Inverse();
+            var K = this.P * this.H_T * S_Inverse;
             var Y = this.Z - this.H * this.X;
 
-            this.X = (this.X + K * Y)[0,0];
+            var x_aux = this.X + K * Y;
+
+            this.X = x_aux[0,0];
 
             var p_aux = (1 - K * this.H) * this.P;
 

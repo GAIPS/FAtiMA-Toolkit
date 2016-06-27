@@ -89,11 +89,11 @@ namespace EmotionRecognitionWF
 
         private void cboxFusionPolicy_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(this.cboxFusionPolicy.SelectedText.Equals("Max"))
+            if(this.cboxFusionPolicy.SelectedIndex == 0)
             {
                 this.EmotionRecognitionAsset.Policy = new MaxPolicy();
             }
-            else if (this.cboxFusionPolicy.SelectedText.Equals("Max"))
+            else if (this.cboxFusionPolicy.SelectedIndex == 1)
             {
                 this.EmotionRecognitionAsset.Policy = new WeightedFusionPolicy();
             }
