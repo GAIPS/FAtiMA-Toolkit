@@ -31,7 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BaseStorageProvider.cs" />
+    <Compile Include="ILogger.cs" />
+    <Compile Include="IStorageProvider.cs" />
     <Compile Include="LoadableAsset.cs" />
+    <Compile Include="LocalStorageProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using ActionLibrary;
-using AssetPackage;
 using EmotionalAppraisal;
 using EmotionalDecisionMaking.DTOs;
+using GAIPS.Rage;
 using GAIPS.Serialization;
 using KnowledgeBase.Conditions;
+using KnowledgeBase.DTOs.Conditions;
 using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalDecisionMaking
@@ -15,25 +15,10 @@ namespace EmotionalDecisionMaking
 	/// <summary>
 	/// Main class of the Emotional Decision Making Asset
 	/// </summary>
-    public sealed class EmotionalDecisionMakingAsset : BaseAsset
+	[Serializable]
+    public sealed class EmotionalDecisionMakingAsset : LoadableAsset<EmotionalDecisionMakingAsset>, ICustomSerialization
     {
         private EmotionalAppraisalAsset m_emotionalAppraisal = null;
-
-		/// <summary>
-		/// Static method used to load an Emotional Decision Making Asset state from a file.
-		/// </summary>
-		/// <param name="filename">The file path from which to load the asset.</param>
-		/// <returns>The loaded instance of a Emotional Decision Making Asset.</returns>
-		public static EmotionalDecisionMakingAsset LoadFromFile(string filename)
-        {
-            EmotionalDecisionMakingAsset ea = new EmotionalDecisionMakingAsset();
-            using (var f = File.Open(filename, FileMode.Open, FileAccess.Read))
-            {
-                var serializer = new JSONSerializer();
-                ea.ReactiveActions = serializer.Deserialize<ReactiveActions>(f);
-            }
-            return ea;
-        }
 
 		/// <summary>
 		/// Asset constructor.
@@ -44,17 +29,12 @@ namespace EmotionalDecisionMaking
             ReactiveActions = new ReactiveActions();
         }
 
-		private ReactiveActions ReactiveActions { get; set; }
+		protected override string OnAssetLoaded()
+		{
+			return null;
+		}
 
-		/// <summary>
-		/// Save the asset in a data stream
-		/// </summary>
-		/// <param name="stream">the stream to which to save the asset</param>
-		public void SaveToFile(Stream stream)
-        {
-            var serializer = new JSONSerializer();
-            serializer.Serialize(stream, this.ReactiveActions);
-        }
+		private ReactiveActions ReactiveActions { get;}
 
 		/// <summary>
 		/// Registers an Emotional Appraisal Asset to be used by
@@ -112,11 +92,20 @@ namespace EmotionalDecisionMaking
 			ReactiveActions.RemoveAction(reactionToEdit.Id);
         }
 
+		public void UpdateReactionConditions(Guid reactionId, ConditionSetDTO conditionSet)
+		{
+			var action = ReactiveActions.GetActionTendency(reactionId);
+			action.ActivationConditions = new ConditionSet(conditionSet);
+
+			ReactiveActions.RemoveAction(reactionId);
+			ReactiveActions.AddActionTendency(action);
+		}
+
 		/// <summary>
 		/// Retrives the definitions of all the stored reactions.
 		/// </summary>
 		/// <returns>A set of DTOs containing the data of all reactions.</returns>
-        public IEnumerable<ReactionDTO> GetAllReactions()
+		public IEnumerable<ReactionDTO> GetAllReactions()
         {
 	        return ReactiveActions.GetAllActionTendencies().Select(at => at.ToDTO());
         }
@@ -184,6 +173,31 @@ namespace EmotionalDecisionMaking
             this.RemoveReactionConditions(selectedReactionID, new[] {conditionToEdit});
             this.AddReactionCondition(selectedReactionID, newCondition);
         }
-    }
+
+#region Serialization
+
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		{
+			var defaultActionCooldown = ReactiveActions.DefaultActionCooldown;
+			dataHolder.SetValue("DefaultActionPriority", defaultActionCooldown);
+			context.PushContext();
+			context.Context = defaultActionCooldown;
+			dataHolder.SetValue("ActionTendencies", ReactiveActions.GetAllActionTendencies().ToArray());
+			context.PopContext();
+		}
+
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		{
+			ReactiveActions.DefaultActionCooldown = dataHolder.GetValue<float>("DefaultActionPriority");
+			context.PushContext();
+			context.Context = ReactiveActions.DefaultActionCooldown;
+			var ats = dataHolder.GetValue<ActionTendency[]>("ActionTendencies");
+			foreach (var at in ats)
+				ReactiveActions.AddActionTendency(at);
+			context.PopContext();
+		}
+
+#endregion
+	}
 
 }

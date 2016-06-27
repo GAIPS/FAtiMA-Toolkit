@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using GAIPS.Serialization;
+using KnowledgeBase.Exceptions;
 using Utilities;
 
 namespace KnowledgeBase.WellFormedNames.Collections
 {
-	//TODO optimiza count. It should not iterate all elements. Just modify a variable of contained elements at each add/remove
+	//TODO optimize count. It should not iterate all elements. Just modify a variable of contained elements at each add/remove
 	[Serializable]
 	public partial class NameSearchTree<T> : IDictionary<Name, T>, ICustomSerialization
 	{
@@ -35,7 +36,7 @@ namespace KnowledgeBase.WellFormedNames.Collections
 		public void Add(Name name, T value)
 		{
 			if (!MethodWrapper(name, s => Root.AddValue(s, value,false)))
-				throw new Exception("Duplicate key"); //TODO better exception
+				throw new DuplicatedKeyException($"\"{name}\" already exists in the NameSearchTree");
 		}
 
 		public bool Remove(Name name)

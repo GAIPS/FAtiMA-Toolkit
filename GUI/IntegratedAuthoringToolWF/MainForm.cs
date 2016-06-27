@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using Equin.ApplicationFramework;
+using GAIPS.Rage;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
 using IntegratedAuthoringToolWF.Properties;
@@ -52,7 +53,7 @@ namespace IntegratedAuthoringToolWF
                 try
                 {
 	                string errorOnLoad;
-                    _iatAsset = IntegratedAuthoringToolAsset.LoadFromFile(ofd.FileName,out errorOnLoad);
+                    _iatAsset = IntegratedAuthoringToolAsset.LoadFromFile(LocalStorageProvider.Instance, ofd.FileName,out errorOnLoad);
                     if (errorOnLoad != null)
                     {
                         MessageBox.Show(errorOnLoad, Resources.ErrorDialogTitle, MessageBoxButtons.OK,
@@ -119,7 +120,7 @@ namespace IntegratedAuthoringToolWF
             }
             try
             {
-				_iatAsset.SaveToFile(_saveFileName);
+				_iatAsset.SaveToFile(LocalStorageProvider.Instance,_saveFileName);
                 this.Text = Resources.MainFormTitle + " - " + _saveFileName;
             }
             catch (Exception ex)
@@ -141,7 +142,7 @@ namespace IntegratedAuthoringToolWF
                 try
                 {
 	                string error;
-	                var character = RolePlayCharacterAsset.LoadFromFile(ofd.FileName, out error);
+	                var character = RolePlayCharacterAsset.LoadFromFile(LocalStorageProvider.Instance, ofd.FileName, out error);
 	                if (error != null)
 	                {
 						MessageBox.Show($"Error when loading character '{character.CharacterName}': {error}", Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);

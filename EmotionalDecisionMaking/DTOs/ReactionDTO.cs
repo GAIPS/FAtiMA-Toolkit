@@ -7,10 +7,6 @@ namespace EmotionalDecisionMaking.DTOs
 	/// </summary>
 	public class ReactionDTO : ActionDefinitionDTO
     {
-		/// <summary>
-		/// The cooldown time that must pass before reusing this same action,
-		/// after using it once.
-		/// </summary>
-	    public float Cooldown { get; set; }
+		public float Priority { get; set; }
 	}
 }

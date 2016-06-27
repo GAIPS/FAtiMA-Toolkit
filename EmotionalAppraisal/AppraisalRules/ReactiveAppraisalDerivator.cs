@@ -61,6 +61,7 @@ namespace EmotionalAppraisal.AppraisalRules
 				existingRule.Desirability = emotionalAppraisalRuleDTO.Desirability;
 				existingRule.Praiseworthiness = emotionalAppraisalRuleDTO.Praiseworthiness;
 				existingRule.EventName = Name.BuildName(emotionalAppraisalRuleDTO.EventMatchingTemplate);
+				existingRule.Conditions = new ConditionSet(emotionalAppraisalRuleDTO.Conditions);
 		    }
 		    else
 		    {
@@ -125,27 +126,7 @@ namespace EmotionalAppraisal.AppraisalRules
   //          return Rules.FirstOrDefault();
 	 //   }
         
-        public void AddAppraisalRuleCondition(Guid appraisalRuleId, string conditionString)
-        {
-	        AppraisalRule existingRule = GetAppraisalRule(appraisalRuleId);
-            if (existingRule != null)
-            {
-                var condition = Condition.Parse(conditionString);
-                existingRule.Conditions = existingRule.Conditions.Add(condition);
-            }
-        }
-
-        public void RemoveAppraisalRuleCondition(Guid appraisalRuleId, string conditionString)
-        {
-	        AppraisalRule existingRule = GetAppraisalRule(appraisalRuleId);
-            if (existingRule != null)
-            {
-				var c = Condition.Parse(conditionString);
-	            existingRule.Conditions = existingRule.Conditions.Remove(c);
-            }
-        }
-
-	    public IEnumerable<AppraisalRule> GetAppraisalRules()
+        public IEnumerable<AppraisalRule> GetAppraisalRules()
 	    {
 	        return Rules.Values.SelectMany(set => set);
 	    }

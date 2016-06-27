@@ -84,6 +84,8 @@ namespace ActionLibrary
 				return null;
 			
 			var a = new Action(actionName.GetTerms(), targetName);
+			float p = CalculateActionUtility(a);
+			a.Utility = p;
 			OnActionGenerated(a);
 			return a;
 		}
@@ -94,6 +96,8 @@ namespace ActionLibrary
 		}
 
 		protected virtual void OnActionGenerated(IAction action){}
+
+		protected abstract float CalculateActionUtility(IAction a);
 
 		public Name GetActionTemplate()
 		{
@@ -107,6 +111,13 @@ namespace ActionLibrary
 			dto.Target = Target.ToString();
 			dto.Conditions = m_activationConditions.ToDTO();
 			return dto;
+		}
+
+		protected void SetFromDTO<T>(T dto) where T : ActionDefinitionDTO
+		{
+			m_actionTemplate = (Name) dto.Action;
+			Target = (Name) dto.Target;
+			m_activationConditions = new ConditionSet(dto.Conditions);
 		}
 
 		public override int GetHashCode()

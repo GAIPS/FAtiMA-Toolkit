@@ -29,8 +29,7 @@ namespace IntegratedAuthoringTool
             this.Utterance = dto.Utterance;
         }
 
-
-        public DialogueStateActionDTO ToDTO()
+		public DialogueStateActionDTO ToDTO()
         {
             return new DialogueStateActionDTO
             {
@@ -42,5 +41,10 @@ namespace IntegratedAuthoringTool
                 Utterance = this.Utterance
             };
         }
+
+	    protected override float CalculateActionUtility(IAction a)
+	    {
+		    return 1;
+	    }
     }
 }

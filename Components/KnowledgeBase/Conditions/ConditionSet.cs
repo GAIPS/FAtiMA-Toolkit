@@ -15,6 +15,8 @@ namespace KnowledgeBase.Conditions
 	public sealed class ConditionSet : IEnumerable<Condition>, IConditionEvaluator, ICustomSerialization
 	{
 		public LogicalQuantifier Quantifier { get; }
+
+		[NonSerialized]
 		private List<Condition> m_conditions;
 
 		public int Count {
@@ -216,7 +218,7 @@ namespace KnowledgeBase.Conditions
 
 		public ConditionSetDTO ToDTO()
 		{
-			return new ConditionSetDTO() {Quantifier = this.Quantifier,ConditionSet = m_conditions.Select(c => c.ToString()).ToArray()};
+			return new ConditionSetDTO() {Quantifier = this.Quantifier,ConditionSet =   m_conditions?.Select(c => c.ToString()).ToArray()};
 		}
 
 		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)

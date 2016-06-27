@@ -8,6 +8,7 @@ using System.Linq;
 using AutobiographicMemory;
 using AutobiographicMemory.DTOs;
 using EmotionalAppraisal.DTOs;
+using GAIPS.Rage;
 using GAIPS.Serialization;
 using KnowledgeBase;
 using KnowledgeBase.DTOs.Conditions;
@@ -20,24 +21,8 @@ namespace EmotionalAppraisal
 	/// Main class of the Emotional Appraisal Asset.
 	/// </summary>
 	[Serializable]
-	public sealed partial class EmotionalAppraisalAsset : BaseAsset, ICustomSerialization
+	public sealed partial class EmotionalAppraisalAsset : LoadableAsset<EmotionalAppraisalAsset>, ICustomSerialization
 	{
-		/// <summary>
-		/// Static method used to load an Emotional Appraisal Asset state from a file.
-		/// </summary>
-		/// <param name="filename">The file path from which to load the asset.</param>
-		/// <returns>The loaded instance of a Emotional Appraisal Asset.</returns>
-        public static EmotionalAppraisalAsset LoadFromFile(string filename)
-        {
-            EmotionalAppraisalAsset ea;
-            using (var f = File.Open(filename, FileMode.Open, FileAccess.Read))
-            {
-                var serializer = new JSONSerializer();
-                ea = serializer.Deserialize<EmotionalAppraisalAsset>(f);
-            }
-            return ea;
-        }
-
         private KB m_kb;
         private AM m_am;
         private ConcreteEmotionalState m_emotionalState;
@@ -136,6 +121,11 @@ namespace EmotionalAppraisal
 	        set { m_emotionalState.DefaultEmotionDisposition = new EmotionDisposition(value); }
 	    }
 
+		protected override string OnAssetLoaded()
+		{
+			return null;
+		}
+
 		/// <summary>
 		/// Returns the current set of active emotions
 		/// <returns>An enumerable containing the emotion DTOs of the currently active emotions being expressed by the asset.</returns>
@@ -205,26 +195,6 @@ namespace EmotionalAppraisal
 		{
 			m_appraisalDerivator.AddOrUpdateAppraisalRule(emotionalAppraisalRule);
 		}
-
-		/// <summary>
-		/// Adds an evaluation condition to an appraisal rule
-		/// </summary>
-		/// <param name="appraisalRuleId">The unique identifier for the appraisal rule that we want to modify</param>
-		/// <param name="conditionString">The string representation of the condition we want to add to the rule</param>
-        public void AddAppraisalRuleCondition(Guid appraisalRuleId, string conditionString)
-        {
-            m_appraisalDerivator.AddAppraisalRuleCondition(appraisalRuleId, conditionString);
-        }
-
-		/// <summary>
-		/// Removes an evaluation condition from an appraisal rule
-		/// </summary>
-		/// <param name="appraisalRuleId">The unique identifier for the appraisal rule that we want to modify</param>
-		/// <param name="conditionString">The string representation of the condition we want to remove from the rule</param>
-		public void RemoveAppraisalRuleCondition(Guid appraisalRuleId, string conditionString)
-        {
-            m_appraisalDerivator.RemoveAppraisalRuleCondition(appraisalRuleId, conditionString);
-        }
 
 		/// <summary>
 		/// Add an Event Record to the asset's autobiographical memory
@@ -477,16 +447,6 @@ namespace EmotionalAppraisal
 			var p = (Name) perspective;
 			this.Kb.Tell(Name.BuildName(name), null, p);
         }
-
-		/// <summary>
-		/// Save the asset in a data stream
-		/// </summary>
-		/// <param name="stream">the stream to which to save the asset</param>
-		public void SaveToFile(Stream stream)
-		{
-			var serializer = new JSONSerializer();
-			serializer.Serialize(stream, this);
-		}
 
 		private void UpdateEmotions(IAppraisalFrame frame)
 		{

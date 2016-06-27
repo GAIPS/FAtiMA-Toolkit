@@ -59,7 +59,8 @@ namespace ActionLibrary
         public IEnumerable<Pair<IAction,T>> SelectAction(KB knowledgeBase, Name perspective)
 		{
 			var validActions = m_actions.MatchConditions(knowledgeBase, perspective, new SubstitutionSet());
-			validActions = validActions.Where(p => m_validator((T)p.Item1,perspective, p.Item2));
+			if(m_validator!=null)
+				validActions = validActions.Where(p => m_validator((T)p.Item1,perspective, p.Item2));
 			return validActions.Select(p => new Pair<IAction, T>(p.Item1.GenerateAction(p.Item2),p.Item1)).Where(a => a.Item1 != null);
 		}
 

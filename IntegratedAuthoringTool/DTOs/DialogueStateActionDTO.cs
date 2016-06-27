@@ -3,9 +3,14 @@
 namespace IntegratedAuthoringTool.DTOs
 {
     [Serializable]
-    public class DialogueStateActionDTO 
+    public class DialogueStateActionDTO
     {
-        public Guid Id { get; set; }
+		[NonSerialized]
+	    private Guid m_id;
+		public Guid Id {
+			get { return m_id; }
+			set { m_id = value; }
+		}
         public string CurrentState { get; set; }
         public string NextState { get; set; }
         public string Meaning { get; set; }

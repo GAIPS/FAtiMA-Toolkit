@@ -8,7 +8,7 @@ using SocialImportance.DTOs;
 namespace SocialImportance
 {
 	[Serializable]
-	public class Conferral : BaseActionDefinition
+	internal class Conferral : BaseActionDefinition
 	{
 		public uint ConferralSI { get; set; }
 
@@ -30,6 +30,17 @@ namespace SocialImportance
 		public ConferralDTO ToDTO()
 		{
 			return FillDTO(new ConferralDTO() {ConferralSI = ConferralSI});
+		}
+
+		public void SetData(ConferralDTO dto)
+		{
+			ConferralSI = dto.ConferralSI;
+			SetFromDTO(dto);
+		}
+
+		protected override float CalculateActionUtility(IAction a)
+		{
+			return 1;
 		}
 
 		public override void GetObjectData(ISerializationData dataHolder, ISerializationContext context)

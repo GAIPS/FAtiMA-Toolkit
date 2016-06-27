@@ -5,7 +5,6 @@ using AutobiographicMemory;
 using GAIPS.Rage;
 using GAIPS.Serialization;
 using IntegratedAuthoringTool.DTOs;
-using KnowledgeBase.WellFormedNames;
 using RolePlayCharacter;
 
 namespace IntegratedAuthoringTool
@@ -36,49 +35,46 @@ namespace IntegratedAuthoringTool
         
 	    protected override string OnAssetLoaded()
 	    {
-		    KeyValuePair<string, CharacterHolder> current = new KeyValuePair<string, CharacterHolder>();
-            
+			KeyValuePair<string, CharacterHolder> current = new KeyValuePair<string, CharacterHolder>();
+		    string currentAbsolutePath = null;
             try
 		    {
 				foreach (var pair in m_characterSources)
 				{
 					current = pair;
-
+					currentAbsolutePath = ToAbsolutePath(pair.Value.Source);
 					if (pair.Value.RPCAsset == null)
 					{
 						string errorsOnLoad;
-						pair.Value.RPCAsset = RolePlayCharacterAsset.LoadFromFile(ToAbsolutePath(pair.Value.Source),out errorsOnLoad);
+						pair.Value.RPCAsset = RolePlayCharacterAsset.LoadFromFile(CurrentStorageProvider,currentAbsolutePath,out errorsOnLoad);
 					    if (errorsOnLoad != null)
 					        return errorsOnLoad;
-					    else
-					    {
-					        foreach (var d in m_agentDialogues)
-					        {
-						        var validDialoguePropertyEvent =
-							        $"Event({Constants.PROPERTY_CHANGE_EVENT},World,{VALID_DIALOGUE_PROPERTY}({d.CurrentState},{d.NextState},{d.Meaning},{d.Style}),True)";
-                                pair.Value.RPCAsset.PerceptionActionLoop(new[] {validDialoguePropertyEvent});
-                            }
-					    }
+
+						foreach (var d in m_agentDialogues)
+						{
+							var validDialoguePropertyName =$"{VALID_DIALOGUE_PROPERTY}({d.CurrentState},{d.NextState},{d.Meaning},{d.Style})";
+							pair.Value.RPCAsset.AddBelief(validDialoguePropertyName,"true");
+						}
 					}
 
 					if (!string.Equals(pair.Key, pair.Value.RPCAsset.CharacterName))
-						return $"Name mismatch. IAT name \"{pair.Key}\" != RPC File Name \"{pair.Value.RPCAsset.CharacterName}\" for file \"{ToAbsolutePath(pair.Value.Source)}\"";
+						return $"Name mismatch. IAT name \"{pair.Key}\" != RPC File Name \"{pair.Value.RPCAsset.CharacterName}\" for file \"{currentAbsolutePath}\"";
 
 				}
 			}
-		    catch (Exception ex)
+		    catch (Exception)
 		    {
-			    return $"An error occured when trying to load the RPC \"{current.Key}\" at \"{ToAbsolutePath(current.Value.Source)}\". Please check if the path is correct.";
-
+			    return $"An error occured when trying to load the RPC \"{current.Key}\" at \"{currentAbsolutePath}\". Please check if the path is correct.";
 			}
 		    return null;
 		}
 
-	    protected override void OnAssetPathChanged(string oldpath)
+	    protected override void OnAssetPathChanged(IStorageProvider oldProvider, string oldpath)
 	    {
 		    foreach (var holder in m_characterSources.Values)
 		    {
-				holder.Source = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, holder.Source));
+			    var absPath = oldProvider.ToAbsolutePath(oldpath, holder.Source);
+			    holder.Source = CurrentStorageProvider.ToRelativePath(AssetFilePath, absPath);
 		    }
 	    }
 
@@ -219,8 +215,9 @@ namespace IntegratedAuthoringTool
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
-            ScenarioName = dataHolder.GetValue<string>("ScenarioName");
-            var charArray = dataHolder.GetValue<CharacterSourceDTO[]>("Characters");
+			ScenarioName = dataHolder.GetValue<string>("ScenarioName");
+			
+			var charArray = dataHolder.GetValue<CharacterSourceDTO[]>("Characters");
             if (charArray != null)
 				m_characterSources = charArray.ToDictionary(c => c.Name, c => new CharacterHolder() {Source = c.Source });
 

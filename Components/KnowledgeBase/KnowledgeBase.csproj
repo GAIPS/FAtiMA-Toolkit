@@ -51,6 +51,7 @@
     <Compile Include="Conditions\IValueRetriver.cs" />
     <Compile Include="Conditions\LogicalQuantifier.cs" />
     <Compile Include="DTOs\Conditions\ConditionSetDTO.cs" />
+    <Compile Include="Exceptions\DuplicatedKeyException.cs" />
     <Compile Include="KB.cs" />
     <Compile Include="PrimitiveValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using ActionLibrary;
-using GAIPS.Serialization;
 using KnowledgeBase;
 using KnowledgeBase.WellFormedNames;
 
 namespace EmotionalDecisionMaking
 {
-	[Serializable]
-	public sealed class ReactiveActions : ICustomSerialization
+	public sealed class ReactiveActions
 	{
 		private float m_defaultActionCooldown = 2;
 		public float DefaultActionCooldown
@@ -22,7 +20,7 @@ namespace EmotionalDecisionMaking
 
 		public ReactiveActions()
 		{
-			m_actionTendencies = new ActionSelector<ActionTendency>((tendency,p, set) => !tendency.IsCoolingdown);
+			m_actionTendencies = new ActionSelector<ActionTendency>(null);
 		}
 
 		public void AddActionTendency(ActionTendency at)
@@ -53,28 +51,5 @@ namespace EmotionalDecisionMaking
 	    {
 	        return m_actionTendencies.GetActionDefinition(id);
 	    }
-
-		
-		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
-		{
-			dataHolder.SetValue("DefaultActionCooldown", m_defaultActionCooldown);
-			context.PushContext();
-			context.Context = m_defaultActionCooldown;
-			dataHolder.SetValue("ActionTendencies", m_actionTendencies.GetAllActionDefinitions().ToArray());
-			context.PopContext();
-		}
-
-		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
-		{
-			DefaultActionCooldown = dataHolder.GetValue<float>("DefaultActionCooldown");
-			context.PushContext();
-			context.Context = m_defaultActionCooldown;
-			var ats = dataHolder.GetValue<ActionTendency[]>("ActionTendencies");
-			foreach (var at in ats)
-				m_actionTendencies.AddActionDefinition(at);
-			context.PopContext();
-		}
-
-	    
 	}
 }

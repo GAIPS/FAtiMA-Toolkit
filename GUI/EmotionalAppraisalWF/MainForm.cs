@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Windows.Forms;
 using AutobiographicMemory.DTOs;
 using EmotionalAppraisal;
@@ -9,7 +8,9 @@ using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
 using Equin.ApplicationFramework;
-using KnowledgeBase.DTOs.Conditions;
+using GAIPS.AssetEditorTools;
+using GAIPS.Rage;
+
 
 namespace EmotionalAppraisalWF
 {
@@ -41,7 +42,7 @@ namespace EmotionalAppraisalWF
                 _saveFileName = args[1];
                 try
                 {
-                    this._emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile((args[1]));
+					this._emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(LocalStorageProvider.Instance,args[1]);
                     Reset(false);
                 }
                 catch (Exception ex)
@@ -75,10 +76,9 @@ namespace EmotionalAppraisalWF
             //Appraisal Rule
             _appraisalRulesVM = new AppraisalRulesVM(_emotionalAppraisalAsset);
             dataGridViewAppraisalRules.DataSource = _appraisalRulesVM.AppraisalRules;
-            dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<AppraisalRuleDTO>(dto => dto.Id)].Visible = false;
-            dataGridViewAppraisalRules.Columns[PropertyUtil.GetName<AppraisalRuleDTO>(dto => dto.Conditions)].Visible = false;
-            dataGridViewAppRuleConditions.DataSource = _appraisalRulesVM.CurrentRuleConditions;
-            comboBoxQuantifierType.DataSource = _appraisalRulesVM.QuantifierTypes;
+            dataGridViewAppraisalRules.Columns[PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Id)].Visible = false;
+            dataGridViewAppraisalRules.Columns[PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Conditions)].Visible = false;
+	        conditionSetEditor.View = _appraisalRulesVM.CurrentRuleConditions;
 
             //KB
             _knowledgeBaseVM = new KnowledgeBaseVM(_emotionalAppraisalAsset);
@@ -98,20 +98,6 @@ namespace EmotionalAppraisalWF
 			this.textBoxStartTick.Text = _emotionalStateVM.Start.ToString();
 			this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
 		}
-
-
-        private void adjustColumnSizeGrid(DataGridView grid)
-        {
-            if (grid.ColumnCount > 1)
-            {
-                for (int i = 0; i < grid.ColumnCount - 1; i++)
-                {
-                    grid.Columns[i].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                }
-            }
-
-            grid.Columns[grid.ColumnCount - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-        }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -146,11 +132,8 @@ namespace EmotionalAppraisalWF
             try
             {
 				_knowledgeBaseVM.UpdatePerspective();
-                using (var file = File.Create(_saveFileName))
-                {
-                    _emotionalAppraisalAsset.SaveToFile(file);
-                }
-                this.Text = Resources.MainFormPrincipalTitle + Resources.TitleSeparator + _saveFileName;
+				_emotionalAppraisalAsset.SaveToFile(LocalStorageProvider.Instance, _saveFileName);
+				this.Text = Resources.MainFormPrincipalTitle + Resources.TitleSeparator + _saveFileName;
             }
             catch (Exception ex)
             {
@@ -188,7 +171,7 @@ namespace EmotionalAppraisalWF
             {
                 try
                 {
-                    _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(ofd.FileName);
+                    _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(LocalStorageProvider.Instance,ofd.FileName);
                     _saveFileName = ofd.FileName;
                     Reset(false);
                 }
@@ -198,76 +181,6 @@ namespace EmotionalAppraisalWF
                         MessageBoxIcon.Error);
                 }
             }
-        }
-
-
-
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-
-        private void mainMenu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void beliefsListView_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void groupBox2_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void trackBar1_Scroll(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dataGridView1_CellContentClick_2(object sender, DataGridViewCellEventArgs e)
-        {
-
         }
 
         private void trackBar1_Scroll_1(object sender, EventArgs e)
@@ -347,34 +260,10 @@ namespace EmotionalAppraisalWF
 
         #endregion
 
-        private void moodValueLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dataGridViewAppRuleConditions_RowEnter(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void dataGridViewAppraisalRules_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
         private void dataGridViewAppraisalRules_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             var rule = ((ObjectView<AppraisalRuleDTO>) dataGridViewAppraisalRules.Rows[e.RowIndex].DataBoundItem).Object;
             _appraisalRulesVM.ChangeCurrentRule(rule);
-            dataGridViewAppRuleConditions.DataSource = _appraisalRulesVM.CurrentRuleConditions;
-        }
-
-        private void buttonAddAppraisalRuleCondition_Click(object sender, EventArgs e)
-        {
-            if (_appraisalRulesVM.SelectedRuleId != Guid.Empty)
-            {
-                new AddOrEditConditionForm(this._appraisalRulesVM).ShowDialog();
-            }
         }
 
         private void buttonAddAppraisalRule_Click(object sender, EventArgs e)
@@ -401,23 +290,7 @@ namespace EmotionalAppraisalWF
             }
             _appraisalRulesVM.RemoveAppraisalRules(rulesToRemove);
         }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void label1_Click_2(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
+		
         private void textBoxPerspective_TextChanged(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(textBoxPerspective.Text))
@@ -473,12 +346,7 @@ namespace EmotionalAppraisalWF
             }
             _emotionDispositionsVM.RemoveDispositions(dispositionsToRemove);
         }
-
-        private void dataGridViewEmotionDispositions_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
+		
         private void buttonAddEventRecord_Click(object sender, EventArgs e)
         {
             new AddOrEditAutobiographicalEventForm(_autobiographicalMemoryVM).ShowDialog();
@@ -544,40 +412,9 @@ namespace EmotionalAppraisalWF
             }
         }
 
-        private void groupBox2_Enter_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void richTextBoxDescription_TextChanged(object sender, EventArgs e)
+		private void richTextBoxDescription_TextChanged(object sender, EventArgs e)
         {
             this._emotionalAppraisalAsset.Description = richTextBoxDescription.Text;
-        }
-
-        private void buttonEditAppraisalRuleCondition_Click(object sender, EventArgs e)
-        {
-            if (dataGridViewAppRuleConditions.SelectedRows.Count == 1)
-            {
-                var selectedCondition = ((ObjectView<string>)dataGridViewAppRuleConditions.
-                    SelectedRows[0].DataBoundItem).Object;
-                new AddOrEditConditionForm(_appraisalRulesVM, selectedCondition).ShowDialog();
-            }
-        }
-
-        private void buttonRemoveAppraisalRuleCondition_Click(object sender, EventArgs e)
-        {
-            IList<string> conditionsToRemove = new List<string>();
-            for (int i = 0; i < dataGridViewAppRuleConditions.SelectedRows.Count; i++)
-            {
-                var emotion = ((ObjectView<string>)dataGridViewAppRuleConditions.SelectedRows[i].DataBoundItem).Object;
-                conditionsToRemove.Add(emotion);
-            }
-            _appraisalRulesVM.RemoveConditions(conditionsToRemove);
-        }
-
-        private void emotionalStateTabPage_Click(object sender, EventArgs e)
-        {
-
         }
 
 		private void OnScreenChanged(object sender, EventArgs e)

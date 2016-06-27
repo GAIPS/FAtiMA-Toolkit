@@ -150,7 +150,7 @@ namespace Tests.SocialImportance
 			var si = new SocialImportanceAsset();
 			si.LoadFromDTO(siDTO);
 
-			si.RegisterEmotionalAppraisalAsset(ea);
+			si.BindEmotionalAppraisalAsset(ea);
 			return si;
 		}
 
@@ -167,8 +167,8 @@ namespace Tests.SocialImportance
 		public static void Test_SI_Values(string a, string b, float abSiValue, float baSiValue)
 		{
 			ASSET_TO_TEST.InvalidateCachedSI();
-			var ab = ASSET_TO_TEST.GetSocialImportance((Name)b, (Name)a); 
-			var ba = ASSET_TO_TEST.GetSocialImportance((Name)a, (Name)b);
+			var ab = ASSET_TO_TEST.GetSocialImportance(b, a); 
+			var ba = ASSET_TO_TEST.GetSocialImportance(a, b);
 
 			Assert.AreEqual(ab,abSiValue);
 			Assert.AreEqual(ba, baSiValue);
@@ -181,7 +181,7 @@ namespace Tests.SocialImportance
 		{
 			var n = Name.BuildName((Name) "AskedDrink", (Name) name);
 			ASSET_TO_TEST.LinkedEA.Kb.Tell(n,true);
-			var a = ASSET_TO_TEST.DecideConferral(Name.SELF_SYMBOL);
+			var a = ASSET_TO_TEST.DecideConferral(Name.SELF_STRING);
 			ASSET_TO_TEST.LinkedEA.Kb.Tell(n,null);
 
 			if (string.IsNullOrEmpty(expectedResult))

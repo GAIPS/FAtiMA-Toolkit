@@ -33,12 +33,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="RageAssetManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,8 +51,14 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConcreteAssetControls.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -58,6 +67,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="BaseAssetControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BaseAssetControl.Designer.cs">
+      <DependentUpon>BaseAssetControl.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -70,6 +85,9 @@
     </Compile>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseAssetControl.resx">
+      <DependentUpon>BaseAssetControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -105,6 +123,10 @@
       <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
       <Name>RolePlayCharacter</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\SocialImportance\SocialImportance.csproj">
+      <Project>{823e8a41-5231-4b06-bbab-e62651e15bc7}</Project>
+      <Name>SocialImportance</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EmotionalAppraisalWF\EmotionalAppraisalWF.csproj">
       <Project>{36ef269c-7ab2-4029-bbf4-18f908af46f6}</Project>
       <Name>EmotionalAppraisalWF</Name>
@@ -117,6 +139,9 @@
       <Project>{a1e56f5c-eaac-43e5-a922-5b244168ea5c}</Project>
       <Name>EmotionalDecisionMaking</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\DataSources\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

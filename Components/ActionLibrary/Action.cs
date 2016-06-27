@@ -8,6 +8,7 @@ namespace ActionLibrary
 		public Name ActionName { get;}
 		public Name Target { get;}
 		public IList<Name> Parameters { get; }
+		public float Utility { get; internal set; }
 
 		public Action(IEnumerable<Name> nameAndParameters, Name target)
 		{
@@ -16,6 +17,7 @@ namespace ActionLibrary
 			a.RemoveAt(0);
 			Target = target;
 			Parameters = a;
+			Utility = 0;
 		}
 	}
 }

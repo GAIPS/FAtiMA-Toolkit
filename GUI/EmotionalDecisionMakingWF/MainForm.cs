@@ -1,30 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using EmotionalDecisionMaking;
 using EmotionalDecisionMaking.DTOs;
 using EmotionalDecisionMakingWF.Properties;
 using Equin.ApplicationFramework;
+using GAIPS.AssetEditorTools;
+using GAIPS.Rage;
 using KnowledgeBase.Conditions;
-using KnowledgeBase.DTOs.Conditions;
 
 namespace EmotionalDecisionMakingWF
 {
     public partial class MainForm : Form
     {
-        private EmotionalDecisionMakingAsset _edmAsset;
+		private EmotionalDecisionMakingAsset _edmAsset;
         private string _saveFileName;
 
         private BindingListView<ReactionDTO> _reactiveActions;
-        private BindingListView<string> _conditions; 
+	    private ConditionSetView _conditionSetView;
         private Guid _selectedActionId;
 
         public MainForm()
         {
             InitializeComponent();
-            string[] args = Environment.GetCommandLineArgs();
+
+			_conditionSetView = new ConditionSetView();
+			conditionSetEditor.View = _conditionSetView;
+			_conditionSetView.OnDataChanged += conditionSetView_OnDataChanged;
+
+			string[] args = Environment.GetCommandLineArgs();
             if (args.Length <= 1)
             {
                 Reset(true);
@@ -34,7 +39,7 @@ namespace EmotionalDecisionMakingWF
                 _saveFileName = args[1];
                 try
                 {
-                    _edmAsset = EmotionalDecisionMakingAsset.LoadFromFile(_saveFileName);
+                    _edmAsset = EmotionalDecisionMakingAsset.LoadFromFile(LocalStorageProvider.Instance,_saveFileName);
                     Reset(false);
                 }
                 catch (Exception ex)
@@ -59,29 +64,22 @@ namespace EmotionalDecisionMakingWF
 
             this._reactiveActions = new BindingListView<ReactionDTO>(_edmAsset.GetAllReactions().ToList());
             dataGridViewReactiveActions.DataSource = this._reactiveActions;
-            dataGridViewReactiveActions.Columns[PropertyUtil.GetName<ReactionDTO>(dto => dto.Id)].Visible = false;
-            dataGridViewReactiveActions.Columns[PropertyUtil.GetName<ReactionDTO>(dto => dto.Conditions)].Visible = false;
+            dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ReactionDTO>(dto => dto.Id)].Visible = false;
+            dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ReactionDTO>(dto => dto.Conditions)].Visible = false;
 
-
-            if (_reactiveActions.Any())
-            {
-	            var ra = _edmAsset.GetReaction(_reactiveActions.First().Id);
-				this._conditions = new BindingListView<string>(ra.Conditions.ConditionSet);
-            }
-            else
-            {
-                this._conditions = new BindingListView<string>(new List<string>());
-            }
-            
-            dataGridViewReactionConditions.DataSource = this._conditions;
-            //dataGridViewReactionConditions.Columns[PropertyUtil.GetName<ConditionDTO>(dto => dto.Id)].Visible = false;
-
-            comboBoxQuantifierType.DataSource = Enum.GetNames(typeof(LogicalQuantifier));
+			if (_reactiveActions.Any())
+	        {
+		        var ra = _edmAsset.GetReaction(_reactiveActions.First().Id);
+		        UpdateConditions(ra);
+	        }
         }
+		
+		private void conditionSetView_OnDataChanged()
+		{
+			_edmAsset.UpdateReactionConditions(_selectedActionId, _conditionSetView.GetData());
+		}
 
-
-
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+		private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Reset(true);
         }
@@ -99,7 +97,7 @@ namespace EmotionalDecisionMakingWF
             {
                 try
                 {
-                    _edmAsset = EmotionalDecisionMakingAsset.LoadFromFile(ofd.FileName);
+                    _edmAsset = EmotionalDecisionMakingAsset.LoadFromFile(LocalStorageProvider.Instance, ofd.FileName);
                     _saveFileName = ofd.FileName;
                     Reset(false);
                 }
@@ -148,11 +146,8 @@ namespace EmotionalDecisionMakingWF
             }
             try
             {
-                using (var file = File.Create(_saveFileName))
-                {
-                    _edmAsset.SaveToFile(file);
-                }
-                this.Text = Resources.MainFormTitle + " - " + _saveFileName;
+				_edmAsset.SaveToFile(LocalStorageProvider.Instance, _saveFileName);
+				this.Text = Resources.MainFormTitle + " - " + _saveFileName;
             }
             catch (Exception ex)
             {
@@ -166,8 +161,7 @@ namespace EmotionalDecisionMakingWF
             _selectedActionId = reaction.Id;
 
 	        var ra = _edmAsset.GetReaction(_selectedActionId);
-	        _conditions.DataSource = ra.Conditions.ConditionSet;
-            _conditions.Refresh();
+			UpdateConditions(ra);
         }
 
         private void buttonRemoveReaction_Click(object sender, EventArgs e)
@@ -180,40 +174,38 @@ namespace EmotionalDecisionMakingWF
             _reactiveActions.Refresh();
         }
 
-        private void buttonAddReactionCondition_Click(object sender, EventArgs e)
-        {
-            if (_selectedActionId != Guid.Empty)
-            {
-                new AddOrEditConditionForm(_edmAsset,_selectedActionId).ShowDialog();
-	            _conditions.DataSource = _edmAsset.GetReaction(_selectedActionId).Conditions.ConditionSet;
-				_conditions.Refresh();
-            }
-        }
+  //      private void buttonAddReactionCondition_Click(object sender, EventArgs e)
+  //      {
+  //          if (_selectedActionId != Guid.Empty)
+  //          {
+  //              new AddOrEditConditionForm(_edmAsset,_selectedActionId).ShowDialog();
+		//		UpdateConditions(_edmAsset.GetReaction(_selectedActionId));
+		//	}
+  //      }
 
-        private void buttonRemoveReactionCondition_Click(object sender, EventArgs e)
-        {
-            IList<string> conditionsToRemove = new List<string>();
-            for (int i = 0; i < dataGridViewReactionConditions.SelectedRows.Count; i++)
-            {
-                var reaction = ((ObjectView<string>)dataGridViewReactionConditions.SelectedRows[i].DataBoundItem).Object;
-                conditionsToRemove.Add(reaction);
-            }
-            _edmAsset.RemoveReactionConditions(_selectedActionId, conditionsToRemove);
-	        _conditions.DataSource = _edmAsset.GetReaction(_selectedActionId).Conditions.ConditionSet;
-			_conditions.Refresh();
-		}
+  //      private void buttonRemoveReactionCondition_Click(object sender, EventArgs e)
+  //      {
+  //          IList<string> conditionsToRemove = new List<string>();
+  //          for (int i = 0; i < dataGridViewReactionConditions.SelectedRows.Count; i++)
+  //          {
+  //              var reaction = ((ObjectView<string>)dataGridViewReactionConditions.SelectedRows[i].DataBoundItem).Object;
+  //              conditionsToRemove.Add(reaction);
+  //          }
+  //          _edmAsset.RemoveReactionConditions(_selectedActionId, conditionsToRemove);
+	 //       UpdateConditions(_edmAsset.GetReaction(_selectedActionId));
+		//}
 
-        private void buttonEditReactionCondition_Click(object sender, EventArgs e)
-        {
-            if (dataGridViewReactionConditions.SelectedRows.Count == 1)
-            {
-                var selectedCondition = ((ObjectView<string>)dataGridViewReactionConditions.
-                    SelectedRows[0].DataBoundItem).Object;
-                new AddOrEditConditionForm(_edmAsset, _selectedActionId, selectedCondition).ShowDialog();
-            }
-            _reactiveActions.DataSource = _edmAsset.GetAllReactions().ToList();
-            _reactiveActions.Refresh();
-        }
+  //      private void buttonEditReactionCondition_Click(object sender, EventArgs e)
+  //      {
+  //          if (dataGridViewReactionConditions.SelectedRows.Count == 1)
+  //          {
+  //              var selectedCondition = ((ObjectView<string>)dataGridViewReactionConditions.
+  //                  SelectedRows[0].DataBoundItem).Object;
+  //              new AddOrEditConditionForm(_edmAsset, _selectedActionId, selectedCondition).ShowDialog();
+  //          }
+  //          _reactiveActions.DataSource = _edmAsset.GetAllReactions().ToList();
+  //          _reactiveActions.Refresh();
+  //      }
 
         private void buttonAddReaction_Click(object sender, EventArgs e)
         {
@@ -234,16 +226,20 @@ namespace EmotionalDecisionMakingWF
             _reactiveActions.Refresh();
         }
 
-      
-        private void dataGridViewReactionConditions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if (e.RowIndex != -1) //exclude header cells
-            {
-                this.buttonEditReactionCondition_Click(sender, e);
-            }
-        }
+		private void UpdateConditions(ReactionDTO reaction)
+		{
+			_conditionSetView.SetData(reaction?.Conditions);
+		}
 
-        private void dataGridViewReactiveActions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+	    //   private void dataGridViewReactionConditions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+		//      {
+		//          if (e.RowIndex != -1) //exclude header cells
+		//          {
+		//              this.buttonEditReactionCondition_Click(sender, e);
+		//          }
+		//      }
+
+		private void dataGridViewReactiveActions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.RowIndex != -1) //exclude header cells
             {

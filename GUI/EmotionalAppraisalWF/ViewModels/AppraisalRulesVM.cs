@@ -4,8 +4,7 @@ using System.Linq;
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using Equin.ApplicationFramework;
-using KnowledgeBase.Conditions;
-using KnowledgeBase.DTOs.Conditions;
+using GAIPS.AssetEditorTools;
 
 namespace EmotionalAppraisalWF.ViewModels
 {
@@ -14,44 +13,49 @@ namespace EmotionalAppraisalWF.ViewModels
         private EmotionalAppraisalAsset _emotionalAppraisalAsset;
 
         public BindingListView<AppraisalRuleDTO> AppraisalRules {get; private set; }
-        public BindingListView<string> CurrentRuleConditions { get; set; }
+	    public ConditionSetView CurrentRuleConditions { get; }
         public Guid SelectedRuleId { get; set;}
-
-        public string[] QuantifierTypes = Enum.GetNames(typeof(LogicalQuantifier));
 
 		public AppraisalRulesVM(EmotionalAppraisalAsset ea)
         {
             _emotionalAppraisalAsset = ea;
             this.AppraisalRules = new BindingListView<AppraisalRuleDTO>(new List<AppraisalRuleDTO>());
-            this.CurrentRuleConditions = new BindingListView<string>(new List<string>());
+			this.CurrentRuleConditions = new ConditionSetView();
+			this.CurrentRuleConditions.OnDataChanged += CurrentRuleConditions_OnDataChanged;
             this.SelectedRuleId = Guid.Empty;
             RefreshData();   
         }
 
-        private void RefreshData()
-        {
-            this.AppraisalRules.DataSource = _emotionalAppraisalAsset.GetAllAppraisalRules().ToList();
-            this.AppraisalRules.Refresh();
-            if (SelectedRuleId != Guid.Empty)
-            {
-	            this.CurrentRuleConditions.DataSource =
-		            _emotionalAppraisalAsset.GetAllAppraisalRuleConditions(SelectedRuleId).ConditionSet;
+		private void CurrentRuleConditions_OnDataChanged()
+		{
+			var rule = AppraisalRules.FirstOrDefault(a => a.Id == SelectedRuleId);
+			if(rule == null)
+				throw new Exception("Unable to alter curretly selected rule.");
 
-            }else if (this.AppraisalRules.Count == 0)
-            {
-                this.CurrentRuleConditions.DataSource = new List<string>();
-            }
-            this.CurrentRuleConditions.Refresh();
-        }
+			rule.Conditions = CurrentRuleConditions.GetData();
+			AddOrUpdateAppraisalRule(rule);
+		}
+
+		private void RefreshData()
+        {
+			this.AppraisalRules.DataSource = _emotionalAppraisalAsset.GetAllAppraisalRules().ToList();
+			this.AppraisalRules.Refresh();
+			if (SelectedRuleId != Guid.Empty)
+			{
+				CurrentRuleConditions.SetData(_emotionalAppraisalAsset.GetAllAppraisalRuleConditions(SelectedRuleId));
+			}
+			else if (this.AppraisalRules.Count == 0)
+			{
+				CurrentRuleConditions.SetData(null);
+			}
+		}
 
         public void ChangeCurrentRule(AppraisalRuleDTO rule)
         {
             if (rule != null)
             {
                 this.SelectedRuleId = rule.Id;
-	            this.CurrentRuleConditions.DataSource =
-		            _emotionalAppraisalAsset.GetAllAppraisalRuleConditions(SelectedRuleId).ConditionSet;
-                this.CurrentRuleConditions.Refresh();
+				CurrentRuleConditions.SetData(_emotionalAppraisalAsset.GetAllAppraisalRuleConditions(SelectedRuleId));
             }
         }
 
@@ -65,28 +69,6 @@ namespace EmotionalAppraisalWF.ViewModels
         {
             _emotionalAppraisalAsset.RemoveAppraisalRules(appraisalRules);
             SelectedRuleId = Guid.Empty;
-            RefreshData();
-        }
-
-        public void AddCondition(string newCondition)
-        {
-            _emotionalAppraisalAsset.AddAppraisalRuleCondition(SelectedRuleId, newCondition);
-            RefreshData();
-        }
-
-        public void UpdateCondition(string oldCondition, string updatedCondition)
-        {
-            _emotionalAppraisalAsset.RemoveAppraisalRuleCondition(SelectedRuleId, oldCondition);
-            _emotionalAppraisalAsset.AddAppraisalRuleCondition(SelectedRuleId, updatedCondition);
-            RefreshData();
-        }
-        
-        public void RemoveConditions(IList<String> conditionsToRemove)
-        {
-            foreach (var condition in conditionsToRemove)
-            {
-                _emotionalAppraisalAsset.RemoveAppraisalRuleCondition(SelectedRuleId, condition);
-            }
             RefreshData();
         }
     }
