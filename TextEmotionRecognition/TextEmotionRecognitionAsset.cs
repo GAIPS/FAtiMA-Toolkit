@@ -103,5 +103,10 @@ namespace TextEmotionRecognition
 
             return this.CurrentSample;
         }
+
+        public IEnumerable<string> GetRecognizedAffectiveVariables()
+        {
+            return new List<string> { "angry", "excited", "sad", "scared", "tender", "happy" };
+        }
     }
 }

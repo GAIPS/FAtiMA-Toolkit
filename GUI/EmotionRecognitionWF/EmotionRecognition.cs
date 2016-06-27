@@ -30,13 +30,15 @@ namespace EmotionRecognitionWF
         private BindingListView<AffectiveInformation> TextInformation { get; }
         private BindingListView<AffectiveInformation> SpeechInformation { get; }
 
+        private KalmanFilterFusionPolicy KalmanFusionPolicy { get; set; }
+
         public EmotionRecognition()
         {
             InitializeComponent();
 
             this.EmotionRecognitionAsset = new RealTimeEmotionRecognitionAsset();
-            this.TextEmotionRecognitionAsset = new TextEmotionRecognitionAsset { DecayWindow = 10 };
-            this.SpeechEmotionRecognitionAsset = new SpeechEmotionRecognitionAsset() { DecayWindow = 10 };
+            this.TextEmotionRecognitionAsset = new TextEmotionRecognitionAsset { DecayWindow = 30 };
+            this.SpeechEmotionRecognitionAsset = new SpeechEmotionRecognitionAsset() { DecayWindow = 30 };
             this.EDARecognitionAsset = new EDARecognitionAsset();
 
             this.EmotionRecognitionAsset.AddAffectRecognitionAsset(this.EDARecognitionAsset, 1.0f);
@@ -55,6 +57,8 @@ namespace EmotionRecognitionWF
 
             this.cboxFusionPolicy.SelectedIndex = 0;
             this.EmotionRecognitionAsset.Policy = new MaxPolicy();
+
+            this.KalmanFusionPolicy = new KalmanFilterFusionPolicy(this.EmotionRecognitionAsset.Classifiers);
         }
 
         [DllImport("winmm.dll", EntryPoint = "mciSendStringA", ExactSpelling = true, CharSet = CharSet.Ansi, SetLastError = true)]
@@ -89,9 +93,13 @@ namespace EmotionRecognitionWF
             {
                 this.EmotionRecognitionAsset.Policy = new MaxPolicy();
             }
-            else
+            else if (this.cboxFusionPolicy.SelectedText.Equals("Max"))
             {
                 this.EmotionRecognitionAsset.Policy = new WeightedFusionPolicy();
+            }
+            else
+            {
+                this.EmotionRecognitionAsset.Policy = this.KalmanFusionPolicy;
             }
         }
 
@@ -108,7 +116,7 @@ namespace EmotionRecognitionWF
             record("save recsound mic.wav", "", 0, 0);
             record("close recsound", "", 0, 0);
 
-            FileStream speechTestFile = File.Open("mic.wav", FileMode.Open);
+            FileStream speechTestFile = File.Open("anger.wav", FileMode.Open);
             byte[] speech = new byte[speechTestFile.Length];
             speechTestFile.Read(speech, 0, speech.Length);
             speechTestFile.Close();

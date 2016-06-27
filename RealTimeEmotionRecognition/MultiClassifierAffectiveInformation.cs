@@ -38,7 +38,10 @@ namespace RealTimeEmotionRecognition
             foreach(var affectiveVariable in this.MCAffectiveInformationSet.Values)
             {
                 var fusedAffectiveVariable = policy.Fuse(affectiveVariable);
-                this.FusedAffectiveInformation.Add(fusedAffectiveVariable);
+                if(fusedAffectiveVariable != null)
+                {
+                    this.FusedAffectiveInformation.Add(fusedAffectiveVariable);
+                }
             }
 
             return this.FusedAffectiveInformation;

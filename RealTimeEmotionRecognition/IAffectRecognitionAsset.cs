@@ -6,5 +6,6 @@ namespace RealTimeEmotionRecognition
     {
         string Name { get; }
         IEnumerable<AffectiveInformation> GetSample();
+        IEnumerable<string> GetRecognizedAffectiveVariables();
     }
 }
