@@ -116,7 +116,7 @@ namespace EmotionRecognitionWF
             record("save recsound mic.wav", "", 0, 0);
             record("close recsound", "", 0, 0);
 
-            FileStream speechTestFile = File.Open("anger.wav", FileMode.Open);
+            FileStream speechTestFile = File.Open("mic.wav", FileMode.Open);
             byte[] speech = new byte[speechTestFile.Length];
             speechTestFile.Read(speech, 0, speech.Length);
             speechTestFile.Close();
