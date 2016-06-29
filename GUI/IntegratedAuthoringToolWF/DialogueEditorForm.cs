@@ -111,5 +111,10 @@ namespace IntegratedAuthoringToolWF
                 _agentDialogs.Refresh();
             }
         }
-    }
+
+		private void textToSpeachToolStripMenuItem_Click(object sender, System.EventArgs e)
+		{
+			new TextToSpeechForm().Show(this);
+		}
+	}
 }

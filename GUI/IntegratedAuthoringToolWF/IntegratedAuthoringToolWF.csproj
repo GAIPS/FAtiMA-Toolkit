@@ -43,6 +43,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Speech" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -65,6 +66,12 @@
     </Compile>
     <Compile Include="DialogueEditorForm.Designer.cs">
       <DependentUpon>DialogueEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TextToSpeechForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TextToSpeechForm.Designer.cs">
+      <DependentUpon>TextToSpeechForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -93,6 +100,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="TextToSpeechForm.resx">
+      <DependentUpon>TextToSpeechForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
