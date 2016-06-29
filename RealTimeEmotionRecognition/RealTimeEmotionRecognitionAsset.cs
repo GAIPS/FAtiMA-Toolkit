@@ -8,7 +8,7 @@ namespace RealTimeEmotionRecognition
     public class RealTimeEmotionRecognitionAsset : BaseAsset
     {
         public IFusionPolicy Policy { get; set; }
-        private List<Classifier> classifiers;
+        public List<Classifier> Classifiers { get; private set; }
 
         private List<MultiClassifierAffectiveInformation> AffectiveInformationData;
 
@@ -16,20 +16,20 @@ namespace RealTimeEmotionRecognition
         {
             this.Policy = new MaxPolicy();
             //this.UpdateRate = 1.0f; //1 Hz by default
-            this.classifiers = new List<Classifier>();
+            this.Classifiers = new List<Classifier>();
             this.AffectiveInformationData = new List<MultiClassifierAffectiveInformation>();
         }
 
         public void AddAffectRecognitionAsset(IAffectRecognitionAsset affectRecognitionAsset, float weight)
         {
-            this.classifiers.Add(new Classifier { Asset = affectRecognitionAsset, Weight = weight });
+            this.Classifiers.Add(new Classifier { Asset = affectRecognitionAsset, Weight = weight });
         }
 
         public void UpdateSamples()
         {
             var sampleData = new MultiClassifierAffectiveInformation { Time = DateTime.Now };
 
-            foreach(var classifier in this.classifiers)
+            foreach(var classifier in this.Classifiers)
             {
                 sampleData.AddSample(classifier, classifier.Asset.GetSample());
             }

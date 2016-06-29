@@ -55,13 +55,13 @@ namespace SpeechEmotionRecognition
 
                 var finalResult = result.Split(':')[2].Split(' ')[0];
 
-                if (finalResult.StartsWith("Angry"))
+                if (finalResult.StartsWith("angry"))
                 {
-                    this.CurrentSample = new List<AffectiveInformation> { new AffectiveInformation { Name = "Angry", Score = 1.0f } };
+                    this.CurrentSample = new List<AffectiveInformation> { new AffectiveInformation { Name = "angry", Score = 1.0f } };
                 }
                 else
                 {
-                    this.CurrentSample = new List<AffectiveInformation> { new AffectiveInformation { Name = "Angry", Score = 0.0f } };
+                    this.CurrentSample = new List<AffectiveInformation> { new AffectiveInformation { Name = "angry", Score = 0.0f } };
                 }
 
                 this.SampleTime = DateTime.Now;
@@ -178,6 +178,11 @@ namespace SpeechEmotionRecognition
             }
 
             return this.CurrentSample;
+        }
+
+        public IEnumerable<string> GetRecognizedAffectiveVariables()
+        {
+            return new List<string> { "angry" };
         }
     }
 }

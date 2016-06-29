@@ -218,5 +218,10 @@ namespace EDARecognition
                 new AffectiveInformation { Name = "arousal", Score = arousal }
             };
         }
+
+        public IEnumerable<string> GetRecognizedAffectiveVariables()
+        {
+            return new List<string> { "arousal" };
+        }
     }
 }
