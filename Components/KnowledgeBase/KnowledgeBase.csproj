@@ -63,7 +63,6 @@
     <Compile Include="WellFormedNames\Interfaces\IGroundable.cs" />
     <Compile Include="WellFormedNames\Implementation\UniversalSymbol.cs" />
     <Compile Include="WellFormedNames\Implementation\VariableSymbol.cs" />
-    <Compile Include="WellFormedNames\Interfaces\IPerspective.cs" />
     <Compile Include="WellFormedNames\Interfaces\IVariableRenamer.cs" />
     <Compile Include="WellFormedNames\Name.cs" />
     <Compile Include="Exceptions\ParsingException.cs" />

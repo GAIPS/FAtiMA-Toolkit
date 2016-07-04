@@ -44,8 +44,8 @@ namespace AutobiographicMemory
 
 			public override BaseEvent SwapPerspective(Name oldPerspective, Name newPerspective)
 			{
-				Property = Property.SwapPerspective(oldPerspective, newPerspective);
-				NewValue = NewValue.SwapPerspective(oldPerspective, newPerspective);
+				Property = Property.SwapTerms(oldPerspective, newPerspective);
+				NewValue = NewValue.SwapTerms(oldPerspective, newPerspective);
 				base.SwapPerspective(oldPerspective, newPerspective);
 				return this;
 			}

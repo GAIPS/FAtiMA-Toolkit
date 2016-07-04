@@ -59,7 +59,7 @@ namespace KnowledgeBase.WellFormedNames
 				return CompareNameWithString(Name.SELF_STRING);
 			}
 
-			public override Name SwapPerspective(Name original, Name newName)
+			public override Name SwapTerms(Name original, Name newName)
 			{
 				if (original.Equals(this))
 					return newName;

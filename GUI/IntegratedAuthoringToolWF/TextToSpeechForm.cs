@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Speech.Recognition;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
+using GAIPS.AssetEditorTools;
+using IntegratedAuthoringTool.DTOs;
 
 namespace IntegratedAuthoringToolWF
 {
@@ -18,12 +18,15 @@ namespace IntegratedAuthoringToolWF
 		private SpeechSynthesizer _synthesizer = new SpeechSynthesizer();
 		private PromptBuilder _builder = new PromptBuilder();
 		private VoiceInfo[] _installedVoices;
+
+		private DialogueStateActionDTO[] _agentActions;
 		private Prompt _current = null;
 
-		public TextToSpeechForm()
+		public TextToSpeechForm(DialogueStateActionDTO[] agentActions)
 		{
 			InitializeComponent();
 
+			_agentActions = agentActions;
 			_installedVoices = _synthesizer.GetInstalledVoices().Where(v => v.Enabled).Select(v => v.VoiceInfo).ToArray();
 			_voiceComboBox.DataSource = _installedVoices.Select(VoiceToIdString).ToArray();
 			UpdateButtonText(true);
@@ -48,8 +51,7 @@ namespace IntegratedAuthoringToolWF
 			}
 			else
 			{ 
-				UpdateSpeechData();
-
+				UpdateSpeechData(textBox1.Text);
 				_synthesizer.SetOutputToDefaultAudioDevice();
 				_current = _synthesizer.SpeakAsync(_builder);
 				_synthesizer.SpeakCompleted += SynthesizerOnSpeakCompleted;
@@ -80,12 +82,26 @@ namespace IntegratedAuthoringToolWF
 
 		private double GetRate()
 		{
+			if (_speachRateSlider.InvokeRequired)
+				return (double) _speachRateSlider.Invoke((Func<double>)GetRate);
+
 			return Math.Pow(3, _speachRateSlider.Value * 0.01);
 		}
 
 		private int GetPitch()
 		{
+			if (_pitchSlider.InvokeRequired)
+				return (int) _pitchSlider.Invoke((Func<int>) GetPitch);
+
 			return _pitchSlider.Value;
+		}
+
+		private VoiceInfo GetCurrentlySelectedVoiceInfo()
+		{
+			if (_voiceComboBox.InvokeRequired)
+				return (VoiceInfo)_voiceComboBox.Invoke((Func<VoiceInfo>) GetCurrentlySelectedVoiceInfo);
+
+			return _installedVoices[_voiceComboBox.SelectedIndex];
 		}
 
 		private void OnFormClosed(object sender, FormClosedEventArgs e)
@@ -104,25 +120,61 @@ namespace IntegratedAuthoringToolWF
 			if (folder.ShowDialog(this) != DialogResult.OK)
 				return;
 
-			List<Tuple<int,TimeSpan>> visemes = new List<Tuple<int, TimeSpan>>();
+			var path = Path.Combine(folder.SelectedPath, $"TTS Generation - {DateTime.UtcNow.ToString("hh-mm-ss-tt_dd-MM-yyyy")}");
+			EditorUtilities.DisplayProgressBar("Generating TTS from Agent's Dialog Data", controler =>
+			{
+				Directory.CreateDirectory(path);
+				GenerateVoicesTask(path,controler);
+			});
+		}
+
+		private void GenerateVoicesTask(string basePath, IProgressBarControler controller)
+		{
+			int i = 0;
+			foreach (var split in _agentActions.Zip(controller.Split(_agentActions.Length), (dto, ctrl) => new { data = dto, ctrl }))
+			{
+				var path = Path.Combine(basePath, split.data.Id.ToString("N"));
+				Directory.CreateDirectory(path);
+
+				split.ctrl.Message = $"Generating TTS for Utterance ({++i}/{_agentActions.Length})";
+				GenerateTTS(path, split.data,split.ctrl);
+				split.ctrl.Percent = 1;
+			}
+			controller.Percent = 1;
+		}
+
+		private void GenerateTTS(string path, DialogueStateActionDTO dto, IProgressBarControler ctrl)
+		{
+			List<Tuple<int, TimeSpan>> visemes = new List<Tuple<int, TimeSpan>>();
 			EventHandler<VisemeReachedEventArgs> visemeHandler = (o, args) =>
 			{
 				visemes.Add(Tuple.Create(args.Viseme, args.Duration));
 			};
 
 			_synthesizer.VisemeReached += visemeHandler;
-			UpdateSpeechData();
-			_synthesizer.SetOutputToWaveFile(Path.Combine(folder.SelectedPath, "speech.wav"));
+			UpdateSpeechData(dto.Utterance);
+			_synthesizer.SetOutputToWaveFile(Path.Combine(path, "speech.wav"));
 			_synthesizer.Speak(_builder);
 			_synthesizer.SetOutputToDefaultAudioDevice();
 			_synthesizer.VisemeReached -= visemeHandler;
 
-			using (var writer = new XmlTextWriter(Path.Combine(folder.SelectedPath, "speech.xml"),Encoding.UTF8))
+			ctrl.Percent = 0.5f;
+
+			if (visemes.Count == 0)
+			{
+				//No visemes were generated. This means that no speach was produced by the synthesizer.
+				//Delete folder and data, and ignore this text.
+
+				Directory.Delete(path,true);
+				return;
+			}
+
+			using (var writer = new XmlTextWriter(Path.Combine(path, "speech.xml"), Encoding.UTF8))
 			{
 				writer.Formatting = Formatting.Indented;
 				writer.WriteStartDocument();
 				writer.WriteStartElement("LipSyncVisemes");
-				writer.WriteAttributeString("wavFile","speech.wav");
+				writer.WriteAttributeString("wavFile", "speech.wav");
 
 				double time = 0;
 				foreach (var v in visemes)
@@ -142,8 +194,6 @@ namespace IntegratedAuthoringToolWF
 				writer.WriteEndElement();
 				writer.WriteEndDocument();
 			}
-
-			Console.WriteLine("Done");
 		}
 
 		private void SynthesizerOnSpeakCompleted(object sender, SpeakCompletedEventArgs speakCompletedEventArgs)
@@ -153,15 +203,15 @@ namespace IntegratedAuthoringToolWF
 			UpdateButtonText(true);
 		}
 
-		private void UpdateSpeechData()
+		private void UpdateSpeechData(string text)
 		{
 			_builder.ClearContent();
 
-			var voice = _installedVoices[_voiceComboBox.SelectedIndex];
+			var voice = GetCurrentlySelectedVoiceInfo();
 			_builder.StartVoice(voice);
 			var prosody = $"<prosody rate=\"{GetRate()}\" pitch=\"{GetPitch()}st\">";
 			_builder.AppendSsmlMarkup(prosody);
-			_builder.AppendText(textBox1.Text);
+			_builder.AppendText(text);
 			_builder.AppendSsmlMarkup("</prosody>");
 			_builder.EndVoice();
 		}

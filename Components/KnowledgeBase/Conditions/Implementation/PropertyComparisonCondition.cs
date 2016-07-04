@@ -84,7 +84,7 @@ namespace KnowledgeBase.Conditions
 
 			public override string ToString()
 			{
-				return string.Format("{0} {1} {2}", Property1, OperatorRepresentation(Operator), Property2);
+				return $"{Property1} {OperatorRepresentation(Operator)} {Property2}";
 			}
 		}
 	}

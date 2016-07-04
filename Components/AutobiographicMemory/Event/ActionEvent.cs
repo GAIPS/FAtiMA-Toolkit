@@ -10,15 +10,16 @@ namespace AutobiographicMemory
 		[Serializable]
 		private class ActionEvent : BaseEvent
 		{
-            public static bool IsActionEvent(Name eventName)
+			public static bool IsActionEvent(Name eventName)
             {
-                return eventName.GetNTerm(1) == Constants.ACTION_EVENT;
+	            var t = eventName.GetNTerm(1);
+				return t == Constants.ACTION_START_EVENT || t == Constants.ACTION_FINISHED_EVENT;
             }
 
 			public Name Action { get; private set; }
             public Name Target { get; private set; }
-
-		    public ActionEvent(uint id, Name eventName, ulong timestamp) : base(id, eventName, timestamp)
+			
+			public ActionEvent(uint id, Name eventName, ulong timestamp) : base(id, eventName, timestamp)
 			{
 				Action = eventName.GetNTerm(3);
                 Target = eventName.GetNTerm(4);
@@ -44,8 +45,8 @@ namespace AutobiographicMemory
 
 			public override BaseEvent SwapPerspective(Name oldPerspective, Name newPerspective)
 			{
-				Action = Action.SwapPerspective(oldPerspective, newPerspective);
-				Target = Target.SwapPerspective(oldPerspective, newPerspective);
+				Action = Action.SwapTerms(oldPerspective, newPerspective);
+				Target = Target.SwapTerms(oldPerspective, newPerspective);
 				base.SwapPerspective(oldPerspective, newPerspective);
 				return this;
 			}

@@ -13,7 +13,7 @@ namespace EmotionalAppraisalWF.ViewModels
 
         public BindingListView<EventDTO> Events {get;}
 
-		public static readonly string[] EventTypes = { Constants.ACTION_EVENT.ToString(), Constants.PROPERTY_CHANGE_EVENT.ToString() };
+		public static readonly string[] EventTypes = { Constants.ACTION_START_EVENT.ToString(),Constants.ACTION_FINISHED_EVENT.ToString(), Constants.PROPERTY_CHANGE_EVENT.ToString() };
 
 		public AutobiographicalMemoryVM(EmotionalAppraisalAsset ea)
         {

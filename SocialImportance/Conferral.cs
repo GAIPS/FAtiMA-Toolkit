@@ -40,7 +40,7 @@ namespace SocialImportance
 
 		protected override float CalculateActionUtility(IAction a)
 		{
-			return 1;
+			return float.PositiveInfinity;
 		}
 
 		public override void GetObjectData(ISerializationData dataHolder, ISerializationContext context)

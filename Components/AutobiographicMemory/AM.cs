@@ -172,7 +172,7 @@ namespace AutobiographicMemory
 			var newIndexes = new NameSearchTree<List<uint>>();
 			foreach (var p in m_typeIndexes)
 			{
-				var k = p.Key.SwapPerspective(oldPerspective, newPerspective);
+				var k = p.Key.SwapTerms(oldPerspective, newPerspective);
 				newIndexes[k] = p.Value;
 			}
 			m_typeIndexes = newIndexes;

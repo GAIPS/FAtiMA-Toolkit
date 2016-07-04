@@ -148,7 +148,7 @@
             var composedName = new ComposedName(symbolsStrings.Select(s => new Symbol(s)));
             var clone = (ComposedName)composedName.Clone();
 
-            var nameWithSwappedPerspective = composedName.SwapPerspective(original, perspective);
+            var nameWithSwappedPerspective = composedName.SwapTerms(original, perspective);
             
             Assert.That(!nameWithSwappedPerspective.GetLiterals().Contains(new Symbol(original)));
             Assert.That(nameWithSwappedPerspective.GetLiterals().Contains(new Symbol(perspective)));

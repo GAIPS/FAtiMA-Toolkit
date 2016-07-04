@@ -31,7 +31,7 @@ namespace KnowledgeBase.WellFormedNames
 				return false;
 			}
 
-			public override Name SwapPerspective(Name original, Name newName)
+			public override Name SwapTerms(Name original, Name newName)
 			{
 				return this;
 			}

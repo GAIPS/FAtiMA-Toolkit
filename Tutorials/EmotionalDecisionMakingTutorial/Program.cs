@@ -31,7 +31,7 @@ namespace EmotionalDecisionMakingTutorial
 
             //the method decide will now trigger the previous reaction defined (since the default value of mood is 0) 
             var actions = edm.Decide();
-            Console.WriteLine("Decision: " + string.Concat(actions.Select(a => a.ToEventName((Name)"John"))));
+            Console.WriteLine("Decision: " + string.Concat(actions.Select(a => a.ToStartEventName((Name)"John"))));
 
             Console.ReadKey();
         }

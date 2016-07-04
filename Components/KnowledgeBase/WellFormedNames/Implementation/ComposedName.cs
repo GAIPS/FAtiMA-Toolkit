@@ -122,9 +122,9 @@ namespace KnowledgeBase.WellFormedNames
 				return GetTerms().Any(s => s.HasSelf());
 			}
 
-			public override Name SwapPerspective(Name original, Name newName)
+			public override Name SwapTerms(Name original, Name newName)
 			{
-				return new ComposedName((Symbol)RootSymbol.SwapPerspective(original,newName), Terms.Select(t => t.SwapPerspective(original,newName)).ToArray());
+				return new ComposedName((Symbol)RootSymbol.SwapTerms(original,newName), Terms.Select(t => t.SwapTerms(original,newName)).ToArray());
 			}
 
 			public override Name ReplaceUnboundVariables(string id)

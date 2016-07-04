@@ -208,7 +208,7 @@ namespace KnowledgeBase
 			var newStorage = new NameSearchTree<KnowledgeEntry>();
 			foreach (var entry in m_knowledgeStorage)
 			{
-				var newProperty = entry.Key.SwapPerspective(Perspective, newPerspective);
+				var newProperty = entry.Key.SwapTerms(Perspective, newPerspective);
 				newStorage.Add(newProperty,entry.Value);
 			}
 			m_knowledgeStorage.Clear();

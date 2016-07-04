@@ -66,7 +66,7 @@ namespace KnowledgeBase.WellFormedNames
 	///			- Kick(Hard, Low)
 	/// </example>
 	[Serializable]
-	public abstract partial class Name : IGroundable<Name>, IComparable<Name>, IPerspective<Name>, ICloneable
+	public abstract partial class Name : IGroundable<Name>, IComparable<Name>, ICloneable
 	{
 		private const string NUMBER_VALIDATION_PATTERN = @"(?:-|\+)?\d+(?:\.\d+)?(?:e(?:-|\+)?[1-9]\d*)?";
 		private const string VARIABLE_SYMBOL_VALIDATION_PATTERN = @"^\[([A-Za-z_][\w-]*)\]$";
@@ -225,7 +225,7 @@ namespace KnowledgeBase.WellFormedNames
 		/// <returns>A new instance, which is a clone of this Name, but with every instance of the given Name swaped with SELF.</returns>
 		public Name ApplyPerspective(Name name)
 		{
-			return SwapPerspective(name, SELF_SYMBOL);
+			return SwapTerms(name, SELF_SYMBOL);
 		}
 
 		/// <summary>
@@ -235,7 +235,7 @@ namespace KnowledgeBase.WellFormedNames
 		/// <returns>A new instance, which is a clone of this Name, but with every instance of SELF swaped with the given Name.</returns>
 		public Name RemovePerspective(Name name)
 		{
-			return SwapPerspective(SELF_SYMBOL, name);
+			return SwapTerms(SELF_SYMBOL, name);
 		}
 
 		/// <summary>
@@ -244,7 +244,7 @@ namespace KnowledgeBase.WellFormedNames
 		/// <param name="original">The Name instance to swap from.</param>
 		/// <param name="newName">The Name instance to swap to.</param>
 		/// <returns>A new instance, which is a clone of this Name, but with every instance of the original Name swaped with the new one.</returns>
-		public abstract Name SwapPerspective(Name original, Name newName);
+		public abstract Name SwapTerms(Name original, Name newName);
 
 		/// <summary>
 		/// Given a SubstitutionSet, tries to ground this Name by substituting every variable with the corresponding value.

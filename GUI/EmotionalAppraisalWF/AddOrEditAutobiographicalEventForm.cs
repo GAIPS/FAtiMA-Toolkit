@@ -63,7 +63,7 @@ namespace EmotionalAppraisalWF
                         Time = ulong.Parse(textBoxTime.Text)
                     };
                 
-                }else if (comboBoxEventType.Text == Constants.ACTION_EVENT.ToString())
+                }else if (comboBoxEventType.Text == Constants.ACTION_START_EVENT.ToString() || comboBoxEventType.Text == Constants.ACTION_FINISHED_EVENT.ToString())
                 {
                     newEvent = new ActionEventDTO()
                     {
@@ -109,16 +109,20 @@ namespace EmotionalAppraisalWF
 
         private void comboBoxEventType_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (((ComboBox) sender).Text == Constants.PROPERTY_CHANGE_EVENT.ToString())
-            {
-                labelObject.Text = "Property:";
-                labelTarget.Text = "New Value:";
-            }
-            else if (((ComboBox)sender).Text == Constants.ACTION_EVENT.ToString())
-            {
-                labelObject.Text = "Action:";
-                labelTarget.Text = "Target";
-            }
+	        if (((ComboBox) sender).Text == Constants.PROPERTY_CHANGE_EVENT.ToString())
+	        {
+		        labelObject.Text = "Property:";
+		        labelTarget.Text = "New Value:";
+	        }
+	        else
+	        {
+		        var text = ((ComboBox) sender).Text;
+				if (text == Constants.ACTION_START_EVENT.ToString() || text == Constants.ACTION_FINISHED_EVENT.ToString())
+				{
+					labelObject.Text = "Action:";
+					labelTarget.Text = "Target";
+				}
+			}
         }
     }
 }

@@ -150,7 +150,7 @@
         public void SwapPerspective_SymbolWithName_ClonedSwappedSymbol(string s, string original, string newName)
         {
             var symbol = new Symbol(s);
-            var clonedSymbol = (Symbol)symbol.SwapPerspective(original, newName);
+            var clonedSymbol = (Symbol)symbol.SwapTerms(original, newName);
             Assert.That(clonedSymbol.Name == newName);
             Assert.That(!ReferenceEquals(symbol, clonedSymbol));
         }
@@ -159,7 +159,7 @@
         public void SwapPerspective_SymbolWithoutPerspective_ClonedUnswappedSymbol(string s, string original, string newName)
         {
             var symbol = new Symbol(s);
-            var clonedSymbol = (Symbol)symbol.SwapPerspective(original, newName);
+            var clonedSymbol = (Symbol)symbol.SwapTerms(original, newName);
             Assert.That(clonedSymbol.Name != newName);
             Assert.That(clonedSymbol == symbol);
             Assert.That(!ReferenceEquals(symbol, clonedSymbol));

@@ -26,6 +26,7 @@ namespace GAIPS.Serialization
 		{
 			FormatSelector.AddFormatter(typeof(Enum), true, new EnumGraphFormatter { parent = this });
 			FormatSelector.AddFormatter(typeof(DateTime),false, new DateTimeFormatter());
+			FormatSelector.AddFormatter(typeof(Guid),false,new GUIDFormatter());
 		}
 
 		#region Serialization
@@ -329,6 +330,20 @@ namespace GAIPS.Serialization
 				var timestamp = (IStringGraphNode) node;
 				DateTime t = DateTime.ParseExact(timestamp.Value, TIME_FORMATS, null, DateTimeStyles.None);
 				return DateTime.SpecifyKind(t, DateTimeKind.Utc);
+			}
+		}
+
+		private class GUIDFormatter: IGraphFormatter
+		{
+			public IGraphNode ObjectToGraphNode(object value, Graph serializationGraph)
+			{
+				return serializationGraph.BuildStringNode(((Guid) value).ToString("D"));
+			}
+
+			public object GraphNodeToObject(IGraphNode node, Type objectType)
+			{
+				var str = ((IStringGraphNode) node).Value;
+				return new Guid(str);
 			}
 		}
 	}

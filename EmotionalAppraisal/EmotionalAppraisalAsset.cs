@@ -364,17 +364,22 @@ namespace EmotionalAppraisal
 		/// <param name="eventNames">A set of string representation of the events to appraise</param>
 		public void AppraiseEvents(IEnumerable<string> eventNames)
 		{
+			AppraiseEvents(eventNames.Select(Name.BuildName));
+		}
+
+		public void AppraiseEvents(IEnumerable<Name> eventNames)
+		{
 			var APPRAISAL_FRAME = new InternalAppraisalFrame();
-			foreach (var n in eventNames.Select(Name.BuildName))
+			foreach (var n in eventNames)
 			{
 				var evtN = n.RemovePerspective((Name)Perspective);
-				var evt = m_am.RecordEvent(evtN,Tick);
+				var evt = m_am.RecordEvent(evtN, Tick);
 
 				var propEvt = evt as IPropertyChangedEvent;
 				if (propEvt != null)
 				{
 					var fact = propEvt.Property;
-					var value = (Name) propEvt.NewValue;
+					var value = (Name)propEvt.NewValue;
 					m_kb.Tell(fact, value.GetPrimitiveValue(), Name.SELF_SYMBOL);
 				}
 

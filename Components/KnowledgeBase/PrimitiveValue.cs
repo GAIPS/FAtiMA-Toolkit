@@ -55,6 +55,10 @@ namespace KnowledgeBase
 
 			public override string ToString()
 			{
+				IFormattable f = value as IFormattable;
+				if(f!=null)
+					return f.ToString(null, CultureInfo.InvariantCulture);
+
 				return value.ToString();
 			}
 		}
@@ -100,10 +104,7 @@ namespace KnowledgeBase
 				return (TResult)Convert.ChangeType(value, typeof(TResult));
 			}
 
-			public object Value
-			{
-				get { return value; }
-			}
+			public object Value => value;
 
 			public override bool Equals(PrimitiveValue obj)
 			{

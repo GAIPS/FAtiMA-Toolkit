@@ -32,6 +32,8 @@ namespace RolePlayCharacter
 		[NonSerialized]
 	    private ICharacterBody _characterBody;
 
+	    private IAction _currentAction = null;
+
 		#endregion
 
 		#region Public Interface
@@ -78,13 +80,23 @@ namespace RolePlayCharacter
 			_socialImportanceAsset.InvalidateCachedSI();
 			_emotionalAppraisalAsset.AppraiseEvents(eventStrings);
 
+		    if (_currentAction != null)
+			    return null;
+
 		    var possibleActions = _emotionalDecisionMakingAsset.Decide();
 		    var sociallyAcceptedActions = _socialImportanceAsset.FilterActions(Name.SELF_STRING, possibleActions);
 		    var conferralAction = _socialImportanceAsset.DecideConferral(Name.SELF_STRING);
 		    if (conferralAction != null)
 			    sociallyAcceptedActions.Append(conferralAction);
 
-			return TakeBestActions(sociallyAcceptedActions).Shuffle().FirstOrDefault();
+			_currentAction = TakeBestActions(sociallyAcceptedActions).Shuffle().FirstOrDefault();
+		    if (_currentAction != null)
+		    {
+				var e = _currentAction.ToStartEventName(Name.SELF_SYMBOL);
+				_emotionalAppraisalAsset.AppraiseEvents(new [] {e});
+		    }
+
+		    return _currentAction;
 	    }
 
 	    private static IEnumerable<IAction> TakeBestActions(IEnumerable<IAction> enumerable)
@@ -111,7 +123,20 @@ namespace RolePlayCharacter
 			return currentActiveEmotions.MaxValue(a => a.Intensity);
 		}
 
-		#endregion
+	    public void ActionFinished(IAction action)
+	    {
+			if(_currentAction == null)
+				throw new Exception("The RPC asset is not currently executing an action");
+
+			if(!_currentAction.Equals(action))
+				throw new ArgumentException("The given action mismatches the currently executing action.",nameof(action));
+
+		    var e = _currentAction.ToFinishedEventName(Name.SELF_SYMBOL);
+			_emotionalAppraisalAsset.AppraiseEvents(new[] { e });
+		    _currentAction = null;
+	    }
+
+	    #endregion
 
 		protected override string OnAssetLoaded()
 		{
@@ -157,25 +182,6 @@ namespace RolePlayCharacter
 
 		    return LoadableAsset<T>.LoadFromFile(CurrentStorageProvider, ToAbsolutePath(path));
 	    }
-
-	    //#region Serialization
-
-		//public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
-  //      {
-  //          dataHolder.SetValue("EmotionalAppraisalAssetSource", ToRelativePath(_emotionalAppraisalAssetSource));
-  //          dataHolder.SetValue("EmotionalDecisionMakingAssetSource", ToRelativePath(_emotionalDecisionMakingAssetSource));
-  //          dataHolder.SetValue("CharacterName", CharacterName);
-  //          dataHolder.SetValue("BodyName", BodyName);
-  //      }
-
-  //      public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
-  //      {
-  //          EmotionalAppraisalAssetSource = dataHolder.GetValue<string>("EmotionalAppraisalAssetSource");
-  //          EmotionalDecisionMakingSource = dataHolder.GetValue<string>("EmotionalDecisionMakingAssetSource");
-  //          CharacterName = dataHolder.GetValue<string>("CharacterName");
-  //          BodyName = dataHolder.GetValue<string>("BodyName");
-  //      }
-  //      #endregion
         
         public void SaveOutput(string filePath, string name)
         {

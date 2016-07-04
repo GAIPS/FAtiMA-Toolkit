@@ -39,7 +39,6 @@
     <Compile Include="ICharacterBody.cs" />
     <Compile Include="RolePlayerCharacterAsset.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities\Messages.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Components\ActionLibrary\ActionLibrary.csproj">

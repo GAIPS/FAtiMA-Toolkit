@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using Equin.ApplicationFramework;
@@ -114,7 +113,8 @@ namespace IntegratedAuthoringToolWF
 
 		private void textToSpeachToolStripMenuItem_Click(object sender, System.EventArgs e)
 		{
-			new TextToSpeechForm().Show(this);
+			var dialogs = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, IntegratedAuthoringToolAsset.ANY_DIALOGUE_STATE).ToArray();
+			new TextToSpeechForm(dialogs).Show(this);
 		}
 	}
 }
