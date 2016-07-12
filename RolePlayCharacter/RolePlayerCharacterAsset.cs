@@ -23,7 +23,20 @@ namespace RolePlayCharacter
 		private string _emotionalDecisionMakingAssetSource = null;
 		private string _socialImportanceAssetSource = null;
 
-		[NonSerialized]
+        private static IEnumerable<IAction> TakeBestActions(IEnumerable<IAction> enumerable)
+        {
+            float best = float.NegativeInfinity;
+            foreach (var a in enumerable.OrderByDescending(a => a.Utility))
+            {
+                if (a.Utility < best)
+                    break;
+
+                yield return a;
+                best = a.Utility;
+            }
+        }
+
+        [NonSerialized]
 		private EmotionalAppraisalAsset _emotionalAppraisalAsset;
 		[NonSerialized]
 		private EmotionalDecisionMakingAsset _emotionalDecisionMakingAsset;
@@ -37,23 +50,44 @@ namespace RolePlayCharacter
 		#endregion
 
 		#region Public Interface
+        
+		/// <summary>
+        /// The instance of the character's embodiment
+        /// </summary>
+        public ICharacterBody CharacterBody => _characterBody;
 
-		public ICharacterBody CharacterBody => _characterBody;
+        /// <summary>
+        /// An identifier for the embodiment that is used by the character
+        /// </summary>
+        public string BodyName { get; set; }
 
-	    public string BodyName { get; set; }
-		public string CharacterName { get; set; }
+        /// <summary>
+        /// The name of the character
+        /// </summary>
+        public string CharacterName { get; set; }
 
-		public string EmotionalAppraisalAssetSource
+        /// <summary>
+        /// The source being used for the Emotional Appraisal Asset
+        /// </summary>
+        public string EmotionalAppraisalAssetSource
 		{
 			get { return ToAbsolutePath(_emotionalAppraisalAssetSource); }
 			set { _emotionalAppraisalAssetSource = ToRelativePath(value); }
-		}
-		public string EmotionalDecisionMakingSource
+        }
+
+        /// <summary>
+        /// The source being used for the Emotional Decision Making Asset
+        /// </summary>
+        public string EmotionalDecisionMakingSource
 		{
 			get { return ToAbsolutePath(_emotionalDecisionMakingAssetSource); }
 			set { _emotionalDecisionMakingAssetSource = ToRelativePath(value); }
 		}
-		public string SocialImportanceAssetSource
+
+        /// <summary>
+        /// The source being used for the Social Importance Asset
+        /// </summary>
+        public string SocialImportanceAssetSource
 		{
 			get { return ToAbsolutePath(_socialImportanceAssetSource); }
 			set { _socialImportanceAssetSource = ToRelativePath(value); }
@@ -63,19 +97,39 @@ namespace RolePlayCharacter
 
 		public IEnumerable<IActiveEmotion> Emotions => _emotionalAppraisalAsset?.GetAllActiveEmotions();
 
+
 		public string Perspective => _emotionalAppraisalAsset?.Perspective;
 
-		public void RegisterCharacterBody(ICharacterBody body)
+
+        /// <summary>
+        /// Registers a concrete implementation of the character's embodiment that must conform to the ICharacterBody interface.
+        /// The implementation will be specific to the game engine being used.
+        /// </summary>
+        /// <param name="body">The instance to register</param>
+        public void RegisterCharacterBody(ICharacterBody body)
         {
 			_characterBody = body;
         }
 
-	    public void AddBelief(string propertyName, string value)
+
+        /// <summary>
+        /// Adds or updates a logical belief to the character that consists of a property-value pair
+        /// </summary>
+        /// <param name="propertyName">A wellformed name representing a logical property (e.g. IsPerson(John))</param>
+        /// <param name="value">The value of the property</param>
+        public void AddBelief(string propertyName, string value)
 	    {
 			_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO() {Value = value,Name = propertyName, Perspective = Name.SELF_STRING});
 	    }
 
-	    public IAction PerceptionActionLoop(IEnumerable<string> eventStrings)
+
+	    /// <summary>
+        /// Executes an iteration of the character's decision cycle.
+        /// </summary>
+        /// <param name="eventStrings">A list of new events that occurred since the last call to this method. Each event must be represented by a well formed name with the following format "EVENT([type], [subject], [param1], [param2])". 
+        /// For illustration purposes here are some examples: EVENT(Property-Change, John, CurrentRole(Customer), False) ; EVENT(Action-Finished, John, Open, Box)</param>
+        /// <returns>The action selected for execution or "null" otherwise</returns>
+        public IAction PerceptionActionLoop(IEnumerable<string> eventStrings)
 	    {
 			_socialImportanceAsset.InvalidateCachedSI();
 			_emotionalAppraisalAsset.AppraiseEvents(eventStrings);
@@ -99,30 +153,27 @@ namespace RolePlayCharacter
 		    return _currentAction;
 	    }
 
-	    private static IEnumerable<IAction> TakeBestActions(IEnumerable<IAction> enumerable)
-	    {
-			float best = float.NegativeInfinity;
-		    foreach (var a in enumerable.OrderByDescending(a => a.Utility))
-		    {
-			    if (a.Utility < best)
-					break;
 
-				yield return a;
-			    best = a.Utility;
-		    }
-	    }
-
-	    public void Update()
+        /// <summary>
+        /// Updates the character's internal state. Should be called once every game tick.
+        /// </summary>
+        public void Update()
         {
             _emotionalAppraisalAsset.Update();
         }
 
+        /// <summary>
+        /// Retrieves the character's strongest emotion if any.
+        /// </summary>
 		public IActiveEmotion GetStrongestActiveEmotion()
 		{
 			IEnumerable<IActiveEmotion> currentActiveEmotions = _emotionalAppraisalAsset.GetAllActiveEmotions();
 			return currentActiveEmotions.MaxValue(a => a.Intensity);
 		}
 
+        /// <summary>
+        /// Method used to inform the character that its current action is finished and a new action may be selected. It can also generate an emotion associated to finishing an action successfully.
+        /// </summary>
 	    public void ActionFinished(IAction action)
 	    {
 			if(_currentAction == null)
@@ -182,7 +233,12 @@ namespace RolePlayCharacter
 
 		    return LoadableAsset<T>.LoadFromFile(CurrentStorageProvider, ToAbsolutePath(path));
 	    }
-        
+
+        /// <summary>
+        /// Saves the current state of the asset into a file
+        /// </summary>
+        /// <param name="filePath">The path for the save file</param>
+        /// <param name="name">The name of the save file</param>
         public void SaveOutput(string filePath, string name)
         {
             if(_emotionalAppraisalAsset == null)
