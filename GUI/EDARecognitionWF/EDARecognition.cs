@@ -6,12 +6,12 @@ namespace EDARecognitionWF
 {
     public partial class EDARecognition : Form
     {
-        public EDARecognitionAsset EDARecognitionAsset { get; private set; }
+        public EDARecognitionComponent EDARecognitionAsset { get; private set; }
 
         public EDARecognition()
         {
             InitializeComponent();
-            this.EDARecognitionAsset = new EDARecognitionAsset();
+            this.EDARecognitionAsset = new EDARecognitionComponent();
         }
 
         private void butRecordMinBaseline_Click(object sender, EventArgs e)

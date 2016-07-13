@@ -56,7 +56,7 @@
     <Compile Include="FusionPolicies\KalmanFilter\KalmanFilter.cs" />
     <Compile Include="FusionPolicies\WeightedFusionPolicy.cs" />
     <Compile Include="FusionPolicies\MaxPolicy.cs" />
-    <Compile Include="IAffectRecognitionAsset.cs" />
+    <Compile Include="IAffectRecognitionComponent.cs" />
     <Compile Include="MultiClassifierAffectiveInformation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RealTimeEmotionRecognitionAsset.cs" />

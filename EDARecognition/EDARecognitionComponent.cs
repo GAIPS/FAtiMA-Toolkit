@@ -8,7 +8,7 @@ using RealTimeEmotionRecognition;
 
 namespace EDARecognition
 {
-    public class EDARecognitionAsset : BaseAsset, IAffectRecognitionAsset
+    public class EDARecognitionComponent : IAffectRecognitionComponent
     {
         private OpenSignalsSocket Socket { get; set; }
 
@@ -64,7 +64,7 @@ namespace EDARecognition
         private MovingSampleSet SCRSamples;
 
 
-        public EDARecognitionAsset()
+        public EDARecognitionComponent()
         {
             this.Socket = new OpenSignalsSocket(this);
             this.SCLSamples = new MovingSampleSet(600);

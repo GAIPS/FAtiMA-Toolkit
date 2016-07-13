@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace TextEmotionRecognition
 {
-    public class TextEmotionRecognitionAsset : BaseAsset, IAffectRecognitionAsset
+    public class TextEmotionRecognitionComponent : IAffectRecognitionComponent
     {
 
         public string Language { get; set; }
@@ -32,7 +32,7 @@ namespace TextEmotionRecognition
             }
         }
 
-        public TextEmotionRecognitionAsset()
+        public TextEmotionRecognitionComponent()
         {
             this.Language = "en";
             this.LSACorpus = "resources/config/LSA/tasa_en";

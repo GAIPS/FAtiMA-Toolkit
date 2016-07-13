@@ -19,11 +19,11 @@ namespace EDARecognition {
         StreamWriter socket_writer;
         StreamReader socket_reader;
 
-        private EDARecognitionAsset EDARecognitionAsset { get; set; }
+        private EDARecognitionComponent EDARecognitionAsset { get; set; }
 
         public Thread SocketThread { get; private set; }
 
-        public OpenSignalsSocket(EDARecognitionAsset asset)
+        public OpenSignalsSocket(EDARecognitionComponent asset)
         {
             this.SocketReady = false;
             this.EDARecognitionAsset = asset;

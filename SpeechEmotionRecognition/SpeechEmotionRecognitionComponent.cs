@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace SpeechEmotionRecognition
 {
-    public class SpeechEmotionRecognitionAsset : BaseAsset, IAffectRecognitionAsset
+    public class SpeechEmotionRecognitionComponent :  IAffectRecognitionComponent
     {
         //public List<Action<IEnumerable<AffectiveInformation>>> EmotionUpdateActions { get; private set; }
 
@@ -27,7 +27,7 @@ namespace SpeechEmotionRecognition
             }
         }
 
-        public SpeechEmotionRecognitionAsset()
+        public SpeechEmotionRecognitionComponent()
         {
             //this.EmotionUpdateActions = new List<Action<IEnumerable<AffectiveInformation>>>();
             this.DecayWindow = 5.0f;

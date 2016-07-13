@@ -21,9 +21,9 @@ namespace EmotionRecognitionWF
     public partial class EmotionRecognition : Form
     {
         private RealTimeEmotionRecognitionAsset EmotionRecognitionAsset { get; set; }
-        private TextEmotionRecognitionAsset TextEmotionRecognitionAsset { get; set; }
-        private SpeechEmotionRecognitionAsset SpeechEmotionRecognitionAsset { get; set; }
-        private EDARecognitionAsset EDARecognitionAsset { get; set; }
+        private TextEmotionRecognitionComponent TextEmotionRecognitionAsset { get; set; }
+        private SpeechEmotionRecognitionComponent SpeechEmotionRecognitionAsset { get; set; }
+        private EDARecognitionComponent EDARecognitionAsset { get; set; }
 
         private BindingListView<AffectiveInformation> FusedAffectiveInformation { get; }
         private BindingListView<AffectiveInformation> EDAInformation { get; }
@@ -37,9 +37,9 @@ namespace EmotionRecognitionWF
             InitializeComponent();
 
             this.EmotionRecognitionAsset = new RealTimeEmotionRecognitionAsset();
-            this.TextEmotionRecognitionAsset = new TextEmotionRecognitionAsset { DecayWindow = 30 };
-            this.SpeechEmotionRecognitionAsset = new SpeechEmotionRecognitionAsset() { DecayWindow = 30 };
-            this.EDARecognitionAsset = new EDARecognitionAsset();
+            this.TextEmotionRecognitionAsset = new TextEmotionRecognitionComponent { DecayWindow = 30 };
+            this.SpeechEmotionRecognitionAsset = new SpeechEmotionRecognitionComponent() { DecayWindow = 30 };
+            this.EDARecognitionAsset = new EDARecognitionComponent();
 
             this.EmotionRecognitionAsset.AddAffectRecognitionAsset(this.EDARecognitionAsset, 1.0f);
             this.EmotionRecognitionAsset.AddAffectRecognitionAsset(this.TextEmotionRecognitionAsset, 1.0f);

@@ -2,7 +2,7 @@
 
 namespace RealTimeEmotionRecognition
 {
-    public interface IAffectRecognitionAsset 
+    public interface IAffectRecognitionComponent 
     {
         string Name { get; }
         IEnumerable<AffectiveInformation> GetSample();

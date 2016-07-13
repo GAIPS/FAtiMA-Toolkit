@@ -51,7 +51,7 @@
     <Compile Include="DTOs\SentimentAnalysisRequestDTO.cs" />
     <Compile Include="DTOs\SentimentAnalysisResponseDTO.cs" />
     <Compile Include="DTOs\ValenceDTO.cs" />
-    <Compile Include="TextEmotionRecognitionAsset.cs" />
+    <Compile Include="TextEmotionRecognitionComponent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

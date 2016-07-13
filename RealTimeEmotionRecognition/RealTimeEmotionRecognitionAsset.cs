@@ -20,7 +20,7 @@ namespace RealTimeEmotionRecognition
             this.AffectiveInformationData = new List<MultiClassifierAffectiveInformation>();
         }
 
-        public void AddAffectRecognitionAsset(IAffectRecognitionAsset affectRecognitionAsset, float weight)
+        public void AddAffectRecognitionAsset(IAffectRecognitionComponent affectRecognitionAsset, float weight)
         {
             this.Classifiers.Add(new Classifier { Asset = affectRecognitionAsset, Weight = weight });
         }
