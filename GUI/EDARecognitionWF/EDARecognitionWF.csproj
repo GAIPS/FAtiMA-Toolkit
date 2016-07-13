@@ -83,7 +83,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\EDARecognition\EDARecognition.csproj">
+    <ProjectReference Include="..\..\AffectRecognitionComponents\EDARecognition\EDARecognition.csproj">
       <Project>{cac723a2-c070-4c79-ab68-caa5bde8733a}</Project>
       <Name>EDARecognition</Name>
     </ProjectReference>
