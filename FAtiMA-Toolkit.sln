@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnowledgeBase", "Components\KnowledgeBase\KnowledgeBase.csproj", "{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}"
 EndProject
@@ -53,15 +53,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ActionLibrary", "Components
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAIPS.Rage", "Components\GAIPS.Rage\GAIPS.Rage.csproj", "{9FECA6E5-C949-44F1-BE40-D3303AB2EF05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDARecognition", "EDARecognition\EDARecognition.csproj", "{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDARecognitionWF", "GUI\EDARecognitionWF\EDARecognitionWF.csproj", "{1CF85D83-9922-4C4C-BC0F-47E6A01B5FEC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealTimeEmotionRecognition", "RealTimeEmotionRecognition\RealTimeEmotionRecognition.csproj", "{CC3A5863-E579-4D38-9817-5DC1744703F3}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechEmotionRecognition", "SpeechEmotionRecognition\SpeechEmotionRecognition.csproj", "{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextEmotionRecognition", "TextEmotionRecognition\TextEmotionRecognition.csproj", "{D6424009-17FD-4BA3-8F97-2069BE13309C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionRecognitionWF", "GUI\EmotionRecognitionWF\EmotionRecognitionWF.csproj", "{72DC878A-DC05-4828-8E84-560D3B4C5F0F}"
 EndProject
@@ -74,6 +68,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialImportanceWF", "GUI\SocialImportanceWF\SocialImportanceWF.csproj", "{8C1BBEDB-3334-4877-84B2-99E4E7C5ABD8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAIPS.AssetEditorTools", "GUI\GAIPS.AssetEditorTools\GAIPS.AssetEditorTools.csproj", "{C61FB19D-E715-4EB4-AFCA-27FF81A14777}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AffectRecognitionComponents", "AffectRecognitionComponents", "{37699C14-0FBC-44FD-84D5-699BF31C9DCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDARecognition", "AffectRecognitionComponents\EDARecognition\EDARecognition.csproj", "{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechEmotionRecognition", "AffectRecognitionComponents\SpeechEmotionRecognition\SpeechEmotionRecognition.csproj", "{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextEmotionRecognition", "AffectRecognitionComponents\TextEmotionRecognition\TextEmotionRecognition.csproj", "{D6424009-17FD-4BA3-8F97-2069BE13309C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -169,10 +171,6 @@ Global
 		{9FECA6E5-C949-44F1-BE40-D3303AB2EF05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FECA6E5-C949-44F1-BE40-D3303AB2EF05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FECA6E5-C949-44F1-BE40-D3303AB2EF05}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1CF85D83-9922-4C4C-BC0F-47E6A01B5FEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1CF85D83-9922-4C4C-BC0F-47E6A01B5FEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CF85D83-9922-4C4C-BC0F-47E6A01B5FEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -181,14 +179,6 @@ Global
 		{CC3A5863-E579-4D38-9817-5DC1744703F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC3A5863-E579-4D38-9817-5DC1744703F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC3A5863-E579-4D38-9817-5DC1744703F3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{72DC878A-DC05-4828-8E84-560D3B4C5F0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{72DC878A-DC05-4828-8E84-560D3B4C5F0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72DC878A-DC05-4828-8E84-560D3B4C5F0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -209,6 +199,18 @@ Global
 		{C61FB19D-E715-4EB4-AFCA-27FF81A14777}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C61FB19D-E715-4EB4-AFCA-27FF81A14777}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C61FB19D-E715-4EB4-AFCA-27FF81A14777}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -237,5 +239,8 @@ Global
 		{CC6CD5AD-EFC5-4CD6-BF6D-FB33D5F186AF} = {2C13F768-C122-4B7F-A08A-9E8AB520F6D2}
 		{8C1BBEDB-3334-4877-84B2-99E4E7C5ABD8} = {391C60E4-92CE-4EC7-BA86-48D8316365FA}
 		{C61FB19D-E715-4EB4-AFCA-27FF81A14777} = {391C60E4-92CE-4EC7-BA86-48D8316365FA}
+		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A} = {37699C14-0FBC-44FD-84D5-699BF31C9DCB}
+		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230} = {37699C14-0FBC-44FD-84D5-699BF31C9DCB}
+		{D6424009-17FD-4BA3-8F97-2069BE13309C} = {37699C14-0FBC-44FD-84D5-699BF31C9DCB}
 	EndGlobalSection
 EndGlobal
