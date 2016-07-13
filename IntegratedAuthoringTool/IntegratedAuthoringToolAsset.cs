@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutobiographicMemory;
 using GAIPS.Rage;
 using GAIPS.Serialization;
 using IntegratedAuthoringTool.DTOs;
@@ -9,6 +8,9 @@ using RolePlayCharacter;
 
 namespace IntegratedAuthoringTool
 {
+    /// <summary>
+    /// This asset is responsible for managing the scenario, including its characters and respective dialogues
+    /// </summary>
     [Serializable]
     public class IntegratedAuthoringToolAsset : LoadableAsset<IntegratedAuthoringToolAsset>, ICustomSerialization
     {
@@ -29,11 +31,17 @@ namespace IntegratedAuthoringTool
         private IList<DialogStateAction> m_agentDialogues;
 
         private Dictionary<string, CharacterHolder> m_characterSources;
-        private Dictionary<string, string> m_dialogueStates; 
+        private Dictionary<string, string> m_dialogueStates;
 
+        /// <summary>
+        /// The name of the Scenario
+        /// </summary>
         public string ScenarioName { get; set; }
-        
-	    protected override string OnAssetLoaded()
+
+        /// <summary>
+        /// This method is used to automatically load any associated assets.
+        /// </summary>
+        protected override string OnAssetLoaded()
 	    {
 			KeyValuePair<string, CharacterHolder> current = new KeyValuePair<string, CharacterHolder>();
 		    string currentAbsolutePath = null;
@@ -59,8 +67,7 @@ namespace IntegratedAuthoringTool
 
 					if (!string.Equals(pair.Key, pair.Value.RPCAsset.CharacterName))
 						return $"Name mismatch. IAT name \"{pair.Key}\" != RPC File Name \"{pair.Value.RPCAsset.CharacterName}\" for file \"{currentAbsolutePath}\"";
-
-				}
+               }
 			}
 		    catch (Exception)
 		    {
@@ -85,12 +92,20 @@ namespace IntegratedAuthoringTool
 	        m_characterSources = new Dictionary<string, CharacterHolder>();
             m_dialogueStates = new Dictionary<string, string>();
         }
-        
+
+        /// <summary>
+        /// Adds a new dialogue action
+        /// </summary>
+        /// <param name="dialogueStateActionDTO">The dto that specifies the dialogue action</param>
         public void AddAgentDialogAction(DialogueStateActionDTO dialogueStateActionDTO)
         {
             this.m_agentDialogues.Add(new DialogStateAction(dialogueStateActionDTO));
         }
 
+        /// <summary>
+        /// Retrieves the current dialogue state for a specific character
+        /// </summary>
+        /// <param name="character">The name of the character</param>
         public string GetCurrentDialogueState(string character)
         {
             if (m_dialogueStates.ContainsKey(character))
@@ -104,37 +119,67 @@ namespace IntegratedAuthoringTool
             }
         }
 
+        /// <summary>
+        /// Updates the current dialogue state for a specific character
+        /// </summary>
+        /// <param name="character">The name of the character</param>
+        /// <param name="state">The name of the character</param>
         public void SetDialogueState(string character, string state)
         {
             m_dialogueStates[character] = state;
         }
 
+        /// <summary>
+        /// Adds a new dialogue action 
+        /// </summary>
+        /// <param name="dialogueStateActionDTO">The action to add.</param>
         public void AddPlayerDialogAction(DialogueStateActionDTO dialogueStateActionDTO)
         {
             this.m_playerDialogues.Add(new DialogStateAction(dialogueStateActionDTO));
         }
 
+        /// <summary>
+        /// Updates an existing dialogue action for the player
+        /// </summary>
+        /// <param name="dialogueStateActionToEdit">The action to be updated.</param>
+        /// <param name="newDialogueAction">The updated action.</param>
         public void EditPlayerDialogAction(DialogueStateActionDTO dialogueStateActionToEdit, DialogueStateActionDTO newDialogueAction)
         {
             this.AddPlayerDialogAction(newDialogueAction);
             this.RemoveDialogueActions(PLAYER, new[] { dialogueStateActionToEdit });
         }
 
+        /// <summary>
+        /// Updates an existing dialogue action for the agents
+        /// </summary>
+        /// <param name="dialogueStateActionToEdit">The action to be updated.</param>
+        /// <param name="newDialogueAction">The updated action.</param>
         public void EditAgentDialogAction(DialogueStateActionDTO dialogueStateActionToEdit, DialogueStateActionDTO newDialogueAction)
         {
             this.AddAgentDialogAction(newDialogueAction);
             this.RemoveDialogueActions(AGENT, new[] {dialogueStateActionToEdit});
         }
 
-        public IEnumerable<DialogueStateActionDTO> GetDialogueActions(string speaker, string currentState)
+
+        /// <summary>
+        /// Retrives a list containing all the dialogue actions for the player or the agents filtered by a specific state.
+        /// </summary>
+        /// <param name="speaker">Either "Player" or "Agent".</param>
+        /// <param name="state">Works as a filter for the state. The value "*" will consider all states.</param>
+        public IEnumerable<DialogueStateActionDTO> GetDialogueActions(string speaker, string state)
         {
             var dialogList = SelectDialogActionList(speaker);
-            if (currentState == ANY_DIALOGUE_STATE)
+            if (state == ANY_DIALOGUE_STATE)
                 return dialogList.Select(d => d.ToDTO());
             else
-                return dialogList.Where(d => d.CurrentState == currentState).Select(d => d.ToDTO());
+                return dialogList.Where(d => d.CurrentState == state).Select(d => d.ToDTO());
         }
 
+        /// <summary>
+        /// Removes a list of dialogue actions for either the player or the agent.
+        /// </summary>
+        /// <param name="speaker">Either "Player" or "Agent".</param>
+        /// <param name="actionsToRemove">The list of dialogues that are to be removed.</param>
         public void  RemoveDialogueActions(string speaker, IEnumerable<DialogueStateActionDTO> actionsToRemove)
         {
             var dialogList = SelectDialogActionList(speaker);
@@ -144,12 +189,20 @@ namespace IntegratedAuthoringTool
                 dialogList.Remove(action);
             }
         }
-        
+
+
+        /// <summary>
+        /// Retreives all the sources for the characters in the scenario.
+        /// </summary>
         public IEnumerable<CharacterSourceDTO> GetAllCharacterSources()
         {
 	        return m_characterSources.Select(p => new CharacterSourceDTO() {Name = p.Key, Source = ToAbsolutePath(p.Value.Source)});
         }
 
+        /// <summary>
+        /// Retreives the instance of the RPC asset associated to a specific character.
+        /// </summary>
+        /// <param name="characterName">The name of the character</param>
 	    public RolePlayCharacterAsset GetCharacterAsset(string characterName)
 	    {
 		    CharacterHolder holder;
@@ -159,11 +212,18 @@ namespace IntegratedAuthoringTool
 		    return holder.RPCAsset;
 	    }
 
-	    public IEnumerable<RolePlayCharacterAsset> GetAllCharacters()
+        /// <summary>
+        /// Retreives all instance of the RPC assets.
+        /// </summary>
+        public IEnumerable<RolePlayCharacterAsset> GetAllCharacters()
 	    {
 		    return m_characterSources.Values.Select(h => h.RPCAsset);
-	    } 
+	    }
 
+        /// <summary>
+        /// Adds a new role-play character asset to the scenario.
+        /// </summary>
+        /// <param name="character">The instance of the Role Play Character asset</param>
         public void AddCharacter(RolePlayCharacterAsset character)
         {
 	        if(m_characterSources.ContainsKey(character.CharacterName))
@@ -171,7 +231,11 @@ namespace IntegratedAuthoringTool
 
 			m_characterSources.Add(character.CharacterName,new CharacterHolder() {Source = ToRelativePath(character.AssetFilePath),RPCAsset = character});
         }
-
+        
+        /// <summary>
+        /// Removes a list of characters from the scenario
+        /// </summary>
+        /// <param name="character">A list of character names</param>
         public void RemoveCharacters(IList<string> charactersToRemove)
         {
             foreach (var characterName in charactersToRemove)
@@ -180,7 +244,10 @@ namespace IntegratedAuthoringTool
             }   
         }
 
-
+        /// <summary>
+        /// Retrieves the list of all dialogue actions for a speaker.
+        /// </summary>
+        /// <param name="speaker">Either "Player" or "Agent"</param>
         private IList<DialogStateAction> SelectDialogActionList(string speaker)
         {
             if (speaker != AGENT && speaker != PLAYER)
