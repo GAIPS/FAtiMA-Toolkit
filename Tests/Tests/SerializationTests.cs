@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using GAIPS.Serialization;
-using KnowledgeBase.WellFormedNames;
 using NUnit.Framework;
+using WellFormedNames;
 
 namespace UnitTest
 {

@@ -4,9 +4,9 @@ using System.Linq;
 using AutobiographicMemory.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase;
-using KnowledgeBase.WellFormedNames;
-using KnowledgeBase.WellFormedNames.Collections;
 using Utilities;
+using WellFormedNames;
+using WellFormedNames.Collections;
 
 namespace AutobiographicMemory
 {

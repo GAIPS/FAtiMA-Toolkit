@@ -1,11 +1,10 @@
-﻿using System.Runtime.InteropServices.WindowsRuntime;
-using ActionLibrary;
+﻿using ActionLibrary;
 using EmotionalAppraisal;
 using KnowledgeBase.DTOs.Conditions;
-using KnowledgeBase.WellFormedNames;
 using NUnit.Framework;
 using SocialImportance;
 using SocialImportance.DTOs;
+using WellFormedNames;
 
 namespace Tests.SocialImportance
 {

@@ -4,9 +4,9 @@ using System.IO;
 using System.Linq;
 using GAIPS.Serialization;
 using KnowledgeBase;
-using KnowledgeBase.WellFormedNames;
 using NUnit.Framework;
 using Utilities;
+using WellFormedNames;
 
 namespace Tests.KnowledgeBase
 {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ActionLibrary;
 using KnowledgeBase;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
 
 namespace EmotionalDecisionMaking
 {

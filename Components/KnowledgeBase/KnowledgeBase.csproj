@@ -51,26 +51,9 @@
     <Compile Include="Conditions\IValueRetriver.cs" />
     <Compile Include="Conditions\LogicalQuantifier.cs" />
     <Compile Include="DTOs\Conditions\ConditionSetDTO.cs" />
-    <Compile Include="Exceptions\DuplicatedKeyException.cs" />
     <Compile Include="KB.cs" />
-    <Compile Include="PrimitiveValue.cs" />
+    <Compile Include="NameUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WellFormedNames\Collections\NameSearchTree.cs" />
-    <Compile Include="WellFormedNames\Collections\TreeNode.cs" />
-    <Compile Include="WellFormedNames\Implementation\ComposedName.cs" />
-    <Compile Include="Exceptions\BadSubstitutionException.cs" />
-    <Compile Include="WellFormedNames\Formatters.cs" />
-    <Compile Include="WellFormedNames\Interfaces\IGroundable.cs" />
-    <Compile Include="WellFormedNames\Implementation\UniversalSymbol.cs" />
-    <Compile Include="WellFormedNames\Implementation\VariableSymbol.cs" />
-    <Compile Include="WellFormedNames\Interfaces\IVariableRenamer.cs" />
-    <Compile Include="WellFormedNames\Name.cs" />
-    <Compile Include="Exceptions\ParsingException.cs" />
-    <Compile Include="WellFormedNames\Implementation\PrimitiveSymbol.cs" />
-    <Compile Include="WellFormedNames\Substitution.cs" />
-    <Compile Include="WellFormedNames\SubstitutionSet.cs" />
-    <Compile Include="WellFormedNames\Implementation\Symbol.cs" />
-    <Compile Include="WellFormedNames\Unifier.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SerializationUtilities\GAIPS.Serialization.csproj">
@@ -80,6 +63,10 @@
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{2021e828-2f7f-4775-9f02-58c68fd72edd}</Project>
       <Name>Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WellFormedNames\WellFormedNames.csproj">
+      <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
+      <Name>WellFormedNames</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

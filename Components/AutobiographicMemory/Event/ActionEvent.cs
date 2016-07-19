@@ -1,7 +1,7 @@
 ﻿using System;
 using AutobiographicMemory.DTOs;
 using GAIPS.Serialization;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
 
 namespace AutobiographicMemory
 {

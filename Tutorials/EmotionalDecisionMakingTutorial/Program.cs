@@ -4,7 +4,7 @@ using ActionLibrary;
 using EmotionalAppraisal;
 using EmotionalDecisionMaking;
 using EmotionalDecisionMaking.DTOs;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
 
 
 namespace EmotionalDecisionMakingTutorial

@@ -6,11 +6,11 @@ using EmotionalAppraisal;
 using GAIPS.Rage;
 using GAIPS.Serialization;
 using KnowledgeBase;
-using KnowledgeBase.Exceptions;
-using KnowledgeBase.WellFormedNames;
-using KnowledgeBase.WellFormedNames.Collections;
 using SocialImportance.DTOs;
 using Utilities;
+using WellFormedNames;
+using WellFormedNames.Collections;
+using WellFormedNames.Exceptions;
 
 namespace SocialImportance
 {

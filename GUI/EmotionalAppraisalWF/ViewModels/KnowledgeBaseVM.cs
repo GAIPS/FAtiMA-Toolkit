@@ -5,7 +5,7 @@ using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using Equin.ApplicationFramework;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
 
 namespace EmotionalAppraisalWF.ViewModels
 {

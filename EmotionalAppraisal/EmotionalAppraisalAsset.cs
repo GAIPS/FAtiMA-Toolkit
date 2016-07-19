@@ -12,8 +12,8 @@ using GAIPS.Rage;
 using GAIPS.Serialization;
 using KnowledgeBase;
 using KnowledgeBase.DTOs.Conditions;
-using KnowledgeBase.WellFormedNames;
 using Utilities;
+using WellFormedNames;
 
 namespace EmotionalAppraisal
 {

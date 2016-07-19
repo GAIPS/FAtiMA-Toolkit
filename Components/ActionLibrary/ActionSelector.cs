@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using KnowledgeBase;
 using KnowledgeBase.Conditions;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
 using Utilities;
 
 namespace ActionLibrary

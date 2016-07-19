@@ -60,6 +60,7 @@
     <Compile Include="InternalAppraisalFrame.cs" />
     <Compile Include="IWritableAppraisalFrame.cs" />
     <Compile Include="Mood.cs" />
+    <Compile Include="NameUtilities.cs" />
     <Compile Include="OCCModel\OCCAffectDerivationComponent.cs" />
     <Compile Include="OCCModel\OCCAppraisalVariables.cs" />
     <Compile Include="OCCModel\OCCBaseEmotion.cs" />
@@ -86,6 +87,10 @@
     <ProjectReference Include="..\Components\Utilities\Utilities.csproj">
       <Project>{2021e828-2f7f-4775-9f02-58c68fd72edd}</Project>
       <Name>Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Components\WellFormedNames\WellFormedNames.csproj">
+      <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
+      <Name>WellFormedNames</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

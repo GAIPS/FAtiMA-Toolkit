@@ -1,4 +1,4 @@
-﻿using KnowledgeBase.WellFormedNames;
+﻿using WellFormedNames;
 
 namespace KnowledgeBase
 {

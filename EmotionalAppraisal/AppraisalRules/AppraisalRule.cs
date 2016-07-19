@@ -1,7 +1,7 @@
 ﻿using System;
 using EmotionalAppraisal.DTOs;
 using KnowledgeBase.Conditions;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
 
 namespace EmotionalAppraisal.AppraisalRules
 {

@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using KnowledgeBase.DTOs.Conditions;
-using KnowledgeBase.Exceptions;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
+using WellFormedNames.Exceptions;
 
 namespace KnowledgeBase.Conditions
 {

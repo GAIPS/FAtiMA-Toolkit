@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GAIPS.Serialization;
 using KnowledgeBase.DTOs.Conditions;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
 using Utilities;
 
 namespace KnowledgeBase.Conditions

@@ -3,7 +3,7 @@ using System.Linq;
 using ActionLibrary.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase.Conditions;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
 
 namespace ActionLibrary
 {

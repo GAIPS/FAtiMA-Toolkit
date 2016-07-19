@@ -4,7 +4,7 @@ using System.Linq;
 using AutobiographicMemory;
 using EmotionalAppraisal.Components;
 using EmotionalAppraisal.DTOs;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
 
 namespace EmotionalAppraisal.OCCModel
 {

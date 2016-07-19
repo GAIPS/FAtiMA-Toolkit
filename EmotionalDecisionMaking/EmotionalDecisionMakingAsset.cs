@@ -8,7 +8,7 @@ using GAIPS.Rage;
 using GAIPS.Serialization;
 using KnowledgeBase.Conditions;
 using KnowledgeBase.DTOs.Conditions;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
 
 namespace EmotionalDecisionMaking
 {

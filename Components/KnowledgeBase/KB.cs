@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using GAIPS.Serialization;
 using GAIPS.Serialization.SerializationGraph;
-using KnowledgeBase.WellFormedNames;
-using KnowledgeBase.WellFormedNames.Collections;
+using WellFormedNames;
+using WellFormedNames.Collections;
 using Utilities;
 
 namespace KnowledgeBase

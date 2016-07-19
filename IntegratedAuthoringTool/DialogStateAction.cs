@@ -1,6 +1,6 @@
 ﻿using System;
 using IntegratedAuthoringTool.DTOs;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
 
 namespace IntegratedAuthoringTool
 {

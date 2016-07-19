@@ -6,7 +6,7 @@ using AutobiographicMemory;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisal.OCCModel;
 using GAIPS.Serialization;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
 using Utilities;
 
 namespace EmotionalAppraisal

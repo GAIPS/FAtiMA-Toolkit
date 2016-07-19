@@ -5,8 +5,8 @@ using System.Text;
 using AutobiographicMemory;
 using EmotionalAppraisal.DTOs;
 using GAIPS.Serialization;
-using KnowledgeBase.WellFormedNames;
 using Utilities;
+using WellFormedNames;
 
 namespace EmotionalAppraisal
 {

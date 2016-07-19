@@ -1,7 +1,7 @@
 ﻿using System;
 using KnowledgeBase.Conditions;
-using KnowledgeBase.WellFormedNames;
 using SocialImportance.DTOs;
+using WellFormedNames;
 
 namespace SocialImportance
 {
