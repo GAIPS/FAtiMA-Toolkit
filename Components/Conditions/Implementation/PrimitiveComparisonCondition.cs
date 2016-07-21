@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using WellFormedNames;
 
-namespace KnowledgeBase.Conditions
+namespace Conditions
 {
 	public partial class Condition
 	{
@@ -18,9 +18,9 @@ namespace KnowledgeBase.Conditions
 				m_operation = op;
 			}
 
-			protected override IEnumerable<SubstitutionSet> CheckActivation(KB kb,Name perspective, IEnumerable<SubstitutionSet> constraints)
+			protected override IEnumerable<SubstitutionSet> CheckActivation(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
-				foreach (var pair in m_retriver.Retrive(kb,perspective, constraints))
+				foreach (var pair in m_retriver.Retrive(db,perspective, constraints))
 				{
 					if (CompareValues(pair.Item1, m_value, m_operation))
 						yield return pair.Item2;

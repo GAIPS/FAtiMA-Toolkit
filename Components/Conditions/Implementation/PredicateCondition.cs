@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using WellFormedNames;
 
-namespace KnowledgeBase.Conditions
+namespace Conditions
 {
 	public partial class Condition
 	{
@@ -17,9 +17,9 @@ namespace KnowledgeBase.Conditions
 				m_invert = !expectedResult;
 			}
 
-			protected override IEnumerable<SubstitutionSet> CheckActivation(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
+			protected override IEnumerable<SubstitutionSet> CheckActivation(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
-				foreach (var pair in m_predicate.Retrive(kb, perspective, constraints))
+				foreach (var pair in m_predicate.Retrive(db, perspective, constraints))
 				{
 					if (pair.Item1.TypeCode != TypeCode.Boolean)
 						continue;

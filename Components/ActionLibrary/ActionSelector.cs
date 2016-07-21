@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Conditions;
 using KnowledgeBase;
-using KnowledgeBase.Conditions;
 using WellFormedNames;
 using Utilities;
 

@@ -1,4 +1,4 @@
-﻿namespace KnowledgeBase.Conditions
+﻿namespace Conditions
 {
 	public enum ComparisonOperator : byte
 	{

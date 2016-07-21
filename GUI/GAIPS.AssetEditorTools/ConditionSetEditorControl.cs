@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
-using KnowledgeBase.Conditions;
+using Conditions;
 
 namespace GAIPS.AssetEditorTools
 {

@@ -1,6 +1,6 @@
 ﻿using System;
+using Conditions;
 using EmotionalAppraisal.DTOs;
-using KnowledgeBase.Conditions;
 using WellFormedNames;
 
 namespace EmotionalAppraisal.AppraisalRules

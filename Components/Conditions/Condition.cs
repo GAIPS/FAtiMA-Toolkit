@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using WellFormedNames;
 using WellFormedNames.Exceptions;
 
-namespace KnowledgeBase.Conditions
+namespace Conditions
 {
 	[Serializable]
 	public abstract partial class Condition : IConditionEvaluator
@@ -13,7 +13,8 @@ namespace KnowledgeBase.Conditions
 		//public Guid Id { get; set; }
 
         private const string WFN_CHARACTERS = @"\w\s-\+\(\)\.\,\[\]\*";
-		private const string REGEX_PATTERN = @"^\s*(#)?(["+WFN_CHARACTERS+@"]+)\s*(=|!=|<|<=|>|>=)\s*(#)?(["+WFN_CHARACTERS+@"]+)\s*$";
+		private const string VALID_OPERATORS = @"=|!=|<|<=|>|>=";
+		private const string REGEX_PATTERN = @"^\s*(#)?(["+WFN_CHARACTERS+@"]+)\s*("+VALID_OPERATORS+@")\s*(#)?(["+WFN_CHARACTERS+@"]+)\s*$";
 		private static readonly Regex REGEX_PARSER = new Regex(REGEX_PATTERN,RegexOptions.Singleline);
 
 		//private Condition()
@@ -21,7 +22,7 @@ namespace KnowledgeBase.Conditions
 		//    this.Id = Guid.NewGuid();
 		//}
 
-        public IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
+        public IEnumerable<SubstitutionSet> UnifyEvaluate(IQueryable kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
 			if (constraints == null || !constraints.Any())
 				constraints = new[] { new SubstitutionSet() };
@@ -29,12 +30,12 @@ namespace KnowledgeBase.Conditions
 			return CheckActivation(kb, perspective, constraints).Distinct();
 		}
 
-		public bool Evaluate(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
+		public bool Evaluate(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
-			return UnifyEvaluate(kb,perspective, constraints).Any();
+			return UnifyEvaluate(db,perspective, constraints).Any();
 		}
 
-		protected abstract IEnumerable<SubstitutionSet> CheckActivation(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints);
+		protected abstract IEnumerable<SubstitutionSet> CheckActivation(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints);
 
 		public abstract override string ToString();
 
@@ -119,8 +120,6 @@ namespace KnowledgeBase.Conditions
 				case ">=":
 					ope = ComparisonOperator.GreatherOrEqualThan;
 					break;
-				default:
-					throw new ParsingException($"Invalid comparison operator \"{op}\".");
 			}
 
 			return internal_buildCondition(mod1, v1, mod2, v2, ope);

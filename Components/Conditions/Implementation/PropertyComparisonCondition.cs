@@ -2,7 +2,7 @@
 using System.Linq;
 using WellFormedNames;
 
-namespace KnowledgeBase.Conditions
+namespace Conditions
 {
 	public partial class Condition
 	{
@@ -19,12 +19,12 @@ namespace KnowledgeBase.Conditions
 				Operator = op;
 			}
 
-			protected override IEnumerable<SubstitutionSet> CheckActivation(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
+			protected override IEnumerable<SubstitutionSet> CheckActivation(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
-				var r1 = Property1.Retrive(kb,perspective, constraints).GroupBy(p => p.Item1, p => p.Item2);
+				var r1 = Property1.Retrive(db,perspective, constraints).GroupBy(p => p.Item1, p => p.Item2);
 				foreach (var g in r1)
 				{
-					foreach (var crossPair in Property2.Retrive(kb,perspective, g))
+					foreach (var crossPair in Property2.Retrive(db,perspective, g))
 					{
 						if (CompareValues(g.Key, crossPair.Item1, Operator))
 							yield return crossPair.Item2;

@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutobiographicMemory;
+using Conditions;
 using EmotionalAppraisal.Components;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisal.OCCModel;
 using GAIPS.Serialization;
 using KnowledgeBase;
-using KnowledgeBase.Conditions;
-using KnowledgeBase.DTOs.Conditions;
 using WellFormedNames;
 using WellFormedNames.Collections;
 

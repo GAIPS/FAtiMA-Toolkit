@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
+using Conditions;
 using GAIPS.Serialization;
 using KnowledgeBase;
-using KnowledgeBase.Conditions;
 using NUnit.Framework;
 using WellFormedNames;
 
-namespace Tests.KnowledgeBase.Conditions
+namespace Tests.Conditions
 {
 	[TestFixture]
 	public class ConditionalNSTTests
@@ -40,7 +40,7 @@ namespace Tests.KnowledgeBase.Conditions
 			return map;
 		}
 
-		private const string DESERIALIZATION_TEST_CASE = @"{""root"":{""classId"":0,""values"":[{""key"":""Event(Self,Remind_Problem,-)"",""value"":3},{""key"":""Event([x],Silence,SELF)"",""value"":0},{""key"":""Event([x],Speak,[y])"",""conditions"":{""Quantifier"":""Universal"",""Set"":[""Informal=[type]"",""SELF=[y]""]},""value"":1},{""key"":""Event([x],Speak,[y])"",""conditions"":{""Quantifier"":""Existential"",""Set"":[""Formal=[type]"",""SELF=[y]""]},""value"":2},{""key"":""Event(*,Problem_Solved,*)"",""conditions"":{""Quantifier"":""Existential"",""Set"":[""Player=[subject]"",""Self=[TARGET]""]},""value"":4}]},""types"":[{""TypeId"":0,""ClassName"":""KnowledgeBase.ConditionalNST`1[[System.Int32,mscorlib,Version=4.0.0.0,Culture=neutral,PublicKeyToken=b77a5c561934e089]],KnowledgeBase,Version=1.0.0.0,Culture=neutral,PublicKeyToken=null""}]}";
+		private const string DESERIALIZATION_TEST_CASE = @"{""root"":{""classId"": 0,""values"": [{""key"": ""Event(Self, Remind_Problem, -)"",""value"": 3}, {""key"": ""Event([x], Silence, SELF)"",""value"": 0}, {""key"": ""Event([x], Speak, [y])"",""conditions"":{""Quantifier"": ""Universal"",""Set"": [""Informal = [type]"", ""SELF = [y]""]},""value"": 1}, {""key"": ""Event([x], Speak, [y])"",""conditions"":{""Set"": [""Formal = [type]"", ""SELF = [y]""]},""value"": 2}, {""key"": ""Event(*, Problem_Solved, *)"",""conditions"":{""Set"": [""Player = [subject]"", ""Self = [TARGET]""]},""value"": 4}]},""types"": [{""TypeId"": 0,""ClassName"": ""KnowledgeBase.ConditionalNST`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Conditions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null""}]}";
 
 		[Test]
 		public void Test_ConditionalNST_Serialization()

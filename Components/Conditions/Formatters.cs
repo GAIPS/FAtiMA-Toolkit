@@ -3,7 +3,7 @@ using GAIPS.Serialization;
 using GAIPS.Serialization.Attributes;
 using GAIPS.Serialization.SerializationGraph;
 
-namespace KnowledgeBase.Conditions
+namespace Conditions
 {
 	[DefaultSerializationSystem(typeof(Condition),true)]
 	sealed class ConditionSerializationFormatter : IGraphFormatter

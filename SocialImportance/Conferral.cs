@@ -1,7 +1,7 @@
 ﻿using System;
 using ActionLibrary;
+using Conditions;
 using GAIPS.Serialization;
-using KnowledgeBase.Conditions;
 using SocialImportance.DTOs;
 using WellFormedNames;
 

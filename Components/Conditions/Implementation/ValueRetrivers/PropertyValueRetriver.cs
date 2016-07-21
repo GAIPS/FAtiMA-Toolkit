@@ -2,7 +2,7 @@
 using WellFormedNames;
 using Utilities;
 
-namespace KnowledgeBase.Conditions
+namespace Conditions
 {
 	public abstract partial class Condition
 	{
@@ -15,9 +15,9 @@ namespace KnowledgeBase.Conditions
 				m_name = name;
 			}
 
-			public IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> Retrive(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
+			public IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> Retrive(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
-				foreach (var pair in kb.AskPossibleProperties(m_name, perspective, constraints))
+				foreach (var pair in db.AskPossibleProperties(m_name, perspective, constraints))
 				{
 					foreach (var s in pair.Item2)
 						yield return Tuples.Create(pair.Item1, s);

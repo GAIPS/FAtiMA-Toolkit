@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using ActionLibrary.DTOs;
+using Conditions;
 using GAIPS.Serialization;
-using KnowledgeBase.Conditions;
 using WellFormedNames;
 
 namespace ActionLibrary

@@ -2,13 +2,13 @@
 using WellFormedNames;
 using Utilities;
 
-namespace KnowledgeBase.Conditions
+namespace Conditions
 {
 	public abstract partial class Condition
 	{
 		private interface IValueRetriver
 		{
-			IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> Retrive(KB kb, Name perpective, IEnumerable<SubstitutionSet> constraints);
+			IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> Retrive(IQueryable db, Name perpective, IEnumerable<SubstitutionSet> constraints);
 
 			Name InnerName { get; }
 			bool HasModifier { get; }

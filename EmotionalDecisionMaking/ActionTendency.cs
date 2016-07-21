@@ -1,8 +1,7 @@
-﻿using System;
-using ActionLibrary;
+﻿using ActionLibrary;
+using Conditions;
 using EmotionalDecisionMaking.DTOs;
 using GAIPS.Serialization;
-using KnowledgeBase.Conditions;
 using WellFormedNames;
 
 namespace EmotionalDecisionMaking

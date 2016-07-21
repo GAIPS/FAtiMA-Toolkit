@@ -4,7 +4,7 @@ using System.Linq;
 using WellFormedNames;
 using Utilities;
 
-namespace KnowledgeBase.Conditions
+namespace Conditions
 {
 	[Serializable]
 	public class ConditionMapper<T> : IEnumerable<Pair<ConditionSet,T>>
@@ -38,7 +38,7 @@ namespace KnowledgeBase.Conditions
 			m_conditions.Clear();
 		}
 
-	    public IEnumerable<Pair<T,SubstitutionSet>> MatchConditions(KB kb, Name perspective, SubstitutionSet constraints)
+	    public IEnumerable<Pair<T, SubstitutionSet>> MatchConditions(IQueryable db, Name perspective, SubstitutionSet constraints)
 		{
 			var constraintSet = new[] { constraints };
 			foreach (var e in m_conditions)
@@ -49,7 +49,7 @@ namespace KnowledgeBase.Conditions
 					continue;
 				}
 
-				foreach (var set in e.Item1.UnifyEvaluate(kb,perspective, constraintSet))
+				foreach (var set in e.Item1.UnifyEvaluate(db,perspective, constraintSet))
 					yield return Tuples.Create(e.Item2, set);
 			}
 		}

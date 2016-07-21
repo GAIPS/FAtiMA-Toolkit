@@ -1,6 +1,4 @@
-﻿using KnowledgeBase.Conditions;
-
-namespace KnowledgeBase.DTOs.Conditions
+﻿namespace Conditions.DTOs
 {
 	/// <summary>
 	/// Data Type Object Class for the representation of a condition set

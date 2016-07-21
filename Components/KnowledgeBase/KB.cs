@@ -14,7 +14,7 @@ namespace KnowledgeBase
 	public delegate IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> DynamicPropertyCalculator(KB kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints);
 
 	[Serializable]
-	public class KB : ICustomSerialization
+	public class KB : Conditions.IQueryable, ICustomSerialization
 	{
 		private const int MAX_TOM_LVL = 2;
 

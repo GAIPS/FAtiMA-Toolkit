@@ -4,10 +4,11 @@ using System.Linq;
 using System.Runtime.Serialization;
 using GAIPS.Serialization;
 using GAIPS.Serialization.SerializationGraph;
-using KnowledgeBase.Conditions;
+using Conditions;
 using WellFormedNames;
 using WellFormedNames.Collections;
 using Utilities;
+using IQueryable = Conditions.IQueryable;
 
 namespace KnowledgeBase
 {
@@ -43,13 +44,13 @@ namespace KnowledgeBase
 			return true;
 		}
 
-		public IEnumerable<Pair<T,SubstitutionSet>> UnifyAll(Name expression, KB knowledgeBase, Name perspective, SubstitutionSet bindings)
+		public IEnumerable<Pair<T, SubstitutionSet>> UnifyAll(Name expression, IQueryable db, Name perspective, SubstitutionSet bindings)
 		{
 			if(bindings==null)
 				bindings=new SubstitutionSet();
 
 			var p1 = m_dictionary.Unify(expression, bindings);
-			return p1.SelectMany(p => p.Item1.MatchConditions(knowledgeBase, perspective, p.Item2));
+			return p1.SelectMany(p => p.Item1.MatchConditions(db, perspective, p.Item2));
 		}
 
 		public ICollection<Name> Keys

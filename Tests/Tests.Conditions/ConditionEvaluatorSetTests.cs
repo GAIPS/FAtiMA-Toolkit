@@ -1,10 +1,10 @@
 ﻿using System.Linq;
+using Conditions;
 using KnowledgeBase;
-using KnowledgeBase.Conditions;
 using NUnit.Framework;
 using WellFormedNames;
 
-namespace Tests.KnowledgeBase.Conditions
+namespace Tests.Conditions
 {
 	[TestFixture]
 	public class ConditionEvaluatorSetTests

@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using GAIPS.Serialization;
-using KnowledgeBase.DTOs.Conditions;
+using Conditions.DTOs;
 using WellFormedNames;
 using Utilities;
 
-namespace KnowledgeBase.Conditions
+namespace Conditions
 {
 	using VarDomain = Dictionary<Name, HashSet<Name>>;
 
@@ -78,7 +78,7 @@ namespace KnowledgeBase.Conditions
 			return new ConditionSet(quantifier,m_conditions);
 		}
 
-		public IEnumerable<SubstitutionSet> UnifyEvaluate(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
+		public IEnumerable<SubstitutionSet> UnifyEvaluate(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
 			if (constraints == null || !constraints.Any())
 				constraints = new[] {new SubstitutionSet()};
@@ -87,14 +87,14 @@ namespace KnowledgeBase.Conditions
 				return constraints;
 
 			if(Quantifier == LogicalQuantifier.Existential)
-				return ExistentialEvaluate(kb,perspective, constraints);
+				return ExistentialEvaluate(db,perspective, constraints);
 
-			return UniversalEvaluate(kb,perspective,constraints);
+			return UniversalEvaluate(db,perspective,constraints);
 		}
 
-		public bool Evaluate(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
+		public bool Evaluate(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
-			return UnifyEvaluate(kb,perspective, constraints).Any();
+			return UnifyEvaluate(db,perspective, constraints).Any();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
@@ -124,14 +124,14 @@ namespace KnowledgeBase.Conditions
 
 		#region Evaluation Methods
 
-		private IEnumerable<SubstitutionSet> ExistentialEvaluate(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<SubstitutionSet> ExistentialEvaluate(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
 			List<SubstitutionSet> sets = new List<SubstitutionSet>();
 			List<SubstitutionSet> aux = new List<SubstitutionSet>();
 			sets.AddRange(constraints.Select(c => new SubstitutionSet(c)));
 			foreach (var c in m_conditions)
 			{
-				aux.AddRange(c.UnifyEvaluate(kb,perspective, sets));
+				aux.AddRange(c.UnifyEvaluate(db,perspective, sets));
 				Util.Swap(ref sets, ref aux);
 				aux.Clear();
 				if (sets.Count == 0)
@@ -141,7 +141,7 @@ namespace KnowledgeBase.Conditions
 			return sets;
 		}
 
-		private IEnumerable<SubstitutionSet> UniversalEvaluate(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<SubstitutionSet> UniversalEvaluate(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
 			var lastDomain = BuildDomain(constraints);
 			List<SubstitutionSet> sets = new List<SubstitutionSet>(constraints);
@@ -150,7 +150,7 @@ namespace KnowledgeBase.Conditions
 			{
 				foreach (var c in m_conditions)
 				{
-					aux.AddRange(c.UnifyEvaluate(kb,perspective, sets));
+					aux.AddRange(c.UnifyEvaluate(db,perspective, sets));
 					Util.Swap(ref sets, ref aux);
 					aux.Clear();
 					var newDomain = BuildDomain(sets);

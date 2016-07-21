@@ -1,5 +1,5 @@
 ﻿using System;
-using KnowledgeBase.Conditions;
+using Conditions;
 using SocialImportance.DTOs;
 using WellFormedNames;
 

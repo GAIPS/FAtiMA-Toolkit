@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using WellFormedNames;
 
-namespace KnowledgeBase.Conditions
+namespace Conditions
 {
 	public partial class Condition
 	{
@@ -16,7 +16,7 @@ namespace KnowledgeBase.Conditions
 				m_other = other;
 			}
 
-			protected override IEnumerable<SubstitutionSet> CheckActivation(KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
+			protected override IEnumerable<SubstitutionSet> CheckActivation(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
 				//if (!m_other.HasModifier && (m_other.InnerName.IsVariable || m_other.InnerName.IsPrimitive))
 				//{
@@ -36,7 +36,7 @@ namespace KnowledgeBase.Conditions
 
 				//}
 
-				foreach (var result in m_other.Retrive(kb, perspective, constraints))
+				foreach (var result in m_other.Retrive(db, perspective, constraints))
 				{
 					var sub = new Substitution(m_variable, Name.BuildName(result.Item1));
 					if (result.Item2.AddSubstitution(sub))

@@ -7,11 +7,11 @@ using System.IO;
 using System.Linq;
 using AutobiographicMemory;
 using AutobiographicMemory.DTOs;
+using Conditions.DTOs;
 using EmotionalAppraisal.DTOs;
 using GAIPS.Rage;
 using GAIPS.Serialization;
 using KnowledgeBase;
-using KnowledgeBase.DTOs.Conditions;
 using Utilities;
 using WellFormedNames;
 

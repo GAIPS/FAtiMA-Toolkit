@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using ActionLibrary;
+using Conditions;
+using Conditions.DTOs;
 using EmotionalAppraisal;
 using EmotionalDecisionMaking.DTOs;
 using GAIPS.Rage;
 using GAIPS.Serialization;
-using KnowledgeBase.Conditions;
-using KnowledgeBase.DTOs.Conditions;
 using WellFormedNames;
 
 namespace EmotionalDecisionMaking

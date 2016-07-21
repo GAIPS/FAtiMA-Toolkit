@@ -1,6 +1,6 @@
 ﻿using ActionLibrary;
+using Conditions.DTOs;
 using EmotionalAppraisal;
-using KnowledgeBase.DTOs.Conditions;
 using NUnit.Framework;
 using SocialImportance;
 using SocialImportance.DTOs;

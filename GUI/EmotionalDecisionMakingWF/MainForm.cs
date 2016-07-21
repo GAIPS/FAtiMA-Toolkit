@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using EmotionalDecisionMaking;
@@ -8,7 +7,6 @@ using EmotionalDecisionMakingWF.Properties;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 using GAIPS.Rage;
-using KnowledgeBase.Conditions;
 
 namespace EmotionalDecisionMakingWF
 {

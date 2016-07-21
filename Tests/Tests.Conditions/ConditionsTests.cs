@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
+using Conditions;
 using KnowledgeBase;
-using KnowledgeBase.Conditions;
 using NUnit.Framework;
 using WellFormedNames;
 using WellFormedNames.Exceptions;
 
-namespace Tests.KnowledgeBase.Conditions
+namespace Tests.Conditions
 {
 	[TestFixture]
 	public class ConditionsTests
@@ -33,6 +33,7 @@ namespace Tests.KnowledgeBase.Conditions
 		[TestCase("?-65.54e10<+-1e",typeof(ParsingException))]
 		[TestCase("#Like([x]) = 4",typeof(ParsingException))]
 		[TestCase("#4 = 4",typeof(ParsingException))]
+		[TestCase("#4 % 4", typeof(ParsingException))]
 		public void Condition_Invalid_Parse(string str, Type expectedException)
 		{
 			Assert.Throws(expectedException, () =>

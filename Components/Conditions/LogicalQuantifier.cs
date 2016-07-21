@@ -1,4 +1,4 @@
-﻿namespace KnowledgeBase.Conditions
+﻿namespace Conditions
 {
 	/// <summary>
 	/// Represents logical quantification modes

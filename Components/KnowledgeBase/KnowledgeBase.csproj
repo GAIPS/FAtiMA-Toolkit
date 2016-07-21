@@ -35,27 +35,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Belief.cs" />
-    <Compile Include="Conditions\ConditionalNST.cs" />
-    <Compile Include="Conditions\Condition.cs" />
-    <Compile Include="Conditions\ConditionMapper.cs" />
-    <Compile Include="Conditions\Formatters.cs" />
-    <Compile Include="Conditions\ConditionSet.cs" />
-    <Compile Include="Conditions\ComparisonOperator.cs" />
-    <Compile Include="Conditions\IConditionEvaluator.cs" />
-    <Compile Include="Conditions\Implementation\EqualityDefinitionCondition.cs" />
-    <Compile Include="Conditions\Implementation\PredicateCondition.cs" />
-    <Compile Include="Conditions\Implementation\PrimitiveComparisonCondition.cs" />
-    <Compile Include="Conditions\Implementation\PropertyComparisonCondition.cs" />
-    <Compile Include="Conditions\Implementation\ValueRetrivers\CountValueRetriver.cs" />
-    <Compile Include="Conditions\Implementation\ValueRetrivers\PropertyValueRetriver.cs" />
-    <Compile Include="Conditions\IValueRetriver.cs" />
-    <Compile Include="Conditions\LogicalQuantifier.cs" />
-    <Compile Include="DTOs\Conditions\ConditionSetDTO.cs" />
     <Compile Include="KB.cs" />
     <Compile Include="NameUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Conditions\Conditions.csproj">
+      <Project>{59041269-e52e-4cdd-84e0-92fdcfbf270d}</Project>
+      <Name>Conditions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SerializationUtilities\GAIPS.Serialization.csproj">
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
       <Name>GAIPS.Serialization</Name>

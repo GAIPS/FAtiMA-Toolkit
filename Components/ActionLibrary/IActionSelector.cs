@@ -1,4 +1,4 @@
-﻿using KnowledgeBase.Conditions;
+﻿using Conditions;
 
 namespace ActionLibrary
 {
