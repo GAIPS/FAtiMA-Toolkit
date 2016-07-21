@@ -6,15 +6,16 @@ using GAIPS.Serialization.SerializationGraph;
 using WellFormedNames;
 using WellFormedNames.Collections;
 using Utilities;
+using IQueryable = WellFormedNames.IQueryable;
 
 namespace KnowledgeBase
 {
 	using BeliefPair = Pair<PrimitiveValue, IEnumerable<SubstitutionSet>>;
 
-	public delegate IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> DynamicPropertyCalculator(KB kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints);
+	public delegate IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> DynamicPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints);
 
 	[Serializable]
-	public class KB : Conditions.IQueryable, ICustomSerialization
+	public class KB : IQueryable, ICustomSerialization
 	{
 		private const int MAX_TOM_LVL = 2;
 
@@ -169,7 +170,7 @@ namespace KnowledgeBase
 
 		//Count
 		private static readonly Name COUNT_TEMPLATE = Name.BuildName("Count([x])");
-		private static IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> CountPropertyCalculator(KB kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
+		private static IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> CountPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			var arg = args["x"];
 

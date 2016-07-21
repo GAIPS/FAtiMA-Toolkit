@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using ActionLibrary;
-using KnowledgeBase;
 using WellFormedNames;
+using IQueryable = WellFormedNames.IQueryable;
 
 namespace EmotionalDecisionMaking
 {
@@ -37,7 +37,7 @@ namespace EmotionalDecisionMaking
             }
         }
 
-        public IEnumerable<IAction> SelectAction(KB kb, Name perspective)
+        public IEnumerable<IAction> SelectAction(IQueryable kb, Name perspective)
 		{
 			return m_actionTendencies.SelectAction(kb, perspective).Select(p => p.Item1);
 		}

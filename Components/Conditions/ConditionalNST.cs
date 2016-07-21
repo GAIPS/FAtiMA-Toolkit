@@ -8,7 +8,7 @@ using Conditions;
 using WellFormedNames;
 using WellFormedNames.Collections;
 using Utilities;
-using IQueryable = Conditions.IQueryable;
+using IQueryable = WellFormedNames.IQueryable;
 
 namespace KnowledgeBase
 {

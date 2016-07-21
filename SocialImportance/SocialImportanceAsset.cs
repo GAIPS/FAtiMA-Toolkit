@@ -11,6 +11,7 @@ using Utilities;
 using WellFormedNames;
 using WellFormedNames.Collections;
 using WellFormedNames.Exceptions;
+using IQueryable = WellFormedNames.IQueryable;
 
 namespace SocialImportance
 {
@@ -73,12 +74,12 @@ namespace SocialImportance
 
 		private void PerformKBBindings()
 		{
-			m_ea.Kb.RegistDynamicProperty(SI_DYNAMIC_PROPERTY_TEMPLATE,SIPropertyCalculator);
+			m_ea.RegistDynamicProperty(SI_DYNAMIC_PROPERTY_TEMPLATE,SIPropertyCalculator);
 		}
 
 		private void RemoveKBBindings()
 		{
-			m_ea.Kb.UnregistDynamicProperty(SI_DYNAMIC_PROPERTY_TEMPLATE);
+			m_ea.UnregistDynamicProperty(SI_DYNAMIC_PROPERTY_TEMPLATE);
 		}
 
 		private void ValidateEALink()
@@ -106,7 +107,7 @@ namespace SocialImportance
 			if (!t.IsPrimitive)
 				throw new ArgumentException("must be a primitive name", nameof(target));
 
-			var p = m_ea.Kb.AssertPerspective(Name.BuildName(perspective));
+			var p = m_ea.AssertPerspective(Name.BuildName(perspective));
 
 			return internal_GetSocialImportance(t,p);
 		}
@@ -155,7 +156,7 @@ namespace SocialImportance
 			ValidateEALink();
 
 			var prp = Name.BuildName(perspective);
-			var a = m_conferalActions.SelectAction(m_ea.Kb, prp).OrderByDescending(p=>p.Item2.ConferralSI);
+			var a = m_conferalActions.SelectAction(m_ea, prp).OrderByDescending(p=>p.Item2.ConferralSI);
 			return internal_FilterActions(prp, a.Select(p=>p.Item1)).FirstOrDefault();
 		}
 
@@ -186,7 +187,7 @@ namespace SocialImportance
 
 		private IEnumerable<IAction> internal_FilterActions(Name perspective, IEnumerable<IAction> actionsToFilter)
 		{
-			perspective = m_ea.Kb.AssertPerspective(perspective);
+			perspective = m_ea.AssertPerspective(perspective);
 			foreach (var a in actionsToFilter)
 			{
 				uint minSI;
@@ -214,7 +215,7 @@ namespace SocialImportance
 			foreach (var a in m_attributionRules)
 			{
 				var sub = new Substitution(a.Target, target);
-				if (a.Conditions.Evaluate(m_ea.Kb, perspective, new[] { new SubstitutionSet(sub) }))
+				if (a.Conditions.Evaluate(m_ea, perspective, new[] { new SubstitutionSet(sub) }))
 					value += a.Value;
 			}
 			return value<1?1:(uint)value;
@@ -397,7 +398,7 @@ namespace SocialImportance
 
 		private static readonly Name SI_DYNAMIC_PROPERTY_TEMPLATE = Name.BuildName("SI([target])");
 
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> SIPropertyCalculator(KB kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> SIPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			Name target;
 			if(!args.TryGetValue("target",out target))

@@ -45,7 +45,6 @@
     <Compile Include="Implementation\PropertyComparisonCondition.cs" />
     <Compile Include="Implementation\ValueRetrivers\CountValueRetriver.cs" />
     <Compile Include="Implementation\ValueRetrivers\PropertyValueRetriver.cs" />
-    <Compile Include="IQueryable.cs" />
     <Compile Include="IValueRetriver.cs" />
     <Compile Include="LogicalQuantifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -2,6 +2,7 @@
 using System.Linq;
 using WellFormedNames;
 using Utilities;
+using IQueryable = WellFormedNames.IQueryable;
 
 namespace Conditions
 {

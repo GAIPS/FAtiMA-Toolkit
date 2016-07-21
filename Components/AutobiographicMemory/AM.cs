@@ -7,6 +7,7 @@ using KnowledgeBase;
 using Utilities;
 using WellFormedNames;
 using WellFormedNames.Collections;
+using IQueryable = WellFormedNames.IQueryable;
 
 namespace AutobiographicMemory
 {
@@ -205,7 +206,7 @@ namespace AutobiographicMemory
 
 		//Event
 		private static readonly Name EVENT_ID_PROPERTY_TEMPLATE = Name.BuildName("EventId([type],[subject],[def],[target])");
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventIdPropertyCalculator(KB kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventIdPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			List<Pair<PrimitiveValue, SubstitutionSet>> results = new List<Pair<PrimitiveValue, SubstitutionSet>>();
 			if (!perspective.Match(Name.SELF_SYMBOL))
@@ -230,7 +231,7 @@ namespace AutobiographicMemory
 
 		//EventElapseTime
 		private static readonly Name EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE = Name.BuildName("EventElapsedTime([id])");
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventAgePropertyCalculator(KB kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventAgePropertyCalculator(IQueryable kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			if(!perspective.Match(Name.SELF_SYMBOL))
 				yield break;
@@ -272,7 +273,7 @@ namespace AutobiographicMemory
 
 		//LastEvent
 		private static readonly Name LAST_EVENT_ID_PROPERTY_TEMPLATE = Name.BuildName("LastEventId([type],[subject],[def],[target])");
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> LastEventIdPropertyCalculator(KB kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> LastEventIdPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			if(!perspective.Match(Name.SELF_SYMBOL))
 				return Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();

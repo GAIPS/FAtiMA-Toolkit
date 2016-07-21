@@ -98,7 +98,7 @@ namespace RolePlayCharacter
 		public IEnumerable<IActiveEmotion> Emotions => _emotionalAppraisalAsset?.GetAllActiveEmotions();
 
 
-		public string Perspective => _emotionalAppraisalAsset?.Perspective;
+		public Name Perspective => _emotionalAppraisalAsset?.Perspective;
 
 
         /// <summary>

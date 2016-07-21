@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using WellFormedNames;
 using WellFormedNames.Exceptions;
+using IQueryable = WellFormedNames.IQueryable;
 
 namespace Conditions
 {
@@ -99,7 +100,7 @@ namespace Conditions
 
 			Name v1 = Name.BuildName(str1);
 			Name v2 = Name.BuildName(str2);
-			ComparisonOperator ope;
+			ComparisonOperator ope = ComparisonOperator.NotEqual;
 			switch (op)
 			{
 				case "=":

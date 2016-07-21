@@ -20,7 +20,7 @@ namespace EmotionalAppraisalWF.ViewModels
 		public KnowledgeBaseVM(EmotionalAppraisalAsset ea)
         {
             _emotionalAppraisalAsset = ea;
-			Perspective = _emotionalAppraisalAsset.Perspective;
+			Perspective = _emotionalAppraisalAsset.Perspective.ToString();
 			Beliefs = new BindingListView<BeliefDTO>(new List<BeliefDTO>());
 			UpdateBeliefList();
         }
@@ -38,14 +38,7 @@ namespace EmotionalAppraisalWF.ViewModels
 	    public void UpdateBeliefList()
 	    {
 			Beliefs.DataSource.Clear();
-		    var beliefList = _emotionalAppraisalAsset.Kb.GetAllBeliefs().Select(b => new BeliefDTO
-		    {
-			    Name = b.Name.ToString(),
-			    Perspective = b.Perspective.ToString(),
-			    Value = b.Value.ToString()
-		    });
-
-		    foreach (var b in beliefList)
+		    foreach (var b in _emotionalAppraisalAsset.GetAllBeliefs())
 				Beliefs.DataSource.Add(b);
 
 			Beliefs.Refresh();

@@ -44,6 +44,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Conditions\Conditions.csproj">
+      <Project>{59041269-e52e-4cdd-84e0-92fdcfbf270d}</Project>
+      <Name>Conditions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KnowledgeBase\KnowledgeBase.csproj">
       <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
       <Name>KnowledgeBase</Name>

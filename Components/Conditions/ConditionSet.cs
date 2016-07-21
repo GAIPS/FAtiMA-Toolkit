@@ -6,6 +6,7 @@ using GAIPS.Serialization;
 using Conditions.DTOs;
 using WellFormedNames;
 using Utilities;
+using IQueryable = WellFormedNames.IQueryable;
 
 namespace Conditions
 {

@@ -10,6 +10,7 @@ using GAIPS.Serialization;
 using KnowledgeBase;
 using WellFormedNames;
 using WellFormedNames.Collections;
+using IQueryable = WellFormedNames.IQueryable;
 
 namespace EmotionalAppraisal.AppraisalRules
 {
@@ -33,9 +34,9 @@ namespace EmotionalAppraisal.AppraisalRules
 			this.Rules = new NameSearchTree<HashSet<AppraisalRule>>();
 		}
 		
-		public AppraisalRule Evaluate(IBaseEvent evt, KB kb)
+		public AppraisalRule Evaluate(IBaseEvent evt, IQueryable kb, Name perspective)
 		{
-			foreach (var possibleAppraisals in Rules.Unify(evt.EventName.ApplyPerspective(kb.Perspective)))
+			foreach (var possibleAppraisals in Rules.Unify(evt.EventName.ApplyPerspective(perspective)))
 			{
 				var conditions = new[] {possibleAppraisals.Item2};
 				foreach (var appraisal in possibleAppraisals.Item1)
@@ -140,7 +141,7 @@ namespace EmotionalAppraisal.AppraisalRules
 
 		public void Appraisal(EmotionalAppraisalAsset emotionalModule, IBaseEvent evt, IWritableAppraisalFrame frame)
 		{
-			AppraisalRule selfEvaluation = Evaluate(evt, emotionalModule.Kb);
+			AppraisalRule selfEvaluation = Evaluate(evt, emotionalModule,emotionalModule.Perspective);
 			if (selfEvaluation != null)
 			{
 				if (selfEvaluation.Desirability != 0)

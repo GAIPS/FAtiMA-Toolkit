@@ -42,6 +42,7 @@
     <Compile Include="Implementation\Symbol.cs" />
     <Compile Include="Implementation\UniversalSymbol.cs" />
     <Compile Include="Implementation\VariableSymbol.cs" />
+    <Compile Include="IQueryable.cs" />
     <Compile Include="Name.cs" />
     <Compile Include="PrimitiveValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

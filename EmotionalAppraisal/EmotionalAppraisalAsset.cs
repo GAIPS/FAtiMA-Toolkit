@@ -1,9 +1,7 @@
 ﻿using System;
-using AssetPackage;
 using EmotionalAppraisal.AppraisalRules;
 using EmotionalAppraisal.OCCModel;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using AutobiographicMemory;
 using AutobiographicMemory.DTOs;
@@ -14,6 +12,7 @@ using GAIPS.Serialization;
 using KnowledgeBase;
 using Utilities;
 using WellFormedNames;
+using IQueryable = WellFormedNames.IQueryable;
 
 namespace EmotionalAppraisal
 {
@@ -21,7 +20,7 @@ namespace EmotionalAppraisal
 	/// Main class of the Emotional Appraisal Asset.
 	/// </summary>
 	[Serializable]
-	public sealed partial class EmotionalAppraisalAsset : LoadableAsset<EmotionalAppraisalAsset>, ICustomSerialization
+	public sealed partial class EmotionalAppraisalAsset : LoadableAsset<EmotionalAppraisalAsset>, IQueryable, ICustomSerialization
 	{
         private KB m_kb;
         private AM m_am;
@@ -86,8 +85,8 @@ namespace EmotionalAppraisal
         /// <summary>
         /// Indicates the name of the agent that corresponds to "SELF"
         /// </summary>
-		public string Perspective {
-	        get { return m_kb.Perspective.ToString(); }
+		public Name Perspective {
+	        get { return m_kb.Perspective; }
 		}
 
 		/// <summary>
@@ -307,16 +306,21 @@ namespace EmotionalAppraisal
 	        }
 	    }
 
+		public IEnumerable<BeliefDTO> GetAllBeliefs()
+		{
+			return m_kb.GetAllBeliefs().Select(b => new BeliefDTO
+			{
+				Name = b.Name.ToString(),
+				Perspective = b.Perspective.ToString(),
+				Value = b.Value.ToString()
+			});
+		}
+
 		/// @cond DEV
 
 		public IEnumerable<IActiveEmotion> GetAllActiveEmotions()
 		{
 			return m_emotionalState.GetAllEmotions();
-		}
-
-		public KB Kb
-		{
-			get { return m_kb; }
 		}
 
 		/// @endcond
@@ -417,7 +421,7 @@ namespace EmotionalAppraisal
 		/// <param name="belief">The dto containing the parameters for the belief to add or update.</param>
         public void AddOrUpdateBelief(BeliefDTO belief)
 	    {
-	        Kb.Tell(Name.BuildName(belief.Name), PrimitiveValue.Parse(belief.Value),Name.BuildName(belief.Perspective));
+			m_kb.Tell(Name.BuildName(belief.Name), PrimitiveValue.Parse(belief.Value),Name.BuildName(belief.Perspective));
 	    }
 
 		/// <summary>
@@ -428,7 +432,7 @@ namespace EmotionalAppraisal
 		/// <returns>The string value of the belief, or null if no belief exists.</returns>
 	    public string GetBeliefValue(string beliefName)
 	    {
-            var result = this.Kb.AskProperty(Name.BuildName(beliefName))?.ToString();
+            var result = m_kb.AskProperty(Name.BuildName(beliefName))?.ToString();
 	        return result;
 	    }
 
@@ -439,7 +443,7 @@ namespace EmotionalAppraisal
 		/// <returns>True if the requested belief has a value. False otherwise.</returns>
         public bool BeliefExists(string name)
         {
-            return this.Kb.BeliefExists(Name.BuildName(name));
+            return m_kb.BeliefExists(Name.BuildName(name));
         }
 
 		/// <summary>
@@ -450,7 +454,7 @@ namespace EmotionalAppraisal
 		public void RemoveBelief(string name, string perspective)
 		{
 			var p = (Name) perspective;
-			this.Kb.Tell(Name.BuildName(name), null, p);
+			m_kb.Tell(Name.BuildName(name), null, p);
         }
 
 		private void UpdateEmotions(IAppraisalFrame frame)
@@ -484,7 +488,7 @@ namespace EmotionalAppraisal
 		#region Dynamic Properties
 
 		private static readonly Name MOOD_TEMPLATE = (Name)"Mood([x])";
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> MoodPropertyCalculator(KB kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> MoodPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			if(perspective != Name.SELF_SYMBOL)
 				yield break;
@@ -513,7 +517,7 @@ namespace EmotionalAppraisal
 		}
 
 		private static readonly Name STRONGEST_EMOTION_TEMPLATE = (Name)"StrongestEmotion([x])";
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> StrongestEmotionCalculator(KB kb,Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> StrongestEmotionCalculator(IQueryable kb,Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			if(perspective != Name.SELF_SYMBOL)
 				yield break;
@@ -545,7 +549,7 @@ namespace EmotionalAppraisal
 		}
 
 		private static readonly Name EMOTION_INTENSITY_TEMPLATE = (Name) "EmotionIntensity([x],[y])";
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EmotionIntensityPropertyCalculator(KB kb,Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EmotionIntensityPropertyCalculator(IQueryable kb,Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			List<Pair<PrimitiveValue, SubstitutionSet>> result = new List<Pair<PrimitiveValue, SubstitutionSet>>();
 			if (perspective != Name.SELF_SYMBOL)
@@ -572,7 +576,7 @@ namespace EmotionalAppraisal
 		}
 
 		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> GetEmotionsForEntity(IEmotionalState state,
-			Name emotionName, KB kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
+			Name emotionName, IQueryable kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
 			if (emotionName.IsVariable)
 			{
@@ -646,5 +650,25 @@ namespace EmotionalAppraisal
 
 		#endregion
 		/// @endcond
+
+		public Name AssertPerspective(Name perspective)
+		{
+			return m_kb.AssertPerspective(perspective);
+		}
+
+		public IEnumerable<Pair<PrimitiveValue, IEnumerable<SubstitutionSet>>> AskPossibleProperties(Name property, Name perspective, IEnumerable<SubstitutionSet> constraints)
+		{
+			return m_kb.AskPossibleProperties(property, perspective, constraints);
+		}
+
+		public void RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate)
+		{
+			m_kb.RegistDynamicProperty(propertyTemplate,surogate);
+		}
+
+		public void UnregistDynamicProperty(Name propertyTemplate)
+		{
+			m_kb.UnregistDynamicProperty(propertyTemplate);
+		}
 	}
 }

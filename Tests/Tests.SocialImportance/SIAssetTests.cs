@@ -1,6 +1,7 @@
 ﻿using ActionLibrary;
 using Conditions.DTOs;
 using EmotionalAppraisal;
+using EmotionalAppraisal.DTOs;
 using NUnit.Framework;
 using SocialImportance;
 using SocialImportance.DTOs;
@@ -18,19 +19,75 @@ namespace Tests.SocialImportance
 			var ea = new EmotionalAppraisalAsset("Matt");
 #region Set KB
 
-			ea.Kb.Tell((Name)"IsPerson(Matt)",true,Name.UNIVERSAL_SYMBOL);
-			ea.Kb.Tell((Name)"IsPerson(Mary)", true, Name.UNIVERSAL_SYMBOL);
-			ea.Kb.Tell((Name)"IsPerson(Diego)", true, Name.UNIVERSAL_SYMBOL);
-			ea.Kb.Tell((Name)"IsPerson(Thomas)", true, Name.UNIVERSAL_SYMBOL);
-			ea.Kb.Tell((Name)"IsPerson(Robot)", true, (Name)"Diego");
-			ea.Kb.Tell((Name)"IsOutsider(Diego)", true, Name.UNIVERSAL_SYMBOL);
-			ea.Kb.Tell((Name)"IsOutsider(Diego)", false, (Name)"Robot");
-			ea.Kb.Tell((Name)"AreFriends(Self,Mary)", true, Name.SELF_SYMBOL);
-			ea.Kb.Tell((Name)"AreFriends(Self,Matt)", true, (Name)"Mary");
-			ea.Kb.Tell((Name)"AreFriends(Self,Thomas)", true, Name.SELF_SYMBOL);
-			ea.Kb.Tell((Name)"IsBartender(Matt)", true, Name.UNIVERSAL_SYMBOL);
+			ea.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "IsPerson(Matt)",
+				Perspective = "*",
+				Value = "true"
+			});
+			ea.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "IsPerson(Mary)",
+				Perspective = "*",
+				Value = "true"
+			});
+			ea.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "IsPerson(Diego)",
+				Perspective = "*",
+				Value = "true"
+			});
+			ea.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "IsPerson(Thomas)",
+				Perspective = "*",
+				Value = "true"
+			});
+			ea.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "IsPerson(Robot)",
+				Perspective = "Diego",
+				Value = "true"
+			});
+			ea.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "IsOutsider(Diego)",
+				Perspective = "*",
+				Value = "true"
+			});
+			ea.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "IsOutsider(Diego)",
+				Perspective = "Robot",
+				Value = "false"
+			});
+			ea.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "AreFriends(Self,Mary)",
+				Perspective = "Self",
+				Value = "true"
+			});
+			ea.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "AreFriends(Self,Matt)",
+				Perspective = "Mary",
+				Value = "true"
+			});
+			ea.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "AreFriends(Self,Thomas)",
+				Perspective = "Self",
+				Value = "true"
+			});
+			ea.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "IsBartender(Matt)",
+				Perspective = "*",
+				Value = "true"
+			});
 
 			#endregion
+
 			#region SI DTO especification
 			var siDTO = new SocialImportanceDTO
 			{
@@ -178,10 +235,15 @@ namespace Tests.SocialImportance
 		[TestCase("Robot", null)]
 		public static void Test_Conferrals(string name, string expectedResult)
 		{
-			var n = Name.BuildName((Name) "AskedDrink", (Name) name);
-			ASSET_TO_TEST.LinkedEA.Kb.Tell(n,true);
+			var n = new BeliefDTO()
+			{
+				Name = $"AskedDrink({name})",
+				Perspective = "Self",
+				Value = "true"
+			};
+			ASSET_TO_TEST.LinkedEA.AddOrUpdateBelief(n);
 			var a = ASSET_TO_TEST.DecideConferral(Name.SELF_STRING);
-			ASSET_TO_TEST.LinkedEA.Kb.Tell(n,null);
+			ASSET_TO_TEST.LinkedEA.RemoveBelief($"AskedDrink({name})","self");
 
 			if (string.IsNullOrEmpty(expectedResult))
 			{
