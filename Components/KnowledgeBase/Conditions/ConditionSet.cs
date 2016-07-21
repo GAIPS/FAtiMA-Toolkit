@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using GAIPS.Serialization;
 using KnowledgeBase.DTOs.Conditions;
-using WellFormedNames;
 using Utilities;
+using WellFormedNames;
 
 namespace KnowledgeBase.Conditions
 {
