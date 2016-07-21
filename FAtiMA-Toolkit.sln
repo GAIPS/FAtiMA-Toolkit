@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnowledgeBase", "Components\KnowledgeBase\KnowledgeBase.csproj", "{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}"
 EndProject
@@ -76,6 +76,14 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechEmotionRecognition", "AffectRecognitionComponents\SpeechEmotionRecognition\SpeechEmotionRecognition.csproj", "{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextEmotionRecognition", "AffectRecognitionComponents\TextEmotionRecognition\TextEmotionRecognition.csproj", "{D6424009-17FD-4BA3-8F97-2069BE13309C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{256F51DD-798C-49D4-A299-C71630787409}"
+	ProjectSection(SolutionItems) = preProject
+		Tutorials\Examples\EATest.ea = Tutorials\Examples\EATest.ea
+		Tutorials\Examples\SITest.si = Tutorials\Examples\SITest.si
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialImportanceTutorial", "Tutorials\SocialImportanceTutorial\SocialImportanceTutorial.csproj", "{3A2ACE1C-1399-4137-8DE8-B8A0E654101D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -211,6 +219,10 @@ Global
 		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A2ACE1C-1399-4137-8DE8-B8A0E654101D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A2ACE1C-1399-4137-8DE8-B8A0E654101D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A2ACE1C-1399-4137-8DE8-B8A0E654101D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A2ACE1C-1399-4137-8DE8-B8A0E654101D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -242,5 +254,7 @@ Global
 		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A} = {37699C14-0FBC-44FD-84D5-699BF31C9DCB}
 		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230} = {37699C14-0FBC-44FD-84D5-699BF31C9DCB}
 		{D6424009-17FD-4BA3-8F97-2069BE13309C} = {37699C14-0FBC-44FD-84D5-699BF31C9DCB}
+		{256F51DD-798C-49D4-A299-C71630787409} = {2C13F768-C122-4B7F-A08A-9E8AB520F6D2}
+		{3A2ACE1C-1399-4137-8DE8-B8A0E654101D} = {2C13F768-C122-4B7F-A08A-9E8AB520F6D2}
 	EndGlobalSection
 EndGlobal
