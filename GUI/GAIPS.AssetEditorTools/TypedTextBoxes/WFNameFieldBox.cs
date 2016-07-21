@@ -1,5 +1,5 @@
 ﻿using System;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
 
 namespace GAIPS.AssetEditorTools.TypedTextBoxes
 {
@@ -9,7 +9,7 @@ namespace GAIPS.AssetEditorTools.TypedTextBoxes
 		public bool AllowProperty { get; set; } = true;
 		public bool AllowUniversal { get; set; } = true;
 
-		public WFNameFieldBox() : base(KnowledgeBase.WellFormedNames.Name.NIL_SYMBOL, FORMATTER)
+		public WFNameFieldBox() : base(WellFormedNames.Name.NIL_SYMBOL, FORMATTER)
 		{
 
 		}
@@ -36,7 +36,7 @@ namespace GAIPS.AssetEditorTools.TypedTextBoxes
 				value = null;
 				try
 				{
-					value = KnowledgeBase.WellFormedNames.Name.BuildName(str);
+					value = WellFormedNames.Name.BuildName(str);
 				}
 				catch (Exception)
 				{

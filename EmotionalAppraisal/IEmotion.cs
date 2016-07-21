@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using AutobiographicMemory;
 using EmotionalAppraisal.DTOs;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
 
 namespace EmotionalAppraisal
 {

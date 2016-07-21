@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using AutobiographicMemory;
 using EmotionalAppraisal.DTOs;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
 using Utilities;
 
 namespace EmotionalAppraisal

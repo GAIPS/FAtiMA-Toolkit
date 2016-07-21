@@ -9,8 +9,8 @@ using GAIPS.Serialization;
 using KnowledgeBase;
 using KnowledgeBase.Conditions;
 using KnowledgeBase.DTOs.Conditions;
-using KnowledgeBase.WellFormedNames;
-using KnowledgeBase.WellFormedNames.Collections;
+using WellFormedNames;
+using WellFormedNames.Collections;
 
 namespace EmotionalAppraisal.AppraisalRules
 {

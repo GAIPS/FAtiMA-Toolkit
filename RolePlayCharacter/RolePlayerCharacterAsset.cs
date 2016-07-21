@@ -8,9 +8,9 @@ using System.Linq;
 using ActionLibrary;
 using EmotionalAppraisal.DTOs;
 using GAIPS.Rage;
-using KnowledgeBase.WellFormedNames;
 using SocialImportance;
 using Utilities;
+using WellFormedNames;
 
 namespace RolePlayCharacter
 {

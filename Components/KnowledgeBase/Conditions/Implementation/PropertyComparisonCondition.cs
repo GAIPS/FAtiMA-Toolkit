@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
 
 namespace KnowledgeBase.Conditions
 {

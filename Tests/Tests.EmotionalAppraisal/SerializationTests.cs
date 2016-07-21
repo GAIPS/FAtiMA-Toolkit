@@ -3,10 +3,10 @@ using EmotionalAppraisal;
 using EmotionalAppraisal.AppraisalRules;
 using EmotionalAppraisal.OCCModel;
 using NUnit.Framework;
-using KnowledgeBase.WellFormedNames;
 using System.IO;
 using EmotionalAppraisal.DTOs;
 using GAIPS.Serialization;
+using WellFormedNames;
 
 namespace Tests.EmotionalAppraisal
 {
@@ -90,39 +90,39 @@ namespace Tests.EmotionalAppraisal
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action,*,Pet,self)",
+				EventMatchingTemplate = "Event(Action-Finished,*,Pet,self)",
 				Desirability = 10
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action,*,Slap,self)",
+				EventMatchingTemplate = "Event(Action-Finished,*,Slap,self)",
 				Desirability = -10
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action, *, Feed, self)",
+				EventMatchingTemplate = "Event(Action-Finished, *, Feed, self)",
 				Desirability = 5,
 				Praiseworthiness = 10
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action,*,Talk(High,Mad),self)",
+				EventMatchingTemplate = "Event(Action-Finished,*,Talk(High,Mad),self)",
 				Desirability = -7,
 				Praiseworthiness = -15
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action,*,Talk(Low,Happy),self)",
+				EventMatchingTemplate = "Event(Action-Finished,*,Talk(Low,Happy),self)",
 				Praiseworthiness = 5
 			});
 			
 			//Generate emotion
 
-			m_emotionalAppraisalAsset.AppraiseEvents(new []{ "Event(Action,Player,Slap,self)" });
+			m_emotionalAppraisalAsset.AppraiseEvents(new []{ "Event(Action-Finished,Player,Slap,self)" });
 
 			//Add knowledge
 			var kb = m_emotionalAppraisalAsset.Kb;

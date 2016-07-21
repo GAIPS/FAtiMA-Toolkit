@@ -3,7 +3,7 @@ using ActionLibrary;
 using EmotionalDecisionMaking.DTOs;
 using GAIPS.Serialization;
 using KnowledgeBase.Conditions;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
 
 namespace EmotionalDecisionMaking
 {

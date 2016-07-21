@@ -2,9 +2,9 @@
 using System.Linq;
 using KnowledgeBase;
 using KnowledgeBase.Conditions;
-using KnowledgeBase.Exceptions;
-using KnowledgeBase.WellFormedNames;
 using NUnit.Framework;
+using WellFormedNames;
+using WellFormedNames.Exceptions;
 
 namespace Tests.KnowledgeBase.Conditions
 {

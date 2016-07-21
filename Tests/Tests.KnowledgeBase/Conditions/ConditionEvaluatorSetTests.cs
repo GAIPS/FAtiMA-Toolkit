@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using KnowledgeBase;
 using KnowledgeBase.Conditions;
-using KnowledgeBase.WellFormedNames;
 using NUnit.Framework;
+using WellFormedNames;
 
 namespace Tests.KnowledgeBase.Conditions
 {
