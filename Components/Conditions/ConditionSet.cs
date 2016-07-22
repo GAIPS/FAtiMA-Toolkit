@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using GAIPS.Serialization;
 using Conditions.DTOs;
-using WellFormedNames;
 using Utilities;
+using WellFormedNames;
 using IQueryable = WellFormedNames.IQueryable;
 
 namespace Conditions
