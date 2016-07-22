@@ -7,6 +7,6 @@ namespace KnowledgeBase
 		//public Guid Id { get; set; }
         public Name Name { get; set; }
 		public Name Perspective { get; set; }
-		public PrimitiveValue Value { get; set; }
+		public Name Value { get; set; }
      }
 }

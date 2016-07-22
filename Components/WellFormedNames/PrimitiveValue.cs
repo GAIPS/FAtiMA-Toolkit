@@ -6,11 +6,11 @@ using GAIPS.Serialization.SerializationGraph;
 using Utilities;
 
 [Serializable]
-public abstract class PrimitiveValue : IEquatable<PrimitiveValue>
+internal abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 {
 	#region Holder Classes
 
-	private class ConcreteValue<T> : PrimitiveValue, IOpenable
+	private abstract class ConcreteValue<T> : PrimitiveValue, IOpenable
 	{
 		public readonly T value;
 
@@ -19,7 +19,7 @@ public abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 			this.value = value;
 		}
 
-		public override Type ValueType
+		public sealed override Type ValueType
 		{
 			get { return typeof(T); }
 		}
@@ -29,36 +29,13 @@ public abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 			return value;
 		}
 
-		public override TypeCode TypeCode
+		public sealed override TypeCode TypeCode
 		{
 			get
 			{
 				return Type.GetTypeCode(typeof(T));
 			}
-		}
-
-		public override bool Equals(PrimitiveValue obj)
-		{
-			ConcreteValue<T> other = obj as ConcreteValue<T>;
-			if (other == null)
-				return false;
-
-			return Equals(value, other.value);
-		}
-
-		public override int GetHashCode()
-		{
-			return value.GetHashCode();
-		}
-
-		public override string ToString()
-		{
-			IFormattable f = value as IFormattable;
-			if (f != null)
-				return f.ToString(null, CultureInfo.InvariantCulture);
-
-			return value.ToString();
-		}
+		}	
 	}
 
 	private interface INumber
@@ -75,23 +52,60 @@ public abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 		object Open();
 	}
 
+	private class BoolValue : ConcreteValue<bool>
+	{
+		public BoolValue(bool value) : base(value)
+		{
+		}
+
+		public override string ToString()
+		{
+			return value.ToString(CultureInfo.InvariantCulture);
+		}
+
+		public sealed override bool Equals(PrimitiveValue other)
+		{
+			ConcreteValue<bool> obj = other as ConcreteValue<bool>;
+			if (obj == null)
+				return false;
+
+			return value == obj.value;
+		}
+
+		public sealed override int GetHashCode()
+		{
+			return value.GetHashCode();
+		}
+	}
+
 	private class StringValue : ConcreteValue<string>
 	{
 		public StringValue(string value) : base(value)
 		{
 		}
 
-		public override bool Equals(PrimitiveValue obj)
+		public sealed override bool Equals(PrimitiveValue other)
 		{
-			ConcreteValue<string> other = obj as ConcreteValue<string>;
-			if (other == null)
+			ConcreteValue<string> obj = other as ConcreteValue<string>;
+			if (obj == null)
 				return false;
 
-			return StringComparer.InvariantCultureIgnoreCase.Equals(value, other.value);
+			return StringComparer.InvariantCultureIgnoreCase.Equals(value, obj.value);
+		}
+
+		public override string ToString()
+		{
+			return value;
+		}
+
+		public sealed override int GetHashCode()
+		{
+			return value.ToUpperInvariant().GetHashCode();
 		}
 	}
 
 	private class NumberValue<T> : ConcreteValue<T>, INumber
+		where T: IFormattable
 	{
 		public NumberValue(T value) : base(value)
 		{
@@ -104,15 +118,15 @@ public abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 
 		public object Value => value;
 
-		public override bool Equals(PrimitiveValue obj)
+		public sealed override bool Equals(PrimitiveValue other)
 		{
-			INumber n = obj as INumber;
+			INumber n = other as INumber;
 			if (n == null)
 				return false;
 
 			return Diff(n) == 0;
 		}
-
+		
 		public int Diff(INumber other)
 		{
 			const float SINGLE_ERROR_MARGIN = 0.0001f;
@@ -194,6 +208,16 @@ public abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 			}
 			return TypeCode.Double;
 		}
+
+		public override string ToString()
+		{
+			return value.ToString(null,CultureInfo.InvariantCulture);
+		}
+
+		public sealed override int GetHashCode()
+		{
+			return value.GetHashCode();
+		}
 	}
 
 	#endregion
@@ -205,103 +229,143 @@ public abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 	public abstract TypeCode TypeCode { get; }
 	public abstract Type ValueType { get; }
 
-	public static PrimitiveValue Cast(object v)
+	public static PrimitiveValue Cast(object obj)
 	{
-		if (v == null)
+		if (obj == null)
 			return null;
 
-		switch (Type.GetTypeCode(v.GetType()))
+		switch (Type.GetTypeCode(obj.GetType()))
 		{
 			case TypeCode.Boolean:
-				return (bool)v;
+				return new BoolValue((bool)obj);
 			case TypeCode.SByte:
-				return (sbyte)v;
+				return new NumberValue<sbyte>((sbyte)obj);
 			case TypeCode.Byte:
-				return (byte)v;
+				return new NumberValue<byte>((byte)obj);
 			case TypeCode.Int16:
-				return (short)v;
+				return new NumberValue<short>((short)obj);
 			case TypeCode.UInt16:
-				return (ushort)v;
+				return new NumberValue<ushort>((ushort)obj);
 			case TypeCode.Int32:
-				return (int)v;
+				return new NumberValue<int>((int)obj);
 			case TypeCode.UInt32:
-				return (uint)v;
+				return new NumberValue<uint>((uint)obj);
 			case TypeCode.Int64:
-				return (long)v;
+				return new NumberValue<long>((long)obj);
 			case TypeCode.UInt64:
-				return (ulong)v;
+				return new NumberValue<ulong>((ulong)obj);
 			case TypeCode.Single:
-				return (float)v;
+				return new NumberValue<float>((float)obj);
 			case TypeCode.Double:
-				return (double)v;
+				return new NumberValue<double>((double)obj);
 			case TypeCode.Decimal:
-				return (decimal)v;
+				return new NumberValue<decimal>((decimal)obj);
 			case TypeCode.String:
-				return (string)v;
+				return new StringValue((string)obj);
 		}
 
-		return null;
+		throw new ArgumentException("The given object must be of primitive data type.",nameof(obj));
 	}
 
 	private const NumberStyles NUMBER_STYLE_FLAGS =
 		NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent | NumberStyles.AllowLeadingSign;
 	private static readonly IFormatProvider NUMBER_FORMAT = CultureInfo.InvariantCulture.NumberFormat;
 
-	public static PrimitiveValue Parse(string str)
+	public static bool TryParse(string str, out PrimitiveValue value)
 	{
-		str = str.TrimStart();
+		str = str.Trim();
+
+		bool bl;
+		if (bool.TryParse(str, out bl))
+		{
+			value = new BoolValue(bl);
+			return true;
+		}
+
+		//Unsigned
 		if (str[0] != '-')
 		{
 			byte b;
 			if (byte.TryParse(str, out b))
-				return b;
+			{
+				value = new NumberValue<byte>(b);
+				return true;
+			}
 
 			ushort us;
 			if (ushort.TryParse(str, out us))
-				return us;
+			{
+				value = new NumberValue<ushort>(us);
+				return true;
+			}
 
 			uint ui;
 			if (uint.TryParse(str, out ui))
-				return ui;
+			{
+				value = new NumberValue<uint>(ui);
+				return true;
+			}
 
 			ulong ul;
 			if (ulong.TryParse(str, out ul))
-				return ul;
+			{
+				value = new NumberValue<ulong>(ul);
+				return true;
+			}
 		}
 
-		bool bl;
-		if (bool.TryParse(str, out bl))
-			return bl;
-
+		//Signed
 		sbyte sb;
 		if (sbyte.TryParse(str, out sb))
-			return sb;
+		{
+			value = new NumberValue<sbyte>(sb);
+			return true;
+		}
 
 		short s;
 		if (short.TryParse(str, out s))
-			return s;
+		{
+			value = new NumberValue<short>(s);
+			return true;
+		}
 
 		int i;
 		if (int.TryParse(str, out i))
-			return i;
+		{
+			value = new NumberValue<int>(i);
+			return true;
+		}
 
 		long l;
 		if (long.TryParse(str, out l))
-			return l;
+		{
+			value = new NumberValue<long>(l);
+			return true;
+		}
 
 		float f;
 		if (float.TryParse(str, NUMBER_STYLE_FLAGS, NUMBER_FORMAT, out f))
-			return f;
-
-		double d;
-		if (double.TryParse(str, NUMBER_STYLE_FLAGS, NUMBER_FORMAT, out d))
-			return d;
+		{
+			value = new NumberValue<float>(f);
+			return true;
+		}
 
 		decimal m;
 		if (decimal.TryParse(str, NUMBER_STYLE_FLAGS, NUMBER_FORMAT, out m))
-			return m;
+		{
+			value = new NumberValue<decimal>(m);
+			return true;
+		}
 
-		return str;
+		double d;
+		if (double.TryParse(str, NUMBER_STYLE_FLAGS, NUMBER_FORMAT, out d))
+		{
+			value = new NumberValue<double>(d);
+			return true;
+		}
+
+		value = new StringValue(str);
+		return true;
 	}
 
 	public static object Extract(PrimitiveValue value)
@@ -309,18 +373,38 @@ public abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 		return ((IOpenable)value).Open();
 	}
 
-	private static TResult Open<TResult>(PrimitiveValue value) where TResult : IConvertible
+	public static bool TryOpen<TResult>(PrimitiveValue value, out TResult v)
 	{
 		ConcreteValue<TResult> r = value as ConcreteValue<TResult>;
 		if (r != null)
-			return r.value;
+		{
+			v = r.value;
+			return true;
+		}
 
 		INumber n = value as INumber;
 		if (n != null)
-			return n.Cast<TResult>();
+		{
+			v = n.Cast<TResult>();
+			return true;
+		}
 
-		throw new InvalidCastException($"Unable to convert {value.ValueType} to {typeof(TResult)}");
+		v = default(TResult);
+		return false;
 	}
+
+	//public static TResult Open<TResult>(PrimitiveValue value) where TResult : IConvertible
+	//{
+	//	ConcreteValue<TResult> r = value as ConcreteValue<TResult>;
+	//	if (r != null)
+	//		return r.value;
+
+	//	INumber n = value as INumber;
+	//	if (n != null)
+	//		return n.Cast<TResult>();
+
+	//	throw new InvalidCastException($"Unable to convert {value.ValueType} to {typeof(TResult)}");
+	//}
 
 	public abstract bool Equals(PrimitiveValue other);
 
@@ -336,197 +420,19 @@ public abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 
 	public abstract override string ToString();
 
-	#region Converters
-
-	public static implicit operator PrimitiveValue(bool value)
+	public static bool TryCompare(PrimitiveValue a, PrimitiveValue b, out int delta)
 	{
-		return new ConcreteValue<bool>(value);
-	}
+		INumber na = a as INumber;
+		INumber nb = b as INumber;
 
-	public static implicit operator bool(PrimitiveValue value)
-	{
-		return Open<bool>(value);
-	}
-
-	public static implicit operator PrimitiveValue(string value)
-	{
-		return new StringValue(value);
-	}
-
-	public static implicit operator string(PrimitiveValue value)
-	{
-		return Open<string>(value);
-	}
-
-	//Numbers
-
-	public static implicit operator PrimitiveValue(byte value)
-	{
-		return new NumberValue<byte>(value);
-	}
-
-	public static implicit operator byte(PrimitiveValue value)
-	{
-		return Open<byte>(value);
-	}
-
-	public static implicit operator PrimitiveValue(sbyte value)
-	{
-		return new NumberValue<sbyte>(value);
-	}
-
-	public static implicit operator sbyte(PrimitiveValue value)
-	{
-		return Open<sbyte>(value);
-	}
-
-	public static implicit operator PrimitiveValue(short value)
-	{
-		return new NumberValue<short>(value);
-	}
-
-	public static implicit operator short(PrimitiveValue value)
-	{
-		return Open<short>(value);
-	}
-
-	public static implicit operator PrimitiveValue(ushort value)
-	{
-		return new NumberValue<ushort>(value);
-	}
-
-	public static implicit operator ushort(PrimitiveValue value)
-	{
-		return Open<ushort>(value);
-	}
-
-	public static implicit operator PrimitiveValue(int value)
-	{
-		return new NumberValue<int>(value);
-	}
-
-	public static implicit operator int(PrimitiveValue value)
-	{
-		return Open<int>(value);
-	}
-
-	public static implicit operator PrimitiveValue(uint value)
-	{
-		return new NumberValue<uint>(value);
-	}
-
-	public static implicit operator uint(PrimitiveValue value)
-	{
-		return Open<uint>(value);
-	}
-
-	public static implicit operator PrimitiveValue(long value)
-	{
-		return new NumberValue<long>(value);
-	}
-
-	public static implicit operator long(PrimitiveValue value)
-	{
-		return Open<long>(value);
-	}
-
-	public static implicit operator PrimitiveValue(ulong value)
-	{
-		return new NumberValue<ulong>(value);
-	}
-
-	public static implicit operator ulong(PrimitiveValue value)
-	{
-		return Open<ulong>(value);
-	}
-
-	public static implicit operator PrimitiveValue(float value)
-	{
-		return new NumberValue<float>(value);
-	}
-
-	public static implicit operator float(PrimitiveValue value)
-	{
-		return Open<float>(value);
-	}
-
-	public static implicit operator PrimitiveValue(double value)
-	{
-		return new NumberValue<double>(value);
-	}
-
-	public static implicit operator double(PrimitiveValue value)
-	{
-		return Open<double>(value);
-	}
-
-	public static implicit operator PrimitiveValue(decimal value)
-	{
-		return new NumberValue<decimal>(value);
-	}
-
-	public static implicit operator decimal(PrimitiveValue value)
-	{
-		return Open<decimal>(value);
-	}
-
-	#endregion
-
-	#region Operators
-
-	public static bool operator ==(PrimitiveValue a, PrimitiveValue b)
-	{
-		if (ReferenceEquals(a, b))
+		if (na != null && nb != null)
+		{
+			delta = na.Diff(nb);
 			return true;
-
-		if (ReferenceEquals(a, null))
-			return false;
-
-		return a.Equals(b);
-	}
-
-	public static bool operator !=(PrimitiveValue a, PrimitiveValue b)
-	{
-		return !(a == b);
-	}
-
-	public static bool operator <(PrimitiveValue a, PrimitiveValue b)
-	{
-		INumber na = a as INumber;
-		INumber nb = b as INumber;
-
-		if (na != null && nb != null)
-		{
-			var r = na.Diff(nb);
-			return r < 0;
 		}
+		delta = 0;
 		return false;
 	}
-
-	public static bool operator <=(PrimitiveValue a, PrimitiveValue b)
-	{
-		INumber na = a as INumber;
-		INumber nb = b as INumber;
-
-		if (na != null && nb != null)
-		{
-			var r = na.Diff(nb);
-			return r <= 0;
-		}
-		return false;
-	}
-
-	public static bool operator >(PrimitiveValue a, PrimitiveValue b)
-	{
-		return !(a <= b);
-	}
-
-	public static bool operator >=(PrimitiveValue a, PrimitiveValue b)
-	{
-		return !(a < b);
-	}
-
-	#endregion
 
 	#region Serializer
 
@@ -565,7 +471,7 @@ public abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 				case TypeCode.Decimal:
 					return serializationGraph.BuildPrimitiveNode(((ConcreteValue<decimal>)v).value);
 			}
-			throw new InvalidOperationException("Unexpected PrimitiveValue type. " + v.ValueType + " is not a primitive v.");
+			throw new InvalidOperationException($"Unexpected PrimitiveValue type. {v.ValueType} is not a primitive object.");
 		}
 
 		public object GraphNodeToObject(IGraphNode node, Type objectType)
@@ -573,7 +479,7 @@ public abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 			switch (node.DataType)
 			{
 				case SerializedDataType.String:
-					return new ConcreteValue<string>(((IStringGraphNode)node).Value);
+					return new StringValue(((IStringGraphNode)node).Value);
 				case SerializedDataType.Boolean:
 				case SerializedDataType.Number:
 					return Cast(((IPrimitiveGraphNode)node).Value);

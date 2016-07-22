@@ -56,19 +56,28 @@ namespace WellFormedNames
 				return true;
 			}
 
-			public override PrimitiveValue GetPrimitiveValue()
+			/// <summary>
+			/// Indicates whether the current object is equal to another object of the same type.
+			/// </summary>
+			/// <returns>
+			/// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+			/// </returns>
+			/// <param name="other">An object to compare with this object.</param>
+			public override bool Equals(Name name)
 			{
-				return null;
-			}
-
-			public override bool Equals(object obj)
-			{
-				return obj is UniversalSymbol;
+				return name.IsUniversal;
 			}
 
 			public override int GetHashCode()
 			{
 				return '*'.GetHashCode();
+			}
+
+			/// @endcond
+			public override bool TryConvertToValue<T>(out T value)
+			{
+				value = default(T);
+				return false;
 			}
 		}
 	}

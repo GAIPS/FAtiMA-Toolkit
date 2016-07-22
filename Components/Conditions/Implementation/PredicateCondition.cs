@@ -21,10 +21,11 @@ namespace Conditions
 			{
 				foreach (var pair in m_predicate.Retrive(db, perspective, constraints))
 				{
-					if (pair.Item1.TypeCode != TypeCode.Boolean)
+					bool b;
+					if(!pair.Item1.TryConvertToValue(out b))
 						continue;
 
-					if (((bool) pair.Item1) != m_invert)
+					if(b!=m_invert)
 						yield return pair.Item2;
 				}
 			}

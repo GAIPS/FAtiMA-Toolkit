@@ -160,21 +160,22 @@ namespace WellFormedNames
 				return result;
 			}
 
-			public override bool Equals(object obj)
+			/// <summary>
+			/// Indicates whether the current object is equal to another object of the same type.
+			/// </summary>
+			/// <returns>
+			/// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+			/// </returns>
+			/// <param name="other">An object to compare with this object.</param>
+			public override bool Equals(Name name)
 			{
-				var other = obj as ComposedName;
-				if (other == null)
+				if (!name.IsComposed)
 					return false;
 
-				if (other.Terms.Length != Terms.Length)
+				if (name.NumberOfTerms != NumberOfTerms)
 					return false;
 
-				if (!other.RootSymbol.Equals(RootSymbol))
-				{
-					return false;
-				}
-
-				return !Terms.Where((t, i) => !other.Terms[i].Equals(t)).Any();
+				return GetTerms().Zip(name.GetTerms(), (n1, n2) => n1.Equals(n2)).All(b => b);
 			}
 
 			public override bool Match(Name name)
@@ -198,11 +199,6 @@ namespace WellFormedNames
 				return true;
 			}
 
-			public override PrimitiveValue GetPrimitiveValue()
-			{
-				return null;
-			}
-
 			public override Name ApplyToTerms(Func<Name, Name> transformFunction)
 			{
 				return new ComposedName(RootSymbol, Terms.Select(transformFunction).ToArray());
@@ -211,6 +207,13 @@ namespace WellFormedNames
 			public override int GetHashCode()
 			{
 				return GetTerms().Select(t => t.GetHashCode()).Aggregate((h1, h2) => h1 ^ h2);
+			}
+
+			/// @endcond
+			public override bool TryConvertToValue<T>(out T value)
+			{
+				value = default(T);
+				return false;
 			}
 		}	 
 	}

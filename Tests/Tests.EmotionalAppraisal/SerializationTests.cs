@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using EmotionalAppraisal;
 using EmotionalAppraisal.AppraisalRules;
 using EmotionalAppraisal.OCCModel;
@@ -159,7 +160,7 @@ namespace Tests.EmotionalAppraisal
 			{
 				Name = "Strength(Saitama)",
 				Perspective = "self",
-				Value = double.MaxValue.ToString()
+				Value = double.MaxValue.ToString(CultureInfo.InvariantCulture)
 			});
 			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
 			{

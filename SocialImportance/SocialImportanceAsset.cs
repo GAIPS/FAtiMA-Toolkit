@@ -398,7 +398,7 @@ namespace SocialImportance
 
 		private static readonly Name SI_DYNAMIC_PROPERTY_TEMPLATE = Name.BuildName("SI([target])");
 
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> SIPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<Name, SubstitutionSet>> SIPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			Name target;
 			if(!args.TryGetValue("target",out target))
@@ -408,7 +408,7 @@ namespace SocialImportance
 			{
 				var si = internal_GetSocialImportance(Name.BuildName(t.Item1), perspective);
 				foreach (var s in t.Item2)
-					yield return new Pair<PrimitiveValue, SubstitutionSet>(si,s);
+					yield return Tuples.Create(Name.BuildName(si), s);
 			}
 		}
 

@@ -5,7 +5,7 @@ namespace WellFormedNames
 {
 	public partial class Name
 	{
-		private class VariableSymbol : Symbol, IEquatable<VariableSymbol>
+		private class VariableSymbol : Symbol
 		{
 			private string m_variableName;
 
@@ -15,19 +15,22 @@ namespace WellFormedNames
 				m_variableName = name;
 			}
 
-			public override bool Equals(object obj)
+			/// <summary>
+			/// Indicates whether the current object is equal to another object of the same type.
+			/// </summary>
+			/// <returns>
+			/// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+			/// </returns>
+			/// <param name="other">An object to compare with this object.</param>
+			public override bool Equals(Name name)
 			{
-				return Equals(obj as VariableSymbol);
-			}
-
-			public bool Equals(VariableSymbol other)
-			{
-				if (other == null)
+				if (!name.IsVariable)
 					return false;
-				return string.Equals(m_variableName, other.m_variableName, StringComparison.InvariantCultureIgnoreCase);
+
+				return StringComparer.InvariantCultureIgnoreCase.Equals(m_variableName, ((VariableSymbol) name).m_variableName);
 			}
 
-			private static readonly int BASE_HASH = '['.GetHashCode() ^ '['.GetHashCode();
+			private static readonly int BASE_HASH = '['.GetHashCode() ^ ']'.GetHashCode();
 			public override int GetHashCode()
 			{
 				return m_variableName.ToUpperInvariant().GetHashCode() ^ BASE_HASH;
@@ -83,9 +86,11 @@ namespace WellFormedNames
 				return Equals(name as VariableSymbol);
 			}
 
-			public override PrimitiveValue GetPrimitiveValue()
+			/// @endcond
+			public override bool TryConvertToValue<T>(out T value)
 			{
-				return null;
+				value = default(T);
+				return false;
 			}
 		}
 	}

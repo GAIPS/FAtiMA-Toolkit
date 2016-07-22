@@ -44,7 +44,7 @@ namespace Conditions
 
 		public abstract override int GetHashCode();
 
-		private static bool CompareValues(PrimitiveValue a, PrimitiveValue b, ComparisonOperator op)
+		private static bool CompareValues(Name a, Name b, ComparisonOperator op)
 		{
 			switch (op)
 			{
@@ -155,21 +155,22 @@ namespace Conditions
 			if (value1.InnerName.IsPrimitive != value2.InnerName.IsPrimitive)
 			{
 				IValueRetriver prop = value1.InnerName.IsPrimitive ? value2 : value1;
-				PrimitiveValue value = (value1.InnerName.IsPrimitive ? value1.InnerName : value2.InnerName).GetPrimitiveValue();
+				string str = (value1.InnerName.IsPrimitive ? value1.InnerName : value2.InnerName).ToString();
 				op = v1.IsPrimitive ? op.Mirror() : op;
 
-				if (value.TypeCode == TypeCode.Boolean)
+				bool boolValue;
+				if (bool.TryParse(str, out boolValue))
 				{
 					switch (op)
 					{
 						case ComparisonOperator.Equal:
-							return new PredicateCondition(prop, value);
+							return new PredicateCondition(prop, boolValue);
 						case ComparisonOperator.NotEqual:
-							return new PredicateCondition(prop, !value);
+							return new PredicateCondition(prop, !boolValue);
 					}
 				}
 
-				return new PrimitiveComparisonCondition(prop, value, op);
+				return new PrimitiveComparisonCondition(prop, (Name)str, op);
 			}
 
 			return new PropertyComparisonCondition(value1,value2, op);

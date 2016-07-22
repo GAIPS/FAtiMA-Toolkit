@@ -15,7 +15,7 @@ namespace Conditions
 				m_name = name;
 			}
 
-			public IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> Retrive(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
+			public IEnumerable<Pair<Name, SubstitutionSet>> Retrive(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
 				foreach (var pair in db.AskPossibleProperties(m_name, perspective, constraints))
 				{

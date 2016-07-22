@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using WellFormedNames;
 
 namespace Conditions
@@ -8,10 +9,10 @@ namespace Conditions
 		private sealed class PrimitiveComparisonCondition : Condition
 		{
 			private readonly IValueRetriver m_retriver;
-			private readonly PrimitiveValue m_value;
+			private readonly Name m_value;
 			private readonly ComparisonOperator m_operation;
 
-			public PrimitiveComparisonCondition(IValueRetriver prop, PrimitiveValue value, ComparisonOperator op)
+			public PrimitiveComparisonCondition(IValueRetriver prop, Name value, ComparisonOperator op)
 			{
 				m_retriver = prop;
 				m_value = value;

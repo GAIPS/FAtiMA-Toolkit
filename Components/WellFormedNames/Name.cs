@@ -65,7 +65,7 @@ namespace WellFormedNames
 	///			- Kick(Hard, Low)
 	/// </example>
 	[Serializable]
-	public abstract partial class Name : IComparable<Name>
+	public abstract partial class Name : IComparable<Name>, IEquatable<Name>
 	{
 		private const string NUMBER_VALIDATION_PATTERN = @"(?:-|\+)?\d+(?:\.\d+)?(?:e(?:-|\+)?[1-9]\d*)?";
 		private const string VARIABLE_SYMBOL_VALIDATION_PATTERN = @"^\[([A-Za-z_][\w-]*)\]$";
@@ -92,7 +92,7 @@ namespace WellFormedNames
 		/// A constant containing an instance of a NIL Name
 		/// </summary>
 		/// @hideinitializer
-		public static readonly Name NIL_SYMBOL = new PrimitiveSymbol(null);
+		public static readonly Name NIL_SYMBOL = new PrimitiveSymbol((PrimitiveValue)null);
 		/// <summary>
 		/// A constant containing an instance of a SELF Name
 		/// </summary>
@@ -154,9 +154,19 @@ namespace WellFormedNames
 		}
 
 		/// @cond DOXYGEN_SHOULD_SKIP_THIS
-		public abstract override bool Equals(object obj);
+		public sealed override bool Equals(object obj)
+		{
+			Name n = obj as Name;
+			if (n == null)
+				return false;
+
+			return Equals(n);
+		}
+
 		public abstract override int GetHashCode();
 		public abstract override string ToString();
+
+		public abstract bool Equals(Name name);
 		/// @endcond
 
 		/// <summary>
@@ -276,10 +286,6 @@ namespace WellFormedNames
 		/// <param name="transformFunction">The function we want to apply to this Name.</param>
 		/// <returns>A new Name instance, which is the original one with the transformed function applied.</returns>
 		public abstract Name ApplyToTerms(Func<Name, Name> transformFunction);
-
-		/// @cond DOXYGEN_SHOULD_SKIP_THIS
-		public abstract PrimitiveValue GetPrimitiveValue();
-		/// @endcond
 		
 		private static ulong _variableIdCounter = 0;
 		/// <summary>
@@ -329,9 +335,47 @@ namespace WellFormedNames
 			return !(n1 == n2);
 		}
 
+		public static bool operator <(Name a, Name b)
+		{
+			PrimitiveSymbol pa = a as PrimitiveSymbol;
+			PrimitiveSymbol pb = b as PrimitiveSymbol;
+
+			if (pa == null || pb == null)
+				return false;
+
+			int delta;
+			if (PrimitiveSymbol.TryCompare(pa, pb, out delta))
+				return delta < 0;
+			return false;
+		}
+
+		public static bool operator <=(Name a, Name b)
+		{
+			PrimitiveSymbol pa = a as PrimitiveSymbol;
+			PrimitiveSymbol pb = b as PrimitiveSymbol;
+
+			if (pa == null || pb == null)
+				return false;
+
+			int delta;
+			if (PrimitiveSymbol.TryCompare(pa, pb, out delta))
+				return delta <= 0;
+			return false;
+		}
+
+		public static bool operator >(Name a, Name b)
+		{
+			return !(a <= b);
+		}
+
+		public static bool operator >=(Name a, Name b)
+		{
+			return !(a < b);
+		}
+
 		#endregion
 
-#region Builders
+		#region Builders
 
 		/// <summary>
 		/// Creates a composed Name, using two or more Names
@@ -373,34 +417,20 @@ namespace WellFormedNames
 			}
 		}
 
-		/// @cond DOXYGEN_SHOULD_SKIP_THIS
-		public static Name BuildName(PrimitiveValue value)
+		public static Name BuildName(object value)
 		{
-			if (value.TypeCode == TypeCode.String)
-				return BuildName((string) value);
+			if (value == null)
+				return NIL_SYMBOL;
 
-			return new PrimitiveSymbol(value);
-		}
-		/// @endcond
-
-		/// <summary>
-		/// Creates a new Name instance by parsing a string.
-		/// </summary>
-		/// <param name="str">The string to parse.</param>
-		/// <exception cref="ArgumentException">Thrown if the given string is empty.</exception>
-		public static Name BuildName(string str)
-		{
-			if (string.IsNullOrEmpty(str))
+			var str = value as string;
+			if (str != null)
 			{
-				if (str == null)
-					return NIL_SYMBOL;
-
-				throw new ArgumentException("Cannot parse an empty string", nameof(str));
+				if(string.IsNullOrEmpty(str))
+					throw new ArgumentException("Cannot convert an empty string to a Name.");
+				str = str.Trim();
+				return ParseName(str);
 			}
-
-			str = str.Trim();
-			Name result = ParseName(str);
-			return result;
+			return new PrimitiveSymbol(PrimitiveValue.Cast(value));
 		}
 
 		// Internal Name Parser
@@ -430,7 +460,11 @@ namespace WellFormedNames
 
 			var primitiveMatch = PRIMITIVE_VALIDATION_PATTERN.Match(str);
 			if (primitiveMatch.Success)
-				return new PrimitiveSymbol(PrimitiveValue.Parse(str));
+			{
+				PrimitiveValue p;
+				if(PrimitiveValue.TryParse(str,out p))
+					return new PrimitiveSymbol(p);
+			}
 
 			throw new ParsingException(str + " is not a well formed name definition");
 		}
@@ -494,6 +528,9 @@ namespace WellFormedNames
 
 			return StringComparer.InvariantCultureIgnoreCase.Compare(ToString(), other.ToString());
 		}
+
 		/// @endcond
+
+		public abstract bool TryConvertToValue<T>(out T value);
 	}
 }

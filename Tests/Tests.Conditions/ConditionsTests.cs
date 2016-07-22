@@ -57,30 +57,30 @@ namespace Tests.Conditions
 		{
 			var kb = new KB((Name)"Me");
 
-			kb.Tell((Name)"Strength(John)",(byte)5);
-			kb.Tell((Name)"Strength(Mary)", (sbyte)3);
-			kb.Tell((Name)"Strength(Leonidas)", (short)500);
-			kb.Tell((Name)"Strength(Goku)", (uint)9001f);
-			kb.Tell((Name)"Strength(SuperMan)", ulong.MaxValue);
-			kb.Tell((Name)"Strength(Saitama)", float.MaxValue);
-			kb.Tell((Name)"Race(Saitama)", "human");
-			kb.Tell((Name)"Race(Superman)", "kriptonian");
-			kb.Tell((Name)"Race(Goku)","sayian");
-			kb.Tell((Name)"Race(Leonidas)", "human");
-			kb.Tell((Name)"Race(Mary)", "human");
-			kb.Tell((Name)"Race(John)", "human");
-			kb.Tell((Name)"Job(Saitama)", "super-hero");
-			kb.Tell((Name)"Job(Superman)", "super-hero");
-			kb.Tell((Name)"Job(Leonidas)", "Spartan");
-			kb.Tell((Name)"AKA(Saitama)", "One-Punch_Man");
-			kb.Tell((Name)"AKA(Superman)", "Clark_Kent");
-			kb.Tell((Name)"AKA(Goku)", "Kakarot");
-			kb.Tell((Name)"Hobby(Saitama)", "super-hero");
-			kb.Tell((Name)"Hobby(Goku)", "training");
-			kb.Tell((Name)"IsAlive(Leonidas)", false);
-			kb.Tell((Name)"IsAlive(Saitama)", true);
-			kb.Tell((Name)"IsAlive(Superman)", true);
-			kb.Tell((Name)"IsAlive(John)", true);
+			kb.Tell((Name)"Strength(John)",Name.BuildName(5));
+			kb.Tell((Name)"Strength(Mary)", Name.BuildName(3));
+			kb.Tell((Name)"Strength(Leonidas)", Name.BuildName(500));
+			kb.Tell((Name)"Strength(Goku)", Name.BuildName(9001f));
+			kb.Tell((Name)"Strength(SuperMan)", Name.BuildName(ulong.MaxValue));
+			kb.Tell((Name)"Strength(Saitama)", Name.BuildName(float.MaxValue));
+			kb.Tell((Name)"Race(Saitama)", Name.BuildName("human"));
+			kb.Tell((Name)"Race(Superman)", Name.BuildName("kriptonian"));
+			kb.Tell((Name)"Race(Goku)",Name.BuildName("sayian"));
+			kb.Tell((Name)"Race(Leonidas)", Name.BuildName("human"));
+			kb.Tell((Name)"Race(Mary)", Name.BuildName("human"));
+			kb.Tell((Name)"Race(John)", Name.BuildName("human"));
+			kb.Tell((Name)"Job(Saitama)", Name.BuildName("super-hero"));
+			kb.Tell((Name)"Job(Superman)", Name.BuildName("super-hero"));
+			kb.Tell((Name)"Job(Leonidas)", Name.BuildName("Spartan"));
+			kb.Tell((Name)"AKA(Saitama)", Name.BuildName("One-Punch_Man"));
+			kb.Tell((Name)"AKA(Superman)", Name.BuildName("Clark_Kent"));
+			kb.Tell((Name)"AKA(Goku)", Name.BuildName("Kakarot"));
+			kb.Tell((Name)"Hobby(Saitama)", Name.BuildName("super-hero"));
+			kb.Tell((Name)"Hobby(Goku)", Name.BuildName("training"));
+			kb.Tell((Name)"IsAlive(Leonidas)", Name.BuildName(false));
+			kb.Tell((Name)"IsAlive(Saitama)", Name.BuildName(true));
+			kb.Tell((Name)"IsAlive(Superman)", Name.BuildName(true));
+			kb.Tell((Name)"IsAlive(John)", Name.BuildName(true));
 
 			return kb;
 		}

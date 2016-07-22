@@ -22,7 +22,7 @@ namespace Tests.Conditions
 		{
 			var kb = new KB((Name)"Me");
 			foreach (var s in beliefs.Select(b => b.Split(':')))
-				kb.Tell((Name)s[0], PrimitiveValue.Parse(s[1]));
+				kb.Tell((Name)s[0], (Name)s[1]);
 
 			var set = new ConditionSet(LogicalQuantifier.Existential,TEST_CONDITIONS);
 			Assert.True(set.Evaluate(kb, Name.SELF_SYMBOL, null));
@@ -33,7 +33,7 @@ namespace Tests.Conditions
 		{
 			var kb = new KB((Name)"Me");
 			foreach (var s in beliefs.Select(b => b.Split(':')))
-				kb.Tell((Name)s[0], PrimitiveValue.Parse(s[1]));
+				kb.Tell((Name)s[0], (Name)s[1]);
 
 			var set = new ConditionSet(LogicalQuantifier.Existential, TEST_CONDITIONS);
 			Assert.False(set.Evaluate(kb, Name.SELF_SYMBOL, null));
@@ -46,7 +46,7 @@ namespace Tests.Conditions
 		{
 			var kb = new KB((Name)"Me");
 			foreach (var s in beliefs.Select(b => b.Split(':')))
-				kb.Tell((Name)s[0], PrimitiveValue.Parse(s[1]));
+				kb.Tell((Name)s[0], (Name)s[1]);
 
 			var set = new ConditionSet(LogicalQuantifier.Universal, TEST_CONDITIONS);
 			Assert.False(set.Evaluate(kb, Name.SELF_SYMBOL, null));
@@ -57,7 +57,7 @@ namespace Tests.Conditions
 		{
 			var kb = new KB((Name)"Me");
 			foreach (var s in beliefs.Select(b => b.Split(':')))
-				kb.Tell((Name)s[0], PrimitiveValue.Parse(s[1]));
+				kb.Tell((Name)s[0], (Name)s[1]);
 
 			var set = new ConditionSet(LogicalQuantifier.Universal, TEST_CONDITIONS);
 			Assert.True(set.Evaluate(kb, Name.SELF_SYMBOL, null));

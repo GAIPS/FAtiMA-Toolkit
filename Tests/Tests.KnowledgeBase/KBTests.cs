@@ -20,7 +20,7 @@ namespace Tests.KnowledgeBase
 		public void Test_Tell_Fail_Primitive_Property(string primitiveName)
 		{
 			var kb = new KB((Name)"John");
-			Assert.Throws<ArgumentException>(() => kb.Tell((Name)primitiveName, true));
+			Assert.Throws<ArgumentException>(() => kb.Tell((Name)primitiveName, Name.BuildName(true)));
 		}
 
 		[TestCase("Likes(*)")]
@@ -28,14 +28,14 @@ namespace Tests.KnowledgeBase
 		public void Test_Tell_Fail_NonConstant_Property(string propertyName)
 		{
 			var kb = new KB((Name)"John");
-			Assert.Throws<ArgumentException>(() => kb.Tell((Name)propertyName, true));
+			Assert.Throws<ArgumentException>(() => kb.Tell((Name)propertyName, Name.BuildName(true)));
 		}
 
 		[Test]
 		public void Test_Tell_Fail_Add_Self_To_Universal_Context()
 		{
 			var kb = new KB((Name)"John");
-			Assert.Throws<InvalidOperationException>(() => kb.Tell((Name)"Likes(Self)", true,Name.UNIVERSAL_SYMBOL));
+			Assert.Throws<InvalidOperationException>(() => kb.Tell((Name)"Likes(Self)", Name.BuildName(true),Name.UNIVERSAL_SYMBOL));
 		}
 
 		[TestCase("[x]", typeof(ArgumentException))]
@@ -49,7 +49,7 @@ namespace Tests.KnowledgeBase
 		{
 			var kb = new KB((Name)"John");
 
-			Assert.Throws(exceptionType,() => kb.Tell((Name)"Likes(Mary)", true, (Name)perspective));
+			Assert.Throws(exceptionType,() => kb.Tell((Name)"Likes(Mary)", Name.BuildName(true), (Name)perspective));
 		}
 
 		[TestCase("ToM(Mary,Likes(Self))", "Mary(Self)")]
@@ -58,7 +58,7 @@ namespace Tests.KnowledgeBase
 		public void Test_Tell_Fail_Property_ToM_Transform(string property,string perspective)
 		{
 			var kb = new KB((Name)"John");
-			Assert.Throws<ArgumentException>(() => kb.Tell((Name) property, true,(Name)perspective));
+			Assert.Throws<ArgumentException>(() => kb.Tell((Name) property, Name.BuildName(true),(Name)perspective));
 		}
 
 		[TestCase("Count(Tiger)", "Self")]
@@ -71,7 +71,7 @@ namespace Tests.KnowledgeBase
 		public void Test_Tell_Fail_DynamicProperty(string property, string perspective)
 		{
 			var kb = new KB((Name)"John");
-			Assert.Throws<ArgumentException>(() => kb.Tell((Name)property, true, (Name)perspective));
+			Assert.Throws<ArgumentException>(() => kb.Tell((Name)property, Name.BuildName(true), (Name)perspective));
 		}
 
 		[Test]
@@ -79,7 +79,7 @@ namespace Tests.KnowledgeBase
 		{
 			const string property = "ToM(Mary,ToM(Self,Has(ToM(Mary,Ball))))";
 			var kb = new KB((Name)"John");
-			Assert.Throws<ArgumentException>(() => kb.Tell((Name)property, true));
+			Assert.Throws<ArgumentException>(() => kb.Tell((Name)property, Name.BuildName(true)));
 		}
 
 		[Test]
@@ -87,7 +87,7 @@ namespace Tests.KnowledgeBase
 		{
 			const string property = "ToM(Mary,ToM(Self,Has(Ball)))";
 			var kb = new KB((Name)"John");
-			kb.Tell((Name) property, true);
+			kb.Tell((Name) property, Name.BuildName(true));
 		}
 
 		[Test]
@@ -113,7 +113,7 @@ namespace Tests.KnowledgeBase
 			{
 				DynamicPropertyCalculator p = (kb2, pers, args, subs) =>
 				{
-					return Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
+					return Enumerable.Empty<Pair<Name, SubstitutionSet>>();
 				};
 				yield return new TestCaseData(PopulatedTestMemory(), (Name)"Count([x])", p, (Name)"Count(IsAlive([x]))", null);
 				yield return new TestCaseData(PopulatedTestMemory(), (Name)"Count([x])", p, (Name)"Count([y])", new SubstitutionSet(new Substitution("[y]/IsAlive([x])")));
@@ -177,7 +177,7 @@ namespace Tests.KnowledgeBase
 				foreach (var t in MemoryData())
 				{
 					Name property = (Name) t.Arguments[0];
-					PrimitiveValue value = PrimitiveValue.Cast(t.Arguments[1]);
+					Name value = Name.BuildName(t.Arguments[1]);
 					try
 					{
 						//if(t.Arguments.Length>2)
@@ -201,20 +201,20 @@ namespace Tests.KnowledgeBase
 		public void Test_Simple_Tell_Valid(Name name, object value)
 		{
 			var kb = new KB((Name)"Me");
-			kb.Tell(name, PrimitiveValue.Cast(value));
+			kb.Tell(name, Name.BuildName(value));
 		}
 
 		[TestCaseSource(typeof(TestFactory), nameof(TestFactory.Test_Simple_Tell_Invalid_Cases))]
 		public void Test_Simple_Tell_Invalid(Name name, object value, Type expectedException)
 		{
 			var kb = new KB((Name)"Me");
-			Assert.Throws(expectedException, () => kb.Tell(name, PrimitiveValue.Cast(value)));
+			Assert.Throws(expectedException, () => kb.Tell(name, Name.BuildName(value)));
 		}
 
 		[Test]
 		public void Test_Acculm_Tell_Valid()
 		{
-			KB kb = TestFactory.PopulatedTestMemory();
+			TestFactory.PopulatedTestMemory();
 		}
 
 		//[Test]
@@ -237,9 +237,7 @@ namespace Tests.KnowledgeBase
 			var value = kb.AskProperty(v);
 			Assert.NotNull(value);
 
-			var v1 = PrimitiveValue.Cast(value);
-			var v2 = PrimitiveValue.Cast(expect);
-			Assert.AreEqual(v1, v2);
+			Assert.AreEqual(value, Name.BuildName(expect));
 		}
 
 		[Test]
@@ -277,7 +275,7 @@ namespace Tests.KnowledgeBase
 			var kb = new KB((Name)"Me");
 			Assert.Throws<ArgumentException>(() =>
 			{
-				kb.Tell((Name)"Count(John)", 3);
+				kb.Tell((Name)"Count(John)", Name.BuildName(3));
 				kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, p, args, constraints) => null));
 			});
 		}
@@ -289,7 +287,7 @@ namespace Tests.KnowledgeBase
 			Assert.Throws<ArgumentException>(() =>
 			{
 				kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, p, args, constraints) => null));
-				kb.Tell((Name)"Count(John)", 3);
+				kb.Tell((Name)"Count(John)", Name.BuildName(3));
 			});
 		}
 
@@ -297,7 +295,7 @@ namespace Tests.KnowledgeBase
 		public void Test_Tell_Fail_Add_Self_To_Universal()
 		{
 			var kb = new KB(Name.BuildName("Matt"));
-			Assert.Throws<InvalidOperationException>(() => { kb.Tell((Name)"IsPerson(Self)", true, Name.UNIVERSAL_SYMBOL); });
+			Assert.Throws<InvalidOperationException>(() => { kb.Tell((Name)"IsPerson(Self)", Name.BuildName(true), Name.UNIVERSAL_SYMBOL); });
 		}
 
 		[TestCase("Matt", "IsPerson(Matt)", "*", "IsPerson(Matt)", "Self")]
@@ -309,7 +307,7 @@ namespace Tests.KnowledgeBase
 		public void Test_Tell_Pass_Add_With_Perspective(string nativePerspective, string tellPerdicate, string tellPerspective, string queryPerdicate, string queryPerspective)
 		{
 			var kb = new KB(Name.BuildName(nativePerspective));
-			kb.Tell(Name.BuildName(tellPerdicate), true, Name.BuildName(tellPerspective));
+			kb.Tell(Name.BuildName(tellPerdicate), Name.BuildName(true), Name.BuildName(tellPerspective));
 
 			using (var stream = new MemoryStream())
 			{
@@ -319,46 +317,60 @@ namespace Tests.KnowledgeBase
 				Console.WriteLine(new StreamReader(stream).ReadToEnd());
 			}
 
-			var r = kb.AskProperty(Name.BuildName(queryPerdicate), Name.BuildName(queryPerspective)) as bool?;
-			Assert.IsTrue(r);
+			var r = kb.AskProperty(Name.BuildName(queryPerdicate), Name.BuildName(queryPerspective));
+			bool b;
+			if (!r.TryConvertToValue(out b))
+				Assert.Fail();
+
+			Assert.IsTrue(b);
 		}
 
 		[Test]
 		public void Test_Fail_Tell_With_Nil_Perspective()
 		{
 			var kb = new KB(Name.BuildName("Mark"));
-			Assert.Throws<ArgumentException>(() => kb.Tell(Name.BuildName("IsPerson(Self)"), true, Name.NIL_SYMBOL));
+			Assert.Throws<ArgumentException>(() => kb.Tell(Name.BuildName("IsPerson(Self)"), Name.BuildName(true), Name.NIL_SYMBOL));
 		}
 
 		[Test]
 		public void Test_Tell_Pass_Add_Self_Belief_and_Change_Perspective_01()
 		{
 			var kb = new KB(Name.BuildName("Mark"));
-			kb.Tell(Name.BuildName("IsPerson(Self)"), true);
+			kb.Tell(Name.BuildName("IsPerson(Self)"), Name.BuildName(true));
 
 			kb.SetPerspective(Name.BuildName("Mary"));
 
 			Assert.Null(kb.AskProperty(Name.BuildName("IsPerson(Mark)")));
-			Assert.True((bool?)kb.AskProperty(Name.BuildName("IsPerson(Mary)")));
+
+			var n = kb.AskProperty(Name.BuildName("IsPerson(Mary)"));
+			bool b;
+			if(!n.TryConvertToValue(out b))
+				Assert.Fail();
+			Assert.True(b);
 		}
 
 		[Test]
 		public void Test_Tell_Pass_Add_Self_Belief_and_Change_Perspective_02()
 		{
 			var kb = new KB(Name.BuildName("Mark"));
-			kb.Tell(Name.BuildName("IsPerson(Self)"), true,Name.BuildName("John(Self)"));
+			kb.Tell(Name.BuildName("IsPerson(Self)"), Name.BuildName(true),Name.BuildName("John(Self)"));
 
 			kb.SetPerspective(Name.BuildName("Mary"));
 
 			Assert.Null(kb.AskProperty(Name.BuildName("IsPerson(Mark)"), Name.BuildName("John(Self)")));
-			Assert.True((bool?)kb.AskProperty(Name.BuildName("IsPerson(Mary)"), Name.BuildName("John(Self)")));
+
+			var n = kb.AskProperty(Name.BuildName("IsPerson(Mary)"), Name.BuildName("John(Self)"));
+			bool b;
+			if(!n.TryConvertToValue(out b))
+				Assert.Fail();
+			Assert.True(b);
 		}
 
 		[Test]
 		public void Test_Fail_Change_Perspective_Conflict()
 		{
 			var kb = new KB(Name.BuildName("Mark"));
-			kb.Tell(Name.BuildName("IsPerson(Self)"), true, Name.BuildName("John(Self)"));
+			kb.Tell(Name.BuildName("IsPerson(Self)"), Name.BuildName(true), Name.BuildName("John(Self)"));
 
 			Assert.Throws<ArgumentException>(()=> kb.SetPerspective(Name.BuildName("John")));
 		}
@@ -370,7 +382,7 @@ namespace Tests.KnowledgeBase
 		public void Test_Fail_Change_Perspective_To_Invalid_Perspective(string perspective)
 		{
 			var kb = new KB(Name.BuildName("Mark"));
-			kb.Tell(Name.BuildName("IsPerson(Self)"), true, Name.BuildName("John(Self)"));
+			kb.Tell(Name.BuildName("IsPerson(Self)"), Name.BuildName(true), Name.BuildName("John(Self)"));
 
 			Assert.Throws<ArgumentException>(() => kb.SetPerspective(Name.BuildName(perspective)));
 		}
