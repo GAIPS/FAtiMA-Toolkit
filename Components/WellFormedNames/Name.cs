@@ -532,5 +532,10 @@ namespace WellFormedNames
 		/// @endcond
 
 		public abstract bool TryConvertToValue<T>(out T value);
+
+		public virtual object GetValue()
+		{
+			return null;
+		}
 	}
 }

@@ -11,12 +11,23 @@ namespace WellFormedNames
 	{
 		public IGraphNode ObjectToGraphNode(object value, Graph serializationGraph)
 		{
-			return serializationGraph.BuildStringNode(value.ToString());
+			var n = (Name) value;
+			if (n.IsPrimitive)
+			{
+				var obj = n.GetValue();
+				if(Type.GetTypeCode(obj.GetType()) == TypeCode.String)
+					return serializationGraph.BuildStringNode((string)obj);
+				return serializationGraph.BuildPrimitiveNode((ValueType)obj);
+			}
+			return serializationGraph.BuildStringNode(n.ToString());
 		}
 
 		public object GraphNodeToObject(IGraphNode node, Type objectType)
 		{
-			return Name.BuildName(((IStringGraphNode)node).Value);
+			var n = node as IStringGraphNode;
+			if (n != null)
+				return Name.BuildName(n.Value);
+			return Name.BuildName(((IPrimitiveGraphNode)node).Value);
 		}
 	}
 

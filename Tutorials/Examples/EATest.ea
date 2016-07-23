@@ -18,14 +18,14 @@
 						{
 							"SELF":
 								{
-									"IsBroken(Computer)": "true",
-									"IsFriend(Player)": "true"
+									"IsBroken(Computer)": true,
+									"IsFriend(Player)": true
 								},
 							"Universal":
 								{
-									"Likes(Computer)": "true",
-									"Likes(formal)": "true",
-									"Likes(informal)": "false"
+									"Likes(Computer)": true,
+									"Likes(formal)": true,
+									"Likes(informal)": false
 								}
 						}
 				},

@@ -109,6 +109,11 @@ namespace WellFormedNames
 			{
 				return PrimitiveValue.TryCompare(s1.m_value, s2.m_value, out delta);
 			}
+
+			public override object GetValue()
+			{
+				return m_value != null ? PrimitiveValue.Extract(m_value) : null;
+			}
 		}
 	}
 }
