@@ -39,11 +39,9 @@ namespace EmotionalAppraisalTutorial
                 Console.WriteLine("Active Emotions: " + string.Concat(ea.ActiveEmotions.Select(e => e.Type + "-" + e.Intensity + " ")));
             }
             
-
             //The asset can also be loaded from an existing file using the following method:
             ea = EmotionalAppraisalAsset.LoadFromFile(LocalStorageProvider.Instance, "../../../Examples/EATest.ea");
             
-
             Console.ReadKey();
         }
     }

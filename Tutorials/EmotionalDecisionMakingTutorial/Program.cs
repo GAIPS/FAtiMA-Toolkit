@@ -4,6 +4,7 @@ using ActionLibrary;
 using EmotionalAppraisal;
 using EmotionalDecisionMaking;
 using EmotionalDecisionMaking.DTOs;
+using GAIPS.Rage;
 using WellFormedNames;
 
 
@@ -33,6 +34,10 @@ namespace EmotionalDecisionMakingTutorial
             var actions = edm.Decide();
             Console.WriteLine("Decision: " + string.Concat(actions.Select(a => a.ToStartEventName((Name)"John"))));
 
+            //this is how you can load the asset from a file
+            edm = EmotionalDecisionMakingAsset.LoadFromFile(LocalStorageProvider.Instance, "../../../Examples/EDMTest.edm");
+            edm.RegisterEmotionalAppraisalAsset(ea);
+            
             Console.ReadKey();
         }
     }

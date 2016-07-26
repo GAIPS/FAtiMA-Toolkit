@@ -1,0 +1,16 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"_emotionalAppraisalAssetSource": "EATest.ea",
+			"_emotionalDecisionMakingAssetSource": "EDMTest.edm",
+			"_socialImportanceAssetSource": "SITest.si",
+			"BodyName": "Female",
+			"CharacterName": "Friend"
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}
