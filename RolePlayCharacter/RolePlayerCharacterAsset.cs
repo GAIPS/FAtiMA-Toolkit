@@ -42,19 +42,12 @@ namespace RolePlayCharacter
 		private EmotionalDecisionMakingAsset _emotionalDecisionMakingAsset;
 		[NonSerialized]
 		private SocialImportanceAsset _socialImportanceAsset;
-		[NonSerialized]
-	    private ICharacterBody _characterBody;
 
 	    private IAction _currentAction = null;
 
 		#endregion
 
 		#region Public Interface
-        
-		/// <summary>
-        /// The instance of the character's embodiment
-        /// </summary>
-        public ICharacterBody CharacterBody => _characterBody;
 
         /// <summary>
         /// An identifier for the embodiment that is used by the character
@@ -100,19 +93,7 @@ namespace RolePlayCharacter
 
 		public Name Perspective => _emotionalAppraisalAsset?.Perspective;
 
-
-        /// <summary>
-        /// Registers a concrete implementation of the character's embodiment that must conform to the ICharacterBody interface.
-        /// The implementation will be specific to the game engine being used.
-        /// </summary>
-        /// <param name="body">The instance to register</param>
-        public void RegisterCharacterBody(ICharacterBody body)
-        {
-			_characterBody = body;
-        }
-
-
-        /// <summary>
+		/// <summary>
         /// Adds or updates a logical belief to the character that consists of a property-value pair
         /// </summary>
         /// <param name="propertyName">A wellformed name representing a logical property (e.g. IsPerson(John))</param>
@@ -120,8 +101,7 @@ namespace RolePlayCharacter
         public void AddBelief(string propertyName, string value)
 	    {
 			_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO() {Value = value,Name = propertyName, Perspective = Name.SELF_STRING});
-	    }
-
+		}
 
 	    /// <summary>
         /// Executes an iteration of the character's decision cycle.

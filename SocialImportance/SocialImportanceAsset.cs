@@ -406,7 +406,7 @@ namespace SocialImportance
 
 			foreach (var t in kb.AskPossibleProperties(target,perspective,constraints))
 			{
-				var si = internal_GetSocialImportance(Name.BuildName(t.Item1), perspective);
+				var si = internal_GetSocialImportance(t.Item1, perspective);
 				foreach (var s in t.Item2)
 					yield return Tuples.Create(Name.BuildName(si), s);
 			}

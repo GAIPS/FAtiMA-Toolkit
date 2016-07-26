@@ -18,27 +18,9 @@ namespace Conditions
 
 			protected override IEnumerable<SubstitutionSet> CheckActivation(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
-				//if (!m_other.HasModifier && (m_other.InnerName.IsVariable || m_other.InnerName.IsPrimitive))
-				//{
-				//	foreach (var constraint in constraints)
-				//	{
-				//		var sub = new Substitution(m_variable, m_other.InnerName);
-				//		if (!constraint.Conflicts(sub))
-				//		{
-				//			var c = new SubstitutionSet(constraint);
-				//			c.AddSubstitution(sub);
-				//			yield return c;
-				//		}	
-				//	}
-				//}
-				//else
-				//{
-
-				//}
-
 				foreach (var result in m_other.Retrive(db, perspective, constraints))
 				{
-					var sub = new Substitution(m_variable, Name.BuildName(result.Item1));
+					var sub = new Substitution(m_variable, result.Item1);
 					if (result.Item2.AddSubstitution(sub))
 						yield return result.Item2;
 				}

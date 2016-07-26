@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WellFormedNames.Exceptions;
 
 namespace WellFormedNames
@@ -32,7 +31,12 @@ namespace WellFormedNames
 				if (!name.IsPrimitive)
 					return false;
 
-				return m_value.Equals(((PrimitiveSymbol) name).m_value);
+				var other = (PrimitiveSymbol) name;
+
+				if (m_value == null)
+					return other.m_value == null;
+
+				return other.m_value != null && m_value.Equals(other.m_value);
 			}
 
 			public override int GetHashCode()
