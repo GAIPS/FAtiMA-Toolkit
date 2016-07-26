@@ -22,6 +22,15 @@
 						{
 							"Set": ["ValidDialogue([current-state], [end-state], [meaning], Friend) = True", "DialogueState([t]) = [current-state]"]
 						}
+				}, 
+				{
+					"ConferralSI": 20,
+					"Action": "Compliment",
+					"Target": "[x]",
+					"Conditions":
+						{
+							"Set": ["IsFriend([x]) = True"]
+						}
 				}]
 		},
 	"types": [
