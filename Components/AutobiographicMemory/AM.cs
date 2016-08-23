@@ -76,9 +76,10 @@ namespace AutobiographicMemory
 			var actionEvent = evt as ActionEventDTO;
 			if (actionEvent != null)
 			{
+				var state = (actionEvent.ActionState == ActionState.Start) ? "Action-Start" : "Action-Finished";
 				return Name.BuildName(
 					(Name)"Event",
-					(Name)"Action",
+					(Name)state,
 					(Name)actionEvent.Subject,
 					(Name)actionEvent.Action,
 					(Name)actionEvent.Target);
