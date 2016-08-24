@@ -50,17 +50,6 @@ namespace Utilities
 			}
 		}
 
-		public static IEnumerable<T> Clone<T>(this IEnumerable<T> enumerable) where T : ICloneable
-		{
-			using (IEnumerator<T> it = enumerable.GetEnumerator())
-			{
-				while (it.MoveNext())
-				{
-					yield return (T)it.Current.Clone();
-				}
-			}
-		}
-
 		public static bool IsEmpty<T>(this IEnumerable<T> enumerable)
 		{
 			return !enumerable.GetEnumerator().MoveNext();

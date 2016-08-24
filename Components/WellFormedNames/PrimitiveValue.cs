@@ -4,6 +4,7 @@ using GAIPS.Serialization;
 using GAIPS.Serialization.Attributes;
 using GAIPS.Serialization.SerializationGraph;
 using Utilities;
+using TypeCode = Utilities.TypeCode;
 
 [Serializable]
 internal abstract class PrimitiveValue : IEquatable<PrimitiveValue>
@@ -14,28 +15,19 @@ internal abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 	{
 		public readonly T value;
 
-		public ConcreteValue(T value)
+		protected ConcreteValue(T value)
 		{
 			this.value = value;
 		}
 
-		public sealed override Type ValueType
-		{
-			get { return typeof(T); }
-		}
+		public sealed override Type ValueType => typeof(T);
 
 		public object Open()
 		{
 			return value;
 		}
 
-		public sealed override TypeCode TypeCode
-		{
-			get
-			{
-				return Type.GetTypeCode(typeof(T));
-			}
-		}	
+		public sealed override TypeCode TypeCode => ValueType.GetTypeCode();
 	}
 
 	private interface INumber
@@ -137,9 +129,9 @@ internal abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 			var tb = other.TypeCode;
 
 			var castType = GetBestNumberTypeComparison(ta, tb);
-
-			var a = ta == castType ? value : Convert.ChangeType(value, castType);
-			var b = tb == castType ? other.Value : Convert.ChangeType(other.Value, castType);
+			var ct = castType.GetUnderlyingType();
+			var a = ta == castType ? value : Convert.ChangeType(value, ct);
+			var b = tb == castType ? other.Value : Convert.ChangeType(other.Value, ct);
 			switch (castType)
 			{
 				case TypeCode.SByte:
@@ -184,7 +176,6 @@ internal abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 		{
 			if (a == b)
 				return a;
-
 			var ua = a.IsUnsignedNumeric();
 			var ub = b.IsUnsignedNumeric();
 
@@ -234,7 +225,7 @@ internal abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 		if (obj == null)
 			return null;
 
-		switch (Type.GetTypeCode(obj.GetType()))
+		switch (obj.GetType().GetTypeCode())
 		{
 			case TypeCode.Boolean:
 				return new BoolValue((bool)obj);

@@ -1,5 +1,6 @@
 ﻿using System;
 using Utilities;
+using TypeCode = Utilities.TypeCode;
 
 namespace GAIPS.Serialization.SerializationGraph
 {
@@ -33,7 +34,7 @@ namespace GAIPS.Serialization.SerializationGraph
 
 			public override bool CanMatchType(Type requestedType)
 			{
-				return requestedType == null || requestedType.IsNumeric() || Type.GetTypeCode(requestedType) == TypeCode.Boolean;
+				return requestedType == null || requestedType.IsNumeric() || requestedType.GetTypeCode() == TypeCode.Boolean;
 			}
 
 			public override object ExtractObject(Type requestedType)
