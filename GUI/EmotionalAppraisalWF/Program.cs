@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
+using AssetManagerPackage;
+using GAIPS.Rage;
 
 namespace EmotionalAppraisalWF
 {
@@ -11,7 +13,8 @@ namespace EmotionalAppraisalWF
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
+			AssetManager.Instance.Bridge = new BasicIOBridge();
+			Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
         }

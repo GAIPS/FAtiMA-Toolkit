@@ -2,7 +2,7 @@
 	"root":
 		{
 			"classId": 0,
-			"_emotionalAppraisalAssetSource": "EATest.ea",
+			"_emotionalAppraisalAssetSource": "..\\test\\..\\Examples\\EATest.ea",
 			"_emotionalDecisionMakingAssetSource": "EDMTest.edm",
 			"_socialImportanceAssetSource": "SITest.si",
 			"BodyName": "Female",

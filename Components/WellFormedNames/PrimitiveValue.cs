@@ -99,6 +99,10 @@ internal abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 	private class NumberValue<T> : ConcreteValue<T>, INumber
 		where T: IFormattable
 	{
+		private const float SINGLE_ERROR_MARGIN = 0.0001f;
+		private const double DOUBLE_ERROR_MARGIN = 0.0001;
+		private const decimal DECIMAL_ERROR_MARGIN = 0.0001m;
+
 		public NumberValue(T value) : base(value)
 		{
 		}
@@ -121,10 +125,6 @@ internal abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 		
 		public int Diff(INumber other)
 		{
-			const float SINGLE_ERROR_MARGIN = 0.0001f;
-			const double DOUBLE_ERROR_MARGIN = 0.0001;
-			const decimal DECIMAL_ERROR_MARGIN = 0.0001m;
-
 			var ta = TypeCode;
 			var tb = other.TypeCode;
 

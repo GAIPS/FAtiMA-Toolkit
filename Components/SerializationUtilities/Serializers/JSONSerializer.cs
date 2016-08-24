@@ -37,7 +37,16 @@ namespace GAIPS.Serialization
 				throw new Exception($"Instances of {graph.GetType()} are not serializable.");  //TODO add a better exception
 
 			Graph serGraph = new Graph(graph, FormatSelector, Context);
-			return (JsonObject)ToJson(serGraph)[ROOT_FIELD];
+			return ToJson(serGraph);
+		}
+
+		protected override void SerializeDataGraph(Stream serializationStream, Graph graph)
+		{
+			JsonObject json = ToJson(graph);
+
+			var w = new StreamWriter(serializationStream);
+			json.Write(w, 0, AllowIdentation);
+			w.Flush();
 		}
 
 		private JsonObject ToJson(Graph graph)
@@ -56,15 +65,6 @@ namespace GAIPS.Serialization
 			json[TYPES_FIELD] = types;
 
 			return json;
-		}
-
-		protected override void SerializeDataGraph(Stream serializationStream, Graph graph)
-		{
-			JsonObject json = ToJson(graph);
-
-			var w = new StreamWriter(serializationStream);
-			json.Write(w, 0, AllowIdentation);
-			w.Flush();
 		}
 
 		private JsonToken CollectAssemblyData(Graph graph)
@@ -145,10 +145,22 @@ namespace GAIPS.Serialization
 
 		public object DeserializeFromJson(JsonObject json, Type returnType)
 		{
-			var baseJson = new JsonObject();
-			baseJson[ROOT_FIELD] = json;
+			if (!json.ContainsField(ROOT_FIELD))
+			{
+				var baseJson = new JsonObject();
+				baseJson[ROOT_FIELD] = json;
+				json = baseJson;
+			}
+
 			var graph = new Graph(FormatSelector, Context);
-			DeserializeDataGraphFromJson(baseJson,graph);
+			if (!json.ContainsField(TYPES_FIELD))
+			{
+				var obj = (JsonObject) json[ROOT_FIELD];
+				if (obj.ContainsField("classId"))
+					graph.RegistTypeEntry(returnType, (byte)((JsonNumber)obj["classId"]).Value);
+			}
+			
+			DeserializeDataGraphFromJson(json,graph);
 			return graph.DeserializeObject(returnType);
 		}
 

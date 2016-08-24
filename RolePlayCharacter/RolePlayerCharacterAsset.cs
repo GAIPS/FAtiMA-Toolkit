@@ -169,7 +169,14 @@ namespace RolePlayCharacter
 
 	    #endregion
 
-		protected override string OnAssetLoaded()
+	    protected override void OnAssetPathChanged(string oldpath)
+	    {
+		    _emotionalAppraisalAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _emotionalAppraisalAssetSource));
+			_emotionalDecisionMakingAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _emotionalDecisionMakingAssetSource));
+			_socialImportanceAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _socialImportanceAssetSource));
+	    }
+
+	    protected override string OnAssetLoaded()
 		{
 			//Load Emotional Appraisal Asset
 			try
@@ -211,7 +218,7 @@ namespace RolePlayCharacter
 		    if (string.IsNullOrEmpty(path))
 			    return generateDefault();
 
-		    return LoadableAsset<T>.LoadFromFile(CurrentStorageProvider, ToAbsolutePath(path));
+		    return LoadableAsset<T>.LoadFromFile(ToAbsolutePath(path));
 	    }
 
         /// <summary>
@@ -219,17 +226,17 @@ namespace RolePlayCharacter
         /// </summary>
         /// <param name="filePath">The path for the save file</param>
         /// <param name="name">The name of the save file</param>
-        public void SaveOutput(string filePath, string name)
-        {
-            if(_emotionalAppraisalAsset == null)
-                return;
+        //public void SaveOutput(string filePath, string name)
+        //{
+        //    if(_emotionalAppraisalAsset == null)
+        //        return;
 
-            var filepath = Path.Combine(filePath, name);
-            using (var f = File.Open(filepath, FileMode.Create, FileAccess.Write))
-            {
-                var serializer = new JSONSerializer();
-                serializer.Serialize(f, _emotionalAppraisalAsset);
-            }
-        }
+        //    var filepath = Path.Combine(filePath, name);
+        //    using (var f = File.Open(filepath, FileMode.Create, FileAccess.Write))
+        //    {
+        //        var serializer = new JSONSerializer();
+        //        serializer.Serialize(f, _emotionalAppraisalAsset);
+        //    }
+        //}
     }
 }

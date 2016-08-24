@@ -1,6 +1,6 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
+using AssetManagerPackage;
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using GAIPS.Rage;
@@ -12,7 +12,8 @@ namespace EmotionalAppraisalTutorial
         //This is a small console program to exemplify the main functionality of the Emotional Appraisal Asset
         static void Main(string[] args)
         {
-            var kickEvent = "Event(Action-Start, Player, Kick, John)";
+			AssetManager.Instance.Bridge = new BasicIOBridge();
+			var kickEvent = "Event(Action-Start, Player, Kick, John)";
 
             // To create a new asset it is required to tell the name of the agent which will correpond to the perspective of the "SELF" 
             EmotionalAppraisalAsset ea = new EmotionalAppraisalAsset("John");
@@ -40,7 +41,7 @@ namespace EmotionalAppraisalTutorial
             }
             
             //The asset can also be loaded from an existing file using the following method:
-            ea = EmotionalAppraisalAsset.LoadFromFile(LocalStorageProvider.Instance, "../../../Examples/EATest.ea");
+            ea = EmotionalAppraisalAsset.LoadFromFile("../../../Examples/EATest.ea");
             
             Console.ReadKey();
         }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using GAIPS.Rage;
 using RolePlayCharacter;
 using RolePlayCharacterWF.Properties;
 
@@ -26,7 +25,7 @@ namespace RolePlayCharacterWF
                 try
                 {
 	                string error;
-                    _rpcAsset = RolePlayCharacterAsset.LoadFromFile(LocalStorageProvider.Instance, args[1],out error);
+                    _rpcAsset = RolePlayCharacterAsset.LoadFromFile(args[1],out error);
 					if(error!=null)
 						MessageBox.Show(error, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
 
@@ -79,7 +78,7 @@ namespace RolePlayCharacterWF
             }
             try
             {
-				_rpcAsset.SaveToFile(LocalStorageProvider.Instance,_saveFileName);
+				_rpcAsset.SaveToFile(_saveFileName);
                 this.Text = Resources.MainFormTitle + " - " + _saveFileName;
             }
             catch (Exception ex)
@@ -124,7 +123,7 @@ namespace RolePlayCharacterWF
                 try
                 {
 	                string error;
-                    _rpcAsset = RolePlayCharacterAsset.LoadFromFile(LocalStorageProvider.Instance, ofd.FileName,out error);
+                    _rpcAsset = RolePlayCharacterAsset.LoadFromFile(ofd.FileName,out error);
                     _saveFileName = ofd.FileName;
 					if(error!=null)
 						MessageBox.Show(error, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);

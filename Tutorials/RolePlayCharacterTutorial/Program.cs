@@ -1,4 +1,5 @@
 ﻿using System;
+using AssetManagerPackage;
 using GAIPS.Rage;
 using RolePlayCharacter;
 
@@ -8,9 +9,10 @@ namespace RolePlayCharacterTutorial
     {
         static void Main(string[] args)
         {
+			AssetManager.Instance.Bridge = new BasicIOBridge();
             //Loading the asset
-            var rpc = RolePlayCharacterAsset.LoadFromFile(LocalStorageProvider.Instance, "../../../Examples/RPCTest.rpc");
-            var eventStr = "Event(Action-Start, Player, Kick, Client)";
+            var rpc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/RPCTest.rpc");
+            var eventStr = "Event(Action-Finished, Player, Kick, Client)";
 
             Console.WriteLine("The name of the character loaded is: " + rpc.CharacterName);
             Console.WriteLine("Perspective: " + rpc.Perspective);

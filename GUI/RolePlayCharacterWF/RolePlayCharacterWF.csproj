@@ -143,6 +143,10 @@
       <Project>{a1e56f5c-eaac-43e5-a922-5b244168ea5c}</Project>
       <Name>EmotionalDecisionMaking</Name>
     </ProjectReference>
+    <ProjectReference Include="..\GAIPS.AssetEditorTools\GAIPS.AssetEditorTools.csproj">
+      <Project>{c61fb19d-e715-4eb4-afca-27ff81a14777}</Project>
+      <Name>GAIPS.AssetEditorTools</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\DataSources\" />

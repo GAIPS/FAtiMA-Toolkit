@@ -13,12 +13,12 @@ namespace SocialImportanceWF
 
 		protected override SocialImportanceAsset LoadAssetFromFile(string path)
 		{
-			return SocialImportanceAsset.LoadFromFile(LocalStorageProvider.Instance, path);
+			return SocialImportanceAsset.LoadFromFile(path);
 		}
 
 		protected override void SaveAssetToFile(SocialImportanceAsset asset, string path)
 		{
-			asset.SaveToFile(LocalStorageProvider.Instance,path);
+			asset.SaveToFile(path);
 		}
 
 		protected override string GetAssetCurrentPath(SocialImportanceAsset asset)

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AssetPackage;
 using GAIPS.Rage;
 using GAIPS.Serialization;
 using IntegratedAuthoringTool.DTOs;
@@ -54,7 +55,7 @@ namespace IntegratedAuthoringTool
 					if (pair.Value.RPCAsset == null)
 					{
 						string errorsOnLoad;
-						pair.Value.RPCAsset = RolePlayCharacterAsset.LoadFromFile(CurrentStorageProvider,currentAbsolutePath,out errorsOnLoad);
+						pair.Value.RPCAsset = RolePlayCharacterAsset.LoadFromFile(currentAbsolutePath,out errorsOnLoad);
 					    if (errorsOnLoad != null)
 					        return errorsOnLoad;
 
@@ -65,23 +66,26 @@ namespace IntegratedAuthoringTool
 						}
 					}
 
-					if (!string.Equals(pair.Key, pair.Value.RPCAsset.CharacterName))
-						return $"Name mismatch. IAT name \"{pair.Key}\" != RPC File Name \"{pair.Value.RPCAsset.CharacterName}\" for file \"{currentAbsolutePath}\"";
+					//if (!string.Equals(pair.Key, pair.Value.RPCAsset.CharacterName))
+					//	return $"Name mismatch. IAT name \"{pair.Key}\" != RPC File Name \"{pair.Value.RPCAsset.CharacterName}\" for file \"{currentAbsolutePath}\"";
                }
 			}
-		    catch (Exception)
+		    catch (Exception e)
 		    {
-			    return $"An error occured when trying to load the RPC \"{current.Key}\" at \"{currentAbsolutePath}\". Please check if the path is correct.";
+#if DEBUG
+				getInterface<ILog>()?.Log(Severity.Error, e.ToString());
+#endif
+				return $"An error occured when trying to load the RPC \"{current.Key}\" at \"{currentAbsolutePath}\". Please check if the path is correct.";
 			}
 		    return null;
 		}
 
-	    protected override void OnAssetPathChanged(IStorageProvider oldProvider, string oldpath)
+	    protected override void OnAssetPathChanged(string oldpath)
 	    {
 		    foreach (var holder in m_characterSources.Values)
 		    {
-			    var absPath = oldProvider.ToAbsolutePath(oldpath, holder.Source);
-			    holder.Source = CurrentStorageProvider.ToRelativePath(AssetFilePath, absPath);
+			    var absPath = ToAbsolutePath(oldpath, holder.Source);
+			    holder.Source = ToRelativePath(AssetFilePath, absPath);
 		    }
 	    }
 

@@ -10,15 +10,9 @@ namespace Utilities.Json
 	{
 		public static JsonToken Parse(string jsonString)
 		{
-			using (var stream = new MemoryStream())
+			using (var reader = new StringReader(jsonString))
 			{
-				using (var writer = new StreamWriter(stream))
-				{
-					writer.Write(jsonString);
-					writer.Flush();
-				}
-				stream.Position = 0;
-				return Parse(stream);
+				return ReadValue(reader);
 			}
 		}
 
@@ -30,7 +24,7 @@ namespace Utilities.Json
 			}
 		}
 
-		private static JsonToken ReadValue(StreamReader reader)
+		private static JsonToken ReadValue(TextReader reader)
 		{
 			JsonToken node = null;
 			readEmptyCharacters(reader);
@@ -56,7 +50,7 @@ namespace Utilities.Json
 			return node;
 		}
 
-		private static JsonObject ReadObject(StreamReader reader)
+		private static JsonObject ReadObject(TextReader reader)
 		{
 			JsonObject obj = new JsonObject();
 			reader.Read();	// read '{'
@@ -68,7 +62,7 @@ namespace Utilities.Json
 				return obj;
 			}
 
-			while (!reader.EndOfStream)
+			while (reader.Peek()>=0)
 			{
 				if (c != '"')
 					throw new IOException("Invalid JSON format");
@@ -98,7 +92,7 @@ namespace Utilities.Json
 			throw new IOException("End of Stream Reached without finishing parsing object");
 		}
 
-		private static JsonToken ReadArray(StreamReader reader)
+		private static JsonToken ReadArray(TextReader reader)
 		{
 			JsonArray array = new JsonArray();
 			reader.Read();	// read '['
@@ -122,12 +116,12 @@ namespace Utilities.Json
 		private const string NUMBER_PATTERN = @"^(\+|-)?(0|[1-9]\d*)(\.\d+)?(e(-|\+)?\d+)?$";
 		private static readonly Regex _numberRegex = new Regex(NUMBER_PATTERN);
 
-		private static JsonToken ReadPrimitive(StreamReader reader)
+		private static JsonToken ReadPrimitive(TextReader reader)
 		{
 			StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
 			try
 			{
-				while (!reader.EndOfStream)
+				while (reader.Peek()>=0)
 				{
 					char c = (char)reader.Peek();
 					if ((c == ',') || (c == ']') || (c == '}') || Char.IsWhiteSpace(c))
@@ -177,12 +171,12 @@ namespace Utilities.Json
 		}
 
 		private static readonly char[] hexBuffer = new char[4];
-		private static string ReadString(StreamReader reader)
+		private static string ReadString(TextReader reader)
 		{
 			reader.Read();	// read '"'
 			StringBuilder builder = new StringBuilder();
 			bool isControl = false;
-			while (!reader.EndOfStream)
+			while (reader.Peek()>=0)
 			{
 				char c = (char)reader.Read();
 				if (isControl)
@@ -248,9 +242,9 @@ namespace Utilities.Json
 			return builder.ToString();
 		}
 
-		private static void readEmptyCharacters(StreamReader reader)
+		private static void readEmptyCharacters(TextReader reader)
 		{
-			while (!reader.EndOfStream && Char.IsWhiteSpace((char)reader.Peek()))
+			while (reader.Peek() >= 0 && Char.IsWhiteSpace((char)reader.Peek()))
 			{
 				reader.Read();
 			}

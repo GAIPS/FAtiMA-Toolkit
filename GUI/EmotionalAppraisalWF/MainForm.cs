@@ -9,8 +9,6 @@ using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
-using GAIPS.Rage;
-
 
 namespace EmotionalAppraisalWF
 {
@@ -42,7 +40,7 @@ namespace EmotionalAppraisalWF
                 _saveFileName = args[1];
                 try
                 {
-					this._emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(LocalStorageProvider.Instance,args[1]);
+					this._emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(args[1]);
                     Reset(false);
                 }
                 catch (Exception ex)
@@ -132,7 +130,7 @@ namespace EmotionalAppraisalWF
             try
             {
 				_knowledgeBaseVM.UpdatePerspective();
-				_emotionalAppraisalAsset.SaveToFile(LocalStorageProvider.Instance, _saveFileName);
+				_emotionalAppraisalAsset.SaveToFile(_saveFileName);
 				this.Text = Resources.MainFormPrincipalTitle + Resources.TitleSeparator + _saveFileName;
             }
             catch (Exception ex)
@@ -171,7 +169,7 @@ namespace EmotionalAppraisalWF
             {
                 try
                 {
-                    _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(LocalStorageProvider.Instance,ofd.FileName);
+                    _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(ofd.FileName);
                     _saveFileName = ofd.FileName;
                     Reset(false);
                 }

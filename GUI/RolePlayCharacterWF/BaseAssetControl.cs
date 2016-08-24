@@ -50,7 +50,7 @@ namespace RolePlayCharacterWF
 			{
 				try
 				{
-					var asset = LoadableAsset<T>.LoadFromFile(LocalStorageProvider.Instance, ofd.FileName);
+					var asset = LoadableAsset<T>.LoadFromFile(ofd.FileName);
 					_path.Text = ofd.FileName;
 					OnPathChanged?.Invoke(this,new EventArgs());
 				}

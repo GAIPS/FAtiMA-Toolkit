@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using AssetManagerPackage;
+using GAIPS.Rage;
 
 namespace SocialImportanceWF
 {
@@ -14,6 +13,7 @@ namespace SocialImportanceWF
 		[STAThread]
 		static void Main()
 		{
+			AssetManager.Instance.Bridge = new BasicIOBridge();
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.Run(new MainForm());

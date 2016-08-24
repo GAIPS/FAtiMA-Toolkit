@@ -6,7 +6,6 @@ using EmotionalDecisionMaking.DTOs;
 using EmotionalDecisionMakingWF.Properties;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
-using GAIPS.Rage;
 
 namespace EmotionalDecisionMakingWF
 {
@@ -37,7 +36,7 @@ namespace EmotionalDecisionMakingWF
                 _saveFileName = args[1];
                 try
                 {
-                    _edmAsset = EmotionalDecisionMakingAsset.LoadFromFile(LocalStorageProvider.Instance,_saveFileName);
+                    _edmAsset = EmotionalDecisionMakingAsset.LoadFromFile(_saveFileName);
                     Reset(false);
                 }
                 catch (Exception ex)
@@ -95,7 +94,7 @@ namespace EmotionalDecisionMakingWF
             {
                 try
                 {
-                    _edmAsset = EmotionalDecisionMakingAsset.LoadFromFile(LocalStorageProvider.Instance, ofd.FileName);
+                    _edmAsset = EmotionalDecisionMakingAsset.LoadFromFile(ofd.FileName);
                     _saveFileName = ofd.FileName;
                     Reset(false);
                 }
@@ -144,7 +143,7 @@ namespace EmotionalDecisionMakingWF
             }
             try
             {
-				_edmAsset.SaveToFile(LocalStorageProvider.Instance, _saveFileName);
+				_edmAsset.SaveToFile(_saveFileName);
 				this.Text = Resources.MainFormTitle + " - " + _saveFileName;
             }
             catch (Exception ex)
