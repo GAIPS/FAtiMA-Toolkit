@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GAIPS.Serialization;
-using GAIPS.Serialization.SerializationGraph;
+using SerializationUtilities;
+using SerializationUtilities.SerializationGraph;
 using WellFormedNames;
 using WellFormedNames.Collections;
 using Utilities;
@@ -95,7 +95,7 @@ namespace KnowledgeBase
 		}
 
 		private NameSearchTree<KnowledgeEntry> m_knowledgeStorage;
-		private readonly NameSearchTree<DynamicKnowledgeEntry> m_dynamicProperties;
+		private NameSearchTree<DynamicKnowledgeEntry> m_dynamicProperties;
 
 		/// <summary>
 		/// Indicates the default mapping of "SELF"
@@ -661,6 +661,16 @@ namespace KnowledgeBase
 
 		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
+			if(m_knowledgeStorage == null)
+				m_knowledgeStorage = new NameSearchTree<KnowledgeEntry>();
+			else
+				m_knowledgeStorage.Clear();
+
+			if(m_dynamicProperties==null)
+				m_dynamicProperties = new NameSearchTree<DynamicKnowledgeEntry>();
+			else
+				m_dynamicProperties.Clear();
+
 			Perspective = dataHolder.GetValue<Name>("Perspective");
 			var knowledge = dataHolder.GetValueGraphNode("Knowledge");
 			var it = ((IObjectGraphNode) knowledge).GetEnumerator();

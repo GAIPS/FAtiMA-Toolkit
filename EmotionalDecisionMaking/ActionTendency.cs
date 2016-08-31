@@ -1,7 +1,7 @@
 ﻿using ActionLibrary;
 using Conditions;
 using EmotionalDecisionMaking.DTOs;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using WellFormedNames;
 
 namespace EmotionalDecisionMaking

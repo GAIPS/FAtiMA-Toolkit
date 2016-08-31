@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
-using GAIPS.Serialization.SerializationGraph;
+using SerializationUtilities.SerializationGraph;
 
-namespace GAIPS.Serialization
+namespace SerializationUtilities
 {
 	public abstract class BaseSerializer : ISerializer
 	{
@@ -29,11 +29,16 @@ namespace GAIPS.Serialization
 
 		public void Serialize(Stream serializationStream, object graph)
 		{
-			if (!graph.GetType().IsSerializable)
+			Graph serGraph = ComputeGraph(graph);
+			SerializeDataGraph(serializationStream, serGraph);
+		}
+
+		protected Graph ComputeGraph(object graph)
+		{
+			if (!graph.GetType().IsSerializable())
 				throw new Exception($"Instances of {graph.GetType()} are not serializable.");  //TODO add a better exception
 
-			Graph serGraph = new Graph(graph, FormatSelector,Context);
-			SerializeDataGraph(serializationStream, serGraph);
+			return new Graph(graph, FormatSelector, Context);
 		}
 
 		protected abstract void SerializeDataGraph(Stream serializationStream, Graph graph);

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using GAIPS.Serialization.SerializationGraph;
+using SerializationUtilities.SerializationGraph;
 
-namespace GAIPS.Serialization
+namespace SerializationUtilities
 {
 	public interface ISerializationData
 	{

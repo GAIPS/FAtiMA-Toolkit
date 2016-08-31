@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
-using GAIPS.Serialization;
-using GAIPS.Serialization.SerializationGraph;
+using SerializationUtilities;
+using SerializationUtilities.SerializationGraph;
 using Conditions;
 using WellFormedNames;
 using WellFormedNames.Collections;
@@ -123,7 +123,11 @@ namespace KnowledgeBase
 
 		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
-			m_dictionary.Clear();
+			if(m_dictionary==null)
+				m_dictionary=new NameSearchTree<ConditionMapper<T>>();
+			else
+				m_dictionary.Clear();
+
 			var seq = dataHolder.GetValueGraphNode("values") as ISequenceGraphNode;
 			if(seq==null)
 				throw new SerializationException("Unable to deserialize "+typeof(ConditionalNST<T>));

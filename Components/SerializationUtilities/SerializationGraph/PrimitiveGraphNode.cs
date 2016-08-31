@@ -2,7 +2,7 @@
 using Utilities;
 using TypeCode = Utilities.TypeCode;
 
-namespace GAIPS.Serialization.SerializationGraph
+namespace SerializationUtilities.SerializationGraph
 {
 	public interface IPrimitiveGraphNode : IGraphNode
 	{
@@ -42,7 +42,7 @@ namespace GAIPS.Serialization.SerializationGraph
 				if (requestedType == null)
 					return m_value;
 
-				if (requestedType.IsEnum)
+				if (requestedType.IsEnum())
 					return ConvertEnum(requestedType, m_value);
 
 				object v = Convert.ChangeType(m_value, requestedType);

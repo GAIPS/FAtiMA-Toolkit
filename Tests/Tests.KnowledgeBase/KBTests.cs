@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using KnowledgeBase;
 using NUnit.Framework;
 using Utilities;

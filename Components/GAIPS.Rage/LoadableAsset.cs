@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using AssetManagerPackage;
 using AssetPackage;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using Utilities.Json;
 
 namespace GAIPS.Rage

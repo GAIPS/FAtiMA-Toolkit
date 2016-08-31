@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GAIPS.Serialization.SerializationGraph
+namespace SerializationUtilities.SerializationGraph
 {
 	public interface ITypeGraphNode : IGraphNode
 	{
@@ -21,7 +21,6 @@ namespace GAIPS.Serialization.SerializationGraph
 			public Type ClassType
 			{
 				get;
-				private set;
 			}
 
 			public TypeGraphNode(Type type, byte typeId, Graph parentGraph)
@@ -40,7 +39,7 @@ namespace GAIPS.Serialization.SerializationGraph
 
 			public bool CanMatchType(Type requestedType)
 			{
-				return requestedType == null || typeof (Type).IsAssignableFrom(requestedType);
+				return requestedType == null || TypeTools.IsAssignableFrom(typeof (Type), requestedType);
 			}
 
 			public object RebuildObject(Type requestedType)

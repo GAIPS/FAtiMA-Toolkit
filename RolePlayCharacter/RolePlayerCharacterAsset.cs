@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using EmotionalAppraisal;
 using EmotionalDecisionMaking;
 using System.Collections.Generic;

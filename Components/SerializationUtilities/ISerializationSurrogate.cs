@@ -1,6 +1,6 @@
-using GAIPS.Serialization.SerializationGraph;
+using SerializationUtilities.SerializationGraph;
 
-namespace GAIPS.Serialization
+namespace SerializationUtilities
 {
 	public interface ISerializationSurrogate
 	{

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Globalization;
-using GAIPS.Serialization;
-using GAIPS.Serialization.Attributes;
-using GAIPS.Serialization.SerializationGraph;
+using SerializationUtilities;
+using SerializationUtilities.Attributes;
+using SerializationUtilities.SerializationGraph;
 using Utilities;
 using TypeCode = Utilities.TypeCode;
 
-[Serializable]
+[System.Serializable]
 internal abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 {
 	#region Holder Classes

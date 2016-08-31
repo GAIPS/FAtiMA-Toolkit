@@ -5,7 +5,7 @@ using System.Text;
 using AutobiographicMemory;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisal.OCCModel;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using WellFormedNames;
 using Utilities;
 

@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using Utilities;
 
-namespace GAIPS.Serialization.SerializationGraph
+namespace SerializationUtilities.SerializationGraph
 {
 	public partial class Graph
 	{
@@ -27,8 +27,9 @@ namespace GAIPS.Serialization.SerializationGraph
 		private int m_idCounter = 0;
 		private StrongLinkDictionary<object, int> m_links = new StrongLinkDictionary<object, int>(new ReferenceComparer<object>(), null);
 		private SortedDictionary<int, ObjectGraphNode> m_refs = new SortedDictionary<int, ObjectGraphNode>();
+#if !PORTABLE
 		private HashSet<IDeserializationCallback> m_deserializeCallbackRegist = new HashSet<IDeserializationCallback>();
-
+#endif
 		private IGraphNode m_root = null;
 		public IGraphNode Root {
 			get
@@ -153,7 +154,7 @@ namespace GAIPS.Serialization.SerializationGraph
 
 		private IGraphFormatter GetFormatter(Type type)
 		{
-			return m_formatterSelector.GetFormatter(type) ?? SerializationServices.GetDefaultSerializationFormatter(type);
+			return m_formatterSelector?.GetFormatter(type) ?? SerializationServices.GetDefaultSerializationFormatter(type);
 		}
 
 		#region Node Builders
@@ -171,7 +172,7 @@ namespace GAIPS.Serialization.SerializationGraph
 			IGraphNode result;
 			Type objType = obj.GetType();
 
-			if (typeof (Type).IsAssignableFrom(objType))
+			if (TypeTools.IsAssignableFrom(typeof (Type),objType))
 				return GetTypeEntry((Type) obj);
 
 			var formatter = GetFormatter(objType);
@@ -219,8 +220,8 @@ namespace GAIPS.Serialization.SerializationGraph
 						valueNode = BuildStringNode(obj as string);
 					else
 					{
-						if (objType.IsEnum)
-							obj = Convert.ChangeType(obj, ((Enum)obj).GetTypeCode());
+						if (objType.IsEnum())
+							obj = Convert.ChangeType(obj, Enum.GetUnderlyingType(objType));
 
 						valueNode = BuildPrimitiveNode(obj as ValueType);
 					}
@@ -242,7 +243,7 @@ namespace GAIPS.Serialization.SerializationGraph
 				//Non-Boxable Values (structs and objects)
 				IObjectGraphNode objReturnData;
 				bool extractData=true;
-				if(objType.IsValueType)
+				if(objType.IsValueType())
 				{
 					//Structure
 					objReturnData = CreateObjectData();
@@ -285,24 +286,26 @@ namespace GAIPS.Serialization.SerializationGraph
 
 		#endregion
 
-		#region Value Builders
+#region Value Builders
 
 		public object DeserializeObject(Type requestedType)
 		{
 			var obj = RebuildObject((BaseGraphNode)Root, requestedType);
+#if !PORTABLE
 			foreach (var callbacks in m_deserializeCallbackRegist)
 				callbacks.OnDeserialization(this);
-
+#endif
 			return obj;
 		}
 
 		private object RebuildObject(BaseGraphNode nodeToRebuild, Type requestedType)
 		{
 			var obj = internal_RebuildObject(nodeToRebuild, requestedType);
+#if !PORTABLE
 			var callback = obj as IDeserializationCallback;
 			if (callback != null)
 				m_deserializeCallbackRegist.Add(callback);
-
+#endif
 			return obj;
 		}
 
@@ -345,6 +348,6 @@ namespace GAIPS.Serialization.SerializationGraph
 			return obj;
 		}
 
-		#endregion
+#endregion
 	}
 }

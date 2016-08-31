@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using Conditions;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using KnowledgeBase;
 using NUnit.Framework;
 using WellFormedNames;

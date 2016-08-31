@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9285D50F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalAppraisal", "EmotionalAppraisal\EmotionalAppraisal.csproj", "{0A2A1EE9-BD5D-44AA-A22D-291612488F06}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAIPS.Serialization", "Components\SerializationUtilities\GAIPS.Serialization.csproj", "{7DD831A6-ADCA-455B-B02F-53C3A639E79B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerializationUtilities", "Components\SerializationUtilities\SerializationUtilities.csproj", "{7DD831A6-ADCA-455B-B02F-53C3A639E79B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutobiographicMemory", "Components\AutobiographicMemory\AutobiographicMemory.csproj", "{C1CC38C5-72F5-4545-B4F7-C65B2883909C}"
 EndProject
@@ -101,6 +101,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Components(Portable)", "Components(Portable)", "{87A68FAD-8907-482C-9E66-31A6F61471D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Components(Portable)\Utilities\Utilities.csproj", "{F5E98DF4-AC62-4A15-A989-4300937B95B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SerializationUtilities", "Components(Portable)\SerializationUtilities\SerializationUtilities.csproj", "{21E0F2D3-BC3E-4005-8BD3-2F079CD52B86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.SerializationUtilities", "Tests\Test.SerializationUtilities\Test.SerializationUtilities.csproj", "{58C05E0C-707A-4D8C-B886-549581CB6EBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -264,6 +268,14 @@ Global
 		{F5E98DF4-AC62-4A15-A989-4300937B95B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5E98DF4-AC62-4A15-A989-4300937B95B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5E98DF4-AC62-4A15-A989-4300937B95B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21E0F2D3-BC3E-4005-8BD3-2F079CD52B86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21E0F2D3-BC3E-4005-8BD3-2F079CD52B86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21E0F2D3-BC3E-4005-8BD3-2F079CD52B86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21E0F2D3-BC3E-4005-8BD3-2F079CD52B86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58C05E0C-707A-4D8C-B886-549581CB6EBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58C05E0C-707A-4D8C-B886-549581CB6EBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58C05E0C-707A-4D8C-B886-549581CB6EBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58C05E0C-707A-4D8C-B886-549581CB6EBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -303,5 +315,7 @@ Global
 		{19B1FA8E-D302-4AF8-A53D-2A9AA469BCC7} = {9285D50F-C051-467D-AB2D-165963753EA5}
 		{22255EBF-8180-4801-877D-5A65AB0B993C} = {2C13F768-C122-4B7F-A08A-9E8AB520F6D2}
 		{F5E98DF4-AC62-4A15-A989-4300937B95B3} = {87A68FAD-8907-482C-9E66-31A6F61471D0}
+		{21E0F2D3-BC3E-4005-8BD3-2F079CD52B86} = {87A68FAD-8907-482C-9E66-31A6F61471D0}
+		{58C05E0C-707A-4D8C-B886-549581CB6EBC} = {9285D50F-C051-467D-AB2D-165963753EA5}
 	EndGlobalSection
 EndGlobal

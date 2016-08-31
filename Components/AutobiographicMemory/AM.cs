@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutobiographicMemory.DTOs;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using KnowledgeBase;
 using Utilities;
 using WellFormedNames;

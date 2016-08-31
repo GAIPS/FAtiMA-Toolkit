@@ -3,9 +3,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using AtomicPanda.Serialization.SerializationGraph;
+using SerializationUtilities.SerializationGraph;
+using Utilities;
+using TypeCode = Utilities.TypeCode;
 
-namespace AtomicPanda.Serialization
+namespace SerializationUtilities
 {
 	public class BinarySerializer : BaseSerializer
 	{
@@ -28,7 +30,7 @@ namespace AtomicPanda.Serialization
 
 		private void WriteTypes(BinaryWriter writer, Graph graph)
 		{
-			var group = graph.GetRegistedTypes().GroupBy(t => t.ClassType.Assembly).ToArray();
+			var group = graph.GetRegistedTypes().GroupBy(t => t.ClassType.GetAssembly()).ToArray();
 			writer.Write((byte)group.Length);
 			foreach (var g in group)
 			{
@@ -59,7 +61,7 @@ namespace AtomicPanda.Serialization
 					var n = node as IPrimitiveGraphNode;
 					byte code = 1 << 5;
 					var value = n.Value;
-					TypeCode typeCode = Type.GetTypeCode(value.GetType());
+					TypeCode typeCode = value.GetType().GetTypeCode();
 					code |= (byte) typeCode;
 					writer.Write(code);
 					switch (typeCode)
@@ -212,7 +214,7 @@ namespace AtomicPanda.Serialization
 			byte numOfAssemblies = reader.ReadByte();
 			for (byte i = 0; i < numOfAssemblies; i++)
 			{
-				var assemblyName = reader.ReadString();
+				var assemblyName = new AssemblyName(reader.ReadString());
 				var assembly = Assembly.Load(assemblyName);
 				var numOfTypes = reader.ReadByte();
 				for (byte j = 0; j < numOfTypes; j++)

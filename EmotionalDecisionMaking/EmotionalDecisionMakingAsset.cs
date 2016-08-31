@@ -7,7 +7,7 @@ using Conditions.DTOs;
 using EmotionalAppraisal;
 using EmotionalDecisionMaking.DTOs;
 using GAIPS.Rage;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using WellFormedNames;
 
 namespace EmotionalDecisionMaking
@@ -34,7 +34,7 @@ namespace EmotionalDecisionMaking
 			return null;
 		}
 
-		private ReactiveActions ReactiveActions { get;}
+		private ReactiveActions ReactiveActions { get; set; }
 
 		/// <summary>
 		/// Registers an Emotional Appraisal Asset to be used by
@@ -188,6 +188,9 @@ namespace EmotionalDecisionMaking
 
 		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
+			if(ReactiveActions==null)
+				ReactiveActions=new ReactiveActions();
+
 			ReactiveActions.DefaultActionCooldown = dataHolder.GetValue<float>("DefaultActionPriority");
 			context.PushContext();
 			context.Context = ReactiveActions.DefaultActionCooldown;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using AutobiographicMemory;
 using EmotionalAppraisal.DTOs;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using Utilities;
 using WellFormedNames;
 
@@ -309,6 +309,19 @@ namespace EmotionalAppraisal
 
 			public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 			{
+				if(emotionPool==null)
+					emotionPool = new Dictionary<string, ActiveEmotion>();
+				else
+					emotionPool.Clear();
+
+				if(emotionDispositions==null)
+					emotionDispositions = new Dictionary<string, EmotionDisposition>();
+				else
+					emotionDispositions.Clear();
+
+				if(mood==null)
+					mood = new Mood();
+				
 				m_parent = dataHolder.GetValue<EmotionalAppraisalAsset>("Parent");
 				mood.SetMoodValue(dataHolder.GetValue<float>("Mood"), m_parent);
 				var dispositions = dataHolder.GetValue<EmotionDisposition[]>("EmotionDispositions");

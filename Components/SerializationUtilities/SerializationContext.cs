@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace GAIPS.Serialization
+namespace SerializationUtilities
 {
 	public class SerializationContext : ISerializationContext
 	{

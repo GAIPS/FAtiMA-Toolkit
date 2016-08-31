@@ -1,6 +1,6 @@
 ﻿using System;
 using AutobiographicMemory.DTOs;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using WellFormedNames;
 
 namespace AutobiographicMemory

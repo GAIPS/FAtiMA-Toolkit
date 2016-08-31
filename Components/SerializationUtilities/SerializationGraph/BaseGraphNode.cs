@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GAIPS.Serialization.SerializationGraph
+namespace SerializationUtilities.SerializationGraph
 {
 	public partial class Graph
 	{

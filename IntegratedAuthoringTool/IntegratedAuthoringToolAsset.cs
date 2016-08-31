@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AssetPackage;
 using GAIPS.Rage;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using IntegratedAuthoringTool.DTOs;
 using RolePlayCharacter;
 

@@ -73,9 +73,9 @@
       <Project>{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}</Project>
       <Name>KnowledgeBase</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Components\SerializationUtilities\GAIPS.Serialization.csproj">
+    <ProjectReference Include="..\..\Components\SerializationUtilities\SerializationUtilities.csproj">
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
-      <Name>GAIPS.Serialization</Name>
+      <Name>SerializationUtilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Components\Utilities\Utilities.csproj">
       <Project>{2021e828-2f7f-4775-9f02-58c68fd72edd}</Project>

@@ -2,7 +2,7 @@
 using System.Linq;
 using ActionLibrary.DTOs;
 using Conditions;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using WellFormedNames;
 
 namespace ActionLibrary

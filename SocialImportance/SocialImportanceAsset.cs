@@ -4,7 +4,7 @@ using System.Linq;
 using ActionLibrary;
 using EmotionalAppraisal;
 using GAIPS.Rage;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using KnowledgeBase;
 using SocialImportance.DTOs;
 using Utilities;

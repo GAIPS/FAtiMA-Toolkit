@@ -1,7 +1,7 @@
 ﻿using System;
-using GAIPS.Serialization;
-using GAIPS.Serialization.Attributes;
-using GAIPS.Serialization.SerializationGraph;
+using SerializationUtilities;
+using SerializationUtilities.Attributes;
+using SerializationUtilities.SerializationGraph;
 
 namespace Conditions
 {

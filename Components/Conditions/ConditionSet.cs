@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using Conditions.DTOs;
 using Utilities;
 using WellFormedNames;

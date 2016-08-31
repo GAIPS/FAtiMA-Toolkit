@@ -114,9 +114,9 @@
       <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
       <Name>KnowledgeBase</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Components\SerializationUtilities\GAIPS.Serialization.csproj">
+    <ProjectReference Include="..\..\Components\SerializationUtilities\SerializationUtilities.csproj">
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
-      <Name>GAIPS.Serialization</Name>
+      <Name>SerializationUtilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\EmotionalAppraisal\EmotionalAppraisal.csproj">
       <Project>{0a2a1ee9-bd5d-44aa-a22d-291612488f06}</Project>

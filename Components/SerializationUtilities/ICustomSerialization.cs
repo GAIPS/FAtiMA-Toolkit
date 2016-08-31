@@ -1,4 +1,4 @@
-﻿namespace GAIPS.Serialization
+﻿namespace SerializationUtilities
 {
 	public interface ICustomSerialization
 	{

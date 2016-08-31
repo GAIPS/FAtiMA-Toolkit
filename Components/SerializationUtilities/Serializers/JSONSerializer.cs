@@ -2,10 +2,10 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using GAIPS.Serialization.SerializationGraph;
+using SerializationUtilities.SerializationGraph;
 using Utilities.Json;
 
-namespace GAIPS.Serialization
+namespace SerializationUtilities
 {
 	public class JSONSerializer : BaseSerializer
 	{
@@ -33,10 +33,7 @@ namespace GAIPS.Serialization
 
 		public JsonObject SerializeToJson(object graph)
 		{
-			if (!graph.GetType().IsSerializable)
-				throw new Exception($"Instances of {graph.GetType()} are not serializable.");  //TODO add a better exception
-
-			Graph serGraph = new Graph(graph, FormatSelector, Context);
+			Graph serGraph = ComputeGraph(graph);
 			return ToJson(serGraph);
 		}
 
@@ -292,7 +289,7 @@ namespace GAIPS.Serialization
 			{
 				Enum enumValue = (Enum)value;
 				if (parent.EnumRepresentation == EnumRepresentationMode.Numeric)
-					return serializationGraph.BuildPrimitiveNode((ValueType)Convert.ChangeType(enumValue, enumValue.GetTypeCode()));
+					return serializationGraph.BuildPrimitiveNode((ValueType)Convert.ChangeType(enumValue, enumValue.GetType()));
 				return serializationGraph.BuildStringNode(enumValue.ToString().Replace(", ", "|"));
 			}
 
@@ -312,7 +309,7 @@ namespace GAIPS.Serialization
 		private class DateTimeFormatter : IGraphFormatter
 		{
 			private static readonly string[] TIME_FORMATS = {
-				@"d/M/yyyy@H:m:s.fff",
+				@"d/M/yyyy@H:m:s.fffffff",
 				@"d/M/yyyy@H:m:s",
 				@"d/M/yyyy@H:m",
 				@"d/M/yyyy",
@@ -330,7 +327,7 @@ namespace GAIPS.Serialization
 					{
 						format += @":s";
 						if (time.Millisecond > 0)
-							format += @".fff";
+							format += @".fffffff";
 					}
 				}
 				string timestamp = time.ToString(format);

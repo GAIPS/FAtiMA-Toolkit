@@ -6,7 +6,7 @@ using EmotionalAppraisal.OCCModel;
 using NUnit.Framework;
 using System.IO;
 using EmotionalAppraisal.DTOs;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using WellFormedNames;
 
 namespace Tests.EmotionalAppraisal

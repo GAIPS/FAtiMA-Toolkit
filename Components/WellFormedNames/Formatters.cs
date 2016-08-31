@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
-using GAIPS.Serialization;
-using GAIPS.Serialization.Attributes;
-using GAIPS.Serialization.SerializationGraph;
+using SerializationUtilities;
+using SerializationUtilities.Attributes;
+using SerializationUtilities.SerializationGraph;
 
 namespace WellFormedNames
 {

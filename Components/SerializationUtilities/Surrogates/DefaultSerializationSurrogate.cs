@@ -1,7 +1,7 @@
-﻿using GAIPS.Serialization.Attributes;
-using GAIPS.Serialization.SerializationGraph;
+﻿using SerializationUtilities.Attributes;
+using SerializationUtilities.SerializationGraph;
 
-namespace GAIPS.Serialization.Surrogates
+namespace SerializationUtilities.Surrogates
 {
 	[DefaultSerializationSystem(typeof(object),true)]
 	public sealed class DefaultSerializationSurrogate : ISerializationSurrogate

@@ -19,6 +19,7 @@ namespace Utilities
 		Single = 13,
 		Double = 14,
 		Decimal = 15,
+		DateTime = 16,
 		String = 18
 	}
 
@@ -36,6 +37,9 @@ namespace Utilities
 				return TypeCode.Char;
 			if (type == typeof(string))
 				return TypeCode.String;
+
+			if (type == typeof (DateTime))
+				return TypeCode.DateTime;
 
 			if (type == typeof(sbyte))
 				return TypeCode.SByte;
@@ -97,6 +101,8 @@ namespace Utilities
 					return typeof(decimal);
 				case TypeCode.String:
 					return typeof(string);
+				case TypeCode.DateTime:
+					return typeof (DateTime);
 			}
 			throw new ArgumentException($"{TypeCode.Object} does not have a defined underlying type.",nameof(code));
 		}

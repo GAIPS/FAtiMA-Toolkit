@@ -6,7 +6,7 @@ using Conditions;
 using EmotionalAppraisal.Components;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisal.OCCModel;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using KnowledgeBase;
 using WellFormedNames;
 using WellFormedNames.Collections;
@@ -26,7 +26,7 @@ namespace EmotionalAppraisal.AppraisalRules
 	{
 		private const short DEFAULT_APPRAISAL_WEIGHT = 1;
 		
-		private readonly NameSearchTree<HashSet<AppraisalRule>> Rules;
+		private NameSearchTree<HashSet<AppraisalRule>> Rules;
 
 		public ReactiveAppraisalDerivator()
 		{
@@ -203,7 +203,12 @@ namespace EmotionalAppraisal.AppraisalRules
 		{
 			AppraisalWeight = dataHolder.GetValue<short>("AppraisalWeight");
 			var rules = dataHolder.GetValue<AppraisalRule[]>("Rules");
-			Rules.Clear();
+
+			if(Rules==null)
+				Rules = new NameSearchTree<HashSet<AppraisalRule>>();
+			else
+				Rules.Clear();
+
 		    foreach (var r in rules)
 		    {
                 AddEmotionalReaction(r);

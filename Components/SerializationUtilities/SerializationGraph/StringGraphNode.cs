@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GAIPS.Serialization.SerializationGraph
+namespace SerializationUtilities.SerializationGraph
 {
 	public interface IStringGraphNode : IGraphNode
 	{
@@ -16,7 +16,7 @@ namespace GAIPS.Serialization.SerializationGraph
 				Value = value;
 			}
 
-			public string Value { get; private set; }
+			public string Value { get; }
 
 			public override SerializedDataType DataType
 			{
@@ -25,7 +25,7 @@ namespace GAIPS.Serialization.SerializationGraph
 
 			public override bool CanMatchType(Type requestedType)
 			{
-				return requestedType == null || requestedType.IsAssignableFrom(typeof (string));
+				return requestedType == null || TypeTools.IsAssignableFrom(requestedType, typeof (string));
 			}
 
 			public override object ExtractObject(Type requestedType)

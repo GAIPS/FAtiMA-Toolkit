@@ -8,7 +8,7 @@ using AutobiographicMemory.DTOs;
 using Conditions.DTOs;
 using EmotionalAppraisal.DTOs;
 using GAIPS.Rage;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using KnowledgeBase;
 using Utilities;
 using WellFormedNames;

@@ -61,9 +61,9 @@
       <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
       <Name>GAIPS.Rage</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Components\SerializationUtilities\GAIPS.Serialization.csproj">
+    <ProjectReference Include="..\..\Components\SerializationUtilities\SerializationUtilities.csproj">
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
-      <Name>GAIPS.Serialization</Name>
+      <Name>SerializationUtilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
       <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
