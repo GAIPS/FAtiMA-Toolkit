@@ -1,5 +1,6 @@
 ﻿using System;
 using Equin.ApplicationFramework;
+using GAIPS.AssetEditor.Core;
 using GAIPS.AssetEditorTools;
 using SocialImportance;
 using SocialImportance.DTOs;
@@ -7,6 +8,7 @@ using SocialImportanceWF.ViewModels;
 
 namespace SocialImportanceWF
 {
+	[MainEditor]
 	public partial class MainForm : BaseSIForm
 	{
 		private AttributionRuleVM _attributionRulesVM;

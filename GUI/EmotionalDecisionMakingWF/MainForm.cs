@@ -5,10 +5,12 @@ using EmotionalDecisionMaking;
 using EmotionalDecisionMaking.DTOs;
 using EmotionalDecisionMakingWF.Properties;
 using Equin.ApplicationFramework;
+using GAIPS.AssetEditor.Core;
 using GAIPS.AssetEditorTools;
 
 namespace EmotionalDecisionMakingWF
 {
+	[MainEditor]
     public partial class MainForm : Form
     {
 		private EmotionalDecisionMakingAsset _edmAsset;
@@ -26,25 +28,26 @@ namespace EmotionalDecisionMakingWF
 			conditionSetEditor.View = _conditionSetView;
 			_conditionSetView.OnDataChanged += conditionSetView_OnDataChanged;
 
-			string[] args = Environment.GetCommandLineArgs();
-            if (args.Length <= 1)
-            {
-                Reset(true);
-            }
-            else
-            {
-                _saveFileName = args[1];
-                try
-                {
-                    _edmAsset = EmotionalDecisionMakingAsset.LoadFromFile(_saveFileName);
-                    Reset(false);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Reset(true);
-                }
-            }
+			Reset(true);
+			//string[] args = Environment.GetCommandLineArgs();
+   //         if (args.Length <= 1)
+   //         {
+   //             Reset(true);
+   //         }
+   //         else
+   //         {
+   //             _saveFileName = args[1];
+   //             try
+   //             {
+   //                 _edmAsset = EmotionalDecisionMakingAsset.LoadFromFile(_saveFileName);
+   //                 Reset(false);
+   //             }
+   //             catch (Exception ex)
+   //             {
+   //                 MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+   //                 Reset(true);
+   //             }
+   //         }
         }
 
         private void Reset(bool newFile)

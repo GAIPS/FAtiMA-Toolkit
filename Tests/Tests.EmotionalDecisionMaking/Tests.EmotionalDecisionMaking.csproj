@@ -63,7 +63,7 @@
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
       <Name>SerializationUtilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\EmotionalDecisionMaking\EmotionalDecisionMaking.csproj">
+    <ProjectReference Include="..\..\Assets\EmotionalDecisionMaking\EmotionalDecisionMaking.csproj">
       <Project>{a1e56f5c-eaac-43e5-a922-5b244168ea5c}</Project>
       <Name>EmotionalDecisionMaking</Name>
     </ProjectReference>

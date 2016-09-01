@@ -130,11 +130,11 @@
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
       <Name>SerializationUtilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\IntegratedAuthoringTool\IntegratedAuthoringTool.csproj">
+    <ProjectReference Include="..\..\Assets\IntegratedAuthoringTool\IntegratedAuthoringTool.csproj">
       <Project>{f6ad95a5-889c-41a4-b613-b81f09a424ee}</Project>
       <Name>IntegratedAuthoringTool</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\RolePlayCharacter\RolePlayCharacter.csproj">
+    <ProjectReference Include="..\..\Assets\RolePlayCharacter\RolePlayCharacter.csproj">
       <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
       <Name>RolePlayCharacter</Name>
     </ProjectReference>

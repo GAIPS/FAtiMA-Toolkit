@@ -8,10 +8,12 @@ using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
 using Equin.ApplicationFramework;
+using GAIPS.AssetEditor.Core;
 using GAIPS.AssetEditorTools;
 
 namespace EmotionalAppraisalWF
 {
+	[MainEditor]
     public partial class MainForm : Form
     {
         private const string MOOD_FORMAT = "0.00";
@@ -28,27 +30,27 @@ namespace EmotionalAppraisalWF
         public MainForm()
         {
             InitializeComponent();
+			Reset(true);
+     //       string[] args = Environment.GetCommandLineArgs();
 
-            string[] args = Environment.GetCommandLineArgs();
-
-            if (args.Length <= 1)
-            {
-                Reset(true);
-            }
-            else
-            {
-                _saveFileName = args[1];
-                try
-                {
-					this._emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(args[1]);
-                    Reset(false);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Reset(true);
-                }
-            }
+     //       if (args.Length <= 1)
+     //       {
+     //           Reset(true);
+     //       }
+     //       else
+     //       {
+     //           _saveFileName = args[1];
+     //           try
+     //           {
+					//this._emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(args[1]);
+     //               Reset(false);
+     //           }
+     //           catch (Exception ex)
+     //           {
+     //               MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+     //               Reset(true);
+     //           }
+     //       }
         }
 
         private void Reset(bool newFile)

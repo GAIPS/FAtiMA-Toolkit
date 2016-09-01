@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{36EF269C-7AB2-4029-BBF4-18F908AF46F6}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EmotionalAppraisalWF</RootNamespace>
     <AssemblyName>EmotionalAppraisalWF</AssemblyName>
@@ -31,6 +31,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AddOrEditAutobiographicalEventForm.cs">
@@ -70,7 +73,6 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\EmotionalStateVM.cs" />
     <Compile Include="ViewModels\EmotionDispositionsVM.cs" />
@@ -117,9 +119,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\logo-gaips-rasterized.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -160,17 +159,18 @@
       <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
       <Name>WellFormedNames</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\EmotionalAppraisal\EmotionalAppraisal.csproj">
+    <ProjectReference Include="..\..\Assets\EmotionalAppraisal\EmotionalAppraisal.csproj">
       <Project>{0a2a1ee9-bd5d-44aa-a22d-291612488f06}</Project>
       <Name>EmotionalAppraisal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GAIPS.AssetEditor.Core\GAIPS.AssetEditor.Core.csproj">
+      <Project>{d610275e-9f56-44bd-bfca-0ad1c9ff59c6}</Project>
+      <Name>GAIPS.AssetEditor.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\GAIPS.AssetEditorTools\GAIPS.AssetEditorTools.csproj">
       <Project>{c61fb19d-e715-4eb4-afca-27ff81a14777}</Project>
       <Name>GAIPS.AssetEditorTools</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

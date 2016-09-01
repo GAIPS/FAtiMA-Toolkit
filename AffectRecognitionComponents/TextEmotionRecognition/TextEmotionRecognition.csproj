@@ -59,7 +59,7 @@
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
       <Name>SerializationUtilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\RealTimeEmotionRecognition\RealTimeEmotionRecognition.csproj">
+    <ProjectReference Include="..\..\Assets\RealTimeEmotionRecognition\RealTimeEmotionRecognition.csproj">
       <Project>{cc3a5863-e579-4d38-9817-5dc1744703f3}</Project>
       <Name>RealTimeEmotionRecognition</Name>
     </ProjectReference>
