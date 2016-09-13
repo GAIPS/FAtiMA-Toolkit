@@ -17,7 +17,10 @@ namespace EmotionalAppraisalWF
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new MainForm());
+
+			var f = new MainForm();
+			f.CreateNewAsset();
+			Application.Run(f);
 		}
 	}
 }

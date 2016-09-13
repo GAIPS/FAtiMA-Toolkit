@@ -198,9 +198,13 @@ namespace SerializationUtilities
 		//	return GetBaseConstructor(type.GetBaseType());
 		//}
 
-		//public static object GetUninitializedObject(Type type)
+		//public static object InstatiateMinimalObject(Type type)
 		//{
-		//	object mem = _factory.CreateUninitialized(type);
+		//	bool calledConst;
+		//	object mem = InstanceFactory.CreateUninitialized(type,out calledConst);
+		//	if (calledConst)
+		//		return mem;
+
 		//	var c = GetBaseConstructor(type);
 		//	if (c == null)
 		//		return mem;

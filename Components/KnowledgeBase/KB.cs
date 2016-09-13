@@ -85,12 +85,12 @@ namespace KnowledgeBase
 		private sealed class DynamicKnowledgeEntry
 		{
 			public readonly DynamicPropertyCalculator surogate;
-			public readonly Name[] arguments;
-			
-			public DynamicKnowledgeEntry(DynamicPropertyCalculator surogate, Name[] arguments)
+			public readonly string description;
+
+			public DynamicKnowledgeEntry(DynamicPropertyCalculator surogate, string description)
 			{
 				this.surogate = surogate;
-				this.arguments = arguments;
+				this.description = description;
 			}
 		}
 
@@ -118,21 +118,21 @@ namespace KnowledgeBase
 
 		public void RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate)
 		{
-			internal_RegistDynamicProperty(propertyTemplate, surogate, propertyTemplate.GetVariables().Distinct().ToArray());
+			internal_RegistDynamicProperty(propertyTemplate,null, surogate);
 		}
 
-		public void RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate, IEnumerable<string> arguments)
+		public void RegistDynamicProperty(Name propertyTemplate, string description, DynamicPropertyCalculator surogate)
 		{
-			Name[] args;
-			if (arguments == null)
-				args = new Name[0];
-			else
-				args = arguments.Distinct().Select(s => Name.BuildName("[" + s + "]")).ToArray();
+			//Name[] args;
+			//if (arguments == null)
+			//	args = new Name[0];
+			//else
+			//	args = arguments.Distinct().Select(s => Name.BuildName("[" + s + "]")).ToArray();
 
-			internal_RegistDynamicProperty(propertyTemplate,surogate,args);
+			internal_RegistDynamicProperty(propertyTemplate,description,surogate);
 		}
 
-		private void internal_RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate, Name[] argumentVariables)
+		private void internal_RegistDynamicProperty(Name propertyTemplate, string description, DynamicPropertyCalculator surogate)
 		{
 			if (surogate == null)
 				throw new ArgumentNullException(nameof(surogate));
@@ -150,13 +150,18 @@ namespace KnowledgeBase
 			if (m_knowledgeStorage.Unify(propertyTemplate).Any())
 				throw new ArgumentException($"The given template {propertyTemplate} will collide with stored constant properties", nameof(propertyTemplate));
 
-			m_dynamicProperties.Add(propertyTemplate, new DynamicKnowledgeEntry(surogate, argumentVariables));
+			m_dynamicProperties.Add(propertyTemplate, new DynamicKnowledgeEntry(surogate, description));
 		}
 
 		public void UnregistDynamicProperty(Name propertyTemplate)
 		{
 			if(!m_dynamicProperties.Remove(propertyTemplate))
 				throw new Exception($"Unknown Dynamic Property {propertyTemplate}");
+		}
+
+		public IEnumerable<DynamicPropertyEntry> GetDynamicProperties()
+		{
+			return m_dynamicProperties.Select(p => new DynamicPropertyEntry() {PropertyTemplate = p.Key, Description = p.Value.description??"No Description"});
 		}
 
 		#endregion
@@ -670,6 +675,7 @@ namespace KnowledgeBase
 				m_dynamicProperties = new NameSearchTree<DynamicKnowledgeEntry>();
 			else
 				m_dynamicProperties.Clear();
+			RegistNativeDynamicProperties(this);
 
 			Perspective = dataHolder.GetValue<Name>("Perspective");
 			var knowledge = dataHolder.GetValueGraphNode("Knowledge");

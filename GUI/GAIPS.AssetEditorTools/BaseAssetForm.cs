@@ -19,9 +19,6 @@ namespace GAIPS.AssetEditorTools
 		protected BaseAssetForm()
 		{
 			InitializeComponent();
-
-			UpdateWindowTitle();
-			//Initialize other stuff
 		}
 
 		public void SetModified()
@@ -157,9 +154,7 @@ namespace GAIPS.AssetEditorTools
 			return true;
 		}
 
-		#region Protected Members
-
-		protected void CreateNewAsset()
+		public void CreateNewAsset()
 		{
 			if (!AssetSaveModified())
 				return;
@@ -171,6 +166,8 @@ namespace GAIPS.AssetEditorTools
 			OnAssetDataLoaded(CurrentAsset);
 		}
 
+		#region Protected Members
+		
 		protected bool SaveAsset(bool force)
 		{
 			if (!(_wasModified || force))

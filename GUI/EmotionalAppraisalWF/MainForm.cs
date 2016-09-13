@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 using AutobiographicMemory.DTOs;
 using EmotionalAppraisal;
@@ -61,6 +62,12 @@ namespace EmotionalAppraisalWF
 			this.moodTrackBar.Value = (int)float.Parse(this.moodValueLabel.Text);
 			this.StartTickField.Value = _emotionalStateVM.Start;
 			this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
+
+			//Dynamic Properties
+
+			_dynamicPropertiesListView.DataSource = asset.GetRegistedDynamicProperties().OrderBy(dto => dto.PropertyTemplate).ToList();
+			_dynamicPropertiesListView.Columns[PropertyUtil.GetPropertyName<DynamicPropertyDTO>(dto => dto.Description)]
+				.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 		}
 
 		protected sealed override void OnWillSaveAsset(EmotionalAppraisalAsset asset)
@@ -302,5 +309,5 @@ namespace EmotionalAppraisalWF
 		{
 			_knowledgeBaseVM.UpdatePerspective();
 		}
-    }
+	}
 }

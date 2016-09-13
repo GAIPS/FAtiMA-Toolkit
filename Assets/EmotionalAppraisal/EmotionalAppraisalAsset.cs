@@ -480,7 +480,7 @@ namespace EmotionalAppraisal
 
 		private void BindCalls(KB kb)
 		{
-			kb.RegistDynamicProperty(MOOD_TEMPLATE, MoodPropertyCalculator, new[] { "x" });
+			kb.RegistDynamicProperty(MOOD_TEMPLATE, MoodPropertyCalculator);//, new[] { "x" });
 			kb.RegistDynamicProperty(STRONGEST_EMOTION_TEMPLATE, StrongestEmotionCalculator);
 			kb.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator);
 		}
@@ -669,6 +669,11 @@ namespace EmotionalAppraisal
 		public void UnregistDynamicProperty(Name propertyTemplate)
 		{
 			m_kb.UnregistDynamicProperty(propertyTemplate);
+		}
+
+		public IEnumerable<DynamicPropertyDTO> GetRegistedDynamicProperties()
+		{
+			return m_kb.GetDynamicProperties().Select(d => new DynamicPropertyDTO() {PropertyTemplate = d.PropertyTemplate.ToString(), Description = d.Description});
 		}
 	}
 }

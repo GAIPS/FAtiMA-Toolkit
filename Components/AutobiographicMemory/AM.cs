@@ -11,6 +11,8 @@ using IQueryable = WellFormedNames.IQueryable;
 
 namespace AutobiographicMemory
 {
+	//TODO improve LastEventId efficiency, by caching the last recorded events (cache should be dumped, if a new event is recorded with a greater timestamp that the ones in cache)
+
 	[Serializable]
 	public sealed partial class AM : ICustomSerialization
 	{
@@ -263,7 +265,7 @@ namespace AutobiographicMemory
 		private IEnumerable<Pair<Name, SubstitutionSet>> LastEventIdPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			if(!perspective.Match(Name.SELF_SYMBOL))
-				return Enumerable.Empty<Pair<Name, SubstitutionSet>>();
+				yield break;
 
 			Name type = GetArgument(args, "type");
 			Name subject = GetArgument(args, "subject");
@@ -272,25 +274,23 @@ namespace AutobiographicMemory
 
 			var key = Name.BuildName(EVT_NAME, type, subject, def, target);
 
-			ulong bestTime = 0;
-			Pair<Name, SubstitutionSet> best = null;
-			foreach (var pair in constraints.SelectMany(c => m_typeIndexes.Unify(key, c)))
+			ulong min = ulong.MinValue;
+			var lastEvents = m_registry.Values.OrderByDescending(e => e.Timestamp).TakeWhile(e =>
 			{
-				var recentRecord = pair.Item1.Select(id => m_registry[id]).OrderByDescending(r => r.Timestamp).FirstOrDefault();
-				if(recentRecord==null)
-					continue;
-
-				if (recentRecord.Timestamp > bestTime)
+				if (e.Timestamp >= min)
 				{
-					bestTime = recentRecord.Timestamp;
-					best = Tuples.Create(Name.BuildName(recentRecord.Id), pair.Item2);
+					min = e.Timestamp;
+					return true;
 				}
+				return false;
+			});
+
+			foreach (var le in lastEvents)
+			{
+				IEnumerable<Substitution> set;
+				if (Unifier.Unify(le.EventName, key, out set))
+					yield return Tuples.Create(Name.BuildName(le.Id), new SubstitutionSet(set));
 			}
-
-			if (best == null)
-				return Enumerable.Empty<Pair<Name, SubstitutionSet>>();
-
-			return new[] {best};
 		}
 
 		#endregion
