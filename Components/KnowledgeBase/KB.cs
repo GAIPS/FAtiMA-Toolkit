@@ -170,7 +170,7 @@ namespace KnowledgeBase
 
 		private static void RegistNativeDynamicProperties(KB kb)
 		{
-			kb.RegistDynamicProperty(COUNT_TEMPLATE, CountPropertyCalculator);
+			kb.RegistDynamicProperty(COUNT_TEMPLATE, "The number of substitutions found for [x]", CountPropertyCalculator);
 		}
 
 		//Count

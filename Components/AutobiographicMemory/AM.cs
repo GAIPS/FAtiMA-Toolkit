@@ -25,9 +25,9 @@ namespace AutobiographicMemory
 
 		public void BindCalls(KB kb)
 		{
-			kb.RegistDynamicProperty(EVENT_ID_PROPERTY_TEMPLATE, EventIdPropertyCalculator);
-			kb.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE, EventAgePropertyCalculator);
-			kb.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_TEMPLATE, LastEventIdPropertyCalculator);
+			kb.RegistDynamicProperty(EVENT_ID_PROPERTY_TEMPLATE, "Returns the ids of all events that unify with the property's name", EventIdPropertyCalculator);
+			kb.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE, "The number of ticks passed since the event associated to [id] occured", EventAgePropertyCalculator);
+			kb.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_TEMPLATE, "Returns the id of the last event if it unifies with the property's name", LastEventIdPropertyCalculator);
 		}
 
 		public IBaseEvent RecordEvent(EventDTO dto)
