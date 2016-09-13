@@ -63,6 +63,7 @@ namespace RolePlayCharacterWF
 		private void button2_Click(object sender, EventArgs e)
 		{
 			_path.Text = string.Empty;
+			OnPathChanged?.Invoke(this, new EventArgs());
 		}
 
 		private void _path_TextChanged(object sender, EventArgs e)

@@ -211,6 +211,7 @@ namespace EmotionalAppraisal.AppraisalRules
 
 		    foreach (var r in rules)
 		    {
+				r.Id = Guid.NewGuid();
                 AddEmotionalReaction(r);
             }
 		}

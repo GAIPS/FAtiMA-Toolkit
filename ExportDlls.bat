@@ -1,7 +1,7 @@
 @echo off
 
 SET exportBat=export.bat
-SET excludeDirectories=tools Tests
+SET excludeDirectories=\tools\ \Tests\
 SET pdo2mdbPath=\tools\pdb2mdb\pdb2mdb.exe
 
 IF NOT "%~1" == "debug" (
@@ -25,7 +25,7 @@ IF NOT EXIST "%targetPath%" (
 	exit /B 
 )
 
-FOR /F %%i IN ('dir /b /AD ^| findstr /v /x "%excludeDirectories%"') DO (
+FOR /F "delims=" %%i IN ('dir /B /S /A:D ^| findstr /v "%excludeDirectories%"') DO (
 	pushd "%%~fi"
 		IF EXIST %exportBat% (
 			echo Exporting %%i

@@ -37,7 +37,7 @@ namespace WellFormedNames
 
 			if (name1.IsGrounded && name2.IsGrounded)
 			{
-				var result = name1.Equals(name2);
+				var result = name1.Match(name2);
 				if (result)
 					bindings = Enumerable.Empty<Substitution>();
 				return result;

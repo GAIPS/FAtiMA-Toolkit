@@ -40,7 +40,6 @@
     <Compile Include="ActiveEmotion.cs" />
     <Compile Include="AppraisalRules\AppraisalRule.cs" />
     <Compile Include="AppraisalRules\ReactiveAppraisalDerivator.cs" />
-    <Compile Include="BaseDomainObject.cs" />
     <Compile Include="BaseEmotion.cs" />
     <Compile Include="Components\IAffectDerivator.cs" />
     <Compile Include="Components\IAppraisalDerivator.cs" />

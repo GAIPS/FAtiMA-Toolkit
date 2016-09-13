@@ -13,9 +13,13 @@ namespace EmotionalAppraisal.AppraisalRules
 	/// @author João Dias
 	/// @author Pedro Gonçalves
 	[Serializable]
-	public class AppraisalRule : BaseDomainObject
+	public class AppraisalRule
 	{
-        public Name EventName { get; set; }
+		[NonSerialized]
+		private Guid m_id;
+
+		public Guid Id { get { return m_id; } set { m_id = value; } }
+		public Name EventName { get; set; }
 		public ConditionSet Conditions { get; set; }
 
 		public AppraisalRule(Name eventName, ConditionSet conditions = null)
@@ -25,8 +29,9 @@ namespace EmotionalAppraisal.AppraisalRules
 			Desirability = Praiseworthiness = 0;
 		}
 
-	    public AppraisalRule(AppraisalRuleDTO appraisalRuleDTO) :base(appraisalRuleDTO.Id)
+	    public AppraisalRule(AppraisalRuleDTO appraisalRuleDTO)
 	    {
+		    m_id = appraisalRuleDTO.Id;
 	        EventName = Name.BuildName(appraisalRuleDTO.EventMatchingTemplate);
 	        Desirability = appraisalRuleDTO.Desirability;
 	        Praiseworthiness = appraisalRuleDTO.Praiseworthiness;
@@ -37,8 +42,9 @@ namespace EmotionalAppraisal.AppraisalRules
 		///     Clone Constructor
 		/// </summary>
 		/// <param name="other">the reaction to clone</param>
-		public AppraisalRule(AppraisalRule other) : base(other.Id)
+		public AppraisalRule(AppraisalRule other)
 		{
+			m_id = other.m_id;
 			EventName = other.EventName;
 			Conditions = new ConditionSet(other.Conditions);
 			Desirability = other.Desirability;

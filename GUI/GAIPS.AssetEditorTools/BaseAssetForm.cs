@@ -23,6 +23,9 @@ namespace GAIPS.AssetEditorTools
 
 		public void SetModified()
 		{
+			if(_wasModified)
+				return;
+
 			_wasModified = true;
 			UpdateWindowTitle();
 		}

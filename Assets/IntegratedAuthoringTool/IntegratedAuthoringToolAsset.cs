@@ -303,7 +303,9 @@ namespace IntegratedAuthoringTool
             {
                 m_agentDialogues = new List<DialogStateAction>(agentDialogueArray.Select(dto => new DialogStateAction(dto)));
             }
-        }
+
+			m_dialogueStates = new Dictionary<string, string>();
+		}
 
         #endregion
 

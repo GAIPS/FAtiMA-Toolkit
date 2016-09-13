@@ -85,6 +85,9 @@ namespace WellFormedNames
 
 			public override bool Match(Name name)
 			{
+				if (name.IsUniversal)
+					return true;
+
 				PrimitiveSymbol s = name as PrimitiveSymbol;
 				if (s == null)
 					return false;

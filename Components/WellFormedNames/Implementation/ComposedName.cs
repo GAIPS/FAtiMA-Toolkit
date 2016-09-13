@@ -180,11 +180,11 @@ namespace WellFormedNames
 
 			public override bool Match(Name name)
 			{
-				var other = name as ComposedName;
-				if (other == null)
-					return false;
+				if (name.IsUniversal)
+					return true;
 
-				if (other.Terms.Length != Terms.Length)
+				var other = name as ComposedName;
+				if (other?.Terms.Length != Terms.Length)
 					return false;
 
 				if (!other.RootSymbol.Match(RootSymbol))
@@ -192,11 +192,7 @@ namespace WellFormedNames
 					return false;
 				}
 
-				for (int i = 0; i < Terms.Length; i++)
-					if (!Terms[i].Match(other.Terms[i]))
-						return false;
-
-				return true;
+				return !Terms.Where((t, i) => !t.Match(other.Terms[i])).Any();
 			}
 
 			public override Name ApplyToTerms(Func<Name, Name> transformFunction)

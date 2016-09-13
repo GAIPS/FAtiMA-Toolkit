@@ -133,7 +133,8 @@ namespace IntegratedAuthoringToolWF
 			int i = 0;
 			foreach (var split in _agentActions.Zip(controller.Split(_agentActions.Length), (dto, ctrl) => new { data = dto, ctrl }))
 			{
-				var path = Path.Combine(basePath, split.data.Id.ToString("N"));
+				var id = $"{split.data.CurrentState}#{split.data.NextState}#{split.data.Meaning}({split.data.Style})".ToUpperInvariant();
+				var path = Path.Combine(basePath, id);
 				Directory.CreateDirectory(path);
 
 				split.ctrl.Message = $"Generating TTS for Utterance ({++i}/{_agentActions.Length})";

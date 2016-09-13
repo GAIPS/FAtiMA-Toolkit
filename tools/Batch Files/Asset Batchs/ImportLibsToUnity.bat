@@ -1,7 +1,7 @@
 @echo off
 set mode=debug
 set assetRepositoriesFolder=..\..\AssetDev
-set destination=\Assets\AssetDLLs
+set destination=\Assets\FAtiMA\Plugins
 SET mainExportBat=ExportDlls.bat
 
 ::----------------------------------------------------------

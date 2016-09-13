@@ -83,6 +83,9 @@ namespace WellFormedNames
 
 			public override bool Match(Name name)
 			{
+				if (name.IsUniversal)
+					return true;
+
 				return Equals(name as VariableSymbol);
 			}
 
