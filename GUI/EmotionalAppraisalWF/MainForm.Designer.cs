@@ -29,20 +29,12 @@
         private void InitializeComponent()
         {
 			this.components = new System.ComponentModel.Container();
-			this.mainMenu = new System.Windows.Forms.MenuStrip();
-			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.saveAsStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.mainFormTab = new System.Windows.Forms.TabControl();
 			this.emotionalStateTabPage = new System.Windows.Forms.TabPage();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
 			this.richTextBoxDescription = new System.Windows.Forms.RichTextBox();
 			this.groupBox9 = new System.Windows.Forms.GroupBox();
 			this.label3 = new System.Windows.Forms.Label();
-			this.textBoxStartTick = new System.Windows.Forms.TextBox();
 			this.groupBox3 = new System.Windows.Forms.GroupBox();
 			this.textBoxPerspective = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
@@ -72,6 +64,8 @@
 			this.buttonAddAppraisalRule = new System.Windows.Forms.Button();
 			this.buttonRemoveAppraisalRule = new System.Windows.Forms.Button();
 			this.dataGridViewAppraisalRules = new System.Windows.Forms.DataGridView();
+			this.groupBox8 = new System.Windows.Forms.GroupBox();
+			this.conditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
 			this.knowledgeBaseTabPage = new System.Windows.Forms.TabPage();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -91,9 +85,7 @@
 			this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
 			this.timer1 = new System.Windows.Forms.Timer(this.components);
 			this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
-			this.groupBox8 = new System.Windows.Forms.GroupBox();
-			this.conditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
-			this.mainMenu.SuspendLayout();
+			this.StartTickField = new System.Windows.Forms.NumericUpDown();
 			this.mainFormTab.SuspendLayout();
 			this.emotionalStateTabPage.SuspendLayout();
 			this.groupBox2.SuspendLayout();
@@ -114,6 +106,7 @@
 			this.splitContainer1.SuspendLayout();
 			this.groupBox7.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridViewAppraisalRules)).BeginInit();
+			this.groupBox8.SuspendLayout();
 			this.knowledgeBaseTabPage.SuspendLayout();
 			this.groupBox1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
@@ -125,66 +118,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.decayErrorProvider)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.emotionListItemBindingSource)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.mainFormBindingSource)).BeginInit();
-			this.groupBox8.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.StartTickField)).BeginInit();
 			this.SuspendLayout();
-			// 
-			// mainMenu
-			// 
-			this.mainMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
-			this.mainMenu.Location = new System.Drawing.Point(0, 0);
-			this.mainMenu.Name = "mainMenu";
-			this.mainMenu.Size = new System.Drawing.Size(592, 24);
-			this.mainMenu.TabIndex = 0;
-			this.mainMenu.Text = "mainMenu";
-			// 
-			// fileToolStripMenuItem
-			// 
-			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newToolStripMenuItem,
-            this.openToolStripMenuItem,
-            this.saveToolStripMenuItem,
-            this.saveAsStripMenuItem,
-            this.exitToolStripMenuItem});
-			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-			this.fileToolStripMenuItem.ShortcutKeyDisplayString = "";
-			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-			this.fileToolStripMenuItem.Text = "&File";
-			// 
-			// newToolStripMenuItem
-			// 
-			this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-			this.newToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-			this.newToolStripMenuItem.Text = "&New";
-			this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
-			// 
-			// openToolStripMenuItem
-			// 
-			this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-			this.openToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-			this.openToolStripMenuItem.Text = "&Open...";
-			this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
-			// 
-			// saveToolStripMenuItem
-			// 
-			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-			this.saveToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-			this.saveToolStripMenuItem.Text = "&Save";
-			this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
-			// 
-			// saveAsStripMenuItem
-			// 
-			this.saveAsStripMenuItem.Name = "saveAsStripMenuItem";
-			this.saveAsStripMenuItem.Size = new System.Drawing.Size(123, 22);
-			this.saveAsStripMenuItem.Text = "Save &As...";
-			this.saveAsStripMenuItem.Click += new System.EventHandler(this.saveAsStripMenuItem_Click);
-			// 
-			// exitToolStripMenuItem
-			// 
-			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
-			this.exitToolStripMenuItem.Text = "E&xit";
-			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
 			// 
 			// mainFormTab
 			// 
@@ -248,8 +183,8 @@
 			// 
 			// groupBox9
 			// 
+			this.groupBox9.Controls.Add(this.StartTickField);
 			this.groupBox9.Controls.Add(this.label3);
-			this.groupBox9.Controls.Add(this.textBoxStartTick);
 			this.groupBox9.Location = new System.Drawing.Point(252, 6);
 			this.groupBox9.Name = "groupBox9";
 			this.groupBox9.Size = new System.Drawing.Size(112, 68);
@@ -265,15 +200,6 @@
 			this.label3.Size = new System.Drawing.Size(31, 13);
 			this.label3.TabIndex = 11;
 			this.label3.Text = "Tick:";
-			// 
-			// textBoxStartTick
-			// 
-			this.textBoxStartTick.Location = new System.Drawing.Point(44, 28);
-			this.textBoxStartTick.Name = "textBoxStartTick";
-			this.textBoxStartTick.Size = new System.Drawing.Size(62, 20);
-			this.textBoxStartTick.TabIndex = 7;
-			this.textBoxStartTick.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.textBoxStartTick.TextChanged += new System.EventHandler(this.textBoxStartTick_TextChanged);
 			// 
 			// groupBox3
 			// 
@@ -657,6 +583,26 @@
 			this.dataGridViewAppraisalRules.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewAppraisalRules_CellMouseDoubleClick);
 			this.dataGridViewAppraisalRules.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAppraisalRules_RowEnter);
 			// 
+			// groupBox8
+			// 
+			this.groupBox8.Controls.Add(this.conditionSetEditor);
+			this.groupBox8.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.groupBox8.Location = new System.Drawing.Point(0, 0);
+			this.groupBox8.Name = "groupBox8";
+			this.groupBox8.Size = new System.Drawing.Size(554, 220);
+			this.groupBox8.TabIndex = 10;
+			this.groupBox8.TabStop = false;
+			this.groupBox8.Text = "Rule Conditions";
+			// 
+			// conditionSetEditor
+			// 
+			this.conditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.conditionSetEditor.Location = new System.Drawing.Point(3, 16);
+			this.conditionSetEditor.Name = "conditionSetEditor";
+			this.conditionSetEditor.Size = new System.Drawing.Size(548, 201);
+			this.conditionSetEditor.TabIndex = 0;
+			this.conditionSetEditor.View = null;
+			// 
 			// knowledgeBaseTabPage
 			// 
 			this.knowledgeBaseTabPage.Controls.Add(this.groupBox1);
@@ -849,25 +795,19 @@
 			// 
 			this.decayErrorProvider.ContainerControl = this;
 			// 
-			// groupBox8
+			// StartTickField
 			// 
-			this.groupBox8.Controls.Add(this.conditionSetEditor);
-			this.groupBox8.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.groupBox8.Location = new System.Drawing.Point(0, 0);
-			this.groupBox8.Name = "groupBox8";
-			this.groupBox8.Size = new System.Drawing.Size(554, 220);
-			this.groupBox8.TabIndex = 10;
-			this.groupBox8.TabStop = false;
-			this.groupBox8.Text = "Rule Conditions";
-			// 
-			// conditionSetEditor
-			// 
-			this.conditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.conditionSetEditor.Location = new System.Drawing.Point(3, 16);
-			this.conditionSetEditor.Name = "conditionSetEditor";
-			this.conditionSetEditor.Size = new System.Drawing.Size(548, 201);
-			this.conditionSetEditor.TabIndex = 0;
-			this.conditionSetEditor.View = null;
+			this.StartTickField.Location = new System.Drawing.Point(44, 28);
+			this.StartTickField.Maximum = new decimal(new int[] {
+            -1,
+            -1,
+            0,
+            0});
+			this.StartTickField.Name = "StartTickField";
+			this.StartTickField.Size = new System.Drawing.Size(62, 20);
+			this.StartTickField.TabIndex = 12;
+			this.StartTickField.ThousandsSeparator = true;
+			this.StartTickField.ValueChanged += new System.EventHandler(this.textBoxStartTick_TextChanged);
 			// 
 			// MainForm
 			// 
@@ -875,13 +815,11 @@
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(592, 522);
 			this.Controls.Add(this.mainFormTab);
-			this.Controls.Add(this.mainMenu);
-			this.MainMenuStrip = this.mainMenu;
+			this.EditorName = "Emotional Appraisal Editor";
 			this.MinimumSize = new System.Drawing.Size(450, 39);
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.mainMenu.ResumeLayout(false);
-			this.mainMenu.PerformLayout();
+			this.Controls.SetChildIndex(this.mainFormTab, 0);
 			this.mainFormTab.ResumeLayout(false);
 			this.emotionalStateTabPage.ResumeLayout(false);
 			this.groupBox2.ResumeLayout(false);
@@ -906,6 +844,7 @@
 			this.splitContainer1.ResumeLayout(false);
 			this.groupBox7.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dataGridViewAppraisalRules)).EndInit();
+			this.groupBox8.ResumeLayout(false);
 			this.knowledgeBaseTabPage.ResumeLayout(false);
 			this.groupBox1.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);
@@ -917,20 +856,13 @@
 			((System.ComponentModel.ISupportInitialize)(this.decayErrorProvider)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.emotionListItemBindingSource)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.mainFormBindingSource)).EndInit();
-			this.groupBox8.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.StartTickField)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.MenuStrip mainMenu;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
         private System.Windows.Forms.TabControl mainFormTab;
         private System.Windows.Forms.TabPage emotionalStateTabPage;
         private System.Windows.Forms.TabPage knowledgeBaseTabPage;
@@ -942,7 +874,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Button editButton;
-        private System.Windows.Forms.ToolStripMenuItem saveAsStripMenuItem;
         private System.Windows.Forms.GroupBox emotionGroupBox;
         private System.Windows.Forms.DataGridView emotionsDataGridView;
         private System.Windows.Forms.Button buttonEditEmotion;
@@ -977,7 +908,6 @@
         private System.Windows.Forms.ErrorProvider decayErrorProvider;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.DataGridView dataGridViewBeliefs;
-        private System.Windows.Forms.TextBox textBoxStartTick;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox textBoxPerspective;
         private System.Windows.Forms.Label label1;
@@ -989,6 +919,7 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.GroupBox groupBox8;
 		private GAIPS.AssetEditorTools.ConditionSetEditorControl conditionSetEditor;
+		private System.Windows.Forms.NumericUpDown StartTickField;
 	}
 }
 

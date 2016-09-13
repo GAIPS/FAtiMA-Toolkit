@@ -8,18 +8,13 @@ using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
 using Equin.ApplicationFramework;
-using GAIPS.AssetEditor.Core;
 using GAIPS.AssetEditorTools;
 
 namespace EmotionalAppraisalWF
 {
-	[MainEditor]
-    public partial class MainForm : Form
+	public partial class MainForm : BaseEAForm
     {
         private const string MOOD_FORMAT = "0.00";
-        private const string DEFAULT_PERSPECTIVE = "Nameless";
-        private EmotionalAppraisalAsset _emotionalAppraisalAsset;
-        private string _saveFileName;
 
         private EmotionalStateVM _emotionalStateVM;
         private KnowledgeBaseVM _knowledgeBaseVM;
@@ -27,171 +22,60 @@ namespace EmotionalAppraisalWF
         private EmotionDispositionsVM _emotionDispositionsVM;
         private AutobiographicalMemoryVM _autobiographicalMemoryVM;
 
-        public MainForm()
+		public MainForm()
         {
             InitializeComponent();
-			Reset(true);
-     //       string[] args = Environment.GetCommandLineArgs();
-
-     //       if (args.Length <= 1)
-     //       {
-     //           Reset(true);
-     //       }
-     //       else
-     //       {
-     //           _saveFileName = args[1];
-     //           try
-     //           {
-					//this._emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(args[1]);
-     //               Reset(false);
-     //           }
-     //           catch (Exception ex)
-     //           {
-     //               MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-     //               Reset(true);
-     //           }
-     //       }
         }
 
-        private void Reset(bool newFile)
-        {
-            if (newFile)
-            {
-                this.Text = Resources.MainFormPrincipalTitle;
-                this._emotionalAppraisalAsset = new EmotionalAppraisalAsset(DEFAULT_PERSPECTIVE);
-            }
-            else
-            {
-                this.Text = Resources.MainFormPrincipalTitle + Resources.TitleSeparator + _saveFileName;
-            }
+		protected override void OnAssetDataLoaded(EmotionalAppraisalAsset asset)
+		{
+			//Emotion Dispositions
+			_emotionDispositionsVM = new EmotionDispositionsVM(this);
+			comboBoxDefaultDecay.SelectedIndex =
+				comboBoxDefaultDecay.FindString(_emotionDispositionsVM.DefaultDecay.ToString());
+			comboBoxDefaultThreshold.SelectedIndex =
+				comboBoxDefaultThreshold.FindString(_emotionDispositionsVM.DefaultThreshold.ToString());
+			dataGridViewEmotionDispositions.DataSource = _emotionDispositionsVM.EmotionDispositions;
 
-            //Emotion Dispositions
-            _emotionDispositionsVM = new EmotionDispositionsVM(_emotionalAppraisalAsset);
-            comboBoxDefaultDecay.SelectedIndex =
-                comboBoxDefaultDecay.FindString(_emotionDispositionsVM.DefaultDecay.ToString());
-            comboBoxDefaultThreshold.SelectedIndex =
-                comboBoxDefaultThreshold.FindString(_emotionDispositionsVM.DefaultThreshold.ToString());
-            dataGridViewEmotionDispositions.DataSource = _emotionDispositionsVM.EmotionDispositions;
+			//Appraisal Rule
+			_appraisalRulesVM = new AppraisalRulesVM(this);
+			dataGridViewAppraisalRules.DataSource = _appraisalRulesVM.AppraisalRules;
+			dataGridViewAppraisalRules.Columns[PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Id)].Visible = false;
+			dataGridViewAppraisalRules.Columns[PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Conditions)].Visible = false;
+			conditionSetEditor.View = _appraisalRulesVM.CurrentRuleConditions;
 
-            //Appraisal Rule
-            _appraisalRulesVM = new AppraisalRulesVM(_emotionalAppraisalAsset);
-            dataGridViewAppraisalRules.DataSource = _appraisalRulesVM.AppraisalRules;
-            dataGridViewAppraisalRules.Columns[PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Id)].Visible = false;
-            dataGridViewAppraisalRules.Columns[PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Conditions)].Visible = false;
-	        conditionSetEditor.View = _appraisalRulesVM.CurrentRuleConditions;
+			//KB
+			_knowledgeBaseVM = new KnowledgeBaseVM(this);
+			dataGridViewBeliefs.DataSource = _knowledgeBaseVM.Beliefs;
 
-            //KB
-            _knowledgeBaseVM = new KnowledgeBaseVM(_emotionalAppraisalAsset);
-            dataGridViewBeliefs.DataSource = _knowledgeBaseVM.Beliefs;
-            //dataGridViewBeliefs.Columns[PropertyUtil.GetName<BaseDTO>(dto => dto.Id)].Visible = false;
-
-            //AM
-            _autobiographicalMemoryVM = new AutobiographicalMemoryVM(_emotionalAppraisalAsset);
-            dataGridViewAM.DataSource = _autobiographicalMemoryVM.Events;
+			//AM
+			_autobiographicalMemoryVM = new AutobiographicalMemoryVM(this);
+			dataGridViewAM.DataSource = _autobiographicalMemoryVM.Events;
 
 			//Emotional State Tab
-			_emotionalStateVM = new EmotionalStateVM(_emotionalAppraisalAsset);
+			_emotionalStateVM = new EmotionalStateVM(this);
+
 			this.textBoxPerspective.Text = _knowledgeBaseVM.Perspective;
-			this.richTextBoxDescription.Text = _emotionalAppraisalAsset.Description;
+			this.richTextBoxDescription.Text = asset.Description;
 			this.moodValueLabel.Text = Math.Round(_emotionalStateVM.Mood).ToString(MOOD_FORMAT);
 			this.moodTrackBar.Value = (int)float.Parse(this.moodValueLabel.Text);
-			this.textBoxStartTick.Text = _emotionalStateVM.Start.ToString();
+			this.StartTickField.Value = _emotionalStateVM.Start;
 			this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
 		}
 
-        private void newToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Reset(true);
-        }
+		protected sealed override void OnWillSaveAsset(EmotionalAppraisalAsset asset)
+		{
+			_knowledgeBaseVM.UpdatePerspective();
+		}
 
-        private void saveHelper(bool newSaveFile)
-        {
-            if (string.IsNullOrWhiteSpace(textBoxPerspective.Text))
-            {
-                MessageBox.Show(Resources.EmptyPerspectiveError, Resources.ErrorDialogTitle, MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-                return;
-            }
-
-            if (newSaveFile)
-            {
-                var sfd = new SaveFileDialog();
-                sfd.Filter = "EA File|*.ea";
-                if (sfd.ShowDialog() == DialogResult.OK)
-                {
-                    if (!string.IsNullOrWhiteSpace(sfd.FileName))
-                    {
-                        _saveFileName = sfd.FileName;
-                    }
-                }
-                else
-                {
-                    return;
-                }
-            }
-            try
-            {
-				_knowledgeBaseVM.UpdatePerspective();
-				_emotionalAppraisalAsset.SaveToFile(_saveFileName);
-				this.Text = Resources.MainFormPrincipalTitle + Resources.TitleSeparator + _saveFileName;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(Resources.UnableToSaveFileError, Resources.ErrorDialogTitle, MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
-        }
-
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(_saveFileName))
-            {
-                saveHelper(true);
-            }
-            else
-            {
-                saveHelper(false);
-            }
-        }
-
-        private void saveAsStripMenuItem_Click(object sender, EventArgs e)
-        {
-            saveHelper(true);
-        }
-
-        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            var ofd = new OpenFileDialog();
-            if (ofd.ShowDialog() == DialogResult.OK)
-            {
-                try
-                {
-                    _emotionalAppraisalAsset = EmotionalAppraisalAsset.LoadFromFile(ofd.FileName);
-                    _saveFileName = ofd.FileName;
-                    Reset(false);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message + "-" + ex.StackTrace, Resources.ErrorDialogTitle, MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        private void trackBar1_Scroll_1(object sender, EventArgs e)
+		private void trackBar1_Scroll_1(object sender, EventArgs e)
         {
             moodValueLabel.Text = moodTrackBar.Value.ToString(MOOD_FORMAT);
             _emotionalStateVM.Mood = moodTrackBar.Value;
         }
 
         #region EmotionalStateTab
-
-
+		
         private void validateDecayHelper(TextBox textBoxDecay, CancelEventArgs e)
         {
             try
@@ -301,11 +185,7 @@ namespace EmotionalAppraisalWF
 
         private void textBoxStartTick_TextChanged(object sender, EventArgs e)
         {
-            ulong time;
-            if (ulong.TryParse(textBoxStartTick.Text, out time))
-            {
-                _emotionalStateVM.Start = time;
-            }
+	        _emotionalStateVM.Start = (ulong)StartTickField.Value;
         }
         
         private void addEmotionButton_Click(object sender, EventArgs e)
@@ -361,7 +241,7 @@ namespace EmotionalAppraisalWF
                 eventsToRemove.Add(evt);
             }
             _autobiographicalMemoryVM.RemoveEventRecords(eventsToRemove);
-        }
+		}
 
         private void buttonRemoveEmotion_Click(object sender, EventArgs e)
         {
@@ -372,7 +252,7 @@ namespace EmotionalAppraisalWF
                 emotionsToRemove.Add(emotion);
             }
             _emotionalStateVM.RemoveEmotions(emotionsToRemove);
-        }
+		}
 
         private void buttonEditEmotion_Click(object sender, EventArgs e)
         {
@@ -414,12 +294,13 @@ namespace EmotionalAppraisalWF
 
 		private void richTextBoxDescription_TextChanged(object sender, EventArgs e)
         {
-            this._emotionalAppraisalAsset.Description = richTextBoxDescription.Text;
-        }
+			CurrentAsset.Description = richTextBoxDescription.Text;
+			SetModified();
+		}
 
 		private void OnScreenChanged(object sender, EventArgs e)
 		{
 			_knowledgeBaseVM.UpdatePerspective();
 		}
-	}
+    }
 }

@@ -78,7 +78,7 @@ namespace KnowledgeBase
 
 			public IEnumerable<Name> GetAllStoredPerspectives()
 			{
-				return m_perspectives.Keys.SelectMany(Key2ToMList).Distinct();
+				return m_perspectives?.Keys.SelectMany(Key2ToMList).Distinct() ?? Enumerable.Empty<Name>();
 			}
 		}
 

@@ -8,37 +8,49 @@ namespace EmotionalAppraisalWF.ViewModels
 {
     public class EmotionDispositionsVM
     {
-        private EmotionalAppraisalAsset _emotionalAppraisalAsset;
+	    private BaseEAForm _mainForm;
+	    private EmotionalAppraisalAsset _emotionalAppraisalAsset => _mainForm.CurrentAsset;
 
-        public IEnumerable<string> EmotionTypes { get { return _emotionalAppraisalAsset.EmotionTypes; } }
+        public IEnumerable<string> EmotionTypes => _emotionalAppraisalAsset.EmotionTypes;
 
-        public BindingListView<EmotionDispositionDTO> EmotionDispositions {get;}
+	    public BindingListView<EmotionDispositionDTO> EmotionDispositions {get;}
+	    private EmotionDispositionDTO _defaultEmotionalDisposition;
+
 
         public int DefaultThreshold
         {
-            get { return _emotionalAppraisalAsset.DefaultEmotionDisposition.Threshold; }
-            set { ChangeDefaultEmotionDisposition(value, DefaultDecay); }
+            get { return _defaultEmotionalDisposition.Threshold; }
+	        set
+	        {
+		        _defaultEmotionalDisposition.Threshold = value;
+				UpdateDefaultEmotionDisposition();
+	        }
         }
 
         public int DefaultDecay
         {
-            get { return _emotionalAppraisalAsset.DefaultEmotionDisposition.Decay; }
-            set { ChangeDefaultEmotionDisposition(DefaultThreshold,value); }
+            get { return _defaultEmotionalDisposition.Decay; }
+	        set
+	        {
+		        _defaultEmotionalDisposition.Decay = value;
+				UpdateDefaultEmotionDisposition();
+	        }
         }
 
-        public EmotionDispositionsVM(EmotionalAppraisalAsset ea)
+        public EmotionDispositionsVM(BaseEAForm form)
         {
-            _emotionalAppraisalAsset = ea;
-            this.EmotionDispositions = new BindingListView<EmotionDispositionDTO>(ea.EmotionDispositions.ToList());
+	        _mainForm = form;
+            this.EmotionDispositions = new BindingListView<EmotionDispositionDTO>(_emotionalAppraisalAsset.EmotionDispositions.ToList());
+	        _defaultEmotionalDisposition = _emotionalAppraisalAsset.DefaultEmotionDisposition;
         }
-
-
+		
         public void AddEmotionDisposition(EmotionDispositionDTO disp)
         {
             _emotionalAppraisalAsset.AddEmotionDisposition(disp);
             EmotionDispositions.DataSource = _emotionalAppraisalAsset.EmotionDispositions.ToList();
             EmotionDispositions.Refresh();
-        }
+			_mainForm.SetModified();
+		}
 
         public void UpdateEmotionDisposition(EmotionDispositionDTO oldDisp, EmotionDispositionDTO newDisp)
         {
@@ -46,16 +58,13 @@ namespace EmotionalAppraisalWF.ViewModels
             _emotionalAppraisalAsset.AddEmotionDisposition(newDisp);
             EmotionDispositions.DataSource = _emotionalAppraisalAsset.EmotionDispositions.ToList();
             EmotionDispositions.Refresh();
-        }
+			_mainForm.SetModified();
+		}
 
-        private void ChangeDefaultEmotionDisposition(int threshold, int decay)
+        private void UpdateDefaultEmotionDisposition()
         {
-            _emotionalAppraisalAsset.DefaultEmotionDisposition = new EmotionDispositionDTO
-            {
-                Decay = decay,
-                Threshold = threshold,
-                Emotion = "*"
-            };
+	        _emotionalAppraisalAsset.DefaultEmotionDisposition = _defaultEmotionalDisposition;
+			_mainForm.SetModified();
         }
 
         public void RemoveDispositions(IList<EmotionDispositionDTO> dispositionsToRemove)
@@ -66,6 +75,7 @@ namespace EmotionalAppraisalWF.ViewModels
             }
             EmotionDispositions.DataSource = _emotionalAppraisalAsset.EmotionDispositions.ToList();
             EmotionDispositions.Refresh();
-        }
+			_mainForm.SetModified();
+		}
     }
 }

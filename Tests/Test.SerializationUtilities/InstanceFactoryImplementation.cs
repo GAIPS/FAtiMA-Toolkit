@@ -16,11 +16,11 @@ namespace Test.SerializationUtilities
 
 	public class TestAssemblyLoader : IAssemblyLoader
 	{
-		public event Action OnAssemblyLoad;
+		public event Action<Assembly> OnAssemblyLoaded;
 
 		private void CurrentDomainOnAssemblyLoad(object sender, AssemblyLoadEventArgs args)
 		{
-			OnAssemblyLoad?.Invoke();
+			OnAssemblyLoaded?.Invoke(args.LoadedAssembly);
 		}
 
 		public void OnBind()

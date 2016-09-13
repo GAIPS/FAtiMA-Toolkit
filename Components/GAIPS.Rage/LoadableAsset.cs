@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
-using System.Text;
 using AssetManagerPackage;
 using AssetPackage;
 using SerializationUtilities;
 using Utilities.Json;
+#if PORTABLE
+using SerializationUtilities.Attributes;
+#endif
 
 namespace GAIPS.Rage
 {

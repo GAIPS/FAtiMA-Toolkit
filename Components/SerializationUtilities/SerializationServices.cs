@@ -2,13 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using SerializationUtilities.Attributes;
 using SerializationUtilities.SerializationGraph;
+using Utilities;
+#if !PORTABLE
+using System.Runtime.Serialization;
+#endif
 
 namespace SerializationUtilities
 {
+	using Pair = Pair<DefaultSerializationSystemAttribute, Type>;
+
 	public static class SerializationServices
 	{
 		private static IAssemblyLoader _assemblyLoader;
@@ -70,7 +75,7 @@ namespace SerializationUtilities
 
 		private static void BindAssemblyLoader(IAssemblyLoader loader)
 		{
-			loader.OnAssemblyLoad += SetDirty;
+			loader.OnAssemblyLoaded += SetDirty;
 			loader.OnBind();
 			_isDirty = true;
 		}
@@ -78,10 +83,10 @@ namespace SerializationUtilities
 		private static void UnbindAssemblyLoader(IAssemblyLoader loader)
 		{
 			loader.OnUnbind();
-			loader.OnAssemblyLoad -= SetDirty;
+			loader.OnAssemblyLoaded -= SetDirty;
 		}
 
-		private static void SetDirty()
+		private static void SetDirty(Assembly assembly)
 		{
 			_isDirty = true;
 		}
@@ -91,26 +96,66 @@ namespace SerializationUtilities
 			if(!_isDirty)
 				return;
 
-			var allTypes = _assemblyLoader.GetAssemblies().SelectMany(TypeTools.GetAllTypes).Where(t => !(t.IsAbstract() || t.IsInterface()));
-			var candidates = allTypes.ToLookup(t => _validTypes.FirstOrDefault(i => TypeTools.IsAssignableFrom(i,t)));
-		
+			_assemblyLoader.OnAssemblyLoaded -= SetDirty;
+
+			Dictionary<Type,List<Pair>> candidates = new Dictionary<Type, List<Pair>>();
+
+			var searchSet = new Queue<Assembly>(_assemblyLoader.GetAssemblies());
+			var foundSet = new HashSet<Assembly>();
+
+			Action<Assembly> onAssemblyLoaded = a =>
+			{
+				if(foundSet.Contains(a))
+					return;
+
+				searchSet.Enqueue(a);
+			};
+			_assemblyLoader.OnAssemblyLoaded += onAssemblyLoaded;
+
+			while (searchSet.Count>0)
+			{
+				var ass = searchSet.Dequeue();
+				foundSet.Add(ass);
+
+				foreach (var type in TypeTools.GetAllTypes(ass).Where(t => !(t.IsAbstract() || t.IsInterface())))
+				{
+					var key = _validTypes.FirstOrDefault(i => TypeTools.IsAssignableFrom(i, type));
+					if(key==null)
+						continue;
+
+					var att = type.GetTypeAttributes<DefaultSerializationSystemAttribute>(false).FirstOrDefault();
+					if(att==null)
+						continue;
+
+					List<Pair> set;
+					if (!candidates.TryGetValue(key, out set))
+					{
+						set = new List<Pair>();
+						candidates[key] = set;
+					}
+
+					set.Add(Tuples.Create(att,type));
+				}
+			}
+
+			_assemblyLoader.OnAssemblyLoaded -= onAssemblyLoaded;
+
 			RecalcTypeTrees(_surrogateSelector,candidates);
 			RecalcTypeTrees(_formatterSelector, candidates);
 
+			_assemblyLoader.OnAssemblyLoaded += SetDirty;
 			_isDirty = false;
 		}
 
-		private static void RecalcTypeTrees<T>(TypeSelector<T> selector, ILookup<Type, Type> group) where T: class
+		private static void RecalcTypeTrees<T>(TypeSelector<T> selector, Dictionary<Type, List<Pair>> group) where T: class
 		{
-			var validDefaults = group[typeof(T)]
-				.Select(t => new{type = t, att = t.GetTypeAttributes<DefaultSerializationSystemAttribute>(false).FirstOrDefault()})
-				.Where(e => e.att!=null);
+			var validDefaults = group[typeof (T)];
 
 			selector.Clear();
 			foreach (var entry in validDefaults)
 			{
-				var att = entry.att;
-				var ist = Activator.CreateInstance(entry.type);
+				var att = entry.Item1;
+				var ist = Activator.CreateInstance(entry.Item2);
 				selector.AddValue(att.AssociatedType,att.UseInChildren,(T)ist);
 			}
 		}

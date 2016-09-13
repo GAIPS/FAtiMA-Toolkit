@@ -4,7 +4,7 @@
 		{
 			"refId": 0,
 			"classId": 1,
-			"Description": null,
+			"Description": "",
 			"EmotionalHalfLifeDecayTime": 10,
 			"MoodHalfLifeDecayTime": 10,
 			"HalfLifeDecayConstant": 0.5,
@@ -41,7 +41,7 @@
 							"Timestamp": 0,
 							"LinkedEmotions": ["Distress"],
 							"Property": "IsBroken(Computer)",
-							"NewValue": "True"
+							"NewValue": true
 						}]
 				},
 			"EmotionalState":
@@ -61,8 +61,8 @@
 					"EmotionDispositions": [
 						{
 							"Emotion": "*",
-							"Decay": 1,
-							"Threshold": 1
+							"Decay": 2,
+							"Threshold": 6
 						}],
 					"Mood": 3
 				},
@@ -74,11 +74,6 @@
 							"EventName": "Event(Action-Start, Player, Speak(*, *, *, [type]), Self)",
 							"Conditions":
 								{
-									"m_conditions":
-										{
-											"_items": ["Likes([type]) = False"],
-											"_size": 1
-										},
 									"Set": ["Likes([type]) = False"]
 								},
 							"Desirability": -6,
@@ -88,11 +83,6 @@
 							"EventName": "Event(Action-Start, Player, Speak(*, *, *, [type]), Self)",
 							"Conditions":
 								{
-									"m_conditions":
-										{
-											"_items": ["Likes([type]) = True"],
-											"_size": 1
-										},
 									"Set": ["Likes([type]) = True"]
 								},
 							"Desirability": 6,
@@ -102,10 +92,6 @@
 							"EventName": "Event(Action-Start, Self, Speak(*, *, IsAnybodyThereQuestion, *), *)",
 							"Conditions":
 								{
-									"m_conditions":
-										{
-											"_items": []
-										},
 									"Set": []
 								},
 							"Desirability": -10
@@ -114,11 +100,6 @@
 							"EventName": "EVENT(Property-Change, *, IsBroken([t]), False)",
 							"Conditions":
 								{
-									"m_conditions":
-										{
-											"_items": ["Likes([t]) = True"],
-											"_size": 1
-										},
 									"Set": ["Likes([t]) = True"]
 								},
 							"Desirability": 10
@@ -127,11 +108,6 @@
 							"EventName": "EVENT(Property-Change, *, IsBroken([t]), True)",
 							"Conditions":
 								{
-									"m_conditions":
-										{
-											"_items": ["Likes([t]) = True"],
-											"_size": 1
-										},
 									"Set": ["Likes([t]) = True"]
 								},
 							"Desirability": -10

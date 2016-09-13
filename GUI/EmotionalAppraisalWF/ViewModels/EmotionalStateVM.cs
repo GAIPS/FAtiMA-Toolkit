@@ -8,7 +8,9 @@ namespace EmotionalAppraisalWF.ViewModels
 {
     public class EmotionalStateVM
     {
-        private EmotionalAppraisalAsset _emotionalAppraisalAsset;
+	    private BaseEAForm _mainForm;
+	    private EmotionalAppraisalAsset _emotionalAppraisalAsset => _mainForm.CurrentAsset;
+
         public BindingListView<EmotionDTO> Emotions {get;}
         
         public float Mood
@@ -25,10 +27,10 @@ namespace EmotionalAppraisalWF.ViewModels
             set{ _emotionalAppraisalAsset.Tick = value;}
         }
 
-        public EmotionalStateVM(EmotionalAppraisalAsset ea)
+        public EmotionalStateVM(BaseEAForm form)
         {
-            _emotionalAppraisalAsset = ea;
-            Emotions = new BindingListView<EmotionDTO>(ea.ActiveEmotions.ToList());
+	        _mainForm = form;
+            Emotions = new BindingListView<EmotionDTO>(_emotionalAppraisalAsset.ActiveEmotions.ToList());
         }
 
 	    public void AddEmotion(EmotionDTO newEmotion)
@@ -36,6 +38,7 @@ namespace EmotionalAppraisalWF.ViewModels
             var resultingEmotion = _emotionalAppraisalAsset.AddActiveEmotion(newEmotion);
             Emotions.DataSource.Add(resultingEmotion);
             Emotions.Refresh();
+			_mainForm.SetModified();
         }
 
         public void UpdateEmotion(EmotionDTO oldEmotion, EmotionDTO newEmotion)
@@ -44,7 +47,8 @@ namespace EmotionalAppraisalWF.ViewModels
             _emotionalAppraisalAsset.AddActiveEmotion(newEmotion);
             Emotions.DataSource = _emotionalAppraisalAsset.ActiveEmotions.ToList();
             Emotions.Refresh();
-        }
+			_mainForm.SetModified();
+		}
 
         public void RemoveEmotions(IList<EmotionDTO> emotionsToRemove)
         {
@@ -54,8 +58,7 @@ namespace EmotionalAppraisalWF.ViewModels
             }
             Emotions.DataSource = _emotionalAppraisalAsset.ActiveEmotions.ToList();
             Emotions.Refresh();
-        }
-
-
+			_mainForm.SetModified();
+		}
     }
 }

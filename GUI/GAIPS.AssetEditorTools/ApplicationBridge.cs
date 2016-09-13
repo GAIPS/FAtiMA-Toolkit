@@ -2,7 +2,7 @@
 using System.IO;
 using AssetPackage;
 
-namespace GAIPS.AssetEditor
+namespace GAIPS.AssetEditorTools
 {
 	public class ApplicationBridge : IBridge, IDataStorage
 	{

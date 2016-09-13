@@ -4,9 +4,9 @@ using SocialImportance;
 
 namespace RolePlayCharacterWF
 {
-	public class SIAssetControl : BaseAssetControl<SocialImportanceAsset>{}
+	public class SIAssetControl : BaseAssetControl<SocialImportanceAsset,SocialImportanceWF.MainForm>{}
 
-	public class EAAssetControl : BaseAssetControl<EmotionalAppraisalAsset> {}
+	public class EAAssetControl : BaseAssetControl<EmotionalAppraisalAsset,EmotionalAppraisalWF.MainForm> {}
 
-	public class EDMAssetControl : BaseAssetControl<EmotionalDecisionMakingAsset> { }
+	public class EDMAssetControl : BaseAssetControl<EmotionalDecisionMakingAsset,EmotionalDecisionMakingWF.MainForm> { }
 }

@@ -1,22 +1,27 @@
 ﻿using System;
 using System.ComponentModel;
-using System.IO;
 using System.Windows.Forms;
+using GAIPS.Rage;
 
 namespace GAIPS.AssetEditorTools
 {
 	public abstract partial class BaseAssetForm<T> : Form
+		where T: LoadableAsset<T>
 	{
 		private bool _wasModified;
 
 		[Description("The title name of the editor."),Category("Appearance")]
 		public string EditorName{get; set; }
 
+		public bool IsEditingOutsideInstance { get; private set; } = false;
 		public T CurrentAsset { get; private set; }
 
 		protected BaseAssetForm()
 		{
 			InitializeComponent();
+
+			UpdateWindowTitle();
+			//Initialize other stuff
 		}
 
 		public void SetModified()
@@ -25,48 +30,46 @@ namespace GAIPS.AssetEditorTools
 			UpdateWindowTitle();
 		}
 
-		private void BaseAssetForm_Shown(object sender, EventArgs e)
+		public string SelectAssetFileFromBrowser()
 		{
-			if(DesignMode)
-				return;
+			var ofd = new OpenFileDialog();
+			ofd.Filter = GetAssetFileFilters() + "|All Files|*.*";
+			if (ofd.ShowDialog() != DialogResult.OK)
+				return null;
 
-			string[] args = Environment.GetCommandLineArgs();
-			if (args.Length <= 1)
-			{
-				CreateNewAsset();
-				return;
-			}
-
-			var fileName = args[1];
-			try
-			{
-				var fullPath = Path.GetFullPath(fileName);
-				if (File.Exists(fullPath))
-				{
-					if (!OpenAssetAtPath(fullPath))
-					{
-						CreateNewAsset();
-					}
-				}
-				else
-				{
-					CreateNewAsset();
-					SaveAssetToFile(CurrentAsset, fullPath);
-					_wasModified = false;
-					UpdateWindowTitle();
-				}
-			}
-			catch (Exception)
-			{
-				MessageBox.Show(
-					$"\"{fileName}\" is not a valid url path.\nPlease check the path parameter being passed to this application.",
-					"Invalid file path format", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-				CreateNewAsset();
-				return;
-			}
+			return ofd.FileName;
 		}
 
+		public string CreateAndSaveEmptyAsset()
+		{
+			var sfd = new SaveFileDialog();
+			sfd.Filter = GetAssetFileFilters() + "|All Files|*.*";
+
+			if (sfd.ShowDialog() != DialogResult.OK)
+				return null;
+
+			var asset = CreateEmptyAsset();
+			SaveAssetToFile(asset,sfd.FileName);
+			return sfd.FileName;
+		}
+
+		public void EditAssetInstance(T asset)
+		{
+			var newBool = asset != null;
+
+			newToolStripMenuItem.Enabled = !newBool;
+			openToolStripMenuItem.Enabled = !newBool;
+			saveAsToolStripMenuItem.Enabled = !newBool;
+
+			CurrentAsset = asset;
+			IsEditingOutsideInstance = newBool;
+			
+			OnAssetDataLoaded(asset);
+
+			_wasModified = false;
+			UpdateWindowTitle();
+		}
+		
 		private void newToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			CreateNewAsset();
@@ -77,12 +80,9 @@ namespace GAIPS.AssetEditorTools
 			if (!AssetSaveModified())
 				return;
 
-			var ofd = new OpenFileDialog();
-			ofd.Filter = GetAssetFileFilters() + "|All Files|*.*";
-			if (ofd.ShowDialog() != DialogResult.OK)
-				return;
-
-			OpenAssetAtPath(ofd.FileName);
+			var path = SelectAssetFileFromBrowser();
+			if (path != null)
+				OpenAssetAtPath(path);
 		}
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -126,6 +126,12 @@ namespace GAIPS.AssetEditorTools
 
 		private void UpdateWindowTitle()
 		{
+			if (CurrentAsset == null)
+			{
+				Text = EditorName;
+				return;
+			}
+
 			var path = GetAssetCurrentPath(CurrentAsset);
 			Text = EditorName + (string.IsNullOrEmpty(path) ? string.Empty : $" - {path}") +
 			       (_wasModified ? "*" : string.Empty);
@@ -146,7 +152,8 @@ namespace GAIPS.AssetEditorTools
 					MessageBoxIcon.Error);
 				return false;
 			}
-			LoadAssetData(CurrentAsset);
+			IsEditingOutsideInstance = false;
+			OnAssetDataLoaded(CurrentAsset);
 			return true;
 		}
 
@@ -160,7 +167,8 @@ namespace GAIPS.AssetEditorTools
 			CurrentAsset = CreateEmptyAsset();
 			_wasModified = false;
 			UpdateWindowTitle();
-			LoadAssetData(CurrentAsset);
+			IsEditingOutsideInstance = false;
+			OnAssetDataLoaded(CurrentAsset);
 		}
 
 		protected bool SaveAsset(bool force)
@@ -197,16 +205,31 @@ namespace GAIPS.AssetEditorTools
 
 		protected abstract T CreateEmptyAsset();
 
-		protected abstract T LoadAssetFromFile(string path);
+		protected virtual T LoadAssetFromFile(string path)
+		{
+			return LoadableAsset<T>.LoadFromFile(path);
+		}
 
-		protected abstract void SaveAssetToFile(T asset, string path);
+		protected void SaveAssetToFile(T asset, string path)
+		{
+			OnWillSaveAsset(asset);
+			asset.SaveToFile(path);
+		}
 
-		protected abstract string GetAssetCurrentPath(T asset);
+		protected virtual string GetAssetCurrentPath(T asset)
+		{
+			return asset.AssetFilePath;
+		}
 
 		protected abstract string GetAssetFileFilters();
 
-		protected virtual void LoadAssetData(T asset)
+		protected virtual void OnAssetDataLoaded(T asset)
 		{
+		}
+
+		protected virtual void OnWillSaveAsset(T asset)
+		{
+			
 		}
 
 		#endregion

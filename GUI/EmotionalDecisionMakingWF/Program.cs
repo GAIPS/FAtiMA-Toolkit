@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using AssetManagerPackage;
 using GAIPS.AssetEditorTools;
 
-namespace RolePlayCharacterWF
+namespace EmotionalDecisionMakingWF
 {
 	static class Program
 	{

@@ -5,7 +5,6 @@ using ActionLibrary;
 using EmotionalAppraisal;
 using GAIPS.Rage;
 using SerializationUtilities;
-using KnowledgeBase;
 using SocialImportance.DTOs;
 using Utilities;
 using WellFormedNames;
@@ -427,18 +426,19 @@ namespace SocialImportance
 
 		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
-			m_attributionRules.Clear();
-			m_attributionRules.UnionWith(dataHolder.GetValue<AttributionRule[]>("AttributionRules"));
-
+			m_attributionRules = new HashSet<AttributionRule>(dataHolder.GetValue<AttributionRule[]>("AttributionRules"));
+			
 			var claims = dataHolder.GetValue<ClaimDTO[]>("Claims");
-			m_claimTree.Clear();
+			m_claimTree = new NameSearchTree<uint>();
 			foreach (var c in claims)
 				m_claimTree.Add(Name.BuildName(c.ActionTemplate), c.ClaimSI);
 
 			var conferrals = dataHolder.GetValue<Conferral[]>("Conferrals");
-			m_conferalActions.Clear();
+			m_conferalActions = new ActionSelector<Conferral>(ValidateConferral);
 			foreach (var c in conferrals)
 				m_conferalActions.AddActionDefinition(c);
+
+			m_cachedSI = new NameSearchTree<NameSearchTree<float>>();
 		}
 
 		/// @endcond

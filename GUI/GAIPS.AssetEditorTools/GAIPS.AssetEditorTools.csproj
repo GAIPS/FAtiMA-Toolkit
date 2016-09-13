@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ApplicationBridge.cs" />
     <Compile Include="BaseAssetForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -38,6 +39,7 @@
     </Compile>
     <Compile Include="ConditionHolder.cs" />
     <Compile Include="ConditionSetView.cs" />
+    <Compile Include="EditorTools.cs" />
     <Compile Include="EditorUtilities.cs" />
     <Compile Include="GenericPropertyDataGridControler.cs">
       <SubType>UserControl</SubType>

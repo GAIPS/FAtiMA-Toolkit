@@ -6,7 +6,7 @@ namespace SerializationUtilities
 {
 	public interface IAssemblyLoader
 	{
-		event Action OnAssemblyLoad;
+		event Action<Assembly> OnAssemblyLoaded;
 
 		void OnBind();
 		void OnUnbind();

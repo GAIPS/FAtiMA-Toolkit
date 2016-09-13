@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using SerializationUtilities;
 using EmotionalAppraisal;
 using EmotionalDecisionMaking;
 using System.Collections.Generic;
@@ -221,7 +219,14 @@ namespace RolePlayCharacter
 		    return LoadableAsset<T>.LoadFromFile(ToAbsolutePath(path));
 	    }
 
-        /// <summary>
+	    public void ReloadDefitions()
+	    {
+		    var error = OnAssetLoaded();
+			if(!string.IsNullOrEmpty(error))
+				throw new Exception(error);
+	    }
+
+	    /// <summary>
         /// Saves the current state of the asset into a file
         /// </summary>
         /// <param name="filePath">The path for the save file</param>

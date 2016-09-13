@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
 using AssetManagerPackage;
-using GAIPS.Rage;
 
 namespace IntegratedAuthoringToolWF
 {
@@ -13,7 +12,6 @@ namespace IntegratedAuthoringToolWF
         [STAThread]
         static void Main()
         {
-			AssetManager.Instance.Bridge = new BasicIOBridge();
 			Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());

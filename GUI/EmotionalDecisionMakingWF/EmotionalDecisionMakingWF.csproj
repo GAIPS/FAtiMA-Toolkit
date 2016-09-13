@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A1727658-04B9-479A-98DB-F04C897488CC}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>EmotionalDecisionMakingWF</RootNamespace>
     <AssemblyName>EmotionalDecisionMakingWF</AssemblyName>
@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <StartupObject>EmotionalDecisionMakingWF.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Equin.ApplicationFramework.BindingListView, Version=1.4.5222.35545, Culture=neutral, processorArchitecture=MSIL">
@@ -62,12 +62,16 @@
     <Compile Include="AddOrEditReactionForm.Designer.cs">
       <DependentUpon>AddOrEditReactionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="BaseEDMForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="AddOrEditReactionForm.resx">
       <DependentUpon>AddOrEditReactionForm.cs</DependentUpon>
@@ -127,10 +131,6 @@
     <ProjectReference Include="..\..\Assets\EmotionalDecisionMaking\EmotionalDecisionMaking.csproj">
       <Project>{a1e56f5c-eaac-43e5-a922-5b244168ea5c}</Project>
       <Name>EmotionalDecisionMaking</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GAIPS.AssetEditor.Core\GAIPS.AssetEditor.Core.csproj">
-      <Project>{d610275e-9f56-44bd-bfca-0ad1c9ff59c6}</Project>
-      <Name>GAIPS.AssetEditor.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\GAIPS.AssetEditorTools\GAIPS.AssetEditorTools.csproj">
       <Project>{c61fb19d-e715-4eb4-afca-27ff81a14777}</Project>

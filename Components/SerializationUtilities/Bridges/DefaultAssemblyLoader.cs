@@ -6,13 +6,13 @@ namespace SerializationUtilities
 {
 	internal class DefaultAssemblyLoader : IAssemblyLoader
 	{
-		public event Action OnAssemblyLoad;
+		public event Action<Assembly> OnAssemblyLoaded;
 
 #if !PORTABLE
 		
 		private void CurrentDomainOnAssemblyLoad(object sender, AssemblyLoadEventArgs args)
 		{
-			OnAssemblyLoad?.Invoke();
+			OnAssemblyLoaded?.Invoke(args.LoadedAssembly);
 		}
 
 #endif

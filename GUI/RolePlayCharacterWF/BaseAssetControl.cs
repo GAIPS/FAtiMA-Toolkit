@@ -1,20 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
+using GAIPS.AssetEditorTools;
 using GAIPS.Rage;
 using RolePlayCharacterWF.Properties;
 
 namespace RolePlayCharacterWF
 {
-	public partial class BaseAssetControl<T> : UserControl
-		where T: LoadableAsset<T>
+	public partial class BaseAssetControl<TAsset,TEditor> : UserControl
+		where TAsset: LoadableAsset<TAsset>
+		where TEditor: BaseAssetForm<TAsset>
 	{
 		[Description("Group Label"), Category("Appearance")]
 		public string Label {
@@ -22,42 +19,44 @@ namespace RolePlayCharacterWF
 			set { groupBox1.Text = value; }
 		}
 
-		[Description("Open File Filters"),Category("Behavior")]
-		public string Filters { get; set; }
+		public string Path => _path.Text;
 
-		[Description("Relative Path to the respective Asset Editor"), Category("Behavior")]
-		public string AssetEditorExecutablePath { get; set; }
-
-		public string Path
-		{
-			get { return _path.Text; }
-			set { _path.Text = value; }
-		}
+		public TAsset Asset { get; private set; }
 
 		[Category("Action")]
 		public event EventHandler OnPathChanged;
+		[Category("Action")]
+		public event EventHandler OnAssetReload;
+
+		private TEditor _controlForm;
 
 		public BaseAssetControl()
 		{
 			InitializeComponent();
+			_controlForm=(TEditor)Activator.CreateInstance(typeof(TEditor));
+		}
+
+		public void SetAsset(TAsset asset)
+		{
+			Asset = asset;
+			_path.Text = asset?.AssetFilePath;
 		}
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			var ofd = new OpenFileDialog();
-			ofd.Filter = Filters;
-			if (ofd.ShowDialog() == DialogResult.OK)
+			var path = _controlForm.SelectAssetFileFromBrowser();
+			if(path==null)
+				return;
+
+			try
 			{
-				try
-				{
-					var asset = LoadableAsset<T>.LoadFromFile(ofd.FileName);
-					_path.Text = ofd.FileName;
-					OnPathChanged?.Invoke(this,new EventArgs());
-				}
-				catch (Exception ex)
-				{
-					MessageBox.Show(ex.Message + "-" + ex.StackTrace, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-				}
+				LoadableAsset<TAsset>.LoadFromFile(path);
+				_path.Text = path;
+				OnPathChanged?.Invoke(this, new EventArgs());
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message + "-" + ex.StackTrace, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
@@ -76,19 +75,35 @@ namespace RolePlayCharacterWF
 			if (string.IsNullOrEmpty(Path))
 				return;
 
-			Process.Start(AssetEditorExecutablePath, $"\"{Path}\"");
+			EditAsset();
 		}
 
 		private void _createNewButton_Click(object sender, EventArgs e)
 		{
-			var sfd = new SaveFileDialog();
-			sfd.Filter = Filters;
-			if (sfd.ShowDialog() == DialogResult.OK)
-			{
-				_path.Text = sfd.FileName;
-				OnPathChanged?.Invoke(this, new EventArgs());
-				Process.Start(AssetEditorExecutablePath, $"\"{Path}\"");
-			}
+			var path = _controlForm.CreateAndSaveEmptyAsset();
+			if (path == null)
+				return;
+
+			_path.Text = path;
+			OnPathChanged?.Invoke(this, new EventArgs());
+
+			EditAsset();
+		}
+
+		private void EditAsset()
+		{
+			ParentForm.Visible = false;
+
+			var lastTime = File.GetLastWriteTimeUtc(Asset.AssetFilePath);
+			_controlForm.EditAssetInstance(Asset);
+			_controlForm.ShowDialog(ParentForm);
+
+			var currentTime = File.GetLastWriteTimeUtc(Asset.AssetFilePath);
+			if (currentTime <= lastTime)
+				OnAssetReload?.Invoke(this, new EventArgs());
+
+
+			ParentForm.Visible = true;
 		}
 	}
 }

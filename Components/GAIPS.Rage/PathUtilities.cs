@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using Utilities;
 
@@ -7,7 +9,9 @@ namespace GAIPS.Rage
 {
 	internal static class PathUtilities
 	{
-		//private static bool IsDirChar(char c)
+		public const char DirectorySeparatorChar = '\\';
+		public const char AltDirectorySeparatorChar = '/';
+		////private static bool IsDirChar(char c)
 		//{
 		//	return c == System.IO.Path.DirectorySeparatorChar || c == System.IO.Path.AltDirectorySeparatorChar;
 		//}
@@ -31,7 +35,7 @@ namespace GAIPS.Rage
 		public static string CleanCombine(string basePath, string relativePath)
 		{
 			var result = basePath;
-			var dirs = relativePath.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+			var dirs = relativePath.Split(DirectorySeparatorChar,AltDirectorySeparatorChar);
 			foreach (var d in dirs)
 			{
 				if (string.IsNullOrEmpty(d))
@@ -40,7 +44,7 @@ namespace GAIPS.Rage
 				if (d == "..")
 					result = Path.GetDirectoryName(result);
 				else
-					result += Path.DirectorySeparatorChar + d;
+					result += DirectorySeparatorChar + d;
 			}
 
 			return result;
@@ -48,8 +52,8 @@ namespace GAIPS.Rage
 
 		public static string RelativePath(string absolutePath, string relativeTo)
 		{
-			string[] relativeDirectories = relativeTo.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-			string[] absoluteDirectories = absolutePath.Split(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+			string[] relativeDirectories = relativeTo.Split(DirectorySeparatorChar, AltDirectorySeparatorChar);
+			string[] absoluteDirectories = absolutePath.Split(DirectorySeparatorChar, AltDirectorySeparatorChar);
 
 			//Get the shortest of the two paths
 			int length = relativeDirectories.Length < absoluteDirectories.Length ? relativeDirectories.Length : absoluteDirectories.Length;
@@ -77,11 +81,11 @@ namespace GAIPS.Rage
 				//Add on the ..
 				for (index = lastCommonRoot + 1; index < relativeDirectories.Length; index++)
 					if (relativeDirectories[index].Length > 0)
-						relativePath.Append("..").Append(Path.DirectorySeparatorChar);
+						relativePath.Append("..").Append(DirectorySeparatorChar);
 
 				//Add on the folders
 				for (index = lastCommonRoot + 1; index < absoluteDirectories.Length - 1; index++)
-					relativePath.Append(absoluteDirectories[index]).Append(Path.DirectorySeparatorChar);
+					relativePath.Append(absoluteDirectories[index]).Append(DirectorySeparatorChar);
 
 				relativePath.Append(absoluteDirectories[absoluteDirectories.Length - 1]);
 

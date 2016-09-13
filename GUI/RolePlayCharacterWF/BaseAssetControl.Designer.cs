@@ -1,6 +1,6 @@
 ﻿namespace RolePlayCharacterWF
 {
-	partial class BaseAssetControl<T>
+	partial class BaseAssetControl<TAsset, TEditor>
 	{
 		/// <summary> 
 		/// Required designer variable.

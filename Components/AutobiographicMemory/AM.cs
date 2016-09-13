@@ -165,7 +165,8 @@ namespace AutobiographicMemory
 
 		public void SwapPerspective(Name oldPerspective, Name newPerspective)
 		{
-			foreach (var key in m_registry.Keys)
+			var currentKeys = m_registry.Keys.ToArray();
+			foreach (var key in currentKeys)
 			{
 				var evt = m_registry[key];
 				m_registry[key] = evt.SwapPerspective(oldPerspective, newPerspective);
