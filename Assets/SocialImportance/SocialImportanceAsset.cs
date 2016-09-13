@@ -73,7 +73,7 @@ namespace SocialImportance
 
 		private void PerformKBBindings()
 		{
-			m_ea.RegistDynamicProperty(SI_DYNAMIC_PROPERTY_TEMPLATE,SIPropertyCalculator);
+			m_ea.RegistDynamicProperty(SI_DYNAMIC_PROPERTY_TEMPLATE,"The value of Social Importance attributed to [target]", SIPropertyCalculator);
 		}
 
 		private void RemoveKBBindings()

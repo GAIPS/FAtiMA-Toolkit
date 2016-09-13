@@ -480,10 +480,10 @@ namespace EmotionalAppraisal
 
 		private void BindCalls(KB kb)
 		{
-			kb.RegistDynamicProperty(MOOD_TEMPLATE, MoodPropertyCalculator);//, new[] { "x" });
-			kb.RegistDynamicProperty(STRONGEST_EMOTION_TEMPLATE, StrongestEmotionCalculator);
-			kb.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator);
-		}
+			kb.RegistDynamicProperty(MOOD_TEMPLATE, "The current mood value for agent [x]", MoodPropertyCalculator);//, new[] { "x" });
+			kb.RegistDynamicProperty(STRONGEST_EMOTION_TEMPLATE, "The type of the current strongest emotion that agent [x] is feeling.", StrongestEmotionCalculator);
+			kb.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, "The intensity value for the emotion felt by agent [x] of type [y].",EmotionIntensityPropertyCalculator);
+        }
 
 		#region Dynamic Properties
 
@@ -666,7 +666,12 @@ namespace EmotionalAppraisal
 			m_kb.RegistDynamicProperty(propertyTemplate,surogate);
 		}
 
-		public void UnregistDynamicProperty(Name propertyTemplate)
+        public void RegistDynamicProperty(Name propertyTemplate, string description,  DynamicPropertyCalculator surogate)
+        {
+            m_kb.RegistDynamicProperty(propertyTemplate, description, surogate);
+        }
+
+        public void UnregistDynamicProperty(Name propertyTemplate)
 		{
 			m_kb.UnregistDynamicProperty(propertyTemplate);
 		}
