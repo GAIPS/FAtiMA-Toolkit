@@ -24,7 +24,11 @@ namespace EmotionalAppraisalWF.ViewModels
         public ulong Start
         {
             get { return _emotionalAppraisalAsset.Tick; }
-            set{ _emotionalAppraisalAsset.Tick = value;}
+	        set
+	        {
+		        _emotionalAppraisalAsset.Tick = value;
+		        _mainForm.SetModified();
+	        }
         }
 
         public EmotionalStateVM(BaseEAForm form)

@@ -72,43 +72,55 @@ namespace EmotionalAppraisalWF
 
 		protected sealed override void OnWillSaveAsset(EmotionalAppraisalAsset asset)
 		{
-			_knowledgeBaseVM.UpdatePerspective();
+			_knowledgeBaseVM?.UpdatePerspective();
 		}
 
 		private void trackBar1_Scroll_1(object sender, EventArgs e)
         {
+			if(IsLoading)
+				return;
+
             moodValueLabel.Text = moodTrackBar.Value.ToString(MOOD_FORMAT);
             _emotionalStateVM.Mood = moodTrackBar.Value;
+			SetModified();
         }
 
-        #region EmotionalStateTab
-		
-        private void validateDecayHelper(TextBox textBoxDecay, CancelEventArgs e)
-        {
-            try
-            {
-                var newDecay = int.Parse(textBoxDecay.Text);
-                if (newDecay < 1)
-                {
-                    throw new Exception();
-                }
-            }
-            catch (Exception)
-            {
-                decayErrorProvider.SetError(textBoxDecay, Resources.ErrorHalfLifeDecay);
-                e.Cancel = true;
-            }
-        }
+		private void textBoxPerspective_TextChanged(object sender, EventArgs e)
+		{
+			if (IsLoading)
+				return;
 
-        private void comboBoxDefaultDecay_SelectedIndexChanged(object sender, EventArgs e)
+			if (!string.IsNullOrEmpty(textBoxPerspective.Text))
+			{
+				_knowledgeBaseVM.Perspective = textBoxPerspective.Text;
+			}
+		}
+
+		private void textBoxStartTick_TextChanged(object sender, EventArgs e)
+		{
+			if (IsLoading)
+				return;
+
+			_emotionalStateVM.Start = (ulong)StartTickField.Value;
+		}
+
+		#region EmotionalStateTab
+
+		private void comboBoxDefaultDecay_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _emotionDispositionsVM.DefaultDecay = int.Parse(comboBoxDefaultDecay.Text);
+			if (IsLoading)
+				return;
+
+			_emotionDispositionsVM.DefaultDecay = int.Parse(comboBoxDefaultDecay.Text);
         }
 
         private void comboBoxDefaultThreshold_SelectedIndexChanged(object sender, EventArgs e)
         {
-            _emotionDispositionsVM.DefaultThreshold = int.Parse(comboBoxDefaultThreshold.Text);
-        }
+			if (IsLoading)
+				return;
+
+			_emotionDispositionsVM.DefaultThreshold = int.Parse(comboBoxDefaultThreshold.Text);
+		}
 
         #endregion
 
@@ -149,9 +161,11 @@ namespace EmotionalAppraisalWF
             }
         }
 
-        #endregion
+		#endregion
 
-        private void dataGridViewAppraisalRules_RowEnter(object sender, DataGridViewCellEventArgs e)
+		#region Appraisal Rules
+		
+		private void dataGridViewAppraisalRules_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             var rule = ((ObjectView<AppraisalRuleDTO>) dataGridViewAppraisalRules.Rows[e.RowIndex].DataBoundItem).Object;
             _appraisalRulesVM.ChangeCurrentRule(rule);
@@ -181,19 +195,8 @@ namespace EmotionalAppraisalWF
             }
             _appraisalRulesVM.RemoveAppraisalRules(rulesToRemove);
         }
-		
-        private void textBoxPerspective_TextChanged(object sender, EventArgs e)
-        {
-            if (!string.IsNullOrEmpty(textBoxPerspective.Text))
-            {
-				_knowledgeBaseVM.Perspective = textBoxPerspective.Text;
-            }
-        }
 
-        private void textBoxStartTick_TextChanged(object sender, EventArgs e)
-        {
-	        _emotionalStateVM.Start = (ulong)StartTickField.Value;
-        }
+		#endregion
         
         private void addEmotionButton_Click(object sender, EventArgs e)
         {

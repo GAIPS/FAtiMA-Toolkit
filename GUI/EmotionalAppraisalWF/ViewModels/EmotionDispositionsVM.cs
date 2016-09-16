@@ -16,8 +16,7 @@ namespace EmotionalAppraisalWF.ViewModels
 	    public BindingListView<EmotionDispositionDTO> EmotionDispositions {get;}
 	    private EmotionDispositionDTO _defaultEmotionalDisposition;
 
-
-        public int DefaultThreshold
+		public int DefaultThreshold
         {
             get { return _defaultEmotionalDisposition.Threshold; }
 	        set

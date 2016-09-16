@@ -49,7 +49,6 @@ namespace EmotionalAppraisalWF.ViewModels
 			{
 				CurrentRuleConditions.SetData(null);
 			}
-			_mainForm.SetModified();
 		}
 
         public void ChangeCurrentRule(AppraisalRuleDTO rule)
@@ -65,13 +64,15 @@ namespace EmotionalAppraisalWF.ViewModels
         {
             _emotionalAppraisalAsset.AddOrUpdateAppraisalRule(newRule);
             RefreshData();
-        }
+			_mainForm.SetModified();
+		}
 
         public void RemoveAppraisalRules(IEnumerable<AppraisalRuleDTO> appraisalRules)
         {
             _emotionalAppraisalAsset.RemoveAppraisalRules(appraisalRules);
             SelectedRuleId = Guid.Empty;
             RefreshData();
-        }
+			_mainForm.SetModified();
+		}
     }
 }

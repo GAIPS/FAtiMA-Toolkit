@@ -6,6 +6,10 @@ using GAIPS.Rage;
 using SerializationUtilities;
 using IntegratedAuthoringTool.DTOs;
 using RolePlayCharacter;
+using Utilities;
+using WellFormedNames;
+using WellFormedNames.Collections;
+using IQueryable = WellFormedNames.IQueryable;
 
 namespace IntegratedAuthoringTool
 {
@@ -21,15 +25,14 @@ namespace IntegratedAuthoringTool
 		    public RolePlayCharacterAsset RPCAsset;
         }
 
-        public static readonly string VALID_DIALOGUE_PROPERTY = "ValidDialogue";
         public static readonly string INITIAL_DIALOGUE_STATE = "Start";
         public static readonly string TERMINAL_DIALOGUE_STATE = "End";
-        public static readonly string ANY_DIALOGUE_STATE = "*";
+        //public static readonly string ANY_DIALOGUE_STATE = "*";
         public static readonly string PLAYER = "Player";
         public static readonly string AGENT = "Agent";
 
-        private IList<DialogStateAction> m_playerDialogues;
-        private IList<DialogStateAction> m_agentDialogues;
+        private NameSearchTree<HashSet<DialogStateAction>> m_playerDialogues;
+		private NameSearchTree<HashSet<DialogStateAction>> m_agentDialogues;
 
         private Dictionary<string, CharacterHolder> m_characterSources;
         private Dictionary<string, string> m_dialogueStates;
@@ -59,11 +62,7 @@ namespace IntegratedAuthoringTool
 					    if (errorsOnLoad != null)
 					        return errorsOnLoad;
 
-						foreach (var d in m_agentDialogues)
-						{
-							var validDialoguePropertyName =$"{VALID_DIALOGUE_PROPERTY}({d.CurrentState},{d.NextState},{d.Meaning},{d.Style})";
-							pair.Value.RPCAsset.AddBelief(validDialoguePropertyName,"true");
-						}
+						RegistDynamicProperties(pair.Value.RPCAsset);
 					}
 
 					//if (!string.Equals(pair.Key, pair.Value.RPCAsset.CharacterName))
@@ -91,19 +90,31 @@ namespace IntegratedAuthoringTool
 
 	    public IntegratedAuthoringToolAsset()
         {
-            m_playerDialogues = new List<DialogStateAction>();
-            m_agentDialogues = new List<DialogStateAction>();
+            m_playerDialogues = new NameSearchTree<HashSet<DialogStateAction>>();
+            m_agentDialogues = new NameSearchTree<HashSet<DialogStateAction>>();
 	        m_characterSources = new Dictionary<string, CharacterHolder>();
             m_dialogueStates = new Dictionary<string, string>();
         }
 
-        /// <summary>
+	    private static void AddDialogAction(NameSearchTree<HashSet<DialogStateAction>> dic, DialogStateAction newAction)
+	    {
+		    var key = newAction.BuildSpeakAction();
+		    HashSet<DialogStateAction> set;
+		    if (!dic.TryGetValue(key, out set))
+		    {
+				set = new HashSet<DialogStateAction>();
+				dic.Add(key,set);
+		    }
+			set.Add(newAction);
+	    }
+
+	    /// <summary>
         /// Adds a new dialogue action
         /// </summary>
         /// <param name="dialogueStateActionDTO">The dto that specifies the dialogue action</param>
         public void AddAgentDialogAction(DialogueStateActionDTO dialogueStateActionDTO)
         {
-            this.m_agentDialogues.Add(new DialogStateAction(dialogueStateActionDTO));
+	        AddDialogAction(m_agentDialogues, new DialogStateAction(dialogueStateActionDTO));
         }
 
         /// <summary>
@@ -112,16 +123,13 @@ namespace IntegratedAuthoringTool
         /// <param name="character">The name of the character</param>
         public string GetCurrentDialogueState(string character)
         {
-            if (m_dialogueStates.ContainsKey(character))
-            {
-                return m_dialogueStates[character];
-            }
-            else
-            {
-                m_dialogueStates[character] = INITIAL_DIALOGUE_STATE;
-                return INITIAL_DIALOGUE_STATE;
-            }
-        }
+	        string state;
+	        if (m_dialogueStates.TryGetValue(character, out state))
+		        return state;
+
+			m_dialogueStates[character] = INITIAL_DIALOGUE_STATE;
+			return INITIAL_DIALOGUE_STATE;
+		}
 
         /// <summary>
         /// Updates the current dialogue state for a specific character
@@ -139,7 +147,7 @@ namespace IntegratedAuthoringTool
         /// <param name="dialogueStateActionDTO">The action to add.</param>
         public void AddPlayerDialogAction(DialogueStateActionDTO dialogueStateActionDTO)
         {
-            this.m_playerDialogues.Add(new DialogStateAction(dialogueStateActionDTO));
+			AddDialogAction(m_playerDialogues, new DialogStateAction(dialogueStateActionDTO));
         }
 
         /// <summary>
@@ -172,11 +180,9 @@ namespace IntegratedAuthoringTool
         /// <param name="state">Works as a filter for the state. The value "*" will consider all states.</param>
         public IEnumerable<DialogueStateActionDTO> GetDialogueActions(string speaker, string state)
         {
-            var dialogList = SelectDialogActionList(speaker);
-            if (state == ANY_DIALOGUE_STATE)
-                return dialogList.Select(d => d.ToDTO());
-            else
-                return dialogList.Where(d => d.CurrentState == state).Select(d => d.ToDTO());
+			var dialogList = SelectDialogActionList(speaker);
+			var S = DialogStateAction.BuildSpeakAction((Name)state,Name.UNIVERSAL_SYMBOL,Name.UNIVERSAL_SYMBOL,Name.UNIVERSAL_SYMBOL);
+	        return dialogList.Unify(S).SelectMany(p => p.Item1.Select(d => d.ToDTO()));
         }
 
         /// <summary>
@@ -184,14 +190,30 @@ namespace IntegratedAuthoringTool
         /// </summary>
         /// <param name="speaker">Either "Player" or "Agent".</param>
         /// <param name="actionsToRemove">The list of dialogues that are to be removed.</param>
-        public void  RemoveDialogueActions(string speaker, IEnumerable<DialogueStateActionDTO> actionsToRemove)
+        public void RemoveDialogueActions(string speaker, IEnumerable<DialogueStateActionDTO> actionsToRemove)
         {
             var dialogList = SelectDialogActionList(speaker);
-            foreach (var dialogueStateActionDto in actionsToRemove)
-            {
-                var action = dialogList.FirstOrDefault(d => d.Id == dialogueStateActionDto.Id);
-                dialogList.Remove(action);
-            }
+
+			var pairs = actionsToRemove.Select(dto => new {key = DialogStateAction.BuildSpeakAction((Name)dto.CurrentState,(Name)dto.NextState,(Name)dto.Meaning,(Name)dto.Style), dto});
+	        var group = pairs.GroupBy(a => a.key, a => a.dto);
+
+	        foreach (var g in group)
+	        {
+		        HashSet<DialogStateAction> set;
+				if(!dialogList.TryGetValue(g.Key,out set))
+					continue;
+
+		        foreach (var dto in g)
+		        {
+			        var r = set.FirstOrDefault(d => d.Id == dto.Id);
+					if(r==null)
+						continue;
+			        set.Remove(r);
+		        }
+
+		        if (set.Count == 0)
+					dialogList.Remove(g.Key);
+	        }
         }
 
 
@@ -215,6 +237,18 @@ namespace IntegratedAuthoringTool
 
 		    return holder.RPCAsset;
 	    }
+
+	    public RolePlayCharacterAsset InstantiateCharacterAsset(string characterName)
+	    {
+			CharacterHolder holder;
+			if (!m_characterSources.TryGetValue(characterName, out holder))
+				throw new Exception($"Character \"{characterName}\" not found");
+
+			var currentAbsolutePath = ToAbsolutePath(holder.Source);
+			var asset = RolePlayCharacterAsset.LoadFromFile(currentAbsolutePath);
+			RegistDynamicProperties(asset);
+		    return asset;
+		}
 
         /// <summary>
         /// Retreives all instance of the RPC assets.
@@ -252,7 +286,7 @@ namespace IntegratedAuthoringTool
         /// Retrieves the list of all dialogue actions for a speaker.
         /// </summary>
         /// <param name="speaker">Either "Player" or "Agent"</param>
-        private IList<DialogStateAction> SelectDialogActionList(string speaker)
+        private NameSearchTree<HashSet<DialogStateAction>> SelectDialogActionList(string speaker)
         {
             if (speaker != AGENT && speaker != PLAYER)
             {
@@ -265,9 +299,41 @@ namespace IntegratedAuthoringTool
                 return m_playerDialogues;
         }
 
-        #region Serialization
+		#region Dynamic Properties
 
-        public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+	    private void RegistDynamicProperties(RolePlayCharacterAsset character)
+	    {
+			character.RegistDynamicProperty(VALID_DIALOGUE_PROPERTY_TEMPLATE,"No description",ValidDialogPropertyCalculator);
+		}
+
+	    private static readonly Name VALID_DIALOGUE_PROPERTY_TEMPLATE = (Name)"ValidDialogue([currentState],[nextState],[meaning],[style])";
+		private IEnumerable<Pair<Name, SubstitutionSet>> ValidDialogPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		{
+			if (!perspective.Match(Name.SELF_SYMBOL))
+				return Enumerable.Empty<Pair<Name, SubstitutionSet>>();
+
+			Name currentState = GetArgument(args, "currentState");
+			Name nextState = GetArgument(args, "nextState");
+			Name meaning = GetArgument(args, "meaning");
+			Name style = GetArgument(args, "style");
+
+			var key = DialogStateAction.BuildSpeakAction(currentState, nextState, meaning, style);
+			return constraints.SelectMany(c => m_agentDialogues.Unify(key, c)).Select(p => Tuples.Create(Name.BuildName(true), p.Item2));
+		}
+
+		private static Name GetArgument(IDictionary<string, Name> args, string argName)
+		{
+			Name result;
+			if (!args.TryGetValue(argName, out result))
+				return Name.UNIVERSAL_SYMBOL;
+			return result;
+		}
+
+		#endregion
+
+		#region Serialization
+
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             dataHolder.SetValue("ScenarioName", ScenarioName);
             if (m_characterSources.Count > 0)
@@ -276,11 +342,11 @@ namespace IntegratedAuthoringTool
             }
             if (m_playerDialogues.Any())
             {
-                dataHolder.SetValue("PlayerDialogues", m_playerDialogues.Select(a => a.ToDTO()).ToArray());
+                dataHolder.SetValue("PlayerDialogues", m_playerDialogues.Values.SelectMany(set => set.Select(a => a.ToDTO())).ToArray());
             }
             if (m_agentDialogues.Any())
             {
-                dataHolder.SetValue("AgentDialogues", m_agentDialogues.Select(a => a.ToDTO()).ToArray());
+                dataHolder.SetValue("AgentDialogues", m_agentDialogues.Values.SelectMany(set => set.Select(a => a.ToDTO())).ToArray());
             }
         }
 
@@ -292,23 +358,29 @@ namespace IntegratedAuthoringTool
             if (charArray != null)
 				m_characterSources = charArray.ToDictionary(c => c.Name, c => new CharacterHolder() {Source = c.Source });
 
-            var playerDialogueArray = dataHolder.GetValue<DialogueStateActionDTO[]>("PlayerDialogues");
+			m_playerDialogues = new NameSearchTree<HashSet<DialogStateAction>>();
+			var playerDialogueArray = dataHolder.GetValue<DialogueStateActionDTO[]>("PlayerDialogues");
             if (playerDialogueArray != null)
             {
-                m_playerDialogues = new List<DialogStateAction>(playerDialogueArray.Select(dto => new DialogStateAction(dto)));
+	            foreach (var d in playerDialogueArray.Select(dto => new DialogStateAction(dto)))
+	            {
+					AddDialogAction(m_playerDialogues,d);
+	            }
             }
 
+			m_agentDialogues=new NameSearchTree<HashSet<DialogStateAction>>();
             var agentDialogueArray = dataHolder.GetValue<DialogueStateActionDTO[]>("AgentDialogues");
             if (agentDialogueArray != null)
             {
-                m_agentDialogues = new List<DialogStateAction>(agentDialogueArray.Select(dto => new DialogStateAction(dto)));
+	            foreach (var d in agentDialogueArray.Select(dto => new DialogStateAction(dto)))
+	            {
+					AddDialogAction(m_agentDialogues, d);
+	            }
             }
 
 			m_dialogueStates = new Dictionary<string, string>();
 		}
 
         #endregion
-
-      
     }
 }

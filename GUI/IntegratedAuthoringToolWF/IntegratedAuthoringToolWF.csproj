@@ -33,33 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Equin.ApplicationFramework.BindingListView, Version=1.4.5222.35545, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Equin.ApplicationFramework.BindingListView.1.4.5222.35545\lib\net40-Client\Equin.ApplicationFramework.BindingListView.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="RageAssetManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Speech" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AddOrEditDialogueActionForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AddOrEditDialogueActionForm.Designer.cs">
       <DependentUpon>AddOrEditDialogueActionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BaseIATForm.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="DialogueEditorForm.cs">
       <SubType>Form</SubType>
@@ -118,9 +99,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj">
-      <Project>{e011d502-5c0f-4a3f-9f1a-337ff025eb48}</Project>
-      <Name>ActionLibrary</Name>
+    <ProjectReference Include="..\..\Assets\IntegratedAuthoringTool\IntegratedAuthoringTool.csproj">
+      <Project>{f6ad95a5-889c-41a4-b613-b81f09a424ee}</Project>
+      <Name>IntegratedAuthoringTool</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Assets\RolePlayCharacter\RolePlayCharacter.csproj">
+      <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
+      <Name>RolePlayCharacter</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
       <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
@@ -130,18 +115,33 @@
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
       <Name>SerializationUtilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Assets\IntegratedAuthoringTool\IntegratedAuthoringTool.csproj">
-      <Project>{f6ad95a5-889c-41a4-b613-b81f09a424ee}</Project>
-      <Name>IntegratedAuthoringTool</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Assets\RolePlayCharacter\RolePlayCharacter.csproj">
-      <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
-      <Name>RolePlayCharacter</Name>
+    <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
+      <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
+      <Name>WellFormedNames</Name>
     </ProjectReference>
     <ProjectReference Include="..\GAIPS.AssetEditorTools\GAIPS.AssetEditorTools.csproj">
       <Project>{c61fb19d-e715-4eb4-afca-27ff81a14777}</Project>
       <Name>GAIPS.AssetEditorTools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RolePlayCharacterWF\RolePlayCharacterWF.csproj">
+      <Project>{63ec96bc-d3e1-491b-8c55-61a0f5fba210}</Project>
+      <Name>RolePlayCharacterWF</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Equin.ApplicationFramework.BindingListView, Version=1.4.5222.35545, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Equin.ApplicationFramework.BindingListView.1.4.5222.35545\lib\net40-Client\Equin.ApplicationFramework.BindingListView.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RageAssetManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Speech" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

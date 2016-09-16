@@ -6,6 +6,7 @@ using System.Linq;
 using ActionLibrary;
 using EmotionalAppraisal.DTOs;
 using GAIPS.Rage;
+using KnowledgeBase;
 using SocialImportance;
 using Utilities;
 using WellFormedNames;
@@ -165,6 +166,11 @@ namespace RolePlayCharacter
 		    _currentAction = null;
 	    }
 
+	    public void RegistDynamicProperty(Name propertyTemplate, string description, DynamicPropertyCalculator surrogate)
+	    {
+		    _emotionalAppraisalAsset.RegistDynamicProperty(propertyTemplate,description,surrogate);
+	    }
+
 	    #endregion
 
 	    protected override void OnAssetPathChanged(string oldpath)
@@ -219,29 +225,29 @@ namespace RolePlayCharacter
 		    return LoadableAsset<T>.LoadFromFile(ToAbsolutePath(path));
 	    }
 
-	    public void ReloadDefitions()
-	    {
-		    var error = OnAssetLoaded();
-			if(!string.IsNullOrEmpty(error))
+		public void ReloadDefitions()
+		{
+			var error = OnAssetLoaded();
+			if (!string.IsNullOrEmpty(error))
 				throw new Exception(error);
-	    }
+		}
 
-	    /// <summary>
-        /// Saves the current state of the asset into a file
-        /// </summary>
-        /// <param name="filePath">The path for the save file</param>
-        /// <param name="name">The name of the save file</param>
-        //public void SaveOutput(string filePath, string name)
-        //{
-        //    if(_emotionalAppraisalAsset == null)
-        //        return;
+		/// <summary>
+		/// Saves the current state of the asset into a file
+		/// </summary>
+		/// <param name="filePath">The path for the save file</param>
+		/// <param name="name">The name of the save file</param>
+		//public void SaveOutput(string filePath, string name)
+		//{
+		//    if(_emotionalAppraisalAsset == null)
+		//        return;
 
-        //    var filepath = Path.Combine(filePath, name);
-        //    using (var f = File.Open(filepath, FileMode.Create, FileAccess.Write))
-        //    {
-        //        var serializer = new JSONSerializer();
-        //        serializer.Serialize(f, _emotionalAppraisalAsset);
-        //    }
-        //}
-    }
+		//    var filepath = Path.Combine(filePath, name);
+		//    using (var f = File.Open(filepath, FileMode.Create, FileAccess.Write))
+		//    {
+		//        var serializer = new JSONSerializer();
+		//        serializer.Serialize(f, _emotionalAppraisalAsset);
+		//    }
+		//}
+	}
 }

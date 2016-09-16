@@ -17,7 +17,10 @@ namespace IntegratedAuthoringToolWF
 
 			Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+
+	        var form = new MainForm();
+			form.CreateNewAsset();
+			Application.Run(form);
         }
     }
 }

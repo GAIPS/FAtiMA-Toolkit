@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
+using AssetPackage;
 using GAIPS.AssetEditorTools;
 using GAIPS.Rage;
 using RolePlayCharacterWF.Properties;
@@ -21,14 +22,12 @@ namespace RolePlayCharacterWF
 
 		public string Path => _path.Text;
 
-		public TAsset Asset { get; private set; }
-
 		[Category("Action")]
 		public event EventHandler OnPathChanged;
-		[Category("Action")]
-		public event EventHandler OnAssetReload;
 
 		private TEditor _controlForm;
+		private Func<TAsset> _assetRequester;
+		private TEditor _activeForm=null;
 
 		public BaseAssetControl()
 		{
@@ -36,10 +35,10 @@ namespace RolePlayCharacterWF
 			_controlForm=(TEditor)Activator.CreateInstance(typeof(TEditor));
 		}
 
-		public void SetAsset(TAsset asset)
+		public void SetAsset(string assetPath, Func<TAsset> assetRequester)
 		{
-			Asset = asset;
-			_path.Text = asset?.AssetFilePath;
+			_assetRequester = assetRequester;
+			_path.Text = assetPath;
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -60,7 +59,7 @@ namespace RolePlayCharacterWF
 			}
 		}
 
-		private void button2_Click(object sender, EventArgs e)
+		private void _clearButton_Click(object sender, EventArgs e)
 		{
 			_path.Text = string.Empty;
 			OnPathChanged?.Invoke(this, new EventArgs());
@@ -93,18 +92,25 @@ namespace RolePlayCharacterWF
 
 		private void EditAsset()
 		{
-			ParentForm.Visible = false;
+			_clearButton.Enabled = false;
+			_createNewButton.Enabled = false;
+			_setButton.Enabled = false;
+			_editButton.Enabled = false;
 
-			var lastTime = File.GetLastWriteTimeUtc(Asset.AssetFilePath);
-			_controlForm.EditAssetInstance(Asset);
-			_controlForm.ShowDialog(ParentForm);
+			_activeForm = (TEditor)Activator.CreateInstance(typeof(TEditor));
+			_activeForm.EditAssetInstance(_assetRequester);
 
-			var currentTime = File.GetLastWriteTimeUtc(Asset.AssetFilePath);
-			if (currentTime <= lastTime)
-				OnAssetReload?.Invoke(this, new EventArgs());
+			_activeForm.Closed += (sender, args) =>
+			{
+				_clearButton.Enabled = true;
+				_createNewButton.Enabled = true;
+				_setButton.Enabled = true;
+				_editButton.Enabled = true;
 
+				_activeForm = null;
+			};
 
-			ParentForm.Visible = true;
+			_activeForm.Show();
 		}
 	}
 }

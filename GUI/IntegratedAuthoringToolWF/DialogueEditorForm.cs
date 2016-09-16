@@ -19,11 +19,11 @@ namespace IntegratedAuthoringToolWF
 
             this._iatAsset = iatAsset;
 
-            _playerDialogs = new BindingListView<DialogueStateActionDTO>(iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER,IntegratedAuthoringToolAsset.ANY_DIALOGUE_STATE).ToList());
+            _playerDialogs = new BindingListView<DialogueStateActionDTO>(iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER,WellFormedNames.Name.UNIVERSAL_STRING).ToList());
             this.dataGridViewPlayerDialogueActions.DataSource = _playerDialogs;
             dataGridViewPlayerDialogueActions.Columns["Id"].Visible = false;
 
-            _agentDialogs = new BindingListView<DialogueStateActionDTO>(iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, IntegratedAuthoringToolAsset.ANY_DIALOGUE_STATE).ToList());
+            _agentDialogs = new BindingListView<DialogueStateActionDTO>(iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, WellFormedNames.Name.UNIVERSAL_STRING).ToList());
             this.dataGridViewAgentDialogueActions.DataSource = _agentDialogs;
             dataGridViewAgentDialogueActions.Columns["Id"].Visible = false;
         }
@@ -52,14 +52,14 @@ namespace IntegratedAuthoringToolWF
         private void buttonAddPlayerDialogueAction_Click(object sender, System.EventArgs e)
         {
             new AddOrEditDialogueActionForm(_iatAsset, true).ShowDialog();
-            _playerDialogs.DataSource = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER,IntegratedAuthoringToolAsset.ANY_DIALOGUE_STATE).ToList();
+            _playerDialogs.DataSource = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, WellFormedNames.Name.UNIVERSAL_STRING).ToList();
             _playerDialogs.Refresh();
         }
 
         private void buttonAgentAddDialogAction_Click(object sender, System.EventArgs e)
         {
             new AddOrEditDialogueActionForm(_iatAsset, false).ShowDialog();
-            _agentDialogs.DataSource = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, IntegratedAuthoringToolAsset.ANY_DIALOGUE_STATE).ToList();
+            _agentDialogs.DataSource = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, WellFormedNames.Name.UNIVERSAL_STRING).ToList();
             _agentDialogs.Refresh();
         }
 
@@ -72,7 +72,7 @@ namespace IntegratedAuthoringToolWF
                 itemsToRemove.Add(item);
             }
             _iatAsset.RemoveDialogueActions(IntegratedAuthoringToolAsset.PLAYER, itemsToRemove);
-            _playerDialogs.DataSource = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, IntegratedAuthoringToolAsset.ANY_DIALOGUE_STATE).ToList();
+            _playerDialogs.DataSource = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, WellFormedNames.Name.UNIVERSAL_STRING).ToList();
             _playerDialogs.Refresh();
         }
 
@@ -85,7 +85,7 @@ namespace IntegratedAuthoringToolWF
                 itemsToRemove.Add(item);
             }
             _iatAsset.RemoveDialogueActions(IntegratedAuthoringToolAsset.AGENT, itemsToRemove);
-            _agentDialogs.DataSource = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, IntegratedAuthoringToolAsset.ANY_DIALOGUE_STATE).ToList();
+            _agentDialogs.DataSource = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, WellFormedNames.Name.UNIVERSAL_STRING).ToList();
             _agentDialogs.Refresh();
         }
 
@@ -95,7 +95,7 @@ namespace IntegratedAuthoringToolWF
             {
                 var item = ((ObjectView<DialogueStateActionDTO>)dataGridViewPlayerDialogueActions.SelectedRows[0].DataBoundItem).Object;
                 new AddOrEditDialogueActionForm(_iatAsset, true, item).ShowDialog();
-                _playerDialogs.DataSource = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, IntegratedAuthoringToolAsset.ANY_DIALOGUE_STATE).ToList();
+                _playerDialogs.DataSource = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, WellFormedNames.Name.UNIVERSAL_STRING).ToList();
                 _playerDialogs.Refresh();
             }
         }
@@ -106,14 +106,14 @@ namespace IntegratedAuthoringToolWF
             {
                 var item = ((ObjectView<DialogueStateActionDTO>)dataGridViewAgentDialogueActions.SelectedRows[0].DataBoundItem).Object;
                 new AddOrEditDialogueActionForm(_iatAsset, false, item).ShowDialog();
-                _agentDialogs.DataSource = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, IntegratedAuthoringToolAsset.ANY_DIALOGUE_STATE).ToList();
+                _agentDialogs.DataSource = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, WellFormedNames.Name.UNIVERSAL_STRING).ToList();
                 _agentDialogs.Refresh();
             }
         }
 
 		private void textToSpeachToolStripMenuItem_Click(object sender, System.EventArgs e)
 		{
-			var dialogs = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, IntegratedAuthoringToolAsset.ANY_DIALOGUE_STATE).ToArray();
+			var dialogs = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, WellFormedNames.Name.UNIVERSAL_STRING).ToArray();
 			new TextToSpeechForm(dialogs).Show(this);
 		}
 	}

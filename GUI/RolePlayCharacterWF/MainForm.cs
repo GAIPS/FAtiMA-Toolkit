@@ -7,34 +7,36 @@ namespace RolePlayCharacterWF
 {
     public sealed partial class MainForm : BaseRPCForm
     {
-	    private bool _ignoreEvents = false;
-
-		public MainForm()
+	    public MainForm()
         {
             InitializeComponent();
         }
 
 		protected override void OnAssetDataLoaded(RolePlayCharacterAsset asset)
 		{
-			_ignoreEvents = true;
-
 			textBoxCharacterName.Text = asset.CharacterName;
 			textBoxCharacterBody.Text = asset.BodyName;
-			var ea = EditorTools.GetFieldValue<EmotionalAppraisal.EmotionalAppraisalAsset>(asset, "_emotionalAppraisalAsset");
-			eaAssetControl1.SetAsset(ea);
 
-			var edm = EditorTools.GetFieldValue<EmotionalDecisionMaking.EmotionalDecisionMakingAsset>(asset, "_emotionalDecisionMakingAsset");
-			edmAssetControl1.SetAsset(edm);
-
-			var si = EditorTools.GetFieldValue<SocialImportance.SocialImportanceAsset>(asset, "_socialImportanceAsset");
-			siAssetControl1.SetAsset(si);
-
-			_ignoreEvents = false;
+			eaAssetControl1.SetAsset(asset.EmotionalAppraisalAssetSource, () =>
+			{
+				RequestAssetReload();
+				return EditorTools.GetFieldValue<EmotionalAppraisal.EmotionalAppraisalAsset>(CurrentAsset, "_emotionalAppraisalAsset");
+			});
+			edmAssetControl1.SetAsset(asset.EmotionalDecisionMakingSource,() =>
+			{
+				RequestAssetReload();
+				return EditorTools.GetFieldValue<EmotionalDecisionMaking.EmotionalDecisionMakingAsset>(CurrentAsset, "_emotionalDecisionMakingAsset");
+			});
+			siAssetControl1.SetAsset(asset.SocialImportanceAssetSource, () =>
+			{
+				RequestAssetReload();
+				return EditorTools.GetFieldValue<SocialImportance.SocialImportanceAsset>(CurrentAsset, "_socialImportanceAsset");
+			});
 		}
 		
 		private void textBoxCharacterName_TextChanged(object sender, EventArgs e)
         {
-			if(_ignoreEvents)
+			if(IsLoading)
 				return;
 
 			CurrentAsset.CharacterName = textBoxCharacterName.Text;
@@ -43,7 +45,7 @@ namespace RolePlayCharacterWF
 
         private void textBoxCharacterBody_TextChanged(object sender, EventArgs e)
         {
-			if (_ignoreEvents)
+			if (IsLoading)
 				return;
 
 			CurrentAsset.BodyName = textBoxCharacterBody.Text;
@@ -52,38 +54,35 @@ namespace RolePlayCharacterWF
 
 		private void eaAssetControl1_OnPathChanged(object sender, EventArgs e)
 		{
-			if (_ignoreEvents)
+			if (IsLoading)
 				return;
 
 			CurrentAsset.EmotionalAppraisalAssetSource = eaAssetControl1.Path;
-			ReloadAsset(sender,e);
+			CurrentAsset.ReloadDefitions();
+			ReloadEditor();
 			SetModified();
 		}
 
 		private void edmAssetControl1_OnPathChanged(object sender, EventArgs e)
 		{
-			if (_ignoreEvents)
+			if (IsLoading)
 				return;
 
 			CurrentAsset.EmotionalDecisionMakingSource = edmAssetControl1.Path;
-			ReloadAsset(sender, e);
+			CurrentAsset.ReloadDefitions();
+			ReloadEditor();
 			SetModified();
 		}
 
 		private void siAssetControl1_OnPathChanged(object sender, EventArgs e)
 		{
-			if (_ignoreEvents)
+			if (IsLoading)
 				return;
 
 			CurrentAsset.SocialImportanceAssetSource = siAssetControl1.Path;
-			ReloadAsset(sender, e);
-			SetModified();
-		}
-
-		private void ReloadAsset(object sender, EventArgs e)
-		{
 			CurrentAsset.ReloadDefitions();
-			OnAssetDataLoaded(CurrentAsset);
+			ReloadEditor();
+			SetModified();
 		}
 	}
 }

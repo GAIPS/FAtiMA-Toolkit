@@ -147,7 +147,6 @@ namespace RolePlayCharacterWF
 			this.siAssetControl1.Size = new System.Drawing.Size(422, 96);
 			this.siAssetControl1.TabIndex = 9;
 			this.siAssetControl1.OnPathChanged += new System.EventHandler(this.siAssetControl1_OnPathChanged);
-			this.siAssetControl1.OnAssetReload += new System.EventHandler(this.ReloadAsset);
 			// 
 			// edmAssetControl1
 			// 
@@ -158,7 +157,6 @@ namespace RolePlayCharacterWF
 			this.edmAssetControl1.Size = new System.Drawing.Size(422, 96);
 			this.edmAssetControl1.TabIndex = 10;
 			this.edmAssetControl1.OnPathChanged += new System.EventHandler(this.edmAssetControl1_OnPathChanged);
-			this.edmAssetControl1.OnAssetReload += new System.EventHandler(this.ReloadAsset);
 			// 
 			// eaAssetControl1
 			// 
@@ -169,7 +167,6 @@ namespace RolePlayCharacterWF
 			this.eaAssetControl1.Size = new System.Drawing.Size(422, 96);
 			this.eaAssetControl1.TabIndex = 11;
 			this.eaAssetControl1.OnPathChanged += new System.EventHandler(this.eaAssetControl1_OnPathChanged);
-			this.eaAssetControl1.OnAssetReload += new System.EventHandler(this.ReloadAsset);
 			// 
 			// MainForm
 			// 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
@@ -149,6 +150,28 @@ namespace Utilities
 				int j = random.Next(i, buffer.Length);
 				yield return buffer[j];
 				buffer[j] = buffer[i];
+			}
+		}
+
+		public static IEnumerable<T> Sort<T>(this IEnumerable<T> enumerable, Func<T, T, int> sortFunction)
+		{
+			var a = enumerable.ToArray();
+			Array.Sort(a, new LambaComparer<T>(sortFunction));
+			return a;
+		}
+
+		private sealed class LambaComparer<T> : IComparer<T>
+		{
+			private Func<T, T, int> _lambda;
+
+			public LambaComparer(Func<T, T, int> lambda)
+			{
+				_lambda = lambda;
+			}
+
+			public int Compare(T x, T y)
+			{
+				return _lambda(x, y);
 			}
 		}
 	}

@@ -10,12 +10,12 @@ namespace IntegratedAuthoringTool
     /// </summary>
     public class DialogStateAction
     {
-        public static readonly Name DIALOG_ACTION_NAME = Name.BuildName("Speak");
+        private static readonly Name DIALOG_ACTION_NAME = Name.BuildName("Speak");
         public Guid Id { get; private set; }
-	    public string CurrentState { get; private set; }
-        public string NextState { get; private set; }
-        public string Meaning { get; private set; }
-        public string Style { get; private set; }
+	    public Name CurrentState { get; private set; }
+        public Name NextState { get; private set; }
+        public Name Meaning { get; private set; }
+        public Name Style { get; private set; }
         public string Utterance { get; private set; }
 
         //private DialogStateAction(Name currentState, Name meaning, Name style, Name nextState) : 
@@ -28,12 +28,22 @@ namespace IntegratedAuthoringTool
 			//: this(Name.BuildName(dto.CurrentState), Name.BuildName(dto.Meaning), Name.BuildName(dto.Style), Name.BuildName(dto.NextState))
         {
 	        this.Id = dto.Id == Guid.Empty?Guid.NewGuid() : dto.Id;
-            this.CurrentState = Name.BuildName(dto.CurrentState).ToString();
-            this.Meaning = Name.BuildName(dto.Meaning).ToString();
-            this.Style = Name.BuildName(dto.Style).ToString();
-            this.NextState = Name.BuildName(dto.NextState).ToString();
+	        this.CurrentState = Name.BuildName(dto.CurrentState);
+	        this.Meaning = Name.BuildName(dto.Meaning);
+	        this.Style = Name.BuildName(dto.Style);
+	        this.NextState = Name.BuildName(dto.NextState);
             this.Utterance = dto.Utterance;
         }
+
+	    public Name BuildSpeakAction()
+	    {
+		    return BuildSpeakAction(CurrentState, NextState, Meaning, Style);
+	    }
+
+	    public static Name BuildSpeakAction(Name currentState, Name nextState, Name meaning, Name style)
+	    {
+		    return Name.BuildName(DIALOG_ACTION_NAME, currentState, nextState, meaning, style);
+	    }
 
         /// <summary>
         /// Creates a DTO from the dialogue action
@@ -43,10 +53,10 @@ namespace IntegratedAuthoringTool
             return new DialogueStateActionDTO
             {
                 Id = this.Id,
-                CurrentState = this.CurrentState,
-                Meaning = this.Meaning,
-                NextState = this.NextState,
-                Style = this.Style,
+                CurrentState = this.CurrentState.ToString(),
+                Meaning = this.Meaning.ToString(),
+                NextState = this.NextState.ToString(),
+                Style = this.Style.ToString(),
                 Utterance = this.Utterance
             };
         }
