@@ -428,8 +428,9 @@ namespace GAIPS.AssetEditorTools
 
 		protected bool SaveAsset(bool force)
 		{
-			if (!(_wasModified || force))
-				return true;
+            //Sam: I am removing this check as I do not see its purpose other than causing unexpected bugs
+			//if (!(_wasModified || force))
+				//return true;
 
 			var path = GetAssetCurrentPath(CurrentAsset);
 			if (string.IsNullOrEmpty(path))
