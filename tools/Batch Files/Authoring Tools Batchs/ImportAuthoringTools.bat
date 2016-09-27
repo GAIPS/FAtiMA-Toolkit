@@ -8,6 +8,8 @@ SET mainExportBat=ExportAuthTools.bat
 set targetFolder=%cd%%destination%
 set repFolder=%cd%\%assetRepositoryFolder%
 
+echo "%targetFolder%"
+
 IF NOT EXIST "%targetFolder%" (
 	echo Target folder "%targetFolder%" does not exist
 	exit /B
@@ -27,7 +29,7 @@ pushd %assetRepositoriesFolder%
 				set d="%targetFolder%\%%i Tools"
 				MKDIR %d%
 				CALL %mainExportBat% %d%
-				echo "%%i" Tools Importing Completed
+				echo "%%i" Tools Importing to "%d%" Completed
 			)
 		popd
 	)

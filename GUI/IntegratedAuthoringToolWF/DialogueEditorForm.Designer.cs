@@ -69,7 +69,6 @@
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Player Dialogue Actions";
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // buttonPlayerEditDialogueAction
             // 
@@ -185,12 +184,10 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.groupBox1);
-            this.splitContainer1.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
             this.splitContainer1.Size = new System.Drawing.Size(490, 589);
             this.splitContainer1.SplitterDistance = 294;
             this.splitContainer1.TabIndex = 17;
@@ -271,7 +268,6 @@
             this.Controls.Add(this.mainMenu);
             this.Name = "DialogueEditorForm";
             this.Text = "Dialogue Editor";
-            this.Load += new System.EventHandler(this.DialogueEditorForm_Load);
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPlayerDialogueActions)).EndInit();
             this.mainMenu.ResumeLayout(false);

@@ -102,7 +102,7 @@ namespace IntegratedAuthoringToolWF
 		[MenuItem("Tools/Show Dialog Editor #ctrl+D")]
 		private void ShowToolbar()
 		{
-			var d = new DialogueEditorForm(CurrentAsset);
+			var d = new DialogueEditorForm(this);
 			_dialogEditorIsShowing = true;
 			d.Closed += (sender, args) => { _dialogEditorIsShowing = false; };
 			d.Show();

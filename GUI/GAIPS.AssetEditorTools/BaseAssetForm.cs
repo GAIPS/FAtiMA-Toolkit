@@ -143,7 +143,7 @@ namespace GAIPS.AssetEditorTools
 
 		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			SaveAsset(false);
+			SaveAsset();
 		}
 
 		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -172,7 +172,7 @@ namespace GAIPS.AssetEditorTools
 			switch (result)
 			{
 				case DialogResult.Yes:
-					return SaveAsset(true);
+					return SaveAsset();
 				case DialogResult.No:
 					return true;
 			}
@@ -426,13 +426,9 @@ namespace GAIPS.AssetEditorTools
 			ReloadEditor();
 		}
 
-		protected bool SaveAsset(bool force)
+		protected bool SaveAsset()
 		{
-            //Sam: I am removing this check as I do not see its purpose other than causing unexpected bugs
-			//if (!(_wasModified || force))
-				//return true;
-
-			var path = GetAssetCurrentPath(CurrentAsset);
+            var path = GetAssetCurrentPath(CurrentAsset);
 			if (string.IsNullOrEmpty(path))
 				return SaveAssetAs();
 

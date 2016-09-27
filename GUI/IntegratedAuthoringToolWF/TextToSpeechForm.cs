@@ -9,6 +9,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
 using GAIPS.AssetEditorTools;
+using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
 
 namespace IntegratedAuthoringToolWF
@@ -128,12 +129,25 @@ namespace IntegratedAuthoringToolWF
 			});
 		}
 
+		private static string JoinStringArray(string[] strs)
+		{
+			switch (strs.Length)
+			{
+				case 0:
+					return "-";
+				case 1:
+					return strs[0];
+			}
+
+			return strs.Aggregate((s, s1) => s + "," + s1);
+		}
+
 		private void GenerateVoicesTask(string basePath, IProgressBarControler controller)
 		{
 			int i = 0;
 			foreach (var split in _agentActions.Zip(controller.Split(_agentActions.Length), (dto, ctrl) => new { data = dto, ctrl }))
 			{
-				var id = $"{split.data.CurrentState}#{split.data.NextState}#{split.data.Meaning}({split.data.Style})".ToUpperInvariant();
+				var id = $"{split.data.CurrentState}#{split.data.NextState}#{JoinStringArray(split.data.Meaning)}({JoinStringArray(split.data.Style)})".ToUpperInvariant();
 				var path = Path.Combine(basePath, id);
 				Directory.CreateDirectory(path);
 
@@ -170,7 +184,7 @@ namespace IntegratedAuthoringToolWF
 				return;
 			}
 
-			using (var writer = new XmlTextWriter(Path.Combine(path, "speech.xml"), Encoding.UTF8))
+			using (var writer = new XmlTextWriter(Path.Combine(path, "speech.xml"), new UTF8Encoding(false)))
 			{
 				writer.Formatting = Formatting.Indented;
 				writer.WriteStartDocument();

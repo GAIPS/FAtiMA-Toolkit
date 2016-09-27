@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
@@ -7,14 +8,15 @@ namespace IntegratedAuthoringToolWF
 {
     public partial class AddOrEditDialogueActionForm : Form
     {
-        private IntegratedAuthoringToolAsset _iatAsset;
+	    private MainForm _parentForm;
+        private IntegratedAuthoringToolAsset _iatAsset => _parentForm.CurrentAsset;
         private DialogueStateActionDTO _dialogueStateActionToEdit;
         private bool _isPlayerDialogue;
 
-        public AddOrEditDialogueActionForm(IntegratedAuthoringToolAsset iatAsset, bool isPlayerDialogue, DialogueStateActionDTO dialogueStateActionToEdit = null)
+        public AddOrEditDialogueActionForm(MainForm form, bool isPlayerDialogue, DialogueStateActionDTO dialogueStateActionToEdit = null)
         {
             InitializeComponent();
-            _iatAsset = iatAsset;
+	        _parentForm = form;
             _isPlayerDialogue = isPlayerDialogue;
   
             if (dialogueStateActionToEdit != null)
@@ -22,9 +24,9 @@ namespace IntegratedAuthoringToolWF
                 buttonAddOrUpdate.Text = "Update";
                 _dialogueStateActionToEdit = dialogueStateActionToEdit;
                 textBoxCurrentState.Text = _dialogueStateActionToEdit.CurrentState;
-                textBoxMeaning.Text = _dialogueStateActionToEdit.Meaning;
-                textBoxNextState.Text = _dialogueStateActionToEdit.NextState;
-                textBoxStyle.Text = _dialogueStateActionToEdit.Style;
+				textBoxNextState.Text = _dialogueStateActionToEdit.NextState;
+				textBoxMeaning.Text = _dialogueStateActionToEdit.Meaning.Length==0?string.Empty: _dialogueStateActionToEdit.Meaning.Aggregate((s, s1) => s+", "+s1);
+                textBoxStyle.Text = _dialogueStateActionToEdit.Style.Length==0?string.Empty:_dialogueStateActionToEdit.Style.Aggregate((s, s1) => s+", "+s1);
                 textBoxUtterance.Text = _dialogueStateActionToEdit.Utterance;
             }
 
@@ -50,9 +52,9 @@ namespace IntegratedAuthoringToolWF
                 var newDialogueAction = new DialogueStateActionDTO
                 {
                     CurrentState = textBoxCurrentState.Text,
-                    Meaning = textBoxMeaning.Text,
-                    NextState = textBoxNextState.Text,
-                    Style = textBoxStyle.Text,
+					NextState = textBoxNextState.Text,
+					Meaning = textBoxMeaning.Text.Split(',').Where(s => !string.IsNullOrEmpty(s)).ToArray(),
+                    Style = textBoxStyle.Text.Split(',').Where(s => !string.IsNullOrEmpty(s)).ToArray(),
                     Utterance = textBoxUtterance.Text
                 };
 
@@ -79,6 +81,7 @@ namespace IntegratedAuthoringToolWF
                     }
 
                 }
+				_parentForm.SetModified();
                 this.Close();
             }
             catch (Exception ex)
