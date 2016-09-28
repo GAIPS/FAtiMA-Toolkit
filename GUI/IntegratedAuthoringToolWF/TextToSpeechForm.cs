@@ -1,63 +1,89 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Speech.Synthesis;
 using System.Text;
-using System.Threading;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
 using GAIPS.AssetEditorTools;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
+using IntegratedAuthoringToolWF.TTSEngines;
+using IntegratedAuthoringToolWF.TTSEngines.System;
 
 namespace IntegratedAuthoringToolWF
 {
 	public partial class TextToSpeechForm : Form
 	{
-		private SpeechSynthesizer _synthesizer = new SpeechSynthesizer();
-		private PromptBuilder _builder = new PromptBuilder();
-		private VoiceInfo[] _installedVoices;
+		private static readonly ITextToSpeechEngine[] _ttsEngines =
+		{
+			new SystemTextToSpeechEngine()
+		};
 
-		private DialogueStateActionDTO[] _agentActions;
-		private Prompt _current = null;
+		private readonly DialogueStateActionDTO[] _agentActions;
+		private readonly IVoice[] _availableVoices;
+
+		private IVoice _selectedVoice;
 
 		public TextToSpeechForm(DialogueStateActionDTO[] agentActions)
 		{
 			InitializeComponent();
 
 			_agentActions = agentActions;
-			_installedVoices = _synthesizer.GetInstalledVoices().Where(v => v.Enabled).Select(v => v.VoiceInfo).ToArray();
-			_voiceComboBox.DataSource = _installedVoices.Select(VoiceToIdString).ToArray();
+
+			_dialogOptions.DataSource = _agentActions.Select(a => a.Utterance).ToArray();
+			_dialogOptions.SelectedIndex = -1;
+
+			_availableVoices = _ttsEngines.SelectMany(e => e.GetAvailableVoices()).ToArray();
+			_voiceComboBox.DataSource = _availableVoices.Select(VoiceToIdString).ToArray();
+			_selectedVoice = _availableVoices[0];
 			UpdateButtonText(true);
 
-			_rateValueLabel.Text = GetRate().ToString();
+			UpdateRateLabel();
 			UpdatePitchLabel();
 		}
 
-		private static string VoiceToIdString(VoiceInfo info)
+		private void _dialogOptions_SelectionChangeCommitted(object sender, EventArgs e)
 		{
-			return $"{info.Name}, {info.Gender} - {info.Age}, {info.Culture.Name}";
+			textBox1.Text = _agentActions[_dialogOptions.SelectedIndex].Utterance;
+		}
+
+		private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+		{
+			_dialogOptions.SelectedIndex = -1;
+		}
+
+		private static string VoiceToIdString(IVoice info)
+		{
+			return $"{info.Name}, {info.Gender} - {info.Age}, {info.Culture} ({info.ParentEngine.Name})";
+		}
+
+		private void OnVoiceSelectionChange(object sender, EventArgs e)
+		{
+			_selectedVoice = _availableVoices[_voiceComboBox.SelectedIndex];
 		}
 
 		private void OnTestButtonClick(object sender, EventArgs e)
 		{
-			if (_synthesizer.State == SynthesizerState.Speaking)
+			if (_selectedVoice.IsSpeaking)
 			{
-				_synthesizer.SpeakAsyncCancel(_current);
-				_current = null;
-				_synthesizer.SpeakCompleted -= SynthesizerOnSpeakCompleted;
-				UpdateButtonText(true);
+				_selectedVoice.CancelSpeaking();
 			}
 			else
-			{ 
-				UpdateSpeechData(textBox1.Text);
-				_synthesizer.SetOutputToDefaultAudioDevice();
-				_current = _synthesizer.SpeakAsync(_builder);
-				_synthesizer.SpeakCompleted += SynthesizerOnSpeakCompleted;
+			{
+				_voiceComboBox.Enabled = false;
+				_generateButton.Enabled = false;
 				UpdateButtonText(false);
+				_selectedVoice.Speak(textBox1.Text, GetRate(), GetPitch(), SynthesizerOnSpeakCompleted);
 			}
+		}
+
+		private void SynthesizerOnSpeakCompleted()
+		{
+			_voiceComboBox.Enabled = true;
+			_generateButton.Enabled = true;
+			UpdateButtonText(true);
 		}
 
 		private void UpdateButtonText(bool state)
@@ -67,12 +93,19 @@ namespace IntegratedAuthoringToolWF
 
 		private void OnRateValueChanged(object sender, EventArgs e)
 		{
-			_rateValueLabel.Text = GetRate().ToString();
+			UpdateRateLabel();
 		}
 
 		private void OnPitchValueChanged(object sender, EventArgs e)
 		{
 			UpdatePitchLabel();
+		}
+
+		private void UpdateRateLabel()
+		{
+			var r = GetRate();
+			var t = (r*100).ToString(CultureInfo.InvariantCulture);
+			_rateTextBox.Text = t + "%";
 		}
 
 		private void UpdatePitchLabel()
@@ -84,9 +117,31 @@ namespace IntegratedAuthoringToolWF
 		private double GetRate()
 		{
 			if (_speachRateSlider.InvokeRequired)
-				return (double) _speachRateSlider.Invoke((Func<double>)GetRate);
+				return (double) _speachRateSlider.Invoke((Func<double>) GetRate);
 
-			return Math.Pow(3, _speachRateSlider.Value * 0.01);
+			return _speachRateSlider.Value*0.001;
+		}
+
+		private void OnValidatedRateTextBox(object sender, EventArgs e)
+		{
+			var t = _rateTextBox.Text;
+			var m = Regex.Match(t, "^((?:\\d*(?:\\.|,))?\\d+)%?$");
+			if (m.Success)
+			{
+				double d;
+				if (double.TryParse(m.Groups[1].Value.Replace(',', '.'), out d))
+				{
+					var c = Clamp(d*10, _speachRateSlider.Minimum, _speachRateSlider.Maximum);
+					_speachRateSlider.Value = (int) Math.Round(c);
+				}
+			}
+
+			UpdateRateLabel();
+		}
+
+		private static double Clamp(double value, double min, double max)
+		{
+			return value < min ? min : (value > max ? max : value);
 		}
 
 		private int GetPitch()
@@ -97,21 +152,10 @@ namespace IntegratedAuthoringToolWF
 			return _pitchSlider.Value;
 		}
 
-		private VoiceInfo GetCurrentlySelectedVoiceInfo()
-		{
-			if (_voiceComboBox.InvokeRequired)
-				return (VoiceInfo)_voiceComboBox.Invoke((Func<VoiceInfo>) GetCurrentlySelectedVoiceInfo);
-
-			return _installedVoices[_voiceComboBox.SelectedIndex];
-		}
-
 		private void OnFormClosed(object sender, FormClosedEventArgs e)
 		{
-			if (_synthesizer.State != SynthesizerState.Speaking)
-				return;
-
-			_synthesizer.SpeakAsyncCancel(_current);
-			_current = null;
+			if (_selectedVoice.IsSpeaking)
+				_selectedVoice.CancelSpeaking();
 		}
 
 		private void OnGenerateButtonClick(object sender, EventArgs e)
@@ -125,163 +169,78 @@ namespace IntegratedAuthoringToolWF
 			EditorUtilities.DisplayProgressBar("Generating TTS from Agent's Dialog Data", controler =>
 			{
 				Directory.CreateDirectory(path);
-				GenerateVoicesTask(path,controler);
+				GenerateVoicesTask(path, controler);
 			});
-		}
-
-		private static string JoinStringArray(string[] strs)
-		{
-			switch (strs.Length)
-			{
-				case 0:
-					return "-";
-				case 1:
-					return strs[0];
-			}
-
-			return strs.Aggregate((s, s1) => s + "," + s1);
 		}
 
 		private void GenerateVoicesTask(string basePath, IProgressBarControler controller)
 		{
-			int i = 0;
-			foreach (var split in _agentActions.Zip(controller.Split(_agentActions.Length), (dto, ctrl) => new { data = dto, ctrl }))
-			{
-				var id = $"{split.data.CurrentState}#{split.data.NextState}#{JoinStringArray(split.data.Meaning)}({JoinStringArray(split.data.Style)})".ToUpperInvariant();
-				var path = Path.Combine(basePath, id);
-				Directory.CreateDirectory(path);
+			var rate = GetRate();
+			var pitch = GetPitch();
 
+			var i = 0;
+			foreach (
+				var split in _agentActions.Zip(controller.Split(_agentActions.Length), (dto, ctrl) => new {data = dto, ctrl}))
+			{
+				var id = DialogUtilities.GenerateFileKey(split.data);
+				var path = Path.Combine(basePath, id);
 				split.ctrl.Message = $"Generating TTS for Utterance ({++i}/{_agentActions.Length})";
-				GenerateTTS(path, split.data,split.ctrl);
+				var bake = _selectedVoice.BakeSpeechFiles(split.data.Utterance, rate, pitch);
+				if (bake != null)
+				{
+					if (!Directory.Exists(path))
+						Directory.CreateDirectory(path);
+
+					var hash = DialogUtilities.UtteranceHash(split.data.Utterance);
+					var path2 = Path.Combine(path, hash.ToString());
+					using (var audioFile = File.Open(path2 + ".wav", FileMode.Create, FileAccess.Write))
+					{
+						audioFile.Write(bake.waveStreamData, 0, bake.waveStreamData.Length);
+					}
+
+					using (var writer = new XmlTextWriter(path2 + ".xml", new UTF8Encoding(false)))
+					{
+						writer.Formatting = Formatting.Indented;
+						writer.WriteStartDocument();
+						writer.WriteStartElement("LipSyncVisemes");
+						writer.WriteAttributeString("wavFile", hash + ".wav");
+
+						double time = 0;
+						foreach (var v in bake.visemes)
+						{
+							if (v.viseme > Viseme.Silence)
+							{
+								writer.WriteStartElement("viseme");
+								writer.WriteAttributeString("type", ((sbyte) v.viseme).ToString());
+								writer.WriteAttributeString("time", time.ToString(CultureInfo.InvariantCulture));
+								writer.WriteAttributeString("duration", v.duration.ToString(CultureInfo.InvariantCulture));
+								writer.WriteEndElement();
+							}
+							time += v.duration;
+						}
+
+						writer.WriteEndElement();
+						writer.WriteEndDocument();
+					}
+				}
 				split.ctrl.Percent = 1;
 			}
 			controller.Percent = 1;
 		}
 
-		private void GenerateTTS(string path, DialogueStateActionDTO dto, IProgressBarControler ctrl)
+		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
-			List<Tuple<int, TimeSpan>> visemes = new List<Tuple<int, TimeSpan>>();
-			EventHandler<VisemeReachedEventArgs> visemeHandler = (o, args) =>
+			if (keyData == Keys.Enter && AcceptButton == null)
 			{
-				visemes.Add(Tuple.Create(args.Viseme, args.Duration));
-			};
-
-			_synthesizer.VisemeReached += visemeHandler;
-			UpdateSpeechData(dto.Utterance);
-			_synthesizer.SetOutputToWaveFile(Path.Combine(path, "speech.wav"));
-			_synthesizer.Speak(_builder);
-			_synthesizer.SetOutputToDefaultAudioDevice();
-			_synthesizer.VisemeReached -= visemeHandler;
-
-			ctrl.Percent = 0.5f;
-
-			if (visemes.Count == 0)
-			{
-				//No visemes were generated. This means that no speach was produced by the synthesizer.
-				//Delete folder and data, and ignore this text.
-
-				Directory.Delete(path,true);
-				return;
-			}
-
-			using (var writer = new XmlTextWriter(Path.Combine(path, "speech.xml"), new UTF8Encoding(false)))
-			{
-				writer.Formatting = Formatting.Indented;
-				writer.WriteStartDocument();
-				writer.WriteStartElement("LipSyncVisemes");
-				writer.WriteAttributeString("wavFile", "speech.wav");
-
-				double time = 0;
-				foreach (var v in visemes)
+				var box = ActiveControl as TextBoxBase;
+				if (box == null || !box.Multiline)
 				{
-					var duration = v.Item2.TotalSeconds;
-					if (v.Item1 != 0)
-					{
-						writer.WriteStartElement("viseme");
-						writer.WriteAttributeString("type", v.Item1.ToString());
-						writer.WriteAttributeString("time", time.ToString(CultureInfo.InvariantCulture));
-						writer.WriteAttributeString("duration", duration.ToString(CultureInfo.InvariantCulture));
-						writer.WriteEndElement();
-					}
-					time += duration;
+					// Not a dialog, not a multi-line textbox; we can use Enter for tabbing
+					SelectNextControl(ActiveControl, true, true, true, true);
+					return true;
 				}
-
-				writer.WriteEndElement();
-				writer.WriteEndDocument();
 			}
-		}
-
-		private void SynthesizerOnSpeakCompleted(object sender, SpeakCompletedEventArgs speakCompletedEventArgs)
-		{
-			_current = null;
-			_synthesizer.SpeakCompleted -= SynthesizerOnSpeakCompleted;
-			UpdateButtonText(true);
-		}
-
-		private void UpdateSpeechData(string text)
-		{
-			_builder.ClearContent();
-
-			var voice = GetCurrentlySelectedVoiceInfo();
-			_builder.StartVoice(voice);
-			var prosody = $"<prosody rate=\"{GetRate()}\" pitch=\"{GetPitch()}st\">";
-			_builder.AppendSsmlMarkup(prosody);
-			_builder.AppendText(text);
-			_builder.AppendSsmlMarkup("</prosody>");
-			_builder.EndVoice();
-		}
-
-		private string IntToViseme(int value)
-		{
-			switch (value)
-			{
-				case 0:
-					return "silence";
-				case 1:
-					return "ae ax ah";
-				case 2:
-					return "aa";
-				case 3:
-					return "ao";
-				case 4:
-					return "ey eh uh";
-				case 5:
-					return "er";
-				case 6:
-					return "y iy ih ix";
-				case 7:
-					return "w uw";
-				case 8:
-					return "ow";
-				case 9:
-					return "aw";
-				case 10:
-					return "oy";
-				case 11:
-					return "ay";
-				case 12:
-					return "h";
-				case 13:
-					return "r";
-				case 14:
-					return "l";
-				case 15:
-					return "s z";
-				case 16:
-					return "sh ch jh zh";
-				case 17:
-					return "th dh";
-				case 18:
-					return "f v";
-				case 19:
-					return "d t n";
-				case 20:
-					return "k g ng";
-				case 21:
-					return "p b m";
-			}
-
-			return "unknown";
+			return base.ProcessCmdKey(ref msg, keyData);
 		}
 	}
 }
