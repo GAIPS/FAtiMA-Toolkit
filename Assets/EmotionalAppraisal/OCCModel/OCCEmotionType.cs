@@ -29,7 +29,7 @@ namespace EmotionalAppraisal.OCCModel
 		#endregion
 
 		public static readonly OCCEmotionType Admiration = new OCCEmotionType("Admiration",EmotionValence.Positive, true, Attribution);
-		public static readonly OCCEmotionType Anger = new OCCEmotionType("Anger", EmotionValence.Positive, true, Composed);
+		public static readonly OCCEmotionType Anger = new OCCEmotionType("Anger", EmotionValence.Negative, true, Composed);
 		public static readonly OCCEmotionType Gratitude = new OCCEmotionType("Gratitude", EmotionValence.Positive, true, Composed);
 		//public static readonly OCCEmotionType Disappointment = new OCCEmotionType("Disappointment", EmotionValence.Negative, true, PositiveProspect);
 		public static readonly OCCEmotionType Distress = new OCCEmotionType("Distress", EmotionValence.Negative, true, WellBeing);

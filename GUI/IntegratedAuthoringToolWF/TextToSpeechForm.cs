@@ -10,21 +10,24 @@ using GAIPS.AssetEditorTools;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
 using IntegratedAuthoringToolWF.TTSEngines;
+using IntegratedAuthoringToolWF.TTSEngines.L2F;
 using IntegratedAuthoringToolWF.TTSEngines.System;
 
 namespace IntegratedAuthoringToolWF
 {
 	public partial class TextToSpeechForm : Form
 	{
-		private static readonly ITextToSpeechEngine[] _ttsEngines =
+		private static readonly TextToSpeechEngine[] _ttsEngines =
 		{
-			new SystemTextToSpeechEngine()
+			new SystemTextToSpeechEngine(),
+			new L2FSpeechEngine()
 		};
 
 		private readonly DialogueStateActionDTO[] _agentActions;
 		private readonly IVoice[] _availableVoices;
 
 		private IVoice _selectedVoice;
+		private VoicePlayer _activeVoicePlayer;
 
 		public TextToSpeechForm(DialogueStateActionDTO[] agentActions)
 		{
@@ -66,29 +69,37 @@ namespace IntegratedAuthoringToolWF
 
 		private void OnTestButtonClick(object sender, EventArgs e)
 		{
-			if (_selectedVoice.IsSpeaking)
+			if (_activeVoicePlayer!=null)
 			{
-				_selectedVoice.CancelSpeaking();
+				_activeVoicePlayer.Stop();
+				_activeVoicePlayer = null;
 			}
 			else
 			{
-				_voiceComboBox.Enabled = false;
-				_generateButton.Enabled = false;
-				UpdateButtonText(false);
-				_selectedVoice.Speak(textBox1.Text, GetRate(), GetPitch(), SynthesizerOnSpeakCompleted);
+				var a = _selectedVoice.BuildPlayer(textBox1.Text, GetRate(), GetPitch());
+				if (a != null)
+				{
+					_voiceComboBox.Enabled = false;
+					_generateButton.Enabled = false;
+					UpdateButtonText(false);
+					_activeVoicePlayer = a;
+					_activeVoicePlayer.Play(SynthesizerOnSpeakCompleted);
+				}
 			}
 		}
 
 		private void SynthesizerOnSpeakCompleted()
 		{
-			_voiceComboBox.Enabled = true;
-			_generateButton.Enabled = true;
+			ThreadSafe(_voiceComboBox, c => c.Enabled = true);
+			ThreadSafe(_generateButton, c => c.Enabled = true);
+
+			_activeVoicePlayer = null;
 			UpdateButtonText(true);
 		}
 
 		private void UpdateButtonText(bool state)
 		{
-			button1.Text = state ? "Speak Text" : "Stop";
+			ThreadSafe(button1, c => c.Text = state ? "Speak Text" : "Stop");
 		}
 
 		private void OnRateValueChanged(object sender, EventArgs e)
@@ -154,8 +165,8 @@ namespace IntegratedAuthoringToolWF
 
 		private void OnFormClosed(object sender, FormClosedEventArgs e)
 		{
-			if (_selectedVoice.IsSpeaking)
-				_selectedVoice.CancelSpeaking();
+			if (_activeVoicePlayer!=null)
+				_activeVoicePlayer.Stop();
 		}
 
 		private void OnGenerateButtonClick(object sender, EventArgs e)
@@ -185,7 +196,7 @@ namespace IntegratedAuthoringToolWF
 				var id = DialogUtilities.GenerateFileKey(split.data);
 				var path = Path.Combine(basePath, id);
 				split.ctrl.Message = $"Generating TTS for Utterance ({++i}/{_agentActions.Length})";
-				var bake = _selectedVoice.BakeSpeechFiles(split.data.Utterance, rate, pitch);
+				var bake = _selectedVoice.BakeTTS(split.data.Utterance, rate, pitch);
 				if (bake != null)
 				{
 					if (!Directory.Exists(path))
@@ -195,7 +206,7 @@ namespace IntegratedAuthoringToolWF
 					var path2 = Path.Combine(path, hash.ToString());
 					using (var audioFile = File.Open(path2 + ".wav", FileMode.Create, FileAccess.Write))
 					{
-						audioFile.Write(bake.waveStreamData, 0, bake.waveStreamData.Length);
+						audioFile.Write(bake.waveStreamData,0,bake.waveStreamData.Length);
 					}
 
 					using (var writer = new XmlTextWriter(path2 + ".xml", new UTF8Encoding(false)))
@@ -241,6 +252,18 @@ namespace IntegratedAuthoringToolWF
 				}
 			}
 			return base.ProcessCmdKey(ref msg, keyData);
+		}
+
+		private void ThreadSafe<T>(T control, Action<T> action) where T : Control
+		{
+			if (control.InvokeRequired)
+			{
+				Invoke(action, control);
+			}
+			else
+			{
+				action(control);
+			}
 		}
 	}
 }

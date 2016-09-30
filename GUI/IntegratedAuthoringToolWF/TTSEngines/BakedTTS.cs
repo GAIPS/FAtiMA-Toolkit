@@ -1,4 +1,6 @@
-﻿namespace IntegratedAuthoringToolWF.TTSEngines
+﻿using System.IO;
+
+namespace IntegratedAuthoringToolWF.TTSEngines
 {
 	public sealed class BakedTTS
 	{

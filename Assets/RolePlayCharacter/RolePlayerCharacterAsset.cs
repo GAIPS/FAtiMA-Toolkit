@@ -2,11 +2,13 @@
 using EmotionalAppraisal;
 using EmotionalDecisionMaking;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using ActionLibrary;
 using EmotionalAppraisal.DTOs;
 using GAIPS.Rage;
 using KnowledgeBase;
+using SerializationUtilities;
 using SocialImportance;
 using Utilities;
 using WellFormedNames;
@@ -232,22 +234,13 @@ namespace RolePlayCharacter
 				throw new Exception(error);
 		}
 
-		/// <summary>
-		/// Saves the current state of the asset into a file
-		/// </summary>
-		/// <param name="filePath">The path for the save file</param>
-		/// <param name="name">The name of the save file</param>
-		//public void SaveOutput(string filePath, string name)
-		//{
-		//    if(_emotionalAppraisalAsset == null)
-		//        return;
+		public void SaveEmotionalAppraisalAsset(Stream stream)
+	    {
+			if (_emotionalAppraisalAsset == null)
+				return;
 
-		//    var filepath = Path.Combine(filePath, name);
-		//    using (var f = File.Open(filepath, FileMode.Create, FileAccess.Write))
-		//    {
-		//        var serializer = new JSONSerializer();
-		//        serializer.Serialize(f, _emotionalAppraisalAsset);
-		//    }
-		//}
+			var serializer = new JSONSerializer();
+			serializer.Serialize(stream, _emotionalAppraisalAsset);
+		}
 	}
 }

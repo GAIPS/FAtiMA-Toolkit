@@ -10,12 +10,9 @@ namespace IntegratedAuthoringToolWF.TTSEngines
 		VoiceAge Age { get; }
 		string Culture { get; }
 
-		ITextToSpeechEngine ParentEngine { get; }
+		TextToSpeechEngine ParentEngine { get; }
 
-		bool IsSpeaking { get; }
-		void Speak(string text, double playbackRate, int pitchShift, Action onFinished=null);
-		void CancelSpeaking();
-
-		BakedTTS BakeSpeechFiles(string text, double playbackRate, int pitchShift);
+		BakedTTS BakeTTS(string text, double rate, int pitch);
+		VoicePlayer BuildPlayer(string text, double rate, int pitch);
 	}
 }

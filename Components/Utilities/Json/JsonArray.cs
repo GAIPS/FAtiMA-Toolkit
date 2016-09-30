@@ -50,6 +50,11 @@ namespace Utilities.Json
 			m_elements.Add(item);
 		}
 
+		public void AddRange(IEnumerable<JsonToken> items)
+		{
+			m_elements.AddRange(items);
+		}
+
 		public void Clear()
 		{
 			m_elements.Clear();

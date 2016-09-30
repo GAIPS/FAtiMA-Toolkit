@@ -96,7 +96,8 @@ namespace IntegratedAuthoringToolWF
 		private void textToSpeachToolStripMenuItem_Click(object sender, System.EventArgs e)
 		{
 			var dialogs = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, WellFormedNames.Name.UNIVERSAL_SYMBOL).ToArray();
-			new TextToSpeechForm(dialogs).Show(this);
+			var t = new TextToSpeechForm(dialogs);
+			t.Show(this);
 		}
 	}
 }
