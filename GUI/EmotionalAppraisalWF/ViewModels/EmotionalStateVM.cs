@@ -19,8 +19,6 @@ namespace EmotionalAppraisalWF.ViewModels
             set { _emotionalAppraisalAsset.Mood = value;}
         }
 
-        public IEnumerable<string> EmotionTypes { get { return _emotionalAppraisalAsset.EmotionTypes; } } 
-
         public ulong Start
         {
             get { return _emotionalAppraisalAsset.Tick; }

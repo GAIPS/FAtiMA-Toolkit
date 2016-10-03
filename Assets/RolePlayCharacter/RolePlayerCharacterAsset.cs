@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ActionLibrary;
+using AutobiographicMemory;
+using AutobiographicMemory.DTOs;
 using EmotionalAppraisal.DTOs;
 using GAIPS.Rage;
 using KnowledgeBase;
@@ -87,11 +89,12 @@ namespace RolePlayCharacter
 			set { _socialImportanceAssetSource = ToRelativePath(value); }
 		}
 
-		public float Mood { get { return _emotionalAppraisalAsset?.Mood ?? 0; } }
+#region Emotional Appraisal Interface
 
-		public IEnumerable<IActiveEmotion> Emotions => _emotionalAppraisalAsset?.GetAllActiveEmotions();
+		public float Mood => _emotionalAppraisalAsset?.Mood ?? 0;
 
-
+	    public IEnumerable<IActiveEmotion> Emotions => _emotionalAppraisalAsset?.GetAllActiveEmotions();
+		
 		public Name Perspective => _emotionalAppraisalAsset?.Perspective;
 
 		/// <summary>
@@ -99,18 +102,56 @@ namespace RolePlayCharacter
         /// </summary>
         /// <param name="propertyName">A wellformed name representing a logical property (e.g. IsPerson(John))</param>
         /// <param name="value">The value of the property</param>
+        [Obsolete]
         public void AddBelief(string propertyName, string value)
 	    {
 			_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO() {Value = value,Name = propertyName, Perspective = Name.SELF_STRING});
 		}
 
-	    /// <summary>
-        /// Executes an iteration of the character's decision cycle.
-        /// </summary>
-        /// <param name="eventStrings">A list of new events that occurred since the last call to this method. Each event must be represented by a well formed name with the following format "EVENT([type], [subject], [param1], [param2])". 
-        /// For illustration purposes here are some examples: EVENT(Property-Change, John, CurrentRole(Customer), False) ; EVENT(Action-Finished, John, Open, Box)</param>
-        /// <returns>The action selected for execution or "null" otherwise</returns>
-        public IAction PerceptionActionLoop(IEnumerable<string> eventStrings)
+		/// <summary>
+		/// Retrieves the character's strongest emotion if any.
+		/// </summary>
+		public IActiveEmotion GetStrongestActiveEmotion()
+		{
+			IEnumerable<IActiveEmotion> currentActiveEmotions = _emotionalAppraisalAsset.GetAllActiveEmotions();
+			return currentActiveEmotions.MaxValue(a => a.Intensity);
+		}
+
+
+		/// <summary>
+		/// Returns all the associated information regarding an event
+		/// </summary>
+		/// <param name="eventId">The id of the event to retrieve</param>
+		/// <returns>The dto containing the information of the retrieved event</returns>
+		public EventDTO GetEventDetails(uint eventId)
+		{
+			return _emotionalAppraisalAsset.GetEventDetails(eventId);
+		}
+
+		public IEnumerable<BeliefDTO> GetAllBeliefs()
+		{
+			return _emotionalAppraisalAsset.GetAllBeliefs();
+		}
+
+		/// <summary>
+		/// Return the value associated to a belief.
+		/// </summary>
+		/// <param name="beliefName">The name of the belief to return</param>
+		/// <returns>The string value of the belief, or null if no belief exists.</returns>
+		public string GetBeliefValue(string beliefName, string perspective = Name.SELF_STRING)
+		{
+			return _emotionalAppraisalAsset.GetBeliefValue(beliefName, perspective);
+		}
+
+		#endregion
+
+		/// <summary>
+		/// Executes an iteration of the character's decision cycle.
+		/// </summary>
+		/// <param name="eventStrings">A list of new events that occurred since the last call to this method. Each event must be represented by a well formed name with the following format "EVENT([type], [subject], [param1], [param2])". 
+		/// For illustration purposes here are some examples: EVENT(Property-Change, John, CurrentRole(Customer), False) ; EVENT(Action-Finished, John, Open, Box)</param>
+		/// <returns>The action selected for execution or "null" otherwise</returns>
+		public IAction PerceptionActionLoop(IEnumerable<string> eventStrings)
 	    {
 			_socialImportanceAsset.InvalidateCachedSI();
 			_emotionalAppraisalAsset.AppraiseEvents(eventStrings);
@@ -142,15 +183,6 @@ namespace RolePlayCharacter
         {
             _emotionalAppraisalAsset.Update();
         }
-
-        /// <summary>
-        /// Retrieves the character's strongest emotion if any.
-        /// </summary>
-		public IActiveEmotion GetStrongestActiveEmotion()
-		{
-			IEnumerable<IActiveEmotion> currentActiveEmotions = _emotionalAppraisalAsset.GetAllActiveEmotions();
-			return currentActiveEmotions.MaxValue(a => a.Intensity);
-		}
 
         /// <summary>
         /// Method used to inform the character that its current action is finished and a new action may be selected. It can also generate an emotion associated to finishing an action successfully.

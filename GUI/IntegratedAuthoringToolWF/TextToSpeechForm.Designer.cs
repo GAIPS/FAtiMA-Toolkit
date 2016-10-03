@@ -42,6 +42,7 @@
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
 			this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+			this.pictureBox1 = new System.Windows.Forms.PictureBox();
 			this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
 			((System.ComponentModel.ISupportInitialize)(this._speachRateSlider)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this._pitchSlider)).BeginInit();
@@ -49,6 +50,7 @@
 			this.tableLayoutPanel2.SuspendLayout();
 			this.tableLayoutPanel3.SuspendLayout();
 			this.tableLayoutPanel5.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.tableLayoutPanel4.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -122,7 +124,7 @@
 			// _generateButton
 			// 
 			this._generateButton.Dock = System.Windows.Forms.DockStyle.Top;
-			this._generateButton.Location = new System.Drawing.Point(3, 42);
+			this._generateButton.Location = new System.Drawing.Point(3, 130);
 			this._generateButton.Name = "_generateButton";
 			this._generateButton.Size = new System.Drawing.Size(82, 34);
 			this._generateButton.TabIndex = 7;
@@ -214,17 +216,30 @@
 			// 
 			this.tableLayoutPanel5.ColumnCount = 1;
 			this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel5.Controls.Add(this.pictureBox1, 0, 1);
 			this.tableLayoutPanel5.Controls.Add(this.button1, 0, 0);
-			this.tableLayoutPanel5.Controls.Add(this._generateButton, 0, 1);
+			this.tableLayoutPanel5.Controls.Add(this._generateButton, 0, 2);
 			this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel5.Location = new System.Drawing.Point(377, 3);
 			this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-			this.tableLayoutPanel5.RowCount = 3;
+			this.tableLayoutPanel5.RowCount = 4;
+			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel5.Size = new System.Drawing.Size(88, 178);
 			this.tableLayoutPanel5.TabIndex = 13;
+			// 
+			// pictureBox1
+			// 
+			this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Top;
+			this.pictureBox1.Location = new System.Drawing.Point(0, 39);
+			this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
+			this.pictureBox1.Name = "pictureBox1";
+			this.pictureBox1.Size = new System.Drawing.Size(88, 88);
+			this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this.pictureBox1.TabIndex = 13;
+			this.pictureBox1.TabStop = false;
 			// 
 			// tableLayoutPanel4
 			// 
@@ -270,6 +285,7 @@
 			this.tableLayoutPanel3.ResumeLayout(false);
 			this.tableLayoutPanel3.PerformLayout();
 			this.tableLayoutPanel5.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.tableLayoutPanel4.ResumeLayout(false);
 			this.tableLayoutPanel4.PerformLayout();
 			this.ResumeLayout(false);
@@ -293,5 +309,6 @@
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+		private System.Windows.Forms.PictureBox pictureBox1;
 	}
 }

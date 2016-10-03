@@ -11,9 +11,7 @@ namespace EmotionalAppraisalWF.ViewModels
 	    private BaseEAForm _mainForm;
 	    private EmotionalAppraisalAsset _emotionalAppraisalAsset => _mainForm.CurrentAsset;
 
-        public IEnumerable<string> EmotionTypes => _emotionalAppraisalAsset.EmotionTypes;
-
-	    public BindingListView<EmotionDispositionDTO> EmotionDispositions {get;}
+        public BindingListView<EmotionDispositionDTO> EmotionDispositions {get;}
 	    private EmotionDispositionDTO _defaultEmotionalDisposition;
 
 		public int DefaultThreshold

@@ -68,7 +68,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Audio\AutoDisposeAudioSample.cs" />
     <Compile Include="TTSEngines\BakedTTS.cs" />
     <Compile Include="TTSEngines\VoicePlayer.cs" />
     <Compile Include="TTSEngines\TextToSpeechEngine.cs" />

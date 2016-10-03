@@ -129,6 +129,7 @@ namespace EmotionalAppraisal
 		/// Returns the current set of active emotions
 		/// <returns>An enumerable containing the emotion DTOs of the currently active emotions being expressed by the asset.</returns>
 		/// </summary>
+		[Obsolete("Use GetAllActiveEmotions instead")]
 	    public IEnumerable<EmotionDTO> ActiveEmotions
 	    {
 	        get { return m_emotionalState.GetAllEmotions().Select(e => e.ToDto(m_am));}
@@ -181,12 +182,9 @@ namespace EmotionalAppraisal
 		/// <summary>
 		/// The currently supported emotional type keys
 		/// </summary>
-	    public IEnumerable<string> EmotionTypes
-	    {
-	        get { return OCCEmotionType.Types; }
-	    } 
+	    public static IEnumerable<string> EmotionTypes => OCCEmotionType.Types;
 
-        /// <summary>
+		/// <summary>
         /// Adds an emotional reaction to an event
         /// </summary>
         /// <param name="emotionalAppraisalRule">the AppraisalRule to add</param>
@@ -316,14 +314,10 @@ namespace EmotionalAppraisal
 			});
 		}
 
-		/// @cond DEV
-
 		public IEnumerable<IActiveEmotion> GetAllActiveEmotions()
 		{
 			return m_emotionalState.GetAllEmotions();
 		}
-
-		/// @endcond
 
 		/// <summary>
 		/// Change the perspective of the memories of the asset.
@@ -426,13 +420,12 @@ namespace EmotionalAppraisal
 
 		/// <summary>
 		/// Return the value associated to a belief.
-		/// Only returns believes regarding a SELF perspective.
 		/// </summary>
 		/// <param name="beliefName">The name of the belief to return</param>
 		/// <returns>The string value of the belief, or null if no belief exists.</returns>
-	    public string GetBeliefValue(string beliefName)
+	    public string GetBeliefValue(string beliefName, string perspective = Name.SELF_STRING)
 	    {
-            var result = m_kb.AskProperty(Name.BuildName(beliefName))?.ToString();
+            var result = m_kb.AskProperty((Name)beliefName,(Name)perspective)?.ToString();
 	        return result;
 	    }
 

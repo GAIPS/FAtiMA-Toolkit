@@ -153,13 +153,8 @@ namespace EmotionalDecisionMaking
 		public void RemoveReactionConditions(Guid selectedReactionId, IEnumerable<string> conditionsToRemove)
         {
 	        var at = this.ReactiveActions.GetActionTendency(selectedReactionId);
-	        var conds = at.ActivationConditions;
-			foreach (var condition in conditionsToRemove)
-			{
-				var c = Condition.Parse(condition);
-				conds = conds.Remove(c);
-            }
-	        at.ActivationConditions = conds;
+	        var conds = conditionsToRemove.Select(Condition.Parse).Aggregate(at.ActivationConditions, (current, c) => current.Remove(c));
+			at.ActivationConditions = conds;
         }
 
 		/// <summary>
