@@ -1,4 +1,4 @@
-﻿namespace GAIPS.Serialization.SerializationGraph
+﻿namespace SerializationUtilities.SerializationGraph
 {
 	public enum SerializedDataType : byte
 	{

@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Globalization;
 using EmotionalAppraisal;
 using EmotionalAppraisal.AppraisalRules;
 using EmotionalAppraisal.OCCModel;
 using NUnit.Framework;
-using KnowledgeBase.WellFormedNames;
 using System.IO;
 using EmotionalAppraisal.DTOs;
-using GAIPS.Serialization;
+using SerializationUtilities;
+using WellFormedNames;
 
 namespace Tests.EmotionalAppraisal
 {
@@ -90,62 +91,161 @@ namespace Tests.EmotionalAppraisal
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action,*,Pet,self)",
+				EventMatchingTemplate = "Event(Action-Finished,*,Pet,self)",
 				Desirability = 10
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action,*,Slap,self)",
+				EventMatchingTemplate = "Event(Action-Finished,*,Slap,self)",
 				Desirability = -10
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action, *, Feed, self)",
+				EventMatchingTemplate = "Event(Action-Finished, *, Feed, self)",
 				Desirability = 5,
 				Praiseworthiness = 10
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action,*,Talk(High,Mad),self)",
+				EventMatchingTemplate = "Event(Action-Finished,*,Talk(High,Mad),self)",
 				Desirability = -7,
 				Praiseworthiness = -15
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action,*,Talk(Low,Happy),self)",
+				EventMatchingTemplate = "Event(Action-Finished,*,Talk(Low,Happy),self)",
 				Praiseworthiness = 5
 			});
 			
 			//Generate emotion
 
-			m_emotionalAppraisalAsset.AppraiseEvents(new []{ "Event(Action,Player,Slap,self)" });
+			m_emotionalAppraisalAsset.AppraiseEvents(new []{ "Event(Action-Finished,Player,Slap,self)" });
 
 			//Add knowledge
-			var kb = m_emotionalAppraisalAsset.Kb;
-			kb.Tell((Name)"Strength(John)", (byte)5);
-			kb.Tell((Name)"Strength(Mary)", (sbyte)3);
-			kb.Tell((Name)"Strength(Leonidas)", (short)500);
-			kb.Tell((Name)"Strength(Goku)", (uint)9001f);
-			kb.Tell((Name)"Strength(SuperMan)", ulong.MaxValue);
-			kb.Tell((Name)"Strength(Saitama)", float.MaxValue);
-			kb.Tell((Name)"Race(Saitama)", "human");
-			kb.Tell((Name)"Race(Superman)", "kriptonian");
-			kb.Tell((Name)"Race(Goku)", "sayian");
-			kb.Tell((Name)"Race(Leonidas)", "human");
-			kb.Tell((Name)"Race(Mary)", "human");
-			kb.Tell((Name)"Race(John)", "human");
-			kb.Tell((Name)"Job(Saitama)", "super-hero");
-			kb.Tell((Name)"Job(Superman)", "super-hero");
-			kb.Tell((Name)"Job(Leonidas)", "Spartan");
-			kb.Tell((Name)"AKA(Saitama)", "One-Punch_Man");
-			kb.Tell((Name)"AKA(Superman)", "Clark_Kent");
-			kb.Tell((Name)"AKA(Goku)", "Kakarot");
-			kb.Tell((Name)"Hobby(Saitama)", "super-hero");
-			kb.Tell((Name)"Hobby(Goku)", "training");
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "Strength(John)",
+				Perspective = "self",
+				Value = "5"
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "Strength(Mary)",
+				Perspective = "self",
+				Value = "3"
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "Strength(Leonidas)",
+				Perspective = "self",
+				Value = "500"
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "Strength(Goku)",
+				Perspective = "self",
+				Value = "9001"
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "Strength(SuperMan)",
+				Perspective = "self",
+				Value = ulong.MaxValue.ToString()
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "Strength(Saitama)",
+				Perspective = "self",
+				Value = double.MaxValue.ToString(CultureInfo.InvariantCulture)
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "Race(Saitama)",
+				Perspective = "self",
+				Value = "human"
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "Race(Mary)",
+				Perspective = "self",
+				Value = "human"
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "Race(John)",
+				Perspective = "self",
+				Value = "human"
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "Race(Leonidas)",
+				Perspective = "self",
+				Value = "human"
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "Race(Goku)",
+				Perspective = "self",
+				Value = "sayian"
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "Race(Superman)",
+				Perspective = "self",
+				Value = "kriptonian"
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "Job(Superman)",
+				Perspective = "self",
+				Value = "super-hero"
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "Job(Jeonidas)",
+				Perspective = "self",
+				Value = "king"
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "AKA(Saitama)",
+				Perspective = "self",
+				Value = "One-Punch_Man"
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "AKA(Saitama)",
+				Perspective = "self",
+				Value = "Caped_Baldy"
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "AKA(Superman)",
+				Perspective = "self",
+				Value = "Clark_Kent"
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "AKA(Goku)",
+				Perspective = "self",
+				Value = "Kakarot"
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "Hobby(Saitama)",
+				Perspective = "self",
+				Value = "super-hero"
+			});
+			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
+			{
+				Name = "Hobby(Goku)",
+				Perspective = "self",
+				Value = "training"
+			});
 
 			return m_emotionalAppraisalAsset;
 		}

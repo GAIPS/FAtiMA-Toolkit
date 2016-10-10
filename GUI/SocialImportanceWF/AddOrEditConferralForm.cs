@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 using Equin.ApplicationFramework;
-using KnowledgeBase.WellFormedNames;
 using SocialImportance.DTOs;
 using SocialImportanceWF.ViewModels;
+using WellFormedNames;
 
 namespace SocialImportanceWF
 {

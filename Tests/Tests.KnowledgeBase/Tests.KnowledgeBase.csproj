@@ -33,38 +33,36 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.2.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NUnit.3.2.0\lib\net45\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Conditions\ConditionalNSTTests.cs" />
-    <Compile Include="Conditions\ConditionEvaluatorSetTests.cs" />
-    <Compile Include="Conditions\ConditionsTests.cs" />
     <Compile Include="KBTests.cs" />
-    <Compile Include="WellFormedNames\NameSearchTreeTests.cs" />
-    <Compile Include="WellFormedNames\UnifierTests.cs" />
-    <Compile Include="WellFormedNames\SubstitutionTests.cs" />
-    <Compile Include="WellFormedNames\InequalityTests.cs" />
-    <Compile Include="WellFormedNames\SymbolTests.cs" />
-    <Compile Include="WellFormedNames\NameTests.cs" />
-    <Compile Include="WellFormedNames\ComposedNameTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Components\Conditions\Conditions.csproj">
+      <Project>{59041269-e52e-4cdd-84e0-92fdcfbf270d}</Project>
+      <Name>Conditions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Components\KnowledgeBase\KnowledgeBase.csproj">
       <Project>{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}</Project>
       <Name>KnowledgeBase</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Components\SerializationUtilities\GAIPS.Serialization.csproj">
+    <ProjectReference Include="..\..\Components\SerializationUtilities\SerializationUtilities.csproj">
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
-      <Name>GAIPS.Serialization</Name>
+      <Name>SerializationUtilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Components\Utilities\Utilities.csproj">
       <Project>{2021e828-2f7f-4775-9f02-58c68fd72edd}</Project>
       <Name>Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
+      <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
+      <Name>WellFormedNames</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

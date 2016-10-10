@@ -1,0 +1,41 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"AttributionRules": [
+				{
+					"RuleName": "All Friends",
+					"Target": "[x]",
+					"Value": 20,
+					"Conditions":
+						{
+							"Set": ["IsFriend([x]) = True"]
+						}
+				}],
+			"Claims": [],
+			"Conferrals": [
+				{
+					"ConferralSI": 20,
+					"Action": "Speak([initial-state], [end-state], [meaning], Friend)",
+					"Target": "[t]",
+					"Conditions":
+						{
+							"Set": ["ValidDialogue([current-state], [end-state], [meaning], Friend) = True", "DialogueState([t]) = [current-state]"]
+						}
+				}, 
+				{
+					"ConferralSI": 20,
+					"Action": "Compliment",
+					"Target": "[x]",
+					"Conditions":
+						{
+							"Set": ["IsFriend([x]) = True"]
+						}
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "SocialImportance.SocialImportanceAsset, SocialImportanceAsset, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

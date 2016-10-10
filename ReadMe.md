@@ -30,6 +30,9 @@ With these goals in mind, the toolkit is composed of several assets. Each has a 
 ### Tutorials
 To get started, we recommed that you check the code examples of each asset in the project folder named *Tutorials*
 
+### Unity Demo
+The following link contains the sourcecode for a game prototype that was made in Unity to showcase the toolkit: https://dl.dropboxusercontent.com/u/5617694/Third%20Demo.zip  
+
 ### Documentation
 For each asset, there is a pdf document describing its API in the folder named *Documentation*
 

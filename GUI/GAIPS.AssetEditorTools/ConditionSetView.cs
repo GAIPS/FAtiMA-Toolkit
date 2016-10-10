@@ -2,9 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Conditions;
+using Conditions.DTOs;
 using Equin.ApplicationFramework;
-using KnowledgeBase.Conditions;
-using KnowledgeBase.DTOs.Conditions;
 
 namespace GAIPS.AssetEditorTools
 {

@@ -20,8 +20,6 @@ namespace SocialImportanceWF
 			//Attribution Rules
 			_attributionRulesVM = new AttributionRuleVM(this);
 			_attRulesDataView.DataController = _attributionRulesVM;
-			_attRulesDataView.GetColumnByName(PropertyUtil.GetPropertyName<AttributionRuleDTO>(dto => dto.Id)).Visible = false;
-			_attRulesDataView.GetColumnByName(PropertyUtil.GetPropertyName<AttributionRuleDTO>(dto => dto.Conditions)).Visible = false;
 			_attRulesDataView.OnSelectionChanged += OnRuleSelectionChanged;
 			
 			_attRuleConditionSetEditor.View = _attributionRulesVM.ConditionSetView;
@@ -33,8 +31,6 @@ namespace SocialImportanceWF
 			//Conferrals
 			_conferralsVM = new ConferralsVM(this);
 			_conferralsDataView.DataController = _conferralsVM;
-			_conferralsDataView.GetColumnByName(PropertyUtil.GetPropertyName<ConferralDTO>(dto => dto.Id)).Visible = false;
-			_conferralsDataView.GetColumnByName(PropertyUtil.GetPropertyName<ConferralDTO>(dto => dto.Conditions)).Visible = false;
 			_conferralsDataView.OnSelectionChanged += () =>
 			{
 				var c = ((ObjectView<ConferralDTO>) _conferralsDataView.CurrentlySelected)?.Object;
@@ -59,17 +55,20 @@ namespace SocialImportanceWF
 
 		#region Overrides of BaseAssetForm<SocialImportanceAsset>
 
-		protected override void LoadAssetData(SocialImportanceAsset asset)
+		protected override void OnAssetDataLoaded(SocialImportanceAsset asset)
 		{
 			_attributionRulesVM.Reload();
 			_attRulesDataView.ClearSelection();
+			_attRulesDataView.GetColumnByName(PropertyUtil.GetPropertyName<AttributionRuleDTO>(dto => dto.Id)).Visible = false;
+			_attRulesDataView.GetColumnByName(PropertyUtil.GetPropertyName<AttributionRuleDTO>(dto => dto.Conditions)).Visible = false;
 
 			_claimsVM.Reload();
 			_claimDataView.ClearSelection();
 
 			_conferralsVM.Reload();
 			_conferralsDataView.ClearSelection();
-
+			_conferralsDataView.GetColumnByName(PropertyUtil.GetPropertyName<ConferralDTO>(dto => dto.Id)).Visible = false;
+			_conferralsDataView.GetColumnByName(PropertyUtil.GetPropertyName<ConferralDTO>(dto => dto.Conditions)).Visible = false;
 		}
 
 		#endregion

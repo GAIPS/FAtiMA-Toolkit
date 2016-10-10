@@ -121,7 +121,7 @@
       <Project>{d6424009-17fd-4ba3-8f97-2069be13309c}</Project>
       <Name>TextEmotionRecognition</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\RealTimeEmotionRecognition\RealTimeEmotionRecognition.csproj">
+    <ProjectReference Include="..\..\Assets\RealTimeEmotionRecognition\RealTimeEmotionRecognition.csproj">
       <Project>{cc3a5863-e579-4d38-9817-5dc1744703f3}</Project>
       <Name>RealTimeEmotionRecognition</Name>
     </ProjectReference>

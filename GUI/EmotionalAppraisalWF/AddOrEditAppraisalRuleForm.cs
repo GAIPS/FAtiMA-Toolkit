@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
+using Conditions.DTOs;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
-using KnowledgeBase.DTOs.Conditions;
 
 namespace EmotionalAppraisalWF
 {

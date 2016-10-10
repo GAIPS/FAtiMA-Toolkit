@@ -2,44 +2,40 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GAIPS.Serialization
+namespace SerializationUtilities
 {
-	public class TypeSelector<T> where T : class
+	internal class TypeSelector<T> where T : class
 	{
 		private readonly List<Node> m_roots = new List<Node>();
 
 		private static bool Match(Type baseType, Type type)
 		{
-			var r = baseType.IsAssignableFrom(type);
+			var r = TypeTools.IsAssignableFrom(baseType, type);
 			if (r)
 				return true;
 
-			if (!baseType.IsGenericType)
+			if (!baseType.IsGenericType())
 				return false;
 
-			if (baseType.IsInterface)
-			{
-				foreach (var i in type.GetInterfaces())
-				{
-					var t = i.IsGenericType ? i.GetGenericTypeDefinition() : i;
-					if (baseType == t)
-						return true;
-				}
-			}
-			else
-			{
-				if (type.IsInterface)
-					return false;
+			if (baseType.IsInterface())
+				return TypeTools.GetInterfaces(type).Select(GetUnderlinedGenericType).Any(t => baseType == t);
 
-				do
-				{
-					type = type.IsGenericType ? type.GetGenericTypeDefinition() : type;
-					if (baseType == type)
-						return true;
-					type = type.BaseType;
-				} while (type != null);
-			}
+			if (type.IsInterface())
+				return false;
+
+			do
+			{
+				type = GetUnderlinedGenericType(type);
+				if (baseType == type)
+					return true;
+				type = type.GetBaseType();
+			} while (type != null);
 			return false;
+		}
+
+		private static Type GetUnderlinedGenericType(Type t)
+		{
+			return t.IsGenericType() ? t.GetGenericTypeDefinition() : t;
 		}
 
 		public void AddValue(Type type, bool useForChildren, T value)
@@ -148,7 +144,7 @@ namespace GAIPS.Serialization
 				if (m_useForChildren)
 					return m_value;
 
-				if (this.type.IsGenericTypeDefinition && type.IsGenericType)
+				if (this.type.IsGenericTypeDefinition() && type.IsGenericType())
 				{
 					type = type.GetGenericTypeDefinition();
 					if (this.type == type)

@@ -1,7 +1,8 @@
 ﻿using System;
 using Utilities;
+using TypeCode = Utilities.TypeCode;
 
-namespace GAIPS.Serialization.SerializationGraph
+namespace SerializationUtilities.SerializationGraph
 {
 	public interface IPrimitiveGraphNode : IGraphNode
 	{
@@ -33,7 +34,7 @@ namespace GAIPS.Serialization.SerializationGraph
 
 			public override bool CanMatchType(Type requestedType)
 			{
-				return requestedType == null || requestedType.IsNumeric() || Type.GetTypeCode(requestedType) == TypeCode.Boolean;
+				return requestedType == null || requestedType.IsNumeric() || requestedType.GetTypeCode() == TypeCode.Boolean;
 			}
 
 			public override object ExtractObject(Type requestedType)
@@ -41,7 +42,7 @@ namespace GAIPS.Serialization.SerializationGraph
 				if (requestedType == null)
 					return m_value;
 
-				if (requestedType.IsEnum)
+				if (requestedType.IsEnum())
 					return ConvertEnum(requestedType, m_value);
 
 				object v = Convert.ChangeType(m_value, requestedType);

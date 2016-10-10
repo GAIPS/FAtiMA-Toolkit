@@ -1,5 +1,5 @@
 ﻿using System;
-using KnowledgeBase.DTOs.Conditions;
+using Conditions.DTOs;
 
 namespace ActionLibrary.DTOs
 {

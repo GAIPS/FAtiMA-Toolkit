@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutobiographicMemory.DTOs;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using KnowledgeBase;
-using KnowledgeBase.WellFormedNames;
-using KnowledgeBase.WellFormedNames.Collections;
 using Utilities;
+using WellFormedNames;
+using WellFormedNames.Collections;
+using IQueryable = WellFormedNames.IQueryable;
 
 namespace AutobiographicMemory
 {
+	//TODO improve LastEventId efficiency, by caching the last recorded events (cache should be dumped, if a new event is recorded with a greater timestamp that the ones in cache)
+
 	[Serializable]
 	public sealed partial class AM : ICustomSerialization
 	{
@@ -22,9 +25,9 @@ namespace AutobiographicMemory
 
 		public void BindCalls(KB kb)
 		{
-			kb.RegistDynamicProperty(EVENT_ID_PROPERTY_TEMPLATE, EventIdPropertyCalculator);
-			kb.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE, EventAgePropertyCalculator);
-			kb.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_TEMPLATE, LastEventIdPropertyCalculator);
+			kb.RegistDynamicProperty(EVENT_ID_PROPERTY_TEMPLATE, "Returns the ids of all events that unify with the property's name", EventIdPropertyCalculator);
+			kb.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE, "The number of ticks passed since the event associated to [id] occured", EventAgePropertyCalculator);
+			kb.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_TEMPLATE, "Returns the id of the last event if it unifies with the property's name", LastEventIdPropertyCalculator);
 		}
 
 		public IBaseEvent RecordEvent(EventDTO dto)
@@ -75,9 +78,10 @@ namespace AutobiographicMemory
 			var actionEvent = evt as ActionEventDTO;
 			if (actionEvent != null)
 			{
+				var state = (actionEvent.ActionState == ActionState.Start) ? "Action-Start" : "Action-Finished";
 				return Name.BuildName(
 					(Name)"Event",
-					(Name)"Action",
+					(Name)state,
 					(Name)actionEvent.Subject,
 					(Name)actionEvent.Action,
 					(Name)actionEvent.Target);
@@ -163,7 +167,8 @@ namespace AutobiographicMemory
 
 		public void SwapPerspective(Name oldPerspective, Name newPerspective)
 		{
-			foreach (var key in m_registry.Keys)
+			var currentKeys = m_registry.Keys.ToArray();
+			foreach (var key in currentKeys)
 			{
 				var evt = m_registry[key];
 				m_registry[key] = evt.SwapPerspective(oldPerspective, newPerspective);
@@ -180,21 +185,6 @@ namespace AutobiographicMemory
 
 		#region Dynamic Properties
 
-		//Helpers
-		//private static IEnumerable<SubstitutionSet> AddSubstitutionToAllConstraints(IEnumerable<SubstitutionSet> constraints,
-		//	Substitution newSub)
-		//{
-		//	foreach (var c in constraints)
-		//	{
-		//		if(c.Conflicts(newSub))
-		//			continue;
-
-		//		var newConstraint = new SubstitutionSet(c);
-		//		newConstraint.AddSubstitution(newSub);
-		//		yield return newConstraint;
-		//	}
-		//}
-
 		private static Name GetArgument(IDictionary<string, Name> args, string argName)
 		{
 			Name result;
@@ -205,9 +195,9 @@ namespace AutobiographicMemory
 
 		//Event
 		private static readonly Name EVENT_ID_PROPERTY_TEMPLATE = Name.BuildName("EventId([type],[subject],[def],[target])");
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventIdPropertyCalculator(KB kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<Name, SubstitutionSet>> EventIdPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
-			List<Pair<PrimitiveValue, SubstitutionSet>> results = new List<Pair<PrimitiveValue, SubstitutionSet>>();
+			List<Pair<Name, SubstitutionSet>> results = new List<Pair<Name, SubstitutionSet>>();
 			if (!perspective.Match(Name.SELF_SYMBOL))
 				return results;
 
@@ -222,7 +212,7 @@ namespace AutobiographicMemory
 				foreach (var pair in m_typeIndexes.Unify(key, c))
 				{
 					foreach (var id in pair.Item1)
-						results.Add(Tuples.Create((PrimitiveValue)id, new SubstitutionSet(pair.Item2)));
+						results.Add(Tuples.Create(Name.BuildName(id), new SubstitutionSet(pair.Item2)));
 				}
 			}
 			return results;
@@ -230,7 +220,7 @@ namespace AutobiographicMemory
 
 		//EventElapseTime
 		private static readonly Name EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE = Name.BuildName("EventElapsedTime([id])");
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> EventAgePropertyCalculator(KB kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<Name, SubstitutionSet>> EventAgePropertyCalculator(IQueryable kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			if(!perspective.Match(Name.SELF_SYMBOL))
 				yield break;
@@ -251,7 +241,7 @@ namespace AutobiographicMemory
 						newSet.AddSubstitution(idSub);
 
 						var value = Tick - record.Timestamp;
-						yield return Tuples.Create((PrimitiveValue)value, newSet);	
+						yield return Tuples.Create(Name.BuildName(value), newSet);
 					}
 				}
 				yield break;
@@ -259,23 +249,23 @@ namespace AutobiographicMemory
 
 			foreach (var pair in kb.AskPossibleProperties(idName,perspective,constraints))
 			{
-				var idValue = pair.Item1;
-				if(!idValue.TypeCode.IsUnsignedNumeric())
+				uint idValue;
+				if(!pair.Item1.TryConvertToValue(out idValue))
 					continue;
 
 				var record = m_registry[idValue];
-				var value = (PrimitiveValue) (Tick - record.Timestamp);
+				var value = (Tick - record.Timestamp);
 				foreach (var c in pair.Item2)
-					yield return Tuples.Create(value, c);
+					yield return Tuples.Create(Name.BuildName(value), c);
 			}
 		}
 
 		//LastEvent
 		private static readonly Name LAST_EVENT_ID_PROPERTY_TEMPLATE = Name.BuildName("LastEventId([type],[subject],[def],[target])");
-		private IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> LastEventIdPropertyCalculator(KB kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<Pair<Name, SubstitutionSet>> LastEventIdPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			if(!perspective.Match(Name.SELF_SYMBOL))
-				return Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
+				yield break;
 
 			Name type = GetArgument(args, "type");
 			Name subject = GetArgument(args, "subject");
@@ -284,25 +274,23 @@ namespace AutobiographicMemory
 
 			var key = Name.BuildName(EVT_NAME, type, subject, def, target);
 
-			ulong bestTime = 0;
-			Pair<PrimitiveValue, SubstitutionSet> best = null;
-			foreach (var pair in constraints.SelectMany(c => m_typeIndexes.Unify(key, c)))
+			ulong min = ulong.MinValue;
+			var lastEvents = m_registry.Values.OrderByDescending(e => e.Timestamp).TakeWhile(e =>
 			{
-				var recentRecord = pair.Item1.Select(id => m_registry[id]).OrderByDescending(r => r.Timestamp).FirstOrDefault();
-				if(recentRecord==null)
-					continue;
-
-				if (recentRecord.Timestamp > bestTime)
+				if (e.Timestamp >= min)
 				{
-					bestTime = recentRecord.Timestamp;
-					best = Tuples.Create((PrimitiveValue)recentRecord.Id, pair.Item2);
+					min = e.Timestamp;
+					return true;
 				}
+				return false;
+			});
+
+			foreach (var le in lastEvents)
+			{
+				IEnumerable<Substitution> set;
+				if (Unifier.Unify(le.EventName, key, out set))
+					yield return Tuples.Create(Name.BuildName(le.Id), new SubstitutionSet(set));
 			}
-
-			if (best == null)
-				return Enumerable.Empty<Pair<PrimitiveValue, SubstitutionSet>>();
-
-			return new[] {best};
 		}
 
 		#endregion

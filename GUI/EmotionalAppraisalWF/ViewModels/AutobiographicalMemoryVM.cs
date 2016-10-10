@@ -9,16 +9,17 @@ namespace EmotionalAppraisalWF.ViewModels
 {
     public class AutobiographicalMemoryVM
     {
-        private readonly EmotionalAppraisalAsset _emotionalAppraisalAsset;
+	    private readonly BaseEAForm _mainForm;
+	    private EmotionalAppraisalAsset _emotionalAppraisalAsset => _mainForm.CurrentAsset;
 
         public BindingListView<EventDTO> Events {get;}
 
 		public static readonly string[] EventTypes = { Constants.ACTION_START_EVENT.ToString(),Constants.ACTION_FINISHED_EVENT.ToString(), Constants.PROPERTY_CHANGE_EVENT.ToString() };
 
-		public AutobiographicalMemoryVM(EmotionalAppraisalAsset ea)
-        {
-            _emotionalAppraisalAsset = ea;
-            this.Events = new BindingListView<EventDTO>(ea.EventRecords.ToList());
+		public AutobiographicalMemoryVM(BaseEAForm form)
+		{
+			_mainForm = form;
+            this.Events = new BindingListView<EventDTO>(_emotionalAppraisalAsset.EventRecords.ToList());
         }
      
         public void AddEventRecord(EventDTO newEvent)
@@ -26,6 +27,7 @@ namespace EmotionalAppraisalWF.ViewModels
             _emotionalAppraisalAsset.AddEventRecord(newEvent);
             Events.DataSource = _emotionalAppraisalAsset.EventRecords.ToList();
             Events.Refresh();
+			_mainForm.SetModified();
         }
 
         public void UpdateEventRecord(EventDTO existingEvent)
@@ -33,8 +35,8 @@ namespace EmotionalAppraisalWF.ViewModels
             _emotionalAppraisalAsset.UpdateEventRecord(existingEvent);
             Events.DataSource = _emotionalAppraisalAsset.EventRecords.ToList();
             Events.Refresh();
-        }
-
+			_mainForm.SetModified();
+		}
 
         public EventDTO RetrieveEventRecord(uint id)
         {
@@ -50,6 +52,7 @@ namespace EmotionalAppraisalWF.ViewModels
 
             Events.DataSource = _emotionalAppraisalAsset.EventRecords.ToList();
             Events.Refresh();
-        }
+			_mainForm.SetModified();
+		}
     }
 }

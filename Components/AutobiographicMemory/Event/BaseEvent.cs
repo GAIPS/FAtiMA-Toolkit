@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutobiographicMemory.DTOs;
-using GAIPS.Serialization;
-using KnowledgeBase.WellFormedNames;
+using SerializationUtilities;
+using WellFormedNames;
 
 namespace AutobiographicMemory
 {

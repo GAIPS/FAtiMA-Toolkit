@@ -2,7 +2,7 @@
 using System.IO;
 using EmotionalDecisionMaking;
 using EmotionalDecisionMaking.DTOs;
-using GAIPS.Serialization;
+using SerializationUtilities;
 using NUnit.Framework;
 
 namespace Tests.EmotionalDecisionMaking

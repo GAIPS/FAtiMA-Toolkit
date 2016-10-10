@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections;
-using GAIPS.Serialization.Attributes;
-using GAIPS.Serialization.SerializationGraph;
+using SerializationUtilities.Attributes;
+using SerializationUtilities.SerializationGraph;
 
-namespace GAIPS.Serialization.Surrogates
+namespace SerializationUtilities.Surrogates
 {
 	[DefaultSerializationSystem(typeof(IDictionary), true)]
 	public sealed class DictionarySerializationSurrogate : ISerializationSurrogate
@@ -15,9 +15,9 @@ namespace GAIPS.Serialization.Surrogates
 			Type keyType = typeof(object);
 			Type valueType = typeof(object);
 
-			if (objType.IsGenericType)
+			if (objType.IsGenericType())
 			{
-				Type[] gen = objType.GetGenericArguments();
+				Type[] gen = TypeTools.GetGenericArguments(objType);
 				keyType = gen[0];
 				valueType = gen[1];
 			}
@@ -43,13 +43,14 @@ namespace GAIPS.Serialization.Surrogates
 			Type keyType = typeof(object);
 			Type valueType = typeof(object);
 
-			if (objType.IsGenericType)
+			if (objType.IsGenericType())
 			{
-				Type[] gen = objType.GetGenericArguments();
+				Type[] gen = TypeTools.GetGenericArguments(objType);
 				keyType = gen[0];
 				valueType = gen[1];
 			}
 
+			objType.GetConstructor(false).Invoke(obj, null);
 			//TODO missing add comparer
 
 			ISequenceGraphNode elements = node["dictionary"] as ISequenceGraphNode;

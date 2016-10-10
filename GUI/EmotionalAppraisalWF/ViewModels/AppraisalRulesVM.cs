@@ -10,15 +10,16 @@ namespace EmotionalAppraisalWF.ViewModels
 {
     public class AppraisalRulesVM
     {
-        private EmotionalAppraisalAsset _emotionalAppraisalAsset;
+	    private readonly BaseEAForm _mainForm;
+	    private EmotionalAppraisalAsset _emotionalAppraisalAsset => _mainForm.CurrentAsset;
 
         public BindingListView<AppraisalRuleDTO> AppraisalRules {get; private set; }
 	    public ConditionSetView CurrentRuleConditions { get; }
         public Guid SelectedRuleId { get; set;}
 
-		public AppraisalRulesVM(EmotionalAppraisalAsset ea)
-        {
-            _emotionalAppraisalAsset = ea;
+		public AppraisalRulesVM(BaseEAForm form)
+		{
+			_mainForm = form;
             this.AppraisalRules = new BindingListView<AppraisalRuleDTO>(new List<AppraisalRuleDTO>());
 			this.CurrentRuleConditions = new ConditionSetView();
 			this.CurrentRuleConditions.OnDataChanged += CurrentRuleConditions_OnDataChanged;
@@ -63,13 +64,15 @@ namespace EmotionalAppraisalWF.ViewModels
         {
             _emotionalAppraisalAsset.AddOrUpdateAppraisalRule(newRule);
             RefreshData();
-        }
+			_mainForm.SetModified();
+		}
 
         public void RemoveAppraisalRules(IEnumerable<AppraisalRuleDTO> appraisalRules)
         {
             _emotionalAppraisalAsset.RemoveAppraisalRules(appraisalRules);
             SelectedRuleId = Guid.Empty;
             RefreshData();
-        }
+			_mainForm.SetModified();
+		}
     }
 }

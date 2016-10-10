@@ -35,51 +35,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Belief.cs" />
-    <Compile Include="Conditions\ConditionalNST.cs" />
-    <Compile Include="Conditions\Condition.cs" />
-    <Compile Include="Conditions\ConditionMapper.cs" />
-    <Compile Include="Conditions\Formatters.cs" />
-    <Compile Include="Conditions\ConditionSet.cs" />
-    <Compile Include="Conditions\ComparisonOperator.cs" />
-    <Compile Include="Conditions\IConditionEvaluator.cs" />
-    <Compile Include="Conditions\Implementation\EqualityDefinitionCondition.cs" />
-    <Compile Include="Conditions\Implementation\PredicateCondition.cs" />
-    <Compile Include="Conditions\Implementation\PrimitiveComparisonCondition.cs" />
-    <Compile Include="Conditions\Implementation\PropertyComparisonCondition.cs" />
-    <Compile Include="Conditions\Implementation\ValueRetrivers\CountValueRetriver.cs" />
-    <Compile Include="Conditions\Implementation\ValueRetrivers\PropertyValueRetriver.cs" />
-    <Compile Include="Conditions\IValueRetriver.cs" />
-    <Compile Include="Conditions\LogicalQuantifier.cs" />
-    <Compile Include="DTOs\Conditions\ConditionSetDTO.cs" />
-    <Compile Include="Exceptions\DuplicatedKeyException.cs" />
+    <Compile Include="DynamicPropertyEntry.cs" />
     <Compile Include="KB.cs" />
-    <Compile Include="PrimitiveValue.cs" />
+    <Compile Include="NameUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WellFormedNames\Collections\NameSearchTree.cs" />
-    <Compile Include="WellFormedNames\Collections\TreeNode.cs" />
-    <Compile Include="WellFormedNames\Implementation\ComposedName.cs" />
-    <Compile Include="Exceptions\BadSubstitutionException.cs" />
-    <Compile Include="WellFormedNames\Formatters.cs" />
-    <Compile Include="WellFormedNames\Interfaces\IGroundable.cs" />
-    <Compile Include="WellFormedNames\Implementation\UniversalSymbol.cs" />
-    <Compile Include="WellFormedNames\Implementation\VariableSymbol.cs" />
-    <Compile Include="WellFormedNames\Interfaces\IVariableRenamer.cs" />
-    <Compile Include="WellFormedNames\Name.cs" />
-    <Compile Include="Exceptions\ParsingException.cs" />
-    <Compile Include="WellFormedNames\Implementation\PrimitiveSymbol.cs" />
-    <Compile Include="WellFormedNames\Substitution.cs" />
-    <Compile Include="WellFormedNames\SubstitutionSet.cs" />
-    <Compile Include="WellFormedNames\Implementation\Symbol.cs" />
-    <Compile Include="WellFormedNames\Unifier.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SerializationUtilities\GAIPS.Serialization.csproj">
+    <ProjectReference Include="..\Conditions\Conditions.csproj">
+      <Project>{59041269-e52e-4cdd-84e0-92fdcfbf270d}</Project>
+      <Name>Conditions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SerializationUtilities\SerializationUtilities.csproj">
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
-      <Name>GAIPS.Serialization</Name>
+      <Name>SerializationUtilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{2021e828-2f7f-4775-9f02-58c68fd72edd}</Project>
       <Name>Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WellFormedNames\WellFormedNames.csproj">
+      <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
+      <Name>WellFormedNames</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

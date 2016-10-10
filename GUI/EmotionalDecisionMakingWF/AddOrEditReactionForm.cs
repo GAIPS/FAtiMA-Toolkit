@@ -57,7 +57,7 @@ namespace EmotionalDecisionMakingWF
             {
                 MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            this.Close();
+	        this.Close();
         }
 
     }

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
+using AssetManagerPackage;
+using GAIPS.AssetEditorTools;
 
 namespace IntegratedAuthoringToolWF
 {
@@ -11,9 +13,14 @@ namespace IntegratedAuthoringToolWF
         [STAThread]
         static void Main()
         {
-            Application.EnableVisualStyles();
+			AssetManager.Instance.Bridge = new ApplicationBridge();
+
+			Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+
+	        var form = new MainForm();
+			form.CreateNewAsset();
+			Application.Run(form);
         }
     }
 }

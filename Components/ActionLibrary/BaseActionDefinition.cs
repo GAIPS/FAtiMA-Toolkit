@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
 using ActionLibrary.DTOs;
-using GAIPS.Serialization;
-using KnowledgeBase.Conditions;
-using KnowledgeBase.WellFormedNames;
+using Conditions;
+using SerializationUtilities;
+using WellFormedNames;
 
 namespace ActionLibrary
 {

@@ -1,38 +1,45 @@
 ﻿using System;
 using System.IO;
+using AssetManagerPackage;
 using AssetPackage;
-using GAIPS.Serialization;
+using SerializationUtilities;
+using Utilities.Json;
+#if PORTABLE
+using SerializationUtilities.Attributes;
+#endif
 
 namespace GAIPS.Rage
 {
 	public abstract class LoadableAsset<T> : BaseAsset
 		where T : LoadableAsset<T>
 	{
+		private static readonly JSONSerializer SERIALIZER = new JSONSerializer();
+
 		[NonSerialized]
 		private string m_assetFilepath = null;
 		public string AssetFilePath => m_assetFilepath;
-		protected IStorageProvider CurrentStorageProvider { get; private set; }
 
-		public static T LoadFromFile(IStorageProvider storageProvider, string filename)
+		public static T LoadFromFile(string filePath)
 		{
 			string error;
-			T asset = LoadFromFile(storageProvider, filename, out error);
+			T asset = LoadFromFile(filePath, out error);
 			if(error!=null)
 				throw new Exception(error);	//TODO better exception
 			return asset;
 		}
 
-		public static T LoadFromFile(IStorageProvider storageProvider, string filename, out string errorOnLoad)
+		public static T LoadFromFile(string filePath, out string errorOnLoad)
 		{
-			T asset;
-			using (var f = storageProvider.RequestFile(filename, FileMode.Open, FileAccess.Read))
-			{
-				var serializer = new JSONSerializer();
-				asset = serializer.Deserialize<T>(f);
-			}
+			var storage = GetInterface<IDataStorage>();
+			if (storage == null)
+				throw new Exception($"No {nameof(IDataStorage)} defined in the AssetManager bridge.");
 
-			asset.CurrentStorageProvider = storageProvider;
-			asset.m_assetFilepath = storageProvider.GetFullPath(filename);
+			if (!storage.Exists(filePath))
+				throw new FileNotFoundException();
+
+			var data = storage.Load(filePath);
+			T asset = SERIALIZER.DeserializeFromJson<T>((JsonObject)JsonParser.Parse(data));
+			asset.m_assetFilepath = filePath;
 			errorOnLoad = asset.OnAssetLoaded();
 			return asset;
 		}
@@ -40,25 +47,25 @@ namespace GAIPS.Rage
 		/// <returns>Error message if any. Null if the asset was loaded without errors</returns>
 		protected abstract string OnAssetLoaded();
 
-		protected virtual void OnAssetPathChanged(IStorageProvider oldProvider, string oldpath){}
-
-		public void SaveToFile(IStorageProvider storageProvider, string filepath)
+		protected virtual void OnAssetPathChanged(string oldpath)
 		{
-			filepath = storageProvider.GetFullPath(filepath);
-			if ((storageProvider!=CurrentStorageProvider) || !string.Equals(m_assetFilepath, filepath))
+		}
+
+		public void SaveToFile(string filepath)
+		{
+			var storage = GetInterface<IDataStorage>();
+			if(storage == null)
+				throw new Exception($"No {nameof(IDataStorage)} defined in the AssetManager bridge.");
+
+			if (!string.Equals(m_assetFilepath, filepath))
 			{
 				var oldPath = m_assetFilepath;
-				var oldProvider = CurrentStorageProvider;
-				CurrentStorageProvider = storageProvider;
 				m_assetFilepath = filepath;
-				OnAssetPathChanged(oldProvider, oldPath);
+				OnAssetPathChanged(oldPath);
 			}
 
-			using (var f = CurrentStorageProvider.RequestFile(filepath, FileMode.Create, FileAccess.Write))
-			{
-				var serializer = new JSONSerializer();
-				serializer.Serialize(f,this);
-			}
+			var json = SERIALIZER.SerializeToJson(this);
+			storage.Save(filepath, json.ToString(true));
 		}
 
 		protected string ToRelativePath(string absolutePath)
@@ -67,7 +74,8 @@ namespace GAIPS.Rage
 				return string.Empty;
 			if (string.IsNullOrEmpty(m_assetFilepath))
 				return absolutePath;
-			return CurrentStorageProvider.ToRelativePath(m_assetFilepath, absolutePath);
+
+			return ToRelativePath(m_assetFilepath, absolutePath);
 		}
 
 		protected string ToAbsolutePath(string relativePath)
@@ -77,7 +85,36 @@ namespace GAIPS.Rage
 			if (string.IsNullOrEmpty(m_assetFilepath))
 				return relativePath;
 
-			return CurrentStorageProvider.ToAbsolutePath(m_assetFilepath, relativePath);
+			return ToAbsolutePath(m_assetFilepath, relativePath);
+		}
+
+		protected static string ToRelativePath(string basePath, string absolutePath)
+		{
+			if (!Path.IsPathRooted(absolutePath))
+				return absolutePath;
+
+			if (Path.HasExtension(basePath))
+				basePath = Path.GetDirectoryName(basePath);
+
+			return PathUtilities.RelativePath(absolutePath, basePath);
+		}
+
+		protected static string ToAbsolutePath(string basePath, string relativePath)
+		{
+			if (Path.HasExtension(basePath))
+				basePath = Path.GetDirectoryName(basePath);
+
+			return PathUtilities.CleanCombine(basePath, relativePath);
+		}
+
+		protected static I GetInterface<I>()
+		{
+			if (AssetManager.Instance.Bridge != null && AssetManager.Instance.Bridge is I)
+			{
+				return (I) (AssetManager.Instance.Bridge);
+			}
+
+			return default(I);
 		}
 	}
 }

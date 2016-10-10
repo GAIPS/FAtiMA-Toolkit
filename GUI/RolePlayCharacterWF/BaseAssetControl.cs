@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
+using AssetPackage;
+using GAIPS.AssetEditorTools;
 using GAIPS.Rage;
 using RolePlayCharacterWF.Properties;
 
 namespace RolePlayCharacterWF
 {
-	public partial class BaseAssetControl<T> : UserControl
-		where T: LoadableAsset<T>
+	public partial class BaseAssetControl<TAsset,TEditor> : UserControl
+		where TAsset: LoadableAsset<TAsset>
+		where TEditor: BaseAssetForm<TAsset>
 	{
 		[Description("Group Label"), Category("Appearance")]
 		public string Label {
@@ -22,48 +20,49 @@ namespace RolePlayCharacterWF
 			set { groupBox1.Text = value; }
 		}
 
-		[Description("Open File Filters"),Category("Behavior")]
-		public string Filters { get; set; }
-
-		[Description("Relative Path to the respective Asset Editor"), Category("Behavior")]
-		public string AssetEditorExecutablePath { get; set; }
-
-		public string Path
-		{
-			get { return _path.Text; }
-			set { _path.Text = value; }
-		}
+		public string Path => _path.Text;
 
 		[Category("Action")]
 		public event EventHandler OnPathChanged;
 
+		private TEditor _controlForm;
+		private Func<TAsset> _assetRequester;
+		private TEditor _activeForm=null;
+
 		public BaseAssetControl()
 		{
 			InitializeComponent();
+			_controlForm=(TEditor)Activator.CreateInstance(typeof(TEditor));
+		}
+
+		public void SetAsset(string assetPath, Func<TAsset> assetRequester)
+		{
+			_assetRequester = assetRequester;
+			_path.Text = assetPath;
 		}
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			var ofd = new OpenFileDialog();
-			ofd.Filter = Filters;
-			if (ofd.ShowDialog() == DialogResult.OK)
+			var path = _controlForm.SelectAssetFileFromBrowser();
+			if(path==null)
+				return;
+
+			try
 			{
-				try
-				{
-					var asset = LoadableAsset<T>.LoadFromFile(LocalStorageProvider.Instance, ofd.FileName);
-					_path.Text = ofd.FileName;
-					OnPathChanged?.Invoke(this,new EventArgs());
-				}
-				catch (Exception ex)
-				{
-					MessageBox.Show(ex.Message + "-" + ex.StackTrace, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-				}
+				LoadableAsset<TAsset>.LoadFromFile(path);
+				_path.Text = path;
+				OnPathChanged?.Invoke(this, new EventArgs());
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show(ex.Message + "-" + ex.StackTrace, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
-		private void button2_Click(object sender, EventArgs e)
+		private void _clearButton_Click(object sender, EventArgs e)
 		{
 			_path.Text = string.Empty;
+			OnPathChanged?.Invoke(this, new EventArgs());
 		}
 
 		private void _path_TextChanged(object sender, EventArgs e)
@@ -76,19 +75,42 @@ namespace RolePlayCharacterWF
 			if (string.IsNullOrEmpty(Path))
 				return;
 
-			Process.Start(AssetEditorExecutablePath, $"\"{Path}\"");
+			EditAsset();
 		}
 
 		private void _createNewButton_Click(object sender, EventArgs e)
 		{
-			var sfd = new SaveFileDialog();
-			sfd.Filter = Filters;
-			if (sfd.ShowDialog() == DialogResult.OK)
+			var path = _controlForm.CreateAndSaveEmptyAsset();
+			if (path == null)
+				return;
+
+			_path.Text = path;
+			OnPathChanged?.Invoke(this, new EventArgs());
+
+			EditAsset();
+		}
+
+		private void EditAsset()
+		{
+			_clearButton.Enabled = false;
+			_createNewButton.Enabled = false;
+			_setButton.Enabled = false;
+			_editButton.Enabled = false;
+
+			_activeForm = (TEditor)Activator.CreateInstance(typeof(TEditor));
+			_activeForm.EditAssetInstance(_assetRequester);
+
+			_activeForm.Closed += (sender, args) =>
 			{
-				_path.Text = sfd.FileName;
-				OnPathChanged?.Invoke(this, new EventArgs());
-				Process.Start(AssetEditorExecutablePath, $"\"{Path}\"");
-			}
+				_clearButton.Enabled = true;
+				_createNewButton.Enabled = true;
+				_setButton.Enabled = true;
+				_editButton.Enabled = true;
+
+				_activeForm = null;
+			};
+
+			_activeForm.Show();
 		}
 	}
 }

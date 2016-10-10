@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
@@ -29,7 +30,7 @@ namespace EmotionalAppraisalWF
             comboBoxDecay.Items.AddRange(seq.Cast<object>().ToArray());
             comboBoxDecay.SelectedIndex = 0;
 
-            comboBoxEmotionType.DataSource = _emotionDispositionsVM.EmotionTypes;
+	        comboBoxEmotionType.DataSource = EmotionalAppraisalAsset.EmotionTypes;
 
             if (emotionDispositionToEdit != null)
             {

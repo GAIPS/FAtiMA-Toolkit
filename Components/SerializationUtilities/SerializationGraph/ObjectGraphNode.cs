@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Utilities;
 
-namespace GAIPS.Serialization.SerializationGraph
+namespace SerializationUtilities.SerializationGraph
 {
 	public struct FieldEntry
 	{
@@ -66,8 +66,7 @@ namespace GAIPS.Serialization.SerializationGraph
 					m_fields[fieldName] = value;
 
 					var node = value as ObjectGraphNode;
-					if (node != null)
-						node.m_referencedBy.Add(this);
+					node?.m_referencedBy.Add(this);
 				}
 			}
 
@@ -138,7 +137,7 @@ namespace GAIPS.Serialization.SerializationGraph
 				if (ObjectType == null)
 					return true;
 
-				return requestedType.IsAssignableFrom(ObjectType.ClassType);
+				return TypeTools.IsAssignableFrom(requestedType, ObjectType.ClassType);
 			}
 
 			public override object ExtractObject(Type requestedType)
@@ -154,7 +153,7 @@ namespace GAIPS.Serialization.SerializationGraph
 				if (ObjectType != null)
 				{
 					Type myType = ObjectType.ClassType;
-					if (requestedType != null && !requestedType.IsAssignableFrom(myType))
+					if (requestedType != null && !TypeTools.IsAssignableFrom(requestedType,myType))
 						throw new Exception("Unable to build object. Requested on type but data has another type");	//TODO better exception
 					typeToBuild = myType;
 				}
@@ -162,7 +161,7 @@ namespace GAIPS.Serialization.SerializationGraph
 				if (typeToBuild == null)
 					throw new Exception("Missing type information. Unable to build object");	//TODO better exception
 
-				if (typeToBuild.IsAbstract || typeToBuild.IsInterface)
+				if (typeToBuild.IsAbstract() || typeToBuild.IsInterface())
 					throw new Exception("Cannot create a direct instance of a abstract or interface");	//TODO better exception
 
 				if (typeToBuild.IsArray || typeToBuild.IsPrimitiveData())
@@ -172,7 +171,7 @@ namespace GAIPS.Serialization.SerializationGraph
 					return boxedValue.RebuildObject(typeToBuild);
 				}
 
-				buildObject = SerializationServices.GetUninitializedObject(typeToBuild);
+				buildObject = SerializationServices.InstanceFactory.CreateUninitialized(typeToBuild);
 				ParentGraph.LinkObjectToNode(this, buildObject);
 
 				var surrogate = SerializationServices.GetDefaultSerializationSurrogate(typeToBuild);

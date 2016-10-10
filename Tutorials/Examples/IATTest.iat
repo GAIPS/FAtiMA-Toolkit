@@ -1,0 +1,194 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"ScenarioName": "Social Importance Demo",
+			"Characters": [
+				{
+					"Name": "Friend",
+					"Source": "RPCTest.rpc"
+				}],
+			"PlayerDialogues": [
+				{
+					"CurrentState": "Start",
+					"NextState": "AfterPlayerGreeting",
+					"Meaning": "Greeting",
+					"Style": "Informal",
+					"Utterance": "Hello, how may I help you?"
+				}, 
+				{
+					"CurrentState": "Start",
+					"NextState": "AfterPlayerGreeting",
+					"Meaning": "Greeting",
+					"Style": "Formal",
+					"Utterance": "Tech Solutions LTD, this is Tom speaking. How are you today?"
+				}, 
+				{
+					"CurrentState": "ProblemSolved",
+					"NextState": "AnythingElse",
+					"Meaning": "AskForFurtherAssistance",
+					"Style": "Informal",
+					"Utterance": "Anything else?"
+				}, 
+				{
+					"CurrentState": "ProblemSolved",
+					"NextState": "AnythingElse",
+					"Meaning": "AskForFurtherAssistance",
+					"Style": "Formal",
+					"Utterance": "We are glad that we could help you solve your problem. Is there anything else we can assist you with?"
+				}, 
+				{
+					"CurrentState": "Start",
+					"NextState": "AfterPlayerGreeting",
+					"Meaning": "Greeting",
+					"Style": "Informal",
+					"Utterance": "Yo dude, wassup?"
+				}, 
+				{
+					"CurrentState": "Problem",
+					"NextState": "SolutionProposed",
+					"Meaning": "AskToCheckCapsLock",
+					"Style": "Informal",
+					"Utterance": "Check the caps lock..."
+				}, 
+				{
+					"CurrentState": "Problem",
+					"NextState": "SolutionProposed",
+					"Meaning": "AskToCheckCapsLock",
+					"Style": "Formal",
+					"Utterance": "Could you please check if the caps lock is turned on by accident?"
+				}, 
+				{
+					"CurrentState": "Start",
+					"NextState": "AfterPlayerGreeting",
+					"Meaning": "Greeting",
+					"Style": "Formal",
+					"Utterance": "Dear Madam, is there anything I can do to help you?"
+				}],
+			"AgentDialogues": [
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "IsAnybodyThereQuestion",
+					"Style": "-",
+					"Utterance": "Are you still there?"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "End",
+					"Meaning": "GiveUp",
+					"Style": "BadMood",
+					"Utterance": "You are useless! I hope you get fired!!"
+				}, 
+				{
+					"CurrentState": "AfterPlayerGreeting",
+					"NextState": "GreetingEnd",
+					"Meaning": "Greeting",
+					"Style": "GoodMood",
+					"Utterance": "Good Day! How are you? I was wondering if you could help me..."
+				}, 
+				{
+					"CurrentState": "AfterPlayerGreeting",
+					"NextState": "GreetingEnd",
+					"Meaning": "Greeting",
+					"Style": "Friend",
+					"Utterance": "Yo dude! Your friend here needs help."
+				}, 
+				{
+					"CurrentState": "AnythingElse",
+					"NextState": "End",
+					"Meaning": "Farewell",
+					"Style": "BadMood",
+					"Utterance": "..."
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "ProblemSolved",
+					"Meaning": "ProblemIsFixed",
+					"Style": "GoodMood",
+					"Utterance": "It worked!! Thank you."
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "ProblemSolved",
+					"Meaning": "ProblemIsFixed",
+					"Style": "BadMood",
+					"Utterance": "It seems to be working now."
+				}, 
+				{
+					"CurrentState": "Farewell",
+					"NextState": "End",
+					"Meaning": "Farewell",
+					"Style": "Gratitude",
+					"Utterance": "You were a great help. Thank you very much. More people like you should exist in this world."
+				}, 
+				{
+					"CurrentState": "Farewell",
+					"NextState": "End",
+					"Meaning": "Farewell",
+					"Style": "GoodMood",
+					"Utterance": "Thanks for the help. Have a nice day."
+				}, 
+				{
+					"CurrentState": "AnythingElse",
+					"NextState": "Farewell",
+					"Meaning": "NoAdditionalProblem",
+					"Style": "BadMood",
+					"Utterance": "No, I'm fine."
+				}, 
+				{
+					"CurrentState": "AnythingElse",
+					"NextState": "Farewell",
+					"Meaning": "NoAdditionalProblem",
+					"Style": "GoodMood",
+					"Utterance": "No, that was the only problem I had."
+				}, 
+				{
+					"CurrentState": "Farewell",
+					"NextState": "End",
+					"Meaning": "Farewell",
+					"Style": "BadMood",
+					"Utterance": "You should be more respectful when talking to customers..."
+				}, 
+				{
+					"CurrentState": "SolutionProposed",
+					"NextState": "-",
+					"Meaning": "CheckSolution",
+					"Style": "BadMood",
+					"Utterance": "Let me see."
+				}, 
+				{
+					"CurrentState": "SolutionProposed",
+					"NextState": "-",
+					"Meaning": "CheckSolution",
+					"Style": "GoodMood",
+					"Utterance": "Thank you. Could you wait just a moment?"
+				}, 
+				{
+					"CurrentState": "AfterPlayerGreeting",
+					"NextState": "GreetingEnd",
+					"Meaning": "Greeting",
+					"Style": "BadMood",
+					"Utterance": "I need this fixed quickly!"
+				}, 
+				{
+					"CurrentState": "GreetingEnd",
+					"NextState": "Problem",
+					"Meaning": "ExplainComputerProblem",
+					"Style": "BadMood",
+					"Utterance": "I can't login into my e-mail account, and I am pretty sure I am using the correct password. This is unnacceptable."
+				}, 
+				{
+					"CurrentState": "GreetingEnd",
+					"NextState": "Problem",
+					"Meaning": "ExplainComputerProblem",
+					"Style": "GoodMood",
+					"Utterance": "I am suddenly unable to login in to my e-mail account, and I am pretty sure my password is correct."
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "IntegratedAuthoringTool.IntegratedAuthoringToolAsset, IntegratedAuthoringTool, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

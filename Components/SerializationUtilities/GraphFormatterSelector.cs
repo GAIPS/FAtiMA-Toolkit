@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GAIPS.Serialization
+namespace SerializationUtilities
 {
 	public sealed class GraphFormatterSelector
 	{

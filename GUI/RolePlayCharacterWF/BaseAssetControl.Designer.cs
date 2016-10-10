@@ -1,6 +1,6 @@
 ﻿namespace RolePlayCharacterWF
 {
-	partial class BaseAssetControl<T>
+	partial class BaseAssetControl<TAsset, TEditor>
 	{
 		/// <summary> 
 		/// Required designer variable.
@@ -128,7 +128,7 @@
 			this._clearButton.TabIndex = 1;
 			this._clearButton.Text = "Clear";
 			this._clearButton.UseVisualStyleBackColor = true;
-			this._clearButton.Click += new System.EventHandler(this.button2_Click);
+			this._clearButton.Click += new System.EventHandler(this._clearButton_Click);
 			// 
 			// _createNewButton
 			// 

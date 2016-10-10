@@ -5,6 +5,8 @@
 	/// </summary>
 	public class ActionEventDTO : EventDTO
     {
+		public ActionState ActionState { get; set; }
+
 		/// <summary>
 		/// The action referent to this event.
 		/// </summary>
@@ -15,4 +17,10 @@
 		/// </summary>
 		public string Target { get; set; }
     }
+
+	public enum ActionState : byte
+	{
+		Start,
+		Finished
+	}
 }

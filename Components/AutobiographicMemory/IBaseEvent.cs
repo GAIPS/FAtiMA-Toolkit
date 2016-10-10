@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using AutobiographicMemory.DTOs;
-using KnowledgeBase.WellFormedNames;
+using WellFormedNames;
 
 namespace AutobiographicMemory
 {

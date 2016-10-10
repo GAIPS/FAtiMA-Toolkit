@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
-using KnowledgeBase.Conditions;
+using Conditions;
 
 namespace GAIPS.AssetEditorTools
 {
@@ -33,11 +33,6 @@ namespace GAIPS.AssetEditorTools
 
 				return dataView.SelectedRows[0].Index;
 			}
-		}
-
-		private string CurrentSelectedValue {
-			get { return (string)dataView.Rows[CurrentSelectedRowIndex].Cells[0].Value; }
-			set { dataView.Rows[CurrentSelectedRowIndex].Cells[0].Value = value; }
 		}
 
 		public ConditionSetEditorControl()
@@ -106,37 +101,44 @@ namespace GAIPS.AssetEditorTools
 			_view.RemoveConditionAt(CurrentSelectedRowIndex);
 		}
 
+		private int _currentEditIndex = -1;
 		private string _savedValue;
 
 		private void dataView_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
 		{
-			_savedValue = CurrentSelectedValue;
+			_currentEditIndex = e.RowIndex;
+			if(_currentEditIndex<0)
+				return;
+
+			dataView.ClearSelection();
+
+			_savedValue = (string) dataView.Rows[_currentEditIndex].Cells[0].Value;
 		}
 
 		private void dataView_CellEndEdit(object sender, DataGridViewCellEventArgs evt)
 		{
 			try
 			{
-				var newValue = CurrentSelectedValue;
+				var newValue = (string)dataView.Rows[_currentEditIndex].Cells[0].Value;
 
 				if (string.Equals(newValue, _savedValue, StringComparison.InvariantCultureIgnoreCase))
 					return;
 
 				if (string.IsNullOrWhiteSpace(newValue))
 				{
-					_view.RemoveConditionAt(CurrentSelectedRowIndex);
+					_view.RemoveConditionAt(_currentEditIndex);
 					return;
 				}
 
 				try
 				{
 					var c = Condition.Parse(newValue);
-					_view.ChangeConditionAtIndex(CurrentSelectedRowIndex,newValue);
+					_view.ChangeConditionAtIndex(_currentEditIndex, newValue);
 				}
 				catch (Exception e)
 				{
 					MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-					CurrentSelectedValue = _savedValue;
+					dataView.Rows[_currentEditIndex].Cells[0].Value = _savedValue;
 				}
 			}
 			finally

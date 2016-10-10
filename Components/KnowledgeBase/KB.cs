@@ -1,38 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using GAIPS.Serialization;
-using GAIPS.Serialization.SerializationGraph;
-using KnowledgeBase.WellFormedNames;
-using KnowledgeBase.WellFormedNames.Collections;
+using SerializationUtilities;
+using SerializationUtilities.SerializationGraph;
+using WellFormedNames;
+using WellFormedNames.Collections;
 using Utilities;
+using IQueryable = WellFormedNames.IQueryable;
 
 namespace KnowledgeBase
 {
-	using BeliefPair = Pair<PrimitiveValue, IEnumerable<SubstitutionSet>>;
+	using BeliefPair = Pair<Name, IEnumerable<SubstitutionSet>>;
 
-	public delegate IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> DynamicPropertyCalculator(KB kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints);
+	public delegate IEnumerable<Pair<Name, SubstitutionSet>> DynamicPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints);
 
 	[Serializable]
-	public class KB : ICustomSerialization
+	public class KB : IQueryable, ICustomSerialization
 	{
 		private const int MAX_TOM_LVL = 2;
 
 		private sealed class KnowledgeEntry
 		{
-			private PrimitiveValue m_universal = null;
-			private Dictionary<Name, PrimitiveValue> m_perspectives;
+			private Name m_universal = null;
+			private Dictionary<Name, Name> m_perspectives;
 
-			public PrimitiveValue GetValueFor(Name perspective)
+			public Name GetValueFor(Name perspective)
 			{
-				PrimitiveValue value;
+				Name value;
 				if ((m_perspectives != null) && m_perspectives.TryGetValue(perspective, out value))
 					return value;
 
 				return m_universal;
 			}
 
-			public void TellValueFor(Name perspective, PrimitiveValue value)
+			public void TellValueFor(Name perspective, Name value)
 			{
 				if (perspective.IsUniversal)
 				{
@@ -45,7 +46,7 @@ namespace KnowledgeBase
 					if(value==null)
 						return;
 
-					m_perspectives = new Dictionary<Name, PrimitiveValue>();
+					m_perspectives = new Dictionary<Name, Name>();
 				}
 
 				if (value == null)
@@ -63,7 +64,7 @@ namespace KnowledgeBase
 				return (m_perspectives == null) && (m_universal == null);
 			}
 
-			public IEnumerable<KeyValuePair<Name, PrimitiveValue>> GetPerspectives()
+			public IEnumerable<KeyValuePair<Name, Name>> GetPerspectives()
 			{
 				if (m_perspectives != null)
 				{
@@ -72,29 +73,29 @@ namespace KnowledgeBase
 				}
 
 				if(m_universal!=null)
-					yield return new KeyValuePair<Name, PrimitiveValue>(Name.UNIVERSAL_SYMBOL, m_universal);
+					yield return new KeyValuePair<Name, Name>(Name.UNIVERSAL_SYMBOL, m_universal);
 			}
 
 			public IEnumerable<Name> GetAllStoredPerspectives()
 			{
-				return m_perspectives.Keys.SelectMany(Key2ToMList).Distinct();
+				return m_perspectives?.Keys.SelectMany(Key2ToMList).Distinct() ?? Enumerable.Empty<Name>();
 			}
 		}
 
 		private sealed class DynamicKnowledgeEntry
 		{
 			public readonly DynamicPropertyCalculator surogate;
-			public readonly Name[] arguments;
-			
-			public DynamicKnowledgeEntry(DynamicPropertyCalculator surogate, Name[] arguments)
+			public readonly string description;
+
+			public DynamicKnowledgeEntry(DynamicPropertyCalculator surogate, string description)
 			{
 				this.surogate = surogate;
-				this.arguments = arguments;
+				this.description = description;
 			}
 		}
 
 		private NameSearchTree<KnowledgeEntry> m_knowledgeStorage;
-		private readonly NameSearchTree<DynamicKnowledgeEntry> m_dynamicProperties;
+		private NameSearchTree<DynamicKnowledgeEntry> m_dynamicProperties;
 
 		/// <summary>
 		/// Indicates the default mapping of "SELF"
@@ -117,21 +118,21 @@ namespace KnowledgeBase
 
 		public void RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate)
 		{
-			internal_RegistDynamicProperty(propertyTemplate, surogate, propertyTemplate.GetVariables().Distinct().ToArray());
+			internal_RegistDynamicProperty(propertyTemplate,null, surogate);
 		}
 
-		public void RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate, IEnumerable<string> arguments)
+		public void RegistDynamicProperty(Name propertyTemplate, string description, DynamicPropertyCalculator surogate)
 		{
-			Name[] args;
-			if (arguments == null)
-				args = new Name[0];
-			else
-				args = arguments.Distinct().Select(s => Name.BuildName("[" + s + "]")).ToArray();
+			//Name[] args;
+			//if (arguments == null)
+			//	args = new Name[0];
+			//else
+			//	args = arguments.Distinct().Select(s => Name.BuildName("[" + s + "]")).ToArray();
 
-			internal_RegistDynamicProperty(propertyTemplate,surogate,args);
+			internal_RegistDynamicProperty(propertyTemplate,description,surogate);
 		}
 
-		private void internal_RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate, Name[] argumentVariables)
+		private void internal_RegistDynamicProperty(Name propertyTemplate, string description, DynamicPropertyCalculator surogate)
 		{
 			if (surogate == null)
 				throw new ArgumentNullException(nameof(surogate));
@@ -149,7 +150,7 @@ namespace KnowledgeBase
 			if (m_knowledgeStorage.Unify(propertyTemplate).Any())
 				throw new ArgumentException($"The given template {propertyTemplate} will collide with stored constant properties", nameof(propertyTemplate));
 
-			m_dynamicProperties.Add(propertyTemplate, new DynamicKnowledgeEntry(surogate, argumentVariables));
+			m_dynamicProperties.Add(propertyTemplate, new DynamicKnowledgeEntry(surogate, description));
 		}
 
 		public void UnregistDynamicProperty(Name propertyTemplate)
@@ -158,23 +159,28 @@ namespace KnowledgeBase
 				throw new Exception($"Unknown Dynamic Property {propertyTemplate}");
 		}
 
+		public IEnumerable<DynamicPropertyEntry> GetDynamicProperties()
+		{
+			return m_dynamicProperties.Select(p => new DynamicPropertyEntry() {PropertyTemplate = p.Key, Description = p.Value.description??"No Description"});
+		}
+
 		#endregion
 
 		#region Native Dynamic Properties
 
 		private static void RegistNativeDynamicProperties(KB kb)
 		{
-			kb.RegistDynamicProperty(COUNT_TEMPLATE, CountPropertyCalculator);
+			kb.RegistDynamicProperty(COUNT_TEMPLATE, "The number of substitutions found for [x]", CountPropertyCalculator);
 		}
 
 		//Count
 		private static readonly Name COUNT_TEMPLATE = Name.BuildName("Count([x])");
-		private static IEnumerable<Pair<PrimitiveValue, SubstitutionSet>> CountPropertyCalculator(KB kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
+		private static IEnumerable<Pair<Name, SubstitutionSet>> CountPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			var arg = args["x"];
 
 			var set = kb.AskPossibleProperties(arg, perspective, constraints).ToList();
-			PrimitiveValue count = set.Count;
+			Name count = Name.BuildName(set.Count);
 			IEnumerable<SubstitutionSet> sets;
 			if (set.Count == 0)
 				sets = constraints;
@@ -242,22 +248,23 @@ namespace KnowledgeBase
 			}
 	    }
 
-		public object AskProperty(Name property)
+		public Name AskProperty(Name property)
 		{
 			return AskProperty(property, Name.SELF_SYMBOL);
 		}
 
-		public object AskProperty(Name property, Name perspective)
+		public Name AskProperty(Name property, Name perspective)
 		{
-			if(!property.IsGrounded)
+			if (!property.IsGrounded)
 				throw new ArgumentException("The given Well Formed Name must be grounded",nameof(property));
 
-			var results = AskPossibleProperties(property, perspective, null).Select(p => PrimitiveValue.Extract(p.Item1)).ToArray();
+			var results = AskPossibleProperties(property, perspective, null).Select(p => p.Item1).ToArray();
 			if (results.Length==0)
 				return null;
 			if (results.Length == 1)
 				return results[0];
-			return results;
+
+			throw new Exception("More the 1 property found");
 		}
 
 		public IEnumerable<BeliefPair> AskPossibleProperties(Name property, Name perspective, IEnumerable<SubstitutionSet> constraints)
@@ -270,7 +277,7 @@ namespace KnowledgeBase
 				if (property == Name.SELF_SYMBOL)
 					property = Perspective;
 
-				return new[] { Tuples.Create(property.GetPrimitiveValue(), constraints) };
+				return new[] { Tuples.Create(property, constraints) };
 			}
 
 			var ToMList = AssertPerspective(perspective, nameof(perspective));
@@ -350,7 +357,7 @@ namespace KnowledgeBase
 			{
 				if (g.Key.IsPrimitive)
 				{
-					yield return Tuples.Create(g.Key.GetPrimitiveValue(), (IEnumerable<SubstitutionSet>)g);
+					yield return Tuples.Create(g.Key, (IEnumerable<SubstitutionSet>)g);
 					continue;
 				}
 
@@ -379,57 +386,13 @@ namespace KnowledgeBase
 	    {
 	        return m_knowledgeStorage.ContainsKey(name);
 	    }
-
-		/// <summary>
-		/// This method provides a way to search for properties/predicates in the WorkingMemory 
-		/// that match with a specified name with unbound variables.
-		/// 
-		/// In order to understand this method, let’s examine the following example. Suppose that 
-		/// the memory only contains properties about two characters: Luke and John.
-		/// Furthermore, it only stores two properties: their name and strength. So the KB will 
-		/// only store the following objects:
-		/// - Luke(Name) : Luke
-		/// - Luke(Strength) : 8
-		/// - John(Name) : John 
-		/// - John(Strength) : 4
-		/// 
-		/// The next table shows the result of calling the method with several distinct names. 
-		/// The function works by finding substitutions for the unbound variables, which make 
-		/// the received name equal to the name of an object stored in memory.
-		/// 
-		/// Name			Substitutions returned
-		/// Luke([x])		{{[x]/Name},{[x]/Strength}}
-		/// [x](Strength)	{{[x]/John},{[x]/Luke}}
-		/// [x]([y])		{{[x]/John,[y]/Name},{[x]/John,[y]/Strength},{[x]/Luke,[y]/Name},{[x]/Luke,[y]/Strength}}
-		/// John(Name)	    {{}}
-		/// John(Height)	null
-		/// Paul([x])	    null
-		/// 
-		/// In the first example, there are two possible substitutions that make “Luke([x])”
-		/// equal to the objects stored above. The third example has two unbound variables,
-		/// so the returned set contains all possible combinations of variable attributions.
-		/// 
-		/// If this method receives a ground name, as seen on examples 4 and 5, it checks
-		/// if the received name exists in memory. If so, a set with the empty substitution is
-		/// returned, i.e. the empty substitution makes the received name equal to some object
-		/// in memory. Otherwise, the function returns null, i.e. there is no substitution
-		/// that applied to the name will make it equal to an object in memory. This same result
-		/// is returned in the last example, since there is no object named Paul, and therefore no 
-		/// substitution of [x] will match the received name with an existing object.
-		/// </summary>
-		/// <param name="name">a name (that correspond to a predicate or predicate)</param>
-		/// <returns>a set of SubstitutionSets that make the received name to match predicates or properties that do exist in the KB</returns>
-		//public IEnumerable<SubstitutionSet> Unify(Name name, SubstitutionSet constraints = null)
-		//{
-		//	return m_knowledgeStorage.Unify(name, constraints).Select(p => p.Item2);
-		//}
-
-		public void Tell(Name property, PrimitiveValue value)
+		
+		public void Tell(Name property, Name value)
 		{
 			Tell(property,value,Name.SELF_SYMBOL);
 		}
 
-		public void Tell(Name property, PrimitiveValue value, Name perspective)
+		public void Tell(Name property, Name value, Name perspective)
 		{
 			if (property.IsPrimitive)
 				throw new ArgumentException("The given property name cannot be a primitive value.",nameof(property));
@@ -519,7 +482,7 @@ namespace KnowledgeBase
 						throw new Exception($"{nameof(KB)} found multiple valid values for {property}");
 				}
 
-				return Name.BuildName(r[0].Item1);
+				return r[0].Item1;
 			}
 			finally
 			{
@@ -703,6 +666,17 @@ namespace KnowledgeBase
 
 		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
+			if(m_knowledgeStorage == null)
+				m_knowledgeStorage = new NameSearchTree<KnowledgeEntry>();
+			else
+				m_knowledgeStorage.Clear();
+
+			if(m_dynamicProperties==null)
+				m_dynamicProperties = new NameSearchTree<DynamicKnowledgeEntry>();
+			else
+				m_dynamicProperties.Clear();
+			RegistNativeDynamicProperties(this);
+
 			Perspective = dataHolder.GetValue<Name>("Perspective");
 			var knowledge = dataHolder.GetValueGraphNode("Knowledge");
 			var it = ((IObjectGraphNode) knowledge).GetEnumerator();
@@ -713,7 +687,7 @@ namespace KnowledgeBase
 				foreach (var field in holder)
 				{
 					var property = (Name) field.FieldName;
-					var value = field.FieldNode.RebuildObject<PrimitiveValue>();
+					var value = field.FieldNode.RebuildObject<Name>();
 					if(value==null)
 						continue;
 					

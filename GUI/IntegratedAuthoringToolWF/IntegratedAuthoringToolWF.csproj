@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,34 +33,20 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Equin.ApplicationFramework.BindingListView, Version=1.4.5222.35545, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Equin.ApplicationFramework.BindingListView.1.4.5222.35545\lib\net40-Client\Equin.ApplicationFramework.BindingListView.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="RageAssetManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Speech" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
+  <PropertyGroup>
+    <StartupObject>IntegratedAuthoringToolWF.Program</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="AddOrEditDialogueActionForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AddOrEditDialogueActionForm.Designer.cs">
       <DependentUpon>AddOrEditDialogueActionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Audio\AudioStreamModifier.cs" />
+    <Compile Include="Audio\SampleJoiner.cs" />
+    <Compile Include="BaseIATForm.cs">
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="DialogueEditorForm.cs">
       <SubType>Form</SubType>
@@ -81,6 +68,14 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TTSEngines\BakedTTS.cs" />
+    <Compile Include="TTSEngines\VoicePlayer.cs" />
+    <Compile Include="TTSEngines\TextToSpeechEngine.cs" />
+    <Compile Include="TTSEngines\IVoice.cs" />
+    <Compile Include="TTSEngines\L2F\L2FSpeechEngine.cs" />
+    <Compile Include="TTSEngines\L2F\LanguageResources.cs" />
+    <Compile Include="TTSEngines\System\SystemTextToSpeechEngine.cs" />
+    <Compile Include="TTSEngines\Viseme.cs" />
     <EmbeddedResource Include="AddOrEditDialogueActionForm.resx">
       <DependentUpon>AddOrEditDialogueActionForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -90,12 +85,12 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Include="Resources\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Include="Resources\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -118,30 +113,92 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj">
-      <Project>{e011d502-5c0f-4a3f-9f1a-337ff025eb48}</Project>
-      <Name>ActionLibrary</Name>
+    <ProjectReference Include="..\..\Assets\IntegratedAuthoringTool\IntegratedAuthoringTool.csproj">
+      <Project>{f6ad95a5-889c-41a4-b613-b81f09a424ee}</Project>
+      <Name>IntegratedAuthoringTool</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Assets\RolePlayCharacter\RolePlayCharacter.csproj">
+      <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
+      <Name>RolePlayCharacter</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
       <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
       <Name>GAIPS.Rage</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Components\SerializationUtilities\GAIPS.Serialization.csproj">
+    <ProjectReference Include="..\..\Components\SerializationUtilities\SerializationUtilities.csproj">
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
-      <Name>GAIPS.Serialization</Name>
+      <Name>SerializationUtilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\IntegratedAuthoringTool\IntegratedAuthoringTool.csproj">
-      <Project>{f6ad95a5-889c-41a4-b613-b81f09a424ee}</Project>
-      <Name>IntegratedAuthoringTool</Name>
+    <ProjectReference Include="..\..\Components\Utilities\Utilities.csproj">
+      <Project>{2021e828-2f7f-4775-9f02-58c68fd72edd}</Project>
+      <Name>Utilities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\RolePlayCharacter\RolePlayCharacter.csproj">
-      <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
-      <Name>RolePlayCharacter</Name>
+    <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
+      <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
+      <Name>WellFormedNames</Name>
     </ProjectReference>
     <ProjectReference Include="..\GAIPS.AssetEditorTools\GAIPS.AssetEditorTools.csproj">
       <Project>{c61fb19d-e715-4eb4-afca-27ff81a14777}</Project>
       <Name>GAIPS.AssetEditorTools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RolePlayCharacterWF\RolePlayCharacterWF.csproj">
+      <Project>{63ec96bc-d3e1-491b-8c55-61a0f5fba210}</Project>
+      <Name>RolePlayCharacterWF</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Equin.ApplicationFramework.BindingListView, Version=1.4.5222.35545, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Equin.ApplicationFramework.BindingListView.1.4.5222.35545\lib\net40-Client\Equin.ApplicationFramework.BindingListView.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NAudio.Vorbis, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NAudio.Vorbis.1.0.0.0\lib\net35\NAudio.Vorbis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NVorbis, Version=0.8.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NVorbis.0.8.5.0\lib\NVorbis.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RageAssetManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
+    </Reference>
+    <Reference Include="SoundTouch.Net, Version=1.9.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SoundTouch.Net.1.9.2.2\lib\net40\SoundTouch.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Speech" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Visemes_img\0-silence.png" />
+    <Content Include="Resources\Visemes_img\1+11-AxAhUh.png" />
+    <Content Include="Resources\Visemes_img\12-H.png" />
+    <Content Include="Resources\Visemes_img\13-R.png" />
+    <Content Include="Resources\Visemes_img\14-L.png" />
+    <Content Include="Resources\Visemes_img\15-SZTs.png" />
+    <Content Include="Resources\Visemes_img\16-ShChJhZh.png" />
+    <Content Include="Resources\Visemes_img\17-ThDh.png" />
+    <Content Include="Resources\Visemes_img\18-FV.png" />
+    <Content Include="Resources\Visemes_img\19-DTDxN.png" />
+    <Content Include="Resources\Visemes_img\2-Aa.png" />
+    <Content Include="Resources\Visemes_img\20-KGNg.png" />
+    <Content Include="Resources\Visemes_img\21-PBM.png" />
+    <Content Include="Resources\Visemes_img\3-Ao.png" />
+    <Content Include="Resources\Visemes_img\4-EyEhAe.png" />
+    <Content Include="Resources\Visemes_img\5-Er.png" />
+    <Content Include="Resources\Visemes_img\6-YIyIhIx.png" />
+    <Content Include="Resources\Visemes_img\7-WUwU.png" />
+    <Content Include="Resources\Visemes_img\8+10-Ow.png" />
+    <Content Include="Resources\Visemes_img\9-Aw.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

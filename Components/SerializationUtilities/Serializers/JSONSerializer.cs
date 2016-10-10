@@ -2,10 +2,10 @@
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using GAIPS.Serialization.SerializationGraph;
+using SerializationUtilities.SerializationGraph;
 using Utilities.Json;
 
-namespace GAIPS.Serialization
+namespace SerializationUtilities
 {
 	public class JSONSerializer : BaseSerializer
 	{
@@ -33,11 +33,17 @@ namespace GAIPS.Serialization
 
 		public JsonObject SerializeToJson(object graph)
 		{
-			if (!graph.GetType().IsSerializable)
-				throw new Exception($"Instances of {graph.GetType()} are not serializable.");  //TODO add a better exception
+			Graph serGraph = ComputeGraph(graph);
+			return ToJson(serGraph);
+		}
 
-			Graph serGraph = new Graph(graph, FormatSelector, Context);
-			return (JsonObject)ToJson(serGraph)[ROOT_FIELD];
+		protected override void SerializeDataGraph(Stream serializationStream, Graph graph)
+		{
+			JsonObject json = ToJson(graph);
+
+			var w = new StreamWriter(serializationStream);
+			json.Write(w, 0, AllowIdentation);
+			w.Flush();
 		}
 
 		private JsonObject ToJson(Graph graph)
@@ -56,15 +62,6 @@ namespace GAIPS.Serialization
 			json[TYPES_FIELD] = types;
 
 			return json;
-		}
-
-		protected override void SerializeDataGraph(Stream serializationStream, Graph graph)
-		{
-			JsonObject json = ToJson(graph);
-
-			var w = new StreamWriter(serializationStream);
-			json.Write(w, 0, AllowIdentation);
-			w.Flush();
 		}
 
 		private JsonToken CollectAssemblyData(Graph graph)
@@ -145,10 +142,22 @@ namespace GAIPS.Serialization
 
 		public object DeserializeFromJson(JsonObject json, Type returnType)
 		{
-			var baseJson = new JsonObject();
-			baseJson[ROOT_FIELD] = json;
+			if (!json.ContainsField(ROOT_FIELD))
+			{
+				var baseJson = new JsonObject();
+				baseJson[ROOT_FIELD] = json;
+				json = baseJson;
+			}
+
 			var graph = new Graph(FormatSelector, Context);
-			DeserializeDataGraphFromJson(baseJson,graph);
+			if (!json.ContainsField(TYPES_FIELD))
+			{
+				var obj = (JsonObject) json[ROOT_FIELD];
+				if (obj.ContainsField("classId"))
+					graph.RegistTypeEntry(returnType, (byte)((JsonNumber)obj["classId"]).Value);
+			}
+			
+			DeserializeDataGraphFromJson(json,graph);
 			return graph.DeserializeObject(returnType);
 		}
 
@@ -280,7 +289,7 @@ namespace GAIPS.Serialization
 			{
 				Enum enumValue = (Enum)value;
 				if (parent.EnumRepresentation == EnumRepresentationMode.Numeric)
-					return serializationGraph.BuildPrimitiveNode((ValueType)Convert.ChangeType(enumValue, enumValue.GetTypeCode()));
+					return serializationGraph.BuildPrimitiveNode((ValueType)Convert.ChangeType(enumValue, enumValue.GetType()));
 				return serializationGraph.BuildStringNode(enumValue.ToString().Replace(", ", "|"));
 			}
 
@@ -300,7 +309,7 @@ namespace GAIPS.Serialization
 		private class DateTimeFormatter : IGraphFormatter
 		{
 			private static readonly string[] TIME_FORMATS = {
-				@"d/M/yyyy@H:m:s.fff",
+				@"d/M/yyyy@H:m:s.fffffff",
 				@"d/M/yyyy@H:m:s",
 				@"d/M/yyyy@H:m",
 				@"d/M/yyyy",
@@ -318,7 +327,7 @@ namespace GAIPS.Serialization
 					{
 						format += @":s";
 						if (time.Millisecond > 0)
-							format += @".fff";
+							format += @".fffffff";
 					}
 				}
 				string timestamp = time.ToString(format);

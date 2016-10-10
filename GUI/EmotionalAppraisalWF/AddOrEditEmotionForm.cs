@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
@@ -20,9 +21,9 @@ namespace EmotionalAppraisalWF
 
             //Default Values 
             comboBoxIntensity.Text = "1";
-            comboBoxEmotionType.DataSource = _emotionalStateVm.EmotionTypes;
-            
-            if (emotionToEdit != null)
+            comboBoxEmotionType.DataSource = EmotionalAppraisalAsset.EmotionTypes;
+
+			if (emotionToEdit != null)
             {
                 this.Text = Resources.EditEmotionFormTitle;
                 this.addOrEditButton.Text = Resources.UpdateButtonLabel;
