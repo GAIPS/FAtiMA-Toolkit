@@ -52,7 +52,7 @@ namespace RealTimeEmotionRecognition.FusionPolicies
             var kalmanFilter = this.KalmanFilters[result.Name];
 
             kalmanFilter.ProcessObservations(affectiveInformation);
-            result.Score = (float) kalmanFilter.X;
+            result.Score = (float) System.Math.Round(kalmanFilter.X,3);
 
             return result;
         }
