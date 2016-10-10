@@ -1,5 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using System.Text;
 using IntegratedAuthoringTool.DTOs;
 
 namespace IntegratedAuthoringTool
@@ -26,10 +26,15 @@ namespace IntegratedAuthoringTool
 
 		public static uint UtteranceHash(string utterance)
 		{
-			unchecked
+			uint hash = 0;
+			var bytes = Encoding.UTF8.GetBytes(utterance);
+			for (var i = 0; i < bytes.Length; i++)
 			{
-				return (uint) utterance.GetHashCode();
+				var move = i%32;
+				var h = (uint) (bytes[i] << move);
+				hash ^= h;
 			}
+			return hash;
 		}
 	}
 }

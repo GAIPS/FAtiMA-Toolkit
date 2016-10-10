@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -45,6 +46,7 @@ namespace IntegratedAuthoringToolWF
 
 			UpdateRateLabel();
 			UpdatePitchLabel();
+			SetVisemeDisplay(Viseme.Silence);
 		}
 
 		private void _dialogOptions_SelectionChangeCommitted(object sender, EventArgs e)
@@ -83,9 +85,17 @@ namespace IntegratedAuthoringToolWF
 					_generateButton.Enabled = false;
 					UpdateButtonText(false);
 					_activeVoicePlayer = a;
-					_activeVoicePlayer.Play(SynthesizerOnSpeakCompleted);
+					_activeVoicePlayer.Play(SynthesizerOnSpeakCompleted,OnVisemeHit);
 				}
 			}
+		}
+
+		private void OnVisemeHit(Viseme v)
+		{
+			if(_activeVoicePlayer==null)
+				return;
+
+			SetVisemeDisplay(v);
 		}
 
 		private void SynthesizerOnSpeakCompleted()
@@ -95,6 +105,84 @@ namespace IntegratedAuthoringToolWF
 
 			_activeVoicePlayer = null;
 			UpdateButtonText(true);
+			SetVisemeDisplay(Viseme.Silence);
+		}
+
+		private void SetVisemeDisplay(Viseme v)
+		{
+			Bitmap b;
+			switch (v)
+			{
+				case Viseme.Silence:
+					b = Resources.Resources.viseme_00;
+					break;
+				case Viseme.AxAhUh:
+					b = Resources.Resources.viseme_01;
+					break;
+				case Viseme.Aa:
+					b = Resources.Resources.viseme_02;
+					break;
+				case Viseme.Ao:
+					b = Resources.Resources.viseme_03;
+					break;
+				case Viseme.EyEhAe:
+					b = Resources.Resources.viseme_04;
+					break;
+				case Viseme.Er:
+					b = Resources.Resources.viseme_05;
+					break;
+				case Viseme.YIyIhIx:
+					b = Resources.Resources.viseme_06;
+					break;
+				case Viseme.WUwU:
+					b = Resources.Resources.viseme_07;
+					break;
+				case Viseme.Ow:
+					b = Resources.Resources.viseme_08;
+					break;
+				case Viseme.Aw:
+					b = Resources.Resources.viseme_09;
+					break;
+				case Viseme.Oy:
+					b = Resources.Resources.viseme_10;
+					break;
+				case Viseme.Ay:
+					b = Resources.Resources.viseme_11;
+					break;
+				case Viseme.H:
+					b = Resources.Resources.viseme_12;
+					break;
+				case Viseme.R:
+					b = Resources.Resources.viseme_13;
+					break;
+				case Viseme.L:
+					b = Resources.Resources.viseme_14;
+					break;
+				case Viseme.SZTs:
+					b = Resources.Resources.viseme_15;
+					break;
+				case Viseme.ShChJhZh:
+					b = Resources.Resources.viseme_16;
+					break;
+				case Viseme.ThDh:
+					b = Resources.Resources.viseme_17;
+					break;
+				case Viseme.FV:
+					b = Resources.Resources.viseme_18;
+					break;
+				case Viseme.DTDxN:
+					b = Resources.Resources.viseme_19;
+					break;
+				case Viseme.KGNg:
+					b = Resources.Resources.viseme_20;
+					break;
+				case Viseme.PBM:
+					b = Resources.Resources.viseme_21;
+					break;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(v), v, null);
+			}
+			_visemeDisplay.Image = b;
 		}
 
 		private void UpdateButtonText(bool state)
@@ -165,7 +253,7 @@ namespace IntegratedAuthoringToolWF
 
 		private void OnFormClosed(object sender, FormClosedEventArgs e)
 		{
-			if (_activeVoicePlayer!=null)
+			if (_activeVoicePlayer != null)
 				_activeVoicePlayer.Stop();
 		}
 
@@ -190,8 +278,7 @@ namespace IntegratedAuthoringToolWF
 			var pitch = GetPitch();
 
 			var i = 0;
-			foreach (
-				var split in _agentActions.Zip(controller.Split(_agentActions.Length), (dto, ctrl) => new {data = dto, ctrl}))
+			foreach (var split in _agentActions.Zip(controller.Split(_agentActions.Length), (dto, ctrl) => new {data = dto, ctrl}))
 			{
 				var id = DialogUtilities.GenerateFileKey(split.data);
 				var path = Path.Combine(basePath, id);
@@ -206,7 +293,7 @@ namespace IntegratedAuthoringToolWF
 					var path2 = Path.Combine(path, hash.ToString());
 					using (var audioFile = File.Open(path2 + ".wav", FileMode.Create, FileAccess.Write))
 					{
-						audioFile.Write(bake.waveStreamData,0,bake.waveStreamData.Length);
+						audioFile.Write(bake.waveStreamData, 0, bake.waveStreamData.Length);
 					}
 
 					using (var writer = new XmlTextWriter(path2 + ".xml", new UTF8Encoding(false)))

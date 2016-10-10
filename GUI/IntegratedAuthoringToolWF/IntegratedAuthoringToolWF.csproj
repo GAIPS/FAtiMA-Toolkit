@@ -85,12 +85,12 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Include="Resources\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Include="Resources\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -177,6 +177,28 @@
     <Reference Include="System.Speech" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Visemes_img\0-silence.png" />
+    <Content Include="Resources\Visemes_img\1+11-AxAhUh.png" />
+    <Content Include="Resources\Visemes_img\12-H.png" />
+    <Content Include="Resources\Visemes_img\13-R.png" />
+    <Content Include="Resources\Visemes_img\14-L.png" />
+    <Content Include="Resources\Visemes_img\15-SZTs.png" />
+    <Content Include="Resources\Visemes_img\16-ShChJhZh.png" />
+    <Content Include="Resources\Visemes_img\17-ThDh.png" />
+    <Content Include="Resources\Visemes_img\18-FV.png" />
+    <Content Include="Resources\Visemes_img\19-DTDxN.png" />
+    <Content Include="Resources\Visemes_img\2-Aa.png" />
+    <Content Include="Resources\Visemes_img\20-KGNg.png" />
+    <Content Include="Resources\Visemes_img\21-PBM.png" />
+    <Content Include="Resources\Visemes_img\3-Ao.png" />
+    <Content Include="Resources\Visemes_img\4-EyEhAe.png" />
+    <Content Include="Resources\Visemes_img\5-Er.png" />
+    <Content Include="Resources\Visemes_img\6-YIyIhIx.png" />
+    <Content Include="Resources\Visemes_img\7-WUwU.png" />
+    <Content Include="Resources\Visemes_img\8+10-Ow.png" />
+    <Content Include="Resources\Visemes_img\9-Aw.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -129,4 +129,71 @@
   <data name="RPCLoadingError" xml:space="preserve">
     <value>An error occurred when trying to load one the characters in the scenario.</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="viseme_00" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\0-silence.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_01" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\1+11-axahuh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_02" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\2-aa.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_03" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\3-ao.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_04" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\4-eyehae.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_05" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\5-er.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_06" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\6-yiyihix.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_07" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\7-wuwu.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_08" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\8+10-ow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_09" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\9-aw.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_10" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\8+10-ow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_11" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\1+11-axahuh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_12" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\12-h.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_13" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\13-r.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_14" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\14-l.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_15" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\15-szts.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\16-shchjhzh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_17" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\17-thdh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_18" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\18-fv.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_19" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\19-dtdxn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_20" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\20-kgng.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="viseme_21" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>visemes_img\21-pbm.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

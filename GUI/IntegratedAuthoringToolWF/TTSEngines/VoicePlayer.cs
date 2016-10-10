@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using NAudio.Wave;
@@ -49,13 +50,34 @@ namespace IntegratedAuthoringToolWF.TTSEngines
 							player.Init(reader);
 							player.Play();
 
+							var visemes = _tts.visemes;
+
+							int nextViseme = 0;
+							double nextVisemeTime = 0;
+
 							while (player.PlaybackState == PlaybackState.Playing)
 							{
-								await Task.Delay(100, token);
+								if (onVisemeHit != null)
+								{
+									var s = reader.CurrentTime.TotalSeconds;
+									if (s >= nextVisemeTime)
+									{
+										var v = visemes[nextViseme];
+										nextViseme++;
+										if (nextViseme >= visemes.Length)
+											nextVisemeTime = double.PositiveInfinity;
+										else
+											nextVisemeTime += v.duration;
+
+										onVisemeHit(v.viseme);
+									}
+								}
+
+								await Task.Delay(1);
 								if (token.IsCancellationRequested)
 									break;
 
-								Console.WriteLine("...next");
+								//Console.WriteLine("...next");
 							}
 							player.Stop();
 							onFinished?.Invoke();

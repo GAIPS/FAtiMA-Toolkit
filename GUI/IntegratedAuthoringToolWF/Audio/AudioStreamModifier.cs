@@ -27,7 +27,7 @@ namespace IntegratedAuthoringToolWF.Audio
 			_soundTouch.SetSampleRate(sample.WaveFormat.SampleRate);
 			_soundTouch.SetChannels(channelCount);
 
-			rateMult = (rateMult - 1)*50;
+			rateMult = (rateMult - 1) * 100;
 			_soundTouch.SetTempoChange(rateMult);
 			_soundTouch.SetPitchSemiTones(pitchDelta*0.25f);
 			_soundTouch.SetRateChange(1.0f);

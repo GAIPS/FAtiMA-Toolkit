@@ -43,40 +43,49 @@ namespace IntegratedAuthoringToolWF.TTSEngines.L2F
 			if (tts == null)
 				return null;
 
-			var phones = ((JsonArray)tts["phones"]).Select(t => ((JsonString)t).String);
-			var times = ((JsonArray)tts["times"]).Select(t => Convert.ToDouble(((JsonNumber)t).Value));
-			var toProcess = phones.Zip(times, (s, d) => new { ph = s, duration = d }).ToArray();
-
+			//Create visemes
 			List<VisemeSpan> visemes = new List<VisemeSpan>();
 			//Convert phones to visemes and adjust time to rate
 			var mapper = LanguageResources.PT_PhonesToVisemes;
 			Viseme lastViseme = Viseme.Silence;
 			double totalVisemeTime = 0;
-			foreach (var p in toProcess)
+			foreach (var r in tts)
 			{
-				Viseme currentViseme;
-				if (!mapper.TryGetValue(p.ph, out currentViseme))
-					currentViseme = Viseme.Silence;
+				var phones = ((JsonArray)r["phones"]).Select(t => ((JsonString)t).String);
+				var time = ((JsonArray) r["times"]).Select(t => Convert.ToDouble(((JsonNumber) t).Value));
 
-				if (lastViseme != currentViseme)
+				var toProcess = phones.Zip(time, (s, d) => new { ph = s, entryTime = d }).ToArray();
+				totalVisemeTime += toProcess[0].entryTime;///rate;
+				lastViseme = Viseme.Silence;
+				for (int i = 1; i < toProcess.Length-1; i++)
 				{
-					visemes.Add(new VisemeSpan() { duration = totalVisemeTime, viseme = lastViseme });
-					lastViseme = currentViseme;
-					totalVisemeTime = 0;
-				}
+					var p = toProcess[i];
+					var nextTime = toProcess[i+1].entryTime;
+					Viseme currentViseme;
+					if (!mapper.TryGetValue(p.ph, out currentViseme))
+						currentViseme = Viseme.Silence;
 
-				totalVisemeTime += p.duration / rate;
+					if (lastViseme != currentViseme)
+					{
+						visemes.Add(new VisemeSpan() { duration = totalVisemeTime/rate, viseme = lastViseme });
+						lastViseme = currentViseme;
+						totalVisemeTime = 0;
+					}
+					var duration = nextTime - p.entryTime;
+					totalVisemeTime += duration;
+				}
 			}
-			if (lastViseme != Viseme.Silence)
-				visemes.Add(new VisemeSpan() { duration = totalVisemeTime, viseme = lastViseme });
+			if(totalVisemeTime>0)
+				visemes.Add(new VisemeSpan() { duration = totalVisemeTime/rate, viseme = lastViseme });
 
 			if (visemes.Count == 0)
 				return null;
 
-			var audioUrls = ((JsonArray)tts["url"]).Select(j => ((JsonString)j).String).ToArray();
+			//Create audio
+			var audioUrls = tts.Select(r => ((JsonString)r["url"]).String).ToArray();
 			var v = BuildAudioStream(audioUrls, rate, pitch);
 
-			const int MAX_SAMPLES = 1024;
+			const int MAX_SAMPLES = 5120;
 			var bufferSize = MAX_SAMPLES * v.WaveFormat.Channels;
 			var buffer = new float[bufferSize];
 
@@ -90,17 +99,16 @@ namespace IntegratedAuthoringToolWF.TTSEngines.L2F
 						w.WriteSamples(buffer, 0, readed);
 					}
 					w.Flush();
-					
 					return new BakedTTS() { visemes = visemes.ToArray(), waveStreamData = m.ToArray() };
 				}
 			}
 		}
 
-		private JsonObject RequestTTS(L2FVoice voice, string text)
+		private JsonObject[] RequestTTS(L2FVoice voice, string text)
 		{
-			JsonObject[] results;
 			using (var client = new HttpClient())
 			{
+				client.Timeout = TimeSpan.FromSeconds(15);
 				var values = new Dictionary<string, string>()
 				{
 					{"task", "echo"},
@@ -119,37 +127,36 @@ namespace IntegratedAuthoringToolWF.TTSEngines.L2F
 				var array = (JsonArray)data["ttsresults"];
 				if (array.Count == 0)
 					return null;
-				results = array.Cast<JsonObject>().ToArray();
+				return array.Cast<JsonObject>().ToArray();
 			}
 
-			if (results.Length == 1)
-			{
-				var r2 = results[0];
-				r2["url"] = new JsonArray() { r2["url"] };
-				return r2;
-			}
+			//if (results.Length == 1)
+			//{
+			//	var r2 = results[0];
+			//	r2["url"] = new JsonArray() { r2["url"] };
+			//	return r2;
+			//}
 
-			return results.Aggregate((j1, j2) =>
-			{
-				if(DELAY_BETWEEN_FRASES>0)
-					((JsonArray)j1["phones"]).Add(new JsonString("@"));
-				((JsonArray)j1["phones"]).AddRange((JsonArray)j2["phones"]);
+			//return results.Aggregate((j1, j2) =>
+			//{
+			//	if(DELAY_BETWEEN_FRASES>0)
+			//		((JsonArray)j1["phones"]).Add(new JsonString("@"));
+			//	((JsonArray)j1["phones"]).AddRange((JsonArray)j2["phones"]);
 
-				if (DELAY_BETWEEN_FRASES > 0)
-					((JsonArray)j1["times"]).Add(new JsonNumber(DELAY_BETWEEN_FRASES));
-				((JsonArray)j1["times"]).AddRange((JsonArray)j2["times"]);
+			//	if (DELAY_BETWEEN_FRASES > 0)
+			//		((JsonArray)j1["times"]).Add(new JsonNumber(DELAY_BETWEEN_FRASES));
+			//	((JsonArray)j1["times"]).AddRange((JsonArray)j2["times"]);
 
-				var token = j1["url"];
-				var a = token as JsonArray;
-				if (a == null)
-				{
-					a = new JsonArray {token};
-					j1["url"] = a;
-				}
-				a.Add(j2["url"]);
-				return j1;
-			});
-			
+			//	var token = j1["url"];
+			//	var a = token as JsonArray;
+			//	if (a == null)
+			//	{
+			//		a = new JsonArray {token};
+			//		j1["url"] = a;
+			//	}
+			//	a.Add(j2["url"]);
+			//	return j1;
+			//});
 		}
 
 		private ISampleProvider BuildAudioStream(string[] urls, double rate, int pitch)
