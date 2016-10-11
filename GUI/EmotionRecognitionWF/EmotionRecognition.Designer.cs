@@ -32,9 +32,6 @@
             this.lblTextInput = new System.Windows.Forms.Label();
             this.txtTextInput = new System.Windows.Forms.TextBox();
             this.btTextInput = new System.Windows.Forms.Button();
-            this.lblSoundInput = new System.Windows.Forms.Label();
-            this.btRecord = new System.Windows.Forms.Button();
-            this.btSendSound = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -46,6 +43,7 @@
             this.dtgvEDAInformation = new System.Windows.Forms.DataGridView();
             this.dtgFusedAffectiveInformation = new System.Windows.Forms.DataGridView();
             this.UpdateTimer = new System.Windows.Forms.Timer(this.components);
+            this.SoundInputTimer = new System.Windows.Forms.Timer(this.components);
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvSpeechInformation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dtgvTextInformation)).BeginInit();
@@ -79,36 +77,6 @@
             this.btTextInput.UseVisualStyleBackColor = true;
             this.btTextInput.Click += new System.EventHandler(this.btTextInput_Click);
             // 
-            // lblSoundInput
-            // 
-            this.lblSoundInput.AutoSize = true;
-            this.lblSoundInput.Location = new System.Drawing.Point(27, 80);
-            this.lblSoundInput.Name = "lblSoundInput";
-            this.lblSoundInput.Size = new System.Drawing.Size(65, 13);
-            this.lblSoundInput.TabIndex = 3;
-            this.lblSoundInput.Text = "Sound Input";
-            // 
-            // btRecord
-            // 
-            this.btRecord.Location = new System.Drawing.Point(98, 69);
-            this.btRecord.Name = "btRecord";
-            this.btRecord.Size = new System.Drawing.Size(53, 35);
-            this.btRecord.TabIndex = 4;
-            this.btRecord.Text = "Record";
-            this.btRecord.UseVisualStyleBackColor = true;
-            this.btRecord.Click += new System.EventHandler(this.btRecord_Click);
-            // 
-            // btSendSound
-            // 
-            this.btSendSound.Location = new System.Drawing.Point(157, 69);
-            this.btSendSound.Name = "btSendSound";
-            this.btSendSound.Size = new System.Drawing.Size(91, 35);
-            this.btSendSound.TabIndex = 5;
-            this.btSendSound.Text = "Stop andSend";
-            this.btSendSound.UseVisualStyleBackColor = true;
-            this.btSendSound.Visible = false;
-            this.btSendSound.Click += new System.EventHandler(this.btSendSound_Click);
-            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.label4);
@@ -120,7 +88,7 @@
             this.panel1.Controls.Add(this.dtgvTextInformation);
             this.panel1.Controls.Add(this.dtgvEDAInformation);
             this.panel1.Controls.Add(this.dtgFusedAffectiveInformation);
-            this.panel1.Location = new System.Drawing.Point(27, 118);
+            this.panel1.Location = new System.Drawing.Point(30, 55);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(923, 345);
             this.panel1.TabIndex = 6;
@@ -224,15 +192,18 @@
             this.UpdateTimer.Interval = 500;
             this.UpdateTimer.Tick += new System.EventHandler(this.UpdateTimer_Tick);
             // 
+            // SoundInputTimer
+            // 
+            this.SoundInputTimer.Enabled = true;
+            this.SoundInputTimer.Interval = 2000;
+            this.SoundInputTimer.Tick += new System.EventHandler(this.SoundInputTimer_Tick);
+            // 
             // EmotionRecognition
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(970, 490);
+            this.ClientSize = new System.Drawing.Size(970, 415);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.btSendSound);
-            this.Controls.Add(this.btRecord);
-            this.Controls.Add(this.lblSoundInput);
             this.Controls.Add(this.btTextInput);
             this.Controls.Add(this.txtTextInput);
             this.Controls.Add(this.lblTextInput);
@@ -254,9 +225,6 @@
         private System.Windows.Forms.Label lblTextInput;
         private System.Windows.Forms.TextBox txtTextInput;
         private System.Windows.Forms.Button btTextInput;
-        private System.Windows.Forms.Label lblSoundInput;
-        private System.Windows.Forms.Button btRecord;
-        private System.Windows.Forms.Button btSendSound;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.DataGridView dtgFusedAffectiveInformation;
         private System.Windows.Forms.Timer UpdateTimer;
@@ -268,6 +236,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox cboxFusionPolicy;
+        private System.Windows.Forms.Timer SoundInputTimer;
     }
 }
 

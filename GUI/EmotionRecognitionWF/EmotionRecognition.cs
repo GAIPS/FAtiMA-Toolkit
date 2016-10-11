@@ -30,15 +30,18 @@ namespace EmotionRecognitionWF
         private BindingListView<AffectiveInformation> TextInformation { get; }
         private BindingListView<AffectiveInformation> SpeechInformation { get; }
 
+        private Task CurrentSpeechRecognitionTask { get; set; }
         private KalmanFilterFusionPolicy KalmanFusionPolicy { get; set; }
+
+
 
         public EmotionRecognition()
         {
             InitializeComponent();
 
             this.EmotionRecognitionAsset = new RealTimeEmotionRecognitionAsset();
-            this.TextEmotionRecognitionAsset = new TextEmotionRecognitionComponent { DecayWindow = 30 };
-            this.SpeechEmotionRecognitionAsset = new SpeechEmotionRecognitionComponent() { DecayWindow = 30 };
+            this.TextEmotionRecognitionAsset = new TextEmotionRecognitionComponent { DecayWindow = 10 };
+            this.SpeechEmotionRecognitionAsset = new SpeechEmotionRecognitionComponent() { DecayWindow = 10 };
             this.EDARecognitionAsset = new EDARecognitionComponent();
 
             this.EmotionRecognitionAsset.AddAffectRecognitionAsset(this.EDARecognitionAsset, 1.0f);
@@ -59,6 +62,10 @@ namespace EmotionRecognitionWF
             this.EmotionRecognitionAsset.Policy = new MaxPolicy();
 
             this.KalmanFusionPolicy = new KalmanFilterFusionPolicy(this.EmotionRecognitionAsset.Classifiers);
+
+            this.CurrentSpeechRecognitionTask = null;
+
+            this.StartRecording();
         }
 
         [DllImport("winmm.dll", EntryPoint = "mciSendStringA", ExactSpelling = true, CharSet = CharSet.Ansi, SetLastError = true)]
@@ -105,26 +112,56 @@ namespace EmotionRecognitionWF
 
         private void btRecord_Click(object sender, EventArgs e)
         {
-            record("open new Type waveaudio Alias recsound", "", 0, 0);
-            record("record recsound", "", 0, 0);
-            this.btRecord.Visible = false;
-            this.btSendSound.Visible = true;
+            //record("open new Type waveaudio Alias recsound", "", 0, 0);
+            //record("set recsound time format ms bitspersample 16 channels 2 samplespersec 48000", "", 0, 0);
+            //record("record recsound", "", 0, 0);
+            //this.btRecord.Visible = false;
+            //this.btSendSound.Visible = true;
         }
 
         private void btSendSound_Click(object sender, EventArgs e)
         {
+            //record("save recsound mic.wav", "", 0, 0);
+            //record("close recsound", "", 0, 0);
+
+            
+
+            //this.btSendSound.Visible = false;
+            //this.btRecord.Visible = true;
+
+            
+        }
+
+        private void SoundInputTimer_Tick(object sender, EventArgs e)
+        {
+            this.StopRecording();
+            this.OpenAndProcessSpeech();
+            this.StartRecording();
+        }
+
+        private void StartRecording()
+        {
+            record("open new Type waveaudio Alias recsound", "", 0, 0);
+            record("set recsound time format ms bitspersample 16 channels 2 samplespersec 48000", "", 0, 0);
+            record("record recsound", "", 0, 0);
+        }
+
+        private void StopRecording()
+        {
             record("save recsound mic.wav", "", 0, 0);
             record("close recsound", "", 0, 0);
+        }
 
-            FileStream speechTestFile = File.Open("mic.wav", FileMode.Open);
-            byte[] speech = new byte[speechTestFile.Length];
-            speechTestFile.Read(speech, 0, speech.Length);
-            speechTestFile.Close();
-
-            this.btSendSound.Visible = false;
-            this.btRecord.Visible = true;
-
-            this.SpeechEmotionRecognitionAsset.ProcessSpeechAsync(speech);
+        private void OpenAndProcessSpeech()
+        {
+            if(this.CurrentSpeechRecognitionTask == null || this.CurrentSpeechRecognitionTask.IsCompleted)
+            {
+                FileStream speechTestFile = File.Open("mic.wav", FileMode.Open);
+                byte[] speech = new byte[speechTestFile.Length];
+                speechTestFile.Read(speech, 0, speech.Length);
+                speechTestFile.Close();
+                this.CurrentSpeechRecognitionTask = this.SpeechEmotionRecognitionAsset.ProcessSpeechAsync(speech);
+            }
         }
     }
 }
