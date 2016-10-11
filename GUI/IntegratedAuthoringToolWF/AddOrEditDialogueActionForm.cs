@@ -10,40 +10,29 @@ namespace IntegratedAuthoringToolWF
     {
 	    private MainForm _parentForm;
         private IntegratedAuthoringToolAsset _iatAsset => _parentForm.CurrentAsset;
-        private DialogueStateActionDTO _dialogueStateActionToEdit;
-        private bool _isPlayerDialogue;
+        private readonly DialogueStateActionDTO _dialogueStateActionToEdit;
+        private readonly bool _isPlayerDialogue;
 
-        public AddOrEditDialogueActionForm(MainForm form, bool isPlayerDialogue, DialogueStateActionDTO dialogueStateActionToEdit = null)
+        public AddOrEditDialogueActionForm(MainForm form, bool isPlayerDialogue)
         {
             InitializeComponent();
 	        _parentForm = form;
             _isPlayerDialogue = isPlayerDialogue;
-  
-            if (dialogueStateActionToEdit != null)
-            {
-                buttonAddOrUpdate.Text = "Update";
-                _dialogueStateActionToEdit = dialogueStateActionToEdit;
-                textBoxCurrentState.Text = _dialogueStateActionToEdit.CurrentState;
-				textBoxNextState.Text = _dialogueStateActionToEdit.NextState;
-				textBoxMeaning.Text = _dialogueStateActionToEdit.Meaning.Length==0?string.Empty: _dialogueStateActionToEdit.Meaning.Aggregate((s, s1) => s+", "+s1);
-                textBoxStyle.Text = _dialogueStateActionToEdit.Style.Length==0?string.Empty:_dialogueStateActionToEdit.Style.Aggregate((s, s1) => s+", "+s1);
-                textBoxUtterance.Text = _dialogueStateActionToEdit.Utterance;
-            }
-
-            UpdateFormTitle();
         }
 
-        private void UpdateFormTitle()
-        {
-            if (_isPlayerDialogue && _dialogueStateActionToEdit == null)
-                this.Text = "Add Player Dialogue Action";
-            else if (_isPlayerDialogue && _dialogueStateActionToEdit != null)
-                this.Text = "Update Player Dialogue Action";
-            else if (!_isPlayerDialogue && _dialogueStateActionToEdit == null)
-                this.Text = "Add Agent Dialogue Action";
-            else if (!_isPlayerDialogue && _dialogueStateActionToEdit != null)
-                this.Text = "Update Agent Dialogue Action";
-        }
+		public AddOrEditDialogueActionForm(MainForm form, bool isPlayerDialogue, Guid dialogId) : this(form,isPlayerDialogue)
+		{
+			buttonAddOrUpdate.Text = "Update";
+			_dialogueStateActionToEdit =
+				form.CurrentAsset.GetDialogActionById(
+					isPlayerDialogue ? IntegratedAuthoringToolAsset.PLAYER : IntegratedAuthoringToolAsset.AGENT, dialogId);
+
+			textBoxCurrentState.Text = _dialogueStateActionToEdit.CurrentState;
+			textBoxNextState.Text = _dialogueStateActionToEdit.NextState;
+			textBoxMeaning.Text = _dialogueStateActionToEdit.Meaning.Length == 0 ? string.Empty : _dialogueStateActionToEdit.Meaning.Aggregate((s, s1) => s + ", " + s1);
+			textBoxStyle.Text = _dialogueStateActionToEdit.Style.Length == 0 ? string.Empty : _dialogueStateActionToEdit.Style.Aggregate((s, s1) => s + ", " + s1);
+			textBoxUtterance.Text = _dialogueStateActionToEdit.Utterance;
+		}
 
         private void buttonAddOrUpdate_Click(object sender, EventArgs e)
         {
@@ -89,5 +78,17 @@ namespace IntegratedAuthoringToolWF
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-    }
+
+		private void OnLoad(object sender, EventArgs e)
+		{
+			if (_isPlayerDialogue && _dialogueStateActionToEdit == null)
+				this.Text = "Add Player Dialogue Action";
+			else if (_isPlayerDialogue && _dialogueStateActionToEdit != null)
+				this.Text = "Update Player Dialogue Action";
+			else if (!_isPlayerDialogue && _dialogueStateActionToEdit == null)
+				this.Text = "Add Agent Dialogue Action";
+			else if (!_isPlayerDialogue && _dialogueStateActionToEdit != null)
+				this.Text = "Update Agent Dialogue Action";
+		}
+	}
 }

@@ -30,6 +30,11 @@ namespace GAIPS.AssetEditorTools
 
 		protected bool IsLoading { get; private set; }
 
+		private void OnLoad(object sender, EventArgs e)
+		{
+			UpdateWindowTitle();
+		}
+
 		public void SetModified()
 		{
 			if (_wasModified)

@@ -46,35 +46,40 @@ namespace IntegratedAuthoringTool
         /// This method is used to automatically load any associated assets.
         /// </summary>
         protected override string OnAssetLoaded()
-	    {
-			KeyValuePair<string, CharacterHolder> current = new KeyValuePair<string, CharacterHolder>();
+        {
+	        string currentKey = string.Empty;
 		    string currentAbsolutePath = null;
             try
 		    {
-				foreach (var pair in m_characterSources)
+				if(m_characterSources==null)
+					m_characterSources = new Dictionary<string, CharacterHolder>();
+				else
 				{
-					current = pair;
-					currentAbsolutePath = ToAbsolutePath(pair.Value.Source);
-					if (pair.Value.RPCAsset == null)
+					foreach (var pair in m_characterSources)
 					{
-						string errorsOnLoad;
-						pair.Value.RPCAsset = RolePlayCharacterAsset.LoadFromFile(currentAbsolutePath,out errorsOnLoad);
-					    if (errorsOnLoad != null)
-					        return errorsOnLoad;
+						currentKey = pair.Key;
+						currentAbsolutePath = ToAbsolutePath(pair.Value.Source);
+						if (pair.Value.RPCAsset == null)
+						{
+							string errorsOnLoad;
+							pair.Value.RPCAsset = RolePlayCharacterAsset.LoadFromFile(currentAbsolutePath, out errorsOnLoad);
+							if (errorsOnLoad != null)
+								return errorsOnLoad;
 
-						RegistDynamicProperties(pair.Value.RPCAsset);
+							RegistDynamicProperties(pair.Value.RPCAsset);
+						}
+
+						//if (!string.Equals(pair.Key, pair.Value.RPCAsset.CharacterName))
+						//	return $"Name mismatch. IAT name \"{pair.Key}\" != RPC File Name \"{pair.Value.RPCAsset.CharacterName}\" for file \"{currentAbsolutePath}\"";
 					}
-
-					//if (!string.Equals(pair.Key, pair.Value.RPCAsset.CharacterName))
-					//	return $"Name mismatch. IAT name \"{pair.Key}\" != RPC File Name \"{pair.Value.RPCAsset.CharacterName}\" for file \"{currentAbsolutePath}\"";
-               }
+				}
 			}
 		    catch (Exception e)
 		    {
 #if DEBUG
 				getInterface<ILog>()?.Log(Severity.Error, e.ToString());
 #endif
-				return $"An error occured when trying to load the RPC \"{current.Key}\" at \"{currentAbsolutePath}\". Please check if the path is correct.";
+				return $"An error occured when trying to load the RPC \"{currentKey}\" at \"{currentAbsolutePath}\". Please check if the path is correct.";
 			}
 		    return null;
 		}
@@ -266,8 +271,13 @@ namespace IntegratedAuthoringTool
 		/// <param name="actionsToRemove">The list of dialogues that are to be removed.</param>
 		public int RemoveDialogueActions(string speaker, IEnumerable<DialogueStateActionDTO> actionsToRemove)
 		{
+			return RemoveDialogueActions(speaker, actionsToRemove.Select(d => d.Id));
+		}
+
+		public int RemoveDialogueActions(string speaker, IEnumerable<Guid> actionsIdToRemove)
+		{
 			var dialogList = SelectDialogActionList(speaker);
-			return actionsToRemove.Count(d => dialogList.RemoveDialog(d.Id));
+			return actionsIdToRemove.Count(d => dialogList.RemoveDialog(d));
 		}
 
 		/// <summary>

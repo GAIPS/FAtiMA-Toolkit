@@ -111,6 +111,7 @@
 			this.Name = "BaseAssetForm";
 			this.Text = "BaseAssetForm";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BaseAssetForm_FormClosing);
+			this.Load += new System.EventHandler(this.OnLoad);
 			this.menuStrip1.ResumeLayout(false);
 			this.menuStrip1.PerformLayout();
 			this.ResumeLayout(false);

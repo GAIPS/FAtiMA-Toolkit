@@ -54,6 +54,7 @@
     <Compile Include="DialogueEditorForm.Designer.cs">
       <DependentUpon>DialogueEditorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUIDialogStateAction.cs" />
     <Compile Include="TextToSpeechForm.cs">
       <SubType>Form</SubType>
     </Compile>
