@@ -110,6 +110,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalAppraisalWF", "GUI
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAIPS.Rage", "Components(Portable)\GAIPS.Rage\GAIPS.Rage.csproj", "{5AC63C25-4F43-477D-8F10-BCE2622B9D0D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WellFormedNames", "Components(Portable)\WellFormedNames\WellFormedNames.csproj", "{C7275FBB-C4EE-40F2-9859-59196298B9C4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -284,6 +286,10 @@ Global
 		{5AC63C25-4F43-477D-8F10-BCE2622B9D0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AC63C25-4F43-477D-8F10-BCE2622B9D0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AC63C25-4F43-477D-8F10-BCE2622B9D0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7275FBB-C4EE-40F2-9859-59196298B9C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7275FBB-C4EE-40F2-9859-59196298B9C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7275FBB-C4EE-40F2-9859-59196298B9C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7275FBB-C4EE-40F2-9859-59196298B9C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -332,5 +338,6 @@ Global
 		{58C05E0C-707A-4D8C-B886-549581CB6EBC} = {9285D50F-C051-467D-AB2D-165963753EA5}
 		{36EF269C-7AB2-4029-BBF4-18F908AF46F6} = {391C60E4-92CE-4EC7-BA86-48D8316365FA}
 		{5AC63C25-4F43-477D-8F10-BCE2622B9D0D} = {87A68FAD-8907-482C-9E66-31A6F61471D0}
+		{C7275FBB-C4EE-40F2-9859-59196298B9C4} = {87A68FAD-8907-482C-9E66-31A6F61471D0}
 	EndGlobalSection
 EndGlobal

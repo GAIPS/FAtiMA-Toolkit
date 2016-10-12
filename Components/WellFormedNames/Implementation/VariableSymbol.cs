@@ -27,7 +27,14 @@ namespace WellFormedNames
 				if (!name.IsVariable)
 					return false;
 
-				return StringComparer.InvariantCultureIgnoreCase.Equals(m_variableName, ((VariableSymbol) name).m_variableName);
+				StringComparer c;
+#if PORTABLE
+				c = StringComparer.OrdinalIgnoreCase;
+#else
+				c = StringComparer.InvariantCultureIgnoreCase;
+#endif
+
+				return c.Equals(m_variableName, ((VariableSymbol) name).m_variableName);
 			}
 
 			private static readonly int BASE_HASH = '['.GetHashCode() ^ ']'.GetHashCode();
@@ -68,7 +75,13 @@ namespace WellFormedNames
 
 			public override Name RemoveBoundedVariables(string id)
 			{
-				if(m_variableName.EndsWith(id,StringComparison.InvariantCultureIgnoreCase))
+				StringComparison c;
+#if PORTABLE
+				c = StringComparison.OrdinalIgnoreCase;
+#else
+				c = StringComparison.InvariantCultureIgnoreCase;
+#endif
+				if (m_variableName.EndsWith(id,c))
 					return new VariableSymbol(m_variableName.Substring(0,m_variableName.Length-id.Length));
 				return this;
 			}

@@ -82,6 +82,7 @@ namespace IntegratedAuthoringToolWF
 				if (a != null)
 				{
 					_voiceComboBox.Enabled = false;
+					_generateAllButton.Enabled = false;
 					_generateButton.Enabled = false;
 					UpdateButtonText(false);
 					_activeVoicePlayer = a;
@@ -101,7 +102,8 @@ namespace IntegratedAuthoringToolWF
 		private void SynthesizerOnSpeakCompleted()
 		{
 			ThreadSafe(_voiceComboBox, c => c.Enabled = true);
-			ThreadSafe(_generateButton, c => c.Enabled = true);
+			ThreadSafe(_generateAllButton, c => c.Enabled = true);
+			ThreadSafe(_generateButton, b => b.Enabled=true );
 
 			_activeVoicePlayer = null;
 			UpdateButtonText(true);
@@ -187,7 +189,7 @@ namespace IntegratedAuthoringToolWF
 
 		private void UpdateButtonText(bool state)
 		{
-			ThreadSafe(button1, c => c.Text = state ? "Speak Text" : "Stop");
+			ThreadSafe(_testSpeechButton, c => c.Text = state ? "Speak Text" : "Stop");
 		}
 
 		private void OnRateValueChanged(object sender, EventArgs e)
@@ -257,22 +259,60 @@ namespace IntegratedAuthoringToolWF
 				_activeVoicePlayer.Stop();
 		}
 
-		private void OnGenerateButtonClick(object sender, EventArgs e)
+		private void OnGenerateSingleButtonClick(object sender, EventArgs e)
 		{
 			var folder = new FolderBrowserDialog();
 			folder.Description = "Select Output folder";
 			if (folder.ShowDialog(this) != DialogResult.OK)
 				return;
 
-			var path = Path.Combine(folder.SelectedPath, $"TTS Generation - {DateTime.UtcNow.ToString("hh-mm-ss-tt_dd-MM-yyyy")}");
+			var path = folder.SelectedPath;
 			EditorUtilities.DisplayProgressBar("Generating TTS from Agent's Dialog Data", controler =>
 			{
-				Directory.CreateDirectory(path);
-				GenerateVoicesTask(path, controler);
+				GenerateSingleVoiceTask(path,controler);
 			});
 		}
 
-		private void GenerateVoicesTask(string basePath, IProgressBarControler controller)
+		private void OnGenerateAllButtonClick(object sender, EventArgs e)
+		{
+			var folder = new FolderBrowserDialog();
+			folder.Description = "Select Output folder";
+			if (folder.ShowDialog(this) != DialogResult.OK)
+				return;
+
+			var path = folder.SelectedPath;
+			EditorUtilities.DisplayProgressBar("Generating TTS from Agent's Dialog Data", controler =>
+			{
+				GenerateAllVoicesTask(path, controler);
+			});
+		}
+
+		private void GenerateSingleVoiceTask(string path, IProgressBarControler controler)
+		{
+			var rate = GetRate();
+			var pitch = GetPitch();
+
+			string text;
+			var i = ThreadSafe(_dialogOptions, d => d.SelectedIndex);
+			if (i < 0)
+			{
+				text = textBox1.Text;
+				path = Path.Combine(path, "preview");
+			}
+			else
+			{
+				var a = _agentActions[i];
+				var id = DialogUtilities.GenerateFileKey(a);
+				path = Path.Combine(path, id);
+				text = a.Utterance;
+			}
+
+			controler.Message = $"Generating TTS for Utterance";
+			BakeAndSaveTTS(path,text,rate,pitch);
+			controler.Percent = 1;
+		}
+
+		private void GenerateAllVoicesTask(string basePath, IProgressBarControler controller)
 		{
 			var rate = GetRate();
 			var pitch = GetPitch();
@@ -283,47 +323,52 @@ namespace IntegratedAuthoringToolWF
 				var id = DialogUtilities.GenerateFileKey(split.data);
 				var path = Path.Combine(basePath, id);
 				split.ctrl.Message = $"Generating TTS for Utterance ({++i}/{_agentActions.Length})";
-				var bake = _selectedVoice.BakeTTS(split.data.Utterance, rate, pitch);
-				if (bake != null)
-				{
-					if (!Directory.Exists(path))
-						Directory.CreateDirectory(path);
-
-					var hash = DialogUtilities.UtteranceHash(split.data.Utterance);
-					var path2 = Path.Combine(path, hash.ToString());
-					using (var audioFile = File.Open(path2 + ".wav", FileMode.Create, FileAccess.Write))
-					{
-						audioFile.Write(bake.waveStreamData, 0, bake.waveStreamData.Length);
-					}
-
-					using (var writer = new XmlTextWriter(path2 + ".xml", new UTF8Encoding(false)))
-					{
-						writer.Formatting = Formatting.Indented;
-						writer.WriteStartDocument();
-						writer.WriteStartElement("LipSyncVisemes");
-						writer.WriteAttributeString("wavFile", hash + ".wav");
-
-						double time = 0;
-						foreach (var v in bake.visemes)
-						{
-							if (v.viseme > Viseme.Silence)
-							{
-								writer.WriteStartElement("viseme");
-								writer.WriteAttributeString("type", ((sbyte) v.viseme).ToString());
-								writer.WriteAttributeString("time", time.ToString(CultureInfo.InvariantCulture));
-								writer.WriteAttributeString("duration", v.duration.ToString(CultureInfo.InvariantCulture));
-								writer.WriteEndElement();
-							}
-							time += v.duration;
-						}
-
-						writer.WriteEndElement();
-						writer.WriteEndDocument();
-					}
-				}
+				BakeAndSaveTTS(path, split.data.Utterance,rate,pitch);
 				split.ctrl.Percent = 1;
 			}
 			controller.Percent = 1;
+		}
+
+		private void BakeAndSaveTTS(string path, string utterance, double rate, int pitch)
+		{
+			var bake = _selectedVoice.BakeTTS(utterance, rate, pitch);
+			if (bake == null)
+				return;
+
+			if (!Directory.Exists(path))
+				Directory.CreateDirectory(path);
+
+			var hash = DialogUtilities.UtteranceHash(utterance);
+			var path2 = Path.Combine(path, hash.ToString());
+			using (var audioFile = File.Open(path2 + ".wav", FileMode.Create, FileAccess.Write))
+			{
+				audioFile.Write(bake.waveStreamData, 0, bake.waveStreamData.Length);
+			}
+
+			using (var writer = new XmlTextWriter(path2 + ".xml", new UTF8Encoding(false)))
+			{
+				writer.Formatting = Formatting.Indented;
+				writer.WriteStartDocument();
+				writer.WriteStartElement("LipSyncVisemes");
+				writer.WriteAttributeString("wavFile", hash + ".wav");
+
+				double time = 0;
+				foreach (var v in bake.visemes)
+				{
+					if (v.viseme > Viseme.Silence)
+					{
+						writer.WriteStartElement("viseme");
+						writer.WriteAttributeString("type", ((sbyte)v.viseme).ToString());
+						writer.WriteAttributeString("time", time.ToString(CultureInfo.InvariantCulture));
+						writer.WriteAttributeString("duration", v.duration.ToString(CultureInfo.InvariantCulture));
+						writer.WriteEndElement();
+					}
+					time += v.duration;
+				}
+
+				writer.WriteEndElement();
+				writer.WriteEndDocument();
+			}
 		}
 
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -350,6 +395,18 @@ namespace IntegratedAuthoringToolWF
 			else
 			{
 				action(control);
+			}
+		}
+
+		private R ThreadSafe<T,R>(T control, Func<T,R> action) where T : Control
+		{
+			if (control.InvokeRequired)
+			{
+				return (R)Invoke(action, control);
+			}
+			else
+			{
+				return action(control);
 			}
 		}
 	}

@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+#if PORTABLE
+using SerializationUtilities.Attributes;
+#endif
 
 namespace WellFormedNames
 {

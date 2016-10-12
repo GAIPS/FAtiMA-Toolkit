@@ -1,5 +1,8 @@
 ﻿using System;
 using WellFormedNames.Exceptions;
+#if PORTABLE
+using SerializationUtilities.Attributes;
+#endif
 
 namespace WellFormedNames
 {

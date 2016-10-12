@@ -28,6 +28,8 @@ namespace Utilities
 			}
 		}
 
+#if !PORTABLE
+
 		public static IEnumerable<R> Zip<T1,T2,R>(this IEnumerable<T1> first, IEnumerable<T2> second, Func<T1, T2, R> zipper)
 		{
 			if (first == null)
@@ -50,6 +52,8 @@ namespace Utilities
 				}
 			}
 		}
+		
+#endif
 
 		public static bool IsEmpty<T>(this IEnumerable<T> enumerable)
 		{

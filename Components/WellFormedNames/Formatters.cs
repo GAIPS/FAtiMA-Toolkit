@@ -3,6 +3,7 @@ using System.Linq;
 using SerializationUtilities;
 using SerializationUtilities.Attributes;
 using SerializationUtilities.SerializationGraph;
+using Utilities;
 
 namespace WellFormedNames
 {
@@ -15,7 +16,7 @@ namespace WellFormedNames
 			if (n.IsPrimitive)
 			{
 				var obj = n.GetValue();
-				if(Type.GetTypeCode(obj.GetType()) == TypeCode.String)
+				if (obj.GetType().GetTypeCode() == Utilities.TypeCode.String)
 					return serializationGraph.BuildStringNode((string)obj);
 				return serializationGraph.BuildPrimitiveNode((ValueType)obj);
 			}

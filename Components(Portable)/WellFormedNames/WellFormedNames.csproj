@@ -5,11 +5,11 @@
     <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{21E0F2D3-BC3E-4005-8BD3-2F079CD52B86}</ProjectGuid>
+    <ProjectGuid>{C7275FBB-C4EE-40F2-9859-59196298B9C4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SerializationUtilities</RootNamespace>
-    <AssemblyName>SerializationUtilities</AssemblyName>
+    <RootNamespace>WellFormedNames</RootNamespace>
+    <AssemblyName>WellFormedNames</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -24,7 +24,6 @@
     <DefineConstants>TRACE;DEBUG;PORTABLE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -35,18 +34,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\..\Components\SerializationUtilities\**\*.cs" Exclude="..\..\Components\SerializationUtilities\bin\**;..\..\Components\SerializationUtilities\obj\**;">
-      <Link>%(RecursiveDir)%(FileName)</Link>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\SerializationUtilities\SerializationUtilities.csproj">
+      <Project>{21e0f2d3-bc3e-4005-8bd3-2f079cd52b86}</Project>
+      <Name>SerializationUtilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.csproj">
       <Project>{f5e98df4-ac62-4a15-a989-4300937b95b3}</Project>
       <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="project.json" />
+    <Compile Include="..\..\Components\WellFormedNames\**\*.cs" Exclude="..\..\Components\WellFormedNames\bin\**;..\..\Components\WellFormedNames\obj\**;">
+      <Link>%(RecursiveDir)%(FileName)</Link>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

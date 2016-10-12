@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Utilities;
+#if PORTABLE
+using SerializationUtilities.Attributes;
+#endif
 
 namespace WellFormedNames
 {

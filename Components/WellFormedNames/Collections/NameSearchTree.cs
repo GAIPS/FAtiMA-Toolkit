@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using SerializationUtilities;
+#if PORTABLE
+using SerializationUtilities.Attributes;
+#endif
 using Utilities;
 using WellFormedNames.Exceptions;
 

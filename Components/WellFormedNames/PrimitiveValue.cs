@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Globalization;
 using SerializationUtilities;
-using SerializationUtilities.Attributes;
 using SerializationUtilities.SerializationGraph;
 using Utilities;
 using TypeCode = Utilities.TypeCode;
+#if PORTABLE
+using SerializationUtilities.Attributes;
+#endif
 
-[System.Serializable]
+[Serializable]
 internal abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 {
 	#region Holder Classes
@@ -52,7 +54,11 @@ internal abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 
 		public override string ToString()
 		{
+#if PORTABLE
+			return value.ToString();
+#else
 			return value.ToString(CultureInfo.InvariantCulture);
+#endif
 		}
 
 		public sealed override bool Equals(PrimitiveValue other)
@@ -82,7 +88,14 @@ internal abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 			if (obj == null)
 				return false;
 
-			return StringComparer.InvariantCultureIgnoreCase.Equals(value, obj.value);
+			StringComparer c;
+#if PORTABLE
+			c = StringComparer.OrdinalIgnoreCase;
+#else
+			c = StringComparer.InvariantCultureIgnoreCase;
+#endif
+
+			return c.Equals(value, obj.value);
 		}
 
 		public override string ToString()

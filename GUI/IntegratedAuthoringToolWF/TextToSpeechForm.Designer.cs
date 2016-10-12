@@ -29,12 +29,12 @@
 		private void InitializeComponent()
 		{
 			this.textBox1 = new System.Windows.Forms.TextBox();
-			this.button1 = new System.Windows.Forms.Button();
+			this._testSpeechButton = new System.Windows.Forms.Button();
 			this._voiceComboBox = new System.Windows.Forms.ComboBox();
 			this._speachRateSlider = new System.Windows.Forms.TrackBar();
 			this._pitchValueLabel = new System.Windows.Forms.Label();
 			this._pitchSlider = new System.Windows.Forms.TrackBar();
-			this._generateButton = new System.Windows.Forms.Button();
+			this._generateAllButton = new System.Windows.Forms.Button();
 			this._rateTextBox = new System.Windows.Forms.TextBox();
 			this._dialogOptions = new System.Windows.Forms.ComboBox();
 			this.label1 = new System.Windows.Forms.Label();
@@ -42,16 +42,17 @@
 			this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
 			this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
 			this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
-			this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
 			this._visemeDisplay = new System.Windows.Forms.PictureBox();
+			this._generateButton = new System.Windows.Forms.Button();
+			this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
 			((System.ComponentModel.ISupportInitialize)(this._speachRateSlider)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this._pitchSlider)).BeginInit();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.tableLayoutPanel3.SuspendLayout();
 			this.tableLayoutPanel5.SuspendLayout();
-			this.tableLayoutPanel4.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this._visemeDisplay)).BeginInit();
+			this.tableLayoutPanel4.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// textBox1
@@ -62,21 +63,23 @@
 			this.textBox1.Multiline = true;
 			this.textBox1.Name = "textBox1";
 			this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.textBox1.Size = new System.Drawing.Size(468, 222);
+			this.textBox1.Size = new System.Drawing.Size(468, 192);
 			this.textBox1.TabIndex = 0;
 			this.textBox1.Text = "Hello, World!";
 			this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
 			// 
-			// button1
+			// _testSpeechButton
 			// 
-			this.button1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.button1.Location = new System.Drawing.Point(3, 3);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(82, 33);
-			this.button1.TabIndex = 1;
-			this.button1.Text = "Test Speech";
-			this.button1.UseVisualStyleBackColor = true;
-			this.button1.Click += new System.EventHandler(this.OnTestButtonClick);
+			this._testSpeechButton.AutoSize = true;
+			this._testSpeechButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this._testSpeechButton.Dock = System.Windows.Forms.DockStyle.Top;
+			this._testSpeechButton.Location = new System.Drawing.Point(3, 3);
+			this._testSpeechButton.Name = "_testSpeechButton";
+			this._testSpeechButton.Size = new System.Drawing.Size(82, 23);
+			this._testSpeechButton.TabIndex = 1;
+			this._testSpeechButton.Text = "Test Speech";
+			this._testSpeechButton.UseVisualStyleBackColor = true;
+			this._testSpeechButton.Click += new System.EventHandler(this.OnTestButtonClick);
 			// 
 			// _voiceComboBox
 			// 
@@ -121,16 +124,16 @@
 			this._pitchSlider.TickStyle = System.Windows.Forms.TickStyle.None;
 			this._pitchSlider.ValueChanged += new System.EventHandler(this.OnPitchValueChanged);
 			// 
-			// _generateButton
+			// _generateAllButton
 			// 
-			this._generateButton.Dock = System.Windows.Forms.DockStyle.Top;
-			this._generateButton.Location = new System.Drawing.Point(3, 130);
-			this._generateButton.Name = "_generateButton";
-			this._generateButton.Size = new System.Drawing.Size(82, 34);
-			this._generateButton.TabIndex = 7;
-			this._generateButton.Text = "Generate";
-			this._generateButton.UseVisualStyleBackColor = true;
-			this._generateButton.Click += new System.EventHandler(this.OnGenerateButtonClick);
+			this._generateAllButton.Dock = System.Windows.Forms.DockStyle.Top;
+			this._generateAllButton.Location = new System.Drawing.Point(3, 170);
+			this._generateAllButton.Name = "_generateAllButton";
+			this._generateAllButton.Size = new System.Drawing.Size(82, 34);
+			this._generateAllButton.TabIndex = 7;
+			this._generateAllButton.Text = "Generate All Dialogs";
+			this._generateAllButton.UseVisualStyleBackColor = true;
+			this._generateAllButton.Click += new System.EventHandler(this.OnGenerateAllButtonClick);
 			// 
 			// _rateTextBox
 			// 
@@ -191,7 +194,7 @@
 			this.tableLayoutPanel2.RowCount = 3;
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 190F));
+			this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 220F));
 			this.tableLayoutPanel2.Size = new System.Drawing.Size(474, 451);
 			this.tableLayoutPanel2.TabIndex = 12;
 			// 
@@ -205,30 +208,55 @@
 			this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel5, 1, 0);
 			this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 0);
 			this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 264);
+			this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 234);
 			this.tableLayoutPanel3.Name = "tableLayoutPanel3";
 			this.tableLayoutPanel3.RowCount = 1;
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel3.Size = new System.Drawing.Size(468, 184);
+			this.tableLayoutPanel3.Size = new System.Drawing.Size(468, 214);
 			this.tableLayoutPanel3.TabIndex = 13;
 			// 
 			// tableLayoutPanel5
 			// 
 			this.tableLayoutPanel5.ColumnCount = 1;
 			this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel5.Controls.Add(this.button1, 0, 0);
-			this.tableLayoutPanel5.Controls.Add(this._generateButton, 0, 2);
-			this.tableLayoutPanel5.Controls.Add(this._visemeDisplay, 0, 1);
+			this.tableLayoutPanel5.Controls.Add(this._testSpeechButton, 0, 0);
+			this.tableLayoutPanel5.Controls.Add(this._generateAllButton, 0, 5);
+			this.tableLayoutPanel5.Controls.Add(this._visemeDisplay, 0, 2);
+			this.tableLayoutPanel5.Controls.Add(this._generateButton, 0, 4);
 			this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tableLayoutPanel5.Location = new System.Drawing.Point(377, 3);
 			this.tableLayoutPanel5.Name = "tableLayoutPanel5";
-			this.tableLayoutPanel5.RowCount = 4;
+			this.tableLayoutPanel5.RowCount = 6;
+			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
 			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel5.Size = new System.Drawing.Size(88, 178);
+			this.tableLayoutPanel5.Size = new System.Drawing.Size(88, 208);
 			this.tableLayoutPanel5.TabIndex = 13;
+			// 
+			// _visemeDisplay
+			// 
+			this._visemeDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+			this._visemeDisplay.Location = new System.Drawing.Point(4, 37);
+			this._visemeDisplay.Name = "_visemeDisplay";
+			this._visemeDisplay.Size = new System.Drawing.Size(80, 82);
+			this._visemeDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+			this._visemeDisplay.TabIndex = 8;
+			this._visemeDisplay.TabStop = false;
+			// 
+			// _generateButton
+			// 
+			this._generateButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+			this._generateButton.Dock = System.Windows.Forms.DockStyle.Top;
+			this._generateButton.Location = new System.Drawing.Point(3, 130);
+			this._generateButton.Name = "_generateButton";
+			this._generateButton.Size = new System.Drawing.Size(82, 34);
+			this._generateButton.TabIndex = 9;
+			this._generateButton.Text = "Generate Single Text";
+			this._generateButton.UseVisualStyleBackColor = true;
+			this._generateButton.Click += new System.EventHandler(this.OnGenerateSingleButtonClick);
 			// 
 			// tableLayoutPanel4
 			// 
@@ -251,18 +279,8 @@
 			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
 			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel4.Size = new System.Drawing.Size(368, 178);
+			this.tableLayoutPanel4.Size = new System.Drawing.Size(368, 208);
 			this.tableLayoutPanel4.TabIndex = 13;
-			// 
-			// _visemeDisplay
-			// 
-			this._visemeDisplay.Dock = System.Windows.Forms.DockStyle.Fill;
-			this._visemeDisplay.Location = new System.Drawing.Point(3, 42);
-			this._visemeDisplay.Name = "_visemeDisplay";
-			this._visemeDisplay.Size = new System.Drawing.Size(82, 82);
-			this._visemeDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-			this._visemeDisplay.TabIndex = 8;
-			this._visemeDisplay.TabStop = false;
 			// 
 			// TextToSpeechForm
 			// 
@@ -284,9 +302,10 @@
 			this.tableLayoutPanel3.ResumeLayout(false);
 			this.tableLayoutPanel3.PerformLayout();
 			this.tableLayoutPanel5.ResumeLayout(false);
+			this.tableLayoutPanel5.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this._visemeDisplay)).EndInit();
 			this.tableLayoutPanel4.ResumeLayout(false);
 			this.tableLayoutPanel4.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this._visemeDisplay)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -294,12 +313,12 @@
 		#endregion
 
 		private System.Windows.Forms.TextBox textBox1;
-		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Button _testSpeechButton;
 		private System.Windows.Forms.ComboBox _voiceComboBox;
 		private System.Windows.Forms.TrackBar _speachRateSlider;
 		private System.Windows.Forms.Label _pitchValueLabel;
 		private System.Windows.Forms.TrackBar _pitchSlider;
-		private System.Windows.Forms.Button _generateButton;
+		private System.Windows.Forms.Button _generateAllButton;
 		private System.Windows.Forms.TextBox _rateTextBox;
 		private System.Windows.Forms.ComboBox _dialogOptions;
 		private System.Windows.Forms.Label label1;
@@ -309,5 +328,6 @@
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
 		private System.Windows.Forms.PictureBox _visemeDisplay;
+		private System.Windows.Forms.Button _generateButton;
 	}
 }

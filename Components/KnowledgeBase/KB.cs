@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using SerializationUtilities;
 using SerializationUtilities.SerializationGraph;
 using WellFormedNames;
@@ -15,7 +16,7 @@ namespace KnowledgeBase
 	public delegate IEnumerable<Pair<Name, SubstitutionSet>> DynamicPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints);
 
 	[Serializable]
-	public class KB : IQueryable, ICustomSerialization
+	public partial class KB : IQueryable, ICustomSerialization
 	{
 		private const int MAX_TOM_LVL = 2;
 
@@ -114,58 +115,6 @@ namespace KnowledgeBase
 			SetPerspective(perspective);
 		}
 
-		#region Dynamic Property Registry
-
-		public void RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate)
-		{
-			internal_RegistDynamicProperty(propertyTemplate,null, surogate);
-		}
-
-		public void RegistDynamicProperty(Name propertyTemplate, string description, DynamicPropertyCalculator surogate)
-		{
-			//Name[] args;
-			//if (arguments == null)
-			//	args = new Name[0];
-			//else
-			//	args = arguments.Distinct().Select(s => Name.BuildName("[" + s + "]")).ToArray();
-
-			internal_RegistDynamicProperty(propertyTemplate,description,surogate);
-		}
-
-		private void internal_RegistDynamicProperty(Name propertyTemplate, string description, DynamicPropertyCalculator surogate)
-		{
-			if (surogate == null)
-				throw new ArgumentNullException(nameof(surogate));
-
-			if (propertyTemplate.IsGrounded)
-				throw new ArgumentException("Grounded names cannot be used as dynamic properties", nameof(propertyTemplate));
-
-			var r = m_dynamicProperties.Unify(propertyTemplate).FirstOrDefault();
-			if (r != null)
-			{
-				throw new ArgumentException(
-					$"The given template {propertyTemplate} will collide with already registed {propertyTemplate.MakeGround(r.Item2)} dynamic property", nameof(propertyTemplate));
-			}
-
-			if (m_knowledgeStorage.Unify(propertyTemplate).Any())
-				throw new ArgumentException($"The given template {propertyTemplate} will collide with stored constant properties", nameof(propertyTemplate));
-
-			m_dynamicProperties.Add(propertyTemplate, new DynamicKnowledgeEntry(surogate, description));
-		}
-
-		public void UnregistDynamicProperty(Name propertyTemplate)
-		{
-			if(!m_dynamicProperties.Remove(propertyTemplate))
-				throw new Exception($"Unknown Dynamic Property {propertyTemplate}");
-		}
-
-		public IEnumerable<DynamicPropertyEntry> GetDynamicProperties()
-		{
-			return m_dynamicProperties.Select(p => new DynamicPropertyEntry() {PropertyTemplate = p.Key, Description = p.Value.description??"No Description"});
-		}
-
-		#endregion
-
 		#region Native Dynamic Properties
 
 		private static void RegistNativeDynamicProperties(KB kb)
@@ -175,18 +124,25 @@ namespace KnowledgeBase
 
 		//Count
 		private static readonly Name COUNT_TEMPLATE = Name.BuildName("Count([x])");
+		private static readonly Name COUNT_TEMPLATE_NEW = Name.BuildName("Count");
 		private static IEnumerable<Pair<Name, SubstitutionSet>> CountPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
 		{
 			var arg = args["x"];
 
-			var set = kb.AskPossibleProperties(arg, perspective, constraints).ToList();
+			return CountPropertyCalculator_new(kb, constraints, perspective, arg);
+		}
+
+		private static IEnumerable<Pair<Name, SubstitutionSet>> CountPropertyCalculator_new(IQueryable kb,
+			IEnumerable<SubstitutionSet> constraints, Name perspective, Name x)
+		{
+			var set = kb.AskPossibleProperties(x, perspective, constraints).ToList();
 			Name count = Name.BuildName(set.Count);
 			IEnumerable<SubstitutionSet> sets;
 			if (set.Count == 0)
 				sets = constraints;
 			else
 				sets = set.SelectMany(s => s.Item2).Distinct();
-			
+
 			foreach (var d in sets)
 				yield return Tuples.Create(count, d);
 		}
