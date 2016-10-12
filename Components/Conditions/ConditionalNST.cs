@@ -9,6 +9,9 @@ using WellFormedNames;
 using WellFormedNames.Collections;
 using Utilities;
 using IQueryable = WellFormedNames.IQueryable;
+#if PORTABLE
+using SerializationUtilities.Attributes;
+#endif
 
 namespace KnowledgeBase
 {

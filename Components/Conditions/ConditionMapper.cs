@@ -4,6 +4,9 @@ using System.Linq;
 using WellFormedNames;
 using Utilities;
 using IQueryable = WellFormedNames.IQueryable;
+#if PORTABLE
+using SerializationUtilities.Attributes;
+#endif
 
 namespace Conditions
 {

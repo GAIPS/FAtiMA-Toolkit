@@ -8,6 +8,9 @@ using WellFormedNames;
 using WellFormedNames.Collections;
 using Utilities;
 using IQueryable = WellFormedNames.IQueryable;
+#if PORTABLE
+using SerializationUtilities.Attributes;
+#endif
 
 namespace KnowledgeBase
 {
@@ -115,7 +118,7 @@ namespace KnowledgeBase
 			SetPerspective(perspective);
 		}
 
-		#region Native Dynamic Properties
+#region Native Dynamic Properties
 
 		private static void RegistNativeDynamicProperties(KB kb)
 		{
@@ -147,7 +150,7 @@ namespace KnowledgeBase
 				yield return Tuples.Create(count, d);
 		}
 
-		#endregion
+#endregion
 
 		public void SetPerspective(Name newPerspective)
 		{
@@ -449,7 +452,7 @@ namespace KnowledgeBase
 			}
 		}
 
-		#region Auxiliary Methods
+#region Auxiliary Methods
 
 		/// <summary>
 		/// 
@@ -533,7 +536,7 @@ namespace KnowledgeBase
 			return ExtractPropertyFromToM(prop, ToMList, argumentName);
 		}
 
-		#endregion
+#endregion
 
 		///// <summary>
 		///// Removes a predicate from the Semantic KB
@@ -579,7 +582,7 @@ namespace KnowledgeBase
 		//	get { return m_knowledgeStorage.Count; }
 		//}
 
-		#region Serialization
+#region Serialization
 
 		private string Perspective2String(Name perception)
 		{
@@ -591,7 +594,13 @@ namespace KnowledgeBase
 
 		private Name String2Perspective(string str)
 		{
-			if (string.Equals(str, "universal", StringComparison.InvariantCultureIgnoreCase))
+			StringComparison c;
+#if PORTABLE
+			c = StringComparison.OrdinalIgnoreCase;
+#else
+			c = StringComparison.InvariantCultureIgnoreCase;
+#endif
+			if (string.Equals(str, "universal", c))
 				return Name.UNIVERSAL_SYMBOL;
 
 			return Name.BuildName(str);
