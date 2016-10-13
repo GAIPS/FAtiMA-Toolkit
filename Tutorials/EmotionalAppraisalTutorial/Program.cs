@@ -37,7 +37,7 @@ namespace EmotionalAppraisalTutorial
             {
                 ea.Update();
                 Console.WriteLine("\nMood on tick '" + ea.Tick + "': " + ea.Mood);
-                Console.WriteLine("Active Emotions: " + string.Concat(ea.ActiveEmotions.Select(e => e.Type + "-" + e.Intensity + " ")));
+                Console.WriteLine("Active Emotions: " + string.Concat(ea.GetAllActiveEmotions().Select(e => e.EmotionType + "-" + e.Intensity + " ")));
             }
             
             //The asset can also be loaded from an existing file using the following method:

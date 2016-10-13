@@ -303,30 +303,18 @@ namespace IntegratedAuthoringTool
 
 		private void RegistDynamicProperties(RolePlayCharacterAsset character)
 	    {
-			character.RegistDynamicProperty(VALID_DIALOGUE_PROPERTY_TEMPLATE,"No description",ValidDialogPropertyCalculator);
+			character.DynamicPropertiesRegistry.RegistDynamicProperty(VALID_DIALOGUE_PROPERTY_TEMPLATE,ValidDialogPropertyCalculator, "No description");
 		}
 
-	    private static readonly Name VALID_DIALOGUE_PROPERTY_TEMPLATE = (Name)"ValidDialogue([currentState],[nextState],[meaning],[style])";
-		private IEnumerable<Pair<Name, SubstitutionSet>> ValidDialogPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+	    private static readonly Name VALID_DIALOGUE_PROPERTY_TEMPLATE = (Name)"ValidDialogue";
+		private IEnumerable<Pair<Name, SubstitutionSet>> ValidDialogPropertyCalculator(IQueryable kb, IEnumerable<SubstitutionSet> constraints, Name perspective,
+			Name currentState, Name nextState, Name meaning, Name style)
 		{
 			if (!perspective.Match(Name.SELF_SYMBOL))
 				return Enumerable.Empty<Pair<Name, SubstitutionSet>>();
 
-			Name currentState = GetArgument(args, "currentState");
-			Name nextState = GetArgument(args, "nextState");
-			Name meaning = GetArgument(args, "meaning");
-			Name style = GetArgument(args, "style");
-
 			var key = DialogStateAction.BuildSpeakAction(currentState, nextState, meaning, style);
 			return constraints.SelectMany(c => m_agentDialogues.GetAllDialogsForKey(key,c)).Select(p => Tuples.Create(Name.BuildName(true), p.Item2));
-		}
-
-		private static Name GetArgument(IDictionary<string, Name> args, string argName)
-		{
-			Name result;
-			if (!args.TryGetValue(argName, out result))
-				return Name.UNIVERSAL_SYMBOL;
-			return result;
 		}
 
 		#endregion

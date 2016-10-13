@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="Belief.cs" />
     <Compile Include="DynamicPropertyEntry.cs" />
+    <Compile Include="IDynamicPropertiesRegister.cs" />
     <Compile Include="KB.cs" />
     <Compile Include="KBDynamicProperties.cs" />
     <Compile Include="NameUtilities.cs" />

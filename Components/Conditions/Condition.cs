@@ -30,7 +30,7 @@ namespace Conditions
         public IEnumerable<SubstitutionSet> UnifyEvaluate(IQueryable kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
 			if (constraints == null || !constraints.Any())
-				constraints = new[] { new SubstitutionSet() };
+				constraints = new[] { new SubstitutionSet()};
 
 			return CheckActivation(kb, perspective, constraints).Distinct();
 		}

@@ -18,9 +18,25 @@ namespace WellFormedNames
 	///  - [x] -> Mary
 	/// </summary>
 	[Serializable]
-	public sealed class SubstitutionSet : IEnumerable<Substitution>
+	public sealed partial class SubstitutionSet : IEnumerable<Substitution>
 	{
-		private Dictionary<Name,Name> m_substitutions = new Dictionary<Name, Name>();
+		private interface ISetImplementation
+		{
+			Name GetValue(Name variable);
+			bool ContainsVariable(Name variable);
+			int Count();
+
+			void AddSubstitution(Substitution s);
+
+			ISetImplementation Clone();
+
+			bool TestConflict(Substitution subs, SubstitutionSet set, out bool canAdd);
+
+			IEnumerator<Substitution> GetEnumerator();
+			IEnumerable<Substitution> GetGroundedSubstitutions(SubstitutionSet other);
+		}
+
+		private ISetImplementation m_impl = new SimpleImplementation();
 
 		/// <summary>
 		/// Creates an empty SubstitutionSet
@@ -59,8 +75,7 @@ namespace WellFormedNames
 				if (!variable.IsVariable)
 					throw new ArgumentException("The given Name is not a variable.");
 
-				Name r;
-				return m_substitutions.TryGetValue(variable, out r) ? r : null;
+				return m_impl.GetValue(variable);
 			}
 		}
 
@@ -74,7 +89,7 @@ namespace WellFormedNames
 			if (!variable.IsVariable)
 				throw new ArgumentException("The given Name is not a variable.",nameof(variable));
 
-			return m_substitutions.ContainsKey(variable);
+			return m_impl.ContainsVariable(variable);
 		}
 
 		/// <summary>
@@ -82,7 +97,7 @@ namespace WellFormedNames
 		/// </summary>
 		public int Count()
 		{
-			return m_substitutions.Count;
+			return m_impl.Count();
 		}
 
 		/// <summary>
@@ -98,11 +113,11 @@ namespace WellFormedNames
 		public bool AddSubstitution(Substitution substitution)
 		{
 			bool canAdd;
-			if (TestConflict(substitution, this, out canAdd))
+			if (m_impl.TestConflict(substitution, this, out canAdd))
 				return false;
 
 			if (canAdd)
-				AddSub(substitution.Variable,substitution.Value);
+				m_impl.AddSubstitution(substitution);
 
 			return true;
 		}
@@ -119,7 +134,7 @@ namespace WellFormedNames
 				return false;
 
 			foreach (var s in substitutions)
-				AddSub(s.Variable, s.Value);
+				m_impl.AddSubstitution(s);
 
 			return true;
 		}
@@ -132,66 +147,24 @@ namespace WellFormedNames
 		/// <returns>True if all the substitutions were added to this object. False if conflics were detected.</returns>
 		public bool AddSubstitutions(IEnumerable<Substitution> substitutions)
 		{
+			var clone = m_impl.Clone();
 			bool rollback = false;
-			List<Name> added = ObjectPool<List<Name>>.GetObject();
-			try
+			foreach (var s in substitutions)
 			{
-				foreach (var s in substitutions)
+				bool canAdd;
+				if (m_impl.TestConflict(s, this, out canAdd))
 				{
-					bool canAdd;
-					if (TestConflict(s, this, out canAdd))
-					{
-						rollback = true;
-						break;
-					}
-
-					if (canAdd)
-					{
-						AddSub(s.Variable, s.Value);
-						added.Add(s.Variable);
-					}
+					rollback = true;
+					break;
 				}
 
-				if (rollback)
-				{
-					foreach (var s in added)
-						m_substitutions.Remove(s);
-				}
-
-				return !rollback;
+				if(canAdd)
+					m_impl.AddSubstitution(s);
 			}
-			finally
-			{
-				added.Clear();
-				ObjectPool<List<Name>>.Recycle(added);
-			}
-		}
 
-		private static bool TestConflict(Substitution subs, SubstitutionSet substitutions, out bool canAdd)
-		{
-			canAdd = true;
-			Name value;
-			if (!substitutions.m_substitutions.TryGetValue(subs.Variable, out value))
-				return false;
-
-			canAdd = false;
-			var G1 = value.MakeGround(substitutions);
-			var G2 = subs.Value.MakeGround(substitutions);
-			return !G1.Equals(G2);	//Conflict!!!
-		}
-
-		private void AddSub(Name variable, Name value)
-		{
-			m_substitutions.Add(variable, value);
-			//if(added!=null)
-			//	added.Add(variable);
-
-			//if (value.IsVariable)
-			//{
-			//	m_substitutions.Add(value,variable);
-			//	if (added != null)
-			//		added.Add(value);
-			//}
+			if (rollback)
+				m_impl = clone;
+			return !rollback;
 		}
 
 		/// <summary>
@@ -201,7 +174,7 @@ namespace WellFormedNames
 		public bool Conflicts(Substitution substitution)
 		{
 			bool aux;
-			return TestConflict(substitution,this, out aux);
+			return m_impl.TestConflict(substitution,this, out aux);
 		}
 
 		/// <summary>
@@ -210,16 +183,16 @@ namespace WellFormedNames
 		/// <param name="substitution">The SubstitutionSet object to test.</param>
 		public bool Conflicts(SubstitutionSet substitutions)
 		{
-			foreach (var pair in substitutions.m_substitutions)
+			foreach (var s in substitutions)
 			{
-				Name value;
-				if (m_substitutions.TryGetValue(pair.Key, out value))
-				{
-					var g1 = pair.Value.MakeGround(substitutions).MakeGround(this);
-					var g2 = value.MakeGround(this).MakeGround(substitutions);
-					if (!g1.Equals(g2))
-						return true;
-				}
+				Name value = m_impl.GetValue(s.Variable);
+				if(value==null)
+					continue;
+
+				var g1 = s.Value.MakeGround(substitutions).MakeGround(this);
+				var g2 = value.MakeGround(this).MakeGround(substitutions);
+				if (!g1.Equals(g2))
+					return true;
 			}
 			return false;
 		}
@@ -229,7 +202,7 @@ namespace WellFormedNames
 		/// </summary>
 		public IEnumerator<Substitution> GetEnumerator()
 		{
-			return m_substitutions.Select(e => new Substitution(e.Key, e.Value)).GetEnumerator();
+			return m_impl.GetEnumerator();
 		}
 
 		/// <summary>
@@ -238,13 +211,6 @@ namespace WellFormedNames
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return this.GetEnumerator();
-		}
-
-		private IEnumerable<Substitution> GetGroundedSubstitutions()
-		{
-			if (m_substitutions.Count > 0)
-				return m_substitutions.Select(e => new Substitution(e.Key, e.Value.MakeGround(this))).Distinct();
-			return Enumerable.Empty<Substitution>();
 		}
 
 		/// @cond DOXYGEN_SHOULD_SKIP_THIS
@@ -256,7 +222,7 @@ namespace WellFormedNames
 			//and two empty sets are equal.
 			const int emptyHashCode = 0x0fc43f9;
 
-			var set = GetGroundedSubstitutions();
+			var set = m_impl.GetGroundedSubstitutions(this);
 			if (!set.Any())
 				return emptyHashCode;
 
@@ -274,9 +240,11 @@ namespace WellFormedNames
 			HashSet<Substitution> aux1 = ObjectPool<HashSet<Substitution>>.GetObject();
 			HashSet<Substitution> aux2 = ObjectPool<HashSet<Substitution>>.GetObject();
 			try 
-			{	        
-				aux1.UnionWith(this.GetGroundedSubstitutions());
-				aux2.UnionWith(other.GetGroundedSubstitutions());
+			{
+				//aux1.UnionWith(this.GetGroundedSubstitutions());
+				//aux2.UnionWith(other.GetGroundedSubstitutions());
+				aux1.UnionWith(m_impl.GetGroundedSubstitutions(this));
+				aux2.UnionWith(other.m_impl.GetGroundedSubstitutions(other));
 				var b = aux1.SetEquals(aux2);
 				return b;
 			}
@@ -296,12 +264,14 @@ namespace WellFormedNames
 			{
 				builder.Append("(");
 				bool addComma = false;
-				foreach (var e in m_substitutions)
+				var it = m_impl.GetEnumerator();
+				while (it.MoveNext())
 				{
+					var e = it.Current;
 					if (addComma)
 						builder.Append(", ");
 
-					builder.AppendFormat("{0}/{1}", e.Key, e.Value);
+					builder.Append(e);
 					addComma = true;
 				}
 				builder.Append(")");

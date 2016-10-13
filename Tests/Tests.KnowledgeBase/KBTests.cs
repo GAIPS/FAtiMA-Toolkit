@@ -7,6 +7,7 @@ using KnowledgeBase;
 using NUnit.Framework;
 using Utilities;
 using WellFormedNames;
+using IQueryable = WellFormedNames.IQueryable;
 
 namespace Tests.KnowledgeBase
 {
@@ -109,15 +110,11 @@ namespace Tests.KnowledgeBase
 				yield return new TestCaseData((Name)"Color(id_2433)", "Blue");
 			}
 
-			public static IEnumerable<TestCaseData> Test_OperatorRegist_Cases()
-			{
-				DynamicPropertyCalculator p = (kb2, pers, args, subs) =>
-				{
-					return Enumerable.Empty<Pair<Name, SubstitutionSet>>();
-				};
-				yield return new TestCaseData(PopulatedTestMemory(), (Name)"Count([x])", p, (Name)"Count(IsAlive([x]))", null);
-				yield return new TestCaseData(PopulatedTestMemory(), (Name)"Count([x])", p, (Name)"Count([y])", new SubstitutionSet(new Substitution("[y]/IsAlive([x])")));
-			}
+			//public static IEnumerable<TestCaseData> Test_OperatorRegist_Cases()
+			//{
+			//	yield return new TestCaseData(PopulatedTestMemory(), (Name)"Count([x])", DummyCount, (Name)"Count(IsAlive([x]))", null);
+			//	yield return new TestCaseData(PopulatedTestMemory(), (Name)"Count([x])", DummyCount, (Name)"Count([y])", new SubstitutionSet(new Substitution("[y]/IsAlive([x])")));
+			//}
 
 			public static IEnumerable<TestCaseData> MemoryData()
 			{
@@ -240,33 +237,31 @@ namespace Tests.KnowledgeBase
 			Assert.AreEqual(value, Name.BuildName(expect));
 		}
 
+		private static IEnumerable<Pair<Name, SubstitutionSet>> DummyCount(IQueryable q, IEnumerable<SubstitutionSet> c, Name perspective, Name x)
+		{
+			throw new NotImplementedException();
+		}
+
 		[Test]
 		public void Test_OperatorRegist_Fail_Duplicate()
 		{
 			var kb = new KB((Name)"Me");
 			Assert.Throws<ArgumentException>(
-				() => kb.RegistDynamicProperty((Name)"Count([y])", ((kb1, pers, args, constraints) => null)));
+				() => kb.RegistDynamicProperty((Name)"Count", DummyCount));
 		}
 
 		[Test]
-		public void Test_OperatorRegist_Fail_Same_Template()
+		public void Test_OperatorRegist_Fail_InvalidTemplate()
 		{
 			var kb = new KB((Name)"Me");
-			Assert.Throws<ArgumentException>(() => kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, p, args, constraints) => null)));
-		}
-
-		[Test]
-		public void Test_OperatorRegist_Fail_GroundedTemplate()
-		{
-			var kb = new KB((Name)"Me");
-			Assert.Throws<ArgumentException>(() => kb.RegistDynamicProperty((Name)"Count(John)", ((kb1, p, args, constraints) => null)));
+			Assert.Throws<ArgumentException>(() => kb.RegistDynamicProperty((Name)"Count(John)", DummyCount));
 		}
 
 		[Test]
 		public void Test_OperatorRegist_Fail_Null_Surogate()
 		{
 			var kb = new KB((Name)"Me");
-			Assert.Throws<ArgumentNullException>(() => kb.RegistDynamicProperty((Name)"Count(John)", null));
+			Assert.Throws<ArgumentNullException>(() => kb.RegistDynamicProperty((Name)"Count", (DynamicPropertyCalculator_T1)null));
 		}
 
 		[Test]
@@ -276,7 +271,7 @@ namespace Tests.KnowledgeBase
 			Assert.Throws<ArgumentException>(() =>
 			{
 				kb.Tell((Name)"Count(John)", Name.BuildName(3));
-				kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, p, args, constraints) => null));
+				kb.RegistDynamicProperty((Name)"Count", DummyCount);
 			});
 		}
 
@@ -286,7 +281,7 @@ namespace Tests.KnowledgeBase
 			var kb = new KB((Name)"Me");
 			Assert.Throws<ArgumentException>(() =>
 			{
-				kb.RegistDynamicProperty((Name)"Count([x])", ((kb1, p, args, constraints) => null));
+				kb.RegistDynamicProperty((Name)"Count", DummyCount);
 				kb.Tell((Name)"Count(John)", Name.BuildName(3));
 			});
 		}

@@ -200,10 +200,7 @@ namespace RolePlayCharacter
 		    _currentAction = null;
 	    }
 
-	    public void RegistDynamicProperty(Name propertyTemplate, string description, DynamicPropertyCalculator surrogate)
-	    {
-		    _emotionalAppraisalAsset.RegistDynamicProperty(propertyTemplate,description,surrogate);
-	    }
+		public IDynamicPropertiesRegister DynamicPropertiesRegistry => _emotionalAppraisalAsset.DynamicPropertiesRegistry;
 
 	    #endregion
 

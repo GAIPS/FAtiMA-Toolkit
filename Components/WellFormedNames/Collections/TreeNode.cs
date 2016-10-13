@@ -586,7 +586,7 @@ namespace WellFormedNames.Collections
 							if (binding.Conflicts(sub))
 								continue;
 
-							set = new SubstitutionSet(binding);
+							set = new SubstitutionSet(set);
 							set.AddSubstitution(sub);
 						}
 

@@ -44,6 +44,7 @@
     <Compile Include="Json\JsonToken.cs" />
     <Compile Include="LinqExtentions.cs" />
     <Compile Include="ObjectPool.cs" />
+    <Compile Include="PortableFixes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StrongLinkDictionary.cs" />
     <Compile Include="Tuples.cs" />

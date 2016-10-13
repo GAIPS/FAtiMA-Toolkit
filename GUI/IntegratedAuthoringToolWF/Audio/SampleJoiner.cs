@@ -10,7 +10,6 @@ namespace IntegratedAuthoringToolWF.Audio
 	{
 		private ISampleProvider[] _samples;
 		private int _currentSample = 0;
-		private int _currentRead = 0;
 		public SampleJoiner(IEnumerable<WaveStream> samples)
 		{
 			var s = samples.ToArray();

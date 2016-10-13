@@ -72,7 +72,7 @@ namespace SpeechEmotionRecognition
 
                 return this.CurrentSample;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
             }

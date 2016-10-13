@@ -182,9 +182,6 @@ namespace IntegratedAuthoringToolWF.TTSEngines.L2F
 
 		private class L2FVoice : BaseVoice
 		{
-			private Action _onFinished;
-			private WaveOutEvent _player;
-
 			public L2FVoice(string name, VoiceGender gender, VoiceAge age, string culture, L2FSpeechEngine engine) : base(engine)
 			{
 				Name = name;
@@ -192,44 +189,6 @@ namespace IntegratedAuthoringToolWF.TTSEngines.L2F
 				Age = age;
 				Culture = culture;
 			}
-
-			//public bool IsSpeaking => _onFinished != null;
-
-			//public void Speak(string text, double playbackRate, int pitchShift, Action onFinished = null)
-			//{
-			//	if(IsSpeaking)
-			//		CancelSpeaking();
-
-			//	_onFinished = onFinished;
-			//	_player = _engine.PlayAudio(this,text,playbackRate,pitchShift);
-			//	if(_player==null)
-			//		OnFinishedDispatch();
-			//}
-
-			//public void CancelSpeaking()
-			//{
-			//	if(!IsSpeaking)
-			//		return;
-
-			//	_player.Stop();
-			//	OnFinishedDispatch();
-			//}
-
-			//public BakedTTS BakeSpeechFiles(string text, double playbackRate, int pitchShift)
-			//{
-			//	return _engine.Bake(this, text, playbackRate, pitchShift);
-			//}
-
-			//public void OnFinishedDispatch()
-			//{
-			//	if (_player != null)
-			//	{
-			//		_player.Dispose();
-			//		_player = null;
-			//	}
-			//	_onFinished?.Invoke();
-			//	_onFinished = null;
-			//}
 		}
 	}
 }

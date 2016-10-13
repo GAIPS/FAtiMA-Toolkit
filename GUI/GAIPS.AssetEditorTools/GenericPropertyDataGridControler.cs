@@ -21,7 +21,7 @@ namespace GAIPS.AssetEditorTools
 				_controller = value;
 				_dataView.DataSource = _controller.GetElements();
 				_dataView.ClearSelection();
-				Refresh();
+				RefreshData();
 			}
 		}
 
@@ -49,7 +49,7 @@ namespace GAIPS.AssetEditorTools
 		public GenericPropertyDataGridControler()
 		{
 			InitializeComponent();
-			Refresh();
+			RefreshData();
 			_dataView.SelectionChanged += OnSelectionChangedEventHandler;
 		}
 
@@ -82,7 +82,7 @@ namespace GAIPS.AssetEditorTools
 					if (r.Selected != b)
 						r.Selected = b;
 				}
-				Refresh();
+				RefreshData();
 			}
 		}
 
@@ -101,7 +101,7 @@ namespace GAIPS.AssetEditorTools
 						if (r.Selected != b)
 							r.Selected = b;
 					}
-					Refresh();
+					RefreshData();
 				}
 			}
 		}
@@ -111,11 +111,11 @@ namespace GAIPS.AssetEditorTools
 			if (_controller != null && _controller.RemoveElements(SelectedObjects) > 0)
 			{
 				_dataView.ClearSelection();
-				Refresh();
+				RefreshData();
 			}
 		}
 
-		private void Refresh()
+		private void RefreshData()
 		{
 			UpdateButtons();
 			_dataView.Refresh();

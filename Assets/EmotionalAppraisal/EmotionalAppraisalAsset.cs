@@ -473,23 +473,22 @@ namespace EmotionalAppraisal
 
 		private void BindCalls(KB kb)
 		{
-			kb.RegistDynamicProperty(MOOD_TEMPLATE, "The current mood value for agent [x]", MoodPropertyCalculator);//, new[] { "x" });
-			kb.RegistDynamicProperty(STRONGEST_EMOTION_TEMPLATE, "The type of the current strongest emotion that agent [x] is feeling.", StrongestEmotionCalculator);
-			kb.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, "The intensity value for the emotion felt by agent [x] of type [y].",EmotionIntensityPropertyCalculator);
+			kb.RegistDynamicProperty(MOOD_PROPERTY_NAME, MoodPropertyCalculator, "The current mood value for agent [x]");
+			kb.RegistDynamicProperty(STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator,"The type of the current strongest emotion that agent [x] is feeling.");
+			kb.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator,"The intensity value for the emotion felt by agent [x] of type [y].");
         }
 
 		#region Dynamic Properties
 
-		private static readonly Name MOOD_TEMPLATE = (Name)"Mood([x])";
-		private IEnumerable<Pair<Name, SubstitutionSet>> MoodPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		private static readonly Name MOOD_PROPERTY_NAME = (Name)"Mood";
+		private IEnumerable<Pair<Name, SubstitutionSet>> MoodPropertyCalculator(IQueryable kb, IEnumerable<SubstitutionSet> constraints, Name perspective, Name x)
 		{
 			if(perspective != Name.SELF_SYMBOL)
 				yield break;
 
-			Name arg = args["x"];
-			if (arg.IsVariable)
+			if (x.IsVariable)
 			{
-				var sub = new Substitution(arg, kb.Perspective);
+				var sub = new Substitution(x, kb.Perspective);
 				foreach (var c in constraints)
 				{
 					if (c.AddSubstitution(sub))
@@ -498,7 +497,7 @@ namespace EmotionalAppraisal
 			}
 			else
 			{
-				foreach (var resultPair in kb.AskPossibleProperties(arg,perspective, constraints))
+				foreach (var resultPair in kb.AskPossibleProperties(x,perspective, constraints))
 				{
 					var v = m_emotionalState.Mood;
 					foreach (var c in resultPair.Item2)
@@ -509,22 +508,21 @@ namespace EmotionalAppraisal
 			}
 		}
 
-		private static readonly Name STRONGEST_EMOTION_TEMPLATE = (Name)"StrongestEmotion([x])";
-		private IEnumerable<Pair<Name, SubstitutionSet>> StrongestEmotionCalculator(IQueryable kb,Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		private static readonly Name STRONGEST_EMOTION_PROPERTY_NAME = (Name)"StrongestEmotion";
+		private IEnumerable<Pair<Name, SubstitutionSet>> StrongestEmotionCalculator(IQueryable kb, IEnumerable<SubstitutionSet> constraints, Name perspective, Name x)
 		{
 			if(perspective != Name.SELF_SYMBOL)
 				yield break;
 
-			Name arg = args["x"];
 			var emo = m_emotionalState.GetStrongestEmotion();
 			if(emo==null)
 				yield break;
 
 			var emoValue = emo.EmotionType;
 
-			if (arg.IsVariable)
+			if (x.IsVariable)
 			{
-				var sub = new Substitution(arg, kb.Perspective);
+				var sub = new Substitution(x, kb.Perspective);
 				foreach (var c in constraints)
 				{
 					if (c.AddSubstitution(sub))
@@ -533,7 +531,7 @@ namespace EmotionalAppraisal
 			}
 			else
 			{
-				foreach (var resultPair in kb.AskPossibleProperties(arg,perspective, constraints))
+				foreach (var resultPair in kb.AskPossibleProperties(x,perspective, constraints))
 				{
 					foreach (var c in resultPair.Item2)
 						yield return Tuples.Create((Name)emoValue, c);
@@ -541,15 +539,15 @@ namespace EmotionalAppraisal
 			}
 		}
 
-		private static readonly Name EMOTION_INTENSITY_TEMPLATE = (Name) "EmotionIntensity([x],[y])";
-		private IEnumerable<Pair<Name, SubstitutionSet>> EmotionIntensityPropertyCalculator(IQueryable kb,Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		private static readonly Name EMOTION_INTENSITY_TEMPLATE = (Name) "EmotionIntensity";
+		private IEnumerable<Pair<Name, SubstitutionSet>> EmotionIntensityPropertyCalculator(IQueryable kb, IEnumerable<SubstitutionSet> constraints, Name perspective, Name x, Name y)
 		{
 			List<Pair<Name, SubstitutionSet>> result = new List<Pair<Name, SubstitutionSet>>();
 			if (perspective != Name.SELF_SYMBOL)
 				return result;
 
-			Name entity = args["x"];
-			Name emotionName = args["y"];
+			Name entity = x;
+			Name emotionName = y;
 			
 			if (entity.IsVariable)
 			{
@@ -654,17 +652,7 @@ namespace EmotionalAppraisal
 			return m_kb.AskPossibleProperties(property, perspective, constraints);
 		}
 
-		public void RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate)
-		{
-			m_kb.RegistDynamicProperty(propertyTemplate,surogate);
-		}
-
-        public void RegistDynamicProperty(Name propertyTemplate, string description,  DynamicPropertyCalculator surogate)
-        {
-            m_kb.RegistDynamicProperty(propertyTemplate, description, surogate);
-        }
-
-        public void UnregistDynamicProperty(Name propertyTemplate)
+		public void UnregistDynamicProperty(Name propertyTemplate)
 		{
 			m_kb.UnregistDynamicProperty(propertyTemplate);
 		}
@@ -673,5 +661,7 @@ namespace EmotionalAppraisal
 		{
 			return m_kb.GetDynamicProperties().Select(d => new DynamicPropertyDTO() {PropertyTemplate = d.PropertyTemplate.ToString(), Description = d.Description});
 		}
+
+		public IDynamicPropertiesRegister DynamicPropertiesRegistry => m_kb;
 	}
 }

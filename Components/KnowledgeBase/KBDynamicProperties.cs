@@ -1,68 +1,125 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
+using System.Reflection;
 using Utilities;
 using WellFormedNames;
+using IQueryable = WellFormedNames.IQueryable;
 
 namespace KnowledgeBase
 {
-	public partial class KB
+	using BeliefPair = Pair<Name, IEnumerable<SubstitutionSet>>;
+
+	public partial class KB : IDynamicPropertiesRegister
 	{
-		#region Dynamic Property Registry
+		private const string TMP_MARKER = "_arg";
 
-		#region Old
+		private delegate IEnumerable<Pair<Name, SubstitutionSet>> DynamicPropertyCalculator(IQueryable kb, Name perspective, IList<Name> args, IEnumerable<SubstitutionSet> constraints);
 
-		public void RegistDynamicProperty(Name propertyTemplate, DynamicPropertyCalculator surogate)
+		private sealed class DynamicKnowledgeEntry
 		{
-			internal_RegistDynamicProperty(propertyTemplate,null, surogate);
-		}
+			private readonly DynamicPropertyCalculator _surogate;
+			private readonly Name[] _parameters;
+			public readonly string description;
 
-		public void RegistDynamicProperty(Name propertyTemplate, string description, DynamicPropertyCalculator surogate)
-		{
-			//Name[] args;
-			//if (arguments == null)
-			//	args = new Name[0];
-			//else
-			//	args = arguments.Distinct().Select(s => Name.BuildName("[" + s + "]")).ToArray();
-
-			internal_RegistDynamicProperty(propertyTemplate,description,surogate);
-		}
-
-		#endregion
-		/*
-		public void RegistDynamicProperty(Name propertyName, LambdaExpression expression)
-		{
-			RegistDynamicProperty(propertyName, null, expression);
-		}
-
-		public void RegistDynamicProperty(Name propertyName, string description, LambdaExpression expression)
-		{
-			//var info = surogate.Method;
-			throw new NotImplementedException();
-		}
-		*/
-		#endregion
-
-		private void internal_RegistDynamicProperty(Name propertyTemplate, string description, DynamicPropertyCalculator surogate)
-		{
-			if (surogate == null)
-				throw new ArgumentNullException(nameof(surogate));
-
-			if (propertyTemplate.IsGrounded)
-				throw new ArgumentException("Grounded names cannot be used as dynamic properties", nameof(propertyTemplate));
-
-			var r = m_dynamicProperties.Unify(propertyTemplate).FirstOrDefault();
-			if (r != null)
+			public DynamicKnowledgeEntry(DynamicPropertyCalculator surogate, Name[] parameters, string description)
 			{
-				throw new ArgumentException(
-					$"The given template {propertyTemplate} will collide with already registed {propertyTemplate.MakeGround(r.Item2)} dynamic property", nameof(propertyTemplate));
+				_surogate = surogate;
+				_parameters = parameters;
+				this.description = description;
 			}
 
-			if (m_knowledgeStorage.Unify(propertyTemplate).Any())
-				throw new ArgumentException($"The given template {propertyTemplate} will collide with stored constant properties", nameof(propertyTemplate));
+			public IEnumerable<Pair<Name, SubstitutionSet>> Evaluate(IQueryable kb, Name perspective, SubstitutionSet args2, IEnumerable<SubstitutionSet> constraints)
+			{
+				var dic = ObjectPool<Dictionary<Name, Name>>.GetObject();
+				var args = ObjectPool<List<Name>>.GetObject();
+				try
+				{
+					foreach(var s in args2)
+					{
+						var p = s.Variable.RemoveBoundedVariables(TMP_MARKER);
+						dic[p] = s.Value;
+						if (!s.Value.IsVariable)
+							continue;
+						dic[s.Value] = p;
+					}
+					args.AddRange(_parameters.Select(p =>
+					{
+						Name v;
+						if (dic.TryGetValue(p, out v))
+							return v;
+						return Name.UNIVERSAL_SYMBOL;
+					}));
+					return _surogate(kb, perspective, args, constraints);
+				}
+				finally
+				{
+					args.Clear();
+					ObjectPool<List<Name>>.Recycle(args);
 
-			m_dynamicProperties.Add(propertyTemplate, new DynamicKnowledgeEntry(surogate, description));
+					dic.Clear();
+					ObjectPool<Dictionary<Name, Name>>.Recycle(dic);
+				}
+			}
+		}
+
+		#region Dynamic Property Registry
+
+		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T1 surrogate, string description = null)
+		{
+			if (surrogate == null)
+				throw new ArgumentNullException(nameof(surrogate));
+
+			internal_RegistDynamicProperty(propertyName, description, surrogate.GetMethodInfo(),
+				(kb, perspective, args, constraints) => surrogate(kb,constraints,perspective,args[0]));
+		}
+
+		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T2 surrogate, string description = null)
+		{
+			if (surrogate == null)
+				throw new ArgumentNullException(nameof(surrogate));
+
+			internal_RegistDynamicProperty(propertyName, description, surrogate.GetMethodInfo(),
+				(kb, perspective, args, constraints) => surrogate(kb, constraints, perspective, args[0],args[1]));
+		}
+
+		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T3 surrogate, string description = null)
+		{
+			if (surrogate == null)
+				throw new ArgumentNullException(nameof(surrogate));
+
+			internal_RegistDynamicProperty(propertyName, description, surrogate.GetMethodInfo(),
+				(kb, perspective, args, constraints) => surrogate(kb, constraints, perspective, args[0], args[1],args[2]));
+		}
+
+		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T4 surrogate, string description = null)
+		{
+			if (surrogate == null)
+				throw new ArgumentNullException(nameof(surrogate));
+
+			internal_RegistDynamicProperty(propertyName, description, surrogate.GetMethodInfo(),
+				(kb, perspective, args, constraints) => surrogate(kb, constraints, perspective, args[0], args[1], args[2], args[3]));
+		}
+
+		#endregion
+
+		private void internal_RegistDynamicProperty(Name propertyName, string description, MethodInfo surogate, DynamicPropertyCalculator converted)
+		{
+			if (!propertyName.IsPrimitive)
+				throw new ArgumentException("The property name must be a primitive symbol.", nameof(propertyName));
+
+			var p = surogate.GetParameters();
+			var propertyParameters = p.Skip(3).Select(p2 => (Name) $"[{p2.Name}]").ToArray();
+			var template = Name.BuildName(propertyParameters.Prepend(propertyName));
+			
+			var r = m_dynamicProperties.Unify(template).FirstOrDefault();
+			if (r != null)
+				throw new ArgumentException($"There is already a registed property with the name {propertyName} that receives {p.Length - 3} parameters.");
+
+			if (m_knowledgeStorage.Unify(template).Any())
+				throw new ArgumentException($"There are already stored property values that will collide with the given dynamic property.");
+
+			m_dynamicProperties.Add(template, new DynamicKnowledgeEntry(converted,propertyParameters, description));
 		}
 
 		public void UnregistDynamicProperty(Name propertyTemplate)
@@ -74,6 +131,25 @@ namespace KnowledgeBase
 		public IEnumerable<DynamicPropertyEntry> GetDynamicProperties()
 		{
 			return m_dynamicProperties.Select(p => new DynamicPropertyEntry() { PropertyTemplate = p.Key, Description = p.Value.description ?? "No Description" });
+		}
+
+		private IEnumerable<BeliefPair> AskDynamicProperties(Name property, Name perspective, IEnumerable<SubstitutionSet> constraints)
+		{
+			if (m_dynamicProperties.Count == 0)
+				yield break;
+
+			Name tmpPropertyName = property.ReplaceUnboundVariables(TMP_MARKER);
+
+			var d = m_dynamicProperties.Unify(tmpPropertyName).ToList();
+			if (d.Count == 0)
+				yield break;
+
+			var results = d.SelectMany(p => p.Item1.Evaluate(this, perspective, p.Item2, constraints).ToList());
+
+			foreach (var g in results.GroupBy(p => p.Item1, p => p.Item2))
+			{
+				yield return Tuples.Create(g.Key, g.Distinct());
+			}
 		}
 	}
 }

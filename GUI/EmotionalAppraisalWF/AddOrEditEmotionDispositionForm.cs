@@ -100,7 +100,7 @@ namespace EmotionalAppraisalWF
                 {   
                     this._emotionDispositionsVM.AddEmotionDisposition(newEmotionDisposition);
                 }
-                catch (ArgumentException ex)
+                catch (ArgumentException)
                 {
                     MessageBox.Show(Resources.EmotionDispositionAlreadyExistsExceptionMessage, Resources.ErrorDialogTitle,
                         MessageBoxButtons.OK, MessageBoxIcon.Error);

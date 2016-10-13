@@ -25,9 +25,9 @@ namespace AutobiographicMemory
 
 		public void BindCalls(KB kb)
 		{
-			kb.RegistDynamicProperty(EVENT_ID_PROPERTY_TEMPLATE, "Returns the ids of all events that unify with the property's name", EventIdPropertyCalculator);
-			kb.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE, "The number of ticks passed since the event associated to [id] occured", EventAgePropertyCalculator);
-			kb.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_TEMPLATE, "Returns the id of the last event if it unifies with the property's name", LastEventIdPropertyCalculator);
+			kb.RegistDynamicProperty(EVENT_ID_PROPERTY_NAME, EventIdPropertyCalculator, "Returns the ids of all events that unify with the property's name");
+			kb.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_NAME, EventAgePropertyCalculator, "The number of ticks passed since the event associated to [id] occured");
+			kb.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_NAME, LastEventIdPropertyCalculator, "Returns the id of the last event if it unifies with the property's name");
 		}
 
 		public IBaseEvent RecordEvent(EventDTO dto)
@@ -185,26 +185,13 @@ namespace AutobiographicMemory
 
 		#region Dynamic Properties
 
-		private static Name GetArgument(IDictionary<string, Name> args, string argName)
-		{
-			Name result;
-			if (!args.TryGetValue(argName, out result))
-				return Name.UNIVERSAL_SYMBOL;
-			return result;
-		}
-
 		//Event
-		private static readonly Name EVENT_ID_PROPERTY_TEMPLATE = Name.BuildName("EventId([type],[subject],[def],[target])");
-		private IEnumerable<Pair<Name, SubstitutionSet>> EventIdPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
+		private static readonly Name EVENT_ID_PROPERTY_NAME = Name.BuildName("EventId");
+		private IEnumerable<Pair<Name, SubstitutionSet>> EventIdPropertyCalculator(IQueryable kb, IEnumerable<SubstitutionSet> constraints, Name perspective, Name type, Name subject, Name def, Name target)
 		{
 			List<Pair<Name, SubstitutionSet>> results = new List<Pair<Name, SubstitutionSet>>();
 			if (!perspective.Match(Name.SELF_SYMBOL))
 				return results;
-
-			Name type = GetArgument(args, "type");
-			Name subject = GetArgument(args, "subject");
-			Name def = GetArgument(args, "def");
-			Name target = GetArgument(args,"target");
 			
 			var key = Name.BuildName(EVT_NAME, type, subject, def, target);
 			foreach (var c in constraints)
@@ -219,19 +206,17 @@ namespace AutobiographicMemory
 		}
 
 		//EventElapseTime
-		private static readonly Name EVENT_ELAPSED_TIME_PROPERTY_TEMPLATE = Name.BuildName("EventElapsedTime([id])");
-		private IEnumerable<Pair<Name, SubstitutionSet>> EventAgePropertyCalculator(IQueryable kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
+		private static readonly Name EVENT_ELAPSED_TIME_PROPERTY_NAME = Name.BuildName("EventElapsedTime");
+		private IEnumerable<Pair<Name, SubstitutionSet>> EventAgePropertyCalculator(IQueryable kb, IEnumerable<SubstitutionSet> constraints, Name perspective, Name id)
 		{
 			if(!perspective.Match(Name.SELF_SYMBOL))
 				yield break;
 
-			Name idName = args["id"];
-
-			if (idName.IsVariable)
+			if (id.IsVariable)
 			{
 				foreach (var record in m_registry.Values)
 				{
-					var idSub = new Substitution(idName, Name.BuildName(record.Id));
+					var idSub = new Substitution(id, Name.BuildName(record.Id));
 					foreach (var c in constraints)
 					{
 						if (c.Conflicts(idSub))
@@ -247,7 +232,7 @@ namespace AutobiographicMemory
 				yield break;
 			}
 
-			foreach (var pair in kb.AskPossibleProperties(idName,perspective,constraints))
+			foreach (var pair in kb.AskPossibleProperties(id,perspective,constraints))
 			{
 				uint idValue;
 				if(!pair.Item1.TryConvertToValue(out idValue))
@@ -261,16 +246,11 @@ namespace AutobiographicMemory
 		}
 
 		//LastEvent
-		private static readonly Name LAST_EVENT_ID_PROPERTY_TEMPLATE = Name.BuildName("LastEventId([type],[subject],[def],[target])");
-		private IEnumerable<Pair<Name, SubstitutionSet>> LastEventIdPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		private static readonly Name LAST_EVENT_ID_PROPERTY_NAME = Name.BuildName("LastEventId");
+		private IEnumerable<Pair<Name, SubstitutionSet>> LastEventIdPropertyCalculator(IQueryable kb, IEnumerable<SubstitutionSet> constraints, Name perspective, Name type, Name subject, Name def, Name target)
 		{
 			if(!perspective.Match(Name.SELF_SYMBOL))
 				yield break;
-
-			Name type = GetArgument(args, "type");
-			Name subject = GetArgument(args, "subject");
-			Name def = GetArgument(args, "def");
-			Name target = GetArgument(args, "target");
 
 			var key = Name.BuildName(EVT_NAME, type, subject, def, target);
 

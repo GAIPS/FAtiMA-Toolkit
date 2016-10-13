@@ -73,12 +73,12 @@ namespace SocialImportance
 
 		private void PerformKBBindings()
 		{
-			m_ea.RegistDynamicProperty(SI_DYNAMIC_PROPERTY_TEMPLATE,"The value of Social Importance attributed to [target]", SIPropertyCalculator);
+			m_ea.DynamicPropertiesRegistry.RegistDynamicProperty(SI_DYNAMIC_PROPERTY_NAME, SIPropertyCalculator,"The value of Social Importance attributed to [target]");
 		}
 
 		private void RemoveKBBindings()
 		{
-			m_ea.UnregistDynamicProperty(SI_DYNAMIC_PROPERTY_TEMPLATE);
+			m_ea.UnregistDynamicProperty(SI_DYNAMIC_PROPERTY_NAME);
 		}
 
 		private void ValidateEALink()
@@ -395,14 +395,9 @@ namespace SocialImportance
 
 		#region Dynamic Properties
 
-		private static readonly Name SI_DYNAMIC_PROPERTY_TEMPLATE = Name.BuildName("SI([target])");
-
-		private IEnumerable<Pair<Name, SubstitutionSet>> SIPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string, Name> args, IEnumerable<SubstitutionSet> constraints)
+		private static readonly Name SI_DYNAMIC_PROPERTY_NAME = Name.BuildName("SI");
+		private IEnumerable<Pair<Name, SubstitutionSet>> SIPropertyCalculator(IQueryable kb, IEnumerable<SubstitutionSet> constraints, Name perspective, Name target)
 		{
-			Name target;
-			if(!args.TryGetValue("target",out target))
-				yield break;
-
 			foreach (var t in kb.AskPossibleProperties(target,perspective,constraints))
 			{
 				var si = internal_GetSocialImportance(t.Item1, perspective);

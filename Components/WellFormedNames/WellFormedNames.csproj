@@ -46,6 +46,7 @@
     <Compile Include="Name.cs" />
     <Compile Include="PrimitiveValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleSubstitutionSetImplementation.cs" />
     <Compile Include="Substitution.cs" />
     <Compile Include="SubstitutionSet.cs" />
     <Compile Include="Unifier.cs" />

@@ -16,8 +16,6 @@ namespace KnowledgeBase
 {
 	using BeliefPair = Pair<Name, IEnumerable<SubstitutionSet>>;
 
-	public delegate IEnumerable<Pair<Name, SubstitutionSet>> DynamicPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints);
-
 	[Serializable]
 	public partial class KB : IQueryable, ICustomSerialization
 	{
@@ -86,18 +84,6 @@ namespace KnowledgeBase
 			}
 		}
 
-		private sealed class DynamicKnowledgeEntry
-		{
-			public readonly DynamicPropertyCalculator surogate;
-			public readonly string description;
-
-			public DynamicKnowledgeEntry(DynamicPropertyCalculator surogate, string description)
-			{
-				this.surogate = surogate;
-				this.description = description;
-			}
-		}
-
 		private NameSearchTree<KnowledgeEntry> m_knowledgeStorage;
 		private NameSearchTree<DynamicKnowledgeEntry> m_dynamicProperties;
 
@@ -120,21 +106,13 @@ namespace KnowledgeBase
 
 #region Native Dynamic Properties
 
-		private static void RegistNativeDynamicProperties(KB kb)
+		private static void RegistNativeDynamicProperties(IDynamicPropertiesRegister kb)
 		{
-			kb.RegistDynamicProperty(COUNT_TEMPLATE, "The number of substitutions found for [x]", CountPropertyCalculator);
+			kb.RegistDynamicProperty(COUNT_TEMPLATE_NEW, CountPropertyCalculator_new, "The number of substitutions found for [x]");
 		}
 
 		//Count
-		private static readonly Name COUNT_TEMPLATE = Name.BuildName("Count([x])");
 		private static readonly Name COUNT_TEMPLATE_NEW = Name.BuildName("Count");
-		private static IEnumerable<Pair<Name, SubstitutionSet>> CountPropertyCalculator(IQueryable kb, Name perspective, IDictionary<string,Name> args, IEnumerable<SubstitutionSet> constraints)
-		{
-			var arg = args["x"];
-
-			return CountPropertyCalculator_new(kb, constraints, perspective, arg);
-		}
-
 		private static IEnumerable<Pair<Name, SubstitutionSet>> CountPropertyCalculator_new(IQueryable kb,
 			IEnumerable<SubstitutionSet> constraints, Name perspective, Name x)
 		{
@@ -242,52 +220,6 @@ namespace KnowledgeBase
 			var ToMList = AssertPerspective(perspective, nameof(perspective));
 
 			return internal_AskPossibleProperties(property, ToMList, constraints);
-		}
-
-		private IEnumerable<BeliefPair> AskDynamicProperties(Name property, Name perspective, IEnumerable<SubstitutionSet> constraints)
-		{
-			const string tmpMarker = "_arg";
-			if (m_dynamicProperties.Count == 0)
-				yield break;
-
-			Name tmpPropertyName = property.ReplaceUnboundVariables(tmpMarker);
-
-			var d = m_dynamicProperties.Unify(tmpPropertyName).ToList();
-			if (d.Count == 0)
-				yield break;
-
-			var results = d.SelectMany(p =>
-			{
-				var args = ObjectPool<Dictionary<string, Name>>.GetObject();
-				try
-				{
-					foreach (var s in p.Item2)
-					{
-						var paramName = s.Variable.ToString();
-						paramName = paramName.Substring(1, paramName.Length - 2);
-						args[paramName] = s.Value.RemoveBoundedVariables(tmpMarker);
-						if (s.Value.IsVariable)
-						{
-							//Unify can mix parameter Name with it's value, if the value is a variable.
-							//In this case, flip a duplicate of the argument entry
-							paramName = s.Value.ToString();
-							paramName = paramName.Substring(1, paramName.Length - 2);
-							args[paramName] = s.Variable.RemoveBoundedVariables(tmpMarker);
-						}
-					}
-					return p.Item1.surogate(this, perspective, args, constraints).ToList();
-				}
-				finally
-				{
-					args.Clear();
-					ObjectPool<Dictionary<string, Name>>.Recycle(args);
-				}
-			});
-
-			foreach (var g in results.GroupBy(p => p.Item1, p => p.Item2))
-			{
-				yield return Tuples.Create(g.Key, g.Distinct());
-			}
 		}
 
 		private IEnumerable<BeliefPair> internal_AskPossibleProperties(Name property, List<Name> ToMList, IEnumerable<SubstitutionSet> constraints)
