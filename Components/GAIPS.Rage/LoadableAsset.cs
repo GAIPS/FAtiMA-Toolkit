@@ -51,6 +51,14 @@ namespace GAIPS.Rage
 		{
 		}
 
+		public void SaveToFile()
+		{
+			if(string.IsNullOrEmpty(m_assetFilepath))
+				throw new Exception("No default file path defined for the asset. Please use SaveToFile(filepath).");
+
+			SaveToFile(m_assetFilepath);
+		}
+
 		public void SaveToFile(string filepath)
 		{
 			var storage = GetInterface<IDataStorage>();
@@ -61,7 +69,8 @@ namespace GAIPS.Rage
 			{
 				var oldPath = m_assetFilepath;
 				m_assetFilepath = filepath;
-				OnAssetPathChanged(oldPath);
+				if(!string.IsNullOrEmpty(oldPath))
+					OnAssetPathChanged(oldPath);
 			}
 
 			var json = SERIALIZER.SerializeToJson(this);

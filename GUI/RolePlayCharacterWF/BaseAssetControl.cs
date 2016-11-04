@@ -80,11 +80,11 @@ namespace RolePlayCharacterWF
 
 		private void _createNewButton_Click(object sender, EventArgs e)
 		{
-			var path = _controlForm.CreateAndSaveEmptyAsset();
-			if (path == null)
+			var asset = _controlForm.CreateAndSaveEmptyAsset(false);
+			if (asset == null)
 				return;
 
-			_path.Text = path;
+			_path.Text = asset.AssetFilePath;
 			OnPathChanged?.Invoke(this, new EventArgs());
 
 			EditAsset();

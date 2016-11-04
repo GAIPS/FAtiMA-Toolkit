@@ -72,17 +72,32 @@ namespace GAIPS.AssetEditorTools
 			return null;
 		}
 
-		public string CreateAndSaveEmptyAsset()
+		public T CreateAndSaveEmptyAsset(bool allowOverwrite)
 		{
 			var sfd = new SaveFileDialog();
 			sfd.Filter = GetAssetFileFilters() + "|All Files|*.*";
 
-			if (sfd.ShowDialog() != DialogResult.OK)
-				return null;
+			if (!allowOverwrite)
+				sfd.OverwritePrompt = false;
+
+			do
+			{
+				if (sfd.ShowDialog() != DialogResult.OK)
+					return null;
+
+				if (allowOverwrite)
+					break;
+
+				if (!File.Exists(sfd.FileName))
+					break;
+
+				MessageBox.Show("Cannot overwrite an existing rpc definition file.", "The file alredy exists", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				sfd.FileName = string.Empty;
+			} while (true);
 
 			var asset = CreateEmptyAsset();
 			SaveAssetToFile(asset, sfd.FileName);
-			return sfd.FileName;
+			return asset;
 		}
 
 		public void CreateNewAsset()

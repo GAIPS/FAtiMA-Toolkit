@@ -25,7 +25,7 @@ namespace IntegratedAuthoringToolWF.TTSEngines
 				Stop();
 
 			_token = new CancellationTokenSource();
-			PlayAsync(onFinished, onVisemeHit, _token.Token).Start();
+			PlayAsync(onFinished, onVisemeHit, _token.Token);
 		}
 
 		public void Stop()

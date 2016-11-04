@@ -205,8 +205,7 @@ namespace IntegratedAuthoringToolWF
 		private void UpdateRateLabel()
 		{
 			var r = GetRate();
-			var t = (r*100).ToString(CultureInfo.InvariantCulture);
-			_rateTextBox.Text = t + "%";
+			_rateTextBox.Text = $"{r:0.###}x";
 		}
 
 		private void UpdatePitchLabel()
@@ -226,13 +225,13 @@ namespace IntegratedAuthoringToolWF
 		private void OnValidatedRateTextBox(object sender, EventArgs e)
 		{
 			var t = _rateTextBox.Text;
-			var m = Regex.Match(t, "^((?:\\d*(?:\\.|,))?\\d+)%?$");
+			var m = Regex.Match(t, "^((?:\\d*(?:\\.|,))?\\d+)x?$");
 			if (m.Success)
 			{
 				double d;
-				if (double.TryParse(m.Groups[1].Value.Replace(',', '.'), out d))
+				if (double.TryParse(m.Groups[1].Value.Replace('.', ','), out d))
 				{
-					var c = Clamp(d*10, _speachRateSlider.Minimum, _speachRateSlider.Maximum);
+					var c = Clamp(d*1000, _speachRateSlider.Minimum, _speachRateSlider.Maximum);
 					_speachRateSlider.Value = (int) Math.Round(c);
 				}
 			}

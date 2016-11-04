@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
+using RolePlayCharacter;
 
 namespace IntegratedAuthoringToolWF
 {
@@ -19,6 +21,9 @@ namespace IntegratedAuthoringToolWF
 		public MainForm()
 		{
 			InitializeComponent();
+
+			buttonEditCharacter.Enabled = false;
+			buttonRemoveCharacter.Enabled = false;
 		}
 
 		protected override void OnAssetDataLoaded(IntegratedAuthoringToolAsset asset)
@@ -26,6 +31,34 @@ namespace IntegratedAuthoringToolWF
 			textBoxScenarioName.Text = asset.ScenarioName;
 			_characterSources = new BindingListView<CharacterSourceDTO>(asset.GetAllCharacterSources().ToList());
 			dataGridViewCharacters.DataSource = _characterSources;
+		}
+
+		private void buttonCreateCharacter_Click(object sender, EventArgs e)
+		{
+			var asset = _rpcForm.CreateAndSaveEmptyAsset(false);
+			if (asset == null)
+				return;
+
+			var name = "RPC Character";
+			var options = CurrentAsset.GetAllCharacterSources().Select(c => c.Name).Where(n => n.StartsWith(name)).ToArray();
+			if (options.Length > 0)
+			{
+				var a = options.Select(o => Regex.Match(o, $"^{name}\\((\\d+)\\)$"))
+					.Where(m => m.Success)
+					.Select(m => int.Parse(m.Groups[1].Value)).ToArray();
+				int value = 1;
+				if (a.Length > 0)
+					value = a.Max() + 1;
+
+				name += $"({value})";
+			}
+			asset.CharacterName = name;
+			asset.SaveToFile();
+
+			CurrentAsset.AddCharacter(asset);
+			_characterSources.DataSource = CurrentAsset.GetAllCharacterSources().ToList();
+			_characterSources.Refresh();
+			SetModified();
 		}
 
 		private void buttonAddCharacter_Click(object sender, EventArgs e)
@@ -115,5 +148,12 @@ namespace IntegratedAuthoringToolWF
 		}
 
 		#endregion
+
+		private void dataGridViewCharacters_SelectionChanged(object sender, EventArgs e)
+		{
+			var active = dataGridViewCharacters.SelectedRows.Count > 0;
+			buttonEditCharacter.Enabled = active;
+			buttonRemoveCharacter.Enabled = active;
+		}
 	}
 }
