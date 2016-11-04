@@ -37,8 +37,53 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\Components\Utilities\**\*.cs" Exclude="..\..\Components\Utilities\bin\**;..\..\Components\Utilities\obj\**;">
-      <Link>%(RecursiveDir)%(FileName)</Link>
+    <Compile Include="..\..\Components\Utilities\DirtyValue.cs">
+      <Link>DirtyValue</Link>
+    </Compile>
+    <Compile Include="..\..\Components\Utilities\Json\JsonArray.cs">
+      <Link>Json\JsonArray</Link>
+    </Compile>
+    <Compile Include="..\..\Components\Utilities\Json\JsonBool.cs">
+      <Link>Json\JsonBool</Link>
+    </Compile>
+    <Compile Include="..\..\Components\Utilities\Json\JsonNumber.cs">
+      <Link>Json\JsonNumber</Link>
+    </Compile>
+    <Compile Include="..\..\Components\Utilities\Json\JsonObject.cs">
+      <Link>Json\JsonObject</Link>
+    </Compile>
+    <Compile Include="..\..\Components\Utilities\Json\JsonParser.cs">
+      <Link>Json\JsonParser</Link>
+    </Compile>
+    <Compile Include="..\..\Components\Utilities\Json\JsonString.cs">
+      <Link>Json\JsonString</Link>
+    </Compile>
+    <Compile Include="..\..\Components\Utilities\Json\JsonToken.cs">
+      <Link>Json\JsonToken</Link>
+    </Compile>
+    <Compile Include="..\..\Components\Utilities\LinqExtentions.cs">
+      <Link>LinqExtentions</Link>
+    </Compile>
+    <Compile Include="..\..\Components\Utilities\ObjectPool.cs">
+      <Link>ObjectPool</Link>
+    </Compile>
+    <Compile Include="..\..\Components\Utilities\OneToOneDictionary.cs">
+      <Link>OneToOneDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Components\Utilities\PortableFixes.cs">
+      <Link>PortableFixes</Link>
+    </Compile>
+    <Compile Include="..\..\Components\Utilities\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo</Link>
+    </Compile>
+    <Compile Include="..\..\Components\Utilities\Tuples.cs">
+      <Link>Tuples</Link>
+    </Compile>
+    <Compile Include="..\..\Components\Utilities\TypeUtilities.cs">
+      <Link>TypeUtilities</Link>
+    </Compile>
+    <Compile Include="..\..\Components\Utilities\Util.cs">
+      <Link>Util</Link>
     </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

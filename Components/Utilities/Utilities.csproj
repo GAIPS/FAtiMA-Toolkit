@@ -46,7 +46,7 @@
     <Compile Include="ObjectPool.cs" />
     <Compile Include="PortableFixes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StrongLinkDictionary.cs" />
+    <Compile Include="OneToOneDictionary.cs" />
     <Compile Include="Tuples.cs" />
     <Compile Include="TypeUtilities.cs" />
     <Compile Include="Util.cs" />

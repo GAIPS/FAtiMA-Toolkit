@@ -1,4 +1,6 @@
-﻿namespace Utilities
+﻿using System;
+
+namespace Utilities
 {
 	/// <summary>
 	/// Generic Object Pool.
@@ -42,6 +44,9 @@
 			node.Value = null;
 			PoolNode.Recycle(node);
 
+			if(value==null)
+				throw new Exception("Should not happen");
+
 			return value;
 		}
 
@@ -51,6 +56,9 @@
 		/// <param name="value"></param>
 		public static void Recycle(T value)
 		{
+			if(value==null)
+				throw new NotImplementedException();
+
 			PoolNode node = PoolNode.GetNewNode();
 			node.Value = value;
 			node.Next = _root;

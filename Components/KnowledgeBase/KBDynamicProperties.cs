@@ -31,25 +31,28 @@ namespace KnowledgeBase
 
 			public IEnumerable<Pair<Name, SubstitutionSet>> Evaluate(IQueryable kb, Name perspective, SubstitutionSet args2, IEnumerable<SubstitutionSet> constraints)
 			{
-				var dic = ObjectPool<Dictionary<Name, Name>>.GetObject();
+				//var dic = ObjectPool<Dictionary<Name, Name>>.GetObject();
 				var args = ObjectPool<List<Name>>.GetObject();
+
 				try
 				{
-					foreach(var s in args2)
-					{
-						var p = s.Variable.RemoveBoundedVariables(TMP_MARKER);
-						dic[p] = s.Value;
-						if (!s.Value.IsVariable)
-							continue;
-						dic[s.Value] = p;
-					}
-					args.AddRange(_parameters.Select(p =>
-					{
-						Name v;
-						if (dic.TryGetValue(p, out v))
-							return v;
-						return Name.UNIVERSAL_SYMBOL;
-					}));
+					//foreach(var s in args2)
+					//{
+					//	var p = s.Variable.RemoveBoundedVariables(TMP_MARKER);
+					//	dic[p] = s.Value;
+					//	if (!s.Value.IsVariable)
+					//		continue;
+					//	dic[s.Value] = p;
+					//}
+
+					args.AddRange(_parameters.Select(p => args2[p]).Select(v => v == null ? Name.UNIVERSAL_SYMBOL : v.RemoveBoundedVariables(TMP_MARKER)));
+					//args.AddRange(_parameters.Select(p =>
+					//{
+					//	Name v;
+					//	if (dic.TryGetValue(p, out v))
+					//		return v;
+					//	return Name.UNIVERSAL_SYMBOL;
+					//}));
 					return _surogate(kb, perspective, args, constraints);
 				}
 				finally
@@ -57,8 +60,8 @@ namespace KnowledgeBase
 					args.Clear();
 					ObjectPool<List<Name>>.Recycle(args);
 
-					dic.Clear();
-					ObjectPool<Dictionary<Name, Name>>.Recycle(dic);
+					//dic.Clear();
+					//ObjectPool<Dictionary<Name, Name>>.Recycle(dic);
 				}
 			}
 		}

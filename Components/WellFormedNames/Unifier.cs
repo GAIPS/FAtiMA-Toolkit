@@ -156,7 +156,7 @@ namespace WellFormedNames
 				{
 					//Case 2: x = x, where x is a variable, ignore it. otherwise add the substitution
 					if (!(p.Item1 == p.Item2))
-						candidate = new Substitution(p.Item1, p.Item2); //TODO in this case, it should return two possible substitutions
+						candidate = new Substitution(p.Item1, p.Item2);
 				}
 				else //isVar1 == isVar2 == false
 				{

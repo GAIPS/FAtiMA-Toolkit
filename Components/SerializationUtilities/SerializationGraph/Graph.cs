@@ -25,7 +25,7 @@ namespace SerializationUtilities.SerializationGraph
 		}
 
 		private int m_idCounter = 0;
-		private StrongLinkDictionary<object, int> m_links = new StrongLinkDictionary<object, int>(new ReferenceComparer<object>(), null);
+		private OneToOneDictionary<object, int> m_links = new OneToOneDictionary<object, int>(new ReferenceComparer<object>(), null);
 		private SortedDictionary<int, ObjectGraphNode> m_refs = new SortedDictionary<int, ObjectGraphNode>();
 #if !PORTABLE
 		private HashSet<IDeserializationCallback> m_deserializeCallbackRegist = new HashSet<IDeserializationCallback>();

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Utilities;
 
 namespace WellFormedNames
 {
@@ -11,12 +13,14 @@ namespace WellFormedNames
 
 			public SimpleImplementation()
 			{
-				m_substitutions = new Dictionary<Name, Name>();
+				m_substitutions = ObjectPool<Dictionary<Name, Name>>.GetObject();
 			}
 
-			private SimpleImplementation(Dictionary<Name,Name> other)
+			~SimpleImplementation()
 			{
-				m_substitutions = new Dictionary<Name, Name>(other);
+				m_substitutions.Clear();
+				ObjectPool<Dictionary<Name, Name>>.Recycle(m_substitutions);
+				GC.ReRegisterForFinalize(m_substitutions);
 			}
 
 			public Name GetValue(Name variable)
@@ -37,12 +41,20 @@ namespace WellFormedNames
 
 			public void AddSubstitution(Substitution s)
 			{
-				m_substitutions.Add(s.Variable, s.Value);
+				AddSubs(s.Variable,s.Value);
+			}
+
+			private void AddSubs(Name variable, Name value)
+			{
+				m_substitutions.Add(variable,value);
 			}
 
 			public ISetImplementation Clone()
 			{
-				return new SimpleImplementation(m_substitutions);
+				var s = new SimpleImplementation();
+				foreach (var pair in m_substitutions)
+					s.AddSubs(pair.Key, pair.Value);
+				return s;
 			}
 
 			public bool TestConflict(Substitution subs, SubstitutionSet set, out bool canAdd)
@@ -68,6 +80,17 @@ namespace WellFormedNames
 				if (m_substitutions.Count > 0)
 					return m_substitutions.Select(e => new Substitution(e.Key, e.Value.MakeGround(other))).Distinct();
 				return Enumerable.Empty<Substitution>();
+			}
+
+			public int CalculateHashCode(int emptyHashCode, SubstitutionSet subs)
+			{
+				var set = GetGroundedSubstitutions(subs);
+				if (!set.Any())
+					return emptyHashCode;
+
+				var hashs = set.Select(s => s.GetHashCode());
+				var h = hashs.Aggregate((v1, v2) => v1 ^ v2);
+				return emptyHashCode ^ h;
 			}
 		}
 	}

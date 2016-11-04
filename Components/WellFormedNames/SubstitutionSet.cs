@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Utilities;
 #if PORTABLE
@@ -34,9 +33,11 @@ namespace WellFormedNames
 
 			IEnumerator<Substitution> GetEnumerator();
 			IEnumerable<Substitution> GetGroundedSubstitutions(SubstitutionSet other);
+
+			int CalculateHashCode(int emptyHash, SubstitutionSet set);
 		}
 
-		private ISetImplementation m_impl = new SimpleImplementation();
+		private ISetImplementation m_impl = new ConstraintSubstitutionSetImplementation();//new SimpleImplementation();
 
 		/// <summary>
 		/// Creates an empty SubstitutionSet
@@ -56,9 +57,10 @@ namespace WellFormedNames
 
 		public SubstitutionSet(IEnumerable<Substitution> substitutions)
 		{
-			if(!AddSubstitutions(substitutions))
+			if(!internal_add(substitutions))
 				throw new ArgumentException("The given substitutions will generate a conflict.", nameof(substitutions));
 		}
+
 		/// @}
 
 		/// <summary>
@@ -148,23 +150,26 @@ namespace WellFormedNames
 		public bool AddSubstitutions(IEnumerable<Substitution> substitutions)
 		{
 			var clone = m_impl.Clone();
-			bool rollback = false;
+			var pass = internal_add(substitutions);
+			if (!pass)
+				m_impl = clone;
+			return pass;
+		}
+
+		private bool internal_add(IEnumerable<Substitution> substitutions)
+		{
 			foreach (var s in substitutions)
 			{
 				bool canAdd;
 				if (m_impl.TestConflict(s, this, out canAdd))
 				{
-					rollback = true;
-					break;
+					return false;
 				}
 
-				if(canAdd)
+				if (canAdd)
 					m_impl.AddSubstitution(s);
 			}
-
-			if (rollback)
-				m_impl = clone;
-			return !rollback;
+			return true;
 		}
 
 		/// <summary>
@@ -222,13 +227,7 @@ namespace WellFormedNames
 			//and two empty sets are equal.
 			const int emptyHashCode = 0x0fc43f9;
 
-			var set = m_impl.GetGroundedSubstitutions(this);
-			if (!set.Any())
-				return emptyHashCode;
-
-			var hashs = set.Select(s => s.GetHashCode());
-			var h = hashs.Aggregate((v1, v2) => v1 ^ v2);
-			return emptyHashCode ^ h;
+			return m_impl.CalculateHashCode(emptyHashCode,this);
 		}
 
 		public override bool Equals(object obj)

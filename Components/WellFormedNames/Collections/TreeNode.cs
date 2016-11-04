@@ -577,7 +577,8 @@ namespace WellFormedNames.Collections
 				else
 				{
 					//Find bindings
-					foreach (var pair in GetNextLevel())
+					var nextLevel = GetNextLevel();
+					foreach (var pair in nextLevel)
 					{
 						SubstitutionSet set = binding;
 						if (!pair.Item1.IsVariable || pair.Item1 != term)

@@ -359,7 +359,7 @@ namespace Tests.WellFormedNames
 						Tuples.Create(32,new []{"[x]/long","[y]/long"})
 					)
 				);
-
+				
 				yield return new TestCaseData(baseInput, (Name)"jump([x],[y])", 
 					BuildSet(
 						"[y]/Short"
@@ -368,7 +368,9 @@ namespace Tests.WellFormedNames
 						Tuples.Create(21, new[] { "[x]/null", "[y]/short" }),
 						Tuples.Create(24, new[] { "[x]/short", "[y]/short" }),
 						Tuples.Create(25, new[] { "[x]/medium", "[y]/short" }),
-						Tuples.Create(26, new[] { "[x]/long", "[y]/short" })
+						Tuples.Create(26, new[] { "[x]/long", "[y]/short" }),
+						Tuples.Create(16, new[] { "[y]/Short", "[x]/null", "[y]/[height]" }),
+						Tuples.Create(17, new[] { "[y]/Short", "[x]/[width]", "[y]/[height]" })
 					)
 				);
 			}
@@ -405,7 +407,7 @@ namespace Tests.WellFormedNames
 			Assert.False(dict.MatchAll(expression).Any(), string.Format("Has able to find matches for {0}",expression));
 		}
 		*/
-		[TestCaseSource(typeof(TestFactory), "TestUnifyCases_Valid")]
+		[TestCaseSource(typeof(TestFactory), nameof(TestFactory.TestUnifyCases_Valid))]
 		public void NameDictionary_Valid_Unify(NameSearchTree<int> dict, Name expression, SubstitutionSet bindings,
 			IEnumerable<Pair<int, SubstitutionSet>> expectedResults)
 		{

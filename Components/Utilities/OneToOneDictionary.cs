@@ -4,14 +4,13 @@ using System.Linq;
 
 namespace Utilities
 {
-	//TODO find a better name for this class
 	//TODO find a better implementation
-	public class StrongLinkDictionary<TKey,TValue> : IDictionary<TKey,TValue>
+	public class OneToOneDictionary<TKey,TValue> : IDictionary<TKey,TValue>
 	{
 		private Dictionary<TKey, TValue> m_link1;
 		private Dictionary<TValue, TKey> m_link2;
 
-		public StrongLinkDictionary(IEqualityComparer<TKey> keyComparer, IEqualityComparer<TValue> valueComparer)
+		public OneToOneDictionary(IEqualityComparer<TKey> keyComparer, IEqualityComparer<TValue> valueComparer)
 		{
 			if(keyComparer!=null)
 				m_link1 = new Dictionary<TKey, TValue>(keyComparer);
