@@ -113,19 +113,18 @@ namespace KnowledgeBase
 
 		//Count
 		private static readonly Name COUNT_TEMPLATE_NEW = Name.BuildName("Count");
-		private static IEnumerable<Pair<Name, SubstitutionSet>> CountPropertyCalculator_new(IQueryable kb,
-			IEnumerable<SubstitutionSet> constraints, Name perspective, Name x)
+		private static IEnumerable<DynamicPropertyResult> CountPropertyCalculator_new(IQueryContext context, Name x)
 		{
-			var set = kb.AskPossibleProperties(x, perspective, constraints).ToList();
+			var set = context.AskPossibleProperties(x).ToList();
 			Name count = Name.BuildName(set.Count);
 			IEnumerable<SubstitutionSet> sets;
 			if (set.Count == 0)
-				sets = constraints;
+				sets = context.Constraints;
 			else
 				sets = set.SelectMany(s => s.Item2).Distinct();
 
 			foreach (var d in sets)
-				yield return Tuples.Create(count, d);
+				yield return new DynamicPropertyResult(count, d);
 		}
 
 #endregion

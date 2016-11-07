@@ -57,11 +57,12 @@ namespace Utilities
 		public static void Recycle(T value)
 		{
 			if(value==null)
-				throw new NotImplementedException();
+				return;
 
 			PoolNode node = PoolNode.GetNewNode();
 			node.Value = value;
 			node.Next = _root;
+			node.Next = null;
 			_root = node;
 		}
 
@@ -78,6 +79,18 @@ namespace Utilities
 				it = it.Next;
 			}
 			return count;
+		}
+
+		public static void DropPool()
+		{
+			while (_root!=null)
+			{
+				var node = _root;
+				_root = node.Next;
+				node.Value = null;
+				node.Next = null;
+				PoolNode.Recycle(node);
+			}
 		}
 	}
 

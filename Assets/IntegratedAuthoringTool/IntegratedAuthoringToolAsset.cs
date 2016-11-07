@@ -5,6 +5,7 @@ using AssetPackage;
 using GAIPS.Rage;
 using SerializationUtilities;
 using IntegratedAuthoringTool.DTOs;
+using KnowledgeBase;
 using RolePlayCharacter;
 using Utilities;
 using WellFormedNames;
@@ -307,14 +308,13 @@ namespace IntegratedAuthoringTool
 		}
 
 	    private static readonly Name VALID_DIALOGUE_PROPERTY_TEMPLATE = (Name)"ValidDialogue";
-		private IEnumerable<Pair<Name, SubstitutionSet>> ValidDialogPropertyCalculator(IQueryable kb, IEnumerable<SubstitutionSet> constraints, Name perspective,
-			Name currentState, Name nextState, Name meaning, Name style)
+		private IEnumerable<DynamicPropertyResult> ValidDialogPropertyCalculator(IQueryContext context, Name currentState, Name nextState, Name meaning, Name style)
 		{
-			if (!perspective.Match(Name.SELF_SYMBOL))
-				return Enumerable.Empty<Pair<Name, SubstitutionSet>>();
+			if (!context.Perspective.Match(Name.SELF_SYMBOL))
+				return Enumerable.Empty<DynamicPropertyResult>();
 
 			var key = DialogStateAction.BuildSpeakAction(currentState, nextState, meaning, style);
-			return constraints.SelectMany(c => m_agentDialogues.GetAllDialogsForKey(key,c)).Select(p => Tuples.Create(Name.BuildName(true), p.Item2));
+			return context.Constraints.SelectMany(c => m_agentDialogues.GetAllDialogsForKey(key,c)).Select(p => new DynamicPropertyResult(Name.BuildName(true), p.Item2));
 		}
 
 		#endregion

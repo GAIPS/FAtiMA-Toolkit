@@ -187,29 +187,27 @@ namespace AutobiographicMemory
 
 		//Event
 		private static readonly Name EVENT_ID_PROPERTY_NAME = Name.BuildName("EventId");
-		private IEnumerable<Pair<Name, SubstitutionSet>> EventIdPropertyCalculator(IQueryable kb, IEnumerable<SubstitutionSet> constraints, Name perspective, Name type, Name subject, Name def, Name target)
+		private IEnumerable<DynamicPropertyResult> EventIdPropertyCalculator(IQueryContext context, Name type, Name subject, Name def, Name target)
 		{
-			List<Pair<Name, SubstitutionSet>> results = new List<Pair<Name, SubstitutionSet>>();
-			if (!perspective.Match(Name.SELF_SYMBOL))
-				return results;
+			if (!context.Perspective.Match(Name.SELF_SYMBOL))
+				yield break;
 			
 			var key = Name.BuildName(EVT_NAME, type, subject, def, target);
-			foreach (var c in constraints)
+			foreach (var c in context.Constraints)
 			{
 				foreach (var pair in m_typeIndexes.Unify(key, c))
 				{
 					foreach (var id in pair.Item1)
-						results.Add(Tuples.Create(Name.BuildName(id), new SubstitutionSet(pair.Item2)));
+						yield return new DynamicPropertyResult(Name.BuildName(id), new SubstitutionSet(pair.Item2));
 				}
 			}
-			return results;
 		}
 
 		//EventElapseTime
 		private static readonly Name EVENT_ELAPSED_TIME_PROPERTY_NAME = Name.BuildName("EventElapsedTime");
-		private IEnumerable<Pair<Name, SubstitutionSet>> EventAgePropertyCalculator(IQueryable kb, IEnumerable<SubstitutionSet> constraints, Name perspective, Name id)
+		private IEnumerable<DynamicPropertyResult> EventAgePropertyCalculator(IQueryContext context, Name id)
 		{
-			if(!perspective.Match(Name.SELF_SYMBOL))
+			if(!context.Perspective.Match(Name.SELF_SYMBOL))
 				yield break;
 
 			if (id.IsVariable)
@@ -217,7 +215,7 @@ namespace AutobiographicMemory
 				foreach (var record in m_registry.Values)
 				{
 					var idSub = new Substitution(id, Name.BuildName(record.Id));
-					foreach (var c in constraints)
+					foreach (var c in context.Constraints)
 					{
 						if (c.Conflicts(idSub))
 							continue;
@@ -226,13 +224,13 @@ namespace AutobiographicMemory
 						newSet.AddSubstitution(idSub);
 
 						var value = Tick - record.Timestamp;
-						yield return Tuples.Create(Name.BuildName(value), newSet);
+						yield return new DynamicPropertyResult(Name.BuildName(value), newSet);
 					}
 				}
 				yield break;
 			}
 
-			foreach (var pair in kb.AskPossibleProperties(id,perspective,constraints))
+			foreach (var pair in context.AskPossibleProperties(id))
 			{
 				uint idValue;
 				if(!pair.Item1.TryConvertToValue(out idValue))
@@ -241,15 +239,15 @@ namespace AutobiographicMemory
 				var record = m_registry[idValue];
 				var value = (Tick - record.Timestamp);
 				foreach (var c in pair.Item2)
-					yield return Tuples.Create(Name.BuildName(value), c);
+					yield return new DynamicPropertyResult(Name.BuildName(value), c);
 			}
 		}
 
 		//LastEvent
 		private static readonly Name LAST_EVENT_ID_PROPERTY_NAME = Name.BuildName("LastEventId");
-		private IEnumerable<Pair<Name, SubstitutionSet>> LastEventIdPropertyCalculator(IQueryable kb, IEnumerable<SubstitutionSet> constraints, Name perspective, Name type, Name subject, Name def, Name target)
+		private IEnumerable<DynamicPropertyResult> LastEventIdPropertyCalculator(IQueryContext context, Name type, Name subject, Name def, Name target)
 		{
-			if(!perspective.Match(Name.SELF_SYMBOL))
+			if(!context.Perspective.Match(Name.SELF_SYMBOL))
 				yield break;
 
 			var key = Name.BuildName(EVT_NAME, type, subject, def, target);
@@ -269,7 +267,7 @@ namespace AutobiographicMemory
 			{
 				IEnumerable<Substitution> set;
 				if (Unifier.Unify(le.EventName, key, out set))
-					yield return Tuples.Create(Name.BuildName(le.Id), new SubstitutionSet(set));
+					yield return new DynamicPropertyResult(Name.BuildName(le.Id), new SubstitutionSet(set));
 			}
 		}
 

@@ -14,13 +14,32 @@ namespace KnowledgeBase
 	{
 		private const string TMP_MARKER = "_arg";
 
-		private delegate IEnumerable<Pair<Name, SubstitutionSet>> DynamicPropertyCalculator(IQueryable kb, Name perspective, IList<Name> args, IEnumerable<SubstitutionSet> constraints);
+		private delegate IEnumerable<DynamicPropertyResult> DynamicPropertyCalculator(IQueryContext context, IList<Name> args);
 
 		private sealed class DynamicKnowledgeEntry
 		{
 			private readonly DynamicPropertyCalculator _surogate;
 			private readonly Name[] _parameters;
 			public readonly string description;
+
+			private struct QueryContext : IQueryContext
+			{
+				public IQueryable Queryable { get; }
+				public IEnumerable<SubstitutionSet> Constraints { get; }
+				public Name Perspective { get; }
+
+				public QueryContext(IQueryable kb, IEnumerable<SubstitutionSet> contraints, Name perspective)
+				{
+					Queryable = kb;
+					Constraints = contraints;
+					Perspective = perspective;
+				}
+
+				public IEnumerable<BeliefPair> AskPossibleProperties(Name property)
+				{
+					return Queryable.AskPossibleProperties(property, Perspective, Constraints);
+				}
+			}
 
 			public DynamicKnowledgeEntry(DynamicPropertyCalculator surogate, Name[] parameters, string description)
 			{
@@ -29,7 +48,7 @@ namespace KnowledgeBase
 				this.description = description;
 			}
 
-			public IEnumerable<Pair<Name, SubstitutionSet>> Evaluate(IQueryable kb, Name perspective, SubstitutionSet args2, IEnumerable<SubstitutionSet> constraints)
+			public IEnumerable<DynamicPropertyResult> Evaluate(IQueryable kb, Name perspective, SubstitutionSet args2, IEnumerable<SubstitutionSet> constraints)
 			{
 				//var dic = ObjectPool<Dictionary<Name, Name>>.GetObject();
 				var args = ObjectPool<List<Name>>.GetObject();
@@ -53,7 +72,8 @@ namespace KnowledgeBase
 					//		return v;
 					//	return Name.UNIVERSAL_SYMBOL;
 					//}));
-					return _surogate(kb, perspective, args, constraints);
+
+					return _surogate(new QueryContext(kb, constraints, perspective),args);
 				}
 				finally
 				{
@@ -74,7 +94,7 @@ namespace KnowledgeBase
 				throw new ArgumentNullException(nameof(surrogate));
 
 			internal_RegistDynamicProperty(propertyName, description, surrogate.GetMethodInfo(),
-				(kb, perspective, args, constraints) => surrogate(kb,constraints,perspective,args[0]));
+				(context,args) => surrogate(context,args[0]));
 		}
 
 		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T2 surrogate, string description = null)
@@ -83,7 +103,7 @@ namespace KnowledgeBase
 				throw new ArgumentNullException(nameof(surrogate));
 
 			internal_RegistDynamicProperty(propertyName, description, surrogate.GetMethodInfo(),
-				(kb, perspective, args, constraints) => surrogate(kb, constraints, perspective, args[0],args[1]));
+				(context,args) => surrogate(context, args[0],args[1]));
 		}
 
 		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T3 surrogate, string description = null)
@@ -92,7 +112,7 @@ namespace KnowledgeBase
 				throw new ArgumentNullException(nameof(surrogate));
 
 			internal_RegistDynamicProperty(propertyName, description, surrogate.GetMethodInfo(),
-				(kb, perspective, args, constraints) => surrogate(kb, constraints, perspective, args[0], args[1],args[2]));
+				(context,args) => surrogate(context, args[0], args[1],args[2]));
 		}
 
 		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T4 surrogate, string description = null)
@@ -101,7 +121,7 @@ namespace KnowledgeBase
 				throw new ArgumentNullException(nameof(surrogate));
 
 			internal_RegistDynamicProperty(propertyName, description, surrogate.GetMethodInfo(),
-				(kb, perspective, args, constraints) => surrogate(kb, constraints, perspective, args[0], args[1], args[2], args[3]));
+				(context, args) => surrogate(context, args[0], args[1], args[2], args[3]));
 		}
 
 		#endregion
@@ -112,7 +132,7 @@ namespace KnowledgeBase
 				throw new ArgumentException("The property name must be a primitive symbol.", nameof(propertyName));
 
 			var p = surogate.GetParameters();
-			var propertyParameters = p.Skip(3).Select(p2 => (Name) $"[{p2.Name}]").ToArray();
+			var propertyParameters = p.Skip(1).Select(p2 => (Name) $"[{p2.Name}]").ToArray();
 			var template = Name.BuildName(propertyParameters.Prepend(propertyName));
 			
 			var r = m_dynamicProperties.Unify(template).FirstOrDefault();
@@ -149,7 +169,7 @@ namespace KnowledgeBase
 
 			var results = d.SelectMany(p => p.Item1.Evaluate(this, perspective, p.Item2, constraints).ToList());
 
-			foreach (var g in results.GroupBy(p => p.Item1, p => p.Item2))
+			foreach (var g in results.GroupBy(p => p.Value, p => p.Constraints))
 			{
 				yield return Tuples.Create(g.Key, g.Distinct());
 			}

@@ -4,6 +4,7 @@ using System.Linq;
 using ActionLibrary;
 using EmotionalAppraisal;
 using GAIPS.Rage;
+using KnowledgeBase;
 using SerializationUtilities;
 using SocialImportance.DTOs;
 using Utilities;
@@ -396,13 +397,13 @@ namespace SocialImportance
 		#region Dynamic Properties
 
 		private static readonly Name SI_DYNAMIC_PROPERTY_NAME = Name.BuildName("SI");
-		private IEnumerable<Pair<Name, SubstitutionSet>> SIPropertyCalculator(IQueryable kb, IEnumerable<SubstitutionSet> constraints, Name perspective, Name target)
+		private IEnumerable<DynamicPropertyResult> SIPropertyCalculator(IQueryContext context, Name target)
 		{
-			foreach (var t in kb.AskPossibleProperties(target,perspective,constraints))
+			foreach (var t in context.AskPossibleProperties(target))
 			{
-				var si = internal_GetSocialImportance(t.Item1, perspective);
+				var si = internal_GetSocialImportance(t.Item1, context.Perspective);
 				foreach (var s in t.Item2)
-					yield return Tuples.Create(Name.BuildName(si), s);
+					yield return new DynamicPropertyResult(Name.BuildName(si), s);
 			}
 		}
 

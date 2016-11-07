@@ -329,7 +329,7 @@ namespace Tests.KnowledgeBase
 
 		#region  Dynamic Property Tests
 
-		private static IEnumerable<Pair<Name, SubstitutionSet>> DummyCount(IQueryable q, IEnumerable<SubstitutionSet> c, Name perspective, Name x)
+		private static IEnumerable<DynamicPropertyResult> DummyCount(IQueryContext context, Name x)
 		{
 			throw new NotImplementedException();
 		}
@@ -378,16 +378,16 @@ namespace Tests.KnowledgeBase
 			});
 		}
 
-		private static IEnumerable<Pair<Name, SubstitutionSet>> Test_Concat_Dynamic_Property(IQueryable q, IEnumerable<SubstitutionSet> c, Name p, Name x, Name y)
+		private static IEnumerable<DynamicPropertyResult> Test_Concat_Dynamic_Property(IQueryContext context, Name x, Name y)
 		{
-			foreach (var v1 in q.AskPossibleProperties(x, p, c))
+			foreach (var v1 in context.AskPossibleProperties(x))
 			{
-				foreach (var v2 in q.AskPossibleProperties(y, p, v1.Item2))
+				foreach (var v2 in context.AskPossibleProperties(y))
 				{
 					var c2 = Name.BuildName((Name)"Con", v1.Item1, v2.Item1);
 					foreach (var s in v2.Item2)
 					{
-						yield return Tuples.Create(c2, s);
+						yield return new DynamicPropertyResult(c2, s);
 					}
 				}
 			}
