@@ -36,6 +36,9 @@
   <PropertyGroup>
     <StartupObject>IntegratedAuthoringToolWF.Program</StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\iat-icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="AddOrEditDialogueActionForm.cs">
       <SubType>Form</SubType>
@@ -184,6 +187,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\iat-icon.ico" />
     <Content Include="Resources\Visemes_img\0-silence.png" />
     <Content Include="Resources\Visemes_img\1+11-AxAhUh.png" />
     <Content Include="Resources\Visemes_img\12-H.png" />
