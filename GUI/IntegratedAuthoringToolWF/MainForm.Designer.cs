@@ -28,16 +28,17 @@
         /// </summary>
         private void InitializeComponent()
         {
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this.textBoxScenarioName = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
 			this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
 			this.dataGridViewCharacters = new System.Windows.Forms.DataGridView();
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+			this.buttonCreateCharacter = new System.Windows.Forms.Button();
 			this.buttonAddCharacter = new System.Windows.Forms.Button();
 			this.buttonEditCharacter = new System.Windows.Forms.Button();
 			this.buttonRemoveCharacter = new System.Windows.Forms.Button();
-			this.buttonCreateCharacter = new System.Windows.Forms.Button();
 			this.groupBox1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridViewCharacters)).BeginInit();
@@ -123,6 +124,16 @@
 			this.flowLayoutPanel1.Size = new System.Drawing.Size(586, 29);
 			this.flowLayoutPanel1.TabIndex = 14;
 			// 
+			// buttonCreateCharacter
+			// 
+			this.buttonCreateCharacter.Location = new System.Drawing.Point(3, 3);
+			this.buttonCreateCharacter.Name = "buttonCreateCharacter";
+			this.buttonCreateCharacter.Size = new System.Drawing.Size(70, 23);
+			this.buttonCreateCharacter.TabIndex = 15;
+			this.buttonCreateCharacter.Text = "Create";
+			this.buttonCreateCharacter.UseVisualStyleBackColor = true;
+			this.buttonCreateCharacter.Click += new System.EventHandler(this.buttonCreateCharacter_Click);
+			// 
 			// buttonAddCharacter
 			// 
 			this.buttonAddCharacter.Location = new System.Drawing.Point(79, 3);
@@ -153,16 +164,6 @@
 			this.buttonRemoveCharacter.UseVisualStyleBackColor = true;
 			this.buttonRemoveCharacter.Click += new System.EventHandler(this.buttonRemoveCharacter_Click);
 			// 
-			// buttonCreateCharacter
-			// 
-			this.buttonCreateCharacter.Location = new System.Drawing.Point(3, 3);
-			this.buttonCreateCharacter.Name = "buttonCreateCharacter";
-			this.buttonCreateCharacter.Size = new System.Drawing.Size(70, 23);
-			this.buttonCreateCharacter.TabIndex = 15;
-			this.buttonCreateCharacter.Text = "Create";
-			this.buttonCreateCharacter.UseVisualStyleBackColor = true;
-			this.buttonCreateCharacter.Click += new System.EventHandler(this.buttonCreateCharacter_Click);
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -172,6 +173,7 @@
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.textBoxScenarioName);
 			this.EditorName = "Integrated Authoring Tool";
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "MainForm";
 			this.Text = "Integrated Authoring Tool";
 			this.Controls.SetChildIndex(this.textBoxScenarioName, 0);
