@@ -362,7 +362,8 @@ namespace EmotionalAppraisal
 		/// <param name="eventNames">A set of string representation of the events to appraise</param>
 		public void AppraiseEvents(IEnumerable<string> eventNames)
 		{
-			AppraiseEvents(eventNames.Select(Name.BuildName));
+
+            AppraiseEvents(eventNames.Select(Name.BuildName));
 		}
 
 		public void AppraiseEvents(IEnumerable<Name> eventNames)
