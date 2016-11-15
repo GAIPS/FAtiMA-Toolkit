@@ -103,7 +103,7 @@ namespace GAIPS.Rage
 				return absolutePath;
 
 			if (Path.HasExtension(basePath))
-				basePath = Path.GetDirectoryName(basePath);
+				basePath = PathUtilities.GetDirectoryName(basePath);
 
 			return PathUtilities.RelativePath(absolutePath, basePath);
 		}
@@ -111,7 +111,7 @@ namespace GAIPS.Rage
 		protected static string ToAbsolutePath(string basePath, string relativePath)
 		{
 			if (Path.HasExtension(basePath))
-				basePath = Path.GetDirectoryName(basePath);
+				basePath = PathUtilities.GetDirectoryName(basePath);
 
 			return PathUtilities.CleanCombine(basePath, relativePath);
 		}

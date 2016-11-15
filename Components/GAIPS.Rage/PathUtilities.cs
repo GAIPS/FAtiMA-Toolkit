@@ -11,6 +11,7 @@ namespace GAIPS.Rage
 	{
 		public const char DirectorySeparatorChar = '\\';
 		public const char AltDirectorySeparatorChar = '/';
+		public static readonly char[] ValidSeparatorCharacters = new[] {DirectorySeparatorChar, AltDirectorySeparatorChar};
 		////private static bool IsDirChar(char c)
 		//{
 		//	return c == System.IO.Path.DirectorySeparatorChar || c == System.IO.Path.AltDirectorySeparatorChar;
@@ -32,6 +33,18 @@ namespace GAIPS.Rage
 
 		//}
 
+		public static string GetDirectoryName(string path)
+		{
+			var index = path.LastIndexOfAny(ValidSeparatorCharacters);
+			if (index < 0)
+				return string.Empty;
+
+			var dir = path.Substring(0, index);
+			if (dir.Length == 2 && dir[1] == ':')
+				return string.Empty;
+			return dir;
+		}
+
 		public static string CleanCombine(string basePath, string relativePath)
 		{
 			var result = basePath;
@@ -42,7 +55,7 @@ namespace GAIPS.Rage
 					continue;
 
 				if (d == "..")
-					result = Path.GetDirectoryName(result);
+					result = GetDirectoryName(result);
 				else
 					result += DirectorySeparatorChar + d;
 			}

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ActionLibrary;
+using AssetManagerPackage;
+using AssetPackage;
 using AutobiographicMemory;
 using AutobiographicMemory.DTOs;
 using EmotionalAppraisal.DTOs;
@@ -228,8 +230,9 @@ namespace RolePlayCharacter
 			{
 				_emotionalDecisionMakingAsset = Loader(_emotionalDecisionMakingAssetSource, () => new EmotionalDecisionMakingAsset());
 			}
-			catch (Exception)
+			catch (Exception e)
 			{
+				AssetManager.Instance.Log(Severity.Critical, e.Message);
 				return $"Unable to load the Emotional Decision Making Asset at \"{EmotionalDecisionMakingSource}\". Check if the path is correct.";
 			}
 			_emotionalDecisionMakingAsset.RegisterEmotionalAppraisalAsset(_emotionalAppraisalAsset);
