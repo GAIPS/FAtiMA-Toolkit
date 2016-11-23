@@ -55,7 +55,7 @@ namespace IntegratedAuthoringToolWF
 			asset.CharacterName = name;
 			asset.SaveToFile();
 
-			CurrentAsset.AddCharacter(asset);
+			CurrentAsset.AddNewCharacterSource(new CharacterSourceDTO() {Name = name,Source = asset.AssetFilePath});
 			_characterSources.DataSource = CurrentAsset.GetAllCharacterSources().ToList();
 			_characterSources.Refresh();
 			SetModified();
@@ -67,7 +67,11 @@ namespace IntegratedAuthoringToolWF
 			if (rpc == null)
 				return;
 
-			CurrentAsset.AddCharacter(rpc);
+			CurrentAsset.AddNewCharacterSource(new CharacterSourceDTO()
+			{
+				Name = rpc.CharacterName,
+				Source = rpc.AssetFilePath
+			});
 			_characterSources.DataSource = CurrentAsset.GetAllCharacterSources().ToList();
 			_characterSources.Refresh();
 			SetModified();
