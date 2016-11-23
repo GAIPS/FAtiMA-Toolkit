@@ -149,6 +149,17 @@ namespace IntegratedAuthoringToolWF
 
 		#endregion
 
+		#region About
+
+		[MenuItem("About",Priority = int.MaxValue)]
+		private void ShowAbout()
+		{
+			var form = new AboutForm();
+			form.ShowDialog();
+		}
+
+		#endregion
+
 		private void dataGridViewCharacters_SelectionChanged(object sender, EventArgs e)
 		{
 			var active = dataGridViewCharacters.SelectedRows.Count > 0;

@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -10,6 +11,7 @@ using System.Xml;
 using GAIPS.AssetEditorTools;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
+using IntegratedAuthoringToolWF.Properties;
 using IntegratedAuthoringToolWF.TTSEngines;
 using IntegratedAuthoringToolWF.TTSEngines.L2F;
 using IntegratedAuthoringToolWF.TTSEngines.System;
@@ -116,70 +118,70 @@ namespace IntegratedAuthoringToolWF
 			switch (v)
 			{
 				case Viseme.Silence:
-					b = Resources.Resources.viseme_00;
+					b = Resources.viseme_00;
 					break;
 				case Viseme.AxAhUh:
-					b = Resources.Resources.viseme_01;
+					b = Resources.viseme_01;
 					break;
 				case Viseme.Aa:
-					b = Resources.Resources.viseme_02;
+					b = Resources.viseme_02;
 					break;
 				case Viseme.Ao:
-					b = Resources.Resources.viseme_03;
+					b = Resources.viseme_03;
 					break;
 				case Viseme.EyEhAe:
-					b = Resources.Resources.viseme_04;
+					b = Resources.viseme_04;
 					break;
 				case Viseme.Er:
-					b = Resources.Resources.viseme_05;
+					b = Resources.viseme_05;
 					break;
 				case Viseme.YIyIhIx:
-					b = Resources.Resources.viseme_06;
+					b = Resources.viseme_06;
 					break;
 				case Viseme.WUwU:
-					b = Resources.Resources.viseme_07;
+					b = Resources.viseme_07;
 					break;
 				case Viseme.Ow:
-					b = Resources.Resources.viseme_08;
+					b = Resources.viseme_08;
 					break;
 				case Viseme.Aw:
-					b = Resources.Resources.viseme_09;
+					b = Resources.viseme_09;
 					break;
 				case Viseme.Oy:
-					b = Resources.Resources.viseme_10;
+					b = Resources.viseme_10;
 					break;
 				case Viseme.Ay:
-					b = Resources.Resources.viseme_11;
+					b = Resources.viseme_11;
 					break;
 				case Viseme.H:
-					b = Resources.Resources.viseme_12;
+					b = Resources.viseme_12;
 					break;
 				case Viseme.R:
-					b = Resources.Resources.viseme_13;
+					b = Resources.viseme_13;
 					break;
 				case Viseme.L:
-					b = Resources.Resources.viseme_14;
+					b = Resources.viseme_14;
 					break;
 				case Viseme.SZTs:
-					b = Resources.Resources.viseme_15;
+					b = Resources.viseme_15;
 					break;
 				case Viseme.ShChJhZh:
-					b = Resources.Resources.viseme_16;
+					b = Resources.viseme_16;
 					break;
 				case Viseme.ThDh:
-					b = Resources.Resources.viseme_17;
+					b = Resources.viseme_17;
 					break;
 				case Viseme.FV:
-					b = Resources.Resources.viseme_18;
+					b = Resources.viseme_18;
 					break;
 				case Viseme.DTDxN:
-					b = Resources.Resources.viseme_19;
+					b = Resources.viseme_19;
 					break;
 				case Viseme.KGNg:
-					b = Resources.Resources.viseme_20;
+					b = Resources.viseme_20;
 					break;
 				case Viseme.PBM:
-					b = Resources.Resources.viseme_21;
+					b = Resources.viseme_21;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(v), v, null);
