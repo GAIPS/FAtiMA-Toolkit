@@ -9,6 +9,7 @@ using AssetManagerPackage;
 using AssetPackage;
 using AutobiographicMemory;
 using AutobiographicMemory.DTOs;
+//using ComeillFaut.DTOs;
 using EmotionalAppraisal.DTOs;
 using GAIPS.Rage;
 using KnowledgeBase;
@@ -16,6 +17,7 @@ using SerializationUtilities;
 using SocialImportance;
 using Utilities;
 using WellFormedNames;
+using CommeillFaut;
 
 namespace RolePlayCharacter
 {
@@ -27,6 +29,7 @@ namespace RolePlayCharacter
 	    private string _emotionalAppraisalAssetSource = null;
 		private string _emotionalDecisionMakingAssetSource = null;
 		private string _socialImportanceAssetSource = null;
+        private string _commeillFautAssetSource;
 
         private static IEnumerable<IAction> TakeBestActions(IEnumerable<IAction> enumerable)
         {
@@ -47,8 +50,10 @@ namespace RolePlayCharacter
 		private EmotionalDecisionMakingAsset _emotionalDecisionMakingAsset;
 		[NonSerialized]
 		private SocialImportanceAsset _socialImportanceAsset;
+       [NonSerialized]
+       private CommeillFautAsset _commeillFautAsset;
 
-	    private IAction _currentAction = null;
+        private IAction _currentAction = null;
 
 		#endregion
 
@@ -89,6 +94,12 @@ namespace RolePlayCharacter
 		{
 			get { return ToAbsolutePath(_socialImportanceAssetSource); }
 			set { _socialImportanceAssetSource = ToRelativePath(value); }
+		}
+
+
+        public string CommeillFautAssetSource {
+            get{ return ToAbsolutePath(_commeillFautAssetSource);}
+            set { _commeillFautAssetSource = ToRelativePath(value); }
 		}
 
 #region Emotional Appraisal Interface
@@ -145,15 +156,49 @@ namespace RolePlayCharacter
 			return _emotionalAppraisalAsset.GetBeliefValue(beliefName, perspective);
 		}
 
-		#endregion
+        #endregion
 
-		/// <summary>
-		/// Executes an iteration of the character's decision cycle.
-		/// </summary>
-		/// <param name="eventStrings">A list of new events that occurred since the last call to this method. Each event must be represented by a well formed name with the following format "EVENT([type], [subject], [param1], [param2])". 
-		/// For illustration purposes here are some examples: EVENT(Property-Change, John, CurrentRole(Customer), False) ; EVENT(Action-Finished, John, Open, Box)</param>
-		/// <returns>The action selected for execution or "null" otherwise</returns>
-		public IAction PerceptionActionLoop(IEnumerable<string> eventStrings)
+
+     
+   /*     #region  Comme il Faut
+
+        private List<SocialExchange> _socialExchanges;
+        private List<RolePlayCharacterAsset> _otherCharacters;
+        private RolePlayCharacterAsset me;
+
+        public void FindMe(RolePlayCharacterAsset m)
+        {
+            me = m;
+        }
+        public void AddSocialExchanges(List<SocialExchange> exchanges)
+        {
+            foreach (var ex in exchanges)
+            {
+                _socialExchanges.Add(ex);
+            }
+            
+        }
+
+        public void AddCharacters(List<RolePlayCharacterAsset> others)
+        {
+            foreach (var ex in others)
+            {
+                _otherCharacters.Add(ex);
+            }
+
+        }
+
+      
+
+        #endregion */
+
+        /// <summary>
+        /// Executes an iteration of the character's decision cycle.
+        /// </summary>
+        /// <param name="eventStrings">A list of new events that occurred since the last call to this method. Each event must be represented by a well formed name with the following format "EVENT([type], [subject], [param1], [param2])". 
+        /// For illustration purposes here are some examples: EVENT(Property-Change, John, CurrentRole(Customer), False) ; EVENT(Action-Finished, John, Open, Box)</param>
+        /// <returns>The action selected for execution or "null" otherwise</returns>
+        public IAction PerceptionActionLoop(IEnumerable<string> eventStrings)
 	    {
 			_socialImportanceAsset.InvalidateCachedSI();
 			_emotionalAppraisalAsset.AppraiseEvents(eventStrings);
@@ -211,7 +256,8 @@ namespace RolePlayCharacter
 		    _emotionalAppraisalAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _emotionalAppraisalAssetSource));
 			_emotionalDecisionMakingAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _emotionalDecisionMakingAssetSource));
 			_socialImportanceAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _socialImportanceAssetSource));
-	    }
+            _commeillFautAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _commeillFautAssetSource));
+        }
 
 	    protected override string OnAssetLoaded()
 		{
@@ -248,7 +294,19 @@ namespace RolePlayCharacter
 			}
 			_socialImportanceAsset.BindEmotionalAppraisalAsset(_emotionalAppraisalAsset);
 
-			return null;
+
+		    try
+		    {
+		        _commeillFautAsset = Loader(_commeillFautAssetSource, () => new CommeillFautAsset());
+
+            }
+            catch (Exception)
+            {
+                return $"Unable to load the Comme ill Faut Asset at \"{CommeillFautAssetSource}\". Check if the path is correct.";
+            }
+            
+
+            return null;
 		}
 
 	    private T Loader<T>(string path, Func<T> generateDefault) where  T: LoadableAsset<T>

@@ -27,14 +27,22 @@ namespace EmotionalDecisionMakingTutorial
 
             //create a reaction rule
             var reaction = new ReactionDTO {Action = "Kick", Priority = 0, Target = "Player"};
-            
+            var reaction2 = new ReactionDTO { Action = "Punch", Priority = 1, Target = "Player" };
+
             //add the reaction rule
             var id = edm.AddReaction(reaction);
+            var id2 = edm.AddReaction(reaction2);
+
             edm.AddReactionCondition(id, "Mood(SELF) = 0");
+
+
+            edm.AddReactionCondition(id2, "Mood(SELF) = 0");
+
 
             //the method decide will now trigger the previous reaction defined (since the default value of mood is 0) 
             var actions = edm.Decide();
-            Console.WriteLine("Decision: " + string.Concat(actions.Select(a => a.ToStartEventName((Name)"John"))));
+            Console.WriteLine("Decision: " + actions.ToList()[0].ToStartEventName((Name)"John"));
+            //Console.WriteLine("Decision: " + string.Concat(actions.Select(a => a.ToStartEventName((Name)"John"))));
 
             //this is how you can load the asset from a file
             edm = EmotionalDecisionMakingAsset.LoadFromFile("../../../Examples/EDMTest.edm");

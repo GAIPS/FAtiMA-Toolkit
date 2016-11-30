@@ -1,0 +1,13 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"BodyName": "Male",
+			"CharacterName": "John"
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}
