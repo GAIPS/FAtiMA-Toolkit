@@ -222,7 +222,10 @@ namespace GAIPS.AssetEditorTools
 				GetType().GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
 
 			var candidates = methods.Select(m => new {att = m.GetCustomAttribute<MenuItemAttribute>(true), method = m})
-				.Where(d => d.att != null);
+				.Where(d => d.att != null).ToArray();
+
+			if(candidates.Length<=0)
+				return;
 
 			var el = candidates.Select(c =>
 			{
@@ -278,22 +281,22 @@ namespace GAIPS.AssetEditorTools
 		{
 			var d2 = data.ToArray();
 
-			var d3 = d2.GroupBy(d => d.Item1.Length - index)
-				.ToLookup(g => g.Key > 1, g => (IEnumerable<Tuple<string[], Keys, int, MethodInfo>>) g);
-
-			var multi = d3[true].Any();
-			var single = d3[false].Any();
-
-			if (multi && single)
-				throw new Exception(
-					$"Single menu item found on the same menu path as a multi tool. \"{d3[false].SelectMany(d => d).First().Item1.Aggregate((s1, s2) => s1 + "/" + s2)}\"");
-
 			var group = d2.GroupBy(d => d.Item1[index]).OrderBy(g => g.Key);
 			foreach (var g in group)
 			{
 				ToolStripMenuItem e;
 				var priority = 0;
 				var validationCallbacks = Enumerable.Empty<Action>();
+
+				var d3 = g.GroupBy(d => d.Item1.Length - index)
+					.ToLookup(d => d.Key > 1, d => (IEnumerable<Tuple<string[], Keys, int, MethodInfo>>)g);
+
+				var multi = d3[true].Any();
+				var single = d3[false].Any();
+
+				if (multi && single)
+					throw new Exception(
+						$"Single menu item found on the same menu path as a multi tool. \"{d3[false].SelectMany(d => d).First().Item1.Aggregate((s1, s2) => s1 + "/" + s2)}\"");
 
 				if (single)
 				{
@@ -313,7 +316,7 @@ namespace GAIPS.AssetEditorTools
 
 					e = new ToolStripMenuItem();
 					e.DropDownItems.AddRange(elements.Sort(MenuItemSorter).Select(e2 => e2.Item1).Cast<ToolStripItem>().ToArray());
-					priority = int.MinValue;
+					priority = 0;
 
 					var callbacks = elements.SelectMany(e2 => e2.Item3).Where(a => a != null).ToArray();
 					if (callbacks.Length > 0)

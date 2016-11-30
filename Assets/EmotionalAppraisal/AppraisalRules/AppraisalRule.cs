@@ -24,6 +24,7 @@ namespace EmotionalAppraisal.AppraisalRules
 
 		public AppraisalRule(Name eventName, ConditionSet conditions = null)
 		{
+			m_id = Guid.NewGuid();
 			EventName = eventName;
 			Conditions = conditions ?? new ConditionSet();
 			Desirability = Praiseworthiness = 0;
@@ -31,7 +32,7 @@ namespace EmotionalAppraisal.AppraisalRules
 
 	    public AppraisalRule(AppraisalRuleDTO appraisalRuleDTO)
 	    {
-		    m_id = appraisalRuleDTO.Id;
+		    m_id = (appraisalRuleDTO.Id == Guid.Empty)?Guid.NewGuid() : appraisalRuleDTO.Id;
 	        EventName = Name.BuildName(appraisalRuleDTO.EventMatchingTemplate);
 	        Desirability = appraisalRuleDTO.Desirability;
 	        Praiseworthiness = appraisalRuleDTO.Praiseworthiness;

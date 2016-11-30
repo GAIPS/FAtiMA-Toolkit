@@ -37,9 +37,16 @@
     <StartupObject>IntegratedAuthoringToolWF.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Resources\iat-icon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutForm.Designer.cs">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AddOrEditDialogueActionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -58,6 +65,11 @@
       <DependentUpon>DialogueEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GUIDialogStateAction.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="TextToSpeechForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +92,9 @@
     <Compile Include="TTSEngines\L2F\LanguageResources.cs" />
     <Compile Include="TTSEngines\System\SystemTextToSpeechEngine.cs" />
     <Compile Include="TTSEngines\Viseme.cs" />
+    <EmbeddedResource Include="AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AddOrEditDialogueActionForm.resx">
       <DependentUpon>AddOrEditDialogueActionForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -89,16 +104,10 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Resources\Resources.resx">
+    <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Compile Include="Resources\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="TextToSpeechForm.resx">
       <DependentUpon>TextToSpeechForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -180,6 +189,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Speech" />
@@ -187,27 +197,13 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\iat-icon.ico" />
-    <Content Include="Resources\Visemes_img\0-silence.png" />
-    <Content Include="Resources\Visemes_img\1+11-AxAhUh.png" />
-    <Content Include="Resources\Visemes_img\12-H.png" />
-    <Content Include="Resources\Visemes_img\13-R.png" />
-    <Content Include="Resources\Visemes_img\14-L.png" />
-    <Content Include="Resources\Visemes_img\15-SZTs.png" />
-    <Content Include="Resources\Visemes_img\16-ShChJhZh.png" />
-    <Content Include="Resources\Visemes_img\17-ThDh.png" />
-    <Content Include="Resources\Visemes_img\18-FV.png" />
-    <Content Include="Resources\Visemes_img\19-DTDxN.png" />
-    <Content Include="Resources\Visemes_img\2-Aa.png" />
-    <Content Include="Resources\Visemes_img\20-KGNg.png" />
-    <Content Include="Resources\Visemes_img\21-PBM.png" />
-    <Content Include="Resources\Visemes_img\3-Ao.png" />
-    <Content Include="Resources\Visemes_img\4-EyEhAe.png" />
-    <Content Include="Resources\Visemes_img\5-Er.png" />
-    <Content Include="Resources\Visemes_img\6-YIyIhIx.png" />
-    <Content Include="Resources\Visemes_img\7-WUwU.png" />
-    <Content Include="Resources\Visemes_img\8+10-Ow.png" />
-    <Content Include="Resources\Visemes_img\9-Aw.png" />
+    <None Include="Resources\RAGE-logo-high-res.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gaips.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\inescid.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

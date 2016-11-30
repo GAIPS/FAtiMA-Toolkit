@@ -7,10 +7,7 @@ using SerializationUtilities;
 using IntegratedAuthoringTool.DTOs;
 using KnowledgeBase;
 using RolePlayCharacter;
-using Utilities;
 using WellFormedNames;
-using WellFormedNames.Collections;
-using IQueryable = WellFormedNames.IQueryable;
 
 namespace IntegratedAuthoringTool
 {
@@ -20,13 +17,7 @@ namespace IntegratedAuthoringTool
     [Serializable]
     public class IntegratedAuthoringToolAsset : LoadableAsset<IntegratedAuthoringToolAsset>, ICustomSerialization
     {
-	    private class CharacterHolder
-	    {
-		    public string Source;
-		    public RolePlayCharacterAsset RPCAsset;
-        }
-
-        public static readonly string INITIAL_DIALOGUE_STATE = "Start";
+		public static readonly string INITIAL_DIALOGUE_STATE = "Start";
         public static readonly string TERMINAL_DIALOGUE_STATE = "End";
         //public static readonly string ANY_DIALOGUE_STATE = "*";
         public static readonly string PLAYER = "Player";
@@ -35,8 +26,7 @@ namespace IntegratedAuthoringTool
         private DialogActionDictionary m_playerDialogues;
 		private DialogActionDictionary m_agentDialogues;
 
-        private Dictionary<string, CharacterHolder> m_characterSources;
-        private Dictionary<string, string> m_dialogueStates;
+        private Dictionary<string, string> m_characterSources;
 
         /// <summary>
         /// The name of the Scenario
@@ -48,30 +38,21 @@ namespace IntegratedAuthoringTool
         /// </summary>
         protected override string OnAssetLoaded()
         {
-	        string currentKey = string.Empty;
+			var storage = GetInterface<IDataStorage>();
+			string currentKey = string.Empty;
 		    string currentAbsolutePath = null;
             try
 		    {
 				if(m_characterSources==null)
-					m_characterSources = new Dictionary<string, CharacterHolder>();
+					m_characterSources = new Dictionary<string, string>();
 				else
 				{
 					foreach (var pair in m_characterSources)
 					{
 						currentKey = pair.Key;
-						currentAbsolutePath = ToAbsolutePath(pair.Value.Source);
-						if (pair.Value.RPCAsset == null)
-						{
-							string errorsOnLoad;
-							pair.Value.RPCAsset = RolePlayCharacterAsset.LoadFromFile(currentAbsolutePath, out errorsOnLoad);
-							if (errorsOnLoad != null)
-								return errorsOnLoad;
-
-							RegistDynamicProperties(pair.Value.RPCAsset);
-						}
-
-						//if (!string.Equals(pair.Key, pair.Value.RPCAsset.CharacterName))
-						//	return $"Name mismatch. IAT name \"{pair.Key}\" != RPC File Name \"{pair.Value.RPCAsset.CharacterName}\" for file \"{currentAbsolutePath}\"";
+						currentAbsolutePath = ToAbsolutePath(pair.Value);
+						if(!storage.Exists(currentAbsolutePath))
+							throw new Exception($"Missing RPC file path to file \"{currentAbsolutePath}\"");
 					}
 				}
 			}
@@ -87,10 +68,10 @@ namespace IntegratedAuthoringTool
 
 	    protected override void OnAssetPathChanged(string oldpath)
 	    {
-		    foreach (var holder in m_characterSources.Values)
+		    foreach (var name in m_characterSources.Keys.ToArray())
 		    {
-			    var absPath = ToAbsolutePath(oldpath, holder.Source);
-			    holder.Source = ToRelativePath(AssetFilePath, absPath);
+			    var absPath = ToAbsolutePath(oldpath, m_characterSources[name]);
+				m_characterSources[name] = ToRelativePath(AssetFilePath, absPath);
 		    }
 	    }
 
@@ -98,8 +79,7 @@ namespace IntegratedAuthoringTool
         {
             m_playerDialogues = new DialogActionDictionary();
             m_agentDialogues = new DialogActionDictionary();
-	        m_characterSources = new Dictionary<string, CharacterHolder>();
-            m_dialogueStates = new Dictionary<string, string>();
+	        m_characterSources = new Dictionary<string, string>();
         }
 
 		/// <summary>
@@ -107,52 +87,31 @@ namespace IntegratedAuthoringTool
         /// </summary>
         public IEnumerable<CharacterSourceDTO> GetAllCharacterSources()
         {
-	        return m_characterSources.Select(p => new CharacterSourceDTO() {Name = p.Key, Source = ToAbsolutePath(p.Value.Source)});
+	        return m_characterSources.Select(p => new CharacterSourceDTO() {Name = p.Key, Source = ToAbsolutePath(p.Value)});
         }
-
-        /// <summary>
-        /// Retreives the instance of the RPC asset associated to a specific character.
-        /// </summary>
-        /// <param name="characterName">The name of the character</param>
-	    public RolePlayCharacterAsset GetCharacterAsset(string characterName)
-	    {
-		    CharacterHolder holder;
-		    if (!m_characterSources.TryGetValue(characterName, out holder))
-				throw new Exception($"Character \"{characterName}\" not found");
-
-		    return holder.RPCAsset;
-	    }
 
 	    public RolePlayCharacterAsset InstantiateCharacterAsset(string characterName)
 	    {
-			CharacterHolder holder;
-			if (!m_characterSources.TryGetValue(characterName, out holder))
+			string path;
+			if (!m_characterSources.TryGetValue(characterName, out path))
 				throw new Exception($"Character \"{characterName}\" not found");
 
-			var currentAbsolutePath = ToAbsolutePath(holder.Source);
+			var currentAbsolutePath = ToAbsolutePath(path);
 			var asset = RolePlayCharacterAsset.LoadFromFile(currentAbsolutePath);
 			RegistDynamicProperties(asset);
 		    return asset;
 		}
 
         /// <summary>
-        /// Retreives all instance of the RPC assets.
-        /// </summary>
-        public IEnumerable<RolePlayCharacterAsset> GetAllCharacters()
-	    {
-		    return m_characterSources.Values.Select(h => h.RPCAsset);
-	    }
-
-        /// <summary>
         /// Adds a new role-play character asset to the scenario.
         /// </summary>
         /// <param name="character">The instance of the Role Play Character asset</param>
-        public void AddCharacter(RolePlayCharacterAsset character)
+        public void AddNewCharacterSource(CharacterSourceDTO dto)
         {
-	        if(m_characterSources.ContainsKey(character.CharacterName))
+	        if(m_characterSources.ContainsKey(dto.Name))
 				throw new Exception("A character with the same name already exists.");
 
-			m_characterSources.Add(character.CharacterName,new CharacterHolder() {Source = ToRelativePath(character.AssetFilePath),RPCAsset = character});
+			m_characterSources.Add(dto.Name, ToRelativePath(dto.Source));
         }
         
         /// <summary>
@@ -187,29 +146,29 @@ namespace IntegratedAuthoringTool
 			m_playerDialogues.AddDialog(new DialogStateAction(dialogueStateActionDTO));
 		}
 
-		/// <summary>
-		/// Retrieves the current dialogue state for a specific character
-		/// </summary>
-		/// <param name="character">The name of the character</param>
-		public string GetCurrentDialogueState(string character)
-		{
-			string state;
-			if (m_dialogueStates.TryGetValue(character, out state))
-				return state;
+		///// <summary>
+		///// Retrieves the current dialogue state for a specific character
+		///// </summary>
+		///// <param name="character">The name of the character</param>
+		//public string GetCurrentDialogueState(string character)
+		//{
+		//	string state;
+		//	if (m_dialogueStates.TryGetValue(character, out state))
+		//		return state;
 
-			m_dialogueStates[character] = INITIAL_DIALOGUE_STATE;
-			return INITIAL_DIALOGUE_STATE;
-		}
+		//	m_dialogueStates[character] = INITIAL_DIALOGUE_STATE;
+		//	return INITIAL_DIALOGUE_STATE;
+		//}
 
-		/// <summary>
-		/// Updates the current dialogue state for a specific character
-		/// </summary>
-		/// <param name="character">The name of the character</param>
-		/// <param name="state">The name of the character</param>
-		public void SetDialogueState(string character, string state)
-		{
-			m_dialogueStates[character] = state;
-		}
+		///// <summary>
+		///// Updates the current dialogue state for a specific character
+		///// </summary>
+		///// <param name="character">The name of the character</param>
+		///// <param name="state">The name of the character</param>
+		//public void SetDialogueState(string character, string state)
+		//{
+		//	m_dialogueStates[character] = state;
+		//}
 
 		/// <summary>
 		/// Updates an existing dialogue action for the player
@@ -326,7 +285,7 @@ namespace IntegratedAuthoringTool
             dataHolder.SetValue("ScenarioName", ScenarioName);
             if (m_characterSources.Count > 0)
             {
-				dataHolder.SetValue("Characters", m_characterSources.Select(p => new CharacterSourceDTO() { Name = p.Key, Source = ToRelativePath(p.Value.Source) }).ToArray());
+				dataHolder.SetValue("Characters", m_characterSources.Select(p => new CharacterSourceDTO() { Name = p.Key, Source = ToRelativePath(p.Value) }).ToArray());
             }
             if (m_playerDialogues.Count>0)
             {
@@ -344,7 +303,7 @@ namespace IntegratedAuthoringTool
 			
 			var charArray = dataHolder.GetValue<CharacterSourceDTO[]>("Characters");
             if (charArray != null)
-				m_characterSources = charArray.ToDictionary(c => c.Name, c => new CharacterHolder() {Source = c.Source });
+				m_characterSources = charArray.ToDictionary(c => c.Name, c => c.Source);
 
 			m_playerDialogues = new DialogActionDictionary();
 			var playerDialogueArray = dataHolder.GetValue<DialogueStateActionDTO[]>("PlayerDialogues");
@@ -365,8 +324,6 @@ namespace IntegratedAuthoringTool
 					m_agentDialogues.AddDialog(d);
 	            }
             }
-
-			m_dialogueStates = new Dictionary<string, string>();
 		}
 
         #endregion

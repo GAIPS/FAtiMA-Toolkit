@@ -17,7 +17,9 @@ namespace EmotionalDecisionMakingWF
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new MainForm());
+			var m = new MainForm();
+			m.CreateNewAsset();
+			Application.Run(m);
 		}
 	}
 }
