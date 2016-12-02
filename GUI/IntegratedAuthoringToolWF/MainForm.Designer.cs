@@ -39,6 +39,8 @@
 			this.buttonAddCharacter = new System.Windows.Forms.Button();
 			this.buttonEditCharacter = new System.Windows.Forms.Button();
 			this.buttonRemoveCharacter = new System.Windows.Forms.Button();
+			this.label2 = new System.Windows.Forms.Label();
+			this.textBoxScenarioDescription = new System.Windows.Forms.TextBox();
 			this.groupBox1.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridViewCharacters)).BeginInit();
@@ -47,7 +49,7 @@
 			// 
 			// textBoxScenarioName
 			// 
-			this.textBoxScenarioName.Location = new System.Drawing.Point(70, 40);
+			this.textBoxScenarioName.Location = new System.Drawing.Point(82, 41);
 			this.textBoxScenarioName.Name = "textBoxScenarioName";
 			this.textBoxScenarioName.Size = new System.Drawing.Size(310, 20);
 			this.textBoxScenarioName.TabIndex = 0;
@@ -68,9 +70,9 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.groupBox1.Controls.Add(this.tableLayoutPanel1);
-			this.groupBox1.Location = new System.Drawing.Point(12, 79);
+			this.groupBox1.Location = new System.Drawing.Point(12, 149);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(598, 328);
+			this.groupBox1.Size = new System.Drawing.Size(598, 258);
 			this.groupBox1.TabIndex = 2;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Characters";
@@ -87,7 +89,7 @@
 			this.tableLayoutPanel1.RowCount = 2;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(592, 309);
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(592, 239);
 			this.tableLayoutPanel1.TabIndex = 15;
 			// 
 			// dataGridViewCharacters
@@ -108,7 +110,7 @@
 			this.dataGridViewCharacters.RowHeadersVisible = false;
 			this.dataGridViewCharacters.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
 			this.dataGridViewCharacters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-			this.dataGridViewCharacters.Size = new System.Drawing.Size(586, 268);
+			this.dataGridViewCharacters.Size = new System.Drawing.Size(586, 198);
 			this.dataGridViewCharacters.TabIndex = 13;
 			this.dataGridViewCharacters.SelectionChanged += new System.EventHandler(this.dataGridViewCharacters_SelectionChanged);
 			// 
@@ -164,11 +166,32 @@
 			this.buttonRemoveCharacter.UseVisualStyleBackColor = true;
 			this.buttonRemoveCharacter.Click += new System.EventHandler(this.buttonRemoveCharacter_Click);
 			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(12, 66);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(63, 13);
+			this.label2.TabIndex = 3;
+			this.label2.Text = "Description:";
+			// 
+			// textBoxScenarioDescription
+			// 
+			this.textBoxScenarioDescription.Location = new System.Drawing.Point(13, 83);
+			this.textBoxScenarioDescription.Multiline = true;
+			this.textBoxScenarioDescription.Name = "textBoxScenarioDescription";
+			this.textBoxScenarioDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.textBoxScenarioDescription.Size = new System.Drawing.Size(597, 60);
+			this.textBoxScenarioDescription.TabIndex = 4;
+			this.textBoxScenarioDescription.TextChanged += new System.EventHandler(this.textBoxScenarioDescription_TextChanged);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(620, 419);
+			this.Controls.Add(this.textBoxScenarioDescription);
+			this.Controls.Add(this.label2);
 			this.Controls.Add(this.groupBox1);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.textBoxScenarioName);
@@ -179,6 +202,8 @@
 			this.Controls.SetChildIndex(this.textBoxScenarioName, 0);
 			this.Controls.SetChildIndex(this.label1, 0);
 			this.Controls.SetChildIndex(this.groupBox1, 0);
+			this.Controls.SetChildIndex(this.label2, 0);
+			this.Controls.SetChildIndex(this.textBoxScenarioDescription, 0);
 			this.groupBox1.ResumeLayout(false);
 			this.tableLayoutPanel1.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dataGridViewCharacters)).EndInit();
@@ -200,6 +225,8 @@
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
 		private System.Windows.Forms.Button buttonCreateCharacter;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.TextBox textBoxScenarioDescription;
 	}
 }
 

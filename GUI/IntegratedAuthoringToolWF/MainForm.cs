@@ -29,6 +29,8 @@ namespace IntegratedAuthoringToolWF
 		protected override void OnAssetDataLoaded(IntegratedAuthoringToolAsset asset)
 		{
 			textBoxScenarioName.Text = asset.ScenarioName;
+			textBoxScenarioDescription.Text = asset.ScenarioDescription;
+
 			_characterSources = new BindingListView<CharacterSourceDTO>(asset.GetAllCharacterSources().ToList());
 			dataGridViewCharacters.DataSource = _characterSources;
 		}
@@ -83,6 +85,15 @@ namespace IntegratedAuthoringToolWF
 				return;
 
 			CurrentAsset.ScenarioName = textBoxScenarioName.Text;
+			SetModified();
+		}
+
+		private void textBoxScenarioDescription_TextChanged(object sender, EventArgs e)
+		{
+			if (IsLoading)
+				return;
+
+			CurrentAsset.ScenarioDescription = textBoxScenarioDescription.Text;
 			SetModified();
 		}
 

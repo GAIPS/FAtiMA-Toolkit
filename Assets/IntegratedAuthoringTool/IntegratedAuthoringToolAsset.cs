@@ -33,10 +33,15 @@ namespace IntegratedAuthoringTool
         /// </summary>
         public string ScenarioName { get; set; }
 
-        /// <summary>
-        /// This method is used to automatically load any associated assets.
-        /// </summary>
-        protected override string OnAssetLoaded()
+		/// <summary>
+		/// The description of the Scenario
+		/// </summary>
+		public string ScenarioDescription { get; set; }
+
+		/// <summary>
+		/// This method is used to automatically load any associated assets.
+		/// </summary>
+		protected override string OnAssetLoaded()
         {
 			var storage = GetInterface<IDataStorage>();
 			string currentKey = string.Empty;
@@ -76,7 +81,9 @@ namespace IntegratedAuthoringTool
 	    }
 
 	    public IntegratedAuthoringToolAsset()
-        {
+	    {
+		    ScenarioName = ScenarioDescription = string.Empty;
+
             m_playerDialogues = new DialogActionDictionary();
             m_agentDialogues = new DialogActionDictionary();
 	        m_characterSources = new Dictionary<string, string>();
@@ -283,6 +290,8 @@ namespace IntegratedAuthoringTool
 		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             dataHolder.SetValue("ScenarioName", ScenarioName);
+			dataHolder.SetValue("Description",ScenarioDescription);
+
             if (m_characterSources.Count > 0)
             {
 				dataHolder.SetValue("Characters", m_characterSources.Select(p => new CharacterSourceDTO() { Name = p.Key, Source = ToRelativePath(p.Value) }).ToArray());
@@ -299,8 +308,9 @@ namespace IntegratedAuthoringTool
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
-			ScenarioName = dataHolder.GetValue<string>("ScenarioName");
-			
+			ScenarioName = dataHolder.GetValue<string>("ScenarioName") ?? string.Empty;
+	        ScenarioDescription = dataHolder.GetValue<string>("Description")??string.Empty;
+
 			var charArray = dataHolder.GetValue<CharacterSourceDTO[]>("Characters");
             if (charArray != null)
 				m_characterSources = charArray.ToDictionary(c => c.Name, c => c.Source);
