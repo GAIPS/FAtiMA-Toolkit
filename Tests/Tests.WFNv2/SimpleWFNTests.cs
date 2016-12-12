@@ -20,9 +20,9 @@ namespace Tests.WFNv2
 
             SimpleName result = null;
 
-            Dictionary<string, SimpleName> subs = new Dictionary<string, SimpleName>();
+            Dictionary<string, string> subs = new Dictionary<string, string>();
 
-            subs["[x]"] = new SimpleName("J(I)");
+            subs["[x]"] = "J(I)";
 
             for (long i = 0; i < reps; i++)
             {

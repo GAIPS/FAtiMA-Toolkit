@@ -331,43 +331,32 @@ namespace WellFormedNames
             return n1.description == n2.description;
         }
 
-        
-        public static SimpleName MakeGround(SimpleName n, Dictionary<string, SimpleName> bindings)
+     
+     
+        //needs input validation
+        public static SimpleName MakeGround(SimpleName n, Dictionary<string, string> bindings)
         {
             var nameClone = new SimpleName(n.literals);
-            foreach (var var in GetVariables(n))
+            List<int> positionsNeedDepthFix = new List<int>();
+
+            foreach (var var in GetVariables(nameClone))
             {
-                var nameValue = bindings[var.description];
-                if (nameValue != null)
+                if (bindings.ContainsKey(var.description))
                 {
-                    int i = nameClone.literals.FindIndex(l => l == var);
-                   
-                    // composedName
-                    if (nameValue.literals.Count > 1)
+                    var nameValue = bindings[var.description];
+                    if (nameValue.Contains('(')) //replace this with a method
                     {
-                        var valueClone = new SimpleName(nameValue.literals);
-                        // the literal depths must be fixed in this case
-                        foreach (var valLit in valueClone.literals)
-                        {
-                            valLit.depth += n.literals.ElementAt(i).depth;
-                        }
-                        nameClone.literals.RemoveAt(i);
-                        nameClone.literals.InsertRange(i, valueClone.literals);
+                        int i = n.literals.FindIndex(l => l == var);
+                        positionsNeedDepthFix.Add(i);
                     }
-                    else //easy case
-                    {
-                        nameClone.literals.ElementAt(i).description 
-                            = nameValue.literals.First().description;
-                    }
+                    var.description = nameValue;
                 }
 
             }
-            nameClone.ToString();
+
+            //still needs position fix
             return nameClone;
         }
-
-      
-
 
 
 
