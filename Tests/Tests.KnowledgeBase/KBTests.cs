@@ -202,7 +202,9 @@ namespace Tests.KnowledgeBase
 			Assert.Throws(expectedException, () => kb.Tell(name, Name.BuildName(value)));
 		}
 
-		[Test]
+
+
+        [Test]
 		public void Test_Acculm_Tell_Valid()
 		{
 			TestFactory.PopulatedTestMemory();

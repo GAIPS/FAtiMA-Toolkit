@@ -48,15 +48,15 @@ namespace WellFormedNames
 				return $"[{m_variableName}]";
 			}
 
-			public override IEnumerable<Name> GetVariables()
+			/*public override IEnumerable<Name> GetVariables()
 			{
 				yield return this;
-			}
+			}*/
 
-			public override bool HasGhostVariable()
+			/*public override bool HasGhostVariable()
 			{
 				return m_variableName[0] == '_';
-			}
+			}*/
 
 			public override bool HasSelf()
 			{
