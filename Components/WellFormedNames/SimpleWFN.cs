@@ -332,12 +332,12 @@ namespace WellFormedNames
         }
 
      
-     
+        //This method is much slower if the value is a composed name
         //needs input validation
         public static SimpleName MakeGround(SimpleName n, Dictionary<string, string> bindings)
         {
             var nameClone = new SimpleName(n.literals);
-            List<int> positionsNeedDepthFix = new List<int>();
+            var needsDepthFix = false;
 
             foreach (var var in GetVariables(nameClone))
             {
@@ -347,17 +347,39 @@ namespace WellFormedNames
                     if (nameValue.Contains('(')) //replace this with a method
                     {
                         int i = n.literals.FindIndex(l => l == var);
-                        positionsNeedDepthFix.Add(i);
+                        if(i != 0) needsDepthFix = true;
                     }
                     var.description = nameValue;
                 }
 
             }
 
-            //still needs position fix
+            if (needsDepthFix) return FixDepthsAfterGround(nameClone);
+
             return nameClone;
         }
 
+        private static SimpleName FixDepthsAfterGround(SimpleName oldName)
+        {
+            List<Literal> fixedLiterals = new List<Literal>();
+            foreach(var l in oldName.literals)
+            {
+                if (l.description.Contains('('))
+                {
+                    var cName = new SimpleName(l.description);
+                    foreach(var l2 in cName.literals)
+                    {
+                        l2.depth += l.depth;
+                    }
+                    fixedLiterals.AddRange(cName.literals);
+                }
+                else
+                {
+                    fixedLiterals.Add(l);                    
+                }
+            }
+            return new SimpleName(fixedLiterals);
+        }
 
 
         #region Unecessary Methods
