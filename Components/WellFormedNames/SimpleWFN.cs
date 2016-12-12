@@ -331,57 +331,31 @@ namespace WellFormedNames
             return n1.description == n2.description;
         }
 
-     
-        //This method is much slower if the value is a composed name
-        //needs input validation
-        public static SimpleName MakeGround(SimpleName n, Dictionary<string, string> bindings)
+
+        public static SimpleName MakeGround(SimpleName n, Dictionary<string, SimpleName> bindings)
         {
-            var nameClone = new SimpleName(n.literals);
-            var needsDepthFix = false;
+            var literals = new List<Literal>();
 
-            foreach (var var in GetVariables(nameClone))
+            foreach (var l in n.literals)
             {
-                if (bindings.ContainsKey(var.description))
+                if (bindings.ContainsKey(l.description))
                 {
-                    var nameValue = bindings[var.description];
-                    if (nameValue.Contains('(')) //replace this with a method
+                    var nameValue = bindings[l.description];
+                    var subName = new SimpleName(nameValue.literals);
+                    foreach(var subL in subName.literals)
                     {
-                        int i = n.literals.FindIndex(l => l == var);
-                        if(i != 0) needsDepthFix = true;
+                        subL.depth += l.depth;
                     }
-                    var.description = nameValue;
-                }
-
-            }
-
-            if (needsDepthFix) return FixDepthsAfterGround(nameClone);
-
-            return nameClone;
-        }
-
-        private static SimpleName FixDepthsAfterGround(SimpleName oldName)
-        {
-            List<Literal> fixedLiterals = new List<Literal>();
-            foreach(var l in oldName.literals)
-            {
-                if (l.description.Contains('('))
-                {
-                    var cName = new SimpleName(l.description);
-                    foreach(var l2 in cName.literals)
-                    {
-                        l2.depth += l.depth;
-                    }
-                    fixedLiterals.AddRange(cName.literals);
+                    literals.AddRange(subName.literals);
                 }
                 else
                 {
-                    fixedLiterals.Add(l);                    
+                    literals.Add(l);
                 }
             }
-            return new SimpleName(fixedLiterals);
+            return new SimpleName(literals);
         }
-
-
+    
         #region Unecessary Methods
         //public abstract Name GetFirstTerm();
         //public abstract IEnumerable<Name> GetTerms();
