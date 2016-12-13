@@ -2,16 +2,12 @@
 using EmotionalAppraisal;
 using EmotionalDecisionMaking;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using ActionLibrary;
-using AssetManagerPackage;
-using AssetPackage;
 using AutobiographicMemory.DTOs;
 using EmotionalAppraisal.DTOs;
 using GAIPS.Rage;
 using KnowledgeBase;
-using SerializationUtilities;
 using SocialImportance;
 using Utilities;
 using WellFormedNames;
@@ -23,74 +19,60 @@ namespace RolePlayCharacter
     {
 		#region RolePlayCharater Fields
 
-	    private string _emotionalAppraisalAssetSource = null;
-		private string _emotionalDecisionMakingAssetSource = null;
-		private string _socialImportanceAssetSource = null;
-
-        private static IEnumerable<IAction> TakeBestActions(IEnumerable<IAction> enumerable)
-        {
-            float best = float.NegativeInfinity;
-            foreach (var a in enumerable.OrderByDescending(a => a.Utility))
-            {
-                if (a.Utility < best)
-                    break;
-
-                yield return a;
-                best = a.Utility;
-            }
-        }
-
-        [NonSerialized]
-		private EmotionalAppraisalAsset _emotionalAppraisalAsset;
-		[NonSerialized]
+        private EmotionalAppraisalAsset _emotionalAppraisalAsset;
 		private EmotionalDecisionMakingAsset _emotionalDecisionMakingAsset;
-		[NonSerialized]
 		private SocialImportanceAsset _socialImportanceAsset;
 
-	    private IAction _currentAction = null;
+		[NonSerialized]
+		private IAction _currentAction = null;
 
 		#endregion
 
 		#region Public Interface
 
-        /// <summary>
-        /// An identifier for the embodiment that is used by the character
-        /// </summary>
-        public string BodyName { get; set; }
-
-        /// <summary>
-        /// The name of the character
-        /// </summary>
-        public string CharacterName { get; set; }
-
-        /// <summary>
-        /// The source being used for the Emotional Appraisal Asset
-        /// </summary>
-        public string EmotionalAppraisalAssetSource
+		public RolePlayCharacterAsset(EmotionalAppraisalAsset ea, EmotionalDecisionMakingAsset edm = null, SocialImportanceAsset si = null)
 		{
-			get { return ToAbsolutePath(_emotionalAppraisalAssetSource); }
-			set { _emotionalAppraisalAssetSource = ToRelativePath(value); }
-        }
+			if (ea == null)
+				throw new ArgumentNullException(nameof(ea));
 
-        /// <summary>
-        /// The source being used for the Emotional Decision Making Asset
-        /// </summary>
-        public string EmotionalDecisionMakingSource
-		{
-			get { return ToAbsolutePath(_emotionalDecisionMakingAssetSource); }
-			set { _emotionalDecisionMakingAssetSource = ToRelativePath(value); }
+			if (edm == null)
+				edm = new EmotionalDecisionMakingAsset();
+
+			if (si == null)
+				si = new SocialImportanceAsset();
+
+			edm.RegisterEmotionalAppraisalAsset(ea);
+			si.BindEmotionalAppraisalAsset(ea);
+
+			_emotionalAppraisalAsset = ea;
+			_emotionalDecisionMakingAsset = edm;
+			_socialImportanceAsset = si;
+
+			////Load Emotional Decision Making Asset
+			//try
+			//{
+			//	_emotionalDecisionMakingAsset = Loader(_emotionalDecisionMakingAssetSource, () => new EmotionalDecisionMakingAsset());
+			//}
+			//catch (Exception e)
+			//{
+			//	AssetManager.Instance.Log(Severity.Critical, e.Message);
+			//	return $"Unable to load the Emotional Decision Making Asset at \"{EmotionalDecisionMakingSource}\". Check if the path is correct.";
+			//}
+			//_emotionalDecisionMakingAsset.RegisterEmotionalAppraisalAsset(_emotionalAppraisalAsset);
+
+			////Load Social Importance Asset
+			//try
+			//{
+			//	_socialImportanceAsset = Loader(_socialImportanceAssetSource, () => new SocialImportanceAsset());
+			//}
+			//catch (Exception)
+			//{
+			//	return $"Unable to load the Emotional Decision Making Asset at \"{SocialImportanceAssetSource}\". Check if the path is correct.";
+			//}
+			//_socialImportanceAsset.BindEmotionalAppraisalAsset(_emotionalAppraisalAsset);
 		}
 
-        /// <summary>
-        /// The source being used for the Social Importance Asset
-        /// </summary>
-        public string SocialImportanceAssetSource
-		{
-			get { return ToAbsolutePath(_socialImportanceAssetSource); }
-			set { _socialImportanceAssetSource = ToRelativePath(value); }
-		}
-
-#region Emotional Appraisal Interface
+		#region Emotional Appraisal Interface
 
 		public float Mood => _emotionalAppraisalAsset?.Mood ?? 0;
 
@@ -205,73 +187,22 @@ namespace RolePlayCharacter
 
 	    #endregion
 
-	    protected override void OnAssetPathChanged(string oldpath)
-	    {
-		    _emotionalAppraisalAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _emotionalAppraisalAssetSource));
-			_emotionalDecisionMakingAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _emotionalDecisionMakingAssetSource));
-			_socialImportanceAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _socialImportanceAssetSource));
-	    }
-
-	    protected override string OnAssetLoaded()
+		protected override string OnAssetLoaded()
 		{
-			//Load Emotional Appraisal Asset
-			try
-			{
-				_emotionalAppraisalAsset = Loader(_emotionalAppraisalAssetSource, () => new EmotionalAppraisalAsset("Agent"));
-			}
-			catch (Exception)
-			{
-				return $"Unable to load the Emotional Appraisal Asset at \"{EmotionalAppraisalAssetSource}\". Check if the path is correct.";
-			}
-
-			//Load Emotional Decision Making Asset
-			try
-			{
-				_emotionalDecisionMakingAsset = Loader(_emotionalDecisionMakingAssetSource, () => new EmotionalDecisionMakingAsset());
-			}
-			catch (Exception e)
-			{
-				AssetManager.Instance.Log(Severity.Critical, e.Message);
-				return $"Unable to load the Emotional Decision Making Asset at \"{EmotionalDecisionMakingSource}\". Check if the path is correct.";
-			}
-			_emotionalDecisionMakingAsset.RegisterEmotionalAppraisalAsset(_emotionalAppraisalAsset);
-
-			//Load Social Importance Asset
-			try
-			{
-				_socialImportanceAsset = Loader(_socialImportanceAssetSource, () => new SocialImportanceAsset());
-			}
-			catch (Exception)
-			{
-				return $"Unable to load the Emotional Decision Making Asset at \"{SocialImportanceAssetSource}\". Check if the path is correct.";
-			}
-			_socialImportanceAsset.BindEmotionalAppraisalAsset(_emotionalAppraisalAsset);
-
 			return null;
 		}
 
-	    private T Loader<T>(string path, Func<T> generateDefault) where  T: LoadableAsset<T>
+	    private static IEnumerable<IAction> TakeBestActions(IEnumerable<IAction> enumerable)
 	    {
-		    if (string.IsNullOrEmpty(path))
-			    return generateDefault();
+		    float best = float.NegativeInfinity;
+		    foreach (var a in enumerable.OrderByDescending(a => a.Utility))
+		    {
+			    if (a.Utility < best)
+				    break;
 
-		    return LoadableAsset<T>.LoadFromFile(ToAbsolutePath(path));
+			    yield return a;
+			    best = a.Utility;
+		    }
 	    }
-
-		public void ReloadDefitions()
-		{
-			var error = OnAssetLoaded();
-			if (!string.IsNullOrEmpty(error))
-				throw new Exception(error);
-		}
-
-		public void SaveEmotionalAppraisalAsset(Stream stream)
-	    {
-			if (_emotionalAppraisalAsset == null)
-				return;
-
-			var serializer = new JSONSerializer();
-			serializer.Serialize(stream, _emotionalAppraisalAsset);
-		}
-	}
+    }
 }

@@ -137,7 +137,7 @@ namespace IntegratedAuthoringToolWF
 					_openedForms.Remove(character.Name);
 					ReloadEditor();
 				};
-				form.EditAssetInstance(() => CurrentAsset.InstantiateCharacterAsset(character.Name));
+				form.EditAssetInstance(() => CurrentAsset.GetCharacterProfile(character.Name));
 				_openedForms.Add(character.Name,form);
 				form.Show();
 			}

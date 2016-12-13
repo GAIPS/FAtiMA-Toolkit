@@ -1,7 +1,5 @@
 ﻿using System;
-using GAIPS.AssetEditorTools;
 using RolePlayCharacter;
-using RolePlayCharacterWF.Properties;
 
 namespace RolePlayCharacterWF
 {
@@ -12,7 +10,7 @@ namespace RolePlayCharacterWF
             InitializeComponent();
         }
 
-		protected override void OnAssetDataLoaded(RolePlayCharacterAsset asset)
+		protected override void OnAssetDataLoaded(RolePlayCharacterProfileAsset asset)
 		{
 			textBoxCharacterName.Text = asset.CharacterName;
 			textBoxCharacterBody.Text = asset.BodyName;
@@ -20,17 +18,21 @@ namespace RolePlayCharacterWF
 			eaAssetControl1.SetAsset(asset.EmotionalAppraisalAssetSource, () =>
 			{
 				RequestAssetReload();
-				return EditorTools.GetFieldValue<EmotionalAppraisal.EmotionalAppraisalAsset>(CurrentAsset, "_emotionalAppraisalAsset");
+
+				erro de proposito
+				//isto deve de falhar, uma vez que não está a passar a lista de dynamic properties
+				// se calhar a lista deve de ser algo externo ao asset
+				return EmotionalAppraisal.EmotionalAppraisalAsset.LoadFromFile(CurrentAsset.EmotionalAppraisalAssetSource);
 			});
-			edmAssetControl1.SetAsset(asset.EmotionalDecisionMakingSource,() =>
-			{
-				RequestAssetReload();
-				return EditorTools.GetFieldValue<EmotionalDecisionMaking.EmotionalDecisionMakingAsset>(CurrentAsset, "_emotionalDecisionMakingAsset");
-			});
+			edmAssetControl1.SetAsset(asset.EmotionalDecisionMakingSource, () =>
+			 {
+				 RequestAssetReload();
+				 return EmotionalDecisionMaking.EmotionalDecisionMakingAsset.LoadFromFile(CurrentAsset.EmotionalDecisionMakingSource);
+			 });
 			siAssetControl1.SetAsset(asset.SocialImportanceAssetSource, () =>
 			{
 				RequestAssetReload();
-				return EditorTools.GetFieldValue<SocialImportance.SocialImportanceAsset>(CurrentAsset, "_socialImportanceAsset");
+				return SocialImportance.SocialImportanceAsset.LoadFromFile(CurrentAsset.SocialImportanceAssetSource);
 			});
 		}
 		
@@ -58,8 +60,6 @@ namespace RolePlayCharacterWF
 				return;
 
 			CurrentAsset.EmotionalAppraisalAssetSource = eaAssetControl1.Path;
-			CurrentAsset.ReloadDefitions();
-			ReloadEditor();
 			SetModified();
 		}
 
@@ -69,8 +69,6 @@ namespace RolePlayCharacterWF
 				return;
 
 			CurrentAsset.EmotionalDecisionMakingSource = edmAssetControl1.Path;
-			CurrentAsset.ReloadDefitions();
-			ReloadEditor();
 			SetModified();
 		}
 
@@ -80,8 +78,6 @@ namespace RolePlayCharacterWF
 				return;
 
 			CurrentAsset.SocialImportanceAssetSource = siAssetControl1.Path;
-			CurrentAsset.ReloadDefitions();
-			ReloadEditor();
 			SetModified();
 		}
 	}

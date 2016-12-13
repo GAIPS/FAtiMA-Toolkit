@@ -36,6 +36,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RolePlayCharacterProfileAsset.cs" />
     <Compile Include="RolePlayerCharacterAsset.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
