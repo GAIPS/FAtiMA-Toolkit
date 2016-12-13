@@ -51,6 +51,7 @@
     <Compile Include="Substitution.cs" />
     <Compile Include="SubstitutionSet.cs" />
     <Compile Include="Unifier.cs" />
+    <Compile Include="SimpleWFN.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SerializationUtilities\SerializationUtilities.csproj">

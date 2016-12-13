@@ -62,10 +62,10 @@ namespace WellFormedNames
 				return this;
 			}
 
-			public sealed override IEnumerable<Name> GetLiterals()
+			/*public sealed override IEnumerable<Name> GetLiterals()
 			{
 				yield return this;
-			}
+			}*/
 
 			public override Name ApplyToTerms(Func<Name, Name> transformFunction)
 			{

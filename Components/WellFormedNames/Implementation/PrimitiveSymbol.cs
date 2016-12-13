@@ -46,15 +46,15 @@ namespace WellFormedNames
 				return m_value.GetHashCode();
 			}
 
-			public override IEnumerable<Name> GetVariables()
+			/*public override IEnumerable<Name> GetVariables()
 			{
 				yield break;
-			}
+			}*/
 
-			public override bool HasGhostVariable()
+			/*public override bool HasGhostVariable()
 			{
 				return false;
-			}
+			}*/
 
 			public override bool HasSelf()
 			{

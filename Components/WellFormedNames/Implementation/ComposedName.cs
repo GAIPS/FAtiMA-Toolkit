@@ -60,7 +60,7 @@ namespace WellFormedNames
 			/// </summary>
 			/// <param name="head">The head symbol</param>
 			/// <param name="terms">A set of parameter symbols</param>
-			public ComposedName(Symbol head, Name[] terms)
+            public ComposedName(Symbol head, Name[] terms)
 				: base(
 					head.IsGrounded && terms.All(n=>n.IsGrounded),false,
 					head.IsConstant && terms.All(n=>n.IsConstant),false,false,true
@@ -91,27 +91,28 @@ namespace WellFormedNames
 				return Terms[index];
 			}
 
-			public override IEnumerable<Name> GetLiterals()
+            public override bool HasSelf()
+            {
+                return GetTerms().Any(s => s.HasSelf());
+            }
+
+            /*public override IEnumerable<Name> GetLiterals()
 			{
 				return Terms.SelectMany(t => t.GetLiterals()).Prepend(RootSymbol);
-			}
+			}*/
 
-			public override IEnumerable<Name> GetVariables()
+            /*public override IEnumerable<Name> GetVariables()
 			{
 				return GetTerms().SelectMany(l => l.GetVariables());
-			}
+			}*/
 
-			public override bool HasGhostVariable()
+            /*public override bool HasGhostVariable()
 			{
 				return GetTerms().Any(s => s.HasGhostVariable());
-			}
+			}*/
 
-			public override bool HasSelf()
-			{
-				return GetTerms().Any(s => s.HasSelf());
-			}
 
-			public override Name SwapTerms(Name original, Name newName)
+            public override Name SwapTerms(Name original, Name newName)
 			{
 				return new ComposedName((Symbol)RootSymbol.SwapTerms(original,newName), Terms.Select(t => t.SwapTerms(original,newName)).ToArray());
 			}

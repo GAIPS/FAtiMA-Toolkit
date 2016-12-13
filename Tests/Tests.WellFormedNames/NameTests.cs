@@ -47,7 +47,6 @@ namespace Tests.WellFormedNames
 			Assert.That(string.Equals(name.ToString(), "-", StringComparison.InvariantCultureIgnoreCase));
 		}
 
-
         [TestCase("[y]")]
         [TestCase("[x]")]
         [TestCase("IsPerson(x)")]
@@ -136,17 +135,5 @@ namespace Tests.WellFormedNames
 			var name2 = Name.BuildName(nameString2);
 			Assert.That(name1.Equals(name2));
 		}
-		
-        [Test]
-        public void GenerateUniqueGhostVariable_AnyState_NewSymbol()
-        {
-            var ghost1 = Name.GenerateUniqueGhostVariable();
-            var ghost2 = Name.GenerateUniqueGhostVariable();
-
-            Assert.That(ghost1.HasGhostVariable());
-            Assert.That(ghost2.HasGhostVariable());
-
-            Assert.That(ghost1 != ghost2);
-        }
     }
 }
