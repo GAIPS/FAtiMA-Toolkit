@@ -10,8 +10,7 @@ namespace Tests.WFNv2
     public class SimpleWFNTests
     {
         private int reps = 10000;
-
-
+        
         [Test]
         public void Test_MakeGround_SimpleWFN()
         {
