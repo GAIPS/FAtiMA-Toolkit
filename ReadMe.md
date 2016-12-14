@@ -33,6 +33,10 @@ To get started, we recommed that you check the code examples of each asset in th
 ### Unity Source Code Demo (Updated!)
 The following link contains the source code for a game prototype that was made in Unity to showcase the toolkit: https://dl.dropboxusercontent.com/u/9291794/RAGE/FAtiMA-Toolkit-UnitySource.zip
 
+### Integrated Authoring Tool (New!)
+An integrated authoring tool is now available for Windows users: 
+https://dl.dropboxusercontent.com/u/9291794/RAGE/FAtiMA%20Toolkit%20-%20Authoring%20Tools.zip
+
 ### WebGL (New!)
 Try the toolkit now directly from your browser: http://gaips.tagus.ist.utl.pt/~smascarenhas/rage/demo/
 
