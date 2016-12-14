@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using WellFormedNames;
 
@@ -8,7 +9,7 @@ namespace Tests.WFNv2
     [TestFixture]
     public class SimpleWFNTests
     {
-        private int reps = 100000;
+        private int reps = 10000;
 
 
         [Test]
@@ -26,9 +27,9 @@ namespace Tests.WFNv2
 
             for (long i = 0; i < reps; i++)
             {
-                result = SimpleWFN.MakeGround(name,subs);
+                result = SimpleWFN.MakeGround(name, subs);
             }
-            
+
             Assert.AreEqual(expectedResult, result.ToString());
         }
 
@@ -119,8 +120,8 @@ namespace Tests.WFNv2
         [Test]
         public void Test_Match_Names_SimpleWFN()
         {
-            var name1 = new SimpleName("AA(BB,C(C1,X([D])),DD(EE,FF),*,II,*(L))");
-            var name2 = new SimpleName("AA(BB,C(C1,X([D])),DD(*,FF),GG(HHH),II,K(L))");
+            var name1 = new SimpleName("A");
+            var name2 = new SimpleName("A");
             var expectedResult = true;
             bool result = false;
 
@@ -135,8 +136,8 @@ namespace Tests.WFNv2
         [Test]
         public void Test_Match_Names_NormalWFN()
         {
-            var name1 = Name.BuildName("AA(BB,C(C1,X([D])),DD(EE,FF),*,II,*(L))");
-            var name2 = Name.BuildName("AA(BB,C(C1,X([D])),DD(*,FF),GG(HHH),II,K(L))");
+            var name1 = Name.BuildName("A");
+            var name2 = Name.BuildName("A");
             var expectedResult = true;
             bool result = false;
 
@@ -233,6 +234,109 @@ namespace Tests.WFNv2
                 test = name.ToString();
             }
             Assert.That(string.Equals(expectedResult, test, StringComparison.InvariantCultureIgnoreCase));
+        }
+    }
+
+    //i had to copy this from unifiertests cause nUnit was not working in that project for some reason
+    [TestFixture]
+    public class UnifierTests
+    {
+
+        //This is still a bit slower in the "Simple" refactorization
+        private int unifierReps = 100000;
+        [TestCase("John", "John", new string[0], "Normal")]
+        [TestCase("John", "John", new string[0], "Simple")]
+        [TestCase("Strong(John,A(B,C(D)))", "Strong(John,A(B,C(*)))", new string[0], "Normal")]
+        [TestCase("Strong(John,A(B,C(D)))", "Strong(John,A(B,C(*)))", new string[0], "Simple")]
+        [TestCase("John", "[x]", new[] { "[x]/John" }, "Normal")]
+        [TestCase("John", "[x]", new[] { "[x]/John" }, "Simple")]
+        [TestCase("Strong([x])", "Strong(John)", new[] { "[x]/John" }, "Normal")]
+        [TestCase("Strong([x])", "Strong(John)", new[] { "[x]/John" }, "Simple")]
+        [TestCase("Likes([x],[y])", "Likes(John, [z])", new[] { "[x]/John", "[y]/[z]" }, "Normal")]
+        [TestCase("Likes([x],[y])", "Likes(John, [z])", new[] { "[x]/John", "[y]/[z]" }, "Simple")]
+        [TestCase("Likes([x],John)", "Likes(John, [x])", new[] { "[x]/John" }, "Normal")]
+        [TestCase("Likes([x],John)", "Likes(John, [x])", new[] { "[x]/John" }, "Simple")]
+        [TestCase("Likes([x],[y])", "Likes(John, Mary)", new[] { "[x]/John", "[y]/Mary" }, "Normal")]
+        [TestCase("Likes([x],[y])", "Likes(John, Mary)", new[] { "[x]/John", "[y]/Mary" }, "Simple")]
+        [TestCase("S([x],k([x],[z]),j([y],k(t(k,l),y)))", "S(t(k,l),k([x],y),j(P,k([x],[z])))", new[] { "[x]/t(k,l)", "[z]/y", "[y]/P" }, "Normal")]
+        [TestCase("S([x],k([x],[z]),j([y],k(t(k,l),y)))", "S(t(k,l),k([x],y),j(P,k([x],[z])))", new[] { "[x]/t(k,l)", "[z]/y", "[y]/P" }, "Simple")]
+        [TestCase("S([x])", "S(t(k))", new[] { "[x]/t(k)"}, "Normal")]
+        public void Unify_UnifiableNames_True(string n1, string n2, string[] result, string refactorization)
+        {
+            var expectedBindings = result.Select(s => new Substitution(s));
+            IEnumerable<Substitution> bindings = null;
+            var isUnifiable = false;
+
+            if(refactorization == "Simple")
+            {
+                var name1 = new SimpleName(n1);
+                var name2 = new SimpleName(n2);
+                for (int i = 0; i < unifierReps; i++)
+                {
+                    isUnifiable = SimpleUnifier.Unify(name1, name2, out bindings);
+                }
+            }
+            else
+            {
+                var name1 = Name.BuildName(n1);
+                var name2 = Name.BuildName(n2);
+                for (int i = 0; i < unifierReps; i++)
+                {
+                    isUnifiable = Unifier.Unify(name1, name2, out bindings);
+                }
+            }
+
+            Assert.That(isUnifiable);
+            if (result.Any())
+            {
+                Assert.That(bindings, Is.EquivalentTo(expectedBindings));
+            }
+            else
+            {
+                Assert.That(bindings.Count() == 0);
+            }
+        }
+                  
+
+        [TestCase("John", "J")]
+        [TestCase("Strong(John)", "John")]
+        [TestCase("[x]([x])", "IsPerson(John)")]
+        [TestCase("[x](John,Paul)", "Friend(John,[x])")]
+        [TestCase("Like([x],[y])", "Like(John,Strong([y]))")]
+        public void Unify_NonUnifiableNames_False(string n1, string n2)
+        {
+            var name1 = Name.BuildName(n1);
+            var name2 = Name.BuildName(n2);
+            IEnumerable<Substitution> bindings = new List<Substitution>();
+            var isUnifiable = Unifier.Unify(name1, name2, out bindings);
+            Assert.That(!isUnifiable);
+            Assert.That(bindings == null);
+        }
+
+
+        [TestCase("x", "x(a)", new string[0])]
+        [TestCase("x", "[y](a)", new[] { "[y]/x" })]
+        [TestCase("x(a)", "x", new string[0])]
+        [TestCase("[y](a)", "x", new[] { "[y]/x" })]
+        [TestCase("x(a, b)", "x(a, b, c)", new string[0])]
+        public void PartialUnify_PartiallyUnifiableNames_True(string n1, string n2, string[] result)
+        {
+            var name1 = Name.BuildName(n1);
+            var name2 = Name.BuildName(n2);
+            var expectedBindings = result.Select(s => new Substitution(s));
+
+            IEnumerable<Substitution> bindings = new List<Substitution>();
+            var isPartiallyUnifiable = Unifier.PartialUnify(name1, name2, out bindings);
+
+            Assert.That(isPartiallyUnifiable);
+            if (result.Any())
+            {
+                Assert.That(bindings, Is.EquivalentTo(expectedBindings));
+            }
+            else
+            {
+                Assert.That(bindings == null);
+            }
         }
     }
 }

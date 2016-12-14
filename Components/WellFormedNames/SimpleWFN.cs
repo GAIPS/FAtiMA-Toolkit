@@ -30,12 +30,15 @@ namespace WellFormedNames
 
     public class SimpleName
     {
-        public List<Literal> literals;
+        internal List<Literal> literals;
 
         public SimpleName(IEnumerable<Literal> literalList)
         {
             this.literals = new List<Literal>();
-            var delta = literalList.FirstOrDefault().depth;
+
+            // used to reset the depth of the first literal to 0
+            var delta = literalList.FirstOrDefault().depth; 
+
             foreach (var l in literalList)
             {
                 this.literals.Add(new Literal(l.description, l.type, l.depth - delta));
@@ -131,8 +134,6 @@ namespace WellFormedNames
         {
             return new string(input.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
         }
-
-
     }
 
 
@@ -143,11 +144,7 @@ namespace WellFormedNames
 	/// <remarks>
     public class SimpleWFN
     {
-        public static int GetNumberOfTerms(SimpleName n)
-        {
-            return n.literals.Where(l => l.depth <= 1).Count();
-        }
-
+       
         /// <summary>
         /// Verifies if a specific variable is contained inside this Name.
         /// </summary>
@@ -158,7 +155,7 @@ namespace WellFormedNames
             var v = Name.BuildName(variable);
             if (!v.IsVariable)
                 throw new ArgumentException("Invalid variable", variable);
-            return GetVariables(name).Any(l => l.description == variable);
+            return GetVariables(name).Any(l => l.description.EqualsIgnoreCase(variable));
         }
 
         public static bool ContainsUniversal(SimpleName name)
@@ -168,7 +165,17 @@ namespace WellFormedNames
 
         public static IEnumerable<Literal> GetVariables(SimpleName name)
         {
-            return name.literals.Where(l => l.description[0] == '[');
+            return name.literals.Where(l => IsVariable(l));
+        }
+
+        public static bool IsVariable(Literal literal)
+        {
+            return literal.description[0] == '[';
+        }
+
+        public static bool IsGrounded(SimpleName name)
+        {
+            return !name.literals.Any(l => IsVariable(l));
         }
 
         public static bool HasSelf(SimpleName name)
@@ -217,6 +224,17 @@ namespace WellFormedNames
             return new SimpleName(list.Prepend(name.literals[n]));
         }
 
+        public static SimpleName BuildNameFromContainedLiteral(SimpleName name, Literal literal)
+        {
+           if (literal.type != LiteralType.Root)
+                return new SimpleName(new Literal[] { literal });
+
+            var i = name.literals.IndexOf(literal);
+            var list = name.literals.Skip(i+1).TakeWhile(l => l.depth > literal.depth);
+            return new SimpleName(list.Prepend(literal));
+        }
+
+
         //not really needed for now but might be useful for building sub names
         public static List<SimpleName> GetAllComposedNames(SimpleName name)
         {
@@ -249,6 +267,9 @@ namespace WellFormedNames
         //A bit more complicated but 3x faster than the old Match method
         public static bool Match(SimpleName n1, SimpleName n2)
         {
+            if(!ContainsUniversal(n1) && ! ContainsUniversal(n2))
+               return n1.ToString().EqualsIgnoreCase(n2.ToString());
+
             var arrayLit1 = n1.literals.ToArray();
             var arrayLit2 = n2.literals.ToArray();
             var idx1 = 0;
@@ -267,7 +288,7 @@ namespace WellFormedNames
                 //The easy matching scenario is when both types match
                 if (typesMatch)
                 {
-                    if (existsUniversal || l1.description == l2.description)
+                    if (existsUniversal || l1.description.EqualsIgnoreCase(l2.description))
                     {
                         idx1++; idx2++;
                         continue;
@@ -356,11 +377,140 @@ namespace WellFormedNames
             return new SimpleName(literals);
         }
     
-        #region Unecessary Methods
-        //public abstract Name GetFirstTerm();
-        //public abstract IEnumerable<Name> GetTerms();
-        //public abstract Name GetNTerm(int index);
-        #endregion
+        
     }
+
+    public static class SimpleUnifier
+    {
+        /// <summary>
+        /// Unifying Method, receives two WellFormedNames and tries 
+        /// to find a list of Substitutions that will make 
+        /// both names syntatically equal. The algorithm performs Occur Check,
+        /// as such the unification of [X] and Luke([X]) will allways fail.
+        /// 
+        /// The method goes on each symbol (for both names) at a time, and tries to find 
+        /// a substitution between them. Take into account that the Unification between
+        /// [X](John,Paul) and Friend(John,[X]) fails because the algorithm considers [X]
+        /// to be the same variable
+        /// </summary>
+        /// <see cref="FAtiMA.Core.WellFormedNames.Substitution"/>
+        /// <see cref="FAtiMA.Core.WellFormedNames.Name"/>
+        /// <param name="name1">The first Name</param>
+        /// <param name="name2">The second Name</param>
+        /// <param name="bindings">The out paramenter for the founded substitutions</param>
+        /// <returns>True if the names are unifiable, in this case the bindings list will contain the found Substitutions, otherwise it will be empty</returns>
+        public static bool Unify(SimpleName name1, SimpleName name2, out IEnumerable<Substitution> bindings)
+        {
+            bindings = null;
+            if (name1 == null || name2 == null)
+                return false;
+
+            if (SimpleWFN.IsGrounded(name1) && SimpleWFN.IsGrounded(name2))
+            {
+                if (SimpleWFN.Match(name1, name2))
+                {
+                    bindings = Enumerable.Empty<Substitution>();
+                    return true;
+                }
+                else   {  return false; }
+            }
+
+            bindings = FindSubst(name1, name2);
+            return bindings != null;
+        }
+
+        private static IEnumerable<Substitution> FindSubst(SimpleName n1, SimpleName n2)
+        {
+            SubstitutionSet bindings = new SubstitutionSet();
+            
+            var arrayLit1 = n1.literals.ToArray();
+            var arrayLit2 = n2.literals.ToArray();
+            var idx1 = 0;
+            var idx2 = 0;
+
+            do
+            {
+                var l1 = arrayLit1[idx1];
+                var l2 = arrayLit2[idx2];
+                //neither literal is a variable
+                if (!SimpleWFN.IsVariable(l1) && !SimpleWFN.IsVariable(l2))
+                {
+                    if (l1.description.EqualsIgnoreCase(l2.description))
+                    {
+                        idx1++; idx2++;
+                        continue;
+                    }
+                    else { return null; }
+                }
+                //both literals are a variable
+                if (SimpleWFN.IsVariable(l1) && SimpleWFN.IsVariable(l2))
+                {
+                    if (!l1.description.EqualsIgnoreCase(l2.description) &&
+                         !bindings.AddSubstitution(
+                             new Substitution(l1.description, l2.description)))
+                        return null;
+
+                    idx1++; idx2++;
+                    continue;
+                }
+                //only l1 is a variable 
+                if (SimpleWFN.IsVariable(l1) && !SimpleWFN.IsVariable(l2))
+                {
+                    var res = FindSubsAux(l1, l2, n2, bindings);
+                    if (res == -1) return null;
+                    else { idx1++; idx2 += res; continue; }
+                }
+                //only l2 is a variable 
+                if (!SimpleWFN.IsVariable(l1) && SimpleWFN.IsVariable(l2))
+                {
+                    var res = FindSubsAux(l2, l1, n1, bindings);
+                    if (res == -1) return null;
+                    else { idx1 += res; idx2++; continue; }
+                }
+                throw new Exception("Unexpected Situation");
+            } while (idx1 < arrayLit1.Length && idx2 < arrayLit2.Length);
+
+            if (idx1 == arrayLit1.Length && idx2 == arrayLit2.Length)
+            {
+                return bindings; // full match
+            }
+            else
+            {
+                return null; // only partial match
+            };
+        }
+
+
+        //return the idx jump on the valName or -1 if it can't add the substitution
+        private static int FindSubsAux(Literal var, Literal val, SimpleName valName, SubstitutionSet bindings)
+        {
+            if (val.type == LiteralType.Root)
+            {
+                var n = SimpleWFN.BuildNameFromContainedLiteral(valName, val);
+                if (!bindings.AddSubstitution(new Substitution(var.description, n.ToString())))
+                    return -1;
+                else return n.literals.Count;
+            }
+            else //l2 is a parameter
+            {
+                if (!bindings.AddSubstitution(new Substitution(var.description, val.description)))
+                    return -1;
+                else return 1;
+            }
+        }
+        /*
+        private static Dictionary<string, SimpleName> SubstitutionSetConverter(SubstitutionSet bindings)
+        {
+            var result = new Dictionary<string, SimpleName>();
+
+            foreach (var b in bindings)
+            {
+                result.Add(b.Variable.ToString(), new SimpleName(b.Variable.ToString()));
+            }
+            return result;
+        }*/
+
+    }
+        
 
 }

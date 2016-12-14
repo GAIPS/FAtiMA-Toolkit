@@ -57,12 +57,13 @@ namespace WellFormedNames
 			this.Value = value;
 		}
 
-		/// <summary>
-		/// Constructs a Substitution using a string definition
-		/// </summary>
-		/// <param name="substitutionDefinition">The string to be parsed as a Substitution</param>
-		/// <exception cref="BadSubstitutionException">Thrown if the given definition is not a valid substitution</exception>
-		public Substitution(string substitutionDefinition)
+        
+        /// <summary>
+        /// Constructs a Substitution using a string definition
+        /// </summary>
+        /// <param name="substitutionDefinition">The string to be parsed as a Substitution</param>
+        /// <exception cref="BadSubstitutionException">Thrown if the given definition is not a valid substitution</exception>
+        public Substitution(string substitutionDefinition)
 		{
 			string[] elem = substitutionDefinition.Split(SUBSTITUTION_SEPARATORS, 2);
 			if(elem.Length != 2)

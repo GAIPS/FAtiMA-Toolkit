@@ -4,7 +4,7 @@ using NUnit.Framework;
 using WellFormedNames;
 
 namespace Tests.WellFormedNames
-{
+{/*
     [TestFixture]
     public class UnifierTests {
 
@@ -74,5 +74,5 @@ namespace Tests.WellFormedNames
                 Assert.That(bindings == null);
             }
         }
-    }
+    }*/
 }
