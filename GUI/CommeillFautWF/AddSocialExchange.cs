@@ -10,73 +10,103 @@ using System.Windows.Forms;
 using CommeillFaut;
 using CommeillFaut.DTOs;
 using CommeillFautWF.Properties;
+using CommeillFautWF.ViewModels;
+using WellFormedNames;
 
 namespace CommeillFautWF
 {
     public partial class AddSocialExchange : Form
     {
         private SocialExchangeDTO _dto;
-        private CommeillFautAsset _cif;
+
+        private SocialExchangesVM _vm;
+
+      
 
         public SocialExchangeDTO AddedObject { get; private set; } = null;
 
-        public AddSocialExchange(CommeillFautAsset asset)
+        public AddSocialExchange(SocialExchangesVM vm)
         {
+
             InitializeComponent();
-            _cif = asset;
+            AddedObject = new SocialExchangeDTO();
+           
+            _vm = vm;
+
+            //	NameBox.Text = (_dto. == Guid.Empty) ? "Add" : "Update";
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        public AddSocialExchange(SocialExchangesVM vm, SocialExchange social)
         {
 
+            InitializeComponent();
+            AddedObject = new SocialExchangeDTO();
+
+            _vm = vm;
+
+            moveName.Text = social.ActionName.ToString();
+            IntentTextBox.Text = social.Intent;
+            InstantiationTextBox.Text = social.Instantiation;
+
+            
+            if (social.InfluenceRules != null )
+            {
+              foreach (var cond in social.InfluenceRules)
+                {
+                 
+                            this.listBox1.Items.Add(cond.RuleName);
+                }
+            }
+
+
+            //	NameBox.Text = (_dto. == Guid.Empty) ? "Add" : "Update";
         }
 
-        private void CloseButton_Click(object sender, EventArgs e)
-        {
-           Close();
-        }
+        private void NameBox_Click(object sender, EventArgs e) {
 
-      
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-            MessageBox.Show(moveName.Name);
-            _cif.ToString();
+             _dto = new SocialExchangeDTO()
+            {
+                
+                Action = moveName.Text,
+                Intent =  IntentTextBox.Text,
+                Instantiation = InstantiationTextBox.Text,
+                InfluenceRules = _vm._rules.Values.ToList()
+            };
+            
             try
             {
-                MessageBox.Show(moveName.Text);
-                var newMove = new SocialExchangeDTO()
-                {
-                   
-                    SocialExchangeName = moveName.Text
-
-                };
+              
+                AddedObject = _dto;
+                _vm.AddSocialMove(_dto);
+                MessageBox.Show("Added Social Exchange: " + _dto.Action);
                
-                _cif.AddSocialExchange(newMove);
+            Close();
+        }
+        catch (Exception ex) {
 
-            }
-            
-            catch (Exception ex)
+       MessageBox.Show(ex.Message, Resources.ErrorDialogTitle , MessageBoxButtons.OK, MessageBoxIcon.Error);
+    }
+}
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            new AddInfluenceRule(this._vm, new InfluenceRuleDTO()).ShowDialog();
+
+            if (_vm._rules != null)
             {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                listBox1.Items.Clear();
+                foreach (var move in _vm._rules)
+                {
+                    if (move.Value != null)
+                        if (move.Value.RuleName != null)
+                            this.listBox1.Items.Add(move.Value.RuleName);
+                }
             }
-            this.Close();
         }
 
-        private void AddSocialExchange_Load(object sender, EventArgs e)
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
-        }
-
-        private void SocialExchangeNameBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        {
-
+           
         }
     }
 }

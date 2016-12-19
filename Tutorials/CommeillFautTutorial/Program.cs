@@ -28,8 +28,8 @@ namespace CommeillFautTutorial
             var compliment = new SocialExchangeDTO { Action = "Compliment", Instanciation = "You are pretty cool" };
 
             CommeillFautAsset n = new CommeillFautAsset();
-            n.AddSocialExchange(flirt);
-            n.AddSocialExchange(compliment);
+            n.AddExchange(flirt);
+            n.AddExchange(compliment);
             
 
             RolePlayCharacterAsset npc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/john.rpc");

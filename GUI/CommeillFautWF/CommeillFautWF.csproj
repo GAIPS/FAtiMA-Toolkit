@@ -33,6 +33,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Equin.ApplicationFramework.BindingListView, Version=1.4.5222.35545, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Equin.ApplicationFramework.BindingListView.1.4.5222.35545\lib\net40-Client\Equin.ApplicationFramework.BindingListView.dll</HintPath>
+    </Reference>
     <Reference Include="RageAssetManager">
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
@@ -49,6 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddInfluenceRule.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddInfluenceRule.Designer.cs">
+      <DependentUpon>AddInfluenceRule.cs</DependentUpon>
+    </Compile>
     <Compile Include="AddSocialExchange.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -66,7 +76,11 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\InfluenceRuleVM.cs" />
     <Compile Include="ViewModels\SocialExchangesVM.cs" />
+    <EmbeddedResource Include="AddInfluenceRule.resx">
+      <DependentUpon>AddInfluenceRule.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AddSocialExchange.resx">
       <DependentUpon>AddSocialExchange.cs</DependentUpon>
     </EmbeddedResource>
@@ -103,10 +117,6 @@
       <Project>{ba21951c-1799-4d0f-aa99-62df857f3b71}</Project>
       <Name>CommeillFaut</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Components%28Portable%29\WellFormedNames\WellFormedNames.csproj">
-      <Project>{c7275fbb-c4ee-40f2-9859-59196298b9c4}</Project>
-      <Name>WellFormedNames</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj">
       <Project>{e011d502-5c0f-4a3f-9f1a-337ff025eb48}</Project>
       <Name>ActionLibrary</Name>
@@ -119,10 +129,17 @@
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
       <Name>SerializationUtilities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
+      <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
+      <Name>WellFormedNames</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GAIPS.AssetEditorTools\GAIPS.AssetEditorTools.csproj">
       <Project>{c61fb19d-e715-4eb4-afca-27ff81a14777}</Project>
       <Name>GAIPS.AssetEditorTools</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

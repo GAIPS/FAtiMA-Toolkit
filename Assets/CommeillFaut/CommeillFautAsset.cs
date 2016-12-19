@@ -15,8 +15,8 @@ namespace CommeillFaut
     {
 
      //   private EmotionalAppraisalAsset m_ea = null;
-        private HashSet<InfluenceRule> m_influencerules;
-        private List<SocialExchange> SocialExchanges;
+        private List<InfluenceRule> m_influencerules;
+        public List<SocialExchange> m_SocialExchanges { get; set; }
       
 
 
@@ -27,8 +27,8 @@ namespace CommeillFaut
 
         public CommeillFautAsset()
         {
-            m_influencerules = new HashSet<InfluenceRule>();
-            SocialExchanges = new List<SocialExchange>();
+            m_influencerules = new List<InfluenceRule>();
+            m_SocialExchanges = new List<SocialExchange>();
           
 
         }
@@ -36,11 +36,26 @@ namespace CommeillFaut
 
        
 
-        public Guid AddSocialExchange(SocialExchangeDTO newExchange)
+        public Guid AddExchange(SocialExchangeDTO newExchange)
         {
             var newSocialExchange = new SocialExchange(newExchange);
-            this.SocialExchanges.Add(newSocialExchange);
-            return newSocialExchange.Id;
+
+            
+      
+            if(m_SocialExchanges != null)
+                m_SocialExchanges.Add(newSocialExchange);
+            else
+            {
+
+              // m_SocialExchanges = new List<SocialExchange>();
+                m_SocialExchanges.Add(newSocialExchange);
+
+                foreach (var newrule in newSocialExchange.InfluenceRules)
+                {
+                    this.m_influencerules.Add(newrule);
+                }
+            }
+            return new Guid();
         }
 
         /// <summary>
@@ -48,9 +63,23 @@ namespace CommeillFaut
         /// </summary>
         public void UpdateSocialExchange(SocialExchangeDTO reactionToEdit, SocialExchangeDTO newReaction)
         {
-            newReaction.Conditions = reactionToEdit.Conditions;
-            var newId = this.AddSocialExchange(newReaction);
-            SocialExchanges.Remove(new SocialExchange(reactionToEdit));
+            m_SocialExchanges.Remove(new SocialExchange(reactionToEdit));
+
+            var newId = this.AddExchange(newReaction);
+
+           
+            
+         
+        }
+
+        public void UpdateSocialExchange(SocialExchangeDTO newReaction)
+        {
+
+          
+
+            m_SocialExchanges.Remove(m_SocialExchanges.Find(x => x.ActionName.ToString() == newReaction.Action));
+
+            var newId = this.AddExchange(newReaction);
         }
 
 
@@ -58,19 +87,24 @@ namespace CommeillFaut
         {
             foreach (var id in toRemove)
             {
-               SocialExchanges.Remove(SocialExchanges.Find(x => x.Id == id));
+                m_SocialExchanges.Remove(m_SocialExchanges.Find(x => new Guid() == id));
             }
         }
 
-     
 
+        public void RemoveSocialExchange(SocialExchange torem)
+        {
+          
+                m_SocialExchanges.Remove(torem);
+           
+        }
 
 
         public SocialExchange GetSocialMove(Name target)
         {
             Dictionary<SocialExchange,int> return_list = new Dictionary<SocialExchange, int>();
            
-                foreach (var _socialMove in SocialExchanges)
+                foreach (var _socialMove in m_SocialExchanges)
                 {
                     return_list.Add(_socialMove, _socialMove.CalculateVolition(Name.BuildName("uhm"), target));
               
@@ -82,12 +116,15 @@ namespace CommeillFaut
 
         public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
-         //   dataHolder.SetValue("Name", m_attributionRules.ToArray());
+               dataHolder.SetValue("SocialExchanges", m_SocialExchanges.ToArray());
+      //      dataHolder.SetValue("InfluenceRules", m_influencerules.ToArray());
+            
         }
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
-            
+            m_SocialExchanges = new List<SocialExchange>(dataHolder.GetValue<SocialExchange[]>("SocialExchanges"));
+        //    m_influencerules = new List<InfluenceRule>(dataHolder.GetValue<List<InfluenceRule>>("InfluenceRules"));
         }
 
 

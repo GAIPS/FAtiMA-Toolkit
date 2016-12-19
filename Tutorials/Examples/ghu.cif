@@ -1,0 +1,23 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"SocialExchanges": [
+				{
+					"Intent": "xcv",
+					"Instantiation": "xcv",
+					"InfluenceRules": null,
+					"Action": "cv",
+					"Conditions":
+						{
+							"Set": []
+						}
+				}],
+			"InfluenceRules": []
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "CommeillFaut.CommeillFautAsset, CommeillFaut, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}
