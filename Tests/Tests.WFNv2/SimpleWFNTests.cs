@@ -6,10 +6,16 @@ using WellFormedNames;
 
 namespace Tests.WFNv2
 {
+    public enum Refactorization
+    {
+        Current,
+        New
+    }
+
     [TestFixture]
     public class SimpleWFNTests
     {
-        private int reps = 10000;
+        private int reps = 1000000;
         
         [Test]
         public void Test_MakeGround_SimpleWFN()
@@ -84,70 +90,71 @@ namespace Tests.WFNv2
             Assert.AreEqual(result, expectedResult);
         }
 
-        [Test]
-        public void Test_Replace_Literals_SimpleWFN()
+        
+        [TestCase("SELF(B,C(D,E([x],D)),[x])","D","T","SELF(B,C(T,E([x],T)),[x])", Refactorization.Current)]
+        [TestCase("SELF(B,C(D,E([x],D)),[x])", "D", "T", "SELF(B,C(T,E([x],T)),[x])", Refactorization.New)]
+        public void Test_Replace_Literals(string n1, string t1, string t2, string expectedResult, Refactorization r)
         {
-            var name = new SimpleName("SELF(B,C(D,E([x],D)),[x])");
-            var expectedResult = new SimpleName("SELF(B,C(T,E([x],T)),[x])");
-            SimpleName result = null;
-
-            for (long i = 0; i < reps; i++)
+            
+            string resultStr = string.Empty;
+            switch (r)
             {
-                result = SimpleWFN.ReplaceLiterals(name, "D", "T");
+                case Refactorization.Current:
+                    Name result1 = null;
+                    var name1 = Name.BuildName(n1);
+                    for (long i = 0; i < reps; i++)
+                    {
+                        result1 = name1.SwapTerms((Name)t1, (Name)t2);
+                    }
+                    resultStr = result1.ToString();
+                    break;
+                case Refactorization.New:
+                    SimpleName result2 = null;
+                    var name2 = new SimpleName(n1);
+                    for (long i = 0; i < reps; i++)
+                    {
+                        result2 = SimpleWFN.ReplaceLiterals(name2, t1, t2);
+                    }
+                    resultStr = result2.ToString();
+                    break;
             }
 
-            Assert.That(string.Equals(result.ToString(), expectedResult.ToString(), StringComparison.InvariantCultureIgnoreCase));
+            Assert.That(string.Equals(resultStr, expectedResult, StringComparison.InvariantCultureIgnoreCase));
         }
 
 
-        [Test]
-        public void Test_Replace_Literals_NormalWFN()
+        [TestCase("John", "John", Refactorization.Current)]
+        [TestCase("John", "John", Refactorization.New)]
+        [TestCase("J(A,*,*,B)", "J(*,B,D,B)", Refactorization.Current)]
+        [TestCase("J(A,*,*,B)", "J(*,B,D,B)", Refactorization.New)]
+        [TestCase("J(A(B,C),*(B,D),*,B)", "J(*,B(B,D),D,B)", Refactorization.Current)]
+        [TestCase("J(A(B,C),*(B,D),*,B)", "J(*,B(B,D),D,B)", Refactorization.New)]
+        public void Test_Match_Names_True(string n1, string n2, Refactorization r)
         {
-            var name = Name.BuildName("SELF(B,C(D,E([x],D)),[x])");
-            var expectedResult = Name.BuildName("SELF(B,C(T,E([x],T)),[x])");
-            Name result = null;
-
-            for (long i = 0; i < reps; i++)
-            {
-                result = name.SwapTerms((Name)"D", (Name)"T");
-            }
-
-            Assert.That(string.Equals(result.ToString(), expectedResult.ToString(), StringComparison.InvariantCultureIgnoreCase));
-        }
-
-
-        [Test]
-        public void Test_Match_Names_SimpleWFN()
-        {
-            var name1 = new SimpleName("A");
-            var name2 = new SimpleName("A");
-            var expectedResult = true;
             bool result = false;
 
-            for (long i = 0; i < reps; i++)
+            switch (r)
             {
-                result = SimpleWFN.Match(name1, name2);
+                case Refactorization.Current:
+                    var name1 = Name.BuildName(n1);
+                    var name2 = Name.BuildName(n2);
+                    for (long i = 0; i < reps; i++)
+                    {
+                        result = name1.Match(name2);
+                    }
+                    break;
+                case Refactorization.New:
+                    var name3 = new SimpleName(n1);
+                    var name4 = new SimpleName(n2);
+                    for (long i = 0; i < reps; i++)
+                    {
+                        result = SimpleWFN.Match(name3, name4);
+                    }
+                    break;
             }
-
-            Assert.AreEqual(result, expectedResult);
+            Assert.IsTrue(result);
         }
-
-        [Test]
-        public void Test_Match_Names_NormalWFN()
-        {
-            var name1 = Name.BuildName("A");
-            var name2 = Name.BuildName("A");
-            var expectedResult = true;
-            bool result = false;
-
-            for (long i = 0; i < reps; i++)
-            {
-                result = name1.Match(name2);
-            }
-
-            Assert.AreEqual(result, expectedResult);
-        }
-
+        
         [Test]
         public void Test_Add_Variable_Tag_SimpleWFN()
         {
@@ -207,18 +214,30 @@ namespace Tests.WFNv2
             Assert.That(string.Equals(expectedResult, test.ToString(), StringComparison.InvariantCultureIgnoreCase));
         }
 
-        [Test]
-        public void Test_To_String_SimpleWFN()
+        [TestCase("  SELF(B, [ y] (D, E([x],D)),[x])","SELF(B, [y](D, E([x], D)), [x])",Refactorization.Current)]
+        [TestCase("  SELF(B, [ y] (D, E([x],D)),[x])","SELF(B,[y](D,E([x],D)),[x])", Refactorization.New)]
+        public void Test_To_String(string n1, string expectedResult, Refactorization r)
         {
-            var expectedResult = "SELF(B,[y](D,E([x],D)),[x])";
-            var name = new SimpleName(expectedResult);
-            string test = "";
-
-            for (long i = 0; i < reps; i++)
+            string result = string.Empty;
+            switch (r)
             {
-                test = name.ToString();
+                case Refactorization.Current:
+                    var name = Name.BuildName(n1);
+                    for (long i = 0; i < reps; i++)
+                    {
+                        result = name.ToString();
+                    }
+                    break;
+                    break;
+                case Refactorization.New:
+                    var name2 = new SimpleName(n1);
+                    for (long i = 0; i < reps; i++)
+                    {
+                        result = name2.ToString();
+                    }
+                    break;
             }
-            Assert.That(string.Equals(expectedResult, test, StringComparison.InvariantCultureIgnoreCase));
+            Assert.That(string.Equals(expectedResult, result, StringComparison.InvariantCultureIgnoreCase));
         }
 
         [Test]
@@ -242,49 +261,50 @@ namespace Tests.WFNv2
     {
 
         //This is still a bit slower in the "Simple" refactorization
-        private int unifierReps = 100000;
-        [TestCase("John", "John", new string[0], "Normal")]
-        [TestCase("John", "John", new string[0], "Simple")]
-        [TestCase("Strong(John,A(B,C(D)))", "Strong(John,A(B,C(*)))", new string[0], "Normal")]
-        [TestCase("Strong(John,A(B,C(D)))", "Strong(John,A(B,C(*)))", new string[0], "Simple")]
-        [TestCase("John", "[x]", new[] { "[x]/John" }, "Normal")]
-        [TestCase("John", "[x]", new[] { "[x]/John" }, "Simple")]
-        [TestCase("Strong([x])", "Strong(John)", new[] { "[x]/John" }, "Normal")]
-        [TestCase("Strong([x])", "Strong(John)", new[] { "[x]/John" }, "Simple")]
-        [TestCase("Likes([x],[y])", "Likes(John, [z])", new[] { "[x]/John", "[y]/[z]" }, "Normal")]
-        [TestCase("Likes([x],[y])", "Likes(John, [z])", new[] { "[x]/John", "[y]/[z]" }, "Simple")]
-        [TestCase("Likes([x],John)", "Likes(John, [x])", new[] { "[x]/John" }, "Normal")]
-        [TestCase("Likes([x],John)", "Likes(John, [x])", new[] { "[x]/John" }, "Simple")]
-        [TestCase("Likes([x],[y])", "Likes(John, Mary)", new[] { "[x]/John", "[y]/Mary" }, "Normal")]
-        [TestCase("Likes([x],[y])", "Likes(John, Mary)", new[] { "[x]/John", "[y]/Mary" }, "Simple")]
-        [TestCase("S([x],k([x],[z]),j([y],k(t(k,l),y)))", "S(t(k,l),k([x],y),j(P,k([x],[z])))", new[] { "[x]/t(k,l)", "[z]/y", "[y]/P" }, "Normal")]
-        [TestCase("S([x],k([x],[z]),j([y],k(t(k,l),y)))", "S(t(k,l),k([x],y),j(P,k([x],[z])))", new[] { "[x]/t(k,l)", "[z]/y", "[y]/P" }, "Simple")]
-        [TestCase("S([x])", "S(t(k))", new[] { "[x]/t(k)"}, "Normal")]
-        public void Unify_UnifiableNames_True(string n1, string n2, string[] result, string refactorization)
+        private int unifierReps = 1000000;
+        [TestCase("John", "John", new string[0], Refactorization.Current)]
+        [TestCase("John", "John", new string[0], Refactorization.New)]
+        [TestCase("Strong(John,A(B,C(D)))", "Strong(John,A(B,C(*)))", new string[0], Refactorization.Current)]
+        [TestCase("Strong(John,A(B,C(D)))", "Strong(John,A(B,C(*)))", new string[0], Refactorization.New)]
+        [TestCase("John", "[x]", new[] { "[x]/John" }, Refactorization.Current)]
+        [TestCase("John", "[x]", new[] { "[x]/John" }, Refactorization.New)]
+        [TestCase("Strong([x])", "Strong(John)", new[] { "[x]/John" }, Refactorization.Current)]
+        [TestCase("Strong([x])", "Strong(John)", new[] { "[x]/John" }, Refactorization.New)]
+        [TestCase("Likes([x],[y])", "Likes(John, [z])", new[] { "[x]/John", "[y]/[z]" }, Refactorization.Current)]
+        [TestCase("Likes([x],[y])", "Likes(John, [z])", new[] { "[x]/John", "[y]/[z]" }, Refactorization.New)]
+        [TestCase("Likes([x],John)", "Likes(John, [x])", new[] { "[x]/John" }, Refactorization.Current)]
+        [TestCase("Likes([x],John)", "Likes(John, [x])", new[] { "[x]/John" }, Refactorization.New)]
+        [TestCase("Likes([x],[y])", "Likes(John, Mary)", new[] { "[x]/John", "[y]/Mary" }, Refactorization.Current)]
+        [TestCase("Likes([x],[y])", "Likes(John, Mary)", new[] { "[x]/John", "[y]/Mary" }, Refactorization.New)]
+        [TestCase("S([x],k([x],[z]),j([y],k(t(k,l),y)))", "S(t(k,l),k([x],y),j(P,k([x],[z])))", new[] { "[x]/t(k,l)", "[z]/y", "[y]/P" }, Refactorization.Current)]
+        [TestCase("S([x],k([x],[z]),j([y],k(t(k,l),y)))", "S(t(k,l),k([x],y),j(P,k([x],[z])))", new[] { "[x]/t(k,l)", "[z]/y", "[y]/P" }, Refactorization.New)]
+        [TestCase("S([x])", "S(t(k))", new[] { "[x]/t(k)"}, Refactorization.Current)]
+        public void Unify_UnifiableNames_True(string n1, string n2, string[] result, Refactorization r)
         {
             var expectedBindings = result.Select(s => new Substitution(s));
             IEnumerable<Substitution> bindings = null;
             var isUnifiable = false;
 
-            if(refactorization == "Simple")
+            switch (r)
             {
-                var name1 = new SimpleName(n1);
-                var name2 = new SimpleName(n2);
-                for (int i = 0; i < unifierReps; i++)
-                {
-                    isUnifiable = SimpleUnifier.Unify(name1, name2, out bindings);
-                }
-            }
-            else
-            {
-                var name1 = Name.BuildName(n1);
-                var name2 = Name.BuildName(n2);
-                for (int i = 0; i < unifierReps; i++)
-                {
-                    isUnifiable = Unifier.Unify(name1, name2, out bindings);
-                }
-            }
+                case Refactorization.Current:
+                    var name1 = Name.BuildName(n1);
+                    var name2 = Name.BuildName(n2);
+                    for (int i = 0; i < unifierReps; i++)
+                    {
+                        isUnifiable = Unifier.Unify(name1, name2, out bindings);
+                    }
+                    break;
+                case Refactorization.New:
+                    var name3 = new SimpleName(n1);
+                    var name4 = new SimpleName(n2);
 
+                    for (int i = 0; i < unifierReps; i++)
+                    {
+                        isUnifiable = SimpleUnifier.Unify(name3, name4, out bindings);
+                    }
+                    break;
+            }
             Assert.That(isUnifiable);
             if (result.Any())
             {

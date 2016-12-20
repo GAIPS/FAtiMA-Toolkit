@@ -31,10 +31,12 @@ namespace WellFormedNames
     public class SimpleName
     {
         internal List<Literal> literals;
+        internal bool isGrounded;
 
         public SimpleName(IEnumerable<Literal> literalList)
         {
             this.literals = new List<Literal>();
+            this.isGrounded = true;
 
             // used to reset the depth of the first literal to 0
             var delta = literalList.FirstOrDefault().depth; 
@@ -42,6 +44,10 @@ namespace WellFormedNames
             foreach (var l in literalList)
             {
                 this.literals.Add(new Literal(l.description, l.type, l.depth - delta));
+                if (SimpleWFN.IsVariable(l))
+                {
+                    this.isGrounded = false;
+                }
             }
         }
 
@@ -175,7 +181,7 @@ namespace WellFormedNames
 
         public static bool IsGrounded(SimpleName name)
         {
-            return !name.literals.Any(l => IsVariable(l));
+            return name.isGrounded;
         }
 
         public static bool HasSelf(SimpleName name)
