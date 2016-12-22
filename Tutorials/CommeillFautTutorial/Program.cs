@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using AssetManagerPackage;
 using CommeillFaut.DTOs;
-using SerializationUtilities;
-using EmotionalAppraisal;
-using GAIPS.Rage;
 using CommeillFaut;
 using RolePlayCharacter;
-using WellFormedNames;
 
 namespace CommeillFautTutorial
 {
@@ -22,19 +12,15 @@ namespace CommeillFautTutorial
         {
             AssetManager.Instance.Bridge = new BasicIOBridge();
 
-            
-
             var flirt = new SocialExchangeDTO {Action = "Flirt", Instantiation = "You are so beautiful"};
             var compliment = new SocialExchangeDTO { Action = "Compliment", Instantiation = "You are pretty cool" };
 
             CommeillFautAsset n = new CommeillFautAsset();
             n.AddExchange(flirt);
             n.AddExchange(compliment);
-            
 
             RolePlayCharacterAsset npc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/john.rpc");
             Console.WriteLine(npc.CharacterName);
-
 
        //     CommeillFautAsset cif;
        //     var flirt_id = cif.AddSocialExchange(flirt);
