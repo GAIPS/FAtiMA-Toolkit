@@ -46,6 +46,7 @@
     <Compile Include="Name.cs" />
     <Compile Include="PrimitiveValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleWFN.cs" />
     <Compile Include="SubstitutionSetImplementations\ConstraintSubstitutionSetImplementation.cs" />
     <Compile Include="SubstitutionSetImplementations\SimpleSubstitutionSetImplementation.cs" />
     <Compile Include="Substitution.cs" />
