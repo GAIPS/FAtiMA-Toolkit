@@ -6,7 +6,7 @@ using NUnit.Framework;
 using Utilities;
 
 
-namespace UnitTest
+namespace Tests.Utilities
 {
 	[TestFixture]
 	public class ObjectPoolTests
