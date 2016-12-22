@@ -15,87 +15,68 @@ namespace Tests.WFNv2
     [TestFixture]
     public class SimpleWFNTests
     {
-        private int reps = 1000000;
+        private int reps = 10000;
         
-        [Test]
-        public void Test_MakeGround_SimpleWFN()
+        [TestCase("A(B,C(D,E([x],D)),[x],B(A,B(SELF)))", "[x]", "J(I)", "A(B,C(D,E(J(I),D)),J(I),B(A,B(SELF)))", Refactorization.New)]
+        public void MakeGround_GroundedName(string n1, string var, string sub, string expectedResult, Refactorization r)
         {
-            var nStr = "A(B,C(D,E([x],D)),[x],B(A,B(SELF)))";
-            var name = new SimpleName(nStr);
-            var expectedResult = "A(B,C(D,E(J(I),D)),J(I),B(A,B(SELF)))";
+            String result = string.Empty;
 
-            SimpleName result = null;
-
-            Dictionary<string, SimpleName> subs = new Dictionary<string, SimpleName>();
-
-            subs["[x]"] = new SimpleName("J(I)");
-
-            for (long i = 0; i < reps; i++)
+            if (r == Refactorization.New)
             {
-                result = SimpleWFN.MakeGround(name, subs);
+                var name = new SimpleName(n1);
+                SimpleName nameResult = null;
+                Dictionary<string, SimpleName> subs = new Dictionary<string, SimpleName>();
+                subs[var] = new SimpleName(sub);
+                for (long i = 0; i < reps; i++)
+                {
+                    nameResult = SimpleWFN.MakeGround(name, subs);
+                }
+                result = nameResult.ToString();
             }
-
-            Assert.AreEqual(expectedResult, result.ToString());
+            else if (r == Refactorization.Current)
+            {
+                var name = Name.BuildName(n1);
+                Name nameResult = null;
+                SubstitutionSet subSet = new SubstitutionSet();
+                subSet.AddSubstitution(new Substitution("[x]/J(I)"));
+                for (long i = 0; i < reps; i++)
+                {
+                    nameResult = name.MakeGround(subSet);
+                }
+            }
+            Assert.AreEqual(expectedResult, result);
         }
 
 
-        [Test]
-        public void Test_MakeGround_NormalWFN()
+        [TestCase("A(B,C(D,E([x],D)),[x],B(A,B(SELF)))", true, Refactorization.Current)]
+        [TestCase("A(B,C(D,E([x],D)),[x],B(A,B(SELF)))", true, Refactorization.New)]
+        public void HasSelf(string nStr, bool expectedResult, Refactorization r)
         {
-            var nStr = "A(B,C(D,E([x],D)),[x],B(A,B(SELF)))";
-            var name = Name.BuildName(nStr);
-            var expectedResult = "A(B, C(D, E(J(I), D)), J(I), B(A, B(SELF)))"; ;
-
-            Name result = null;
-
-            SubstitutionSet subSet = new SubstitutionSet();
-            subSet.AddSubstitution(new Substitution("[x]/J(I)"));
-
-            for (long i = 0; i < reps; i++)
-            {
-                result = name.MakeGround(subSet);
-            }
-            Assert.AreEqual(result.ToString(), expectedResult);
-        }
-
-
-
-        [TestCase("A(B,C(D,E([x],D)),[x],B(A,B(SELF)))")]
-        public void Test_HasSelf_SimpleWFN(string nStr)
-        {
-            var name = new SimpleName(nStr);
-            var expectedResult = true;
             bool result = false;
-
-            for (long i = 0; i < reps; i++)
+            if (r == Refactorization.Current)
             {
-                result = SimpleWFN.HasSelf(name);
+                var name = Name.BuildName(nStr);
+                for (long i = 0; i < reps; i++)
+                {
+                    result = name.HasSelf();
+                }
             }
-
-            Assert.AreEqual(result, expectedResult);
+            else if(r == Refactorization.New)
+            {
+                var name = new SimpleName(nStr);
+                for (long i = 0; i < reps; i++)
+                {
+                    result = SimpleWFN.HasSelf(name);
+                }
+            }
+            Assert.AreEqual(expectedResult,result);
         }
 
-        [TestCase("A(B,C(D,E([x],D)),[x],B(A,B(SELF)))")]
-        public void Test_HasSelf_NormalWFN(string nStr)
-        {
-            var name = Name.BuildName(nStr);
-            var expectedResult = true;
-            bool result = false;
-
-            for (long i = 0; i < reps; i++)
-            {
-                result = name.HasSelf();
-            }
-
-            Assert.AreEqual(result, expectedResult);
-        }
-
-        
         [TestCase("SELF(B,C(D,E([x],D)),[x])","D","T","SELF(B,C(T,E([x],T)),[x])", Refactorization.Current)]
         [TestCase("SELF(B,C(D,E([x],D)),[x])", "D", "T", "SELF(B,C(T,E([x],T)),[x])", Refactorization.New)]
-        public void Test_Replace_Literals(string n1, string t1, string t2, string expectedResult, Refactorization r)
+        public void ReplaceLiterals(string n1, string t1, string t2, string expectedResult, Refactorization r)
         {
-            
             string resultStr = string.Empty;
             switch (r)
             {
@@ -129,7 +110,7 @@ namespace Tests.WFNv2
         [TestCase("J(A,*,*,B)", "J(*,B,D,B)", Refactorization.New)]
         [TestCase("J(A(B,C),*(B,D),*,B)", "J(*,B(B,D),D,B)", Refactorization.Current)]
         [TestCase("J(A(B,C),*(B,D),*,B)", "J(*,B(B,D),D,B)", Refactorization.New)]
-        public void Test_Match_Names_True(string n1, string n2, Refactorization r)
+        public void MatchNames_True(string n1, string n2, Refactorization r)
         {
             bool result = false;
 
@@ -156,7 +137,7 @@ namespace Tests.WFNv2
         }
         
         [Test]
-        public void Test_Add_Variable_Tag_SimpleWFN()
+        public void Add_Variable_Tag_SimpleWFN()
         {
             var name = new SimpleName("SELF(B,[y](D,E([x],D)),[x])");
             var expectedResult = new SimpleName("SELF(B,[y_tag](D,E([x_tag],D)),[x_tag])");
@@ -171,7 +152,7 @@ namespace Tests.WFNv2
         }
 
         [Test]
-        public void Test_Add_Variable_Tag_NormalWFN()
+        public void Add_Variable_Tag_NormalWFN()
         {
             var name = Name.BuildName("SELF(B,[y](D,E([x],D)),[x])");
             var expectedResult = Name.BuildName("SELF(B,[y_tag](D,E([x_tag],D)),[x_tag])");
@@ -186,7 +167,7 @@ namespace Tests.WFNv2
         }
 
         [Test]
-        public void Test_ReplaceLiterals_SimpleWFN()
+        public void ReplaceLiterals_SimpleWFN()
         {
             var name = new SimpleName("SELF(B,[x](D,B([x],B)),[b])");
             var expectedResult = "SELF(D,[x](D,D([x],D)),[b])";
@@ -200,7 +181,7 @@ namespace Tests.WFNv2
         }
 
         [Test]
-        public void Test_ReplaceLiterals_NormalWFN()
+        public void ReplaceLiterals_NormalWFN()
         {
             var name = Name.BuildName("SELF(B,[x](D,B([x],B)),[b])");
             var expectedResult = "SELF(D, [x](D, D([x], D)), [b])";
@@ -214,44 +195,34 @@ namespace Tests.WFNv2
             Assert.That(string.Equals(expectedResult, test.ToString(), StringComparison.InvariantCultureIgnoreCase));
         }
 
-        [TestCase("  SELF(B, [ y] (D, E([x],D)),[x])","SELF(B, [y](D, E([x], D)), [x])",Refactorization.Current)]
-        [TestCase("  SELF(B, [ y] (D, E([x],D)),[x])","SELF(B,[y](D,E([x],D)),[x])", Refactorization.New)]
-        public void Test_To_String(string n1, string expectedResult, Refactorization r)
+        [TestCase("  SELF(B(1), [y] (D, E([x],D)),[x])","SELF(B(1),[y](D,E([x],D)),[x])",Refactorization.Current)]
+        [TestCase("  SELF(B(1) , [y] (D, E([x],D)),[x])","SELF(B(1),[y](D,E([x],D)),[x])",Refactorization.New)]
+        public void ToString(string n1, string expectedResult, Refactorization r)
         {
             string result = string.Empty;
-            switch (r)
+            if(r == Refactorization.Current)
             {
-                case Refactorization.Current:
-                    var name = Name.BuildName(n1);
-                    for (long i = 0; i < reps; i++)
-                    {
-                        result = name.ToString();
-                    }
-                    break;
-                    break;
-                case Refactorization.New:
-                    var name2 = new SimpleName(n1);
-                    for (long i = 0; i < reps; i++)
-                    {
-                        result = name2.ToString();
-                    }
-                    break;
+                var name = Name.BuildName(n1);
+                for (long i = 0; i < reps; i++)
+                {
+                    result = name.ToString();
+                }
+                result = RemoveWhiteSpace(result);
+            }
+            else if(r == Refactorization.New)
+            {
+                var name = new SimpleName(n1);
+                for (long i = 0; i < reps; i++)
+                {
+                    result = name.ToString();
+                }
             }
             Assert.That(string.Equals(expectedResult, result, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        [Test]
-        public void Test_To_String_NameWFN()
+        private static string RemoveWhiteSpace(string input)
         {
-            var expectedResult = "SELF(B, [y](D, E([x], D)), [x])";
-            var name = Name.BuildName("SELF(B,[y](D,E([x],D)),[x])");
-            string test = "";
-
-            for (long i = 0; i < reps; i++)
-            {
-                test = name.ToString();
-            }
-            Assert.That(string.Equals(expectedResult, test, StringComparison.InvariantCultureIgnoreCase));
+            return new string(input.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
         }
     }
 
@@ -261,7 +232,7 @@ namespace Tests.WFNv2
     {
 
         //This is still a bit slower in the "Simple" refactorization
-        private int unifierReps = 1000000;
+        private int unifierReps = 100000;
         [TestCase("John", "John", new string[0], Refactorization.Current)]
         [TestCase("John", "John", new string[0], Refactorization.New)]
         [TestCase("Strong(John,A(B,C(D)))", "Strong(John,A(B,C(*)))", new string[0], Refactorization.Current)]
@@ -357,5 +328,7 @@ namespace Tests.WFNv2
                 Assert.That(bindings == null);
             }
         }
+
+     
     }
 }
