@@ -22,13 +22,17 @@ namespace IntegratedAuthoringToolWF
 		private void AboutForm_Load(object sender, EventArgs e)
 		{
 			var a = Assembly.GetExecutingAssembly();
-			var fvi = FileVersionInfo.GetVersionInfo(a.Location);
-			_versionLabel.Text = $"Version {fvi.FileVersion}";
+			_versionLabel.Text = $"Version {a.GetName().Version}";
 		}
 
 		private void button1_Click(object sender, EventArgs e)
 		{
 			Close();
 		}
-	}
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

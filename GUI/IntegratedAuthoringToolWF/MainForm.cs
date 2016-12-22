@@ -170,5 +170,10 @@ namespace IntegratedAuthoringToolWF
 			buttonEditCharacter.Enabled = active;
 			buttonRemoveCharacter.Enabled = active;
 		}
-	}
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
+    }
 }
