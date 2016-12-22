@@ -10,11 +10,11 @@ namespace CommeillFautWF
 	public partial class AddInfluenceRule : Form
 	{
 		private InfluenceRuleDTO _dto;
-		private SocialExchangesVM _vm;
+		private InfluenceRuleVM _vm;
 
 		public ObjectView<InfluenceRuleDTO> AddedObject { get; private set; } = null;
 
-		public AddInfluenceRule(SocialExchangesVM vm, InfluenceRuleDTO dto)
+		public AddInfluenceRule(InfluenceRuleVM vm, InfluenceRuleDTO dto)
 		{
 			InitializeComponent();
 
@@ -35,7 +35,7 @@ namespace CommeillFautWF
 				_dto.RuleName = _ruleDescriptionTextBox.Text;
 				_dto.Value = _valueFieldBox.Value;
 				_dto.Target = _targetVariableBox.Value.ToString();
-				_vm.AddInfluenceRule(_dto);
+				_vm.AddOrUpdateInfluenceRule(_dto);
 			}
 			catch (Exception e)
 			{

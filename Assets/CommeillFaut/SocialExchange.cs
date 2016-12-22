@@ -29,7 +29,7 @@ namespace CommeillFaut
 
         public String Instantiation { get; set; }
 
-        public List<InfluenceRule> InfluenceRules { get; set; }
+        public List<InfluenceRuleDTO> InfluenceRules { get; set; }
 
 
 
@@ -41,14 +41,20 @@ namespace CommeillFaut
             Intent = "";
             Instantiation = "";
 
-            InfluenceRules = new List<InfluenceRule>();
+            InfluenceRules = new List<InfluenceRuleDTO>();
 
         }
 
 
-        public SocialExchange(SocialExchangeDTO s) : base(s){ 
-            
-      //      Name = s.SocialExchangeName;
+        public SocialExchange(SocialExchangeDTO s) : base(s){
+
+            InfluenceRules = new List<InfluenceRuleDTO>();
+            //      Name = s.SocialExchangeName;
+            foreach (var inf in s.InfluenceRules)
+            {
+                InfluenceRules.Add(inf);
+            }
+           
             Intent = s.Intent;
             Instantiation = s.Instantiation;
         }
@@ -89,7 +95,7 @@ namespace CommeillFaut
             int counter = 0;
             foreach (var rule in InfluenceRules)
             {
-                counter += rule.Result(init, _targ);
+                counter += rule.Value;
 
             }
             return counter;
@@ -151,7 +157,7 @@ namespace CommeillFaut
 
             foreach (var go in dto.InfluenceRules)
             {
-                InfluenceRules.Add(new InfluenceRule(go));
+                InfluenceRules.Add(go);
             }
         
             SetFromDTO(dto);
@@ -163,7 +169,7 @@ namespace CommeillFaut
 
             foreach (var inf in InfluenceRules)
             {
-               ret.Add(inf.ToDTO());
+               ret.Add(inf);
             }
             return new SocialExchangeDTO() {Intent = Intent, Instantiation = Instantiation, InfluenceRules = ret };
         }
@@ -187,19 +193,19 @@ namespace CommeillFaut
            
             Intent = dataHolder.GetValue<string>("Intent");
             Instantiation = dataHolder.GetValue<string>("Instantiation");
-            InfluenceRules = dataHolder.GetValue<List<InfluenceRule>>("InfluenceRules");
+            InfluenceRules = dataHolder.GetValue<List<InfluenceRuleDTO>>("InfluenceRules");
         }
 
         public void AddInfluenceRule(InfluenceRule infrul)
         {
-            InfluenceRules.Add(infrul);
+            InfluenceRules.Add(infrul.ToDTO());
 
         }
 
         public void EditInfluenceRule(InfluenceRule infrul)
         {
             InfluenceRules.Remove(InfluenceRules.Find(x => x.RuleName == infrul.RuleName));
-            InfluenceRules.Add(infrul);
+            InfluenceRules.Add(infrul.ToDTO());
 
         }
 

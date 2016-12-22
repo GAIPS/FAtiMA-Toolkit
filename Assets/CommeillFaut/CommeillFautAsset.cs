@@ -48,12 +48,12 @@ namespace CommeillFaut
             {
 
               // m_SocialExchanges = new List<SocialExchange>();
-                m_SocialExchanges.Add(newSocialExchange);
+            if(m_SocialExchanges.Find(x => x.ActionName.ToString() == newExchange.Action) != null)
+                    UpdateSocialExchange(newExchange);
 
-                foreach (var newrule in newSocialExchange.InfluenceRules)
-                {
-                    this.m_influencerules.Add(newrule);
-                }
+                   else m_SocialExchanges.Add(newSocialExchange);
+
+               
             }
             return new Guid();
         }

@@ -24,8 +24,8 @@ namespace CommeillFautTutorial
 
             
 
-            var flirt = new SocialExchangeDTO {Action = "Flirt", Instanciation = "You are so beautiful"};
-            var compliment = new SocialExchangeDTO { Action = "Compliment", Instanciation = "You are pretty cool" };
+            var flirt = new SocialExchangeDTO {Action = "Flirt", Instantiation = "You are so beautiful"};
+            var compliment = new SocialExchangeDTO { Action = "Compliment", Instantiation = "You are pretty cool" };
 
             CommeillFautAsset n = new CommeillFautAsset();
             n.AddExchange(flirt);

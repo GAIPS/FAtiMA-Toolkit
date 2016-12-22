@@ -91,6 +91,7 @@ namespace CommeillFautWF
         private void Refresh()
         {
             OnAssetDataLoaded(this.CurrentAsset);
+            
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -126,7 +127,7 @@ namespace CommeillFautWF
             {
                 SocialExchange toEdit = CurrentAsset.m_SocialExchanges[toedit_index];
 
-                new AddSocialExchange(_socialExchangesVM, toEdit).ShowDialog();
+                new AddSocialExchange(this._socialExchangesVM, toEdit).ShowDialog();
 
             }
             Refresh();

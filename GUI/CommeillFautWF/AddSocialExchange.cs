@@ -17,9 +17,10 @@ namespace CommeillFautWF
 {
     public partial class AddSocialExchange : Form
     {
-        private SocialExchangeDTO _dto;
+     
 
         private SocialExchangesVM _vm;
+        private InfluenceRuleVM _influenceRuleVm;
 
       
 
@@ -32,7 +33,7 @@ namespace CommeillFautWF
             AddedObject = new SocialExchangeDTO();
            
             _vm = vm;
-
+            _influenceRuleVm = new InfluenceRuleVM(vm);
             //	NameBox.Text = (_dto. == Guid.Empty) ? "Add" : "Update";
         }
 
@@ -47,30 +48,35 @@ namespace CommeillFautWF
             moveName.Text = social.ActionName.ToString();
             IntentTextBox.Text = social.Intent;
             InstantiationTextBox.Text = social.Instantiation;
-
-            
-            if (social.InfluenceRules != null )
+            _influenceRuleVm = new InfluenceRuleVM(vm);
+              
+           
+            if (social.InfluenceRules != null)
             {
               foreach (var cond in social.InfluenceRules)
                 {
-                 
+                            _influenceRuleVm.AddOrUpdateInfluenceRule(cond);
                             this.listBox1.Items.Add(cond.RuleName);
                 }
             }
 
-
+            
             //	NameBox.Text = (_dto. == Guid.Empty) ? "Add" : "Update";
         }
 
-        private void NameBox_Click(object sender, EventArgs e) {
+        private void NameBox_Click(object sender, EventArgs e)
+        {
 
-             _dto = new SocialExchangeDTO()
+            MessageBox.Show(" count: " + _influenceRuleVm.RuleList.Count);
+
+           SocialExchangeDTO  _dto = new SocialExchangeDTO()
             {
-                
+                SocialExchangeName = moveName.Text,
                 Action = moveName.Text,
                 Intent =  IntentTextBox.Text,
                 Instantiation = InstantiationTextBox.Text,
-                InfluenceRules = _vm._rules.Values.ToList()
+                InfluenceRules = _influenceRuleVm.RuleList,
+                
             };
             
             try
@@ -78,8 +84,8 @@ namespace CommeillFautWF
               
                 AddedObject = _dto;
                 _vm.AddSocialMove(_dto);
-                MessageBox.Show("Added Social Exchange: " + _dto.Action);
-               
+       //         MessageBox.Show("Added Social Exchange: " + _dto.Action);
+          
             Close();
         }
         catch (Exception ex) {
@@ -90,16 +96,15 @@ namespace CommeillFautWF
 
         private void button2_Click(object sender, EventArgs e)
         {
-            new AddInfluenceRule(this._vm, new InfluenceRuleDTO()).ShowDialog();
+            new AddInfluenceRule(_influenceRuleVm, new InfluenceRuleDTO()).ShowDialog();
 
-            if (_vm._rules != null)
+            if (_influenceRuleVm.RuleList != null)
             {
                 listBox1.Items.Clear();
-                foreach (var move in _vm._rules)
+                foreach (var move in _influenceRuleVm.RuleList)
                 {
-                    if (move.Value != null)
-                        if (move.Value.RuleName != null)
-                            this.listBox1.Items.Add(move.Value.RuleName);
+                  
+                            this.listBox1.Items.Add(move.RuleName);
                 }
             }
         }
