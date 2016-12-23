@@ -4,24 +4,28 @@ using EmotionalDecisionMaking;
 using System.Collections.Generic;
 using System.Linq;
 using ActionLibrary;
+using AssetPackage;
 using AutobiographicMemory.DTOs;
+//using ComeillFaut.DTOs;
 using EmotionalAppraisal.DTOs;
 using GAIPS.Rage;
 using KnowledgeBase;
 using SocialImportance;
 using Utilities;
 using WellFormedNames;
+using CommeillFaut;
 
 namespace RolePlayCharacter
 {
     [Serializable]
-    public sealed class RolePlayCharacterAsset : LoadableAsset<RolePlayCharacterAsset>//, ICustomSerialization
+    public sealed class RolePlayCharacterAsset : BaseAsset, IDynamicPropertiesRegister//, ICustomSerialization
     {
 		#region RolePlayCharater Fields
 
-        private EmotionalAppraisalAsset _emotionalAppraisalAsset;
+	    private EmotionalAppraisalAsset _emotionalAppraisalAsset;
 		private EmotionalDecisionMakingAsset _emotionalDecisionMakingAsset;
 		private SocialImportanceAsset _socialImportanceAsset;
+		private CommeillFautAsset _commeillFautAsset;
 
 		[NonSerialized]
 		private IAction _currentAction = null;
@@ -30,7 +34,7 @@ namespace RolePlayCharacter
 
 		#region Public Interface
 
-		public RolePlayCharacterAsset(EmotionalAppraisalAsset ea, EmotionalDecisionMakingAsset edm = null, SocialImportanceAsset si = null)
+		public RolePlayCharacterAsset(EmotionalAppraisalAsset ea, EmotionalDecisionMakingAsset edm = null, SocialImportanceAsset si = null, CommeillFautAsset cfa=null)
 		{
 			if (ea == null)
 				throw new ArgumentNullException(nameof(ea));
@@ -41,38 +45,19 @@ namespace RolePlayCharacter
 			if (si == null)
 				si = new SocialImportanceAsset();
 
+			if(cfa == null)
+				cfa = new CommeillFautAsset();
+
 			edm.RegisterEmotionalAppraisalAsset(ea);
 			si.BindEmotionalAppraisalAsset(ea);
 
 			_emotionalAppraisalAsset = ea;
 			_emotionalDecisionMakingAsset = edm;
 			_socialImportanceAsset = si;
-
-			////Load Emotional Decision Making Asset
-			//try
-			//{
-			//	_emotionalDecisionMakingAsset = Loader(_emotionalDecisionMakingAssetSource, () => new EmotionalDecisionMakingAsset());
-			//}
-			//catch (Exception e)
-			//{
-			//	AssetManager.Instance.Log(Severity.Critical, e.Message);
-			//	return $"Unable to load the Emotional Decision Making Asset at \"{EmotionalDecisionMakingSource}\". Check if the path is correct.";
-			//}
-			//_emotionalDecisionMakingAsset.RegisterEmotionalAppraisalAsset(_emotionalAppraisalAsset);
-
-			////Load Social Importance Asset
-			//try
-			//{
-			//	_socialImportanceAsset = Loader(_socialImportanceAssetSource, () => new SocialImportanceAsset());
-			//}
-			//catch (Exception)
-			//{
-			//	return $"Unable to load the Emotional Decision Making Asset at \"{SocialImportanceAssetSource}\". Check if the path is correct.";
-			//}
-			//_socialImportanceAsset.BindEmotionalAppraisalAsset(_emotionalAppraisalAsset);
+			_commeillFautAsset = cfa;
 		}
 
-		#region Emotional Appraisal Interface
+#region Emotional Appraisal Interface
 
 		public float Mood => _emotionalAppraisalAsset?.Mood ?? 0;
 
@@ -126,15 +111,49 @@ namespace RolePlayCharacter
 			return _emotionalAppraisalAsset.GetBeliefValue(beliefName, perspective);
 		}
 
-		#endregion
+        #endregion
 
-		/// <summary>
-		/// Executes an iteration of the character's decision cycle.
-		/// </summary>
-		/// <param name="eventStrings">A list of new events that occurred since the last call to this method. Each event must be represented by a well formed name with the following format "EVENT([type], [subject], [param1], [param2])". 
-		/// For illustration purposes here are some examples: EVENT(Property-Change, John, CurrentRole(Customer), False) ; EVENT(Action-Finished, John, Open, Box)</param>
-		/// <returns>The action selected for execution or "null" otherwise</returns>
-		public IAction PerceptionActionLoop(IEnumerable<string> eventStrings)
+
+     
+   /*     #region  Comme il Faut
+
+        private List<SocialExchange> _socialExchanges;
+        private List<RolePlayCharacterAsset> _otherCharacters;
+        private RolePlayCharacterAsset me;
+
+        public void FindMe(RolePlayCharacterAsset m)
+        {
+            me = m;
+        }
+        public void AddSocialExchanges(List<SocialExchange> exchanges)
+        {
+            foreach (var ex in exchanges)
+            {
+                _socialExchanges.Add(ex);
+            }
+            
+        }
+
+        public void AddCharacters(List<RolePlayCharacterAsset> others)
+        {
+            foreach (var ex in others)
+            {
+                _otherCharacters.Add(ex);
+            }
+
+        }
+
+      
+
+        #endregion */
+
+        /// <summary>
+        /// Executes an iteration of the character's decision cycle.
+        /// </summary>
+        /// <param name="eventStrings">A list of new events that occurred since the last call to this method. Each event must be represented by a well formed name with the following format "EVENT([type], [subject], [param1], [param2])". 
+        /// For illustration purposes here are some examples: EVENT(Property-Change, John, CurrentRole(Customer), False) ; EVENT(Action-Finished, John, Open, Box)</param>
+        /// <returns>The action selected for execution or "null" otherwise</returns>
+        public IAction PerceptionActionLoop(IEnumerable<string> eventStrings)
 	    {
 			_socialImportanceAsset.InvalidateCachedSI();
 			_emotionalAppraisalAsset.AppraiseEvents(eventStrings);
@@ -183,16 +202,23 @@ namespace RolePlayCharacter
 		    _currentAction = null;
 	    }
 
-		public IDynamicPropertiesRegister DynamicPropertiesRegistry => _emotionalAppraisalAsset.DynamicPropertiesRegistry;
+		public IDynamicPropertiesRegistry DynamicPropertiesRegistry => _emotionalAppraisalAsset.DynamicPropertiesRegistry;
 
-	    #endregion
+	    public void BindToRegistry(IDynamicPropertiesRegistry registry)
+	    {
+		    _emotionalAppraisalAsset.BindToRegistry(registry);
+			_socialImportanceAsset.BindToRegistry(registry);
+	    }
 
-		protected override string OnAssetLoaded()
-		{
-			return null;
+	    public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
+	    {
+			_emotionalAppraisalAsset.UnbindToRegistry(registry);
+			_socialImportanceAsset.UnbindToRegistry(registry);
 		}
 
-	    private static IEnumerable<IAction> TakeBestActions(IEnumerable<IAction> enumerable)
+		#endregion
+
+		private static IEnumerable<IAction> TakeBestActions(IEnumerable<IAction> enumerable)
 	    {
 		    float best = float.NegativeInfinity;
 		    foreach (var a in enumerable.OrderByDescending(a => a.Utility))

@@ -15,7 +15,7 @@ namespace IntegratedAuthoringTool
     /// This asset is responsible for managing the scenario, including its characters and respective dialogues
     /// </summary>
     [Serializable]
-    public class IntegratedAuthoringToolAsset : LoadableAsset<IntegratedAuthoringToolAsset>, ICustomSerialization
+    public class IntegratedAuthoringToolAsset : LoadableAsset<IntegratedAuthoringToolAsset>, ICustomSerialization, IDynamicPropertiesRegister
     {
 		private class Profile
 		{
@@ -40,15 +40,12 @@ namespace IntegratedAuthoringTool
         /// </summary>
         public string ScenarioName { get; set; }
 
-		/// <summary>
-		/// The description of the Scenario
-		/// </summary>
 		public string ScenarioDescription { get; set; }
 
-		/// <summary>
-		/// This method is used to automatically load any associated assets.
-		/// </summary>
-		protected override string OnAssetLoaded()
+        /// <summary>
+        /// This method is used to automatically load any associated assets.
+        /// </summary>
+        protected override string OnAssetLoaded()
         {
 			var storage = GetInterface<IDataStorage>();
 			string currentKey = string.Empty;
@@ -92,9 +89,7 @@ namespace IntegratedAuthoringTool
 	    }
 
 	    public IntegratedAuthoringToolAsset()
-	    {
-		    ScenarioName = ScenarioDescription = string.Empty;
-
+        {
             m_playerDialogues = new DialogActionDictionary();
             m_agentDialogues = new DialogActionDictionary();
 	        m_characterSources = new Dictionary<string, Profile>();
@@ -124,7 +119,7 @@ namespace IntegratedAuthoringTool
 				throw new Exception($"Character \"{characterName}\" not found");
 
 		    var asset = p.Asset.BuildRPCFromProfile();
-			RegistDynamicProperties(asset);
+			BindToRegistry(asset.DynamicPropertiesRegistry);
 		    return asset;
 		}
 
@@ -300,10 +295,15 @@ namespace IntegratedAuthoringTool
 
 		#region Dynamic Properties
 
-		private void RegistDynamicProperties(RolePlayCharacterAsset character)
+	    public void BindToRegistry(IDynamicPropertiesRegistry registry)
 	    {
-			character.DynamicPropertiesRegistry.RegistDynamicProperty(VALID_DIALOGUE_PROPERTY_TEMPLATE,ValidDialogPropertyCalculator, "No description");
+			registry.RegistDynamicProperty(VALID_DIALOGUE_PROPERTY_TEMPLATE, ValidDialogPropertyCalculator, "No description");
 		}
+
+	    public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
+	    {
+		    throw new NotImplementedException();
+	    }
 
 	    private static readonly Name VALID_DIALOGUE_PROPERTY_TEMPLATE = (Name)"ValidDialogue";
 		private IEnumerable<DynamicPropertyResult> ValidDialogPropertyCalculator(IQueryContext context, Name currentState, Name nextState, Name meaning, Name style)
@@ -340,8 +340,8 @@ namespace IntegratedAuthoringTool
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
-			ScenarioName = dataHolder.GetValue<string>("ScenarioName") ?? string.Empty;
-	        ScenarioDescription = dataHolder.GetValue<string>("Description")??string.Empty;
+			ScenarioName = dataHolder.GetValue<string>("ScenarioName");
+	        ScenarioDescription = dataHolder.GetValue<string>("Description");
 
 			var charArray = dataHolder.GetValue<CharacterSourceDTO[]>("Characters");
             if (charArray != null)

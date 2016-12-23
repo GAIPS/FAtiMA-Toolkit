@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
+using GAIPS.AssetEditorTools.DynamicPropertiesWindow;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
 using RolePlayCharacter;
@@ -30,7 +31,6 @@ namespace IntegratedAuthoringToolWF
 		{
 			textBoxScenarioName.Text = asset.ScenarioName;
 			textBoxScenarioDescription.Text = asset.ScenarioDescription;
-
 			_characterSources = new BindingListView<CharacterSourceDTO>(asset.GetAllCharacterSources().ToList());
 			dataGridViewCharacters.DataSource = _characterSources;
 		}
@@ -160,6 +160,12 @@ namespace IntegratedAuthoringToolWF
 		private bool ShowToolbar_Validation()
 		{
 			return !_dialogEditorIsShowing;
+		}
+
+		[MenuItem("Tools/Show Available Dynamic Properties")]
+		private void ShowDynamicPropertiesWindow()
+		{
+			DynamicPropertyDisplayer.Instance.ShowOrBringToFront();
 		}
 
 		#endregion

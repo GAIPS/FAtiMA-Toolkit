@@ -1,0 +1,30 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"SocialExchanges": [
+				{
+					"Intent": "yo",
+					"Instantiaction": null,
+					"Action": "Speak(-, -, -, -)",
+					"Conditions":
+						{
+							"Set": []
+						}
+				}, 
+				{
+					"Intent": "dfg",
+					"Instantiaction": "dfg",
+					"Action": "dfg",
+					"Conditions":
+						{
+							"Set": []
+						}
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "CommeillFaut.CommeillFautAsset, CommeillFaut, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

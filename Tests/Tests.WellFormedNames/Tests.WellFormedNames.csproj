@@ -25,7 +25,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -44,13 +43,11 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="InequalityTests.cs" />
     <Compile Include="NameSearchTreeTests.cs" />
     <Compile Include="NameTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SubstitutionSetTests.cs" />
     <Compile Include="SubstitutionTests.cs" />
-    <Compile Include="SymbolTests.cs" />
     <Compile Include="UnifierTests.cs" />
   </ItemGroup>
   <ItemGroup>

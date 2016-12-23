@@ -6,6 +6,7 @@ namespace WellFormedNames
 {
 	/// <summary>
 	/// Static Class that implements the Unifying algorithm
+	/// 
 	/// @author: João Dias
 	/// @author: Pedro Gonçalves (C# version)
 	/// </summary>

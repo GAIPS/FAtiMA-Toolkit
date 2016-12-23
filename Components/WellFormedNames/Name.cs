@@ -72,7 +72,7 @@ namespace WellFormedNames
 	{
 		private const string NUMBER_VALIDATION_PATTERN = @"(?:-|\+)?\d+(?:\.\d+)?(?:e(?:-|\+)?[1-9]\d*)?";
 		private const string VARIABLE_SYMBOL_VALIDATION_PATTERN = @"^\[([A-Za-z_][\w-]*)\]$";
-		private const string VALUE_SYMBOL_VALIDATION_PATTERN = @"^(?:(?:[A-Za-z_][\w-]*)|(?:" + NUMBER_VALIDATION_PATTERN + @"))$";
+		private const string VALUE_SYMBOL_VALIDATION_PATTERN = @"^(?:(?:[A-Za-z1-9_][\w-]*)|(?:" + NUMBER_VALIDATION_PATTERN + @"))$";
 		private static readonly Regex VARIABLE_VALIDATION_PATTERN = new Regex(VARIABLE_SYMBOL_VALIDATION_PATTERN,RegexOptions.IgnoreCase);
 		private static readonly Regex PRIMITIVE_VALIDATION_PATTERN = new Regex(VALUE_SYMBOL_VALIDATION_PATTERN,RegexOptions.IgnoreCase);
 
@@ -197,18 +197,18 @@ namespace WellFormedNames
 		/// <summary>
 		/// Generates a sequence of all Names contained inside this Name.
 		/// </summary>
-        //public abstract IEnumerable<Name> GetLiterals(); //This was not being used at all...
+		public abstract IEnumerable<Name> GetLiterals();
 
 		/// <summary>
 		/// Generates a sequence of all variables contained inside this Name.
 		/// </summary>
-		//public abstract IEnumerable<Name> GetVariables();
+		public abstract IEnumerable<Name> GetVariables();
 
 		/// <summary>
 		/// Tells if this name contains a Ghost variable
 		/// </summary>
 		/// <see cref="GenerateUniqueGhostVariable()"/>
-		//public abstract bool HasGhostVariable();
+		public abstract bool HasGhostVariable();
 
 		/// <summary>
 		/// Tells if this name contains a SELF primitive.
@@ -226,22 +226,8 @@ namespace WellFormedNames
 				throw new ArgumentException("The given Name is not a variable",nameof(variable));
 
 			var v = (VariableSymbol) variable;
-            foreach(var t in this.GetTerms())
-            {
-                if (t.IsVariable && t.Equals(v))
-                {
-                    return true;
-                }
-                else
-                {
-                    if (t.IsComposed)
-                    {
-                        return t.ContainsVariable(v);
-                    }
-                }
-            }
 
-            return false;
+			return GetVariables().Cast<VariableSymbol>().Any(s => s.Equals(v));
 		}
 
 		/// <summary>
@@ -250,7 +236,7 @@ namespace WellFormedNames
 		/// <param name="original">The Name instance to swap from.</param>
 		/// <param name="newName">The Name instance to swap to.</param>
 		/// <returns>A new instance, which is a clone of this Name, but with every instance of the original Name swaped with the new one.</returns>
-        public abstract Name SwapTerms(Name original, Name newName);
+		public abstract Name SwapTerms(Name original, Name newName);
 
 		/// <summary>
 		/// Given a SubstitutionSet, tries to ground this Name by substituting every variable with the corresponding value.
@@ -305,18 +291,17 @@ namespace WellFormedNames
 		public abstract Name ApplyToTerms(Func<Name, Name> transformFunction);
 		
 		private static ulong _variableIdCounter = 0;
-		
-        /// <summary>
+		/// <summary>
 		/// Creates a new Name, representing a variable without a proper human readable identifier.
 		/// Usefull to create temporary substitution variables.
 		/// </summary>
-		/*public static Name GenerateUniqueGhostVariable()
+		public static Name GenerateUniqueGhostVariable()
 		{
 			Name ghost = new VariableSymbol("_");
             ghost = ghost.ReplaceUnboundVariables(_variableIdCounter.ToString());
 			_variableIdCounter++;
             return ghost;
-		}*/
+		}
 
 		#region Operators
 

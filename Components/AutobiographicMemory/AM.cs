@@ -14,7 +14,7 @@ namespace AutobiographicMemory
 	//TODO improve LastEventId efficiency, by caching the last recorded events (cache should be dumped, if a new event is recorded with a greater timestamp that the ones in cache)
 
 	[Serializable]
-	public sealed partial class AM : ICustomSerialization
+	public sealed partial class AM : ICustomSerialization, IDynamicPropertiesRegister
 	{
 		//Indexes
 		private uint m_eventGUIDCounter = 0;
@@ -23,11 +23,16 @@ namespace AutobiographicMemory
 
 		public ulong Tick { get; set; }
 
-		public void BindCalls(KB kb)
+		public void BindToRegistry(IDynamicPropertiesRegistry registry)
 		{
-			kb.RegistDynamicProperty(EVENT_ID_PROPERTY_NAME, EventIdPropertyCalculator, "Returns the ids of all events that unify with the property's name");
-			kb.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_NAME, EventAgePropertyCalculator, "The number of ticks passed since the event associated to [id] occured");
-			kb.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_NAME, LastEventIdPropertyCalculator, "Returns the id of the last event if it unifies with the property's name");
+			registry.RegistDynamicProperty(EVENT_ID_PROPERTY_NAME, EventIdPropertyCalculator, "Returns the ids of all events that unify with the property's name");
+			registry.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_NAME, EventAgePropertyCalculator, "The number of ticks passed since the event associated to [id] occured");
+			registry.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_NAME, LastEventIdPropertyCalculator, "Returns the id of the last event if it unifies with the property's name");
+		}
+
+		public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
+		{
+			throw new NotImplementedException();
 		}
 
 		public IBaseEvent RecordEvent(EventDTO dto)

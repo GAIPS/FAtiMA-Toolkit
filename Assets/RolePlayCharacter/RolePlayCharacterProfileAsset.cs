@@ -1,6 +1,7 @@
 ﻿using System;
 using AssetManagerPackage;
 using AssetPackage;
+using CommeillFaut;
 using EmotionalAppraisal;
 using EmotionalDecisionMaking;
 using GAIPS.Rage;
@@ -14,6 +15,7 @@ namespace RolePlayCharacter
 		private string _emotionalAppraisalAssetSource = null;
 		private string _emotionalDecisionMakingAssetSource = null;
 		private string _socialImportanceAssetSource = null;
+		private string _commeillFautAssetSource = null;
 
 		/// <summary>
 		/// The name of the character
@@ -52,6 +54,12 @@ namespace RolePlayCharacter
 			set { _socialImportanceAssetSource = ToRelativePath(value); }
 		}
 
+		public string CommeillFautAssetSource
+		{
+			get { return ToAbsolutePath(_commeillFautAssetSource); }
+			set { _commeillFautAssetSource = ToRelativePath(value); }
+		}
+
 		protected override string OnAssetLoaded()
 		{
 			return null;
@@ -61,9 +69,15 @@ namespace RolePlayCharacter
 		{
 			_emotionalAppraisalAssetSource = ToRelativePath(AssetFilePath,
 				ToAbsolutePath(oldpath, _emotionalAppraisalAssetSource));
+
 			_emotionalDecisionMakingAssetSource = ToRelativePath(AssetFilePath,
 				ToAbsolutePath(oldpath, _emotionalDecisionMakingAssetSource));
-			_socialImportanceAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _socialImportanceAssetSource));
+
+			_socialImportanceAssetSource = ToRelativePath(AssetFilePath,
+				ToAbsolutePath(oldpath, _socialImportanceAssetSource));
+
+			_commeillFautAssetSource = ToRelativePath(AssetFilePath,
+				ToAbsolutePath(oldpath, _commeillFautAssetSource));
 		}
 
 		public RolePlayCharacterAsset BuildRPCFromProfile()
@@ -73,7 +87,9 @@ namespace RolePlayCharacter
 			EmotionalDecisionMakingAsset edm = Loader(_emotionalDecisionMakingAssetSource,()=> new EmotionalDecisionMakingAsset());
 			SocialImportanceAsset si = Loader(_socialImportanceAssetSource, () => new SocialImportanceAsset());
 
-			return new RolePlayCharacterAsset(ea,edm,si);
+			CommeillFautAsset cfa = Loader(_commeillFautAssetSource, () => new CommeillFautAsset());
+
+			return new RolePlayCharacterAsset(ea,edm,si,cfa);
 		}
 
 		private T Loader<T>(string path, Func<T> generateDefault) where T : LoadableAsset<T>

@@ -1,4 +1,4 @@
-﻿namespace EmotionalAppraisal.DTOs
+﻿namespace KnowledgeBase.DTOs
 {
 	public class DynamicPropertyDTO
 	{

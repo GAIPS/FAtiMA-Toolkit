@@ -20,7 +20,7 @@ namespace EmotionalAppraisal
 	/// Main class of the Emotional Appraisal Asset.
 	/// </summary>
 	[Serializable]
-	public sealed partial class EmotionalAppraisalAsset : LoadableAsset<EmotionalAppraisalAsset>, IQueryable, ICustomSerialization
+	public sealed partial class EmotionalAppraisalAsset : LoadableAsset<EmotionalAppraisalAsset>, IQueryable, ICustomSerialization, IDynamicPropertiesRegister
 	{
         private KB m_kb;
         private AM m_am;
@@ -343,12 +343,11 @@ namespace EmotionalAppraisal
 		{
 			m_kb = new KB((Name)perspective);
 			m_am = new AM();
-			m_am.BindCalls(m_kb);
-
+			
 			m_emotionalState = new ConcreteEmotionalState(this);
 			m_occAffectDerivator = new OCCAffectDerivationComponent();
 			m_appraisalDerivator = new ReactiveAppraisalDerivator();
-			BindCalls(m_kb);
+			BindToRegistry(m_kb);
 		}
 
 		/// <summary>
@@ -472,12 +471,22 @@ namespace EmotionalAppraisal
 			_lastFrameAppraisal = frame.LastChange;
 		}
 
-		private void BindCalls(KB kb)
+		public void BindToRegistry(IDynamicPropertiesRegistry registry)
 		{
-			kb.RegistDynamicProperty(MOOD_PROPERTY_NAME, MoodPropertyCalculator, "The current mood value for agent [x]");
-			kb.RegistDynamicProperty(STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator,"The type of the current strongest emotion that agent [x] is feeling.");
-			kb.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator,"The intensity value for the emotion felt by agent [x] of type [y].");
-        }
+			registry.RegistDynamicProperty(MOOD_PROPERTY_NAME, MoodPropertyCalculator, "The current mood value for agent [x]");
+			registry.RegistDynamicProperty(STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator, "The type of the current strongest emotion that agent [x] is feeling.");
+			registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator, "The intensity value for the emotion felt by agent [x] of type [y].");
+
+			m_kb.BindToRegistry(registry);
+			m_am.BindToRegistry(registry);
+		}
+
+		public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
+		{
+			m_kb.UnbindToRegistry(registry);
+
+			throw new NotImplementedException();
+		}
 
 		#region Dynamic Properties
 
@@ -631,13 +640,12 @@ namespace EmotionalAppraisal
 
             m_kb = dataHolder.GetValue<KB>("KnowledgeBase");
 			m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
-			m_am.BindCalls(m_kb);
 
 			m_emotionalState = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
 			m_appraisalDerivator = dataHolder.GetValue<ReactiveAppraisalDerivator>("AppraisalRules");
 
 			m_occAffectDerivator = new OCCAffectDerivationComponent();
-			BindCalls(m_kb);
+			BindToRegistry(m_kb);
 		}
 
 		#endregion
@@ -658,11 +666,6 @@ namespace EmotionalAppraisal
 			m_kb.UnregistDynamicProperty(propertyTemplate);
 		}
 
-		public IEnumerable<DynamicPropertyDTO> GetRegistedDynamicProperties()
-		{
-			return m_kb.GetDynamicProperties().Select(d => new DynamicPropertyDTO() {PropertyTemplate = d.PropertyTemplate.ToString(), Description = d.Description});
-		}
-
-		public IDynamicPropertiesRegister DynamicPropertiesRegistry => m_kb;
+		public IDynamicPropertiesRegistry DynamicPropertiesRegistry => m_kb;
 	}
 }

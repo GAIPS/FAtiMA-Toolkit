@@ -24,7 +24,7 @@ namespace SocialImportance
 	///			- Gives the Social Importance value attributed to the given target
 	/// </remarks>
 	[Serializable]
-	public sealed class SocialImportanceAsset: LoadableAsset<SocialImportanceAsset>, ICustomSerialization
+	public sealed class SocialImportanceAsset: LoadableAsset<SocialImportanceAsset>, ICustomSerialization, IDynamicPropertiesRegister
 	{
 		private EmotionalAppraisalAsset m_ea;
 		private HashSet<AttributionRule> m_attributionRules;
@@ -63,23 +63,23 @@ namespace SocialImportance
 			if (m_ea != null)
 			{
 				//Unregist bindings
-				RemoveKBBindings();
+				UnbindToRegistry(m_ea.DynamicPropertiesRegistry);
 				m_ea = null;
 			}
 
 			m_ea = eaa;
-			PerformKBBindings();
+			BindToRegistry(m_ea.DynamicPropertiesRegistry);
 			InvalidateCachedSI();
 		}
 
-		private void PerformKBBindings()
+		public void BindToRegistry(IDynamicPropertiesRegistry registry)
 		{
-			m_ea.DynamicPropertiesRegistry.RegistDynamicProperty(SI_DYNAMIC_PROPERTY_NAME, SIPropertyCalculator,"The value of Social Importance attributed to [target]");
+			registry.RegistDynamicProperty(SI_DYNAMIC_PROPERTY_NAME, SIPropertyCalculator, "The value of Social Importance attributed to [target]");
 		}
 
-		private void RemoveKBBindings()
+		public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
 		{
-			m_ea.UnregistDynamicProperty(SI_DYNAMIC_PROPERTY_NAME);
+			registry.UnregistDynamicProperty((Name)"SI([target])");
 		}
 
 		private void ValidateEALink()

@@ -19,7 +19,7 @@ namespace RolePlayCharacterWF
 			{
 				RequestAssetReload();
 
-				erro de proposito
+				//erro de proposito
 				//isto deve de falhar, uma vez que não está a passar a lista de dynamic properties
 				// se calhar a lista deve de ser algo externo ao asset
 				return EmotionalAppraisal.EmotionalAppraisalAsset.LoadFromFile(CurrentAsset.EmotionalAppraisalAssetSource);

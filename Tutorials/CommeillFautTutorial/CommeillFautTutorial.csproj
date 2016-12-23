@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BB9973F4-6832-424C-A596-941AFCD7FC80}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ConsoleApplication1</RootNamespace>
+    <AssemblyName>ConsoleApplication1</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="RageAssetManager">
+      <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BasicIOBridge.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\AffectRecognitionComponents\EDARecognition\EDARecognition.csproj">
+      <Project>{cac723a2-c070-4c79-ab68-caa5bde8733a}</Project>
+      <Name>EDARecognition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AffectRecognitionComponents\SpeechEmotionRecognition\SpeechEmotionRecognition.csproj">
+      <Project>{284b89e5-85fb-4b3e-bfb7-8bd871a1a230}</Project>
+      <Name>SpeechEmotionRecognition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Assets\CommeillFaut\CommeillFaut.csproj">
+      <Project>{ba21951c-1799-4d0f-aa99-62df857f3b71}</Project>
+      <Name>CommeillFaut</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Assets\EmotionalAppraisal\EmotionalAppraisal.csproj">
+      <Project>{0a2a1ee9-bd5d-44aa-a22d-291612488f06}</Project>
+      <Name>EmotionalAppraisal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Assets\EmotionalDecisionMaking\EmotionalDecisionMaking.csproj">
+      <Project>{a1e56f5c-eaac-43e5-a922-5b244168ea5c}</Project>
+      <Name>EmotionalDecisionMaking</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Assets\IntegratedAuthoringTool\IntegratedAuthoringTool.csproj">
+      <Project>{f6ad95a5-889c-41a4-b613-b81f09a424ee}</Project>
+      <Name>IntegratedAuthoringTool</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Assets\RealTimeEmotionRecognition\RealTimeEmotionRecognition.csproj">
+      <Project>{cc3a5863-e579-4d38-9817-5dc1744703f3}</Project>
+      <Name>RealTimeEmotionRecognition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Assets\RolePlayCharacter\RolePlayCharacter.csproj">
+      <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
+      <Name>RolePlayCharacter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Assets\SocialImportance\SocialImportance.csproj">
+      <Project>{823e8a41-5231-4b06-bbab-e62651e15bc7}</Project>
+      <Name>SocialImportance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components%28Portable%29\SerializationUtilities\SerializationUtilities.csproj">
+      <Project>{21e0f2d3-bc3e-4005-8bd3-2f079cd52b86}</Project>
+      <Name>SerializationUtilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj">
+      <Project>{e011d502-5c0f-4a3f-9f1a-337ff025eb48}</Project>
+      <Name>ActionLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\AutobiographicMemory\AutobiographicMemory.csproj">
+      <Project>{c1cc38c5-72f5-4545-b4f7-c65b2883909c}</Project>
+      <Name>AutobiographicMemory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\Conditions\Conditions.csproj">
+      <Project>{59041269-e52e-4cdd-84e0-92fdcfbf270d}</Project>
+      <Name>Conditions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
+      <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
+      <Name>GAIPS.Rage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\KnowledgeBase\KnowledgeBase.csproj">
+      <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
+      <Name>KnowledgeBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\Utilities\Utilities.csproj">
+      <Project>{2021e828-2f7f-4775-9f02-58c68fd72edd}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\ValueDomains\ValueDomains.csproj">
+      <Project>{b439d1f1-11ed-4983-a762-593ad1c0d57e}</Project>
+      <Name>ValueDomains</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
+      <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
+      <Name>WellFormedNames</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GUI\AuthorialAgentsWF\AuthorialAgentsWF.csproj">
+      <Project>{15fdc9b4-c348-4561-9e7e-2c278c058bc8}</Project>
+      <Name>AuthorialAgentsWF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\GUI\GAIPS.AssetEditorTools\GAIPS.AssetEditorTools.csproj">
+      <Project>{c61fb19d-e715-4eb4-afca-27ff81a14777}</Project>
+      <Name>GAIPS.AssetEditorTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tests\Test.SerializationUtilities\Test.SerializationUtilities.csproj">
+      <Project>{58c05e0c-707a-4d8c-b886-549581cb6ebc}</Project>
+      <Name>Test.SerializationUtilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Tests\Tests.Conditions\Tests.Conditions.csproj">
+      <Project>{19b1fa8e-d302-4af8-a53d-2a9aa469bcc7}</Project>
+      <Name>Tests.Conditions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

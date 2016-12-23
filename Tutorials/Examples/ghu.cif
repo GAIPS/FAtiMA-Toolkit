@@ -1,0 +1,44 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"SocialExchanges": [
+				{
+					"Intent": "zzzz",
+					"Instantiation": "zzzzz",
+					"InfluenceRules": [
+						{
+							"RuleName": "xxxxx",
+							"Target": "-"
+						}, 
+						{
+							"RuleName": "cccc",
+							"Target": "-"
+						}],
+					"Action": "zzzz",
+					"Conditions":
+						{
+							"Set": []
+						}
+				}, 
+				{
+					"Intent": "yyyyy",
+					"Instantiation": "yyyy",
+					"InfluenceRules": [
+						{
+							"RuleName": "dddddd",
+							"Target": "-"
+						}],
+					"Action": "yyyy",
+					"Conditions":
+						{
+							"Set": []
+						}
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "CommeillFaut.CommeillFautAsset, CommeillFaut, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}
