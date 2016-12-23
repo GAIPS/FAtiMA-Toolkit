@@ -146,8 +146,8 @@
 			this.label1.Size = new System.Drawing.Size(531, 133);
 			this.label1.TabIndex = 4;
 			this.label1.Text = "Created by GAIPS @ INESC-ID\r\n\r\nCredits:\r\nRui Prada\r\nPedro Santos\r\nJoão Dias\r\nSamu" +
-    "el Mascaredas\r\nPedro Gonçalves\r\n\r\nThis software is licensed under the terms of t" +
-    "he Apache 2.0 license";
+    "el Mascarenhas\r\nPedro Gonçalves\r\n\r\nThis software is licensed under the terms of " +
+    "the Apache 2.0 license";
 			this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// tableLayoutPanel3
