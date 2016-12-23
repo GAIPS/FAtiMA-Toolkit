@@ -80,6 +80,20 @@ namespace Tests.WellFormedNames
             var tree = new NameSearchTree<string>();
             Assert.That(!tree.ContainsKey(Name.BuildName(name)));
         }
+
+		[TestCase()]
+	    public void Special_Test_For_Bug_22_11_2017()
+	    {
+			var tree = new NameSearchTree<byte>();
+
+		    var n1 = (Name) "Speak(-,end,Meanings(a(b),c(d)),t)";
+			var n2 = (Name)"Speak(-,end,Meanings(a(c),e),t)";
+			var test1 = (Name)"Speak(-,end,*,t)";
+
+			tree.Add(n1,0);
+			tree.Add(n2, 0);
+			Assert.IsTrue(tree.Unify(test1).All(r => r.Item1 == 0));
+	    }
 		/*
         [TestCase("x", "1")]
         [TestCase("x(a)", "2")]
@@ -437,6 +451,5 @@ namespace Tests.WellFormedNames
 	    {
 			Assert.AreEqual(nst.Count,expectedCount);
 	    }
-
     }
 }
