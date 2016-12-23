@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Utilities
 {
@@ -15,6 +16,12 @@ namespace Utilities
         public static bool EqualsIgnoreCase(this string str, string str2)
         {
             return StringComparer.OrdinalIgnoreCase.Equals(str, str2);
-        }        
+        }
+
+        //Extension Method
+        public static string RemoveWhiteSpace(this string str)
+        {
+            return new string(str.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
+        }
     }
 }

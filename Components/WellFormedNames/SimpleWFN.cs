@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Utilities;
+using WellFormedNames.Exceptions;
 
 namespace WellFormedNames
 {
@@ -54,37 +55,39 @@ namespace WellFormedNames
         public SimpleName(string description)
         {
             this.literals = new List<Literal>();
-            description = RemoveWhiteSpace(description);
+            this.isGrounded = true;
+            description = description.RemoveWhiteSpace();
             var n = Name.BuildName(description); //Substituir
 
             if (n.IsComposed)
             {
                 char[] literalLimiterChars = { ' ', ',', '(', ')' };
-                string[] literals = description.Split(literalLimiterChars, StringSplitOptions.RemoveEmptyEntries);
+                string[] stringLiterals = description.Split(literalLimiterChars, StringSplitOptions.RemoveEmptyEntries);
 
                 var lPos = 0;
                 var depth = 0;
                 for (int i = 0; i < description.Length; i++)
                 {
                     //add literal
+                    Literal lit = null;
                     switch (description[i])
                     {
                         case '(':
-                            this.literals.Add(new Literal(literals[lPos], LiteralType.Root, depth));
+                            this.literals.Add(new Literal(stringLiterals[lPos], LiteralType.Root, depth));
                             lPos++;
                             depth++;
                             break;
                         case ',':
                             if (description[i - 1] != ')')
                             {
-                                this.literals.Add(new Literal(literals[lPos], LiteralType.Param, depth));
+                                this.literals.Add(new Literal(stringLiterals[lPos], LiteralType.Param, depth));
                                 lPos++;
                             }
                             break;
                         case ')':
                             if (description[i - 1] != ')')
                             {
-                                this.literals.Add(new Literal(literals[lPos], LiteralType.Param, depth));
+                                this.literals.Add(new Literal(stringLiterals[lPos], LiteralType.Param, depth));
                                 lPos++;
                             }
                             depth--;
@@ -95,6 +98,15 @@ namespace WellFormedNames
             else //if n is non composed
             {
                 this.literals.Add(new Literal(description, LiteralType.Param, 0));
+            }
+
+            //check if grounded
+            foreach (var l in this.literals)
+            {
+                if (SimpleWFN.IsVariable(l))
+                {
+                    this.isGrounded = false;
+                }
             }
         }
 
@@ -136,10 +148,6 @@ namespace WellFormedNames
             }
         }
 
-        private static string RemoveWhiteSpace(string input)
-        {
-            return new string(input.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
-        }
     }
 
 
@@ -164,6 +172,11 @@ namespace WellFormedNames
             return GetVariables(name).Any(l => l.description.EqualsIgnoreCase(variable));
         }
 
+
+        public static int GetNumberOfTerms(SimpleName name)
+        {
+            return name.literals.Count(l => l.depth <= 1);
+        }
         public static bool ContainsUniversal(SimpleName name)
         {
             return name.literals.Any(l => l.description == Name.UNIVERSAL_STRING);
@@ -255,15 +268,32 @@ namespace WellFormedNames
             }
             return res;
         }
+            
+        private static int FindJumpUntilDepthN(IList<Literal> list, int currentPos, int depthN)
+        {
+            for (int i = currentPos + 1; i < list.Count; i++)
+            {
+                if (list[i].depth <= depthN)
+                {
+                    return i - currentPos;
+                }
+            }
+            //If the codes reaches here the jump will be to the end of the array
+            return list.Count - currentPos;
+        }
 
-               
+     
         public static bool Match(SimpleName n1, SimpleName n2)
         {
-            var idx1 = n1.literals.GetEnumerator();
-            var idx2 = n2.literals.GetEnumerator();
-            while(idx1.MoveNext() && idx2.MoveNext())
+            if (SimpleWFN.GetNumberOfTerms(n1) != SimpleWFN.GetNumberOfTerms(n2))
+                return false;
+
+            var idx1 = 0;
+            var idx2 = 0;
+            do
             {
-                var l1 = idx1.Current; var l2 = idx2.Current;
+                var l1 = n1.literals[idx1];
+                var l2 = n2.literals[idx2];
 
                 //auxiliary variables
                 bool typesMatch = l1.type == l2.type;
@@ -276,6 +306,7 @@ namespace WellFormedNames
                 {
                     if (existsUniversal || l1.description.EqualsIgnoreCase(l2.description))
                     {
+                        idx1++; idx2++;
                         continue;
                     }
                     return false; //no universals and different descritions
@@ -294,11 +325,8 @@ namespace WellFormedNames
                     if (l1.type == LiteralType.Param)
                     {
                         // the index on n2 must jump until it reaches the depth of l1 again
-                        var jump = FindJumpUntilDepthN(n2.literals, n2.literals.IndexOf(l2), l1.depth);
-                        for(int i = 0; i < jump - 1; i++)
-                        {
-                            idx2.MoveNext();
-                        }
+                        idx2 += FindJumpUntilDepthN(n2.literals, idx2, l1.depth);
+                        idx1++;
                         continue;
                     }
                     //a root universal never matches any parameter except a universal
@@ -311,53 +339,34 @@ namespace WellFormedNames
                 {
                     if (l2.type == LiteralType.Param)
                     {
-                        // the index on n1 must jump until it reaches the depth of l2 again
-                        var jump = FindJumpUntilDepthN(n1.literals, n1.literals.IndexOf(l1), l2.depth);
-                        for (int i = 0; i < jump - 1; i++)
-                        {
-                            idx1.MoveNext();
-                        }
+                        // the index on n2 must jump until it reaches the depth of n1 again
+                        idx1 += FindJumpUntilDepthN(n1.literals, idx1, l2.depth);
+                        idx2++;
                         continue;
                     }
                     //a root universal never matches any parameter except a universal
                     if (l2.type == LiteralType.Root && !l1IsUniv)
                         return false;
                 }
-            } 
+            } while (idx1 < n1.literals.Count && idx2 < n2.literals.Count);
 
-            if (idx1.MoveNext() || idx2.MoveNext())
+            if (idx1 == n1.literals.Count && idx2 == n2.literals.Count)
             {
-                return false; // only partial match
+                return true; // full match
             }
             else
             {
-                return true; 
+                return false; // only partial match
             }
         }
-
-        private static int FindJumpUntilDepthN(List<Literal> literals, int currentPos, int depthN)
-        {
-            for (int i = currentPos + 1; i < literals.Count; i++)
-            {
-                if (literals.ElementAt(i).depth <= depthN)
-                {
-                    return i - currentPos;
-                }
-            }
-            //If the codes reaches here the jump will be to the end of the array
-            return literals.Count - currentPos;
-        }
-
-
         public static bool MatchDescription(Literal n1, Literal n2)
         {
             if (n1.description == Name.UNIVERSAL_STRING ||
                 n2.description == Name.UNIVERSAL_STRING)
                 return true;
 
-            return n1.description == n2.description;
+            return n1.description.EqualsIgnoreCase(n2.description);
         }
-
 
         public static SimpleName MakeGround(SimpleName n, Dictionary<string, SimpleName> bindings)
         {
@@ -425,10 +434,11 @@ namespace WellFormedNames
             return bindings != null;
         }
 
+                
         private static IEnumerable<Substitution> FindSubst(SimpleName n1, SimpleName n2)
         {
-            SubstitutionSet bindings = new SubstitutionSet();
-            
+            // SubstitutionSet bindings = new SubstitutionSet();
+            Dictionary<string, Substitution> bindings = new Dictionary<string, Substitution>();
             var arrayLit1 = n1.literals.ToArray();
             var arrayLit2 = n2.literals.ToArray();
             var idx1 = 0;
@@ -451,11 +461,12 @@ namespace WellFormedNames
                 //both literals are a variable
                 if (SimpleWFN.IsVariable(l1) && SimpleWFN.IsVariable(l2))
                 {
-                    if (!l1.description.EqualsIgnoreCase(l2.description) &&
-                         !bindings.AddSubstitution(
-                             new Substitution(l1.description, l2.description)))
-                        return null;
-
+                    if (!l1.description.EqualsIgnoreCase(l2.description))
+                    {
+                        if (bindings.ContainsKey(l1.description))
+                            return null;
+                        bindings[l1.description] = new Substitution(l1.description, l2.description);
+                    }    
                     idx1++; idx2++;
                     continue;
                 }
@@ -478,7 +489,7 @@ namespace WellFormedNames
 
             if (idx1 == arrayLit1.Length && idx2 == arrayLit2.Length)
             {
-                return bindings; // full match
+                return bindings.Values; // full match
             }
             else
             {
@@ -488,34 +499,42 @@ namespace WellFormedNames
 
 
         //return the idx jump on the valName or -1 if it can't add the substitution
-        private static int FindSubsAux(Literal var, Literal val, SimpleName valName, SubstitutionSet bindings)
+        private static int FindSubsAux(Literal var, Literal val, SimpleName valName, IDictionary<string, Substitution> bindings)
         {
+            string valDescription;
+            SimpleName auxName = null;
             if (val.type == LiteralType.Root)
             {
-                var n = SimpleWFN.BuildNameFromContainedLiteral(valName, val);
-                if (!bindings.AddSubstitution(new Substitution(var.description, n.ToString())))
-                    return -1;
-                else return n.literals.Count;
+                auxName = SimpleWFN.BuildNameFromContainedLiteral(valName, val);
+                valDescription = auxName.ToString();
             }
-            else //l2 is a parameter
+            else
             {
-                if (!bindings.AddSubstitution(new Substitution(var.description, val.description)))
-                    return -1;
+                valDescription = val.description;
+            }
+            
+            //check if a binding for the same variable already exists
+            Substitution existingSub = null;
+            bindings.TryGetValue(var.description, out existingSub);
+            if (existingSub != null)
+            {
+                if (existingSub.Value.ToString().RemoveWhiteSpace().EqualsIgnoreCase("valDescription"))
+                    return 1;
+                else return -1;
+            }
+            //if there was no existing binding to the variable
+            try
+            {
+                bindings[var.description] = new Substitution(var.description, valDescription);
+                if (var.type == LiteralType.Param && val.type == LiteralType.Root)
+                    return auxName.literals.Count;
                 else return 1;
             }
-        }
-        /*
-        private static Dictionary<string, SimpleName> SubstitutionSetConverter(SubstitutionSet bindings)
-        {
-            var result = new Dictionary<string, SimpleName>();
-
-            foreach (var b in bindings)
+            catch (BadSubstitutionException)
             {
-                result.Add(b.Variable.ToString(), new SimpleName(b.Variable.ToString()));
+                return -1;
             }
-            return result;
-        }*/
-
+        }
     }
         
 

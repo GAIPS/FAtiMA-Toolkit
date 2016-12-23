@@ -159,6 +159,10 @@ namespace Tests.WellFormedNames
         [TestCase("J(A,*,*,B,D)", "J(*,B,D,B)", Refactorization.New)]
         [TestCase("J(A(B,C),*(B,D(D)),*,B)", "J(*,B(B,D),D,B)", Refactorization.Current)]
         [TestCase("J(A(B,C),*(B,D(D)),*,B)", "J(*,B(B,D),D,B)", Refactorization.New)]
+        [TestCase("A(A(A,A))", "A(A(A),A)", Refactorization.Current)] 
+        [TestCase("A(A(A,A))", "A(A(A),A)", Refactorization.New)]
+        [TestCase("A(A(A,A),A)", "A(A(A),A)", Refactorization.Current)]
+        [TestCase("A(A(A,A),A)", "A(A(A),A)", Refactorization.New)]
         public void MatchNames_False(string n1, string n2, Refactorization r)
         {
             bool result = true;
@@ -371,18 +375,6 @@ namespace Tests.WellFormedNames
             var name1 = Name.BuildName(nameString1);
             var name2 = Name.BuildName(nameString2);
             Assert.That(name1.Equals(name2));
-        }
-
-        [Test]
-        public void GenerateUniqueGhostVariable_AnyState_NewSymbol()
-        {
-            var ghost1 = Name.GenerateUniqueGhostVariable();
-            var ghost2 = Name.GenerateUniqueGhostVariable();
-
-            Assert.That(ghost1.HasGhostVariable());
-            Assert.That(ghost2.HasGhostVariable());
-
-            Assert.That(ghost1 != ghost2);
         }
     }
 }
