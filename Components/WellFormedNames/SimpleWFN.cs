@@ -256,34 +256,14 @@ namespace WellFormedNames
             return res;
         }
 
-
-        public static int FindJumpUntilDepthN(Literal[] array, int currentPos, int depthN)
-        {
-           for(int i = currentPos + 1; i < array.Length; i++)
-           {
-                if(array[i].depth <= depthN)
-                {
-                    return i - currentPos;
-                }
-           }
-           //If the codes reaches here the jump will be to the end of the array
-           return array.Length - currentPos; 
-        }
-
-        //A bit more complicated but 3x faster than the old Match method
+               
         public static bool Match(SimpleName n1, SimpleName n2)
         {
-            if(!ContainsUniversal(n1) && ! ContainsUniversal(n2))
-               return n1.ToString().EqualsIgnoreCase(n2.ToString());
-
-            var arrayLit1 = n1.literals.ToArray();
-            var arrayLit2 = n2.literals.ToArray();
-            var idx1 = 0;
-            var idx2 = 0;
-            do
+            var idx1 = n1.literals.GetEnumerator();
+            var idx2 = n2.literals.GetEnumerator();
+            while(idx1.MoveNext() && idx2.MoveNext())
             {
-                var l1 = arrayLit1[idx1];
-                var l2 = arrayLit2[idx2];
+                var l1 = idx1.Current; var l2 = idx2.Current;
 
                 //auxiliary variables
                 bool typesMatch = l1.type == l2.type;
@@ -296,7 +276,6 @@ namespace WellFormedNames
                 {
                     if (existsUniversal || l1.description.EqualsIgnoreCase(l2.description))
                     {
-                        idx1++; idx2++;
                         continue;
                     }
                     return false; //no universals and different descritions
@@ -315,8 +294,11 @@ namespace WellFormedNames
                     if (l1.type == LiteralType.Param)
                     {
                         // the index on n2 must jump until it reaches the depth of l1 again
-                        idx2 += FindJumpUntilDepthN(arrayLit2, idx2, l1.depth);
-                        idx1++;
+                        var jump = FindJumpUntilDepthN(n2.literals, n2.literals.IndexOf(l2), l1.depth);
+                        for(int i = 0; i < jump - 1; i++)
+                        {
+                            idx2.MoveNext();
+                        }
                         continue;
                     }
                     //a root universal never matches any parameter except a universal
@@ -329,26 +311,44 @@ namespace WellFormedNames
                 {
                     if (l2.type == LiteralType.Param)
                     {
-                        // the index on n2 must jump until it reaches the depth of n1 again
-                        idx1 += FindJumpUntilDepthN(arrayLit1, idx1, l2.depth);
-                        idx2++;
+                        // the index on n1 must jump until it reaches the depth of l2 again
+                        var jump = FindJumpUntilDepthN(n1.literals, n1.literals.IndexOf(l1), l2.depth);
+                        for (int i = 0; i < jump - 1; i++)
+                        {
+                            idx1.MoveNext();
+                        }
                         continue;
                     }
                     //a root universal never matches any parameter except a universal
                     if (l2.type == LiteralType.Root && !l1IsUniv)
                         return false;
                 }
-            } while (idx1 < arrayLit1.Length && idx2 < arrayLit2.Length);
-     
-            if (idx1 == arrayLit1.Length && idx2 == arrayLit2.Length)
+            } 
+
+            if (idx1.MoveNext() || idx2.MoveNext())
             {
-                return true; // full match
-            }
-            else{
                 return false; // only partial match
             }
+            else
+            {
+                return true; 
+            }
         }
-       
+
+        private static int FindJumpUntilDepthN(List<Literal> literals, int currentPos, int depthN)
+        {
+            for (int i = currentPos + 1; i < literals.Count; i++)
+            {
+                if (literals.ElementAt(i).depth <= depthN)
+                {
+                    return i - currentPos;
+                }
+            }
+            //If the codes reaches here the jump will be to the end of the array
+            return literals.Count - currentPos;
+        }
+
+
         public static bool MatchDescription(Literal n1, Literal n2)
         {
             if (n1.description == Name.UNIVERSAL_STRING ||

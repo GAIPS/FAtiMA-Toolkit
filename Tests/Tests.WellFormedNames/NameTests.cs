@@ -17,7 +17,7 @@ namespace Tests.WellFormedNames
     [TestFixture]
     public class SimpleWFNTests
     {
-        private int reps = 10000;
+        private int reps = 1000000;
 
         [TestCase("A(B,C(D,E([x],D)),[x],B(A,B(SELF)))", "[x]", "J(I)", "A(B,C(D,E(J(I),D)),J(I),B(A,B(SELF)))", Refactorization.New)]
         public void MakeGround_GroundedName(string n1, string var, string sub, string expectedResult, Refactorization r)
@@ -80,123 +80,140 @@ namespace Tests.WellFormedNames
         public void ReplaceLiterals(string n1, string t1, string t2, string expectedResult, Refactorization r)
         {
             string resultStr = string.Empty;
-            switch (r)
+
+            if(r == Refactorization.Current)
             {
-                case Refactorization.Current:
-                    Name result1 = null;
-                    var name1 = Name.BuildName(n1);
-                    for (long i = 0; i < reps; i++)
-                    {
-                        result1 = name1.SwapTerms((Name)t1, (Name)t2);
-                    }
-                    resultStr = result1.ToString();
-                    break;
-                case Refactorization.New:
-                    SimpleName result2 = null;
-                    var name2 = new SimpleName(n1);
-                    for (long i = 0; i < reps; i++)
-                    {
-                        result2 = SimpleWFN.ReplaceLiterals(name2, t1, t2);
-                    }
-                    resultStr = result2.ToString();
-                    break;
+                Name result = null;
+                var name = Name.BuildName(n1);
+                for (long i = 0; i < reps; i++)
+                {
+                    result = name.SwapTerms((Name)t1, (Name)t2);
+                }
+                resultStr = RemoveWhiteSpace(result.ToString());
+            }else if(r == Refactorization.New)
+            {
+                SimpleName result = null;
+                var name = new SimpleName(n1);
+                for (long i = 0; i < reps; i++)
+                {
+                    result = SimpleWFN.ReplaceLiterals(name, t1, t2);
+                }
+                resultStr = result.ToString();
             }
 
             Assert.That(string.Equals(resultStr, expectedResult, StringComparison.InvariantCultureIgnoreCase));
         }
 
 
-        [TestCase("John", "John", Refactorization.Current)]
-        [TestCase("John", "John", Refactorization.New)]
+        
+        [TestCase("JoHn", "*", Refactorization.Current)]
+        [TestCase("JoHn", "*", Refactorization.New)]
+        [TestCase("*", "JoHn", Refactorization.Current)]
+        [TestCase("*", "JoHn", Refactorization.New)]
+        [TestCase("john", "joHn", Refactorization.Current)]
+        [TestCase("john", "JoHn", Refactorization.New)]
+        [TestCase("J(*)", "j(A(b))", Refactorization.Current)]
+        [TestCase("J(*)", "j(A(b))", Refactorization.New)]
+        [TestCase("J(A(B))", "j(*(b))", Refactorization.Current)]
+        [TestCase("J(A(B))", "j(*(b))", Refactorization.New)]
         [TestCase("J(A,*,*,B)", "J(*,B,D,B)", Refactorization.Current)]
         [TestCase("J(A,*,*,B)", "J(*,B,D,B)", Refactorization.New)]
         [TestCase("J(A(B,C),*(B,D),*,B)", "J(*,B(B,D),D,B)", Refactorization.Current)]
         [TestCase("J(A(B,C),*(B,D),*,B)", "J(*,B(B,D),D,B)", Refactorization.New)]
+        [TestCase("J(*,*(B,D),*,B(d,f))", "J(A(B(C,D)),B(b,D),D,*)", Refactorization.Current)]
+        [TestCase("J(*,*(B,D),*,B(d,f))", "J(A(B(C,D)),B(b,D),D,*)", Refactorization.New)]
         public void MatchNames_True(string n1, string n2, Refactorization r)
         {
             bool result = false;
 
-            switch (r)
+            if(r == Refactorization.Current)
             {
-                case Refactorization.Current:
-                    var name1 = Name.BuildName(n1);
-                    var name2 = Name.BuildName(n2);
-                    for (long i = 0; i < reps; i++)
-                    {
-                        result = name1.Match(name2);
-                    }
-                    break;
-                case Refactorization.New:
-                    var name3 = new SimpleName(n1);
-                    var name4 = new SimpleName(n2);
-                    for (long i = 0; i < reps; i++)
-                    {
-                        result = SimpleWFN.Match(name3, name4);
-                    }
-                    break;
+                var name = Name.BuildName(n1);
+                var name2 = Name.BuildName(n2);
+                for (long i = 0; i < reps; i++)
+                {
+                    result = name.Match(name2);
+                }
+            }
+            else if (r == Refactorization.New)
+            {
+                var name = new SimpleName(n1);
+                var name2 = new SimpleName(n2);
+                for (long i = 0; i < reps; i++)
+                {
+                    result = SimpleWFN.Match(name, name2);
+                }
             }
             Assert.IsTrue(result);
         }
 
-        [Test]
-        public void Add_Variable_Tag_SimpleWFN()
+        [TestCase("JoHn", "Jo", Refactorization.Current)]
+        [TestCase("JoHn", "Jo", Refactorization.New)]
+        [TestCase("Jo", "JoHn", Refactorization.Current)]
+        [TestCase("Jo", "JoHn", Refactorization.New)]
+        [TestCase("J(*,b)", "j(A(b))", Refactorization.Current)]
+        [TestCase("J(*,b)", "j(A(b))", Refactorization.New)]
+        [TestCase("J(A(d))", "j(*(b))", Refactorization.Current)]
+        [TestCase("J(A(d))", "j(*(b))", Refactorization.New)]
+        [TestCase("J(A,*,*,B,D)", "J(*,B,D,B)", Refactorization.Current)]
+        [TestCase("J(A,*,*,B,D)", "J(*,B,D,B)", Refactorization.New)]
+        [TestCase("J(A(B,C),*(B,D(D)),*,B)", "J(*,B(B,D),D,B)", Refactorization.Current)]
+        [TestCase("J(A(B,C),*(B,D(D)),*,B)", "J(*,B(B,D),D,B)", Refactorization.New)]
+        public void MatchNames_False(string n1, string n2, Refactorization r)
         {
-            var name = new SimpleName("SELF(B,[y](D,E([x],D)),[x])");
-            var expectedResult = new SimpleName("SELF(B,[y_tag](D,E([x_tag],D)),[x_tag])");
-            SimpleName result = null;
+            bool result = true;
 
-            for (long i = 0; i < reps; i++)
+            if (r == Refactorization.Current)
             {
-                result = SimpleWFN.AddVariableTag(name, "_tag");
+                var name = Name.BuildName(n1);
+                var name2 = Name.BuildName(n2);
+                for (long i = 0; i < reps; i++)
+                {
+                    result = name.Match(name2);
+                }
             }
-
-            Assert.That(string.Equals(result.ToString(), expectedResult.ToString(), StringComparison.InvariantCultureIgnoreCase));
+            else if (r == Refactorization.New)
+            {
+                var name = new SimpleName(n1);
+                var name2 = new SimpleName(n2);
+                for (long i = 0; i < reps; i++)
+                {
+                    result = SimpleWFN.Match(name, name2);
+                }
+            }
+            Assert.IsFalse(result);
         }
 
-        [Test]
-        public void Add_Variable_Tag_NormalWFN()
+        [TestCase("SELF(B,[y](D,E([x],D)),[x])","_tag","SELF(B,[y_tag](D,E([x_tag],D)),[x_tag])",Refactorization.New)]
+        [TestCase("SELF(B,[y](D,E([x],D)),[x])", "_tag", "SELF(B,[y_tag](D,E([x_tag],D)),[x_tag])", Refactorization.Current)]
+        public void Add_Variable_Tag_SimpleWFN(string n1, string tag, string expectedResult, Refactorization r)
         {
-            var name = Name.BuildName("SELF(B,[y](D,E([x],D)),[x])");
-            var expectedResult = Name.BuildName("SELF(B,[y_tag](D,E([x_tag],D)),[x_tag])");
-            Name result = null;
-
-            for (long i = 0; i < reps; i++)
+            string result = string.Empty;
+            if(r == Refactorization.New)
             {
-                result = name.ReplaceUnboundVariables("_tag");
+                SimpleName name = new SimpleName(n1);
+                SimpleName resName = null;
+                for (long i = 0; i < reps; i++)
+                {
+                    resName = SimpleWFN.AddVariableTag(name, tag);
+                }
+                result = resName.ToString();
+            }
+            else if(r == Refactorization.Current)
+            {
+                Name name = Name.BuildName(n1);
+                Name resName = null;
+                for (long i = 0; i < reps; i++)
+                {
+                    resName = name.ReplaceUnboundVariables("_tag");
+                }
+                result = RemoveWhiteSpace(resName.ToString());
             }
 
-            Assert.That(string.Equals(result.ToString(), expectedResult.ToString(), StringComparison.InvariantCultureIgnoreCase));
+            Assert.AreEqual(expectedResult, result);
         }
 
-        [Test]
-        public void ReplaceLiterals_SimpleWFN()
-        {
-            var name = new SimpleName("SELF(B,[x](D,B([x],B)),[b])");
-            var expectedResult = "SELF(D,[x](D,D([x],D)),[b])";
-            SimpleName test = null;
-
-            for (long i = 0; i < reps; i++)
-            {
-                test = SimpleWFN.ReplaceLiterals(name, "B", "D");
-            }
-            Assert.That(string.Equals(expectedResult, test.ToString(), StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        [Test]
-        public void ReplaceLiterals_NormalWFN()
-        {
-            var name = Name.BuildName("SELF(B,[x](D,B([x],B)),[b])");
-            var expectedResult = "SELF(D, [x](D, D([x], D)), [b])";
-            Name test = null;
-
-            for (long i = 0; i < reps; i++)
-            {
-                test = name.SwapTerms((Name)"B", (Name)"D");
-            }
-
-            Assert.That(string.Equals(expectedResult, test.ToString(), StringComparison.InvariantCultureIgnoreCase));
-        }
-
+      
         [TestCase("  SELF(B(1), [y] (D, E([x],D)),[x])", "SELF(B(1),[y](D,E([x],D)),[x])", Refactorization.Current)]
         [TestCase("  SELF(B(1) , [y] (D, E([x],D)),[x])", "SELF(B(1),[y](D,E([x],D)),[x])", Refactorization.New)]
         public void ToString(string n1, string expectedResult, Refactorization r)

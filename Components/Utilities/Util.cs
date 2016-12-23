@@ -1,4 +1,6 @@
-﻿namespace Utilities
+﻿using System;
+
+namespace Utilities
 {
 	public static class Util
 	{
@@ -12,8 +14,7 @@
         //Extension Method
         public static bool EqualsIgnoreCase(this string str, string str2)
         {
-            return string.Equals(str, str2, System.StringComparison.CurrentCultureIgnoreCase);
-        }
-
+            return StringComparer.OrdinalIgnoreCase.Equals(str, str2);
+        }        
     }
 }
