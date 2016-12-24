@@ -11,7 +11,7 @@ namespace Tests.WellFormedNames
     public class UnifierTests {
         
         //This is still a bit slower in the "Simple" refactorization
-        private int unifierReps = 100000;
+        private int unifierReps = 10000;
         [TestCase("John", "John", new string[0], Refactorization.Current)]
         [TestCase("John", "John", new string[0], Refactorization.New)]
         [TestCase("Strong(John,A(B,C(D)))", "Strong(John,A(B,C(*)))", new string[0], Refactorization.Current)]
@@ -26,8 +26,8 @@ namespace Tests.WellFormedNames
         [TestCase("Likes([x],John)", "Likes(John, [x])", new[] { "[x]/John" }, Refactorization.New)]
         [TestCase("Likes([x],[y])", "Likes(John, Mary)", new[] { "[x]/John", "[y]/Mary" }, Refactorization.Current)]
         [TestCase("Likes([x],[y])", "Likes(John, Mary)", new[] { "[x]/John", "[y]/Mary" }, Refactorization.New)]
-        [TestCase("S([x],k([x],[z]),j([y],k(t(k,l),y)))", "S(t(k,l),k([x],y),j(P,k([x],[z])))", new[] { "[x]/t(k,l)", "[z]/y", "[y]/P" }, Refactorization.Current)]
-        [TestCase("S([x],k([x],[z]),j([y],k(t(k,l),y)))", "S(t(k,l),k([x],y),j(P,k([x],[z])))", new[] { "[x]/t(k,l)", "[z]/y", "[y]/P" }, Refactorization.New)]
+        [TestCase("S([x],k([x],[z]),j([y],k(t(d,l),y)))", "S(t(d,l),k([x],y),j(P,k([x],[z])))", new[] { "[x]/t(d,l)", "[z]/y", "[y]/P" }, Refactorization.Current)]
+        [TestCase("S([x],k([x],[z]),j([y],k(t(d,l),y)))", "S(t(d,l),k([x],y),j(P,k([x],[z])))", new[] { "[x]/t(d,l)", "[z]/y", "[y]/P" }, Refactorization.New)]
         [TestCase("S([x])", "S(t(k))", new[] { "[x]/t(k)" }, Refactorization.Current)]
         public void Unify_UnifiableNames_True(string n1, string n2, string[] result, Refactorization r)
         {

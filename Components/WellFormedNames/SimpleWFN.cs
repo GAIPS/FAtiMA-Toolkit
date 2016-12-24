@@ -439,15 +439,13 @@ namespace WellFormedNames
         {
             // SubstitutionSet bindings = new SubstitutionSet();
             Dictionary<string, Substitution> bindings = new Dictionary<string, Substitution>();
-            var arrayLit1 = n1.literals.ToArray();
-            var arrayLit2 = n2.literals.ToArray();
             var idx1 = 0;
             var idx2 = 0;
 
             do
             {
-                var l1 = arrayLit1[idx1];
-                var l2 = arrayLit2[idx2];
+                var l1 = n1.literals[idx1];
+                var l2 = n2.literals[idx2];
                 //neither literal is a variable
                 if (!SimpleWFN.IsVariable(l1) && !SimpleWFN.IsVariable(l2))
                 {
@@ -474,20 +472,22 @@ namespace WellFormedNames
                 if (SimpleWFN.IsVariable(l1) && !SimpleWFN.IsVariable(l2))
                 {
                     var res = FindSubsAux(l1, l2, n2, bindings);
-                    if (res == -1) return null;
+                    if (res == -1)
+                        return null;
                     else { idx1++; idx2 += res; continue; }
                 }
                 //only l2 is a variable 
                 if (!SimpleWFN.IsVariable(l1) && SimpleWFN.IsVariable(l2))
                 {
                     var res = FindSubsAux(l2, l1, n1, bindings);
-                    if (res == -1) return null;
+                    if (res == -1)
+                        return null;
                     else { idx1 += res; idx2++; continue; }
                 }
                 throw new Exception("Unexpected Situation");
-            } while (idx1 < arrayLit1.Length && idx2 < arrayLit2.Length);
+            } while (idx1 < n1.literals.Count && idx2 < n2.literals.Count);
 
-            if (idx1 == arrayLit1.Length && idx2 == arrayLit2.Length)
+            if (idx1 == n1.literals.Count && idx2 == n2.literals.Count)
             {
                 return bindings.Values; // full match
             }
@@ -501,16 +501,20 @@ namespace WellFormedNames
         //return the idx jump on the valName or -1 if it can't add the substitution
         private static int FindSubsAux(Literal var, Literal val, SimpleName valName, IDictionary<string, Substitution> bindings)
         {
+            //first, analyse if the value is a composed name or a single parameter 
             string valDescription;
-            SimpleName auxName = null;
+            int valLiteralCount;
             if (val.type == LiteralType.Root)
             {
+                SimpleName auxName = null;
                 auxName = SimpleWFN.BuildNameFromContainedLiteral(valName, val);
                 valDescription = auxName.ToString();
+                valLiteralCount = auxName.literals.Count;
             }
             else
             {
                 valDescription = val.description;
+                valLiteralCount = 1;
             }
             
             //check if a binding for the same variable already exists
@@ -518,17 +522,15 @@ namespace WellFormedNames
             bindings.TryGetValue(var.description, out existingSub);
             if (existingSub != null)
             {
-                if (existingSub.Value.ToString().RemoveWhiteSpace().EqualsIgnoreCase("valDescription"))
-                    return 1;
+                if (existingSub.Value.ToString().RemoveWhiteSpace().EqualsIgnoreCase(valDescription))
+                    return valLiteralCount;
                 else return -1;
             }
             //if there was no existing binding to the variable
             try
             {
                 bindings[var.description] = new Substitution(var.description, valDescription);
-                if (var.type == LiteralType.Param && val.type == LiteralType.Root)
-                    return auxName.literals.Count;
-                else return 1;
+                return valLiteralCount;
             }
             catch (BadSubstitutionException)
             {
