@@ -45,6 +45,8 @@
             this.dataGridViewAgentDialogueActions = new System.Windows.Forms.DataGridView();
             this.buttonAgentAddDialogAction = new System.Windows.Forms.Button();
             this.buttonAgentRemoveDialogAction = new System.Windows.Forms.Button();
+            this.buttonPlayerDuplicateDialogueAction = new System.Windows.Forms.Button();
+            this.buttonAgentDuplicateDialogueAction = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPlayerDialogueActions)).BeginInit();
             this.mainMenu.SuspendLayout();
@@ -58,6 +60,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.buttonPlayerDuplicateDialogueAction);
             this.groupBox1.Controls.Add(this.buttonPlayerEditDialogueAction);
             this.groupBox1.Controls.Add(this.dataGridViewPlayerDialogueActions);
             this.groupBox1.Controls.Add(this.buttonAddPlayerDialogueAction);
@@ -115,7 +118,7 @@
             // 
             // buttonPlayerRemoveDialogueAction
             // 
-            this.buttonPlayerRemoveDialogueAction.Location = new System.Drawing.Point(126, 19);
+            this.buttonPlayerRemoveDialogueAction.Location = new System.Drawing.Point(202, 19);
             this.buttonPlayerRemoveDialogueAction.Name = "buttonPlayerRemoveDialogueAction";
             this.buttonPlayerRemoveDialogueAction.Size = new System.Drawing.Size(70, 23);
             this.buttonPlayerRemoveDialogueAction.TabIndex = 11;
@@ -163,13 +166,13 @@
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.textToSpeachToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
             // textToSpeachToolStripMenuItem
             // 
             this.textToSpeachToolStripMenuItem.Name = "textToSpeachToolStripMenuItem";
-            this.textToSpeachToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.textToSpeachToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.textToSpeachToolStripMenuItem.Text = "Text To Speech";
             this.textToSpeachToolStripMenuItem.Click += new System.EventHandler(this.textToSpeachToolStripMenuItem_Click);
             // 
@@ -196,6 +199,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.buttonAgentDuplicateDialogueAction);
             this.groupBox2.Controls.Add(this.buttonAgentEditDialogAction);
             this.groupBox2.Controls.Add(this.dataGridViewAgentDialogueActions);
             this.groupBox2.Controls.Add(this.buttonAgentAddDialogAction);
@@ -253,13 +257,33 @@
             // 
             // buttonAgentRemoveDialogAction
             // 
-            this.buttonAgentRemoveDialogAction.Location = new System.Drawing.Point(126, 19);
+            this.buttonAgentRemoveDialogAction.Location = new System.Drawing.Point(202, 19);
             this.buttonAgentRemoveDialogAction.Name = "buttonAgentRemoveDialogAction";
             this.buttonAgentRemoveDialogAction.Size = new System.Drawing.Size(70, 23);
             this.buttonAgentRemoveDialogAction.TabIndex = 11;
             this.buttonAgentRemoveDialogAction.Text = "Remove";
             this.buttonAgentRemoveDialogAction.UseVisualStyleBackColor = true;
             this.buttonAgentRemoveDialogAction.Click += new System.EventHandler(this.buttonAgentRemoveDialogAction_Click);
+            // 
+            // buttonPlayerDuplicateDialogueAction
+            // 
+            this.buttonPlayerDuplicateDialogueAction.Location = new System.Drawing.Point(126, 19);
+            this.buttonPlayerDuplicateDialogueAction.Name = "buttonPlayerDuplicateDialogueAction";
+            this.buttonPlayerDuplicateDialogueAction.Size = new System.Drawing.Size(70, 23);
+            this.buttonPlayerDuplicateDialogueAction.TabIndex = 15;
+            this.buttonPlayerDuplicateDialogueAction.Text = "Duplicate";
+            this.buttonPlayerDuplicateDialogueAction.UseVisualStyleBackColor = true;
+            this.buttonPlayerDuplicateDialogueAction.Click += new System.EventHandler(this.buttonPlayerDuplicateDialogueAction_Click);
+            // 
+            // buttonAgentDuplicateDialogueAction
+            // 
+            this.buttonAgentDuplicateDialogueAction.Location = new System.Drawing.Point(126, 19);
+            this.buttonAgentDuplicateDialogueAction.Name = "buttonAgentDuplicateDialogueAction";
+            this.buttonAgentDuplicateDialogueAction.Size = new System.Drawing.Size(70, 23);
+            this.buttonAgentDuplicateDialogueAction.TabIndex = 16;
+            this.buttonAgentDuplicateDialogueAction.Text = "Duplicate";
+            this.buttonAgentDuplicateDialogueAction.UseVisualStyleBackColor = true;
+            this.buttonAgentDuplicateDialogueAction.Click += new System.EventHandler(this.buttonAgentDuplicateDialogueAction_Click);
             // 
             // DialogueEditorForm
             // 
@@ -304,5 +328,7 @@
         private System.Windows.Forms.Button buttonAgentRemoveDialogAction;
 		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem textToSpeachToolStripMenuItem;
-	}
+        private System.Windows.Forms.Button buttonPlayerDuplicateDialogueAction;
+        private System.Windows.Forms.Button buttonAgentDuplicateDialogueAction;
+    }
 }

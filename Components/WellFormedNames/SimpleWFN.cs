@@ -8,27 +8,6 @@ using WellFormedNames.Exceptions;
 
 namespace WellFormedNames
 {
-    public enum LiteralType
-    {
-        Root,
-        Param,
-    }
-
-    public class Literal
-    {
-        public string description;
-        public readonly LiteralType type;
-        public int depth;
-
-        public Literal(string desc, LiteralType t, int depth)
-        {
-            this.description = desc;
-            this.type = t;
-            this.depth = depth;
-        }
-    }
-
-
     public class SimpleName
     {
         internal List<Literal> literals;
@@ -117,17 +96,15 @@ namespace WellFormedNames
                 return this.literals.First().description;
 
             var litArray = literals.ToArray();
-            var builder = ObjectPool<StringBuilder>.GetObject();
+            var builder = new StringBuilder();
             builder.Append(litArray[0].description + "(" + litArray[1].description);
             for (int i = 2; i < litArray.Length; i++)
             {
                 ToStringHelper(builder, litArray[i - 1], litArray[i]);
             }
             builder.Append(')', litArray[litArray.Length - 1].depth);
-            string result = builder.ToString();
-            builder.Length = 0;
-            ObjectPool<StringBuilder>.Recycle(builder);
-            return result;
+            
+            return builder.ToString(); 
         }
 
         private void ToStringHelper(StringBuilder sb, Literal previous, Literal current)

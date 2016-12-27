@@ -12,7 +12,7 @@ namespace WellFormedNames
 	/// </summary>
 	public static class Unifier
 	{
-		/// <summary>
+		/// <summary>C:\GIT\FAtiMA-Toolkit\Components\WellFormedNames\Unifier.cs
 		/// Unifying Method, receives two WellFormedNames and tries 
 		/// to find a list of Substitutions that will make 
 		/// both names syntatically equal. The algorithm performs Occur Check,
