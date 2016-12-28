@@ -10,6 +10,7 @@ using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
+using GAIPS.AssetEditorTools.DynamicPropertiesWindow;
 
 namespace EmotionalAppraisalWF
 {
@@ -288,6 +289,16 @@ namespace EmotionalAppraisalWF
             }
         }
 
+
+        private void buttonDuplicateEventRecord_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewAM.SelectedRows.Count == 1)
+            {
+                var selectedEvent = ((ObjectView<EventDTO>)dataGridViewAM.SelectedRows[0].DataBoundItem).Object;
+                _autobiographicalMemoryVM.AddEventRecord(selectedEvent);
+            }
+        }
+
         private void dataGridViewAM_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.RowIndex != -1) //exclude header cells
@@ -306,5 +317,15 @@ namespace EmotionalAppraisalWF
 		{
 			_knowledgeBaseVM.UpdatePerspective();
 		}
+
+		#region Toolbar Options
+
+		[MenuItem("Tools/Show Available Dynamic Properties")]
+		private void ShowDynamicPropertiesWindow()
+		{
+			DynamicPropertyDisplayer.Instance.ShowOrBringToFront();
+		}
+
+		#endregion
 	}
 }

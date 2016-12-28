@@ -85,6 +85,7 @@
 			this.removeBeliefButton = new System.Windows.Forms.Button();
 			this.autobiographicalMemoryTabPage = new System.Windows.Forms.TabPage();
 			this.groupBox4 = new System.Windows.Forms.GroupBox();
+			this.buttonDuplicateEventRecord = new System.Windows.Forms.Button();
 			this.dataGridViewAM = new System.Windows.Forms.DataGridView();
 			this.buttonEditEvent = new System.Windows.Forms.Button();
 			this.buttonAddEventRecord = new System.Windows.Forms.Button();
@@ -885,6 +886,7 @@
 			// 
 			// groupBox4
 			// 
+			this.groupBox4.Controls.Add(this.buttonDuplicateEventRecord);
 			this.groupBox4.Controls.Add(this.dataGridViewAM);
 			this.groupBox4.Controls.Add(this.buttonEditEvent);
 			this.groupBox4.Controls.Add(this.buttonAddEventRecord);
@@ -896,6 +898,16 @@
 			this.groupBox4.TabIndex = 0;
 			this.groupBox4.TabStop = false;
 			this.groupBox4.Text = "Event Records";
+			// 
+			// buttonDuplicateEventRecord
+			// 
+			this.buttonDuplicateEventRecord.Location = new System.Drawing.Point(142, 20);
+			this.buttonDuplicateEventRecord.Name = "buttonDuplicateEventRecord";
+			this.buttonDuplicateEventRecord.Size = new System.Drawing.Size(70, 23);
+			this.buttonDuplicateEventRecord.TabIndex = 11;
+			this.buttonDuplicateEventRecord.Text = "Duplicate";
+			this.buttonDuplicateEventRecord.UseVisualStyleBackColor = true;
+			this.buttonDuplicateEventRecord.Click += new System.EventHandler(this.buttonDuplicateEventRecord_Click);
 			// 
 			// dataGridViewAM
 			// 
@@ -943,7 +955,7 @@
 			// 
 			// buttonRemoveEventRecord
 			// 
-			this.buttonRemoveEventRecord.Location = new System.Drawing.Point(142, 20);
+			this.buttonRemoveEventRecord.Location = new System.Drawing.Point(218, 20);
 			this.buttonRemoveEventRecord.Name = "buttonRemoveEventRecord";
 			this.buttonRemoveEventRecord.Size = new System.Drawing.Size(70, 23);
 			this.buttonRemoveEventRecord.TabIndex = 8;
@@ -1083,6 +1095,7 @@
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
-	}
+        private System.Windows.Forms.Button buttonDuplicateEventRecord;
+    }
 }
 
