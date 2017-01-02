@@ -33,7 +33,6 @@
   <ItemGroup>
     <Compile Include="ComparisonOperator.cs" />
     <Compile Include="Condition.cs" />
-    <Compile Include="ConditionalNST.cs" />
     <Compile Include="ConditionMapper.cs" />
     <Compile Include="ConditionSet.cs" />
     <Compile Include="DTOs\ConditionSetDTO.cs" />
