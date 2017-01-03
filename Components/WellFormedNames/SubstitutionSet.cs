@@ -19,25 +19,7 @@ namespace WellFormedNames
 	[Serializable]
 	public sealed partial class SubstitutionSet : IEnumerable<Substitution>
 	{
-		private interface ISetImplementation
-		{
-			Name GetValue(Name variable);
-			bool ContainsVariable(Name variable);
-			int Count();
-
-			void AddSubstitution(Substitution s);
-
-			ISetImplementation Clone();
-
-			bool TestConflict(Substitution subs, SubstitutionSet set, out bool canAdd);
-
-			IEnumerator<Substitution> GetEnumerator();
-			IEnumerable<Substitution> GetGroundedSubstitutions(SubstitutionSet other);
-
-			int CalculateHashCode(int emptyHash, SubstitutionSet set);
-		}
-
-		private ISetImplementation m_impl = new ConstraintSubstitutionSetImplementation();//new SimpleImplementation();
+		private Constraints m_impl = new Constraints();
 
 		/// <summary>
 		/// Creates an empty SubstitutionSet
