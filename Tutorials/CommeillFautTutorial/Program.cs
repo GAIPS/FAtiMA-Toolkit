@@ -19,7 +19,7 @@ namespace CommeillFautTutorial
             n.AddExchange(flirt);
             n.AddExchange(compliment);
 
-	        var profile = RolePlayCharacterProfileAsset.LoadFromFile("../../../Examples/john.rpcp");
+	        var profile = RolePlayCharacterAsset.LoadFromFile("../../../Examples/john.rpc");
 			RolePlayCharacterAsset npc =profile.BuildRPCFromProfile();
 
 			Console.WriteLine(profile.CharacterName);

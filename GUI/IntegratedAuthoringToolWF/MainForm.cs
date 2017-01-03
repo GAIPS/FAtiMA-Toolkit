@@ -5,10 +5,9 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
-using GAIPS.AssetEditorTools.DynamicPropertiesWindow;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
-using RolePlayCharacter;
+using WellFormedNames;
 
 namespace IntegratedAuthoringToolWF
 {
@@ -54,7 +53,7 @@ namespace IntegratedAuthoringToolWF
 
 				name += $"({value})";
 			}
-			asset.CharacterName = name;
+			asset.CharacterName = (Name)name;
 			asset.SaveToFile();
 
 			CurrentAsset.AddNewCharacterSource(new CharacterSourceDTO() {Name = name,Source = asset.AssetFilePath});
@@ -71,7 +70,7 @@ namespace IntegratedAuthoringToolWF
 
 			CurrentAsset.AddNewCharacterSource(new CharacterSourceDTO()
 			{
-				Name = rpc.CharacterName,
+				Name = rpc.CharacterName.ToString(),
 				Source = rpc.AssetFilePath
 			});
 			_characterSources.DataSource = CurrentAsset.GetAllCharacterSources().ToList();
@@ -161,13 +160,6 @@ namespace IntegratedAuthoringToolWF
 		{
 			return !_dialogEditorIsShowing;
 		}
-
-		[MenuItem("Tools/Show Available Dynamic Properties")]
-		private void ShowDynamicPropertiesWindow()
-		{
-			DynamicPropertyDisplayer.Instance.ShowOrBringToFront();
-		}
-
 		#endregion
 
 		#region About

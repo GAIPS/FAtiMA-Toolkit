@@ -11,7 +11,7 @@ namespace RolePlayCharacterTutorial
         {
 			AssetManager.Instance.Bridge = new BasicIOBridge();
             //Loading the asset
-	        var profile = RolePlayCharacterProfileAsset.LoadFromFile("../../../Examples/RPCTest.rpcf");
+	        var profile = RolePlayCharacterAsset.LoadFromFile("../../../Examples/RPCTest.rpc");
             var rpc = profile.BuildRPCFromProfile();
             var eventStr = "Event(Action-Finished, Player, Kick, Client)";
 

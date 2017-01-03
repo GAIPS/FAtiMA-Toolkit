@@ -3,16 +3,16 @@ using RolePlayCharacter;
 
 namespace RolePlayCharacterWF
 {
-	public class BaseRPCForm : BaseAssetForm<RolePlayCharacterProfileAsset>
+	public class BaseRPCForm : BaseAssetForm<RolePlayCharacterAsset>
 	{
-		protected sealed override RolePlayCharacterProfileAsset CreateEmptyAsset()
+		protected sealed override RolePlayCharacterAsset CreateEmptyAsset()
 		{
-			return new RolePlayCharacterProfileAsset();
+			return new RolePlayCharacterAsset();
 		}
 
 		protected sealed override string GetAssetFileFilters()
 		{
-			return "Role Play Character Profile File (*.rpcp)|*.rpcp";
+			return "Role Play Character Profile File (*.rpc)|*.rpc";
 		}
 	}
 }

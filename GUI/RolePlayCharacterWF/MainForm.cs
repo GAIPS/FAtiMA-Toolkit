@@ -1,5 +1,8 @@
 ﻿using System;
 using RolePlayCharacter;
+using WellFormedNames;
+using WellFormedNames.Exceptions;
+using System.Windows.Forms;
 
 namespace RolePlayCharacterWF
 {
@@ -10,15 +13,15 @@ namespace RolePlayCharacterWF
             InitializeComponent();
         }
 
-		protected override void OnAssetDataLoaded(RolePlayCharacterProfileAsset asset)
+		protected override void OnAssetDataLoaded(RolePlayCharacterAsset asset)
 		{
-			textBoxCharacterName.Text = asset.CharacterName;
+            textBoxCharacterName.Text = asset.CharacterName == null ? string.Empty : asset.CharacterName.ToString();
 			textBoxCharacterBody.Text = asset.BodyName;
+            textBoxCharacterVoice.Text = asset.VoiceName;
 
-			eaAssetControl1.SetAsset(asset.EmotionalAppraisalAssetSource, () =>
+            eaAssetControl1.SetAsset(asset.EmotionalAppraisalAssetSource, () =>
 			{
 				RequestAssetReload();
-
 				//erro de proposito
 				//isto deve de falhar, uma vez que não está a passar a lista de dynamic properties
 				// se calhar a lista deve de ser algo externo ao asset
@@ -41,7 +44,18 @@ namespace RolePlayCharacterWF
 			if(IsLoading)
 				return;
 
-			CurrentAsset.CharacterName = textBoxCharacterName.Text;
+            if (!string.IsNullOrWhiteSpace(textBoxCharacterName.Text))
+            {
+                try
+                {
+                    var newName = (Name)textBoxCharacterName.Text;
+                    CurrentAsset.CharacterName = newName;
+                }
+                catch (ParsingException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK,MessageBoxIcon.Error);
+                }
+            }   
 			SetModified();
         }
 
@@ -54,7 +68,16 @@ namespace RolePlayCharacterWF
 			SetModified();
 		}
 
-		private void eaAssetControl1_OnPathChanged(object sender, EventArgs e)
+        private void textBoxCharacterVoice_TextChanged(object sender, EventArgs e)
+        {
+            if (IsLoading)
+                return;
+
+            CurrentAsset.VoiceName = textBoxCharacterVoice.Text;
+            SetModified();
+        }
+
+        private void eaAssetControl1_OnPathChanged(object sender, EventArgs e)
 		{
 			if (IsLoading)
 				return;
@@ -80,5 +103,12 @@ namespace RolePlayCharacterWF
 			CurrentAsset.SocialImportanceAssetSource = siAssetControl1.Path;
 			SetModified();
 		}
-	}
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+     
+    }
 }

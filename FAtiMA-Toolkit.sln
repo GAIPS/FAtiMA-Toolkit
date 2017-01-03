@@ -77,11 +77,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{25
 	ProjectSection(SolutionItems) = preProject
 		Tutorials\Examples\EATest.ea = Tutorials\Examples\EATest.ea
 		Tutorials\Examples\EDMTest.edm = Tutorials\Examples\EDMTest.edm
+		Tutorials\Examples\ghu.cif = Tutorials\Examples\ghu.cif
 		Tutorials\Examples\IATTest.iat = Tutorials\Examples\IATTest.iat
+		Tutorials\Examples\john.rpc = Tutorials\Examples\john.rpc
 		Tutorials\Examples\jonas.ea = Tutorials\Examples\jonas.ea
+		Tutorials\Examples\pls.cif = Tutorials\Examples\pls.cif
 		Tutorials\Examples\RPCTest.rpc = Tutorials\Examples\RPCTest.rpc
 		Tutorials\Examples\sarah.ea = Tutorials\Examples\sarah.ea
 		Tutorials\Examples\SITest.si = Tutorials\Examples\SITest.si
+		Tutorials\Examples\test.cif = Tutorials\Examples\test.cif
+		Tutorials\Examples\test.si = Tutorials\Examples\test.si
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WellFormedNames", "Components\WellFormedNames\WellFormedNames.csproj", "{BC47528F-FBF6-465E-BB0E-F68F50F31C13}"

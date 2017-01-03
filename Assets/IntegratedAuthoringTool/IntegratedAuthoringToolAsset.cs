@@ -21,12 +21,11 @@ namespace IntegratedAuthoringTool
 		{
 			public string Name;
 			public string Path;
-			public RolePlayCharacterProfileAsset Asset;
+			public RolePlayCharacterAsset Asset;
 		}
 
 		public static readonly string INITIAL_DIALOGUE_STATE = "Start";
         public static readonly string TERMINAL_DIALOGUE_STATE = "End";
-        //public static readonly string ANY_DIALOGUE_STATE = "*";
         public static readonly string PLAYER = "Player";
         public static readonly string AGENT = "Agent";
 
@@ -63,7 +62,7 @@ namespace IntegratedAuthoringTool
 						pair.Value.Asset = null;
 
 						string errorsOnLoad;
-						pair.Value.Asset = RolePlayCharacterProfileAsset.LoadFromFile(currentAbsolutePath, out errorsOnLoad);
+						pair.Value.Asset = RolePlayCharacterAsset.LoadFromFile(currentAbsolutePath, out errorsOnLoad);
 						if (errorsOnLoad != null)
 							return errorsOnLoad;
 					}
@@ -103,7 +102,7 @@ namespace IntegratedAuthoringTool
 	        return m_characterSources.Select(p => new CharacterSourceDTO() {Name = p.Key, Source = ToAbsolutePath(p.Value.Path)});
         }
 
-	    public RolePlayCharacterProfileAsset GetCharacterProfile(string characterName)
+	    public RolePlayCharacterAsset GetCharacterProfile(string characterName)
 	    {
 			Profile p;
 			if (!m_characterSources.TryGetValue(characterName, out p))
@@ -134,7 +133,7 @@ namespace IntegratedAuthoringTool
 
 	        var absPath = ToAbsolutePath(dto.Source);
 			string errorsOnLoad;
-			var asset = RolePlayCharacterProfileAsset.LoadFromFile(absPath, out errorsOnLoad);
+			var asset = RolePlayCharacterAsset.LoadFromFile(absPath, out errorsOnLoad);
 	        if (errorsOnLoad != null)
 		        throw new Exception(errorsOnLoad);
 
@@ -326,7 +325,7 @@ namespace IntegratedAuthoringTool
 
             if (m_characterSources.Count > 0)
             {
-				dataHolder.SetValue("Characters", m_characterSources.Select(p => new CharacterSourceDTO() { Name = p.Key, Source = ToRelativePath(p.Value.Path) }).ToArray());
+				dataHolder.SetValue("Characters", m_characterSources.Select(p => new CharacterSourceDTO() { Name = p.Value.Name, Source = ToRelativePath(p.Value.Path) }).ToArray());
             }
             if (m_playerDialogues.Count>0)
             {

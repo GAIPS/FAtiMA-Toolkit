@@ -1,12 +1,15 @@
 {
 	"root":
 		{
-			"classId": 0,
-			"_emotionalAppraisalAssetSource": "..\\test\\..\\Examples\\EATest.ea",
-			"_emotionalDecisionMakingAssetSource": "EDMTest.edm",
-			"_socialImportanceAssetSource": "SITest.si",
+      "classId": 0,
+			"CharacterName": "Friend",
 			"BodyName": "Female",
-			"CharacterName": "Friend"
+			"VoiceName": null,
+			"EmotionalAppraisalAssetSource": "..\\test\\..\\Examples\\EATest.ea",
+			"EmotionalDecisionMakingSource": "EDMTest.edm",
+			"SocialImportanceAssetSource": "SITest.si",
+			"CommeillFautAssetSource": null,
+			"AutobiographicMemory": null
 		},
 	"types": [
 		{
