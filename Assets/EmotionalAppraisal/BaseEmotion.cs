@@ -5,6 +5,7 @@ using AutobiographicMemory;
 using EmotionalAppraisal.DTOs;
 using WellFormedNames;
 using Utilities;
+using System;
 
 namespace EmotionalAppraisal
 {
@@ -61,14 +62,15 @@ namespace EmotionalAppraisal
 			protected set;
 		}
 
-		/// <summary>
-		/// Creates a new BasicEmotion
-		/// </summary>
-		/// <param name="type">the type of the Emotion</param>
-		/// <param name="potential">the potential value for the intensity of the emotion</param>
-		/// <param name="cause">the event that caused the emotion</param>
-		/// <param name="direction">if the emotion is targeted to someone (ex: angry with Luke), this parameter specifies the target</param>
-		protected BaseEmotion(string type, EmotionValence valence, IEnumerable<string> appraisalVariables, float potential, bool influencesMood, uint causeId, Name direction)
+
+        /// <summary>
+        /// Creates a new BasicEmotion
+        /// </summary>
+        /// <param name="type">the type of the Emotion</param>
+        /// <param name="potential">the potential value for the intensity of the emotion</param>
+        /// <param name="cause">the event that caused the emotion</param>
+        /// <param name="direction">if the emotion is targeted to someone (ex: angry with Luke), this parameter specifies the target</param>
+        protected BaseEmotion(string type, EmotionValence valence, IEnumerable<string> appraisalVariables, float potential, bool influencesMood, uint causeId, Name direction)
 		{
 			this.EmotionType = type;
 			this.Valence = valence;
@@ -78,6 +80,7 @@ namespace EmotionalAppraisal
 			this.CauseId = causeId;
 			this.Direction = direction;
 			this.InfluenceMood = influencesMood;
+            
 		}
 
 		protected BaseEmotion(string type, EmotionValence valence, IEnumerable<string> appraisalVariables, float potential, bool influencesMood, uint causeId) :

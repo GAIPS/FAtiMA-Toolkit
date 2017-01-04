@@ -123,16 +123,17 @@ namespace RolePlayCharacter
         private CommeillFautAsset _commeillFautAsset;
 
         private AM m_am;
+        private ConcreteEmotionalState m_es;
 
         private IAction _currentAction = null;
 
         #endregion
 
-        #region Public Interface
-
+        
         public RolePlayCharacterAsset()
         {
             m_am = new AM();
+            m_es = new ConcreteEmotionalState();
         }
 
         public RolePlayCharacterAsset(EmotionalAppraisalAsset ea, EmotionalDecisionMakingAsset edm = null, SocialImportanceAsset si = null, CommeillFautAsset cfa = null)
@@ -160,8 +161,7 @@ namespace RolePlayCharacter
             m_am = new AM();
         }
 
-        #region Emotional Appraisal Interface
-
+        
         public float Mood => _emotionalAppraisalAsset?.Mood ?? 0;
 
         public IEnumerable<IActiveEmotion> Emotions => _emotionalAppraisalAsset?.GetAllActiveEmotions();
@@ -214,41 +214,7 @@ namespace RolePlayCharacter
             return _emotionalAppraisalAsset.GetBeliefValue(beliefName, perspective);
         }
 
-        #endregion
 
-
-
-        /*     #region  Comme il Faut
-
-             private List<SocialExchange> _socialExchanges;
-             private List<RolePlayCharacterAsset> _otherCharacters;
-             private RolePlayCharacterAsset me;
-
-             public void FindMe(RolePlayCharacterAsset m)
-             {
-                 me = m;
-             }
-             public void AddSocialExchanges(List<SocialExchange> exchanges)
-             {
-                 foreach (var ex in exchanges)
-                 {
-                     _socialExchanges.Add(ex);
-                 }
-
-             }
-
-             public void AddCharacters(List<RolePlayCharacterAsset> others)
-             {
-                 foreach (var ex in others)
-                 {
-                     _otherCharacters.Add(ex);
-                 }
-
-             }
-
-
-
-             #endregion */
 
         /// <summary>
         /// The amount of update ticks this asset as experienced since its initialization
@@ -269,7 +235,7 @@ namespace RolePlayCharacter
         {
             _socialImportanceAsset.InvalidateCachedSI();
 
-            _emotionalAppraisalAsset.AppraiseEvents(eventStrings);
+            _emotionalAppraisalAsset.AppraiseEvents(eventStrings, m_es);
             foreach (var e in eventStrings)
             {
                 var evtName = Name.BuildName(e);
@@ -290,7 +256,7 @@ namespace RolePlayCharacter
             if (_currentAction != null)
             {
                 var e = _currentAction.ToStartEventName(Name.SELF_SYMBOL);
-                _emotionalAppraisalAsset.AppraiseEvents(new[] { e });
+                _emotionalAppraisalAsset.AppraiseEvents(new[] { e }, m_es);
             }
 
             return _currentAction;
@@ -317,7 +283,7 @@ namespace RolePlayCharacter
                 throw new ArgumentException("The given action mismatches the currently executing action.", nameof(action));
 
             var e = _currentAction.ToFinishedEventName(Name.SELF_SYMBOL);
-            _emotionalAppraisalAsset.AppraiseEvents(new[] { e });
+            _emotionalAppraisalAsset.AppraiseEvents(new[] { e }, m_es);
             _currentAction = null;
         }
 
@@ -335,8 +301,7 @@ namespace RolePlayCharacter
             _emotionalAppraisalAsset.UnbindToRegistry(registry);
             _socialImportanceAsset.UnbindToRegistry(registry);
         }
-
-        #endregion
+        
 
         private static IEnumerable<IAction> TakeBestActions(IEnumerable<IAction> enumerable)
         {
@@ -364,6 +329,7 @@ namespace RolePlayCharacter
             dataHolder.SetValue("SocialImportanceAssetSource", this._socialImportanceAssetSource);
             dataHolder.SetValue("CommeillFautAssetSource", this._commeillFautAssetSource);
             dataHolder.SetValue("AutobiographicMemory", m_am);
+            dataHolder.SetValue("EmotionalState", m_es);
         }
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
@@ -376,10 +342,10 @@ namespace RolePlayCharacter
             this._socialImportanceAssetSource = dataHolder.GetValue<string>("SocialImportanceAssetSource");
             this._commeillFautAssetSource = dataHolder.GetValue<string>("CommeillFautAssetSource");
             m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
+            m_es = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
         }
 
-        #endregion
         /// @endcond
-
+        #endregion
     }
 }

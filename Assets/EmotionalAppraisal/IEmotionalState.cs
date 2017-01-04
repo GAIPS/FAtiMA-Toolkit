@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using AutobiographicMemory;
+using System.Collections.Generic;
 using WellFormedNames;
 
 namespace EmotionalAppraisal
@@ -18,13 +19,13 @@ namespace EmotionalAppraisal
 		/// <param name="emotion">the BaseEmotion that creates the ActiveEmotion</param>
 		/// <returns>the ActiveEmotion created if it was added to the EmotionalState.
 		/// Otherwise, if the intensity of the emotion was not enough to be added to the EmotionalState, the method returns null</returns>
-		IActiveEmotion AddEmotion(IEmotion emotion);
+		IActiveEmotion AddEmotion(IEmotion emotion, AM am, ulong tick);
 
 		/// <summary>
 		/// Removes the given active emotion from the EmotionalState
 		/// </summary>
 		/// <param name="em">the active emotion to be removed</param>
-		void RemoveEmotion(IActiveEmotion em);
+		void RemoveEmotion(IActiveEmotion em, AM am);
 
 		/// <summary>
 		/// Creates a new ActiveEmotion based on a received BaseEmotion.
@@ -36,7 +37,7 @@ namespace EmotionalAppraisal
 		/// <param name="potEm">the BaseEmotion that creates the ActiveEmotion</param>
 		/// <returns>the ActiveEmotion created. If the intensity of the emotion was not 
 		/// enough to be created, the method returns null</returns>
-		IActiveEmotion DetermineActiveEmotion(IEmotion potEm);
+		//IActiveEmotion DetermineActiveEmotion(IEmotion potEm);
 
 		/// <summary>
 		/// Clears all the emotions in the EmotionalState
@@ -97,7 +98,7 @@ namespace EmotionalAppraisal
 		/// </summary>
 		/// <param name="cause">the event that caused the emotion that we want to retrieve</param>
 		/// <returns>the strongest emotion or null if there is no emotion in the emotional state</returns>
-		IActiveEmotion GetStrongestEmotion(Name cause);
+		IActiveEmotion GetStrongestEmotion(Name cause, AM am);
 
 		void AddEmotionDisposition(EmotionDisposition emotionDisposition);
 

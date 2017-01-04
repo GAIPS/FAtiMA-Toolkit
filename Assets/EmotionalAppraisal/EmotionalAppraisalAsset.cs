@@ -27,56 +27,6 @@ namespace EmotionalAppraisal
         private ConcreteEmotionalState m_emotionalState;
         private ReactiveAppraisalDerivator m_appraisalDerivator;
 
-		#region Constants
-		/// <summary>
-		/// The half-life base decay for the exponential decay lambda calculation.
-		/// To calculate the lambda, divide this constant by the required half-life time.
-		/// </summary>
-		/// @hideinitializer
-		public double HalfLifeDecayConstant { get; private set; } = 0.5;
-
-		/// <summary>
-		/// Defines how strong is the influence of the emotion's intensity
-		/// on the character's mood. Since we don't want the mood to be very
-		/// volatile, we only take into account 30% of the emotion's intensity
-		/// </summary>
-		/// @hideinitializer
-		public float EmotionInfluenceOnMoodFactor { get; private set; } = 0.3f;
-
-		/// <summary>
-		/// Defines how strong is the influence of the current mood 
-		/// in the intensity of the emotion. We don't want the influence
-		/// of mood to be that great, so we only take into account 30% of 
-		/// the mood's value
-		/// </summary>
-		/// @hideinitializer
-		public float MoodInfluenceOnEmotionFactor { get; private set; } = 0.3f;
-
-		/// <summary>
-		/// Defines the minimum absolute value that mood must have,
-		/// in order to be considered for influencing emotions. At the 
-		/// moment, values of mood ranged in ]-0.5;0.5[ are considered
-		/// to be neutral moods that do not infuence emotions
-		/// </summary>
-		/// @hideinitializer
-		public double MinimumMoodValueForInfluencingEmotions { get; private set; } = 0.5;
-
-		/// <summary>
-		/// Defines how fast a emotion decay over time.
-		/// This value is the actual time it takes for an emotion to reach half of its initial intensity
-		/// </summary>
-		/// @hideinitializer
-		public float EmotionalHalfLifeDecayTime { get; private set; } = 15;
-
-		/// <summary>
-		/// Defines how fast mood decay over time.
-		/// This value is the actual time it takes the mood to reach half of its initial intensity
-		/// </summary>
-		/// @hideinitializer
-		public float MoodHalfLifeDecayTime { get; private set; } = 60;
-
-        #endregion
-        
         [NonSerialized]
 		private long _lastFrameAppraisal = 0;
 		[NonSerialized]
@@ -147,7 +97,7 @@ namespace EmotionalAppraisal
 		/// <returns>The DTO representing the actual emotion added to the active emotion set.</returns>
 		public EmotionDTO AddActiveEmotion(EmotionDTO emotion)
 	    {
-            return m_emotionalState.AddActiveEmotion(emotion);
+            return m_emotionalState.AddActiveEmotion(emotion,m_am);
 	    }
 
 		/// <summary>
@@ -157,7 +107,7 @@ namespace EmotionalAppraisal
 		/// <remarks>Note that only the <b>Type</b> and <b>CauseEventId</b> fields are required to select an emotion to be removed.</remarks>
 		public void RemoveEmotion(EmotionDTO emotion)
         {
-            m_emotionalState.RemoveEmotion(emotion);
+            m_emotionalState.RemoveEmotion(emotion, m_am);
         }
 
 		/// <summary>
@@ -344,7 +294,7 @@ namespace EmotionalAppraisal
 			m_kb = new KB((Name)perspective);
 			m_am = new AM();
 			
-			m_emotionalState = new ConcreteEmotionalState(this);
+			m_emotionalState = new ConcreteEmotionalState();
 			m_occAffectDerivator = new OCCAffectDerivationComponent();
 			m_appraisalDerivator = new ReactiveAppraisalDerivator();
 			BindToRegistry(m_kb);
@@ -359,12 +309,12 @@ namespace EmotionalAppraisal
 		/// emotions.
 		/// </summary>
 		/// <param name="eventNames">A set of string representation of the events to appraise</param>
-		public void AppraiseEvents(IEnumerable<string> eventNames)
+		public void AppraiseEvents(IEnumerable<string> eventNames, IEmotionalState emotionalState)
 		{
-            AppraiseEvents(eventNames.Select(Name.BuildName));
+            AppraiseEvents(eventNames.Select(Name.BuildName),emotionalState);
 		}
 
-		public void AppraiseEvents(IEnumerable<Name> eventNames)
+		public void AppraiseEvents(IEnumerable<Name> eventNames, IEmotionalState emotionalState)
 		{
 			var APPRAISAL_FRAME = new InternalAppraisalFrame();
 			foreach (var n in eventNames)
@@ -393,8 +343,8 @@ namespace EmotionalAppraisal
 		public void Update()
 		{
 		    this.Tick++;
-			m_emotionalState.Decay();
-		}
+            m_emotionalState.Decay(this.Tick);
+        }
 
 		/// <summary>
 		/// Reappraise the assets current emotional status
@@ -457,14 +407,9 @@ namespace EmotionalAppraisal
 			var emotions = m_occAffectDerivator.AffectDerivation(this, frame);
 			foreach (var emotion in emotions)
 			{
-				var activeEmotion = m_emotionalState.AddEmotion(emotion);
+				var activeEmotion = m_emotionalState.AddEmotion(emotion, m_am, Tick);
 				if (activeEmotion == null)
 					continue;
-
-				//foreach (var processor in m_emotionalProcessors)
-				//{
-				//	processor.EmotionActivation(this, activeEmotion);
-				//}
 			}
 
 			_lastFrameAppraisal = frame.LastChange;
@@ -615,27 +560,15 @@ namespace EmotionalAppraisal
 		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
             dataHolder.SetValue("Description", Description);
-            dataHolder.SetValue("EmotionalHalfLifeDecayTime", EmotionalHalfLifeDecayTime);
-			dataHolder.SetValue("MoodHalfLifeDecayTime", MoodHalfLifeDecayTime);
-            dataHolder.SetValue("HalfLifeDecayConstant", HalfLifeDecayConstant);
-            dataHolder.SetValue("EmotionInfluenceOnMoodFactor", EmotionInfluenceOnMoodFactor);
-            dataHolder.SetValue("MoodInfluenceOnEmotionFactor", MoodInfluenceOnEmotionFactor);
-            dataHolder.SetValue("MinimumMoodValueForInfluencingEmotions", MinimumMoodValueForInfluencingEmotions);
             dataHolder.SetValue("KnowledgeBase",m_kb);
 			dataHolder.SetValue("AutobiographicMemory",m_am);
 			dataHolder.SetValue("EmotionalState", m_emotionalState);
 			dataHolder.SetValue("AppraisalRules", m_appraisalDerivator);
-		}
+        }
 
 		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
             Description = dataHolder.GetValue<string>("Description");
-            EmotionalHalfLifeDecayTime = dataHolder.GetValue<float>("EmotionalHalfLifeDecayTime");
-            MoodHalfLifeDecayTime = dataHolder.GetValue<float>("MoodHalfLifeDecayTime");
-		    HalfLifeDecayConstant = dataHolder.GetValue<double>("HalfLifeDecayConstant");
-            EmotionInfluenceOnMoodFactor = dataHolder.GetValue<float>("EmotionInfluenceOnMoodFactor");
-            MoodInfluenceOnEmotionFactor = dataHolder.GetValue<float>("MoodInfluenceOnEmotionFactor");
-            MinimumMoodValueForInfluencingEmotions = dataHolder.GetValue<double>("MinimumMoodValueForInfluencingEmotions");
 
             m_kb = dataHolder.GetValue<KB>("KnowledgeBase");
 			m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
@@ -643,7 +576,7 @@ namespace EmotionalAppraisal
 			m_emotionalState = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
 			m_appraisalDerivator = dataHolder.GetValue<ReactiveAppraisalDerivator>("AppraisalRules");
 
-			m_occAffectDerivator = new OCCAffectDerivationComponent();
+            m_occAffectDerivator = new OCCAffectDerivationComponent();
 			BindToRegistry(m_kb);
 		}
 

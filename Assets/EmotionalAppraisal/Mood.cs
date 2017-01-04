@@ -24,14 +24,14 @@ namespace EmotionalAppraisal
 			}
 		}
 
-		public void SetMoodValue(float value,EmotionalAppraisalAsset parent)
+		public void SetMoodValue(float value, EmotionalAppraisalConfiguration config)
 		{
 			value = value < -10 ? -10 : (value > 10 ? 10 : value);
-			if (Math.Abs(value) < parent.MinimumMoodValueForInfluencingEmotions)
+			if (Math.Abs(value) < config.MinimumMoodValueForInfluencingEmotions)
 				value = 0;
 
 			this._intensityATt0 = this._intensity = value;
-			this._tickT0 = parent.Tick;
+			//this._tickT0 = parent.Tick;
 		}
 
 		internal Mood()
@@ -44,7 +44,7 @@ namespace EmotionalAppraisal
 		/// Decays the mood according to the agent's simulated time
 		/// </summary>
 		/// <returns>the mood's intensity after being decayed</returns>
-		public void DecayMood(EmotionalAppraisalAsset parent)
+		public void DecayMood(EmotionalAppraisalConfiguration config, float tick)
 		{
 			if (this._intensityATt0 == 0)
 			{
@@ -52,10 +52,10 @@ namespace EmotionalAppraisal
 				return;
 			}
 
-			var delta = (parent.Tick - this._tickT0);
-			double lambda = Math.Log(parent.HalfLifeDecayConstant)/parent.MoodHalfLifeDecayTime;
+			var delta = (tick - this._tickT0);
+			double lambda = Math.Log(config.HalfLifeDecayConstant)/ config.MoodHalfLifeDecayTime;
 			_intensity = (float)(this._intensityATt0 * Math.Exp(lambda*delta));
-			if(Math.Abs(this._intensity) < parent.MinimumMoodValueForInfluencingEmotions)
+			if(Math.Abs(this._intensity) < config.MinimumMoodValueForInfluencingEmotions)
 			{
 				this._intensity = this._intensityATt0 = 0;
 				this._tickT0 = 0;
@@ -66,13 +66,13 @@ namespace EmotionalAppraisal
 		/// Updates the character's mood when a given emotion is "felt" by the character. 
 		/// </summary>
 		/// <param name="emotion">the ActiveEmotion that will influence the agent's current mood</param>
-		public void UpdateMood(ActiveEmotion emotion, EmotionalAppraisalAsset parent)
+		public void UpdateMood(ActiveEmotion emotion, EmotionalAppraisalConfiguration config)
 		{
 			if (!emotion.InfluenceMood)
 				return;
 
 			float scale = (float)emotion.Valence;
-			SetMoodValue(this._intensity + scale * (emotion.Intensity * parent.EmotionInfluenceOnMoodFactor),parent);
+			SetMoodValue(this._intensity + scale * (emotion.Intensity * config.EmotionInfluenceOnMoodFactor), config);
 		}
 	}
 }
