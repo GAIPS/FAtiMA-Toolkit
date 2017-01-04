@@ -16,16 +16,15 @@ namespace EmotionalAppraisal
     {
         //private EmotionalAppraisalAsset m_parent = null;
         private Dictionary<string, ActiveEmotion> emotionPool;
-        private EmotionDisposition m_defaultEmotionalDisposition;
-        private Dictionary<string, EmotionDisposition> emotionDispositions;
+        
         private Mood mood;
         private EmotionalAppraisalConfiguration appraisalConfiguration;
 
         public ConcreteEmotionalState()
         {
-            this.m_defaultEmotionalDisposition = new EmotionDisposition("*", 1, 1);
+            
             this.emotionPool = new Dictionary<string, ActiveEmotion>();
-            this.emotionDispositions = new Dictionary<string, EmotionDisposition>();
+
             this.mood = new Mood();
             this.appraisalConfiguration = new EmotionalAppraisalConfiguration();
         }
@@ -41,8 +40,7 @@ namespace EmotionalAppraisal
 
         public EmotionDTO AddActiveEmotion(EmotionDTO emotion, AM am)
         {
-            EmotionDisposition disposition = GetEmotionDisposition(emotion.Type);
-            var activeEmotion = new ActiveEmotion(emotion, am, disposition.Threshold, disposition.Decay);
+            var activeEmotion = new ActiveEmotion(emotion, am, 1, 1);
 
             if (emotionPool.ContainsKey(calculateHashString(activeEmotion)))
             {
@@ -56,7 +54,7 @@ namespace EmotionalAppraisal
 
         public void RemoveEmotion(EmotionDTO emotion, AM am)
         {
-            var activeEmotion = new ActiveEmotion(emotion, am, this.DefaultEmotionDisposition.Decay, this.DefaultEmotionDisposition.Threshold);
+            var activeEmotion = new ActiveEmotion(emotion, am, 1, 1);
             emotionPool.Remove(calculateHashString(activeEmotion));
         }
 
@@ -98,7 +96,7 @@ namespace EmotionalAppraisal
         /// <param name="emotion">the BaseEmotion that creates the ActiveEmotion</param>
         /// <returns>the ActiveEmotion created if it was added to the EmotionalState.
         /// Otherwise, if the intensity of the emotion was not enough to be added to the EmotionalState, the method returns null</returns>
-        public IActiveEmotion AddEmotion(IEmotion emotion, AM am, ulong tick)
+        public IActiveEmotion AddEmotion(IEmotion emotion, AM am, EmotionDispositionDTO disposition, ulong tick)
         {
             if (emotion == null)
                 return null;
@@ -107,7 +105,6 @@ namespace EmotionalAppraisal
             ActiveEmotion auxEmotion = null;
             bool reappraisal = false;
 
-            EmotionDisposition disposition = GetEmotionDisposition(emotion.EmotionType);
             decay = disposition.Decay;
 
             ActiveEmotion previousEmotion;
@@ -139,25 +136,7 @@ namespace EmotionalAppraisal
             return auxEmotion;
         }
 
-        public EmotionDisposition GetEmotionDisposition(String emotionName)
-        {
-            EmotionDisposition disp;
-            if (this.emotionDispositions.TryGetValue(emotionName, out disp))
-                return disp;
-
-            return m_defaultEmotionalDisposition;
-        }
-
-        public void RemoveEmotionDisposition(string emotionName)
-        {
-            this.emotionDispositions.Remove(emotionName);
-        }
-
-        public EmotionDisposition DefaultEmotionDisposition
-        {
-            get { return m_defaultEmotionalDisposition; }
-            set { m_defaultEmotionalDisposition = value; }
-        }
+      
 
         /// <summary>
         /// Clears all the emotions in the EmotionalState
@@ -257,16 +236,7 @@ namespace EmotionalAppraisal
             return set.MaxValue(emo => emo.Intensity);
         }
 
-        public void AddEmotionDisposition(EmotionDisposition emotionDisposition)
-        {
-            this.emotionDispositions.Add(emotionDisposition.Emotion, emotionDisposition);
-        }
-
-        public IEnumerable<EmotionDisposition> GetEmotionDispositions()
-        {
-            return this.emotionDispositions.Values;
-        }
-
+       
         public override string ToString()
         {
             return $"Mood: {this.mood} Emotions: {this.emotionPool}";
@@ -274,9 +244,8 @@ namespace EmotionalAppraisal
 
         public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
-            dataHolder.SetValue("EmotionalPool", emotionPool.Values.ToArray());
-            dataHolder.SetValue("EmotionDispositions", emotionDispositions.Values.Prepend(m_defaultEmotionalDisposition).ToArray());
             dataHolder.SetValue("Mood", mood.MoodValue);
+            dataHolder.SetValue("EmotionalPool", emotionPool.Values.ToArray());
             dataHolder.SetValue("AppraisalConfiguration", this.appraisalConfiguration);
         }
 
@@ -286,12 +255,7 @@ namespace EmotionalAppraisal
                 emotionPool = new Dictionary<string, ActiveEmotion>();
             else
                 emotionPool.Clear();
-
-            if (emotionDispositions == null)
-                emotionDispositions = new Dictionary<string, EmotionDisposition>();
-            else
-                emotionDispositions.Clear();
-
+            
             if (mood == null)
                 mood = new Mood();
 
@@ -300,22 +264,7 @@ namespace EmotionalAppraisal
                 this.appraisalConfiguration = new EmotionalAppraisalConfiguration();
 
             mood.SetMoodValue(dataHolder.GetValue<float>("Mood"), this.appraisalConfiguration);
-            var dispositions = dataHolder.GetValue<EmotionDisposition[]>("EmotionDispositions");
-            EmotionDisposition defaultDisposition = null;
-            foreach (var disposition in dispositions)
-            {
-                if (string.Equals(disposition.Emotion, "*", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    if (defaultDisposition == null)
-                        defaultDisposition = disposition;
-                }
-                else
-                    emotionDispositions.Add(disposition.Emotion, disposition);
-            }
-            if (defaultDisposition == null)
-                defaultDisposition = new EmotionDisposition("*", 1, 1);
-            m_defaultEmotionalDisposition = defaultDisposition;
-
+       
             context.PushContext();
             {
                 context.Context = (ulong)0; //Tick 

@@ -42,6 +42,45 @@ namespace RolePlayCharacter
         public string VoiceName { get; set; }
 
         /// <summary>
+		/// The amount of update ticks this asset as experienced since its initialization
+		/// </summary>
+		public ulong Tick
+        {
+            get { return m_am.Tick; }
+            set { m_am.Tick = value; }
+        }
+
+        /// <summary>
+	    /// The emotional mood of the agent, which can vary from -10 to 10
+	    /// </summary>
+	    public float Mood
+        {
+            get { return m_emotionalState.Mood; }
+            set { m_emotionalState.Mood = value; }
+        }
+
+        /// <summary>
+        /// Creates a new <b>Active Emotion</b> and adds it to the asset's currently experiencing emotions set.
+        /// </summary>
+        /// <exception cref="ArgumentException">
+        /// Thrown if the given emotion is already being experienced by the asset.
+        /// This can happend if in the given EmotionDTO the pair of parameters <b>Type</b> and <b>CauseEventId</b>
+        /// are equal to an already existent ActiveEmotion in the asset.
+        /// </exception>
+        /// <param name="emotion">The DTO containing the emotion parameters to be used in the active emotion creation process</param>
+        /// <returns>The DTO representing the actual emotion added to the active emotion set.</returns>
+        public EmotionDTO AddActiveEmotion(EmotionDTO emotion)
+        {
+            return m_emotionalState.AddActiveEmotion(emotion, m_am);
+        }
+
+        public IEnumerable<IActiveEmotion> GetAllActiveEmotions()
+        {
+            return m_emotionalState.GetAllEmotions();
+        }
+
+
+        /// <summary>
         /// The source being used for the Emotional Appraisal Asset
         /// </summary>
         public string EmotionalAppraisalAssetSource
@@ -122,8 +161,9 @@ namespace RolePlayCharacter
         private SocialImportanceAsset _socialImportanceAsset;
         private CommeillFautAsset _commeillFautAsset;
 
+        private KB m_kb;
         private AM m_am;
-        private ConcreteEmotionalState m_es;
+        private ConcreteEmotionalState m_emotionalState;
 
         private IAction _currentAction = null;
 
@@ -133,7 +173,8 @@ namespace RolePlayCharacter
         public RolePlayCharacterAsset()
         {
             m_am = new AM();
-            m_es = new ConcreteEmotionalState();
+            m_emotionalState = new ConcreteEmotionalState();
+            BindToRegistry(m_kb);
         }
 
         public RolePlayCharacterAsset(EmotionalAppraisalAsset ea, EmotionalDecisionMakingAsset edm = null, SocialImportanceAsset si = null, CommeillFautAsset cfa = null)
@@ -161,11 +202,6 @@ namespace RolePlayCharacter
             m_am = new AM();
         }
 
-        
-        public float Mood => _emotionalAppraisalAsset?.Mood ?? 0;
-
-        public IEnumerable<IActiveEmotion> Emotions => _emotionalAppraisalAsset?.GetAllActiveEmotions();
-
         public Name Perspective => _emotionalAppraisalAsset?.Perspective;
 
         /// <summary>
@@ -184,7 +220,7 @@ namespace RolePlayCharacter
         /// </summary>
         public IActiveEmotion GetStrongestActiveEmotion()
         {
-            IEnumerable<IActiveEmotion> currentActiveEmotions = _emotionalAppraisalAsset.GetAllActiveEmotions();
+            IEnumerable<IActiveEmotion> currentActiveEmotions = m_emotionalState.GetAllEmotions();
             return currentActiveEmotions.MaxValue(a => a.Intensity);
         }
 
@@ -214,17 +250,6 @@ namespace RolePlayCharacter
             return _emotionalAppraisalAsset.GetBeliefValue(beliefName, perspective);
         }
 
-
-
-        /// <summary>
-        /// The amount of update ticks this asset as experienced since its initialization
-        /// </summary>
-        public ulong Tick
-        {
-            get { return m_am.Tick; }
-            set { m_am.Tick = value; }
-        }
-
         /// <summary>
         /// Executes an iteration of the character's decision cycle.
         /// </summary>
@@ -235,7 +260,7 @@ namespace RolePlayCharacter
         {
             _socialImportanceAsset.InvalidateCachedSI();
 
-            _emotionalAppraisalAsset.AppraiseEvents(eventStrings, m_es);
+            _emotionalAppraisalAsset.AppraiseEvents(eventStrings, m_emotionalState);
             foreach (var e in eventStrings)
             {
                 var evtName = Name.BuildName(e);
@@ -256,19 +281,19 @@ namespace RolePlayCharacter
             if (_currentAction != null)
             {
                 var e = _currentAction.ToStartEventName(Name.SELF_SYMBOL);
-                _emotionalAppraisalAsset.AppraiseEvents(new[] { e }, m_es);
+                _emotionalAppraisalAsset.AppraiseEvents(new[] { e }, m_emotionalState);
             }
 
             return _currentAction;
         }
-
 
         /// <summary>
         /// Updates the character's internal state. Should be called once every game tick.
         /// </summary>
         public void Update()
         {
-            _emotionalAppraisalAsset.Update();
+            Tick++;
+            m_emotionalState.Decay(Tick);
         }
 
         /// <summary>
@@ -283,7 +308,7 @@ namespace RolePlayCharacter
                 throw new ArgumentException("The given action mismatches the currently executing action.", nameof(action));
 
             var e = _currentAction.ToFinishedEventName(Name.SELF_SYMBOL);
-            _emotionalAppraisalAsset.AppraiseEvents(new[] { e }, m_es);
+            _emotionalAppraisalAsset.AppraiseEvents(new[] { e }, m_emotionalState);
             _currentAction = null;
         }
 
@@ -292,16 +317,19 @@ namespace RolePlayCharacter
 
         public void BindToRegistry(IDynamicPropertiesRegistry registry)
         {
-            _emotionalAppraisalAsset.BindToRegistry(registry);
+            registry.RegistDynamicProperty(MOOD_PROPERTY_NAME, MoodPropertyCalculator, "The current mood value for agent [x]");
+            registry.RegistDynamicProperty(STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator, "The type of the current strongest emotion that agent [x] is feeling.");
+            registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator, "The intensity value for the emotion felt by agent [x] of type [y].");
+            m_kb.BindToRegistry(registry);
+            m_am.BindToRegistry(registry);
             _socialImportanceAsset.BindToRegistry(registry);
         }
 
         public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
         {
-            _emotionalAppraisalAsset.UnbindToRegistry(registry);
+            m_kb.UnbindToRegistry(registry);
             _socialImportanceAsset.UnbindToRegistry(registry);
         }
-        
 
         private static IEnumerable<IAction> TakeBestActions(IEnumerable<IAction> enumerable)
         {
@@ -316,6 +344,131 @@ namespace RolePlayCharacter
             }
         }
 
+
+        #region Dynamic Properties
+
+        private static readonly Name MOOD_PROPERTY_NAME = (Name)"Mood";
+        private IEnumerable<DynamicPropertyResult> MoodPropertyCalculator(IQueryContext context, Name x)
+        {
+            if (context.Perspective != Name.SELF_SYMBOL)
+                yield break;
+
+            if (x.IsVariable)
+            {
+                var sub = new Substitution(x, context.Perspective);
+                foreach (var c in context.Constraints)
+                {
+                    if (c.AddSubstitution(sub))
+                        yield return new DynamicPropertyResult(Name.BuildName(m_emotionalState.Mood), c);
+                }
+            }
+            else
+            {
+                foreach (var resultPair in context.AskPossibleProperties(x))
+                {
+                    var v = m_emotionalState.Mood;
+                    foreach (var c in resultPair.Item2)
+                    {
+                        yield return new DynamicPropertyResult(Name.BuildName(v), c);
+                    }
+                }
+            }
+        }
+
+        private static readonly Name STRONGEST_EMOTION_PROPERTY_NAME = (Name)"StrongestEmotion";
+        private IEnumerable<DynamicPropertyResult> StrongestEmotionCalculator(IQueryContext context, Name x)
+        {
+            if (context.Perspective != Name.SELF_SYMBOL)
+                yield break;
+
+            var emo = m_emotionalState.GetStrongestEmotion();
+            if (emo == null)
+                yield break;
+
+            var emoValue = emo.EmotionType;
+
+            if (x.IsVariable)
+            {
+                var sub = new Substitution(x, context.Perspective);
+                foreach (var c in context.Constraints)
+                {
+                    if (c.AddSubstitution(sub))
+                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                }
+            }
+            else
+            {
+                foreach (var resultPair in context.AskPossibleProperties(x))
+                {
+                    foreach (var c in resultPair.Item2)
+                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                }
+            }
+        }
+
+        private static readonly Name EMOTION_INTENSITY_TEMPLATE = (Name)"EmotionIntensity";
+        private IEnumerable<DynamicPropertyResult> EmotionIntensityPropertyCalculator(IQueryContext context, Name x, Name y)
+        {
+            List<DynamicPropertyResult> result = new List<DynamicPropertyResult>();
+            if (context.Perspective != Name.SELF_SYMBOL)
+                return result;
+
+            Name entity = x;
+            Name emotionName = y;
+
+            if (entity.IsVariable)
+            {
+                var newSub = new Substitution(entity, context.Perspective);
+                var newC = context.Constraints.Where(c => c.AddSubstitution(newSub));
+                if (newC.Any())
+                    result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, context.Queryable, context.Perspective, newC));
+            }
+            else
+            {
+                foreach (var resultPair in context.AskPossibleProperties(entity))
+                {
+                    result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, context.Queryable, context.Perspective, resultPair.Item2));
+                }
+            }
+            return result;
+        }
+
+        private IEnumerable<DynamicPropertyResult> GetEmotionsForEntity(IEmotionalState state,
+            Name emotionName, WellFormedNames.IQueryable kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
+        {
+            if (emotionName.IsVariable)
+            {
+                foreach (var emotion in state.GetAllEmotions())
+                {
+                    var sub = new Substitution(emotionName, (Name)emotion.EmotionType);
+                    foreach (var c in constraints)
+                    {
+                        if (c.Conflicts(sub))
+                            continue;
+
+                        var newConstraints = new SubstitutionSet(c);
+                        newConstraints.AddSubstitution(sub);
+                        yield return new DynamicPropertyResult(Name.BuildName(emotion.Intensity), newConstraints);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var resultPair in kb.AskPossibleProperties(emotionName, perspective, constraints))
+                {
+                    string emotionKey = resultPair.Item1.ToString();
+                    var emotion = state.GetEmotionsByType(emotionKey).OrderByDescending(e => e.Intensity).FirstOrDefault();
+                    float value = emotion?.Intensity ?? 0;
+                    foreach (var c in resultPair.Item2)
+                        yield return new DynamicPropertyResult(Name.BuildName(value), c);
+                }
+            }
+        }
+
+        
+
+        #endregion
+
         /// @cond DEV
         #region ICustomSerialization
 
@@ -329,7 +482,7 @@ namespace RolePlayCharacter
             dataHolder.SetValue("SocialImportanceAssetSource", this._socialImportanceAssetSource);
             dataHolder.SetValue("CommeillFautAssetSource", this._commeillFautAssetSource);
             dataHolder.SetValue("AutobiographicMemory", m_am);
-            dataHolder.SetValue("EmotionalState", m_es);
+            dataHolder.SetValue("EmotionalState", m_emotionalState);
         }
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
@@ -342,7 +495,9 @@ namespace RolePlayCharacter
             this._socialImportanceAssetSource = dataHolder.GetValue<string>("SocialImportanceAssetSource");
             this._commeillFautAssetSource = dataHolder.GetValue<string>("CommeillFautAssetSource");
             m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
-            m_es = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
+            m_emotionalState = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
+
+            BindToRegistry(m_kb);
         }
 
         /// @endcond

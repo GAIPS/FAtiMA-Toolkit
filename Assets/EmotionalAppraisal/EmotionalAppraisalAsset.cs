@@ -20,13 +20,14 @@ namespace EmotionalAppraisal
 	/// Main class of the Emotional Appraisal Asset.
 	/// </summary>
 	[Serializable]
-	public sealed partial class EmotionalAppraisalAsset : LoadableAsset<EmotionalAppraisalAsset>, IQueryable, ICustomSerialization, IDynamicPropertiesRegister
+	public sealed partial class EmotionalAppraisalAsset : LoadableAsset<EmotionalAppraisalAsset>, IQueryable, ICustomSerialization
 	{
         private KB m_kb;
         private AM m_am;
-        private ConcreteEmotionalState m_emotionalState;
         private ReactiveAppraisalDerivator m_appraisalDerivator;
-
+        private Dictionary<string, EmotionDisposition> m_emotionDispositions;
+        private EmotionDisposition m_defaultEmotionalDisposition;
+        
         [NonSerialized]
 		private long _lastFrameAppraisal = 0;
 		[NonSerialized]
@@ -39,21 +40,17 @@ namespace EmotionalAppraisal
 	        get { return m_kb.Perspective; }
 		}
 
-		/// <summary>
-		/// The amount of update ticks this asset as experienced since its initialization
-		/// </summary>
-		public ulong Tick {
-		    get { return m_am.Tick; }
-		    set { m_am.Tick = value; }
-	    }
+        public EmotionDispositionDTO DefaultEmotionDisposition {
+            get { return m_defaultEmotionalDisposition.ToDto(); }
+            set { m_defaultEmotionalDisposition = new EmotionDisposition(value);}
+        }
 
         /// <summary>
-	    /// The emotional mood of the agent, which can vary from -10 to 10
-	    /// </summary>
-	    public float Mood
-	    {
-	        get { return m_emotionalState.Mood; }
-            set { m_emotionalState.Mood = value; }
+        /// The amount of update ticks this asset as experienced since its initialization
+        /// </summary>
+        public ulong Tick {
+		    get { return m_am.Tick; }
+		    set { m_am.Tick = value; }
 	    }
 
         /// <summary>
@@ -61,66 +58,59 @@ namespace EmotionalAppraisal
 	    /// </summary>
 	    public string Description { get; set; }
 
-		/// <summary>
-		/// Gets/Sets the default emotion disposition parameters.
-		/// </summary>
-        public EmotionDispositionDTO DefaultEmotionDisposition
-	    {
-	        get{ return m_emotionalState.DefaultEmotionDisposition.ToDto();}
-	        set { m_emotionalState.DefaultEmotionDisposition = new EmotionDisposition(value); }
-	    }
 
 		protected override string OnAssetLoaded()
 		{
 			return null;
 		}
 
-		/// <summary>
-		/// Returns the current set of active emotions
-		/// <returns>An enumerable containing the emotion DTOs of the currently active emotions being expressed by the asset.</returns>
-		/// </summary>
-		[Obsolete("Use GetAllActiveEmotions instead")]
-	    public IEnumerable<EmotionDTO> ActiveEmotions
-	    {
-	        get { return m_emotionalState.GetAllEmotions().Select(e => e.ToDto(m_am));}
-	    }
+        #region EmotionDispositions
 
-		/// <summary>
-		/// Creates a new <b>Active Emotion</b> and adds it to the asset's currently experiencing emotions set.
-		/// </summary>
-		/// <exception cref="ArgumentException">
-		/// Thrown if the given emotion is already being experienced by the asset.
-		/// This can happend if in the given EmotionDTO the pair of parameters <b>Type</b> and <b>CauseEventId</b>
-		/// are equal to an already existent ActiveEmotion in the asset.
-		/// </exception>
-		/// <param name="emotion">The DTO containing the emotion parameters to be used in the active emotion creation process</param>
-		/// <returns>The DTO representing the actual emotion added to the active emotion set.</returns>
-		public EmotionDTO AddActiveEmotion(EmotionDTO emotion)
-	    {
-            return m_emotionalState.AddActiveEmotion(emotion,m_am);
-	    }
-
-		/// <summary>
-		/// Removes the given emotion from the asset's active emotions set.
-		/// </summary>
-		/// <param name="emotion">The DTO containing the emotion parameters to be used to select and remove the requested emotion from the active emotion set.</param>
-		/// <remarks>Note that only the <b>Type</b> and <b>CauseEventId</b> fields are required to select an emotion to be removed.</remarks>
-		public void RemoveEmotion(EmotionDTO emotion)
-        {
-            m_emotionalState.RemoveEmotion(emotion, m_am);
-        }
-
-		/// <summary>
-		/// The asset's currently defined Emotion Dispositions.
-		/// </summary>
+        /// <summary>
+        /// The asset's currently defined Emotion Dispositions.
+        /// </summary>
         public IEnumerable<EmotionDispositionDTO> EmotionDispositions
         {
-            get { return m_emotionalState.GetEmotionDispositions().Select(disp => disp.ToDto()); }
+            get { return m_emotionDispositions.Values.Select(disp => disp.ToDto()); }
         }
 
-		/// <summary>
-		/// Gets all the recorded events experienced by the asset.
-		/// </summary>
+        /// <summary>
+        /// Returns the emotional dispotion associated to a given emotion type.
+        /// </summary>
+        /// <param name="emotionType">The emotion type key of the emotional disposition to retrieve</param>
+        /// <returns>The dto containing the retrieved emotional disposition information</returns>
+        public EmotionDispositionDTO GetEmotionDisposition(String emotionName)
+        {
+            EmotionDisposition disp;
+            if (this.m_emotionDispositions.TryGetValue(emotionName, out disp))
+                return disp.ToDto();
+
+            return m_defaultEmotionalDisposition.ToDto();
+        }
+     
+        /// <summary>
+        /// Creates and adds an emotional disposition to the asset.
+        /// </summary>
+        /// <param name="emotionDispositionDto">The dto containing the parameters to create a new emotional disposition on the asset</param>
+        public void AddEmotionDisposition(EmotionDispositionDTO emotionDispositionDto)
+        {
+            var disp = new EmotionDisposition(emotionDispositionDto);
+            this.m_emotionDispositions.Add(disp.Emotion, disp);
+        }
+
+        /// <summary>
+        /// Removes an emotional disposition from the asset.
+        /// </summary>
+        /// <param name="emotionType">The emotion type key of the emotional disposition to remove</param>
+        public void RemoveEmotionDisposition(string emotionType)
+        {
+            this.m_emotionDispositions.Remove(emotionType);
+        }
+        #endregion
+
+        /// <summary>
+        /// Gets all the recorded events experienced by the asset.
+        /// </summary>
         public IEnumerable<EventDTO> EventRecords
         {
             get
@@ -183,34 +173,6 @@ namespace EmotionalAppraisal
         }
 
 		/// <summary>
-		/// Creates and adds an emotional disposition to the asset.
-		/// </summary>
-		/// <param name="emotionDispositionDto">The dto containing the parameters to create a new emotional disposition on the asset</param>
-        public void AddEmotionDisposition(EmotionDispositionDTO emotionDispositionDto)
-	    {
-	        m_emotionalState.AddEmotionDisposition(new EmotionDisposition(emotionDispositionDto));
-	    } 
-
-		/// <summary>
-		/// Returns the emotional dispotion associated to a given emotion type.
-		/// </summary>
-		/// <param name="emotionType">The emotion type key of the emotional disposition to retrieve</param>
-		/// <returns>The dto containing the retrieved emotional disposition information</returns>
-	    public EmotionDispositionDTO GetEmotionDisposition(string emotionType)
-	    {
-	        return this.m_emotionalState.GetEmotionDisposition(emotionType).ToDto();
-	    }
-
-		/// <summary>
-		/// Removes an emotional disposition from the asset.
-		/// </summary>
-		/// <param name="emotionType">The emotion type key of the emotional disposition to remove</param>
-		public void RemoveEmotionDisposition(string emotionType)
-	    {
-	        m_emotionalState.RemoveEmotionDisposition(emotionType);
-	    }
-
-		/// <summary>
 		/// Returns all the appraisal rules
 		/// </summary>
 		/// <returns>The set of dtos containing the information for all the appraisal rules</returns>
@@ -264,11 +226,7 @@ namespace EmotionalAppraisal
 			});
 		}
 
-		public IEnumerable<IActiveEmotion> GetAllActiveEmotions()
-		{
-			return m_emotionalState.GetAllEmotions();
-		}
-
+	
 		/// <summary>
 		/// Change the perspective of the memories of the asset.
 		/// Use this to change "name" which the asset identifies as itself.
@@ -293,11 +251,12 @@ namespace EmotionalAppraisal
 		{
 			m_kb = new KB((Name)perspective);
 			m_am = new AM();
-			
-			m_emotionalState = new ConcreteEmotionalState();
-			m_occAffectDerivator = new OCCAffectDerivationComponent();
+
+            m_emotionDispositions = new Dictionary<string, EmotionDisposition>();
+            m_defaultEmotionalDisposition = new EmotionDisposition("*", 1, 1);
+            m_occAffectDerivator = new OCCAffectDerivationComponent();
 			m_appraisalDerivator = new ReactiveAppraisalDerivator();
-			BindToRegistry(m_kb);
+			
 		}
 
 		/// <summary>
@@ -333,30 +292,10 @@ namespace EmotionalAppraisal
 				APPRAISAL_FRAME.Reset(evt);
 				var componentFrame = APPRAISAL_FRAME.RequestComponentFrame(m_appraisalDerivator, m_appraisalDerivator.AppraisalWeight);
 				m_appraisalDerivator.Appraisal(this, evt, componentFrame);
-				UpdateEmotions(APPRAISAL_FRAME);
+				UpdateEmotions(APPRAISAL_FRAME, emotionalState);
 			}
 		}
-
-		/// <summary>
-		/// Updates the assets internal clock of the asset and updates emotional decay
-		/// </summary>
-		public void Update()
-		{
-		    this.Tick++;
-            m_emotionalState.Decay(this.Tick);
-        }
-
-		/// <summary>
-		/// Reappraise the assets current emotional status
-		/// </summary>
-		/// <remarks>Currently this method is not fully developed. As such it will not create any changes to the asset's emotional state</remarks>
-		public void Reappraise()
-		{
-			var frame = m_appraisalDerivator.Reappraisal(this);
-			if (frame != null)
-				UpdateEmotions(frame);
-		}
-
+        
 		/// <summary>
 		/// Adds a new belief to the asset's knowledge base.
 		/// If the belief already exists, its value is updated.
@@ -399,7 +338,7 @@ namespace EmotionalAppraisal
 			m_kb.Tell(Name.BuildName(name), null, p);
         }
 
-		private void UpdateEmotions(IAppraisalFrame frame)
+		private void UpdateEmotions(IAppraisalFrame frame, IEmotionalState emotionalState)
 		{
 			if (_lastFrameAppraisal >= frame.LastChange)
 				return;
@@ -407,152 +346,13 @@ namespace EmotionalAppraisal
 			var emotions = m_occAffectDerivator.AffectDerivation(this, frame);
 			foreach (var emotion in emotions)
 			{
-				var activeEmotion = m_emotionalState.AddEmotion(emotion, m_am, Tick);
+                var activeEmotion = emotionalState.AddEmotion(emotion, m_am, GetEmotionDisposition(emotion.EmotionType), Tick);
 				if (activeEmotion == null)
 					continue;
 			}
 
 			_lastFrameAppraisal = frame.LastChange;
 		}
-
-		public void BindToRegistry(IDynamicPropertiesRegistry registry)
-		{
-			registry.RegistDynamicProperty(MOOD_PROPERTY_NAME, MoodPropertyCalculator, "The current mood value for agent [x]");
-			registry.RegistDynamicProperty(STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator, "The type of the current strongest emotion that agent [x] is feeling.");
-			registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator, "The intensity value for the emotion felt by agent [x] of type [y].");
-
-			m_kb.BindToRegistry(registry);
-			m_am.BindToRegistry(registry);
-		}
-
-		public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
-		{
-			m_kb.UnbindToRegistry(registry);
-
-			throw new NotImplementedException();
-		}
-
-		#region Dynamic Properties
-
-		private static readonly Name MOOD_PROPERTY_NAME = (Name)"Mood";
-		private IEnumerable<DynamicPropertyResult> MoodPropertyCalculator(IQueryContext context, Name x)
-		{
-			if(context.Perspective != Name.SELF_SYMBOL)
-				yield break;
-
-			if (x.IsVariable)
-			{
-				var sub = new Substitution(x, context.Perspective);
-				foreach (var c in context.Constraints)
-				{
-					if (c.AddSubstitution(sub))
-						yield return new DynamicPropertyResult(Name.BuildName(m_emotionalState.Mood), c);	
-				}
-			}
-			else
-			{
-				foreach (var resultPair in context.AskPossibleProperties(x))
-				{
-					var v = m_emotionalState.Mood;
-					foreach (var c in resultPair.Item2)
-					{
-						yield return new DynamicPropertyResult(Name.BuildName(v), c);
-					}
-				}
-			}
-		}
-
-		private static readonly Name STRONGEST_EMOTION_PROPERTY_NAME = (Name)"StrongestEmotion";
-		private IEnumerable<DynamicPropertyResult> StrongestEmotionCalculator(IQueryContext context, Name x)
-		{
-			if(context.Perspective != Name.SELF_SYMBOL)
-				yield break;
-
-			var emo = m_emotionalState.GetStrongestEmotion();
-			if(emo==null)
-				yield break;
-
-			var emoValue = emo.EmotionType;
-
-			if (x.IsVariable)
-			{
-				var sub = new Substitution(x, context.Perspective);
-				foreach (var c in context.Constraints)
-				{
-					if (c.AddSubstitution(sub))
-						yield return new DynamicPropertyResult((Name)emoValue, c);
-				}
-			}
-			else
-			{
-				foreach (var resultPair in context.AskPossibleProperties(x))
-				{
-					foreach (var c in resultPair.Item2)
-						yield return new DynamicPropertyResult((Name)emoValue, c);
-				}
-			}
-		}
-
-		private static readonly Name EMOTION_INTENSITY_TEMPLATE = (Name) "EmotionIntensity";
-		private IEnumerable<DynamicPropertyResult> EmotionIntensityPropertyCalculator(IQueryContext context, Name x, Name y)
-		{
-			List<DynamicPropertyResult> result = new List<DynamicPropertyResult>();
-			if (context.Perspective != Name.SELF_SYMBOL)
-				return result;
-
-			Name entity = x;
-			Name emotionName = y;
-			
-			if (entity.IsVariable)
-			{
-				var newSub = new Substitution(entity,context.Perspective);
-				var newC = context.Constraints.Where(c => c.AddSubstitution(newSub));
-				if(newC.Any())
-					result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, context.Queryable, context.Perspective, newC));
-			}
-			else
-			{
-				foreach (var resultPair in context.AskPossibleProperties(entity))
-				{
-					result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, context.Queryable, context.Perspective, resultPair.Item2));
-				}
-			}
-			return result;
-		}
-
-		private IEnumerable<DynamicPropertyResult> GetEmotionsForEntity(IEmotionalState state,
-			Name emotionName, IQueryable kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
-		{
-			if (emotionName.IsVariable)
-			{
-				foreach (var emotion in state.GetAllEmotions())
-				{
-					var sub = new Substitution(emotionName,(Name)emotion.EmotionType);
-					foreach (var c in constraints)
-					{
-						if(c.Conflicts(sub))
-							continue;
-
-						var newConstraints = new SubstitutionSet(c);
-						newConstraints.AddSubstitution(sub);
-						yield return new DynamicPropertyResult(Name.BuildName(emotion.Intensity), newConstraints);
-					}
-				}
-			}
-			else
-			{
-				foreach (var resultPair in kb.AskPossibleProperties(emotionName,perspective,constraints))
-				{
-					string emotionKey = resultPair.Item1.ToString();
-					var emotion = state.GetEmotionsByType(emotionKey).OrderByDescending(e => e.Intensity).FirstOrDefault();
-					float value = emotion?.Intensity ?? 0;
-					foreach (var c in resultPair.Item2)
-						yield return new DynamicPropertyResult(Name.BuildName(value), c);
-				}
-			}
-		}
-
-		#endregion
 
 		/// @cond DEV
 		#region ICustomSerialization
@@ -561,9 +361,8 @@ namespace EmotionalAppraisal
 		{
             dataHolder.SetValue("Description", Description);
             dataHolder.SetValue("KnowledgeBase",m_kb);
-			dataHolder.SetValue("AutobiographicMemory",m_am);
-			dataHolder.SetValue("EmotionalState", m_emotionalState);
 			dataHolder.SetValue("AppraisalRules", m_appraisalDerivator);
+            dataHolder.SetValue("EmotionDispositions", m_emotionDispositions.Values.Prepend(m_defaultEmotionalDisposition).ToArray());
         }
 
 		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
@@ -572,12 +371,29 @@ namespace EmotionalAppraisal
 
             m_kb = dataHolder.GetValue<KB>("KnowledgeBase");
 			m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
-
-			m_emotionalState = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
-			m_appraisalDerivator = dataHolder.GetValue<ReactiveAppraisalDerivator>("AppraisalRules");
-
+            m_appraisalDerivator = dataHolder.GetValue<ReactiveAppraisalDerivator>("AppraisalRules");
             m_occAffectDerivator = new OCCAffectDerivationComponent();
-			BindToRegistry(m_kb);
+
+            if (m_emotionDispositions == null)
+                m_emotionDispositions = new Dictionary<string, EmotionDisposition>();
+            else
+                m_emotionDispositions.Clear();
+			
+            var dispositions = dataHolder.GetValue<EmotionDisposition[]>("EmotionDispositions");
+            EmotionDisposition defaultDisposition = null;
+            foreach (var disposition in dispositions)
+            {
+                if (string.Equals(disposition.Emotion, "*", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (defaultDisposition == null)
+                        defaultDisposition = disposition;
+                }
+                else
+                    m_emotionDispositions.Add(disposition.Emotion, disposition);
+            }
+            if (defaultDisposition == null)
+                defaultDisposition = new EmotionDisposition("*", 1, 1);
+            m_defaultEmotionalDisposition = defaultDisposition;
 		}
 
 		#endregion
