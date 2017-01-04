@@ -109,6 +109,29 @@ namespace RolePlayCharacterWF
 
         }
 
-     
+        private void eaAssetControl1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void edmAssetControl1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void addEmotionButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel4_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
