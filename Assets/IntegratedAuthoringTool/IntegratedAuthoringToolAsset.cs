@@ -296,7 +296,7 @@ namespace IntegratedAuthoringTool
 
 	    public void BindToRegistry(IDynamicPropertiesRegistry registry)
 	    {
-			registry.RegistDynamicProperty(VALID_DIALOGUE_PROPERTY_TEMPLATE, ValidDialogPropertyCalculator, "No description");
+			registry.RegistDynamicProperty(VALID_DIALOGUE_PROPERTY_TEMPLATE, ValidDialogPropertyCalculator,"Retrieves all valid dialogues that match the current state [cs], next state [ns], meaning [m] and style [s]");
 		}
 
 	    public void UnbindToRegistry(IDynamicPropertiesRegistry registry)

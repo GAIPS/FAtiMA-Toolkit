@@ -40,7 +40,7 @@ namespace IntegratedAuthoringToolWF
 			if (asset == null)
 				return;
 
-			var name = "RPC Character";
+			var name = "NewCharacter";
 			var options = CurrentAsset.GetAllCharacterSources().Select(c => c.Name).Where(n => n.StartsWith(name)).ToArray();
 			if (options.Length > 0)
 			{
