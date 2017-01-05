@@ -16,13 +16,11 @@ namespace EmotionalAppraisalWF
 {
 	public partial class MainForm : BaseEAForm
     {
-        private const string MOOD_FORMAT = "0.00";
-
+        
         private KnowledgeBaseVM _knowledgeBaseVM;
         private AppraisalRulesVM _appraisalRulesVM;
         private EmotionDispositionsVM _emotionDispositionsVM;
-        private AutobiographicalMemoryVM _autobiographicalMemoryVM;
-
+        
 		public MainForm()
         {
             InitializeComponent();
@@ -48,10 +46,6 @@ namespace EmotionalAppraisalWF
 			//KB
 			_knowledgeBaseVM = new KnowledgeBaseVM(this);
 			dataGridViewBeliefs.DataSource = _knowledgeBaseVM.Beliefs;
-
-			//AM
-			_autobiographicalMemoryVM = new AutobiographicalMemoryVM(this);
-			dataGridViewAM.DataSource = _autobiographicalMemoryVM.Events;
 
 			this.textBoxPerspective.Text = _knowledgeBaseVM.Perspective;
 			this.richTextBoxDescription.Text = asset.Description;
@@ -203,56 +197,12 @@ namespace EmotionalAppraisalWF
             }
             _emotionDispositionsVM.RemoveDispositions(dispositionsToRemove);
         }
-		
-        private void buttonAddEventRecord_Click(object sender, EventArgs e)
-        {
-            new AddOrEditAutobiographicalEventForm(_autobiographicalMemoryVM).ShowDialog();
-        }
-
-        private void buttonRemoveEventRecord_Click(object sender, EventArgs e)
-        {
-            IList<EventDTO> eventsToRemove = new List<EventDTO>();
-            for (int i = 0; i < dataGridViewAM.SelectedRows.Count; i++)
-            {
-                var evt = ((ObjectView<EventDTO>)dataGridViewAM.SelectedRows[i].DataBoundItem).Object;
-                eventsToRemove.Add(evt);
-            }
-            _autobiographicalMemoryVM.RemoveEventRecords(eventsToRemove);
-		}
-       
+		            
         private void dataGridViewAppraisalRules_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.RowIndex != -1) //exclude header cells
             {
                 this.buttonEditAppraisalRule_Click(sender, e);
-            }
-        }
-
-        private void buttonEditEvent_Click(object sender, EventArgs e)
-        {
-            if (dataGridViewAM.SelectedRows.Count == 1)
-            {
-                var selectedEvent = ((ObjectView<EventDTO>)dataGridViewAM.
-                    SelectedRows[0].DataBoundItem).Object;
-                new AddOrEditAutobiographicalEventForm(_autobiographicalMemoryVM, selectedEvent).ShowDialog();
-            }
-        }
-
-
-        private void buttonDuplicateEventRecord_Click(object sender, EventArgs e)
-        {
-            if (dataGridViewAM.SelectedRows.Count == 1)
-            {
-                var selectedEvent = ((ObjectView<EventDTO>)dataGridViewAM.SelectedRows[0].DataBoundItem).Object;
-                _autobiographicalMemoryVM.AddEventRecord(selectedEvent);
-            }
-        }
-
-        private void dataGridViewAM_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if (e.RowIndex != -1) //exclude header cells
-            {
-                this.buttonEditEvent_Click(sender, e);
             }
         }
 

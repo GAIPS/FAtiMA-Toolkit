@@ -1,4 +1,4 @@
-﻿namespace EmotionalAppraisalWF
+﻿namespace RolePlayCharacterWF
 {
     partial class AddOrEditAutobiographicalEventForm
     {

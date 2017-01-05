@@ -63,6 +63,12 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddOrEditAutobiographicalEventForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddOrEditAutobiographicalEventForm.Designer.cs">
+      <DependentUpon>AddOrEditAutobiographicalEventForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AddOrEditEmotionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,7 +95,11 @@
     <Compile Include="BaseAssetControl.Designer.cs">
       <DependentUpon>BaseAssetControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\AutobiographicalMemoryVM.cs" />
     <Compile Include="ViewModels\EmotionalStateVM.cs" />
+    <EmbeddedResource Include="AddOrEditAutobiographicalEventForm.resx">
+      <DependentUpon>AddOrEditAutobiographicalEventForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AddOrEditEmotionForm.resx">
       <DependentUpon>AddOrEditEmotionForm.cs</DependentUpon>
     </EmbeddedResource>

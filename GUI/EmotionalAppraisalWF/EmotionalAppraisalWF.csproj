@@ -36,12 +36,6 @@
     <StartupObject>EmotionalAppraisalWF.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AddOrEditAutobiographicalEventForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AddOrEditAutobiographicalEventForm.Designer.cs">
-      <DependentUpon>AddOrEditAutobiographicalEventForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="AddOrEditAppraisalRuleForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -74,11 +68,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\EmotionDispositionsVM.cs" />
     <Compile Include="ViewModels\AppraisalRulesVM.cs" />
-    <Compile Include="ViewModels\AutobiographicalMemoryVM.cs" />
     <Compile Include="ViewModels\KnowledgeBaseVM.cs" />
-    <EmbeddedResource Include="AddOrEditAutobiographicalEventForm.resx">
-      <DependentUpon>AddOrEditAutobiographicalEventForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="AddOrEditAppraisalRuleForm.resx">
       <DependentUpon>AddOrEditAppraisalRuleForm.cs</DependentUpon>
     </EmbeddedResource>

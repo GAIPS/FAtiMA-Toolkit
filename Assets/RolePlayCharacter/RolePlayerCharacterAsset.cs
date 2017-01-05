@@ -79,12 +79,11 @@ namespace RolePlayCharacter
             m_emotionalState.RemoveEmotion(emotion, m_am);
         }
 
-        public IEnumerable<IActiveEmotion> GetAllActiveEmotions()
+        public IEnumerable<EmotionDTO> GetAllActiveEmotions()
         {
-            return m_emotionalState.GetAllEmotions();
+            return m_emotionalState.GetAllEmotions().Select(e => e.ToDto(m_am));
         }
-
-
+        
         /// <summary>
         /// The source being used for the Emotional Appraisal Asset
         /// </summary>
@@ -178,6 +177,7 @@ namespace RolePlayCharacter
         public RolePlayCharacterAsset()
         {
             m_am = new AM();
+            m_kb = new KB((Name)"Nameless");
             m_emotionalState = new ConcreteEmotionalState();
             BindToRegistry(m_kb);
         }
@@ -207,8 +207,6 @@ namespace RolePlayCharacter
             m_am = new AM();
         }
 
-        public Name Perspective => _emotionalAppraisalAsset?.Perspective;
-
         /// <summary>
         /// Adds or updates a logical belief to the character that consists of a property-value pair
         /// </summary>
@@ -237,7 +235,52 @@ namespace RolePlayCharacter
         /// <returns>The dto containing the information of the retrieved event</returns>
         public EventDTO GetEventDetails(uint eventId)
         {
-            return _emotionalAppraisalAsset.GetEventDetails(eventId);
+            return this.m_am.RecallEvent(eventId).ToDTO();
+        }
+
+
+        /// <summary>
+        /// Add an Event Record to the asset's autobiographical memory
+        /// </summary>
+        /// <param name="eventDTO">The dto containing the information regarding the event to add</param>
+        /// <returns>The unique identifier associated to the event</returns>
+        public uint AddEventRecord(EventDTO eventDTO)
+        {
+            return this.m_am.RecordEvent(eventDTO).Id;
+        }
+
+
+
+
+        /// <summary>
+        /// Updates the associated data regarding a recorded event.
+        /// </summary>
+        /// <param name="eventDTO">The dto containing the information regarding the event to update. The Id field of the dto must match the id of the event we want to update.</param>
+        public void UpdateEventRecord(EventDTO eventDTO)
+        {
+            this.m_am.UpdateEvent(eventDTO);
+        }
+
+
+        /// <summary>
+        /// Removes and forgets an event
+        /// </summary>
+        /// <param name="eventId">The id of the event to forget.</param>
+        public void ForgetEvent(uint eventId)
+        {
+            this.m_am.ForgetEvent(eventId);
+        }
+
+
+        /// <summary>
+        /// Gets all the recorded events experienced by the asset.
+        /// </summary>
+        public IEnumerable<EventDTO> EventRecords
+        {
+            get
+            {
+                return this.m_am.RecallAllEvents().Select(e => e.ToDTO());
+            }
         }
 
         public IEnumerable<BeliefDTO> GetAllBeliefs()
@@ -269,7 +312,7 @@ namespace RolePlayCharacter
             foreach (var e in eventStrings)
             {
                 var evtName = Name.BuildName(e);
-                evtName.RemovePerspective((Name)this.Perspective);
+                evtName.RemovePerspective(CharacterName);
                 var evt = m_am.RecordEvent(evtName, Tick);
             }
 
@@ -327,7 +370,8 @@ namespace RolePlayCharacter
             registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator, "The intensity value for the emotion felt by agent [x] of type [y].");
             m_kb.BindToRegistry(registry);
             m_am.BindToRegistry(registry);
-            _socialImportanceAsset.BindToRegistry(registry);
+            if(_socialImportanceAsset != null) 
+                _socialImportanceAsset.BindToRegistry(registry);
         }
 
         public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
