@@ -4,7 +4,6 @@ using EmotionalDecisionMaking;
 using System.Collections.Generic;
 using System.Linq;
 using ActionLibrary;
-using AssetPackage;
 using AutobiographicMemory;
 using EmotionalAppraisal.DTOs;
 using KnowledgeBase;
@@ -21,15 +20,22 @@ namespace RolePlayCharacter
     [Serializable]
     public sealed class RolePlayCharacterAsset : LoadableAsset<RolePlayCharacterAsset>, IDynamicPropertiesRegister, ICustomSerialization
     {
+        private static readonly Name DefaultCharacterName = (Name)"Nameless";
+
         private string _emotionalAppraisalAssetSource = null;
         private string _emotionalDecisionMakingAssetSource = null;
         private string _socialImportanceAssetSource = null;
         private string _commeillFautAssetSource = null;
 
+
         /// <summary>
         /// The name of the character
         /// </summary>
-        public Name CharacterName { get; set; }
+        public Name CharacterName
+        {
+            get { return m_kb.Perspective; }
+            set { m_kb.Perspective = value; }
+        }
 
         /// <summary>
         /// An identifier for the embodiment that is used by the character
@@ -176,8 +182,8 @@ namespace RolePlayCharacter
         
         public RolePlayCharacterAsset()
         {
+            m_kb = new KB(DefaultCharacterName);
             m_am = new AM();
-            m_kb = new KB((Name)"Nameless");
             m_emotionalState = new ConcreteEmotionalState();
             BindToRegistry(m_kb);
         }
@@ -204,7 +210,7 @@ namespace RolePlayCharacter
             _socialImportanceAsset = si;
             _commeillFautAsset = cfa;
 
-            m_am = new AM();
+            
         }
 
         /// <summary>
@@ -523,29 +529,29 @@ namespace RolePlayCharacter
 
         public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
-            dataHolder.SetValue("CharacterName", this.CharacterName);
+            dataHolder.SetValue("KnowledgeBase", m_kb);
             dataHolder.SetValue("BodyName", this.BodyName);
             dataHolder.SetValue("VoiceName", this.VoiceName);
             dataHolder.SetValue("EmotionalAppraisalAssetSource", this._emotionalAppraisalAssetSource);
             dataHolder.SetValue("EmotionalDecisionMakingSource", this._emotionalDecisionMakingAssetSource);
             dataHolder.SetValue("SocialImportanceAssetSource", this._socialImportanceAssetSource);
             dataHolder.SetValue("CommeillFautAssetSource", this._commeillFautAssetSource);
-            dataHolder.SetValue("AutobiographicMemory", m_am);
             dataHolder.SetValue("EmotionalState", m_emotionalState);
+            dataHolder.SetValue("AutobiographicMemory", m_am);
         }
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
-            this.CharacterName = dataHolder.GetValue<Name>("CharacterName");
+            m_kb = dataHolder.GetValue<KB>("KnowledgeBase");
             this.BodyName = dataHolder.GetValue<string>("BodyName");
             this.VoiceName = dataHolder.GetValue<string>("VoiceName");
             this._emotionalAppraisalAssetSource = dataHolder.GetValue<string>("EmotionalAppraisalAssetSource");
             this._emotionalDecisionMakingAssetSource = dataHolder.GetValue<string>("EmotionalDecisionMakingSource");
             this._socialImportanceAssetSource = dataHolder.GetValue<string>("SocialImportanceAssetSource");
             this._commeillFautAssetSource = dataHolder.GetValue<string>("CommeillFautAssetSource");
-            m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
             m_emotionalState = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
-
+            m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
+         
             BindToRegistry(m_kb);
         }
 
