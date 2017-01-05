@@ -30,12 +30,12 @@ namespace RolePlayCharacterWF
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -59,8 +59,8 @@ namespace RolePlayCharacterWF
             this.buttonRemoveEventRecord = new System.Windows.Forms.Button();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.StartTickField = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
+            this.StartTickField = new System.Windows.Forms.NumericUpDown();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.eaAssetControl1 = new RolePlayCharacterWF.EAAssetControl();
             this.tabPage4 = new System.Windows.Forms.TabPage();
@@ -109,7 +109,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(434, 387);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(603, 441);
             this.tableLayoutPanel1.TabIndex = 11;
             // 
             // tabControl1
@@ -125,7 +125,7 @@ namespace RolePlayCharacterWF
             this.tabControl1.Location = new System.Drawing.Point(3, 89);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(428, 295);
+            this.tabControl1.Size = new System.Drawing.Size(597, 349);
             this.tabControl1.TabIndex = 13;
             // 
             // tabPage1
@@ -134,7 +134,7 @@ namespace RolePlayCharacterWF
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(420, 266);
+            this.tabPage1.Size = new System.Drawing.Size(589, 320);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Emotional State";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -153,7 +153,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(414, 257);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(583, 311);
             this.tableLayoutPanel3.TabIndex = 2;
             // 
             // moodGroupBox
@@ -162,7 +162,7 @@ namespace RolePlayCharacterWF
             this.moodGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.moodGroupBox.Location = new System.Drawing.Point(3, 3);
             this.moodGroupBox.Name = "moodGroupBox";
-            this.moodGroupBox.Size = new System.Drawing.Size(408, 58);
+            this.moodGroupBox.Size = new System.Drawing.Size(577, 58);
             this.moodGroupBox.TabIndex = 14;
             this.moodGroupBox.TabStop = false;
             this.moodGroupBox.Text = "Mood";
@@ -179,14 +179,14 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 1;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(402, 39);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(571, 39);
             this.tableLayoutPanel7.TabIndex = 12;
             // 
             // moodValueLabel
             // 
             this.moodValueLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.moodValueLabel.AutoSize = true;
-            this.moodValueLabel.Location = new System.Drawing.Point(355, 13);
+            this.moodValueLabel.Location = new System.Drawing.Point(524, 13);
             this.moodValueLabel.Name = "moodValueLabel";
             this.moodValueLabel.Size = new System.Drawing.Size(44, 13);
             this.moodValueLabel.TabIndex = 5;
@@ -199,8 +199,9 @@ namespace RolePlayCharacterWF
             this.moodTrackBar.Location = new System.Drawing.Point(3, 3);
             this.moodTrackBar.Minimum = -10;
             this.moodTrackBar.Name = "moodTrackBar";
-            this.moodTrackBar.Size = new System.Drawing.Size(346, 33);
+            this.moodTrackBar.Size = new System.Drawing.Size(515, 33);
             this.moodTrackBar.TabIndex = 11;
+            this.moodTrackBar.Scroll += new System.EventHandler(this.moodTrackBar_Scroll);
             // 
             // emotionGroupBox
             // 
@@ -213,7 +214,7 @@ namespace RolePlayCharacterWF
             this.emotionGroupBox.Controls.Add(this.emotionsDataGridView);
             this.emotionGroupBox.Location = new System.Drawing.Point(3, 67);
             this.emotionGroupBox.Name = "emotionGroupBox";
-            this.emotionGroupBox.Size = new System.Drawing.Size(408, 187);
+            this.emotionGroupBox.Size = new System.Drawing.Size(577, 241);
             this.emotionGroupBox.TabIndex = 1;
             this.emotionGroupBox.TabStop = false;
             this.emotionGroupBox.Text = "Emotions";
@@ -226,6 +227,7 @@ namespace RolePlayCharacterWF
             this.buttonEditEmotion.TabIndex = 9;
             this.buttonEditEmotion.Text = "Edit";
             this.buttonEditEmotion.UseVisualStyleBackColor = true;
+            this.buttonEditEmotion.Click += new System.EventHandler(this.buttonEditEmotion_Click);
             // 
             // addEmotionButton
             // 
@@ -235,7 +237,7 @@ namespace RolePlayCharacterWF
             this.addEmotionButton.TabIndex = 7;
             this.addEmotionButton.Text = "Add";
             this.addEmotionButton.UseVisualStyleBackColor = true;
-            this.addEmotionButton.Click += new System.EventHandler(this.addEmotionButton_Click);
+            this.addEmotionButton.Click += new System.EventHandler(this.addEmotionButton_Click_1);
             // 
             // buttonRemoveEmotion
             // 
@@ -245,6 +247,7 @@ namespace RolePlayCharacterWF
             this.buttonRemoveEmotion.TabIndex = 8;
             this.buttonRemoveEmotion.Text = "Remove";
             this.buttonRemoveEmotion.UseVisualStyleBackColor = true;
+            this.buttonRemoveEmotion.Click += new System.EventHandler(this.buttonRemoveEmotion_Click_1);
             // 
             // emotionsDataGridView
             // 
@@ -258,39 +261,39 @@ namespace RolePlayCharacterWF
             | System.Windows.Forms.AnchorStyles.Right)));
             this.emotionsDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.emotionsDataGridView.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.emotionsDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.emotionsDataGridView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.emotionsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.emotionsDataGridView.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.emotionsDataGridView.DefaultCellStyle = dataGridViewCellStyle8;
             this.emotionsDataGridView.ImeMode = System.Windows.Forms.ImeMode.On;
             this.emotionsDataGridView.Location = new System.Drawing.Point(6, 54);
             this.emotionsDataGridView.Name = "emotionsDataGridView";
             this.emotionsDataGridView.ReadOnly = true;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.emotionsDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.emotionsDataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.emotionsDataGridView.RowHeadersVisible = false;
             this.emotionsDataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.emotionsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.emotionsDataGridView.Size = new System.Drawing.Size(396, 127);
+            this.emotionsDataGridView.Size = new System.Drawing.Size(565, 181);
             this.emotionsDataGridView.TabIndex = 2;
             // 
             // tabPage2
@@ -299,7 +302,7 @@ namespace RolePlayCharacterWF
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(420, 266);
+            this.tabPage2.Size = new System.Drawing.Size(589, 320);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Autobiographical Memory";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -318,7 +321,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 206F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(408, 260);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(577, 314);
             this.tableLayoutPanel4.TabIndex = 0;
             this.tableLayoutPanel4.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel4_Paint);
             // 
@@ -332,7 +335,7 @@ namespace RolePlayCharacterWF
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(3, 63);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(402, 200);
+            this.groupBox4.Size = new System.Drawing.Size(571, 248);
             this.groupBox4.TabIndex = 16;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Event Records";
@@ -358,39 +361,39 @@ namespace RolePlayCharacterWF
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewAM.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewAM.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewAM.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewAM.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
             this.dataGridViewAM.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewAM.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle11.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewAM.DefaultCellStyle = dataGridViewCellStyle11;
             this.dataGridViewAM.ImeMode = System.Windows.Forms.ImeMode.On;
             this.dataGridViewAM.Location = new System.Drawing.Point(3, 49);
             this.dataGridViewAM.Name = "dataGridViewAM";
             this.dataGridViewAM.ReadOnly = true;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewAM.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle12.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewAM.RowHeadersDefaultCellStyle = dataGridViewCellStyle12;
             this.dataGridViewAM.RowHeadersVisible = false;
             this.dataGridViewAM.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAM.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAM.Size = new System.Drawing.Size(396, 145);
+            this.dataGridViewAM.Size = new System.Drawing.Size(565, 193);
             this.dataGridViewAM.TabIndex = 10;
             // 
             // buttonEditEvent
@@ -426,7 +429,7 @@ namespace RolePlayCharacterWF
             this.groupBox9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox9.Location = new System.Drawing.Point(3, 3);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(402, 54);
+            this.groupBox9.Size = new System.Drawing.Size(571, 54);
             this.groupBox9.TabIndex = 15;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Time";
@@ -443,22 +446,8 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(396, 35);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(565, 35);
             this.tableLayoutPanel6.TabIndex = 13;
-            // 
-            // StartTickField
-            // 
-            this.StartTickField.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.StartTickField.Location = new System.Drawing.Point(79, 7);
-            this.StartTickField.Maximum = new decimal(new int[] {
-            -1,
-            -1,
-            0,
-            0});
-            this.StartTickField.Name = "StartTickField";
-            this.StartTickField.Size = new System.Drawing.Size(314, 20);
-            this.StartTickField.TabIndex = 12;
-            this.StartTickField.ThousandsSeparator = true;
             // 
             // label4
             // 
@@ -470,12 +459,27 @@ namespace RolePlayCharacterWF
             this.label4.TabIndex = 11;
             this.label4.Text = "Starting Tick:";
             // 
+            // StartTickField
+            // 
+            this.StartTickField.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.StartTickField.Location = new System.Drawing.Point(79, 7);
+            this.StartTickField.Maximum = new decimal(new int[] {
+            -1,
+            -1,
+            0,
+            0});
+            this.StartTickField.Name = "StartTickField";
+            this.StartTickField.Size = new System.Drawing.Size(483, 20);
+            this.StartTickField.TabIndex = 12;
+            this.StartTickField.ThousandsSeparator = true;
+            this.StartTickField.ValueChanged += new System.EventHandler(this.StartTickField_ValueChanged);
+            // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.eaAssetControl1);
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(420, 266);
+            this.tabPage3.Size = new System.Drawing.Size(589, 320);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Emotional Appraisal";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -486,7 +490,7 @@ namespace RolePlayCharacterWF
             this.eaAssetControl1.Label = "Emotional Appraisal";
             this.eaAssetControl1.Location = new System.Drawing.Point(0, 0);
             this.eaAssetControl1.Name = "eaAssetControl1";
-            this.eaAssetControl1.Size = new System.Drawing.Size(420, 266);
+            this.eaAssetControl1.Size = new System.Drawing.Size(589, 320);
             this.eaAssetControl1.TabIndex = 12;
             this.eaAssetControl1.Load += new System.EventHandler(this.eaAssetControl1_Load);
             // 
@@ -495,7 +499,7 @@ namespace RolePlayCharacterWF
             this.tabPage4.Controls.Add(this.tableLayoutPanel5);
             this.tabPage4.Location = new System.Drawing.Point(4, 25);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(420, 266);
+            this.tabPage4.Size = new System.Drawing.Size(589, 320);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Decision Making";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -514,7 +518,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel5.RowCount = 2;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(414, 254);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(583, 308);
             this.tableLayoutPanel5.TabIndex = 0;
             // 
             // edmAssetControl1
@@ -525,7 +529,7 @@ namespace RolePlayCharacterWF
             this.edmAssetControl1.Label = "Emotional Decision Making";
             this.edmAssetControl1.Location = new System.Drawing.Point(3, 3);
             this.edmAssetControl1.Name = "edmAssetControl1";
-            this.edmAssetControl1.Size = new System.Drawing.Size(408, 121);
+            this.edmAssetControl1.Size = new System.Drawing.Size(577, 148);
             this.edmAssetControl1.TabIndex = 11;
             this.edmAssetControl1.Load += new System.EventHandler(this.edmAssetControl1_Load);
             // 
@@ -533,9 +537,9 @@ namespace RolePlayCharacterWF
             // 
             this.siAssetControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.siAssetControl1.Label = "Social Importance";
-            this.siAssetControl1.Location = new System.Drawing.Point(3, 130);
+            this.siAssetControl1.Location = new System.Drawing.Point(3, 157);
             this.siAssetControl1.Name = "siAssetControl1";
-            this.siAssetControl1.Size = new System.Drawing.Size(408, 121);
+            this.siAssetControl1.Size = new System.Drawing.Size(577, 148);
             this.siAssetControl1.TabIndex = 12;
             // 
             // tableLayoutPanel2
@@ -556,7 +560,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(428, 80);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(597, 80);
             this.tableLayoutPanel2.TabIndex = 0;
             this.tableLayoutPanel2.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
             // 
@@ -578,7 +582,7 @@ namespace RolePlayCharacterWF
             this.textBoxCharacterName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxCharacterName.Location = new System.Drawing.Point(48, 3);
             this.textBoxCharacterName.Name = "textBoxCharacterName";
-            this.textBoxCharacterName.Size = new System.Drawing.Size(377, 20);
+            this.textBoxCharacterName.Size = new System.Drawing.Size(546, 20);
             this.textBoxCharacterName.TabIndex = 3;
             this.textBoxCharacterName.TextChanged += new System.EventHandler(this.textBoxCharacterName_TextChanged);
             // 
@@ -599,7 +603,7 @@ namespace RolePlayCharacterWF
             this.textBoxCharacterBody.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxCharacterBody.Location = new System.Drawing.Point(48, 29);
             this.textBoxCharacterBody.Name = "textBoxCharacterBody";
-            this.textBoxCharacterBody.Size = new System.Drawing.Size(377, 20);
+            this.textBoxCharacterBody.Size = new System.Drawing.Size(546, 20);
             this.textBoxCharacterBody.TabIndex = 4;
             this.textBoxCharacterBody.TextChanged += new System.EventHandler(this.textBoxCharacterBody_TextChanged);
             // 
@@ -608,7 +612,7 @@ namespace RolePlayCharacterWF
             this.textBoxCharacterVoice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxCharacterVoice.Location = new System.Drawing.Point(48, 56);
             this.textBoxCharacterVoice.Name = "textBoxCharacterVoice";
-            this.textBoxCharacterVoice.Size = new System.Drawing.Size(377, 20);
+            this.textBoxCharacterVoice.Size = new System.Drawing.Size(546, 20);
             this.textBoxCharacterVoice.TabIndex = 10;
             this.textBoxCharacterVoice.TextChanged += new System.EventHandler(this.textBoxCharacterVoice_TextChanged);
             // 
@@ -627,7 +631,7 @@ namespace RolePlayCharacterWF
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.ClientSize = new System.Drawing.Size(434, 411);
+            this.ClientSize = new System.Drawing.Size(603, 465);
             this.Controls.Add(this.tableLayoutPanel1);
             this.EditorName = "Role Play Character Editor";
             this.MaximizeBox = false;

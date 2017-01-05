@@ -74,6 +74,11 @@ namespace RolePlayCharacter
             return m_emotionalState.AddActiveEmotion(emotion, m_am);
         }
 
+        public void RemoveEmotion(EmotionDTO emotion)
+        {
+            m_emotionalState.RemoveEmotion(emotion, m_am);
+        }
+
         public IEnumerable<IActiveEmotion> GetAllActiveEmotions()
         {
             return m_emotionalState.GetAllEmotions();

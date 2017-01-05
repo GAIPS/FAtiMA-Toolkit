@@ -18,7 +18,6 @@ namespace EmotionalAppraisalWF
     {
         private const string MOOD_FORMAT = "0.00";
 
-        private EmotionalStateVM _emotionalStateVM;
         private KnowledgeBaseVM _knowledgeBaseVM;
         private AppraisalRulesVM _appraisalRulesVM;
         private EmotionDispositionsVM _emotionDispositionsVM;
@@ -54,15 +53,9 @@ namespace EmotionalAppraisalWF
 			_autobiographicalMemoryVM = new AutobiographicalMemoryVM(this);
 			dataGridViewAM.DataSource = _autobiographicalMemoryVM.Events;
 
-			//Emotional State Tab
-			_emotionalStateVM = new EmotionalStateVM(this);
-
 			this.textBoxPerspective.Text = _knowledgeBaseVM.Perspective;
 			this.richTextBoxDescription.Text = asset.Description;
-			this.moodValueLabel.Text = Math.Round(_emotionalStateVM.Mood).ToString(MOOD_FORMAT);
-			this.moodTrackBar.Value = (int)float.Parse(this.moodValueLabel.Text);
-			this.StartTickField.Value = _emotionalStateVM.Start;
-			this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
+
 		}
 
 		protected sealed override void OnWillSaveAsset(EmotionalAppraisalAsset asset)
@@ -70,17 +63,7 @@ namespace EmotionalAppraisalWF
 			_knowledgeBaseVM?.UpdatePerspective();
 		}
 
-		private void trackBar1_Scroll_1(object sender, EventArgs e)
-        {
-			if(IsLoading)
-				return;
-
-            moodValueLabel.Text = moodTrackBar.Value.ToString(MOOD_FORMAT);
-            _emotionalStateVM.Mood = moodTrackBar.Value;
-			SetModified();
-        }
-
-		private void textBoxPerspective_TextChanged(object sender, EventArgs e)
+        private void textBoxPerspective_TextChanged(object sender, EventArgs e)
 		{
 			if (IsLoading)
 				return;
@@ -91,13 +74,6 @@ namespace EmotionalAppraisalWF
 			}
 		}
 
-		private void textBoxStartTick_TextChanged(object sender, EventArgs e)
-		{
-			if (IsLoading)
-				return;
-
-			_emotionalStateVM.Start = (ulong)StartTickField.Value;
-		}
 
 		#region EmotionalStateTab
 
@@ -193,11 +169,7 @@ namespace EmotionalAppraisalWF
 
 		#endregion
         
-        private void addEmotionButton_Click(object sender, EventArgs e)
-        {
-            new AddOrEditEmotionForm(_emotionalStateVM).ShowDialog();
-        }
-
+    
         private void buttonAddEmotionDisposition_Click(object sender, EventArgs e)
         {
             new AddOrEditEmotionDispositionForm(_emotionDispositionsVM).ShowDialog();
@@ -247,30 +219,7 @@ namespace EmotionalAppraisalWF
             }
             _autobiographicalMemoryVM.RemoveEventRecords(eventsToRemove);
 		}
-
-        private void buttonRemoveEmotion_Click(object sender, EventArgs e)
-        {
-            IList<EmotionDTO> emotionsToRemove = new List<EmotionDTO>();
-            for (int i = 0; i < emotionsDataGridView.SelectedRows.Count; i++)
-            {
-                var emotion = ((ObjectView<EmotionDTO>)emotionsDataGridView.SelectedRows[i].DataBoundItem).Object;
-                emotionsToRemove.Add(emotion);
-            }
-            _emotionalStateVM.RemoveEmotions(emotionsToRemove);
-		}
-
-        private void buttonEditEmotion_Click(object sender, EventArgs e)
-        {
        
-            if (emotionsDataGridView.SelectedRows.Count == 1)
-            {
-                var selectedEmotion = ((ObjectView<EmotionDTO>)emotionsDataGridView.
-                    SelectedRows[0].DataBoundItem).Object;
-                new AddOrEditEmotionForm(_emotionalStateVM, selectedEmotion).ShowDialog();
-            }
-        
-        }
-
         private void dataGridViewAppraisalRules_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.RowIndex != -1) //exclude header cells
@@ -326,6 +275,21 @@ namespace EmotionalAppraisalWF
 			DynamicPropertyDisplayer.Instance.ShowOrBringToFront();
 		}
 
-		#endregion
-	}
+        #endregion
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridViewBeliefs_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void textBoxPerspective_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

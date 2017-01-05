@@ -3,21 +3,35 @@ using RolePlayCharacter;
 using WellFormedNames;
 using WellFormedNames.Exceptions;
 using System.Windows.Forms;
+using RolePlayCharacterWF.ViewModels;
+using System.Collections.Generic;
+using EmotionalAppraisal.DTOs;
+using Equin.ApplicationFramework;
 
 namespace RolePlayCharacterWF
 {
     public sealed partial class MainForm : BaseRPCForm
     {
-	    public MainForm()
+        private const string MOOD_FORMAT = "0.00";
+        private EmotionalStateVM _emotionalStateVM;
+
+        public MainForm()
         {
             InitializeComponent();
         }
 
-		protected override void OnAssetDataLoaded(RolePlayCharacterAsset asset)
+        protected override void OnAssetDataLoaded(RolePlayCharacterAsset asset)
 		{
             textBoxCharacterName.Text = asset.CharacterName == null ? string.Empty : asset.CharacterName.ToString();
 			textBoxCharacterBody.Text = asset.BodyName;
             textBoxCharacterVoice.Text = asset.VoiceName;
+
+            _emotionalStateVM = new EmotionalStateVM(this);
+
+            this.moodValueLabel.Text = Math.Round(_emotionalStateVM.Mood).ToString(MOOD_FORMAT);
+            this.moodTrackBar.Value = (int)float.Parse(this.moodValueLabel.Text);
+            this.StartTickField.Value = _emotionalStateVM.Start;
+            this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
 
             eaAssetControl1.SetAsset(asset.EmotionalAppraisalAssetSource, () =>
 			{
@@ -132,6 +146,49 @@ namespace RolePlayCharacterWF
         private void tableLayoutPanel4_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void addEmotionButton_Click_1(object sender, EventArgs e)
+        {
+            new AddOrEditEmotionForm(_emotionalStateVM).ShowDialog();
+        }
+
+        private void buttonEditEmotion_Click(object sender, EventArgs e)
+        {
+            if (emotionsDataGridView.SelectedRows.Count == 1)
+            {
+                var selectedEmotion = ((ObjectView<EmotionDTO>)emotionsDataGridView.
+                    SelectedRows[0].DataBoundItem).Object;
+                new AddOrEditEmotionForm(_emotionalStateVM, selectedEmotion).ShowDialog();
+            }
+        }
+
+        private void buttonRemoveEmotion_Click_1(object sender, EventArgs e)
+        {
+            IList<EmotionDTO> emotionsToRemove = new List<EmotionDTO>();
+            for (int i = 0; i < emotionsDataGridView.SelectedRows.Count; i++)
+            {
+                var emotion = ((ObjectView<EmotionDTO>)emotionsDataGridView.SelectedRows[i].DataBoundItem).Object;
+                emotionsToRemove.Add(emotion);
+            }
+            _emotionalStateVM.RemoveEmotions(emotionsToRemove);
+        }
+
+        private void moodTrackBar_Scroll(object sender, EventArgs e)
+        {
+            if (IsLoading)
+                return;
+
+            moodValueLabel.Text = moodTrackBar.Value.ToString(MOOD_FORMAT);
+            _emotionalStateVM.Mood = moodTrackBar.Value;
+            SetModified();
+        }
+
+        private void StartTickField_ValueChanged(object sender, EventArgs e)
+        {
+            if (IsLoading)
+                return;
+            _emotionalStateVM.Start = (ulong)StartTickField.Value;
         }
     }
 }
