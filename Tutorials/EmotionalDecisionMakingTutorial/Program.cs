@@ -23,7 +23,7 @@ namespace EmotionalDecisionMakingTutorial
             //Second, we need to associate an existing EmotionalAppraisalAsset to the new instance
             //Since there is none existing we create a new EmotionalAppraisalAsset as well
             var ea = new EmotionalAppraisalAsset("John");
-            edm.RegisterEmotionalAppraisalAsset(ea);
+            edm.RegisterKnowledgeBase(ea);
 
             //create a reaction rule
             var reaction = new ReactionDTO {Action = "Kick", Priority = 0, Target = "Player"};
@@ -46,7 +46,7 @@ namespace EmotionalDecisionMakingTutorial
 
             //this is how you can load the asset from a file
             edm = EmotionalDecisionMakingAsset.LoadFromFile("../../../Examples/EDMTest.edm");
-            edm.RegisterEmotionalAppraisalAsset(ea);
+            edm.RegisterKnowledgeBase(ea);
             
             Console.ReadKey();
         }

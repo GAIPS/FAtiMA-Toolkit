@@ -19,10 +19,10 @@ namespace CommeillFautTutorial
             n.AddExchange(flirt);
             n.AddExchange(compliment);
 
-	        var profile = RolePlayCharacterAsset.LoadFromFile("../../../Examples/john.rpc");
-			RolePlayCharacterAsset npc =profile.BuildRPCFromProfile();
+	        var rpc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/john.rpc");
+            rpc.Initialize();
 
-			Console.WriteLine(profile.CharacterName);
+			Console.WriteLine(rpc.CharacterName);
 
        //     CommeillFautAsset cif;
        //     var flirt_id = cif.AddSocialExchange(flirt);

@@ -23,7 +23,6 @@ namespace EmotionalAppraisal
 	public sealed partial class EmotionalAppraisalAsset : LoadableAsset<EmotionalAppraisalAsset>, IQueryable, ICustomSerialization
 	{
         private KB m_kb;
-        private AM m_am;
         private ReactiveAppraisalDerivator m_appraisalDerivator;
         private Dictionary<string, EmotionDisposition> m_emotionDispositions;
         private EmotionDisposition m_defaultEmotionalDisposition;
@@ -44,14 +43,6 @@ namespace EmotionalAppraisal
             get { return m_defaultEmotionalDisposition.ToDto(); }
             set { m_defaultEmotionalDisposition = new EmotionDisposition(value);}
         }
-
-        /// <summary>
-        /// The amount of update ticks this asset as experienced since its initialization
-        /// </summary>
-        public ulong Tick {
-		    get { return m_am.Tick; }
-		    set { m_am.Tick = value; }
-	    }
 
         /// <summary>
 	    /// A short description of the asset's configuration
@@ -108,17 +99,6 @@ namespace EmotionalAppraisal
         }
         #endregion
 
-        /// <summary>
-        /// Gets all the recorded events experienced by the asset.
-        /// </summary>
-        public IEnumerable<EventDTO> EventRecords
-        {
-            get
-            {
-                return this.m_am.RecallAllEvents().Select(e => e.ToDTO());
-            }
-        }
-
 		/// <summary>
 		/// The currently supported emotional type keys
 		/// </summary>
@@ -132,45 +112,6 @@ namespace EmotionalAppraisal
 		{
 			m_appraisalDerivator.AddOrUpdateAppraisalRule(emotionalAppraisalRule);
 		}
-
-		/// <summary>
-		/// Add an Event Record to the asset's autobiographical memory
-		/// </summary>
-		/// <param name="eventDTO">The dto containing the information regarding the event to add</param>
-		/// <returns>The unique identifier associated to the event</returns>
-        public uint AddEventRecord(EventDTO eventDTO)
-	    {
-	        return this.m_am.RecordEvent(eventDTO).Id;
-	    }
-
-		/// <summary>
-		/// Updates the associated data regarding a recorded event.
-		/// </summary>
-		/// <param name="eventDTO">The dto containing the information regarding the event to update. The Id field of the dto must match the id of the event we want to update.</param>
-		public void UpdateEventRecord(EventDTO eventDTO)
-	    {
-	        this.m_am.UpdateEvent(eventDTO);
-	    }
-
-		/// <summary>
-		/// Returns all the associated information regarding an event
-		/// </summary>
-		/// <param name="eventId">The id of the event to retrieve</param>
-		/// <returns>The dto containing the information of the retrieved event</returns>
-		public EventDTO GetEventDetails(uint eventId)
-		{
-			IBaseEvent evt = m_am.RecallEvent(eventId);
-			return evt.ToDTO();
-		}
-
-		/// <summary>
-		/// Removes and forgets an event
-		/// </summary>
-		/// <param name="eventId">The id of the event to forget.</param>
-		public void ForgetEvent(uint eventId)
-        {
-            this.m_am.ForgetEvent(eventId);
-        }
 
 		/// <summary>
 		/// Returns all the appraisal rules
@@ -237,8 +178,6 @@ namespace EmotionalAppraisal
 			var p = (Name) newPerspective;
 			if(p==m_kb.Perspective)
 				return;
-
-			m_am.SwapPerspective(m_kb.Perspective,p);
 			m_kb.SetPerspective(p);
 		}
 
@@ -250,8 +189,7 @@ namespace EmotionalAppraisal
 		public EmotionalAppraisalAsset(string perspective)
 		{
 			m_kb = new KB((Name)perspective);
-			m_am = new AM();
-
+			
             m_emotionDispositions = new Dictionary<string, EmotionDisposition>();
             m_defaultEmotionalDisposition = new EmotionDisposition("*", 1, 1);
             m_occAffectDerivator = new OCCAffectDerivationComponent();
@@ -268,39 +206,41 @@ namespace EmotionalAppraisal
 		/// emotions.
 		/// </summary>
 		/// <param name="eventNames">A set of string representation of the events to appraise</param>
-		public void AppraiseEvents(IEnumerable<string> eventNames, IEmotionalState emotionalState)
-		{
-            AppraiseEvents(eventNames.Select(Name.BuildName),emotionalState);
-		}
-
-		public void AppraiseEvents(IEnumerable<Name> eventNames, IEmotionalState emotionalState)
+		public void AppraiseEvents(IEnumerable<Name> eventNames, IEmotionalState emotionalState, AM am, KB kb)
 		{
 			var APPRAISAL_FRAME = new InternalAppraisalFrame();
 			foreach (var n in eventNames)
 			{
 				var evtN = n.RemovePerspective((Name)Perspective);
-				var evt = m_am.RecordEvent(evtN, Tick);
+				
+                var evt = am.RecordEvent(evtN, am.Tick);
 
 				var propEvt = evt as IPropertyChangedEvent;
 				if (propEvt != null)
 				{
 					var fact = propEvt.Property;
 					var value = propEvt.NewValue;
-					m_kb.Tell(fact, value, Name.SELF_SYMBOL);
+                    kb.Tell(fact, value, Name.SELF_SYMBOL);
 				}
 
 				APPRAISAL_FRAME.Reset(evt);
 				var componentFrame = APPRAISAL_FRAME.RequestComponentFrame(m_appraisalDerivator, m_appraisalDerivator.AppraisalWeight);
-				m_appraisalDerivator.Appraisal(this, evt, componentFrame);
-				UpdateEmotions(APPRAISAL_FRAME, emotionalState);
+				m_appraisalDerivator.Appraisal(kb, evt, componentFrame);
+				UpdateEmotions(APPRAISAL_FRAME, emotionalState, am);
 			}
 		}
-        
-		/// <summary>
-		/// Adds a new belief to the asset's knowledge base.
-		/// If the belief already exists, its value is updated.
-		/// </summary>
-		/// <param name="belief">The dto containing the parameters for the belief to add or update.</param>
+
+
+        public void AppraiseEvents(IEnumerable<Name> eventNames, IEmotionalState emotionalState, AM am)
+        {
+            AppraiseEvents(eventNames, emotionalState, am, m_kb);
+        }
+
+        /// <summary>
+        /// Adds a new belief to the asset's knowledge base.
+        /// If the belief already exists, its value is updated.
+        /// </summary>
+        /// <param name="belief">The dto containing the parameters for the belief to add or update.</param>
         public void AddOrUpdateBelief(BeliefDTO belief)
 	    {
 			m_kb.Tell(Name.BuildName(belief.Name), Name.BuildName(belief.Value),Name.BuildName(belief.Perspective));
@@ -338,7 +278,7 @@ namespace EmotionalAppraisal
 			m_kb.Tell(Name.BuildName(name), null, p);
         }
 
-		private void UpdateEmotions(IAppraisalFrame frame, IEmotionalState emotionalState)
+		private void UpdateEmotions(IAppraisalFrame frame, IEmotionalState emotionalState, AM am)
 		{
 			if (_lastFrameAppraisal >= frame.LastChange)
 				return;
@@ -346,7 +286,7 @@ namespace EmotionalAppraisal
 			var emotions = m_occAffectDerivator.AffectDerivation(this, frame);
 			foreach (var emotion in emotions)
 			{
-                var activeEmotion = emotionalState.AddEmotion(emotion, m_am, GetEmotionDisposition(emotion.EmotionType), Tick);
+                var activeEmotion = emotionalState.AddEmotion(emotion, am, GetEmotionDisposition(emotion.EmotionType), am.Tick);
 				if (activeEmotion == null)
 					continue;
 			}
@@ -370,7 +310,6 @@ namespace EmotionalAppraisal
             Description = dataHolder.GetValue<string>("Description");
 
             m_kb = dataHolder.GetValue<KB>("KnowledgeBase");
-			m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
             m_appraisalDerivator = dataHolder.GetValue<ReactiveAppraisalDerivator>("AppraisalRules");
             m_occAffectDerivator = new OCCAffectDerivationComponent();
 

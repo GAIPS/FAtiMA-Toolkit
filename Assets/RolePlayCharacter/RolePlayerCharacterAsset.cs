@@ -37,6 +37,7 @@ namespace RolePlayCharacter
             set { m_kb.Perspective = value; }
         }
 
+
         /// <summary>
         /// An identifier for the embodiment that is used by the character
         /// </summary>
@@ -143,17 +144,35 @@ namespace RolePlayCharacter
                 ToAbsolutePath(oldpath, _commeillFautAssetSource));
         }
 
-        public RolePlayCharacterAsset BuildRPCFromProfile()
-        {
-            EmotionalAppraisalAsset ea = Loader(_emotionalAppraisalAssetSource, () => new EmotionalAppraisalAsset(this.CharacterName.ToString()));
 
+        public void Initialize()
+        {
+            //Reset state
+            m_kb = new KB(m_kb.Perspective);
+            m_am = new AM();
+            m_emotionalState = new ConcreteEmotionalState();
+
+            EmotionalAppraisalAsset ea = Loader(_emotionalAppraisalAssetSource, () => new EmotionalAppraisalAsset(this.CharacterName.ToString()));
             ea.SetPerspective(CharacterName.ToString());
             EmotionalDecisionMakingAsset edm = Loader(_emotionalDecisionMakingAssetSource, () => new EmotionalDecisionMakingAsset());
             SocialImportanceAsset si = Loader(_socialImportanceAssetSource, () => new SocialImportanceAsset());
-
             CommeillFautAsset cfa = Loader(_commeillFautAssetSource, () => new CommeillFautAsset());
 
-            return new RolePlayCharacterAsset(ea, edm, si, cfa);
+            //TODO: Copy beliefs from multiple EA sources
+            if (ea != null)
+            {
+                foreach (var bel in ea.GetAllBeliefs())
+                {
+                    m_kb.Tell((Name)bel.Name, (Name)bel.Value, (Name)bel.Perspective);
+                }
+            }
+
+            edm.RegisterKnowledgeBase(ea);
+            si.BindEmotionalAppraisalAsset(ea);
+            _emotionalAppraisalAsset = ea;
+            _emotionalDecisionMakingAsset = edm;
+            _socialImportanceAsset = si;
+            _commeillFautAsset = cfa;
         }
 
         private T Loader<T>(string path, Func<T> generateDefault) where T : LoadableAsset<T>
@@ -187,32 +206,7 @@ namespace RolePlayCharacter
             m_emotionalState = new ConcreteEmotionalState();
             BindToRegistry(m_kb);
         }
-
-        public RolePlayCharacterAsset(EmotionalAppraisalAsset ea, EmotionalDecisionMakingAsset edm = null, SocialImportanceAsset si = null, CommeillFautAsset cfa = null)
-        {
-            if (ea == null)
-                throw new ArgumentNullException(nameof(ea));
-
-            if (edm == null)
-                edm = new EmotionalDecisionMakingAsset();
-
-            if (si == null)
-                si = new SocialImportanceAsset();
-
-            if (cfa == null)
-                cfa = new CommeillFautAsset();
-
-            edm.RegisterEmotionalAppraisalAsset(ea);
-            si.BindEmotionalAppraisalAsset(ea);
-
-            _emotionalAppraisalAsset = ea;
-            _emotionalDecisionMakingAsset = edm;
-            _socialImportanceAsset = si;
-            _commeillFautAsset = cfa;
-
-            
-        }
-
+       
         /// <summary>
         /// Adds or updates a logical belief to the character that consists of a property-value pair
         /// </summary>
@@ -221,7 +215,7 @@ namespace RolePlayCharacter
         [Obsolete]
         public void AddBelief(string propertyName, string value)
         {
-            _emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO() { Value = value, Name = propertyName, Perspective = Name.SELF_STRING });
+            m_kb.Tell(Name.BuildName(propertyName), Name.BuildName(value), Name.SELF_SYMBOL);
         }
 
         /// <summary>
@@ -254,9 +248,6 @@ namespace RolePlayCharacter
         {
             return this.m_am.RecordEvent(eventDTO).Id;
         }
-
-
-
 
         /// <summary>
         /// Updates the associated data regarding a recorded event.
@@ -291,7 +282,12 @@ namespace RolePlayCharacter
 
         public IEnumerable<BeliefDTO> GetAllBeliefs()
         {
-            return _emotionalAppraisalAsset.GetAllBeliefs();
+            return m_kb.GetAllBeliefs().Select(b => new BeliefDTO
+            {
+                Name = b.Name.ToString(),
+                Perspective = b.Perspective.ToString(),
+                Value = b.Value.ToString()
+            });
         }
 
         /// <summary>
@@ -301,27 +297,22 @@ namespace RolePlayCharacter
         /// <returns>The string value of the belief, or null if no belief exists.</returns>
         public string GetBeliefValue(string beliefName, string perspective = Name.SELF_STRING)
         {
-            return _emotionalAppraisalAsset.GetBeliefValue(beliefName, perspective);
+            var result = m_kb.AskProperty((Name)beliefName, (Name)perspective)?.ToString();
+            return result;
         }
 
         /// <summary>
         /// Executes an iteration of the character's decision cycle.
         /// </summary>
-        /// <param name="eventStrings">A list of new events that occurred since the last call to this method. Each event must be represented by a well formed name with the following format "EVENT([type], [subject], [param1], [param2])". 
+        /// <param name="events">A list of new events that occurred since the last call to this method. Each event must be represented by a well formed name with the following format "EVENT([type], [subject], [param1], [param2])". 
         /// For illustration purposes here are some examples: EVENT(Property-Change, John, CurrentRole(Customer), False) ; EVENT(Action-Finished, John, Open, Box)</param>
         /// <returns>The action selected for execution or "null" otherwise</returns>
-        public IAction PerceptionActionLoop(IEnumerable<string> eventStrings)
+        public IAction PerceptionActionLoop(IEnumerable<Name> events)
         {
             _socialImportanceAsset.InvalidateCachedSI();
 
-            _emotionalAppraisalAsset.AppraiseEvents(eventStrings, m_emotionalState);
-            foreach (var e in eventStrings)
-            {
-                var evtName = Name.BuildName(e);
-                evtName.RemovePerspective(CharacterName);
-                var evt = m_am.RecordEvent(evtName, Tick);
-            }
-
+            _emotionalAppraisalAsset.AppraiseEvents(events, m_emotionalState, m_am, m_kb);
+       
             if (_currentAction != null)
                 return null;
 
@@ -335,7 +326,7 @@ namespace RolePlayCharacter
             if (_currentAction != null)
             {
                 var e = _currentAction.ToStartEventName(Name.SELF_SYMBOL);
-                _emotionalAppraisalAsset.AppraiseEvents(new[] { e }, m_emotionalState);
+                _emotionalAppraisalAsset.AppraiseEvents(new[] { e }, m_emotionalState, m_am, m_kb);
             }
 
             return _currentAction;
@@ -362,7 +353,7 @@ namespace RolePlayCharacter
                 throw new ArgumentException("The given action mismatches the currently executing action.", nameof(action));
 
             var e = _currentAction.ToFinishedEventName(Name.SELF_SYMBOL);
-            _emotionalAppraisalAsset.AppraiseEvents(new[] { e }, m_emotionalState);
+            _emotionalAppraisalAsset.AppraiseEvents(new[] { e }, m_emotionalState, m_am);
             _currentAction = null;
         }
 

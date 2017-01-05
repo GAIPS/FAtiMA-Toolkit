@@ -117,9 +117,9 @@ namespace IntegratedAuthoringTool
 			if (!m_characterSources.TryGetValue(characterName, out p))
 				throw new Exception($"Character \"{characterName}\" not found");
 
-		    var asset = p.Asset.BuildRPCFromProfile();
-			BindToRegistry(asset.DynamicPropertiesRegistry);
-		    return asset;
+		    p.Asset.Initialize();
+			BindToRegistry(p.Asset.DynamicPropertiesRegistry);
+		    return p.Asset;
 		}
 
         /// <summary>

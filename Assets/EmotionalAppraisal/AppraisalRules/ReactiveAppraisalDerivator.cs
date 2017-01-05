@@ -139,9 +139,9 @@ namespace EmotionalAppraisal.AppraisalRules
 			set;
 		}
 
-		public void Appraisal(EmotionalAppraisalAsset emotionalModule, IBaseEvent evt, IWritableAppraisalFrame frame)
+		public void Appraisal(KB kb, IBaseEvent evt, IWritableAppraisalFrame frame)
 		{
-			AppraisalRule selfEvaluation = Evaluate(evt, emotionalModule,emotionalModule.Perspective);
+			AppraisalRule selfEvaluation = Evaluate(evt, kb, kb.Perspective);
 			if (selfEvaluation != null)
 			{
 				if (selfEvaluation.Desirability != 0)

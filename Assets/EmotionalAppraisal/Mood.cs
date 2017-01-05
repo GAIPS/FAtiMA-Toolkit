@@ -30,8 +30,7 @@ namespace EmotionalAppraisal
 			if (Math.Abs(value) < config.MinimumMoodValueForInfluencingEmotions)
 				value = 0;
 
-			this._intensityATt0 = this._intensity = value;
-			//this._tickT0 = parent.Tick;
+            this._intensityATt0 = this._intensity = value;
 		}
 
 		internal Mood()
