@@ -4,6 +4,8 @@ using AssetManagerPackage;
 using EmotionalAppraisal;
 using GAIPS.Rage;
 using SocialImportance;
+using KnowledgeBase;
+using WellFormedNames;
 
 namespace SocialImportanceTutorial
 {
@@ -19,9 +21,8 @@ namespace SocialImportanceTutorial
             //First, we load the asset from an existing profile
             var siAsset = SocialImportanceAsset.LoadFromFile("../../../Examples/SITest.si");
 
-            //Second, we need to associate an existing EmotionalAppraisalAsset to the new instance
-            var ea = EmotionalAppraisalAsset.LoadFromFile("../../../Examples/EATest.ea");
-            siAsset.BindEmotionalAppraisalAsset(ea);
+            var kb = new KB((Name)"John");
+            siAsset.RegisterKnowledgeBase(kb);
             
             Console.WriteLine("The SI attributed to "+siTarget+" is:" + siAsset.GetSocialImportance(siTarget));
 

@@ -7,7 +7,6 @@ using GAIPS.Rage;
 using KnowledgeBase;
 using SerializationUtilities;
 using SocialImportance.DTOs;
-using Utilities;
 using WellFormedNames;
 using WellFormedNames.Collections;
 using WellFormedNames.Exceptions;
@@ -26,7 +25,7 @@ namespace SocialImportance
 	[Serializable]
 	public sealed class SocialImportanceAsset: LoadableAsset<SocialImportanceAsset>, ICustomSerialization, IDynamicPropertiesRegister
 	{
-		private EmotionalAppraisalAsset m_ea;
+		private KB m_kB;
 		private HashSet<AttributionRule> m_attributionRules;
 		private NameSearchTree<uint> m_claimTree;
 		private ActionSelector<Conferral> m_conferalActions;
@@ -35,15 +34,15 @@ namespace SocialImportance
 		private NameSearchTree<NameSearchTree<float>> m_cachedSI = new NameSearchTree<NameSearchTree<float>>();
 
 		/// <summary>
-		/// The Emotional Appraisal Asset that is binded to this Social Importance Asset instance
+		/// The Knowledge Base that is binded to this Social Importance Asset instance
 		/// </summary>
-		public EmotionalAppraisalAsset LinkedEA {
-			get { return m_ea; }
+		public KB LinkedEA {
+			get { return m_kB; }
 		}
 
 		public SocialImportanceAsset()
 		{
-			m_ea = null;
+			m_kB = null;
 			m_attributionRules = new HashSet<AttributionRule>();
 			m_claimTree = new NameSearchTree<uint>();
 			m_conferalActions = new ActionSelector<Conferral>(ValidateConferral);
@@ -58,17 +57,17 @@ namespace SocialImportance
 		/// InvalidateCachedSI() is automatically called by this method.
 		/// </summary>
 		/// <param name="eaa">The Emotional Appraisal Asset to be binded to this asset.</param>
-		public void BindEmotionalAppraisalAsset(EmotionalAppraisalAsset eaa)
+		public void RegisterKnowledgeBase(KB kB)
 		{
-			if (m_ea != null)
+			if (m_kB != null)
 			{
 				//Unregist bindings
-				UnbindToRegistry(m_ea.DynamicPropertiesRegistry);
-				m_ea = null;
+				UnbindToRegistry(m_kB);
+				m_kB = null;
 			}
 
-			m_ea = eaa;
-			BindToRegistry(m_ea.DynamicPropertiesRegistry);
+			m_kB = kB;
+			BindToRegistry(kB);
 			InvalidateCachedSI();
 		}
 
@@ -84,7 +83,7 @@ namespace SocialImportance
 
 		private void ValidateEALink()
 		{
-			if(m_ea==null)
+			if(m_kB==null)
 				throw new InvalidOperationException($"Cannot execute operation as an instance of {nameof(EmotionalAppraisalAsset)} was not registed in this asset.");
 		}
 
@@ -107,7 +106,7 @@ namespace SocialImportance
 			if (!t.IsPrimitive)
 				throw new ArgumentException("must be a primitive name", nameof(target));
 
-			var p = m_ea.AssertPerspective(Name.BuildName(perspective));
+			var p = m_kB.AssertPerspective(Name.BuildName(perspective));
 
 			return internal_GetSocialImportance(t,p);
 		}
@@ -156,7 +155,7 @@ namespace SocialImportance
 			ValidateEALink();
 
 			var prp = Name.BuildName(perspective);
-			var a = m_conferalActions.SelectAction(m_ea, prp).OrderByDescending(p=>p.Item2.ConferralSI);
+			var a = m_conferalActions.SelectAction(m_kB, prp).OrderByDescending(p=>p.Item2.ConferralSI);
 			return internal_FilterActions(prp, a.Select(p=>p.Item1)).FirstOrDefault();
 		}
 
@@ -187,7 +186,7 @@ namespace SocialImportance
 
 		private IEnumerable<IAction> internal_FilterActions(Name perspective, IEnumerable<IAction> actionsToFilter)
 		{
-			perspective = m_ea.AssertPerspective(perspective);
+			perspective = m_kB.AssertPerspective(perspective);
 			foreach (var a in actionsToFilter)
 			{
 				uint minSI;
@@ -215,7 +214,7 @@ namespace SocialImportance
 			foreach (var a in m_attributionRules)
 			{
 				var sub = new Substitution(a.Target, target);
-				if (a.Conditions.Evaluate(m_ea, perspective, new[] { new SubstitutionSet(sub) }))
+				if (a.Conditions.Evaluate(m_kB, perspective, new[] { new SubstitutionSet(sub) }))
 					value += a.Value;
 			}
 			return value<1?1:(uint)value;

@@ -7,7 +7,7 @@ using EmotionalDecisionMaking;
 using EmotionalDecisionMaking.DTOs;
 using GAIPS.Rage;
 using WellFormedNames;
-
+using KnowledgeBase;
 
 namespace EmotionalDecisionMakingTutorial
 {
@@ -22,8 +22,8 @@ namespace EmotionalDecisionMakingTutorial
 
             //Second, we need to associate an existing EmotionalAppraisalAsset to the new instance
             //Since there is none existing we create a new EmotionalAppraisalAsset as well
-            var ea = new EmotionalAppraisalAsset("John");
-            edm.RegisterKnowledgeBase(ea);
+            var kb = new KB((Name)"John");
+            edm.RegisterKnowledgeBase(kb);
 
             //create a reaction rule
             var reaction = new ReactionDTO {Action = "Kick", Priority = 0, Target = "Player"};
@@ -46,8 +46,7 @@ namespace EmotionalDecisionMakingTutorial
 
             //this is how you can load the asset from a file
             edm = EmotionalDecisionMakingAsset.LoadFromFile("../../../Examples/EDMTest.edm");
-            edm.RegisterKnowledgeBase(ea);
-            
+                        
             Console.ReadKey();
         }
     }

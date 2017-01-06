@@ -206,7 +206,7 @@ namespace Tests.SocialImportance
 			var si = new SocialImportanceAsset();
 			si.LoadFromDTO(siDTO);
 
-			si.BindEmotionalAppraisalAsset(ea);
+			//si.BindEmotionalAppraisalAsset(ea);
 			return si;
 		}
 
@@ -241,9 +241,9 @@ namespace Tests.SocialImportance
 				Perspective = "Self",
 				Value = "true"
 			};
-			ASSET_TO_TEST.LinkedEA.AddOrUpdateBelief(n);
+			//ASSET_TO_TEST.LinkedEA.AddOrUpdateBelief(n);
 			var a = ASSET_TO_TEST.DecideConferral(Name.SELF_STRING);
-			ASSET_TO_TEST.LinkedEA.RemoveBelief($"AskedDrink({name})","self");
+			//ASSET_TO_TEST.LinkedEA.RemoveBelief($"AskedDrink({name})","self");
 
 			if (string.IsNullOrEmpty(expectedResult))
 			{

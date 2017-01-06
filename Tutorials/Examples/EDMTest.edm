@@ -5,77 +5,30 @@
 			"DefaultActionPriority": 0,
 			"ActionTendencies": [
 				{
-					"Action": "Speak([currentState], [nextState], [meaning], GoodMood)",
+					"Action": "KickBack",
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["ValidDialogue([currentState], [nextState], [meaning], GoodMood) = True", "DialogueState([x]) = [currentState]", "Count(EventId(Action-Start, Self, Speak([currentState], [nextState], [meaning], *), [x])) = 0", "Mood(Self) >= 0"]
+							"Set": ["LastEventId(Action-Finished, [x], Kick, SELF) = [id]"]
 						}
-				}, 
-				{
-					"Action": "Speak(-, ProblemSolved, ProblemIsFixed, GoodMood)",
+				},
+        {
+          "Action": "Insult",
+          "Target": "Player",
+          "Conditions": 
+          {
+            "Set": [ "Mood(SELF) < 0" ]
+          }
+        },
+        {
+					"Action": "Compliment",
 					"Target": "Player",
 					"Conditions":
 						{
-							"Set": ["Count(EventId(Action-Start, Self, Speak(*, *, ProblemIsFixed, *), Player)) = 0", "Count(EventId(Action-Finished, Self, Fix, Computer)) > 0", "IsBroken(Computer) = False", "Mood(Self) > 0"]
+							"Set": ["Mood(SELF) >= 0"]
 						}
-				}, 
-				{
-					"Action": "Speak(-, -, IsAnybodyThereQuestion, -)",
-					"Target": "[x]",
-					"Conditions":
-						{
-							"Set": ["Count(LastEventId(Action-Finished, SELF, Speak(*, *, IsAnybodyThereQuestion, *), *)) = 0", "LastEventId(Action-Finished, [x], *, SELF) = [id]", "EventElapsedTime([id]) > 20"]
-						}
-				}, 
-				{
-					"Action": "Speak(-, -, IsAnybodyThereQuestion, -)",
-					"Target": "[x]",
-					"Conditions":
-						{
-							"Set": ["LastEventId(Action-Finished, SELF, Speak(*, *, IsAnybodyThereQuestion, *), *) = [id2]", "EventElapsedTime([id2]) > 2.5", "LastEventId(Action-Finished, [x], *, SELF) = [id]", "EventElapsedTime([id]) > 20"]
-						}
-				}, 
-				{
-					"Action": "Fix",
-					"Target": "[t]",
-					"Conditions":
-						{
-							"Set": ["LastEventId(Action-Finished, Self, Speak(*, *, CheckSolution, *), *) = [id]", "IsBroken([t]) = True", "Count(EventId(Action-Start, Self, Fix, [t])) = 0"]
-						}
-				}, 
-				{
-					"Action": "Speak(-, End, GiveUp, BadMood)",
-					"Target": "Player",
-					"Conditions":
-						{
-							"Set": ["Mood(Self) <= -7", "IsBroken(Computer) = True"]
-						}
-				}, 
-				{
-					"Action": "Speak([currentState], [nextState], [meaning], BadMood)",
-					"Target": "[x]",
-					"Conditions":
-						{
-							"Set": ["ValidDialogue([currentState], [nextState], [meaning], BadMood) = True", "DialogueState([x]) = [currentState]", "Count(EventId(Action-Start, Self, Speak([currentState], [nextState], [meaning], *), [x])) = 0", "Mood(Self) < 0"]
-						}
-				}, 
-				{
-					"Action": "Speak(-, ProblemSolved, ProblemIsFixed, BadMood)",
-					"Target": "Player",
-					"Conditions":
-						{
-							"Set": ["Count(EventId(Action-Finished, Self, Speak(*, *, ProblemIsFixed, *), Player)) = 0", "Count(EventId(Action-Finished, Self, Fix, Computer)) > 0", "IsBroken(Computer) = False", "Mood(Self) <= 0"]
-						}
-				}, 
-				{
-					"Action": "Disconnect",
-					"Conditions":
-						{
-							"Set": ["DialogueState(Player) = End"]
-						},
-					"Priority": 10
-				}]
+				}
+			]
 		},
 	"types": [
 		{

@@ -15,6 +15,7 @@ using AutobiographicMemory.DTOs;
 using SerializationUtilities;
 using GAIPS.Rage;
 
+
 namespace RolePlayCharacter
 {
     [Serializable]
@@ -169,8 +170,8 @@ namespace RolePlayCharacter
                 }
             }
 
-            edm.RegisterKnowledgeBase(ea);
-            si.BindEmotionalAppraisalAsset(ea);
+            edm.RegisterKnowledgeBase(m_kb);
+            si.RegisterKnowledgeBase(m_kb);
             _emotionalAppraisalAsset = ea;
             _emotionalDecisionMakingAsset = edm;
             _socialImportanceAsset = si;
