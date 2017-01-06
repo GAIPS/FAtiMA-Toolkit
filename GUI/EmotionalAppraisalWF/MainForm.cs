@@ -50,24 +50,9 @@ namespace EmotionalAppraisalWF
 			this.textBoxPerspective.Text = _knowledgeBaseVM.Perspective;
 			this.richTextBoxDescription.Text = asset.Description;
 
+            _wasModified = false;
+
 		}
-
-		protected sealed override void OnWillSaveAsset(EmotionalAppraisalAsset asset)
-		{
-			_knowledgeBaseVM?.UpdatePerspective();
-		}
-
-        private void textBoxPerspective_TextChanged(object sender, EventArgs e)
-		{
-			if (IsLoading)
-				return;
-
-			if (!string.IsNullOrEmpty(textBoxPerspective.Text))
-			{
-				_knowledgeBaseVM.Perspective = textBoxPerspective.Text;
-			}
-		}
-
 
 		#region EmotionalStateTab
 
@@ -206,12 +191,6 @@ namespace EmotionalAppraisalWF
             }
         }
 
-		private void richTextBoxDescription_TextChanged(object sender, EventArgs e)
-        {
-			CurrentAsset.Description = richTextBoxDescription.Text;
-			SetModified();
-		}
-
 		private void OnScreenChanged(object sender, EventArgs e)
 		{
 			_knowledgeBaseVM.UpdatePerspective();
@@ -239,7 +218,21 @@ namespace EmotionalAppraisalWF
 
         private void textBoxPerspective_TextChanged_1(object sender, EventArgs e)
         {
+            if (IsLoading)
+                return;
 
+            if (!string.IsNullOrEmpty(textBoxPerspective.Text))
+            {
+                _knowledgeBaseVM.Perspective = textBoxPerspective.Text;
+                _knowledgeBaseVM.UpdatePerspective();
+                SetModified();
+            }
+        }
+
+        private void richTextBoxDescription_TextChanged_1(object sender, EventArgs e)
+        {
+            CurrentAsset.Description = richTextBoxDescription.Text;
+            SetModified();
         }
     }
 }

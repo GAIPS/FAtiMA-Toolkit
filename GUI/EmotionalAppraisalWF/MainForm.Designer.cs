@@ -155,6 +155,7 @@
             this.richTextBoxDescription.Size = new System.Drawing.Size(507, 38);
             this.richTextBoxDescription.TabIndex = 0;
             this.richTextBoxDescription.Text = "";
+            this.richTextBoxDescription.TextChanged += new System.EventHandler(this.richTextBoxDescription_TextChanged_1);
             // 
             // groupBox10
             // 
