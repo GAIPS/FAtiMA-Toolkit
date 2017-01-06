@@ -36,12 +36,13 @@ namespace EmotionalAppraisal.AppraisalRules
 		
 		public AppraisalRule Evaluate(IBaseEvent evt, IQueryable kb, Name perspective)
 		{
-			foreach (var possibleAppraisals in Rules.Unify(evt.EventName.ApplyPerspective(perspective)))
+            var eventInPerspective = evt.EventName.ApplyPerspective(perspective);
+            foreach (var possibleAppraisals in Rules.Unify(eventInPerspective))
 			{
 				var conditions = new[] {possibleAppraisals.Item2};
 				foreach (var appraisal in possibleAppraisals.Item1)
 				{
-					if (appraisal.Conditions.Evaluate(kb,Name.SELF_SYMBOL, conditions))
+					if (appraisal.Conditions.Evaluate(kb, Name.SELF_SYMBOL, conditions))
 						return appraisal;	
 				}
 			}

@@ -4,7 +4,7 @@
 			"classId": 0,
 			"KnowledgeBase":
 				{
-					"Perspective": "Friend",
+					"Perspective": "Sam",
 					"Knowledge":
 						{
 
@@ -12,9 +12,9 @@
 				},
 			"BodyName": "Female",
 			"VoiceName": "",
-			"EmotionalAppraisalAssetSource": null,
-			"EmotionalDecisionMakingSource": null,
-			"SocialImportanceAssetSource": null,
+			"EmotionalAppraisalAssetSource": "EATest.ea",
+			"EmotionalDecisionMakingSource": "EDMTest.edm",
+			"SocialImportanceAssetSource": "SITest.si",
 			"CommeillFautAssetSource": null,
 			"EmotionalState":
 				{

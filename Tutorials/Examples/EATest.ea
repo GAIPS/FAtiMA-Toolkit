@@ -5,12 +5,12 @@
 			"Description": null,
 			"KnowledgeBase":
 				{
-					"Perspective": "Nameless",
+					"Perspective": "Person",
 					"Knowledge":
 						{
 							"SELF":
 								{
-									"Likes(Futebol)": true
+									"Likes(Person, Kick)": false
 								}
 						}
 				},
@@ -19,10 +19,10 @@
 					"AppraisalWeight": 1,
 					"Rules": [
 						{
-							"EventName": "Event(*, *, *, *, *)",
+							"EventName": "Event(*, *, [x], SELF)",
 							"Conditions":
 								{
-									"Set": []
+									"Set": ["Likes(SELF,[x]) = False"]
 								},
 							"Desirability": -6
 						}]
@@ -30,8 +30,8 @@
 			"EmotionDispositions": [
 				{
 					"Emotion": "*",
-					"Decay": 3,
-					"Threshold": 8
+					"Decay": 1,
+					"Threshold": 1
 				}, 
 				{
 					"Emotion": "Admiration",
