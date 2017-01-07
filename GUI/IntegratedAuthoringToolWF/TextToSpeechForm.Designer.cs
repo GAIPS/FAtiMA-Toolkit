@@ -45,10 +45,10 @@
 			this._visemeDisplay = new System.Windows.Forms.PictureBox();
 			this._generateButton = new System.Windows.Forms.Button();
 			this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-			this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-			this.label2 = new System.Windows.Forms.Label();
 			this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
 			this.label3 = new System.Windows.Forms.Label();
+			this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+			this.label2 = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this._speachRateSlider)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this._pitchSlider)).BeginInit();
 			this.tableLayoutPanel1.SuspendLayout();
@@ -57,8 +57,8 @@
 			this.tableLayoutPanel5.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this._visemeDisplay)).BeginInit();
 			this.tableLayoutPanel4.SuspendLayout();
-			this.tableLayoutPanel6.SuspendLayout();
 			this.tableLayoutPanel7.SuspendLayout();
+			this.tableLayoutPanel6.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// textBox1
@@ -287,33 +287,6 @@
 			this.tableLayoutPanel4.Size = new System.Drawing.Size(368, 208);
 			this.tableLayoutPanel4.TabIndex = 13;
 			// 
-			// tableLayoutPanel6
-			// 
-			this.tableLayoutPanel6.ColumnCount = 3;
-			this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
-			this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-			this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel6.Controls.Add(this._rateTextBox, 1, 0);
-			this.tableLayoutPanel6.Controls.Add(this.label2, 0, 0);
-			this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 82);
-			this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
-			this.tableLayoutPanel6.Name = "tableLayoutPanel6";
-			this.tableLayoutPanel6.RowCount = 1;
-			this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tableLayoutPanel6.Size = new System.Drawing.Size(368, 41);
-			this.tableLayoutPanel6.TabIndex = 13;
-			// 
-			// label2
-			// 
-			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(3, 3);
-			this.label2.Margin = new System.Windows.Forms.Padding(3);
-			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(67, 13);
-			this.label2.TabIndex = 9;
-			this.label2.Text = "Speak Rate:";
-			// 
 			// tableLayoutPanel7
 			// 
 			this.tableLayoutPanel7.ColumnCount = 3;
@@ -342,6 +315,33 @@
 			this.label3.TabIndex = 7;
 			this.label3.Text = "Pitch Shift:";
 			// 
+			// tableLayoutPanel6
+			// 
+			this.tableLayoutPanel6.ColumnCount = 3;
+			this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+			this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+			this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel6.Controls.Add(this._rateTextBox, 1, 0);
+			this.tableLayoutPanel6.Controls.Add(this.label2, 0, 0);
+			this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.tableLayoutPanel6.Location = new System.Drawing.Point(0, 82);
+			this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(0);
+			this.tableLayoutPanel6.Name = "tableLayoutPanel6";
+			this.tableLayoutPanel6.RowCount = 1;
+			this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tableLayoutPanel6.Size = new System.Drawing.Size(368, 41);
+			this.tableLayoutPanel6.TabIndex = 13;
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(3, 3);
+			this.label2.Margin = new System.Windows.Forms.Padding(3);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(67, 13);
+			this.label2.TabIndex = 9;
+			this.label2.Text = "Speak Rate:";
+			// 
 			// TextToSpeechForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -366,10 +366,10 @@
 			((System.ComponentModel.ISupportInitialize)(this._visemeDisplay)).EndInit();
 			this.tableLayoutPanel4.ResumeLayout(false);
 			this.tableLayoutPanel4.PerformLayout();
-			this.tableLayoutPanel6.ResumeLayout(false);
-			this.tableLayoutPanel6.PerformLayout();
 			this.tableLayoutPanel7.ResumeLayout(false);
 			this.tableLayoutPanel7.PerformLayout();
+			this.tableLayoutPanel6.ResumeLayout(false);
+			this.tableLayoutPanel6.PerformLayout();
 			this.ResumeLayout(false);
 
 		}

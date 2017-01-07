@@ -298,13 +298,10 @@ namespace IntegratedAuthoringToolWF
 			if (i < 0)
 			{
 				text = textBox1.Text;
-				path = Path.Combine(path, "preview");
 			}
 			else
 			{
 				var a = _agentActions[i];
-				var id = DialogUtilities.GenerateFileKey(a);
-				path = Path.Combine(path, id);
 				text = a.Utterance;
 			}
 
@@ -313,7 +310,7 @@ namespace IntegratedAuthoringToolWF
 			controler.Percent = 1;
 		}
 
-		private void GenerateAllVoicesTask(string basePath, IProgressBarControler controller)
+		private void GenerateAllVoicesTask(string path, IProgressBarControler controller)
 		{
 			var rate = GetRate();
 			var pitch = GetPitch();
@@ -321,8 +318,6 @@ namespace IntegratedAuthoringToolWF
 			var i = 0;
 			foreach (var split in _agentActions.Zip(controller.Split(_agentActions.Length), (dto, ctrl) => new {data = dto, ctrl}))
 			{
-				var id = DialogUtilities.GenerateFileKey(split.data);
-				var path = Path.Combine(basePath, id);
 				split.ctrl.Message = $"Generating TTS for Utterance ({++i}/{_agentActions.Length})";
 				BakeAndSaveTTS(path, split.data.Utterance,rate,pitch);
 				split.ctrl.Percent = 1;
@@ -339,7 +334,7 @@ namespace IntegratedAuthoringToolWF
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
 
-			var hash = DialogUtilities.UtteranceHash(utterance);
+			var hash = DialogUtilities.GenerateUtteranceFileName(utterance);
 			var path2 = Path.Combine(path, hash.ToString());
 			using (var audioFile = File.Open(path2 + ".wav", FileMode.Create, FileAccess.Write))
 			{

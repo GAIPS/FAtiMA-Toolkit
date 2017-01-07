@@ -43,7 +43,6 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
-    <Compile Include="ConditionalNSTTests.cs" />
     <Compile Include="ConditionEvaluatorSetTests.cs" />
     <Compile Include="ConditionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

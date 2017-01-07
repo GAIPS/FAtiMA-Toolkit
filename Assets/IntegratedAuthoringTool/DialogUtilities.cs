@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using IntegratedAuthoringTool.DTOs;
 
@@ -6,6 +8,10 @@ namespace IntegratedAuthoringTool
 {
 	public static class DialogUtilities
 	{
+		private static readonly HashAlgorithm _hashAlg = MD5.Create();
+		private static readonly char[] _invalidChars = {'.','/','\\','*','"','[',']',':',';',',','|','=','\n','\t','\b','!','?'};
+		private const int MAX_CHARACTERS = 20;
+
 		private static string JoinStringArray(string[] strs)
 		{
 			switch (strs.Length)
@@ -24,17 +30,13 @@ namespace IntegratedAuthoringTool
 			return $"{dto.CurrentState}#{dto.NextState}#{JoinStringArray(dto.Meaning)}({JoinStringArray(dto.Style)})".ToUpperInvariant();
 		}
 
-		public static uint UtteranceHash(string utterance)
+		public static string GenerateUtteranceFileName(string utterance)
 		{
-			uint hash = 0;
+			var seq = utterance.Where(c => !_invalidChars.Contains(c)).Take(MAX_CHARACTERS).Select(char.ToUpperInvariant);
+			var head = new string(seq.ToArray());
+
 			var bytes = Encoding.UTF8.GetBytes(utterance);
-			for (var i = 0; i < bytes.Length; i++)
-			{
-				var move = i%32;
-				var h = (uint) (bytes[i] << move);
-				hash ^= h;
-			}
-			return hash;
+			return head+"-"+BitConverter.ToString(_hashAlg.ComputeHash(bytes)).Replace("-", string.Empty);
 		}
 	}
 }
