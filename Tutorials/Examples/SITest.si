@@ -20,16 +20,16 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["Player = [x]"]
+							"Set": ["Mood(SELF) > 0"]
 						}
 				},
         {
 					"ConferralSI": 20,
 					"Action": "Hug",
-					"Target": "[x]",
+					"Target": "Player",
 					"Conditions":
 						{
-							"Set": ["Player = [x]"]
+							"Set": ["Mood(SELF) > 0"]
 						}
 				}]
 		},
