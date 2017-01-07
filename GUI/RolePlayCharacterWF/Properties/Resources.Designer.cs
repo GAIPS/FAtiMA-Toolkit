@@ -86,5 +86,7 @@ namespace RolePlayCharacterWF.Properties {
                 return ResourceManager.GetString("UnableToSaveFileError", resourceCulture);
             }
         }
+
+        public static string EditEmotionFormTitle { get; internal set; }
     }
 }

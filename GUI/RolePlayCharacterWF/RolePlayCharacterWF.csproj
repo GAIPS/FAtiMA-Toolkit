@@ -36,6 +36,10 @@
     <StartupObject>RolePlayCharacterWF.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Equin.ApplicationFramework.BindingListView, Version=1.4.5222.35545, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Equin.ApplicationFramework.BindingListView.1.4.5222.35545\lib\net40-Client\Equin.ApplicationFramework.BindingListView.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RageAssetManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -59,6 +63,18 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddOrEditAutobiographicalEventForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddOrEditAutobiographicalEventForm.Designer.cs">
+      <DependentUpon>AddOrEditAutobiographicalEventForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddOrEditEmotionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddOrEditEmotionForm.Designer.cs">
+      <DependentUpon>AddOrEditEmotionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="BaseRPCForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -79,6 +95,14 @@
     <Compile Include="BaseAssetControl.Designer.cs">
       <DependentUpon>BaseAssetControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\AutobiographicalMemoryVM.cs" />
+    <Compile Include="ViewModels\EmotionalStateVM.cs" />
+    <EmbeddedResource Include="AddOrEditAutobiographicalEventForm.resx">
+      <DependentUpon>AddOrEditAutobiographicalEventForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddOrEditEmotionForm.resx">
+      <DependentUpon>AddOrEditEmotionForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -95,6 +119,7 @@
     <EmbeddedResource Include="BaseAssetControl.resx">
       <DependentUpon>BaseAssetControl.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -38,7 +38,7 @@ namespace EmotionalAppraisal
 		/// </summary>
 		EmotionValence Valence { get; }
 
-		IEnumerable<string> AppraisalVariables { get; }
+        IEnumerable<string> AppraisalVariables { get; }
 
 		bool InfluenceMood { get; }
 

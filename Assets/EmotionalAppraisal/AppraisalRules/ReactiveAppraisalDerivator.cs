@@ -36,12 +36,13 @@ namespace EmotionalAppraisal.AppraisalRules
 		
 		public AppraisalRule Evaluate(IBaseEvent evt, IQueryable kb, Name perspective)
 		{
-			foreach (var possibleAppraisals in Rules.Unify(evt.EventName.ApplyPerspective(perspective)))
+            var eventInPerspective = evt.EventName.ApplyPerspective(perspective);
+            foreach (var possibleAppraisals in Rules.Unify(eventInPerspective))
 			{
 				var conditions = new[] {possibleAppraisals.Item2};
 				foreach (var appraisal in possibleAppraisals.Item1)
 				{
-					if (appraisal.Conditions.Evaluate(kb,Name.SELF_SYMBOL, conditions))
+					if (appraisal.Conditions.Evaluate(kb, Name.SELF_SYMBOL, conditions))
 						return appraisal;	
 				}
 			}
@@ -139,9 +140,9 @@ namespace EmotionalAppraisal.AppraisalRules
 			set;
 		}
 
-		public void Appraisal(EmotionalAppraisalAsset emotionalModule, IBaseEvent evt, IWritableAppraisalFrame frame)
+		public void Appraisal(KB kb, IBaseEvent evt, IWritableAppraisalFrame frame)
 		{
-			AppraisalRule selfEvaluation = Evaluate(evt, emotionalModule,emotionalModule.Perspective);
+			AppraisalRule selfEvaluation = Evaluate(evt, kb, kb.Perspective);
 			if (selfEvaluation != null)
 			{
 				if (selfEvaluation.Desirability != 0)

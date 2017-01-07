@@ -15,21 +15,21 @@
 			"Claims": [],
 			"Conferrals": [
 				{
-					"ConferralSI": 20,
-					"Action": "Speak([initial-state], [end-state], [meaning], Friend)",
-					"Target": "[t]",
-					"Conditions":
-						{
-							"Set": ["ValidDialogue([current-state], [end-state], [meaning], Friend) = True", "DialogueState([t]) = [current-state]"]
-						}
-				}, 
-				{
-					"ConferralSI": 20,
-					"Action": "Compliment",
+					"ConferralSI": 1,
+					"Action": "Greet",
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsFriend([x]) = True"]
+							"Set": ["Mood(SELF) > 0"]
+						}
+				},
+        {
+					"ConferralSI": 20,
+					"Action": "Hug",
+					"Target": "Player",
+					"Conditions":
+						{
+							"Set": ["Mood(SELF) > 0"]
 						}
 				}]
 		},

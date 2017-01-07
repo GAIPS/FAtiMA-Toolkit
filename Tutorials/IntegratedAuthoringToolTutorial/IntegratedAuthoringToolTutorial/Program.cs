@@ -4,6 +4,7 @@ using IntegratedAuthoringTool;
 using System;
 using System.Linq;
 using ActionLibrary;
+using WellFormedNames;
 
 namespace IntegratedAuthoringToolTutorial
 {
@@ -19,21 +20,19 @@ namespace IntegratedAuthoringToolTutorial
 	        var rpc = iat.InstantiateCharacterAsset(iat.GetAllCharacterSources().FirstOrDefault().Name);
                         
             var eventStr = "Event(Action-Finished, Player, Kick, Client)";
-            Console.WriteLine("The name of the character loaded is: " + rpc.Perspective);
-            Console.WriteLine("Perspective: " + rpc.Perspective);
+            Console.WriteLine("The name of the character loaded is: " + rpc.CharacterName);
             Console.WriteLine("Mood: " + rpc.Mood);
             Console.WriteLine("Strongest emotion: " + rpc.GetStrongestActiveEmotion()?.EmotionType + "-" + rpc.GetStrongestActiveEmotion()?.Intensity);
 
-            var action = rpc.PerceptionActionLoop(new[] { ("Event(Action-Start,Player,Start,-)") });
+            var action = rpc.PerceptionActionLoop(new[] { (Name)("Event(Action-Start,Player,Start,-)") });
 
             WriteAction(action);
             Console.WriteLine();
-            WriteAction(rpc.PerceptionActionLoop(new[] { ("Event(Action-Start,Player,Start,-)") }));
+            WriteAction(rpc.PerceptionActionLoop(new[] { (Name)("Event(Action-Start,Player,Start,-)") }));
 
 
             rpc.ActionFinished(action);
-            WriteAction(rpc.PerceptionActionLoop(new[] { ("Event(Action-Start,Player,Start,-)") }));
-            //WriteAction(rpc.PerceptionActionLoop(new[] { ("Event(Property-Change,Player,DialogueState(Player),Problem)") }));
+            WriteAction(rpc.PerceptionActionLoop(new[] { (Name)("Event(Action-Start,Player,Start,-)") }));
 
             Console.ReadKey();
         }

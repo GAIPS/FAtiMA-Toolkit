@@ -1,4 +1,4 @@
-﻿namespace EmotionalAppraisalWF
+﻿namespace RolePlayCharacterWF
 {
     partial class AddOrEditEmotionForm
     {
@@ -28,18 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.addOrEditButton = new System.Windows.Forms.Button();
             this.comboBoxEmotionType = new System.Windows.Forms.ComboBox();
             this.textBoxCauseId = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.addBeliefErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.comboBoxIntensity = new System.Windows.Forms.ComboBox();
-            this.emotionalAppraisalAssetBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.addBeliefErrorProvider)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emotionalAppraisalAssetBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -100,10 +95,6 @@
             this.label2.Text = "Intensity:";
             this.label2.Click += new System.EventHandler(this.label2_Click_1);
             // 
-            // addBeliefErrorProvider
-            // 
-            this.addBeliefErrorProvider.ContainerControl = this;
-            // 
             // comboBoxIntensity
             // 
             this.comboBoxIntensity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -125,10 +116,6 @@
             this.comboBoxIntensity.TabIndex = 21;
             this.comboBoxIntensity.SelectedIndexChanged += new System.EventHandler(this.comboBoxIntensity_SelectedIndexChanged);
             // 
-            // emotionalAppraisalAssetBindingSource
-            // 
-            this.emotionalAppraisalAssetBindingSource.DataSource = typeof(EmotionalAppraisal.EmotionalAppraisalAsset);
-            // 
             // AddOrEditEmotionForm
             // 
             this.AcceptButton = this.addOrEditButton;
@@ -149,22 +136,18 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Emotion";
             this.Load += new System.EventHandler(this.AddOrEditBeliefForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.addBeliefErrorProvider)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.emotionalAppraisalAssetBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.BindingSource emotionalAppraisalAssetBindingSource;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button addOrEditButton;
         private System.Windows.Forms.ComboBox comboBoxEmotionType;
         private System.Windows.Forms.TextBox textBoxCauseId;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ErrorProvider addBeliefErrorProvider;
         private System.Windows.Forms.ComboBox comboBoxIntensity;
     }
 }

@@ -22,8 +22,8 @@ namespace EmotionalAppraisal
 	{
 		private float intensityATt0;
 		private ulong tickATt0;
-
-		public uint CauseId { get; private set; }
+        
+        public uint CauseId { get; private set; }
 
 		public Name Direction{ get; private set; }
 
@@ -34,8 +34,8 @@ namespace EmotionalAppraisal
 		public IEnumerable<string> AppraisalVariables { get; private set; }
 
 		public bool InfluenceMood { get; private set; }
-
-		private int m_decay;
+                
+        private int m_decay;
 		public int Decay
 		{
 			get { return m_decay; }
@@ -91,8 +91,9 @@ namespace EmotionalAppraisal
 		}
 
 
+
         //TODO: Discuss with Pedro this hierarchy. Problem: ActiveEmotion might be a bit too tied to OCCEmotion
-	    public ActiveEmotion(EmotionDTO emotionDTO, int threshold, int decay)
+        public ActiveEmotion(EmotionDTO emotionDTO, AM am, int threshold, int decay)
 	    {
 	        var occType = OCCEmotionType.Parse(emotionDTO.Type);
             if(occType == null)
@@ -106,16 +107,16 @@ namespace EmotionalAppraisal
 	        this.Threshold = threshold;
 	        this.Decay = decay;
 	        this.Intensity = emotionDTO.Intensity;
-	    }
+        }
 
 		/// <summary>
 		/// Decays the emotion according to the system's time
 		/// </summary>
 		/// <returns>the intensity of the emotion after being decayed</returns>
-		internal void DecayEmotion(EmotionalAppraisalAsset parent)
+		internal void DecayEmotion(EmotionalAppraisalConfiguration configuration, ulong tick)
 		{
-			var delta = parent.Tick - tickATt0;
-			double lambda = Math.Log(parent.HalfLifeDecayConstant) /parent.EmotionalHalfLifeDecayTime;
+			var delta = tick - tickATt0;
+			double lambda = Math.Log(configuration.HalfLifeDecayConstant) / configuration.EmotionalHalfLifeDecayTime;
 			float decay = (float)Math.Exp(lambda * this.Decay * delta);
 			Intensity = intensityATt0 * decay;
 		}
@@ -183,35 +184,7 @@ namespace EmotionalAppraisal
 	        };
 	    }
 
-		//public void GetObjectData(ISerializationData dataHolder)
-		//{
-		//	dataHolder.SetValue("Intensity", Intensity);
-		//	dataHolder.SetValue("Decay", Decay);
-		//	dataHolder.SetValue("Threshold", Threshold);
-		//	dataHolder.SetValue("CauseId", CauseId);
-		//	if (Direction != null)
-		//		dataHolder.SetValue("Direction", Direction.ToString());
-		//	dataHolder.SetValue("EmotionType", EmotionType);
-		//	dataHolder.SetValue("Valence", Valence);
-		//	dataHolder.SetValue("AppraisalVariables", AppraisalVariables.ToArray());
-		//	dataHolder.SetValue("InfluenceMood", InfluenceMood);
-		//}
-
-		//public ActiveEmotion(ISerializationData dataHolder, ulong tickStamp)
-		//{
-		//	Decay = dataHolder.GetValue<int>("Decay");
-		//	Threshold = dataHolder.GetValue<int>("Threshold");
-		//	CauseId = dataHolder.GetValue<uint>("CauseId");
-		//	var dir = dataHolder.GetValue<string>("Direction");
-		//	Direction = !string.IsNullOrEmpty(dir) ? Name.BuildName(dir) : null;
-		//	EmotionType = dataHolder.GetValue<string>("EmotionType");
-		//	Valence = dataHolder.GetValue<EmotionValence>("Valence");
-		//	AppraisalVariables = dataHolder.GetValue<string[]>("AppraisalVariables");
-		//	InfluenceMood = dataHolder.GetValue<bool>("InfluenceMood");
-		//	this.intensityATt0 = this.Intensity = dataHolder.GetValue<float>("Intensity");
-  //          this.tickATt0 = tickStamp;
-  //      }
-
+	
 		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			dataHolder.SetValue("Intensity", Intensity);
@@ -237,7 +210,8 @@ namespace EmotionalAppraisal
 			Valence = dataHolder.GetValue<EmotionValence>("Valence");
 			AppraisalVariables = dataHolder.GetValue<string[]>("AppraisalVariables");
 			InfluenceMood = dataHolder.GetValue<bool>("InfluenceMood");
-			this.intensityATt0 = this.Intensity = dataHolder.GetValue<float>("Intensity");
+            this.intensityATt0 = this.Intensity = dataHolder.GetValue<float>("Intensity");
+           
 			if(!(context.Context is ulong))
 				throw new Exception("Unable to deserialize Active Emotion. Invalid serialization context.");
 			this.tickATt0 = (ulong)context.Context;

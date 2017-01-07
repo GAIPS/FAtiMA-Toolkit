@@ -2,10 +2,9 @@
 using System.Windows.Forms;
 using AutobiographicMemory;
 using AutobiographicMemory.DTOs;
-using EmotionalAppraisalWF.Properties;
-using EmotionalAppraisalWF.ViewModels;
+using RolePlayCharacterWF.ViewModels;
 
-namespace EmotionalAppraisalWF
+namespace RolePlayCharacterWF
 {
     public partial class AddOrEditAutobiographicalEventForm : Form
     {
@@ -23,8 +22,8 @@ namespace EmotionalAppraisalWF
             
             if (eventToEdit != null)
             {
-                this.Text = Resources.EditAutobiographicalEventFormTitle;
-                this.addOrEditButton.Text = Resources.UpdateButtonLabel;
+                this.Text = "Edit Event Record";
+                this.addOrEditButton.Text = "Update";
 
                 _eventToEdit = _autobiographicalMemoryVm.RetrieveEventRecord(_eventToEdit.Id);
                 var propertyEvent = _eventToEdit as PropertyChangeEventDTO;
@@ -88,7 +87,7 @@ namespace EmotionalAppraisalWF
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

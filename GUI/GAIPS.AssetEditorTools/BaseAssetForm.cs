@@ -15,7 +15,7 @@ namespace GAIPS.AssetEditorTools
 		where T : LoadableAsset<T>
 	{
 		private Func<T> _getExternalAssetInstance = null;
-		private bool _wasModified;
+		protected bool _wasModified;
 
 		protected BaseAssetForm()
 		{
@@ -44,6 +44,9 @@ namespace GAIPS.AssetEditorTools
 			_wasModified = true;
 			UpdateWindowTitle();
 		}
+
+
+
 
 		public string SelectAssetFileFromBrowser()
 		{
@@ -489,7 +492,7 @@ namespace GAIPS.AssetEditorTools
 		protected void SaveAssetToFile(T asset, string path)
 		{
 			OnWillSaveAsset(asset);
-			asset.SaveToFile(path);
+			asset.SaveConfigurationToFile(path);
 		}
 
 		protected virtual string GetAssetCurrentPath(T asset)
