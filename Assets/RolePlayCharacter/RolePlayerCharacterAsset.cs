@@ -325,7 +325,7 @@ namespace RolePlayCharacter
             var sociallyAcceptedActions = _socialImportanceAsset.FilterActions(Name.SELF_STRING, possibleActions);
             var conferralAction = _socialImportanceAsset.DecideConferral(Name.SELF_STRING);
             if (conferralAction != null)
-                sociallyAcceptedActions.Append(conferralAction);
+                sociallyAcceptedActions = sociallyAcceptedActions.Append(conferralAction);
 
             _currentAction = TakeBestActions(sociallyAcceptedActions).Shuffle().FirstOrDefault();
             if (_currentAction != null)
