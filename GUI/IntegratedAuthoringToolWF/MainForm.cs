@@ -54,7 +54,7 @@ namespace IntegratedAuthoringToolWF
 				name += $"({value})";
 			}
 			asset.CharacterName = (Name)name;
-			asset.SaveToFile();
+			asset.SaveConfigurationToFile();
 
 			CurrentAsset.AddNewCharacterSource(new CharacterSourceDTO() {Name = name,Source = asset.AssetFilePath});
 			_characterSources.DataSource = CurrentAsset.GetAllCharacterSources().ToList();

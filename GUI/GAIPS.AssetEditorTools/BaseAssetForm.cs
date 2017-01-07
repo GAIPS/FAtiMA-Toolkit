@@ -492,7 +492,7 @@ namespace GAIPS.AssetEditorTools
 		protected void SaveAssetToFile(T asset, string path)
 		{
 			OnWillSaveAsset(asset);
-			asset.SaveToFile(path);
+			asset.SaveConfigurationToFile(path);
 		}
 
 		protected virtual string GetAssetCurrentPath(T asset)

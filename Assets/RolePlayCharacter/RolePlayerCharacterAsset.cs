@@ -14,7 +14,7 @@ using CommeillFaut;
 using AutobiographicMemory.DTOs;
 using SerializationUtilities;
 using GAIPS.Rage;
-
+using AssetPackage;
 
 namespace RolePlayCharacter
 {
@@ -132,16 +132,20 @@ namespace RolePlayCharacter
 
         protected override void OnAssetPathChanged(string oldpath)
         {
+			if(!string.IsNullOrEmpty(_emotionalAppraisalAssetSource))
             _emotionalAppraisalAssetSource = ToRelativePath(AssetFilePath,
                 ToAbsolutePath(oldpath, _emotionalAppraisalAssetSource));
 
-            _emotionalDecisionMakingAssetSource = ToRelativePath(AssetFilePath,
+			if (!string.IsNullOrEmpty(_emotionalDecisionMakingAssetSource))
+				_emotionalDecisionMakingAssetSource = ToRelativePath(AssetFilePath,
                 ToAbsolutePath(oldpath, _emotionalDecisionMakingAssetSource));
 
-            _socialImportanceAssetSource = ToRelativePath(AssetFilePath,
+			if (!string.IsNullOrEmpty(_socialImportanceAssetSource))
+				_socialImportanceAssetSource = ToRelativePath(AssetFilePath,
                 ToAbsolutePath(oldpath, _socialImportanceAssetSource));
 
-            _commeillFautAssetSource = ToRelativePath(AssetFilePath,
+			if (!string.IsNullOrEmpty(_commeillFautAssetSource))
+				_commeillFautAssetSource = ToRelativePath(AssetFilePath,
                 ToAbsolutePath(oldpath, _commeillFautAssetSource));
         }
 
@@ -516,9 +520,18 @@ namespace RolePlayCharacter
             }
         }
 
-        
+
 
         #endregion
+
+        public void SaveStateToFile(string filepath)
+        {
+            var storage = GetInterface<IDataStorage>();
+            if (storage == null)
+                throw new Exception($"No {nameof(IDataStorage)} defined in the AssetManager bridge.");
+            var json = SERIALIZER.SerializeToJson(this);
+            storage.Save(filepath, json.ToString(true));
+        }
 
         /// @cond DEV
         #region ICustomSerialization
@@ -547,7 +560,6 @@ namespace RolePlayCharacter
             this._commeillFautAssetSource = dataHolder.GetValue<string>("CommeillFautAssetSource");
             m_emotionalState = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
             m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
-         
             BindToRegistry(m_kb);
         }
 
