@@ -2,6 +2,7 @@
 using AssetManagerPackage;
 using GAIPS.Rage;
 using RolePlayCharacter;
+using WellFormedNames;
 
 namespace RolePlayCharacterTutorial
 {
@@ -11,15 +12,14 @@ namespace RolePlayCharacterTutorial
         {
 			AssetManager.Instance.Bridge = new BasicIOBridge();
             //Loading the asset
-	        var profile = RolePlayCharacterProfileAsset.LoadFromFile("../../../Examples/RPCTest.rpcf");
-            var rpc = profile.BuildRPCFromProfile();
-            var eventStr = "Event(Action-Finished, Player, Kick, Client)";
-
-            Console.WriteLine("The name of the character loaded is: " + rpc.Perspective);
-            Console.WriteLine("Perspective: " + rpc.Perspective);
+	        var rpc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/RPCTest.rpc");
+            rpc.Initialize();
+            var eventStr = "Event(Action-Finished, Player, Kick, "+ rpc.CharacterName + ")";
+            var action = rpc.PerceptionActionLoop(new []{(Name)eventStr})?.ActionName;
+            Console.WriteLine("The name of the character loaded is: " + rpc.CharacterName);
             Console.WriteLine("Mood: " + rpc.Mood);
-            Console.WriteLine("Strongest emotion: " + rpc.GetStrongestActiveEmotion()?.EmotionType + "-"+ rpc.GetStrongestActiveEmotion()?.Intensity);
-            Console.WriteLine("Selected Action: " + rpc.PerceptionActionLoop(new []{eventStr})?.ActionName);
+            Console.WriteLine("Strongest emotion: " + rpc.GetStrongestActiveEmotion()?.EmotionType + "-" + rpc.GetStrongestActiveEmotion()?.Intensity);
+            Console.WriteLine("Action: " + action?.ToString());
             Console.ReadKey();
         }
     }

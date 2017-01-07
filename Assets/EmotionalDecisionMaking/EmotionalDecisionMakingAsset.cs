@@ -9,6 +9,7 @@ using EmotionalDecisionMaking.DTOs;
 using GAIPS.Rage;
 using SerializationUtilities;
 using WellFormedNames;
+using IQueryable = WellFormedNames.IQueryable;
 
 namespace EmotionalDecisionMaking
 {
@@ -18,7 +19,7 @@ namespace EmotionalDecisionMaking
 	[Serializable]
     public sealed class EmotionalDecisionMakingAsset : LoadableAsset<EmotionalDecisionMakingAsset>, ICustomSerialization
     {
-        private EmotionalAppraisalAsset m_emotionalAppraisal = null;
+        private IQueryable m_kb = null;
 
 		/// <summary>
 		/// Asset constructor.
@@ -44,9 +45,9 @@ namespace EmotionalDecisionMaking
 		/// To understand Emotional Appaisal Asset functionalities, please refer to its documentation.
 		/// </remarks>
 		/// <param name="eaa">The instance of an Emotional Appaisal Asset to regist in this asset.</param>
-		public void RegisterEmotionalAppraisalAsset(EmotionalAppraisalAsset eaa)
+		public void RegisterKnowledgeBase(IQueryable KB)
         {
-            m_emotionalAppraisal = eaa;
+            m_kb = KB;
         }
 
 		/// <summary>
@@ -58,14 +59,14 @@ namespace EmotionalDecisionMaking
 		/// <exception cref="Exception">Thrown if there is no Emotional Appraisal Asset registed in this asset.</exception>
         public IEnumerable<IAction> Decide()
         {
-            if (m_emotionalAppraisal == null)
+            if (m_kb == null)
                 throw new Exception(
-                    $"Unlinked to a {nameof(EmotionalAppraisalAsset)}. Use {nameof(RegisterEmotionalAppraisalAsset)} before calling any method.");
+                    $"Unlinked to a {nameof(EmotionalAppraisalAsset)}. Use {nameof(RegisterKnowledgeBase)} before calling any method.");
 
 			if (ReactiveActions == null)
 				return Enumerable.Empty<IAction>();
 
-            return ReactiveActions.SelectAction(m_emotionalAppraisal, Name.SELF_SYMBOL);
+            return ReactiveActions.SelectAction(m_kb, Name.SELF_SYMBOL);
         }
 
 		/// <summary>

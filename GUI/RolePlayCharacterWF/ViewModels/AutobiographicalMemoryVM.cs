@@ -2,55 +2,55 @@
 using System.Linq;
 using AutobiographicMemory;
 using AutobiographicMemory.DTOs;
-using EmotionalAppraisal;
 using Equin.ApplicationFramework;
+using RolePlayCharacter;
 
-namespace EmotionalAppraisalWF.ViewModels
+namespace RolePlayCharacterWF.ViewModels
 {
     public class AutobiographicalMemoryVM
     {
-	    private readonly BaseEAForm _mainForm;
-	    private EmotionalAppraisalAsset _emotionalAppraisalAsset => _mainForm.CurrentAsset;
+	    private readonly BaseRPCForm _mainForm;
+	    private RolePlayCharacterAsset _rpcAsset => _mainForm.CurrentAsset;
 
         public BindingListView<EventDTO> Events {get;}
 
 		public static readonly string[] EventTypes = { Constants.ACTION_START_EVENT.ToString(),Constants.ACTION_FINISHED_EVENT.ToString(), Constants.PROPERTY_CHANGE_EVENT.ToString() };
 
-		public AutobiographicalMemoryVM(BaseEAForm form)
+		public AutobiographicalMemoryVM(BaseRPCForm form)
 		{
 			_mainForm = form;
-            this.Events = new BindingListView<EventDTO>(_emotionalAppraisalAsset.EventRecords.ToList());
+            this.Events = new BindingListView<EventDTO>(_rpcAsset.EventRecords.ToList());
         }
      
         public void AddEventRecord(EventDTO newEvent)
         {
-            _emotionalAppraisalAsset.AddEventRecord(newEvent);
-            Events.DataSource = _emotionalAppraisalAsset.EventRecords.ToList();
+            _rpcAsset.AddEventRecord(newEvent);
+            Events.DataSource = _rpcAsset.EventRecords.ToList();
             Events.Refresh();
 			_mainForm.SetModified();
         }
 
         public void UpdateEventRecord(EventDTO existingEvent)
         {
-            _emotionalAppraisalAsset.UpdateEventRecord(existingEvent);
-            Events.DataSource = _emotionalAppraisalAsset.EventRecords.ToList();
+            _rpcAsset.UpdateEventRecord(existingEvent);
+            Events.DataSource = _rpcAsset.EventRecords.ToList();
             Events.Refresh();
 			_mainForm.SetModified();
 		}
 
         public EventDTO RetrieveEventRecord(uint id)
         {
-            return _emotionalAppraisalAsset.GetEventDetails(id);
+            return _rpcAsset.GetEventDetails(id);
         }
 
         public void RemoveEventRecords(IEnumerable<EventDTO> events)
         {
             foreach (var eventDto in events)
             {
-                _emotionalAppraisalAsset.ForgetEvent(eventDto.Id);
+                _rpcAsset.ForgetEvent(eventDto.Id);
             }
 
-            Events.DataSource = _emotionalAppraisalAsset.EventRecords.ToList();
+            Events.DataSource = _rpcAsset.EventRecords.ToList();
             Events.Refresh();
 			_mainForm.SetModified();
 		}

@@ -2,10 +2,9 @@
 using System.Windows.Forms;
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
-using EmotionalAppraisalWF.Properties;
-using EmotionalAppraisalWF.ViewModels;
+using RolePlayCharacterWF.ViewModels;
 
-namespace EmotionalAppraisalWF
+namespace RolePlayCharacterWF
 {
     public partial class AddOrEditEmotionForm : Form
     {
@@ -25,8 +24,8 @@ namespace EmotionalAppraisalWF
 
 			if (emotionToEdit != null)
             {
-                this.Text = Resources.EditEmotionFormTitle;
-                this.addOrEditButton.Text = Resources.UpdateButtonLabel;
+                this.Text = "Update Emotion";
+                this.addOrEditButton.Text = "Update";
 
                 comboBoxIntensity.Text = Math.Round(emotionToEdit.Intensity).ToString();
                 comboBoxEmotionType.Text = emotionToEdit.Type;
@@ -99,7 +98,7 @@ namespace EmotionalAppraisalWF
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             
       }

@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutobiographicMemory;
+using EmotionalAppraisal.DTOs;
 
 namespace EmotionalAppraisal
 {
 	public partial class EmotionalAppraisalAsset
 	{
-		private class InternalAppraisalFrame : IAppraisalFrame
+        
+
+        private class InternalAppraisalFrame : IAppraisalFrame
 		{
 			private Dictionary<object, ComponentAppraisalFrame> nestedFrames = new Dictionary<object, ComponentAppraisalFrame>();
 			private Dictionary<string, AppraisalVariable> appraisalVariables = new Dictionary<string, AppraisalVariable>();

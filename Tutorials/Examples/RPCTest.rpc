@@ -2,11 +2,39 @@
 	"root":
 		{
 			"classId": 0,
-			"_emotionalAppraisalAssetSource": "..\\test\\..\\Examples\\EATest.ea",
-			"_emotionalDecisionMakingAssetSource": "EDMTest.edm",
-			"_socialImportanceAssetSource": "SITest.si",
+			"KnowledgeBase":
+				{
+					"Perspective": "Sam",
+					"Knowledge":
+						{
+
+						}
+				},
 			"BodyName": "Female",
-			"CharacterName": "Friend"
+			"VoiceName": "",
+			"EmotionalAppraisalAssetSource": "EATest.ea",
+			"EmotionalDecisionMakingSource": "EDMTest.edm",
+			"SocialImportanceAssetSource": "SITest.si",
+			"CommeillFautAssetSource": null,
+			"EmotionalState":
+				{
+					"Mood": 0,
+					"EmotionalPool": [],
+					"AppraisalConfiguration":
+						{
+							"HalfLifeDecayConstant": 0.5,
+							"EmotionInfluenceOnMoodFactor": 0.3,
+							"MoodInfluenceOnEmotionFactor": 0.3,
+							"MinimumMoodValueForInfluencingEmotions": 0.5,
+							"EmotionalHalfLifeDecayTime": 15,
+							"MoodHalfLifeDecayTime": 60
+						}
+				},
+			"AutobiographicMemory":
+				{
+					"Tick": 0,
+					"records": []
+				}
 		},
 	"types": [
 		{
