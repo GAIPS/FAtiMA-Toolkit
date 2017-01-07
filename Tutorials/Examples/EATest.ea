@@ -10,6 +10,7 @@
 						{
 							"SELF":
 								{
+									"IsFriend(Player)": true,
 									"Likes(Person, Kick)": false
 								}
 						}
@@ -22,7 +23,7 @@
 							"EventName": "Event(*, *, [x], SELF)",
 							"Conditions":
 								{
-									"Set": ["Likes(SELF,[x]) = False"]
+									"Set": ["Likes(SELF, [x]) = False"]
 								},
 							"Desirability": -6
 						}]

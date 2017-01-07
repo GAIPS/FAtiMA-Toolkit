@@ -51,12 +51,11 @@ namespace SocialImportance
 		}
 
 		/// <summary>
-		/// Binds an Emotional Appraisal Asset (EAA) to this Social Importance Asset instance.
-		/// Without a EAA instance binded to this asset, social importance evaluations will not
-		/// work.
-		/// InvalidateCachedSI() is automatically called by this method.
-		/// </summary>
-		/// <param name="eaa">The Emotional Appraisal Asset to be binded to this asset.</param>
+		/// Binds a KB to this Social Importance Asset instance. Without a KB instance binded to this asset, 
+        /// social importance evaluations will not work properly.
+        /// InvalidateCachedSI() is automatically called by this method.
+        /// </summary>
+		/// <param name="kb">The Knowledge Base to be binded to this asset.</param>
 		public void RegisterKnowledgeBase(KB kB)
 		{
 			if (m_kB != null)

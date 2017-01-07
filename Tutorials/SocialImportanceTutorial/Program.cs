@@ -21,11 +21,12 @@ namespace SocialImportanceTutorial
             //First, we load the asset from an existing profile
             var siAsset = SocialImportanceAsset.LoadFromFile("../../../Examples/SITest.si");
 
+            //We then register a knowledge base
             var kb = new KB((Name)"John");
+            kb.Tell((Name)"IsFriend(Player)", (Name)"True");
             siAsset.RegisterKnowledgeBase(kb);
             
             Console.WriteLine("The SI attributed to "+siTarget+" is:" + siAsset.GetSocialImportance(siTarget));
-
             Console.WriteLine("Conferral to execute: " + siAsset.DecideConferral("SELF")?.ActionName);
 
             Console.ReadKey();

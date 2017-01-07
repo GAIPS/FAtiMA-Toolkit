@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnowledgeBase", "Components\KnowledgeBase\KnowledgeBase.csproj", "{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}"
 EndProject
@@ -86,7 +86,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{25
 		Tutorials\Examples\sarah.ea = Tutorials\Examples\sarah.ea
 		Tutorials\Examples\SITest.si = Tutorials\Examples\SITest.si
 		Tutorials\Examples\test.cif = Tutorials\Examples\test.cif
-		Tutorials\Examples\test.si = Tutorials\Examples\test.si
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WellFormedNames", "Components\WellFormedNames\WellFormedNames.csproj", "{BC47528F-FBF6-465E-BB0E-F68F50F31C13}"

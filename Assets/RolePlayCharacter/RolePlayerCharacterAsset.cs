@@ -159,7 +159,6 @@ namespace RolePlayCharacter
             SocialImportanceAsset si = Loader(_socialImportanceAssetSource, () => new SocialImportanceAsset());
             CommeillFautAsset cfa = Loader(_commeillFautAssetSource, () => new CommeillFautAsset());
 
-            //TODO: Copy beliefs from multiple EA sources
             if (ea != null)
             {
                 foreach (var bel in ea.GetAllBeliefs())
@@ -170,12 +169,15 @@ namespace RolePlayCharacter
                 }
             }
 
-            edm.RegisterKnowledgeBase(m_kb);
-            si.RegisterKnowledgeBase(m_kb);
             _emotionalAppraisalAsset = ea;
             _emotionalDecisionMakingAsset = edm;
             _socialImportanceAsset = si;
             _commeillFautAsset = cfa;
+
+            //Dynamic properties
+            BindToRegistry(m_kb);
+            edm.RegisterKnowledgeBase(m_kb);
+            si.RegisterKnowledgeBase(m_kb);
         }
 
         private T Loader<T>(string path, Func<T> generateDefault) where T : LoadableAsset<T>
