@@ -24,6 +24,9 @@ namespace IntegratedAuthoringTool
         public Name[] Styles { get; private set; }
         public string Utterance { get; private set; }
 
+	    private bool _autoFileName;
+	    private string _fileId;
+
         //private DialogStateAction(Name currentState, Name meaning, Name style, Name nextState) : 
         //    base(Name.BuildName(DIALOG_ACTION_NAME, currentState, meaning, style, nextState), Name.NIL_SYMBOL, new ConditionSet()){}
 
@@ -39,6 +42,9 @@ namespace IntegratedAuthoringTool
 	        this.Styles = dto.Style.Select(s => (Name) s).ToArray();
 	        this.NextState = Name.BuildName(dto.NextState);
             this.Utterance = dto.Utterance;
+
+	        _autoFileName = dto.AutoFileName;
+	        _fileId = _autoFileName ? null : dto.FileName;
         }
 
 	    public Name BuildSpeakAction()
@@ -91,14 +97,11 @@ namespace IntegratedAuthoringTool
                 NextState = this.NextState.ToString(),
 				Meaning = this.Meanings.Select(s => s.ToString()).ToArray(),
 				Style = this.Styles.Select(s => s.ToString()).ToArray(),
-                Utterance = this.Utterance
+                Utterance = this.Utterance,
+				AutoFileName = this._autoFileName,
+				FileName = _autoFileName||string.IsNullOrEmpty(this._fileId)?DialogUtilities.GenerateUtteranceFileName(this.Utterance):this._fileId
             };
         }
-
-	    //protected override float CalculateActionUtility(IAction a)
-	    //{
-		   // return 1;
-	    //}
     }
 
 	public static class DialogStateActionDTOExtention
