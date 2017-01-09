@@ -24,17 +24,13 @@ namespace IntegratedAuthoringTool
         public Name[] Styles { get; private set; }
         public string Utterance { get; private set; }
 
-	    private bool _autoFileName;
-	    private string _fileId;
-
-        //private DialogStateAction(Name currentState, Name meaning, Name style, Name nextState) : 
-        //    base(Name.BuildName(DIALOG_ACTION_NAME, currentState, meaning, style, nextState), Name.NIL_SYMBOL, new ConditionSet()){}
+	    private bool _autoUtteranceId;
+	    private string _utteranceId;
 
         /// <summary>
         /// Creates a new instance of a dialogue action from the corresponding DTO
         /// </summary>
         public DialogStateAction(DialogueStateActionDTO dto)
-			//: this(Name.BuildName(dto.CurrentState), Name.BuildName(dto.Meaning), Name.BuildName(dto.Styles), Name.BuildName(dto.NextState))
         {
 	        this.Id = dto.Id == Guid.Empty?Guid.NewGuid() : dto.Id;
 	        this.CurrentState = Name.BuildName(dto.CurrentState);
@@ -42,9 +38,8 @@ namespace IntegratedAuthoringTool
 	        this.Styles = dto.Style.Select(s => (Name) s).ToArray();
 	        this.NextState = Name.BuildName(dto.NextState);
             this.Utterance = dto.Utterance;
-
-	        _autoFileName = dto.AutoFileName;
-	        _fileId = _autoFileName ? null : dto.FileName;
+            _autoUtteranceId = dto.AutoUtteranceId;
+	        _utteranceId = _autoUtteranceId ? null : dto.UtteranceId;
         }
 
 	    public Name BuildSpeakAction()
@@ -98,8 +93,8 @@ namespace IntegratedAuthoringTool
 				Meaning = this.Meanings.Select(s => s.ToString()).ToArray(),
 				Style = this.Styles.Select(s => s.ToString()).ToArray(),
                 Utterance = this.Utterance,
-				AutoFileName = this._autoFileName,
-				FileName = _autoFileName||string.IsNullOrEmpty(this._fileId)?DialogUtilities.GenerateUtteranceFileName(this.Utterance):this._fileId
+				AutoUtteranceId = this._autoUtteranceId,
+				UtteranceId = _autoUtteranceId||string.IsNullOrEmpty(this._utteranceId)?DialogUtilities.GenerateUtteranceFileName(this.Utterance):this._utteranceId
             };
         }
     }
