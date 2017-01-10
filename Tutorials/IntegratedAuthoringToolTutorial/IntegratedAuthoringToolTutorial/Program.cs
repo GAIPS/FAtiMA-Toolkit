@@ -18,7 +18,7 @@ namespace IntegratedAuthoringToolTutorial
             var iat = IntegratedAuthoringToolAsset.LoadFromFile("C://Teste/SpaceModulesScenarioA.iat");
 
 	        var rpc = iat.InstantiateCharacterAsset(iat.GetAllCharacterSources().FirstOrDefault().Name);
-                        
+            rpc.Initialize();        
             var eventStr = "Event(Action-Finished, Player, Kick, Client)";
             Console.WriteLine("The name of the character loaded is: " + rpc.CharacterName);
             Console.WriteLine("Mood: " + rpc.Mood);
