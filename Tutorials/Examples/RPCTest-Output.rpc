@@ -1,7 +1,7 @@
 {
 	"root":
 		{
-			"classId": 1,
+			"classId": 2,
 			"KnowledgeBase":
 				{
 					"Perspective": "Sam",
@@ -9,6 +9,7 @@
 						{
 							"SELF":
 								{
+									"DialogueState(Player)": "A1",
 									"IsFriend(Player)": true,
 									"Likes(Sam, Kick)": false
 								}
@@ -59,8 +60,17 @@
 							"Target": "Sam"
 						}, 
 						{
-							"classId": 0,
+							"classId": 1,
 							"Id": 1,
+							"Type": "Property-change",
+							"Subject": "Sam",
+							"Timestamp": 0,
+							"Property": "DialogueState(Player)",
+							"NewValue": "A1"
+						}, 
+						{
+							"classId": 0,
+							"Id": 2,
 							"Type": "Action-Start",
 							"Subject": "Sam",
 							"Timestamp": 0,
@@ -76,6 +86,10 @@
 		}, 
 		{
 			"TypeId": 1,
+			"ClassName": "AutobiographicMemory.AM+PropertyChangeEvent, AutobiographicMemory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}, 
+		{
+			"TypeId": 2,
 			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 		}]
 }

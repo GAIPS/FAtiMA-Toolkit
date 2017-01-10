@@ -366,7 +366,7 @@ namespace RolePlayCharacter
             _currentAction = null;
         }
 
-        public IDynamicPropertiesRegistry DynamicPropertiesRegistry => _emotionalAppraisalAsset.DynamicPropertiesRegistry;
+        public IDynamicPropertiesRegistry DynamicPropertiesRegistry => m_kb;
 
 
         public void BindToRegistry(IDynamicPropertiesRegistry registry)

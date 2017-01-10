@@ -15,7 +15,8 @@ namespace RolePlayCharacterTutorial
 	        var rpc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/RPCTest.rpc");
             rpc.Initialize();
             var eventStr = "Event(Action-Finished, Player, Kick, "+ rpc.CharacterName + ")";
-            var action = rpc.PerceptionActionLoop(new []{(Name)eventStr})?.ActionName;
+            var eventStr2 = "Event(Property-change,Self,DialogueState(Player),A1)";
+            var action = rpc.PerceptionActionLoop(new[] { (Name)eventStr, (Name)eventStr2 })?.ActionName;
             Console.WriteLine("The name of the character loaded is: " + rpc.CharacterName);
             Console.WriteLine("The following event ocurred: " + eventStr);
             Console.WriteLine("Mood after event: " + rpc.Mood);
