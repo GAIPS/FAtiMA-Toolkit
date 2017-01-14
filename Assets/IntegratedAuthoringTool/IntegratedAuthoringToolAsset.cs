@@ -8,6 +8,9 @@ using IntegratedAuthoringTool.DTOs;
 using KnowledgeBase;
 using RolePlayCharacter;
 using WellFormedNames;
+using Utilities;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace IntegratedAuthoringTool
 {
@@ -28,6 +31,8 @@ namespace IntegratedAuthoringTool
         public static readonly string TERMINAL_DIALOGUE_STATE = "End";
         public static readonly string PLAYER = "Player";
         public static readonly string AGENT = "Agent";
+
+        public static readonly string TTSGenerationPrefix = "TTS-";
 
         private DialogActionDictionary m_playerDialogues;
 		private DialogActionDictionary m_agentDialogues;
@@ -111,7 +116,15 @@ namespace IntegratedAuthoringTool
 		    return p.Asset;
 	    }
 
-	    public RolePlayCharacterAsset InstantiateCharacterAsset(string characterName)
+        public static string GenerateUtteranceFileName(string utterance)
+        {
+            utterance.RemoveWhiteSpace();
+            utterance = utterance.ToLowerInvariant();
+            var bytes = System.Text.Encoding.UTF8.GetBytes(utterance);
+            return TTSGenerationPrefix + BitConverter.ToString(MD5.Create().ComputeHash(bytes));
+        }
+
+        public RolePlayCharacterAsset InstantiateCharacterAsset(string characterName)
 	    {
 			Profile p;
 			if (!m_characterSources.TryGetValue(characterName, out p))
@@ -167,7 +180,8 @@ namespace IntegratedAuthoringTool
 		/// <param name="dialogueStateActionDTO">The dto that specifies the dialogue action</param>
 		public void AddAgentDialogAction(DialogueStateActionDTO dialogueStateActionDTO)
 		{
-			m_agentDialogues.AddDialog(new DialogStateAction(dialogueStateActionDTO));
+            dialogueStateActionDTO.UtteranceId = GenerateUtteranceFileName(dialogueStateActionDTO.Utterance);
+            m_agentDialogues.AddDialog(new DialogStateAction(dialogueStateActionDTO));
 		}
 
 		/// <summary>
@@ -178,31 +192,6 @@ namespace IntegratedAuthoringTool
 		{
 			m_playerDialogues.AddDialog(new DialogStateAction(dialogueStateActionDTO));
 		}
-
-		///// <summary>
-		///// Retrieves the current dialogue state for a specific character
-		///// </summary>
-		///// <param name="character">The name of the character</param>
-		//public string GetCurrentDialogueState(string character)
-		//{
-		//	string state;
-		//	if (m_dialogueStates.TryGetValue(character, out state))
-		//		return state;
-
-		//	m_dialogueStates[character] = INITIAL_DIALOGUE_STATE;
-		//	return INITIAL_DIALOGUE_STATE;
-		//}
-
-		///// <summary>
-		///// Updates the current dialogue state for a specific character
-		///// </summary>
-		///// <param name="character">The name of the character</param>
-		///// <param name="state">The name of the character</param>
-		//public void SetDialogueState(string character, string state)
-		//{
-		//	m_dialogueStates[character] = state;
-		//}
-
 		/// <summary>
 		/// Updates an existing dialogue action for the player
 		/// </summary>
@@ -273,11 +262,13 @@ namespace IntegratedAuthoringTool
 			return actionsIdToRemove.Count(d => dialogList.RemoveDialog(d));
 		}
 
-		/// <summary>
-		/// Retrieves the list of all dialogue actions for a speaker.
-		/// </summary>
-		/// <param name="speaker">Either "Player" or "Agent"</param>
-		private DialogActionDictionary SelectDialogActionList(string speaker)
+
+        
+        /// <summary>
+        /// Retrieves the list of all dialogue actions for a speaker.
+        /// </summary>
+        /// <param name="speaker">Either "Player" or "Agent"</param>
+        private DialogActionDictionary SelectDialogActionList(string speaker)
         {
             if (speaker != AGENT && speaker != PLAYER)
             {
@@ -333,7 +324,8 @@ namespace IntegratedAuthoringTool
             }
             if (m_agentDialogues.Count>0)
             {
-                dataHolder.SetValue("AgentDialogues", m_agentDialogues.Select(d => d.ToDTO()).ToArray());
+                var agentDialogues = m_agentDialogues.Select(d => d.ToDTO()).ToArray();
+                dataHolder.SetValue("AgentDialogues", agentDialogues);
             }
         }
 
@@ -355,7 +347,7 @@ namespace IntegratedAuthoringTool
 					m_playerDialogues.AddDialog(d);
 	            }
             }
-
+            
 			m_agentDialogues= new DialogActionDictionary();
 			var agentDialogueArray = dataHolder.GetValue<DialogueStateActionDTO[]>("AgentDialogues");
             if (agentDialogueArray != null)

@@ -334,7 +334,7 @@ namespace IntegratedAuthoringToolWF
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
 
-			var hash = DialogUtilities.GenerateUtteranceFileName(utterance);
+			var hash = IntegratedAuthoringToolAsset.GenerateUtteranceFileName(utterance);
 			var path2 = Path.Combine(path, hash.ToString());
 			using (var audioFile = File.Open(path2 + ".wav", FileMode.Create, FileAccess.Write))
 			{

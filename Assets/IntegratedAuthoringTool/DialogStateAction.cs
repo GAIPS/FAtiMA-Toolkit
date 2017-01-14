@@ -4,6 +4,7 @@ using System.Linq;
 using IntegratedAuthoringTool.DTOs;
 using Utilities;
 using WellFormedNames;
+using System.Security.Cryptography;
 
 namespace IntegratedAuthoringTool
 {
@@ -14,18 +15,18 @@ namespace IntegratedAuthoringTool
     public class DialogStateAction
     {
         private static readonly Name DIALOG_ACTION_NAME = Name.BuildName("Speak");
-		public static readonly Name STYLES_PACKAGING_NAME = Name.BuildName("Styles");
-		public static readonly Name MEANINGS_PACKAGING_NAME = Name.BuildName("Meanings");
+        public static readonly Name STYLES_PACKAGING_NAME = Name.BuildName("Styles");
+        public static readonly Name MEANINGS_PACKAGING_NAME = Name.BuildName("Meanings");
 
-		public Guid Id { get; private set; }
-	    public Name CurrentState { get; private set; }
+   
+
+        public Guid Id { get; private set; }
+        public Name CurrentState { get; private set; }
         public Name NextState { get; private set; }
         public Name[] Meanings { get; private set; }
         public Name[] Styles { get; private set; }
         public string Utterance { get; private set; }
-
-	    private bool _autoUtteranceId;
-	    private string _utteranceId;
+        public string UtteranceId { get; set;}
 
         /// <summary>
         /// Creates a new instance of a dialogue action from the corresponding DTO
@@ -38,11 +39,11 @@ namespace IntegratedAuthoringTool
 	        this.Styles = dto.Style.Select(s => (Name) s).ToArray();
 	        this.NextState = Name.BuildName(dto.NextState);
             this.Utterance = dto.Utterance;
-            _autoUtteranceId = dto.AutoUtteranceId;
-	        _utteranceId = _autoUtteranceId ? null : dto.UtteranceId;
+            this.UtteranceId = dto.UtteranceId;
         }
 
-	    public Name BuildSpeakAction()
+       
+        public Name BuildSpeakAction()
 	    {
 		    return BuildSpeakAction(CurrentState, NextState, Meanings, Styles);
 	    }
@@ -90,11 +91,10 @@ namespace IntegratedAuthoringTool
                 Id = this.Id,
                 CurrentState = this.CurrentState.ToString(),
                 NextState = this.NextState.ToString(),
-				Meaning = this.Meanings.Select(s => s.ToString()).ToArray(),
-				Style = this.Styles.Select(s => s.ToString()).ToArray(),
+                Meaning = this.Meanings.Select(s => s.ToString()).ToArray(),
+                Style = this.Styles.Select(s => s.ToString()).ToArray(),
                 Utterance = this.Utterance,
-				AutoUtteranceId = this._autoUtteranceId,
-				UtteranceId = _autoUtteranceId||string.IsNullOrEmpty(this._utteranceId)?DialogUtilities.GenerateUtteranceFileName(this.Utterance):this._utteranceId
+                UtteranceId = this.UtteranceId
             };
         }
     }
