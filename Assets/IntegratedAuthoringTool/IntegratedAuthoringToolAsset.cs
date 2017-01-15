@@ -20,13 +20,6 @@ namespace IntegratedAuthoringTool
     [Serializable]
     public class IntegratedAuthoringToolAsset : LoadableAsset<IntegratedAuthoringToolAsset>, ICustomSerialization, IDynamicPropertiesRegister
     {
-		private class Profile
-		{
-			public string Name;
-			public string Path;
-			public RolePlayCharacterAsset Asset;
-		}
-
 		public static readonly string INITIAL_DIALOGUE_STATE = "Start";
         public static readonly string TERMINAL_DIALOGUE_STATE = "End";
         public static readonly string PLAYER = "Player";
@@ -36,8 +29,7 @@ namespace IntegratedAuthoringTool
 
         private DialogActionDictionary m_playerDialogues;
 		private DialogActionDictionary m_agentDialogues;
-
-        private Dictionary<string, Profile> m_characterSources;
+        private IList<CharacterSourceDTO> m_characterSources;
 
         /// <summary>
         /// The name of the Scenario
@@ -46,57 +38,21 @@ namespace IntegratedAuthoringTool
 
 		public string ScenarioDescription { get; set; }
 
-        /// <summary>
-        /// This method is used to automatically load any associated assets.
-        /// </summary>
-        protected override string OnAssetLoaded()
-        {
-			var storage = GetInterface<IDataStorage>();
-			string currentKey = string.Empty;
-		    string currentAbsolutePath = null;
-            try
-		    {
-				if(m_characterSources==null)
-					m_characterSources = new Dictionary<string, Profile>();
-				else
-				{
-					foreach (var pair in m_characterSources)
-					{
-						currentKey = pair.Key;
-						currentAbsolutePath = ToAbsolutePath(pair.Value.Path);
-						pair.Value.Asset = null;
-
-						string errorsOnLoad;
-						pair.Value.Asset = RolePlayCharacterAsset.LoadFromFile(currentAbsolutePath, out errorsOnLoad);
-						if (errorsOnLoad != null)
-							return errorsOnLoad;
-					}
-				}
-			}
-		    catch (Exception e)
-		    {
-#if DEBUG
-				getInterface<ILog>()?.Log(Severity.Error, e.ToString());
-#endif
-				return $"An error occured when trying to load the RPC \"{currentKey}\" at \"{currentAbsolutePath}\". Please check if the path is correct.";
-			}
-		    return null;
-		}
-
+        
 	    protected override void OnAssetPathChanged(string oldpath)
 	    {
-		    foreach (var profile in m_characterSources.Values)
-		    {
-			    var absPath = ToAbsolutePath(oldpath, profile.Path);
-				profile.Path = ToRelativePath(AssetFilePath, absPath);
-		    }
+            for(int i = 0; i < m_characterSources.Count; i++)
+            {
+                var absPath = ToAbsolutePath(oldpath, m_characterSources[i].Source);
+                m_characterSources[i].Source = absPath;
+            }
 	    }
 
 	    public IntegratedAuthoringToolAsset()
         {
             m_playerDialogues = new DialogActionDictionary();
             m_agentDialogues = new DialogActionDictionary();
-	        m_characterSources = new Dictionary<string, Profile>();
+	        m_characterSources = new List<CharacterSourceDTO>();
         }
 
 		/// <summary>
@@ -104,17 +60,9 @@ namespace IntegratedAuthoringTool
         /// </summary>
         public IEnumerable<CharacterSourceDTO> GetAllCharacterSources()
         {
-	        return m_characterSources.Select(p => new CharacterSourceDTO() {Name = p.Key, Source = ToAbsolutePath(p.Value.Path)});
+	        return m_characterSources.Select(p => new CharacterSourceDTO() {Id = p.Id, Source = ToAbsolutePath(p.Source)});
         }
 
-	    public RolePlayCharacterAsset GetCharacterProfile(string characterName)
-	    {
-			Profile p;
-			if (!m_characterSources.TryGetValue(characterName, out p))
-				throw new Exception($"Character \"{characterName}\" not found");
-
-		    return p.Asset;
-	    }
 
         public static string GenerateUtteranceId(string utterance)
         {
@@ -126,52 +74,35 @@ namespace IntegratedAuthoringTool
             return TTSGenerationPrefix + utteranceId;
         }
 
-        public RolePlayCharacterAsset InstantiateCharacterAsset(string characterName)
-	    {
-			Profile p;
-			if (!m_characterSources.TryGetValue(characterName, out p))
-				throw new Exception($"Character \"{characterName}\" not found");
-
-		    p.Asset.Initialize();
-			BindToRegistry(p.Asset.DynamicPropertiesRegistry);
-		    return p.Asset;
-		}
-
         /// <summary>
         /// Adds a new role-play character asset to the scenario.
         /// </summary>
         /// <param name="character">The instance of the Role Play Character asset</param>
         public void AddNewCharacterSource(CharacterSourceDTO dto)
         {
-	        if(m_characterSources.ContainsKey(dto.Name))
-				throw new Exception("A character with the same name already exists.");
-
 	        var absPath = ToAbsolutePath(dto.Source);
 			string errorsOnLoad;
 			var asset = RolePlayCharacterAsset.LoadFromFile(absPath, out errorsOnLoad);
 	        if (errorsOnLoad != null)
 		        throw new Exception(errorsOnLoad);
-
-			var profile = new Profile()
-	        {
-		        Name = dto.Name,
-				Path = ToRelativePath(dto.Source),
-				Asset = asset
-	        };
-
-			m_characterSources.Add(dto.Name, profile);
+            dto.Id = m_characterSources.Count;
+			m_characterSources.Add(dto);
         }
         
         /// <summary>
         /// Removes a list of characters from the scenario
         /// </summary>
         /// <param name="character">A list of character names</param>
-        public void RemoveCharacters(IList<string> charactersToRemove)
+        public void RemoveCharacters(IList<int> charactersToRemove)
         {
-            foreach (var characterName in charactersToRemove)
+            foreach (var characterId in charactersToRemove)
             {
-	            m_characterSources.Remove(characterName);
+	            m_characterSources.RemoveAt(characterId);
             }   
+            for(int i = 0; i < m_characterSources.Count; i++)
+            {
+                m_characterSources[i].Id = i;
+            }
         }
 
 		#region Dialog System
@@ -316,10 +247,9 @@ namespace IntegratedAuthoringTool
         {
             dataHolder.SetValue("ScenarioName", ScenarioName);
 			dataHolder.SetValue("Description",ScenarioDescription);
-
             if (m_characterSources.Count > 0)
             {
-				dataHolder.SetValue("Characters", m_characterSources.Select(p => new CharacterSourceDTO() { Name = p.Value.Name, Source = ToRelativePath(p.Value.Path) }).ToArray());
+                dataHolder.SetValue("Characters", m_characterSources.Select(d => d.Source).ToArray());
             }
             if (m_playerDialogues.Count>0)
             {
@@ -344,12 +274,20 @@ namespace IntegratedAuthoringTool
         {
 			ScenarioName = dataHolder.GetValue<string>("ScenarioName");
 	        ScenarioDescription = dataHolder.GetValue<string>("Description");
+			var charArray = dataHolder.GetValue<string[]>("Characters");
+            if(charArray == null)
+            {
+                m_characterSources = new List<CharacterSourceDTO>();
+            }
+            else
+            {
+                for(int i=0; i < charArray.Length; i++)
+                {
+                    m_characterSources.Add(new CharacterSourceDTO { Id = i, Source = charArray[i] });
+                }
+            }
 
-			var charArray = dataHolder.GetValue<CharacterSourceDTO[]>("Characters");
-            if (charArray != null)
-				m_characterSources = charArray.ToDictionary(c => c.Name, c => new Profile() {Name = c.Name, Path = c.Source, Asset = null});
-
-			m_playerDialogues = new DialogActionDictionary();
+            m_playerDialogues = new DialogActionDictionary();
 			var playerDialogueArray = dataHolder.GetValue<DialogueStateActionDTO[]>("PlayerDialogues");
             if (playerDialogueArray != null)
             {
@@ -358,7 +296,6 @@ namespace IntegratedAuthoringTool
 					m_playerDialogues.AddDialog(d);
 	            }
             }
-            
 			m_agentDialogues= new DialogActionDictionary();
 			var agentDialogueArray = dataHolder.GetValue<DialogueStateActionDTO[]>("AgentDialogues");
             if (agentDialogueArray != null)
@@ -369,6 +306,8 @@ namespace IntegratedAuthoringTool
 	            }
             }
 		}
+
+        protected override string OnAssetLoaded() { return null; }
 
         #endregion
     }

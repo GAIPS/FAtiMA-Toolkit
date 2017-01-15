@@ -129,34 +129,6 @@ namespace IntegratedAuthoringToolWF.TTSEngines.L2F
 					return null;
 				return array.Cast<JsonObject>().ToArray();
 			}
-
-			//if (results.Length == 1)
-			//{
-			//	var r2 = results[0];
-			//	r2["url"] = new JsonArray() { r2["url"] };
-			//	return r2;
-			//}
-
-			//return results.Aggregate((j1, j2) =>
-			//{
-			//	if(DELAY_BETWEEN_FRASES>0)
-			//		((JsonArray)j1["phones"]).Add(new JsonString("@"));
-			//	((JsonArray)j1["phones"]).AddRange((JsonArray)j2["phones"]);
-
-			//	if (DELAY_BETWEEN_FRASES > 0)
-			//		((JsonArray)j1["times"]).Add(new JsonNumber(DELAY_BETWEEN_FRASES));
-			//	((JsonArray)j1["times"]).AddRange((JsonArray)j2["times"]);
-
-			//	var token = j1["url"];
-			//	var a = token as JsonArray;
-			//	if (a == null)
-			//	{
-			//		a = new JsonArray {token};
-			//		j1["url"] = a;
-			//	}
-			//	a.Add(j2["url"]);
-			//	return j1;
-			//});
 		}
 
 		private ISampleProvider BuildAudioStream(string[] urls, double rate, int pitch)

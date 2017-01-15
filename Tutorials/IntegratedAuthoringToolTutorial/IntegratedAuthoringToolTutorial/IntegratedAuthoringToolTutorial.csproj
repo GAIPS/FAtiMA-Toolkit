@@ -78,6 +78,10 @@
       <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
       <Name>GAIPS.Rage</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Components\KnowledgeBase\KnowledgeBase.csproj">
+      <Project>{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}</Project>
+      <Name>KnowledgeBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Components\SerializationUtilities\SerializationUtilities.csproj">
       <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
       <Name>SerializationUtilities</Name>

@@ -45,9 +45,6 @@ namespace GAIPS.AssetEditorTools
 			UpdateWindowTitle();
 		}
 
-
-
-
 		public string SelectAssetFileFromBrowser()
 		{
 			var ofd = new OpenFileDialog();
