@@ -79,12 +79,12 @@ namespace IntegratedAuthoringTool
         /// <param name="character">The instance of the Role Play Character asset</param>
         public void AddNewCharacterSource(CharacterSourceDTO dto)
         {
-	        var absPath = ToAbsolutePath(dto.Source);
-			string errorsOnLoad;
-			var asset = RolePlayCharacterAsset.LoadFromFile(absPath, out errorsOnLoad);
+	     	string errorsOnLoad;
+			var asset = RolePlayCharacterAsset.LoadFromFile(dto.Source, out errorsOnLoad);
 	        if (errorsOnLoad != null)
 		        throw new Exception(errorsOnLoad);
             dto.Id = m_characterSources.Count;
+            dto.Source = ToRelativePath(dto.Source);
 			m_characterSources.Add(dto);
         }
         
@@ -241,46 +241,56 @@ namespace IntegratedAuthoringTool
         {
             dataHolder.SetValue("ScenarioName", ScenarioName);
 			dataHolder.SetValue("Description",ScenarioDescription);
+
+            // Save Character Sources
             if (m_characterSources.Count > 0)
             {
-                dataHolder.SetValue("Characters", m_characterSources.Select(d => d.Source).ToArray());
+                dataHolder.SetValue("CharacterSources", m_characterSources.Select(d => ToRelativePath(d.Source)).ToArray());
             }
+
+            // Save Player Dialogues
             if (m_playerDialogues.Count>0)
             {
 	            dataHolder.SetValue("PlayerDialogues", m_playerDialogues.Select(d => d.ToDTO()).ToArray());
             }
+
+            // Save Agent Dialogues
             if (m_agentDialogues.Count>0)
             {
                 var agentDialogues = m_agentDialogues.Select(d => d.ToDTO()).ToArray();
-                foreach(var d in agentDialogues)
+
+                //Generate the automatic TTS code except if there is already an UtterancId that does not 
+                //start with the generation prefix
+                foreach (var d in agentDialogues)
                 {
                     if(d.UtteranceId == null || d.UtteranceId.StartsWith(TTSGenerationPrefix))
                     {
                         d.UtteranceId = GenerateUtteranceId(d.Utterance);
                     }
                 }
-
                 dataHolder.SetValue("AgentDialogues", agentDialogues);
             }
         }
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
-			ScenarioName = dataHolder.GetValue<string>("ScenarioName");
-	        ScenarioDescription = dataHolder.GetValue<string>("Description");
-			var charArray = dataHolder.GetValue<string[]>("Characters");
-            if(charArray == null)
-            {
-                m_characterSources = new List<CharacterSourceDTO>();
-            }
-            else
-            {
+           
+            ScenarioName = dataHolder.GetValue<string>("ScenarioName");
+
+            ScenarioDescription = dataHolder.GetValue<string>("Description");
+
+            //Load Character Sources
+            m_characterSources = new List<CharacterSourceDTO>();
+            var charArray = dataHolder.GetValue<string[]>("CharacterSources");
+            if(charArray != null)
+            { 
                 for(int i=0; i < charArray.Length; i++)
                 {
                     m_characterSources.Add(new CharacterSourceDTO { Id = i, Source = charArray[i] });
                 }
             }
 
+            //Load Player Dialogues
             m_playerDialogues = new DialogActionDictionary();
 			var playerDialogueArray = dataHolder.GetValue<DialogueStateActionDTO[]>("PlayerDialogues");
             if (playerDialogueArray != null)
@@ -290,7 +300,9 @@ namespace IntegratedAuthoringTool
 					m_playerDialogues.AddDialog(d);
 	            }
             }
-			m_agentDialogues= new DialogActionDictionary();
+
+            //Load Agent Dialogues
+            m_agentDialogues = new DialogActionDictionary();
 			var agentDialogueArray = dataHolder.GetValue<DialogueStateActionDTO[]>("AgentDialogues");
             if (agentDialogueArray != null)
             {

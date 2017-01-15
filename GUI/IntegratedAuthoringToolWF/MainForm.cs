@@ -55,7 +55,7 @@ namespace IntegratedAuthoringToolWF
 
 			CurrentAsset.AddNewCharacterSource(new CharacterSourceDTO()
 			{
-				Source = rpc.AssetFilePath
+				Source =  rpc.AssetFilePath
 			});
 
 			_characterSources.DataSource = CurrentAsset.GetAllCharacterSources().ToList();
