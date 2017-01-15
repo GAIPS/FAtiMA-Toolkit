@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Windows.Forms;
+﻿using System.Windows.Forms;
 using Equin.ApplicationFramework;
-using KnowledgeBase;
-using KnowledgeBase.DTOs;
 
 namespace GAIPS.AssetEditorTools.DynamicPropertiesWindow
 {
 	public partial class DynamicPropertyDisplayer : Form
 	{
+		#region Singleton
+
 		private static DynamicPropertyDisplayer _instance;
 
 		public static DynamicPropertyDisplayer Instance
@@ -24,23 +20,76 @@ namespace GAIPS.AssetEditorTools.DynamicPropertiesWindow
 			}
 		}
 
-		private DynamicPropertyRegistry _registry;
-
 		private DynamicPropertyDisplayer()
 		{
 			InitializeComponent();
-
-			_registry = new DynamicPropertyRegistry(name => false);
-
-			Populate();
-			AppDomain.CurrentDomain.AssemblyLoad += OnAssemblyLoad;
-		}
-
-		private void OnAssemblyLoad(object sender, AssemblyLoadEventArgs args)
-		{
-			RegistValidTypes(args.LoadedAssembly.GetTypes());
 			UpdateView();
 		}
+
+		#endregion
+
+		private static readonly DynamicPropertyEntry[] DYN_PROPERTIES = {
+			new DynamicPropertyEntry()
+			{
+				Origin = "KB",
+				PropertyTemplate = "Count([x])",
+				Description = "The number of substitutions found for [x]."
+			},
+			new DynamicPropertyEntry()
+			{
+				Origin = "Emotional Appraisal Asset",
+				PropertyTemplate = "EmotionIntensity([x], [y])",
+				Description = "The intensity value for the emotion felt by agent [x] of type [y]."
+			},
+			new DynamicPropertyEntry()
+			{
+				Origin = "AM",
+				PropertyTemplate = "EventElapsedTime([id])",
+				Description = "The number of ticks passed since the event associated to [id] occured."
+			},
+			new DynamicPropertyEntry()
+			{
+				Origin = "AM",
+				PropertyTemplate = "EventId([type], [subject], [def], [target])",
+				Description = "Returns the ids of all events that unify with the property's name."
+			},
+			new DynamicPropertyEntry()
+			{
+				Origin = "AM",
+				PropertyTemplate = "LastEventId([type], [subject], [def], [target])",
+				Description = "Returns the id of the last event if it unifies with the property's name."
+			},
+			new DynamicPropertyEntry()
+			{
+				Origin = "Emotional Appraisal Asset",
+				PropertyTemplate = "Mood([x])",
+				Description = "The current mood value for agent [x]."
+			},
+			new DynamicPropertyEntry()
+			{
+				Origin = "Social Importance Asset",
+				PropertyTemplate = "SI([target])",
+				Description = "The value of Social Importance attributed to [target]."
+			},
+			new DynamicPropertyEntry()
+			{
+				Origin = "Emotional Appraisal Asset",
+				PropertyTemplate = "StrongestEmotion([x])",
+				Description = "The type of the current strongest emotion that agent [x] is feeling."
+			},
+			new DynamicPropertyEntry()
+			{
+				Origin = "Integrated Authoring Tool Asset",
+				PropertyTemplate = "ValidDialogue([currentState], [nextState], [meaning], [style])",
+				Description = "No description."
+			},
+			new DynamicPropertyEntry()
+			{
+				Origin = "Role Play Character Asset",
+				PropertyTemplate = "IsAgent([x])",
+				Description = "Given a name [x], returns true if that name is binded to an agent."
+			}
+		};
 
 		public void ShowOrBringToFront()
 		{
@@ -50,42 +99,9 @@ namespace GAIPS.AssetEditorTools.DynamicPropertiesWindow
 				Show();
 		}
 
-		private void Populate()
-		{
-			_registry.Clear();
-			RegistValidTypes(AppDomain.CurrentDomain.GetAssemblies().SelectMany(a => a.GetTypes()));
-			UpdateView();
-		}
-
-		private void RegistValidTypes(IEnumerable<Type> allTypes)
-		{
-			var candidates = allTypes.Where(t => t.IsClass && !t.IsAbstract && typeof(IDynamicPropertiesRegister).IsAssignableFrom(t))
-					.Select(t => FormatterServices.GetUninitializedObject(t) as IDynamicPropertiesRegister)
-					.ToArray();
-
-			foreach (var c in candidates)
-			{
-				try
-				{
-					c.BindToRegistry(_registry);
-				}
-				catch (Exception)
-				{
-					//Ignore exception
-				}
-			}
-		}
-
 		private void UpdateView()
 		{
-			var list = _registry.GetDynamicProperties().Select(e => new DynamicPropertyDTO()
-			{
-				PropertyTemplate = e.PropertyTemplate.ToString(),
-				Description = e.Description
-			}).OrderBy(dto => dto.PropertyTemplate).ToList();
-			_dynamicPropertiesListView.DataSource = new BindingListView<DynamicPropertyDTO>(list);
-			
-			//_dynamicPropertiesListView.Columns[PropertyUtil.GetPropertyName<DynamicPropertyEntry>(dto => dto.Description)].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+			_dynamicPropertiesListView.DataSource = new BindingListView<DynamicPropertyEntry>(DYN_PROPERTIES);
 		}
 	}
 }

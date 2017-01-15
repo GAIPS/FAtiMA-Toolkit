@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using KnowledgeBase.DTOs;
 using WellFormedNames;
 
 namespace KnowledgeBase
@@ -8,24 +9,24 @@ namespace KnowledgeBase
 	{
 		private DynamicPropertyRegistry _registry;
 
-		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T1 surrogate, string description = null)
+		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T1 surrogate)
 		{
-			_registry.RegistDynamicProperty(propertyName, surrogate, description);
+			_registry.RegistDynamicProperty(propertyName, surrogate);
 		}
 
-		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T2 surrogate, string description = null)
+		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T2 surrogate)
 		{
-			_registry.RegistDynamicProperty(propertyName, surrogate, description);
+			_registry.RegistDynamicProperty(propertyName, surrogate);
 		}
 
-		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T3 surrogate, string description = null)
+		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T3 surrogate)
 		{
-			_registry.RegistDynamicProperty(propertyName, surrogate, description);
+			_registry.RegistDynamicProperty(propertyName, surrogate);
 		}
 
-		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T4 surrogate, string description = null)
+		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T4 surrogate)
 		{
-			_registry.RegistDynamicProperty(propertyName,surrogate,description);
+			_registry.RegistDynamicProperty(propertyName,surrogate);
 		}
 
 		public void UnregistDynamicProperty(Name propertyTemplate)
@@ -33,7 +34,7 @@ namespace KnowledgeBase
 			_registry.UnregistDynamicProperty(propertyTemplate);
 		}
 
-		public IEnumerable<DynamicPropertyEntry> GetDynamicProperties()
+		public IEnumerable<DynamicPropertyDTO> GetDynamicProperties()
 		{
 			return _registry.GetDynamicProperties();
 		}

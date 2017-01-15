@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using GAIPS.AssetEditorTools.DynamicPropertiesWindow;
 using GAIPS.Rage;
 using Utilities;
 
@@ -214,12 +215,33 @@ namespace GAIPS.AssetEditorTools
 			       (_wasModified ? "*" : string.Empty);
 		}
 
+		#region Toolbar Options
+
+		[MenuItem("Help/Show Available Dynamic Properties")]
+		private void ShowDynamicPropertiesWindow()
+		{
+			DynamicPropertyDisplayer.Instance.ShowOrBringToFront();
+		}
+
+		#endregion
+
 		#region Build Other ToolStrip Options
+
+		private IEnumerable<Type> GetAllAncestorTypes(Type t)
+		{
+			while (t!=null)
+			{
+				yield return t;
+				t = t.BaseType;
+			}
+		}
 
 		private void BuildToolOptions()
 		{
 			var methods =
-				GetType().GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+				GetAllAncestorTypes(GetType())
+					.SelectMany(
+						t => t.GetMethods(BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic));
 
 			var candidates = methods.Select(m => new {att = m.GetCustomAttribute<MenuItemAttribute>(true), method = m})
 				.Where(d => d.att != null).ToArray();

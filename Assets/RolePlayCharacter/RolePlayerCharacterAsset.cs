@@ -19,7 +19,7 @@ using AssetPackage;
 namespace RolePlayCharacter
 {
     [Serializable]
-    public sealed class RolePlayCharacterAsset : LoadableAsset<RolePlayCharacterAsset>, IDynamicPropertiesRegister, ICustomSerialization
+    public sealed class RolePlayCharacterAsset : LoadableAsset<RolePlayCharacterAsset>, ICustomSerialization
     {
         private static readonly Name DefaultCharacterName = (Name)"Nameless";
 
@@ -28,8 +28,7 @@ namespace RolePlayCharacter
         private string _socialImportanceAssetSource = null;
         private string _commeillFautAssetSource = null;
 
-
-        /// <summary>
+		/// <summary>
         /// The name of the character
         /// </summary>
         public Name CharacterName
@@ -37,7 +36,6 @@ namespace RolePlayCharacter
             get { return m_kb.Perspective; }
             set { m_kb.Perspective = value; }
         }
-
 
         /// <summary>
         /// An identifier for the embodiment that is used by the character
@@ -133,20 +131,16 @@ namespace RolePlayCharacter
         protected override void OnAssetPathChanged(string oldpath)
         {
 			if(!string.IsNullOrEmpty(_emotionalAppraisalAssetSource))
-            _emotionalAppraisalAssetSource = ToRelativePath(AssetFilePath,
-                ToAbsolutePath(oldpath, _emotionalAppraisalAssetSource));
+				_emotionalAppraisalAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _emotionalAppraisalAssetSource));
 
 			if (!string.IsNullOrEmpty(_emotionalDecisionMakingAssetSource))
-				_emotionalDecisionMakingAssetSource = ToRelativePath(AssetFilePath,
-                ToAbsolutePath(oldpath, _emotionalDecisionMakingAssetSource));
+				_emotionalDecisionMakingAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _emotionalDecisionMakingAssetSource));
 
 			if (!string.IsNullOrEmpty(_socialImportanceAssetSource))
-				_socialImportanceAssetSource = ToRelativePath(AssetFilePath,
-                ToAbsolutePath(oldpath, _socialImportanceAssetSource));
+				_socialImportanceAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _socialImportanceAssetSource));
 
 			if (!string.IsNullOrEmpty(_commeillFautAssetSource))
-				_commeillFautAssetSource = ToRelativePath(AssetFilePath,
-                ToAbsolutePath(oldpath, _commeillFautAssetSource));
+				_commeillFautAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _commeillFautAssetSource));
         }
 
 
@@ -203,28 +197,82 @@ namespace RolePlayCharacter
         private AM m_am;
         private ConcreteEmotionalState m_emotionalState;
 
+	    private Dictionary<Name, AgentEntry> _knownAgents;
+
         private IAction _currentAction = null;
 
         #endregion
 
-        
         public RolePlayCharacterAsset()
         {
             m_kb = new KB(DefaultCharacterName);
             m_am = new AM();
             m_emotionalState = new ConcreteEmotionalState();
-            BindToRegistry(m_kb);
+			_knownAgents = new Dictionary<Name, AgentEntry>();
+
+			BindToRegistry(m_kb);
         }
-       
-        /// <summary>
-        /// Adds or updates a logical belief to the character that consists of a property-value pair
-        /// </summary>
-        /// <param name="propertyName">A wellformed name representing a logical property (e.g. IsPerson(John))</param>
-        /// <param name="value">The value of the property</param>
-        [Obsolete]
+
+		#region Event Helpers
+
+	    public void PropertyChanged(string propertyName, string value, string subject)
+	    {
+			var e = Name.BuildName(
+				(Name)"Event",
+				(Name)"Property-Change",
+				(Name)subject,
+				(Name)propertyName,
+				(Name)value);
+
+			InternalEventAppraisal(new[] { e });
+		}
+
+		/// <summary>
+		/// Method used to inform the character that its current action is finished and a new action may be selected. It can also generate an emotion associated to finishing an action successfully.
+		/// </summary>
+		public void ActionFinished(IAction action)
+		{
+			if (_currentAction == null)
+				throw new Exception("The RPC asset is not currently executing an action");
+
+			if (!_currentAction.Equals(action))
+				throw new ArgumentException("The given action mismatches the currently executing action.", nameof(action));
+
+			var e = _currentAction.ToFinishedEventName(Name.SELF_SYMBOL);
+			InternalEventAppraisal(new[] { e });
+		}
+
+	    public void AddAgent(string agentId)
+	    {
+		    var n = (Name) agentId;
+			if(!n.IsPrimitive)
+				throw new ArgumentException("The agent id needs to be a primitive",nameof(agentId));
+
+			var e = Name.BuildName((Name)"Event", (Name)"Agent-Added", Name.SELF_SYMBOL, n, Name.SELF_SYMBOL);
+			InternalEventAppraisal(new[] { e });
+	    }
+
+		public void RemoveAgent(string agentId)
+		{
+			var n = (Name)agentId;
+			if (!n.IsPrimitive)
+				throw new ArgumentException("The agent id needs to be a primitive", nameof(agentId));
+
+			var e = Name.BuildName((Name)"Event", (Name)"Agent-Removed", Name.SELF_SYMBOL, n, Name.SELF_SYMBOL);
+			InternalEventAppraisal(new[] { e });
+		}
+
+		#endregion
+
+		/// <summary>
+		/// Adds or updates a logical belief to the character that consists of a property-value pair
+		/// </summary>
+		/// <param name="propertyName">A wellformed name representing a logical property (e.g. IsPerson(John))</param>
+		/// <param name="value">The value of the property</param>
+		[Obsolete]
         public void AddBelief(string propertyName, string value)
         {
-            m_kb.Tell(Name.BuildName(propertyName), Name.BuildName(value), Name.SELF_SYMBOL);
+			PropertyChanged(propertyName,value,"self");
         }
 
         /// <summary>
@@ -247,7 +295,6 @@ namespace RolePlayCharacter
             return this.m_am.RecallEvent(eventId).ToDTO();
         }
 
-
         /// <summary>
         /// Add an Event Record to the asset's autobiographical memory
         /// </summary>
@@ -266,8 +313,7 @@ namespace RolePlayCharacter
         {
             this.m_am.UpdateEvent(eventDTO);
         }
-
-
+		
         /// <summary>
         /// Removes and forgets an event
         /// </summary>
@@ -276,7 +322,6 @@ namespace RolePlayCharacter
         {
             this.m_am.ForgetEvent(eventId);
         }
-
 
         /// <summary>
         /// Gets all the recorded events experienced by the asset.
@@ -310,6 +355,35 @@ namespace RolePlayCharacter
             return result;
         }
 
+	    private static readonly Name EVENT_MATCHING_AGENT_ADDED = (Name) "Event(Agent-Added,Self,*,Self)";
+		private static readonly Name EVENT_MATCHING_AGENT_REMOVED = (Name)"Event(Agent-Added,Self,*,Self)";
+
+		private void InternalEventAppraisal(IEnumerable<Name> events)
+	    {
+			_socialImportanceAsset.InvalidateCachedSI();
+
+			foreach (var e in events.Select(e => e.RemovePerspective(m_kb.Perspective)))
+			{
+				if (_currentAction != null && _currentAction.ToFinishedEventName(Name.SELF_SYMBOL).Match(e))
+					_currentAction = null;
+				else if (EVENT_MATCHING_AGENT_ADDED.Match(e))
+				{
+					var n = e.GetNTerm(3);
+					var n2 = m_kb.AskProperty(n);
+					if(!_knownAgents.ContainsKey(n2))
+						_knownAgents.Add(n2,new AgentEntry(n2));
+				}
+				else if (EVENT_MATCHING_AGENT_REMOVED.Match(e))
+				{
+					var n = e.GetNTerm(3);
+					var n2 = m_kb.AskProperty(n);
+					_knownAgents.Remove(n2);
+				}
+			}
+
+			_emotionalAppraisalAsset.AppraiseEvents(events, m_emotionalState, m_am, m_kb);
+		}
+
         /// <summary>
         /// Executes an iteration of the character's decision cycle.
         /// </summary>
@@ -318,11 +392,9 @@ namespace RolePlayCharacter
         /// <returns>The action selected for execution or "null" otherwise</returns>
         public IAction PerceptionActionLoop(IEnumerable<Name> events)
         {
-            _socialImportanceAsset.InvalidateCachedSI();
+            InternalEventAppraisal(events);
 
-            _emotionalAppraisalAsset.AppraiseEvents(events, m_emotionalState, m_am, m_kb);
-       
-            if (_currentAction != null)
+			if (_currentAction != null)
                 return null;
 
             var possibleActions = _emotionalDecisionMakingAsset.Decide();
@@ -350,40 +422,17 @@ namespace RolePlayCharacter
             m_emotionalState.Decay(Tick);
         }
 
-        /// <summary>
-        /// Method used to inform the character that its current action is finished and a new action may be selected. It can also generate an emotion associated to finishing an action successfully.
-        /// </summary>
-	    public void ActionFinished(IAction action)
-        {
-            if (_currentAction == null)
-                throw new Exception("The RPC asset is not currently executing an action");
-
-            if (!_currentAction.Equals(action))
-                throw new ArgumentException("The given action mismatches the currently executing action.", nameof(action));
-
-            var e = _currentAction.ToFinishedEventName(Name.SELF_SYMBOL);
-            _emotionalAppraisalAsset.AppraiseEvents(new[] { e }, m_emotionalState, m_am);
-            _currentAction = null;
-        }
-
         public IDynamicPropertiesRegistry DynamicPropertiesRegistry => m_kb;
 
-
-        public void BindToRegistry(IDynamicPropertiesRegistry registry)
+		private void BindToRegistry(IDynamicPropertiesRegistry registry)
         {
-            registry.RegistDynamicProperty(MOOD_PROPERTY_NAME, MoodPropertyCalculator, "The current mood value for agent [x]");
-            registry.RegistDynamicProperty(STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator, "The type of the current strongest emotion that agent [x] is feeling.");
-            registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator, "The intensity value for the emotion felt by agent [x] of type [y].");
-            m_kb.BindToRegistry(registry);
+            registry.RegistDynamicProperty(MOOD_PROPERTY_NAME, MoodPropertyCalculator);
+            registry.RegistDynamicProperty(STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator);
+            registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator);
+			registry.RegistDynamicProperty(IS_AGENT_TEMPLATE,IsAgentPropertyCalculator);
             m_am.BindToRegistry(registry);
             if(_socialImportanceAsset != null) 
                 _socialImportanceAsset.BindToRegistry(registry);
-        }
-
-        public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
-        {
-            m_kb.UnbindToRegistry(registry);
-            _socialImportanceAsset.UnbindToRegistry(registry);
         }
 
         private static IEnumerable<IAction> TakeBestActions(IEnumerable<IAction> enumerable)
@@ -398,8 +447,7 @@ namespace RolePlayCharacter
                 best = a.Utility;
             }
         }
-
-
+		
         #region Dynamic Properties
 
         private static readonly Name MOOD_PROPERTY_NAME = (Name)"Mood";
@@ -520,11 +568,42 @@ namespace RolePlayCharacter
             }
         }
 
+		private static readonly Name IS_AGENT_TEMPLATE = (Name) "IsAgent";
+		private IEnumerable<DynamicPropertyResult> IsAgentPropertyCalculator(IQueryContext context, Name x)
+		{
+			if (context.Perspective != Name.SELF_SYMBOL)
+				yield break;
 
+			if (x.IsVariable)
+			{
+				foreach (var s in _knownAgents.Keys.Select(n => new Substitution(x, n)))
+				{
+					foreach (var set in context.Constraints)
+					{
+						if(!set.AddSubstitution(s))
+							continue;
 
-        #endregion
+						yield return new DynamicPropertyResult(Name.BuildName(true),set);
+					}
+				}
+				yield break;
+			}
 
-        public void SaveStateToFile(string filepath)
+			foreach (var prop in context.AskPossibleProperties(x))
+			{
+				if (_knownAgents.ContainsKey(prop.Item1))
+				{
+					foreach (var p in prop.Item2)
+					{
+						yield return new DynamicPropertyResult(prop.Item1, p);
+					}
+				}
+			}
+		}
+
+		#endregion
+
+		public void SaveStateToFile(string filepath)
         {
             var storage = GetInterface<IDataStorage>();
             if (storage == null)

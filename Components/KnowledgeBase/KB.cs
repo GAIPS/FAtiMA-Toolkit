@@ -16,7 +16,7 @@ namespace KnowledgeBase
 	using BeliefPair = Pair<Name, IEnumerable<SubstitutionSet>>;
 
 	[Serializable]
-	public partial class KB : IQueryable, ICustomSerialization, IDynamicPropertiesRegister
+	public partial class KB : IQueryable, ICustomSerialization
 	{
 		private const int MAX_TOM_LVL = 2;
 
@@ -102,14 +102,9 @@ namespace KnowledgeBase
 			SetPerspective(perspective);
 		}
 
-		public void BindToRegistry(IDynamicPropertiesRegistry registry)
+		private void BindToRegistry(IDynamicPropertiesRegistry registry)
 		{
-			registry.RegistDynamicProperty(COUNT_TEMPLATE_NEW, CountPropertyCalculator_new, "The number of substitutions found for [x]");
-		}
-
-		public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
-		{
-			registry.UnregistDynamicProperty((Name)"Count([x])");
+			registry.RegistDynamicProperty(COUNT_TEMPLATE_NEW, CountPropertyCalculator_new);
 		}
 
 		#region Native Dynamic Properties

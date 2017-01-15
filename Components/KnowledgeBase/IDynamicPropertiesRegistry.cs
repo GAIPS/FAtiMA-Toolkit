@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using KnowledgeBase.DTOs;
 using Utilities;
 using WellFormedNames;
 
@@ -11,14 +12,14 @@ namespace KnowledgeBase
 
 	public interface IDynamicPropertiesRegistry
 	{
-		void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T1 surrogate, string description = null);
-		void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T2 surrogate, string description = null);
-		void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T3 surrogate, string description = null);
-		void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T4 surrogate, string description = null);
+		void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T1 surrogate);
+		void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T2 surrogate);
+		void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T3 surrogate);
+		void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T4 surrogate);
 
 		void UnregistDynamicProperty(Name propertyTemplate);
 
-		IEnumerable<DynamicPropertyEntry> GetDynamicProperties();
+		IEnumerable<DynamicPropertyDTO> GetDynamicProperties();
 	}
 
 	public interface IQueryContext

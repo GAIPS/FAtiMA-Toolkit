@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using KnowledgeBase.DTOs;
 using Utilities;
 using WellFormedNames;
 using WellFormedNames.Collections;
@@ -21,7 +22,6 @@ namespace KnowledgeBase
 		{
 			private readonly DynamicPropertyCalculator _surogate;
 			private readonly Name[] _parameters;
-			public readonly string description;
 			public readonly Type DeclaringType;
 
 			private struct QueryContext : IQueryContext
@@ -43,11 +43,10 @@ namespace KnowledgeBase
 				}
 			}
 
-			public DynamicKnowledgeEntry(DynamicPropertyCalculator surogate, Name[] parameters, string description, Type declaringType)
+			public DynamicKnowledgeEntry(DynamicPropertyCalculator surogate, Name[] parameters, Type declaringType)
 			{
 				_surogate = surogate;
 				_parameters = parameters;
-				this.description = description;
 				DeclaringType = declaringType;
 			}
 
@@ -95,39 +94,39 @@ namespace KnowledgeBase
 
 #region IDynamicPropertiesRegistry implementation
 
-		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T1 surrogate, string description = null)
+		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T1 surrogate)
 		{
 			if (surrogate == null)
 				throw new ArgumentNullException(nameof(surrogate));
 
-			internal_RegistDynamicProperty(propertyName, description, surrogate.GetMethodInfo(),
+			internal_RegistDynamicProperty(propertyName, surrogate.GetMethodInfo(),
 				(context, args) => surrogate(context, args[0]));
 		}
 
-		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T2 surrogate, string description = null)
+		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T2 surrogate)
 		{
 			if (surrogate == null)
 				throw new ArgumentNullException(nameof(surrogate));
 
-			internal_RegistDynamicProperty(propertyName, description, surrogate.GetMethodInfo(),
+			internal_RegistDynamicProperty(propertyName, surrogate.GetMethodInfo(),
 				(context, args) => surrogate(context, args[0], args[1]));
 		}
 
-		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T3 surrogate, string description = null)
+		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T3 surrogate)
 		{
 			if (surrogate == null)
 				throw new ArgumentNullException(nameof(surrogate));
 
-			internal_RegistDynamicProperty(propertyName, description, surrogate.GetMethodInfo(),
+			internal_RegistDynamicProperty(propertyName, surrogate.GetMethodInfo(),
 				(context, args) => surrogate(context, args[0], args[1], args[2]));
 		}
 
-		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T4 surrogate, string description = null)
+		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T4 surrogate)
 		{
 			if (surrogate == null)
 				throw new ArgumentNullException(nameof(surrogate));
 
-			internal_RegistDynamicProperty(propertyName, description, surrogate.GetMethodInfo(),
+			internal_RegistDynamicProperty(propertyName, surrogate.GetMethodInfo(),
 				(context, args) => surrogate(context, args[0], args[1], args[2], args[3]));
 		}
 
@@ -137,9 +136,9 @@ namespace KnowledgeBase
 				throw new Exception($"Unknown Dynamic Property {propertyTemplate}");
 		}
 
-		public IEnumerable<DynamicPropertyEntry> GetDynamicProperties()
+		public IEnumerable<DynamicPropertyDTO> GetDynamicProperties()
 		{
-			return m_dynamicProperties.Select(p => new DynamicPropertyEntry() { PropertyTemplate = p.Key, Description = p.Value.description ?? "No Description" });
+			return m_dynamicProperties.Select(p => new DynamicPropertyDTO() { PropertyTemplate = p.Key.ToString()});
 		}
 
 #endregion
@@ -149,7 +148,7 @@ namespace KnowledgeBase
 			_willCollideDelegate = willCollideDelegate;
 		}
 
-		private void internal_RegistDynamicProperty(Name propertyName, string description, MethodInfo surogate, DynamicPropertyCalculator converted)
+		private void internal_RegistDynamicProperty(Name propertyName, MethodInfo surogate, DynamicPropertyCalculator converted)
 		{
 			if (!propertyName.IsPrimitive)
 				throw new ArgumentException("The property name must be a primitive symbol.", nameof(propertyName));
@@ -171,7 +170,7 @@ namespace KnowledgeBase
 			if (_willCollideDelegate(template))
 				throw new ArgumentException($"There are already stored property values that will collide with the given dynamic property.");
 
-			m_dynamicProperties.Add(template, new DynamicKnowledgeEntry(converted, propertyParameters, description, surogate.DeclaringType));
+			m_dynamicProperties.Add(template, new DynamicKnowledgeEntry(converted, propertyParameters, surogate.DeclaringType));
 		}
 
 		public int NumOfRegists { get { return m_dynamicProperties.Count; } }

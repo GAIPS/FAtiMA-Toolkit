@@ -214,7 +214,6 @@ namespace EmotionalAppraisal
 				var evtN = n.RemovePerspective((Name)Perspective);
 				
                 var evt = am.RecordEvent(evtN, am.Tick);
-
 				var propEvt = evt as IPropertyChangedEvent;
 				if (propEvt != null)
 				{
@@ -229,7 +228,6 @@ namespace EmotionalAppraisal
 				UpdateEmotions(APPRAISAL_FRAME, emotionalState, am);
 			}
 		}
-
 
         public void AppraiseEvents(IEnumerable<Name> eventNames, IEmotionalState emotionalState, AM am)
         {
@@ -346,11 +344,6 @@ namespace EmotionalAppraisal
 		public IEnumerable<Pair<Name, IEnumerable<SubstitutionSet>>> AskPossibleProperties(Name property, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
 			return m_kb.AskPossibleProperties(property, perspective, constraints);
-		}
-
-		public void UnregistDynamicProperty(Name propertyTemplate)
-		{
-			m_kb.UnregistDynamicProperty(propertyTemplate);
 		}
 
 		public IDynamicPropertiesRegistry DynamicPropertiesRegistry => m_kb;

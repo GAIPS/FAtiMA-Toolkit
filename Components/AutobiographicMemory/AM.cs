@@ -14,7 +14,7 @@ namespace AutobiographicMemory
 	//TODO improve LastEventId efficiency, by caching the last recorded events (cache should be dumped, if a new event is recorded with a greater timestamp that the ones in cache)
 
 	[Serializable]
-	public sealed partial class AM : ICustomSerialization, IDynamicPropertiesRegister
+	public sealed partial class AM : ICustomSerialization
 	{
 		//Indexes
 		private uint m_eventGUIDCounter = 0;
@@ -25,14 +25,9 @@ namespace AutobiographicMemory
 
 		public void BindToRegistry(IDynamicPropertiesRegistry registry)
 		{
-			registry.RegistDynamicProperty(EVENT_ID_PROPERTY_NAME, EventIdPropertyCalculator, "Returns the ids of all events that unify with the property's name");
-			registry.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_NAME, EventAgePropertyCalculator, "The number of ticks passed since the event associated to [id] occured");
-			registry.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_NAME, LastEventIdPropertyCalculator, "Returns the id of the last event if it unifies with the property's name");
-		}
-
-		public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
-		{
-			throw new NotImplementedException();
+			registry.RegistDynamicProperty(EVENT_ID_PROPERTY_NAME, EventIdPropertyCalculator);
+			registry.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_NAME, EventAgePropertyCalculator);
+			registry.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_NAME, LastEventIdPropertyCalculator);
 		}
 
 		public IBaseEvent RecordEvent(EventDTO dto)

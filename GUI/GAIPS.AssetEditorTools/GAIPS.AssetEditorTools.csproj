@@ -45,6 +45,7 @@
     <Compile Include="DynamicPropertiesWindow\DynamicPropertyDisplayer.Designer.cs">
       <DependentUpon>DynamicPropertyDisplayer.cs</DependentUpon>
     </Compile>
+    <Compile Include="DynamicPropertiesWindow\DynamicPropertyEntry.cs" />
     <Compile Include="EditorTools.cs" />
     <Compile Include="EditorUtilities.cs" />
     <Compile Include="GenericPropertyDataGridControler.cs">

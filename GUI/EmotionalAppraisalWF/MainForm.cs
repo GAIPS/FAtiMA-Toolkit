@@ -196,17 +196,7 @@ namespace EmotionalAppraisalWF
 			_knowledgeBaseVM.UpdatePerspective();
 		}
 
-		#region Toolbar Options
-
-		[MenuItem("Tools/Show Available Dynamic Properties")]
-		private void ShowDynamicPropertiesWindow()
-		{
-			DynamicPropertyDisplayer.Instance.ShowOrBringToFront();
-		}
-
-        #endregion
-
-        private void groupBox1_Enter(object sender, EventArgs e)
+		private void groupBox1_Enter(object sender, EventArgs e)
         {
 
         }

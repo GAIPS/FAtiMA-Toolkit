@@ -10,22 +10,12 @@ namespace Utilities
 	{
 		public static IEnumerable<T> Append<T>(this IEnumerable<T> enumerable, T element)
 		{
-			using (IEnumerator<T> it = enumerable.GetEnumerator())
-			{
-				while (it.MoveNext())
-					yield return it.Current;
-			}
-			yield return element;
+			return enumerable.Union(new[] {element});
 		}
 
 		public static IEnumerable<T> Prepend<T>(this IEnumerable<T> enumerable, T element)
 		{
-			yield return element;
-			using (IEnumerator<T> it = enumerable.GetEnumerator())
-			{
-				while (it.MoveNext())
-					yield return it.Current;
-			}
+			return new[] {element}.Union(enumerable);
 		}
 
 #if !PORTABLE

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AssetPackage;
 using GAIPS.Rage;
 using SerializationUtilities;
 using IntegratedAuthoringTool.DTOs;
@@ -18,7 +17,7 @@ namespace IntegratedAuthoringTool
     /// This asset is responsible for managing the scenario, including its characters and respective dialogues
     /// </summary>
     [Serializable]
-    public class IntegratedAuthoringToolAsset : LoadableAsset<IntegratedAuthoringToolAsset>, ICustomSerialization, IDynamicPropertiesRegister
+    public class IntegratedAuthoringToolAsset : LoadableAsset<IntegratedAuthoringToolAsset>, ICustomSerialization
     {
 		public static readonly string INITIAL_DIALOGUE_STATE = "Start";
         public static readonly string TERMINAL_DIALOGUE_STATE = "End";
@@ -221,13 +220,8 @@ namespace IntegratedAuthoringTool
 
 	    public void BindToRegistry(IDynamicPropertiesRegistry registry)
 	    {
-			registry.RegistDynamicProperty(VALID_DIALOGUE_PROPERTY_TEMPLATE, ValidDialogPropertyCalculator,"Returns all valid dialogues that unify with [currentState], [nextState], [meaning] and [style]");
+			registry.RegistDynamicProperty(VALID_DIALOGUE_PROPERTY_TEMPLATE, ValidDialogPropertyCalculator);
 		}
-
-	    public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
-	    {
-		    throw new NotImplementedException();
-	    }
 
 	    private static readonly Name VALID_DIALOGUE_PROPERTY_TEMPLATE = (Name)"ValidDialogue";
 		private IEnumerable<DynamicPropertyResult> ValidDialogPropertyCalculator(IQueryContext context, Name currentState, Name nextState, Name meaning, Name style)

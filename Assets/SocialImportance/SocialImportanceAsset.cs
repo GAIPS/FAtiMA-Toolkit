@@ -23,7 +23,7 @@ namespace SocialImportance
 	///			- Gives the Social Importance value attributed to the given target
 	/// </remarks>
 	[Serializable]
-	public sealed class SocialImportanceAsset: LoadableAsset<SocialImportanceAsset>, ICustomSerialization, IDynamicPropertiesRegister
+	public sealed class SocialImportanceAsset: LoadableAsset<SocialImportanceAsset>, ICustomSerialization
 	{
 		private KB m_kB;
 		private HashSet<AttributionRule> m_attributionRules;
@@ -72,7 +72,7 @@ namespace SocialImportance
 
 		public void BindToRegistry(IDynamicPropertiesRegistry registry)
 		{
-			registry.RegistDynamicProperty(SI_DYNAMIC_PROPERTY_NAME, SIPropertyCalculator, "The value of Social Importance attributed to [target]");
+			registry.RegistDynamicProperty(SI_DYNAMIC_PROPERTY_NAME, SIPropertyCalculator);
 		}
 
 		public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
