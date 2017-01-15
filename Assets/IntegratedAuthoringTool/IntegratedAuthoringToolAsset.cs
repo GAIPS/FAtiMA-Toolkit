@@ -32,7 +32,7 @@ namespace IntegratedAuthoringTool
         public static readonly string PLAYER = "Player";
         public static readonly string AGENT = "Agent";
 
-        public static readonly string TTSGenerationPrefix = "TTS-";
+        private static readonly string TTSGenerationPrefix = "TTS-";
 
         private DialogActionDictionary m_playerDialogues;
 		private DialogActionDictionary m_agentDialogues;
@@ -116,12 +116,14 @@ namespace IntegratedAuthoringTool
 		    return p.Asset;
 	    }
 
-        public static string GenerateUtteranceFileName(string utterance)
+        public static string GenerateUtteranceId(string utterance)
         {
-            utterance.RemoveWhiteSpace();
+            utterance = utterance.RemoveWhiteSpace();
             utterance = utterance.ToLowerInvariant();
-            var bytes = System.Text.Encoding.UTF8.GetBytes(utterance);
-            return TTSGenerationPrefix + BitConverter.ToString(MD5.Create().ComputeHash(bytes));
+            var bytes = Encoding.UTF8.GetBytes(utterance);
+            var utteranceId = BitConverter.ToString(MD5.Create().ComputeHash(bytes));
+            utteranceId = utteranceId.Replace("-", string.Empty);
+            return TTSGenerationPrefix + utteranceId;
         }
 
         public RolePlayCharacterAsset InstantiateCharacterAsset(string characterName)
@@ -174,15 +176,7 @@ namespace IntegratedAuthoringTool
 
 		#region Dialog System
 
-		/// <summary>
-		/// Adds a new dialogue action
-		/// </summary>
-		/// <param name="dialogueStateActionDTO">The dto that specifies the dialogue action</param>
-		public void AddAgentDialogAction(DialogueStateActionDTO dialogueStateActionDTO)
-		{
-            dialogueStateActionDTO.UtteranceId = GenerateUtteranceFileName(dialogueStateActionDTO.Utterance);
-            m_agentDialogues.AddDialog(new DialogStateAction(dialogueStateActionDTO));
-		}
+		
 
 		/// <summary>
 		/// Adds a new dialogue action 
@@ -203,14 +197,23 @@ namespace IntegratedAuthoringTool
 			this.RemoveDialogueActions(PLAYER, new[] { dialogueStateActionToEdit });
 		}
 
-		/// <summary>
-		/// Updates an existing dialogue action for the agents
+
+        /// <summary>
+		/// Adds a new dialogue action
 		/// </summary>
-		/// <param name="dialogueStateActionToEdit">The action to be updated.</param>
-		/// <param name="newDialogueAction">The updated action.</param>
-		public void EditAgentDialogAction(DialogueStateActionDTO dialogueStateActionToEdit, DialogueStateActionDTO newDialogueAction)
+		/// <param name="dialogueStateActionDTO">The dto that specifies the dialogue action</param>
+		public void AddAgentDialogAction(DialogueStateActionDTO dialogueStateActionDTO)
+        {
+            m_agentDialogues.AddDialog(new DialogStateAction(dialogueStateActionDTO));
+        }
+        /// <summary>
+        /// Updates an existing dialogue action for the agents
+        /// </summary>
+        /// <param name="dialogueStateActionToEdit">The action to be updated.</param>
+        /// <param name="newDialogueAction">The updated action.</param>
+        public void EditAgentDialogAction(DialogueStateActionDTO dialogueStateActionToEdit, DialogueStateActionDTO newDialogueAction)
 		{
-			this.AddAgentDialogAction(newDialogueAction);
+            this.AddAgentDialogAction(newDialogueAction);
 			this.RemoveDialogueActions(AGENT, new[] { dialogueStateActionToEdit });
 		}
 
@@ -325,6 +328,14 @@ namespace IntegratedAuthoringTool
             if (m_agentDialogues.Count>0)
             {
                 var agentDialogues = m_agentDialogues.Select(d => d.ToDTO()).ToArray();
+                foreach(var d in agentDialogues)
+                {
+                    if(d.UtteranceId == null || d.UtteranceId.StartsWith(TTSGenerationPrefix))
+                    {
+                        d.UtteranceId = GenerateUtteranceId(d.Utterance);
+                    }
+                }
+
                 dataHolder.SetValue("AgentDialogues", agentDialogues);
             }
         }
@@ -354,7 +365,7 @@ namespace IntegratedAuthoringTool
             {
 	            foreach (var d in agentDialogueArray.Select(dto => new DialogStateAction(dto)))
 	            {
-					m_agentDialogues.AddDialog(d);
+                    m_agentDialogues.AddDialog(d);
 	            }
             }
 		}
