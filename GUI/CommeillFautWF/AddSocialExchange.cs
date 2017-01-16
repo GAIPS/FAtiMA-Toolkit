@@ -33,7 +33,7 @@ namespace CommeillFautWF
             AddedObject = new SocialExchangeDTO();
            
             _vm = vm;
-            _influenceRuleVm = new InfluenceRuleVM(vm);
+       //     _influenceRuleVm = new InfluenceRuleVM(vm, "ay");
             //	NameBox.Text = (_dto. == Guid.Empty) ? "Add" : "Update";
         }
 
@@ -41,22 +41,27 @@ namespace CommeillFautWF
         {
 
             InitializeComponent();
-            AddedObject = new SocialExchangeDTO();
+            AddedObject = social.ToDTO();
 
             _vm = vm;
 
             moveName.Text = social.ActionName.ToString();
             IntentTextBox.Text = social.Intent;
             InstantiationTextBox.Text = social.Instantiation;
-            _influenceRuleVm = new InfluenceRuleVM(vm);
-              
+
            
+            AddedObject = social.ToDTO();
+
+            MessageBox.Show("AddSocialExchange Constructor " + AddedObject.Action);
+
+            //         _influenceRuleVm = new InfluenceRuleVM(vm, social.ActionName.ToString());
+
             if (social.InfluenceRules != null)
             {
               foreach (var cond in social.InfluenceRules)
-                {
-                            _influenceRuleVm.AddOrUpdateInfluenceRule(cond);
-                            this.listBox1.Items.Add(cond.RuleName);
+              {
+             
+                        this.listBox1.Items.Add(cond.RuleName);
                 }
             }
 
@@ -67,18 +72,22 @@ namespace CommeillFautWF
         private void NameBox_Click(object sender, EventArgs e)
         {
 
-            MessageBox.Show(" count: " + _influenceRuleVm.RuleList.Count);
 
            SocialExchangeDTO  _dto = new SocialExchangeDTO()
             {
-                SocialExchangeName = moveName.Text,
+               
                 Action = moveName.Text,
                 Intent =  IntentTextBox.Text,
                 Instantiation = InstantiationTextBox.Text,
-                InfluenceRules = _influenceRuleVm.RuleList,
-                
+                InfluenceRules = new List<InfluenceRuleDTO>()
             };
-            
+
+            if (AddedObject!= null)
+                if(AddedObject.InfluenceRules != null)
+                if(AddedObject.InfluenceRules.Count > 0)
+                _dto.InfluenceRules = AddedObject.InfluenceRules;
+         
+
             try
             {
               
@@ -96,15 +105,31 @@ namespace CommeillFautWF
 
         private void button2_Click(object sender, EventArgs e)
         {
-            new AddInfluenceRule(_influenceRuleVm, new InfluenceRuleDTO()).ShowDialog();
+           
+            _influenceRuleVm = new InfluenceRuleVM(_vm, AddedObject);
 
-            if (_influenceRuleVm.RuleList != null)
+            if (listBox1.SelectedItem == null)
+                new AddInfluenceRule(_influenceRuleVm, new InfluenceRuleDTO(), moveName.Text).ShowDialog();
+            else
             {
-                listBox1.Items.Clear();
-                foreach (var move in _influenceRuleVm.RuleList)
+                new AddInfluenceRule(_influenceRuleVm, AddedObject.InfluenceRules[listBox1.SelectedIndex], moveName.Text).ShowDialog();
+
+            }
+
+            AddedObject.InfluenceRules = _influenceRuleVm.RuleList.ToList();
+
+            MessageBox.Show(" Button2 Click" + AddedObject.Action + " count " + AddedObject.InfluenceRules.Count);
+          //  _vm.AddSocialMove(AddedObject);
+            listBox1.Items.Clear();
+
+
+
+            if (AddedObject.InfluenceRules != null)
+            {
+                foreach (var cond in AddedObject.InfluenceRules)
                 {
-                  
-                            this.listBox1.Items.Add(move.RuleName);
+                    
+                    this.listBox1.Items.Add(cond.RuleName);
                 }
             }
         }
@@ -112,6 +137,16 @@ namespace CommeillFautWF
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
            
+        }
+
+        private void AddSocialExchange_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

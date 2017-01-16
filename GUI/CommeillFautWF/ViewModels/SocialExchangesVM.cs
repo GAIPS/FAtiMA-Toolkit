@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,6 +10,7 @@ using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 using CommeillFaut.DTOs;
 using CommeillFautWF;
+using WellFormedNames;
 
 namespace CommeillFautWF.ViewModels
 {
@@ -19,17 +21,18 @@ namespace CommeillFautWF.ViewModels
         private bool m_loading;
         public CommeillFautAsset _cifAsset => _mainForm.CurrentAsset;
         public BindingListView<SocialExchangeDTO> SocialExchanges { get; private set; }
-        public List<InfluenceRuleDTO> addedRules;
+  
+     //   public Dictionary<string, InfluenceRuleDTO> InfluenceRulesDiccionary;
 
         
         public SocialExchangesVM(BaseCIFForm parent)
         {
             
             _mainForm = parent;
-		this.SocialExchanges = new BindingListView<SocialExchangeDTO>((IList)null);
-   //         _rules = new Dictionary<string, InfluenceRuleDTO>();
+		    SocialExchanges = new BindingListView<SocialExchangeDTO>((IList)null);
+      //      InfluenceRulesDiccionary = new Dictionary<string, InfluenceRuleDTO>();
             m_loading = false;
-            
+         
         }
 
      
@@ -38,46 +41,43 @@ namespace CommeillFautWF.ViewModels
             m_loading = true;
 
             SocialExchanges.Refresh();
- //           _rules.Clear();
+     
             m_loading = false;
         }
 
         public void AddSocialMove(SocialExchangeDTO newSocialExchange)
         {
-           
 
+            
             if (_cifAsset.m_SocialExchanges.Find(x=>x.ActionName.ToString() == newSocialExchange.Action) != null)
                 _cifAsset.UpdateSocialExchange(newSocialExchange);
+
             else _cifAsset.AddExchange(newSocialExchange);
 
+            
             
       //      SocialExchanges.DataSource = _cifAsset.m_SocialExchanges.ToList();
         //    SocialExchanges.Refresh();
             _mainForm.SetModified();
+            Reload();
           
         }
 
+ /*       public void AddOrUpdateInfluenceRule(InfluenceRuleDTO dto)
+        {
+            if (addedRules.Find(x => x.RuleName == dto.RuleName) != null)
+            {
+                addedRules.Remove(addedRules.Find(x => x.RuleName == dto.RuleName));
+                addedRules.Add(dto);
+            }
+          else  addedRules.Add(dto);
+           _mainForm.SetModified();
+           this.Reload();
+        }
 
+      
+*/
     }
 }
 
 
-/* using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
-using Equin.ApplicationFramework;
-using GAIPS.AssetEditorTools;
-using SocialImportance.DTOs;
-
-namespace SocialImportanceWF.ViewModels
-{
-	public class ClaimsVM: IDataGridViewController
-	{
-		
-
-		#endregion
-	}
-}
-*/

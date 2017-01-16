@@ -1,4 +1,5 @@
-﻿using EmotionalAppraisal;
+﻿using CommeillFaut;
+using EmotionalAppraisal;
 using EmotionalDecisionMaking;
 using SocialImportance;
 
@@ -9,4 +10,6 @@ namespace RolePlayCharacterWF
 	public class EAAssetControl : BaseAssetControl<EmotionalAppraisalAsset,EmotionalAppraisalWF.MainForm> {}
 
 	public class EDMAssetControl : BaseAssetControl<EmotionalDecisionMakingAsset,EmotionalDecisionMakingWF.MainForm> { }
+
+    public class CommeillFautControl : BaseAssetControl<CommeillFautAsset, CommeillFautWF.MainForm> { }
 }

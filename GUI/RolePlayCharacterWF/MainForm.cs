@@ -32,7 +32,12 @@ namespace RolePlayCharacterWF
 				RequestAssetReload();
 				return EditorTools.GetFieldValue<SocialImportance.SocialImportanceAsset>(CurrentAsset, "_socialImportanceAsset");
 			});
-		}
+            cifAssetControl.SetAsset(asset.CommeillFautAssetSource, () =>
+            {
+                RequestAssetReload();
+                return EditorTools.GetFieldValue<CommeillFaut.CommeillFautAsset>(CurrentAsset, "_commeillFautAsset");
+            });
+        }
 		
 		private void textBoxCharacterName_TextChanged(object sender, EventArgs e)
         {
@@ -84,5 +89,16 @@ namespace RolePlayCharacterWF
 			ReloadEditor();
 			SetModified();
 		}
-	}
+
+        private void cifAssetControl_Load(object sender, EventArgs e)
+        {
+            if (IsLoading)
+                return;
+
+            CurrentAsset.CommeillFautAssetSource = cifAssetControl.Path;
+            CurrentAsset.ReloadDefitions();
+            ReloadEditor();
+            SetModified();
+        }
+    }
 }

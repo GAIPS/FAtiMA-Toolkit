@@ -59,6 +59,12 @@
     <Compile Include="AddInfluenceRule.Designer.cs">
       <DependentUpon>AddInfluenceRule.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddOrEditInfluenceRuleForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddOrEditInfluenceRuleForm.Designer.cs">
+      <DependentUpon>AddOrEditInfluenceRuleForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AddSocialExchange.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,6 +86,9 @@
     <Compile Include="ViewModels\SocialExchangesVM.cs" />
     <EmbeddedResource Include="AddInfluenceRule.resx">
       <DependentUpon>AddInfluenceRule.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddOrEditInfluenceRuleForm.resx">
+      <DependentUpon>AddOrEditInfluenceRuleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AddSocialExchange.resx">
       <DependentUpon>AddSocialExchange.cs</DependentUpon>
@@ -120,6 +129,10 @@
     <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj">
       <Project>{e011d502-5c0f-4a3f-9f1a-337ff025eb48}</Project>
       <Name>ActionLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\Conditions\Conditions.csproj">
+      <Project>{59041269-e52e-4cdd-84e0-92fdcfbf270d}</Project>
+      <Name>Conditions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
       <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>

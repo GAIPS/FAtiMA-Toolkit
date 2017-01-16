@@ -153,12 +153,9 @@
             this.Controls.Add(this.ExchangeList1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Text = "Comme ill Faut";
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.Controls.SetChildIndex(this.menuStrip1, 0);
             this.Controls.SetChildIndex(this.groupBox1, 0);
             this.Controls.SetChildIndex(this.label1, 0);
             this.Controls.SetChildIndex(this.ExchangeList1, 0);

@@ -52,6 +52,7 @@
     <Compile Include="CommeillFautAsset.cs" />
     <Compile Include="DTOs\SocialExchangeDTO.cs" />
     <Compile Include="DTOs\InfluenceRuleDTO.cs" />
+    <Compile Include="DTOs\CommeillFautDTO.cs" />
     <Compile Include="InfluenceRule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SocialExchange.cs" />

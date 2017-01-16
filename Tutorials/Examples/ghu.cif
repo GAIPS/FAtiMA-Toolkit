@@ -4,37 +4,68 @@
 			"classId": 0,
 			"SocialExchanges": [
 				{
-					"Intent": "zzzz",
-					"Instantiation": "zzzzz",
+					"Intent": "ds",
+					"Instantiation": "d",
 					"InfluenceRules": [
 						{
-							"RuleName": "xxxxx",
-							"Target": "-"
-						}, 
-						{
-							"RuleName": "cccc",
+							"Id": "7038a297-efe6-4993-9d40-a5e960f76673",
+							"RuleName": "ay",
 							"Target": "-"
 						}],
-					"Action": "zzzz",
+					"ay":
+						{
+
+						},
+					"Action": "dad",
 					"Conditions":
 						{
 							"Set": []
 						}
 				}, 
 				{
-					"Intent": "yyyyy",
-					"Instantiation": "yyyy",
+					"Intent": "dd",
+					"Instantiation": "ff",
 					"InfluenceRules": [
 						{
-							"RuleName": "dddddd",
+							"Id": "b508a4f1-e477-4ab9-9e9b-a82ce36d3bd7",
+							"RuleName": "saa",
+							"Target": "-"
+						}, 
+						{
+							"Id": "4cd9b5f4-5d55-4237-93e7-e630127f9abe",
+							"RuleName": "eww",
 							"Target": "-"
 						}],
-					"Action": "yyyy",
+					"saa":
+						{
+
+						},
+					"eww":
+						{
+
+						},
+					"Action": "dsa",
 					"Conditions":
 						{
 							"Set": []
 						}
-				}]
+				}],
+			"RuleList":
+				{
+					"dictionary": [
+						{
+							"key": "ay",
+							"value": ["[x]=true"]
+						}, 
+						{
+							"key": "saa",
+							"value": ["[x]=true", "[x]=Attraction"]
+						}, 
+						{
+							"key": "eww",
+							"value": ["[x]=true"]
+						}]
+				}
 		},
 	"types": [
 		{

@@ -37,8 +37,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.InstantiationTextBox = new System.Windows.Forms.RichTextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button2 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -121,6 +121,17 @@
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Influence Rules";
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 16;
+            this.listBox1.Location = new System.Drawing.Point(4, 86);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(224, 100);
+            this.listBox1.TabIndex = 1;
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // button2
             // 
@@ -128,19 +139,9 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(182, 36);
             this.button2.TabIndex = 0;
-            this.button2.Text = "Add Influence Rules";
+            this.button2.Text = "Add/Edit Influence Rule";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(3, 82);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(224, 100);
-            this.listBox1.TabIndex = 1;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // AddSocialExchange
             // 
@@ -157,6 +158,7 @@
             this.Controls.Add(this.label1);
             this.Name = "AddSocialExchange";
             this.Text = "AddSocialExchange";
+            this.Load += new System.EventHandler(this.AddSocialExchange_Load);
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

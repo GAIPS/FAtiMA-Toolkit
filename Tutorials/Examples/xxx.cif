@@ -4,22 +4,22 @@
 			"classId": 0,
 			"SocialExchanges": [
 				{
-					"Intent": "daa",
-					"Instantiation": "dadad",
+					"Intent": "",
+					"Instantiation": "",
 					"InfluenceRules": [
 						{
-							"Id": "80c9bd35-6b1b-46bc-b96a-078cef35c435",
-							"RuleName": "oi",
+							"Id": "114e23d9-0f68-4c63-bd7f-61203bed6d53",
+							"RuleName": "System.Windows.Forms.TextBox, Text: New Attribution Rule",
 							"Target": "-",
 							"Value": 1
 						}, 
 						{
-							"Id": "011313b7-3208-4d72-afce-1d21b05c06fd",
-							"RuleName": "manteiga",
+							"Id": "4bc01c53-df08-4423-bebe-24f5ab94400b",
+							"RuleName": "System.Windows.Forms.TextBox, Text: New Attribution Rule",
 							"Target": "-",
 							"Value": 1
 						}],
-					"Action": "ddddd",
+					"Action": "xxxx",
 					"Conditions":
 						{
 							"Set": []

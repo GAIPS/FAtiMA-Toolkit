@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using CommeillFaut.DTOs;
 using Conditions;
+using Conditions.DTOs;
+using EmotionalAppraisal;
+using SerializationUtilities;
 using WellFormedNames;
 
 
@@ -13,27 +17,28 @@ namespace CommeillFaut
         public readonly Guid GUID;
 
         public string RuleName { get; private set; }
-        public Name Target { get; private set; }
+        public string Target { get; private set; }
+        public string Initiator { get; private set; }
         public int Value { get; private set; }
-       public bool cond { get; private set; }
-      public ConditionSet Conditions;
+     
+      public ConditionSetDTO RuleConditions { get; private set; }
 
 
-        protected InfluenceRule()
+    protected InfluenceRule()
         {
             GUID = Guid.NewGuid();
         }
 
-        public int Result(Name init, Name targ)
+        public int Result(string init, string targ, EmotionalAppraisalAsset m_ea)
         {
 
-            foreach (var cond in Conditions)
-            {
-                 return Value;
-            }
-          
-            return 0;
+            var toEvaluate = new ConditionSet(RuleConditions);
+         //   var sub = new Substitution(Name.BuildName(Target), t);
+            if (toEvaluate.Evaluate(m_ea, Name.BuildName(init), new List<SubstitutionSet>()))
+                return Value;
+            else return 0;
 
+            //  (a.Conditions.Evaluate(m_ea, perspective, new[] { new SubstitutionSet(sub) }))
         }
         public InfluenceRule(InfluenceRuleDTO dto) : this()
 		{
@@ -43,15 +48,38 @@ namespace CommeillFaut
         public void SetData(InfluenceRuleDTO dto)
         {
             RuleName = dto.RuleName;
-            Target = (Name)dto.Target;
-            Value = dto.Value;
-            Conditions = new ConditionSet(dto.Conditions);
+            Initiator = dto.Initiator;
+            Target = dto.Target;
+            Value = dto.Value;;
+            RuleConditions = dto.RuleConditions;
         }
 
         public InfluenceRuleDTO ToDTO()
         {
-            return new InfluenceRuleDTO() { Id = GUID, RuleName = RuleName, Target = Target.ToString(), Value = Value, Conditions = Conditions.ToDTO() };
+            return new InfluenceRuleDTO() {Id = GUID, RuleName = RuleName, Initiator = Initiator, Target = Target, Value = Value, RuleConditions = RuleConditions};
         }
+
+     /*   public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+        {
+
+
+            dataHolder.SetValue("RuleName", this.RuleName);
+            dataHolder.SetValue("Initiator", this.Initiator);
+            dataHolder.SetValue("Target", this.Target);
+            dataHolder.SetValue("RuleConditions", this.RuleConditions);
+            
+
+
+        }
+
+        public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+        {
+           
+            RuleName = dataHolder.GetValue<string>("RuleName");
+            Initiator = dataHolder.GetValue<string>("Initiator");
+            Target = dataHolder.GetValue<string>("Target");
+            RuleConditions = dataHolder.GetValue<ConditionSet>("RuleConditions");
+        }*/
     }
 
 

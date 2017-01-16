@@ -4,23 +4,57 @@
 			"classId": 0,
 			"SocialExchanges": [
 				{
-					"Intent": "yo",
-					"Instantiaction": null,
-					"Action": "Speak(-, -, -, -)",
+					"Intent": "Increase Attraction",
+					"Instantiation": "Flirt",
+					"InfluenceRules": [
+						{
+							"Id": "2bfe749b-63c8-4b14-b41c-a43de1dfb788",
+							"RuleName": "Attraction",
+							"Target": "[x]",
+							"Value": 4
+						}],
+					"Attraction":
+						{
+
+						},
+					"Action": "Flirt",
 					"Conditions":
 						{
 							"Set": []
 						}
 				}, 
 				{
-					"Intent": "dfg",
-					"Instantiaction": "dfg",
-					"Action": "dfg",
+					"Intent": "Increase Friendship",
+					"Instantiation": "Compliment",
+					"InfluenceRules": [
+						{
+							"Id": "fef85e0c-e92c-41b4-bfe6-195d131132b7",
+							"RuleName": "Friendship",
+							"Target": "[x]",
+							"Value": 5
+						}],
+					"Friendship":
+						{
+
+						},
+					"Action": "Compliment",
 					"Conditions":
 						{
 							"Set": []
 						}
-				}]
+				}],
+			"RuleList":
+				{
+					"dictionary": [
+						{
+							"key": "Attraction",
+							"value": ["[x]=Attraction", "[x]>5"]
+						}, 
+						{
+							"key": "Friendship",
+							"value": ["[x]=Friendship", "[x]>5"]
+						}]
+				}
 		},
 	"types": [
 		{

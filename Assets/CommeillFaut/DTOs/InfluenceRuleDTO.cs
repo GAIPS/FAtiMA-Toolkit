@@ -1,5 +1,6 @@
 ﻿using System;
 using Conditions.DTOs;
+using WellFormedNames;
 
 namespace CommeillFaut.DTOs
 {
@@ -19,6 +20,7 @@ namespace CommeillFaut.DTOs
         /// </summary>
         public string Target { get; set; }
 
+        public string Initiator { get; set; }
         /// <summary>
         /// The value to be attributed to the target, if all conditions are valid.
         /// </summary>
@@ -27,6 +29,6 @@ namespace CommeillFaut.DTOs
         /// <summary>
         /// The condition set used to validate this rule.
         /// </summary>
-        public ConditionSetDTO Conditions { get; set; }
+        public ConditionSetDTO RuleConditions { get; set; }
     }
 }

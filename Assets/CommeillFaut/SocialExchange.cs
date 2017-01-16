@@ -5,13 +5,14 @@ using ActionLibrary.DTOs;
 using CommeillFaut.DTOs;
 using Conditions;
 using Conditions.DTOs;
+using EmotionalAppraisal;
 using WellFormedNames;
 using SerializationUtilities;
 
 namespace CommeillFaut
 {
 
-
+    [Serializable]
     public class SocialExchange : BaseActionDefinition
     {
     
@@ -19,9 +20,11 @@ namespace CommeillFaut
 
         public String Intent { get; set; }
 
-        public Name Initiator { get; set; }
+     
 
-       public Name targ { get; set; }
+        public string Initiator { get; set; }
+
+       public string targ { get; set; }
 
         int Response { get; set; }
 
@@ -33,7 +36,7 @@ namespace CommeillFaut
 
 
 
-        public SocialExchange(String name) : base(WellFormedNames.Name.BuildName(name), WellFormedNames.Name.BuildName(""), new ConditionSet(new ConditionSetDTO()))
+        public SocialExchange(String name) : base(WellFormedNames.Name.BuildName(name), WellFormedNames.Name.BuildName("Empty"), new ConditionSet(new ConditionSetDTO()))
         
             {
             State = "Initialized";
@@ -46,14 +49,19 @@ namespace CommeillFaut
         }
 
 
-        public SocialExchange(SocialExchangeDTO s) : base(s){
+        public SocialExchange(SocialExchangeDTO s) : base(s)
+        {
+
+         
 
             InfluenceRules = new List<InfluenceRuleDTO>();
             //      Name = s.SocialExchangeName;
+            if(s.InfluenceRules!=null)
             foreach (var inf in s.InfluenceRules)
             {
                 InfluenceRules.Add(inf);
             }
+            
            
             Intent = s.Intent;
             Instantiation = s.Instantiation;
@@ -61,9 +69,17 @@ namespace CommeillFaut
 
         public SocialExchange(SocialExchange other) : base(other)
 		{
+         
             Intent = other.Intent;
 		    Instantiation = other.Instantiation;
-		}
+
+            if (other.InfluenceRules != null)
+                foreach (var inf in other.InfluenceRules)
+                {
+                    InfluenceRules.Add(inf);
+                }
+
+        }
 
 
 
@@ -89,22 +105,23 @@ namespace CommeillFaut
             //System.Threading.Thread.Sleep(2000);
         }
 
-        public int CalculateVolition(Name init, Name _targ)
+        public int CalculateVolition(string init, string _targ, EmotionalAppraisalAsset m_ea)
         {
 
             int counter = 0;
             foreach (var rule in InfluenceRules)
             {
-                counter += rule.Value;
+                var result = new InfluenceRule(rule);
+                counter += result.Result(init, _targ, m_ea);
 
             }
             return counter;
         }
 
 
-        private int CalculateResponse(Name Init, Name _Targ)
+        private int CalculateResponse(string Init, string _Targ)
         {
-            var write = "Calculating SocialExchangeResponse:";// Target.CalculateResponse(Name, Initiator) + "\n";
+           // var write = "Calculating SocialExchangeResponse:";// Target.CalculateResponse(Name, Initiator) + "\n";
 
             return this.CalculateVolition(_Targ, Init);
 
@@ -118,7 +135,7 @@ namespace CommeillFaut
         }
 
 
-        public void LaunchSocialExchange(Name init, Name _targ)
+        public void LaunchSocialExchange(string init, string _targ)
         {
             Initiator = init;
             targ = _targ;
@@ -171,7 +188,7 @@ namespace CommeillFaut
             {
                ret.Add(inf);
             }
-            return new SocialExchangeDTO() {Intent = Intent, Instantiation = Instantiation, InfluenceRules = ret };
+            return new SocialExchangeDTO() {Action = ActionName.ToString(), Intent = Intent, Instantiation = Instantiation, InfluenceRules = ret };
         }
 
 
@@ -182,6 +199,15 @@ namespace CommeillFaut
             dataHolder.SetValue("Intent", this.Intent);
             dataHolder.SetValue("Instantiation", this.Instantiation);
             dataHolder.SetValue("InfluenceRules", this.InfluenceRules);
+
+        
+            foreach (var inf in this.InfluenceRules)
+            {
+
+                dataHolder.SetValue(inf.RuleName, inf.RuleConditions);
+
+            }
+            
             base.GetObjectData(dataHolder, context);
            
            
@@ -194,10 +220,19 @@ namespace CommeillFaut
             Intent = dataHolder.GetValue<string>("Intent");
             Instantiation = dataHolder.GetValue<string>("Instantiation");
             InfluenceRules = dataHolder.GetValue<List<InfluenceRuleDTO>>("InfluenceRules");
+
+            int index = 0;
+            foreach (var inf in InfluenceRules)
+            {
+
+              var InfConditions = dataHolder.GetValue<ConditionSetDTO>(inf.RuleName);
+               inf.RuleConditions =InfConditions;
+            }
         }
 
         public void AddInfluenceRule(InfluenceRule infrul)
         {
+
             InfluenceRules.Add(infrul.ToDTO());
 
         }

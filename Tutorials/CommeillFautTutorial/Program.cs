@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +12,8 @@ using SerializationUtilities;
 using EmotionalAppraisal;
 using GAIPS.Rage;
 using CommeillFaut;
+using Conditions.DTOs;
+using Microsoft.CSharp.RuntimeBinder;
 using RolePlayCharacter;
 using WellFormedNames;
 
@@ -22,25 +25,36 @@ namespace CommeillFautTutorial
         {
             AssetManager.Instance.Bridge = new BasicIOBridge();
 
-            
 
-            var flirt = new SocialExchangeDTO {Action = "Flirt", Instantiation = "You are so beautiful"};
-            var compliment = new SocialExchangeDTO { Action = "Compliment", Instantiation = "You are pretty cool" };
-
-            CommeillFautAsset n = new CommeillFautAsset();
-            n.AddExchange(flirt);
-            n.AddExchange(compliment);
+        
             
 
             RolePlayCharacterAsset npc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/john.rpc");
+            RolePlayCharacterAsset rpc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/RPCTest.rpc");
             Console.WriteLine(npc.CharacterName);
 
+            CommeillFautAsset cif = CommeillFautAsset.LoadFromFile("../../../Examples/test.cif");
+            
+            Console.WriteLine("Social Move: " + cif.CalculateSocialMove(npc.CharacterName, rpc.CharacterName));
 
-       //     CommeillFautAsset cif;
-       //     var flirt_id = cif.AddSocialExchange(flirt);
-        //   var compliment_id = cif.AddSocialExchange(compliment);
 
-         //   cif.GetSocialMove(Name.BuildName("Player"));
+       /*    Console.WriteLine(cif.m_SocialExchanges.Count);
+
+            cif.SaveToFile("../../../Examples/ghu.cif");
+
+
+
+            SocialExchange result = cif.CalculateSocialMove(npc.Perspective.ToString(), rpc.Perspective.ToString());
+            Console.WriteLine(result.ActionName);
+                 CommeillFautAsset cif;
+                 var flirt_id = cif.AddSocialExchange(flirt);
+               var compliment_id = cif.AddSocialExchange(compliment);
+
+               cif.GetSocialMove(Name.BuildName("Player"));*/
+
+
+        
+
             Console.ReadLine();
         }
     }

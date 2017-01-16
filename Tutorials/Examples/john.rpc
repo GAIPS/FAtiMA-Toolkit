@@ -2,6 +2,7 @@
 	"root":
 		{
 			"classId": 0,
+			"_commeillFautAssetSource": "",
 			"BodyName": "Male",
 			"CharacterName": "John"
 		},

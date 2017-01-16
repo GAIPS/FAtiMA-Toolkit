@@ -127,6 +127,8 @@ namespace CommeillFautWF
             {
                 SocialExchange toEdit = CurrentAsset.m_SocialExchanges[toedit_index];
 
+            
+
                 new AddSocialExchange(this._socialExchangesVM, toEdit).ShowDialog();
 
             }

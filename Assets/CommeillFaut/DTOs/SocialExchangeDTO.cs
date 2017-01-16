@@ -13,8 +13,7 @@ namespace CommeillFaut.DTOs
         /// <summary>
         /// The social exchange name/description string.
        
-        /// </summary>
-        public string SocialExchangeName { get; set; }
+        
 
         /// <summary>
         /// The condition variable that represents the initiator name 
@@ -44,5 +43,7 @@ namespace CommeillFaut.DTOs
 
 
         public List<InfluenceRuleDTO> Effects { get; set; }
+
+     
     }
 }
