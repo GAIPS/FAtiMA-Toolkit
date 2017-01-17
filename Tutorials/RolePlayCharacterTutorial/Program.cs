@@ -14,11 +14,10 @@ namespace RolePlayCharacterTutorial
             //Loading the asset
 	        var rpc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/RPCTest.rpc");
             rpc.Initialize();
-            var eventStr = "Event(Action-Finished, Player, Kick, "+ rpc.CharacterName + ")";
-            var eventStr2 = "Event(Property-change,Self,DialogueState(Player),A1)";
-            var action = rpc.PerceptionActionLoop(new[] { (Name)eventStr, (Name)eventStr2 })?.ActionName;
+            var event1 = EventHelper.ActionEnd("Player","Kick",rpc.CharacterName.ToString());
+            var action = rpc.PerceptionActionLoop(new[] { event1})?.ActionName;
             Console.WriteLine("The name of the character loaded is: " + rpc.CharacterName);
-            Console.WriteLine("The following event ocurred: " + eventStr);
+            Console.WriteLine("The following event was perceived: " + event1);
             Console.WriteLine("Mood after event: " + rpc.Mood);
             Console.WriteLine("Strongest emotion: " + rpc.GetStrongestActiveEmotion()?.EmotionType + "-" + rpc.GetStrongestActiveEmotion()?.Intensity);
             Console.WriteLine("Response: " + action?.ToString());
