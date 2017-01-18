@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ActionLibrary;
+using System;
 using WellFormedNames;
 
 namespace RolePlayCharacter
@@ -7,12 +8,8 @@ namespace RolePlayCharacter
     {
         public static Name ActionEnd(string subject, string actionName, string target)
         {
-            return Name.BuildName(
-                (Name)"Event",
-                (Name)"Action-Finished",
-                (Name)subject,
-                (Name)actionName,
-                (Name)target);
+            return Name.BuildName(Consts.EVT_ROOT_NAME, Consts.ACTION_FINISHED_NAME,
+                (Name)subject, (Name)actionName, (Name)target);
         }
 
         public static Name PropertyChanged(string propertyName, string value, string subject)
@@ -40,6 +37,19 @@ namespace RolePlayCharacter
             if (!agentName.IsPrimitive)
                 throw new ArgumentException("The agent id needs to be a primitive", nameof(agent));
             return Name.BuildName((Name)"Event", (Name)"Agent-Removed", Name.SELF_SYMBOL, agentName, Name.SELF_SYMBOL);
+        }
+
+
+        public static Name ToStartEventName(IAction action, Name subject)
+        {
+            return Name.BuildName(Consts.EVT_ROOT_NAME, Consts.ACTION_START_NAME,
+                subject, action.FullName, action.Target);
+        }
+
+        public static Name ToFinishedEventName(IAction action, Name subject)
+        {
+            return Name.BuildName(Consts.EVT_ROOT_NAME, Consts.ACTION_FINISHED_NAME,
+                subject, action.FullName, action.Target);
         }
     }
 }

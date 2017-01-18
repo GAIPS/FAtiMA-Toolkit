@@ -23,6 +23,8 @@ namespace ActionLibrary
 		/// </summary>
 		IList<Name> Parameters { get; }
 
+        Name FullName { get; }
+
 		float Utility { get; }
 	}
 }

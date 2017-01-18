@@ -33,7 +33,6 @@
   <ItemGroup>
     <Compile Include="Action.cs" />
     <Compile Include="ActionSelector.cs" />
-    <Compile Include="ActionsExtentedOperations.cs" />
     <Compile Include="BaseActionDefinition.cs" />
     <Compile Include="DTOs\ActionDefinitionDTO.cs" />
     <Compile Include="IAction.cs" />

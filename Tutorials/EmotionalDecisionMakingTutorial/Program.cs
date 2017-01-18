@@ -20,30 +20,26 @@ namespace EmotionalDecisionMakingTutorial
 			//First we construct a new instance of the EmotionalDecisionMakingAsset class
 			var edm = new EmotionalDecisionMakingAsset();
 
-            //Second, we need to associate an existing EmotionalAppraisalAsset to the new instance
-            //Since there is none existing we create a new EmotionalAppraisalAsset as well
+            //Then, we have to register an existing knowledge base to the asset so it can check for 
+            //beliefs are true
             var kb = new KB((Name)"John");
+            kb.Tell((Name)"LikesToFight(SELF)", (Name)"True");
             edm.RegisterKnowledgeBase(kb);
 
             //create a reaction rule
-            var reaction = new ReactionDTO {Action = "Kick", Priority = 0, Target = "Player"};
-            var reaction2 = new ReactionDTO { Action = "Punch", Priority = 1, Target = "Player" };
+            var reaction = new ReactionDTO {Action = "Kick", Priority = 0, Target = "Player" };
 
             //add the reaction rule
             var id = edm.AddReaction(reaction);
-            var id2 = edm.AddReaction(reaction2);
-
-            edm.AddReactionCondition(id, "Mood(SELF) = 0");
-
-
-            edm.AddReactionCondition(id2, "Mood(SELF) = 0");
-
-
-            //the method decide will now trigger the previous reaction defined (since the default value of mood is 0) 
+            
+            edm.AddReactionCondition(id, "LikesToFight(SELF) = True");
             var actions = edm.Decide();
-            Console.WriteLine("Decision: " + actions.ToList()[0].ToStartEventName((Name)"John"));
-            //Console.WriteLine("Decision: " + string.Concat(actions.Select(a => a.ToStartEventName((Name)"John"))));
-
+            Console.WriteLine("Decisions: ");
+            foreach (var a in actions)
+            {
+                Console.WriteLine(a.FullName.ToString());
+            }
+            
             //this is how you can load the asset from a file
             edm = EmotionalDecisionMakingAsset.LoadFromFile("../../../Examples/EDMTest.edm");
                         

@@ -15,13 +15,14 @@ using AutobiographicMemory.DTOs;
 using SerializationUtilities;
 using GAIPS.Rage;
 using AssetPackage;
+using RolePlayCharacter;
 
 namespace RolePlayCharacter
 {
     [Serializable]
     public sealed class RolePlayCharacterAsset : LoadableAsset<RolePlayCharacterAsset>, ICustomSerialization
     {
-        private static readonly Name DefaultCharacterName = (Name)"Nameless";
+
 
         private string m_emotionalAppraisalAssetSource = null;
         private string m_emotionalDecisionMakingAssetSource = null;
@@ -205,27 +206,12 @@ namespace RolePlayCharacter
 
         public RolePlayCharacterAsset()
         {
-            m_kb = new KB(DefaultCharacterName);
+            m_kb = new KB(Consts.DEFAULT_CHARACTER_NAME);
             m_am = new AM();
             m_emotionalState = new ConcreteEmotionalState();
 			_knownAgents = new Dictionary<Name, AgentEntry>();
 			BindToRegistry(m_kb);
         }
-  
-
-		/// <summary>
-		/// Method used to inform the character that its current action is finished and a new action may be selected. It can also generate an emotion associated to finishing an action successfully.
-		/// </summary>
-		public Name ActionFinishedEvent(IAction action)
-		{
-			if (_currentAction == null)
-				throw new Exception("The RPC asset is not currently executing an action");
-
-			if (!_currentAction.Equals(action))
-				throw new ArgumentException("The given action mismatches the currently executing action.", nameof(action));
-
-		    return _currentAction.ToFinishedEventName(Name.SELF_SYMBOL);
-		}
 
         /// <summary>
         /// Retrieves the character's strongest emotion if any.
@@ -307,9 +293,6 @@ namespace RolePlayCharacter
             return result;
         }
 
-	    private static readonly Name EVENT_MATCHING_AGENT_ADDED = (Name) "Event(Agent-Added,Self,*,Self)";
-		private static readonly Name EVENT_MATCHING_AGENT_REMOVED = (Name)"Event(Agent-Added,Self,*,Self)";
-
         /// <summary>
         /// Executes an iteration of the character's decision cycle.
         /// </summary>
@@ -329,12 +312,6 @@ namespace RolePlayCharacter
                 sociallyAcceptedActions = sociallyAcceptedActions.Append(conferralAction);
 
             _currentAction = TakeBestActions(sociallyAcceptedActions).Shuffle().FirstOrDefault();
-            if (_currentAction != null)
-            {
-                var e = _currentAction.ToStartEventName(Name.SELF_SYMBOL);
-                m_emotionalAppraisalAsset.AppraiseEvents(new[] { e }, m_emotionalState, m_am, m_kb);
-            }
-
             return _currentAction;
         }
 
@@ -344,16 +321,22 @@ namespace RolePlayCharacter
 
             foreach (var e in events.Select(e => e.RemovePerspective(m_kb.Perspective)))
             {
-                if (_currentAction != null && _currentAction.ToFinishedEventName(Name.SELF_SYMBOL).Match(e))
-                    _currentAction = null;
-                else if (EVENT_MATCHING_AGENT_ADDED.Match(e))
+                if (_currentAction != null)
+                {
+                    var currActName = _currentAction.ActionName.ToString();
+                    var currActTarget = _currentAction.ActionName.ToString();
+                    var match = EventHelper.ActionEnd(Name.SELF_STRING, currActName, currActTarget).Match(e);
+                    if (match)
+                        _currentAction = null;
+                }
+                else if (Consts.EVENT_MATCHING_AGENT_ADDED.Match(e))
                 {
                     var n = e.GetNTerm(3);
                     var n2 = m_kb.AskProperty(n);
                     if (!_knownAgents.ContainsKey(n2))
                         _knownAgents.Add(n2, new AgentEntry(n2));
                 }
-                else if (EVENT_MATCHING_AGENT_REMOVED.Match(e))
+                else if (Consts.EVENT_MATCHING_AGENT_REMOVED.Match(e))
                 {
                     var n = e.GetNTerm(3);
                     var n2 = m_kb.AskProperty(n);
@@ -376,8 +359,8 @@ namespace RolePlayCharacter
 
 		private void BindToRegistry(IDynamicPropertiesRegistry registry)
         {
-            registry.RegistDynamicProperty(MOOD_PROPERTY_NAME, MoodPropertyCalculator);
-            registry.RegistDynamicProperty(STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator);
+            registry.RegistDynamicProperty(Consts.MOOD_PROPERTY_NAME, MoodPropertyCalculator);
+            registry.RegistDynamicProperty(Consts.STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator);
             registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator);
 			registry.RegistDynamicProperty(IS_AGENT_TEMPLATE,IsAgentPropertyCalculator);
             m_am.BindToRegistry(registry);
@@ -399,8 +382,6 @@ namespace RolePlayCharacter
         }
 		
         #region Dynamic Properties
-
-        private static readonly Name MOOD_PROPERTY_NAME = (Name)"Mood";
         private IEnumerable<DynamicPropertyResult> MoodPropertyCalculator(IQueryContext context, Name x)
         {
             if (context.Perspective != Name.SELF_SYMBOL)
@@ -428,7 +409,6 @@ namespace RolePlayCharacter
             }
         }
 
-        private static readonly Name STRONGEST_EMOTION_PROPERTY_NAME = (Name)"StrongestEmotion";
         private IEnumerable<DynamicPropertyResult> StrongestEmotionCalculator(IQueryContext context, Name x)
         {
             if (context.Perspective != Name.SELF_SYMBOL)
