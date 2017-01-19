@@ -31,7 +31,7 @@ namespace IntegratedAuthoringToolTutorial
             Console.WriteLine();
             WriteAction(rpc.PerceptionActionLoop(new[] { (Name)("Event(Action-Start,Player,Start,-)") }));
 
-			rpc.ActionFinishedEvent(action);
+	        rpc.PerceptionActionLoop(new [] {EventHelper.ToFinishedEventName(action, rpc.CharacterName)});
             WriteAction(rpc.PerceptionActionLoop(new[] { (Name)("Event(Action-Start,Player,Start,-)") }));
 
             Console.ReadKey();

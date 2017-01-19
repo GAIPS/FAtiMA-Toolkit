@@ -405,6 +405,21 @@ namespace Tests.KnowledgeBase
 			Assert.True(results.SetEquals(expected));
 		}
 
+		[TestCase("[x]","[y]",0)]
+		[TestCase("[x]", "John", 0)]
+		[TestCase("[x]", "Meaning(Toast,Baegle)", 2)]
+		[TestCase("Toast", "Meaning(Toast,Baegle)", 1)]
+		[TestCase("Dougnut", "Meaning(Toast,Baegle)", 0)]
+		[TestCase("Dougnut", "Meaning([x],Baegle)", 0)]
+		public void Test_DynamicProperty_HasLiteral(string x, string y, int num)
+		{
+			var kb = TestFactory.PopulatedTestMemory();
+			var prop = (Name) string.Format("HasLiteral({0},{1})", x, y);
+
+			var result = kb.AskPossibleProperties(prop, Name.SELF_SYMBOL, null).SelectMany(p => p.Item2).ToArray();
+			Assert.AreEqual(result.Length,num);
+		}
+
 		#endregion
 	}
 }

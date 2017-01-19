@@ -364,8 +364,6 @@ namespace RolePlayCharacter
             registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator);
 			registry.RegistDynamicProperty(IS_AGENT_TEMPLATE,IsAgentPropertyCalculator);
             m_am.BindToRegistry(registry);
-            if(m_socialImportanceAsset != null) 
-                m_socialImportanceAsset.BindToRegistry(registry);
         }
 
         private static IEnumerable<IAction> TakeBestActions(IEnumerable<IAction> enumerable)
