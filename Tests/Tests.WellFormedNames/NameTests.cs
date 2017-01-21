@@ -17,7 +17,7 @@ namespace Tests.WellFormedNames
     [TestFixture]
     public class SimpleWFNTests
     {
-        private int reps = 1000000;
+        private int reps = 1;
 
         [TestCase("A(B,C(D,E([x],D)),[x],B(A,B(SELF)))", "[x]", "J(I)", "A(B,C(D,E(J(I),D)),J(I),B(A,B(SELF)))", Refactorization.New)]
         public void MakeGround_GroundedName(string n1, string var, string sub, string expectedResult, Refactorization r)

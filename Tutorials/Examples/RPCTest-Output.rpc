@@ -1,7 +1,7 @@
 {
 	"root":
 		{
-			"classId": 2,
+			"classId": 1,
 			"KnowledgeBase":
 				{
 					"Perspective": "Sam",
@@ -9,7 +9,6 @@
 						{
 							"SELF":
 								{
-									"DialogueState(Player)": "A1",
 									"IsFriend(Player)": true,
 									"Likes(Sam, Kick)": false
 								}
@@ -23,18 +22,8 @@
 			"CommeillFautAssetSource": null,
 			"EmotionalState":
 				{
-					"Mood": -1.5,
-					"EmotionalPool": [
-						{
-							"Intensity": 5,
-							"Decay": 1,
-							"Threshold": 1,
-							"CauseId": 0,
-							"EmotionType": "Distress",
-							"Valence": "Negative",
-							"AppraisalVariables": ["DESIRABILITY"],
-							"InfluenceMood": true
-						}],
+					"Mood": 0,
+					"EmotionalPool": [],
 					"AppraisalConfiguration":
 						{
 							"HalfLifeDecayConstant": 0.5,
@@ -55,27 +44,8 @@
 							"Type": "Action-Finished",
 							"Subject": "Player",
 							"Timestamp": 0,
-							"LinkedEmotions": ["Distress"],
 							"Action": "Kick",
 							"Target": "Sam"
-						}, 
-						{
-							"classId": 1,
-							"Id": 1,
-							"Type": "Property-change",
-							"Subject": "Sam",
-							"Timestamp": 0,
-							"Property": "DialogueState(Player)",
-							"NewValue": "A1"
-						}, 
-						{
-							"classId": 0,
-							"Id": 2,
-							"Type": "Action-Start",
-							"Subject": "Sam",
-							"Timestamp": 0,
-							"Action": "Insult",
-							"Target": "Player"
 						}]
 				}
 		},
@@ -86,10 +56,6 @@
 		}, 
 		{
 			"TypeId": 1,
-			"ClassName": "AutobiographicMemory.AM+PropertyChangeEvent, AutobiographicMemory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-		}, 
-		{
-			"TypeId": 2,
 			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 		}]
 }

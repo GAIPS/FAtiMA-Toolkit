@@ -22,7 +22,7 @@ namespace RolePlayCharacterTutorial
             Console.WriteLine("Strongest emotion: " + rpc.GetStrongestActiveEmotion()?.EmotionType + "-" + rpc.GetStrongestActiveEmotion()?.Intensity);
             Console.WriteLine("Response: " + action?.ToString());
             Console.ReadKey();
-            rpc.SaveConfigurationToFile("../../../Examples/RPCTest-Output.rpc");
+            rpc.SaveToFile("../../../Examples/RPCTest-Output.rpc");
         }
     }
 }

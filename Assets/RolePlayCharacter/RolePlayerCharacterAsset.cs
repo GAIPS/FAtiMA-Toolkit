@@ -533,15 +533,6 @@ namespace RolePlayCharacter
 
 		#endregion
 
-		public void SaveStateToFile(string filepath)
-        {
-            var storage = GetInterface<IDataStorage>();
-            if (storage == null)
-                throw new Exception($"No {nameof(IDataStorage)} defined in the AssetManager bridge.");
-            var json = SERIALIZER.SerializeToJson(this);
-            storage.Save(filepath, json.ToString(true));
-        }
-
         /// @cond DEV
         #region ICustomSerialization
 

@@ -511,7 +511,7 @@ namespace GAIPS.AssetEditorTools
 		protected void SaveAssetToFile(T asset, string path)
 		{
 			OnWillSaveAsset(asset);
-			asset.SaveConfigurationToFile(path);
+			asset.SaveToFile(path);
 		}
 
 		protected virtual string GetAssetCurrentPath(T asset)

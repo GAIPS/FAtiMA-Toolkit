@@ -157,26 +157,13 @@ namespace IntegratedAuthoringTool
 		/// </summary>
 		/// <param name="speaker">Either "Player" or "Agent".</param>
 		/// <param name="state">Works as a filter for the state. The value "*" will consider all states.</param>
-		public IEnumerable<DialogueStateActionDTO> GetDialogueActions(string speaker, Name currentState)
-		{
-			return GetDialogueActions(speaker, currentState, Name.UNIVERSAL_SYMBOL, Name.UNIVERSAL_SYMBOL, Name.UNIVERSAL_SYMBOL);
-		}
-
-		public IEnumerable<DialogueStateActionDTO> GetDialogueActions(string speaker, Name currentState, Name nextState)
-		{
-			return GetDialogueActions(speaker, currentState, nextState, Name.UNIVERSAL_SYMBOL, Name.UNIVERSAL_SYMBOL);
-		}
-
-		public IEnumerable<DialogueStateActionDTO> GetDialogueActions(string speaker, Name currentState, Name nextState, Name meanings)
-		{
-			return GetDialogueActions(speaker, currentState, nextState, meanings, Name.UNIVERSAL_SYMBOL);
-		}
-
-		public IEnumerable<DialogueStateActionDTO> GetDialogueActions(string speaker, Name currentState, Name nextState, Name meanings, Name styles)
+		public IEnumerable<DialogueStateActionDTO> GetDialogueActions(string speaker, string currentState, string nextState, string meanings, string styles)
 		{
 			var dialogList = SelectDialogActionList(speaker);
-			var S = DialogStateAction.BuildSpeakAction(currentState, nextState, meanings, styles);
-			return dialogList.GetAllDialogsForKey(S).Select(d => d.Item1.ToDTO());
+
+			var S = DialogStateAction.BuildSpeakAction(Name.BuildName(currentState), Name.BuildName(nextState), Name.BuildName(meanings), Name.BuildName(styles));
+             var filteredDialogues = dialogList.GetAllDialogsForKey(S);
+			return filteredDialogues.Select(d => d.Item1.ToDTO());
 		}
 
 		/// <summary>

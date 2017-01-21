@@ -1,7 +1,6 @@
-﻿using ActionLibrary;
-using Conditions.DTOs;
-using EmotionalAppraisal;
+﻿using Conditions.DTOs;
 using EmotionalAppraisal.DTOs;
+using KnowledgeBase;
 using NUnit.Framework;
 using SocialImportance;
 using SocialImportance.DTOs;
@@ -16,75 +15,19 @@ namespace Tests.SocialImportance
 
 		private static SocialImportanceAsset BuildAsset()
 		{
-			var ea = new EmotionalAppraisalAsset("Matt");
-#region Set KB
-
-			ea.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "IsPerson(Matt)",
-				Perspective = "*",
-				Value = "true"
-			});
-			ea.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "IsPerson(Mary)",
-				Perspective = "*",
-				Value = "true"
-			});
-			ea.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "IsPerson(Diego)",
-				Perspective = "*",
-				Value = "true"
-			});
-			ea.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "IsPerson(Thomas)",
-				Perspective = "*",
-				Value = "true"
-			});
-			ea.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "IsPerson(Robot)",
-				Perspective = "Diego",
-				Value = "true"
-			});
-			ea.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "IsOutsider(Diego)",
-				Perspective = "*",
-				Value = "true"
-			});
-			ea.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "IsOutsider(Diego)",
-				Perspective = "Robot",
-				Value = "false"
-			});
-			ea.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "AreFriends(Self,Mary)",
-				Perspective = "Self",
-				Value = "true"
-			});
-			ea.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "AreFriends(Self,Matt)",
-				Perspective = "Mary",
-				Value = "true"
-			});
-			ea.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "AreFriends(Self,Thomas)",
-				Perspective = "Self",
-				Value = "true"
-			});
-			ea.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "IsBartender(Matt)",
-				Perspective = "*",
-				Value = "true"
-			});
+			var kb = new KB((Name)"Matt");
+            #region Set KB
+            kb.Tell((Name)"IsPerson(Matt)", (Name)"true", (Name)"*");
+            kb.Tell((Name)"IsPerson(Mary)", (Name)"true", (Name)"*");
+            kb.Tell((Name)"IsPerson(Thomas)", (Name)"true", (Name)"*");
+            kb.Tell((Name)"IsPerson(Diego)", (Name)"true", (Name)"*");
+            kb.Tell((Name)"IsPerson(Robot)", (Name)"true", (Name)"Diego");
+            kb.Tell((Name)"IsOutsider(Diego)", (Name)"true", (Name)"*");
+            kb.Tell((Name)"IsOutsider(Diego)", (Name)"false", (Name)"Robot");
+            kb.Tell((Name)"AreFriends(SELF,Mary)", (Name)"true", (Name)"SELF");
+            kb.Tell((Name)"AreFriends(SELF,Matt)", (Name)"true", (Name)"Mary");
+            kb.Tell((Name)"AreFriends(SELF,Thomas)", (Name)"true", (Name)"SELF");
+            kb.Tell((Name)"IsBartender(Matt)", (Name)"true", (Name)"*");
 
 			#endregion
 
@@ -157,19 +100,6 @@ namespace Tests.SocialImportance
 								"IsElder(Self) = false"
 							}
 						}
-					},
-					new AttributionRuleDTO()
-					{
-						Target = "[target]",
-						Value = -1,
-						Conditions = new ConditionSetDTO()
-						{
-							ConditionSet = new []
-							{
-								"IsElder([target]) = false",
-								"IsElder(Self) = true"
-							}
-						}
 					}
 				},
 				Conferral = new[]
@@ -205,8 +135,7 @@ namespace Tests.SocialImportance
 			#endregion
 			var si = new SocialImportanceAsset();
 			si.LoadFromDTO(siDTO);
-
-			//si.BindEmotionalAppraisalAsset(ea);
+            si.RegisterKnowledgeBase(kb);
 			return si;
 		}
 
@@ -241,10 +170,10 @@ namespace Tests.SocialImportance
 				Perspective = "Self",
 				Value = "true"
 			};
-			//ASSET_TO_TEST.LinkedEA.AddOrUpdateBelief(n);
+			
+            ASSET_TO_TEST.LinkedKB.Tell((Name)n.Name,(Name)n.Value,(Name)n.Perspective);
 			var a = ASSET_TO_TEST.DecideConferral(Name.SELF_STRING);
-			//ASSET_TO_TEST.LinkedEA.RemoveBelief($"AskedDrink({name})","self");
-
+			ASSET_TO_TEST.LinkedKB.Tell((Name)n.Name, null, (Name)n.Perspective); 
 			if (string.IsNullOrEmpty(expectedResult))
 			{
 				if(a==null)
@@ -254,7 +183,7 @@ namespace Tests.SocialImportance
 			}
 
 			var an = (Name)expectedResult;
-			Assert.AreEqual(an, a.ToNameRepresentation());
+			Assert.AreEqual(an, a.FullName);
 		}
 	}
 }
