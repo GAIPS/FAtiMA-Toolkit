@@ -94,7 +94,33 @@ namespace Tests.WellFormedNames
 			tree.Add(n2, 0);
 			Assert.IsTrue(tree.Unify(test1).All(r => r.Item1 == 0));
 	    }
+		/*
+        [TestCase("x", "1")]
+        [TestCase("x(a)", "2")]
+        [TestCase("x(a, b)", "3")]
+        public void TryMatchValue_EmptySearchTree_False(string nameStr, string value)
+        {
+            var tree = new NameSearchTree<string>();
+            var name = Name.BuildName(nameStr);
+            string res;
+            Assert.That(!tree.TryMatchValue(name, out res));
+            Assert.That(tree[name] == null);
+        }
 
+        [TestCase("x", "1")]
+        [TestCase("x(a)", "2")]
+        [TestCase("x(a, b)", "3")]
+        public void TryMatchValue_SearchTreeThatContainsName_True(string nameStr, string value)
+        {
+            var tree = new NameSearchTree<string>();
+            var name = Name.BuildName(nameStr);
+            tree.Add(name, value);
+            string res;
+            Assert.That(tree.TryMatchValue(name, out res));
+            Assert.That(res == value);
+            Assert.That(tree[name] == value);
+        }
+		*/
 		private class TestFactory
 		{
 			private static string[] inputStrings = new string[]
@@ -376,6 +402,33 @@ namespace Tests.WellFormedNames
 			}
 		}
 
+		[TestCaseSource(typeof(TestFactory), nameof(TestFactory.Test_NameSearchTree_Count_Cases))]
+		public void NameDictionary_Get_Keys(NameSearchTree<int> dict, int count)
+		{
+			var keys = dict.Keys;
+			Assert.AreEqual(keys.Count,count);
+		}
+
+		/*
+		[TestCaseSource(typeof(TestFactory), "TestMatchAllCases_Valid")]
+		public void NameDictionary_Valid_MatcheAll(NameSearchTree<int> dict, Name expression, IEnumerable<int> expectedResults)
+	    {
+			var result = dict.MatchAll(expression).ToArray();
+			if (result.Length != result.Distinct().Count())
+			{
+				Assert.Fail("Match All Produced more results that the ones expected");
+			}
+
+			if(!new HashSet<int>(expectedResults).SetEquals(result))
+				Assert.Fail("Matcher didn't returned the expected results.");
+	    }
+
+		[TestCaseSource(typeof(TestFactory), "TestMatchAllCases_Invalid")]
+		public void NameDictionary_Invalid_MatcheAll(NameSearchTree<int> dict, Name expression)
+		{
+			Assert.False(dict.MatchAll(expression).Any(), string.Format("Has able to find matches for {0}",expression));
+		}
+		*/
 		[TestCaseSource(typeof(TestFactory), nameof(TestFactory.TestUnifyCases_Valid))]
 		public void NameDictionary_Valid_Unify(NameSearchTree<int> dict, Name expression, SubstitutionSet bindings,
 			IEnumerable<Pair<int, SubstitutionSet>> expectedResults)

@@ -70,7 +70,7 @@ namespace SocialImportance
 			InvalidateCachedSI();
 		}
 
-		public void BindToRegistry(IDynamicPropertiesRegistry registry)
+		private void BindToRegistry(IDynamicPropertiesRegistry registry)
 		{
 			registry.RegistDynamicProperty(SI_DYNAMIC_PROPERTY_NAME, SIPropertyCalculator);
 		}
