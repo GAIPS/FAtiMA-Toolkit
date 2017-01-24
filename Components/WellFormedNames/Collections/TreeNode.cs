@@ -616,7 +616,7 @@ namespace WellFormedNames.Collections
 					var key = entry.Key;
 					if (level > 1)
 					{
-						foreach (var pair in entry.Value.CollectNextLevel(level - 1))
+						foreach (var pair in entry.Value.GetNextConsecutive(level-1))
 						{
 							pair.Item1.Push(key);
 							yield return pair;
@@ -685,6 +685,19 @@ namespace WellFormedNames.Collections
 						yield return Tuples.Create(s, (IEnumerable<TreeNode>)new[] { m_universal });
 					}
 				}
+			}
+
+			private IEnumerable<Pair<Stack<Name>, IEnumerable<TreeNode>>> GetNextConsecutive(int nextCount)
+			{
+				if (nextCount < 2)
+					return CollectNextLevel(1);
+
+				return GetNextLevel().SelectMany(pair => pair.Item2.SelectMany(t => t.CollectNextLevel(nextCount - 1)).Select(
+					t =>
+					{
+						t.Item1.Push(pair.Item1);
+						return t;
+					}));
 			}
 
 			private IEnumerable<Pair<Name, IEnumerable<TreeNode>>> GetNextLevel()

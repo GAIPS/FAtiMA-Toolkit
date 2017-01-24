@@ -19,10 +19,10 @@ namespace CommeillFaut
     public sealed class CommeillFautAsset  : LoadableAsset<CommeillFautAsset>, ICustomSerialization
     {
 
-        private EmotionalAppraisalAsset m_ea = null;
-       
+        private KB m_kB;
         public List<SocialExchange> m_SocialExchanges { get; set; }
         public Dictionary<string, string[]> ConditionList;
+        public TriggerRules _TriggerRules;
 
         //Volatile Statements
         private NameSearchTree<NameSearchTree<float>> m_cachedCIF = new NameSearchTree<NameSearchTree<float>>();
@@ -31,72 +31,116 @@ namespace CommeillFaut
         /// The Comme ill Faut constructor
         /// </summary>
 
-        public EmotionalAppraisalAsset LinkedEA
+        public KB LinkedEA
         {
-            get { return m_ea; }
+            get { return m_kB; }
         }
 
         public CommeillFautAsset()
         {
-            m_ea = null;
+            m_kB = null;
             m_SocialExchanges = new List<SocialExchange>();
             ConditionList = new Dictionary<string, string[]>();
-
+            m_cachedCIF = new NameSearchTree<NameSearchTree<float>>();
+            _TriggerRules = new TriggerRules();
         }
 
-        public void BindEmotionalAppraisalAsset(EmotionalAppraisalAsset eaa)
+        /// <summary>
+        /// Binds a KB to this Social Importance Asset instance. Without a KB instance binded to this asset, 
+        /// social importance evaluations will not work properly.
+        /// InvalidateCachedSI() is automatically called by this method.
+        /// </summary>
+        /// <param name="kb">The Knowledge Base to be binded to this asset.</param>
+        public void RegisterKnowledgeBase(KB kB)
         {
-            if (m_ea != null)
+            if (m_kB != null)
             {
                 //Unregist bindings
-                RemoveKBBindings();
-                m_ea = null;
+                UnbindToRegistry(m_kB);
+                m_kB = null;
             }
 
-            m_ea = eaa;
-            PerformKBBindings();
+            m_kB = kB;
+            BindToRegistry(kB);
             InvalidateCachedCIF();
         }
 
-        private void PerformKBBindings()
+        public void BindToRegistry(IDynamicPropertiesRegistry registry)
         {
-            m_ea.DynamicPropertiesRegistry.RegistDynamicProperty(CIF_DYNAMIC_PROPERTY_NAME, CIFPropertyCalculator, "The value of Social Importance attributed to [target]");
+            registry.RegistDynamicProperty(CIF_DYNAMIC_PROPERTY_NAME, CIFPropertyCalculator);
         }
 
-        private void RemoveKBBindings()
+        public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
         {
-            m_ea.UnregistDynamicProperty(CIF_DYNAMIC_PROPERTY_NAME);
+            registry.UnregistDynamicProperty((Name)"cif([target])");
         }
 
         private void ValidateEALink()
         {
-            if (m_ea == null)
-                throw new InvalidOperationException($"Cannot execute operation as an instance of {nameof(EmotionalAppraisalAsset)} was not registed in this asset.");
+            if (m_kB == null)
+                throw new InvalidOperationException($"Cannot execute operation as an instance of {nameof(CommeillFautAsset)} was not registed in this asset.");
         }
 
-        public void InvalidateCachedCIF()
+
+        /// <summary>
+        /// Calculate the Social Importance value of a given target, in a particular perspective.
+        /// If no perspective is given, the current agent's perspective is used as default.
+        /// </summary>
+        /// <remarks>
+        /// All values calculated by this method are automatically cached, in order to optimize future searches.
+        /// If the values are needed to be recalculated, call InvalidateCachedSI() to clear the cached values.
+        /// </remarks>
+        /// <param name="target">The name of target which we want to calculate the SI</param>
+        /// <param name="perspective">From which perspective do we want to calculate de SI.</param>
+        /// <returns>The value of Social Importance attributed to given target by the perspective of a particular agent.</returns>
+        public string GetSocialVolition(string target, string perspective = "self")
         {
-            m_cachedCIF.Clear();
+            ValidateEALink();
+
+            var t = Name.BuildName(target);
+            if (!t.IsPrimitive)
+                throw new ArgumentException("must be a primitive name", nameof(target));
+
+            var p = m_kB.AssertPerspective(Name.BuildName(perspective));
+
+            return internal_GetSocialVolition(t, p);
         }
 
-
-        private float internal_GetSocialImportance(Name target, Name perspective)
+        private string internal_GetSocialVolition(Name target, Name perspective)
         {
             NameSearchTree<float> targetDict;
+            string ret_value = "";
             if (!m_cachedCIF.TryGetValue(perspective, out targetDict))
             {
                 targetDict = new NameSearchTree<float>();
                 m_cachedCIF[perspective] = targetDict;
             }
 
+          
             float value;
             if (!targetDict.TryGetValue(target, out value))
             {
-                value = 0;
-               // value = CalculateSocialMove(target, perspective);
+                ret_value = CalculateSocialMove(target.ToString(), perspective.ToString()).ActionName.ToString();
                 targetDict[target] = value;
             }
-            return value;
+            return ret_value;
+        }
+
+
+        /// <summary>
+        /// Clears all cached Social Importance values, allowing new values to be recalculated uppon request.
+        /// </summary>
+        public void InvalidateCachedCIF()
+        {
+            m_cachedCIF.Clear();
+        }
+
+
+
+
+        public void CheckTriggerRules()
+        {
+            _TriggerRules.Verify(this.m_kB);
         }
 
 
@@ -121,6 +165,12 @@ namespace CommeillFaut
             return new Guid();
         }
 
+
+        public Guid AddTriggerRule(InfluenceRuleDTO rule, string cond)
+        {
+
+            return _TriggerRules.AddTriggerRule(rule, cond);
+        }
         /// <summary>
         /// Updates a reaction definition.
         /// </summary>
@@ -146,6 +196,12 @@ namespace CommeillFaut
         }
 
 
+        public void UpdateTriggerRule(InfluenceRuleDTO rule, string cond)
+        {
+           _TriggerRules.UpdateTriggerRule(rule, cond);
+        }
+
+
         public void RemoveSocialExchanges(IList<Guid> toRemove)
         {
             foreach (var id in toRemove)
@@ -162,45 +218,68 @@ namespace CommeillFaut
            
         }
 
+        public void RemoveTriggerRule(InfluenceRuleDTO rule)
+        {
+
+            _TriggerRules.RemoveTriggerRule(rule);
+        }
+
+        public void RemoveTriggerRuleByName(string ruleName)
+        {
+            
+            _TriggerRules.RemoveTriggerRuleByName(ruleName);
+        }
 
         public SocialExchange GetSocialMove(Name socialExchangeName)
         {
           return  m_SocialExchanges.Find(x => x.ActionName == socialExchangeName);
         }
 
+        public SocialExchange GetHighestVolition(Dictionary<string, int> _volitions)
+        {
 
+            int index = 0;
+            var first = _volitions.First();
+            string key = first.Key;
+            int compareValue = _volitions[key];
+            
 
-        public SocialExchange CalculateSocialMove(string target, string perspective)
+            foreach (var aux in _volitions.Keys)
+            {
+                if (compareValue < _volitions[aux])
+                {
+                    compareValue = _volitions[aux];
+                    key = aux;
+                }
+            }
+           
+           
+            return m_SocialExchanges.Find(x =>x.ActionName.ToString() == key);
+
+        }
+
+        public Dictionary<string, int> CalculateSocialMovesVolitions(string target, string perspective)
         {
 
             
-            List<int> volitions = new List<int>();
+            Dictionary<string,int> volitions = new Dictionary<string, int>();
 
             foreach (var socialMove in m_SocialExchanges)
             {
-                int volitionResult = socialMove.CalculateVolition(perspective, target, m_ea);
-                volitions.Add(volitionResult);
+                int volitionResult = socialMove.CalculateVolition(perspective, target, m_kB);
+                volitions.Add(socialMove.ActionName.ToString(), volitionResult);
                 Console.WriteLine(" Name " + socialMove.ActionName + " volResult: " + volitionResult);
 
             }
-
-            int index = 0;
-            int compareValue = volitions[0];
-
-            for (int j = 1; j < volitions.Count; j++)
-            {
-                if (compareValue < volitions[j])
-                {
-                    compareValue = volitions[j];
-                    index = j;
-                }
-                    
-                    
-            }
-            Console.WriteLine("Highest volition: " + m_SocialExchanges[index] + " " + compareValue);
-            return m_SocialExchanges[index];
+            return volitions;
         }
 
+
+        public SocialExchange CalculateSocialMove(string target, string perpective)
+        {
+
+            return GetHighestVolition(CalculateSocialMovesVolitions(target, perpective));
+        }
 
         #region Dynamic Properties
 
@@ -209,7 +288,7 @@ namespace CommeillFaut
         {
             foreach (var t in context.AskPossibleProperties(target))
             {
-                var si = internal_GetSocialImportance(t.Item1, context.Perspective);
+                var si = internal_GetSocialVolition(t.Item1, context.Perspective);
                 foreach (var s in t.Item2)
                     yield return new DynamicPropertyResult(Name.BuildName(si), s);
             }
@@ -228,12 +307,13 @@ namespace CommeillFaut
             {
                 foreach (var rule in social.InfluenceRules)
                 {
-                    if(rule.RuleConditions?.ConditionSet.Length > 0)
+                    if(rule.RuleConditions?.ConditionSet?.Length > 0)
                         ConditionList.Add(rule.RuleName, rule.RuleConditions.ConditionSet);
                 }
             }
 
             dataHolder.SetValue("RuleList", ConditionList);
+            dataHolder.SetValue("_triggerRules", _TriggerRules);
 
         }
 
@@ -251,6 +331,8 @@ namespace CommeillFaut
                 }
                 
             }
+            _TriggerRules = dataHolder.GetValue<TriggerRules>("_triggerRules");
+            m_cachedCIF = new NameSearchTree<NameSearchTree<float>>();
         }
 
 
@@ -279,7 +361,9 @@ namespace CommeillFaut
                 }
             }
 
-        
+            _TriggerRules = dto._triggerRules;
+
+
         }
 
         /// <summary>
@@ -289,7 +373,7 @@ namespace CommeillFaut
         {
             var at = m_SocialExchanges.Select(a => a.ToDTO()).ToArray();
           
-            return new CommeillFautDTO() { _SocialExchangesDtos = at};
+            return new CommeillFautDTO() { _SocialExchangesDtos = at, _triggerRules = _TriggerRules};
         }
 
 

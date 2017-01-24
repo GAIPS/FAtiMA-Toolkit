@@ -98,6 +98,25 @@ namespace IntegratedAuthoringToolWF
             }
         }
 
+        private void buttonPlayerDuplicateDialogueAction_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewPlayerDialogueActions.SelectedRows.Count == 1)
+            {
+                var item = ((ObjectView<GUIDialogStateAction>)dataGridViewPlayerDialogueActions.SelectedRows[0].DataBoundItem).Object;
+
+                var newDialogueAction = new DialogueStateActionDTO
+                {
+                    CurrentState = item.CurrentState,
+                    NextState = item.NextState,
+                    Meaning = item.Meaning.Split(',').Where(s => !string.IsNullOrEmpty(s)).ToArray(),
+                    Style = item.Style.Split(',').Where(s => !string.IsNullOrEmpty(s)).ToArray(),
+                    Utterance = item.Utterance
+                };
+                _iatAsset.AddPlayerDialogAction(newDialogueAction);
+                RefreshPlayerDialogs();
+            }
+        }
+
         private void buttonAgentEditDialogAction_Click(object sender, System.EventArgs e)
         {
             if (dataGridViewAgentDialogueActions.SelectedRows.Count == 1)
@@ -108,7 +127,28 @@ namespace IntegratedAuthoringToolWF
             }
         }
 
-		private void textToSpeachToolStripMenuItem_Click(object sender, System.EventArgs e)
+
+        private void buttonAgentDuplicateDialogueAction_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewAgentDialogueActions.SelectedRows.Count == 1)
+            {
+                var item = ((ObjectView<GUIDialogStateAction>)dataGridViewAgentDialogueActions.SelectedRows[0].DataBoundItem).Object;
+
+                var newDialogueAction = new DialogueStateActionDTO
+                {
+                    CurrentState = item.CurrentState,
+                    NextState = item.NextState,
+                    Meaning = item.Meaning.Split(',').Where(s => !string.IsNullOrEmpty(s)).ToArray(),
+                    Style = item.Style.Split(',').Where(s => !string.IsNullOrEmpty(s)).ToArray(),
+                    Utterance = item.Utterance
+                };
+                _iatAsset.AddAgentDialogAction(newDialogueAction);
+                RefreshAgentDialogs();
+            }
+        }
+
+
+        private void textToSpeachToolStripMenuItem_Click(object sender, System.EventArgs e)
 		{
 			var dialogs = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, WellFormedNames.Name.UNIVERSAL_SYMBOL).ToArray();
 			var t = new TextToSpeechForm(dialogs);
@@ -265,6 +305,8 @@ namespace IntegratedAuthoringToolWF
 		    }
 		}
 
-	    #endregion
-	}
+
+        #endregion
+
+    }
 }

@@ -35,6 +35,9 @@ namespace CommeillFautWF
             _vm = vm;
        //     _influenceRuleVm = new InfluenceRuleVM(vm, "ay");
             //	NameBox.Text = (_dto. == Guid.Empty) ? "Add" : "Update";
+
+           AddedObject.Effects = new Dictionary<int, List<string>>();
+            AddedObject.InfluenceRules = new List<InfluenceRuleDTO>();
         }
 
         public AddSocialExchange(SocialExchangesVM vm, SocialExchange social)
@@ -52,7 +55,7 @@ namespace CommeillFautWF
            
             AddedObject = social.ToDTO();
 
-            MessageBox.Show("AddSocialExchange Constructor " + AddedObject.Action);
+          
 
             //         _influenceRuleVm = new InfluenceRuleVM(vm, social.ActionName.ToString());
 
@@ -63,9 +66,21 @@ namespace CommeillFautWF
              
                         this.listBox1.Items.Add(cond.RuleName);
                 }
-            }
+            } else AddedObject.InfluenceRules = new List<InfluenceRuleDTO>();
 
-            
+            if(AddedObject.Effects != null)
+                foreach (var key in AddedObject.Effects.Keys)
+                {
+                   
+                    foreach (var list in AddedObject.Effects[key])
+                    {
+                        listBox2.Items.Add(key);
+                        listBox3.Items.Add(list);
+                    }
+                }
+
+            else AddedObject.Effects = new Dictionary<int, List<string>>();
+
             //	NameBox.Text = (_dto. == Guid.Empty) ? "Add" : "Update";
         }
 
@@ -79,14 +94,16 @@ namespace CommeillFautWF
                 Action = moveName.Text,
                 Intent =  IntentTextBox.Text,
                 Instantiation = InstantiationTextBox.Text,
-                InfluenceRules = new List<InfluenceRuleDTO>()
+                InfluenceRules = new List<InfluenceRuleDTO>() 
+                
             };
 
-            if (AddedObject!= null)
-                if(AddedObject.InfluenceRules != null)
-                if(AddedObject.InfluenceRules.Count > 0)
+            if (AddedObject?.Effects?.Count > 0)
+                _dto.Effects = AddedObject.Effects;
+
+            if (AddedObject?.InfluenceRules?.Count > 0)
                 _dto.InfluenceRules = AddedObject.InfluenceRules;
-         
+
 
             try
             {
@@ -146,6 +163,47 @@ namespace CommeillFautWF
 
         private void groupBox1_Enter(object sender, EventArgs e)
         {
+
+        }
+
+        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            textBox1.Text = listBox2.SelectedItem.ToString();
+            numericUpDown1.Value = Convert.ToInt32(listBox3.Items[listBox2.SelectedIndex].ToString());
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var key = (int)numericUpDown1.Value;
+
+            if (AddedObject.Effects.ContainsKey(key))
+                AddedObject.Effects[key].Add(textBox1.Text);
+            else
+            {
+                var newList = new List<string>();
+                newList.Add(textBox1.Text);
+                AddedObject.Effects.Add(key, newList);
+            }
+
+            Reload();
+        }
+
+        public void Reload()
+        {
+            listBox2.Items.Clear();
+            listBox3.Items.Clear();
+
+            if (AddedObject.Effects != null)
+                foreach (var key in AddedObject.Effects.Keys)
+                {
+
+                    foreach (var list in AddedObject.Effects[key])
+                    {
+                        listBox2.Items.Add(key);
+                        listBox3.Items.Add(list);
+                    }
+                }
+
 
         }
     }

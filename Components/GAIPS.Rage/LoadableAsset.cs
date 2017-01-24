@@ -13,7 +13,7 @@ namespace GAIPS.Rage
 	public abstract class LoadableAsset<T> : BaseAsset
 		where T : LoadableAsset<T>
 	{
-		private static readonly JSONSerializer SERIALIZER = new JSONSerializer();
+		protected static readonly JSONSerializer SERIALIZER = new JSONSerializer();
 
 		[NonSerialized]
 		private string m_assetFilepath = null;
@@ -51,15 +51,15 @@ namespace GAIPS.Rage
 		{
 		}
 
-		public void SaveToFile()
+		public void Save()
 		{
 			if(string.IsNullOrEmpty(m_assetFilepath))
 				throw new Exception("No default file path defined for the asset. Please use SaveToFile(filepath).");
 
-			SaveToFile(m_assetFilepath);
+			SaveConfigurationToFile(m_assetFilepath);
 		}
 
-		public void SaveToFile(string filepath)
+		public void SaveConfigurationToFile(string filepath)
 		{
 			var storage = GetInterface<IDataStorage>();
 			if(storage == null)

@@ -12,7 +12,7 @@ namespace WellFormedNames
 	/// </summary>
 	public static class Unifier
 	{
-		/// <summary>
+		/// <summary>C:\GIT\FAtiMA-Toolkit\Components\WellFormedNames\Unifier.cs
 		/// Unifying Method, receives two WellFormedNames and tries 
 		/// to find a list of Substitutions that will make 
 		/// both names syntatically equal. The algorithm performs Occur Check,
@@ -89,27 +89,7 @@ namespace WellFormedNames
 			return bindings != null;
 		}
 
-		/// <summary>
-		/// Inverse of the Unify.
-		/// Receives two WellFormedNames and tries to find a list of Inequalities that will make 
-		/// both names syntatically different. 
-		/// </summary>
-		/// <see cref="FAtiMA.Core.WellFormedNames.Inequality"/>
-		/// <see cref="FAtiMA.Core.WellFormedNames.Name"/>
-		/// <param name="name1">The first Name</param>
-		/// <param name="name2">The second Name</param>
-		/// <param name="bindings">The out paramenter for the founded inequalities</param>
-		/// <returns>True if the names are disunifiable, in this case the bindings list will contain the found Inequalities, otherwise it will be empty</returns>
-		//public static bool Disunify(Name name1, Name name2, out IEnumerable<Substitution> bindings)
-		//{
-		//	bool result = Unify(name1, name2, out bindings);
-		//	if (result)
-		//		bindings = (IEnumerable<Substitution>)(bindings.Select(s => new Inequality(s)));
-		//	return result;
-		//}
-
-	   
-        #region Private Methods
+		#region Private Methods
 
         private static IEnumerable<Substitution> FindSubst(Name n1, Name n2, bool allowPartial)
 		{
@@ -126,8 +106,7 @@ namespace WellFormedNames
 
             return n1.GetTerms().Zip(n2.GetTerms(), Tuples.Create);
         }
-
-
+		
         private static bool FindSubst(Name n1, Name n2, bool allowPartialTerms, SubstitutionSet bindings)
 		{
 			n1 = n1.MakeGround(bindings);

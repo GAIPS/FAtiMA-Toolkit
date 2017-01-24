@@ -1,0 +1,14 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"ScenarioName": "CifScenario",
+			"Description": "Testing the new cif dialogue combination",
+			"CharacterSources": ["Mary.rpc", "Peter.rpc"]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "IntegratedAuthoringTool.IntegratedAuthoringToolAsset, IntegratedAuthoringTool, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

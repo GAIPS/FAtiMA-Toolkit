@@ -4,26 +4,6 @@
 			"classId": 0,
 			"SocialExchanges": [
 				{
-					"Intent": "Increase Attraction",
-					"Instantiation": "Flirt",
-					"InfluenceRules": [
-						{
-							"Id": "2bfe749b-63c8-4b14-b41c-a43de1dfb788",
-							"RuleName": "Attraction",
-							"Target": "[x]",
-							"Value": 4
-						}],
-					"Attraction":
-						{
-
-						},
-					"Action": "Flirt",
-					"Conditions":
-						{
-							"Set": []
-						}
-				}, 
-				{
 					"Intent": "Increase Friendship",
 					"Instantiation": "Compliment",
 					"InfluenceRules": [
@@ -33,6 +13,7 @@
 							"Target": "[x]",
 							"Value": 5
 						}],
+					"EffectsList": null,
 					"Friendship":
 						{
 
@@ -42,17 +23,63 @@
 						{
 							"Set": []
 						}
+				}, 
+				{
+					"Intent": "Increase Attraction",
+					"Instantiation": "Flirt",
+					"InfluenceRules": [
+						{
+							"Id": "2bfe749b-63c8-4b14-b41c-a43de1dfb788",
+							"RuleName": "Attraction",
+							"Target": "[x]",
+							"Value": 4
+						}, 
+						{
+							"Id": "de4a8783-968c-4a03-bee0-499119b58fd6",
+							"RuleName": "Friends",
+							"Target": "[x]",
+							"Value": 2
+						}],
+					"EffectsList":
+						{
+							"dictionary": [
+								{
+									"key": 4,
+									"value": ["Attraction(Initiator,Target,10)", "Attraction(Target,Initiator,6)"]
+								}, 
+								{
+									"key": 0,
+									"value": ["Attraction(Target,Initiator,-7)"]
+								}]
+						},
+					"Attraction":
+						{
+
+						},
+					"Friends":
+						{
+
+						},
+					"Action": "Flirt",
+					"Conditions":
+						{
+							"Set": []
+						}
 				}],
 			"RuleList":
 				{
 					"dictionary": [
 						{
-							"key": "Attraction",
-							"value": ["[x]=Attraction", "[x]>5"]
+							"key": "Friendship",
+							"value": ["Friendship([x]) > 2"]
 						}, 
 						{
-							"key": "Friendship",
-							"value": ["[x]=Friendship", "[x]>5"]
+							"key": "Attraction",
+							"value": ["Attraction([x]) = 5"]
+						}, 
+						{
+							"key": "Friends",
+							"value": ["Friendship([x]) > 5"]
 						}]
 				}
 		},

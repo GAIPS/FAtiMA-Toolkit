@@ -4,6 +4,7 @@ using CommeillFaut.DTOs;
 using Conditions;
 using Conditions.DTOs;
 using EmotionalAppraisal;
+using KnowledgeBase;
 using SerializationUtilities;
 using WellFormedNames;
 
@@ -29,12 +30,12 @@ namespace CommeillFaut
             GUID = Guid.NewGuid();
         }
 
-        public int Result(string init, string targ, EmotionalAppraisalAsset m_ea)
+        public int Result(string init, string targ, KB m_Kb)
         {
-
+           
             var toEvaluate = new ConditionSet(RuleConditions);
-         //   var sub = new Substitution(Name.BuildName(Target), t);
-            if (toEvaluate.Evaluate(m_ea, Name.BuildName(init), new List<SubstitutionSet>()))
+            var sub = new Substitution(Name.BuildName(Target), Name.BuildName(targ));
+            if (toEvaluate.Evaluate(m_Kb, Name.BuildName(init), new [] { new SubstitutionSet(sub) }))
                 return Value;
             else return 0;
 

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using SerializationUtilities;
-using SerializationUtilities.SerializationGraph;
 using Utilities;
 using TypeCode = Utilities.TypeCode;
 #if PORTABLE
@@ -397,18 +395,6 @@ internal abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 		return false;
 	}
 
-	//public static TResult Open<TResult>(PrimitiveValue value) where TResult : IConvertible
-	//{
-	//	ConcreteValue<TResult> r = value as ConcreteValue<TResult>;
-	//	if (r != null)
-	//		return r.value;
-
-	//	INumber n = value as INumber;
-	//	if (n != null)
-	//		return n.Cast<TResult>();
-
-	//	throw new InvalidCastException($"Unable to convert {value.ValueType} to {typeof(TResult)}");
-	//}
 
 	public abstract bool Equals(PrimitiveValue other);
 
@@ -439,58 +425,4 @@ internal abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 	}
 
 	//#region Serializer
-
-	//[DefaultSerializationSystem(typeof(PrimitiveValue), true)]
-	//private class PrimitiveValueSerializer : IGraphFormatter
-	//{
-	//	public IGraphNode ObjectToGraphNode(object value, Graph serializationGraph)
-	//	{
-	//		PrimitiveValue v = (PrimitiveValue)value;
-	//		switch (v.TypeCode)
-	//		{
-	//			case TypeCode.String:
-	//				return serializationGraph.BuildStringNode(((ConcreteValue<string>)v).value);
-	//			case TypeCode.Boolean:
-	//				return serializationGraph.BuildPrimitiveNode(((ConcreteValue<bool>)v).value);
-	//			case TypeCode.SByte:
-	//				return serializationGraph.BuildPrimitiveNode(((ConcreteValue<sbyte>)v).value);
-	//			case TypeCode.Byte:
-	//				return serializationGraph.BuildPrimitiveNode(((ConcreteValue<byte>)v).value);
-	//			case TypeCode.Int16:
-	//				return serializationGraph.BuildPrimitiveNode(((ConcreteValue<short>)v).value);
-	//			case TypeCode.UInt16:
-	//				return serializationGraph.BuildPrimitiveNode(((ConcreteValue<ushort>)v).value);
-	//			case TypeCode.Int32:
-	//				return serializationGraph.BuildPrimitiveNode(((ConcreteValue<int>)v).value);
-	//			case TypeCode.UInt32:
-	//				return serializationGraph.BuildPrimitiveNode(((ConcreteValue<uint>)v).value);
-	//			case TypeCode.Int64:
-	//				return serializationGraph.BuildPrimitiveNode(((ConcreteValue<long>)v).value);
-	//			case TypeCode.UInt64:
-	//				return serializationGraph.BuildPrimitiveNode(((ConcreteValue<ulong>)v).value);
-	//			case TypeCode.Single:
-	//				return serializationGraph.BuildPrimitiveNode(((ConcreteValue<float>)v).value);
-	//			case TypeCode.Double:
-	//				return serializationGraph.BuildPrimitiveNode(((ConcreteValue<double>)v).value);
-	//			case TypeCode.Decimal:
-	//				return serializationGraph.BuildPrimitiveNode(((ConcreteValue<decimal>)v).value);
-	//		}
-	//		throw new InvalidOperationException($"Unexpected PrimitiveValue type. {v.ValueType} is not a primitive object.");
-	//	}
-
-	//	public object GraphNodeToObject(IGraphNode node, Type objectType)
-	//	{
-	//		switch (node.DataType)
-	//		{
-	//			case SerializedDataType.String:
-	//				return new StringValue(((IStringGraphNode)node).Value);
-	//			case SerializedDataType.Boolean:
-	//			case SerializedDataType.Number:
-	//				return Cast(((IPrimitiveGraphNode)node).Value);
-	//		}
-	//		throw new InvalidOperationException("Unable to deserialize non-primitive data type as " + typeof(PrimitiveValue));
-	//	}
-	//}
-
-	//#endregion
 }

@@ -123,7 +123,7 @@ namespace Tests.EmotionalAppraisal
 			
 			//Generate emotion
 
-			m_emotionalAppraisalAsset.AppraiseEvents(new []{ "Event(Action-Finished,Player,Slap,self)" });
+			//m_emotionalAppraisalAsset.AppraiseEvents(new []{ "Event(Action-Finished,Player,Slap,self)" });
 
 			//Add knowledge
 			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()

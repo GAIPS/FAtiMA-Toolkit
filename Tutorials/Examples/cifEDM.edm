@@ -1,0 +1,49 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"DefaultActionPriority": 2,
+			"ActionTendencies": [
+				{
+					"Action": "Speak(RespondFlirt, End, *, *)",
+					"Target": "[x]",
+					"Conditions":
+						{
+							"Set": ["DialogueState([x]) = RespondFlirt"]
+						},
+					"Priority": 0
+				}, 
+				{
+					"Action": "Speak(RespondCompliment, End, *, *)",
+					"Target": "[x]",
+					"Conditions":
+						{
+							"Set": ["DialogueState([x]) = RespondCompliment"]
+						},
+					"Priority": 0
+				}, 
+				{
+					"Action": "Speak(StartFlirt, RespondFlirt, *, *)",
+					"Target": "[x]",
+					"Conditions":
+						{
+							"Set": ["Volition(Flirt, SELF, [x]) > 0"]
+						},
+					"Priority": 0
+				}, 
+				{
+					"Action": "Speak(StartCompliment, RespondCompliment, *, *)",
+					"Target": "[x]",
+					"Conditions":
+						{
+							"Set": ["Volition(Compliment, SELF, [x]) > 0"]
+						},
+					"Priority": 0
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "EmotionalDecisionMaking.EmotionalDecisionMakingAsset, EmotionalDecisionMaking, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

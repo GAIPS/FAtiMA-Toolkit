@@ -8,7 +8,7 @@ namespace WellFormedNames
 	public partial class SubstitutionSet
 	{
 		//todo: this class will be instantiated a lot of times. need to find a way to reduce instantiation (pooling)
-		private sealed class ConstraintSubstitutionSetImplementation : ISetImplementation
+		private sealed class Constraints
 		{
 			private sealed class Constraint
 			{
@@ -36,13 +36,13 @@ namespace WellFormedNames
 			private int m_hash;
 			private bool m_hashIsDirty = true;
 
-			public ConstraintSubstitutionSetImplementation()
+			public Constraints()
 			{
 				m_substitutions = new HashSet<Substitution>();
 				m_constraints = new Dictionary<Name, Constraint>();
 			}
 			/*
-			~ConstraintSubstitutionSetImplementation()
+			~Constraints()
 			{
 				m_constraints.Clear();
 				m_substitutions.Clear();
@@ -123,9 +123,9 @@ namespace WellFormedNames
 				m_hashIsDirty = true;
 			}
 
-			public ISetImplementation Clone()
+			public Constraints Clone()
 			{
-				var c = new ConstraintSubstitutionSetImplementation();
+				var c = new Constraints();
 				if (!m_hashIsDirty)
 				{
 					c.m_hashIsDirty = false;

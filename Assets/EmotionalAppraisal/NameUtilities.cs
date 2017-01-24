@@ -2,7 +2,7 @@
 
 namespace KnowledgeBase
 {
-	internal static class NameUtilities
+	public static class NameUtilities
 	{
 		public static Name ApplyPerspective(this Name original, Name name)
 		{

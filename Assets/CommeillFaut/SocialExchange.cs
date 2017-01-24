@@ -6,6 +6,7 @@ using CommeillFaut.DTOs;
 using Conditions;
 using Conditions.DTOs;
 using EmotionalAppraisal;
+using KnowledgeBase;
 using WellFormedNames;
 using SerializationUtilities;
 
@@ -34,7 +35,7 @@ namespace CommeillFaut
 
         public List<InfluenceRuleDTO> InfluenceRules { get; set; }
 
-
+        public Dictionary<int,List<string>> EffectsList { get; set; }
 
         public SocialExchange(String name) : base(WellFormedNames.Name.BuildName(name), WellFormedNames.Name.BuildName("Empty"), new ConditionSet(new ConditionSetDTO()))
         
@@ -45,6 +46,7 @@ namespace CommeillFaut
             Instantiation = "";
 
             InfluenceRules = new List<InfluenceRuleDTO>();
+            EffectsList = new Dictionary<int,List<string>>();
 
         }
 
@@ -61,8 +63,7 @@ namespace CommeillFaut
             {
                 InfluenceRules.Add(inf);
             }
-            
-           
+            EffectsList = s.Effects ?? new Dictionary<int, List<string>>();
             Intent = s.Intent;
             Instantiation = s.Instantiation;
         }
@@ -79,51 +80,59 @@ namespace CommeillFaut
                     InfluenceRules.Add(inf);
                 }
 
-        }
+		    EffectsList = other.EffectsList;
+		}
 
 
 
-        private void Instatiate()
+        private void Instatiate(int response)
         {
-            var write = "Instantiating SocialExchange... \n";
+            var write = "Instantiating SocialExchange " + ActionName + " \n";
 
 
-            write += Initiator + " " + Intent + " with " + targ + "\n";
+            write += Initiator + " wants to " + Intent + " with " + targ + "\n";
 
             Console.WriteLine(write);
 
 
-            if (CalculateResponse(Initiator, targ) > 0)
-            {
-                write = targ + " accepted the" + this.ActionName + " Social Exchange \n";
-                Console.WriteLine(write);
+           if(response > 0)
+                write = targ + " accepted the " + this.ActionName + " Social Exchange \n";
+           else if (response == 0)
+                write = targ + " is neutral to the " + this.ActionName + " Social Exchange \n";
+           else 
+                write = targ + " rejected the " + this.ActionName + " Social Exchange \n";
 
 
-            }
+            Console.WriteLine(write);
+
+
+          
             write = " Social Exchange" + base.ActionName + " completed \n";
             Console.WriteLine(write);
             //System.Threading.Thread.Sleep(2000);
         }
 
-        public int CalculateVolition(string init, string _targ, EmotionalAppraisalAsset m_ea)
+        public int CalculateVolition(string init, string _targ, KB m_Kb)
         {
 
             int counter = 0;
             foreach (var rule in InfluenceRules)
             {
+             
                 var result = new InfluenceRule(rule);
-                counter += result.Result(init, _targ, m_ea);
+                counter += result.Result(init, _targ, m_Kb);
+                Console.WriteLine("SocialExchange : " + this.ActionName.ToString() + "Initiator " + init + "Target " + _targ+ " Rule: " + rule.RuleName + " Counter" + counter);
 
             }
             return counter;
         }
 
 
-        private int CalculateResponse(string Init, string _Targ)
+        private int CalculateResponse(string Init, string _Targ, KB m_Kb)
         {
            // var write = "Calculating SocialExchangeResponse:";// Target.CalculateResponse(Name, Initiator) + "\n";
 
-            return this.CalculateVolition(_Targ, Init);
+            return this.CalculateVolition(_Targ, Init, m_Kb);
 
            
         }
@@ -135,7 +144,7 @@ namespace CommeillFaut
         }
 
 
-        public void LaunchSocialExchange(string init, string _targ)
+        public void LaunchSocialExchange(string init, string _targ, KB init_Kb, KB targ_Kb)
         {
             Initiator = init;
             targ = _targ;
@@ -144,26 +153,101 @@ namespace CommeillFaut
 
             Console.WriteLine(write);
 
-            CalculateResponse(init, targ);
+           
+            var response = CalculateResponse(init, targ, targ_Kb);
+            Console.WriteLine("Response result: " + response );
 
-            Instatiate();
+            Instatiate(response);
 
-            ApplyConsequences();
+            ApplyConsequences(init_Kb, targ_Kb, response);
 
             State = "Completed";
+
+
+            write = " SocialExchange Completed: " + base.ActionName + " Initator: " + init + " Target: " + targ + " result : " + response + "\n";
+
+            Console.WriteLine(write);
+
         }
 
 
 
-        public void ApplyConsequences()
+        public void ApplyConsequences(KB init_Kb , KB targ_Kb, int response)
         {
 
 
-       /*     Initiator.AddBelief();.SocialBeliefs[Target] += 2;
-            Target.SocialBeliefs[Initiator] += 2;
+            if (EffectsList.ContainsKey(response))
+            {
+                foreach (var effect in EffectsList[response])
+                {
+                    ApplyKeywordEffects(init_Kb, targ_Kb, effect);
+                }
 
-            Initiator.SocialExchangeEnded();*/
-          
+            }
+
+           
+
+        }
+
+        public void ApplyKeywordEffects(KB init_Kb, KB targ_Kb, string keyword)
+        {
+            char[] delimitedChars = {'(', ')', ','};
+
+            string[] words = keyword.Split(delimitedChars);
+            var value = 0;
+
+                                             // Ideally we would be able to insert any 
+                                          // social network but we don't store them just yet
+                if (words[1] == "Initiator")
+                {
+                    if(words[2] == "Target")
+                    {
+
+                        if (init_Kb.AskProperty((Name) (words[0] + "(" + targ_Kb.Perspective + ")")) != null)
+                        {
+                             value =
+                                Convert.ToInt32(init_Kb.AskProperty((Name) (words[0] + "(" + targ_Kb.Perspective + ")")).ToString());
+                            value += Convert.ToInt32(words[3]);
+
+                        }
+                        else
+                        {
+                             value = Convert.ToInt32(words[3]);
+                        }
+
+                        var insert = "" + value;
+                        init_Kb.Tell((Name)(words[0] + "(" + targ_Kb.Perspective + ")"), (Name)insert);
+                        return;
+                    }
+                }
+
+            if (words[1] == "Target")
+            {
+                if (words[2] == "Initiator")
+                {
+                    if (init_Kb.AskProperty((Name) (words[0] + "(" + init_Kb.Perspective + ")")) != null)
+                    {
+                         value =
+                            Convert.ToInt32(init_Kb.AskProperty((Name) (words[0] + "(" + init_Kb.Perspective + ")")).ToString());
+                        value += Convert.ToInt32(words[3]);
+                        string insert = "" + value;
+                        targ_Kb.Tell((Name) (words[0] + "(" + init_Kb.Perspective + ")"), (Name) insert);
+                        return;
+                    }
+                    else
+                    {
+
+                         value = Convert.ToInt32(words[3]);
+                        string insert = "" + value;
+                        targ_Kb.Tell((Name)(words[0] + "(" + init_Kb.Perspective + ")"), (Name)insert);
+                        return;
+                    } 
+                }
+            }
+
+
+
+
         }
 
         public void SetData(SocialExchangeDTO dto)
@@ -188,7 +272,7 @@ namespace CommeillFaut
             {
                ret.Add(inf);
             }
-            return new SocialExchangeDTO() {Action = ActionName.ToString(), Intent = Intent, Instantiation = Instantiation, InfluenceRules = ret };
+            return new SocialExchangeDTO() {Action = ActionName.ToString(), Intent = Intent, Instantiation = Instantiation, InfluenceRules = ret, Effects = EffectsList};
         }
 
 
@@ -199,8 +283,9 @@ namespace CommeillFaut
             dataHolder.SetValue("Intent", this.Intent);
             dataHolder.SetValue("Instantiation", this.Instantiation);
             dataHolder.SetValue("InfluenceRules", this.InfluenceRules);
+            dataHolder.SetValue("EffectsList", this.EffectsList);
 
-        
+
             foreach (var inf in this.InfluenceRules)
             {
 
@@ -220,8 +305,8 @@ namespace CommeillFaut
             Intent = dataHolder.GetValue<string>("Intent");
             Instantiation = dataHolder.GetValue<string>("Instantiation");
             InfluenceRules = dataHolder.GetValue<List<InfluenceRuleDTO>>("InfluenceRules");
-
-            int index = 0;
+            EffectsList = dataHolder.GetValue<Dictionary<int,List<string>>>("EffectsList");
+         
             foreach (var inf in InfluenceRules)
             {
 

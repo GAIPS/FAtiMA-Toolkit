@@ -8,11 +8,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using AssetManagerPackage;
 using CommeillFaut.DTOs;
-using SerializationUtilities;
-using EmotionalAppraisal;
-using GAIPS.Rage;
 using CommeillFaut;
 using Conditions.DTOs;
+using KnowledgeBase;
 using Microsoft.CSharp.RuntimeBinder;
 using RolePlayCharacter;
 using WellFormedNames;
@@ -25,35 +23,71 @@ namespace CommeillFautTutorial
         {
             AssetManager.Instance.Bridge = new BasicIOBridge();
 
-
-        
-            
-
-            RolePlayCharacterAsset npc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/john.rpc");
-            RolePlayCharacterAsset rpc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/RPCTest.rpc");
-            Console.WriteLine(npc.CharacterName);
-
+  
             CommeillFautAsset cif = CommeillFautAsset.LoadFromFile("../../../Examples/test.cif");
             
-            Console.WriteLine("Social Move: " + cif.CalculateSocialMove(npc.CharacterName, rpc.CharacterName));
+     
+
+          /*  var flirt = new SocialExchangeDTO {Action = "Flirt", Instantiation = "You are so beautiful"};
+            var compliment = new SocialExchangeDTO { Action = "Compliment", Instantiation = "You are pretty cool" };
+
+            CommeillFautAsset n = new CommeillFautAsset();
+            n.AddExchange(flirt);
+            n.AddExchange(compliment);*/
+
+	      
+            //We then register a knowledge base
+            var kb = new KB((Name)"John");
+            kb.Tell((Name)"Attraction(Sarah)", (Name)"5");
+            kb.Tell((Name)"Friendship(Sarah)", (Name)"2");
+            
+            cif.RegisterKnowledgeBase(kb);
+
+            RolePlayCharacterAsset rpc = new RolePlayCharacterAsset();
+
+            var johnSocialMove = cif.CalculateSocialMove("Sarah", "John");
 
 
-       /*    Console.WriteLine(cif.m_SocialExchanges.Count);
+            var kb2 = new KB((Name)"Sarah");
+            kb2.Tell((Name)"Attraction(John)", (Name)"-5");
+            kb2.Tell((Name)"Friendship(John)", (Name)"3");
+            cif.RegisterKnowledgeBase(kb2);
 
-            cif.SaveToFile("../../../Examples/ghu.cif");
+            Console.WriteLine("Before Social Move Starts");
+            Console.WriteLine("John's knowledge base: " + "Attraction(Sarah) " + kb.AskProperty((Name)"Attraction(Sarah)").ToString());
+            Console.WriteLine("John's knowledge base: " + "Friendship(Sarah) " + kb.AskProperty((Name)"Friendship(Sarah)").ToString());
 
-
-
-            SocialExchange result = cif.CalculateSocialMove(npc.Perspective.ToString(), rpc.Perspective.ToString());
-            Console.WriteLine(result.ActionName);
-                 CommeillFautAsset cif;
-                 var flirt_id = cif.AddSocialExchange(flirt);
-               var compliment_id = cif.AddSocialExchange(compliment);
-
-               cif.GetSocialMove(Name.BuildName("Player"));*/
+            Console.WriteLine("Sarah's knowledge base: " + "Attraction(John) " + kb2.AskProperty((Name)"Attraction(John)").ToString());
+            Console.WriteLine("Sarah's knowledge base: " + "Friendship(John) " + kb2.AskProperty((Name)"Friendship(John)").ToString());
 
 
-        
+            johnSocialMove.LaunchSocialExchange("John", "Sarah", kb, kb2 );
+
+            var sarahSocialMove = cif.CalculateSocialMove("John", "Sarah");
+
+            johnSocialMove.LaunchSocialExchange("Sarah", "John", kb2, kb);
+
+
+
+            /*   kb2.Tell((Name)"Attraction(John)", (Name)"5");
+               SocialExchange sarahOption2 = cif.CalculateSocialMove("John", "Sarah");
+               cif.RegisterKnowledgeBase(kb2);
+               Console.WriteLine("Sarah wants to: " + sarahOption2.ToString());
+               Console.WriteLine(sarahOption2.Instantiation);*/
+
+            /*         foreach (var social in cif.m_SocialExchanges)
+                     {
+                         foreach (var inf in social.InfluenceRules)
+                         {
+                             Console.WriteLine("RuleName: " + inf.RuleName + " value: " + inf.Value + " target " + inf.Target + " conditions " + inf.RuleConditions.ConditionSet.First());
+                         }
+                     }*/
+
+            Console.WriteLine("John's knowledge base: " + "Attraction(Sarah) " + kb.AskProperty((Name)"Attraction(Sarah)").ToString());
+            Console.WriteLine("John's knowledge base: " + "Friendship(Sarah) " + kb.AskProperty((Name)"Friendship(Sarah)").ToString());
+
+            Console.WriteLine("Sarah's knowledge base: " + "Attraction(John) " + kb2.AskProperty((Name)"Attraction(John)").ToString());
+            Console.WriteLine("Sarah's knowledge base: " + "Friendship(John) " + kb2.AskProperty((Name)"Friendship(John)").ToString());
 
             Console.ReadLine();
         }

@@ -19,12 +19,15 @@ namespace CommeillFautWF
         //   private ClaimsVM _claimsVM;
         //   private ConferralsVM _conferralsVM;
 
+        private TriggerRulesVM _triggerRules;
+
 
         public MainForm()
         {
 
             InitializeComponent();
             _socialExchangesVM = new SocialExchangesVM(this);
+            _triggerRules = new TriggerRulesVM(this);
         }
 
         protected override void OnAssetDataLoaded(CommeillFautAsset asset)
@@ -41,6 +44,12 @@ namespace CommeillFautWF
                     if(move != null)
                         if(move.ActionName!=null)
                         this.SocialExchangeBox.Items.Add(move.ActionName);
+                }
+            
+                foreach (var move in asset._TriggerRules._triggerRules.Keys)
+                {
+                    if (move?.RuleName != null)
+                        this.TriggerRulesBox.Items.Add(move.RuleName);
                 }
             }
         }
@@ -133,6 +142,42 @@ namespace CommeillFautWF
 
             }
             Refresh();
+        }
+
+        private void label2_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TriggerRulesBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void AddTriggerRule_Click(object sender, EventArgs e)
+        {
+            new AddTriggerRule(this._triggerRules).ShowDialog();
+
+            Refresh();
+        }
+
+        private void DeleteTriggerRule_Click(object sender, EventArgs e)
+        {
+
+            string toDeleteName = TriggerRulesBox.SelectedItem.ToString();
+
+            if (toDeleteName != "")
+            {
+               
+
+                CurrentAsset.RemoveTriggerRuleByName(toDeleteName);
+            }
+            Refresh();
+        }
+
+        private void EditTriggerRule_Click(object sender, EventArgs e)
+        {
+
         }
 
 

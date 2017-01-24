@@ -2,8 +2,11 @@
 using RolePlayCharacter;
 using IntegratedAuthoringTool;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using ActionLibrary;
+using WellFormedNames;
 
 namespace IntegratedAuthoringToolTutorial
 {
@@ -12,46 +15,116 @@ namespace IntegratedAuthoringToolTutorial
         static void Main(string[] args)
         {
             AssetManager.Instance.Bridge = new BasicIOBridge();
-         
+
             //Loading the asset
-            var iat = IntegratedAuthoringToolAsset.LoadFromFile("C://Teste/SpaceModulesScenarioA.iat");
+            /*     var iat = IntegratedAuthoringToolAsset.LoadFromFile("C://Teste/SpaceModulesScenarioA.iat");
+                 var rpc = RolePlayCharacterAsset.LoadFromFile(iat.GetAllCharacterSources().FirstOrDefault().Source);
+                 rpc.Initialize();
+                 iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
 
-	        var rpc = iat.InstantiateCharacterAsset(iat.GetAllCharacterSources().FirstOrDefault().Name);
-                        
-            var eventStr = "Event(Action-Finished, Player, Kick, Client)";
-            Console.WriteLine("The name of the character loaded is: " + rpc.CharacterName);
-            Console.WriteLine("Perspective: " + rpc.Perspective);
-            Console.WriteLine("Mood: " + rpc.Mood);
-            Console.WriteLine("Strongest emotion: " + rpc.GetStrongestActiveEmotion()?.EmotionType + "-" + rpc.GetStrongestActiveEmotion()?.Intensity);
+                 var eventStr = "Event(Action-Finished, Player, Kick, Client)";
+                 Console.WriteLine("The name of the character loaded is: " + rpc.CharacterName);
+                 Console.WriteLine("Mood: " + rpc.Mood);
+                 Console.WriteLine("Strongest emotion: " + rpc.GetStrongestActiveEmotion()?.EmotionType + "-" + rpc.GetStrongestActiveEmotion()?.Intensity);
 
-            var action = rpc.PerceptionActionLoop(new[] { ("Event(Action-Start,Player,Start,-)") });
+                 var action = rpc.PerceptionActionLoop(new[] { (Name)("Event(Action-Start,Player,Start,-)") });
 
-            WriteAction(action);
-            Console.WriteLine();
-            WriteAction(rpc.PerceptionActionLoop(new[] { ("Event(Action-Start,Player,Start,-)") }));
+                 WriteAction(action);
+                 Console.WriteLine();
+                 WriteAction(rpc.PerceptionActionLoop(new[] { (Name)("Event(Action-Start,Player,Start,-)") }));
+
+                 rpc.ActionFinished(action);
+                 WriteAction(rpc.PerceptionActionLoop(new[] { (Name)("Event(Action-Start,Player,Start,-)") }));
+
+                
+             }
+       */
 
 
-            rpc.ActionFinished(action);
-            WriteAction(rpc.PerceptionActionLoop(new[] { ("Event(Action-Start,Player,Start,-)") }));
-            //WriteAction(rpc.PerceptionActionLoop(new[] { ("Event(Property-Change,Player,DialogueState(Player),Problem)") }));
 
-            Console.ReadKey();
+            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../../Examples/cifIAT.iat");
+            List<RolePlayCharacterAsset> rpcList = new List<RolePlayCharacterAsset>();
+            foreach (var source in iat.GetAllCharacterSources())
+            {
+                var rpc = RolePlayCharacterAsset.LoadFromFile(source.Source);
+                rpc.Initialize();
+                iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
+                rpcList.Add(rpc);
+            }
+
+
+            while (true)
+            {
+
+                var position = new Random();
+
+
+                var actor = rpcList.ElementAt(position.Next(2));
+
+                var actioN = actor.PerceptionActionLoop(new[] {(Name) ("Event(Action-Start,Player,Start,-)")});
+
+               if(actioN!=null) actor.ActionFinished(actioN);
+
+                Console.WriteLine("Character" + actor.CharacterName + " does " + WriteAction(actioN) + "\n");
+
+                Console.ReadKey();
+            }
+
         }
 
-        static void WriteAction(IAction a)
+        /*         Console.WriteLine("The name of the character loaded is: " + rpc.CharacterName);
+                 Console.WriteLine("Mood: " + rpc.Mood);
+                 Console.WriteLine("Strongest emotion: " + rpc.GetStrongestActiveEmotion()?.EmotionType + "-" +
+                                   rpc.GetStrongestActiveEmotion()?.Intensity);
+     
+                 var action = rpc.PerceptionActionLoop(new[] {(Name) ("Event(Action-Start,Player,Start,-)")});
+     
+        //         WriteAction(action);
+                 Console.WriteLine("\n");
+     
+     
+                 rpc2.Initialize();
+                 iat.BindToRegistry(rpc2.DynamicPropertiesRegistry);
+     
+                 /*Console.WriteLine("The name of the character loaded is: " + rpc2.CharacterName);
+                 Console.WriteLine("Mood: " + rpc2.Mood);
+                 Console.WriteLine("Strongest emotion: " + rpc2.GetStrongestActiveEmotion()?.EmotionType + "-" +
+                                   rpc.GetStrongestActiveEmotion()?.Intensity);
+     
+                 action = rpc2.PerceptionActionLoop(new[] { (Name)("Event(Action-Start,Player,Start,-)") });
+     
+          //       WriteAction(action);
+                 Console.WriteLine("\n");
+     
+                 rpc2.ActionFinished(action);
+                 
+     
+     //            WriteAction(rpc2.PerceptionActionLoop(new[] {(Name) ("Event(Action-Start,Player,Start,-)")}));
+     
+      //           WriteAction(rpc.PerceptionActionLoop(new[] { (Name)("Event(Action-Start,Player,Start,-)") }));
+     
+     
+                 Console.ReadKey();
+                 */
+        
+
+
+        static string WriteAction(IAction a)
         {
-            if(a == null)
+            string result = "";
+            if (a == null)
             {
-                Console.WriteLine("Null action");
-                return;
+              
+                return "Null action";
             }
 
-            Console.WriteLine("Selected Action: " + a.ActionName);
-            Console.WriteLine("Parameters: ");
+            result += a.ActionName;
+            result += " Parameters: ";
             foreach (var p in a.Parameters)
             {
-                Console.Write(p + ", ");
+                result += p + ", ";
             }
+            return result;
         }
     }
 }

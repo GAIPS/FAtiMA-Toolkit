@@ -41,8 +41,10 @@ namespace CommeillFaut.DTOs
         /// </summary>
         public List<InfluenceRuleDTO> InfluenceRules { get; set; }
 
-
-        public List<InfluenceRuleDTO> Effects { get; set; }
+        /// <summary>
+        /// What happens when the social Exchange is completed.
+        /// </summary>
+        public Dictionary<int,List<string>> Effects { get; set; }
 
      
     }

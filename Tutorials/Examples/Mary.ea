@@ -1,0 +1,35 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"Description": null,
+			"KnowledgeBase":
+				{
+					"Perspective": "Mary",
+					"Knowledge":
+						{
+							"SELF":
+								{
+									"Volition(Compliment, Mary, Peter)": -5,
+									"Volition(Flirt, Mary, Peter)": 2
+								}
+						}
+				},
+			"AppraisalRules":
+				{
+					"AppraisalWeight": 1,
+					"Rules": []
+				},
+			"EmotionDispositions": [
+				{
+					"Emotion": "*",
+					"Decay": 1,
+					"Threshold": 1
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "EmotionalAppraisal.EmotionalAppraisalAsset, EmotionalAppraisal, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

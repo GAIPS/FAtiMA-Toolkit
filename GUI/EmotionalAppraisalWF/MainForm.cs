@@ -10,19 +10,17 @@ using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
+using GAIPS.AssetEditorTools.DynamicPropertiesWindow;
 
 namespace EmotionalAppraisalWF
 {
 	public partial class MainForm : BaseEAForm
     {
-        private const string MOOD_FORMAT = "0.00";
-
-        private EmotionalStateVM _emotionalStateVM;
+        
         private KnowledgeBaseVM _knowledgeBaseVM;
         private AppraisalRulesVM _appraisalRulesVM;
         private EmotionDispositionsVM _emotionDispositionsVM;
-        private AutobiographicalMemoryVM _autobiographicalMemoryVM;
-
+        
 		public MainForm()
         {
             InitializeComponent();
@@ -49,59 +47,11 @@ namespace EmotionalAppraisalWF
 			_knowledgeBaseVM = new KnowledgeBaseVM(this);
 			dataGridViewBeliefs.DataSource = _knowledgeBaseVM.Beliefs;
 
-			//AM
-			_autobiographicalMemoryVM = new AutobiographicalMemoryVM(this);
-			dataGridViewAM.DataSource = _autobiographicalMemoryVM.Events;
-
-			//Emotional State Tab
-			_emotionalStateVM = new EmotionalStateVM(this);
-
 			this.textBoxPerspective.Text = _knowledgeBaseVM.Perspective;
 			this.richTextBoxDescription.Text = asset.Description;
-			this.moodValueLabel.Text = Math.Round(_emotionalStateVM.Mood).ToString(MOOD_FORMAT);
-			this.moodTrackBar.Value = (int)float.Parse(this.moodValueLabel.Text);
-			this.StartTickField.Value = _emotionalStateVM.Start;
-			this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
 
-			//Dynamic Properties
+            _wasModified = false;
 
-			_dynamicPropertiesListView.DataSource = asset.GetRegistedDynamicProperties().OrderBy(dto => dto.PropertyTemplate).ToList();
-			_dynamicPropertiesListView.Columns[PropertyUtil.GetPropertyName<DynamicPropertyDTO>(dto => dto.Description)]
-				.DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-		}
-
-		protected sealed override void OnWillSaveAsset(EmotionalAppraisalAsset asset)
-		{
-			_knowledgeBaseVM?.UpdatePerspective();
-		}
-
-		private void trackBar1_Scroll_1(object sender, EventArgs e)
-        {
-			if(IsLoading)
-				return;
-
-            moodValueLabel.Text = moodTrackBar.Value.ToString(MOOD_FORMAT);
-            _emotionalStateVM.Mood = moodTrackBar.Value;
-			SetModified();
-        }
-
-		private void textBoxPerspective_TextChanged(object sender, EventArgs e)
-		{
-			if (IsLoading)
-				return;
-
-			if (!string.IsNullOrEmpty(textBoxPerspective.Text))
-			{
-				_knowledgeBaseVM.Perspective = textBoxPerspective.Text;
-			}
-		}
-
-		private void textBoxStartTick_TextChanged(object sender, EventArgs e)
-		{
-			if (IsLoading)
-				return;
-
-			_emotionalStateVM.Start = (ulong)StartTickField.Value;
 		}
 
 		#region EmotionalStateTab
@@ -198,11 +148,7 @@ namespace EmotionalAppraisalWF
 
 		#endregion
         
-        private void addEmotionButton_Click(object sender, EventArgs e)
-        {
-            new AddOrEditEmotionForm(_emotionalStateVM).ShowDialog();
-        }
-
+    
         private void buttonAddEmotionDisposition_Click(object sender, EventArgs e)
         {
             new AddOrEditEmotionDispositionForm(_emotionDispositionsVM).ShowDialog();
@@ -236,46 +182,7 @@ namespace EmotionalAppraisalWF
             }
             _emotionDispositionsVM.RemoveDispositions(dispositionsToRemove);
         }
-		
-        private void buttonAddEventRecord_Click(object sender, EventArgs e)
-        {
-            new AddOrEditAutobiographicalEventForm(_autobiographicalMemoryVM).ShowDialog();
-        }
-
-        private void buttonRemoveEventRecord_Click(object sender, EventArgs e)
-        {
-            IList<EventDTO> eventsToRemove = new List<EventDTO>();
-            for (int i = 0; i < dataGridViewAM.SelectedRows.Count; i++)
-            {
-                var evt = ((ObjectView<EventDTO>)dataGridViewAM.SelectedRows[i].DataBoundItem).Object;
-                eventsToRemove.Add(evt);
-            }
-            _autobiographicalMemoryVM.RemoveEventRecords(eventsToRemove);
-		}
-
-        private void buttonRemoveEmotion_Click(object sender, EventArgs e)
-        {
-            IList<EmotionDTO> emotionsToRemove = new List<EmotionDTO>();
-            for (int i = 0; i < emotionsDataGridView.SelectedRows.Count; i++)
-            {
-                var emotion = ((ObjectView<EmotionDTO>)emotionsDataGridView.SelectedRows[i].DataBoundItem).Object;
-                emotionsToRemove.Add(emotion);
-            }
-            _emotionalStateVM.RemoveEmotions(emotionsToRemove);
-		}
-
-        private void buttonEditEmotion_Click(object sender, EventArgs e)
-        {
-       
-            if (emotionsDataGridView.SelectedRows.Count == 1)
-            {
-                var selectedEmotion = ((ObjectView<EmotionDTO>)emotionsDataGridView.
-                    SelectedRows[0].DataBoundItem).Object;
-                new AddOrEditEmotionForm(_emotionalStateVM, selectedEmotion).ShowDialog();
-            }
-        
-        }
-
+		            
         private void dataGridViewAppraisalRules_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             if (e.RowIndex != -1) //exclude header cells
@@ -284,33 +191,38 @@ namespace EmotionalAppraisalWF
             }
         }
 
-        private void buttonEditEvent_Click(object sender, EventArgs e)
-        {
-            if (dataGridViewAM.SelectedRows.Count == 1)
-            {
-                var selectedEvent = ((ObjectView<EventDTO>)dataGridViewAM.
-                    SelectedRows[0].DataBoundItem).Object;
-                new AddOrEditAutobiographicalEventForm(_autobiographicalMemoryVM, selectedEvent).ShowDialog();
-            }
-        }
-
-        private void dataGridViewAM_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if (e.RowIndex != -1) //exclude header cells
-            {
-                this.buttonEditEvent_Click(sender, e);
-            }
-        }
-
-		private void richTextBoxDescription_TextChanged(object sender, EventArgs e)
-        {
-			CurrentAsset.Description = richTextBoxDescription.Text;
-			SetModified();
-		}
-
 		private void OnScreenChanged(object sender, EventArgs e)
 		{
 			_knowledgeBaseVM.UpdatePerspective();
 		}
-	}
+
+		private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridViewBeliefs_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void textBoxPerspective_TextChanged_1(object sender, EventArgs e)
+        {
+            if (IsLoading)
+                return;
+
+            if (!string.IsNullOrEmpty(textBoxPerspective.Text))
+            {
+                _knowledgeBaseVM.Perspective = textBoxPerspective.Text;
+                _knowledgeBaseVM.UpdatePerspective();
+                SetModified();
+            }
+        }
+
+        private void richTextBoxDescription_TextChanged_1(object sender, EventArgs e)
+        {
+            CurrentAsset.Description = richTextBoxDescription.Text;
+            SetModified();
+        }
+    }
 }

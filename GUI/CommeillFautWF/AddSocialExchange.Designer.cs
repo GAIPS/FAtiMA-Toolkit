@@ -39,7 +39,15 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.listBox2 = new System.Windows.Forms.ListBox();
+            this.listBox3 = new System.Windows.Forms.ListBox();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.button3 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -61,7 +69,7 @@
             // 
             // NameBox
             // 
-            this.NameBox.Location = new System.Drawing.Point(91, 408);
+            this.NameBox.Location = new System.Drawing.Point(112, 587);
             this.NameBox.Name = "NameBox";
             this.NameBox.Size = new System.Drawing.Size(84, 34);
             this.NameBox.TabIndex = 3;
@@ -117,7 +125,7 @@
             this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Location = new System.Drawing.Point(23, 175);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(228, 192);
+            this.groupBox1.Size = new System.Drawing.Size(265, 192);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Influence Rules";
@@ -143,11 +151,68 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.textBox1);
+            this.groupBox2.Controls.Add(this.button3);
+            this.groupBox2.Controls.Add(this.numericUpDown1);
+            this.groupBox2.Controls.Add(this.listBox3);
+            this.groupBox2.Controls.Add(this.listBox2);
+            this.groupBox2.Location = new System.Drawing.Point(27, 373);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(261, 208);
+            this.groupBox2.TabIndex = 10;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Effects";
+            // 
+            // listBox2
+            // 
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.ItemHeight = 16;
+            this.listBox2.Location = new System.Drawing.Point(6, 118);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(120, 84);
+            this.listBox2.TabIndex = 1;
+            // 
+            // listBox3
+            // 
+            this.listBox3.FormattingEnabled = true;
+            this.listBox3.ItemHeight = 16;
+            this.listBox3.Location = new System.Drawing.Point(132, 118);
+            this.listBox3.Name = "listBox3";
+            this.listBox3.Size = new System.Drawing.Size(120, 84);
+            this.listBox3.TabIndex = 2;
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(179, 28);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(73, 22);
+            this.numericUpDown1.TabIndex = 4;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(85, 71);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(83, 31);
+            this.button3.TabIndex = 5;
+            this.button3.Text = "AddEffect";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(18, 28);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(150, 22);
+            this.textBox1.TabIndex = 6;
+            // 
             // AddSocialExchange
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(282, 454);
+            this.ClientSize = new System.Drawing.Size(339, 647);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.InstantiationTextBox);
             this.Controls.Add(this.label3);
@@ -160,6 +225,9 @@
             this.Text = "AddSocialExchange";
             this.Load += new System.EventHandler(this.AddSocialExchange_Load);
             this.groupBox1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -179,5 +247,11 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.ListBox listBox3;
+        private System.Windows.Forms.ListBox listBox2;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }

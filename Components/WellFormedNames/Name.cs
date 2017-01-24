@@ -291,18 +291,7 @@ namespace WellFormedNames
 		public abstract Name ApplyToTerms(Func<Name, Name> transformFunction);
 		
 		private static ulong _variableIdCounter = 0;
-		/// <summary>
-		/// Creates a new Name, representing a variable without a proper human readable identifier.
-		/// Usefull to create temporary substitution variables.
-		/// </summary>
-		public static Name GenerateUniqueGhostVariable()
-		{
-			Name ghost = new VariableSymbol("_");
-            ghost = ghost.ReplaceUnboundVariables(_variableIdCounter.ToString());
-			_variableIdCounter++;
-            return ghost;
-		}
-
+		
 		#region Operators
 
 		/// <summary>

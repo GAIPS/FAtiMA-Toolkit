@@ -23,11 +23,11 @@ namespace AutobiographicMemory
 
 		public ulong Tick { get; set; }
 
-		public void BindCalls(KB kb)
+		public void BindToRegistry(IDynamicPropertiesRegistry registry)
 		{
-			kb.RegistDynamicProperty(EVENT_ID_PROPERTY_NAME, EventIdPropertyCalculator, "Returns the ids of all events that unify with the property's name");
-			kb.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_NAME, EventAgePropertyCalculator, "The number of ticks passed since the event associated to [id] occured");
-			kb.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_NAME, LastEventIdPropertyCalculator, "Returns the id of the last event if it unifies with the property's name");
+			registry.RegistDynamicProperty(EVENT_ID_PROPERTY_NAME, EventIdPropertyCalculator);
+			registry.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_NAME, EventAgePropertyCalculator);
+			registry.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_NAME, LastEventIdPropertyCalculator);
 		}
 
 		public IBaseEvent RecordEvent(EventDTO dto)

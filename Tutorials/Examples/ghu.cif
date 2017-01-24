@@ -2,69 +2,26 @@
 	"root":
 		{
 			"classId": 0,
-			"SocialExchanges": [
-				{
-					"Intent": "ds",
-					"Instantiation": "d",
-					"InfluenceRules": [
-						{
-							"Id": "7038a297-efe6-4993-9d40-a5e960f76673",
-							"RuleName": "ay",
-							"Target": "-"
-						}],
-					"ay":
-						{
-
-						},
-					"Action": "dad",
-					"Conditions":
-						{
-							"Set": []
-						}
-				}, 
-				{
-					"Intent": "dd",
-					"Instantiation": "ff",
-					"InfluenceRules": [
-						{
-							"Id": "b508a4f1-e477-4ab9-9e9b-a82ce36d3bd7",
-							"RuleName": "saa",
-							"Target": "-"
-						}, 
-						{
-							"Id": "4cd9b5f4-5d55-4237-93e7-e630127f9abe",
-							"RuleName": "eww",
-							"Target": "-"
-						}],
-					"saa":
-						{
-
-						},
-					"eww":
-						{
-
-						},
-					"Action": "dsa",
-					"Conditions":
-						{
-							"Set": []
-						}
-				}],
+			"SocialExchanges": [],
 			"RuleList":
 				{
-					"dictionary": [
+					"dictionary": []
+				},
+			"_triggerRules":
+				{
+					"_triggerRules":
 						{
-							"key": "ay",
-							"value": ["[x]=true"]
-						}, 
-						{
-							"key": "saa",
-							"value": ["[x]=true", "[x]=Attraction"]
-						}, 
-						{
-							"key": "eww",
-							"value": ["[x]=true"]
-						}]
+							"dictionary": [
+								{
+									"key":
+										{
+											"Id": "564866a6-820d-4a63-b096-259a6efca7fd",
+											"RuleName": "dsd",
+											"Target": "-"
+										},
+									"value": "System.Windows.Forms.TextBox, Text: sd(System.Windows.Forms.TextBox, Text: d,System.Windows.Forms.TextBox, Text: f,System.Windows.Forms.NumericUpDown, Minimum = 0, Maximum = 100)"
+								}]
+						}
 				}
 		},
 	"types": [

@@ -43,12 +43,12 @@
     <Compile Include="Implementation\UniversalSymbol.cs" />
     <Compile Include="Implementation\VariableSymbol.cs" />
     <Compile Include="IQueryable.cs" />
+    <Compile Include="Literal.cs" />
     <Compile Include="Name.cs" />
     <Compile Include="PrimitiveValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleWFN.cs" />
     <Compile Include="SubstitutionSetImplementations\ConstraintSubstitutionSetImplementation.cs" />
-    <Compile Include="SubstitutionSetImplementations\SimpleSubstitutionSetImplementation.cs" />
     <Compile Include="Substitution.cs" />
     <Compile Include="SubstitutionSet.cs" />
     <Compile Include="Unifier.cs" />

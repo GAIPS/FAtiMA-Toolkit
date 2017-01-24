@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using SerializationUtilities;
 using SerializationUtilities.SerializationGraph;
 using WellFormedNames;
@@ -85,18 +84,17 @@ namespace KnowledgeBase
 		}
 
 		private NameSearchTree<KnowledgeEntry> m_knowledgeStorage;
-		private NameSearchTree<DynamicKnowledgeEntry> m_dynamicProperties;
 
 		/// <summary>
 		/// Indicates the default mapping of "SELF"
 		/// </summary>
-		public Name Perspective { get; private set; }
+		public Name Perspective { get; set; }
 
 		private KB()
 		{
 			m_knowledgeStorage = new NameSearchTree<KnowledgeEntry>();
-			m_dynamicProperties = new NameSearchTree<DynamicKnowledgeEntry>();
-			RegistNativeDynamicProperties(this);
+			CreateRegistry();
+			BindToRegistry(this);
 		}
 
 		public KB(Name perspective) : this()
@@ -104,12 +102,12 @@ namespace KnowledgeBase
 			SetPerspective(perspective);
 		}
 
-#region Native Dynamic Properties
-
-		private static void RegistNativeDynamicProperties(IDynamicPropertiesRegister kb)
+		private void BindToRegistry(IDynamicPropertiesRegistry registry)
 		{
-			kb.RegistDynamicProperty(COUNT_TEMPLATE_NEW, CountPropertyCalculator_new, "The number of substitutions found for [x]");
+			registry.RegistDynamicProperty(COUNT_TEMPLATE_NEW, CountPropertyCalculator_new);
 		}
+
+		#region Native Dynamic Properties
 
 		//Count
 		private static readonly Name COUNT_TEMPLATE_NEW = Name.BuildName("Count");
@@ -232,7 +230,7 @@ namespace KnowledgeBase
 			if (!property.IsVariable)
 			{
 				bool dynamicFound = false;
-				foreach (var r in AskDynamicProperties(property, mind_key, constraints))
+				foreach (var r in _registry.Evaluate(this, property, mind_key, constraints))
 				{
 					dynamicFound = true;
 					yield return r;
@@ -296,7 +294,7 @@ namespace KnowledgeBase
 			//ToM property shift
 			property = ExtractPropertyFromToM(property, ToMList, nameof(property));
 
-			if (m_dynamicProperties.Unify(property).Any())
+			if (_registry.WillEvaluate(property))
 				throw new ArgumentException("The given name will be objuscated by a dynamic property", nameof(property));
 
 			var fact = property.ApplyToTerms(p => SimplifyProperty(p, ToMList));
@@ -567,11 +565,12 @@ namespace KnowledgeBase
 			else
 				m_knowledgeStorage.Clear();
 
-			if(m_dynamicProperties==null)
-				m_dynamicProperties = new NameSearchTree<DynamicKnowledgeEntry>();
+			if (_registry == null)
+				CreateRegistry();
 			else
-				m_dynamicProperties.Clear();
-			RegistNativeDynamicProperties(this);
+				_registry.Clear();
+
+			BindToRegistry(this);
 
 			Perspective = dataHolder.GetValue<Name>("Perspective");
 			var knowledge = dataHolder.GetValueGraphNode("Knowledge");

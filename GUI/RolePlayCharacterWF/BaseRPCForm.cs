@@ -12,7 +12,7 @@ namespace RolePlayCharacterWF
 
 		protected sealed override string GetAssetFileFilters()
 		{
-			return "Role Play Character Definition File (*.rpc)|*.rpc";
+			return "Role Play Character Profile File (*.rpc)|*.rpc";
 		}
 	}
 }

@@ -5,7 +5,7 @@ namespace IntegratedAuthoringTool.DTOs
     [Serializable]
     public class CharacterSourceDTO
     {
-        public string Name { get; set; }
+        public int Id { get; set; }
         public string Source { get; set; }
     }
 }

@@ -34,7 +34,6 @@ namespace EmotionalAppraisalWF.ViewModels
 
 			emotionalAppraisalAsset.SetPerspective(Perspective);
 			UpdateBeliefList();
-			_mainForm.SetModified();
 		}
 
 	    public void UpdateBeliefList()

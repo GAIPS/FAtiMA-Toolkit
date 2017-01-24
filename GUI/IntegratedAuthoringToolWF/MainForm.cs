@@ -7,6 +7,7 @@ using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
+using WellFormedNames;
 using RolePlayCharacter;
 
 namespace IntegratedAuthoringToolWF
@@ -29,6 +30,7 @@ namespace IntegratedAuthoringToolWF
 		protected override void OnAssetDataLoaded(IntegratedAuthoringToolAsset asset)
 		{
 			textBoxScenarioName.Text = asset.ScenarioName;
+			textBoxScenarioDescription.Text = asset.ScenarioDescription;
 			_characterSources = new BindingListView<CharacterSourceDTO>(asset.GetAllCharacterSources().ToList());
 			dataGridViewCharacters.DataSource = _characterSources;
 		}
@@ -38,24 +40,8 @@ namespace IntegratedAuthoringToolWF
 			var asset = _rpcForm.CreateAndSaveEmptyAsset(false);
 			if (asset == null)
 				return;
-
-			var name = "RPC Character";
-			var options = CurrentAsset.GetAllCharacterSources().Select(c => c.Name).Where(n => n.StartsWith(name)).ToArray();
-			if (options.Length > 0)
-			{
-				var a = options.Select(o => Regex.Match(o, $"^{name}\\((\\d+)\\)$"))
-					.Where(m => m.Success)
-					.Select(m => int.Parse(m.Groups[1].Value)).ToArray();
-				int value = 1;
-				if (a.Length > 0)
-					value = a.Max() + 1;
-
-				name += $"({value})";
-			}
-			asset.CharacterName = name;
-			asset.SaveToFile();
-
-			CurrentAsset.AddNewCharacterSource(new CharacterSourceDTO() {Name = name,Source = asset.AssetFilePath});
+					
+            CurrentAsset.AddNewCharacterSource(new CharacterSourceDTO() {Source = asset.AssetFilePath});
 			_characterSources.DataSource = CurrentAsset.GetAllCharacterSources().ToList();
 			_characterSources.Refresh();
 			SetModified();
@@ -69,9 +55,9 @@ namespace IntegratedAuthoringToolWF
 
 			CurrentAsset.AddNewCharacterSource(new CharacterSourceDTO()
 			{
-				Name = rpc.CharacterName,
-				Source = rpc.AssetFilePath
+				Source =  rpc.AssetFilePath
 			});
+
 			_characterSources.DataSource = CurrentAsset.GetAllCharacterSources().ToList();
 			_characterSources.Refresh();
 			SetModified();
@@ -86,24 +72,32 @@ namespace IntegratedAuthoringToolWF
 			SetModified();
 		}
 
+		private void textBoxScenarioDescription_TextChanged(object sender, EventArgs e)
+		{
+			if (IsLoading)
+				return;
+
+			CurrentAsset.ScenarioDescription = textBoxScenarioDescription.Text;
+			SetModified();
+		}
+
 		private void buttonRemoveCharacter_Click(object sender, EventArgs e)
 		{
-			IList<string> charactersToRemove = new List<string>();
+			IList<int> charactersToRemove = new List<int>();
 			for (var i = 0; i < dataGridViewCharacters.SelectedRows.Count; i++)
 			{
 				var character = ((ObjectView<CharacterSourceDTO>) dataGridViewCharacters.SelectedRows[i].DataBoundItem).Object;
 				Form f;
-				if (_openedForms.TryGetValue(character.Name,out f))
+				if (_openedForms.TryGetValue(character.Source,out f))
 				{
-					var r = MessageBox.Show($"\"{character.Name}\" is currently being edited.\nDo you wish to remove it?", "Warning",
+					var r = MessageBox.Show($"\"{character.Source}\" is currently being edited.\nDo you wish to remove it?", "Warning",
 						MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 					if (r == DialogResult.No)
 						continue;
 
 					f.Close();
 				}
-				
-				charactersToRemove.Add(character.Name);
+				charactersToRemove.Add(character.Id);
 			}
 
 			CurrentAsset.RemoveCharacters(charactersToRemove);
@@ -117,17 +111,18 @@ namespace IntegratedAuthoringToolWF
 			for (var i = 0; i < dataGridViewCharacters.SelectedRows.Count; i++)
 			{
 				var character = ((ObjectView<CharacterSourceDTO>) dataGridViewCharacters.SelectedRows[i].DataBoundItem).Object;
-				if(_openedForms.ContainsKey(character.Name))
+				if(_openedForms.ContainsKey(character.Source))
 					continue;
 
 				var form = new RolePlayCharacterWF.MainForm();
 				form.Closed += (o, args) =>
 				{
-					_openedForms.Remove(character.Name);
+					_openedForms.Remove(character.Source);
 					ReloadEditor();
 				};
-				form.EditAssetInstance(() => CurrentAsset.InstantiateCharacterAsset(character.Name));
-				_openedForms.Add(character.Name,form);
+                var rpc = RolePlayCharacterAsset.LoadFromFile(character.Source);
+				form.EditAssetInstance(() => rpc);
+				_openedForms.Add(character.Source,form);
 				form.Show();
 			}
 		}
@@ -150,7 +145,6 @@ namespace IntegratedAuthoringToolWF
 		{
 			return !_dialogEditorIsShowing;
 		}
-
 		#endregion
 
 		#region About
