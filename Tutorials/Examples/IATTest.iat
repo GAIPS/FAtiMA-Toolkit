@@ -2,70 +2,25 @@
 	"root":
 		{
 			"classId": 0,
-			"ScenarioName": "IATest",
-			"Description": "This is a scenario.",
+			"ScenarioName": "IATTest",
+			"Description": "Testing Scenario",
 			"CharacterSources": ["RPCTest.rpc"],
 			"PlayerDialogues": [
 				{
 					"CurrentState": "Start",
-					"NextState": "AfterGreeting",
+					"NextState": "S2",
 					"Meaning": [],
 					"Style": [],
 					"Utterance": "Hi"
-				}, 
-				{
-					"CurrentState": "d",
-					"NextState": "ad",
-					"Meaning": ["ada"],
-					"Style": ["add"],
-					"Utterance": "dsdasd"
-				}, 
-				{
-					"CurrentState": "jonas",
-					"NextState": "joas",
-					"Meaning": ["dja"],
-					"Style": ["das"],
-					"Utterance": "Jonas"
-				}, 
-				{
-					"CurrentState": "dasd",
-					"NextState": "dsada",
-					"Meaning": ["dasda"],
-					"Style": ["asdad"],
-					"Utterance": "aasdada"
 				}],
 			"AgentDialogues": [
 				{
-					"CurrentState": "Hi",
-					"NextState": "Hi",
-					"Meaning": ["Hi"],
-					"Style": ["Hi"],
-					"Utterance": "Hi",
-					"UtteranceId": "TTS-49F68A5C8493EC2C0BF489821C21FC3B"
-				}, 
-				{
-					"CurrentState": "dasd",
-					"NextState": "asda",
-					"Meaning": ["sada"],
-					"Style": ["asd"],
-					"Utterance": "asdada",
-					"UtteranceId": "TTS-98C6C14ACCE440C6AB3058D2970D5A0F"
-				}, 
-				{
-					"CurrentState": "dsa",
-					"NextState": "asdad",
-					"Meaning": ["asdad"],
-					"Style": ["asdadas"],
-					"Utterance": "asdadsda",
-					"UtteranceId": "TTS-B34B302A19AF530E3CA2FA94102DF5C0"
-				}, 
-				{
-					"CurrentState": "Hi",
-					"NextState": "Hi",
-					"Meaning": ["Hi"],
-					"Style": ["Hi"],
-					"Utterance": "Hi",
-					"UtteranceId": "TTS-49F68A5C8493EC2C0BF489821C21FC3B"
+					"CurrentState": "S2",
+					"NextState": "S3",
+					"Meaning": [],
+					"Style": [],
+					"Utterance": "Hello",
+					"UtteranceId": "TTS-5D41402ABC4B2A76B9719D911017C592"
 				}]
 		},
 	"types": [
