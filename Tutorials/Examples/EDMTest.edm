@@ -5,30 +5,29 @@
 			"DefaultActionPriority": 0,
 			"ActionTendencies": [
 				{
-					"Action": "KickBack",
+					"Action": "Speak([cs], [ns], [m], [s])",
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["LastEventId(Action-Finished, [x], Kick, SELF) = [id]"]
+							"Set": ["ValidDialogue([cs], [ns], [m], [s]) = True", "DialogueState([x]) = [cs]"]
+	    			}
+   			}, 
+				{
+					"Action": "Insult",
+					"Target": "Player",
+					"Conditions":
+						{
+							"Set": ["Mood(SELF) < 0"]
 						}
-				},
-        {
-          "Action": "Insult",
-          "Target": "Player",
-          "Conditions": 
-          {
-            "Set": [ "Mood(SELF) < 0" ]
-          }
-        },
-        {
+				}, 
+				{
 					"Action": "Compliment",
 					"Target": "Player",
 					"Conditions":
 						{
 							"Set": ["Mood(SELF) >= 0"]
 						}
-				}
-			]
+				}]
 		},
 	"types": [
 		{

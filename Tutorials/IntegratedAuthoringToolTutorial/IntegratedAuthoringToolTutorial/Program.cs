@@ -15,7 +15,7 @@ namespace IntegratedAuthoringToolTutorial
             AssetManager.Instance.Bridge = new BasicIOBridge();
          
             //Loading the asset
-            var iat = IntegratedAuthoringToolAsset.LoadFromFile("C://Teste/SpaceModulesScenarioA.iat");
+            var iat = IntegratedAuthoringToolAsset.LoadFromFile("/../../../Examples/IATTest.iat");
 	        var rpc = RolePlayCharacterAsset.LoadFromFile(iat.GetAllCharacterSources().FirstOrDefault().Source);
             rpc.Initialize();
             iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
@@ -24,16 +24,11 @@ namespace IntegratedAuthoringToolTutorial
             Console.WriteLine("The name of the character loaded is: " + rpc.CharacterName);
             Console.WriteLine("Mood: " + rpc.Mood);
             Console.WriteLine("Strongest emotion: " + rpc.GetStrongestActiveEmotion()?.EmotionType + "-" + rpc.GetStrongestActiveEmotion()?.Intensity);
-
             var action = rpc.PerceptionActionLoop(new[] { (Name)("Event(Action-Start,Player,Start,-)") });
-
             WriteAction(action);
             Console.WriteLine();
             WriteAction(rpc.PerceptionActionLoop(new[] { (Name)("Event(Action-Start,Player,Start,-)") }));
-
-	        rpc.PerceptionActionLoop(new [] {EventHelper.ToFinishedEventName(action, rpc.CharacterName)});
-            WriteAction(rpc.PerceptionActionLoop(new[] { (Name)("Event(Action-Start,Player,Start,-)") }));
-
+			
             Console.ReadKey();
         }
 

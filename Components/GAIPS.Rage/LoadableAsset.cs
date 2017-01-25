@@ -55,10 +55,10 @@ namespace GAIPS.Rage
 			if(string.IsNullOrEmpty(m_assetFilepath))
 				throw new Exception("No default file path defined for the asset. Please use SaveToFile(filepath).");
 
-			SaveConfigurationToFile(m_assetFilepath);
+			SaveToFile(m_assetFilepath);
 		}
 
-		public void SaveConfigurationToFile(string filepath)
+		public void SaveToFile(string filepath)
 		{
 			var storage = GetInterface<IDataStorage>();
 			if(storage == null)

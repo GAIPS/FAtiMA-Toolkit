@@ -36,7 +36,7 @@ namespace SocialImportance
 		/// <summary>
 		/// The Knowledge Base that is binded to this Social Importance Asset instance
 		/// </summary>
-		public KB LinkedEA {
+		public KB LinkedKB {
 			get { return m_kB; }
 		}
 
@@ -80,7 +80,7 @@ namespace SocialImportance
 			registry.UnregistDynamicProperty((Name)"SI([target])");
 		}
 
-		private void ValidateEALink()
+		private void ValidateKBLink()
 		{
 			if(m_kB==null)
 				throw new InvalidOperationException($"Cannot execute operation as an instance of {nameof(EmotionalAppraisalAsset)} was not registed in this asset.");
@@ -99,7 +99,7 @@ namespace SocialImportance
 		/// <returns>The value of Social Importance attributed to given target by the perspective of a particular agent.</returns>
 		public float GetSocialImportance(string target, string perspective = "self")
 		{
-			ValidateEALink();
+			ValidateKBLink();
 
 			var t = Name.BuildName(target);
 			if (!t.IsPrimitive)
@@ -151,7 +151,7 @@ namespace SocialImportance
 		/// <returns>The action we want to execute or predict.</returns>
 		public IAction DecideConferral(string perspective)
 		{
-			ValidateEALink();
+			ValidateKBLink();
 
 			var prp = Name.BuildName(perspective);
 			var a = m_conferalActions.SelectAction(m_kB, prp).OrderByDescending(p=>p.Item2.ConferralSI);
@@ -177,7 +177,7 @@ namespace SocialImportance
 		/// <see cref="ClaimDTO"/>
 		public IEnumerable<IAction> FilterActions(string perspective, IEnumerable<IAction> actionsToFilter)
 		{
-			ValidateEALink();
+			ValidateKBLink();
 
 			var p = Name.BuildName(perspective);
 			return internal_FilterActions(p, actionsToFilter);

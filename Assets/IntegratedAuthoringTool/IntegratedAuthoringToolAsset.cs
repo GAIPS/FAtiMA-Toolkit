@@ -156,35 +156,24 @@ namespace IntegratedAuthoringTool
 		/// Retrives a list containing all the dialogue actions for the player or the agents filtered by a specific state.
 		/// </summary>
 		/// <param name="speaker">Either "Player" or "Agent".</param>
-		/// <param name="state">Works as a filter for the state. The value "*" will consider all states.</param>
-		public IEnumerable<DialogueStateActionDTO> GetDialogueActions(string speaker, Name currentState)
-		{
-			return GetDialogueActions(speaker, currentState, Name.UNIVERSAL_SYMBOL, Name.UNIVERSAL_SYMBOL, Name.UNIVERSAL_SYMBOL);
-		}
-
-		public IEnumerable<DialogueStateActionDTO> GetDialogueActions(string speaker, Name currentState, Name nextState)
-		{
-			return GetDialogueActions(speaker, currentState, nextState, Name.UNIVERSAL_SYMBOL, Name.UNIVERSAL_SYMBOL);
-		}
-
-		public IEnumerable<DialogueStateActionDTO> GetDialogueActions(string speaker, Name currentState, Name nextState, Name meanings)
-		{
-			return GetDialogueActions(speaker, currentState, nextState, meanings, Name.UNIVERSAL_SYMBOL);
-		}
-
-		public IEnumerable<DialogueStateActionDTO> GetDialogueActions(string speaker, Name currentState, Name nextState, Name meanings, Name styles)
+		/// <param name="state">Works as a filter for the state. </param>
+		public IEnumerable<DialogueStateActionDTO> GetDialogueActionsByState(string speaker, string currentState)
 		{
 			var dialogList = SelectDialogActionList(speaker);
-			var S = DialogStateAction.BuildSpeakAction(currentState, nextState, meanings, styles);
-			return dialogList.GetAllDialogsForKey(S).Select(d => d.Item1.ToDTO());
+            return dialogList.Select(d => d.ToDTO()).Where(d => d.CurrentState == currentState);
 		}
 
-		/// <summary>
-		/// Removes a list of dialogue actions for either the player or the agent.
-		/// </summary>
-		/// <param name="speaker">Either "Player" or "Agent".</param>
-		/// <param name="actionsToRemove">The list of dialogues that are to be removed.</param>
-		public int RemoveDialogueActions(string speaker, IEnumerable<DialogueStateActionDTO> actionsToRemove)
+        public IEnumerable<DialogueStateActionDTO> GetDialogueActionssBySpeaker(string speaker)
+        {
+            return SelectDialogActionList(speaker).Select(d => d.ToDTO());
+        }
+
+        /// <summary>
+        /// Removes a list of dialogue actions for either the player or the agent.
+        /// </summary>
+        /// <param name="speaker">Either "Player" or "Agent".</param>
+        /// <param name="actionsToRemove">The list of dialogues that are to be removed.</param>
+        public int RemoveDialogueActions(string speaker, IEnumerable<DialogueStateActionDTO> actionsToRemove)
 		{
 			return RemoveDialogueActions(speaker, actionsToRemove.Select(d => d.Id));
 		}

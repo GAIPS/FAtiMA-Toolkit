@@ -17,8 +17,7 @@ namespace IntegratedAuthoringTool
         private static readonly Name DIALOG_ACTION_NAME = Name.BuildName("Speak");
         public static readonly Name STYLES_PACKAGING_NAME = Name.BuildName("Styles");
         public static readonly Name MEANINGS_PACKAGING_NAME = Name.BuildName("Meanings");
-
-   
+         
 
         public Guid Id { get; private set; }
         public Name CurrentState { get; private set; }

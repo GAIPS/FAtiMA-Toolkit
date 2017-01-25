@@ -1,6 +1,4 @@
-﻿using ActionLibrary;
-using Conditions.DTOs;
-using EmotionalAppraisal;
+﻿using Conditions.DTOs;
 using EmotionalAppraisal.DTOs;
 using KnowledgeBase;
 using NUnit.Framework;
@@ -17,20 +15,19 @@ namespace Tests.SocialImportance
 
 		private static SocialImportanceAsset BuildAsset()
 		{
-			var kb = new KB((Name) "Matt");
-#region Set KB
-
-			kb.Tell((Name)"IsPerson(Matt)",(Name)"true",(Name)"*");
-			kb.Tell((Name)"IsPerson(Mary)", (Name)"true", (Name)"*");
-			kb.Tell((Name)"IsPerson(Diego)", (Name)"true", (Name)"*");
-			kb.Tell((Name)"IsPerson(Thomas)", (Name)"true", (Name)"*");
-			kb.Tell((Name)"IsPerson(Robot)", (Name)"true", (Name)"Diego");
-			kb.Tell((Name)"IsOutsider(Diego)", (Name)"true", (Name)"*");
-			kb.Tell((Name)"IsOutsider(Diego)", (Name)"false", (Name)"Robot");
-			kb.Tell((Name)"AreFriends(Self,Mary)", (Name)"true", (Name)"Self");
-			kb.Tell((Name)"AreFriends(Self,Thomas)", (Name)"true", (Name)"Self");
-			kb.Tell((Name)"AreFriends(Self,Matt)", (Name)"true", (Name)"Mary");
-			kb.Tell((Name)"IsBartender(Matt)", (Name)"true", (Name)"*");
+			var kb = new KB((Name)"Matt");
+            #region Set KB
+            kb.Tell((Name)"IsPerson(Matt)", (Name)"true", (Name)"*");
+            kb.Tell((Name)"IsPerson(Mary)", (Name)"true", (Name)"*");
+            kb.Tell((Name)"IsPerson(Thomas)", (Name)"true", (Name)"*");
+            kb.Tell((Name)"IsPerson(Diego)", (Name)"true", (Name)"*");
+            kb.Tell((Name)"IsPerson(Robot)", (Name)"true", (Name)"Diego");
+            kb.Tell((Name)"IsOutsider(Diego)", (Name)"true", (Name)"*");
+            kb.Tell((Name)"IsOutsider(Diego)", (Name)"false", (Name)"Robot");
+            kb.Tell((Name)"AreFriends(SELF,Mary)", (Name)"true", (Name)"SELF");
+            kb.Tell((Name)"AreFriends(SELF,Matt)", (Name)"true", (Name)"Mary");
+            kb.Tell((Name)"AreFriends(SELF,Thomas)", (Name)"true", (Name)"SELF");
+            kb.Tell((Name)"IsBartender(Matt)", (Name)"true", (Name)"*");
 
 			#endregion
 
@@ -103,19 +100,6 @@ namespace Tests.SocialImportance
 								"IsElder(Self) = false"
 							}
 						}
-					},
-					new AttributionRuleDTO()
-					{
-						Target = "[target]",
-						Value = -1,
-						Conditions = new ConditionSetDTO()
-						{
-							ConditionSet = new []
-							{
-								"IsElder([target]) = false",
-								"IsElder(Self) = true"
-							}
-						}
 					}
 				},
 				Conferral = new[]
@@ -150,10 +134,8 @@ namespace Tests.SocialImportance
 			};
 			#endregion
 			var si = new SocialImportanceAsset();
-			si.RegisterKnowledgeBase(kb);
 			si.LoadFromDTO(siDTO);
-
-			//si.BindEmotionalAppraisalAsset(ea);
+            si.RegisterKnowledgeBase(kb);
 			return si;
 		}
 
@@ -182,10 +164,16 @@ namespace Tests.SocialImportance
 		[TestCase("Robot", null)]
 		public static void Test_Conferrals(string name, string expectedResult)
 		{
-			ASSET_TO_TEST.LinkedEA.Tell((Name)$"AskedDrink({name})",(Name)"true");
+			var n = new BeliefDTO()
+			{
+				Name = $"AskedDrink({name})",
+				Perspective = "Self",
+				Value = "true"
+			};
+			
+            ASSET_TO_TEST.LinkedKB.Tell((Name)n.Name,(Name)n.Value,(Name)n.Perspective);
 			var a = ASSET_TO_TEST.DecideConferral(Name.SELF_STRING);
-			ASSET_TO_TEST.LinkedEA.Tell((Name)$"AskedDrink({name})", Name.NIL_SYMBOL);
-
+			ASSET_TO_TEST.LinkedKB.Tell((Name)n.Name, null, (Name)n.Perspective); 
 			if (string.IsNullOrEmpty(expectedResult))
 			{
 				if(a==null)
@@ -195,7 +183,6 @@ namespace Tests.SocialImportance
 			}
 
 			var an = (Name)expectedResult;
-			
 			Assert.AreEqual(an, a.FullName);
 		}
 	}
