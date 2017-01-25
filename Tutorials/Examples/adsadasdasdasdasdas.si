@@ -1,0 +1,14 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"AttributionRules": [],
+			"Claims": [],
+			"Conferrals": []
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "SocialImportance.SocialImportanceAsset, SocialImportanceAsset, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

@@ -321,11 +321,17 @@ namespace RolePlayCharacter
 
             foreach (var e in events.Select(e => e.RemovePerspective(m_kb.Perspective)))
             {
+                if(Consts.ACTION_FINISHED_EVENT_PROTOTYPE.Match(e))
+                {
+                    
+                }
                 if (_currentAction != null)
                 {
-                    var currActName = _currentAction.ActionName.ToString();
-                    var currActTarget = _currentAction.ActionName.ToString();
-                    var match = EventHelper.ActionEnd(Name.SELF_STRING, currActName, currActTarget).Match(e);
+                    var currActName = _currentAction.FullName.ToString();
+                    var currActTarget = _currentAction.Target.ToString();
+                    var _event = EventHelper.ActionEnd(Name.SELF_STRING, currActName, currActTarget);
+                    _event = _event.RemovePerspective(m_kb.Perspective);
+                    var match = _event.Match(e);
                     if (match)
                         _currentAction = null;
                 }

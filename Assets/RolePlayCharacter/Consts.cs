@@ -12,5 +12,7 @@ namespace RolePlayCharacter
         public static readonly Name EVT_ROOT_NAME = Name.BuildName("Event");
         public static readonly Name ACTION_START_NAME = Name.BuildName("Action-Start");
         public static readonly Name ACTION_FINISHED_NAME = Name.BuildName("Action-Finished");
+        public static readonly Name ACTION_FINISHED_EVENT_PROTOTYPE = Name.BuildName("Event(Action-Finished,*,*,*)");
+        public static readonly Name ACTION_START_EVENT_PROTOTYPE = Name.BuildName("Event(Action-Start,*,*,*)");
     }
 }

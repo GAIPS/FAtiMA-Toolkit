@@ -124,7 +124,6 @@ namespace GAIPS.AssetEditorTools
 			saveAsToolStripMenuItem.Enabled = !newBool;
 
 			_getExternalAssetInstance = externalAssetResolver;
-			RequestAssetReload();
 		}
 
 		public void ReloadEditor()
@@ -415,63 +414,7 @@ namespace GAIPS.AssetEditorTools
 		#endregion
 
 		#region Protected Members
-
-		protected void RequestAssetReload()
-		{
-			if(IsLoading)
-				return;
-
-			T originalAsset;
-			MemoryStream backup = null;
-			DateTime writeDateBackup = DateTime.MinValue;
-			string path = null;
-			try
-			{
-				if (_wasModified)
-				{
-					path = GetAssetCurrentPath(CurrentAsset);
-					if (!string.IsNullOrEmpty(path))
-					{
-						backup = new MemoryStream();
-						using (var f = File.OpenRead(path))
-						{
-							f.CopyTo(backup);
-						}
-						writeDateBackup = File.GetLastWriteTimeUtc(path);
-						SaveAssetToFile(CurrentAsset,path);
-					}
-				}
-
-				if (IsEditingOutsideInstance)
-				{
-					originalAsset = _getExternalAssetInstance();
-				}
-				else if (CurrentAsset != null)
-				{
-					originalAsset = LoadAssetFromFile(CurrentAsset.AssetFilePath);
-				}
-				else
-					throw new Exception("No defined original asset to be loaded");
-			}
-			finally
-			{
-				if (!string.IsNullOrEmpty(path))
-				{
-					backup.Position = 0;
-					using (var f = File.OpenWrite(path))
-					{
-						backup.CopyTo(f);
-					}
-					File.SetLastWriteTimeUtc(path,writeDateBackup);
-					backup.Dispose();
-				}
-			}
-
-			CurrentAsset = originalAsset;
-
-			ReloadEditor();
-		}
-
+        
 		protected bool SaveAsset()
 		{
             var path = GetAssetCurrentPath(CurrentAsset);
