@@ -78,9 +78,9 @@ namespace AutobiographicMemory
 			var actionEvent = evt as ActionEventDTO;
 			if (actionEvent != null)
 			{
-				var state = (actionEvent.ActionState == ActionState.Start) ? "Action-Start" : "Action-Finished";
+				var state = (actionEvent.ActionState == ActionState.Start) ? AMConsts.ACTION_START : AMConsts.ACTION_END;
 				return Name.BuildName(
-					(Name)"Event",
+					(Name)AMConsts.EVENT,
 					(Name)state,
 					(Name)actionEvent.Subject,
 					(Name)actionEvent.Action,
@@ -91,8 +91,8 @@ namespace AutobiographicMemory
 			if (pcEvent != null)
 			{
 				return Name.BuildName(
-				(Name)"Event",
-				(Name)"Property-Change",
+				(Name)AMConsts.EVENT,
+				(Name)AMConsts.PROPERTY_CHANGE,
 				(Name)pcEvent.Subject,
 				(Name)pcEvent.Property,
 				(Name)pcEvent.NewValue);
@@ -142,8 +142,6 @@ namespace AutobiographicMemory
 			ids.Add(record.Id);
 		}
 
-		private static readonly Name EVT_NAME = (Name)"Event";
-
 		public static void AssertEventNameValidity(Name name)
 		{
 			if (name.NumberOfTerms != 5)
@@ -152,8 +150,8 @@ namespace AutobiographicMemory
 			if(!name.IsGrounded)
 				throw new Exception("A event name cannot contain variables");
 
-			if (name.GetNTerm(0) != EVT_NAME)
-				throw new Exception("The first term of an event name must be \"Event\"");
+			if (name.GetNTerm(0) != (Name)AMConsts.EVENT)
+				throw new Exception("The first term of an event name must be "+ AMConsts.EVENT);
 
 			if (name.GetNTerm(1).IsComposed)
 				throw new Exception("The second term of an event name cannot be a composed name.");
@@ -192,7 +190,7 @@ namespace AutobiographicMemory
 			if (!context.Perspective.Match(Name.SELF_SYMBOL))
 				yield break;
 			
-			var key = Name.BuildName(EVT_NAME, type, subject, def, target);
+			var key = Name.BuildName((Name)AMConsts.EVENT, type, subject, def, target);
 			foreach (var c in context.Constraints)
 			{
 				foreach (var pair in m_typeIndexes.Unify(key, c))
@@ -250,7 +248,7 @@ namespace AutobiographicMemory
 			if(!context.Perspective.Match(Name.SELF_SYMBOL))
 				yield break;
 
-			var key = Name.BuildName(EVT_NAME, type, subject, def, target);
+			var key = Name.BuildName((Name)AMConsts.EVENT, type, subject, def, target);
 
 			ulong min = ulong.MinValue;
 			var lastEvents = m_registry.Values.OrderByDescending(e => e.Timestamp).TakeWhile(e =>

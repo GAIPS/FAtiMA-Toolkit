@@ -13,7 +13,7 @@ namespace AutobiographicMemory
 			public static bool IsActionEvent(Name eventName)
             {
 	            var t = eventName.GetNTerm(1);
-				return t == Constants.ACTION_START_EVENT || t == Constants.ACTION_FINISHED_EVENT;
+				return t == (Name)AMConsts.ACTION_START || t == (Name)AMConsts.ACTION_END;
             }
 
 			public Name Action { get; private set; }
@@ -40,7 +40,7 @@ namespace AutobiographicMemory
 
 			protected override Name BuildEventName()
 			{
-				return Name.BuildName(EVT_NAME, (Name)Type, (Name)Subject, Action, (Name)Target);
+				return Name.BuildName((Name)AMConsts.EVENT, Type, Subject, Action, Target);
 			}
 
 			public override BaseEvent SwapPerspective(Name oldPerspective, Name newPerspective)

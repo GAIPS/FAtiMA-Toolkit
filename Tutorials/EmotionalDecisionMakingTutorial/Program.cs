@@ -37,7 +37,7 @@ namespace EmotionalDecisionMakingTutorial
             Console.WriteLine("Decisions: ");
             foreach (var a in actions)
             {
-                Console.WriteLine(a.FullName.ToString());
+                Console.WriteLine(a.Name.ToString());
             }
             
             //this is how you can load the asset from a file

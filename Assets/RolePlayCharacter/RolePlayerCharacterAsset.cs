@@ -14,21 +14,19 @@ using CommeillFaut;
 using AutobiographicMemory.DTOs;
 using SerializationUtilities;
 using GAIPS.Rage;
-using AssetPackage;
-using RolePlayCharacter;
-using EmotionalDecisionMaking.DTOs;
 
 namespace RolePlayCharacter
 {
     [Serializable]
     public sealed class RolePlayCharacterAsset : LoadableAsset<RolePlayCharacterAsset>, ICustomSerialization
     {
-
-
         private string m_emotionalAppraisalAssetSource = null;
         private string m_emotionalDecisionMakingAssetSource = null;
         private string m_socialImportanceAssetSource = null;
         private string m_commeillFautAssetSource = null;
+
+        private bool m_allowAuthoring; //This flag is used to prevent certain methods to be called
+                                            //when not editing the asset using the authoring tool
 
 		/// <summary>
         /// The name of the character
@@ -155,14 +153,11 @@ namespace RolePlayCharacter
 				m_commeillFautAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, m_commeillFautAssetSource));
         }
 
-
-        public void Initialize()
-        {
-            //Reset state
-            m_kb = new KB(m_kb.Perspective);
-            m_am = new AM();
-            m_emotionalState = new ConcreteEmotionalState();
-
+        /// <summary>
+        /// Loads the associated assets from the defined sources and prevents further authoring of the asset
+        /// </summary>
+        public void LoadAssociatedAssets()
+        {               
             EmotionalAppraisalAsset ea = Loader(m_emotionalAppraisalAssetSource, () => new EmotionalAppraisalAsset(this.CharacterName.ToString()));
             ea.SetPerspective(CharacterName.ToString());
             EmotionalDecisionMakingAsset edm = Loader(m_emotionalDecisionMakingAssetSource, () => new EmotionalDecisionMakingAsset());
@@ -188,6 +183,8 @@ namespace RolePlayCharacter
             BindToRegistry(m_kb);
             edm.RegisterKnowledgeBase(m_kb);
             si.RegisterKnowledgeBase(m_kb);
+
+            m_allowAuthoring = false;
         }
 
         private T Loader<T>(string path, Func<T> generateDefault) where T : LoadableAsset<T>
@@ -209,17 +206,18 @@ namespace RolePlayCharacter
         private AM m_am;
         private ConcreteEmotionalState m_emotionalState;
 
-	    private Dictionary<Name, AgentEntry> _knownAgents;
+	    private Dictionary<Name, AgentEntry> m_knownAgents;
 
         
         #endregion
 
         public RolePlayCharacterAsset()
         {
-            m_kb = new KB(Consts.DEFAULT_CHARACTER_NAME);
+            m_kb = new KB(RPCConsts.DEFAULT_CHARACTER_NAME);
             m_am = new AM();
             m_emotionalState = new ConcreteEmotionalState();
-			_knownAgents = new Dictionary<Name, AgentEntry>();
+            m_allowAuthoring = true;
+			m_knownAgents = new Dictionary<Name, AgentEntry>();
 			BindToRegistry(m_kb);
         }
 
@@ -250,6 +248,9 @@ namespace RolePlayCharacter
         /// <returns>The unique identifier associated to the event</returns>
         public uint AddEventRecord(EventDTO eventDTO)
         {
+            if (!m_allowAuthoring)
+                throw new Exception("This function is only available during authoring");
+
             return this.m_am.RecordEvent(eventDTO).Id;
         }
 
@@ -259,6 +260,9 @@ namespace RolePlayCharacter
         /// <param name="eventDTO">The dto containing the information regarding the event to update. The Id field of the dto must match the id of the event we want to update.</param>
         public void UpdateEventRecord(EventDTO eventDTO)
         {
+            if (!m_allowAuthoring)
+                throw new Exception("This function is only available during authoring");
+
             this.m_am.UpdateEvent(eventDTO);
         }
 		
@@ -331,38 +335,42 @@ namespace RolePlayCharacter
 
             foreach (var e in events.Select(e => e.RemoveSelfPerspective(m_kb.Perspective)))
             {
-                if(Consts.ACTION_START_EVENT_PROTOTYPE.Match(e))
+                if(RPCConsts.ACTION_START_EVENT_PROTOTYPE.Match(e))
                 {
                     var subject = e.GetNTerm(2);
+                    
                     if (subject == this.CharacterName)
                     {
                         CurrentActionName = e.GetNTerm(3);
                         CurrentActionTarget = e.GetNTerm(4);
                     }
+                    //Add agent
+                    this.AddKnownAgent(subject);
                 }
-                if (Consts.ACTION_FINISHED_EVENT_PROTOTYPE.Match(e))
+                if (RPCConsts.ACTION_END_EVENT_PROTOTYPE.Match(e))
                 {
                     var evt = EventHelper.ActionEnd(this.CharacterName.ToString(), CurrentActionName?.ToString(), CurrentActionTarget?.ToString());
                     if (evt.Match(e))
+                    {
                         CurrentActionName = null;
-                        CurrentActionTarget = null; 
-                }
-                else if (Consts.EVENT_MATCHING_AGENT_ADDED.Match(e))
-                {
-                    var n = e.GetNTerm(3);
-                    var n2 = m_kb.AskProperty(n);
-                    if (!_knownAgents.ContainsKey(n2))
-                        _knownAgents.Add(n2, new AgentEntry(n2));
-                }
-                else if (Consts.EVENT_MATCHING_AGENT_REMOVED.Match(e))
-                {
-                    var n = e.GetNTerm(3);
-                    var n2 = m_kb.AskProperty(n);
-                    _knownAgents.Remove(n2);
+                        CurrentActionTarget = null;
+                    }
+                    this.AddKnownAgent(e.GetNTerm(2));
                 }
             }
             m_emotionalAppraisalAsset.AppraiseEvents(events, m_emotionalState, m_am, m_kb);
         }
+
+        private void AddKnownAgent(Name agentName)
+        {
+            if (agentName != this.CharacterName)
+            {
+                var agentNameProperty = m_kb.AskProperty(agentName);
+                if (!m_knownAgents.ContainsKey(agentNameProperty))
+                    m_knownAgents.Add(agentNameProperty, new AgentEntry(agentNameProperty));
+            }
+        }
+
 
         /// <summary>
         /// Updates the character's internal state. Should be called once every game tick.
@@ -377,8 +385,8 @@ namespace RolePlayCharacter
 
 		private void BindToRegistry(IDynamicPropertiesRegistry registry)
         {
-            registry.RegistDynamicProperty(Consts.MOOD_PROPERTY_NAME, MoodPropertyCalculator);
-            registry.RegistDynamicProperty(Consts.STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator);
+            registry.RegistDynamicProperty(RPCConsts.MOOD_PROPERTY_NAME, MoodPropertyCalculator);
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator);
             registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator);
 			registry.RegistDynamicProperty(IS_AGENT_TEMPLATE,IsAgentPropertyCalculator);
             m_am.BindToRegistry(registry);
@@ -522,7 +530,7 @@ namespace RolePlayCharacter
 
 			if (x.IsVariable)
 			{
-				foreach (var s in _knownAgents.Keys.Select(n => new Substitution(x, n)))
+				foreach (var s in m_knownAgents.Keys.Select(n => new Substitution(x, n)))
 				{
 					foreach (var set in context.Constraints)
 					{
@@ -537,7 +545,7 @@ namespace RolePlayCharacter
 
 			foreach (var prop in context.AskPossibleProperties(x))
 			{
-				if (_knownAgents.ContainsKey(prop.Item1))
+				if (m_knownAgents.ContainsKey(prop.Item1))
 				{
 					foreach (var p in prop.Item2)
 					{
@@ -567,6 +575,8 @@ namespace RolePlayCharacter
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
+            m_allowAuthoring = true;
+            m_knownAgents = new Dictionary<Name, AgentEntry>();
             m_kb = dataHolder.GetValue<KB>("KnowledgeBase");
             this.BodyName = dataHolder.GetValue<string>("BodyName");
             this.VoiceName = dataHolder.GetValue<string>("VoiceName");

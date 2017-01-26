@@ -189,7 +189,7 @@ namespace SocialImportance
 			foreach (var a in actionsToFilter)
 			{
 				uint minSI;
-				if (m_claimTree.TryGetValue(a.FullName, out minSI))
+				if (m_claimTree.TryGetValue(a.Name, out minSI))
 					if (internal_GetSocialImportance(a.Target, perspective) < minSI)
 						continue;
 

@@ -17,7 +17,7 @@ namespace IntegratedAuthoringToolTutorial
             //Loading the asset
             var iat = IntegratedAuthoringToolAsset.LoadFromFile("/../../../Examples/IATTest.iat");
 	        var rpc = RolePlayCharacterAsset.LoadFromFile(iat.GetAllCharacterSources().FirstOrDefault().Source);
-            rpc.Initialize();
+            rpc.LoadAssociatedAssets();
             iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
 
             var eventStr = "Event(Action-Finished, Player, Kick, Client)";
@@ -40,7 +40,7 @@ namespace IntegratedAuthoringToolTutorial
                 return;
             }
 
-            Console.WriteLine("Selected Action: " + a.ActionName);
+            Console.WriteLine("Selected Action: " + a.Key);
             Console.WriteLine("Parameters: ");
             foreach (var p in a.Parameters)
             {

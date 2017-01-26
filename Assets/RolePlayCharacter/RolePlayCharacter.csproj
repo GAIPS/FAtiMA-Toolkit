@@ -38,7 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AgentEntry.cs" />
-    <Compile Include="Consts.cs" />
+    <Compile Include="RPCConsts.cs" />
     <Compile Include="EventHelper.cs" />
     <Compile Include="RolePlayerCharacterAsset.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

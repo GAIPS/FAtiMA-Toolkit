@@ -14,7 +14,7 @@ namespace RolePlayCharacterWF.ViewModels
 
         public BindingListView<EventDTO> Events {get;}
 
-		public static readonly string[] EventTypes = { Constants.ACTION_START_EVENT.ToString(),Constants.ACTION_FINISHED_EVENT.ToString(), Constants.PROPERTY_CHANGE_EVENT.ToString() };
+		public static readonly string[] EventTypes = { AMConsts.ACTION_START, AMConsts.ACTION_END, AMConsts.PROPERTY_CHANGE };
 
 		public AutobiographicalMemoryVM(BaseRPCForm form)
 		{

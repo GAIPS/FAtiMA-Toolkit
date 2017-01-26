@@ -183,7 +183,7 @@ namespace Tests.SocialImportance
 			}
 
 			var an = (Name)expectedResult;
-			Assert.AreEqual(an, a.FullName);
+			Assert.AreEqual(an, a.Name);
 		}
 	}
 }

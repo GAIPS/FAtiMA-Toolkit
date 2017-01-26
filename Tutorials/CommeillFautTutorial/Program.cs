@@ -20,7 +20,7 @@ namespace CommeillFautTutorial
             n.AddExchange(compliment);
 
 	        var rpc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/john.rpc");
-            rpc.Initialize();
+            rpc.LoadAssociatedAssets();
 
 			Console.WriteLine(rpc.CharacterName);
 

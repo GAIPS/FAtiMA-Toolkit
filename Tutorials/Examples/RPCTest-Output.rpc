@@ -22,8 +22,18 @@
 			"CommeillFautAssetSource": null,
 			"EmotionalState":
 				{
-					"Mood": 0,
-					"EmotionalPool": [],
+					"Mood": 1.77,
+					"EmotionalPool": [
+						{
+							"Intensity": 4.1,
+							"Decay": 1,
+							"Threshold": 1,
+							"CauseId": 1,
+							"EmotionType": "Distress",
+							"Valence": "Negative",
+							"AppraisalVariables": ["DESIRABILITY"],
+							"InfluenceMood": true
+						}],
 					"AppraisalConfiguration":
 						{
 							"HalfLifeDecayConstant": 0.5,
@@ -40,12 +50,31 @@
 					"records": [
 						{
 							"classId": 0,
-							"Id": 0,
-							"Type": "Action-Finished",
+							"Id": 1,
+							"Type": "Action-End",
 							"Subject": "Player",
 							"Timestamp": 0,
+							"LinkedEmotions": ["Distress"],
 							"Action": "Kick",
 							"Target": "Sam"
+						}, 
+						{
+							"classId": 0,
+							"Id": 2,
+							"Type": "Action-Start",
+							"Subject": "Sam",
+							"Timestamp": 0,
+							"Action": "Hug",
+							"Target": "Player"
+						}, 
+						{
+							"classId": 0,
+							"Id": 3,
+							"Type": "Action-End",
+							"Subject": "Sam",
+							"Timestamp": 0,
+							"Action": "Hug",
+							"Target": "Player"
 						}]
 				}
 		},
