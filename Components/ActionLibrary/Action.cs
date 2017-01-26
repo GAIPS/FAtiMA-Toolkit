@@ -5,7 +5,7 @@ using WellFormedNames;
 
 namespace ActionLibrary
 {
-	internal class Action : IAction
+	public class Action : IAction
 	{
 		public Name ActionName { get;}
 		public Name Target { get;}

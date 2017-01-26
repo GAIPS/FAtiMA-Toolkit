@@ -24,10 +24,10 @@ namespace IntegratedAuthoringToolTutorial
             Console.WriteLine("The name of the character loaded is: " + rpc.CharacterName);
             Console.WriteLine("Mood: " + rpc.Mood);
             Console.WriteLine("Strongest emotion: " + rpc.GetStrongestActiveEmotion()?.EmotionType + "-" + rpc.GetStrongestActiveEmotion()?.Intensity);
-            var action = rpc.PerceptionActionLoop(new[] { (Name)("Event(Action-Start,Player,Start,-)") });
+            var action = rpc.PerceptionActionLoop(new[] { (Name)("Event(Action-Start,Player,Start,-)") }).FirstOrDefault();
             WriteAction(action);
             Console.WriteLine();
-            WriteAction(rpc.PerceptionActionLoop(new[] { (Name)("Event(Action-Start,Player,Start,-)") }));
+            WriteAction(rpc.PerceptionActionLoop(new[] { (Name)("Event(Action-Start,Player,Start,-)") }).FirstOrDefault());
 			
             Console.ReadKey();
         }

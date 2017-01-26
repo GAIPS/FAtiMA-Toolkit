@@ -36,7 +36,7 @@ namespace EmotionalAppraisal.AppraisalRules
 		
 		public AppraisalRule Evaluate(IBaseEvent evt, IQueryable kb, Name perspective)
 		{
-            var eventInPerspective = evt.EventName.ApplyPerspective(perspective);
+            var eventInPerspective = evt.EventName.ApplySelfPerspective(perspective);
             foreach (var possibleAppraisals in Rules.Unify(eventInPerspective))
 			{
 				var conditions = new[] {possibleAppraisals.Item2};
@@ -176,7 +176,7 @@ namespace EmotionalAppraisal.AppraisalRules
 
 			if (desirability != 0 || praiseworthiness != 0)
 			{
-				var eventName = frame.AppraisedEvent.EventName.ApplyPerspective((Name)emotionalModule.Perspective);
+				var eventName = frame.AppraisedEvent.EventName.ApplySelfPerspective((Name)emotionalModule.Perspective);
 				AppraisalRule r = new AppraisalRule(eventName,null);
 				r.Desirability = desirability;
 				r.Praiseworthiness = praiseworthiness;

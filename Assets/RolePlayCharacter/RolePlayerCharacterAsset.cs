@@ -16,6 +16,7 @@ using SerializationUtilities;
 using GAIPS.Rage;
 using AssetPackage;
 using RolePlayCharacter;
+using EmotionalDecisionMaking.DTOs;
 
 namespace RolePlayCharacter
 {
@@ -56,6 +57,16 @@ namespace RolePlayCharacter
             get { return m_am.Tick; }
             set { m_am.Tick = value; }
         }
+
+        /// <summary>
+		/// The name of the action that the character is currently executing
+		/// </summary>
+		public Name CurrentActionName { get; set; }
+
+        /// <summary>
+        /// The target of the action that the character is currently executing
+        /// </summary>
+        public Name CurrentActionTarget { get; set; }
 
         /// <summary>
 	    /// The emotional mood of the agent, which can vary from -10 to 10
@@ -200,8 +211,7 @@ namespace RolePlayCharacter
 
 	    private Dictionary<Name, AgentEntry> _knownAgents;
 
-        private IAction _currentAction = null;
-
+        
         #endregion
 
         public RolePlayCharacterAsset()
@@ -299,41 +309,43 @@ namespace RolePlayCharacter
         /// <param name="events">A list of new events that occurred since the last call to this method. Each event must be represented by a well formed name with the following format "EVENT([type], [subject], [param1], [param2])". 
         /// For illustration purposes here are some examples: EVENT(Property-Change, John, CurrentRole(Customer), False) ; EVENT(Action-Finished, John, Open, Box)</param>
         /// <returns>The action selected for execution or "null" otherwise</returns>
-        public IAction PerceptionActionLoop(IEnumerable<Name> events)
+        public IEnumerable<IAction> PerceptionActionLoop(IEnumerable<Name> events)
         {
             InternalEventAppraisal(events);
-			if (_currentAction != null)
-                return null;
+            
+            if (CurrentActionName != null)
+                return new IAction[] { new ActionLibrary.Action(new Name[] { (Name)"Busy", CurrentActionName }, CurrentActionTarget) };
 
             var possibleActions = m_emotionalDecisionMakingAsset.Decide();
             var sociallyAcceptedActions = m_socialImportanceAsset.FilterActions(Name.SELF_STRING, possibleActions);
             var conferralAction = m_socialImportanceAsset.DecideConferral(Name.SELF_STRING);
             if (conferralAction != null)
                 sociallyAcceptedActions = sociallyAcceptedActions.Append(conferralAction);
-
-            _currentAction = TakeBestActions(sociallyAcceptedActions).Shuffle().FirstOrDefault();
-            return _currentAction;
+            
+            return TakeBestActions(sociallyAcceptedActions).Shuffle();
         }
 
         private void InternalEventAppraisal(IEnumerable<Name> events)
         {
             m_socialImportanceAsset.InvalidateCachedSI();
 
-            foreach (var e in events.Select(e => e.RemovePerspective(m_kb.Perspective)))
+            foreach (var e in events.Select(e => e.RemoveSelfPerspective(m_kb.Perspective)))
             {
-                if(Consts.ACTION_FINISHED_EVENT_PROTOTYPE.Match(e))
+                if(Consts.ACTION_START_EVENT_PROTOTYPE.Match(e))
                 {
-                    
+                    var subject = e.GetNTerm(2);
+                    if (subject == this.CharacterName)
+                    {
+                        CurrentActionName = e.GetNTerm(3);
+                        CurrentActionTarget = e.GetNTerm(4);
+                    }
                 }
-                if (_currentAction != null)
+                if (Consts.ACTION_FINISHED_EVENT_PROTOTYPE.Match(e))
                 {
-                    var currActName = _currentAction.FullName.ToString();
-                    var currActTarget = _currentAction.Target.ToString();
-                    var _event = EventHelper.ActionEnd(Name.SELF_STRING, currActName, currActTarget);
-                    _event = _event.RemovePerspective(m_kb.Perspective);
-                    var match = _event.Match(e);
-                    if (match)
-                        _currentAction = null;
+                    var evt = EventHelper.ActionEnd(this.CharacterName.ToString(), CurrentActionName?.ToString(), CurrentActionTarget?.ToString());
+                    if (evt.Match(e))
+                        CurrentActionName = null;
+                        CurrentActionTarget = null; 
                 }
                 else if (Consts.EVENT_MATCHING_AGENT_ADDED.Match(e))
                 {

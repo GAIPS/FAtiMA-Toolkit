@@ -211,7 +211,7 @@ namespace EmotionalAppraisal
 			var APPRAISAL_FRAME = new InternalAppraisalFrame();
 			foreach (var n in eventNames)
 			{
-				var evtN = n.RemovePerspective((Name)Perspective);
+				var evtN = n.RemoveSelfPerspective((Name)Perspective);
 				
                 var evt = am.RecordEvent(evtN, am.Tick);
 				var propEvt = evt as IPropertyChangedEvent;
