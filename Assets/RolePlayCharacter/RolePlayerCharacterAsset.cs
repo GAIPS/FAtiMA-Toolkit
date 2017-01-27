@@ -365,9 +365,8 @@ namespace RolePlayCharacter
         {
             if (agentName != this.CharacterName)
             {
-                var agentNameProperty = m_kb.AskProperty(agentName);
-                if (!m_knownAgents.ContainsKey(agentNameProperty))
-                    m_knownAgents.Add(agentNameProperty, new AgentEntry(agentNameProperty));
+                if (!m_knownAgents.ContainsKey(agentName))
+                    m_knownAgents.Add(agentName, new AgentEntry(agentName));
             }
         }
 

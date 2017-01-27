@@ -25,19 +25,19 @@ namespace RolePlayCharacterTutorial
             Console.WriteLine("The following event was perceived: " + event1);
             Console.WriteLine("Mood after event: " + rpc.Mood);
             Console.WriteLine("Strongest emotion: " + rpc.GetStrongestActiveEmotion()?.EmotionType + "-" + rpc.GetStrongestActiveEmotion()?.Intensity);
-            Console.WriteLine("First Response: " + action?.Name);
+            Console.WriteLine("First Response: " + action?.Name + ", Target:" + action?.Target.ToString());
 
-            var event2 = EventHelper.ActionStart(rpc.CharacterName.ToString(), action.Name.ToString(), "Player");
+            var event2 = EventHelper.ActionStart(rpc.CharacterName.ToString(), action?.Name.ToString(), "Player");
 
             var busyAction = rpc.PerceptionActionLoop(new[] { event2 }).FirstOrDefault();
 
-            Console.WriteLine("Second Response: " + busyAction?.Name);
+            Console.WriteLine("Second Response: " + busyAction?.Name + ", Target:" + action?.Target.ToString());
 
-            var event3 = EventHelper.ActionEnd(rpc.CharacterName.ToString(), action.Name.ToString(), "Player");
+            var event3 = EventHelper.ActionEnd(rpc.CharacterName.ToString(), action?.Name.ToString(), "Player");
 
             action = rpc.PerceptionActionLoop(new[] { event3 }).FirstOrDefault();
 
-            Console.WriteLine("Third Response: " + action?.Name);
+            Console.WriteLine("Third Response: " + action?.Name +", Target:" + action?.Target.ToString());
 
             rpc.SaveToFile("../../../Examples/RPCTest-Output.rpc");
             Console.ReadKey();

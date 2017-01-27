@@ -14,10 +14,10 @@
    			}, 
 				{
 					"Action": "Insult",
-					"Target": "Player",
+					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["Mood(SELF) < 0"]
+							"Set": ["Mood(SELF) < 0", "IsAgent([x]) = True"]
 						}
 				}, 
 				{

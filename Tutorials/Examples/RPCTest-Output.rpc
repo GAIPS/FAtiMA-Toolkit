@@ -22,10 +22,10 @@
 			"CommeillFautAssetSource": null,
 			"EmotionalState":
 				{
-					"Mood": 1.77,
+					"Mood": -1.5,
 					"EmotionalPool": [
 						{
-							"Intensity": 4.1,
+							"Intensity": 5,
 							"Decay": 1,
 							"Threshold": 1,
 							"CauseId": 1,
@@ -64,7 +64,7 @@
 							"Type": "Action-Start",
 							"Subject": "Sam",
 							"Timestamp": 0,
-							"Action": "Hug",
+							"Action": "Insult",
 							"Target": "Player"
 						}, 
 						{
@@ -73,7 +73,7 @@
 							"Type": "Action-End",
 							"Subject": "Sam",
 							"Timestamp": 0,
-							"Action": "Hug",
+							"Action": "Insult",
 							"Target": "Player"
 						}]
 				}
