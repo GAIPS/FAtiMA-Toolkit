@@ -205,9 +205,7 @@ namespace RolePlayCharacter
         private KB m_kb;
         private AM m_am;
         private ConcreteEmotionalState m_emotionalState;
-
-	    private Dictionary<Name, AgentEntry> m_knownAgents;
-
+        private Dictionary<Name, AgentEntry> m_otherAgents;
         
         #endregion
 
@@ -217,7 +215,7 @@ namespace RolePlayCharacter
             m_am = new AM();
             m_emotionalState = new ConcreteEmotionalState();
             m_allowAuthoring = true;
-			m_knownAgents = new Dictionary<Name, AgentEntry>();
+			m_otherAgents = new Dictionary<Name, AgentEntry>();
 			BindToRegistry(m_kb);
         }
 
@@ -365,8 +363,8 @@ namespace RolePlayCharacter
         {
             if (agentName != this.CharacterName)
             {
-                if (!m_knownAgents.ContainsKey(agentName))
-                    m_knownAgents.Add(agentName, new AgentEntry(agentName));
+                if (!m_otherAgents.ContainsKey(agentName))
+                    m_otherAgents.Add(agentName, new AgentEntry(agentName));
             }
         }
 
@@ -529,7 +527,7 @@ namespace RolePlayCharacter
 
 			if (x.IsVariable)
 			{
-				foreach (var s in m_knownAgents.Keys.Select(n => new Substitution(x, n)))
+				foreach (var s in m_otherAgents.Keys.Select(n => new Substitution(x, n)))
 				{
 					foreach (var set in context.Constraints)
 					{
@@ -544,7 +542,7 @@ namespace RolePlayCharacter
 
 			foreach (var prop in context.AskPossibleProperties(x))
 			{
-				if (m_knownAgents.ContainsKey(prop.Item1))
+				if (m_otherAgents.ContainsKey(prop.Item1))
 				{
 					foreach (var p in prop.Item2)
 					{
@@ -570,12 +568,13 @@ namespace RolePlayCharacter
             dataHolder.SetValue("CommeillFautAssetSource", this.m_commeillFautAssetSource);
             dataHolder.SetValue("EmotionalState", m_emotionalState);
             dataHolder.SetValue("AutobiographicMemory", m_am);
+            dataHolder.SetValue("OtherAgents", m_otherAgents);
         }
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             m_allowAuthoring = true;
-            m_knownAgents = new Dictionary<Name, AgentEntry>();
+
             m_kb = dataHolder.GetValue<KB>("KnowledgeBase");
             this.BodyName = dataHolder.GetValue<string>("BodyName");
             this.VoiceName = dataHolder.GetValue<string>("VoiceName");
@@ -585,6 +584,8 @@ namespace RolePlayCharacter
             this.m_commeillFautAssetSource = dataHolder.GetValue<string>("CommeillFautAssetSource");
             m_emotionalState = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
             m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
+            m_otherAgents = dataHolder.GetValue<Dictionary<Name, AgentEntry>>("OtherAgents");
+            if(m_otherAgents == null) { m_otherAgents = new Dictionary<Name, AgentEntry>(); }
             BindToRegistry(m_kb);
         }
 

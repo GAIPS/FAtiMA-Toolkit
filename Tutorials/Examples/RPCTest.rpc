@@ -30,10 +30,34 @@
 							"MoodHalfLifeDecayTime": 60
 						}
 				},
-			"AutobiographicMemory":
+      "AutobiographicMemory": {
+        "Tick": 0,
+        "records": [ ]
+      },
+      "OtherAgents":
 				{
-					"Tick": 0,
-					"records": []
+					"dictionary": [
+						{
+							"key": "Player",
+							"value":
+								{
+									"Name": "Player",
+									"EmotionalState":
+										{
+											"Mood": 0,
+											"EmotionalPool": [],
+											"AppraisalConfiguration":
+												{
+													"HalfLifeDecayConstant": 0.5,
+													"EmotionInfluenceOnMoodFactor": 0.3,
+													"MoodInfluenceOnEmotionFactor": 0.3,
+													"MinimumMoodValueForInfluencingEmotions": 0.5,
+													"EmotionalHalfLifeDecayTime": 15,
+													"MoodHalfLifeDecayTime": 60
+												}
+										}
+								}
+						}]
 				}
 		},
 	"types": [
