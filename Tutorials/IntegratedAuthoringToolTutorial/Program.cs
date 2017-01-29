@@ -15,8 +15,9 @@ namespace IntegratedAuthoringToolTutorial
             AssetManager.Instance.Bridge = new BasicIOBridge();
          
             //Loading the asset
-            var iat = IntegratedAuthoringToolAsset.LoadFromFile("/../../../Examples/IATTest.iat");
-	        var rpc = RolePlayCharacterAsset.LoadFromFile(iat.GetAllCharacterSources().FirstOrDefault().Source);
+            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/IATTest.iat");
+
+            var rpc = RolePlayCharacterAsset.LoadFromFile(iat.GetAllCharacterSources().FirstOrDefault().Source);
             rpc.LoadAssociatedAssets();
             iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
 
