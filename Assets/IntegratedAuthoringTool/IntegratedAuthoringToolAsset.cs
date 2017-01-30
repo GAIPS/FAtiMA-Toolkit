@@ -19,13 +19,6 @@ namespace IntegratedAuthoringTool
     [Serializable]
     public class IntegratedAuthoringToolAsset : LoadableAsset<IntegratedAuthoringToolAsset>, ICustomSerialization
     {
-		public static readonly string INITIAL_DIALOGUE_STATE = "Start";
-        public static readonly string TERMINAL_DIALOGUE_STATE = "End";
-        public static readonly string PLAYER = "Player";
-        public static readonly string AGENT = "Agent";
-
-        private static readonly string TTSGenerationPrefix = "TTS-";
-
         private DialogActionDictionary m_playerDialogues;
 		private DialogActionDictionary m_agentDialogues;
         private IList<CharacterSourceDTO> m_characterSources;
@@ -70,7 +63,7 @@ namespace IntegratedAuthoringTool
             var bytes = Encoding.UTF8.GetBytes(utterance);
             var utteranceId = BitConverter.ToString(MD5.Create().ComputeHash(bytes));
             utteranceId = utteranceId.Replace("-", string.Empty);
-            return TTSGenerationPrefix + utteranceId;
+            return IATConsts.TTS_PREFIX + utteranceId;
         }
 
         /// <summary>
@@ -124,7 +117,7 @@ namespace IntegratedAuthoringTool
 		public void EditPlayerDialogAction(DialogueStateActionDTO dialogueStateActionToEdit, DialogueStateActionDTO newDialogueAction)
 		{
 			this.AddPlayerDialogAction(newDialogueAction);
-			this.RemoveDialogueActions(PLAYER, new[] { dialogueStateActionToEdit });
+			this.RemoveDialogueActions(IATConsts.PLAYER, new[] { dialogueStateActionToEdit });
 		}
 
 
@@ -144,7 +137,7 @@ namespace IntegratedAuthoringTool
         public void EditAgentDialogAction(DialogueStateActionDTO dialogueStateActionToEdit, DialogueStateActionDTO newDialogueAction)
 		{
             this.AddAgentDialogAction(newDialogueAction);
-			this.RemoveDialogueActions(AGENT, new[] { dialogueStateActionToEdit });
+			this.RemoveDialogueActions(IATConsts.AGENT, new[] { dialogueStateActionToEdit });
 		}
 
 	    public DialogueStateActionDTO GetDialogActionById(string speaker, Guid id)
@@ -152,21 +145,44 @@ namespace IntegratedAuthoringTool
 		    return SelectDialogActionList(speaker).GetDialogById(id).ToDTO();
 	    }
 
-		/// <summary>
-		/// Retrives a list containing all the dialogue actions for the player or the agents filtered by a specific state.
-		/// </summary>
-		/// <param name="speaker">Either "Player" or "Agent".</param>
-		/// <param name="state">Works as a filter for the state. </param>
-		public IEnumerable<DialogueStateActionDTO> GetDialogueActionsByState(string speaker, string currentState)
+        public Name BuildSpeakActionName(string speaker, Guid id)
+        {
+            var dialogue = new DialogStateAction(GetDialogActionById(speaker, id));
+          
+            var speakAction = string.Format(IATConsts.DIALOG_ACTION_KEY + "({0},{1},{2},{3})",
+                dialogue.CurrentState, dialogue.NextState, 
+                DialogStateAction.PackageList((Name)IATConsts.MEANINGS_PACKAGING_NAME, dialogue.Meanings),
+                DialogStateAction.PackageList((Name)IATConsts.STYLES_PACKAGING_NAME, dialogue.Styles));
+            return (Name)speakAction; 
+        }
+
+        public DialogueStateActionDTO GetDialogueAction(string speaker, Name currentState, Name nextState, Name meaning, Name style)
+        {
+            var dialogList = SelectDialogActionList(speaker);
+            var action = dialogList.Where(d => d.CurrentState == currentState &&
+                                               d.NextState == nextState &&
+                                               DialogStateAction.PackageList((Name)IATConsts.MEANINGS_PACKAGING_NAME, d.Meanings) == meaning &&
+                                               DialogStateAction.PackageList((Name)IATConsts.STYLES_PACKAGING_NAME, d.Styles) == style).FirstOrDefault();
+            return action.ToDTO();
+        }
+
+
+        /// <summary>
+        /// Retrives a list containing all the dialogue actions for the player or the agents filtered by a specific state.
+        /// </summary>
+        /// <param name="speaker">Either "Player" or "Agent".</param>
+        /// <param name="state">Works as a filter for the state. </param>
+        public IEnumerable<DialogueStateActionDTO> GetDialogueActionsByState(string speaker, string currentState)
 		{
 			var dialogList = SelectDialogActionList(speaker);
             return dialogList.Select(d => d.ToDTO()).Where(d => d.CurrentState == currentState);
 		}
 
-        public IEnumerable<DialogueStateActionDTO> GetDialogueActionssBySpeaker(string speaker)
+        public IEnumerable<DialogueStateActionDTO> GetDialogueActionsBySpeaker(string speaker)
         {
             return SelectDialogActionList(speaker).Select(d => d.ToDTO());
         }
+        
 
         /// <summary>
         /// Removes a list of dialogue actions for either the player or the agent.
@@ -192,12 +208,12 @@ namespace IntegratedAuthoringTool
         /// <param name="speaker">Either "Player" or "Agent"</param>
         private DialogActionDictionary SelectDialogActionList(string speaker)
         {
-            if (speaker != AGENT && speaker != PLAYER)
+            if (speaker != IATConsts.AGENT && speaker != IATConsts.PLAYER)
             {
                 throw new Exception("Invalid Speaker");
             }
 
-            if (speaker == AGENT)
+            if (speaker == IATConsts.AGENT)
                 return m_agentDialogues;
             else
                 return m_playerDialogues;
@@ -218,8 +234,8 @@ namespace IntegratedAuthoringTool
 			if (!context.Perspective.Match(Name.SELF_SYMBOL))
 				return Enumerable.Empty<DynamicPropertyResult>();
 
-			var key = DialogStateAction.BuildSpeakAction(currentState, nextState, meaning, style);
-			return context.Constraints.SelectMany(c => m_agentDialogues.GetAllDialogsForKey(key,c)).Select(p => new DynamicPropertyResult(Name.BuildName(true), p.Item2));
+			var key = DialogStateAction.BuildSpeakAction(currentState, nextState, new Name[] { meaning },new Name[] { style });
+     		return context.Constraints.SelectMany(c => m_agentDialogues.GetAllDialogsForKey(key,c)).Select(p => new DynamicPropertyResult(Name.BuildName(true), p.Item2));
 		}
 
 		#endregion
@@ -252,7 +268,7 @@ namespace IntegratedAuthoringTool
                 //start with the generation prefix
                 foreach (var d in agentDialogues)
                 {
-                    if(d.UtteranceId == null || d.UtteranceId.StartsWith(TTSGenerationPrefix))
+                    if(d.UtteranceId == null || d.UtteranceId.StartsWith(IATConsts.TTS_PREFIX))
                     {
                         d.UtteranceId = GenerateUtteranceId(d.Utterance);
                     }

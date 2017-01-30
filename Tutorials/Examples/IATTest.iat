@@ -9,8 +9,8 @@
 				{
 					"CurrentState": "Start",
 					"NextState": "S2",
-					"Meaning": [],
-					"Style": [],
+					"Meaning": ["M1", "M2"],
+					"Style": ["S1"],
 					"Utterance": "Hi"
 				}],
 			"AgentDialogues": [
