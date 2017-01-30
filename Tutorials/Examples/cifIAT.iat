@@ -4,7 +4,90 @@
 			"classId": 0,
 			"ScenarioName": "CifScenario",
 			"Description": "Testing the new cif dialogue combination",
-			"CharacterSources": ["Mary.rpc", "Peter.rpc"]
+			"CharacterSources": ["Mary.rpc", "Peter.rpc", "Kate.rpc"],
+			"PlayerDialogues": [
+				{
+					"CurrentState": "RespondFlirt",
+					"NextState": "End",
+					"Meaning": [],
+					"Style": ["Positive"],
+					"Utterance": "Thank you! so are you.."
+				}, 
+				{
+					"CurrentState": "StartFlirt",
+					"NextState": "RespondFlirt",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "Hello, you are so pretty"
+				}, 
+				{
+					"CurrentState": "RespondCompliment",
+					"NextState": "End",
+					"Meaning": ["-"],
+					"Style": ["Positive"],
+					"Utterance": "Thank you! so are you.."
+				}, 
+				{
+					"CurrentState": "End",
+					"NextState": "Start",
+					"Meaning": [],
+					"Style": [],
+					"Utterance": "Goodbye then!"
+				}, 
+				{
+					"CurrentState": "StartCompliment",
+					"NextState": "RespondCompliment",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "Hello, you are so niceee"
+				}, 
+				{
+					"CurrentState": "Start",
+					"NextState": "StartFlirt",
+					"Meaning": [],
+					"Style": [],
+					"Utterance": "Hi!"
+				}, 
+				{
+					"CurrentState": "Start",
+					"NextState": "StartCompliment",
+					"Meaning": [],
+					"Style": [],
+					"Utterance": "Alo alo?"
+				}],
+			"AgentDialogues": [
+				{
+					"CurrentState": "StartFlirt",
+					"NextState": "RespondFlirt",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "You are so beautiful",
+					"UtteranceId": "TTS-39C4A1305DAECEC070E5BD83EE46EE2C"
+				}, 
+				{
+					"CurrentState": "RespondFlirt",
+					"NextState": "End",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "Ay lmao",
+					"UtteranceId": "TTS-AB4B060EE55E10F852F14D7E0160FD3B"
+				}, 
+				{
+					"CurrentState": "StartCompliment",
+					"NextState": "RespondCompliment",
+					"Meaning": [],
+					"Style": [],
+					"Utterance": "suuuup",
+					"UtteranceId": "TTS-D511D82F82E341D66C638AC97416D8CA"
+				}, 
+				{
+					"CurrentState": "RespondCompliment",
+					"NextState": "End",
+					"Meaning": ["-"],
+					"Style": ["-"],
+					"Utterance": "Ay lmao",
+					"UtteranceId": "TTS-AB4B060EE55E10F852F14D7E0160FD3B"
+				}]
 		},
 	"types": [
 		{

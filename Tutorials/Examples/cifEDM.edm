@@ -5,38 +5,49 @@
 			"DefaultActionPriority": 2,
 			"ActionTendencies": [
 				{
-					"Action": "Speak(RespondFlirt, End, *, *)",
+					"Action": "Speak(RespondFlirt, End,-,-)",
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["DialogueState([x]) = RespondFlirt"]
+							"Set": ["DialogueState([x]) = RespondFlirt", "HasFloor(SELF)=true"]
 						},
-					"Priority": 0
+					"Priority": 1
 				}, 
 				{
-					"Action": "Speak(RespondCompliment, End, *, *)",
+					"Action": "Speak(RespondCompliment, End,-,-)",
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["DialogueState([x]) = RespondCompliment"]
+							"Set": ["DialogueState([x]) = RespondCompliment","HasFloor(SELF)=true"]
 						},
-					"Priority": 0
+					"Priority": 1
 				}, 
 				{
-					"Action": "Speak(StartFlirt, RespondFlirt, *, *)",
+					"Action": "Speak(StartFlirt, RespondFlirt,-,-)",
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["Volition(Flirt, SELF, [x]) > 0"]
+							"Set": ["Volition(Flirt, SELF, [x]) > 0", "DialogueState([x]) = Start","HasFloor(SELF)=true"]
+							
 						},
 					"Priority": 0
-				}, 
-				{
-					"Action": "Speak(StartCompliment, RespondCompliment, *, *)",
+				},
+{
+					"Action": "Speak(End, Start,-,-)",
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["Volition(Compliment, SELF, [x]) > 0"]
+							"Set": ["DialogueState([x]) = End","HasFloor(SELF)=true"]
+							
+						},
+					"Priority": 2
+				},				
+				{
+					"Action": "Speak(StartCompliment, RespondCompliment,-,-)",
+					"Target": "[x]",
+					"Conditions":
+						{
+							"Set": ["Volition(Compliment, SELF, [x]) > 0","DialogueState([x]) = Start","HasFloor(SELF)=true"]
 						},
 					"Priority": 0
 				}]

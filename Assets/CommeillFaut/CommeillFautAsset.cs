@@ -65,15 +65,34 @@ namespace CommeillFaut
             InvalidateCachedCIF();
         }
 
+        #region Dynamic Properties
+
         public void BindToRegistry(IDynamicPropertiesRegistry registry)
         {
             registry.RegistDynamicProperty(CIF_DYNAMIC_PROPERTY_NAME, CIFPropertyCalculator);
+            registry.RegistDynamicProperty(VOLITION_PROPERTY_TEMPLATE, ValidDialogPropertyCalculator);
+        }
+
+       
+
+        private static readonly Name VOLITION_PROPERTY_TEMPLATE = (Name)"Volition";
+
+        private IEnumerable<DynamicPropertyResult> ValidDialogPropertyCalculator(IQueryContext context, Name currentState, Name nextState, Name meaning, Name style)
+        {
+            if (!context.Perspective.Match(Name.SELF_SYMBOL))
+                return Enumerable.Empty<DynamicPropertyResult>();
+
+       /*     var key = DialogStateAction.BuildSpeakAction(currentState, nextState, meaning, style);*/
+          //  return context.Constraints.SelectMany(c => m_agentDialogues.GetAllDialogsForKey(key, c)).Select(p => new DynamicPropertyResult(Name.BuildName(true), p.Item2));
+          return new DynamicPropertyResult[10];
         }
 
         public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
         {
             registry.UnregistDynamicProperty((Name)"cif([target])");
         }
+
+        #endregion
 
         private void ValidateEALink()
         {
@@ -376,8 +395,7 @@ namespace CommeillFaut
             return new CommeillFautDTO() { _SocialExchangesDtos = at, _triggerRules = _TriggerRules};
         }
 
-
-
+   
 
         /// @cond DOXYGEN_SHOULD_SKIP_THIS
 

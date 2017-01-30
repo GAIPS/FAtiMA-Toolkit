@@ -5,17 +5,15 @@
 			"Description": null,
 			"KnowledgeBase":
 				{
-					"Perspective": "Mary",
+					"Perspective": "Kate",
 					"Knowledge":
 						{
-							"SELF":
-								{
+						"SELF":{
 									"DialogueState(Peter)": "Start",
-									"DialogueState(Kate)": "Start",
-									"HasFloor(SELF)": "true",
-									"Volition(Compliment, Mary, Peter)": -5,
-									"Volition(Flirt, Mary, Peter)": 2
-								}
+									"DialogueState(Mary)": "Start",
+									"Volition(Compliment, Kate, Peter)": -2,
+									"Volition(Flirt, Kate, Peter)": 7
+									}
 						}
 				},
 			"AppraisalRules":

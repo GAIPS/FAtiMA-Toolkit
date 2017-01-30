@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using ActionLibrary;
 using AssetManagerPackage;
 using CommeillFaut.DTOs;
 using CommeillFaut;
 using Conditions.DTOs;
+using IntegratedAuthoringTool;
 using KnowledgeBase;
 using Microsoft.CSharp.RuntimeBinder;
 using RolePlayCharacter;
@@ -19,162 +22,155 @@ namespace CommeillFautTutorial
 {
     class Program
     {
+        static List<RolePlayCharacterAsset> rpcList;
+
         static void Main(string[] args)
         {
             AssetManager.Instance.Bridge = new BasicIOBridge();
 
-  
-            CommeillFautAsset cif = CommeillFautAsset.LoadFromFile("../../../Examples/test.cif");
-            
-     
-
-          /*  var flirt = new SocialExchangeDTO {Action = "Flirt", Instantiation = "You are so beautiful"};
-            var compliment = new SocialExchangeDTO { Action = "Compliment", Instantiation = "You are pretty cool" };
-
-            CommeillFautAsset n = new CommeillFautAsset();
-            n.AddExchange(flirt);
-            n.AddExchange(compliment);*/
-
-	      
-            //We then register a knowledge base
-            var kb = new KB((Name)"John");
-            kb.Tell((Name)"Attraction(Sarah)", (Name)"5");
-            kb.Tell((Name)"Friendship(Sarah)", (Name)"2");
-            
-            cif.RegisterKnowledgeBase(kb);
-
-            RolePlayCharacterAsset rpc = new RolePlayCharacterAsset();
-
-            var johnSocialMove = cif.CalculateSocialMove("Sarah", "John");
 
 
-            var kb2 = new KB((Name)"Sarah");
-            kb2.Tell((Name)"Attraction(John)", (Name)"-5");
-            kb2.Tell((Name)"Friendship(John)", (Name)"3");
-            cif.RegisterKnowledgeBase(kb2);
+            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/cifIAT.iat");
+            rpcList = new List<RolePlayCharacterAsset>();
+            foreach (var source in iat.GetAllCharacterSources())
+            {
+                var rpc = RolePlayCharacterAsset.LoadFromFile(source.Source);
+               rpc.LoadAssociatedAssets();
+                iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
+                rpcList.Add(rpc);
+            }
 
-            Console.WriteLine("Before Social Move Starts");
-            Console.WriteLine("John's knowledge base: " + "Attraction(Sarah) " + kb.AskProperty((Name)"Attraction(Sarah)").ToString());
-            Console.WriteLine("John's knowledge base: " + "Friendship(Sarah) " + kb.AskProperty((Name)"Friendship(Sarah)").ToString());
+            List<Name> _events = new List<Name>();
+            List<IAction> _actions = new List<IAction>();
 
-            Console.WriteLine("Sarah's knowledge base: " + "Attraction(John) " + kb2.AskProperty((Name)"Attraction(John)").ToString());
-            Console.WriteLine("Sarah's knowledge base: " + "Friendship(John) " + kb2.AskProperty((Name)"Friendship(John)").ToString());
+            while (true)
+            {
+                _actions.Clear();
+                foreach (var rpc in rpcList)
+                {
+                   
+                    rpc.Perceive(_events);
+                    _actions.Add(rpc.Decide().FirstOrDefault());
+                }
 
+                _events.Clear();
 
-            johnSocialMove.LaunchSocialExchange("John", "Sarah", kb, kb2 );
+                var randomGen = new Random();
 
-            var sarahSocialMove = cif.CalculateSocialMove("John", "Sarah");
-
-            johnSocialMove.LaunchSocialExchange("Sarah", "John", kb2, kb);
+                var pos = randomGen.Next(3);
+                var initiator = rpcList.ElementAt(pos);
+                var action = _actions.ElementAt(pos);
 
 
 
-            /*   kb2.Tell((Name)"Attraction(John)", (Name)"5");
-               SocialExchange sarahOption2 = cif.CalculateSocialMove("John", "Sarah");
-               cif.RegisterKnowledgeBase(kb2);
-               Console.WriteLine("Sarah wants to: " + sarahOption2.ToString());
-               Console.WriteLine(sarahOption2.Instantiation);*/
 
-            /*         foreach (var social in cif.m_SocialExchanges)
-                     {
-                         foreach (var inf in social.InfluenceRules)
-                         {
-                             Console.WriteLine("RuleName: " + inf.RuleName + " value: " + inf.Value + " target " + inf.Target + " conditions " + inf.RuleConditions.ConditionSet.First());
-                         }
-                     }*/
 
-            Console.WriteLine("John's knowledge base: " + "Attraction(Sarah) " + kb.AskProperty((Name)"Attraction(Sarah)").ToString());
-            Console.WriteLine("John's knowledge base: " + "Friendship(Sarah) " + kb.AskProperty((Name)"Friendship(Sarah)").ToString());
+                if (action != null)
+                {
+                    Console.WriteLine("Character: " + initiator.CharacterName + " does " + action.Name + "to " +
+                                      action.Target + "\n");
 
-            Console.WriteLine("Sarah's knowledge base: " + "Attraction(John) " + kb2.AskProperty((Name)"Attraction(John)").ToString());
-            Console.WriteLine("Sarah's knowledge base: " + "Friendship(John) " + kb2.AskProperty((Name)"Friendship(John)").ToString());
+                    _events.Add(EventHelper.ActionEnd(initiator.CharacterName.ToString(), action.Name.ToString(),
+                        action.Target.ToString()));
 
-            Console.ReadLine();
+                    var Initiator_Events = new List<Name>();
+
+                   
+                     Initiator_Events.Add(EventHelper.PropertyChanged("DialogueState(" + action.Target.ToString() + ")",
+                            action.Parameters[1].ToString(), initiator.CharacterName.ToString()));
+
+                    Initiator_Events.Add(EventHelper.PropertyChanged("HasFloor(" + initiator.CharacterName + ")",
+                        "false",
+                        action.Target.ToString()));
+
+                    initiator.Perceive(Initiator_Events);
+                    
+
+
+
+
+
+                    Console.WriteLine("Current State: " + action.Parameters[0].ToString());
+                    Console.WriteLine(initiator.CharacterName + " says: " +
+                                      iat.GetDialogueActionsByState("Player", action.Parameters[0].ToString())
+                                          .First()
+                                          .Utterance + " to " + action.Target);
+                    Console.WriteLine("Next State: " + action.Parameters[1].ToString());
+
+
+                    var replier = rpcList.Find(x => x.CharacterName == action.Target);
+
+
+                    if (action.Parameters[1].ToString() != "Start")
+                    {
+
+                        var targetEvents = new List<Name>();
+                        targetEvents.Add(EventHelper.PropertyChanged("DialogueState(" + initiator.CharacterName.ToString() + ")",
+                                action.Parameters[1].ToString(), action.Target.ToString()));
+
+                        targetEvents.Add(EventHelper.PropertyChanged("HasFloor(" + action.Target.ToString() + ")",
+                            "true",
+                            action.Target.ToString()));
+
+                        rpcList.Find(x => x.CharacterName == action.Target).Perceive(targetEvents);
+
+                    }
+
+                    else
+                    {
+                        var targetEvents = new List<Name>();
+
+                       targetEvents.Add(EventHelper.PropertyChanged("DialogueState(" + initiator.CharacterName.ToString() + ")",
+                                action.Parameters[1].ToString(), action.Target.ToString()));
+                        targetEvents.Add(EventHelper.PropertyChanged("HasFloor(" + action.Target.ToString() + ")",
+                            "false",
+                            action.Target.ToString()));
+
+                        rpcList.Find(x=>x.CharacterName == action.Target).Perceive(targetEvents);
+                        var rand = randomGen.Next(3);
+                        //     Console.WriteLine(rand + "");
+
+                        var next = rpcList.ElementAt(rand);
+
+                        Console.WriteLine("next: " + next.CharacterName + rand);
+
+                        var finalEvents = new List<Name>();
+
+                        finalEvents.Add( EventHelper.PropertyChanged("HasFloor(" + next.CharacterName + ")", "true",
+                            "Random"));
+                   
+                       
+                         next.Perceive(finalEvents);
+
+                    }
+
+
+
+
+
+
+
+                    Console.WriteLine();
+
+
+
+                    //    actor.PerceptionActionLoop(new[] { _event });
+
+                    foreach (var rpc in rpcList)
+                    {
+                        rpc.SaveToFile("../../../Examples/" + rpc.CharacterName + "-output" + ".rpc");
+                    }
+
+
+                }
+                else Console.WriteLine("Character" + initiator.CharacterName + " does null \n");
+
+                Console.ReadKey();
+            }
         }
     }
 }
 
 
 
-/* InfluenceRule inf1 = new InfluenceRule("One", 3, true);
- InfluenceRule inf2 = new InfluenceRule("Two", 3, false);
- InfluenceRule inf3 = new InfluenceRule("Three", 1, true);
 
-
-
-
-
-
- SocialExchange flirt = new SocialExchange("Flirt", "toFlirt");
- flirt.InfluenceRules.Add(inf1);
- flirt.InfluenceRules.Add(inf2);
- flirt.InfluenceRules.Add(inf3);
-
- SocialExchange compliment = new SocialExchange("Insult", " i think you're ugly ");
- compliment.InfluenceRules.Add(inf1);
- compliment.InfluenceRules.Add(inf2);
- compliment.InfluenceRules.Add(inf3);
-
- Manager man = new Manager();
-
- man.SocialExchangeList.Add(flirt);
- man.SocialExchangeList.Add(compliment);
-
-
-
- var jonas_ea = EmotionalAppraisalAsset.LoadFromFile("../../../Examples/jonas.ea");
-
-
-Character john = new Character(jonas_ea.Perspective.ToString(), jonas_ea.GetBeliefValue("isNice(SELF)"), jonas_ea.GetBeliefValue("isDrunk(SELF)"), jonas_ea.GetBeliefValue("Gender(SELF)"));
- Character john = new Character(man, "Sarah", "Nice", "Angry", "Female");
-
-Console.WriteLine(john.ToString() + "\n");
-
- var sarah_ea = EmotionalAppraisalAsset.LoadFromFile("../../../Examples/sarah.ea");
-
- Character sarah = new Character(sarah_ea.Perspective.ToString(), sarah_ea.GetBeliefValue("isNice(SELF)"), sarah_ea.GetBeliefValue("isDrunk(SELF)"), sarah_ea.GetBeliefValue("Gender(SELF)"));
-
- Console.WriteLine(sarah.ToString() + "\n");
-
- Character peter = new Character("Peter", "Ugly", "Angry", "Male");
- john.SocialExchanges.Add(flirt);
- john.SocialExchanges.Add(compliment);
-
- sarah.SocialExchanges.Add(flirt);
- sarah.SocialExchanges.Add(compliment);
-
- peter.SocialExchanges.Add(flirt);
- peter.SocialExchanges.Add(compliment);
-
- sarah.Targets.Add(peter);
- sarah.Targets.Add(john);
- john.Targets.Add(sarah);
- john.Targets.Add(peter);
- peter.Targets.Add(sarah);
- peter.Targets.Add(john);
-
- john.Init();
- peter.Init();
- sarah.Init();
- // Console.WriteLine(flirt.ToString());
-
-
- Thread oThread = new Thread(new ThreadStart(john.BDI));
- Thread aThread = new Thread(new ThreadStart(peter.BDI));
- Thread bThread = new Thread(new ThreadStart(sarah.BDI));
-
- Thread mThread = new Thread(new ThreadStart(man.Init));
- mThread.Start();
-
- oThread.Start();
- int milliseconds = 1000;
- Thread.Sleep(milliseconds);
- aThread.Start();
- Thread.Sleep(1000);
- bThread.Start();
-
- //       Thread mThread = new Thread(new ThreadStart(man.Init));
- //     mThread.Start();
-
-
- */
