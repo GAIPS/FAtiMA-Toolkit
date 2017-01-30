@@ -6,13 +6,21 @@
 			"Description": "Testing Scenario",
 			"CharacterSources": ["RPCTest.rpc"],
 			"PlayerDialogues": [
-				{
-					"CurrentState": "Start",
-					"NextState": "S2",
-					"Meaning": ["M1", "M2"],
-					"Style": ["S1"],
-					"Utterance": "Hi"
-				}],
+        {
+          "CurrentState": "Start",
+          "NextState": "S2",
+          "Meaning": [ "M1", "M2" ],
+          "Style": [ "S1" ],
+          "Utterance": "Hi"
+        },
+        {
+					"CurrentState": "S3",
+					"NextState": "End",
+					"Meaning": [],
+					"Style": [],
+					"Utterance": "Goodbye"
+				}
+			],
 			"AgentDialogues": [
 				{
 					"CurrentState": "S2",

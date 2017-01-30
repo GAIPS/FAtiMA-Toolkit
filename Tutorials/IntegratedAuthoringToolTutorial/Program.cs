@@ -21,10 +21,9 @@ namespace IntegratedAuthoringToolTutorial
             rpc.LoadAssociatedAssets();
             iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
 
-
             while (currentState != IATConsts.TERMINAL_DIALOGUE_STATE)
             {
-                var playerDialogs = iat.GetDialogueActionsByState(playerStr, IATConsts.INITIAL_DIALOGUE_STATE);
+                var playerDialogs = iat.GetDialogueActionsByState(playerStr, currentState);
 
                 Console.WriteLine("Current Dialogue State: " + currentState);
                 Console.WriteLine("Available choices: ");
@@ -38,16 +37,36 @@ namespace IntegratedAuthoringToolTutorial
                 do
                 {
                     Console.Write("Select Option: ");
-                } while (!Int32.TryParse(Console.ReadLine(), out pos) || pos > playerDialogs.Count() || pos < 0);
+                } while (!Int32.TryParse(Console.ReadLine(), out pos) || pos >= playerDialogs.Count() || pos < 0);
 
-                var actionName = iat.BuildSpeakActionName(playerStr, playerDialogs.ElementAt(pos).Id);
-                var evt = EventHelper.ActionEnd(playerStr, actionName.ToString(), rpc.CharacterName.ToString());
+                var chosenDialog = playerDialogs.ElementAt(pos);
 
-                var characterAction = rpc.PerceptionActionLoop(new[] { evt }).FirstOrDefault();
+                var actionName = iat.BuildSpeakActionName(playerStr, chosenDialog.Id);
+                var speakEvt = EventHelper.ActionEnd(playerStr, actionName.ToString(), rpc.CharacterName.ToString());
 
-                
-                Console.WriteLine("\n" + rpc.CharacterName + ": " + characterAction.Name +"\n");
+                currentState = chosenDialog.NextState;
+                var dialogStateChangeEvt = EventHelper.PropertyChanged(string.Format(IATConsts.DIALOGUE_STATE_PROPERTY,playerStr), chosenDialog.NextState, playerStr);
+
+                rpc.Perceive(new[] { speakEvt, dialogStateChangeEvt });
+                var characterAction = rpc.Decide().FirstOrDefault();
+
+                if (characterAction.Key.ToString() == IATConsts.DIALOG_ACTION_KEY)
+                {
+                    var dialog = iat.GetDialogueAction(
+                        IATConsts.AGENT,
+                        characterAction.Parameters[0],
+                        characterAction.Parameters[1],
+                        characterAction.Parameters[2],
+                        characterAction.Parameters[3]);
+                    Console.WriteLine("\n" + rpc.CharacterName + ": " + dialog.Utterance + "\n");
+                    currentState = characterAction.Parameters[1].ToString();
+                }
+                else
+                {
+                    Console.WriteLine("\n" + rpc.CharacterName + ": " + characterAction.Name + "\n");
+                }
             }
+            Console.WriteLine("Dialogue Reached a Terminal State");
             Console.ReadKey();
         }
     }

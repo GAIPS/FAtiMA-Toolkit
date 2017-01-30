@@ -15,5 +15,7 @@ namespace RolePlayCharacter
                                                                             AMConsts.EVENT, AMConsts.ACTION_START));
         public static readonly Name ACTION_END_EVENT_PROTOTYPE = Name.BuildName(string.Format("{0}({1},*,*,*)",
                                                                             AMConsts.EVENT, AMConsts.ACTION_END));
+        public static readonly Name COMMITED_ACTION_KEY = (Name)"Busy";
+
     }
 }

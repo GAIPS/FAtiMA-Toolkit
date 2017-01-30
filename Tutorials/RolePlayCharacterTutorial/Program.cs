@@ -2,7 +2,7 @@
 using AssetManagerPackage;
 using RolePlayCharacter;
 using System.Linq;
-using WellFormedNames;
+
 
 namespace RolePlayCharacterTutorial
 {
@@ -18,8 +18,9 @@ namespace RolePlayCharacterTutorial
             Console.WriteLine("Starting Mood: " + rpc.Mood);
 
             var event1 = EventHelper.ActionEnd("Player","Kick", rpc.CharacterName.ToString());
-                      
-            var action = rpc.PerceptionActionLoop(new[] { event1 }).FirstOrDefault();;
+
+            rpc.Perceive(new[] { event1 });
+            var action = rpc.Decide().FirstOrDefault();;
 
             Console.WriteLine("The name of the character loaded is: " + rpc.CharacterName);
             Console.WriteLine("The following event was perceived: " + event1);
@@ -29,13 +30,15 @@ namespace RolePlayCharacterTutorial
 
             var event2 = EventHelper.ActionStart(rpc.CharacterName.ToString(), action?.Name.ToString(), "Player");
 
-            var busyAction = rpc.PerceptionActionLoop(new[] { event2 }).FirstOrDefault();
+            rpc.Perceive(new[] { event2 });
+            var busyAction = rpc.Decide().FirstOrDefault(); ;
 
             Console.WriteLine("Second Response: " + busyAction?.Name + ", Target:" + action?.Target.ToString());
 
             var event3 = EventHelper.ActionEnd(rpc.CharacterName.ToString(), action?.Name.ToString(), "Player");
 
-            action = rpc.PerceptionActionLoop(new[] { event3 }).FirstOrDefault();
+            rpc.Perceive(new[] { event3 });
+            action = rpc.Decide().FirstOrDefault(); 
 
             Console.WriteLine("Third Response: " + action?.Name +", Target:" + action?.Target.ToString());
 

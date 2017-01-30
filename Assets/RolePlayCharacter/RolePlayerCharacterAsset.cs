@@ -304,39 +304,17 @@ namespace RolePlayCharacter
             var result = m_kb.AskProperty((Name)beliefName, (Name)perspective)?.ToString();
             return result;
         }
-
-        /// <summary>
-        /// Executes an iteration of the character's decision cycle.
-        /// </summary>
-        /// <param name="events">A list of new events that occurred since the last call to this method. Each event must be represented by a well formed name with the following format "EVENT([type], [subject], [param1], [param2])". 
-        /// For illustration purposes here are some examples: EVENT(Property-Change, John, CurrentRole(Customer), False) ; EVENT(Action-Finished, John, Open, Box)</param>
-        /// <returns>The action selected for execution or "null" otherwise</returns>
-        public IEnumerable<IAction> PerceptionActionLoop(IEnumerable<Name> events)
-        {
-            InternalEventAppraisal(events);
-            
-            if (CurrentActionName != null)
-                return new IAction[] { new ActionLibrary.Action(new Name[] { (Name)"Busy", CurrentActionName }, CurrentActionTarget) };
-
-            var possibleActions = m_emotionalDecisionMakingAsset.Decide();
-            var sociallyAcceptedActions = m_socialImportanceAsset.FilterActions(Name.SELF_STRING, possibleActions);
-            var conferralAction = m_socialImportanceAsset.DecideConferral(Name.SELF_STRING);
-            if (conferralAction != null)
-                sociallyAcceptedActions = sociallyAcceptedActions.Append(conferralAction);
-            
-            return TakeBestActions(sociallyAcceptedActions).Shuffle();
-        }
-
-        private void InternalEventAppraisal(IEnumerable<Name> events)
+        
+        public void Perceive(IEnumerable<Name> events)
         {
             m_socialImportanceAsset.InvalidateCachedSI();
 
             foreach (var e in events.Select(e => e.RemoveSelfPerspective(m_kb.Perspective)))
             {
-                if(RPCConsts.ACTION_START_EVENT_PROTOTYPE.Match(e))
+                if (RPCConsts.ACTION_START_EVENT_PROTOTYPE.Match(e))
                 {
                     var subject = e.GetNTerm(2);
-                    
+
                     if (subject == this.CharacterName)
                     {
                         CurrentActionName = e.GetNTerm(3);
@@ -356,8 +334,27 @@ namespace RolePlayCharacter
                     this.AddKnownAgent(e.GetNTerm(2));
                 }
             }
+
             m_emotionalAppraisalAsset.AppraiseEvents(events, m_emotionalState, m_am, m_kb);
         }
+
+
+        public IEnumerable<IAction> Decide()
+        {
+            if (CurrentActionName != null)
+                return new IAction[] {
+                    new ActionLibrary.Action(new Name[] { RPCConsts.COMMITED_ACTION_KEY, CurrentActionName }, CurrentActionTarget) };
+
+            var possibleActions = m_emotionalDecisionMakingAsset.Decide();
+            var sociallyAcceptedActions = m_socialImportanceAsset.FilterActions(Name.SELF_STRING, possibleActions);
+            var conferralAction = m_socialImportanceAsset.DecideConferral(Name.SELF_STRING);
+            if (conferralAction != null)
+                sociallyAcceptedActions = sociallyAcceptedActions.Append(conferralAction);
+
+            return TakeBestActions(sociallyAcceptedActions).Shuffle();
+        }
+
+
 
         private void AddKnownAgent(Name agentName)
         {
