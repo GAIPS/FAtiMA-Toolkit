@@ -38,8 +38,12 @@ namespace CommeillFautTutorial
                rpc.LoadAssociatedAssets();
                 iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
                 rpcList.Add(rpc);
+
+              
             }
 
+
+           
             List<Name> _events = new List<Name>();
             List<IAction> _actions = new List<IAction>();
 
@@ -92,9 +96,7 @@ namespace CommeillFautTutorial
 
                     Console.WriteLine("Current State: " + action.Parameters[0].ToString());
                     Console.WriteLine(initiator.CharacterName + " says: " +
-                                      iat.GetDialogueActionsByState("Player", action.Parameters[0].ToString())
-                                          .First()
-                                          .Utterance + " to " + action.Target);
+                                      iat.GetDialogueAction(IATConsts.PLAYER, action.Parameters[0],action.Parameters[1], action.Parameters[2], action.Parameters[3]).Utterance + " to " + action.Target);
                     Console.WriteLine("Next State: " + action.Parameters[1].ToString());
 
 
@@ -132,7 +134,7 @@ namespace CommeillFautTutorial
 
                         var next = rpcList.ElementAt(rand);
 
-                        Console.WriteLine("next: " + next.CharacterName + rand);
+                        Console.WriteLine("next: " + next.CharacterName + " index: " + rand);
 
                         var finalEvents = new List<Name>();
 

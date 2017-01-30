@@ -22,7 +22,7 @@
 			"EmotionalAppraisalAssetSource": "../../../Examples\\Kate.ea",
 			"EmotionalDecisionMakingSource": "../../../Examples\\cifEDM.edm",
 			"SocialImportanceAssetSource": null,
-			"CommeillFautAssetSource": null,
+			"CommeillFautAssetSource": "../../../Examples\\test.cif",
 			"EmotionalState":
 				{
 					"Mood": 0,
@@ -87,8 +87,35 @@
 							"Target": "Mary"
 						}, 
 						{
-							"classId": 1,
+							"classId": 0,
 							"Id": 6,
+							"Type": "Action-End",
+							"Subject": "Mary",
+							"Timestamp": 0,
+							"Action": "Speak(End, Start, -, -)",
+							"Target": "Peter"
+						}, 
+						{
+							"classId": 0,
+							"Id": 7,
+							"Type": "Action-End",
+							"Subject": "Peter",
+							"Timestamp": 0,
+							"Action": "Speak(StartCompliment, RespondCompliment, -, -)",
+							"Target": "Mary"
+						}, 
+						{
+							"classId": 0,
+							"Id": 8,
+							"Type": "Action-End",
+							"Subject": "Mary",
+							"Timestamp": 0,
+							"Action": "Speak(RespondCompliment, End, -, -)",
+							"Target": "Peter"
+						}, 
+						{
+							"classId": 1,
+							"Id": 9,
 							"Type": "Property-Change",
 							"Subject": "Random",
 							"Timestamp": 0,
@@ -97,39 +124,12 @@
 						}, 
 						{
 							"classId": 0,
-							"Id": 7,
-							"Type": "Action-End",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Action": "Speak(End, Start, -, -)",
-							"Target": "Peter"
-						}, 
-						{
-							"classId": 1,
-							"Id": 8,
-							"Type": "Property-Change",
-							"Subject": "Kate",
-							"Timestamp": 0,
-							"Property": "DialogueState(Peter)",
-							"NewValue": "RespondFlirt"
-						}, 
-						{
-							"classId": 1,
-							"Id": 9,
-							"Type": "Property-Change",
-							"Subject": "Peter",
-							"Timestamp": 0,
-							"Property": "HasFloor(Kate)",
-							"NewValue": false
-						}, 
-						{
-							"classId": 0,
 							"Id": 10,
 							"Type": "Action-End",
-							"Subject": "Kate",
+							"Subject": "Peter",
 							"Timestamp": 0,
-							"Action": "Speak(StartFlirt, RespondFlirt, -, -)",
-							"Target": "Peter"
+							"Action": "Speak(End, Start, -, -)",
+							"Target": "Mary"
 						}, 
 						{
 							"classId": 1,
@@ -138,38 +138,11 @@
 							"Subject": "Kate",
 							"Timestamp": 0,
 							"Property": "DialogueState(Peter)",
-							"NewValue": "End"
+							"NewValue": "RespondFlirt"
 						}, 
 						{
 							"classId": 1,
 							"Id": 12,
-							"Type": "Property-Change",
-							"Subject": "Kate",
-							"Timestamp": 0,
-							"Property": "HasFloor(Kate)",
-							"NewValue": true
-						}, 
-						{
-							"classId": 0,
-							"Id": 13,
-							"Type": "Action-End",
-							"Subject": "Peter",
-							"Timestamp": 0,
-							"Action": "Speak(RespondFlirt, End, -, -)",
-							"Target": "Kate"
-						}, 
-						{
-							"classId": 1,
-							"Id": 14,
-							"Type": "Property-Change",
-							"Subject": "Kate",
-							"Timestamp": 0,
-							"Property": "DialogueState(Peter)",
-							"NewValue": "Start"
-						}, 
-						{
-							"classId": 1,
-							"Id": 15,
 							"Type": "Property-Change",
 							"Subject": "Peter",
 							"Timestamp": 0,
@@ -178,21 +151,57 @@
 						}, 
 						{
 							"classId": 0,
-							"Id": 16,
+							"Id": 13,
 							"Type": "Action-End",
 							"Subject": "Kate",
 							"Timestamp": 0,
-							"Action": "Speak(End, Start, -, -)",
+							"Action": "Speak(StartFlirt, RespondFlirt, -, -)",
 							"Target": "Peter"
 						}, 
 						{
-							"classId": 0,
-							"Id": 17,
-							"Type": "Action-End",
-							"Subject": "Mary",
+							"classId": 1,
+							"Id": 14,
+							"Type": "Property-Change",
+							"Subject": "Kate",
 							"Timestamp": 0,
-							"Action": "Speak(StartFlirt, RespondFlirt, -, -)",
-							"Target": "Peter"
+							"Property": "DialogueState(Peter)",
+							"NewValue": "End"
+						}, 
+						{
+							"classId": 1,
+							"Id": 15,
+							"Type": "Property-Change",
+							"Subject": "Kate",
+							"Timestamp": 0,
+							"Property": "HasFloor(Kate)",
+							"NewValue": true
+						}, 
+						{
+							"classId": 0,
+							"Id": 16,
+							"Type": "Action-End",
+							"Subject": "Peter",
+							"Timestamp": 0,
+							"Action": "Speak(RespondFlirt, End, -, -)",
+							"Target": "Kate"
+						}, 
+						{
+							"classId": 1,
+							"Id": 17,
+							"Type": "Property-Change",
+							"Subject": "Kate",
+							"Timestamp": 0,
+							"Property": "DialogueState(Peter)",
+							"NewValue": "Start"
+						}, 
+						{
+							"classId": 1,
+							"Id": 18,
+							"Type": "Property-Change",
+							"Subject": "Peter",
+							"Timestamp": 0,
+							"Property": "HasFloor(Kate)",
+							"NewValue": false
 						}]
 				},
 			"OtherAgents":

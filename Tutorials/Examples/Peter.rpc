@@ -15,7 +15,7 @@
 			"EmotionalAppraisalAssetSource": "Peter.ea",
 			"EmotionalDecisionMakingSource": "cifEDM.edm",
 			"SocialImportanceAssetSource": null,
-			"CommeillFautAssetSource": null,
+			"CommeillFautAssetSource": "test.cif",
 			"EmotionalState":
 				{
 					"Mood": 0,

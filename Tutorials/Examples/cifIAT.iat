@@ -10,7 +10,7 @@
 					"CurrentState": "RespondFlirt",
 					"NextState": "End",
 					"Meaning": [],
-					"Style": ["Positive"],
+					"Style": [],
 					"Utterance": "Thank you! so are you.."
 				}, 
 				{
@@ -24,7 +24,7 @@
 					"CurrentState": "RespondCompliment",
 					"NextState": "End",
 					"Meaning": ["-"],
-					"Style": ["Positive"],
+					"Style": [],
 					"Utterance": "Thank you! so are you.."
 				}, 
 				{

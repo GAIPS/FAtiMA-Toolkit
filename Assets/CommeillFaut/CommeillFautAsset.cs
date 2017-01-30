@@ -70,21 +70,24 @@ namespace CommeillFaut
         public void BindToRegistry(IDynamicPropertiesRegistry registry)
         {
             registry.RegistDynamicProperty(CIF_DYNAMIC_PROPERTY_NAME, CIFPropertyCalculator);
-            registry.RegistDynamicProperty(VOLITION_PROPERTY_TEMPLATE, ValidDialogPropertyCalculator);
+            registry.RegistDynamicProperty(VOLITION_PROPERTY_TEMPLATE, VolitionPropertyCalculator);
         }
 
        
 
         private static readonly Name VOLITION_PROPERTY_TEMPLATE = (Name)"Volition";
 
-        private IEnumerable<DynamicPropertyResult> ValidDialogPropertyCalculator(IQueryContext context, Name currentState, Name nextState, Name meaning, Name style)
+        private IEnumerable<DynamicPropertyResult> VolitionPropertyCalculator(IQueryContext context, Name socialMoveName, Name Initiator, Name Target)
         {
-            if (!context.Perspective.Match(Name.SELF_SYMBOL))
-                return Enumerable.Empty<DynamicPropertyResult>();
 
-       /*     var key = DialogStateAction.BuildSpeakAction(currentState, nextState, meaning, style);*/
-          //  return context.Constraints.SelectMany(c => m_agentDialogues.GetAllDialogsForKey(key, c)).Select(p => new DynamicPropertyResult(Name.BuildName(true), p.Item2));
-          return new DynamicPropertyResult[10];
+
+        
+            foreach (var t in context.AskPossibleProperties(Name.BuildName("" + socialMoveName + Initiator + Target)))
+            {
+                var cif = internal_GetSocialVolition(t.Item1, context.Perspective);
+                foreach (var s in t.Item2)
+                    yield return new DynamicPropertyResult(Name.BuildName(cif), s);
+            }
         }
 
         public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
