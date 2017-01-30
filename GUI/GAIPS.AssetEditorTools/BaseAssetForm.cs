@@ -32,10 +32,18 @@ namespace GAIPS.AssetEditorTools
 
 		protected bool IsLoading { get; private set; }
 
-		private void OnLoad(object sender, EventArgs e)
-		{
-			UpdateWindowTitle();
-		}
+
+        private void OnLoad(object sender, EventArgs e)
+        {
+            UpdateWindowTitle();
+            if (CurrentAsset == null)
+            {
+                if (_getExternalAssetInstance != null)
+                    CurrentAsset = _getExternalAssetInstance();
+            }
+            ReloadEditor();
+        }
+
 
 		public void SetModified()
 		{
