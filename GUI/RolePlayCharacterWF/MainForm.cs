@@ -39,20 +39,17 @@ namespace RolePlayCharacterWF
 
             eaAssetControl1.SetAsset(asset.EmotionalAppraisalAssetSource, () =>
             {
-                RequestAssetReload();
-                //erro de proposito
-                //isto deve de falhar, uma vez que não está a passar a lista de dynamic properties
-                // se calhar a lista deve de ser algo externo ao asset
+                CurrentAsset.EmotionalAppraisalAssetSource = eaAssetControl1.Path;
                 return EmotionalAppraisal.EmotionalAppraisalAsset.LoadFromFile(CurrentAsset.EmotionalAppraisalAssetSource);
             });
             edmAssetControl1.SetAsset(asset.EmotionalDecisionMakingSource, () =>
              {
-                 RequestAssetReload();
+                 CurrentAsset.EmotionalDecisionMakingSource = edmAssetControl1.Path;
                  return EmotionalDecisionMaking.EmotionalDecisionMakingAsset.LoadFromFile(CurrentAsset.EmotionalDecisionMakingSource);
              });
             siAssetControl1.SetAsset(asset.SocialImportanceAssetSource, () =>
             {
-                RequestAssetReload();
+                CurrentAsset.SocialImportanceAssetSource = siAssetControl1.Path;
                 return SocialImportance.SocialImportanceAsset.LoadFromFile(CurrentAsset.SocialImportanceAssetSource);
             });
         }

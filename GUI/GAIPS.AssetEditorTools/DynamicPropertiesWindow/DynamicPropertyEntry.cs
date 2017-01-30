@@ -2,8 +2,8 @@
 {
 	internal sealed class DynamicPropertyEntry
 	{
-		public string Origin { get; set; }
 		public string PropertyTemplate { get; set; }
 		public string Description { get; set; }
-	}
+        public string Origin { get; set; }
+    }
 }

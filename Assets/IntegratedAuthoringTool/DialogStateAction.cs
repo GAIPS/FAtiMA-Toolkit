@@ -14,12 +14,7 @@ namespace IntegratedAuthoringTool
     /// </summary>
     public class DialogStateAction
     {
-        private static readonly Name DIALOG_ACTION_NAME = Name.BuildName("Speak");
-        public static readonly Name STYLES_PACKAGING_NAME = Name.BuildName("Styles");
-        public static readonly Name MEANINGS_PACKAGING_NAME = Name.BuildName("Meanings");
-
-   
-
+        
         public Guid Id { get; private set; }
         public Name CurrentState { get; private set; }
         public Name NextState { get; private set; }
@@ -61,24 +56,11 @@ namespace IntegratedAuthoringTool
 		    return Name.BuildName(elements.Prepend(packageRoot));
 	    }
 
-		public static Name BuildSpeakAction(Name currentState, Name nextState, Name meaning, Name style)
-		{
-			return Name.BuildName(DIALOG_ACTION_NAME, currentState, nextState, meaning, style);
-		}
-
-		public static Name BuildSpeakAction(Name currentState, Name nextState, Name meaning, IList<Name> styles)
-		{
-			return Name.BuildName(DIALOG_ACTION_NAME, currentState, nextState, meaning, PackageList(STYLES_PACKAGING_NAME, styles));
-		}
-
-		public static Name BuildSpeakAction(Name currentState, Name nextState, IList<Name> meanings, Name style)
-		{
-			return Name.BuildName(DIALOG_ACTION_NAME, currentState, nextState, PackageList(MEANINGS_PACKAGING_NAME, meanings), style);
-		}
-
 		public static Name BuildSpeakAction(Name currentState, Name nextState, IList<Name> meanings, IList<Name> styles)
 	    {
-		    return Name.BuildName(DIALOG_ACTION_NAME, currentState, nextState, PackageList(MEANINGS_PACKAGING_NAME,meanings), PackageList(STYLES_PACKAGING_NAME,styles));
+		    return Name.BuildName((Name)IATConsts.DIALOG_ACTION_KEY, currentState, nextState, 
+                PackageList((Name)IATConsts.MEANINGS_PACKAGING_NAME,meanings), 
+                PackageList((Name)IATConsts.STYLES_PACKAGING_NAME,styles));
 	    }
 
         /// <summary>
@@ -103,12 +85,12 @@ namespace IntegratedAuthoringTool
 	{
 		public static Name GetMeaningName(this DialogueStateActionDTO dto)
 		{
-			return DialogStateAction.PackageList(DialogStateAction.MEANINGS_PACKAGING_NAME, dto.Meaning.Select(d => (Name) d).ToArray());
+			return DialogStateAction.PackageList((Name)IATConsts.MEANINGS_PACKAGING_NAME, dto.Meaning.Select(d => (Name) d).ToArray());
 		}
 
 		public static Name GetStylesName(this DialogueStateActionDTO dto)
 		{
-			return DialogStateAction.PackageList(DialogStateAction.STYLES_PACKAGING_NAME, dto.Style.Select(d => (Name)d).ToArray());
+			return DialogStateAction.PackageList((Name)IATConsts.STYLES_PACKAGING_NAME, dto.Style.Select(d => (Name)d).ToArray());
 		}
 	}
 }

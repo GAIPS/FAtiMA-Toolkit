@@ -401,6 +401,14 @@ namespace Tests.WellFormedNames
 				yield return new TestCaseData(baseInput,inputStrings.Length);
 			}
 		}
+
+		[TestCaseSource(typeof(TestFactory), nameof(TestFactory.Test_NameSearchTree_Count_Cases))]
+		public void NameDictionary_Get_Keys(NameSearchTree<int> dict, int count)
+		{
+			var keys = dict.Keys;
+			Assert.AreEqual(keys.Count,count);
+		}
+
 		/*
 		[TestCaseSource(typeof(TestFactory), "TestMatchAllCases_Valid")]
 		public void NameDictionary_Valid_MatcheAll(NameSearchTree<int> dict, Name expression, IEnumerable<int> expectedResults)

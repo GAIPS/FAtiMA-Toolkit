@@ -105,6 +105,7 @@ namespace KnowledgeBase
 		private void BindToRegistry(IDynamicPropertiesRegistry registry)
 		{
 			registry.RegistDynamicProperty(COUNT_TEMPLATE_NEW, CountPropertyCalculator_new);
+			registry.RegistDynamicProperty(HAS_LITERAL_TEMPLATE,HasLiteralPropertyCalculator);
 		}
 
 		#region Native Dynamic Properties
@@ -125,7 +126,76 @@ namespace KnowledgeBase
 				yield return new DynamicPropertyResult(count, d);
 		}
 
-#endregion
+		//HasLiteral
+		private static readonly Name HAS_LITERAL_TEMPLATE = (Name) "HasLiteral";
+		private static IEnumerable<DynamicPropertyResult> HasLiteralPropertyCalculator(IQueryContext context, Name x, Name y)
+		{
+			if (!(y.IsVariable || y.IsComposed))
+				return Enumerable.Empty<DynamicPropertyResult>();
+
+			//var pairs = context.AskPossibleProperties(x).ToArray();
+
+			List<DynamicPropertyResult> results = ObjectPool<List<DynamicPropertyResult>>.GetObject();
+			try
+			{
+				IEnumerable<Name> candidates;
+				if (y.IsVariable)
+				{
+					candidates = context.Constraints.Select(s => s[y]).Where(n => n != null);
+				}
+				else if (!y.IsGrounded)
+				{
+					candidates = context.Constraints.Select(y.MakeGround).Where(c => c.IsConstant);
+				}
+				else
+				{
+					candidates = new[] { y };
+				}
+
+				foreach (var c in candidates)
+				{
+					foreach (var t in c.GetTerms().Skip(1))
+					{
+						if (x.IsVariable)
+						{
+							var sub = new Substitution(x,t);
+							foreach (var g in context.Constraints)
+							{
+								if(g.Conflicts(sub))
+									continue;
+
+								var s = new SubstitutionSet(g);
+								s.AddSubstitution(sub);
+								results.Add(new DynamicPropertyResult(Name.BuildName(true),s));
+							}
+						}
+						else
+						{
+							foreach (var x2 in context.AskPossibleProperties(x))
+							{
+								if (x2.Item1 == t)
+								{
+									var r = Name.BuildName(true);
+									foreach (var s in x2.Item2)
+									{
+										results.Add(new DynamicPropertyResult(r, s));
+									}
+								}
+							}
+						}
+					}
+				}
+
+				return results.ToArray();
+			}
+			finally
+			{
+				results.Clear();
+				ObjectPool<List<DynamicPropertyResult>>.Recycle(results);
+			}
+		}
+
+		#endregion
 
 		public void SetPerspective(Name newPerspective)
 		{

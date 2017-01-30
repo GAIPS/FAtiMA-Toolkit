@@ -14,19 +14,19 @@ using CommeillFaut;
 using AutobiographicMemory.DTOs;
 using SerializationUtilities;
 using GAIPS.Rage;
-using AssetPackage;
 
 namespace RolePlayCharacter
 {
     [Serializable]
     public sealed class RolePlayCharacterAsset : LoadableAsset<RolePlayCharacterAsset>, ICustomSerialization
     {
-        private static readonly Name DefaultCharacterName = (Name)"Nameless";
+        private string m_emotionalAppraisalAssetSource = null;
+        private string m_emotionalDecisionMakingAssetSource = null;
+        private string m_socialImportanceAssetSource = null;
+        private string m_commeillFautAssetSource = null;
 
-        private string _emotionalAppraisalAssetSource = null;
-        private string _emotionalDecisionMakingAssetSource = null;
-        private string _socialImportanceAssetSource = null;
-        private string _commeillFautAssetSource = null;
+        private bool m_allowAuthoring; //This flag is used to prevent certain methods to be called
+                                            //when not editing the asset using the authoring tool
 
 		/// <summary>
         /// The name of the character
@@ -55,6 +55,16 @@ namespace RolePlayCharacter
             get { return m_am.Tick; }
             set { m_am.Tick = value; }
         }
+
+        /// <summary>
+		/// The name of the action that the character is currently executing
+		/// </summary>
+		public Name CurrentActionName { get; set; }
+
+        /// <summary>
+        /// The target of the action that the character is currently executing
+        /// </summary>
+        public Name CurrentActionTarget { get; set; }
 
         /// <summary>
 	    /// The emotional mood of the agent, which can vary from -10 to 10
@@ -95,8 +105,8 @@ namespace RolePlayCharacter
         /// </summary>
         public string EmotionalAppraisalAssetSource
         {
-            get { return ToAbsolutePath(_emotionalAppraisalAssetSource); }
-            set { _emotionalAppraisalAssetSource = ToRelativePath(value); }
+            get { return ToAbsolutePath(m_emotionalAppraisalAssetSource); }
+            set { m_emotionalAppraisalAssetSource = ToRelativePath(value); }
         }
 
         /// <summary>
@@ -104,8 +114,8 @@ namespace RolePlayCharacter
         /// </summary>
         public string EmotionalDecisionMakingSource
         {
-            get { return ToAbsolutePath(_emotionalDecisionMakingAssetSource); }
-            set { _emotionalDecisionMakingAssetSource = ToRelativePath(value); }
+            get { return ToAbsolutePath(m_emotionalDecisionMakingAssetSource); }
+            set { m_emotionalDecisionMakingAssetSource = ToRelativePath(value); }
         }
 
         /// <summary>
@@ -113,14 +123,14 @@ namespace RolePlayCharacter
         /// </summary>
         public string SocialImportanceAssetSource
         {
-            get { return ToAbsolutePath(_socialImportanceAssetSource); }
-            set { _socialImportanceAssetSource = ToRelativePath(value); }
+            get { return ToAbsolutePath(m_socialImportanceAssetSource); }
+            set { m_socialImportanceAssetSource = ToRelativePath(value); }
         }
 
         public string CommeillFautAssetSource
         {
-            get { return ToAbsolutePath(_commeillFautAssetSource); }
-            set { _commeillFautAssetSource = ToRelativePath(value); }
+            get { return ToAbsolutePath(m_commeillFautAssetSource); }
+            set { m_commeillFautAssetSource = ToRelativePath(value); }
         }
 
         protected override string OnAssetLoaded()
@@ -130,32 +140,29 @@ namespace RolePlayCharacter
 
         protected override void OnAssetPathChanged(string oldpath)
         {
-			if(!string.IsNullOrEmpty(_emotionalAppraisalAssetSource))
-				_emotionalAppraisalAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _emotionalAppraisalAssetSource));
+			if(!string.IsNullOrEmpty(m_emotionalAppraisalAssetSource))
+				m_emotionalAppraisalAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, m_emotionalAppraisalAssetSource));
 
-			if (!string.IsNullOrEmpty(_emotionalDecisionMakingAssetSource))
-				_emotionalDecisionMakingAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _emotionalDecisionMakingAssetSource));
+			if (!string.IsNullOrEmpty(m_emotionalDecisionMakingAssetSource))
+				m_emotionalDecisionMakingAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, m_emotionalDecisionMakingAssetSource));
 
-			if (!string.IsNullOrEmpty(_socialImportanceAssetSource))
-				_socialImportanceAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _socialImportanceAssetSource));
+			if (!string.IsNullOrEmpty(m_socialImportanceAssetSource))
+				m_socialImportanceAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, m_socialImportanceAssetSource));
 
-			if (!string.IsNullOrEmpty(_commeillFautAssetSource))
-				_commeillFautAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, _commeillFautAssetSource));
+			if (!string.IsNullOrEmpty(m_commeillFautAssetSource))
+				m_commeillFautAssetSource = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, m_commeillFautAssetSource));
         }
 
-
-        public void Initialize()
-        {
-            //Reset state
-            m_kb = new KB(m_kb.Perspective);
-            m_am = new AM();
-            m_emotionalState = new ConcreteEmotionalState();
-
-            EmotionalAppraisalAsset ea = Loader(_emotionalAppraisalAssetSource, () => new EmotionalAppraisalAsset(this.CharacterName.ToString()));
+        /// <summary>
+        /// Loads the associated assets from the defined sources and prevents further authoring of the asset
+        /// </summary>
+        public void LoadAssociatedAssets()
+        {               
+            EmotionalAppraisalAsset ea = Loader(m_emotionalAppraisalAssetSource, () => new EmotionalAppraisalAsset(this.CharacterName.ToString()));
             ea.SetPerspective(CharacterName.ToString());
-            EmotionalDecisionMakingAsset edm = Loader(_emotionalDecisionMakingAssetSource, () => new EmotionalDecisionMakingAsset());
-            SocialImportanceAsset si = Loader(_socialImportanceAssetSource, () => new SocialImportanceAsset());
-            CommeillFautAsset cfa = Loader(_commeillFautAssetSource, () => new CommeillFautAsset());
+            EmotionalDecisionMakingAsset edm = Loader(m_emotionalDecisionMakingAssetSource, () => new EmotionalDecisionMakingAsset());
+            SocialImportanceAsset si = Loader(m_socialImportanceAssetSource, () => new SocialImportanceAsset());
+            CommeillFautAsset cfa = Loader(m_commeillFautAssetSource, () => new CommeillFautAsset());
 
             if (ea != null)
             {
@@ -167,15 +174,17 @@ namespace RolePlayCharacter
                 }
             }
 
-            _emotionalAppraisalAsset = ea;
-            _emotionalDecisionMakingAsset = edm;
-            _socialImportanceAsset = si;
-            _commeillFautAsset = cfa;
+            m_emotionalAppraisalAsset = ea;
+            m_emotionalDecisionMakingAsset = edm;
+            m_socialImportanceAsset = si;
+            m_commeillFautAsset = cfa;
 
             //Dynamic properties
             BindToRegistry(m_kb);
             edm.RegisterKnowledgeBase(m_kb);
             si.RegisterKnowledgeBase(m_kb);
+
+            m_allowAuthoring = false;
         }
 
         private T Loader<T>(string path, Func<T> generateDefault) where T : LoadableAsset<T>
@@ -188,91 +197,26 @@ namespace RolePlayCharacter
 
         #region RolePlayCharater Fields
 
-        private EmotionalAppraisalAsset _emotionalAppraisalAsset;
-        private EmotionalDecisionMakingAsset _emotionalDecisionMakingAsset;
-        private SocialImportanceAsset _socialImportanceAsset;
-        private CommeillFautAsset _commeillFautAsset;
+        private EmotionalAppraisalAsset m_emotionalAppraisalAsset;
+        private EmotionalDecisionMakingAsset m_emotionalDecisionMakingAsset;
+        private SocialImportanceAsset m_socialImportanceAsset;
+        private CommeillFautAsset m_commeillFautAsset;
 
         private KB m_kb;
         private AM m_am;
         private ConcreteEmotionalState m_emotionalState;
-
-	    private Dictionary<Name, AgentEntry> _knownAgents;
-
-        private IAction _currentAction = null;
-
+        private Dictionary<Name, AgentEntry> m_otherAgents;
+        
         #endregion
 
         public RolePlayCharacterAsset()
         {
-            m_kb = new KB(DefaultCharacterName);
+            m_kb = new KB(RPCConsts.DEFAULT_CHARACTER_NAME);
             m_am = new AM();
             m_emotionalState = new ConcreteEmotionalState();
-			_knownAgents = new Dictionary<Name, AgentEntry>();
-
+            m_allowAuthoring = true;
+			m_otherAgents = new Dictionary<Name, AgentEntry>();
 			BindToRegistry(m_kb);
-        }
-
-		#region Event Helpers
-
-	    public void PropertyChanged(string propertyName, string value, string subject)
-	    {
-			var e = Name.BuildName(
-				(Name)"Event",
-				(Name)"Property-Change",
-				(Name)subject,
-				(Name)propertyName,
-				(Name)value);
-
-			InternalEventAppraisal(new[] { e });
-		}
-
-		/// <summary>
-		/// Method used to inform the character that its current action is finished and a new action may be selected. It can also generate an emotion associated to finishing an action successfully.
-		/// </summary>
-		public void ActionFinished(IAction action)
-		{
-			if (_currentAction == null)
-				throw new Exception("The RPC asset is not currently executing an action");
-
-			if (!_currentAction.Equals(action))
-				throw new ArgumentException("The given action mismatches the currently executing action.", nameof(action));
-
-			var e = _currentAction.ToFinishedEventName(Name.SELF_SYMBOL);
-			InternalEventAppraisal(new[] { e });
-		}
-
-	    public void AddAgent(string agentId)
-	    {
-		    var n = (Name) agentId;
-			if(!n.IsPrimitive)
-				throw new ArgumentException("The agent id needs to be a primitive",nameof(agentId));
-
-			var e = Name.BuildName((Name)"Event", (Name)"Agent-Added", Name.SELF_SYMBOL, n, Name.SELF_SYMBOL);
-			InternalEventAppraisal(new[] { e });
-	    }
-
-		public void RemoveAgent(string agentId)
-		{
-			var n = (Name)agentId;
-			if (!n.IsPrimitive)
-				throw new ArgumentException("The agent id needs to be a primitive", nameof(agentId));
-
-			var e = Name.BuildName((Name)"Event", (Name)"Agent-Removed", Name.SELF_SYMBOL, n, Name.SELF_SYMBOL);
-			InternalEventAppraisal(new[] { e });
-		}
-
-		#endregion
-
-		/// <summary>
-		/// Adds or updates a logical belief to the character that consists of a property-value pair
-		/// </summary>
-		/// <param name="propertyName">A wellformed name representing a logical property (e.g. IsPerson(John))</param>
-		/// <param name="value">The value of the property</param>
-		[Obsolete]
-        public void AddBelief(string propertyName, string value)
-        {
-			PropertyChanged(propertyName,value,"self");
         }
 
         /// <summary>
@@ -302,6 +246,9 @@ namespace RolePlayCharacter
         /// <returns>The unique identifier associated to the event</returns>
         public uint AddEventRecord(EventDTO eventDTO)
         {
+            if (!m_allowAuthoring)
+                throw new Exception("This function is only available during authoring");
+
             return this.m_am.RecordEvent(eventDTO).Id;
         }
 
@@ -311,6 +258,9 @@ namespace RolePlayCharacter
         /// <param name="eventDTO">The dto containing the information regarding the event to update. The Id field of the dto must match the id of the event we want to update.</param>
         public void UpdateEventRecord(EventDTO eventDTO)
         {
+            if (!m_allowAuthoring)
+                throw new Exception("This function is only available during authoring");
+
             this.m_am.UpdateEvent(eventDTO);
         }
 		
@@ -354,64 +304,67 @@ namespace RolePlayCharacter
             var result = m_kb.AskProperty((Name)beliefName, (Name)perspective)?.ToString();
             return result;
         }
-
-	    private static readonly Name EVENT_MATCHING_AGENT_ADDED = (Name) "Event(Agent-Added,Self,*,Self)";
-		private static readonly Name EVENT_MATCHING_AGENT_REMOVED = (Name)"Event(Agent-Added,Self,*,Self)";
-
-		private void InternalEventAppraisal(IEnumerable<Name> events)
-	    {
-			_socialImportanceAsset.InvalidateCachedSI();
-
-			foreach (var e in events.Select(e => e.RemovePerspective(m_kb.Perspective)))
-			{
-				if (_currentAction != null && _currentAction.ToFinishedEventName(Name.SELF_SYMBOL).Match(e))
-					_currentAction = null;
-				else if (EVENT_MATCHING_AGENT_ADDED.Match(e))
-				{
-					var n = e.GetNTerm(3);
-					var n2 = m_kb.AskProperty(n);
-					if(!_knownAgents.ContainsKey(n2))
-						_knownAgents.Add(n2,new AgentEntry(n2));
-				}
-				else if (EVENT_MATCHING_AGENT_REMOVED.Match(e))
-				{
-					var n = e.GetNTerm(3);
-					var n2 = m_kb.AskProperty(n);
-					_knownAgents.Remove(n2);
-				}
-			}
-
-			_emotionalAppraisalAsset.AppraiseEvents(events, m_emotionalState, m_am, m_kb);
-		}
-
-        /// <summary>
-        /// Executes an iteration of the character's decision cycle.
-        /// </summary>
-        /// <param name="events">A list of new events that occurred since the last call to this method. Each event must be represented by a well formed name with the following format "EVENT([type], [subject], [param1], [param2])". 
-        /// For illustration purposes here are some examples: EVENT(Property-Change, John, CurrentRole(Customer), False) ; EVENT(Action-Finished, John, Open, Box)</param>
-        /// <returns>The action selected for execution or "null" otherwise</returns>
-        public IAction PerceptionActionLoop(IEnumerable<Name> events)
+        
+        public void Perceive(IEnumerable<Name> events)
         {
-            InternalEventAppraisal(events);
+            m_socialImportanceAsset.InvalidateCachedSI();
 
-			if (_currentAction != null)
-                return null;
+            foreach (var e in events.Select(e => e.RemoveSelfPerspective(m_kb.Perspective)))
+            {
+                if (RPCConsts.ACTION_START_EVENT_PROTOTYPE.Match(e))
+                {
+                    var subject = e.GetNTerm(2);
 
-            var possibleActions = _emotionalDecisionMakingAsset.Decide();
-            var sociallyAcceptedActions = _socialImportanceAsset.FilterActions(Name.SELF_STRING, possibleActions);
-            var conferralAction = _socialImportanceAsset.DecideConferral(Name.SELF_STRING);
+                    if (subject == this.CharacterName)
+                    {
+                        CurrentActionName = e.GetNTerm(3);
+                        CurrentActionTarget = e.GetNTerm(4);
+                    }
+                    //Add agent
+                    this.AddKnownAgent(subject);
+                }
+                if (RPCConsts.ACTION_END_EVENT_PROTOTYPE.Match(e))
+                {
+                    var evt = EventHelper.ActionEnd(this.CharacterName.ToString(), CurrentActionName?.ToString(), CurrentActionTarget?.ToString());
+                    if (evt.Match(e))
+                    {
+                        CurrentActionName = null;
+                        CurrentActionTarget = null;
+                    }
+                    this.AddKnownAgent(e.GetNTerm(2));
+                }
+            }
+
+            m_emotionalAppraisalAsset.AppraiseEvents(events, m_emotionalState, m_am, m_kb);
+        }
+
+
+        public IEnumerable<IAction> Decide()
+        {
+            if (CurrentActionName != null)
+                return new IAction[] {
+                    new ActionLibrary.Action(new Name[] { RPCConsts.COMMITED_ACTION_KEY, CurrentActionName }, CurrentActionTarget) };
+
+            var possibleActions = m_emotionalDecisionMakingAsset.Decide();
+            var sociallyAcceptedActions = m_socialImportanceAsset.FilterActions(Name.SELF_STRING, possibleActions);
+            var conferralAction = m_socialImportanceAsset.DecideConferral(Name.SELF_STRING);
             if (conferralAction != null)
                 sociallyAcceptedActions = sociallyAcceptedActions.Append(conferralAction);
 
-            _currentAction = TakeBestActions(sociallyAcceptedActions).Shuffle().FirstOrDefault();
-            if (_currentAction != null)
-            {
-                var e = _currentAction.ToStartEventName(Name.SELF_SYMBOL);
-                _emotionalAppraisalAsset.AppraiseEvents(new[] { e }, m_emotionalState, m_am, m_kb);
-            }
-
-            return _currentAction;
+            return TakeBestActions(sociallyAcceptedActions).Shuffle();
         }
+
+
+
+        private void AddKnownAgent(Name agentName)
+        {
+            if (agentName != this.CharacterName)
+            {
+                if (!m_otherAgents.ContainsKey(agentName))
+                    m_otherAgents.Add(agentName, new AgentEntry(agentName));
+            }
+        }
+
 
         /// <summary>
         /// Updates the character's internal state. Should be called once every game tick.
@@ -426,13 +379,11 @@ namespace RolePlayCharacter
 
 		private void BindToRegistry(IDynamicPropertiesRegistry registry)
         {
-            registry.RegistDynamicProperty(MOOD_PROPERTY_NAME, MoodPropertyCalculator);
-            registry.RegistDynamicProperty(STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator);
+            registry.RegistDynamicProperty(RPCConsts.MOOD_PROPERTY_NAME, MoodPropertyCalculator);
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator);
             registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator);
 			registry.RegistDynamicProperty(IS_AGENT_TEMPLATE,IsAgentPropertyCalculator);
             m_am.BindToRegistry(registry);
-            if(_socialImportanceAsset != null) 
-                _socialImportanceAsset.BindToRegistry(registry);
         }
 
         private static IEnumerable<IAction> TakeBestActions(IEnumerable<IAction> enumerable)
@@ -449,8 +400,6 @@ namespace RolePlayCharacter
         }
 		
         #region Dynamic Properties
-
-        private static readonly Name MOOD_PROPERTY_NAME = (Name)"Mood";
         private IEnumerable<DynamicPropertyResult> MoodPropertyCalculator(IQueryContext context, Name x)
         {
             if (context.Perspective != Name.SELF_SYMBOL)
@@ -478,7 +427,6 @@ namespace RolePlayCharacter
             }
         }
 
-        private static readonly Name STRONGEST_EMOTION_PROPERTY_NAME = (Name)"StrongestEmotion";
         private IEnumerable<DynamicPropertyResult> StrongestEmotionCalculator(IQueryContext context, Name x)
         {
             if (context.Perspective != Name.SELF_SYMBOL)
@@ -576,7 +524,7 @@ namespace RolePlayCharacter
 
 			if (x.IsVariable)
 			{
-				foreach (var s in _knownAgents.Keys.Select(n => new Substitution(x, n)))
+				foreach (var s in m_otherAgents.Keys.Select(n => new Substitution(x, n)))
 				{
 					foreach (var set in context.Constraints)
 					{
@@ -591,7 +539,7 @@ namespace RolePlayCharacter
 
 			foreach (var prop in context.AskPossibleProperties(x))
 			{
-				if (_knownAgents.ContainsKey(prop.Item1))
+				if (m_otherAgents.ContainsKey(prop.Item1))
 				{
 					foreach (var p in prop.Item2)
 					{
@@ -603,15 +551,6 @@ namespace RolePlayCharacter
 
 		#endregion
 
-		public void SaveStateToFile(string filepath)
-        {
-            var storage = GetInterface<IDataStorage>();
-            if (storage == null)
-                throw new Exception($"No {nameof(IDataStorage)} defined in the AssetManager bridge.");
-            var json = SERIALIZER.SerializeToJson(this);
-            storage.Save(filepath, json.ToString(true));
-        }
-
         /// @cond DEV
         #region ICustomSerialization
 
@@ -620,25 +559,30 @@ namespace RolePlayCharacter
             dataHolder.SetValue("KnowledgeBase", m_kb);
             dataHolder.SetValue("BodyName", this.BodyName);
             dataHolder.SetValue("VoiceName", this.VoiceName);
-            dataHolder.SetValue("EmotionalAppraisalAssetSource", this._emotionalAppraisalAssetSource);
-            dataHolder.SetValue("EmotionalDecisionMakingSource", this._emotionalDecisionMakingAssetSource);
-            dataHolder.SetValue("SocialImportanceAssetSource", this._socialImportanceAssetSource);
-            dataHolder.SetValue("CommeillFautAssetSource", this._commeillFautAssetSource);
+            dataHolder.SetValue("EmotionalAppraisalAssetSource", this.m_emotionalAppraisalAssetSource);
+            dataHolder.SetValue("EmotionalDecisionMakingSource", this.m_emotionalDecisionMakingAssetSource);
+            dataHolder.SetValue("SocialImportanceAssetSource", this.m_socialImportanceAssetSource);
+            dataHolder.SetValue("CommeillFautAssetSource", this.m_commeillFautAssetSource);
             dataHolder.SetValue("EmotionalState", m_emotionalState);
             dataHolder.SetValue("AutobiographicMemory", m_am);
+            dataHolder.SetValue("OtherAgents", m_otherAgents);
         }
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
+            m_allowAuthoring = true;
+
             m_kb = dataHolder.GetValue<KB>("KnowledgeBase");
             this.BodyName = dataHolder.GetValue<string>("BodyName");
             this.VoiceName = dataHolder.GetValue<string>("VoiceName");
-            this._emotionalAppraisalAssetSource = dataHolder.GetValue<string>("EmotionalAppraisalAssetSource");
-            this._emotionalDecisionMakingAssetSource = dataHolder.GetValue<string>("EmotionalDecisionMakingSource");
-            this._socialImportanceAssetSource = dataHolder.GetValue<string>("SocialImportanceAssetSource");
-            this._commeillFautAssetSource = dataHolder.GetValue<string>("CommeillFautAssetSource");
+            this.m_emotionalAppraisalAssetSource = dataHolder.GetValue<string>("EmotionalAppraisalAssetSource");
+            this.m_emotionalDecisionMakingAssetSource = dataHolder.GetValue<string>("EmotionalDecisionMakingSource");
+            this.m_socialImportanceAssetSource = dataHolder.GetValue<string>("SocialImportanceAssetSource");
+            this.m_commeillFautAssetSource = dataHolder.GetValue<string>("CommeillFautAssetSource");
             m_emotionalState = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
             m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
+            m_otherAgents = dataHolder.GetValue<Dictionary<Name, AgentEntry>>("OtherAgents");
+            if(m_otherAgents == null) { m_otherAgents = new Dictionary<Name, AgentEntry>(); }
             BindToRegistry(m_kb);
         }
 

@@ -25,7 +25,7 @@ namespace IntegratedAuthoringToolWF
 			buttonAddOrUpdate.Text = "Update";
 			_dialogueStateActionToEdit =
 				form.CurrentAsset.GetDialogActionById(
-					isPlayerDialogue ? IntegratedAuthoringToolAsset.PLAYER : IntegratedAuthoringToolAsset.AGENT, dialogId);
+					isPlayerDialogue ? IATConsts.PLAYER : IATConsts.AGENT, dialogId);
 
 			textBoxCurrentState.Text = _dialogueStateActionToEdit.CurrentState;
 			textBoxNextState.Text = _dialogueStateActionToEdit.NextState;

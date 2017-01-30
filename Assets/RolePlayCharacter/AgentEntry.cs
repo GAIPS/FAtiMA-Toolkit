@@ -7,12 +7,12 @@ namespace RolePlayCharacter
 	[Serializable]
 	internal class AgentEntry
 	{
-		public Name AgentId { get; private set; }
+		public Name Name { get; private set; }
 		public ConcreteEmotionalState EmotionalState { get; private set; }
 
 		public AgentEntry(Name id)
 		{
-			AgentId = id;
+			Name = id;
 			EmotionalState = new ConcreteEmotionalState();
 		}
 	}

@@ -36,6 +36,7 @@
     <Compile Include="DialogStateAction.cs" />
     <Compile Include="DTOs\CharacterSourceDTO.cs" />
     <Compile Include="DTOs\DialogueStateActionDTO.cs" />
+    <Compile Include="IATConsts.cs" />
     <Compile Include="IntegratedAuthoringToolAsset.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -78,6 +79,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

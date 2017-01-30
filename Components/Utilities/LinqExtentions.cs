@@ -10,12 +10,16 @@ namespace Utilities
 	{
 		public static IEnumerable<T> Append<T>(this IEnumerable<T> enumerable, T element)
 		{
-			return enumerable.Union(new[] {element});
+			foreach (var e in enumerable)
+				yield return e;
+			yield return element;
 		}
 
 		public static IEnumerable<T> Prepend<T>(this IEnumerable<T> enumerable, T element)
 		{
-			return new[] {element}.Union(enumerable);
+			yield return element;
+			foreach (var e in enumerable)
+				yield return e;
 		}
 
 #if !PORTABLE

@@ -29,7 +29,7 @@ namespace RolePlayCharacterWF
                 var propertyEvent = _eventToEdit as PropertyChangeEventDTO;
                 if (propertyEvent != null)
                 { 
-                    comboBoxEventType.Text = Constants.PROPERTY_CHANGE_EVENT.ToString();
+                    comboBoxEventType.Text = AMConsts.PROPERTY_CHANGE.ToString();
                     textBoxSubject.Text = propertyEvent.Subject;
                     textBoxObject.Text = propertyEvent.Property;
                     textBoxTarget.Text = propertyEvent.NewValue;
@@ -52,7 +52,7 @@ namespace RolePlayCharacterWF
             try
             {
                 EventDTO newEvent = null;
-                if (comboBoxEventType.Text == Constants.PROPERTY_CHANGE_EVENT.ToString())
+                if (comboBoxEventType.Text == AMConsts.PROPERTY_CHANGE.ToString())
                 {
                     newEvent = new PropertyChangeEventDTO
                     {
@@ -62,7 +62,7 @@ namespace RolePlayCharacterWF
                         Time = ulong.Parse(textBoxTime.Text)
                     };
                 
-                }else if (comboBoxEventType.Text == Constants.ACTION_START_EVENT.ToString() || comboBoxEventType.Text == Constants.ACTION_FINISHED_EVENT.ToString())
+                }else if (comboBoxEventType.Text == AMConsts.ACTION_START || comboBoxEventType.Text == AMConsts.ACTION_END)
                 {
                     newEvent = new ActionEventDTO()
                     {
@@ -108,7 +108,7 @@ namespace RolePlayCharacterWF
 
         private void comboBoxEventType_SelectedValueChanged(object sender, EventArgs e)
         {
-	        if (((ComboBox) sender).Text == Constants.PROPERTY_CHANGE_EVENT.ToString())
+	        if (((ComboBox) sender).Text == AMConsts.PROPERTY_CHANGE.ToString())
 	        {
 		        labelObject.Text = "Property:";
 		        labelTarget.Text = "New Value:";
@@ -116,7 +116,7 @@ namespace RolePlayCharacterWF
 	        else
 	        {
 		        var text = ((ComboBox) sender).Text;
-				if (text == Constants.ACTION_START_EVENT.ToString() || text == Constants.ACTION_FINISHED_EVENT.ToString())
+				if (text == AMConsts.ACTION_START || text == AMConsts.ACTION_END)
 				{
 					labelObject.Text = "Action:";
 					labelTarget.Text = "Target";

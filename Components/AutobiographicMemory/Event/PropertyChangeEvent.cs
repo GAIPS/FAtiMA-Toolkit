@@ -12,7 +12,7 @@ namespace AutobiographicMemory
 		{
 		    public static bool IsPropertyChangeEvent(Name eventName)
 		    {
-		        return eventName.GetNTerm(1) == Constants.PROPERTY_CHANGE_EVENT;
+		        return eventName.GetNTerm(1) == (Name)AMConsts.PROPERTY_CHANGE;
 		    }
 
 			public Name Property { get; private set; }
@@ -39,7 +39,7 @@ namespace AutobiographicMemory
 
 			protected override Name BuildEventName()
 			{
-				return Name.BuildName(EVT_NAME, Type, Subject, Property, NewValue);
+				return Name.BuildName((Name)AMConsts.EVENT, Type, Subject, Property, NewValue);
 			}
 
 			public override BaseEvent SwapPerspective(Name oldPerspective, Name newPerspective)

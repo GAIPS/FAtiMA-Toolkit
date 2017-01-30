@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -20,6 +19,8 @@ namespace IntegratedAuthoringToolWF
 	    private IntegratedAuthoringToolAsset _iatAsset => _parentForm.CurrentAsset;
         private BindingListView<GUIDialogStateAction> _playerDialogs;
         private BindingListView<GUIDialogStateAction> _agentDialogs;
+        private readonly string PLAYER = IATConsts.PLAYER;
+        private readonly string AGENT = IATConsts.AGENT;
 
         public DialogueEditorForm(MainForm parentForm)
         {
@@ -38,19 +39,21 @@ namespace IntegratedAuthoringToolWF
 
 	    private void RefreshPlayerDialogs()
 	    {
-			_playerDialogs.DataSource = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, WellFormedNames.Name.UNIVERSAL_SYMBOL).Select(d => new GUIDialogStateAction(d)).ToList();
+			_playerDialogs.DataSource = _iatAsset.GetDialogueActionsBySpeaker(
+                PLAYER).Select(d => new GUIDialogStateAction(d)).ToList();
 			_playerDialogs.Refresh();
 			dataGridViewPlayerDialogueActions.Columns["Id"].Visible = false;
 		}
 
 	    private void RefreshAgentDialogs()
 	    {
-			_agentDialogs.DataSource = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, WellFormedNames.Name.UNIVERSAL_SYMBOL).Select(d => new GUIDialogStateAction(d)).ToList();
+			_agentDialogs.DataSource = _iatAsset.GetDialogueActionsBySpeaker(
+             AGENT).Select(d => new GUIDialogStateAction(d)).ToList();
 			_agentDialogs.Refresh();
 			dataGridViewAgentDialogueActions.Columns["Id"].Visible = false;
 		}
 
-		private void buttonAddPlayerDialogueAction_Click(object sender, System.EventArgs e)
+		private void buttonAddPlayerDialogueAction_Click(object sender, EventArgs e)
         {
             new AddOrEditDialogueActionForm(_parentForm, true).ShowDialog();
             RefreshPlayerDialogs();
@@ -70,7 +73,7 @@ namespace IntegratedAuthoringToolWF
                 var item = ((ObjectView<GUIDialogStateAction>)dataGridViewPlayerDialogueActions.SelectedRows[i].DataBoundItem).Object;
                 itemsToRemove.Add(item.Id);
             }
-            _iatAsset.RemoveDialogueActions(IntegratedAuthoringToolAsset.PLAYER, itemsToRemove);
+            _iatAsset.RemoveDialogueActions(PLAYER, itemsToRemove);
 			RefreshPlayerDialogs();
 			_parentForm.SetModified();
         }
@@ -83,7 +86,7 @@ namespace IntegratedAuthoringToolWF
                 var item = ((ObjectView<GUIDialogStateAction>)dataGridViewAgentDialogueActions.SelectedRows[i].DataBoundItem).Object;
                 itemsToRemove.Add(item.Id);
             }
-            _iatAsset.RemoveDialogueActions(IntegratedAuthoringToolAsset.AGENT, itemsToRemove);
+            _iatAsset.RemoveDialogueActions(AGENT, itemsToRemove);
 			RefreshAgentDialogs();
 			_parentForm.SetModified();
 		}
@@ -147,10 +150,9 @@ namespace IntegratedAuthoringToolWF
             }
         }
 
-
-        private void textToSpeachToolStripMenuItem_Click(object sender, System.EventArgs e)
+        private void textToSpeachToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var dialogs = _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, WellFormedNames.Name.UNIVERSAL_SYMBOL).ToArray();
+			var dialogs = _iatAsset.GetDialogueActionsBySpeaker(AGENT).ToArray();
 			var t = new TextToSpeechForm(dialogs);
 			t.Show(this);
 		}
@@ -181,8 +183,8 @@ namespace IntegratedAuthoringToolWF
 				var agentDialogs = ImportWorkSheet(excelDoc, "Agent Dialogs").ToArray();
 
 				//Clear all actions
-				ClearAllDialogActions(IntegratedAuthoringToolAsset.PLAYER);
-				ClearAllDialogActions(IntegratedAuthoringToolAsset.AGENT);
+				ClearAllDialogActions(PLAYER);
+				ClearAllDialogActions(AGENT);
 
 			    foreach (var d in playerDialogs)
 					_iatAsset.AddPlayerDialogAction(d);
@@ -197,7 +199,7 @@ namespace IntegratedAuthoringToolWF
 
 	    private void ClearAllDialogActions(string speaker)
 	    {
-		    _iatAsset.RemoveDialogueActions(speaker,_iatAsset.GetDialogueActions(speaker, WellFormedNames.Name.UNIVERSAL_SYMBOL).ToArray());
+		    _iatAsset.RemoveDialogueActions(speaker,_iatAsset.GetDialogueActionsBySpeaker(speaker).ToArray());
 	    }
 
 	    private static IEnumerable<DialogueStateActionDTO> ImportWorkSheet(ExcelPackage package, string workSheetName)
@@ -237,10 +239,9 @@ namespace IntegratedAuthoringToolWF
 			var fileName = new FileInfo(sfd.FileName);
 		    using (var excelDoc = new ExcelPackage())
 		    {
-				ExportWorkSheet(excelDoc,"Player Dialogs", _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.PLAYER, WellFormedNames.Name.UNIVERSAL_SYMBOL));
-				ExportWorkSheet(excelDoc, "Agent Dialogs", _iatAsset.GetDialogueActions(IntegratedAuthoringToolAsset.AGENT, WellFormedNames.Name.UNIVERSAL_SYMBOL));
-
-				excelDoc.SaveAs(fileName);
+				ExportWorkSheet(excelDoc,"Player Dialogs", _iatAsset.GetDialogueActionsBySpeaker(PLAYER));
+                ExportWorkSheet(excelDoc, "Agent Dialogs", _iatAsset.GetDialogueActionsBySpeaker(AGENT));
+            	excelDoc.SaveAs(fileName);
 		    }
 	    }
 

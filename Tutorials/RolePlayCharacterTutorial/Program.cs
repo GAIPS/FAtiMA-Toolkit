@@ -1,8 +1,8 @@
 ﻿using System;
 using AssetManagerPackage;
-using GAIPS.Rage;
 using RolePlayCharacter;
-using WellFormedNames;
+using System.Linq;
+
 
 namespace RolePlayCharacterTutorial
 {
@@ -13,17 +13,38 @@ namespace RolePlayCharacterTutorial
 			AssetManager.Instance.Bridge = new BasicIOBridge();
             //Loading the asset
 	        var rpc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/RPCTest.rpc");
-            rpc.Initialize();
-            var eventStr = "Event(Action-Finished, Player, Kick, "+ rpc.CharacterName + ")";
-            var eventStr2 = "Event(Property-change,Self,DialogueState(Player),A1)";
-            var action = rpc.PerceptionActionLoop(new[] { (Name)eventStr, (Name)eventStr2 })?.ActionName;
+            rpc.LoadAssociatedAssets();
+
+            Console.WriteLine("Starting Mood: " + rpc.Mood);
+
+            var event1 = EventHelper.ActionEnd("Player","Kick", rpc.CharacterName.ToString());
+
+            rpc.Perceive(new[] { event1 });
+            var action = rpc.Decide().FirstOrDefault();;
+
             Console.WriteLine("The name of the character loaded is: " + rpc.CharacterName);
-            Console.WriteLine("The following event ocurred: " + eventStr);
+            Console.WriteLine("The following event was perceived: " + event1);
             Console.WriteLine("Mood after event: " + rpc.Mood);
             Console.WriteLine("Strongest emotion: " + rpc.GetStrongestActiveEmotion()?.EmotionType + "-" + rpc.GetStrongestActiveEmotion()?.Intensity);
-            Console.WriteLine("Response: " + action?.ToString());
+            Console.WriteLine("First Response: " + action?.Name + ", Target:" + action?.Target.ToString());
+
+            var event2 = EventHelper.ActionStart(rpc.CharacterName.ToString(), action?.Name.ToString(), "Player");
+
+            rpc.Perceive(new[] { event2 });
+            var busyAction = rpc.Decide().FirstOrDefault(); ;
+
+            Console.WriteLine("Second Response: " + busyAction?.Name + ", Target:" + action?.Target.ToString());
+
+            var event3 = EventHelper.ActionEnd(rpc.CharacterName.ToString(), action?.Name.ToString(), "Player");
+
+            rpc.Perceive(new[] { event3 });
+            action = rpc.Decide().FirstOrDefault(); 
+
+            Console.WriteLine("Third Response: " + action?.Name +", Target:" + action?.Target.ToString());
+
+            rpc.SaveToFile("../../../Examples/RPCTest-Output.rpc");
             Console.ReadKey();
-            rpc.SaveConfigurationToFile("../../../Examples/RPCTest-Output.rpc");
+
         }
     }
 }

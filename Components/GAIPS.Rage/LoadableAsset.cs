@@ -10,8 +10,7 @@ using SerializationUtilities.Attributes;
 
 namespace GAIPS.Rage
 {
-	public abstract class LoadableAsset<T> : BaseAsset
-		where T : LoadableAsset<T>
+	public abstract class LoadableAsset<T> : BaseAsset	where T : LoadableAsset<T>
 	{
 		protected static readonly JSONSerializer SERIALIZER = new JSONSerializer();
 
@@ -56,10 +55,10 @@ namespace GAIPS.Rage
 			if(string.IsNullOrEmpty(m_assetFilepath))
 				throw new Exception("No default file path defined for the asset. Please use SaveToFile(filepath).");
 
-			SaveConfigurationToFile(m_assetFilepath);
+			SaveToFile(m_assetFilepath);
 		}
 
-		public void SaveConfigurationToFile(string filepath)
+		public void SaveToFile(string filepath)
 		{
 			var storage = GetInterface<IDataStorage>();
 			if(storage == null)
@@ -112,7 +111,6 @@ namespace GAIPS.Rage
 		{
 			if (Path.HasExtension(basePath))
 				basePath = PathUtilities.GetDirectoryName(basePath);
-
 			return PathUtilities.CleanCombine(basePath, relativePath);
 		}
 
@@ -122,7 +120,6 @@ namespace GAIPS.Rage
 			{
 				return (I) (AssetManager.Instance.Bridge);
 			}
-
 			return default(I);
 		}
 	}

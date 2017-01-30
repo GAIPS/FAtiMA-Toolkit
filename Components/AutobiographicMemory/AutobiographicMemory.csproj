@@ -35,7 +35,7 @@
     <Compile Include="DTOs\EventDTO.cs" />
     <Compile Include="DTOs\PropertyChangeEventDTO.cs" />
     <Compile Include="Event\BaseEvent.cs" />
-    <Compile Include="Constants.cs" />
+    <Compile Include="AMConsts.cs" />
     <Compile Include="Event\PropertyChangeEvent.cs" />
     <Compile Include="AM.cs" />
     <Compile Include="Event\ActionEvent.cs" />
