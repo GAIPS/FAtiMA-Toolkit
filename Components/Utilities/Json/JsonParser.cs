@@ -8,11 +8,22 @@ namespace Utilities.Json
 {
 	public static class JsonParser
 	{
+		private class ReadContext
+		{
+			public uint LineNumber = 0;
+			public uint CharacterCount = 0;
+
+			public override string ToString()
+			{
+				return $"Invalid JSON format at line {LineNumber}, character {CharacterCount}: ";
+			}
+		}
+
 		public static JsonToken Parse(string jsonString)
 		{
 			using (var reader = new StringReader(jsonString))
 			{
-				return ReadValue(reader);
+				return ReadValue(reader,new ReadContext());
 			}
 		}
 
@@ -20,103 +31,117 @@ namespace Utilities.Json
 		{
 			using (StreamReader reader = new StreamReader(stream))
 			{
-				return ReadValue(reader);
+				return ReadValue(reader,new ReadContext());
 			}
 		}
 
-		private static JsonToken ReadValue(TextReader reader)
+		private static JsonToken ReadValue(TextReader reader, ReadContext context)
 		{
 			JsonToken node = null;
-			readEmptyCharacters(reader);
+			readEmptyCharacters(reader,context);
 			char start = (char)reader.Peek();
 			switch (start)
 			{
 				case '{':
-					node = ReadObject(reader);
+					node = ReadObject(reader,context);
 					break;
 				case '[':
-					node = ReadArray(reader);
+					node = ReadArray(reader,context);
 					break;
 				case '\"':
 					{
-						string str = ReadString(reader);
+						string str = ReadString(reader,context);
 						node = new JsonString(str);
 					}
 					break;
 				default:
-					node = ReadPrimitive(reader);
+					node = ReadPrimitive(reader,context);
 					break;
 			}
 			return node;
 		}
 
-		private static JsonObject ReadObject(TextReader reader)
+		private static JsonObject ReadObject(TextReader reader, ReadContext context)
 		{
 			JsonObject obj = new JsonObject();
 			reader.Read();	// read '{'
-			readEmptyCharacters(reader);
+			context.CharacterCount++;
+			readEmptyCharacters(reader,context);
 			char c = (char)reader.Peek();
 			if (c == '}')
 			{
 				reader.Read();
+				context.CharacterCount++;
+
 				return obj;
 			}
 
 			while (reader.Peek()>=0)
 			{
 				if (c != '"')
-					throw new IOException("Invalid JSON format");
+					throw new IOException(context+" string expected");
 
-				string field = ReadString(reader);
-				readEmptyCharacters(reader);
+				string field = ReadString(reader,context);
+				readEmptyCharacters(reader,context);
 				c = (char)reader.Read();
 				if (c != ':')
-					throw new IOException("Invalid JSON format");
+					throw new IOException(context+$" expected ':', found '{c}'");
+				context.CharacterCount++;
 
-				JsonToken value = ReadValue(reader);
-				readEmptyCharacters(reader);
+				JsonToken value = ReadValue(reader,context);
+				readEmptyCharacters(reader,context);
 
 				obj[field] = value;
 
 				c = (char)reader.Read();
 				if (c == '}')
+				{
+					context.CharacterCount++;
 					return obj;
+				}
 
 				if (c != ',')
-					throw new IOException("Invalid JSON format");
+					throw new IOException(context+ $" expected ',', found '{c}'");
 
-				readEmptyCharacters(reader);
+				context.CharacterCount++;
+				readEmptyCharacters(reader,context);
 				c = (char)reader.Peek();
 			}
 
 			throw new IOException("End of Stream Reached without finishing parsing object");
 		}
 
-		private static JsonToken ReadArray(TextReader reader)
+		private static JsonToken ReadArray(TextReader reader, ReadContext context)
 		{
 			JsonArray array = new JsonArray();
 			reader.Read();	// read '['
-			readEmptyCharacters(reader);
+			context.CharacterCount++;
+			readEmptyCharacters(reader,context);
+
 			while ((char)reader.Peek() != ']')
 			{
-				JsonToken val = ReadValue(reader);
+				JsonToken val = ReadValue(reader,context);
 				array.Add(val);
 
-				readEmptyCharacters(reader);
+				readEmptyCharacters(reader,context);
 				char c = (char)reader.Peek();
 				if (c == ',')
+				{
 					reader.Read();
+					context.CharacterCount++;
+				}
 				else if (c != ']')
-					throw new IOException("Invalid JSON format: Invalid array separator. Expected ',' or ']' - Found'" + c + "'");
+					throw new IOException(context+ $" Invalid array separator. Expected ',' or ']', but found '{c}'");
 			}
 			reader.Read(); //Read ']'
+			context.CharacterCount++;
 			return array;
 		}
 
 		private const string NUMBER_PATTERN = @"^(\+|-)?(0|[1-9]\d*)(\.\d+)?(e(-|\+)?\d+)?$";
 		private static readonly Regex _numberRegex = new Regex(NUMBER_PATTERN);
 
-		private static JsonToken ReadPrimitive(TextReader reader)
+		private static JsonToken ReadPrimitive(TextReader reader, ReadContext context)
 		{
 			StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
 			try
@@ -128,6 +153,7 @@ namespace Utilities.Json
 						break;
 
 					builder.Append((char)reader.Read());
+					context.CharacterCount++;
 				}
 
 				string primitive = builder.ToString().ToLower();
@@ -161,7 +187,7 @@ namespace Utilities.Json
 					return new JsonNumber(decimal.Parse(primitive, CultureInfo.InvariantCulture));
 				}
 
-				throw new IOException("Invalid JSON format: Invalid primitive \"" + primitive + "\"");
+				throw new IOException(context+ $" Invalid primitive \"{primitive}\"");
 			}
 			finally
 			{
@@ -171,14 +197,20 @@ namespace Utilities.Json
 		}
 
 		private static readonly char[] hexBuffer = new char[4];
-		private static string ReadString(TextReader reader)
+		private static string ReadString(TextReader reader, ReadContext context)
 		{
 			reader.Read();	// read '"'
+			context.CharacterCount++;
 			StringBuilder builder = new StringBuilder();
 			bool isControl = false;
 			while (reader.Peek()>=0)
 			{
 				char c = (char)reader.Read();
+				if (c == '\n' || c == '\r')
+					throw new IOException(context+" new line in the middle of a string");
+
+				context.CharacterCount++;
+
 				if (isControl)
 				{
 					switch (c)
@@ -210,7 +242,8 @@ namespace Utilities.Json
 						case 'u':
 							{
 								if (reader.ReadBlock(hexBuffer, 0, 4) < 4)
-									throw new IOException("Invalid JSON format.");
+									throw new IOException(context+" invalid hexadecimal char format");
+								context.CharacterCount += 4;
 
 								string hexString = new string(hexBuffer);
 								long result = long.Parse(hexString, System.Globalization.NumberStyles.HexNumber);
@@ -221,7 +254,7 @@ namespace Utilities.Json
 
 							break;
 						default:
-							throw new IOException("Invalid JSON format.");
+							throw new IOException(context+ $" invalid control character '\\{c}'");
 					}
 					isControl = false;
 				}
@@ -229,7 +262,8 @@ namespace Utilities.Json
 				{
 					if (c == '"')
 						break;
-					else if (c == '\\')
+
+					if (c == '\\')
 					{
 						isControl = true;
 					}
@@ -242,11 +276,38 @@ namespace Utilities.Json
 			return builder.ToString();
 		}
 
-		private static void readEmptyCharacters(TextReader reader)
+		private static void readEmptyCharacters(TextReader reader,ReadContext context)
 		{
+			bool isLineBreak = false;
 			while (reader.Peek() >= 0 && Char.IsWhiteSpace((char)reader.Peek()))
 			{
-				reader.Read();
+				var c = (char)reader.Read();
+				if (c == '\r')
+				{
+					isLineBreak = true;
+				}
+				else if (c == '\n')
+				{
+					context.LineNumber++;
+					context.CharacterCount = 0;
+					isLineBreak = false;
+				}
+				else
+				{
+					if (isLineBreak)
+					{
+						context.LineNumber++;
+						context.CharacterCount = 0;
+					}
+					context.CharacterCount++;
+					isLineBreak = false;
+				}
+			}
+
+			if (isLineBreak)
+			{
+				context.LineNumber++;
+				context.CharacterCount = 0;
 			}
 		}
 	}

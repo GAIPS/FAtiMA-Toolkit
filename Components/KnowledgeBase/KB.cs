@@ -25,11 +25,11 @@ namespace KnowledgeBase
 			private Name m_universal = null;
 			private Dictionary<Name, Name> m_perspectives;
 
-			public Name GetValueFor(Name perspective)
+			public Name GetValueFor(Name mindKey, Name finalPerspective)
 			{
 				Name value;
-				if ((m_perspectives != null) && m_perspectives.TryGetValue(perspective, out value))
-					return value;
+				if ((m_perspectives != null) && m_perspectives.TryGetValue(mindKey, out value))
+					return value.SwapTerms(Name.SELF_SYMBOL,finalPerspective);
 
 				return m_universal;
 			}
@@ -332,12 +332,23 @@ namespace KnowledgeBase
 				var g2 = g.SelectMany(c => m_knowledgeStorage.Unify(fact, c)).GroupBy(r => r.Item1, r => r.Item2);
 				foreach (var r in g2)
 				{
-					var value = r.Key.GetValueFor(mind_key);
+					var value = r.Key.GetValueFor(mind_key,GetFinalPerspective(ToMList));
 					if (value == null)
 						continue;
 					yield return Tuples.Create(value, r.Distinct());
 				}
 			}
+		}
+
+		private Name GetFinalPerspective(IEnumerable<Name> ToMList)
+		{
+			var last = Perspective;
+			foreach (var n in ToMList)
+			{
+				if (n != Name.SELF_SYMBOL)
+					last = n;
+			}
+			return last;
 		}
 
 		public bool BeliefExists(Name name)

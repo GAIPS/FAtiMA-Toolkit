@@ -157,24 +157,22 @@ namespace RolePlayCharacter
         /// Loads the associated assets from the defined sources and prevents further authoring of the asset
         /// </summary>
         public void LoadAssociatedAssets()
-        {               
-            EmotionalAppraisalAsset ea = Loader(m_emotionalAppraisalAssetSource, () => new EmotionalAppraisalAsset(this.CharacterName.ToString()));
-            ea.SetPerspective(CharacterName.ToString());
+        {
+	        var charName = CharacterName.ToString();
+            EmotionalAppraisalAsset ea = Loader(m_emotionalAppraisalAssetSource, () => new EmotionalAppraisalAsset(charName));
+            ea.SetPerspective(charName);
             EmotionalDecisionMakingAsset edm = Loader(m_emotionalDecisionMakingAssetSource, () => new EmotionalDecisionMakingAsset());
             SocialImportanceAsset si = Loader(m_socialImportanceAssetSource, () => new SocialImportanceAsset());
             CommeillFautAsset cfa = Loader(m_commeillFautAssetSource, () => new CommeillFautAsset());
 
-            if (ea != null)
-            {
-                foreach (var bel in ea.GetAllBeliefs())
-                {
-                    var name = Name.BuildName(bel.Name).SwapTerms(ea.Perspective, CharacterName);
-                    var value = Name.BuildName(bel.Value).SwapTerms(ea.Perspective, CharacterName);
-                    m_kb.Tell(name, value, (Name)bel.Perspective);
-                }
-            }
+			foreach (var bel in ea.GetAllBeliefs())
+			{
+				var name = Name.BuildName(bel.Name).SwapTerms(ea.Perspective, CharacterName);
+				var value = Name.BuildName(bel.Value).SwapTerms(ea.Perspective, CharacterName);
+				m_kb.Tell(name, value, (Name)bel.Perspective);
+			}
 
-            m_emotionalAppraisalAsset = ea;
+			m_emotionalAppraisalAsset = ea;
             m_emotionalDecisionMakingAsset = edm;
             m_socialImportanceAsset = si;
             m_commeillFautAsset = cfa;
@@ -524,7 +522,7 @@ namespace RolePlayCharacter
 
 			if (x.IsVariable)
 			{
-				foreach (var s in m_otherAgents.Keys.Select(n => new Substitution(x, n)))
+				foreach (var s in m_otherAgents.Keys.Append(CharacterName).Select(n => new Substitution(x, n)))
 				{
 					foreach (var set in context.Constraints)
 					{
@@ -539,11 +537,12 @@ namespace RolePlayCharacter
 
 			foreach (var prop in context.AskPossibleProperties(x))
 			{
-				if (m_otherAgents.ContainsKey(prop.Item1))
+				var i = prop.Item1;
+				if (m_otherAgents.ContainsKey(i) || i == CharacterName)
 				{
 					foreach (var p in prop.Item2)
 					{
-						yield return new DynamicPropertyResult(prop.Item1, p);
+						yield return new DynamicPropertyResult(i, p);
 					}
 				}
 			}
