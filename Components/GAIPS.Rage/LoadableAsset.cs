@@ -4,26 +4,26 @@ using AssetManagerPackage;
 using AssetPackage;
 using SerializationUtilities;
 using Utilities.Json;
+
 #if PORTABLE
 using SerializationUtilities.Attributes;
 #endif
 
 namespace GAIPS.Rage
 {
-	public abstract class LoadableAsset<T> : BaseAsset	where T : LoadableAsset<T>
+	public abstract class LoadableAsset<T> : BaseAsset where T : LoadableAsset<T>
 	{
 		protected static readonly JSONSerializer SERIALIZER = new JSONSerializer();
 
-		[NonSerialized]
-		private string m_assetFilepath = null;
+		[NonSerialized] private string m_assetFilepath = null;
 		public string AssetFilePath => m_assetFilepath;
 
 		public static T LoadFromFile(string filePath)
 		{
 			string error;
 			T asset = LoadFromFile(filePath, out error);
-			if(error!=null)
-				throw new Exception(error);	//TODO better exception
+			if (error != null)
+				throw new Exception(error); //TODO better exception
 			return asset;
 		}
 
@@ -37,7 +37,16 @@ namespace GAIPS.Rage
 				throw new FileNotFoundException();
 
 			var data = storage.Load(filePath);
-			T asset = SERIALIZER.DeserializeFromJson<T>((JsonObject)JsonParser.Parse(data));
+			T asset;
+			try
+			{
+				asset = SERIALIZER.DeserializeFromJson<T>((JsonObject)JsonParser.Parse(data));
+			}
+			catch (Exception e)
+			{
+				errorOnLoad = e.Message + "\n" + e.StackTrace;
+				return null;
+			}
 			asset.m_assetFilepath = filePath;
 			errorOnLoad = asset.OnAssetLoaded();
 			return asset;

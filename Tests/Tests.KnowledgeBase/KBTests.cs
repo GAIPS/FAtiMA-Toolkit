@@ -421,5 +421,21 @@ namespace Tests.KnowledgeBase
 		}
 
 		#endregion
+
+		[Test]
+		public void Test_Self_Property()
+		{
+			var me = (Name) "Ana";
+			var kb = new KB(me);
+			kb.Tell((Name)"A(B)",Name.SELF_SYMBOL);
+			Assert.AreEqual(kb.AskProperty((Name) "A(B)"), me);
+
+			me = (Name) "John";
+			kb.SetPerspective(me);
+			Assert.AreEqual(kb.AskProperty((Name)"A(B)"), me);
+
+			kb.Tell((Name)"A(B)", Name.SELF_SYMBOL,(Name)"Ana");
+			Assert.AreEqual(kb.AskProperty((Name)"A(B)", (Name)"Ana"), (Name)"Ana");
+		}
 	}
 }

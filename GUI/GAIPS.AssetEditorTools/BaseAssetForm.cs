@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -32,10 +31,18 @@ namespace GAIPS.AssetEditorTools
 
 		protected bool IsLoading { get; private set; }
 
-		private void OnLoad(object sender, EventArgs e)
-		{
-			UpdateWindowTitle();
-		}
+
+        private void OnLoad(object sender, EventArgs e)
+        {
+            UpdateWindowTitle();
+            if (CurrentAsset == null)
+            {
+                if (_getExternalAssetInstance != null)
+                    CurrentAsset = _getExternalAssetInstance();
+            }
+            ReloadEditor();
+        }
+
 
 		public void SetModified()
 		{
