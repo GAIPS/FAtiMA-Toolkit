@@ -183,6 +183,7 @@ namespace RolePlayCharacter
             BindToRegistry(m_kb);
             edm.RegisterKnowledgeBase(m_kb);
             si.RegisterKnowledgeBase(m_kb);
+            cfa.RegisterKnowledgeBase(m_kb);
 
             m_allowAuthoring = false;
         }

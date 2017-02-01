@@ -13,8 +13,7 @@
 									"DialogueState(Peter)": "Start",
 									"DialogueState(Kate)": "Start",
 									"HasFloor(SELF)": "true",
-									"Volition(Compliment, Mary, Peter)": -5,
-									"Volition(Flirt, Mary, Peter)": 2
+									"Attraction(Peter)": 10
 								}
 						}
 				},

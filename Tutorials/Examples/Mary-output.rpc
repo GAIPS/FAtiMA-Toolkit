@@ -9,11 +9,10 @@
 						{
 							"SELF":
 								{
+									"Attraction(Peter)": 10,
 									"DialogueState(Kate)": "Start",
 									"DialogueState(Peter)": "Start",
-									"HasFloor(Mary)": true,
-									"Volition(Compliment, Mary, Peter)": -5,
-									"Volition(Flirt, Mary, Peter)": 2
+									"HasFloor(Mary)": false
 								}
 						}
 				},
@@ -202,123 +201,6 @@
 							"Timestamp": 0,
 							"Property": "HasFloor(Mary)",
 							"NewValue": false
-						}, 
-						{
-							"classId": 1,
-							"Id": 19,
-							"Type": "Action-End",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Action": "Speak(End, Start, -, -)",
-							"Target": "Peter"
-						}, 
-						{
-							"classId": 0,
-							"Id": 20,
-							"Type": "Property-Change",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Property": "DialogueState(Peter)",
-							"NewValue": "RespondCompliment"
-						}, 
-						{
-							"classId": 0,
-							"Id": 21,
-							"Type": "Property-Change",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Property": "HasFloor(Mary)",
-							"NewValue": true
-						}, 
-						{
-							"classId": 1,
-							"Id": 22,
-							"Type": "Action-End",
-							"Subject": "Peter",
-							"Timestamp": 0,
-							"Action": "Speak(StartCompliment, RespondCompliment, -, -)",
-							"Target": "Mary"
-						}, 
-						{
-							"classId": 0,
-							"Id": 23,
-							"Type": "Property-Change",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Property": "DialogueState(Peter)",
-							"NewValue": "End"
-						}, 
-						{
-							"classId": 0,
-							"Id": 24,
-							"Type": "Property-Change",
-							"Subject": "Peter",
-							"Timestamp": 0,
-							"Property": "HasFloor(Mary)",
-							"NewValue": false
-						}, 
-						{
-							"classId": 1,
-							"Id": 25,
-							"Type": "Action-End",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Action": "Speak(RespondCompliment, End, -, -)",
-							"Target": "Peter"
-						}, 
-						{
-							"classId": 0,
-							"Id": 26,
-							"Type": "Property-Change",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Property": "DialogueState(Peter)",
-							"NewValue": "Start"
-						}, 
-						{
-							"classId": 0,
-							"Id": 27,
-							"Type": "Property-Change",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Property": "HasFloor(Mary)",
-							"NewValue": false
-						}, 
-						{
-							"classId": 1,
-							"Id": 28,
-							"Type": "Action-End",
-							"Subject": "Peter",
-							"Timestamp": 0,
-							"Action": "Speak(End, Start, -, -)",
-							"Target": "Mary"
-						}, 
-						{
-							"classId": 1,
-							"Id": 29,
-							"Type": "Action-End",
-							"Subject": "Kate",
-							"Timestamp": 0,
-							"Action": "Speak(StartFlirt, RespondFlirt, -, -)",
-							"Target": "Peter"
-						}, 
-						{
-							"classId": 1,
-							"Id": 30,
-							"Type": "Action-End",
-							"Subject": "Peter",
-							"Timestamp": 0,
-							"Action": "Speak(RespondFlirt, End, -, -)",
-							"Target": "Kate"
-						}, 
-						{
-							"classId": 0,
-							"Id": 31,
-							"Type": "Property-Change",
-							"Subject": "Random",
-							"Timestamp": 0,
-							"Property": "HasFloor(Mary)",
-							"NewValue": true
 						}]
 				},
 			"OtherAgents":
@@ -329,27 +211,6 @@
 							"value":
 								{
 									"Name": "Peter",
-									"EmotionalState":
-										{
-											"Mood": 0,
-											"EmotionalPool": [],
-											"AppraisalConfiguration":
-												{
-													"HalfLifeDecayConstant": 0.5,
-													"EmotionInfluenceOnMoodFactor": 0.3,
-													"MoodInfluenceOnEmotionFactor": 0.3,
-													"MinimumMoodValueForInfluencingEmotions": 0.5,
-													"EmotionalHalfLifeDecayTime": 15,
-													"MoodHalfLifeDecayTime": 60
-												}
-										}
-								}
-						}, 
-						{
-							"key": "Kate",
-							"value":
-								{
-									"Name": "Kate",
 									"EmotionalState":
 										{
 											"Mood": 0,

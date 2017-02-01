@@ -12,6 +12,7 @@ using AssetManagerPackage;
 using CommeillFaut.DTOs;
 using CommeillFaut;
 using Conditions.DTOs;
+using EmotionalAppraisal;
 using IntegratedAuthoringTool;
 using KnowledgeBase;
 using Microsoft.CSharp.RuntimeBinder;
@@ -34,12 +35,17 @@ namespace CommeillFautTutorial
             rpcList = new List<RolePlayCharacterAsset>();
             foreach (var source in iat.GetAllCharacterSources())
             {
+
                 var rpc = RolePlayCharacterAsset.LoadFromFile(source.Source);
-               rpc.LoadAssociatedAssets();
+               // var cif = CommeillFautAsset.LoadFromFile(rpc.CommeillFautAssetSource);
+              
+                //rpc.DynamicPropertiesRegistry.RegistDynamicProperty(Name.BuildName("Volition"),cif.VolitionPropertyCalculator);
+                    rpc.LoadAssociatedAssets();
                 iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
+
                 rpcList.Add(rpc);
 
-              
+
             }
 
 
@@ -52,6 +58,7 @@ namespace CommeillFautTutorial
                 _actions.Clear();
                 foreach (var rpc in rpcList)
                 {
+                    
                    
                     rpc.Perceive(_events);
                     _actions.Add(rpc.Decide().FirstOrDefault());

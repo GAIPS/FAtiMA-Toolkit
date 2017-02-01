@@ -46,9 +46,9 @@ namespace CommeillFaut
         }
 
         /// <summary>
-        /// Binds a KB to this Social Importance Asset instance. Without a KB instance binded to this asset, 
-        /// social importance evaluations will not work properly.
-        /// InvalidateCachedSI() is automatically called by this method.
+        /// Binds a KB to this Comme ill Faut Asset instance. Without a KB instance binded to this asset, 
+        /// comme ill faut evaluations will not work properly.
+        /// InvalidateCachedCIF() is automatically called by this method.
         /// </summary>
         /// <param name="kb">The Knowledge Base to be binded to this asset.</param>
         public void RegisterKnowledgeBase(KB kB)
@@ -69,7 +69,8 @@ namespace CommeillFaut
 
         public void BindToRegistry(IDynamicPropertiesRegistry registry)
         {
-            registry.RegistDynamicProperty(CIF_DYNAMIC_PROPERTY_NAME, CIFPropertyCalculator);
+            //       registry.RegistDynamicProperty(CIF_DYNAMIC_PROPERTY_NAME, CIFPropertyCalculator);
+       
             registry.RegistDynamicProperty(VOLITION_PROPERTY_TEMPLATE, VolitionPropertyCalculator);
         }
 
@@ -77,22 +78,37 @@ namespace CommeillFaut
 
         private static readonly Name VOLITION_PROPERTY_TEMPLATE = (Name)"Volition";
 
-        private IEnumerable<DynamicPropertyResult> VolitionPropertyCalculator(IQueryContext context, Name socialMoveName, Name Initiator, Name Target)
+        public IEnumerable<DynamicPropertyResult> VolitionPropertyCalculator(IQueryContext context, Name socialMoveName, Name Target)
         {
 
+      
 
-        
-            foreach (var t in context.AskPossibleProperties(Name.BuildName("" + socialMoveName + Initiator + Target)))
+            if (m_SocialExchanges.Find(x => x.ActionName == socialMoveName) != null)
             {
-                var cif = internal_GetSocialVolition(t.Item1, context.Perspective);
-                foreach (var s in t.Item2)
-                    yield return new DynamicPropertyResult(Name.BuildName(cif), s);
+                var value = CalculateVolitions(socialMoveName.ToString(), "Peter", context.Perspective.ToString());
+                //     var value = CalculateSocial(socialMoveName, Target);
+                // var cif = internal_GetSocialVolition(t.Item1, context.Perspective);
+                //  foreach (var s in t.Item2)
+                var sub =
+                    new SubstitutionSet(new Substitution[]
+                        {new Substitution(Name.BuildName("[x]"), Name.BuildName("Peter"))});
+
+                Console.WriteLine(" Result: " + socialMoveName + "(" + "Peter" + ")" + "=" + value);
+                yield return new DynamicPropertyResult(Name.BuildName(value), sub);
+
+            }
+            else
+            {
+                Console.WriteLine("ayy no social exchange found");
+                yield break;
+
             }
         }
+        
 
         public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
         {
-            registry.UnregistDynamicProperty((Name)"cif([target])");
+            registry.UnregistDynamicProperty((Name)"Volition");
         }
 
         #endregion
@@ -105,7 +121,7 @@ namespace CommeillFaut
 
 
         /// <summary>
-        /// Calculate the Social Importance value of a given target, in a particular perspective.
+        /// Calculate the Volition value of a given target, in a particular perspective.
         /// If no perspective is given, the current agent's perspective is used as default.
         /// </summary>
         /// <remarks>
@@ -130,6 +146,7 @@ namespace CommeillFaut
 
         private string internal_GetSocialVolition(Name target, Name perspective)
         {
+            Console.WriteLine("internal Get social Volition");
             NameSearchTree<float> targetDict;
             string ret_value = "";
             if (!m_cachedCIF.TryGetValue(perspective, out targetDict))
@@ -142,9 +159,14 @@ namespace CommeillFaut
             float value;
             if (!targetDict.TryGetValue(target, out value))
             {
-                ret_value = CalculateSocialMove(target.ToString(), perspective.ToString()).ActionName.ToString();
+             
+                var action = CalculateSocialMove(target.ToString(), perspective.ToString());
+                ret_value = action.ActionName.ToString();
+                Console.WriteLine("uhm " + action.ActionName.ToString() + action.Initiator);
                 targetDict[target] = value;
             }
+         
+            Console.WriteLine("retvalue: " + ret_value + " target " + target + " perpective " + perspective);
             return ret_value;
         }
 
@@ -288,7 +310,7 @@ namespace CommeillFaut
 
             foreach (var socialMove in m_SocialExchanges)
             {
-                int volitionResult = socialMove.CalculateVolition(perspective, target, m_kB);
+                int volitionResult = socialMove.CalculateVolition(perspective, target, this.m_kB);
                 volitions.Add(socialMove.ActionName.ToString(), volitionResult);
                 Console.WriteLine(" Name " + socialMove.ActionName + " volResult: " + volitionResult);
 
@@ -303,19 +325,16 @@ namespace CommeillFaut
             return GetHighestVolition(CalculateSocialMovesVolitions(target, perpective));
         }
 
-        #region Dynamic Properties
 
-        private static readonly Name CIF_DYNAMIC_PROPERTY_NAME = Name.BuildName("CIF");
-        private IEnumerable<DynamicPropertyResult> CIFPropertyCalculator(IQueryContext context, Name target)
+        public int CalculateVolitions(string socialMove, string target, string perpective)
         {
-            foreach (var t in context.AskPossibleProperties(target))
-            {
-                var si = internal_GetSocialVolition(t.Item1, context.Perspective);
-                foreach (var s in t.Item2)
-                    yield return new DynamicPropertyResult(Name.BuildName(si), s);
-            }
+
+            return m_SocialExchanges.Find(x => x.ActionName.ToString() == socialMove)
+                .CalculateVolition(perpective, target, this.m_kB);
         }
-        #endregion
+
+
+
 
 
         #region Serialization

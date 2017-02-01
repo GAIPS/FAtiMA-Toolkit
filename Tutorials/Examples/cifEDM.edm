@@ -27,7 +27,7 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["Volition(Flirt, SELF, [x]) > 0", "DialogueState([x]) = Start","HasFloor(SELF)=true"]
+							"Set": ["Volition(Flirt, [x]) > 0", "DialogueState([x]) = Start","HasFloor(SELF)=true"]
 							
 						},
 					"Priority": 0
@@ -47,7 +47,7 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["Volition(Compliment, SELF, [x]) > 0","DialogueState([x]) = Start","HasFloor(SELF)=true"]
+							"Set": ["Volition(Compliment, [x]) > 0","DialogueState([x]) = Start","HasFloor(SELF)=true"]
 						},
 					"Priority": 0
 				}]

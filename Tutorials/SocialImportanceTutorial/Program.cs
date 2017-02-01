@@ -19,7 +19,7 @@ namespace SocialImportanceTutorial
 
             Console.WriteLine(Directory.GetCurrentDirectory());
             //First, we load the asset from an existing profile
-            var siAsset = SocialImportanceAsset.LoadFromFile("../../../../Examples/SITest.si");
+            var siAsset = SocialImportanceAsset.LoadFromFile("../../../Examples/SITest.si");
 
             //We then register a knowledge base
             var kb = new KB((Name)"John");
