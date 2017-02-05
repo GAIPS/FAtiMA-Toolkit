@@ -689,15 +689,54 @@ namespace WellFormedNames.Collections
 
 			private IEnumerable<Pair<Stack<Name>, IEnumerable<TreeNode>>> GetNextConsecutive(int nextCount)
 			{
-				if (nextCount < 2)
-					return CollectNextLevel(1);
-
-				return GetNextLevel().SelectMany(pair => pair.Item2.SelectMany(t => t.CollectNextLevel(nextCount - 1)).Select(
-					t =>
+				var n = CollectNextLevel(1);
+				while (nextCount>=2)
+				{
+					nextCount--;
+					List< Pair < Stack<Name>, IEnumerable < TreeNode >>> newSet = new List<Pair<Stack<Name>, IEnumerable<TreeNode>>>();
+					foreach (var p in n)
 					{
-						t.Item1.Push(pair.Item1);
-						return t;
-					}));
+						var terms = p.Item1.Reverse().ToArray();
+						p.Item1.Clear();
+						ObjectPool<Stack<Name>>.Recycle(p.Item1);
+						foreach (var t in p.Item2)
+						{
+							foreach (var p2 in t.CollectNextLevel(1))
+							{
+								foreach (var t2 in terms)
+									p2.Item1.Push(t2);
+								newSet.Add(p2);
+							}
+						}
+					}
+					n = newSet;
+				}
+				return n;
+				//if (nextCount < 2)
+				//	return n;
+
+				//foreach (var p in n)
+				//{
+				//	foreach (var t in p.Item2)
+				//	{
+				//		var n2 = t.CollectNextLevel(nextCount - 1).ToArray();
+				//		throw new NotImplementedException();
+				//	}
+				//}
+
+				//throw new NotImplementedException();
+
+
+
+				//if (nextCount < 2)
+				//	return CollectNextLevel(1);
+
+				//return GetNextLevel().SelectMany(pair => pair.Item2.SelectMany(t => t.CollectNextLevel(nextCount - 1)).Select(
+				//	t =>
+				//	{
+				//		t.Item1.Push(pair.Item1);
+				//		return t;
+				//	}));
 			}
 
 			private IEnumerable<Pair<Name, IEnumerable<TreeNode>>> GetNextLevel()

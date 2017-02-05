@@ -25,7 +25,7 @@
 				{
 					"CurrentState": "S2",
 					"NextState": "S3",
-					"Meaning": [],
+					"Meaning": ["M1(1)", "M2(2)", "M3(3)"],
 					"Style": [],
 					"Utterance": "Hello",
 					"UtteranceId": "TTS-5D41402ABC4B2A76B9719D911017C592"
