@@ -1,7 +1,7 @@
 {
 	"root":
 		{
-			"classId": 2,
+			"classId": 1,
 			"KnowledgeBase":
 				{
 					"Perspective": "Mary",
@@ -12,7 +12,7 @@
 									"Attraction(Peter)": 10,
 									"DialogueState(Kate)": "Start",
 									"DialogueState(Peter)": "Start",
-									"HasFloor(Mary)": false
+									"HasFloor(Mary)": true
 								}
 						}
 				},
@@ -43,169 +43,46 @@
 						{
 							"classId": 0,
 							"Id": 1,
-							"Type": "Property-Change",
-							"Subject": "Mary",
+							"Type": "Action-End",
+							"Subject": "Kate",
 							"Timestamp": 0,
-							"Property": "DialogueState(Peter)",
-							"NewValue": "RespondFlirt"
+							"Action": "Enters",
+							"Target": "Room"
 						}, 
 						{
 							"classId": 0,
 							"Id": 2,
-							"Type": "Property-Change",
-							"Subject": "Peter",
-							"Timestamp": 0,
-							"Property": "HasFloor(Mary)",
-							"NewValue": false
-						}, 
-						{
-							"classId": 1,
-							"Id": 3,
-							"Type": "Action-End",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Action": "Speak(StartFlirt, RespondFlirt, -, -)",
-							"Target": "Peter"
-						}, 
-						{
-							"classId": 0,
-							"Id": 4,
-							"Type": "Property-Change",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Property": "DialogueState(Peter)",
-							"NewValue": "End"
-						}, 
-						{
-							"classId": 0,
-							"Id": 5,
-							"Type": "Property-Change",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Property": "HasFloor(Mary)",
-							"NewValue": true
-						}, 
-						{
-							"classId": 1,
-							"Id": 6,
 							"Type": "Action-End",
 							"Subject": "Peter",
 							"Timestamp": 0,
-							"Action": "Speak(RespondFlirt, End, -, -)",
-							"Target": "Mary"
-						}, 
-						{
-							"classId": 0,
-							"Id": 7,
-							"Type": "Property-Change",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Property": "DialogueState(Peter)",
-							"NewValue": "Start"
-						}, 
-						{
-							"classId": 0,
-							"Id": 8,
-							"Type": "Property-Change",
-							"Subject": "Peter",
-							"Timestamp": 0,
-							"Property": "HasFloor(Mary)",
-							"NewValue": false
-						}, 
-						{
-							"classId": 0,
-							"Id": 9,
-							"Type": "Property-Change",
-							"Subject": "Random",
-							"Timestamp": 0,
-							"Property": "HasFloor(Mary)",
-							"NewValue": true
-						}, 
-						{
-							"classId": 1,
-							"Id": 10,
-							"Type": "Action-End",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Action": "Speak(End, Start, -, -)",
-							"Target": "Peter"
-						}, 
-						{
-							"classId": 0,
-							"Id": 11,
-							"Type": "Property-Change",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Property": "DialogueState(Peter)",
-							"NewValue": "RespondFlirt"
-						}, 
-						{
-							"classId": 0,
-							"Id": 12,
-							"Type": "Property-Change",
-							"Subject": "Peter",
-							"Timestamp": 0,
-							"Property": "HasFloor(Mary)",
-							"NewValue": false
-						}, 
-						{
-							"classId": 1,
-							"Id": 13,
-							"Type": "Action-End",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Action": "Speak(StartFlirt, RespondFlirt, -, -)",
-							"Target": "Peter"
-						}, 
-						{
-							"classId": 0,
-							"Id": 14,
-							"Type": "Property-Change",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Property": "DialogueState(Peter)",
-							"NewValue": "End"
-						}, 
-						{
-							"classId": 0,
-							"Id": 15,
-							"Type": "Property-Change",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Property": "HasFloor(Mary)",
-							"NewValue": true
-						}, 
-						{
-							"classId": 1,
-							"Id": 16,
-							"Type": "Action-End",
-							"Subject": "Peter",
-							"Timestamp": 0,
-							"Action": "Speak(RespondFlirt, End, -, -)",
-							"Target": "Mary"
-						}, 
-						{
-							"classId": 0,
-							"Id": 17,
-							"Type": "Property-Change",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Property": "DialogueState(Peter)",
-							"NewValue": "Start"
-						}, 
-						{
-							"classId": 0,
-							"Id": 18,
-							"Type": "Property-Change",
-							"Subject": "Peter",
-							"Timestamp": 0,
-							"Property": "HasFloor(Mary)",
-							"NewValue": false
+							"Action": "Enters",
+							"Target": "Room"
 						}]
 				},
 			"OtherAgents":
 				{
 					"dictionary": [
+						{
+							"key": "Kate",
+							"value":
+								{
+									"Name": "Kate",
+									"EmotionalState":
+										{
+											"Mood": 0,
+											"EmotionalPool": [],
+											"AppraisalConfiguration":
+												{
+													"HalfLifeDecayConstant": 0.5,
+													"EmotionInfluenceOnMoodFactor": 0.3,
+													"MoodInfluenceOnEmotionFactor": 0.3,
+													"MinimumMoodValueForInfluencingEmotions": 0.5,
+													"EmotionalHalfLifeDecayTime": 15,
+													"MoodHalfLifeDecayTime": 60
+												}
+										}
+								}
+						}, 
 						{
 							"key": "Peter",
 							"value":
@@ -232,14 +109,10 @@
 	"types": [
 		{
 			"TypeId": 0,
-			"ClassName": "AutobiographicMemory.AM+PropertyChangeEvent, AutobiographicMemory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-		}, 
-		{
-			"TypeId": 1,
 			"ClassName": "AutobiographicMemory.AM+ActionEvent, AutobiographicMemory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 		}, 
 		{
-			"TypeId": 2,
+			"TypeId": 1,
 			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 		}]
 }

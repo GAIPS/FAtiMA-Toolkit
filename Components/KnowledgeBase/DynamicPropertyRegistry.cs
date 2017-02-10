@@ -192,7 +192,7 @@ namespace KnowledgeBase
 				yield break;
 
 			var results = d.SelectMany(p => p.Item1.Evaluate(kb, perspective, p.Item2, constraints).ToList());
-
+            
 			foreach (var g in results.GroupBy(p => p.Value, p => p.Constraints))
 			{
 				yield return Tuples.Create(g.Key, g.Distinct());

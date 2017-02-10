@@ -53,8 +53,11 @@ namespace Conditions
 					continue;
 				}
 
-				foreach (var set in e.Item1.UnifyEvaluate(db,perspective, constraintSet))
-					yield return Tuples.Create(e.Item2, set);
+			    foreach (var set in e.Item1.UnifyEvaluate(db, perspective, constraintSet))
+			    {
+                    Console.WriteLine(set.ToString());
+			        yield return Tuples.Create(e.Item2, set);
+			    }
 			}
 		}
 

@@ -11,7 +11,8 @@
 							"SELF":
 								{
 									"DialogueState(Mary)": "Start",
-									"DialogueState(Kate)": "Start"
+									"DialogueState(Kate)": "Start",
+									"Compliment(Mary)": 10
 								}
 						}
 				},

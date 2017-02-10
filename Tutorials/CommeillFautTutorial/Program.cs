@@ -13,6 +13,7 @@ using CommeillFaut.DTOs;
 using CommeillFaut;
 using Conditions.DTOs;
 using EmotionalAppraisal;
+using EmotionalAppraisal.DTOs;
 using IntegratedAuthoringTool;
 using KnowledgeBase;
 using Microsoft.CSharp.RuntimeBinder;
@@ -49,6 +50,30 @@ namespace CommeillFautTutorial
             }
 
 
+            foreach (var actor in rpcList)
+            {
+
+              
+                foreach (var anotherActor in rpcList)
+                {
+                    if (actor != anotherActor)
+                    {
+
+
+                        var changed = new[] {EventHelper.ActionEnd(anotherActor.CharacterName.ToString(), "Enters", "Room")};
+                        actor.Perceive(changed);
+                    }
+
+                       
+
+                          
+                    }
+
+                actor.SaveToFile("../../../Examples/" + actor.CharacterName + "-output" + ".rpc");
+            }
+            
+
+           
            
             List<Name> _events = new List<Name>();
             List<IAction> _actions = new List<IAction>();
@@ -58,8 +83,9 @@ namespace CommeillFautTutorial
                 _actions.Clear();
                 foreach (var rpc in rpcList)
                 {
-                    
-                   
+
+                    Console.WriteLine("Character deciding: "+ rpc.CharacterName);
+
                     rpc.Perceive(_events);
                     _actions.Add(rpc.Decide().FirstOrDefault());
                 }
@@ -167,6 +193,10 @@ namespace CommeillFautTutorial
 
                     foreach (var rpc in rpcList)
                     {
+                       
+                          
+                       
+                        
                         rpc.SaveToFile("../../../Examples/" + rpc.CharacterName + "-output" + ".rpc");
                     }
 

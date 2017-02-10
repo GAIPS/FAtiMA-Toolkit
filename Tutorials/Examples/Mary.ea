@@ -10,8 +10,8 @@
 						{
 							"SELF":
 								{
-									"DialogueState(Peter)": "Start",
 									"DialogueState(Kate)": "Start",
+									"DialogueState(Peter)": "Start",
 									"HasFloor(SELF)": "true",
 									"Attraction(Peter)": 10
 								}

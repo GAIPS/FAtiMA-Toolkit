@@ -235,7 +235,8 @@ namespace IntegratedAuthoringTool
 				return Enumerable.Empty<DynamicPropertyResult>();
 
 			var key = DialogStateAction.BuildSpeakAction(currentState, nextState, new Name[] { meaning },new Name[] { style });
-     		return context.Constraints.SelectMany(c => m_agentDialogues.GetAllDialogsForKey(key,c)).Select(p => new DynamicPropertyResult(Name.BuildName(true), p.Item2));
+     		var results = context.Constraints.SelectMany(c => m_agentDialogues.GetAllDialogsForKey(key,c)).Select(p => new DynamicPropertyResult(Name.BuildName(true), p.Item2));
+		    return results;
 		}
 
 		#endregion

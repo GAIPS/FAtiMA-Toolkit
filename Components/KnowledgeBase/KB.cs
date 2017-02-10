@@ -302,6 +302,7 @@ namespace KnowledgeBase
 				bool dynamicFound = false;
 				foreach (var r in _registry.Evaluate(this, property, mind_key, constraints))
 				{
+                   
 					dynamicFound = true;
 					yield return r;
 				}

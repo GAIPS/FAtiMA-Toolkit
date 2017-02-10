@@ -523,16 +523,25 @@ namespace RolePlayCharacter
 
 			if (x.IsVariable)
 			{
-				foreach (var s in m_otherAgents.Keys.Append(CharacterName).Select(n => new Substitution(x, n)))
-				{
-					foreach (var set in context.Constraints)
-					{
-						if(!set.AddSubstitution(s))
-							continue;
+                var otherAgentsSubstitutions = m_otherAgents.Keys.Append(CharacterName).Select(n => new Substitution(x, n));
+                var result = new List<SubstitutionSet>();
 
-						yield return new DynamicPropertyResult(Name.BuildName(true),set);
-					}
-				}
+			    foreach (var s in otherAgentsSubstitutions)
+			    {
+
+			       
+
+                    			foreach (var set in context.Constraints)
+                                {
+                                    if(!set.AddSubstitution(s))
+                                        continue;
+                                        
+                                    
+                                }
+                    yield return new DynamicPropertyResult(Name.BuildName(true), new SubstitutionSet(s));
+                }
+               
+            
 				yield break;
 			}
 

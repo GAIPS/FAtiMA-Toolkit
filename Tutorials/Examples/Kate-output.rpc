@@ -9,6 +9,7 @@
 						{
 							"SELF":
 								{
+									"Attraction(Mary)": 10,
 									"DialogueState(Mary)": "Start",
 									"DialogueState(Peter)": "Start"
 								}
@@ -44,8 +45,8 @@
 							"Type": "Action-End",
 							"Subject": "Mary",
 							"Timestamp": 0,
-							"Action": "Speak(StartFlirt, RespondFlirt, -, -)",
-							"Target": "Peter"
+							"Action": "Enters",
+							"Target": "Room"
 						}, 
 						{
 							"classId": 0,
@@ -53,35 +54,8 @@
 							"Type": "Action-End",
 							"Subject": "Peter",
 							"Timestamp": 0,
-							"Action": "Speak(RespondFlirt, End, -, -)",
-							"Target": "Mary"
-						}, 
-						{
-							"classId": 0,
-							"Id": 3,
-							"Type": "Action-End",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Action": "Speak(End, Start, -, -)",
-							"Target": "Peter"
-						}, 
-						{
-							"classId": 0,
-							"Id": 4,
-							"Type": "Action-End",
-							"Subject": "Mary",
-							"Timestamp": 0,
-							"Action": "Speak(StartFlirt, RespondFlirt, -, -)",
-							"Target": "Peter"
-						}, 
-						{
-							"classId": 0,
-							"Id": 5,
-							"Type": "Action-End",
-							"Subject": "Peter",
-							"Timestamp": 0,
-							"Action": "Speak(RespondFlirt, End, -, -)",
-							"Target": "Mary"
+							"Action": "Enters",
+							"Target": "Room"
 						}]
 				},
 			"OtherAgents":
