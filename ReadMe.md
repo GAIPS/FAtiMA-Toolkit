@@ -36,7 +36,8 @@ https://github.com/GAIPS-INESC-ID/FAtiMA-Toolkit-UnityDemo
 
 ### Integrated Authoring Tool
 An integrated authoring tool is now available for Windows users: 
-https://dl.dropboxusercontent.com/u/9291794/RAGE/AuthoringTools-2016-Dec-30.zip
+Version 1.3: https://dl.dropboxusercontent.com/u/9291794/RAGE/AuthoringTools-2016-Dec-30.zip
+Version 1.4: https://dl.dropboxusercontent.com/u/9291794/RAGE/AuthoringTools-2017-Feb-10.zip
 
 ### WebGL
 Try the toolkit now directly from your browser: https://dl.dropboxusercontent.com/u/9291794/RAGE/SpaceModules-2016-Dec-30-WebGL/index.html
