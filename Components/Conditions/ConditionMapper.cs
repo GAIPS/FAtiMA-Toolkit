@@ -55,8 +55,7 @@ namespace Conditions
 
 			    foreach (var set in e.Item1.UnifyEvaluate(db, perspective, constraintSet))
 			    {
-                    Console.WriteLine(set.ToString());
-			        yield return Tuples.Create(e.Item2, set);
+                    yield return Tuples.Create(e.Item2, set);
 			    }
 			}
 		}
