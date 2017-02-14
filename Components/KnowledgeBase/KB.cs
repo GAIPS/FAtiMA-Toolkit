@@ -88,7 +88,7 @@ namespace KnowledgeBase
 		/// <summary>
 		/// Indicates the default mapping of "SELF"
 		/// </summary>
-		public Name Perspective { get; set; }
+		public Name Perspective { get; private set; }
 
 		private KB()
 		{
@@ -305,11 +305,14 @@ namespace KnowledgeBase
 			if (!property.IsVariable)
 			{
 				bool dynamicFound = false;
-				foreach (var r in _registry.Evaluate(this, property, mind_key, constraints))
+				//foreach (var r in _registry.Evaluate(this, property, mind_key, constraints))
+				foreach (var match in _registry.Evaluate(property))
 				{
-                   
 					dynamicFound = true;
-					yield return r;
+					foreach (var r in match.Evaluate(this, mind_key, constraints))
+					{
+						yield return r;
+					}
 				}
 				if (dynamicFound)
 					yield break;
@@ -328,7 +331,7 @@ namespace KnowledgeBase
 				Name fact;
 				try
 				{
-					fact = property.ApplyToTerms(p => SimplifyProperty(p, ToMList));
+					fact = property.ApplyToTerms(p => ApplyDynamic(p,mind_key));
 				}
 				catch (Exception)
 				{
@@ -382,9 +385,11 @@ namespace KnowledgeBase
 			property = ExtractPropertyFromToM(property, ToMList, nameof(property));
 
 			if (_registry.WillEvaluate(property))
-				throw new ArgumentException("The given name will be objuscated by a dynamic property", nameof(property));
+				throw new ArgumentException("The given name will be obfuscated by a dynamic property", nameof(property));
 
-			var fact = property.ApplyToTerms(p => SimplifyProperty(p, ToMList));
+			var mind_key = ToMList2Key(ToMList);
+
+			var fact = property.ApplyToTerms(p => ApplyDynamic(p,mind_key));
 
 			KnowledgeEntry entry;
 			if (!m_knowledgeStorage.TryGetValue(fact, out entry))
@@ -393,7 +398,6 @@ namespace KnowledgeBase
 				m_knowledgeStorage[fact] = entry;
 			}
 
-			var mind_key = ToMList2Key(ToMList);
 			entry.TellValueFor(mind_key,value);
 			if (entry.IsEmpty())
 				m_knowledgeStorage.Remove(fact);
@@ -438,34 +442,26 @@ namespace KnowledgeBase
 			yield return key;
 		}
 
-		private Name SimplifyProperty(Name property,List<Name> ToMList)
+		private Name ApplyDynamic(Name property, Name perspective)
 		{
 			if (!property.IsComposed)
 				return property;
 
-			var tmpList = ObjectPool<List<Name>>.GetObject();
-			var r = ObjectPool<List<BeliefPair>>.GetObject();
-			try
+			Name value = null;
+			bool found = false;
+			using (var it = _registry.Evaluate(property).SelectMany(m => m.Evaluate(this, perspective, null)).GetEnumerator())
 			{
-				tmpList.AddRange(ToMList);
-				r.AddRange(internal_AskPossibleProperties(property, tmpList, new[] {new SubstitutionSet()}));
-				if (r.Count != 1)
+				while (it.MoveNext())
 				{
-					if (r.Count == 0)
-						throw new Exception($"{nameof(KB)} could not find property value for {property}");
-					if (r.Count > 1)
+					if(found)
 						throw new Exception($"{nameof(KB)} found multiple valid values for {property}");
-				}
 
-				return r[0].Item1;
+					value = it.Current.Item1;
+					found = true;
+				}
 			}
-			finally
-			{
-				r.Clear();
-				ObjectPool<List<BeliefPair>>.Recycle(r);
-				tmpList.Clear();
-				ObjectPool<List<Name>>.Recycle(tmpList);
-			}
+
+			return found ? value : property.ApplyToTerms(p => ApplyDynamic(p,perspective));
 		}
 
 #region Auxiliary Methods
@@ -539,6 +535,9 @@ namespace KnowledgeBase
 		private static readonly Name TOM_NAME = Name.BuildName("ToM");
 		private Name ExtractPropertyFromToM(Name property, List<Name> ToMList, string argumentName)
 		{
+			if (!property.IsComposed)
+				return property;
+
 			if (property.GetFirstTerm() != TOM_NAME)
 				return property;
 
@@ -551,52 +550,8 @@ namespace KnowledgeBase
 			AssetToMList(ToMList,pers,argumentName);
 			return ExtractPropertyFromToM(prop, ToMList, argumentName);
 		}
-
+		
 #endregion
-
-		///// <summary>
-		///// Removes a predicate from the Semantic KB
-		///// </summary>
-		///// <param name="predicate">the predicate to be removed</param>
-		//public void Retract(Name predicate, Name perspective)
-		//{
-		//	if (predicate.IsPrimitive)
-		//		throw new ArgumentException("Unable to retract primitive value", nameof(predicate));
-
-		//	if (!predicate.IsConstant)
-		//		throw new ArgumentException("The given name is not constant. Only constant names can be retracted", nameof(predicate));
-
-		//	if (m_dynamicProperties.Unify(predicate).Any())
-		//		throw new ArgumentException("The given name cannot be retracted as it is a dynamic property.", nameof(predicate));
-
-		//	if (perspective.IsUniversal)
-		//	{
-		//		if (predicate.HasSelf())
-		//			throw new Exception($"Cannot remove a property containing SELF from the Universal context of the {nameof(KB)}");
-		//	}
-
-		//	predicate = predicate.RemovePerspective(perspective.RemovePerspective(Perspective));
-
-		//	SubstitutionSet set;
-		//	var fact = predicate.Unfold(out set);
-		//	if (set != null)
-		//	{
-		//		fact = FindConstantLeveledName(fact, perspective, set, true);
-		//	}
-
-		//	KnowledgeEntry entry;
-		//	if (m_knowledgeStorage.TryGetValue(fact, out entry))
-		//	{
-		//		entry.TellValueFor(perspective, null);
-		//		if (entry.IsEmpty())
-		//			m_knowledgeStorage.Remove(fact);
-		//	}
-		//}
-
-		//public int NumOfEntries
-		//{
-		//	get { return m_knowledgeStorage.Count; }
-		//}
 
 #region Serialization
 

@@ -35,7 +35,7 @@ namespace RolePlayCharacter
 		public Name CharacterName
 		{
 			get { return m_kb.Perspective; }
-			set { m_kb.Perspective = value; }
+			set { m_kb.SetPerspective(value); }
 		}
 
 		/// <summary>

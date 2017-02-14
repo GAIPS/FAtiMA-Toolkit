@@ -18,7 +18,7 @@ namespace KnowledgeBase
 
 		public delegate IEnumerable<DynamicPropertyResult> DynamicPropertyCalculator(IQueryContext context, IList<Name> args);
 
-		public sealed class DynamicKnowledgeEntry
+		private sealed class DynamicKnowledgeEntry
 		{
 			private readonly DynamicPropertyCalculator _surogate;
 			private readonly Name[] _parameters;
@@ -85,6 +85,28 @@ namespace KnowledgeBase
 					//dic.Clear();
 					//ObjectPool<Dictionary<Name, Name>>.Recycle(dic);
 				}
+			}
+		}
+
+		public interface IDynamicPropertyMatch
+		{
+			IEnumerable<BeliefPair> Evaluate(IQueryable kb, Name perspective, IEnumerable<SubstitutionSet> constraints);
+		}
+
+		private sealed class DynamicPropertyMatch : IDynamicPropertyMatch
+		{
+			private DynamicKnowledgeEntry _entry;
+			private SubstitutionSet _variable;
+
+			public DynamicPropertyMatch(DynamicKnowledgeEntry entry, SubstitutionSet variables)
+			{
+				_entry = entry;
+				_variable = variables;
+			}
+
+			public IEnumerable<BeliefPair> Evaluate(IQueryable kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
+			{
+				return _entry.Evaluate(kb, perspective, _variable, constraints).GroupBy(p => p.Value, p => p.Constraints).Select(g => Tuples.Create(g.Key,g.Distinct()));
 			}
 		}
 
@@ -180,7 +202,21 @@ namespace KnowledgeBase
 			m_dynamicProperties.Clear();
 		}
 
-		public IEnumerable<BeliefPair> Evaluate(IQueryable kb, Name property, Name perspective, IEnumerable<SubstitutionSet> constraints)
+		public IEnumerable<IDynamicPropertyMatch> Evaluate(Name property)
+		{
+			if (m_dynamicProperties.Count == 0)
+				return Enumerable.Empty<IDynamicPropertyMatch>();
+
+			Name tmpPropertyName = property.ReplaceUnboundVariables(TMP_MARKER);
+
+			var d = m_dynamicProperties.Unify(tmpPropertyName).ToList();
+			if (d.Count == 0)
+				return Enumerable.Empty<IDynamicPropertyMatch>();
+
+			return d.Select(r => (IDynamicPropertyMatch)new DynamicPropertyMatch(r.Item1,r.Item2));
+		}
+
+		public IEnumerable<BeliefPair> Evaluate2(IQueryable kb, Name property, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
 			if (m_dynamicProperties.Count == 0)
 				yield break;
