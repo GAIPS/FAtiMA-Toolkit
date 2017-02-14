@@ -155,8 +155,8 @@ namespace Tests.SocialImportance
 			var ab = ASSET_TO_TEST.GetSocialImportance(b, a); 
 			var ba = ASSET_TO_TEST.GetSocialImportance(a, b);
 
-			Assert.AreEqual(ab,abSiValue);
-			Assert.AreEqual(ba, baSiValue);
+			Assert.AreEqual(abSiValue,ab);
+			Assert.AreEqual(baSiValue,ba);
 		}
 
 		[TestCase("Diego","Give(Drink)")]

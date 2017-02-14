@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using WellFormedNames;
+using IQueryable = WellFormedNames.IQueryable;
 
 namespace Conditions
 {
@@ -21,9 +23,10 @@ namespace Conditions
 
 			protected override IEnumerable<SubstitutionSet> CheckActivation(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
+				Name realValue = db.AskPossibleProperties(m_value, perspective, null).First().Item1;
 				foreach (var pair in m_retriver.Retrive(db,perspective, constraints))
 				{
-					if (CompareValues(pair.Item1, m_value, m_operation))
+					if (CompareValues(pair.Item1, realValue, m_operation))
 						yield return pair.Item2;
 				}
 			}

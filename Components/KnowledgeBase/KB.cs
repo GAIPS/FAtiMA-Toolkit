@@ -279,7 +279,12 @@ namespace KnowledgeBase
 			if (property.IsPrimitive)
 			{
 				if (property == Name.SELF_SYMBOL)
-					property = Perspective;
+				{
+					var p = AssertPerspective(perspective, nameof(perspective)).Last();
+					if (p == Name.SELF_SYMBOL)
+						p = Perspective;
+					property = p;
+				}
 
 				return new[] { Tuples.Create(property, constraints) };
 			}

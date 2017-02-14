@@ -55,7 +55,7 @@ namespace Tests.Conditions
 		private static KB _kb = CreateKB();
 		private static KB CreateKB()
 		{
-			var kb = new KB((Name)"Me");
+			var kb = new KB((Name)"Agatha");
 
 			kb.Tell((Name)"Strength(John)",Name.BuildName(5));
 			kb.Tell((Name)"Strength(Mary)", Name.BuildName(3));
@@ -149,6 +149,24 @@ namespace Tests.Conditions
 			var set = constraints!=null?new[]{new SubstitutionSet(constraints.Select(c => new Substitution(c)))}:null;
 			var conds = new ConditionSet(conditions.Select(Condition.Parse));
 			Assert.AreEqual(result, conds.Evaluate(_kb, Name.SELF_SYMBOL, set));
+		}
+
+		[Test]
+		public void Test_SelfCompare_Equal()
+		{
+			var c = Condition.Parse("[x] = Self");
+			var s = new Substitution("[x]/Agatha");
+			var res = c.Evaluate(_kb, Name.SELF_SYMBOL, new []{ new SubstitutionSet(s) });
+			Assert.IsTrue(res);
+		}
+
+		[Test]
+		public void Test_SelfCompare_Diferent()
+		{
+			var c = Condition.Parse("[x] != Self");
+			var s = new Substitution("[x]/Agatha");
+			var res = c.Evaluate(_kb, Name.SELF_SYMBOL, new[] { new SubstitutionSet(s) });
+			Assert.IsFalse(res);
 		}
 	}
 }
