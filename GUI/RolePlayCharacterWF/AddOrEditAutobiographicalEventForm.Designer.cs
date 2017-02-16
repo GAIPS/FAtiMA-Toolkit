@@ -76,6 +76,7 @@
             this.textBoxTime.Name = "textBoxTime";
             this.textBoxTime.Size = new System.Drawing.Size(227, 20);
             this.textBoxTime.TabIndex = 30;
+            this.textBoxTime.TextChanged += new System.EventHandler(this.textBoxTime_TextChanged);
             // 
             // label2
             // 
@@ -85,6 +86,7 @@
             this.label2.Size = new System.Drawing.Size(61, 13);
             this.label2.TabIndex = 22;
             this.label2.Text = "Timestamp:";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // label3
             // 
@@ -102,6 +104,7 @@
             this.textBoxSubject.Name = "textBoxSubject";
             this.textBoxSubject.Size = new System.Drawing.Size(227, 20);
             this.textBoxSubject.TabIndex = 25;
+            this.textBoxSubject.TextChanged += new System.EventHandler(this.textBoxSubject_TextChanged);
             // 
             // textBoxObject
             // 
@@ -109,6 +112,7 @@
             this.textBoxObject.Name = "textBoxObject";
             this.textBoxObject.Size = new System.Drawing.Size(227, 20);
             this.textBoxObject.TabIndex = 27;
+            this.textBoxObject.TextChanged += new System.EventHandler(this.textBoxObject_TextChanged);
             // 
             // labelObject
             // 
@@ -118,6 +122,7 @@
             this.labelObject.Size = new System.Drawing.Size(40, 13);
             this.labelObject.TabIndex = 26;
             this.labelObject.Text = "Action:";
+            this.labelObject.Click += new System.EventHandler(this.labelObject_Click);
             // 
             // textBoxTarget
             // 
@@ -125,6 +130,7 @@
             this.textBoxTarget.Name = "textBoxTarget";
             this.textBoxTarget.Size = new System.Drawing.Size(227, 20);
             this.textBoxTarget.TabIndex = 29;
+            this.textBoxTarget.TextChanged += new System.EventHandler(this.textBoxTarget_TextChanged);
             // 
             // labelTarget
             // 
@@ -134,6 +140,7 @@
             this.labelTarget.Size = new System.Drawing.Size(41, 13);
             this.labelTarget.TabIndex = 28;
             this.labelTarget.Text = "Target:";
+            this.labelTarget.Click += new System.EventHandler(this.labelTarget_Click);
             // 
             // comboBoxEventType
             // 
@@ -143,6 +150,7 @@
             this.comboBoxEventType.Name = "comboBoxEventType";
             this.comboBoxEventType.Size = new System.Drawing.Size(224, 21);
             this.comboBoxEventType.TabIndex = 15;
+            this.comboBoxEventType.SelectedIndexChanged += new System.EventHandler(this.comboBoxEventType_SelectedIndexChanged);
             this.comboBoxEventType.SelectedValueChanged += new System.EventHandler(this.comboBoxEventType_SelectedValueChanged);
             // 
             // emotionalAppraisalAssetBindingSource
