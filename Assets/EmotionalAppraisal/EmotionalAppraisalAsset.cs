@@ -119,31 +119,14 @@ namespace EmotionalAppraisal
         /// <returns>The set of dtos containing the information for all the appraisal rules</returns>
         public IEnumerable<AppraisalRuleDTO> GetAllAppraisalRules()
         {
-            var result = new List<AppraisalRuleDTO>();
-
-            foreach (var appraisalRule in this.m_appraisalDerivator.GetAppraisalRules())
+            return this.m_appraisalDerivator.GetAppraisalRules().Select(r => new AppraisalRuleDTO
             {
-                var newRule = new AppraisalRuleDTO
-                {
-                    Id = appraisalRule.Id,
-                    EventType = appraisalRule.EventName.GetNTerm(1).ToString(),
-                    Desirability = appraisalRule.Desirability,
-                    Praiseworthiness = appraisalRule.Praiseworthiness,
-                    Conditions = appraisalRule.Conditions.ToDTO()
-                };
-                if(newRule.EventType == AMConsts.ACTION_END || newRule.EventType == AMConsts.ACTION_START)
-                {
-                    newRule.Action = appraisalRule.EventName.GetNTerm(3).ToString();
-                    newRule.Target = appraisalRule.EventName.GetNTerm(4).ToString();
-                }
-                else if (newRule.EventType == AMConsts.PROPERTY_CHANGE)
-                {
-                    newRule.Property = appraisalRule.EventName.GetNTerm(3).ToString();
-                    newRule.NewValue = appraisalRule.EventName.GetNTerm(4).ToString();
-                }
-                result.Add(newRule);
-            }
-            return result;
+                Id = r.Id,
+                EventMatchingTemplate = r.EventName,
+                Desirability = r.Desirability,
+                Praiseworthiness = r.Praiseworthiness,
+                Conditions = r.Conditions.ToDTO()
+            });
         }
 
 		/// <summary>

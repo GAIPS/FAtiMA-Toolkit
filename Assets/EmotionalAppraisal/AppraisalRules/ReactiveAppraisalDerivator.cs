@@ -61,7 +61,7 @@ namespace EmotionalAppraisal.AppraisalRules
 				RemoveAppraisalRule(existingRule);
 				existingRule.Desirability = emotionalAppraisalRuleDTO.Desirability;
 				existingRule.Praiseworthiness = emotionalAppraisalRuleDTO.Praiseworthiness;
-                existingRule.EventName = AppraisalRule.BuildEventName(emotionalAppraisalRuleDTO);
+                existingRule.EventName = emotionalAppraisalRuleDTO.EventMatchingTemplate;
 				existingRule.Conditions = new ConditionSet(emotionalAppraisalRuleDTO.Conditions);
 		    }
 		    else

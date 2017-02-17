@@ -417,8 +417,8 @@ namespace WellFormedNames
 			var str = value as string;
 			if (str != null)
 			{
-				if(string.IsNullOrEmpty(str))
-					throw new ArgumentException("Cannot convert an empty string to a Name.");
+                if (string.IsNullOrEmpty(str))
+                    return NIL_SYMBOL;
 				str = str.Trim();
 				return ParseName(str);
 			}

@@ -92,49 +92,34 @@ namespace Tests.EmotionalAppraisal
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventType = AMConsts.ACTION_END,
-                Subject = "*",
-                Action = "Pet",
-                Target = "self",
+				EventMatchingTemplate = (Name)"Event(Action-End,*,Pet,self)",
 				Desirability = 10
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-                EventType = AMConsts.ACTION_END,
-                Subject = "*",
-                Action = "Slap",
-                Target = "self",
+                EventMatchingTemplate = (Name)"Event(Action-End,*,Slap,self)",
                 Desirability = -10
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-                EventType = AMConsts.ACTION_END,
-                Subject = "*",
-                Action = "Feed",
-                Target = "self",
+                EventMatchingTemplate = (Name)"Event(Action-End,*,Feed,self)",
 				Desirability = 5,
 				Praiseworthiness = 10
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-                EventType = AMConsts.ACTION_END,
-                Subject = "*",
-                Action = "Talk(High,Mad)",
-                Target = "self",
-				Desirability = -7,
+                EventMatchingTemplate = (Name)"Event(Action-End,*,Talk(High,Mad),self)",
+                Desirability = -7,
 				Praiseworthiness = -15
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-                EventType = AMConsts.ACTION_END,
-                Subject = "*",
-                Action = "Talk(Low,Happy)",
-                Target = "self",
-				Praiseworthiness = 5
+                EventMatchingTemplate = (Name)"Event(Action-End,*,Talk(Low,Happy),self)",
+                Praiseworthiness = 5
 			});
 			
 			//Generate emotion

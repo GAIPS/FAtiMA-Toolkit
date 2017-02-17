@@ -23,28 +23,7 @@ namespace EmotionalAppraisal.AppraisalRules
 		public Name EventName { get; set; }
 		public ConditionSet Conditions { get; set; }
 
-        public static Name BuildEventName(AppraisalRuleDTO appraisalRuleDTO)
-        {
-            if (appraisalRuleDTO.EventType == AMConsts.PROPERTY_CHANGE)
-            {
-                return Name.BuildName(
-                    (Name)AMConsts.EVENT,
-                    (Name)appraisalRuleDTO.EventType,
-                    (Name)appraisalRuleDTO.Subject,
-                    (Name)appraisalRuleDTO.Property,
-                    (Name)appraisalRuleDTO.NewValue);
-            }
-            else
-            {
-                return Name.BuildName(
-                  (Name)AMConsts.EVENT,
-                  (Name)appraisalRuleDTO.EventType,
-                  (Name)appraisalRuleDTO.Subject,
-                  (Name)appraisalRuleDTO.Action,
-                  (Name)appraisalRuleDTO.Target);
-            }
-        }
-
+       
 		public AppraisalRule(Name eventName, ConditionSet conditions = null)
 		{
 			m_id = Guid.NewGuid();
@@ -56,7 +35,7 @@ namespace EmotionalAppraisal.AppraisalRules
 	    public AppraisalRule(AppraisalRuleDTO appraisalRuleDTO)
 	    {
 		    m_id = (appraisalRuleDTO.Id == Guid.Empty)?Guid.NewGuid() : appraisalRuleDTO.Id;
-            EventName = BuildEventName(appraisalRuleDTO);
+            EventName = (Name)appraisalRuleDTO.EventMatchingTemplate;
 	        Desirability = appraisalRuleDTO.Desirability;
 	        Praiseworthiness = appraisalRuleDTO.Praiseworthiness;
 			Conditions = appraisalRuleDTO.Conditions==null ? new ConditionSet() : new ConditionSet(appraisalRuleDTO.Conditions);

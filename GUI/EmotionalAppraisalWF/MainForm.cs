@@ -11,6 +11,7 @@ using EmotionalAppraisalWF.ViewModels;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 using GAIPS.AssetEditorTools.DynamicPropertiesWindow;
+using Conditions.DTOs;
 
 namespace EmotionalAppraisalWF
 {
@@ -135,6 +136,27 @@ namespace EmotionalAppraisalWF
             }
         }
 
+
+        private void buttonDuplicateAppraisalRule_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewAppraisalRules.SelectedRows.Count == 1)
+            {
+                var selectedAppraisalRule = ((ObjectView<AppraisalRuleDTO>)dataGridViewAppraisalRules.SelectedRows[0].DataBoundItem).Object;
+                var duplicateRule = new AppraisalRuleDTO
+                {
+                    EventMatchingTemplate = selectedAppraisalRule.EventMatchingTemplate,
+                    Praiseworthiness = selectedAppraisalRule.Praiseworthiness,
+                    Desirability = selectedAppraisalRule.Desirability,
+                    Conditions = new ConditionSetDTO
+                    {
+                        Quantifier = selectedAppraisalRule.Conditions.Quantifier,
+                        ConditionSet = (string[])selectedAppraisalRule.Conditions.ConditionSet.Clone()
+                    }
+                };
+                _appraisalRulesVM.AddOrUpdateAppraisalRule(duplicateRule);
+            }
+        }
+
         private void buttonRemoveAppraisalRule_Click(object sender, EventArgs e)
         {
             IList<AppraisalRuleDTO> rulesToRemove = new List<AppraisalRuleDTO>();
@@ -224,5 +246,6 @@ namespace EmotionalAppraisalWF
             CurrentAsset.Description = richTextBoxDescription.Text;
             SetModified();
         }
+
     }
 }

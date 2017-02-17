@@ -168,9 +168,9 @@
             this.labelTarget.AutoSize = true;
             this.labelTarget.Location = new System.Drawing.Point(32, 224);
             this.labelTarget.Name = "labelTarget";
-            this.labelTarget.Size = new System.Drawing.Size(41, 13);
+            this.labelTarget.Size = new System.Drawing.Size(101, 13);
             this.labelTarget.TabIndex = 38;
-            this.labelTarget.Text = "Target:";
+            this.labelTarget.Text = "Target | New Value:";
             // 
             // textBoxObject
             // 
@@ -184,9 +184,10 @@
             this.labelObject.AutoSize = true;
             this.labelObject.Location = new System.Drawing.Point(32, 157);
             this.labelObject.Name = "labelObject";
-            this.labelObject.Size = new System.Drawing.Size(40, 13);
+            this.labelObject.Size = new System.Drawing.Size(87, 13);
             this.labelObject.TabIndex = 36;
-            this.labelObject.Text = "Action:";
+            this.labelObject.Text = "Action | Property:";
+            this.labelObject.Click += new System.EventHandler(this.labelObject_Click);
             // 
             // textBoxSubject
             // 

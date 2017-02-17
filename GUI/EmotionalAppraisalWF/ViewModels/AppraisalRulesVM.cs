@@ -18,7 +18,7 @@ namespace EmotionalAppraisalWF.ViewModels
 	    public ConditionSetView CurrentRuleConditions { get; }
         public Guid SelectedRuleId { get; set;}
 
-        public static readonly string[] EventTypes = { AMConsts.ACTION_START, AMConsts.ACTION_END, AMConsts.PROPERTY_CHANGE };
+        public static readonly string[] EventTypes = { AMConsts.ACTION_END, AMConsts.ACTION_START, AMConsts.PROPERTY_CHANGE, "*" };
 
         public AppraisalRulesVM(BaseEAForm form)
 		{
