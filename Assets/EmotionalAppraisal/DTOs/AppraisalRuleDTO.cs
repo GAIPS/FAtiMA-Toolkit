@@ -16,10 +16,21 @@ namespace EmotionalAppraisal.DTOs
 		/// <summary>
 		/// The matching template for the events we want to appraise with this rule.
 		/// </summary>
-		public string EventMatchingTemplate { get; set; }
-		/// <summary>
-		/// The desirability of the event
-		/// </summary>
+		public string EventType { get; set; }
+
+        public string Subject { get; set; }
+
+        public string Action { get; set; }
+
+        public string Target { get; set; }
+
+        public string Property { get; set; }
+
+        public string NewValue { get; set; }
+
+        /// <summary>
+        /// The desirability of the event
+        /// </summary>
         public float Desirability { get; set; }
 		/// <summary>
 		/// The praisewothiness of the event.
@@ -30,5 +41,7 @@ namespace EmotionalAppraisal.DTOs
 		/// If the conditions are not met, the event appraisal is ignored.
 		/// </summary>
 	    public ConditionSetDTO Conditions { get; set; }
+
+
     }
 }

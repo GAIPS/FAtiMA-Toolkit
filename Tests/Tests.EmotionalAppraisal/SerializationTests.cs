@@ -8,6 +8,7 @@ using System.IO;
 using EmotionalAppraisal.DTOs;
 using SerializationUtilities;
 using WellFormedNames;
+using AutobiographicMemory;
 
 namespace Tests.EmotionalAppraisal
 {
@@ -91,33 +92,48 @@ namespace Tests.EmotionalAppraisal
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action-Finished,*,Pet,self)",
+				EventType = AMConsts.ACTION_END,
+                Subject = "*",
+                Action = "Pet",
+                Target = "self",
 				Desirability = 10
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action-Finished,*,Slap,self)",
-				Desirability = -10
+                EventType = AMConsts.ACTION_END,
+                Subject = "*",
+                Action = "Slap",
+                Target = "self",
+                Desirability = -10
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action-Finished, *, Feed, self)",
+                EventType = AMConsts.ACTION_END,
+                Subject = "*",
+                Action = "Feed",
+                Target = "self",
 				Desirability = 5,
 				Praiseworthiness = 10
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action-Finished,*,Talk(High,Mad),self)",
+                EventType = AMConsts.ACTION_END,
+                Subject = "*",
+                Action = "Talk(High,Mad)",
+                Target = "self",
 				Desirability = -7,
 				Praiseworthiness = -15
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action-Finished,*,Talk(Low,Happy),self)",
+                EventType = AMConsts.ACTION_END,
+                Subject = "*",
+                Action = "Talk(Low,Happy)",
+                Target = "self",
 				Praiseworthiness = 5
 			});
 			

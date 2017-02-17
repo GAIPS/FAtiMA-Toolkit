@@ -194,6 +194,7 @@
             this.textBoxSubject.Name = "textBoxSubject";
             this.textBoxSubject.Size = new System.Drawing.Size(257, 20);
             this.textBoxSubject.TabIndex = 35;
+            this.textBoxSubject.TextChanged += new System.EventHandler(this.textBoxSubject_TextChanged);
             // 
             // label4
             // 
@@ -203,6 +204,7 @@
             this.label4.Size = new System.Drawing.Size(46, 13);
             this.label4.TabIndex = 34;
             this.label4.Text = "Subject:";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // label6
             // 

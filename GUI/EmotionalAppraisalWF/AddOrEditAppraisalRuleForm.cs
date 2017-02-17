@@ -4,6 +4,7 @@ using Conditions.DTOs;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
+using AutobiographicMemory;
 
 namespace EmotionalAppraisalWF
 {
@@ -22,16 +23,26 @@ namespace EmotionalAppraisalWF
             //defaultValues
             comboBoxDesirability.Text = "0";
             comboBoxPraiseworthiness.Text = "0";
-            
-
             comboBoxEventType.DataSource = AppraisalRulesVM.EventTypes;
 
             if (ruleToEdit != null)
             {
                 this.Text = Resources.EditAppraisalRuleFormTitle;
                 this.addOrEditButton.Text = Resources.UpdateButtonLabel;
-
-            /*    eventTextBox.Text = ruleToEdit.EventMatchingTemplate;*/
+                comboBoxEventType.Text = ruleToEdit.EventType;
+                textBoxSubject.Text = ruleToEdit.Subject;
+                if (comboBoxEventType.Text == AMConsts.ACTION_START || comboBoxEventType.Text == AMConsts.ACTION_END)
+                {
+                    textBoxObject.Text = ruleToEdit.Action;
+                    textBoxTarget.Text = ruleToEdit.Target;
+                }
+                else
+                {
+                    labelObject.Text = "Property:";
+                    labelTarget.Text = "New Value:";
+                    textBoxObject.Text = ruleToEdit.Property;
+                    textBoxTarget.Text = ruleToEdit.NewValue;
+                }
                 comboBoxDesirability.Text = ruleToEdit.Desirability.ToString();
                 comboBoxPraiseworthiness.Text = ruleToEdit.Praiseworthiness.ToString();
             }
@@ -39,18 +50,34 @@ namespace EmotionalAppraisalWF
   
         private void addOrEditButton_Click_1(object sender, EventArgs e)
         {
-            var newRule = new AppraisalRuleDTO()
+            AppraisalRuleDTO newRule = new AppraisalRuleDTO();
+
+            if(comboBoxEventType.Text.Equals(AMConsts.ACTION_START) || comboBoxEventType.Text.Equals(AMConsts.ACTION_END))
             {
-                /*EventMatchingTemplate = eventTextBox.Text,*/
-
-                /*Subject = textBoxSubject.Text,
-                Property = textBoxObject.Text,
-                NewValue = textBoxTarget.Text,*/
-
-                Desirability = int.Parse(comboBoxDesirability.Text),
-                Praiseworthiness = int.Parse(comboBoxPraiseworthiness.Text),
-				Conditions = new ConditionSetDTO()
-            };
+                newRule = new AppraisalRuleDTO()
+                {
+                    EventType = comboBoxEventType.Text,
+                    Subject = textBoxSubject.Text,
+                    Action = textBoxObject.Text,
+                    Target = textBoxTarget.Text,
+                    Desirability = int.Parse(comboBoxDesirability.Text),
+                    Praiseworthiness = int.Parse(comboBoxPraiseworthiness.Text),
+                    Conditions = new ConditionSetDTO()
+                };
+            }
+            else if (comboBoxEventType.Text.Equals(AMConsts.PROPERTY_CHANGE))
+            {
+                newRule = new AppraisalRuleDTO()
+                {
+                    EventType = comboBoxEventType.Text,
+                    Subject = textBoxSubject.Text,
+                    Action = textBoxObject.Text,
+                    Target = textBoxTarget.Text,
+                    Desirability = int.Parse(comboBoxDesirability.Text),
+                    Praiseworthiness = int.Parse(comboBoxPraiseworthiness.Text),
+                    Conditions = new ConditionSetDTO()
+                };
+            }
             
             try
             {
@@ -71,6 +98,16 @@ namespace EmotionalAppraisalWF
         }
 
         private void comboBoxEventType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxSubject_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
         {
 
         }
