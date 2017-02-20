@@ -20,7 +20,7 @@ namespace CommeillFaut
     public sealed class CommeillFautAsset  : LoadableAsset<CommeillFautAsset>, ICustomSerialization
     {
 
-        private KB m_kB;
+        public KB m_kB;
         public List<SocialExchange> m_SocialExchanges { get; set; }
         public Dictionary<string, string[]> ConditionList;
         public TriggerRules _TriggerRules;
@@ -83,12 +83,12 @@ namespace CommeillFaut
 
         public IEnumerable<DynamicPropertyResult> VolitionPropertyCalculator(IQueryContext context, Name socialMoveName, Name Target)
         {
-          Console.WriteLine("VolitionProperty " + socialMoveName.ToString());
+         // Console.WriteLine("VolitionProperty " + socialMoveName.ToString());
 
 
             foreach (var t in context.AskPossibleProperties(Target))
             {
-                Console.WriteLine("Target: " + t.Item1 + "  Original target: " + Target + " found size: " + context.AskPossibleProperties(Target).Count());
+           //     Console.WriteLine("Target: " + t.Item1 + "  Original target: " + Target + " found size: " + context.AskPossibleProperties(Target).Count());
 
                 if (m_SocialExchanges.Find(x => x.ActionName == socialMoveName) != null)
                 {
@@ -326,6 +326,8 @@ namespace CommeillFaut
             return m_SocialExchanges.Find(x =>x.ActionName.ToString() == key);
 
         }
+
+      
 
         public Dictionary<string, int> CalculateSocialMovesVolitions(string target, string perspective)
         {

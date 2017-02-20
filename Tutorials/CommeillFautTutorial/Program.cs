@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using ActionLibrary;
+using ActionLibrary.DTOs;
 using AssetManagerPackage;
 using CommeillFaut.DTOs;
 using CommeillFaut;
@@ -30,7 +31,7 @@ namespace CommeillFautTutorial
         {
             AssetManager.Instance.Bridge = new BasicIOBridge();
 
-
+         
 
             var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/cifIAT.iat");
             rpcList = new List<RolePlayCharacterAsset>();
@@ -38,7 +39,7 @@ namespace CommeillFautTutorial
             {
 
                 var rpc = RolePlayCharacterAsset.LoadFromFile(source.Source);
-               // var cif = CommeillFautAsset.LoadFromFile(rpc.CommeillFautAssetSource);
+               
               
                 //rpc.DynamicPropertiesRegistry.RegistDynamicProperty(Name.BuildName("Volition"),cif.VolitionPropertyCalculator);
                     rpc.LoadAssociatedAssets();
@@ -48,7 +49,7 @@ namespace CommeillFautTutorial
 
 
             }
-
+            var cif = CommeillFautAsset.LoadFromFile(rpcList.First().CommeillFautAssetSource);
 
             foreach (var actor in rpcList)
             {
@@ -69,7 +70,7 @@ namespace CommeillFautTutorial
                           
                     }
 
-                actor.SaveToFile("../../../Examples/" + actor.CharacterName + "-output" + ".rpc");
+             //   actor.SaveToFile("../../../Examples/" + actor.CharacterName + "-output" + ".rpc");
             }
             
 
@@ -77,6 +78,8 @@ namespace CommeillFautTutorial
            
             List<Name> _events = new List<Name>();
             List<IAction> _actions = new List<IAction>();
+            var currentSocialMoveAction = "";
+            var currentSocialMoveResult = "";
 
             while (true)
             {
@@ -121,15 +124,29 @@ namespace CommeillFautTutorial
                         action.Target.ToString()));
 
                     initiator.Perceive(Initiator_Events);
-                    
 
 
+                    // storing data to apply consequences
+
+                    if (action.Parameters[0].ToString().Contains("Start"))
+                    {
+                        currentSocialMoveAction = action.Parameters[0].ToString().Replace("Start", "");
+
+                        Console.WriteLine("Started " + currentSocialMoveAction);
+                    }
+
+                    if (action.Parameters[0].ToString().Contains("Respond"))
+                    {
+                        currentSocialMoveResult = action.Parameters[2].ToString();
+
+                        Console.WriteLine("Result " + currentSocialMoveResult);
+                    }
 
 
 
                     Console.WriteLine("Current State: " + action.Parameters[0].ToString());
-                    Console.WriteLine(initiator.CharacterName + " says: " +
-                                      iat.GetDialogueAction(IATConsts.PLAYER, action.Parameters[0],action.Parameters[1], action.Parameters[2], action.Parameters[3]).Utterance + " to " + action.Target);
+                    Console.WriteLine(initiator.CharacterName + " says: ''" +
+                                      iat.GetDialogueAction(IATConsts.PLAYER, action.Parameters[0],action.Parameters[1], action.Parameters[2], action.Parameters[3]).Utterance + "'' to " + action.Target);
                     Console.WriteLine("Next State: " + action.Parameters[1].ToString());
 
 
@@ -161,7 +178,28 @@ namespace CommeillFautTutorial
                             "false",
                             action.Target.ToString()));
 
-                        rpcList.Find(x=>x.CharacterName == action.Target).Perceive(targetEvents);
+                        rpcList.Find(x => x.CharacterName == action.Target).Perceive(targetEvents);
+
+
+
+                        // Apply consequences
+
+                        Console.WriteLine("Social Exchange Finished, applying effects");
+
+                        var target = rpcList.Find(x => x.CharacterName == action.Target);
+
+                        //   var initiatorCIF = CommeillFautAsset.LoadFromFile(initiator.CommeillFautAssetSource);
+                        //   var initiatorEA = EmotionalAppraisalAsset.LoadFromFile(initiator.EmotionalAppraisalAssetSource);
+
+                        var _socialExchange = cif.m_SocialExchanges.Find(x => x.ActionName.ToString() == currentSocialMoveAction);
+
+                        _socialExchange.ApplyConsequences(initiator.m_kb, target.CharacterName, currentSocialMoveResult,true);
+                        _socialExchange.ApplyConsequences(target.m_kb, initiator.CharacterName, currentSocialMoveResult, false);
+
+                        currentSocialMoveAction = "";
+                        currentSocialMoveResult = "";
+
+
                         var rand = randomGen.Next(3);
                         //     Console.WriteLine(rand + "");
 
@@ -207,6 +245,8 @@ namespace CommeillFautTutorial
                 Console.ReadKey();
             }
         }
+
+
     }
 }
 
