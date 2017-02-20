@@ -372,8 +372,9 @@ namespace IntegratedAuthoringToolWF
         private DialogueStateActionDTO getPlayerDialogueAction(string line)
         {
 
-            line.Replace("P:", "");
+            line = line.Replace("P:", "");
             char[] delimitedchars = {'\n'};
+            line = line.Trim();
 
             var result = line.Split(delimitedchars);
             string currentState = "";
@@ -406,8 +407,9 @@ namespace IntegratedAuthoringToolWF
 
         private DialogueStateActionDTO getAgentDialogueAction(string line)
         {
-            line.Replace("P:", "");
+            line = line.Replace("A:", "");
             char[] delimitedchars = {'\n'};
+            line = line.Trim();
 
             var result = line.Split(delimitedchars);
             var currentState = "";

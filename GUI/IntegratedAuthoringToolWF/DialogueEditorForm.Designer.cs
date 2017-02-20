@@ -38,6 +38,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importFromtxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textToSpeachToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -47,7 +48,6 @@
             this.dataGridViewAgentDialogueActions = new System.Windows.Forms.DataGridView();
             this.buttonAgentAddDialogAction = new System.Windows.Forms.Button();
             this.buttonAgentRemoveDialogAction = new System.Windows.Forms.Button();
-            this.importFromtxtToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPlayerDialogueActions)).BeginInit();
             this.mainMenu.SuspendLayout();
@@ -68,9 +68,9 @@
             this.groupBox1.Controls.Add(this.buttonPlayerRemoveDialogueAction);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(1264, 361);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
@@ -79,7 +79,7 @@
             // buttonPlayerDuplicateDialogueAction
             // 
             this.buttonPlayerDuplicateDialogueAction.Location = new System.Drawing.Point(168, 23);
-            this.buttonPlayerDuplicateDialogueAction.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonPlayerDuplicateDialogueAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonPlayerDuplicateDialogueAction.Name = "buttonPlayerDuplicateDialogueAction";
             this.buttonPlayerDuplicateDialogueAction.Size = new System.Drawing.Size(93, 28);
             this.buttonPlayerDuplicateDialogueAction.TabIndex = 15;
@@ -90,7 +90,7 @@
             // buttonPlayerEditDialogueAction
             // 
             this.buttonPlayerEditDialogueAction.Location = new System.Drawing.Point(88, 23);
-            this.buttonPlayerEditDialogueAction.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonPlayerEditDialogueAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonPlayerEditDialogueAction.Name = "buttonPlayerEditDialogueAction";
             this.buttonPlayerEditDialogueAction.Size = new System.Drawing.Size(72, 28);
             this.buttonPlayerEditDialogueAction.TabIndex = 14;
@@ -113,7 +113,7 @@
             this.dataGridViewPlayerDialogueActions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewPlayerDialogueActions.ImeMode = System.Windows.Forms.ImeMode.On;
             this.dataGridViewPlayerDialogueActions.Location = new System.Drawing.Point(8, 63);
-            this.dataGridViewPlayerDialogueActions.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dataGridViewPlayerDialogueActions.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewPlayerDialogueActions.Name = "dataGridViewPlayerDialogueActions";
             this.dataGridViewPlayerDialogueActions.ReadOnly = true;
             this.dataGridViewPlayerDialogueActions.RowHeadersVisible = false;
@@ -125,7 +125,7 @@
             // buttonAddPlayerDialogueAction
             // 
             this.buttonAddPlayerDialogueAction.Location = new System.Drawing.Point(8, 23);
-            this.buttonAddPlayerDialogueAction.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonAddPlayerDialogueAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonAddPlayerDialogueAction.Name = "buttonAddPlayerDialogueAction";
             this.buttonAddPlayerDialogueAction.Size = new System.Drawing.Size(72, 28);
             this.buttonAddPlayerDialogueAction.TabIndex = 10;
@@ -136,7 +136,7 @@
             // buttonPlayerRemoveDialogueAction
             // 
             this.buttonPlayerRemoveDialogueAction.Location = new System.Drawing.Point(269, 23);
-            this.buttonPlayerRemoveDialogueAction.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonPlayerRemoveDialogueAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonPlayerRemoveDialogueAction.Name = "buttonPlayerRemoveDialogueAction";
             this.buttonPlayerRemoveDialogueAction.Size = new System.Drawing.Size(93, 28);
             this.buttonPlayerRemoveDialogueAction.TabIndex = 11;
@@ -171,16 +171,23 @@
             // importToolStripMenuItem
             // 
             this.importToolStripMenuItem.Name = "importToolStripMenuItem";
-            this.importToolStripMenuItem.Size = new System.Drawing.Size(189, 26);
-            this.importToolStripMenuItem.Text = "&Import";
+            this.importToolStripMenuItem.Size = new System.Drawing.Size(231, 26);
+            this.importToolStripMenuItem.Text = "&Import from Excel";
             this.importToolStripMenuItem.Click += new System.EventHandler(this.importToolStripMenuItem_Click);
             // 
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(189, 26);
-            this.exportToolStripMenuItem.Text = "&Export";
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(231, 26);
+            this.exportToolStripMenuItem.Text = "&Export to Excel";
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
+            // 
+            // importFromtxtToolStripMenuItem
+            // 
+            this.importFromtxtToolStripMenuItem.Name = "importFromtxtToolStripMenuItem";
+            this.importFromtxtToolStripMenuItem.Size = new System.Drawing.Size(231, 26);
+            this.importFromtxtToolStripMenuItem.Text = "Import Script from .txt";
+            this.importFromtxtToolStripMenuItem.Click += new System.EventHandler(this.importFromtxtToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
             // 
@@ -204,7 +211,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.splitContainer1.Location = new System.Drawing.Point(16, 33);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -229,9 +236,9 @@
             this.groupBox2.Controls.Add(this.buttonAgentRemoveDialogAction);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox2.Size = new System.Drawing.Size(1264, 359);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
@@ -240,7 +247,7 @@
             // buttonAgentDuplicateDialogueAction
             // 
             this.buttonAgentDuplicateDialogueAction.Location = new System.Drawing.Point(168, 23);
-            this.buttonAgentDuplicateDialogueAction.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonAgentDuplicateDialogueAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonAgentDuplicateDialogueAction.Name = "buttonAgentDuplicateDialogueAction";
             this.buttonAgentDuplicateDialogueAction.Size = new System.Drawing.Size(93, 28);
             this.buttonAgentDuplicateDialogueAction.TabIndex = 16;
@@ -251,7 +258,7 @@
             // buttonAgentEditDialogAction
             // 
             this.buttonAgentEditDialogAction.Location = new System.Drawing.Point(88, 23);
-            this.buttonAgentEditDialogAction.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonAgentEditDialogAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonAgentEditDialogAction.Name = "buttonAgentEditDialogAction";
             this.buttonAgentEditDialogAction.Size = new System.Drawing.Size(72, 28);
             this.buttonAgentEditDialogAction.TabIndex = 14;
@@ -274,7 +281,7 @@
             this.dataGridViewAgentDialogueActions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewAgentDialogueActions.ImeMode = System.Windows.Forms.ImeMode.On;
             this.dataGridViewAgentDialogueActions.Location = new System.Drawing.Point(8, 63);
-            this.dataGridViewAgentDialogueActions.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dataGridViewAgentDialogueActions.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewAgentDialogueActions.Name = "dataGridViewAgentDialogueActions";
             this.dataGridViewAgentDialogueActions.ReadOnly = true;
             this.dataGridViewAgentDialogueActions.RowHeadersVisible = false;
@@ -286,7 +293,7 @@
             // buttonAgentAddDialogAction
             // 
             this.buttonAgentAddDialogAction.Location = new System.Drawing.Point(8, 23);
-            this.buttonAgentAddDialogAction.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonAgentAddDialogAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonAgentAddDialogAction.Name = "buttonAgentAddDialogAction";
             this.buttonAgentAddDialogAction.Size = new System.Drawing.Size(72, 28);
             this.buttonAgentAddDialogAction.TabIndex = 10;
@@ -297,20 +304,13 @@
             // buttonAgentRemoveDialogAction
             // 
             this.buttonAgentRemoveDialogAction.Location = new System.Drawing.Point(269, 23);
-            this.buttonAgentRemoveDialogAction.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonAgentRemoveDialogAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonAgentRemoveDialogAction.Name = "buttonAgentRemoveDialogAction";
             this.buttonAgentRemoveDialogAction.Size = new System.Drawing.Size(93, 28);
             this.buttonAgentRemoveDialogAction.TabIndex = 11;
             this.buttonAgentRemoveDialogAction.Text = "Remove";
             this.buttonAgentRemoveDialogAction.UseVisualStyleBackColor = true;
             this.buttonAgentRemoveDialogAction.Click += new System.EventHandler(this.buttonAgentRemoveDialogAction_Click);
-            // 
-            // importFromtxtToolStripMenuItem
-            // 
-            this.importFromtxtToolStripMenuItem.Name = "importFromtxtToolStripMenuItem";
-            this.importFromtxtToolStripMenuItem.Size = new System.Drawing.Size(189, 26);
-            this.importFromtxtToolStripMenuItem.Text = "Import from .txt";
-            this.importFromtxtToolStripMenuItem.Click += new System.EventHandler(this.importFromtxtToolStripMenuItem_Click);
             // 
             // DialogueEditorForm
             // 
@@ -319,7 +319,7 @@
             this.ClientSize = new System.Drawing.Size(1296, 773);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.mainMenu);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "DialogueEditorForm";
             this.Text = "Dialogue Editor";
             this.groupBox1.ResumeLayout(false);

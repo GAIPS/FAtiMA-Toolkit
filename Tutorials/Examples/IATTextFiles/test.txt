@@ -1,7 +1,7 @@
 P: Hello
 A: Hi
 P: How are you
-A: I'm good, how about ?
+A: I'm good.
 P: I'm fine, thank you!
 A: Oh Ok!
 P: See you later?
