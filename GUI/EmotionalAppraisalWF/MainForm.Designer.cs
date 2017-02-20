@@ -47,6 +47,7 @@
             this.appraisalRulesTagePage = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.buttonDuplicateAppraisalRule = new System.Windows.Forms.Button();
             this.buttonEditAppraisalRule = new System.Windows.Forms.Button();
             this.buttonAddAppraisalRule = new System.Windows.Forms.Button();
             this.buttonRemoveAppraisalRule = new System.Windows.Forms.Button();
@@ -335,6 +336,7 @@
             // 
             // groupBox7
             // 
+            this.groupBox7.Controls.Add(this.buttonDuplicateAppraisalRule);
             this.groupBox7.Controls.Add(this.buttonEditAppraisalRule);
             this.groupBox7.Controls.Add(this.buttonAddAppraisalRule);
             this.groupBox7.Controls.Add(this.buttonRemoveAppraisalRule);
@@ -346,6 +348,16 @@
             this.groupBox7.TabIndex = 1;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Rules";
+            // 
+            // buttonDuplicateAppraisalRule
+            // 
+            this.buttonDuplicateAppraisalRule.Location = new System.Drawing.Point(142, 19);
+            this.buttonDuplicateAppraisalRule.Name = "buttonDuplicateAppraisalRule";
+            this.buttonDuplicateAppraisalRule.Size = new System.Drawing.Size(70, 23);
+            this.buttonDuplicateAppraisalRule.TabIndex = 10;
+            this.buttonDuplicateAppraisalRule.Text = "Duplicate";
+            this.buttonDuplicateAppraisalRule.UseVisualStyleBackColor = true;
+            this.buttonDuplicateAppraisalRule.Click += new System.EventHandler(this.buttonDuplicateAppraisalRule_Click);
             // 
             // buttonEditAppraisalRule
             // 
@@ -369,7 +381,8 @@
             // 
             // buttonRemoveAppraisalRule
             // 
-            this.buttonRemoveAppraisalRule.Location = new System.Drawing.Point(142, 19);
+            this.buttonRemoveAppraisalRule.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonRemoveAppraisalRule.Location = new System.Drawing.Point(218, 19);
             this.buttonRemoveAppraisalRule.Name = "buttonRemoveAppraisalRule";
             this.buttonRemoveAppraisalRule.Size = new System.Drawing.Size(70, 23);
             this.buttonRemoveAppraisalRule.TabIndex = 8;
@@ -722,6 +735,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.GroupBox groupBox11;
         private System.Windows.Forms.RichTextBox richTextBoxDescription;
+        private System.Windows.Forms.Button buttonDuplicateAppraisalRule;
     }
 }
 

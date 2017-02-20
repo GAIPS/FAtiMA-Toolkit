@@ -8,6 +8,7 @@ using System.IO;
 using EmotionalAppraisal.DTOs;
 using SerializationUtilities;
 using WellFormedNames;
+using AutobiographicMemory;
 
 namespace Tests.EmotionalAppraisal
 {
@@ -91,34 +92,34 @@ namespace Tests.EmotionalAppraisal
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action-Finished,*,Pet,self)",
+				EventMatchingTemplate = (Name)"Event(Action-End,*,Pet,self)",
 				Desirability = 10
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action-Finished,*,Slap,self)",
-				Desirability = -10
+                EventMatchingTemplate = (Name)"Event(Action-End,*,Slap,self)",
+                Desirability = -10
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action-Finished, *, Feed, self)",
+                EventMatchingTemplate = (Name)"Event(Action-End,*,Feed,self)",
 				Desirability = 5,
 				Praiseworthiness = 10
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action-Finished,*,Talk(High,Mad),self)",
-				Desirability = -7,
+                EventMatchingTemplate = (Name)"Event(Action-End,*,Talk(High,Mad),self)",
+                Desirability = -7,
 				Praiseworthiness = -15
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
-				EventMatchingTemplate = "Event(Action-Finished,*,Talk(Low,Happy),self)",
-				Praiseworthiness = 5
+                EventMatchingTemplate = (Name)"Event(Action-End,*,Talk(Low,Happy),self)",
+                Praiseworthiness = 5
 			});
 			
 			//Generate emotion

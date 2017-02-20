@@ -2,6 +2,7 @@
 using Conditions;
 using EmotionalAppraisal.DTOs;
 using WellFormedNames;
+using AutobiographicMemory;
 
 namespace EmotionalAppraisal.AppraisalRules
 {
@@ -22,6 +23,7 @@ namespace EmotionalAppraisal.AppraisalRules
 		public Name EventName { get; set; }
 		public ConditionSet Conditions { get; set; }
 
+       
 		public AppraisalRule(Name eventName, ConditionSet conditions = null)
 		{
 			m_id = Guid.NewGuid();
@@ -33,7 +35,7 @@ namespace EmotionalAppraisal.AppraisalRules
 	    public AppraisalRule(AppraisalRuleDTO appraisalRuleDTO)
 	    {
 		    m_id = (appraisalRuleDTO.Id == Guid.Empty)?Guid.NewGuid() : appraisalRuleDTO.Id;
-	        EventName = Name.BuildName(appraisalRuleDTO.EventMatchingTemplate);
+            EventName = (Name)appraisalRuleDTO.EventMatchingTemplate;
 	        Desirability = appraisalRuleDTO.Desirability;
 	        Praiseworthiness = appraisalRuleDTO.Praiseworthiness;
 			Conditions = appraisalRuleDTO.Conditions==null ? new ConditionSet() : new ConditionSet(appraisalRuleDTO.Conditions);

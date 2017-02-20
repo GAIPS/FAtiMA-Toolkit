@@ -22,10 +22,10 @@
 			"CommeillFautAssetSource": null,
 			"EmotionalState":
 				{
-					"Mood": -1.5,
+					"Mood": -1.482771,
 					"EmotionalPool": [
 						{
-							"Intensity": 5,
+							"Intensity": 4.774208,
 							"Decay": 1,
 							"Threshold": 1,
 							"CauseId": 1,
@@ -46,7 +46,7 @@
 				},
 			"AutobiographicMemory":
 				{
-					"Tick": 0,
+					"Tick": 1,
 					"records": [
 						{
 							"classId": 0,
@@ -63,7 +63,7 @@
 							"Id": 2,
 							"Type": "Action-Start",
 							"Subject": "Sam",
-							"Timestamp": 0,
+							"Timestamp": 1,
 							"Action": "Insult",
 							"Target": "Player"
 						}, 
@@ -72,7 +72,7 @@
 							"Id": 3,
 							"Type": "Action-End",
 							"Subject": "Sam",
-							"Timestamp": 0,
+							"Timestamp": 1,
 							"Action": "Insult",
 							"Target": "Player"
 						}]

@@ -123,5 +123,45 @@ namespace RolePlayCharacterWF
 				}
 			}
         }
+
+        private void comboBoxEventType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxTarget_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labelTarget_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxObject_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labelObject_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxSubject_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBoxTime_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

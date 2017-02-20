@@ -116,10 +116,10 @@ namespace CommeillFautTutorial
                     var Initiator_Events = new List<Name>();
 
                    
-                     Initiator_Events.Add(EventHelper.PropertyChanged("DialogueState(" + action.Target.ToString() + ")",
+                     Initiator_Events.Add(EventHelper.PropertyChange("DialogueState(" + action.Target.ToString() + ")",
                             action.Parameters[1].ToString(), initiator.CharacterName.ToString()));
 
-                    Initiator_Events.Add(EventHelper.PropertyChanged("HasFloor(" + initiator.CharacterName + ")",
+                    Initiator_Events.Add(EventHelper.PropertyChange("HasFloor(" + initiator.CharacterName + ")",
                         "false",
                         action.Target.ToString()));
 
@@ -157,10 +157,10 @@ namespace CommeillFautTutorial
                     {
 
                         var targetEvents = new List<Name>();
-                        targetEvents.Add(EventHelper.PropertyChanged("DialogueState(" + initiator.CharacterName.ToString() + ")",
+                        targetEvents.Add(EventHelper.PropertyChange("DialogueState(" + initiator.CharacterName.ToString() + ")",
                                 action.Parameters[1].ToString(), action.Target.ToString()));
 
-                        targetEvents.Add(EventHelper.PropertyChanged("HasFloor(" + action.Target.ToString() + ")",
+                        targetEvents.Add(EventHelper.PropertyChange("HasFloor(" + action.Target.ToString() + ")",
                             "true",
                             action.Target.ToString()));
 
@@ -172,9 +172,9 @@ namespace CommeillFautTutorial
                     {
                         var targetEvents = new List<Name>();
 
-                       targetEvents.Add(EventHelper.PropertyChanged("DialogueState(" + initiator.CharacterName.ToString() + ")",
+                       targetEvents.Add(EventHelper.PropertyChange("DialogueState(" + initiator.CharacterName.ToString() + ")",
                                 action.Parameters[1].ToString(), action.Target.ToString()));
-                        targetEvents.Add(EventHelper.PropertyChanged("HasFloor(" + action.Target.ToString() + ")",
+                        targetEvents.Add(EventHelper.PropertyChange("HasFloor(" + action.Target.ToString() + ")",
                             "false",
                             action.Target.ToString()));
 
@@ -209,7 +209,7 @@ namespace CommeillFautTutorial
 
                         var finalEvents = new List<Name>();
 
-                        finalEvents.Add( EventHelper.PropertyChanged("HasFloor(" + next.CharacterName + ")", "true",
+                        finalEvents.Add( EventHelper.PropertyChange("HasFloor(" + next.CharacterName + ")", "true",
                             "Random"));
                    
                        

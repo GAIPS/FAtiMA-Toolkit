@@ -45,7 +45,7 @@ namespace IntegratedAuthoringToolTutorial
                 var speakEvt = EventHelper.ActionEnd(playerStr, actionName.ToString(), rpc.CharacterName.ToString());
 
                 currentState = chosenDialog.NextState;
-                var dialogStateChangeEvt = EventHelper.PropertyChanged(string.Format(IATConsts.DIALOGUE_STATE_PROPERTY,playerStr), chosenDialog.NextState, playerStr);
+                var dialogStateChangeEvt = EventHelper.PropertyChange(string.Format(IATConsts.DIALOGUE_STATE_PROPERTY,playerStr), chosenDialog.NextState, playerStr);
 
                 rpc.Perceive(new[] { speakEvt, dialogStateChangeEvt });
                 var characterAction = rpc.Decide().FirstOrDefault();

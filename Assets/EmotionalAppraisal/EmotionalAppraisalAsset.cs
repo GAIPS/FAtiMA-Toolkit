@@ -113,21 +113,20 @@ namespace EmotionalAppraisal
 			m_appraisalDerivator.AddOrUpdateAppraisalRule(emotionalAppraisalRule);
 		}
 
-		/// <summary>
-		/// Returns all the appraisal rules
-		/// </summary>
-		/// <returns>The set of dtos containing the information for all the appraisal rules</returns>
+        /// <summary>
+        /// Returns all the appraisal rules
+        /// </summary>
+        /// <returns>The set of dtos containing the information for all the appraisal rules</returns>
         public IEnumerable<AppraisalRuleDTO> GetAllAppraisalRules()
         {
-            var appraisalRules = this.m_appraisalDerivator.GetAppraisalRules().Select(r => new AppraisalRuleDTO
+            return this.m_appraisalDerivator.GetAppraisalRules().Select(r => new AppraisalRuleDTO
             {
                 Id = r.Id,
-                EventMatchingTemplate = r.EventName.ToString(),
+                EventMatchingTemplate = r.EventName,
                 Desirability = r.Desirability,
                 Praiseworthiness = r.Praiseworthiness,
-				Conditions = r.Conditions.ToDTO()
+                Conditions = r.Conditions.ToDTO()
             });
-            return appraisalRules;
         }
 
 		/// <summary>
