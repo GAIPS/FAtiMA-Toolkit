@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,9 @@ namespace IntegratedAuthoringToolWF
         private readonly string PLAYER = IATConsts.PLAYER;
         private readonly string AGENT = IATConsts.AGENT;
 
+        private int stateCounter;
+        private int totalSize;
+
         public DialogueEditorForm(MainForm parentForm)
         {
             InitializeComponent();
@@ -35,6 +39,8 @@ namespace IntegratedAuthoringToolWF
             _agentDialogs = new BindingListView<GUIDialogStateAction>(new List<GUIDialogStateAction>());
 	        dataGridViewAgentDialogueActions.DataSource = _agentDialogs;
             RefreshAgentDialogs();
+            stateCounter = 0;
+            totalSize = 0;
         }
 
 	    private void RefreshPlayerDialogs()
@@ -43,6 +49,7 @@ namespace IntegratedAuthoringToolWF
                 PLAYER).Select(d => new GUIDialogStateAction(d)).ToList();
 			_playerDialogs.Refresh();
 			dataGridViewPlayerDialogueActions.Columns["Id"].Visible = false;
+
 		}
 
 	    private void RefreshAgentDialogs()
@@ -309,5 +316,124 @@ namespace IntegratedAuthoringToolWF
 
         #endregion
 
+
+        private void importFromtxtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+            ImportFromTxt();
+        }
+
+
+        private void ImportFromTxt()
+        {
+
+            var ofd = new OpenFileDialog();
+            ofd.Filter = "Text File|*.txt";
+            if (ofd.ShowDialog() != DialogResult.OK)
+                return;
+
+            var fileName = new FileInfo(ofd.FileName);
+            File.SetAttributes(fileName.DirectoryName, FileAttributes.Normal);
+
+            ClearAllDialogActions(PLAYER);
+            ClearAllDialogActions(AGENT);
+            stateCounter = 0;
+            totalSize = 0;
+
+            var lines = File.ReadAllLines(fileName.FullName);
+            totalSize = lines.Length;
+
+          
+
+            foreach (var line in lines) 
+            {
+                if (line.Contains("P:"))
+                {
+                    var add = getPlayerDialogueAction(line);
+                    _iatAsset.AddPlayerDialogAction(add);
+                }
+
+                else if (line.Contains("A:"))
+                {
+
+
+                    var add = getAgentDialogueAction(line);
+                    _iatAsset.AddAgentDialogAction(add);
+
+                }
+            }
+
+            RefreshPlayerDialogs();
+            RefreshAgentDialogs();
+        }
+
+
+
+        private DialogueStateActionDTO getPlayerDialogueAction(string line)
+        {
+
+            line.Replace("P:", "");
+            char[] delimitedchars = {'\n'};
+
+            var result = line.Split(delimitedchars);
+            string currentState = "";
+            string nextState = "";
+            if (stateCounter == 0)
+            {
+                currentState = "Start";
+                stateCounter += 1;
+                nextState = "S" + stateCounter;
+            }
+            else
+            {
+                currentState = "S" + stateCounter;
+                stateCounter += 1;
+                nextState = "S" + stateCounter;
+            }
+
+            var add = new DialogueStateActionDTO()
+            {
+                CurrentState = currentState,
+                Meaning = new string[1],
+                NextState = nextState,
+                Utterance = result[0],
+                Style = new string[1]
+
+            };
+
+            return add;
+        }
+
+        private DialogueStateActionDTO getAgentDialogueAction(string line)
+        {
+            line.Replace("P:", "");
+            char[] delimitedchars = {'\n'};
+
+            var result = line.Split(delimitedchars);
+            var currentState = "";
+            var nextState = "";
+           
+             currentState = "S" + stateCounter;
+              stateCounter += 1;
+                nextState = "S" + stateCounter;
+            if (stateCounter == totalSize)
+                nextState = "End";
+
+            var add = new DialogueStateActionDTO()
+            {
+                CurrentState = currentState,
+                Meaning = new string[1],
+                NextState = nextState,
+                Utterance = result[0],
+                Style = new string[1]
+
+            };
+
+            return add;
+        }
+
     }
+
+
+
 }
