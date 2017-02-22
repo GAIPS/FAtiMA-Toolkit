@@ -11,8 +11,7 @@
 						"SELF":{
 									"DialogueState(Peter)": "Start",
 									"DialogueState(Mary)": "Start",
-									"Volition(Compliment, Kate, Peter)": -2,
-									"Volition(Flirt, Kate, Peter)": 7
+									"Attraction(Mary)": 10
 									}
 						}
 				},

@@ -397,7 +397,8 @@ namespace SocialImportance
 		private static readonly Name SI_DYNAMIC_PROPERTY_NAME = Name.BuildName("SI");
 		private IEnumerable<DynamicPropertyResult> SIPropertyCalculator(IQueryContext context, Name target)
 		{
-			foreach (var t in context.AskPossibleProperties(target))
+
+            foreach (var t in context.AskPossibleProperties(target))
 			{
 				var si = internal_GetSocialImportance(t.Item1, context.Perspective);
 				foreach (var s in t.Item2)

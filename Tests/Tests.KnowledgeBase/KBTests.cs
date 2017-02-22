@@ -76,14 +76,6 @@ namespace Tests.KnowledgeBase
 		}
 
 		[Test]
-		public void Test_Tell_Fail_Complext_Property_With_ToM()
-		{
-			const string property = "ToM(Mary,ToM(Self,Has(ToM(Mary,Ball))))";
-			var kb = new KB((Name)"John");
-			Assert.Throws<ArgumentException>(() => kb.Tell((Name)property, Name.BuildName(true)));
-		}
-
-		[Test]
 		public void Test_Tell_Pass_Basic_Property_With_ToM()
 		{
 			const string property = "ToM(Mary,ToM(Self,Has(Ball)))";
@@ -147,8 +139,6 @@ namespace Tests.KnowledgeBase
 			{
 				yield return new TestCaseData((Name)"[x]", false, typeof(ArgumentException));
 				yield return new TestCaseData((Name)"like(self,[x])", false, typeof(ArgumentException));
-				yield return new TestCaseData((Name)"like(self,Color(Ball))", false, typeof(Exception));
-				yield return new TestCaseData((Name)"like(self,Color(A(B,D)))", false, typeof(Exception));
 				yield return new TestCaseData((Name)"10", 35, typeof(ArgumentException));
 				yield return new TestCaseData((Name)"10", 10, typeof(ArgumentException));
 				yield return new TestCaseData((Name)"true", 25, typeof(ArgumentException));

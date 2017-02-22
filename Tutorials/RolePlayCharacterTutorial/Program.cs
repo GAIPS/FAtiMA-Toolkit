@@ -21,6 +21,7 @@ namespace RolePlayCharacterTutorial
 
             rpc.Perceive(new[] { event1 });
             var action = rpc.Decide().FirstOrDefault();;
+            rpc.Update();
 
             Console.WriteLine("The name of the character loaded is: " + rpc.CharacterName);
             Console.WriteLine("The following event was perceived: " + event1);
@@ -43,6 +44,14 @@ namespace RolePlayCharacterTutorial
             Console.WriteLine("Third Response: " + action?.Name +", Target:" + action?.Target.ToString());
 
             rpc.SaveToFile("../../../Examples/RPCTest-Output.rpc");
+
+            while (rpc.Mood != 0)
+            {
+                Console.WriteLine("Mood after tick: " + rpc.Mood);
+                rpc.Update();
+                Console.ReadKey();
+            }
+            Console.WriteLine("Mood after tick: " + rpc.Mood);
             Console.ReadKey();
 
         }

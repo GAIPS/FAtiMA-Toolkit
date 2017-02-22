@@ -4,7 +4,7 @@
 			"classId": 0,
 			"ScenarioName": "CifScenario",
 			"Description": "Testing the new cif dialogue combination",
-			"CharacterSources": ["Mary.rpc", "Peter.rpc", "Kate.rpc"],
+			"CharacterSources": ["Mary.rpc", "Kate.rpc", "Peter.rpc"],
 			"PlayerDialogues": [
 				{
 					"CurrentState": "RespondFlirt",

@@ -32,7 +32,7 @@
 					"dictionary": [
 						{
 							"key": "Attraction",
-							"value": ["Attractio([x]) > 5"]
+							"value": ["Attraction([x]) > 5"]
 						}]
 				},
 			"_triggerRules":

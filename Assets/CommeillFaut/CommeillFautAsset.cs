@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using CommeillFaut.DTOs;
@@ -19,10 +20,11 @@ namespace CommeillFaut
     public sealed class CommeillFautAsset  : LoadableAsset<CommeillFautAsset>, ICustomSerialization
     {
 
-        private KB m_kB;
+        public KB m_kB;
         public List<SocialExchange> m_SocialExchanges { get; set; }
         public Dictionary<string, string[]> ConditionList;
         public TriggerRules _TriggerRules;
+        private List<Name> _actorsList;
 
         //Volatile Statements
         private NameSearchTree<NameSearchTree<float>> m_cachedCIF = new NameSearchTree<NameSearchTree<float>>();
@@ -43,12 +45,13 @@ namespace CommeillFaut
             ConditionList = new Dictionary<string, string[]>();
             m_cachedCIF = new NameSearchTree<NameSearchTree<float>>();
             _TriggerRules = new TriggerRules();
+            _actorsList = new List<Name>();
         }
 
         /// <summary>
-        /// Binds a KB to this Social Importance Asset instance. Without a KB instance binded to this asset, 
-        /// social importance evaluations will not work properly.
-        /// InvalidateCachedSI() is automatically called by this method.
+        /// Binds a KB to this Comme ill Faut Asset instance. Without a KB instance binded to this asset, 
+        /// comme ill faut evaluations will not work properly.
+        /// InvalidateCachedCIF() is automatically called by this method.
         /// </summary>
         /// <param name="kb">The Knowledge Base to be binded to this asset.</param>
         public void RegisterKnowledgeBase(KB kB)
@@ -69,7 +72,8 @@ namespace CommeillFaut
 
         public void BindToRegistry(IDynamicPropertiesRegistry registry)
         {
-            registry.RegistDynamicProperty(CIF_DYNAMIC_PROPERTY_NAME, CIFPropertyCalculator);
+            //       registry.RegistDynamicProperty(CIF_DYNAMIC_PROPERTY_NAME, CIFPropertyCalculator);
+       
             registry.RegistDynamicProperty(VOLITION_PROPERTY_TEMPLATE, VolitionPropertyCalculator);
         }
 
@@ -77,22 +81,43 @@ namespace CommeillFaut
 
         private static readonly Name VOLITION_PROPERTY_TEMPLATE = (Name)"Volition";
 
-        private IEnumerable<DynamicPropertyResult> VolitionPropertyCalculator(IQueryContext context, Name socialMoveName, Name Initiator, Name Target)
+        public IEnumerable<DynamicPropertyResult> VolitionPropertyCalculator(IQueryContext context, Name socialMoveName, Name Target)
         {
+         // Console.WriteLine("VolitionProperty " + socialMoveName.ToString());
 
 
-        
-            foreach (var t in context.AskPossibleProperties(Name.BuildName("" + socialMoveName + Initiator + Target)))
+            foreach (var t in context.AskPossibleProperties(Target))
             {
-                var cif = internal_GetSocialVolition(t.Item1, context.Perspective);
-                foreach (var s in t.Item2)
-                    yield return new DynamicPropertyResult(Name.BuildName(cif), s);
+           //     Console.WriteLine("Target: " + t.Item1 + "  Original target: " + Target + " found size: " + context.AskPossibleProperties(Target).Count());
+
+                if (m_SocialExchanges.Find(x => x.ActionName == socialMoveName) != null)
+                {
+                    var value = CalculateVolitions(socialMoveName.ToString(), t.Item1.ToString(),
+                        context.Perspective.ToString());
+
+                    var sub =
+                        new SubstitutionSet(new Substitution[]
+                            {new Substitution(Name.BuildName("[x]"), t.Item1)});
+
+                    Console.WriteLine(" Result: " + "Volition(" + socialMoveName + "," + t.Item1.ToString() + ")" + "=" +
+                                      value);
+                    yield return new DynamicPropertyResult(Name.BuildName(value), sub);
+
+                }
+                else
+                {
+                    Console.WriteLine("No such social exchange with that name found \n");
+                    yield break;
+
+                }
             }
         }
+        
+        
 
         public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
         {
-            registry.UnregistDynamicProperty((Name)"cif([target])");
+            registry.UnregistDynamicProperty((Name)"Volition");
         }
 
         #endregion
@@ -105,7 +130,7 @@ namespace CommeillFaut
 
 
         /// <summary>
-        /// Calculate the Social Importance value of a given target, in a particular perspective.
+        /// Calculate the Volition value of a given target, in a particular perspective.
         /// If no perspective is given, the current agent's perspective is used as default.
         /// </summary>
         /// <remarks>
@@ -130,6 +155,7 @@ namespace CommeillFaut
 
         private string internal_GetSocialVolition(Name target, Name perspective)
         {
+            Console.WriteLine("internal Get social Volition");
             NameSearchTree<float> targetDict;
             string ret_value = "";
             if (!m_cachedCIF.TryGetValue(perspective, out targetDict))
@@ -142,9 +168,14 @@ namespace CommeillFaut
             float value;
             if (!targetDict.TryGetValue(target, out value))
             {
-                ret_value = CalculateSocialMove(target.ToString(), perspective.ToString()).ActionName.ToString();
+             
+                var action = CalculateSocialMove(target.ToString(), perspective.ToString());
+                ret_value = action.ActionName.ToString();
+               
                 targetDict[target] = value;
             }
+         
+            Console.WriteLine("retvalue: " + ret_value + " target " + target + " perpective " + perspective);
             return ret_value;
         }
 
@@ -165,7 +196,23 @@ namespace CommeillFaut
             _TriggerRules.Verify(this.m_kB);
         }
 
+        private List<Name> getTargetList()
+        {
+            List<Name> retList = new List<Name>();
+     
 
+            var total = m_kB.AskProperty(Name.BuildName("NumberofTargets(" + "SELF" + ")"), m_kB.Perspective);
+
+            for (int i = Int32.Parse(total.ToString()); i>0; i--)
+            {
+                var target = m_kB.AskProperty(Name.BuildName("Target(" + i + ")"), m_kB.Perspective);
+                retList.Add(target);
+            }
+
+            _actorsList = retList;
+           
+            return retList;
+        }
 
         public Guid AddExchange(SocialExchangeDTO newExchange)
         {
@@ -280,6 +327,8 @@ namespace CommeillFaut
 
         }
 
+      
+
         public Dictionary<string, int> CalculateSocialMovesVolitions(string target, string perspective)
         {
 
@@ -288,7 +337,7 @@ namespace CommeillFaut
 
             foreach (var socialMove in m_SocialExchanges)
             {
-                int volitionResult = socialMove.CalculateVolition(perspective, target, m_kB);
+                int volitionResult = socialMove.CalculateVolition(perspective, target, this.m_kB);
                 volitions.Add(socialMove.ActionName.ToString(), volitionResult);
                 Console.WriteLine(" Name " + socialMove.ActionName + " volResult: " + volitionResult);
 
@@ -303,20 +352,36 @@ namespace CommeillFaut
             return GetHighestVolition(CalculateSocialMovesVolitions(target, perpective));
         }
 
-        #region Dynamic Properties
 
-        private static readonly Name CIF_DYNAMIC_PROPERTY_NAME = Name.BuildName("CIF");
-        private IEnumerable<DynamicPropertyResult> CIFPropertyCalculator(IQueryContext context, Name target)
+        public int CalculateVolitions(string socialMove, string target, string perpective)
         {
-            foreach (var t in context.AskPossibleProperties(target))
-            {
-                var si = internal_GetSocialVolition(t.Item1, context.Perspective);
-                foreach (var s in t.Item2)
-                    yield return new DynamicPropertyResult(Name.BuildName(si), s);
-            }
-        }
-        #endregion
 
+            return m_SocialExchanges.Find(x => x.ActionName.ToString() == socialMove)
+                .CalculateVolition(perpective, target, this.m_kB);
+        }
+
+        public void AddToActorList(Name actor)
+        {
+           
+
+
+         var number =   m_kB.AskProperty(Name.BuildName("NumberOfTargets"), m_kB.Perspective);
+
+            if (number == null) number = Name.BuildName(0);
+           
+            var value = Int32.Parse(number.ToString()) + 1;
+            m_kB.Tell(Name.BuildName("NumberOfTargets"), Name.BuildName(value), m_kB.Perspective);
+            m_kB.Tell(Name.BuildName("Target(" + value + ")"), actor, m_kB.Perspective);
+
+
+
+        }
+
+
+        public List<Name> getActorList()
+        {
+            return _actorsList;
+        }
 
         #region Serialization
 
@@ -374,7 +439,8 @@ namespace CommeillFaut
         public void LoadFromDTO(CommeillFautDTO dto)
         {
             m_SocialExchanges.Clear();
-          
+            _actorsList = new List<Name>();
+
             if (dto._SocialExchangesDtos != null)
             {
                 foreach (var c in dto._SocialExchangesDtos)

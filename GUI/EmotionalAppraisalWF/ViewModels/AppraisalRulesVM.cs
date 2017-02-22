@@ -5,6 +5,7 @@ using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
+using AutobiographicMemory;
 
 namespace EmotionalAppraisalWF.ViewModels
 {
@@ -17,7 +18,9 @@ namespace EmotionalAppraisalWF.ViewModels
 	    public ConditionSetView CurrentRuleConditions { get; }
         public Guid SelectedRuleId { get; set;}
 
-		public AppraisalRulesVM(BaseEAForm form)
+        public static readonly string[] EventTypes = { AMConsts.ACTION_END, AMConsts.ACTION_START, AMConsts.PROPERTY_CHANGE, "*" };
+
+        public AppraisalRulesVM(BaseEAForm form)
 		{
 			_mainForm = form;
             this.AppraisalRules = new BindingListView<AppraisalRuleDTO>(new List<AppraisalRuleDTO>());

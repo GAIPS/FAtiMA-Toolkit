@@ -5,49 +5,46 @@
 			"DefaultActionPriority": 2,
 			"ActionTendencies": [
 				{
-					"Action": "Speak(RespondFlirt, End,-,-)",
+					"Action": "Speak(RespondFlirt, End, -, -)",
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["DialogueState([x]) = RespondFlirt", "HasFloor(SELF)=true"]
+							"Set": ["DialogueState([x]) = RespondFlirt", "HasFloor(SELF) = True"]
 						},
 					"Priority": 1
 				}, 
 				{
-					"Action": "Speak(RespondCompliment, End,-,-)",
+					"Action": "Speak(RespondCompliment, End, -, -)",
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["DialogueState([x]) = RespondCompliment","HasFloor(SELF)=true"]
+							"Set": ["DialogueState([x]) = RespondCompliment", "HasFloor(SELF) = True"]
 						},
 					"Priority": 1
 				}, 
 				{
-					"Action": "Speak(StartFlirt, RespondFlirt,-,-)",
+					"Action": "Speak(StartFlirt, RespondFlirt, -, -)",
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["Volition(Flirt, SELF, [x]) > 0", "DialogueState([x]) = Start","HasFloor(SELF)=true"]
-							
+							"Set": ["[x]=Kate","IsAgent([x]) = true", "ValidDialogue([x], [y], [mn], [sty]) = true", "[x] != SELF", "Volition(Flirt, [x]) > 0", "DialogueState([x]) = Start", "HasFloor(SELF) = True"]
 						},
 					"Priority": 0
-				},
-{
-					"Action": "Speak(End, Start,-,-)",
-					"Target": "[x]",
-					"Conditions":
-						{
-							"Set": ["DialogueState([x]) = End","HasFloor(SELF)=true"]
-							
-						},
-					"Priority": 2
-				},				
+				}, 
 				{
-					"Action": "Speak(StartCompliment, RespondCompliment,-,-)",
+					"Action": "Speak(End, Start, -, -)",
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["Volition(Compliment, SELF, [x]) > 0","DialogueState([x]) = Start","HasFloor(SELF)=true"]
+							"Set": ["DialogueState([x]) = End", "HasFloor(SELF) = True"]
+						}
+				}, 
+				{
+					"Action": "Speak(StartCompliment, RespondCompliment, -, -)",
+					"Target": "[x]",
+					"Conditions":
+						{
+							"Set": ["isAgent([x]) = true", "Volition(Compliment, [x]) > 0", "DialogueState([x]) = Start", "HasFloor(SELF) = True"]
 						},
 					"Priority": 0
 				}]

@@ -1,5 +1,6 @@
 ﻿using System;
 using Conditions.DTOs;
+using WellFormedNames;
 
 namespace EmotionalAppraisal.DTOs
 {
@@ -16,10 +17,10 @@ namespace EmotionalAppraisal.DTOs
 		/// <summary>
 		/// The matching template for the events we want to appraise with this rule.
 		/// </summary>
-		public string EventMatchingTemplate { get; set; }
-		/// <summary>
-		/// The desirability of the event
-		/// </summary>
+		public Name EventMatchingTemplate { get; set; }
+        /// <summary>
+        /// The desirability of the event
+        /// </summary>
         public float Desirability { get; set; }
 		/// <summary>
 		/// The praisewothiness of the event.
