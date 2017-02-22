@@ -34,6 +34,14 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataStructures\ClosedDictionary.cs" />
+    <Compile Include="DataStructures\IClosedSet.cs" />
+    <Compile Include="DataStructures\IOpenSet.cs" />
+    <Compile Include="DataStructures\NodePriorityHeap.cs" />
+    <Compile Include="DataStructures\NodeRecord.cs" />
+    <Compile Include="DataStructures\PriorityQueue.cs" />
+    <Compile Include="DataStructures\SimpleUnorderedNodeList.cs" />
+    <Compile Include="DFSearch.cs" />
     <Compile Include="DirtyValue.cs" />
     <Compile Include="Json\JsonArray.cs" />
     <Compile Include="Json\JsonBool.cs" />

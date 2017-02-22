@@ -14,7 +14,9 @@ namespace IntegratedAuthoringToolTutorial
             var playerStr = IATConsts.PLAYER;
          
             //Loading the asset
-            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/IATTest.iat");
+            //var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/IATTest.iat");
+            var iat = IntegratedAuthoringToolAsset.LoadFromFile("D:/FA/inspector-toto.iat");
+            //D:/FA/inspector-toto.iat
             var currentState = IATConsts.INITIAL_DIALOGUE_STATE;
 
             var rpc = RolePlayCharacterAsset.LoadFromFile(iat.GetAllCharacterSources().FirstOrDefault().Source);
@@ -60,6 +62,8 @@ namespace IntegratedAuthoringToolTutorial
                         characterAction.Parameters[3]);
                     Console.WriteLine("\n" + rpc.CharacterName + ": " + dialog.Utterance + "\n");
                     currentState = characterAction.Parameters[1].ToString();
+                    Console.WriteLine("\nMood: " + rpc.Mood);
+                    rpc.SaveToFile("D:/FA/xuxa.rpc");
                 }
                 else
                 {

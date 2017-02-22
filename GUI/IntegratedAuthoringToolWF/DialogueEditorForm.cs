@@ -10,6 +10,7 @@ using IntegratedAuthoringTool.DTOs;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using Utilities;
+using Utilities.DataStructures;
 
 namespace IntegratedAuthoringToolWF
 {
@@ -309,5 +310,40 @@ namespace IntegratedAuthoringToolWF
 
         #endregion
 
+        private void dataGridViewPlayerDialogueActions_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void validateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dfsearch = new DFSearch<string>(state => _iatAsset.GetAllDialogueActionsByState(state).Select(dto => dto.NextState));
+            dfsearch.InitializeSearch(IATConsts.INITIAL_DIALOGUE_STATE);
+            dfsearch.FullSearch();
+
+            int unreacheableStatesCount = 0;
+            string unreacheableStates = "The following Dialogue States are not reachable: \n[";
+
+            foreach(var dAction in _iatAsset.GetAllDialogueActions())
+            {
+                if(dfsearch.Closed.SearchInClosed(new NodeRecord<string>() { node = dAction.CurrentState.ToString() })==null)
+                {
+                    unreacheableStatesCount++;
+                    unreacheableStates += dAction.CurrentState + ", ";
+                }
+            }
+
+            unreacheableStates = unreacheableStates.Remove(unreacheableStates.Length - 2);
+            unreacheableStates += "]";
+
+            if(unreacheableStatesCount > 0)
+            {
+                MessageBox.Show(unreacheableStates);
+            }
+            else
+            {
+                MessageBox.Show("All Dialogue States are reachable!");
+            }
+        }
     }
 }

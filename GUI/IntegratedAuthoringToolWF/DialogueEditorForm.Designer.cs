@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.buttonPlayerDuplicateDialogueAction = new System.Windows.Forms.Button();
             this.buttonPlayerEditDialogueAction = new System.Windows.Forms.Button();
             this.dataGridViewPlayerDialogueActions = new System.Windows.Forms.DataGridView();
             this.buttonAddPlayerDialogueAction = new System.Windows.Forms.Button();
@@ -41,12 +42,12 @@
             this.textToSpeachToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.buttonAgentDuplicateDialogueAction = new System.Windows.Forms.Button();
             this.buttonAgentEditDialogAction = new System.Windows.Forms.Button();
             this.dataGridViewAgentDialogueActions = new System.Windows.Forms.DataGridView();
             this.buttonAgentAddDialogAction = new System.Windows.Forms.Button();
             this.buttonAgentRemoveDialogAction = new System.Windows.Forms.Button();
-            this.buttonPlayerDuplicateDialogueAction = new System.Windows.Forms.Button();
-            this.buttonAgentDuplicateDialogueAction = new System.Windows.Forms.Button();
+            this.validateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPlayerDialogueActions)).BeginInit();
             this.mainMenu.SuspendLayout();
@@ -72,6 +73,16 @@
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Player Dialogue Actions";
+            // 
+            // buttonPlayerDuplicateDialogueAction
+            // 
+            this.buttonPlayerDuplicateDialogueAction.Location = new System.Drawing.Point(126, 19);
+            this.buttonPlayerDuplicateDialogueAction.Name = "buttonPlayerDuplicateDialogueAction";
+            this.buttonPlayerDuplicateDialogueAction.Size = new System.Drawing.Size(70, 23);
+            this.buttonPlayerDuplicateDialogueAction.TabIndex = 15;
+            this.buttonPlayerDuplicateDialogueAction.Text = "Duplicate";
+            this.buttonPlayerDuplicateDialogueAction.UseVisualStyleBackColor = true;
+            this.buttonPlayerDuplicateDialogueAction.Click += new System.EventHandler(this.buttonPlayerDuplicateDialogueAction_Click);
             // 
             // buttonPlayerEditDialogueAction
             // 
@@ -105,6 +116,7 @@
             this.dataGridViewPlayerDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewPlayerDialogueActions.Size = new System.Drawing.Size(936, 237);
             this.dataGridViewPlayerDialogueActions.TabIndex = 13;
+            this.dataGridViewPlayerDialogueActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPlayerDialogueActions_CellContentClick);
             // 
             // buttonAddPlayerDialogueAction
             // 
@@ -164,7 +176,8 @@
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.textToSpeachToolStripMenuItem});
+            this.textToSpeachToolStripMenuItem,
+            this.validateToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -211,6 +224,16 @@
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Agent Dialogue Actions";
+            // 
+            // buttonAgentDuplicateDialogueAction
+            // 
+            this.buttonAgentDuplicateDialogueAction.Location = new System.Drawing.Point(126, 19);
+            this.buttonAgentDuplicateDialogueAction.Name = "buttonAgentDuplicateDialogueAction";
+            this.buttonAgentDuplicateDialogueAction.Size = new System.Drawing.Size(70, 23);
+            this.buttonAgentDuplicateDialogueAction.TabIndex = 16;
+            this.buttonAgentDuplicateDialogueAction.Text = "Duplicate";
+            this.buttonAgentDuplicateDialogueAction.UseVisualStyleBackColor = true;
+            this.buttonAgentDuplicateDialogueAction.Click += new System.EventHandler(this.buttonAgentDuplicateDialogueAction_Click);
             // 
             // buttonAgentEditDialogAction
             // 
@@ -265,25 +288,12 @@
             this.buttonAgentRemoveDialogAction.UseVisualStyleBackColor = true;
             this.buttonAgentRemoveDialogAction.Click += new System.EventHandler(this.buttonAgentRemoveDialogAction_Click);
             // 
-            // buttonPlayerDuplicateDialogueAction
+            // validateToolStripMenuItem
             // 
-            this.buttonPlayerDuplicateDialogueAction.Location = new System.Drawing.Point(126, 19);
-            this.buttonPlayerDuplicateDialogueAction.Name = "buttonPlayerDuplicateDialogueAction";
-            this.buttonPlayerDuplicateDialogueAction.Size = new System.Drawing.Size(70, 23);
-            this.buttonPlayerDuplicateDialogueAction.TabIndex = 15;
-            this.buttonPlayerDuplicateDialogueAction.Text = "Duplicate";
-            this.buttonPlayerDuplicateDialogueAction.UseVisualStyleBackColor = true;
-            this.buttonPlayerDuplicateDialogueAction.Click += new System.EventHandler(this.buttonPlayerDuplicateDialogueAction_Click);
-            // 
-            // buttonAgentDuplicateDialogueAction
-            // 
-            this.buttonAgentDuplicateDialogueAction.Location = new System.Drawing.Point(126, 19);
-            this.buttonAgentDuplicateDialogueAction.Name = "buttonAgentDuplicateDialogueAction";
-            this.buttonAgentDuplicateDialogueAction.Size = new System.Drawing.Size(70, 23);
-            this.buttonAgentDuplicateDialogueAction.TabIndex = 16;
-            this.buttonAgentDuplicateDialogueAction.Text = "Duplicate";
-            this.buttonAgentDuplicateDialogueAction.UseVisualStyleBackColor = true;
-            this.buttonAgentDuplicateDialogueAction.Click += new System.EventHandler(this.buttonAgentDuplicateDialogueAction_Click);
+            this.validateToolStripMenuItem.Name = "validateToolStripMenuItem";
+            this.validateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.validateToolStripMenuItem.Text = "Validate";
+            this.validateToolStripMenuItem.Click += new System.EventHandler(this.validateToolStripMenuItem_Click);
             // 
             // DialogueEditorForm
             // 
@@ -330,5 +340,6 @@
 		private System.Windows.Forms.ToolStripMenuItem textToSpeachToolStripMenuItem;
         private System.Windows.Forms.Button buttonPlayerDuplicateDialogueAction;
         private System.Windows.Forms.Button buttonAgentDuplicateDialogueAction;
+        private System.Windows.Forms.ToolStripMenuItem validateToolStripMenuItem;
     }
 }
