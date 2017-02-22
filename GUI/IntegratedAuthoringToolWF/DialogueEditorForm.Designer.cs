@@ -48,10 +48,7 @@
             this.dataGridViewAgentDialogueActions = new System.Windows.Forms.DataGridView();
             this.buttonAgentAddDialogAction = new System.Windows.Forms.Button();
             this.buttonAgentRemoveDialogAction = new System.Windows.Forms.Button();
-<<<<<<< HEAD
             this.validateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-=======
->>>>>>> 7ce82270ac726d473f1b199d5082c03acc705caa
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPlayerDialogueActions)).BeginInit();
             this.mainMenu.SuspendLayout();
@@ -82,16 +79,13 @@
             // 
             // buttonPlayerDuplicateDialogueAction
             // 
-<<<<<<< HEAD
             this.buttonPlayerDuplicateDialogueAction.Location = new System.Drawing.Point(126, 19);
             this.buttonPlayerDuplicateDialogueAction.Name = "buttonPlayerDuplicateDialogueAction";
             this.buttonPlayerDuplicateDialogueAction.Size = new System.Drawing.Size(70, 23);
-=======
             this.buttonPlayerDuplicateDialogueAction.Location = new System.Drawing.Point(168, 23);
             this.buttonPlayerDuplicateDialogueAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonPlayerDuplicateDialogueAction.Name = "buttonPlayerDuplicateDialogueAction";
             this.buttonPlayerDuplicateDialogueAction.Size = new System.Drawing.Size(93, 28);
->>>>>>> 7ce82270ac726d473f1b199d5082c03acc705caa
             this.buttonPlayerDuplicateDialogueAction.TabIndex = 15;
             this.buttonPlayerDuplicateDialogueAction.Text = "Duplicate";
             this.buttonPlayerDuplicateDialogueAction.UseVisualStyleBackColor = true;
@@ -258,16 +252,13 @@
             // 
             // buttonAgentDuplicateDialogueAction
             // 
-<<<<<<< HEAD
             this.buttonAgentDuplicateDialogueAction.Location = new System.Drawing.Point(126, 19);
             this.buttonAgentDuplicateDialogueAction.Name = "buttonAgentDuplicateDialogueAction";
             this.buttonAgentDuplicateDialogueAction.Size = new System.Drawing.Size(70, 23);
-=======
             this.buttonAgentDuplicateDialogueAction.Location = new System.Drawing.Point(168, 23);
             this.buttonAgentDuplicateDialogueAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonAgentDuplicateDialogueAction.Name = "buttonAgentDuplicateDialogueAction";
             this.buttonAgentDuplicateDialogueAction.Size = new System.Drawing.Size(93, 28);
->>>>>>> 7ce82270ac726d473f1b199d5082c03acc705caa
             this.buttonAgentDuplicateDialogueAction.TabIndex = 16;
             this.buttonAgentDuplicateDialogueAction.Text = "Duplicate";
             this.buttonAgentDuplicateDialogueAction.UseVisualStyleBackColor = true;
@@ -330,7 +321,6 @@
             this.buttonAgentRemoveDialogAction.UseVisualStyleBackColor = true;
             this.buttonAgentRemoveDialogAction.Click += new System.EventHandler(this.buttonAgentRemoveDialogAction_Click);
             // 
-<<<<<<< HEAD
             // validateToolStripMenuItem
             // 
             this.validateToolStripMenuItem.Name = "validateToolStripMenuItem";
@@ -338,8 +328,6 @@
             this.validateToolStripMenuItem.Text = "Validate";
             this.validateToolStripMenuItem.Click += new System.EventHandler(this.validateToolStripMenuItem_Click);
             // 
-=======
->>>>>>> 7ce82270ac726d473f1b199d5082c03acc705caa
             // DialogueEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -387,10 +375,6 @@
 		private System.Windows.Forms.ToolStripMenuItem textToSpeachToolStripMenuItem;
         private System.Windows.Forms.Button buttonPlayerDuplicateDialogueAction;
         private System.Windows.Forms.Button buttonAgentDuplicateDialogueAction;
-<<<<<<< HEAD
         private System.Windows.Forms.ToolStripMenuItem validateToolStripMenuItem;
-=======
-        
->>>>>>> 7ce82270ac726d473f1b199d5082c03acc705caa
     }
 }

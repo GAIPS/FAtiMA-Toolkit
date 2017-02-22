@@ -317,7 +317,6 @@ namespace IntegratedAuthoringToolWF
 
         #endregion
 
-<<<<<<< HEAD
         private void dataGridViewPlayerDialogueActions_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -329,31 +328,40 @@ namespace IntegratedAuthoringToolWF
             dfsearch.InitializeSearch(IATConsts.INITIAL_DIALOGUE_STATE);
             dfsearch.FullSearch();
 
-            int unreacheableStatesCount = 0;
-            string unreacheableStates = "The following Dialogue States are not reachable: \n[";
+            int unreachableStatesCount = 0;
+            int totalStates = 0;
+            string unreachableStatesDescription = "The following Dialogue States are not reachable: \n[";
 
-            foreach(var dAction in _iatAsset.GetAllDialogueActions())
+            foreach(var dAction in _iatAsset.GetAllDialogueActions().GroupBy(da => da.CurrentState).Select(group => group.First()))
             {
+                totalStates++;
                 if(dfsearch.Closed.SearchInClosed(new NodeRecord<string>() { node = dAction.CurrentState.ToString() })==null)
                 {
-                    unreacheableStatesCount++;
-                    unreacheableStates += dAction.CurrentState + ", ";
+                    unreachableStatesCount++;
+                    unreachableStatesDescription += dAction.CurrentState + ", ";
                 }
             }
 
-            unreacheableStates = unreacheableStates.Remove(unreacheableStates.Length - 2);
-            unreacheableStates += "]";
+            unreachableStatesDescription = unreachableStatesDescription.Remove(unreachableStatesDescription.Length - 2);
+            unreachableStatesDescription += "]";
 
-            if(unreacheableStatesCount > 0)
+
+            string validationMessage;
+
+            if(unreachableStatesCount > 0)
             {
-                MessageBox.Show(unreacheableStates);
+                validationMessage = "Reachability: " + (totalStates - unreachableStatesCount)*100/totalStates + "%\n"+ unreachableStatesDescription;
             }
             else
             {
-                MessageBox.Show("All Dialogue States are reachable!");
+                validationMessage = "All Dialogue States are reachable!";
             }
+
+            //get the dead ends
+            validationMessage += "\n\nEnd States:\n[" + string.Join(",",dfsearch.End.ToArray()) + "]";
+
+            MessageBox.Show(validationMessage);
         }
-=======
 
         private void importFromtxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -471,10 +479,5 @@ namespace IntegratedAuthoringToolWF
 
             return add;
         }
-
->>>>>>> 7ce82270ac726d473f1b199d5082c03acc705caa
     }
-
-
-
 }
