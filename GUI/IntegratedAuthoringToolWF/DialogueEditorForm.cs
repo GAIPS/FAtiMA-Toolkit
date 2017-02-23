@@ -381,7 +381,7 @@ namespace IntegratedAuthoringToolWF
             string nextState = "";
             if (stateCounter == 0)
             {
-                currentState = "Start";
+                currentState = IATConsts.INITIAL_DIALOGUE_STATE;
                 stateCounter += 1;
                 nextState = "S" + stateCounter;
             }
