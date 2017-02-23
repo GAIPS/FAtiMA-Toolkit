@@ -193,8 +193,8 @@ namespace CommeillFautTutorial
 
                         var _socialExchange = cif.m_SocialExchanges.Find(x => x.ActionName.ToString() == currentSocialMoveAction);
 
-                        _socialExchange.ApplyConsequences(initiator.m_kb, target.CharacterName, currentSocialMoveResult,true);
-                        _socialExchange.ApplyConsequences(target.m_kb, initiator.CharacterName, currentSocialMoveResult, false);
+                        //_socialExchange.ApplyConsequences(initiator.m_kb, target.CharacterName, currentSocialMoveResult,true);
+                        //_socialExchange.ApplyConsequences(target.m_kb, initiator.CharacterName, currentSocialMoveResult, false);
 
                         currentSocialMoveAction = "";
                         currentSocialMoveResult = "";

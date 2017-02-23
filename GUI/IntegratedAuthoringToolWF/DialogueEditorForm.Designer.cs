@@ -48,6 +48,7 @@
             this.dataGridViewAgentDialogueActions = new System.Windows.Forms.DataGridView();
             this.buttonAgentAddDialogAction = new System.Windows.Forms.Button();
             this.buttonAgentRemoveDialogAction = new System.Windows.Forms.Button();
+            this.validateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPlayerDialogueActions)).BeginInit();
             this.mainMenu.SuspendLayout();
@@ -78,6 +79,9 @@
             // 
             // buttonPlayerDuplicateDialogueAction
             // 
+            this.buttonPlayerDuplicateDialogueAction.Location = new System.Drawing.Point(126, 19);
+            this.buttonPlayerDuplicateDialogueAction.Name = "buttonPlayerDuplicateDialogueAction";
+            this.buttonPlayerDuplicateDialogueAction.Size = new System.Drawing.Size(70, 23);
             this.buttonPlayerDuplicateDialogueAction.Location = new System.Drawing.Point(168, 23);
             this.buttonPlayerDuplicateDialogueAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonPlayerDuplicateDialogueAction.Name = "buttonPlayerDuplicateDialogueAction";
@@ -121,6 +125,7 @@
             this.dataGridViewPlayerDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewPlayerDialogueActions.Size = new System.Drawing.Size(1248, 291);
             this.dataGridViewPlayerDialogueActions.TabIndex = 13;
+            this.dataGridViewPlayerDialogueActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPlayerDialogueActions_CellContentClick);
             // 
             // buttonAddPlayerDialogueAction
             // 
@@ -192,7 +197,8 @@
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.textToSpeachToolStripMenuItem});
+            this.textToSpeachToolStripMenuItem,
+            this.validateToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(56, 24);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -246,6 +252,9 @@
             // 
             // buttonAgentDuplicateDialogueAction
             // 
+            this.buttonAgentDuplicateDialogueAction.Location = new System.Drawing.Point(126, 19);
+            this.buttonAgentDuplicateDialogueAction.Name = "buttonAgentDuplicateDialogueAction";
+            this.buttonAgentDuplicateDialogueAction.Size = new System.Drawing.Size(70, 23);
             this.buttonAgentDuplicateDialogueAction.Location = new System.Drawing.Point(168, 23);
             this.buttonAgentDuplicateDialogueAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonAgentDuplicateDialogueAction.Name = "buttonAgentDuplicateDialogueAction";
@@ -312,6 +321,13 @@
             this.buttonAgentRemoveDialogAction.UseVisualStyleBackColor = true;
             this.buttonAgentRemoveDialogAction.Click += new System.EventHandler(this.buttonAgentRemoveDialogAction_Click);
             // 
+            // validateToolStripMenuItem
+            // 
+            this.validateToolStripMenuItem.Name = "validateToolStripMenuItem";
+            this.validateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.validateToolStripMenuItem.Text = "Validate";
+            this.validateToolStripMenuItem.Click += new System.EventHandler(this.validateToolStripMenuItem_Click);
+            // 
             // DialogueEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -359,6 +375,6 @@
 		private System.Windows.Forms.ToolStripMenuItem textToSpeachToolStripMenuItem;
         private System.Windows.Forms.Button buttonPlayerDuplicateDialogueAction;
         private System.Windows.Forms.Button buttonAgentDuplicateDialogueAction;
-        
+        private System.Windows.Forms.ToolStripMenuItem validateToolStripMenuItem;
     }
 }

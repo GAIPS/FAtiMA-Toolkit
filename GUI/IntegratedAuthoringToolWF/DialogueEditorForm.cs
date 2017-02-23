@@ -11,6 +11,7 @@ using IntegratedAuthoringTool.DTOs;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using Utilities;
+using Utilities.DataStructures;
 
 namespace IntegratedAuthoringToolWF
 {
@@ -316,6 +317,51 @@ namespace IntegratedAuthoringToolWF
 
         #endregion
 
+        private void dataGridViewPlayerDialogueActions_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void validateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dfsearch = new DFSearch<string>(state => _iatAsset.GetAllDialogueActionsByState(state).Select(dto => dto.NextState));
+            dfsearch.InitializeSearch(IATConsts.INITIAL_DIALOGUE_STATE);
+            dfsearch.FullSearch();
+
+            int unreachableStatesCount = 0;
+            int totalStates = 0;
+            string unreachableStatesDescription = "The following Dialogue States are not reachable: \n[";
+
+            foreach(var dAction in _iatAsset.GetAllDialogueActions().GroupBy(da => da.CurrentState).Select(group => group.First()))
+            {
+                totalStates++;
+                if(dfsearch.Closed.SearchInClosed(new NodeRecord<string>() { node = dAction.CurrentState.ToString() })==null)
+                {
+                    unreachableStatesCount++;
+                    unreachableStatesDescription += dAction.CurrentState + ", ";
+                }
+            }
+
+            unreachableStatesDescription = unreachableStatesDescription.Remove(unreachableStatesDescription.Length - 2);
+            unreachableStatesDescription += "]";
+
+
+            string validationMessage;
+
+            if(unreachableStatesCount > 0)
+            {
+                validationMessage = "Reachability: " + (totalStates - unreachableStatesCount)*100/totalStates + "%\n"+ unreachableStatesDescription;
+            }
+            else
+            {
+                validationMessage = "All Dialogue States are reachable!";
+            }
+
+            //get the dead ends
+            validationMessage += "\n\nEnd States:\n[" + string.Join(",",dfsearch.End.ToArray()) + "]";
+
+            MessageBox.Show(validationMessage);
+        }
 
         private void importFromtxtToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -433,9 +479,5 @@ namespace IntegratedAuthoringToolWF
 
             return add;
         }
-
     }
-
-
-
 }

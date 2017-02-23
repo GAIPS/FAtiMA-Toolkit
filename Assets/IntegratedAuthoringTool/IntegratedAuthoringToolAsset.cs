@@ -178,9 +178,25 @@ namespace IntegratedAuthoringTool
             return dialogList.Select(d => d.ToDTO()).Where(d => d.CurrentState == currentState);
 		}
 
+        /// <summary>
+        /// Retrives a list containing all the dialogue actions for the player or the agents filtered by a specific state.
+        /// </summary>
+        /// <param name="speaker">Either "Player" or "Agent".</param>
+        /// <param name="state">Works as a filter for the state. </param>
+        public IEnumerable<DialogueStateActionDTO> GetAllDialogueActionsByState(string currentState)
+        {
+            var dialogList = this.GetAllDialogueActions();
+            return dialogList.Select(d => d.ToDTO()).Where(d => d.CurrentState == currentState);
+        }
+
         public IEnumerable<DialogueStateActionDTO> GetDialogueActionsBySpeaker(string speaker)
         {
             return SelectDialogActionList(speaker).Select(d => d.ToDTO());
+        }
+
+        public IEnumerable<DialogStateAction> GetAllDialogueActions()
+        {
+            return this.m_agentDialogues.Concat<DialogStateAction>(this.m_playerDialogues);
         }
         
 
