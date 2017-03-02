@@ -110,7 +110,7 @@ namespace EmotionalAppraisal
         /// <param name="emotionalAppraisalRule">the AppraisalRule to add</param>
         public void AddOrUpdateAppraisalRule(AppraisalRuleDTO emotionalAppraisalRule)
 		{
-			m_appraisalDerivator.AddOrUpdateAppraisalRule(emotionalAppraisalRule);
+			m_appraisalDerivator.AddOrUpdateAppraisalRule(emotionalAppraisalRule, m_kb.Perspective);
 		}
 
         /// <summary>
@@ -207,7 +207,8 @@ namespace EmotionalAppraisal
 		/// <param name="eventNames">A set of string representation of the events to appraise</param>
 		public void AppraiseEvents(IEnumerable<Name> eventNames, IEmotionalState emotionalState, AM am, KB kb)
 		{
-			var APPRAISAL_FRAME = new InternalAppraisalFrame();
+			var appraisalFrame = new InternalAppraisalFrame();
+            appraisalFrame.Perspective = kb.Perspective;
 			foreach (var n in eventNames)
 			{
 				var evtN = n.RemoveSelfPerspective((Name)Perspective);
@@ -221,10 +222,10 @@ namespace EmotionalAppraisal
                     kb.Tell(fact, value, Name.SELF_SYMBOL);
 				}
 
-				APPRAISAL_FRAME.Reset(evt);
-				var componentFrame = APPRAISAL_FRAME.RequestComponentFrame(m_appraisalDerivator, m_appraisalDerivator.AppraisalWeight);
+				appraisalFrame.Reset(evt);
+				var componentFrame = appraisalFrame.RequestComponentFrame(m_appraisalDerivator, m_appraisalDerivator.AppraisalWeight);
 				m_appraisalDerivator.Appraisal(kb, evt, componentFrame);
-				UpdateEmotions(APPRAISAL_FRAME, emotionalState, am);
+				UpdateEmotions(appraisalFrame, emotionalState, am);
 			}
 		}
 

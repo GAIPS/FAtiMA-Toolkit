@@ -16,7 +16,7 @@ namespace EmotionalAppraisalTutorial
         static void Main(string[] args)
         {
 			AssetManager.Instance.Bridge = new BasicIOBridge();
-			var kickEvent = (Name)"Event(Action-Start, Player, Kick, John)";
+			var kickEvent = (Name)"Event(Action-End, John, Kick, Player)";
 
             // To create a new asset it is required to tell the name of the agent which will correpond to the perspective of the "SELF" 
             EmotionalAppraisalAsset ea = new EmotionalAppraisalAsset("John");
@@ -24,7 +24,7 @@ namespace EmotionalAppraisalTutorial
             //The following lines add an appraisal rule that will make the kickEvent be perceived as undesirable
             //Normally, these rules should be authored using the AuthoringTool provided with the asset but they can also be added dynamically
             var rule = new AppraisalRuleDTO {
-                EventMatchingTemplate = (Name)"Event(Action-End,*,Kick,SELF)", Desirability = -5f, Praiseworthiness = -3f };
+                EventMatchingTemplate = (Name)"Event(Action-End, John, Kick, *)", Praiseworthiness = -3f };
             ea.AddOrUpdateAppraisalRule(rule);
 
             var am = new AM();
