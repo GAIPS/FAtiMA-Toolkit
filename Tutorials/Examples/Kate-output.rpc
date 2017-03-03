@@ -9,9 +9,9 @@
 						{
 							"SELF":
 								{
-									"Attraction(Mary)": 10,
 									"DialogueState(Mary)": "Start",
-									"DialogueState(Peter)": "Start"
+									"DialogueState(Peter)": "Start",
+									"Attraction(Kate, Mary)": 10
 								}
 						}
 				},

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ActionLibrary;
 using ActionLibrary.DTOs;
 using CommeillFaut.DTOs;
@@ -121,7 +122,7 @@ namespace CommeillFaut
              
                 var result = new InfluenceRule(rule);
                 counter += result.Result(init, _targ, m_Kb);
-                Console.WriteLine("SocialExchange : " + this.ActionName.ToString() + "Initiator " + init + "Target " + _targ+ " Rule: " + rule.RuleName + " Counter" + counter);
+          //      Console.WriteLine("SocialExchange : " + this.ActionName.ToString() + "Initiator " + init + "Target " + _targ+ " Rule: " + rule.RuleName + " Counter" + counter);
 
             }
             return counter;
@@ -159,7 +160,7 @@ namespace CommeillFaut
 
             Instatiate(response);
 
-            ApplyConsequences(init_Kb, targ_Kb, response);
+         //   ApplyConsequences(init_Kb, targ_Kb, response);
 
             State = "Completed";
 
@@ -172,76 +173,93 @@ namespace CommeillFaut
 
 
 
-        public void ApplyConsequences(KB init_Kb , KB targ_Kb, int response)
+        public void ApplyConsequences(KB me, Name Target, string response, bool isInitiator)
         {
+            int resp = 0;
 
 
-            if (EffectsList.ContainsKey(response))
+            if (response != "Neutral")
             {
-                foreach (var effect in EffectsList[response])
-                {
-                    ApplyKeywordEffects(init_Kb, targ_Kb, effect);
-                }
-
+                if (response == "Positve")
+                    resp = 5;
+                else resp = -5;
             }
+            
+            
+            var newEffectList = new List<String>();
 
+            foreach (var effect in EffectsList)
+            {
+                if (effect.Key == resp)
+                {
+                    newEffectList = effect.Value;
+                }
+            }
+                                     // Ideally we would be able to insert any 
+
+
+            foreach (var ef in newEffectList)
+            {
+                ApplyKeywordEffects(me, Target, resp, ef, isInitiator);
+            }
+          
+            
            
-
         }
 
-        public void ApplyKeywordEffects(KB init_Kb, KB targ_Kb, string keyword)
+        public void ApplyKeywordEffects(KB me,Name other, int result, string keyword, bool isInitiator)
         {
             char[] delimitedChars = {'(', ')', ','};
 
             string[] words = keyword.Split(delimitedChars);
             var value = 0;
 
-                                             // Ideally we would be able to insert any 
-                                          // social network but we don't store them just yet
+                                       // social network but we don't store them just yet   Attraction(Initiator,Target,3)
                 if (words[1] == "Initiator")
                 {
-                    if(words[2] == "Target")
+                    if (isInitiator)
                     {
 
-                        if (init_Kb.AskProperty((Name) (words[0] + "(" + targ_Kb.Perspective + ")")) != null)
+                        if (me.AskProperty((Name) (words[0] + "(" + other.ToString() + ")")) != null)
                         {
-                             value =
-                                Convert.ToInt32(init_Kb.AskProperty((Name) (words[0] + "(" + targ_Kb.Perspective + ")")).ToString());
-                            value += Convert.ToInt32(words[3]);
+                            value =
+                                Convert.ToInt32(
+                                    me.AskProperty((Name) (words[0] + "(" + other.ToString() + ")")).ToString());
+                            value += Convert.ToInt32(words[2]);
 
                         }
                         else
                         {
-                             value = Convert.ToInt32(words[3]);
+                            value = Convert.ToInt32(words[2]);
                         }
 
                         var insert = "" + value;
-                        init_Kb.Tell((Name)(words[0] + "(" + targ_Kb.Perspective + ")"), (Name)insert);
+                        me.Tell((Name) (words[0] + "(" + other.ToString() + ")"), (Name) insert);
                         return;
                     }
+
                 }
 
             if (words[1] == "Target")
             {
-                if (words[2] == "Initiator")
+                if (!isInitiator)
                 {
-                    if (init_Kb.AskProperty((Name) (words[0] + "(" + init_Kb.Perspective + ")")) != null)
+                    if (me.AskProperty((Name)(words[0] + "(" + other.ToString() + ")")) != null)
                     {
-                         value =
-                            Convert.ToInt32(init_Kb.AskProperty((Name) (words[0] + "(" + init_Kb.Perspective + ")")).ToString());
-                        value += Convert.ToInt32(words[3]);
-                        string insert = "" + value;
-                        targ_Kb.Tell((Name) (words[0] + "(" + init_Kb.Perspective + ")"), (Name) insert);
-                        return;
+                        value =
+                            Convert.ToInt32(
+                                me.AskProperty((Name)(words[0] + "(" + other.ToString() + ")")).ToString());
+                        value += Convert.ToInt32(words[2]);
+
                     }
                     else
                     {
+                        value = Convert.ToInt32(words[2]);
+                    }
 
-                         value = Convert.ToInt32(words[3]);
-                        string insert = "" + value;
-                        targ_Kb.Tell((Name)(words[0] + "(" + init_Kb.Perspective + ")"), (Name)insert);
-                        return;
-                    } 
+                    var insert = "" + value;
+                    me.Tell((Name)(words[0] + "(" + other.ToString() + ")"), (Name)insert);
+                    
                 }
             }
 

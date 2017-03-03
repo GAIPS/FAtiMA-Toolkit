@@ -15,7 +15,19 @@
 						}],
 					"EffectsList":
 						{
-							"dictionary": []
+							"dictionary": [
+								{
+									"key": 4,
+									"value": ["Attraction(SELF,Target,3)"]
+								}, 
+								{
+									"key": 0,
+									"value": ["Friendship(SELF,Target,2)"]
+								}, 
+								{
+									"key": 6,
+									"value": ["Friendship(SELF,Initiator,2)"]
+								}]
 						},
 					"Attraction":
 						{
@@ -26,13 +38,41 @@
 						{
 							"Set": []
 						}
+				}, 
+				{
+					"Intent": "Increase Friendship",
+					"Instantiation": "Alo Alo",
+					"InfluenceRules": [
+						{
+							"Id": "19305e94-5f00-4508-a2db-945263208e0f",
+							"RuleName": "Friendship",
+							"Target": "[x]",
+							"Value": 3
+						}],
+					"EffectsList":
+						{
+							"dictionary": []
+						},
+					"Friendship":
+						{
+
+						},
+					"Action": "Compliment",
+					"Conditions":
+						{
+							"Set": []
+						}
 				}],
 			"RuleList":
 				{
 					"dictionary": [
 						{
 							"key": "Attraction",
-							"value": ["Attraction([x]) > 5"]
+							"value": ["Attraction(SELF, [x]) > 5"]
+						}, 
+						{
+							"key": "Friendship",
+							"value": ["Friendship(SELF, [x]) > 5"]
 						}]
 				},
 			"_triggerRules":

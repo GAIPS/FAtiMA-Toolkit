@@ -14,8 +14,8 @@ namespace IntegratedAuthoringToolTutorial
             var playerStr = IATConsts.PLAYER;
          
             //Loading the asset
-            //var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/IATTest.iat");
-            var iat = IntegratedAuthoringToolAsset.LoadFromFile("D:/FA/inspector-toto.iat");
+          var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/IATTest.iat");
+        //    var iat = IntegratedAuthoringToolAsset.LoadFromFile("D:/FA/inspector-toto.iat");
             //D:/FA/inspector-toto.iat
             var currentState = IATConsts.INITIAL_DIALOGUE_STATE;
 
@@ -50,7 +50,9 @@ namespace IntegratedAuthoringToolTutorial
                 var dialogStateChangeEvt = EventHelper.PropertyChange(string.Format(IATConsts.DIALOGUE_STATE_PROPERTY,playerStr), chosenDialog.NextState, playerStr);
 
                 rpc.Perceive(new[] { speakEvt, dialogStateChangeEvt });
-                var characterAction = rpc.Decide().FirstOrDefault();
+                var characterActions = rpc.Decide();
+
+                var characterAction = characterActions.FirstOrDefault();
 
                 if (characterAction.Key.ToString() == IATConsts.DIALOG_ACTION_KEY)
                 {
@@ -63,7 +65,7 @@ namespace IntegratedAuthoringToolTutorial
                     Console.WriteLine("\n" + rpc.CharacterName + ": " + dialog.Utterance + "\n");
                     currentState = characterAction.Parameters[1].ToString();
                     Console.WriteLine("\nMood: " + rpc.Mood);
-                    rpc.SaveToFile("D:/FA/xuxa.rpc");
+                   // rpc.SaveToFile("../../../ Examples/IATTest.iat");
                 }
                 else
                 {
