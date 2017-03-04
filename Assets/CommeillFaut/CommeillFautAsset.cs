@@ -81,14 +81,14 @@ namespace CommeillFaut
 
         private static readonly Name VOLITION_PROPERTY_TEMPLATE = (Name)"Volition";
 
-        public IEnumerable<DynamicPropertyResult> VolitionPropertyCalculator(IQueryContext context, Name socialMoveName, Name Target)
+        public IEnumerable<DynamicPropertyResult> VolitionPropertyCalculator(IQueryContext context, Name socialMoveName, Name initator, Name Target)
         {
-         // Console.WriteLine("VolitionProperty " + socialMoveName.ToString());
+       //   Console.WriteLine("VolitionProperty " + socialMoveName.ToString());
 
 
             foreach (var t in context.AskPossibleProperties(Target))
             {
-           //     Console.WriteLine("Target: " + t.Item1 + "  Original target: " + Target + " found size: " + context.AskPossibleProperties(Target).Count());
+           //    Console.WriteLine("Target: " + t.Item1 + "  Original target: " + Target + " found size: " + context.AskPossibleProperties(Target).Count());
 
                 if (m_SocialExchanges.Find(x => x.ActionName == socialMoveName) != null)
                 {
@@ -99,7 +99,7 @@ namespace CommeillFaut
                         new SubstitutionSet(new Substitution[]
                             {new Substitution(Name.BuildName("[x]"), t.Item1)});
 
-                    Console.WriteLine(" Result: " + "Volition(" + socialMoveName + "," + t.Item1.ToString() + ")" + "=" +
+                    Console.WriteLine(" Result: " + "Volition(" + socialMoveName + "," + initator + "," + t.Item1.ToString() + ")" + "=" +
                                       value);
                     yield return new DynamicPropertyResult(Name.BuildName(value), sub);
 
@@ -196,7 +196,7 @@ namespace CommeillFaut
             _TriggerRules.Verify(this.m_kB);
         }
 
-        private List<Name> getTargetList()
+      /*  private List<Name> getTargetList()
         {
             List<Name> retList = new List<Name>();
      
@@ -213,7 +213,7 @@ namespace CommeillFaut
            
             return retList;
         }
-
+        */
         public Guid AddExchange(SocialExchangeDTO newExchange)
         {
             var newSocialExchange = new SocialExchange(newExchange);
@@ -423,9 +423,42 @@ namespace CommeillFaut
         }
 
 
-#endregion
+        #endregion
+
+        public void AppraiseEvents(IEnumerable<Name> eventNames, KB kb)
+        {
+            foreach (var e in eventNames.Select(e => e.RemoveSelfPerspective(kb.Perspective)))
+            {
+
+             
+            }
+        }
+
+        public void StartSE(Name SE, KB kb)
+        {
+
+            Console.WriteLine("CIF Asset: " + SE + "\n");
+            if (m_SocialExchanges.Find(x => x.ActionName == SE.GetNTerm(3)) != null)
+            {
+
+                var initiator = SE.GetNTerm(2);
+                var target = SE.GetNTerm(4);
+                var ActionName = SE.GetNTerm(3);
+                var SocialExchange = m_SocialExchanges.Find(x => x.ActionName == SE.GetNTerm(3));
+
+                Console.WriteLine("CIF Asset, Character: " + initiator + " does " + SocialExchange.ActionName + "to " +
+                                     target + "\n");
 
 
+            }
+
+           
+        }
+
+        public void EndSE(Name SE, KB kb)
+        {
+          
+        }
 
         /// <summary>
         /// Load a Social Importance Asset definition from a DTO object.

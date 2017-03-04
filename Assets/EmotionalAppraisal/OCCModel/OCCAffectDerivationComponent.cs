@@ -57,18 +57,18 @@ namespace EmotionalAppraisal.OCCModel
 		//	return new OCCBaseEmotion(emoType, potential, evtId, string.IsNullOrEmpty(target) ? Name.UNIVERSAL_SYMBOL : Name.BuildName(target));
 		//}
 
-		private static OCCBaseEmotion OCCAppraisePraiseworthiness(IBaseEvent evt, float praiseworthiness) {
+		private static OCCBaseEmotion OCCAppraisePraiseworthiness(IBaseEvent evt, float praiseworthiness, Name perspective) {
 			Name direction;
 			OCCEmotionType emoType;
 
-			if (evt.Subject == Name.SELF_SYMBOL)
+			if (evt.Subject == perspective)
 			{
-				direction = Name.SELF_SYMBOL;
+				direction = perspective;
 				emoType = (praiseworthiness >= 0) ? OCCEmotionType.Pride : OCCEmotionType.Shame;
 			}
 			else
 			{
-				direction = evt.Subject ?? Name.UNIVERSAL_SYMBOL;
+                direction = evt.Subject;
 				emoType = (praiseworthiness >= 0) ? OCCEmotionType.Admiration : OCCEmotionType.Reproach;
 			}
 
@@ -159,6 +159,7 @@ namespace EmotionalAppraisal.OCCModel
 		public IEnumerable<IEmotion> AffectDerivation(EmotionalAppraisalAsset emotionalModule, IAppraisalFrame frame)
 		{
 			var evt = frame.AppraisedEvent;
+            
 
 			if(frame.ContainsAppraisalVariable(OCCAppraisalVariables.DESIRABILITY) && frame.ContainsAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS))
 			{
@@ -191,7 +192,7 @@ namespace EmotionalAppraisal.OCCModel
 			{
 				float praiseworthiness = frame.GetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS);
 				if (praiseworthiness != 0)
-					yield return OCCAppraisePraiseworthiness(evt, praiseworthiness);
+					yield return OCCAppraisePraiseworthiness(evt, praiseworthiness, frame.Perspective);
 			}
 
 			//if(frame.ContainsAppraisalVariable(OCCAppraisalVariables.LIKE))

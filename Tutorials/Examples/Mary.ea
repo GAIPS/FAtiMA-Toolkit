@@ -13,7 +13,7 @@
 									"DialogueState(Kate)": "Start",
 									"DialogueState(Peter)": "Start",
 									"HasFloor(SELF)": "true",
-									"Attraction(Peter)": 10
+									"Attraction(SELF, Peter)": 10
 								}
 						}
 				},

@@ -100,5 +100,10 @@ namespace EmotionalDecisionMakingWF
                 this.buttonEditReaction_Click(sender, e);
             }
         }
+
+        private void groupBox7_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }
