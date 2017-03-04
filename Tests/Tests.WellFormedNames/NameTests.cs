@@ -322,14 +322,13 @@ namespace Tests.WellFormedNames
             Assert.Throws<ParsingException>(() => Name.BuildName(nameString));
         }
 
-        [Test]
-        public void Parse_EmptyNameString_ArgumentException()
-        {
-            Assert.Throws<ArgumentException>(() => Name.BuildName(""));
-        }
+		[Test]
+		public void Parse_EmptyNameString_ArgumentException()
+		{
+			Assert.Throws<ArgumentException>(() => Name.BuildName(""));
+		}
 
-
-        [TestCase("IsPerson([x])", "[x]")]
+		[TestCase("IsPerson([x])", "[x]")]
         [TestCase("Likes(x, Likes([x], y))", "[x]")]
         public void ContainsVariable_NameWithMatchingVariable_True(string nameString, string variable)
         {
