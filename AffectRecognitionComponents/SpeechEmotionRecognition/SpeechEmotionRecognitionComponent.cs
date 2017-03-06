@@ -13,7 +13,13 @@ namespace SpeechEmotionRecognition
     {
         //public List<Action<IEnumerable<AffectiveInformation>>> EmotionUpdateActions { get; private set; }
 
+        public const string DEFAULT_SERVICE_URI = "https://www.l2f.inesc-id.pt/spa/services/emotionDetection";
+        public const string DEFAULT_AUTHENTICATION = "joao.dias@gaips.inesc-id.pt:rage2016";
+
         public float DecayWindow { get; set; }
+        public string ServiceURI { get; set; }
+        public string AuthenticationString { get; set; }
+
         private IEnumerable<AffectiveInformation> CurrentSample;
 
         private DateTime SampleTime { get; set; }
@@ -31,6 +37,8 @@ namespace SpeechEmotionRecognition
             //this.EmotionUpdateActions = new List<Action<IEnumerable<AffectiveInformation>>>();
             this.DecayWindow = 5.0f;
             this.CurrentSample = new List<AffectiveInformation>();
+            this.ServiceURI = DEFAULT_SERVICE_URI;
+            this.AuthenticationString = DEFAULT_AUTHENTICATION;
             
         }
 
@@ -124,10 +132,10 @@ namespace SpeechEmotionRecognition
 
         private HttpWebRequest CreateRequest(byte[] speech)
         {
-            HttpWebRequest request = WebRequest.Create(new Uri("https://www.l2f.inesc-id.pt/spa/services/emotionDetection")) as HttpWebRequest;
+            HttpWebRequest request = WebRequest.Create(new Uri(this.ServiceURI)) as HttpWebRequest;
             request.Method = "POST";
             request.ContentType = "application/xml";
-            request.Headers["Authorization"] = "Basic " + System.Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes("joao.dias@gaips.inesc-id.pt:rage2016"));
+            request.Headers["Authorization"] = "Basic " + System.Convert.ToBase64String(System.Text.Encoding.ASCII.GetBytes(this.AuthenticationString));
             request.PreAuthenticate = true;
 
             StringBuilder builder = new StringBuilder();

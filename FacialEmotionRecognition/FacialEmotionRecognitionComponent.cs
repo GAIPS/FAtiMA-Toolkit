@@ -3,6 +3,7 @@ using AssetPackage;
 using RealTimeEmotionRecognition;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -39,12 +40,28 @@ namespace FacialEmotionRecognition
             //}
         }
 
-        IEnumerable<string> IAffectRecognitionComponent.GetRecognizedAffectiveVariables()
+        public void ProcessImage(Image img)
+        {
+            bool facedetected = this.EDA.ProcessImage(img);
+
+            if (facedetected)
+            {
+                if (this.EDA.ProcessFaces())
+                {
+                    //! Show Detection Results.
+                    //
+                    this.EDA.ProcessLandmarks();
+                }
+            }
+        }
+
+
+        public IEnumerable<string> GetRecognizedAffectiveVariables()
         {
             return this.EDA.Emotions.Select(em => ConvertEmotion(em));
         }
 
-        IEnumerable<AffectiveInformation> IAffectRecognitionComponent.GetSample()
+        public IEnumerable<AffectiveInformation> GetSample()
         {
             List<AffectiveInformation> sample = new List<AffectiveInformation>();
 

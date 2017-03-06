@@ -11,10 +11,15 @@ namespace TextEmotionRecognition
 {
     public class TextEmotionRecognitionComponent : IAffectRecognitionComponent
     {
+        public const string DEFAULT_LANGUAGE = "English";
+        public const string DEFAULT_LSA_CORPUS = "resources/config/EN/LSA/TASA";
+        public const string DEFAULT_LDA_CORPUS = "resources/config/EN/LDA/TASA";
+        public const string DEFAULT_SERVICE_URI = "http://readerbench.com:8080/getSentiment";
 
         public string Language { get; set; }
         public string LSACorpus { get; set; }
         public string LDACorpus { get; set; }
+        public string ServiceURI { get; set; }
         public bool PostTagging { get; set; }
         public bool Dialogism { get; set; }
 
@@ -33,9 +38,11 @@ namespace TextEmotionRecognition
 
         public TextEmotionRecognitionComponent()
         {
-            this.Language = "English";
-            this.LSACorpus = "resources/config/EN/LSA/TASA";
-            this.LDACorpus = "resources/config/EN/LDA/TASA";
+            this.Language = DEFAULT_LANGUAGE;
+            this.LSACorpus = DEFAULT_LSA_CORPUS;
+            this.LDACorpus = DEFAULT_LDA_CORPUS;
+            this.ServiceURI = DEFAULT_SERVICE_URI;
+
             this.PostTagging = false;
             this.Dialogism = false;
 
@@ -78,7 +85,7 @@ namespace TextEmotionRecognition
             var escapedText = Uri.EscapeDataString(text);
             string parameters = "?text=" + escapedText + "&lang=" + this.Language + "&lsa=" + this.LSACorpus + "&lda=" + this.LDACorpus + "&postagging=" + this.PostTagging + "&dialogism=" + this.Dialogism;
             
-            HttpWebRequest request = WebRequest.Create(new Uri("http://readerbench.com:8080/getSentiment" + parameters)) as HttpWebRequest;
+            HttpWebRequest request = WebRequest.Create(new Uri(this.ServiceURI + parameters)) as HttpWebRequest;
             request.Method = "GET";
 
             return request;

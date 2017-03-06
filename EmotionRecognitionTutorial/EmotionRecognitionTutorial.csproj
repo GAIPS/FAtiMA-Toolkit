@@ -33,8 +33,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EmotionDetectionAsset">
+      <HintPath>..\DllDependencies\EmotionDetectionAsset.dll</HintPath>
+    </Reference>
+    <Reference Include="RageAssetManager">
+      <HintPath>..\DllDependencies\RageAssetManager.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,6 +55,44 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="shape_predictor_68_face_landmarks.dat">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AffectRecognitionComponents\SpeechEmotionRecognition\SpeechEmotionRecognition.csproj">
+      <Project>{284b89e5-85fb-4b3e-bfb7-8bd871a1a230}</Project>
+      <Name>SpeechEmotionRecognition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AffectRecognitionComponents\TextEmotionRecognition\TextEmotionRecognition.csproj">
+      <Project>{d6424009-17fd-4ba3-8f97-2069be13309c}</Project>
+      <Name>TextEmotionRecognition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Assets\RealTimeEmotionRecognition\RealTimeEmotionRecognition.csproj">
+      <Project>{cc3a5863-e579-4d38-9817-5dc1744703f3}</Project>
+      <Name>RealTimeEmotionRecognition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FacialEmotionRecognition\FacialEmotionRecognition.csproj">
+      <Project>{dd9b21a0-50dc-4dc2-bf5e-b8d46077d6ec}</Project>
+      <Name>FacialEmotionRecognition</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="anger.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dlibwrapper_x64.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dlibwrapper_x86.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="FURIA Fuzzy Logic Rules.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Kiavash1.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
