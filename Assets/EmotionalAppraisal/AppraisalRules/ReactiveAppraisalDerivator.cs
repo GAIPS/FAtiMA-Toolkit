@@ -53,7 +53,7 @@ namespace EmotionalAppraisal.AppraisalRules
 		/// Adds an emotional reaction to an event
 		/// </summary>
 		/// <param name="emotionalAppraisalRule">the AppraisalRule to add</param>
-		public void AddOrUpdateAppraisalRule(AppraisalRuleDTO emotionalAppraisalRuleDTO)
+		public void AddOrUpdateAppraisalRule(AppraisalRuleDTO emotionalAppraisalRuleDTO, Name perspective)
 		{
 			AppraisalRule existingRule = GetAppraisalRule(emotionalAppraisalRuleDTO.Id);
 		    if (existingRule != null)
@@ -68,12 +68,13 @@ namespace EmotionalAppraisal.AppraisalRules
 		    {
 			    existingRule = new AppraisalRule(emotionalAppraisalRuleDTO);
 		    }
-			AddEmotionalReaction(existingRule);
+			AddEmotionalReaction(existingRule, perspective);
 		}
 
-        public void AddEmotionalReaction(AppraisalRule appraisalRule)
+        public void AddEmotionalReaction(AppraisalRule appraisalRule, Name perspective)
         {
             var name = appraisalRule.EventName;
+
             HashSet<AppraisalRule> ruleSet;
             if (!Rules.TryGetValue(name, out ruleSet))
             {
@@ -176,12 +177,12 @@ namespace EmotionalAppraisal.AppraisalRules
 
 			if (desirability != 0 || praiseworthiness != 0)
 			{
-				var eventName = frame.AppraisedEvent.EventName.ApplySelfPerspective((Name)emotionalModule.Perspective);
+				var eventName = frame.AppraisedEvent.EventName.ApplySelfPerspective(emotionalModule.Perspective);
 				AppraisalRule r = new AppraisalRule(eventName,null);
 				r.Desirability = desirability;
 				r.Praiseworthiness = praiseworthiness;
 				//r.EventObject = frame.AppraisedEvent.ToIdentifierName().RemovePerspective(emotionalModule.Perspective);
-				AddEmotionalReaction(r);
+				AddEmotionalReaction(r, emotionalModule.Perspective);
 			}
 		}
 
@@ -213,7 +214,7 @@ namespace EmotionalAppraisal.AppraisalRules
 		    foreach (var r in rules)
 		    {
 				r.Id = Guid.NewGuid();
-                AddEmotionalReaction(r);
+                AddEmotionalReaction(r, null);
             }
 		}
 

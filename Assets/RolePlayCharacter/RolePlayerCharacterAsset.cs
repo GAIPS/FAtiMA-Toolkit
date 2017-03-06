@@ -2,6 +2,7 @@
 using EmotionalAppraisal;
 using EmotionalDecisionMaking;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using ActionLibrary;
 using AutobiographicMemory;
@@ -202,7 +203,7 @@ namespace RolePlayCharacter
 		private SocialImportanceAsset m_socialImportanceAsset;
 		private CommeillFautAsset m_commeillFautAsset;
 
-		private KB m_kb;
+		public KB m_kb;
 		private AM m_am;
 		private ConcreteEmotionalState m_emotionalState;
 		private Dictionary<Name, AgentEntry> m_otherAgents;
@@ -313,7 +314,8 @@ namespace RolePlayCharacter
 
 			foreach (var e in events.Select(e => e.RemoveSelfPerspective(m_kb.Perspective)))
 			{
-				if (RPCConsts.ACTION_START_EVENT_PROTOTYPE.Match(e))
+
+                if (RPCConsts.ACTION_START_EVENT_PROTOTYPE.Match(e))
 				{
 					var subject = e.GetNTerm(2);
 
@@ -324,7 +326,8 @@ namespace RolePlayCharacter
 					}
 					//Add agent
 					this.AddKnownAgent(subject);
-				}
+                    m_commeillFautAsset.StartSE(e, m_kb);
+                }
 				if (RPCConsts.ACTION_END_EVENT_PROTOTYPE.Match(e))
 				{
 					var evt = EventHelper.ActionEnd(this.CharacterName.ToString(), CurrentActionName?.ToString(), CurrentActionTarget?.ToString());
@@ -334,10 +337,16 @@ namespace RolePlayCharacter
 						CurrentActionTarget = null;
 					}
 					this.AddKnownAgent(e.GetNTerm(2));
-				}
-			}
 
-			m_emotionalAppraisalAsset.AppraiseEvents(events, m_emotionalState, m_am, m_kb);
+                    m_commeillFautAsset.EndSE(e, m_kb);
+                
+
+            }
+               
+            }
+           
+            m_emotionalAppraisalAsset.AppraiseEvents(events, m_emotionalState, m_am, m_kb);
+            
 		}
 
 

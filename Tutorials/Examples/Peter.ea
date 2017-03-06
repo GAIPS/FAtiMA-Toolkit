@@ -12,7 +12,8 @@
 								{
 									"DialogueState(Mary)": "Start",
 									"DialogueState(Kate)": "Start",
-									"Compliment(Mary)": 10
+									"Friendship(SELF, Mary)": 10,
+									"Attraction(SELF, Mary)": 10
 								}
 						}
 				},

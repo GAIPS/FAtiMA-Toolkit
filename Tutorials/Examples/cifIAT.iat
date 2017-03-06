@@ -9,9 +9,9 @@
 				{
 					"CurrentState": "RespondFlirt",
 					"NextState": "End",
-					"Meaning": [],
-					"Style": [],
-					"Utterance": "Thank you! so are you.."
+					"Meaning": ["Neutral"],
+					"Style": ["-"],
+					"Utterance": "...............ok"
 				}, 
 				{
 					"CurrentState": "StartFlirt",
@@ -54,6 +54,41 @@
 					"Meaning": [],
 					"Style": [],
 					"Utterance": "Alo alo?"
+				}, 
+				{
+					"CurrentState": "RespondCompliment",
+					"NextState": "End",
+					"Meaning": ["Negative"],
+					"Style": ["-"],
+					"Utterance": "Go AWAY! Creep!"
+				}, 
+				{
+					"CurrentState": "RespondCompliment",
+					"NextState": "End",
+					"Meaning": ["Positive"],
+					"Style": ["-"],
+					"Utterance": "Thank you! so are you.."
+				}, 
+				{
+					"CurrentState": "RespondCompliment",
+					"NextState": "End",
+					"Meaning": ["Neutral"],
+					"Style": ["-"],
+					"Utterance": "Uhm..."
+				}, 
+				{
+					"CurrentState": "RespondFlirt",
+					"NextState": "End",
+					"Meaning": ["Positive"],
+					"Style": [],
+					"Utterance": "Thank you! so are you.."
+				}, 
+				{
+					"CurrentState": "RespondFlirt",
+					"NextState": "End",
+					"Meaning": ["Negative"],
+					"Style": ["-"],
+					"Utterance": "You idiot...you're the worst"
 				}],
 			"AgentDialogues": [
 				{

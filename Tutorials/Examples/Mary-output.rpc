@@ -1,7 +1,7 @@
 {
 	"root":
 		{
-			"classId": 1,
+			"classId": 2,
 			"KnowledgeBase":
 				{
 					"Perspective": "Mary",
@@ -9,10 +9,10 @@
 						{
 							"SELF":
 								{
-									"Attraction(Peter)": 10,
 									"DialogueState(Kate)": "Start",
-									"DialogueState(Peter)": "Start",
-									"HasFloor(Mary)": true
+									"DialogueState(Peter)": "RespondFlirt",
+									"HasFloor(Mary)": false,
+									"Attraction(Mary, Peter)": 10
 								}
 						}
 				},
@@ -57,6 +57,24 @@
 							"Timestamp": 0,
 							"Action": "Enters",
 							"Target": "Room"
+						}, 
+						{
+							"classId": 1,
+							"Id": 3,
+							"Type": "Property-Change",
+							"Subject": "Mary",
+							"Timestamp": 0,
+							"Property": "DialogueState(Peter)",
+							"NewValue": "RespondFlirt"
+						}, 
+						{
+							"classId": 1,
+							"Id": 4,
+							"Type": "Property-Change",
+							"Subject": "Peter",
+							"Timestamp": 0,
+							"Property": "HasFloor(Mary)",
+							"NewValue": false
 						}]
 				},
 			"OtherAgents":
@@ -113,6 +131,10 @@
 		}, 
 		{
 			"TypeId": 1,
+			"ClassName": "AutobiographicMemory.AM+PropertyChangeEvent, AutobiographicMemory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}, 
+		{
+			"TypeId": 2,
 			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 		}]
 }

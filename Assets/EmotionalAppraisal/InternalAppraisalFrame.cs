@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AutobiographicMemory;
 using EmotionalAppraisal.DTOs;
+using WellFormedNames;
 
 namespace EmotionalAppraisal
 {
@@ -33,7 +34,13 @@ namespace EmotionalAppraisal
 				private set;
 			}
 
-			public InternalAppraisalFrame()
+            public Name Perspective
+            {
+                get;
+                set;
+            }
+
+            public InternalAppraisalFrame()
 			{
 				AppraisedEvent = null;
 				LastChange = 0;
@@ -179,7 +186,13 @@ namespace EmotionalAppraisal
 					private set;
 				}
 
-				public ComponentAppraisalFrame(InternalAppraisalFrame parentFrame, object component, short weight)
+                public Name Perspective
+                {
+                    get;
+                    set;
+                }
+
+                public ComponentAppraisalFrame(InternalAppraisalFrame parentFrame, object component, short weight)
 				{
 					this.parentFrame = parentFrame;
 					this.component = component;

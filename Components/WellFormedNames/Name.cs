@@ -418,7 +418,8 @@ namespace WellFormedNames
 			if (str != null)
 			{
                 if (string.IsNullOrEmpty(str))
-                    return NIL_SYMBOL;
+                    throw new ArgumentException("Invalid symbol \"\"");
+
 				str = str.Trim();
 				return ParseName(str);
 			}

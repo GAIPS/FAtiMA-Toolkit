@@ -70,7 +70,7 @@ namespace CommeillFautTutorial
                           
                     }
 
-             //   actor.SaveToFile("../../../Examples/" + actor.CharacterName + "-output" + ".rpc");
+          //      actor.SaveToFile("../../../Examples/" + actor.CharacterName + "-output" + ".rpc");
             }
             
 
@@ -91,6 +91,7 @@ namespace CommeillFautTutorial
 
                     rpc.Perceive(_events);
                     _actions.Add(rpc.Decide().FirstOrDefault());
+                    
                 }
 
                 _events.Clear();
@@ -110,6 +111,9 @@ namespace CommeillFautTutorial
                     Console.WriteLine("Character: " + initiator.CharacterName + " does " + action.Name + "to " +
                                       action.Target + "\n");
 
+                    _events.Add(EventHelper.ActionStart(initiator.CharacterName.ToString(), action.Name.ToString(),
+                     action.Target.ToString()));
+
                     _events.Add(EventHelper.ActionEnd(initiator.CharacterName.ToString(), action.Name.ToString(),
                         action.Target.ToString()));
 
@@ -124,7 +128,7 @@ namespace CommeillFautTutorial
                         action.Target.ToString()));
 
                     initiator.Perceive(Initiator_Events);
-
+                 
 
                     // storing data to apply consequences
 

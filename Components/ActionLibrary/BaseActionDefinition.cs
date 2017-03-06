@@ -40,11 +40,6 @@ namespace ActionLibrary
 			var name = terms[0];
 			if (!name.IsPrimitive)
 				throw new ArgumentException("Invalid Action Template format", nameof(actionTemplate));
-			for (int i = 1; i < terms.Length; i++)
-			{
-				if (terms[i].IsComposed)
-					throw new ArgumentException("Invalid Action Template format", nameof(actionTemplate));
-			}
 
 			if (target.IsComposed)
 				throw new ArgumentException("Action Definition Target must be a symbol definition", nameof(target));
