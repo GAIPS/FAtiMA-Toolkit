@@ -131,6 +131,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests.Utilities", "Tests\Te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegratedAuthoringToolTutorial", "Tutorials\IntegratedAuthoringToolTutorial\IntegratedAuthoringToolTutorial.csproj", "{4207A3D8-E526-4E5F-8E1D-F748A01EF34D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacialEmotionRecognition", "FacialEmotionRecognition\FacialEmotionRecognition.csproj", "{DD9B21A0-50DC-4DC2-BF5E-B8D46077D6EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionRecognitionTutorial", "EmotionRecognitionTutorial\EmotionRecognitionTutorial.csproj", "{5A9B44DE-14D0-4D83-B238-A70F85C3765A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -333,6 +337,14 @@ Global
 		{4207A3D8-E526-4E5F-8E1D-F748A01EF34D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4207A3D8-E526-4E5F-8E1D-F748A01EF34D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4207A3D8-E526-4E5F-8E1D-F748A01EF34D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD9B21A0-50DC-4DC2-BF5E-B8D46077D6EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD9B21A0-50DC-4DC2-BF5E-B8D46077D6EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD9B21A0-50DC-4DC2-BF5E-B8D46077D6EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD9B21A0-50DC-4DC2-BF5E-B8D46077D6EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A9B44DE-14D0-4D83-B238-A70F85C3765A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A9B44DE-14D0-4D83-B238-A70F85C3765A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A9B44DE-14D0-4D83-B238-A70F85C3765A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A9B44DE-14D0-4D83-B238-A70F85C3765A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -388,5 +400,7 @@ Global
 		{FD251A80-D5D3-4776-B323-37496FD9C550} = {391C60E4-92CE-4EC7-BA86-48D8316365FA}
 		{C971A59A-2DD0-4396-AB70-7CBAC20D6CC9} = {9285D50F-C051-467D-AB2D-165963753EA5}
 		{4207A3D8-E526-4E5F-8E1D-F748A01EF34D} = {2C13F768-C122-4B7F-A08A-9E8AB520F6D2}
+		{DD9B21A0-50DC-4DC2-BF5E-B8D46077D6EC} = {37699C14-0FBC-44FD-84D5-699BF31C9DCB}
+		{5A9B44DE-14D0-4D83-B238-A70F85C3765A} = {2C13F768-C122-4B7F-A08A-9E8AB520F6D2}
 	EndGlobalSection
 EndGlobal
