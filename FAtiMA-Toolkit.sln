@@ -122,9 +122,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnowledgeBase", "Components(Portable)\KnowledgeBase\KnowledgeBase.csproj", "{04D51847-0676-480A-9EA0-D0A58D894556}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommeillFaut", "Assets\CommeillFaut\CommeillFaut.csproj", "{BA21951C-1799-4D0F-AA99-62DF857F3B71}"
-	ProjectSection(ProjectDependencies) = postProject
-		{C1CC38C5-72F5-4545-B4F7-C65B2883909C} = {C1CC38C5-72F5-4545-B4F7-C65B2883909C}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommeillFautTutorial", "Tutorials\CommeillFautTutorial\CommeillFautTutorial.csproj", "{BB9973F4-6832-424C-A596-941AFCD7FC80}"
 EndProject
