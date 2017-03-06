@@ -33,9 +33,9 @@ namespace TextEmotionRecognition
 
         public TextEmotionRecognitionComponent()
         {
-            this.Language = "en";
-            this.LSACorpus = "resources/config/LSA/tasa_en";
-            this.LDACorpus = "resources/config/LDA/tasa_en";
+            this.Language = "English";
+            this.LSACorpus = "resources/config/EN/LSA/TASA";
+            this.LDACorpus = "resources/config/EN/LDA/TASA";
             this.PostTagging = false;
             this.Dialogism = false;
 
