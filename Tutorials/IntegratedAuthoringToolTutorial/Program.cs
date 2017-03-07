@@ -54,12 +54,12 @@ namespace IntegratedAuthoringToolTutorial
 
                 if (characterAction.Key.ToString() == IATConsts.DIALOG_ACTION_KEY)
                 {
-                    var dialog = iat.GetDialogueAction(
+                    var dialog = iat.GetDialogueActions(
                         IATConsts.AGENT,
                         characterAction.Parameters[0],
                         characterAction.Parameters[1],
                         characterAction.Parameters[2],
-                        characterAction.Parameters[3]);
+                        characterAction.Parameters[3]).FirstOrDefault();
                     Console.WriteLine("\n" + rpc.CharacterName + ": " + dialog.Utterance + "\n");
                     currentState = characterAction.Parameters[1].ToString();
                     Console.WriteLine("\nMood: " + rpc.Mood);

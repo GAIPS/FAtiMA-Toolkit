@@ -438,6 +438,9 @@ namespace IntegratedAuthoringToolWF
                 nextState = "S" + stateCounter;
             }
 
+            if (stateCounter == totalSize)
+                nextState = "End";
+
             var add = new DialogueStateActionDTO()
             {
                 CurrentState = currentState,
@@ -460,10 +463,19 @@ namespace IntegratedAuthoringToolWF
             var result = line.Split(delimitedchars);
             var currentState = "";
             var nextState = "";
-           
-             currentState = "S" + stateCounter;
-              stateCounter += 1;
+
+            if (stateCounter == 0)
+            {
+                currentState = IATConsts.INITIAL_DIALOGUE_STATE;
+                stateCounter += 1;
                 nextState = "S" + stateCounter;
+            }
+            else
+            {
+                currentState = "S" + stateCounter;
+                stateCounter += 1;
+                nextState = "S" + stateCounter;
+            }
             if (stateCounter == totalSize)
                 nextState = "End";
 

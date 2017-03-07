@@ -52,8 +52,7 @@ namespace EmotionRecognitionTutorial
             speechTestFile.Close();
             speechER.ProcessSpeech(speech);
             Console.WriteLine("Done!\n");
-
-
+            
             //this method will create a new fused sample by combining samples from the registered classifiers (using the defined fusion policy)
             rtER.UpdateSamples();
 
