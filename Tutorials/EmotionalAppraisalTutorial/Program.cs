@@ -24,7 +24,8 @@ namespace EmotionalAppraisalTutorial
             //The following lines add an appraisal rule that will make the kickEvent be perceived as undesirable
             //Normally, these rules should be authored using the AuthoringTool provided with the asset but they can also be added dynamically
             var rule = new AppraisalRuleDTO {
-                EventMatchingTemplate = (Name)"Event(Action-End, John, Kick, *)", Praiseworthiness = -3f };
+                EventMatchingTemplate = (Name)"Event(Action-End, *, Kick, *)",
+                Praiseworthiness = -3f };
             ea.AddOrUpdateAppraisalRule(rule);
 
             var am = new AM();

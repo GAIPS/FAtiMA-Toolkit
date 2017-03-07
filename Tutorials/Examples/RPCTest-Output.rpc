@@ -18,7 +18,7 @@
 			"VoiceName": "",
 			"EmotionalAppraisalAssetSource": "../../../Examples\\EATest.ea",
 			"EmotionalDecisionMakingSource": "../../../Examples\\EDMTest.edm",
-			"SocialImportanceAssetSource": "../../../Examples\\SITest.si",
+			"SocialImportanceAssetSource": null,
 			"CommeillFautAssetSource": null,
 			"EmotionalState":
 				{

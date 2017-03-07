@@ -14,10 +14,8 @@ namespace IntegratedAuthoringToolTutorial
             var playerStr = IATConsts.PLAYER;
          
             //Loading the asset
-          var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/IATTest.iat");
-        //    var iat = IntegratedAuthoringToolAsset.LoadFromFile("D:/FA/inspector-toto.iat");
-            //D:/FA/inspector-toto.iat
-            var currentState = IATConsts.INITIAL_DIALOGUE_STATE;
+           var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/IATTest.iat");
+           var currentState = IATConsts.INITIAL_DIALOGUE_STATE;
 
             var rpc = RolePlayCharacterAsset.LoadFromFile(iat.GetAllCharacterSources().FirstOrDefault().Source);
             rpc.LoadAssociatedAssets();

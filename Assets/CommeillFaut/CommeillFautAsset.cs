@@ -437,7 +437,7 @@ namespace CommeillFaut
         public void StartSE(Name SE, KB kb)
         {
 
-            Console.WriteLine("CIF Asset: " + SE + "\n");
+            //Console.WriteLine("CIF Asset: " + SE + "\n");
             if (m_SocialExchanges.Find(x => x.ActionName == SE.GetNTerm(3)) != null)
             {
 

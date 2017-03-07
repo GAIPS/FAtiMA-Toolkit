@@ -16,14 +16,13 @@ namespace SocialImportanceTutorial
         {
 			AssetManager.Instance.Bridge = new BasicIOBridge();
             var siTarget = "Player";
-
-            Console.WriteLine(Directory.GetCurrentDirectory());
+            
             //First, we load the asset from an existing profile
             var siAsset = SocialImportanceAsset.LoadFromFile("../../../Examples/SITest.si");
 
             //We then register a knowledge base
             var kb = new KB((Name)"John");
-            kb.Tell((Name)"IsFriend(Player)", (Name)"True");
+            kb.Tell((Name)"IsFriend(Player)", (Name)"False");
             siAsset.RegisterKnowledgeBase(kb);
             
             Console.WriteLine("The SI attributed to "+siTarget+" is:" + siAsset.GetSocialImportance(siTarget));

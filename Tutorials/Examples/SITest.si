@@ -17,19 +17,19 @@
 				{
 					"ConferralSI": 1,
 					"Action": "Greet",
-					"Target": "[x]",
+					"Target": "Player",
 					"Conditions":
 						{
-							"Set": ["Mood(SELF) > 0"]
+							"Set": []
 						}
 				},
-        {
+				{
 					"ConferralSI": 20,
 					"Action": "Hug",
 					"Target": "Player",
 					"Conditions":
 						{
-							"Set": ["Mood(SELF) > 0"]
+							"Set": []
 						}
 				}]
 		},

@@ -34,6 +34,7 @@ namespace EmotionalDecisionMakingTutorial
             
             edm.AddReactionCondition(id, "LikesToFight(SELF) = True");
             var actions = edm.Decide();
+
             Console.WriteLine("Decisions: ");
             foreach (var a in actions)
             {
