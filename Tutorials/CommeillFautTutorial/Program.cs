@@ -72,8 +72,11 @@ namespace CommeillFautTutorial
 
           //      actor.SaveToFile("../../../Examples/" + actor.CharacterName + "-output" + ".rpc");
             }
-            
 
+            foreach (var go in iat.GetDialogueActionsByState("Player", "Start"))
+            {
+                Console.WriteLine(go.Utterance);
+            }
            
            
             List<Name> _events = new List<Name>();
@@ -149,8 +152,8 @@ namespace CommeillFautTutorial
 
 
                     Console.WriteLine("Current State: " + action.Parameters[0].ToString());
-                    Console.WriteLine(initiator.CharacterName + " says: ''" +
-                                      iat.GetDialogueAction(IATConsts.PLAYER, action.Parameters[0],action.Parameters[1], action.Parameters[2], action.Parameters[3]).Utterance + "'' to " + action.Target);
+                    //Console.WriteLine(initiator.CharacterName + " says: ''" +
+                    //                  iat.GetDialogueAction(IATConsts.PLAYER, action.Parameters[0],action.Parameters[1], action.Parameters[2], action.Parameters[3]).Utterance + "'' to " + action.Target);
                     Console.WriteLine("Next State: " + action.Parameters[1].ToString());
 
 

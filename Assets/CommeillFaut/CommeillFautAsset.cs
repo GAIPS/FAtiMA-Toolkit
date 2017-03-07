@@ -437,16 +437,22 @@ namespace CommeillFaut
         public void StartSE(Name SE, KB kb)
         {
 
-            Console.WriteLine("CIF Asset: " + SE + "\n");
-            if (m_SocialExchanges.Find(x => x.ActionName == SE.GetNTerm(3)) != null)
+           
+            if (SE.GetNTerm(3).ToString().Contains("SE("))
             {
+
+                var action = SE.GetNTerm(3).ToString();
+
+                char[] delims = {',', '(', ')'};
+
+                var result = action.Split(delims);
 
                 var initiator = SE.GetNTerm(2);
                 var target = SE.GetNTerm(4);
-                var ActionName = SE.GetNTerm(3);
-                var SocialExchange = m_SocialExchanges.Find(x => x.ActionName == SE.GetNTerm(3));
+                var seName = result[4];
+                var SocialExchange = m_SocialExchanges.Find(x => x.ActionName.ToString() == seName);
 
-                Console.WriteLine("CIF Asset, Character: " + initiator + " does " + SocialExchange.ActionName + "to " +
+                Console.WriteLine("CIF Asset, Character: " + initiator + " initiates " + seName + " towards " +
                                      target + "\n");
 
 

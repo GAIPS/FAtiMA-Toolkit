@@ -156,16 +156,6 @@ namespace IntegratedAuthoringTool
             return (Name)speakAction; 
         }
 
-        public DialogueStateActionDTO GetDialogueAction(string speaker, Name currentState, Name nextState, Name meaning, Name style)
-        {
-            var dialogList = SelectDialogActionList(speaker);
-            var action = dialogList.Where(d => d.CurrentState == currentState &&
-                                               d.NextState == nextState &&
-                                               DialogStateAction.PackageList((Name)IATConsts.MEANINGS_PACKAGING_NAME, d.Meanings) == meaning &&
-                                               DialogStateAction.PackageList((Name)IATConsts.STYLES_PACKAGING_NAME, d.Styles) == style).FirstOrDefault();
-            return action.ToDTO();
-        }
-
 
         public List<DialogueStateActionDTO> GetDialogueActions(string speaker, Name currentState, Name nextState, Name meaning, Name style)
         {
