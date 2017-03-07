@@ -438,6 +438,9 @@ namespace IntegratedAuthoringToolWF
                 nextState = "S" + stateCounter;
             }
 
+            if (stateCounter == totalSize)
+                nextState = "End";
+
             var add = new DialogueStateActionDTO()
             {
                 CurrentState = currentState,
