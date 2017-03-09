@@ -326,7 +326,7 @@ namespace RolePlayCharacter
 					}
 					//Add agent
 					this.AddKnownAgent(subject);
-                    m_commeillFautAsset.StartSE(e, m_kb);
+                  
                 }
 				if (RPCConsts.ACTION_END_EVENT_PROTOTYPE.Match(e))
 				{
@@ -338,7 +338,7 @@ namespace RolePlayCharacter
 					}
 					this.AddKnownAgent(e.GetNTerm(2));
 
-                    m_commeillFautAsset.EndSE(e, m_kb);
+                m_commeillFautAsset.EndSE(e, m_kb);
                 
 
             }
@@ -346,6 +346,7 @@ namespace RolePlayCharacter
             }
            
             m_emotionalAppraisalAsset.AppraiseEvents(events, m_emotionalState, m_am, m_kb);
+            m_commeillFautAsset.AppraiseEvents(events, m_kb);
             
 		}
 

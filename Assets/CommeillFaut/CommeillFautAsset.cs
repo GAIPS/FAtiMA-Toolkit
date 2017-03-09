@@ -430,40 +430,123 @@ namespace CommeillFaut
             foreach (var e in eventNames.Select(e => e.RemoveSelfPerspective(kb.Perspective)))
             {
 
-             
+                if (e.GetNTerm(3).ToString().Contains("SE(") && e.GetNTerm(3).ToString().Contains("Initiate"))
+                {
+
+                    var action = e.GetNTerm(3).ToString();
+
+                    char[] delims = {',', '(', ')'};
+
+                    var result = action.Split(delims);
+
+                    var initiator = e.GetNTerm(2);
+                    var target = e.GetNTerm(4);
+                    var seName = result[4];
+                    var SocialExchange = m_SocialExchanges.Find(x => x.ActionName.ToString() == seName);
+
+                    Console.WriteLine("CIF Asset, Character: " + initiator + " initiates " + seName + " towards " +
+                                      target + "\n");
+
+                    StartSE(SocialExchange, initiator, target);
+                }
+
+                else if (e.GetNTerm(3).ToString().Contains("SE(") && e.GetNTerm(3).ToString().Contains("Answer"))
+                {
+
+                    var action = e.GetNTerm(3).ToString();
+
+                    char[] delims = {',', '(', ')'};
+
+                    var result = action.Split(delims);
+
+                    var initiator = e.GetNTerm(2);
+                    var target = e.GetNTerm(4);
+                    var seName = result[4];
+                    var seResult = result[6];
+                    var SocialExchange = m_SocialExchanges.Find(x => x.ActionName.ToString() == seName);
+
+                    Console.WriteLine("CIF Asset, Character: " + target + " responded " + seName + " towards " +
+                                      initiator + "\n");
+
+                    SEResponse(SocialExchange, initiator, target, seResult);
+                }
+
+              
+            }
+
+
+
+        }
+
+        public void StartSE(SocialExchange seName, Name initiator, Name target)
+        {
+
+
+            if (initiator == m_kB.Perspective)
+            {
+
+                m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(false), target);
+
+             }
+
+            else if (target == m_kB.Perspective)
+            {
+                m_kB.Tell(Name.BuildName("DialogueState(" + initiator + ")"), Name.BuildName("Respond" + seName.ActionName), initiator);
+            }
+           
+
+           
+        }
+
+        public void SEResponse(SocialExchange seName, Name initiator, Name target, string result)
+        {
+            if (target == m_kB.Perspective)
+            {
+
+                m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(false), target);
+
+            }
+
+            else if (initiator == m_kB.Perspective)
+            {
+                m_kB.Tell(Name.BuildName("DialogueState(" + initiator + ")"), Name.BuildName("End"), initiator);
             }
         }
 
-        public void StartSE(Name SE, KB kb)
+
+        public void EndSE(Name e, KB m_kb)
         {
-
-           
-            if (SE.GetNTerm(3).ToString().Contains("SE("))
+            if (e.GetNTerm(3).ToString().Contains("SE("))
             {
-
-                var action = SE.GetNTerm(3).ToString();
+                var action = e.GetNTerm(3).ToString();
 
                 char[] delims = {',', '(', ')'};
 
                 var result = action.Split(delims);
 
-                var initiator = SE.GetNTerm(2);
-                var target = SE.GetNTerm(4);
+                var initiator = e.GetNTerm(2);
+                var target = e.GetNTerm(4);
                 var seName = result[4];
+                var seResult = result[6];
                 var SocialExchange = m_SocialExchanges.Find(x => x.ActionName.ToString() == seName);
 
-                Console.WriteLine("CIF Asset, Character: " + initiator + " initiates " + seName + " towards " +
-                                     target + "\n");
+                Console.WriteLine("CIF Asset, Character: " + initiator + " ended " + seName + " towards " +
+                                  target + "\n");
 
 
+                if (target == m_kB.Perspective)
+                {
+
+                    m_kB.Tell(Name.BuildName("DialogueState(" + initiator + ")"), Name.BuildName("Start"), initiator);
+
+                }
+
+                else if (initiator == m_kB.Perspective)
+                {
+                    m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(false), target);
+                    m_kB.Tell(Name.BuildName("DialogueState(" + target + ")"), Name.BuildName("Start"), target);
+                }
             }
-
-           
-        }
-
-        public void EndSE(Name SE, KB kb)
-        {
-          
         }
 
         /// <summary>
