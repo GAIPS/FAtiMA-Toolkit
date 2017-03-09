@@ -99,8 +99,8 @@ namespace CommeillFaut
                         new SubstitutionSet(new Substitution[]
                             {new Substitution(Name.BuildName("[x]"), t.Item1)});
 
-                    Console.WriteLine(" Result: " + "Volition(" + socialMoveName + "," + initator + "," + t.Item1.ToString() + ")" + "=" +
-                                      value);
+              //      Console.WriteLine(" Result: " + "Volition(" + socialMoveName + "," + initator + "," + t.Item1.ToString() + ")" + "=" +
+               //                       value);
                     yield return new DynamicPropertyResult(Name.BuildName(value), sub);
 
                 }
@@ -444,7 +444,7 @@ namespace CommeillFaut
                     var seName = result[4];
                     var SocialExchange = m_SocialExchanges.Find(x => x.ActionName.ToString() == seName);
 
-                    Console.WriteLine("CIF Asset, Character: " + initiator + " initiates " + seName + " towards " +
+                    Console.WriteLine("CIF Asset Perceive, Character: " + initiator + " initiates " + seName + " towards " +
                                       target + "\n");
 
                     StartSE(SocialExchange, initiator, target);
@@ -465,16 +465,34 @@ namespace CommeillFaut
                     var seResult = result[6];
                     var SocialExchange = m_SocialExchanges.Find(x => x.ActionName.ToString() == seName);
 
-                    Console.WriteLine("CIF Asset, Character: " + target + " responded " + seName + " towards " +
-                                      initiator + "\n");
+                    Console.WriteLine("CIF Asset Perceive, Character: " + initiator + " responded " + seName + " towards " +
+                                      target + "\n");
 
                     SEResponse(SocialExchange, initiator, target, seResult);
                 }
 
-              
+                else if (e.GetNTerm(3).ToString().Contains("SE(") && e.GetNTerm(3).ToString().Contains("Finalize"))
+                {
+
+                    var action = e.GetNTerm(3).ToString();
+
+                    char[] delims = {',', '(', ')'};
+
+                    var result = action.Split(delims);
+
+                    var initiator = e.GetNTerm(2);
+                    var target = e.GetNTerm(4);
+                    var seName = result[4];
+                    var seResult = result[6];
+                    var SocialExchange = m_SocialExchanges.Find(x => x.ActionName.ToString() == seName);
+
+                    Console.WriteLine("CIF Asset Perceive, Character: " + initiator + " ended " + seName + " towards " +
+                                      target + "\n" + e.GetNTerm(3));
+
+                    EndSE(SocialExchange, initiator, target, seResult);
+                }
+
             }
-
-
 
         }
 
@@ -485,13 +503,15 @@ namespace CommeillFaut
             if (initiator == m_kB.Perspective)
             {
 
-                m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(false), target);
+                m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(false), Name.BuildName("SELF"));
 
              }
 
             else if (target == m_kB.Perspective)
             {
-                m_kB.Tell(Name.BuildName("DialogueState(" + initiator + ")"), Name.BuildName("Respond" + seName.ActionName), initiator);
+                m_kB.Tell(Name.BuildName("DialogueState(" + initiator + ")"), Name.BuildName("Respond" + seName.ActionName), Name.BuildName("SELF"));
+
+                m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(true), Name.BuildName("SELF"));
             }
            
 
@@ -500,54 +520,40 @@ namespace CommeillFaut
 
         public void SEResponse(SocialExchange seName, Name initiator, Name target, string result)
         {
-            if (target == m_kB.Perspective)
+            if (initiator == m_kB.Perspective)
             {
 
-                m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(false), target);
+                m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(false), Name.BuildName("SELF"));
 
             }
 
-            else if (initiator == m_kB.Perspective)
+            else if (target == m_kB.Perspective)
             {
-                m_kB.Tell(Name.BuildName("DialogueState(" + initiator + ")"), Name.BuildName("End"), initiator);
+                m_kB.Tell(Name.BuildName("DialogueState(" + initiator + ")"), Name.BuildName("End"), Name.BuildName("SELF"));
+                m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(true), Name.BuildName("SELF"));
             }
         }
 
 
-        public void EndSE(Name e, KB m_kb)
+        public void EndSE(SocialExchange seName, Name initiator, Name target, string result)
         {
-            if (e.GetNTerm(3).ToString().Contains("SE("))
-            {
-                var action = e.GetNTerm(3).ToString();
-
-                char[] delims = {',', '(', ')'};
-
-                var result = action.Split(delims);
-
-                var initiator = e.GetNTerm(2);
-                var target = e.GetNTerm(4);
-                var seName = result[4];
-                var seResult = result[6];
-                var SocialExchange = m_SocialExchanges.Find(x => x.ActionName.ToString() == seName);
-
-                Console.WriteLine("CIF Asset, Character: " + initiator + " ended " + seName + " towards " +
-                                  target + "\n");
+            
 
 
                 if (target == m_kB.Perspective)
                 {
 
-                    m_kB.Tell(Name.BuildName("DialogueState(" + initiator + ")"), Name.BuildName("Start"), initiator);
+                    m_kB.Tell(Name.BuildName("DialogueState(" + initiator + ")"), Name.BuildName("Start"), Name.BuildName("SELF"));
 
                 }
 
                 else if (initiator == m_kB.Perspective)
                 {
-                    m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(false), target);
-                    m_kB.Tell(Name.BuildName("DialogueState(" + target + ")"), Name.BuildName("Start"), target);
+                    m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(false), Name.BuildName("SELF"));
+                    m_kB.Tell(Name.BuildName("DialogueState(" + target + ")"), Name.BuildName("Start"), Name.BuildName("SELF"));
                 }
             }
-        }
+       
 
         /// <summary>
         /// Load a Social Importance Asset definition from a DTO object.

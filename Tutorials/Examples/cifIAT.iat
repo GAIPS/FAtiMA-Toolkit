@@ -9,36 +9,50 @@
 				{
 					"CurrentState": "RespondFlirt",
 					"NextState": "End",
-					"Meaning": ["Neutral"],
-					"Style": ["-"],
+					"Meaning": ["SE(Flirt, Answer)"],
+					"Style": [],
 					"Utterance": "...............ok"
 				}, 
 				{
 					"CurrentState": "StartFlirt",
 					"NextState": "RespondFlirt",
-					"Meaning": ["-"],
-					"Style": ["-"],
+					"Meaning": ["SE(Flirt, Initiate)"],
+					"Style": [],
 					"Utterance": "Hello, you are so pretty"
 				}, 
 				{
 					"CurrentState": "RespondCompliment",
 					"NextState": "End",
-					"Meaning": ["-"],
+					"Meaning": [],
 					"Style": [],
 					"Utterance": "Thank you! so are you.."
 				}, 
 				{
 					"CurrentState": "End",
 					"NextState": "Start",
+					"Meaning": ["SE(Flirt, Finalize)"],
+					"Style": [],
+					"Utterance": "Uhmm ok then!"
+				},
+{
+					"CurrentState": "End",
+					"NextState": "Start",
+					"Meaning": ["SE(Compliment, Finalize)"],
+					"Style": [],
+					"Utterance": "Sorryyy!"
+				},
+{
+					"CurrentState": "End",
+					"NextState": "Start",
 					"Meaning": [],
 					"Style": [],
 					"Utterance": "Goodbye then!"
-				}, 
+				},				
 				{
 					"CurrentState": "StartCompliment",
 					"NextState": "RespondCompliment",
-					"Meaning": ["-"],
-					"Style": ["-"],
+					"Meaning": ["SE(Compliment, Initiate)"],
+					"Style": [],
 					"Utterance": "Hello, you are so niceee"
 				}, 
 				{
@@ -58,52 +72,52 @@
 				{
 					"CurrentState": "RespondCompliment",
 					"NextState": "End",
-					"Meaning": ["Negative"],
-					"Style": ["-"],
+						"Meaning": ["SE(Compliment, Answer)"],
+					"Style": [],
 					"Utterance": "Go AWAY! Creep!"
 				}, 
 				{
 					"CurrentState": "RespondCompliment",
 					"NextState": "End",
-					"Meaning": ["Positive"],
-					"Style": ["-"],
+						"Meaning": ["SE(Compliment, Answer)"],
+					"Style": [],
 					"Utterance": "Thank you! so are you.."
 				}, 
 				{
 					"CurrentState": "RespondCompliment",
 					"NextState": "End",
-					"Meaning": ["Neutral"],
-					"Style": ["-"],
+					"Meaning": ["SE(Compliment, Answer)"],
+					"Style": [],
 					"Utterance": "Uhm..."
 				}, 
 				{
 					"CurrentState": "RespondFlirt",
 					"NextState": "End",
-					"Meaning": ["Positive"],
+					"Meaning": ["SE(Flirt, Answer)"],
 					"Style": [],
 					"Utterance": "Thank you! so are you.."
 				}, 
 				{
 					"CurrentState": "RespondFlirt",
 					"NextState": "End",
-					"Meaning": ["Negative"],
-					"Style": ["-"],
+					"Meaning": ["SE(Flirt, Answer)"],
+					"Style": [],
 					"Utterance": "You idiot...you're the worst"
 				}],
 			"AgentDialogues": [
 				{
 					"CurrentState": "StartFlirt",
 					"NextState": "RespondFlirt",
-					"Meaning": ["-"],
-					"Style": ["-"],
+					"Meaning": [],
+					"Style": [],
 					"Utterance": "You are so beautiful",
 					"UtteranceId": "TTS-39C4A1305DAECEC070E5BD83EE46EE2C"
 				}, 
 				{
 					"CurrentState": "RespondFlirt",
 					"NextState": "End",
-					"Meaning": ["-"],
-					"Style": ["-"],
+					"Meaning": [],
+					"Style": [],
 					"Utterance": "Ay lmao",
 					"UtteranceId": "TTS-AB4B060EE55E10F852F14D7E0160FD3B"
 				}, 
@@ -118,8 +132,8 @@
 				{
 					"CurrentState": "RespondCompliment",
 					"NextState": "End",
-					"Meaning": ["-"],
-					"Style": ["-"],
+					"Meaning": [],
+					"Style": [],
 					"Utterance": "Ay lmao",
 					"UtteranceId": "TTS-AB4B060EE55E10F852F14D7E0160FD3B"
 				}]

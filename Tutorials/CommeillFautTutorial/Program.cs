@@ -86,11 +86,19 @@ namespace CommeillFautTutorial
                 foreach (var rpc in rpcList)
                 {
 
-                    Console.WriteLine("Character deciding: "+ rpc.CharacterName);
+                    Console.WriteLine("Character perceiving: "+ rpc.CharacterName);
 
                     rpc.Perceive(_events);
                     _actions.Add(rpc.Decide().FirstOrDefault());
-                    
+
+                   
+
+
+
+
+                        rpc.SaveToFile("../../../Examples/" + rpc.CharacterName + "-output" + ".rpc");
+                  
+
                 }
 
                 _events.Clear();
@@ -102,25 +110,31 @@ namespace CommeillFautTutorial
                 var action = _actions.ElementAt(pos);
 
 
-
+                Console.WriteLine();
 
 
                 if (action != null)
                 {
-                    Console.WriteLine("Character: " + initiator.CharacterName + " does " + action.Name + "to " +
-                                      action.Target + "\n");
+                    Console.WriteLine("Action: " + initiator.CharacterName + " does " + action.Name + " to " +
+                                      action.Target + "\n" + action.Parameters[1]);
 
-                    _events.Add(EventHelper.ActionStart(initiator.CharacterName.ToString(), action.Name.ToString(),
-                        action.Target.ToString()));
-
+               //    _events.Add(EventHelper.ActionStart(initiator.CharacterName.ToString(), action.Name.ToString(),
+                //        action.Target.ToString()));
+                    
                     _events.Add(EventHelper.ActionEnd(initiator.CharacterName.ToString(), action.Name.ToString(),
                         action.Target.ToString()));
 
+           //         _events.Add(EventHelper.PropertyChange("DialogueState(" + initiator.CharacterName.ToString() + ")",
+             //                                   action.Parameters[1].ToString(), action.Target.ToString()));
 
+                    Console.WriteLine();
+                    Console.WriteLine("Dialogue:");
                     Console.WriteLine("Current State: " + action.Parameters[0].ToString());
                     Console.WriteLine(initiator.CharacterName + " says: ''" +
                                       iat.GetDialogueActions(IATConsts.PLAYER, action.Parameters[0],action.Parameters[1], action.Parameters[2], action.Parameters[3]).FirstOrDefault().Utterance + "'' to " + action.Target);
                     Console.WriteLine("Next State: " + action.Parameters[1].ToString());
+
+
                 }
 
 /*                 
@@ -199,7 +213,7 @@ namespace CommeillFautTutorial
                                         currentSocialMoveAction = "";
                                         currentSocialMoveResult = "";
                 
-                    */
+                    if()
                         var rand = randomGen.Next(3);
                         //     Console.WriteLine(rand + "");
 
@@ -221,25 +235,54 @@ namespace CommeillFautTutorial
 
 
 
+    */
+
+
 
 
                     Console.WriteLine();
 
 
+                var aux = "False";
+             
+                //    actor.PerceptionActionLoop(new[] { _event });
 
-                    //    actor.PerceptionActionLoop(new[] { _event });
+                foreach (var rpc in rpcList)
+                {
 
-                    foreach (var rpc in rpcList)
+                    if (rpc.m_kb.AskProperty(Name.BuildName("HasFloor(" + rpc.CharacterName + ")")) != null)
                     {
-                       
-                          
-                       
                         
-                        rpc.SaveToFile("../../../Examples/" + rpc.CharacterName + "-output" + ".rpc");
+                        if (rpc.m_kb.AskProperty(Name.BuildName("HasFloor(" + rpc.CharacterName + ")")).ToString() ==
+                            "True")
+                            aux = "True";
                     }
 
+                    _actions.Add(rpc.Decide().FirstOrDefault());
 
-               
+                   
+                    rpc.SaveToFile("../../../Examples/" + rpc.CharacterName + "-output" + ".rpc");
+                    }
+
+              
+
+                if (aux == "False")
+                {
+                    var rand = randomGen.Next(3);
+                    //     Console.WriteLine(rand + "");
+
+                    var next = rpcList.ElementAt(rand);
+
+                    Console.WriteLine("next: " + next.CharacterName + " index: " + rand);
+
+                    var finalEvents = new List<Name>();
+
+                    finalEvents.Add(EventHelper.PropertyChange("HasFloor(" + next.CharacterName + ")", "true",
+                        "Random"));
+
+
+                    next.Perceive(finalEvents);
+                }
                 Console.ReadKey();
             }
         }

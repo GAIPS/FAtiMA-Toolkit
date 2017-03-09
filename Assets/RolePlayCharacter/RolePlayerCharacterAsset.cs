@@ -335,18 +335,20 @@ namespace RolePlayCharacter
 					{
 						CurrentActionName = null;
 						CurrentActionTarget = null;
-					}
+                       
+                    }
 					this.AddKnownAgent(e.GetNTerm(2));
+                    m_commeillFautAsset.AppraiseEvents(events, m_kb);
 
-                m_commeillFautAsset.EndSE(e, m_kb);
-                
 
-            }
+
+
+                }
                
             }
            
             m_emotionalAppraisalAsset.AppraiseEvents(events, m_emotionalState, m_am, m_kb);
-            m_commeillFautAsset.AppraiseEvents(events, m_kb);
+           
             
 		}
 
