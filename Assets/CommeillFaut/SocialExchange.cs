@@ -177,22 +177,29 @@ namespace CommeillFaut
         {
             int resp = 0;
 
-
+            response = response.Trim();
+            
+            
+           
             if (response != "Neutral")
             {
-                if (response == "Positve")
+                if (response == "Positive")
                     resp = 5;
-                else resp = -5;
+                else if (response == "Negative")
+                    resp = -5;
+                else resp = 0;
             }
-            
-            
+
+            Console.WriteLine(" Much effects, such response: " + resp);
             var newEffectList = new List<String>();
 
             foreach (var effect in EffectsList)
             {
+              
                 if (effect.Key == resp)
                 {
                     newEffectList = effect.Value;
+                   
                 }
             }
                                      // Ideally we would be able to insert any 
@@ -213,28 +220,28 @@ namespace CommeillFaut
 
             string[] words = keyword.Split(delimitedChars);
             var value = 0;
-
+            Console.WriteLine("Effects Keyword: " +  keyword);
                                        // social network but we don't store them just yet   Attraction(Initiator,Target,3)
                 if (words[1] == "Initiator")
                 {
                     if (isInitiator)
                     {
 
-                        if (me.AskProperty((Name) (words[0] + "(" + other.ToString() + ")")) != null)
+                        if (me.AskProperty((Name) (words[0] + "(" + me.Perspective + ","  + other.ToString() + ")")) != null)
                         {
                             value =
                                 Convert.ToInt32(
-                                    me.AskProperty((Name) (words[0] + "(" + other.ToString() + ")")).ToString());
-                            value += Convert.ToInt32(words[2]);
+                                    me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")")).ToString());
+                            value += Convert.ToInt32(words[3]);
 
                         }
                         else
                         {
-                            value = Convert.ToInt32(words[2]);
+                            value = Convert.ToInt32(words[3]);
                         }
 
                         var insert = "" + value;
-                        me.Tell((Name) (words[0] + "(" + other.ToString() + ")"), (Name) insert);
+                        me.Tell((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")"), (Name) insert);
                         return;
                     }
 
@@ -244,21 +251,21 @@ namespace CommeillFaut
             {
                 if (!isInitiator)
                 {
-                    if (me.AskProperty((Name)(words[0] + "(" + other.ToString() + ")")) != null)
+                    if (me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")")) != null)
                     {
                         value =
                             Convert.ToInt32(
-                                me.AskProperty((Name)(words[0] + "(" + other.ToString() + ")")).ToString());
-                        value += Convert.ToInt32(words[2]);
+                                me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")")).ToString());
+                        value += Convert.ToInt32(words[3]);
 
                     }
                     else
                     {
-                        value = Convert.ToInt32(words[2]);
+                        value = Convert.ToInt32(words[3]);
                     }
 
                     var insert = "" + value;
-                    me.Tell((Name)(words[0] + "(" + other.ToString() + ")"), (Name)insert);
+                    me.Tell((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")"), (Name)insert);
                     
                 }
             }

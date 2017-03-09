@@ -17,16 +17,16 @@
 						{
 							"dictionary": [
 								{
-									"key": 4,
-									"value": ["Attraction(SELF,Target,3)"]
-								}, 
+									"key": 5,
+									"value": ["Attraction(Initiator,Target,3)","Attraction(Target,Initiator,3)"]
+								},							
 								{
 									"key": 0,
-									"value": ["Friendship(SELF,Target,2)"]
+									"value": ["Friendship(Initiator,Target,2)"]
 								}, 
 								{
 									"key": 6,
-									"value": ["Friendship(SELF,Initiator,2)"]
+									"value": ["Friendship(Initiator,Initiator,2)"]
 								}]
 						},
 					"Attraction":

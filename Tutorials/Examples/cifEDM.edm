@@ -5,7 +5,7 @@
 			"DefaultActionPriority": 2,
 			"ActionTendencies": [
 				{
-					"Action": "Speak(RespondFlirt, End, SE(Flirt, Answer), Negative)",
+					"Action": "Speak(RespondFlirt, End, SE(Flirt, Answer), *)",
 					"Target": "[x]",
 					"Conditions":
 						{
@@ -14,7 +14,7 @@
 					"Priority": 1
 				},
 {
-					"Action": "Speak(RespondFlirt, End, SE(Flirt, Answer), Neutral)",
+					"Action": "Speak(RespondFlirt, End, SE(Flirt, Answer), *)",
 					"Target": "[x]",
 					"Conditions":
 						{
@@ -23,7 +23,7 @@
 					"Priority": 1
 				},
 {
-					"Action": "Speak(RespondFlirt, End, SE(Flirt, Answer), Positive)",
+					"Action": "Speak(RespondFlirt, End, SE(Flirt, Answer), *)",
 					"Target": "[x]",
 					"Conditions":
 						{
@@ -32,7 +32,7 @@
 					"Priority": 1
 				},				
 				{
-					"Action": "Speak(RespondCompliment, End, SE(Compliment, Answer), Neutral)",
+					"Action": "Speak(RespondCompliment, End, SE(Compliment, Answer), *)",
 					"Target": "[x]",
 					"Conditions":
 						{
@@ -42,7 +42,7 @@
 				},
 
 {
-					"Action": "Speak(RespondCompliment, End, SE(Compliment, Answer), Negative)",
+					"Action": "Speak(RespondCompliment, End, SE(Compliment, Answer), *)",
 					"Target": "[x]",
 					"Conditions":
 						{
@@ -52,7 +52,7 @@
 				},				
 				
 					{
-					"Action": "Speak(RespondCompliment, End, SE(Compliment, Answer), Positive )",
+					"Action": "Speak(RespondCompliment, End, SE(Compliment, Answer), *)",
 					"Target": "[x]",
 					"Conditions":
 						{
@@ -61,7 +61,7 @@
 					"Priority": 1
 				}, 
 				{
-					"Action": "Speak(StartFlirt, RespondFlirt, SE(Flirt, Initiate), -)",
+					"Action": "Speak(StartFlirt, RespondFlirt, SE(Flirt, Initiate), *)",
 					"Target": "[x]",
 					"Conditions":
 						{
@@ -70,23 +70,42 @@
 					"Priority": 0
 				}, 
 				{
-					"Action": "Speak(End, Start, SE(Flirt, End), Positive)",
+					"Action": "Speak(End, Start, SE(Flirt, Finalize),Positive)",
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "DialogueState([x]) = End", "HasFloor(SELF) = True"]
-						}
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "DialogueState([x]) = End", "HasFloor(SELF) = True", "Volition(Flirt, SELF,[x]) > 0"]
+						},
+						"Priority": 1
 				}, 
 				{
-					"Action": "Speak(End, Start, SE(Compiment, End), Neutral)",
+					"Action": "Speak(End, Start, SE(Flirt, Finalize),Neutral)",
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "DialogueState([x]) = End", "HasFloor(SELF) = True"]
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "DialogueState([x]) = End", "HasFloor(SELF) = True", "Volition(Flirt, SELF,[x]) = 0"]
+						},
+						"Priority": 1						
+				}, 
+				{
+					"Action": "Speak(End, Start, SE(Flirt, Finalize),Negative)",
+					"Target": "[x]",
+					"Conditions":
+						{
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "DialogueState([x]) = End", "HasFloor(SELF) = True", "Volition(Flirt, SELF,[x]) < 0"]
+						},
+						"Priority": 1
+				}, 
+				{
+					"Action": "Speak(End, Start, SE(Compliment, Finalize),Negative)",
+					"Target": "[x]",
+					"Conditions":
+						{
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "DialogueState([x]) = End", "HasFloor(SELF) = True", "Volition(Compliment, SELF,[x]) < 0"]
 						}
 				},				
 				{
-					"Action": "Speak(StartCompliment, RespondCompliment, SE(Compliment, Initiate), -)",
+					"Action": "Speak(StartCompliment, RespondCompliment, SE(Compliment, Initiate), *)",
 					"Target": "[x]",
 					"Conditions":
 						{

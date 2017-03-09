@@ -31,22 +31,29 @@
 					"CurrentState": "End",
 					"NextState": "Start",
 					"Meaning": ["SE(Flirt, Finalize)"],
-					"Style": [],
-					"Utterance": "Uhmm ok then!"
+					"Style": ["Positive"],
+					"Utterance": "Thanks you too!"
+				},
+				{
+					"CurrentState": "End",
+					"NextState": "Start",
+					"Meaning": ["SE(Flirt, Finalize)"],
+					"Style": ["Neutral"],
+					"Utterance": "Uhm okk"
+				},
+				{
+					"CurrentState": "End",
+					"NextState": "Start",
+					"Meaning": ["SE(Flirt, Finalize)"],
+					"Style": ["Negative"],
+					"Utterance": "Piss off then!"
 				},
 {
 					"CurrentState": "End",
 					"NextState": "Start",
 					"Meaning": ["SE(Compliment, Finalize)"],
-					"Style": [],
-					"Utterance": "Sorryyy!"
-				},
-{
-					"CurrentState": "End",
-					"NextState": "Start",
-					"Meaning": [],
-					"Style": [],
-					"Utterance": "Goodbye then!"
+					"Style": ["Negative"],
+					"Utterance": "What Go away!"
 				},				
 				{
 					"CurrentState": "StartCompliment",
