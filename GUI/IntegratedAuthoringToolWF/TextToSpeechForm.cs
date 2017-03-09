@@ -118,70 +118,70 @@ namespace IntegratedAuthoringToolWF
 			switch (v)
 			{
 				case Viseme.Silence:
-					b = Resources.viseme_00;
+					b = Resources._0_silence;
 					break;
 				case Viseme.AxAhUh:
-					b = Resources.viseme_01;
+					b = Resources._1_11_AxAhUh;
 					break;
 				case Viseme.Aa:
-					b = Resources.viseme_02;
+					b = Resources._2_Aa;
 					break;
 				case Viseme.Ao:
-					b = Resources.viseme_03;
+					b = Resources._3_Ao;
 					break;
 				case Viseme.EyEhAe:
-					b = Resources.viseme_04;
+                    b = Resources._4_EyEhAe;
 					break;
 				case Viseme.Er:
-					b = Resources.viseme_05;
+					b = Resources._5_Er;
 					break;
 				case Viseme.YIyIhIx:
-					b = Resources.viseme_06;
+					b = Resources._6_YIyIhIx;
 					break;
 				case Viseme.WUwU:
-					b = Resources.viseme_07;
+					b = Resources._7_WUwU;
 					break;
 				case Viseme.Ow:
-					b = Resources.viseme_08;
+					b = Resources._8_10_Ow;
 					break;
 				case Viseme.Aw:
-					b = Resources.viseme_09;
+					b = Resources._9_Aw;
 					break;
 				case Viseme.Oy:
-					b = Resources.viseme_10;
+					b = Resources._8_10_Ow;
 					break;
 				case Viseme.Ay:
-					b = Resources.viseme_11;
+					b = Resources._9_Aw;
 					break;
 				case Viseme.H:
-					b = Resources.viseme_12;
+					b = Resources._12_H;
 					break;
 				case Viseme.R:
-					b = Resources.viseme_13;
+					b = Resources._13_R;
 					break;
 				case Viseme.L:
-					b = Resources.viseme_14;
+					b = Resources._14_L;
 					break;
 				case Viseme.SZTs:
-					b = Resources.viseme_15;
+					b = Resources._15_SZTs;
 					break;
 				case Viseme.ShChJhZh:
-					b = Resources.viseme_16;
+					b = Resources._16_ShChJhZh;
 					break;
 				case Viseme.ThDh:
-					b = Resources.viseme_17;
+					b = Resources._17_ThDh;
 					break;
 				case Viseme.FV:
-					b = Resources.viseme_18;
+					b = Resources._18_FV;
 					break;
 				case Viseme.DTDxN:
-					b = Resources.viseme_19;
+                    b = Resources._19_DTDxN;
 					break;
 				case Viseme.KGNg:
-					b = Resources.viseme_20;
+					b = Resources._20_KGNg;
 					break;
 				case Viseme.PBM:
-					b = Resources.viseme_21;
+					b = Resources._21_PBM;
 					break;
 				default:
 					throw new ArgumentOutOfRangeException(nameof(v), v, null);

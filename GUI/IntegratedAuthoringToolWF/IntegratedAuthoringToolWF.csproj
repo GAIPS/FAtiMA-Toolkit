@@ -105,8 +105,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="TextToSpeechForm.resx">
       <DependentUpon>TextToSpeechForm.cs</DependentUpon>
@@ -197,6 +197,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\composition.xcf" />
     <None Include="Resources\RAGE-logo-high-res.png" />
   </ItemGroup>
   <ItemGroup>
@@ -206,6 +207,26 @@
     <None Include="Resources\inescid.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\0-silence.png" />
+    <None Include="Resources\1+11-AxAhUh.png" />
+    <None Include="Resources\2-Aa.png" />
+    <None Include="Resources\3-Ao.png" />
+    <None Include="Resources\4-EyEhAe.png" />
+    <None Include="Resources\5-Er.png" />
+    <None Include="Resources\6-YIyIhIx.png" />
+    <None Include="Resources\7-WUwU.png" />
+    <None Include="Resources\8+10-Ow.png" />
+    <None Include="Resources\9-Aw.png" />
+    <None Include="Resources\12-H.png" />
+    <None Include="Resources\13-R.png" />
+    <None Include="Resources\14-L.png" />
+    <None Include="Resources\15-SZTs.png" />
+    <None Include="Resources\16-ShChJhZh.png" />
+    <None Include="Resources\17-ThDh.png" />
+    <None Include="Resources\18-FV.png" />
+    <None Include="Resources\19-DTDxN.png" />
+    <None Include="Resources\20-KGNg.png" />
+    <None Include="Resources\21-PBM.png" />
     <Content Include="Resources\BubbleIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

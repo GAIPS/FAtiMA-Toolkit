@@ -245,6 +245,7 @@
             // _visemeDisplay
             // 
             this._visemeDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
+            this._visemeDisplay.ErrorImage = global::IntegratedAuthoringToolWF.Properties.Resources._0_silence;
             this._visemeDisplay.Location = new System.Drawing.Point(4, 37);
             this._visemeDisplay.Name = "_visemeDisplay";
             this._visemeDisplay.Size = new System.Drawing.Size(80, 82);
