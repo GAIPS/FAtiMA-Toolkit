@@ -12,9 +12,9 @@ namespace TextEmotionRecognition
     public class TextEmotionRecognitionComponent : IAffectRecognitionComponent
     {
         public const string DEFAULT_LANGUAGE = "English";
-        public const string DEFAULT_LSA_CORPUS = "resources/config/EN/LSA/TASA";
-        public const string DEFAULT_LDA_CORPUS = "resources/config/EN/LDA/TASA";
-        public const string DEFAULT_SERVICE_URI = "http://readerbench.com:8080/getSentiment";
+        public const string DEFAULT_LSA_CORPUS = "TASA";
+        public const string DEFAULT_LDA_CORPUS = "TASA";
+        public const string DEFAULT_SERVICE_URI = "http://readerbench.com:8080/sentiment-analysis";
 
         public string Language { get; set; }
         public string LSACorpus { get; set; }
@@ -83,10 +83,11 @@ namespace TextEmotionRecognition
         private HttpWebRequest CreateRequest(string text)
         {
             var escapedText = Uri.EscapeDataString(text);
-            string parameters = "?text=" + escapedText + "&lang=" + this.Language + "&lsa=" + this.LSACorpus + "&lda=" + this.LDACorpus + "&postagging=" + this.PostTagging + "&dialogism=" + this.Dialogism;
+            string parameters = "?text=" + escapedText + "&lang=" + this.Language + "&lsa=" + this.LSACorpus + "&lda=" + this.LDACorpus + "&pos-tagging=" + this.PostTagging + "&dialogism=" + this.Dialogism;
             
             HttpWebRequest request = WebRequest.Create(new Uri(this.ServiceURI + parameters)) as HttpWebRequest;
-            request.Method = "GET";
+
+            request.Method = "POST";
 
             return request;
         }

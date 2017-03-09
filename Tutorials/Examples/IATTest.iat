@@ -27,15 +27,7 @@
 					"NextState": "S3",
 					"Meaning": [],
 					"Style": [],
-					"Utterance": "hi",
-					"UtteranceId": "TTS-5D41402ABC4B2A76B9719D911017C592"
-				},
-				{
-					"CurrentState": "S2",
-					"NextState": "S3",
-					"Meaning": ["M1(2)", "M2(2)", "M3(2)"],
-					"Style": [],
-					"Utterance": "Ola",
+					"Utterance": "hi to you",
 					"UtteranceId": "TTS-5D41402ABC4B2A76B9719D911017C592"
 				},
 				{
