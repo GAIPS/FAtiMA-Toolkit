@@ -176,7 +176,7 @@ namespace KnowledgeBase
 				throw new ArgumentException("The property name must be a primitive symbol.", nameof(propertyName));
 
 			var p = surogate.GetParameters();
-			var propertyParameters = p.Skip(1).Select(p2 => (Name)$"[{p2.Name}]").ToArray();
+			var propertyParameters = p.Skip(1).Select(p2 => Name.BuildName("["+p2.Name+"]")).ToArray();
 			var template = Name.BuildName(propertyParameters.Prepend(propertyName));
 
 			var r = m_dynamicProperties.Unify(template).FirstOrDefault();
@@ -186,11 +186,11 @@ namespace KnowledgeBase
 				if (t == surogate.DeclaringType)
 					return;
 
-				throw new ArgumentException($"There is already a registed property with the name {propertyName} that receives {p.Length - 3} parameters.");
+				throw new ArgumentException("There is already a registed property with the name " + propertyName +" that receives " + (p.Length - 3) + "parameters.");
 			}
 
 			if (_willCollideDelegate(template))
-				throw new ArgumentException($"There are already stored property values that will collide with the given dynamic property.");
+				throw new ArgumentException("There are already stored property values that will collide with the given dynamic property.");
 
 			m_dynamicProperties.Add(template, new DynamicKnowledgeEntry(converted, propertyParameters, surogate.DeclaringType));
 		}
