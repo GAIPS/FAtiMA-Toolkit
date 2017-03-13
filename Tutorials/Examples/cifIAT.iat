@@ -10,7 +10,7 @@
 					"CurrentState": "RespondFlirt",
 					"NextState": "End",
 					"Meaning": ["SE(Flirt, Answer)"],
-					"Style": [],
+					"Style": ["Neutral"],
 					"Utterance": "...............ok"
 				}, 
 				{
@@ -80,70 +80,40 @@
 					"CurrentState": "RespondCompliment",
 					"NextState": "End",
 						"Meaning": ["SE(Compliment, Answer)"],
-					"Style": [],
+					"Style": ["Negative"],
 					"Utterance": "Go AWAY! Creep!"
 				}, 
 				{
 					"CurrentState": "RespondCompliment",
 					"NextState": "End",
 						"Meaning": ["SE(Compliment, Answer)"],
-					"Style": [],
+					"Style": ["Positive"],
 					"Utterance": "Thank you! so are you.."
 				}, 
 				{
 					"CurrentState": "RespondCompliment",
 					"NextState": "End",
 					"Meaning": ["SE(Compliment, Answer)"],
-					"Style": [],
+					"Style": ["Neutral"],
 					"Utterance": "Uhm..."
 				}, 
 				{
 					"CurrentState": "RespondFlirt",
 					"NextState": "End",
 					"Meaning": ["SE(Flirt, Answer)"],
-					"Style": [],
+					"Style": ["Positive"],
 					"Utterance": "Thank you! so are you.."
 				}, 
 				{
 					"CurrentState": "RespondFlirt",
 					"NextState": "End",
 					"Meaning": ["SE(Flirt, Answer)"],
-					"Style": [],
+					"Style": ["Negative"],
 					"Utterance": "You idiot...you're the worst"
 				}],
 			"AgentDialogues": [
-				{
-					"CurrentState": "StartFlirt",
-					"NextState": "RespondFlirt",
-					"Meaning": [],
-					"Style": [],
-					"Utterance": "You are so beautiful",
-					"UtteranceId": "TTS-39C4A1305DAECEC070E5BD83EE46EE2C"
-				}, 
-				{
-					"CurrentState": "RespondFlirt",
-					"NextState": "End",
-					"Meaning": [],
-					"Style": [],
-					"Utterance": "Ay lmao",
-					"UtteranceId": "TTS-AB4B060EE55E10F852F14D7E0160FD3B"
-				}, 
-				{
-					"CurrentState": "StartCompliment",
-					"NextState": "RespondCompliment",
-					"Meaning": [],
-					"Style": [],
-					"Utterance": "suuuup",
-					"UtteranceId": "TTS-D511D82F82E341D66C638AC97416D8CA"
-				}, 
-				{
-					"CurrentState": "RespondCompliment",
-					"NextState": "End",
-					"Meaning": [],
-					"Style": [],
-					"Utterance": "Ay lmao",
-					"UtteranceId": "TTS-AB4B060EE55E10F852F14D7E0160FD3B"
-				}]
+				 
+				]
 		},
 	"types": [
 		{

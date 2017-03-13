@@ -529,7 +529,7 @@ namespace CommeillFaut
                 {
                     Console.WriteLine("I'm the target");
                     m_kB.Tell(Name.BuildName("DialogueState(" + initiator + ")"), Name.BuildName("Start"), Name.BuildName("SELF"));
-                m_SocialExchanges.Find(x => x.ActionName.ToString() == socialExchange.ActionName.ToString()).ApplyConsequences(m_kB, initiator, result,false);
+                m_SocialExchanges.Find(x => x.ActionName.ToString() == socialExchange.ActionName.ToString()).ApplyConsequences(m_kB, initiator, initiator, result,false);
             }
 
                 else if (initiator == m_kB.Perspective)
@@ -537,7 +537,12 @@ namespace CommeillFaut
                 Console.WriteLine("I'm the initiator");
                 m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(false), Name.BuildName("SELF"));
                     m_kB.Tell(Name.BuildName("DialogueState(" + target + ")"), Name.BuildName("Start"), Name.BuildName("SELF"));
-                m_SocialExchanges.Find(x => x.ActionName.ToString() == socialExchange.ActionName.ToString()).ApplyConsequences(m_kB, target, result, true);
+                m_SocialExchanges.Find(x => x.ActionName.ToString() == socialExchange.ActionName.ToString()).ApplyConsequences(m_kB,initiator ,target, result, false);
+
+            }
+                else
+                {
+                m_SocialExchanges.Find(x => x.ActionName.ToString() == socialExchange.ActionName.ToString()).ApplyConsequences(m_kB, initiator,target, result, true);
 
             }
 

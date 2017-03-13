@@ -390,6 +390,7 @@ namespace RolePlayCharacter
 		}
 
 		public IDynamicPropertiesRegistry DynamicPropertiesRegistry => m_kb;
+        
 
 		private void BindToRegistry(IDynamicPropertiesRegistry registry)
 		{
@@ -397,7 +398,9 @@ namespace RolePlayCharacter
 			registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator);
 			registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator);
 			registry.RegistDynamicProperty(IS_AGENT_TEMPLATE, IsAgentPropertyCalculator);
-			m_am.BindToRegistry(registry);
+        //    registry.RegistDynamicProperty(MIN_METHOD_TEMPLATE, MinMethodCalculator);
+            registry.RegistDynamicProperty(ROUND_METHOD_TEMPLATE, RoundMethodCalculator);
+            m_am.BindToRegistry(registry);
 		}
 
 		private static IEnumerable<IAction> TakeBestActions(IEnumerable<IAction> enumerable)
@@ -440,8 +443,70 @@ namespace RolePlayCharacter
 				}
 			}
 		}
+    /*    private static readonly Name MIN_METHOD_TEMPLATE = (Name)"MinMethod";
+        private IEnumerable<DynamicPropertyResult> MinMethodCalculator(IQueryContext context, Name x)
+	    {
+            Console.WriteLine("Min method calculation for: " + x.ToString());
+	        var valueList = new List<DynamicPropertyResult>();
+	        if (x.IsVariable)
+	        {
+	            var sub = new Substitution(x, context.Perspective);
+	            foreach (var c in context.Constraints)
+	            {
+	                if (c.AddSubstitution(sub))
+	                    valueList.Add(new DynamicPropertyResult(Name.BuildName(m_emotionalState.Mood), c));
+	            }
+	        }
 
-		private IEnumerable<DynamicPropertyResult> StrongestEmotionCalculator(IQueryContext context, Name x)
+	        yield return valueList.Min();
+	    }*/
+
+        private static readonly Name ROUND_METHOD_TEMPLATE = (Name)"RoundMethod";
+
+        private IEnumerable<DynamicPropertyResult> RoundMethodCalculator(IQueryContext context, Name x)
+        {
+
+
+
+            if (x.IsVariable)
+            {
+              
+
+                foreach (var c in context.Constraints)
+                {
+                    foreach (var sub in c)
+                    {
+                        if (sub.Variable == x)
+                        {
+                      
+                            var toRet = Convert.ToDouble(sub.Value.ToString());
+                            Console.WriteLine("Round method calculation for: " + x.ToString() + " the value : " + toRet);
+                            toRet = toRet/10;
+                            toRet = Math.Round(toRet, 0);
+                            toRet = toRet*10;
+                            Console.WriteLine("Round method calculation for: " + x.ToString() + " rounded value : " + toRet);
+
+                            yield return new DynamicPropertyResult(Name.BuildName(toRet), c);
+                        }
+
+
+
+
+
+                    }
+
+
+                }
+
+
+            }
+        }
+        
+
+           
+        
+
+        private IEnumerable<DynamicPropertyResult> StrongestEmotionCalculator(IQueryContext context, Name x)
 		{
 			if (context.Perspective != Name.SELF_SYMBOL)
 				yield break;

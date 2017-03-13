@@ -36,7 +36,7 @@ namespace CommeillFaut
 
         public List<InfluenceRuleDTO> InfluenceRules { get; set; }
 
-        public Dictionary<int,List<string>> EffectsList { get; set; }
+        public Dictionary<string,List<string>> EffectsList { get; set; }
 
         public SocialExchange(String name) : base(WellFormedNames.Name.BuildName(name), WellFormedNames.Name.BuildName("Empty"), new ConditionSet(new ConditionSetDTO()))
         
@@ -47,7 +47,7 @@ namespace CommeillFaut
             Instantiation = "";
 
             InfluenceRules = new List<InfluenceRuleDTO>();
-            EffectsList = new Dictionary<int,List<string>>();
+            EffectsList = new Dictionary<string,List<string>>();
 
         }
 
@@ -64,7 +64,7 @@ namespace CommeillFaut
             {
                 InfluenceRules.Add(inf);
             }
-            EffectsList = s.Effects ?? new Dictionary<int, List<string>>();
+            EffectsList = s.Effects ?? new Dictionary<string, List<string>>();
             Intent = s.Intent;
             Instantiation = s.Instantiation;
         }
@@ -173,7 +173,7 @@ namespace CommeillFaut
 
 
 
-        public void ApplyConsequences(KB me, Name Target, string response, bool isInitiator)
+        public void ApplyConsequences(KB me, Name initiator, Name Target, string response, bool isInitiator)
         {
             int resp = 0;
 
@@ -181,22 +181,14 @@ namespace CommeillFaut
             
             
            
-            if (response != "Neutral")
-            {
-                if (response == "Positive")
-                    resp = 5;
-                else if (response == "Negative")
-                    resp = -5;
-                else resp = 0;
-            }
-
-            Console.WriteLine(" Much effects, such response: " + resp);
+            
+            Console.WriteLine(" Much effects, such response: " + response);
             var newEffectList = new List<String>();
 
             foreach (var effect in EffectsList)
             {
               
-                if (effect.Key == resp)
+                if (effect.Key == response)
                 {
                     newEffectList = effect.Value;
                    
@@ -207,17 +199,17 @@ namespace CommeillFaut
 
             foreach (var ef in newEffectList)
             {
-                ApplyKeywordEffects(me, Target, resp, ef, isInitiator);
+                ApplyKeywordEffects(me, initiator, Target, resp, ef, isInitiator);
             }
           
             
            
         }
 
-        public void ApplyKeywordEffects(KB me,Name other, int result, string keyword, bool isInitiator)
+        public void ApplyKeywordEffects(KB me, Name initiator, Name other, int result, string keyword, bool spectator)
         {
             char[] delimitedChars = {'(', ')', ','};
-
+            bool isInitiator = (initiator == me.Perspective);
             string[] words = keyword.Split(delimitedChars);
             var value = 0;
             Console.WriteLine("Effects Keyword: " +  keyword);
@@ -244,12 +236,33 @@ namespace CommeillFaut
                         me.Tell((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")"), (Name) insert);
                         return;
                     }
+                else if (spectator)
+                {
+                    if (me.AskProperty((Name)(words[0] + "(" + initiator + "," + other + ")")) != null)
+                    {
+                        value =
+                            Convert.ToInt32(
+                                me.AskProperty(me.AskProperty((Name)(words[0] + "(" + initiator + "," + other + ")")))
+                                    .ToString());
+                        value += Convert.ToInt32(words[3]);
+                    }
 
+                    else
+                    {
+                        value = Convert.ToInt32(words[3]);
+                    }
+
+                    var insert = "" + value;
+                    me.Tell((Name)(words[0] + "(" + initiator + "," + other.ToString() + ")"), (Name)insert);
                 }
+
+
+
+            }
 
             if (words[1] == "Target")
             {
-                if (!isInitiator)
+                if (!isInitiator && !spectator)
                 {
                     if (me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")")) != null)
                     {
@@ -267,6 +280,25 @@ namespace CommeillFaut
                     var insert = "" + value;
                     me.Tell((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")"), (Name)insert);
                     
+                }
+                else if (spectator)
+                {
+                    if (me.AskProperty((Name) (words[0] + "(" + other + "," + initiator + ")")) != null)
+                    {
+                        value =
+                            Convert.ToInt32(
+                                me.AskProperty(me.AskProperty((Name) (words[0] + "(" + other + "," + initiator + ")")))
+                                    .ToString());
+                        value += Convert.ToInt32(words[3]);
+                    }
+
+                    else
+                    {
+                        value = Convert.ToInt32(words[3]);
+                    }
+
+                      var insert = "" + value;
+                    me.Tell((Name)(words[0] + "(" + other + "," + initiator + ")"), (Name)insert);
                 }
             }
 
@@ -330,7 +362,7 @@ namespace CommeillFaut
             Intent = dataHolder.GetValue<string>("Intent");
             Instantiation = dataHolder.GetValue<string>("Instantiation");
             InfluenceRules = dataHolder.GetValue<List<InfluenceRuleDTO>>("InfluenceRules");
-            EffectsList = dataHolder.GetValue<Dictionary<int,List<string>>>("EffectsList");
+            EffectsList = dataHolder.GetValue<Dictionary<string,List<string>>>("EffectsList");
          
             foreach (var inf in InfluenceRules)
             {

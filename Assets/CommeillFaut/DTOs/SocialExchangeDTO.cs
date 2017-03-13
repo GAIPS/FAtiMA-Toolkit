@@ -44,7 +44,7 @@ namespace CommeillFaut.DTOs
         /// <summary>
         /// What happens when the social Exchange is completed.
         /// </summary>
-        public Dictionary<int,List<string>> Effects { get; set; }
+        public Dictionary<string,List<string>> Effects { get; set; }
 
      
     }
