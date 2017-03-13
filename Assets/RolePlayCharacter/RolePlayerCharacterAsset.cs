@@ -480,11 +480,11 @@ namespace RolePlayCharacter
                         {
                       
                             var toRet = Convert.ToDouble(sub.Value.ToString());
-                            Console.WriteLine("Round method calculation for: " + x.ToString() + " the value : " + toRet);
+                           // Console.WriteLine("Round method calculation for: " + x.ToString() + " the value : " + toRet);
                             toRet = toRet/10;
                             toRet = Math.Round(toRet, 0);
                             toRet = toRet*10;
-                            Console.WriteLine("Round method calculation for: " + x.ToString() + " rounded value : " + toRet);
+                            Console.WriteLine("Round method calculation for: " + x.ToString() + " rounded value " + sub.Value.ToString()+ " result : " + toRet);
 
                             yield return new DynamicPropertyResult(Name.BuildName(toRet), c);
                         }

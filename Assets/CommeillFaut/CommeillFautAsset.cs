@@ -514,7 +514,7 @@ namespace CommeillFaut
 
             else if (target == m_kB.Perspective)
             {
-                m_kB.Tell(Name.BuildName("DialogueState(" + initiator + ")"), Name.BuildName("End"), Name.BuildName("SELF"));
+                m_kB.Tell(Name.BuildName("DialogueState(" + initiator + ")"), Name.BuildName("End" + socialExchange.ActionName), Name.BuildName("SELF"));
                 m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(true), Name.BuildName("SELF"));
             }
         }

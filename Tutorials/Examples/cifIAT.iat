@@ -8,7 +8,7 @@
 			"PlayerDialogues": [
 				{
 					"CurrentState": "RespondFlirt",
-					"NextState": "End",
+					"NextState": "EndFlirt",
 					"Meaning": ["SE(Flirt, Answer)"],
 					"Style": ["Neutral"],
 					"Utterance": "...............ok"
@@ -19,7 +19,13 @@
 					"Meaning": ["SE(Flirt, Initiate)"],
 					"Style": [],
 					"Utterance": "Hello, you are so pretty"
-				}, 
+				},
+				{	"CurrentState": "StartCompliment",
+					"NextState": "RespondCompliment",
+					"Meaning": ["SE(Compliment, Initiate)"],
+					"Style": [],
+					"Utterance": "Hello, you are so very honorable"
+				},				
 				{
 					"CurrentState": "RespondCompliment",
 					"NextState": "End",
@@ -28,85 +34,79 @@
 					"Utterance": "Thank you! so are you.."
 				}, 
 				{
-					"CurrentState": "End",
+					"CurrentState": "EndFlirt",
 					"NextState": "Start",
 					"Meaning": ["SE(Flirt, Finalize)"],
 					"Style": ["Positive"],
 					"Utterance": "Thanks you too!"
 				},
 				{
-					"CurrentState": "End",
+					"CurrentState": "EndFlirt",
 					"NextState": "Start",
 					"Meaning": ["SE(Flirt, Finalize)"],
 					"Style": ["Neutral"],
 					"Utterance": "Uhm okk"
 				},
 				{
-					"CurrentState": "End",
+					"CurrentState": "EndFlirt",
 					"NextState": "Start",
 					"Meaning": ["SE(Flirt, Finalize)"],
 					"Style": ["Negative"],
 					"Utterance": "Piss off then!"
 				},
 {
-					"CurrentState": "End",
+					"CurrentState": "EndCompliment",
 					"NextState": "Start",
 					"Meaning": ["SE(Compliment, Finalize)"],
 					"Style": ["Negative"],
 					"Utterance": "What Go away!"
 				},				
 				{
-					"CurrentState": "StartCompliment",
-					"NextState": "RespondCompliment",
-					"Meaning": ["SE(Compliment, Initiate)"],
-					"Style": [],
-					"Utterance": "Hello, you are so niceee"
-				}, 
-				{
-					"CurrentState": "Start",
-					"NextState": "StartFlirt",
-					"Meaning": [],
-					"Style": [],
-					"Utterance": "Hi!"
-				}, 
-				{
-					"CurrentState": "Start",
-					"NextState": "StartCompliment",
-					"Meaning": [],
-					"Style": [],
-					"Utterance": "Alo alo?"
-				}, 
+					"CurrentState": "EndCompliment",
+					"NextState": "Start",
+					"Meaning": ["SE(Compliment, Finalize)"],
+					"Style": ["Positive"],
+					"Utterance": "Goodbye my Friend"
+				},
+{
+					"CurrentState": "EndCompliment",
+					"NextState": "Start",
+					"Meaning": ["SE(Compliment, Finalize)"],
+					"Style": ["Neutral"],
+					"Utterance": "OK i GUESS"
+				},				
+			
 				{
 					"CurrentState": "RespondCompliment",
-					"NextState": "End",
+					"NextState": "EndCompliment",
 						"Meaning": ["SE(Compliment, Answer)"],
 					"Style": ["Negative"],
 					"Utterance": "Go AWAY! Creep!"
 				}, 
 				{
 					"CurrentState": "RespondCompliment",
-					"NextState": "End",
+					"NextState": "EndCompliment",
 						"Meaning": ["SE(Compliment, Answer)"],
 					"Style": ["Positive"],
 					"Utterance": "Thank you! so are you.."
 				}, 
 				{
 					"CurrentState": "RespondCompliment",
-					"NextState": "End",
+					"NextState": "EndCompliment",
 					"Meaning": ["SE(Compliment, Answer)"],
 					"Style": ["Neutral"],
 					"Utterance": "Uhm..."
 				}, 
 				{
 					"CurrentState": "RespondFlirt",
-					"NextState": "End",
+					"NextState": "EndFlirt",
 					"Meaning": ["SE(Flirt, Answer)"],
 					"Style": ["Positive"],
 					"Utterance": "Thank you! so are you.."
 				}, 
 				{
 					"CurrentState": "RespondFlirt",
-					"NextState": "End",
+					"NextState": "EndFlirt",
 					"Meaning": ["SE(Flirt, Answer)"],
 					"Style": ["Negative"],
 					"Utterance": "You idiot...you're the worst"
