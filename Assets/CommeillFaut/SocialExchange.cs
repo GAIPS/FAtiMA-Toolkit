@@ -173,7 +173,7 @@ namespace CommeillFaut
 
 
 
-        public void ApplyConsequences(KB me, Name initiator, Name Target, string response, bool isInitiator)
+        public void ApplyConsequences(KB me, Name initiator, Name Target, string response, bool isSpectator)
         {
             int resp = 0;
 
@@ -199,7 +199,7 @@ namespace CommeillFaut
 
             foreach (var ef in newEffectList)
             {
-                ApplyKeywordEffects(me, initiator, Target, resp, ef, isInitiator);
+                ApplyKeywordEffects(me, initiator, Target, resp, ef, isSpectator);
             }
           
             

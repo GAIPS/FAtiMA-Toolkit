@@ -11,7 +11,7 @@
 							"Id": "a6f9328a-8e74-40db-9891-60e8145f2d39",
 							"RuleName": "Attraction",
 							"Target": "[x]",
-							"Value": 4
+							"Value": 5
 						}],
 					"EffectsList":
 						{

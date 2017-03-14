@@ -529,7 +529,7 @@ namespace CommeillFaut
                 {
                     Console.WriteLine("I'm the target");
                     m_kB.Tell(Name.BuildName("DialogueState(" + initiator + ")"), Name.BuildName("Start"), Name.BuildName("SELF"));
-                m_SocialExchanges.Find(x => x.ActionName.ToString() == socialExchange.ActionName.ToString()).ApplyConsequences(m_kB, initiator, initiator, result,false);
+                m_SocialExchanges.Find(x => x.ActionName.ToString() == socialExchange.ActionName.ToString()).ApplyConsequences(m_kB, initiator, target, result,false);
             }
 
                 else if (initiator == m_kB.Perspective)

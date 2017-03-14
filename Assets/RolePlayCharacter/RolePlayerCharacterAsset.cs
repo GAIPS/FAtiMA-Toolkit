@@ -399,6 +399,7 @@ namespace RolePlayCharacter
 			registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator);
 			registry.RegistDynamicProperty(IS_AGENT_TEMPLATE, IsAgentPropertyCalculator);
         //    registry.RegistDynamicProperty(MIN_METHOD_TEMPLATE, MinMethodCalculator);
+            registry.RegistDynamicProperty(ROUND_TO_TENS_METHOD_TEMPLATE, RoundtoTensMethodCalculator);
             registry.RegistDynamicProperty(ROUND_METHOD_TEMPLATE, RoundMethodCalculator);
             m_am.BindToRegistry(registry);
 		}
@@ -461,17 +462,16 @@ namespace RolePlayCharacter
 	        yield return valueList.Min();
 	    }*/
 
-        private static readonly Name ROUND_METHOD_TEMPLATE = (Name)"RoundMethod";
+        private static readonly Name ROUND_TO_TENS_METHOD_TEMPLATE = (Name)"RoundtoTensMethod";
 
-        private IEnumerable<DynamicPropertyResult> RoundMethodCalculator(IQueryContext context, Name x)
+        private IEnumerable<DynamicPropertyResult> RoundtoTensMethodCalculator(IQueryContext context, Name x, Name digits)
         {
-
-
+            var y_value = Convert.ToInt32(digits.ToString());
+            var toTens = Math.Pow(10, y_value);
 
             if (x.IsVariable)
             {
-              
-
+             
                 foreach (var c in context.Constraints)
                 {
                     foreach (var sub in c)
@@ -481,17 +481,43 @@ namespace RolePlayCharacter
                       
                             var toRet = Convert.ToDouble(sub.Value.ToString());
                            // Console.WriteLine("Round method calculation for: " + x.ToString() + " the value : " + toRet);
-                            toRet = toRet/10;
+                            toRet = toRet/toTens;
                             toRet = Math.Round(toRet, 0);
-                            toRet = toRet*10;
+                            toRet = toRet* toTens;
                             Console.WriteLine("Round method calculation for: " + x.ToString() + " rounded value " + sub.Value.ToString()+ " result : " + toRet);
 
                             yield return new DynamicPropertyResult(Name.BuildName(toRet), c);
                         }
+                    }
+                }
+            }
+        }
+
+        private static readonly Name ROUND_METHOD_TEMPLATE = (Name)"RoundMethod";
+
+        private IEnumerable<DynamicPropertyResult> RoundMethodCalculator(IQueryContext context, Name x, Name digits)
+        {
+            var y_value = Convert.ToInt32(digits.ToString());
+            
+
+            if (x.IsVariable)
+            {
 
 
+                foreach (var c in context.Constraints)
+                {
+                    foreach (var sub in c)
+                    {
+                        if (sub.Variable == x)
+                        {
 
+                            var toRet = Convert.ToDouble(sub.Value.ToString());
+                            // Console.WriteLine("Round method calculation for: " + x.ToString() + " the value : " + toRet);
+                            toRet = Math.Round(toRet, y_value);
+                            Console.WriteLine("Round method calculation for: " + x.ToString() + " rounded value " + sub.Value.ToString()  + " digits: " + y_value + " result : " + toRet);
 
+                            yield return new DynamicPropertyResult(Name.BuildName(toRet), c);
+                        }
 
                     }
 
@@ -501,10 +527,10 @@ namespace RolePlayCharacter
 
             }
         }
-        
 
-           
-        
+
+
+
 
         private IEnumerable<DynamicPropertyResult> StrongestEmotionCalculator(IQueryContext context, Name x)
 		{

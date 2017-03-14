@@ -9,7 +9,7 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Flirt, SELF,[x])" , "DialogueState([x]) = RespondFlirt", "HasFloor(SELF) = True", "RoundMethod([volValue]) = -10"]
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Flirt, SELF,[x])" , "DialogueState([x]) = RespondFlirt", "HasFloor(SELF) = True", "RoundtoTensMethod([volValue], 1) = -10"]
 						},
 					"Priority": 1
 				},
@@ -18,7 +18,7 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Flirt, SELF,[x])" , "DialogueState([x]) = RespondFlirt", "HasFloor(SELF) = True", "RoundMethod([volValue]) = 0"]
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Flirt, SELF,[x])" , "DialogueState([x]) = RespondFlirt", "HasFloor(SELF) = True", "RoundtoTensMethod([volValue], 1) = 0"]
 						},
 					"Priority": 1
 				},
@@ -27,7 +27,7 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Flirt, SELF,[x])" , "DialogueState([x]) = RespondFlirt", "HasFloor(SELF) = True", "RoundMethod([volValue]) = 10"]
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Flirt, SELF,[x])" , "DialogueState([x]) = RespondFlirt", "HasFloor(SELF) = True", "RoundtoTensMethod([volValue], 1) = 10"]
 						},
 					"Priority": 1
 				},				
@@ -36,7 +36,7 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Compliment, SELF,[x])" , "DialogueState([x]) = RespondCompliment", "HasFloor(SELF) = True", "RoundMethod([volValue]) = 0"]
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Compliment, SELF,[x])" , "DialogueState([x]) = RespondCompliment", "HasFloor(SELF) = True", "RoundtoTensMethod([volValue], 1) = 0 "]
 						},
 					"Priority": 1
 				},
@@ -46,7 +46,7 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Compliment, SELF,[x])" , "DialogueState([x]) = RespondCompliment", "HasFloor(SELF) = True", "RoundMethod([volValue]) = -10"]
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Compliment, SELF,[x])" , "DialogueState([x]) = RespondCompliment", "HasFloor(SELF) = True", "RoundtoTensMethod([volValue], 1) = -10"]
 						},
 					"Priority": 1
 				},				
@@ -56,7 +56,7 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-						    "Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Compliment, SELF,[x])" ,  "DialogueState([x]) = RespondCompliment", "HasFloor(SELF) = True", "RoundMethod([volValue]) = 10"]
+						    "Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Compliment, SELF,[x])" ,  "DialogueState([x]) = RespondCompliment", "HasFloor(SELF) = True", "RoundtoTensMethod([volValue], 1) = 10"]
 						},
 					"Priority": 1
 				}, 
@@ -65,7 +65,7 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Flirt, SELF,[x])" , "[volValue] > 0", "DialogueState([x]) = Start", "HasFloor(SELF) = True"]
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Flirt, SELF,[x])" , "[volValue] > 0", "DialogueState([x]) = Start", "HasFloor(SELF) = True", "RoundMethod([volValue], 2) = 0"]
 						},
 					"Priority": 0
 				}, 
@@ -74,7 +74,7 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Flirt, SELF,[x])" , "DialogueState([x]) = EndFlirt", "HasFloor(SELF) = True", "RoundMethod([volValue]) = 10"]
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Flirt, SELF,[x])" , "DialogueState([x]) = EndFlirt", "HasFloor(SELF) = True", "RoundtoTensMethod([volValue], 1) = 10"]
 						},
 						"Priority": 1
 				}, 
@@ -83,7 +83,7 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Flirt, SELF,[x])" , "DialogueState([x]) = EndFlirt", "HasFloor(SELF) = True", "RoundMethod([volValue]) = 0"]
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Flirt, SELF,[x])" , "DialogueState([x]) = EndFlirt", "HasFloor(SELF) = True", "RoundtoTensMethod([volValue], 1) = 0"]
 						},
 						"Priority": 1						
 				}, 
@@ -92,7 +92,7 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Flirt, SELF,[x])" , "DialogueState([x]) = EndFlirt", "HasFloor(SELF) = True", "RoundMethod([volValue]) = -10"]
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Flirt, SELF,[x])" , "DialogueState([x]) = EndFlirt", "HasFloor(SELF) = True", "RoundtoTensMethod([volValue], 1) = -10"]
 						},
 						"Priority": 1
 				}, 
@@ -101,7 +101,7 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Compliment, SELF,[x])" , "DialogueState([x]) = EndCompliment", "HasFloor(SELF) = True", "RoundMethod([volValue]) = 10"]
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Compliment, SELF,[x])" , "DialogueState([x]) = EndCompliment", "HasFloor(SELF) = True", "RoundtoTensMethod([volValue], 1) = 10"]
 						}
 				},		
 				{
@@ -109,7 +109,7 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Compliment, SELF,[x])" , "DialogueState([x]) = EndCompliment", "HasFloor(SELF) = True", "RoundMethod([volValue]) = 0"]
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Compliment, SELF,[x])" , "DialogueState([x]) = EndCompliment", "HasFloor(SELF) = True", "RoundtoTensMethod([volValue], 1) = 0"]
 						}
 				},		
 				
@@ -117,7 +117,7 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Compliment, SELF,[x])" , "DialogueState([x]) = EndCompliment", "HasFloor(SELF) = True", "RoundMethod([volValue]) = -10"]
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Compliment, SELF,[x])" , "DialogueState([x]) = EndCompliment", "HasFloor(SELF) = True", "RoundtoTensMethod([volValue], 1) = -10"]
 						}
 				},						
 				{
