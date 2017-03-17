@@ -36,7 +36,7 @@ namespace CommeillFautWF
        //     _influenceRuleVm = new InfluenceRuleVM(vm, "ay");
             //	NameBox.Text = (_dto. == Guid.Empty) ? "Add" : "Update";
 
-           AddedObject.Effects = new Dictionary<int, List<string>>();
+//           AddedObject.Effects = new Dictionary<int, List<string>>();
             AddedObject.InfluenceRules = new List<InfluenceRuleDTO>();
         }
 
@@ -79,7 +79,7 @@ namespace CommeillFautWF
                     }
                 }
 
-            else AddedObject.Effects = new Dictionary<int, List<string>>();
+         //   else AddedObject.Effects = new Dictionary<int, List<string>>();
 
             //	NameBox.Text = (_dto. == Guid.Empty) ? "Add" : "Update";
         }
@@ -176,7 +176,7 @@ namespace CommeillFautWF
         {
             var key = (int)numericUpDown1.Value;
 
-            if (AddedObject.Effects.ContainsKey(key))
+         /*   if (AddedObject.Effects.ContainsKey(key))
                 AddedObject.Effects[key].Add(textBox1.Text);
             else
             {
@@ -184,7 +184,7 @@ namespace CommeillFautWF
                 newList.Add(textBox1.Text);
                 AddedObject.Effects.Add(key, newList);
             }
-
+            */
             Reload();
         }
 
