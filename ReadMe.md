@@ -1,7 +1,5 @@
 # FAtiMA Toolkit
 
-[![Build Status](https://travis-ci.org/GAIPS-INESC-ID/FAtiMA-Toolkit.svg?branch=master)](https://travis-ci.org/GAIPS-INESC-ID/FAtiMA-Toolkit)
-
 FAtiMA Toolkit is a collection of tools/assets designed for the creation of characters with social and emotional intelligence. Currently, the project is actively being developed in the context of the EU-funded project named [RAGE][rage-link]. As implied by its name, the toolkit is a continuation of the work done in developing the [FAtiMA][fatima-link] agent architecture. This architecture was initially released in 2005 and, since then, it has been used to control the behaviour of virtual characters and social robots in several research applications such as:  
 
 - [Traveller][traveller-link] - A serious game for raising intercultural awareness;
