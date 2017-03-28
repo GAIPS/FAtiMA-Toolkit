@@ -7,6 +7,7 @@ using System.Linq;
 using ActionLibrary;
 using AutobiographicMemory;
 using EmotionalAppraisal.DTOs;
+using EmotionalAppraisal.OCCModel;
 using KnowledgeBase;
 using SocialImportance;
 using Utilities;
@@ -396,7 +397,10 @@ namespace RolePlayCharacter
 		{
 			registry.RegistDynamicProperty(RPCConsts.MOOD_PROPERTY_NAME, MoodPropertyCalculator);
 			registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator);
-			registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator);
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_WELL_BEING_EMOTION_PROPERTY_NAME, StrongestWellBeingEmotionCalculator);
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_ATTRIBUTION_PROPERTY_NAME, StrongestAttributionEmotionCalculator);
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_COMPOUND_PROPERTY_NAME, StrongestCompoundEmotionCalculator);
+            registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator);
 			registry.RegistDynamicProperty(IS_AGENT_TEMPLATE, IsAgentPropertyCalculator);
         //    registry.RegistDynamicProperty(MIN_METHOD_TEMPLATE, MinMethodCalculator);
             registry.RegistDynamicProperty(ROUND_TO_TENS_METHOD_TEMPLATE, RoundtoTensMethodCalculator);
@@ -560,9 +564,148 @@ namespace RolePlayCharacter
 						yield return new DynamicPropertyResult((Name)emoValue, c);
 				}
 			}
-		}
+        }
 
-		private static readonly Name EMOTION_INTENSITY_TEMPLATE = (Name)"EmotionIntensity";
+
+        private IEnumerable<DynamicPropertyResult> StrongestWellBeingEmotionCalculator(IQueryContext context, Name x)
+        {
+            if (context.Perspective != Name.SELF_SYMBOL)
+                yield break;
+
+            var emotions = m_emotionalState.GetAllEmotions();
+
+            if (emotions.IsEmpty())
+            {
+                yield break;
+            }
+
+            var wellBeingEmotions = emotions.Where(
+                em => em.EmotionType == OCCEmotionType.Joy.Name
+                || em.EmotionType == OCCEmotionType.Distress.Name);
+
+
+            if (wellBeingEmotions.IsEmpty())
+            {
+                yield break;
+            }
+
+            var emo = wellBeingEmotions.MaxValue(em => em.Intensity);
+            var emoValue = emo.EmotionType;
+
+            if (x.IsVariable)
+            {
+                var sub = new Substitution(x, context.Perspective);
+                foreach (var c in context.Constraints)
+                {
+                    if (c.AddSubstitution(sub))
+                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                }
+            }
+            else
+            {
+                foreach (var resultPair in context.AskPossibleProperties(x))
+                {
+                    foreach (var c in resultPair.Item2)
+                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                }
+            }
+        }
+
+
+        private IEnumerable<DynamicPropertyResult> StrongestAttributionEmotionCalculator(IQueryContext context, Name x)
+        {
+            if (context.Perspective != Name.SELF_SYMBOL)
+                yield break;
+
+            var emotions = m_emotionalState.GetAllEmotions();
+
+            if (emotions.IsEmpty())
+            {
+                yield break;
+            }
+
+            var attributionEmotions = emotions.Where(
+                em => em.EmotionType == OCCEmotionType.Shame.Name
+                || em.EmotionType == OCCEmotionType.Pride.Name
+                || em.EmotionType == OCCEmotionType.Reproach.Name
+                || em.EmotionType == OCCEmotionType.Admiration.Name);
+
+
+            if (attributionEmotions.IsEmpty())
+            {
+                yield break;
+            }
+
+            var emo = attributionEmotions.MaxValue(em => em.Intensity);
+            var emoValue = emo.EmotionType;
+
+            if (x.IsVariable)
+            {
+                var sub = new Substitution(x, context.Perspective);
+                foreach (var c in context.Constraints)
+                {
+                    if (c.AddSubstitution(sub))
+                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                }
+            }
+            else
+            {
+                foreach (var resultPair in context.AskPossibleProperties(x))
+                {
+                    foreach (var c in resultPair.Item2)
+                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                }
+            }
+        }
+
+
+        private IEnumerable<DynamicPropertyResult> StrongestCompoundEmotionCalculator(IQueryContext context, Name x)
+        {
+            if (context.Perspective != Name.SELF_SYMBOL)
+                yield break;
+
+            var emotions = m_emotionalState.GetAllEmotions();
+
+            if (emotions.IsEmpty())
+            {
+                yield break;
+            }
+
+            var compoundEmotions = emotions.Where(
+                em => em.EmotionType == OCCEmotionType.Gratification.Name
+                || em.EmotionType == OCCEmotionType.Gratitude.Name
+                || em.EmotionType == OCCEmotionType.Remorse.Name
+                || em.EmotionType == OCCEmotionType.Anger.Name);
+
+
+            if (compoundEmotions.IsEmpty())
+            {
+                yield break;
+            }
+
+            var emo = compoundEmotions.MaxValue(em => em.Intensity);
+            var emoValue = emo.EmotionType;
+
+            if (x.IsVariable)
+            {
+                var sub = new Substitution(x, context.Perspective);
+                foreach (var c in context.Constraints)
+                {
+                    if (c.AddSubstitution(sub))
+                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                }
+            }
+            else
+            {
+                foreach (var resultPair in context.AskPossibleProperties(x))
+                {
+                    foreach (var c in resultPair.Item2)
+                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                }
+            }
+        }
+
+        private static readonly Name EMOTION_INTENSITY_TEMPLATE = (Name)"EmotionIntensity";
 		private IEnumerable<DynamicPropertyResult> EmotionIntensityPropertyCalculator(IQueryContext context, Name x, Name y)
 		{
 			List<DynamicPropertyResult> result = new List<DynamicPropertyResult>();

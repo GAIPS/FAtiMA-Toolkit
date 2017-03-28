@@ -56,6 +56,24 @@ namespace GAIPS.AssetEditorTools.DynamicPropertiesWindow
             new DynamicPropertyEntry()
             {
                 Origin = "Emotional Appraisal Asset",
+                PropertyTemplate = "StrongestWellBeingEmotion([x])",
+                Description = "The type of the current strongest emotion that agent [x] is feeling among well being emotions (Joy, Distress)."
+            },
+            new DynamicPropertyEntry()
+            {
+                Origin = "Emotional Appraisal Asset",
+                PropertyTemplate = "StrongestAttributionEmotion([x])",
+                Description = "The type of the current strongest emotion that agent [x] is feeling among attribution emotions (Shame, Pride, Reproach, Admiration)."
+            },
+            new DynamicPropertyEntry()
+            {
+                Origin = "Emotional Appraisal Asset",
+                PropertyTemplate = "StrongestCompoundEmotion([x])",
+                Description = "The type of the current strongest emotion that agent [x] is feeling among compound emotions (Gratification, Gratitude, Remorse, Anger)."
+            },
+            new DynamicPropertyEntry()
+            {
+                Origin = "Emotional Appraisal Asset",
                 PropertyTemplate = "Mood([x])",
                 Description = "The current mood value for agent [x]."
             },

@@ -9,6 +9,12 @@ namespace RolePlayCharacter
 
         public static readonly Name STRONGEST_EMOTION_PROPERTY_NAME = (Name)"StrongestEmotion";
 
+        public static readonly Name STRONGEST_WELL_BEING_EMOTION_PROPERTY_NAME = (Name)"StrongestWellBeingEmotion";
+
+        public static readonly Name STRONGEST_ATTRIBUTION_PROPERTY_NAME = (Name)"StrongestAttributionEmotion";
+
+        public static readonly Name STRONGEST_COMPOUND_PROPERTY_NAME = (Name)"StrongestCompoundEmotion";
+
         public static readonly Name MOOD_PROPERTY_NAME = (Name)"Mood";
 
         public static readonly Name ACTION_START_EVENT_PROTOTYPE = Name.BuildName(string.Format("{0}({1},*,*,*)",
