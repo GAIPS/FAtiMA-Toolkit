@@ -174,9 +174,9 @@ namespace CommeillFautWF
 
         private void button3_Click(object sender, EventArgs e)
         {
-            var key = (int)numericUpDown1.Value;
+            var key = (numericUpDown1.Value).ToString();
 
-         /*   if (AddedObject.Effects.ContainsKey(key))
+            if (AddedObject.Effects.ContainsKey(key))
                 AddedObject.Effects[key].Add(textBox1.Text);
             else
             {
@@ -184,7 +184,7 @@ namespace CommeillFautWF
                 newList.Add(textBox1.Text);
                 AddedObject.Effects.Add(key, newList);
             }
-            */
+            
             Reload();
         }
 
