@@ -2,6 +2,7 @@
 using AssetManagerPackage;
 using RolePlayCharacter;
 using System.Linq;
+using EmotionalAppraisal.DTOs;
 
 
 namespace RolePlayCharacterTutorial
@@ -16,15 +17,11 @@ namespace RolePlayCharacterTutorial
             rpc.LoadAssociatedAssets();
 
             Console.WriteLine("Starting Mood: " + rpc.Mood);
-
-            var event1 = EventHelper.ActionEnd("Player","Kick", rpc.CharacterName.ToString());
-
-            rpc.Perceive(new[] { event1 });
-            var action = rpc.Decide().FirstOrDefault();;
+           var action = rpc.Decide().FirstOrDefault();
             rpc.Update();
 
             Console.WriteLine("The name of the character loaded is: " + rpc.CharacterName);
-            Console.WriteLine("The following event was perceived: " + event1);
+          //  Console.WriteLine("The following event was perceived: " + event1);
             Console.WriteLine("Mood after event: " + rpc.Mood);
             Console.WriteLine("Strongest emotion: " + rpc.GetStrongestActiveEmotion()?.EmotionType + "-" + rpc.GetStrongestActiveEmotion()?.Intensity);
             Console.WriteLine("First Response: " + action?.Name + ", Target:" + action?.Target.ToString());
@@ -43,13 +40,30 @@ namespace RolePlayCharacterTutorial
 
             Console.WriteLine("Third Response: " + action?.Name +", Target:" + action?.Target.ToString());
 
-            rpc.SaveToFile("../../../Examples/RPCTest-Output.rpc");
-
-            while (rpc.Mood != 0)
+        
+            int x = 0;
+            while (true)
             {
-                Console.WriteLine("Mood after tick: " + rpc.Mood);
+                Console.WriteLine("Mood after tick: " + rpc.Mood + " x: "  + x);
+                Console.WriteLine("Strongest emotion: " + rpc.GetStrongestActiveEmotion()?.EmotionType + "-" + rpc.GetStrongestActiveEmotion()?.Intensity);
+                rpc.SaveToFile("../../../Examples/RPCTest-Output.rpc");
                 rpc.Update();
-                Console.ReadKey();
+               Console.ReadLine();
+
+                if (x == 25)
+                {
+                    var event1 = EventHelper.ActionEnd("Player", "Kick", rpc.CharacterName.ToString());
+
+                    rpc.Perceive(new[] { event1 });
+                     action = rpc.Decide().FirstOrDefault();
+                    rpc.SaveToFile("../../../Examples/RPCTest-OutputEvent.rpc");
+                    rpc.Update();
+                 }
+
+                    x++;
+
+            
+
             }
             Console.WriteLine("Mood after tick: " + rpc.Mood);
             Console.ReadKey();

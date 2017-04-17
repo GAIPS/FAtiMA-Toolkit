@@ -128,7 +128,7 @@ namespace EmotionalAppraisal
                 auxEmotion = new ActiveEmotion(emotion, potential, disposition.Threshold, decay, tick);
                 emotionPool.Add(calculateHashString(emotion), auxEmotion);
                 if (!reappraisal)
-                    this.mood.UpdateMood(auxEmotion, this.appraisalConfiguration);
+                    this.mood.UpdateMood(auxEmotion, this.appraisalConfiguration, tick);
 
                 auxEmotion.GetCause(am).LinkEmotion(auxEmotion.EmotionType);
             }
@@ -151,6 +151,7 @@ namespace EmotionalAppraisal
         /// </summary>
         public void Decay(ulong tick)
         {
+           
             this.mood.DecayMood(this.appraisalConfiguration, tick);
             HashSet<string> toRemove = ObjectPool<HashSet<string>>.GetObject();
             using (var it = this.emotionPool.GetEnumerator())
@@ -159,7 +160,11 @@ namespace EmotionalAppraisal
                 {
                     it.Current.Value.DecayEmotion(this.appraisalConfiguration, tick);
                     if (!it.Current.Value.IsRelevant)
+                    {
+                        Console.WriteLine("Remove it " + it.Current.Key);
                         toRemove.Add(it.Current.Key);
+                    }
+                       
                 }
             }
             foreach (var key in toRemove)
