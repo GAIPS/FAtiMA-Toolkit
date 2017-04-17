@@ -161,7 +161,6 @@ namespace EmotionalAppraisal
                     it.Current.Value.DecayEmotion(this.appraisalConfiguration, tick);
                     if (!it.Current.Value.IsRelevant)
                     {
-                        Console.WriteLine("Remove it " + it.Current.Key);
                         toRemove.Add(it.Current.Key);
                     }
                        
