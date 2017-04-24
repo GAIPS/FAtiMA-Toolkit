@@ -1,12 +1,45 @@
 {
-  "locked": false,
-  "version": 1,
+  "version": 2,
   "targets": {
-    ".NETPortable,Version=v4.5,Profile=Profile111": {}
+    ".NETPortable,Version=v4.5,Profile=Profile111": {
+      "Utilities/1.0.0": {
+        "type": "project"
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "Utilities/1.0.0": {
+      "type": "project",
+      "path": "../Utilities/Utilities.csproj",
+      "msbuildProject": "../Utilities/Utilities.csproj"
+    }
+  },
   "projectFileDependencyGroups": {
     "": [],
     ".NETPortable,Version=v4.5,Profile=Profile111": []
+  },
+  "packageFolders": {
+    "C:\\Users\\Filipa Correia\\.nuget\\packages\\": {}
+  },
+  "project": {
+    "restore": {
+      "projectUniqueName": "C:\\Users\\Filipa Correia\\Devel\\FAtiMA-Toolkit\\Components(Portable)\\SerializationUtilities\\SerializationUtilities.csproj",
+      "projectName": "SerializationUtilities",
+      "projectPath": "C:\\Users\\Filipa Correia\\Devel\\FAtiMA-Toolkit\\Components(Portable)\\SerializationUtilities\\SerializationUtilities.csproj",
+      "projectJsonPath": "C:\\Users\\Filipa Correia\\Devel\\FAtiMA-Toolkit\\Components(Portable)\\SerializationUtilities\\project.json",
+      "projectStyle": "ProjectJson",
+      "frameworks": {
+        "portable45-net45+win8+wpa81": {
+          "projectReferences": {
+            "C:\\Users\\Filipa Correia\\Devel\\FAtiMA-Toolkit\\Components(Portable)\\Utilities\\Utilities.csproj": {
+              "projectPath": "C:\\Users\\Filipa Correia\\Devel\\FAtiMA-Toolkit\\Components(Portable)\\Utilities\\Utilities.csproj"
+            }
+          }
+        }
+      }
+    },
+    "frameworks": {
+      "portable45-net45+win8+wpa81": {}
+    }
   }
 }
