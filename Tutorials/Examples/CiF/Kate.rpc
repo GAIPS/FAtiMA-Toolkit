@@ -13,9 +13,9 @@
 			"BodyName": "Female",
 			"VoiceName": "Zira",
 			"EmotionalAppraisalAssetSource": "Kate.ea",
-			"EmotionalDecisionMakingSource": "CiF/newCifEDM.edm",
+			"EmotionalDecisionMakingSource": "newCifEDM.edm",
 			"SocialImportanceAssetSource": null,
-			"CommeillFautAssetSource": "CiF/newTest.cif",
+			"CommeillFautAssetSource": "newTest.cif",
 			"EmotionalState":
 				{
 					"Mood": 0,

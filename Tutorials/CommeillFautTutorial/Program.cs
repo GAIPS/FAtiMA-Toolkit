@@ -33,7 +33,7 @@ namespace CommeillFautTutorial
 
          
 
-            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/cifIAT.iat");
+            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/CiF/newCiF.iat");
             rpcList = new List<RolePlayCharacterAsset>();
             foreach (var source in iat.GetAllCharacterSources())
             {
@@ -65,6 +65,8 @@ namespace CommeillFautTutorial
                         actor.Perceive(changed);
                     }
 
+
+                   
                        
 
                           

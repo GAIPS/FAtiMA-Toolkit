@@ -83,25 +83,44 @@ namespace CommeillFaut
 
         public IEnumerable<DynamicPropertyResult> VolitionPropertyCalculator(IQueryContext context, Name socialMoveName, Name initator, Name Target)
         {
-       //   Console.WriteLine("VolitionProperty " + socialMoveName.ToString());
+            //   Console.WriteLine("VolitionProperty " + socialMoveName.ToString());
 
+            var value = -1;
+            var seSub = new Substitution(Name.BuildName("[x]"), Name.BuildName("Peter"));
 
             foreach (var t in context.AskPossibleProperties(Target))
             {
            //    Console.WriteLine("Target: " + t.Item1 + "  Original target: " + Target + " found size: " + context.AskPossibleProperties(Target).Count());
 
-                if (m_SocialExchanges.Find(x => x.ActionName == socialMoveName) != null)
+                foreach (var se in m_SocialExchanges)
                 {
-                    var value = CalculateVolitions(socialMoveName.ToString(), t.Item1.ToString(),
-                        context.Perspective.ToString());
+                   var newValue = CalculateVolitions(se.ActionName.ToString(), t.Item1.ToString(),
+                     context.Perspective.ToString());
+
+                    if (newValue >= value)
+                    {
+                    //    Console.WriteLine(" sub: " + socialMoveName + " for " + se.ActionName);
+                        value = newValue;
+                        seSub = new Substitution(socialMoveName, se.ActionName);
+                    }
+                }
+
+                if (value != -1)
+                {
+                 
 
                     var sub =
                         new SubstitutionSet(new Substitution[]
                             {new Substitution(Name.BuildName("[x]"), t.Item1)});
+                    sub.AddSubstitution(seSub);
 
-              //      Console.WriteLine(" Result: " + "Volition(" + socialMoveName + "," + initator + "," + t.Item1.ToString() + ")" + "=" +
-               //                       value);
-                    yield return new DynamicPropertyResult(Name.BuildName(value), sub);
+                    var roundedValue = Floor(value);
+
+                    var stringVolition = CalculateStyle(roundedValue);
+
+                 //  Console.WriteLine(" Result: " + "Volition(" + socialMoveName + "," + initator + "," + t.Item1.ToString() + ")" + "=" +
+                  //                   stringVolition);
+                    yield return new DynamicPropertyResult(Name.BuildName(stringVolition), sub);
 
                 }
                 else
@@ -175,7 +194,7 @@ namespace CommeillFaut
                 targetDict[target] = value;
             }
          
-            Console.WriteLine("retvalue: " + ret_value + " target " + target + " perpective " + perspective);
+        //    Console.WriteLine("retvalue: " + ret_value + " target " + target + " perpective " + perspective);
             return ret_value;
         }
 
@@ -237,6 +256,29 @@ namespace CommeillFaut
          
         }
 
+        public double Floor(int value)
+        {
+            var toRet = Convert.ToDouble(value);
+            // Console.WriteLine("Round method calculation for: " + x.ToString() + " the value : " + toRet);
+            toRet = toRet / 10;
+            toRet = Math.Round(toRet, 0);
+            toRet = toRet * 10;
+         //   Console.WriteLine("Round method calculation for: " + x.ToString() + " rounded value " + sub.Value.ToString() + " result : " + toRet);
+
+            return toRet;
+        }
+
+
+        public string CalculateStyle(double value)
+        {
+            if(value > 0)
+                return value == 10 ? "Positive" : "VeryPositive";
+
+            if (value < 0)
+                return value == -10 ? "Negative" : "VeryNegative";
+           
+            return "Neutral";
+        }
         public void UpdateSocialExchange(SocialExchangeDTO newReaction)
         {
 

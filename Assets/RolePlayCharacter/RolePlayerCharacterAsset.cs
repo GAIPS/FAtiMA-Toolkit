@@ -415,7 +415,6 @@ namespace RolePlayCharacter
                 StrongestCompoundEmotionCalculator);
             registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator);
             registry.RegistDynamicProperty(IS_AGENT_TEMPLATE, IsAgentPropertyCalculator);
-            //    registry.RegistDynamicProperty(MIN_METHOD_TEMPLATE, MinMethodCalculator);
             registry.RegistDynamicProperty(ROUND_TO_TENS_METHOD_TEMPLATE, RoundtoTensMethodCalculator);
             registry.RegistDynamicProperty(ROUND_METHOD_TEMPLATE, RoundMethodCalculator);
             registry.RegistDynamicProperty(RANDOM_METHOD_TEMPLATE, RandomCalculator);
@@ -464,23 +463,6 @@ namespace RolePlayCharacter
             }
         }
 
-/*    private static readonly Name MIN_METHOD_TEMPLATE = (Name)"MinMethod";
-                                private IEnumerable<DynamicPropertyResult> MinMethodCalculator(IQueryContext context, Name x)
-                                {
-                                    Console.WriteLine("Min method calculation for: " + x.ToString());
-                                    var valueList = new List<DynamicPropertyResult>();
-                                    if (x.IsVariable)
-                                    {
-                                        var sub = new Substitution(x, context.Perspective);
-                                        foreach (var c in context.Constraints)
-                                        {
-                                            if (c.AddSubstitution(sub))
-                                                valueList.Add(new DynamicPropertyResult(Name.BuildName(m_emotionalState.Mood), c));
-                                        }
-                                    }
-                        
-                                    yield return valueList.Min();
-                                }*/
 
         private static readonly Name ROUND_TO_TENS_METHOD_TEMPLATE = (Name) "RoundtoTensMethod";
 

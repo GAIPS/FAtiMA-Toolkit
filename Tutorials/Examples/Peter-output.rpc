@@ -1,7 +1,7 @@
 {
 	"root":
 		{
-			"classId": 2,
+			"classId": 1,
 			"KnowledgeBase":
 				{
 					"Perspective": "Peter",
@@ -10,19 +10,18 @@
 							"SELF":
 								{
 									"DialogueState(Kate)": "Start",
-									"DialogueState(Mary)": "RespondFlirt",
-									"HasFloor(Peter)": true,
+									"DialogueState(Mary)": "Start",
 									"Attraction(Peter, Mary)": 10,
-									"Friendship(Peter, Mary)": 10
+									"Friendship(Peter, Kate)": 10
 								}
 						}
 				},
-			"BodyName": null,
-			"VoiceName": null,
-			"EmotionalAppraisalAssetSource": "../../../Examples\\Peter.ea",
-			"EmotionalDecisionMakingSource": "../../../Examples\\cifEDM.edm",
+			"BodyName": "Male",
+			"VoiceName": "David",
+			"EmotionalAppraisalAssetSource": "../../../Examples/CiF\\Peter.ea",
+			"EmotionalDecisionMakingSource": "../../../Examples/CiF\\newCifEDM.edm",
 			"SocialImportanceAssetSource": null,
-			"CommeillFautAssetSource": "../../../Examples\\test.cif",
+			"CommeillFautAssetSource": "../../../Examples/CiF\\newTest.cif",
 			"EmotionalState":
 				{
 					"Mood": 0,
@@ -58,24 +57,6 @@
 							"Timestamp": 0,
 							"Action": "Enters",
 							"Target": "Room"
-						}, 
-						{
-							"classId": 1,
-							"Id": 3,
-							"Type": "Property-Change",
-							"Subject": "Peter",
-							"Timestamp": 0,
-							"Property": "DialogueState(Mary)",
-							"NewValue": "RespondFlirt"
-						}, 
-						{
-							"classId": 1,
-							"Id": 4,
-							"Type": "Property-Change",
-							"Subject": "Peter",
-							"Timestamp": 0,
-							"Property": "HasFloor(Peter)",
-							"NewValue": true
 						}]
 				},
 			"OtherAgents":
@@ -132,10 +113,6 @@
 		}, 
 		{
 			"TypeId": 1,
-			"ClassName": "AutobiographicMemory.AM+PropertyChangeEvent, AutobiographicMemory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-		}, 
-		{
-			"TypeId": 2,
 			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 		}]
 }

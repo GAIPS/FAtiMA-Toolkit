@@ -65,7 +65,7 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Flirt, SELF,[x])" , "[volValue] > 0", "DialogueState([x]) = Start", "HasFloor(SELF) = True", "RoundMethod([volValue], 2) = 0"]
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[volValue] = Volition(Flirt, SELF,[x])" , "[volValue] > 0", "DialogueState([x]) = Start", "HasFloor(SELF) = True"]
 						},
 					"Priority": 0
 				}, 
