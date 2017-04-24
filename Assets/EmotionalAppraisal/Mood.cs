@@ -16,13 +16,15 @@ namespace EmotionalAppraisal
 		/// Mood is ranged between [-10;10], a negative value represents a bad mood,
 		/// a positive value represents good mood and values near 0 represent a neutral mood
 		/// </summary>
-		public float MoodValue
-		{
-			get
-			{
-				return this._intensity;
-			}
-		}
+		/// 
+		public float MoodValue => this._intensity;
+
+	    public ulong InitialTick => this._tickT0;
+
+	    public void SetTick0Value(ulong value)
+	    {
+	        _tickT0 = value;
+	    }
 
 		public void SetMoodValue(float value, EmotionalAppraisalConfiguration config)
 		{
@@ -50,7 +52,7 @@ namespace EmotionalAppraisal
 				this._intensity = 0;
 				return;
 			}
-           
+        
             var delta = (tick - this._tickT0);
 		
 			double lambda = Math.Log(config.HalfLifeDecayConstant)/ config.MoodHalfLifeDecayTime;
@@ -71,6 +73,7 @@ namespace EmotionalAppraisal
 		{
 			if (!emotion.InfluenceMood)
 				return;
+            
 		    this._tickT0 = tick;
 			float scale = (float)emotion.Valence;
 			SetMoodValue(this._intensity + scale * (emotion.Intensity * config.EmotionInfluenceOnMoodFactor), config);

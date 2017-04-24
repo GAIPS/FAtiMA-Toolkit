@@ -2,6 +2,7 @@
 using AssetManagerPackage;
 using RolePlayCharacter;
 using System.Linq;
+using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 
 
@@ -44,7 +45,8 @@ namespace RolePlayCharacterTutorial
             int x = 0;
             while (true)
             {
-                Console.WriteLine("Mood after tick: " + rpc.Mood + " x: "  + x);
+               
+                Console.WriteLine("Mood after tick: " + rpc.Mood + " x: "  + x + " tick: " + rpc.Tick);
                 Console.WriteLine("Strongest emotion: " + rpc.GetStrongestActiveEmotion()?.EmotionType + "-" + rpc.GetStrongestActiveEmotion()?.Intensity);
                 rpc.SaveToFile("../../../Examples/RPCTest-Output.rpc");
                 rpc.Update();
@@ -59,6 +61,17 @@ namespace RolePlayCharacterTutorial
                     rpc.SaveToFile("../../../Examples/RPCTest-OutputEvent.rpc");
                     rpc.Update();
                  }
+
+
+                else if (x == 30)
+                {
+                   Console.WriteLine("Reloading " + rpc.GetStrongestActiveEmotion().Intensity + " " + rpc.GetStrongestActiveEmotion().EmotionType + " mood: " + rpc.Mood);
+                    rpc.SaveToFile("RPCTestReload.rpc");
+
+                    rpc = RolePlayCharacterAsset.LoadFromFile("RPCTestReload.rpc");
+                    Console.WriteLine("Reloading result: " + rpc.GetStrongestActiveEmotion().Intensity + " " + rpc.GetStrongestActiveEmotion().EmotionType + " mood: " + rpc.Mood);
+
+                }
 
                     x++;
 
