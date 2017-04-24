@@ -4,18 +4,18 @@
 			"classId": 0,
 			"KnowledgeBase":
 				{
-					"Perspective": "Kate",
+					"Perspective": "Peter",
 					"Knowledge":
 						{
 
 						}
 				},
-			"BodyName": "Female",
-			"VoiceName": "Zira",
-			"EmotionalAppraisalAssetSource": "Kate.ea",
-			"EmotionalDecisionMakingSource": "CiF/newCifEDM.edm",
+			"BodyName": "Male",
+			"VoiceName": "David",
+			"EmotionalAppraisalAssetSource": "Peter.ea",
+			"EmotionalDecisionMakingSource": "newCifEDM.edm",
 			"SocialImportanceAssetSource": null,
-			"CommeillFautAssetSource": "CiF/newTest.cif",
+			"CommeillFautAssetSource": "newTest.cif",
 			"EmotionalState":
 				{
 					"Mood": 0,

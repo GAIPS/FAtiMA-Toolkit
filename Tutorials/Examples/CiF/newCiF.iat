@@ -7,226 +7,270 @@
 			"CharacterSources": ["Mary.rpc", "Kate.rpc", "Peter.rpc"],
 			"PlayerDialogues": [
 				{
-					"CurrentState": "RespondFlirt",
-					"NextState": "EndFlirt",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Flirt, Answer)"],
 					"Style": ["Neutral"],
 					"Utterance": "...............ok"
 				}, 
 				{
-					"CurrentState": "StartFlirt",
-					"NextState": "RespondFlirt",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Flirt, Initiate)"],
-					"Style": [],
+					"Style": ["Neutral"],
 					"Utterance": "Hello, you are so pretty"
 				}, 
 				{
-					"CurrentState": "StartCompliment",
-					"NextState": "RespondCompliment",
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": ["SE(Flirt, Initiate)"],
+					"Style": ["Positive"],
+					"Utterance": "Hello, you are so pretty"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": ["SE(Flirt, Initiate)"],
+					"Style": ["Negative"],
+					"Utterance": "Hello, you are so pretty"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Compliment, Initiate)"],
-					"Style": [],
+					"Style": ["Positive"],
 					"Utterance": "Hello, you are so very honorable"
 				}, 
 				{
-					"CurrentState": "RespondCompliment",
-					"NextState": "End",
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": ["SE(Compliment, Initiate)"],
+					"Style": ["Neutral"],
+					"Utterance": "Hello, you are so very honorable"
+				},
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": ["SE(Compliment, Initiate)"],
+					"Style": ["Negative"],
+					"Utterance": "Hello, you are so very honorable"
+				},
+				{
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": [],
 					"Style": [],
 					"Utterance": "Thank you! so are you.."
 				}, 
 				{
-					"CurrentState": "EndFlirt",
-					"NextState": "Start",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Flirt, Finalize)"],
 					"Style": ["Positive"],
 					"Utterance": "Thanks you too!"
 				}, 
 				{
-					"CurrentState": "EndFlirt",
-					"NextState": "Start",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Flirt, Finalize)"],
 					"Style": ["Neutral"],
 					"Utterance": "Uhm okk"
 				}, 
 				{
-					"CurrentState": "EndFlirt",
-					"NextState": "Start",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Flirt, Finalize)"],
 					"Style": ["Negative"],
 					"Utterance": "Piss off then!"
 				}, 
 				{
-					"CurrentState": "EndCompliment",
-					"NextState": "Start",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Compliment, Finalize)"],
 					"Style": ["Negative"],
 					"Utterance": "What Go away!"
 				}, 
 				{
-					"CurrentState": "EndCompliment",
-					"NextState": "Start",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Compliment, Finalize)"],
 					"Style": ["Positive"],
 					"Utterance": "Goodbye my Friend"
 				}, 
 				{
-					"CurrentState": "EndCompliment",
-					"NextState": "Start",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Compliment, Finalize)"],
 					"Style": ["Neutral"],
 					"Utterance": "OK i GUESS"
 				}, 
 				{
-					"CurrentState": "RespondCompliment",
-					"NextState": "EndCompliment",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Compliment, Answer)"],
 					"Style": ["Negative"],
 					"Utterance": "Go AWAY! Creep!"
 				}, 
 				{
-					"CurrentState": "RespondCompliment",
-					"NextState": "EndCompliment",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Compliment, Answer)"],
 					"Style": ["Positive"],
 					"Utterance": "Thank you! so are you.."
 				}, 
 				{
-					"CurrentState": "RespondCompliment",
-					"NextState": "EndCompliment",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Compliment, Answer)"],
 					"Style": ["Neutral"],
 					"Utterance": "Uhm..."
 				}, 
 				{
-					"CurrentState": "RespondFlirt",
-					"NextState": "EndFlirt",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Flirt, Answer)"],
 					"Style": ["Positive"],
 					"Utterance": "Thank you! so are you.."
 				}, 
 				{
-					"CurrentState": "RespondFlirt",
-					"NextState": "EndFlirt",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Flirt, Answer)"],
 					"Style": ["Negative"],
 					"Utterance": "You idiot...you're the worst"
 				}],
 			"AgentDialogues": [
 				{
-					"CurrentState": "RespondFlirt",
-					"NextState": "EndFlirt",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Flirt, Answer)"],
 					"Style": ["Neutral"],
 					"Utterance": "...............ok",
 					"UtteranceId": "TTS-A3A063FC8EF92D71682A15E23A282F21"
 				}, 
 				{
-					"CurrentState": "StartFlirt",
-					"NextState": "RespondFlirt",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Flirt, Initiate)"],
-					"Style": [],
+					"Style": ["Negative"],
 					"Utterance": "Hello, you are so pretty",
 					"UtteranceId": "TTS-19ED81DFFC0B15522E8B02FF8AD1A836"
-				}, 
+				},
 				{
-					"CurrentState": "StartCompliment",
-					"NextState": "RespondCompliment",
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": ["SE(Flirt, Initiate)"],
+					"Style": ["Neutral"],
+					"Utterance": "Hello, you are so pretty",
+					"UtteranceId": "TTS-19ED81DFFC0B15522E8B02FF8AD1A836"
+				},
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": ["SE(Flirt, Initiate)"],
+					"Style": ["Positive"],
+					"Utterance": "Hello, you are so pretty",
+					"UtteranceId": "TTS-19ED81DFFC0B15522E8B02FF8AD1A836"
+				},				
+				{
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Compliment, Initiate)"],
 					"Style": [],
 					"Utterance": "Hello, you are so very honorable",
 					"UtteranceId": "TTS-623F94FCE48D4DBC27E9CAA20E922686"
 				}, 
 				{
-					"CurrentState": "RespondCompliment",
-					"NextState": "End",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": [],
 					"Style": [],
 					"Utterance": "Thank you! so are you..",
 					"UtteranceId": "TTS-27E5F732A7F1D8BA129F0218AAB8769F"
 				}, 
 				{
-					"CurrentState": "EndFlirt",
-					"NextState": "Start",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Flirt, Finalize)"],
 					"Style": ["Positive"],
 					"Utterance": "Thanks you too!",
 					"UtteranceId": "TTS-F299AED4571B9565773AD15A3E15ADAC"
 				}, 
 				{
-					"CurrentState": "EndFlirt",
-					"NextState": "Start",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Flirt, Finalize)"],
 					"Style": ["Neutral"],
 					"Utterance": "Uhm okk",
 					"UtteranceId": "TTS-658EF0728501D425AE35F3FB641B154F"
 				}, 
 				{
-					"CurrentState": "EndFlirt",
-					"NextState": "Start",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Flirt, Finalize)"],
 					"Style": ["Negative"],
 					"Utterance": "Piss off then!",
 					"UtteranceId": "TTS-23213E2E2423936BB6B3EA091098EA0C"
 				}, 
 				{
-					"CurrentState": "EndCompliment",
-					"NextState": "Start",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Compliment, Finalize)"],
 					"Style": ["Negative"],
 					"Utterance": "What Go away!",
 					"UtteranceId": "TTS-F2A45A4FA9F721CCC11D1E576AC8BB06"
 				}, 
 				{
-					"CurrentState": "EndCompliment",
-					"NextState": "Start",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Compliment, Finalize)"],
 					"Style": ["Positive"],
 					"Utterance": "Goodbye my Friend",
 					"UtteranceId": "TTS-2757649344FA67C2EEF03FE8C4DB3D6F"
 				}, 
 				{
-					"CurrentState": "EndCompliment",
-					"NextState": "Start",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Compliment, Finalize)"],
 					"Style": ["Neutral"],
 					"Utterance": "OK i GUESS",
 					"UtteranceId": "TTS-A4A186AF4AEFD03045A85702306DA39D"
 				}, 
 				{
-					"CurrentState": "RespondCompliment",
-					"NextState": "EndCompliment",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Compliment, Answer)"],
 					"Style": ["Negative"],
 					"Utterance": "Go AWAY! Creep!",
 					"UtteranceId": "TTS-69DAEB5F8941C6A56543CD4BD7124444"
 				}, 
 				{
-					"CurrentState": "RespondCompliment",
-					"NextState": "EndCompliment",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Compliment, Answer)"],
 					"Style": ["Positive"],
 					"Utterance": "Thank you! so are you..",
 					"UtteranceId": "TTS-27E5F732A7F1D8BA129F0218AAB8769F"
 				}, 
 				{
-					"CurrentState": "RespondCompliment",
-					"NextState": "EndCompliment",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Compliment, Answer)"],
 					"Style": ["Neutral"],
 					"Utterance": "Uhm...",
 					"UtteranceId": "TTS-221E1B6D7BCBBC6E8D5B2F4582FEDF19"
 				}, 
 				{
-					"CurrentState": "RespondFlirt",
-					"NextState": "EndFlirt",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Flirt, Answer)"],
 					"Style": ["Positive"],
 					"Utterance": "Thank you! so are you..",
 					"UtteranceId": "TTS-27E5F732A7F1D8BA129F0218AAB8769F"
 				}, 
 				{
-					"CurrentState": "RespondFlirt",
-					"NextState": "EndFlirt",
+					"CurrentState": "-",
+					"NextState": "-",
 					"Meaning": ["SE(Flirt, Answer)"],
 					"Style": ["Negative"],
 					"Utterance": "You idiot...you're the worst",

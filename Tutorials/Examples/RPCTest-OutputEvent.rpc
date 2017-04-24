@@ -16,17 +16,17 @@
 				},
 			"BodyName": "Female",
 			"VoiceName": "",
-			"EmotionalAppraisalAssetSource": "\\Examples\\EATest.ea",
-			"EmotionalDecisionMakingSource": "\\Examples\\EDMTest.edm",
+			"EmotionalAppraisalAssetSource": "..\\Examples\\EATest.ea",
+			"EmotionalDecisionMakingSource": "..\\Examples\\EDMTest.edm",
 			"SocialImportanceAssetSource": null,
 			"CommeillFautAssetSource": null,
 			"EmotionalState":
 				{
-					"Mood": -1.678989,
+					"Mood": -2.92329,
 					"initialTick": 27,
 					"EmotionalPool": [
 						{
-							"Intensity": 0.8150512,
+							"Intensity": 3,
 							"Decay": 1,
 							"Threshold": 1,
 							"CauseId": 3,
@@ -37,7 +37,7 @@
 							"InfluenceMood": true
 						}, 
 						{
-							"Intensity": 0.6167221,
+							"Intensity": 2.27,
 							"Decay": 1,
 							"Threshold": 1,
 							"CauseId": 3,
@@ -47,7 +47,7 @@
 							"InfluenceMood": true
 						}, 
 						{
-							"Intensity": 1.215595,
+							"Intensity": 4.4743,
 							"Decay": 1,
 							"Threshold": 1,
 							"CauseId": 3,
@@ -69,7 +69,7 @@
 				},
 			"AutobiographicMemory":
 				{
-					"Tick": 41,
+					"Tick": 27,
 					"records": [
 						{
 							"classId": 0,

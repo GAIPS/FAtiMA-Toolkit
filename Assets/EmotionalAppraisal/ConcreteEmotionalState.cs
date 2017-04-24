@@ -19,7 +19,7 @@ namespace EmotionalAppraisal
         
         private Mood mood;
         private EmotionalAppraisalConfiguration appraisalConfiguration;
-
+        private ulong tick;
         public ConcreteEmotionalState()
         {
             
@@ -96,16 +96,15 @@ namespace EmotionalAppraisal
         /// <param name="emotion">the BaseEmotion that creates the ActiveEmotion</param>
         /// <returns>the ActiveEmotion created if it was added to the EmotionalState.
         /// Otherwise, if the intensity of the emotion was not enough to be added to the EmotionalState, the method returns null</returns>
-        public IActiveEmotion AddEmotion(IEmotion emotion, AM am, EmotionDispositionDTO disposition, ulong tick)
+        public IActiveEmotion AddEmotion(IEmotion emotion, AM am, EmotionDispositionDTO disposition, ulong _tick)
         {
             if (emotion == null)
                 return null;
-
-            int decay;
+            tick = _tick;
             ActiveEmotion auxEmotion = null;
             bool reappraisal = false;
 
-            decay = disposition.Decay;
+            var decay = disposition.Decay;
 
             ActiveEmotion previousEmotion;
             if (emotionPool.TryGetValue(calculateHashString(emotion), out previousEmotion))
@@ -249,6 +248,7 @@ namespace EmotionalAppraisal
         public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             dataHolder.SetValue("Mood", mood.MoodValue);
+            dataHolder.SetValue("initialTick", mood.InitialTick );
             dataHolder.SetValue("EmotionalPool", emotionPool.Values.ToArray());
             dataHolder.SetValue("AppraisalConfiguration", this.appraisalConfiguration);
         }
@@ -268,7 +268,7 @@ namespace EmotionalAppraisal
                 this.appraisalConfiguration = new EmotionalAppraisalConfiguration();
 
             mood.SetMoodValue(dataHolder.GetValue<float>("Mood"), this.appraisalConfiguration);
-       
+            mood.SetTick0Value(dataHolder.GetValue<ulong>("initialTick"));
             context.PushContext();
             {
                 context.Context = (ulong)0; //Tick 

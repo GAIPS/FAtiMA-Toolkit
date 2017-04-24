@@ -1,0 +1,41 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"DefaultActionPriority": 2,
+			"ActionTendencies": [
+				{
+					"Action": "Speak(-, -,SE([se],Initiate), [sty])",
+					"Target": "[x]",
+					"Conditions":
+						{
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[sty] = Volition([se], SELF,[x])"] 
+						},
+					"Priority": 1
+				},				
+				{
+					"Action": "Speak(-, -,SE([se],Answer), [sty])",
+					"Target": "[x]",
+					"Conditions":
+						{
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[sty] = Volition([se], SELF,[x])", "LastEventId(Action-End, [x], Speak(-, -,SE([se],Initiate), [sty]), SELF) = [id]"] 
+						},
+					"Priority": 2
+				},
+				{
+					"Action": "Speak(-,-,SE([se],Finalize), [sty])",
+					"Target": "[x]",
+					"Conditions":
+						{
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[sty] = Volition([se], SELF,[x])", "LastEventId(Action-End, [x], Speak(-, -,SE([se],Answer), [sty]), SELF) = [id]"] 
+						},
+					"Priority": 3
+				}
+				]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "EmotionalDecisionMaking.EmotionalDecisionMakingAsset, EmotionalDecisionMaking, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}
