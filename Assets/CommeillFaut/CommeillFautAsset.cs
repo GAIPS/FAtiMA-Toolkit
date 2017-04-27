@@ -364,7 +364,6 @@ namespace CommeillFaut
             {
                 int volitionResult = socialMove.CalculateVolition(perspective, target, this.m_kB);
                 volitions.Add(socialMove.ActionName.ToString(), volitionResult);
-                Console.WriteLine(" Name " + socialMove.ActionName + " volResult: " + volitionResult);
 
             }
             return volitions;
@@ -408,23 +407,13 @@ namespace CommeillFaut
             return _actorsList;
         }
 
-        #region Serialization
+        #region Custom Serialization
 
         public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
                dataHolder.SetValue("SocialExchanges", m_SocialExchanges.ToArray());
             ConditionList = new Dictionary<string, string[]>();
 
-            foreach (var social in m_SocialExchanges)
-            {
-                foreach (var rule in social.InfluenceRules)
-                {
-                    if(rule.RuleConditions?.ConditionSet?.Length > 0)
-                        ConditionList.Add(rule.RuleName, rule.RuleConditions.ConditionSet);
-                }
-            }
-
-            dataHolder.SetValue("RuleList", ConditionList);
             dataHolder.SetValue("_triggerRules", _TriggerRules);
 
         }
@@ -432,17 +421,7 @@ namespace CommeillFaut
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             m_SocialExchanges = new List<SocialExchange>(dataHolder.GetValue<SocialExchange[]>("SocialExchanges"));
-           ConditionList = dataHolder.GetValue<Dictionary<string,string[]>>("RuleList");
-
-            foreach (var social in m_SocialExchanges)
-            {
-                foreach (var rule in social.InfluenceRules)
-                {
-                    if (ConditionList.ContainsKey(rule.RuleName))
-                        rule.RuleConditions.ConditionSet = ConditionList[rule.RuleName];
-                }
-                
-            }
+   
             _TriggerRules = dataHolder.GetValue<TriggerRules>("_triggerRules");
             m_cachedCIF = new NameSearchTree<NameSearchTree<float>>();
         }

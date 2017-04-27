@@ -21,8 +21,7 @@ namespace CommeillFaut
         public string Target { get; private set; }
         public string Initiator { get; private set; }
         public int Value { get; private set; }
-     
-      public ConditionSetDTO RuleConditions { get; private set; }
+      public ConditionSet RuleConditions { get; private set; }
 
 
     protected InfluenceRule()
@@ -52,12 +51,12 @@ namespace CommeillFaut
             Initiator = dto.Initiator;
             Target = dto.Target;
             Value = dto.Value;;
-            RuleConditions = dto.RuleConditions;
+            RuleConditions = new ConditionSet(dto.RuleConditions);
         }
 
         public InfluenceRuleDTO ToDTO()
         {
-            return new InfluenceRuleDTO() {Id = GUID, RuleName = RuleName, Initiator = Initiator, Target = Target, Value = Value, RuleConditions = RuleConditions};
+            return new InfluenceRuleDTO() {Id = GUID, RuleName = RuleName, Initiator = Initiator, Target = Target, Value = Value, RuleConditions = RuleConditions.ToDTO()};
         }
 
      /*   public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
