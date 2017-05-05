@@ -106,7 +106,8 @@ namespace KnowledgeBase
 		{
 			registry.RegistDynamicProperty(COUNT_TEMPLATE_NEW, CountPropertyCalculator_new);
 			registry.RegistDynamicProperty(HAS_LITERAL_TEMPLATE,HasLiteralPropertyCalculator);
-		}
+			registry.RegistDynamicProperty(LOG_TEMPLATE, LogDynamicProperty);
+        }
 
 		#region Native Dynamic Properties
 
@@ -126,8 +127,24 @@ namespace KnowledgeBase
 				yield return new DynamicPropertyResult(count, d);
 		}
 
-		//HasLiteral
-		private static readonly Name HAS_LITERAL_TEMPLATE = (Name) "HasLiteral";
+        //This is a special property that is only used for debug purposes
+        private static readonly Name LOG_TEMPLATE = Name.BuildName("Log");
+        private static IEnumerable<DynamicPropertyResult> LogDynamicProperty(IQueryContext context, Name x)
+        {
+            var set = context.AskPossibleProperties(x).ToList();
+           
+            IEnumerable<SubstitutionSet> sets;
+            if (set.Count == 0)
+                sets = context.Constraints;
+            else
+                sets = set.SelectMany(s => s.Item2).Distinct();
+
+            foreach (var d in sets)
+                yield return new DynamicPropertyResult(Name.BuildName(0), d);
+        }
+
+        //HasLiteral
+        private static readonly Name HAS_LITERAL_TEMPLATE = (Name) "HasLiteral";
 		private static IEnumerable<DynamicPropertyResult> HasLiteralPropertyCalculator(IQueryContext context, Name x, Name y)
 		{
 			if (!(y.IsVariable || y.IsComposed))
