@@ -15,12 +15,14 @@ namespace EmotionalAppraisal
 		/// </summary>
 		uint CauseId { get; }
 
-		/// <summary>
-		/// The target, if any, of the emotion.
-		/// Ex. I am angry thowards John.
-		/// Ie. The emotion is <b>Anger</b>. The direction is <b>John</b>
-		/// </summary>
-		Name Direction { get; }
+        Name EventName { get; }
+
+        /// <summary>
+        /// The target, if any, of the emotion.
+        /// Ex. I am angry thowards John.
+        /// Ie. The emotion is <b>Anger</b>. The direction is <b>John</b>
+        /// </summary>
+        Name Direction { get; }
 
 		/// <summary>
 		/// The potential of this emotion.

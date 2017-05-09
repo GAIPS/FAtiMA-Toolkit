@@ -68,7 +68,18 @@ namespace EmotionalAppraisal
             StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
             try
             {
-                builder.Append(emotion.CauseId);
+                var eventType = emotion.EventName.GetNTerm(1);
+                //for property change events the cause of the emotion is just the property names
+                //this means that if a new change to a property occcurs the previous emotion associated with it will be reappraised
+                if(eventType.ToString().EqualsIgnoreCase(AMConsts.PROPERTY_CHANGE))
+                {
+                    builder.Append(emotion.EventName.GetNTerm(3));
+                }
+                else
+                {
+                    builder.Append(emotion.CauseId);
+                }
+
                 using (var it = emotion.AppraisalVariables.GetEnumerator())
                 {
                     while (it.MoveNext())

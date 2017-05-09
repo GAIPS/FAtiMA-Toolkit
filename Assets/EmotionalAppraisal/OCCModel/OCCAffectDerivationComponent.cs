@@ -38,10 +38,10 @@ namespace EmotionalAppraisal.OCCModel
 			return new OCCBaseEmotion(emoType, potential, evt.Id, direction);
 		}
 
-		private static OCCBaseEmotion OCCAppraiseWellBeing(uint evtId, float desirability) {
+		private static OCCBaseEmotion OCCAppraiseWellBeing(uint evtId, Name eventName, float desirability) {
 			if(desirability >= 0)
-				return new OCCBaseEmotion(OCCEmotionType.Joy, desirability, evtId);
-			return new OCCBaseEmotion(OCCEmotionType.Distress, -desirability, evtId);
+				return new OCCBaseEmotion(OCCEmotionType.Joy, desirability, evtId, eventName);
+			return new OCCBaseEmotion(OCCEmotionType.Distress, -desirability, evtId, eventName);
 		}
 
 		//private static OCCBaseEmotion OCCAppraiseFortuneOfOthers(uint evtId, float desirability, float desirabilityForOther, string target)
@@ -72,7 +72,7 @@ namespace EmotionalAppraisal.OCCModel
 				emoType = (praiseworthiness >= 0) ? OCCEmotionType.Admiration : OCCEmotionType.Reproach;
 			}
 
-			return new OCCBaseEmotion(emoType, Math.Abs(praiseworthiness), evt.Id, direction);
+			return new OCCBaseEmotion(emoType, Math.Abs(praiseworthiness), evt.Id, direction, evt.EventName);
 		}
 
 		//private static OCCBaseEmotion OCCAppraiseAttribution(IEventRecord evt, float like)
@@ -82,7 +82,7 @@ namespace EmotionalAppraisal.OCCModel
 		//	return new OCCBaseEmotion(emoType,Math.Abs(like)*magicFactor,evt.Id,evt.Subject==null?Name.UNIVERSAL_SYMBOL:Name.BuildName(evt.Subject));
 		//}
 
-		private static OCCBaseEmotion AppraiseGoalEnd(OCCEmotionType hopefullOutcome, OCCEmotionType fearfullOutcome, IActiveEmotion hopeEmotion, IActiveEmotion fearEmotion, float goalImportance, uint evtId) {
+		private static OCCBaseEmotion AppraiseGoalEnd(OCCEmotionType hopefullOutcome, OCCEmotionType fearfullOutcome, IActiveEmotion hopeEmotion, IActiveEmotion fearEmotion, float goalImportance, uint evtId, Name eventName) {
 
 			OCCEmotionType finalEmotion;
 			float potential = goalImportance;
@@ -106,7 +106,7 @@ namespace EmotionalAppraisal.OCCModel
 			//The goal importance now affects 66% of the final potential value for the emotion
 			potential = (potential +  2* goalImportance) / 3;
 		
-			return new OCCBaseEmotion(finalEmotion, potential, evtId);
+			return new OCCBaseEmotion(finalEmotion, potential, evtId, eventName);
 		}
 
 		///// <summary>
@@ -176,7 +176,7 @@ namespace EmotionalAppraisal.OCCModel
 				float desirability = frame.GetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY);
 				if(desirability!=0)
 				{
-					yield return OCCAppraiseWellBeing(evt.Id, desirability);
+					yield return OCCAppraiseWellBeing(evt.Id, evt.EventName, desirability);
 
 					//foreach(string variable in frame.AppraisalVariables.Where(v => v.StartsWith(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER)))
 					//{

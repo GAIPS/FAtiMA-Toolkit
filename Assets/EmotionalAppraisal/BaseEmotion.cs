@@ -26,7 +26,13 @@ namespace EmotionalAppraisal
 			protected set;
 		}
 
-		public float Potential
+        public Name EventName
+        {
+            get;
+            protected set;
+        }
+
+        public float Potential
 		{
 			get
 			{
@@ -70,7 +76,7 @@ namespace EmotionalAppraisal
         /// <param name="potential">the potential value for the intensity of the emotion</param>
         /// <param name="cause">the event that caused the emotion</param>
         /// <param name="direction">if the emotion is targeted to someone (ex: angry with Luke), this parameter specifies the target</param>
-        protected BaseEmotion(string type, EmotionValence valence, IEnumerable<string> appraisalVariables, float potential, bool influencesMood, uint causeId, Name direction)
+        protected BaseEmotion(string type, EmotionValence valence, IEnumerable<string> appraisalVariables, float potential, bool influencesMood, uint causeId, Name direction, Name eventName)
 		{
 			this.EmotionType = type;
 			this.Valence = valence;
@@ -79,15 +85,16 @@ namespace EmotionalAppraisal
 
 			this.CauseId = causeId;
 			this.Direction = direction;
+            this.EventName = eventName;
 			this.InfluenceMood = influencesMood;
             
 		}
 
-		protected BaseEmotion(string type, EmotionValence valence, IEnumerable<string> appraisalVariables, float potential, bool influencesMood, uint causeId) :
-			this(type, valence, appraisalVariables, potential, influencesMood, causeId, null)
+		protected BaseEmotion(string type, EmotionValence valence, IEnumerable<string> appraisalVariables, float potential, bool influencesMood, uint causeId, Name eventName) :
+			this(type, valence, appraisalVariables, potential, influencesMood, causeId, null, eventName)
 		{
 		}
-
+        
 		/// <summary>
 		/// Clone constructor
 		/// </summary>
@@ -101,6 +108,7 @@ namespace EmotionalAppraisal
 			this.InfluenceMood = other.InfluenceMood;
 			this.CauseId = other.CauseId;
 			this.Direction = other.Direction;
+            this.EventName = other.EventName;
 		}
 
 		public override int GetHashCode()
@@ -137,9 +145,11 @@ namespace EmotionalAppraisal
 			StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
 			builder.AppendFormat("{0}: {1}", EmotionType,am.RecallEvent(CauseId).EventName);
 			if (this.Direction != null)
-				builder.AppendFormat(" {0}", Direction);
+				builder.AppendFormat(" {0}", this.Direction);
+            if (this.EventName != null)
+                builder.AppendFormat(" {0}", this.EventName);
 
-			var result = builder.ToString();
+            var result = builder.ToString();
 			builder.Length = 0;
 			ObjectPool<StringBuilder>.Recycle(builder);
 			return result;

@@ -183,16 +183,15 @@ namespace WellFormedNames
 		/// </summary>
 		public abstract IEnumerable<Name> GetTerms();
 
-		/// <summary>
-		/// Return the term at the specified index.
-		/// </summary>
-		/// <param name="index">The zero-based index of the term to get.</param>
-		/// <exception cref="IndexOutOfRangeException">Thrown if the given index is out of bounds.</exception>
-		/// <remarks>
-		/// - For Primitive or Variable Names, any index different from 0, will throw an IndexOutOfRangeException.
-		/// - Using this method with a 0 index is the same as using GetFirstTerm()
-		/// </remarks>
-		public abstract Name GetNTerm(int index);
+        /// <summary>
+        /// Return the term at the specified index.
+        /// - For Primitive or Variable Names, any index different from 0, will throw an IndexOutOfRangeException.
+        /// - Using this method with a 0 index is the same as using GetFirstTerm()
+        /// </summary>
+        /// <param name="index">The zero-based index of the term to get.</param>
+        /// <exception cref="IndexOutOfRangeException">Thrown if the given index is out of bounds.</exception>
+
+        public abstract Name GetNTerm(int index);
 
 		/// <summary>
 		/// Generates a sequence of all Names contained inside this Name.
