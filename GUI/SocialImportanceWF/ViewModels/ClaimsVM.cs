@@ -27,7 +27,7 @@ namespace SocialImportanceWF.ViewModels
 		{
 			m_loading = true;
 
-			ClaimList.DataSource = _parent.CurrentAsset.GetClaims().ToList();
+			ClaimList.DataSource = _parent.LoadedAsset.GetClaims().ToList();
 			ClaimList.Refresh();
 
 			m_loading = false;
@@ -35,9 +35,9 @@ namespace SocialImportanceWF.ViewModels
 
 		public ObjectView<ClaimDTO> AddClaim(ClaimDTO dto)
 		{
-			_parent.CurrentAsset.AddClaim(dto);
+			_parent.LoadedAsset.AddClaim(dto);
 
-			ClaimList.DataSource = _parent.CurrentAsset.GetClaims().ToList();
+			ClaimList.DataSource = _parent.LoadedAsset.GetClaims().ToList();
 			ClaimList.Refresh();
 			_parent.SetModified();
 
@@ -47,9 +47,9 @@ namespace SocialImportanceWF.ViewModels
 
 		public ObjectView<ClaimDTO> ReplaceClaim(ClaimDTO oldClaim, ClaimDTO newClaim)
 		{
-			_parent.CurrentAsset.ReplaceClaim(oldClaim,newClaim);
+			_parent.LoadedAsset.ReplaceClaim(oldClaim,newClaim);
 
-			ClaimList.DataSource = _parent.CurrentAsset.GetClaims().ToList();
+			ClaimList.DataSource = _parent.LoadedAsset.GetClaims().ToList();
 			ClaimList.Refresh();
 			_parent.SetModified();
 
@@ -99,7 +99,7 @@ namespace SocialImportanceWF.ViewModels
 			{
 				try
 				{
-					if (_parent.CurrentAsset.RemoveClaim(dto.ActionTemplate))
+					if (_parent.LoadedAsset.RemoveClaim(dto.ActionTemplate))
 						count++;
 				}
 				catch (Exception e)
@@ -110,7 +110,7 @@ namespace SocialImportanceWF.ViewModels
 
 			if (count > 0)
 			{
-				ClaimList.DataSource = _parent.CurrentAsset.GetClaims().ToList();
+				ClaimList.DataSource = _parent.LoadedAsset.GetClaims().ToList();
 				ClaimList.Refresh();
 				_parent.SetModified();
 			}

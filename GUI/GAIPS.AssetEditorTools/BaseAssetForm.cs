@@ -27,7 +27,7 @@ namespace GAIPS.AssetEditorTools
 		public string EditorName { get; set; }
 
 		public bool IsEditingOutsideInstance => _getExternalAssetInstance != null;
-		public T CurrentAsset { get; private set; }
+		public T LoadedAsset { get; private set; }
 
 		protected bool IsLoading { get; private set; }
 
@@ -35,10 +35,10 @@ namespace GAIPS.AssetEditorTools
         private void OnLoad(object sender, EventArgs e)
         {
             UpdateWindowTitle();
-            if (CurrentAsset == null)
+            if (LoadedAsset == null)
             {
                 if (_getExternalAssetInstance != null)
-                    CurrentAsset = _getExternalAssetInstance();
+                    LoadedAsset = _getExternalAssetInstance();
             }
             ReloadEditor();
         }
@@ -114,7 +114,7 @@ namespace GAIPS.AssetEditorTools
 			if (!AssetSaveModified())
 				return;
 
-			CurrentAsset = CreateEmptyAsset();
+			LoadedAsset = CreateEmptyAsset();
 			_getExternalAssetInstance = null;
 			_wasModified = false;
 			UpdateWindowTitle();
@@ -138,7 +138,7 @@ namespace GAIPS.AssetEditorTools
 			IsLoading = true;
 			try
 			{
-				OnAssetDataLoaded(CurrentAsset);
+				OnAssetDataLoaded(LoadedAsset);
 			}
 			finally
 			{
@@ -162,7 +162,7 @@ namespace GAIPS.AssetEditorTools
 
 			_getExternalAssetInstance = null;
 
-			CurrentAsset = asset;
+			LoadedAsset = asset;
 			_wasModified = false;
 			UpdateWindowTitle();
 
@@ -210,13 +210,13 @@ namespace GAIPS.AssetEditorTools
 
 		private void UpdateWindowTitle()
 		{
-			if (CurrentAsset == null)
+			if (LoadedAsset == null)
 			{
 				Text = EditorName;
 				return;
 			}
 
-			var path = GetAssetCurrentPath(CurrentAsset);
+			var path = GetAssetCurrentPath(LoadedAsset);
 			Text = EditorName + (string.IsNullOrEmpty(path) ? string.Empty : $" - {path}") +
 			       (_wasModified ? "*" : string.Empty);
 		}
@@ -424,11 +424,11 @@ namespace GAIPS.AssetEditorTools
         
 		protected bool SaveAsset()
 		{
-            var path = GetAssetCurrentPath(CurrentAsset);
+            var path = GetAssetCurrentPath(LoadedAsset);
 			if (string.IsNullOrEmpty(path))
 				return SaveAssetAs();
 
-			SaveAssetToFile(CurrentAsset, path);
+			SaveAssetToFile(LoadedAsset, path);
 			_wasModified = false;
 			UpdateWindowTitle();
 			return true;
@@ -441,7 +441,7 @@ namespace GAIPS.AssetEditorTools
 			if (sfd.ShowDialog() != DialogResult.OK)
 				return false;
 
-			SaveAssetToFile(CurrentAsset, sfd.FileName);
+			SaveAssetToFile(LoadedAsset, sfd.FileName);
 			_wasModified = false;
 			UpdateWindowTitle();
 			return true;

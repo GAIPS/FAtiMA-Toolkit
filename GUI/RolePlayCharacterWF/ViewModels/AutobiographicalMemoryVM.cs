@@ -10,7 +10,7 @@ namespace RolePlayCharacterWF.ViewModels
     public class AutobiographicalMemoryVM
     {
 	    private readonly BaseRPCForm _mainForm;
-	    private RolePlayCharacterAsset _rpcAsset => _mainForm.CurrentAsset;
+	    private RolePlayCharacterAsset _rpcAsset => _mainForm.LoadedAsset;
 
         public BindingListView<EventDTO> Events {get;}
 

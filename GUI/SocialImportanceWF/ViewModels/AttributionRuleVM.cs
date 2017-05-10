@@ -64,7 +64,7 @@ namespace SocialImportanceWF.ViewModels
 				return;
 
 			rule.Conditions = ConditionSetView.GetData();
-			_parent.CurrentAsset.UpdateAttributionRule(rule);
+			_parent.LoadedAsset.UpdateAttributionRule(rule);
 			_parent.SetModified();
 		}
 
@@ -72,7 +72,7 @@ namespace SocialImportanceWF.ViewModels
 		{
 			m_loading = true;
 
-			RuleList.DataSource = _parent.CurrentAsset.GetAttributionRules().ToList();
+			RuleList.DataSource = _parent.LoadedAsset.GetAttributionRules().ToList();
 			RuleList.Refresh();
 
 			ConditionSetView.SetData(null);
@@ -83,9 +83,9 @@ namespace SocialImportanceWF.ViewModels
 		public ObjectView<AttributionRuleDTO> AddOrUpdateRule(AttributionRuleDTO dto)
 		{
 			if (dto.Id == Guid.Empty)
-				dto = _parent.CurrentAsset.AddAttributionRule(dto);
+				dto = _parent.LoadedAsset.AddAttributionRule(dto);
 			else
-				_parent.CurrentAsset.UpdateAttributionRule(dto);
+				_parent.LoadedAsset.UpdateAttributionRule(dto);
 
 			_parent.SetModified();
 			Reload();
@@ -155,7 +155,7 @@ namespace SocialImportanceWF.ViewModels
 			{
 				try
 				{
-					_parent.CurrentAsset.RemoveAttributionRuleById(dto.Id);
+					_parent.LoadedAsset.RemoveAttributionRuleById(dto.Id);
 					count++;
 				}
 				catch (Exception e)

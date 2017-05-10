@@ -39,18 +39,18 @@ namespace RolePlayCharacterWF
 
             eaAssetControl1.SetAsset(asset.EmotionalAppraisalAssetSource, () =>
             {
-                CurrentAsset.EmotionalAppraisalAssetSource = eaAssetControl1.Path;
-                return EmotionalAppraisal.EmotionalAppraisalAsset.LoadFromFile(CurrentAsset.EmotionalAppraisalAssetSource);
+                LoadedAsset.EmotionalAppraisalAssetSource = eaAssetControl1.Path;
+                return EmotionalAppraisal.EmotionalAppraisalAsset.LoadFromFile(LoadedAsset.EmotionalAppraisalAssetSource);
             });
             edmAssetControl1.SetAsset(asset.EmotionalDecisionMakingSource, () =>
              {
-                 CurrentAsset.EmotionalDecisionMakingSource = edmAssetControl1.Path;
-                 return EmotionalDecisionMaking.EmotionalDecisionMakingAsset.LoadFromFile(CurrentAsset.EmotionalDecisionMakingSource);
+                 LoadedAsset.EmotionalDecisionMakingSource = edmAssetControl1.Path;
+                 return EmotionalDecisionMaking.EmotionalDecisionMakingAsset.LoadFromFile(LoadedAsset.EmotionalDecisionMakingSource);
              });
             siAssetControl1.SetAsset(asset.SocialImportanceAssetSource, () =>
             {
-                CurrentAsset.SocialImportanceAssetSource = siAssetControl1.Path;
-                return SocialImportance.SocialImportanceAsset.LoadFromFile(CurrentAsset.SocialImportanceAssetSource);
+                LoadedAsset.SocialImportanceAssetSource = siAssetControl1.Path;
+                return SocialImportance.SocialImportanceAsset.LoadFromFile(LoadedAsset.SocialImportanceAssetSource);
             });
         }
 
@@ -64,7 +64,7 @@ namespace RolePlayCharacterWF
                 try
                 {
                     var newName = (Name)textBoxCharacterName.Text;
-                    CurrentAsset.CharacterName = newName;
+                    LoadedAsset.CharacterName = newName;
                 }
                 catch (ParsingException ex)
                 {
@@ -79,7 +79,7 @@ namespace RolePlayCharacterWF
             if (IsLoading)
                 return;
 
-            CurrentAsset.BodyName = textBoxCharacterBody.Text;
+            LoadedAsset.BodyName = textBoxCharacterBody.Text;
             SetModified();
         }
 
@@ -88,7 +88,7 @@ namespace RolePlayCharacterWF
             if (IsLoading)
                 return;
 
-            CurrentAsset.VoiceName = textBoxCharacterVoice.Text;
+            LoadedAsset.VoiceName = textBoxCharacterVoice.Text;
             SetModified();
         }
 
@@ -97,7 +97,7 @@ namespace RolePlayCharacterWF
             if (IsLoading)
                 return;
 
-            CurrentAsset.EmotionalAppraisalAssetSource = eaAssetControl1.Path;
+            LoadedAsset.EmotionalAppraisalAssetSource = eaAssetControl1.Path;
             SetModified();
         }
 
@@ -106,7 +106,7 @@ namespace RolePlayCharacterWF
             if (IsLoading)
                 return;
 
-            CurrentAsset.EmotionalDecisionMakingSource = edmAssetControl1.Path;
+            LoadedAsset.EmotionalDecisionMakingSource = edmAssetControl1.Path;
             SetModified();
         }
 
@@ -115,7 +115,7 @@ namespace RolePlayCharacterWF
             if (IsLoading)
                 return;
 
-            CurrentAsset.SocialImportanceAssetSource = siAssetControl1.Path;
+            LoadedAsset.SocialImportanceAssetSource = siAssetControl1.Path;
             SetModified();
         }
 

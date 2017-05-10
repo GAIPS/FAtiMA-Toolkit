@@ -19,7 +19,7 @@ namespace CommeillFautWF.ViewModels
       
         public readonly BaseCIFForm _mainForm;
         private bool m_loading;
-        public CommeillFautAsset _cifAsset => _mainForm.CurrentAsset;
+        public CommeillFautAsset _cifAsset => _mainForm.LoadedAsset;
         public BindingListView<SocialExchangeDTO> SocialExchanges { get; private set; }
   
      //   public Dictionary<string, InfluenceRuleDTO> InfluenceRulesDiccionary;

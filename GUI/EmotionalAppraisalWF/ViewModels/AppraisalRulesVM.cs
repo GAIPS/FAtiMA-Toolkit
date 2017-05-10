@@ -12,7 +12,7 @@ namespace EmotionalAppraisalWF.ViewModels
     public class AppraisalRulesVM
     {
 	    private readonly BaseEAForm _mainForm;
-	    private EmotionalAppraisalAsset _emotionalAppraisalAsset => _mainForm.CurrentAsset;
+	    private EmotionalAppraisalAsset _emotionalAppraisalAsset => _mainForm.LoadedAsset;
 
         public BindingListView<AppraisalRuleDTO> AppraisalRules {get; private set; }
 	    public ConditionSetView CurrentRuleConditions { get; }

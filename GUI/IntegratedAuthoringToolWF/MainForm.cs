@@ -14,20 +14,61 @@ namespace IntegratedAuthoringToolWF
 {
 	public partial class MainForm : BaseIATForm
 	{
-		private BindingListView<CharacterSourceDTO> _characterSources;
+        
+        private BindingListView<GUIDialogStateAction> _playerDialogs;
+        private BindingListView<GUIDialogStateAction> _agentDialogs;
+        private readonly string PLAYER = IATConsts.PLAYER;
+        private readonly string AGENT = IATConsts.AGENT;
+        private BindingListView<CharacterSourceDTO> _characterSources;
 		private readonly RolePlayCharacterWF.MainForm _rpcForm = new RolePlayCharacterWF.MainForm();
 
 		private Dictionary<string,Form> _openedForms = new Dictionary<string, Form>();
 
-		public MainForm()
+        private int stateCounter;
+        private int totalSize;
+
+        public MainForm()
 		{
 			InitializeComponent();
 
 			buttonEditCharacter.Enabled = false;
 			buttonRemoveCharacter.Enabled = false;
-		}
+            _playerDialogs = new BindingListView<GUIDialogStateAction>(new List<GUIDialogStateAction>());
+            dataGridViewPlayerDialogueActions.DataSource = _playerDialogs;
+           // RefreshPlayerDialogs();
 
-		protected override void OnAssetDataLoaded(IntegratedAuthoringToolAsset asset)
+            _agentDialogs = new BindingListView<GUIDialogStateAction>(new List<GUIDialogStateAction>());
+            dataGridViewAgentDialogueActions.DataSource = _agentDialogs;
+            //RefreshAgentDialogs();
+            stateCounter = 0;
+            totalSize = 0;
+        }
+
+
+        private void RefreshPlayerDialogs()
+        {
+            _playerDialogs.DataSource = LoadedAsset.GetDialogueActionsBySpeaker(
+                PLAYER).Select(d => new GUIDialogStateAction(d)).ToList();
+            _playerDialogs.Refresh();
+            dataGridViewPlayerDialogueActions.Columns["Id"].Visible = false;
+
+        }
+
+        private void RefreshAgentDialogs()
+        {
+            _agentDialogs.DataSource = LoadedAsset.GetDialogueActionsBySpeaker(
+             AGENT).Select(d => new GUIDialogStateAction(d)).ToList();
+            _agentDialogs.Refresh();
+            dataGridViewAgentDialogueActions.Columns["Id"].Visible = false;
+        }
+
+        private void buttonAddPlayerDialogueAction_Click(object sender, EventArgs e)
+        {
+            new AddOrEditDialogueActionForm(this, true).ShowDialog();
+            RefreshPlayerDialogs();
+        }
+
+        protected override void OnAssetDataLoaded(IntegratedAuthoringToolAsset asset)
 		{
 			textBoxScenarioName.Text = asset.ScenarioName;
 			textBoxScenarioDescription.Text = asset.ScenarioDescription;
@@ -41,8 +82,8 @@ namespace IntegratedAuthoringToolWF
 			if (asset == null)
 				return;
 					
-            CurrentAsset.AddNewCharacterSource(new CharacterSourceDTO() {Source = asset.AssetFilePath});
-			_characterSources.DataSource = CurrentAsset.GetAllCharacterSources().ToList();
+            LoadedAsset.AddNewCharacterSource(new CharacterSourceDTO() {Source = asset.AssetFilePath});
+			_characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
 			_characterSources.Refresh();
 			SetModified();
 		}
@@ -53,12 +94,12 @@ namespace IntegratedAuthoringToolWF
 			if (rpc == null)
 				return;
 
-			CurrentAsset.AddNewCharacterSource(new CharacterSourceDTO()
+			LoadedAsset.AddNewCharacterSource(new CharacterSourceDTO()
 			{
 				Source =  rpc.AssetFilePath
 			});
 
-			_characterSources.DataSource = CurrentAsset.GetAllCharacterSources().ToList();
+			_characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
 			_characterSources.Refresh();
 			SetModified();
 		}
@@ -68,7 +109,7 @@ namespace IntegratedAuthoringToolWF
 			if (IsLoading)
 				return;
 
-			CurrentAsset.ScenarioName = textBoxScenarioName.Text;
+			LoadedAsset.ScenarioName = textBoxScenarioName.Text;
 			SetModified();
 		}
 
@@ -77,7 +118,7 @@ namespace IntegratedAuthoringToolWF
 			if (IsLoading)
 				return;
 
-			CurrentAsset.ScenarioDescription = textBoxScenarioDescription.Text;
+			LoadedAsset.ScenarioDescription = textBoxScenarioDescription.Text;
 			SetModified();
 		}
 
@@ -100,8 +141,8 @@ namespace IntegratedAuthoringToolWF
 				charactersToRemove.Add(character.Id);
 			}
 
-			CurrentAsset.RemoveCharacters(charactersToRemove);
-			_characterSources.DataSource = CurrentAsset.GetAllCharacterSources().ToList();
+			LoadedAsset.RemoveCharacters(charactersToRemove);
+			_characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
 			_characterSources.Refresh();
 			SetModified();
 		}
@@ -164,5 +205,25 @@ namespace IntegratedAuthoringToolWF
 			buttonEditCharacter.Enabled = active;
 			buttonRemoveCharacter.Enabled = active;
 		}
-	}
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBoxDialogueEditor_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

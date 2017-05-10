@@ -12,7 +12,7 @@ namespace EmotionalAppraisalWF.ViewModels
     {
 	    private BaseEAForm _mainForm;
 
-	    private EmotionalAppraisalAsset emotionalAppraisalAsset => _mainForm.CurrentAsset;
+	    private EmotionalAppraisalAsset emotionalAppraisalAsset => _mainForm.LoadedAsset;
 
 	    public BindingListView<BeliefDTO> Beliefs {get;}
 

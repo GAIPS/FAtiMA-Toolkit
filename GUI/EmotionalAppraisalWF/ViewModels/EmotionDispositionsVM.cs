@@ -9,7 +9,7 @@ namespace EmotionalAppraisalWF.ViewModels
     public class EmotionDispositionsVM
     {
 	    private BaseEAForm _mainForm;
-	    private EmotionalAppraisalAsset _emotionalAppraisalAsset => _mainForm.CurrentAsset;
+	    private EmotionalAppraisalAsset _emotionalAppraisalAsset => _mainForm.LoadedAsset;
 
         public BindingListView<EmotionDispositionDTO> EmotionDispositions {get;}
 	    private EmotionDispositionDTO _defaultEmotionalDisposition;

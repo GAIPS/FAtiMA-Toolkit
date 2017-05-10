@@ -1,60 +1,12 @@
 {
-  "version": 2,
+  "locked": false,
+  "version": 1,
   "targets": {
-    ".NETPortable,Version=v4.5,Profile=Profile111": {
-      "SerializationUtilities/1.0.0": {
-        "type": "project",
-        "framework": ".NETPortable,Version=v4.5,Profile=Profile111",
-        "dependencies": {
-          "Utilities": "1.0.0"
-        }
-      },
-      "Utilities/1.0.0": {
-        "type": "project"
-      }
-    }
+    ".NETPortable,Version=v4.5,Profile=Profile111": {}
   },
-  "libraries": {
-    "SerializationUtilities/1.0.0": {
-      "type": "project",
-      "path": "../SerializationUtilities/project.json",
-      "msbuildProject": "../SerializationUtilities/SerializationUtilities.csproj"
-    },
-    "Utilities/1.0.0": {
-      "type": "project",
-      "path": "../Utilities/Utilities.csproj",
-      "msbuildProject": "../Utilities/Utilities.csproj"
-    }
-  },
+  "libraries": {},
   "projectFileDependencyGroups": {
     "": [],
     ".NETPortable,Version=v4.5,Profile=Profile111": []
-  },
-  "packageFolders": {
-    "C:\\Users\\Filipa Correia\\.nuget\\packages\\": {}
-  },
-  "project": {
-    "restore": {
-      "projectUniqueName": "C:\\Users\\Filipa Correia\\Devel\\FAtiMA-Toolkit\\Components(Portable)\\GAIPS.Rage\\GAIPS.Rage.csproj",
-      "projectName": "GAIPS.Rage",
-      "projectPath": "C:\\Users\\Filipa Correia\\Devel\\FAtiMA-Toolkit\\Components(Portable)\\GAIPS.Rage\\GAIPS.Rage.csproj",
-      "projectJsonPath": "C:\\Users\\Filipa Correia\\Devel\\FAtiMA-Toolkit\\Components(Portable)\\GAIPS.Rage\\project.json",
-      "projectStyle": "ProjectJson",
-      "frameworks": {
-        "portable45-net45+win8+wpa81": {
-          "projectReferences": {
-            "C:\\Users\\Filipa Correia\\Devel\\FAtiMA-Toolkit\\Components(Portable)\\SerializationUtilities\\SerializationUtilities.csproj": {
-              "projectPath": "C:\\Users\\Filipa Correia\\Devel\\FAtiMA-Toolkit\\Components(Portable)\\SerializationUtilities\\SerializationUtilities.csproj"
-            },
-            "C:\\Users\\Filipa Correia\\Devel\\FAtiMA-Toolkit\\Components(Portable)\\Utilities\\Utilities.csproj": {
-              "projectPath": "C:\\Users\\Filipa Correia\\Devel\\FAtiMA-Toolkit\\Components(Portable)\\Utilities\\Utilities.csproj"
-            }
-          }
-        }
-      }
-    },
-    "frameworks": {
-      "portable45-net45+win8+wpa81": {}
-    }
   }
 }

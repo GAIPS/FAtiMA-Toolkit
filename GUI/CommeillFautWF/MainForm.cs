@@ -99,7 +99,7 @@ namespace CommeillFautWF
 
         private void Refresh()
         {
-            OnAssetDataLoaded(this.CurrentAsset);
+            OnAssetDataLoaded(this.LoadedAsset);
             
         }
 
@@ -114,9 +114,9 @@ namespace CommeillFautWF
             int todelete_index = SocialExchangeBox.SelectedIndex;
             if (todelete_index >= 0)
             {
-                SocialExchange todelete = CurrentAsset.m_SocialExchanges[todelete_index];
+                SocialExchange todelete = LoadedAsset.m_SocialExchanges[todelete_index];
 
-                CurrentAsset.RemoveSocialExchange(todelete);
+                LoadedAsset.RemoveSocialExchange(todelete);
             }
             Refresh();
         }
@@ -134,7 +134,7 @@ namespace CommeillFautWF
 
             if (toedit_index >= 0)
             {
-                SocialExchange toEdit = CurrentAsset.m_SocialExchanges[toedit_index];
+                SocialExchange toEdit = LoadedAsset.m_SocialExchanges[toedit_index];
 
             
 
@@ -170,7 +170,7 @@ namespace CommeillFautWF
             {
                
 
-                CurrentAsset.RemoveTriggerRuleByName(toDeleteName);
+                LoadedAsset.RemoveTriggerRuleByName(toDeleteName);
             }
             Refresh();
         }

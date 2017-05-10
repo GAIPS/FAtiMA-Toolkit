@@ -243,7 +243,7 @@ namespace EmotionalAppraisalWF
 
         private void richTextBoxDescription_TextChanged_1(object sender, EventArgs e)
         {
-            CurrentAsset.Description = richTextBoxDescription.Text;
+            LoadedAsset.Description = richTextBoxDescription.Text;
             SetModified();
         }
 

@@ -9,7 +9,7 @@ namespace RolePlayCharacterWF.ViewModels
     public class EmotionalStateVM
     {
 	    private BaseRPCForm _mainForm;
-	    private RolePlayCharacterAsset _rpcAsset => _mainForm.CurrentAsset;
+	    private RolePlayCharacterAsset _rpcAsset => _mainForm.LoadedAsset;
 
         public BindingListView<EmotionDTO> Emotions {get;}
         

@@ -30,20 +30,20 @@ namespace EmotionalDecisionMakingWF
 
 	    protected override void OnAssetDataLoaded(EmotionalDecisionMakingAsset asset)
 	    {
-		    _reactiveActions.DataSource = CurrentAsset.GetAllReactions().ToList();
+		    _reactiveActions.DataSource = LoadedAsset.GetAllReactions().ToList();
 			dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ReactionDTO>(dto => dto.Id)].Visible = false;
 			dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ReactionDTO>(dto => dto.Conditions)].Visible = false;
 
 			if (_reactiveActions.Any())
 			{
-				var ra = CurrentAsset.GetReaction(_reactiveActions.First().Id);
+				var ra = LoadedAsset.GetReaction(_reactiveActions.First().Id);
 				UpdateConditions(ra);
 			}
 		}
 		
 		private void conditionSetView_OnDataChanged()
 		{
-			CurrentAsset.UpdateReactionConditions(_selectedActionId, _conditionSetView.GetData());
+			LoadedAsset.UpdateReactionConditions(_selectedActionId, _conditionSetView.GetData());
 			SetModified();
 		}
 
@@ -52,7 +52,7 @@ namespace EmotionalDecisionMakingWF
             var reaction = ((ObjectView<ReactionDTO>)dataGridViewReactiveActions.Rows[e.RowIndex].DataBoundItem).Object;
             _selectedActionId = reaction.Id;
 
-	        var ra = CurrentAsset.GetReaction(_selectedActionId);
+	        var ra = LoadedAsset.GetReaction(_selectedActionId);
 			UpdateConditions(ra);
         }
 
@@ -61,16 +61,16 @@ namespace EmotionalDecisionMakingWF
 	        var ids = dataGridViewReactiveActions.SelectedRows.Cast<DataGridViewRow>()
 		        .Select(r => ((ObjectView<ReactionDTO>) r.DataBoundItem).Object.Id).ToList();
 
-			CurrentAsset.RemoveReactions(ids);
-            _reactiveActions.DataSource = CurrentAsset.GetAllReactions().ToList();
+			LoadedAsset.RemoveReactions(ids);
+            _reactiveActions.DataSource = LoadedAsset.GetAllReactions().ToList();
             _reactiveActions.Refresh();
 			SetModified();
         }
 
         private void buttonAddReaction_Click(object sender, EventArgs e)
         {
-            new AddOrEditReactionForm(CurrentAsset).ShowDialog();
-            _reactiveActions.DataSource = CurrentAsset.GetAllReactions().ToList();
+            new AddOrEditReactionForm(LoadedAsset).ShowDialog();
+            _reactiveActions.DataSource = LoadedAsset.GetAllReactions().ToList();
             _reactiveActions.Refresh();
 			SetModified();
 		}
@@ -81,9 +81,9 @@ namespace EmotionalDecisionMakingWF
             {
                 var selectedReaction = ((ObjectView<ReactionDTO>)dataGridViewReactiveActions.
                    SelectedRows[0].DataBoundItem).Object;
-                new AddOrEditReactionForm(CurrentAsset,selectedReaction).ShowDialog();
+                new AddOrEditReactionForm(LoadedAsset,selectedReaction).ShowDialog();
             }
-            _reactiveActions.DataSource = CurrentAsset.GetAllReactions().ToList();
+            _reactiveActions.DataSource = LoadedAsset.GetAllReactions().ToList();
             _reactiveActions.Refresh();
 			SetModified();
         }

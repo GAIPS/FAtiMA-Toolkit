@@ -18,12 +18,11 @@ namespace IntegratedAuthoringToolWF
     public partial class DialogueEditorForm : Form
     {
 	    private MainForm _parentForm;
-	    private IntegratedAuthoringToolAsset _iatAsset => _parentForm.CurrentAsset;
+	    private IntegratedAuthoringToolAsset _iatAsset => _parentForm.LoadedAsset;
         private BindingListView<GUIDialogStateAction> _playerDialogs;
         private BindingListView<GUIDialogStateAction> _agentDialogs;
         private readonly string PLAYER = IATConsts.PLAYER;
         private readonly string AGENT = IATConsts.AGENT;
-
         private int stateCounter;
         private int totalSize;
 
@@ -39,7 +38,7 @@ namespace IntegratedAuthoringToolWF
 
             _agentDialogs = new BindingListView<GUIDialogStateAction>(new List<GUIDialogStateAction>());
 	        dataGridViewAgentDialogueActions.DataSource = _agentDialogs;
-            RefreshAgentDialogs();
+           RefreshAgentDialogs();
             stateCounter = 0;
             totalSize = 0;
         }
@@ -75,13 +74,13 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonPlayerRemoveDialogueAction_Click(object sender, System.EventArgs e)
         {
-            IList<Guid> itemsToRemove = new List<Guid>();
+        /*    IList<Guid> itemsToRemove = new List<Guid>();
             for (int i = 0; i < dataGridViewPlayerDialogueActions.SelectedRows.Count; i++)
             {
                 var item = ((ObjectView<GUIDialogStateAction>)dataGridViewPlayerDialogueActions.SelectedRows[i].DataBoundItem).Object;
                 itemsToRemove.Add(item.Id);
             }
-            _iatAsset.RemoveDialogueActions(PLAYER, itemsToRemove);
+            _iatAsset.RemoveDialogueActions(PLAYER, itemsToRemove);*/
 			RefreshPlayerDialogs();
 			_parentForm.SetModified();
         }

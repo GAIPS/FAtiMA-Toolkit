@@ -36,7 +36,7 @@ namespace SocialImportanceWF.ViewModels
 			var conferral = _conferralsList.FirstOrDefault(c => c.Id == _selected);
 
 			conferral.Conditions = ConditionsView.GetData();
-			_parent.CurrentAsset.UpdateConferralData(conferral);
+			_parent.LoadedAsset.UpdateConferralData(conferral);
 			_parent.SetModified();
 		}
 
@@ -44,7 +44,7 @@ namespace SocialImportanceWF.ViewModels
 		{
 			m_loading = true;
 
-			_conferralsList.DataSource = _parent.CurrentAsset.GetConferrals().ToList();
+			_conferralsList.DataSource = _parent.LoadedAsset.GetConferrals().ToList();
 			_conferralsList.Refresh();
 
 			ConditionsView.SetData(null);
@@ -55,9 +55,9 @@ namespace SocialImportanceWF.ViewModels
 		public ObjectView<ConferralDTO> AddOrUpdateConferral(ConferralDTO dto)
 		{
 			if (dto.Id == Guid.Empty)
-				dto = _parent.CurrentAsset.AddConferral(dto);
+				dto = _parent.LoadedAsset.AddConferral(dto);
 			else
-				_parent.CurrentAsset.UpdateConferralData(dto);
+				_parent.LoadedAsset.UpdateConferralData(dto);
 
 			_parent.SetModified();
 			Reload();
@@ -115,7 +115,7 @@ namespace SocialImportanceWF.ViewModels
 			{
 				try
 				{
-					_parent.CurrentAsset.RemoveConferralById(dto.Id);
+					_parent.LoadedAsset.RemoveConferralById(dto.Id);
 					count++;
 				}
 				catch (Exception e)

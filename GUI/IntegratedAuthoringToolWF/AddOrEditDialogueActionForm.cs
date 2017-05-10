@@ -9,7 +9,7 @@ namespace IntegratedAuthoringToolWF
     public partial class AddOrEditDialogueActionForm : Form
     {
 	    private MainForm _parentForm;
-        private IntegratedAuthoringToolAsset _iatAsset => _parentForm.CurrentAsset;
+        private IntegratedAuthoringToolAsset _iatAsset => _parentForm.LoadedAsset;
         private readonly DialogueStateActionDTO _dialogueStateActionToEdit;
         private readonly bool _isPlayerDialogue;
 
@@ -24,7 +24,7 @@ namespace IntegratedAuthoringToolWF
 		{
 			buttonAddOrUpdate.Text = "Update";
 			_dialogueStateActionToEdit =
-				form.CurrentAsset.GetDialogActionById(
+				form.LoadedAsset.GetDialogActionById(
 					isPlayerDialogue ? IATConsts.PLAYER : IATConsts.AGENT, dialogId);
 
 			textBoxCurrentState.Text = _dialogueStateActionToEdit.CurrentState;
