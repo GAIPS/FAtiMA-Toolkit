@@ -48,6 +48,7 @@
     <Compile Include="DynamicPropertiesWindow\DynamicPropertyEntry.cs" />
     <Compile Include="EditorTools.cs" />
     <Compile Include="EditorUtilities.cs" />
+    <Compile Include="FormHelper.cs" />
     <Compile Include="GenericPropertyDataGridControler.cs">
       <SubType>UserControl</SubType>
     </Compile>

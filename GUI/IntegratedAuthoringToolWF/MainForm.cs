@@ -26,15 +26,11 @@ namespace IntegratedAuthoringToolWF
         private readonly string PLAYER = IATConsts.PLAYER;
         private readonly string AGENT = IATConsts.AGENT;
         private BindingListView<CharacterSourceDTO> _characterSources;
-		private readonly RolePlayCharacterWF.MainForm _rpcForm = new RolePlayCharacterWF.MainForm();
-
-		private Dictionary<string,Form> _openedForms = new Dictionary<string, Form>();
-
+		private RolePlayCharacterWF.MainForm _rpcForm = new RolePlayCharacterWF.MainForm();
 
         public MainForm()
 		{
 			InitializeComponent();
-			buttonEditCharacter.Enabled = false;
 			buttonRemoveCharacter.Enabled = false;
         }
         
@@ -77,12 +73,17 @@ namespace IntegratedAuthoringToolWF
 			var asset = _rpcForm.CreateAndSaveEmptyAsset(false);
 			if (asset == null)
 				return;
-					
+                                   
             LoadedAsset.AddNewCharacterSource(new CharacterSourceDTO() {Source = asset.AssetFilePath});
 			_characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
 			_characterSources.Refresh();
 			SetModified();
-		}
+
+            var rpc = RolePlayCharacterAsset.LoadFromFile(asset.AssetFilePath);
+            _rpcForm.EditAssetInstance(() => rpc);
+            FormHelper.ShowFormInContainerControl(this.tabControl1.TabPages[1], _rpcForm);
+            this.tabControl1.SelectTab(1);
+        }
 
 		private void buttonAddCharacter_Click(object sender, EventArgs e)
 		{
@@ -98,7 +99,7 @@ namespace IntegratedAuthoringToolWF
 			_characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
 			_characterSources.Refresh();
 			SetModified();
-		}
+        }
 
 		private void textBoxScenarioName_TextChanged(object sender, EventArgs e)
 		{
@@ -125,44 +126,16 @@ namespace IntegratedAuthoringToolWF
 			{
 				var character = ((ObjectView<CharacterSourceDTO>) dataGridViewCharacters.SelectedRows[i].DataBoundItem).Object;
 				Form f;
-				if (_openedForms.TryGetValue(character.Source,out f))
-				{
-					var r = MessageBox.Show($"\"{character.Source}\" is currently being edited.\nDo you wish to remove it?", "Warning",
-						MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-					if (r == DialogResult.No)
-						continue;
-
-					f.Close();
-				}
 				charactersToRemove.Add(character.Id);
 			}
 
 			LoadedAsset.RemoveCharacters(charactersToRemove);
 			_characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
 			_characterSources.Refresh();
+            _rpcForm.Close();
 			SetModified();
-		}
-
-		private void buttonEditCharacter_Click(object sender, EventArgs e)
-		{
-			for (var i = 0; i < dataGridViewCharacters.SelectedRows.Count; i++)
-			{
-				var character = ((ObjectView<CharacterSourceDTO>) dataGridViewCharacters.SelectedRows[i].DataBoundItem).Object;
-				if(_openedForms.ContainsKey(character.Source))
-					continue;
-
-				var form = new RolePlayCharacterWF.MainForm();
-				form.Closed += (o, args) =>
-				{
-					_openedForms.Remove(character.Source);
-					ReloadEditor();
-				};
-                var rpc = RolePlayCharacterAsset.LoadFromFile(character.Source);
-				form.EditAssetInstance(() => rpc);
-				_openedForms.Add(character.Source,form);
-				form.Show();
-			}
-		}
+            dataGridViewCharacters.ClearSelection();
+        }
 
 		#region About
 
@@ -177,9 +150,18 @@ namespace IntegratedAuthoringToolWF
 
 		private void dataGridViewCharacters_SelectionChanged(object sender, EventArgs e)
 		{
-			var active = dataGridViewCharacters.SelectedRows.Count > 0;
-			buttonEditCharacter.Enabled = active;
-			buttonRemoveCharacter.Enabled = active;
+            if(dataGridViewCharacters.SelectedRows.Count > 0)
+            {
+                var rpcSource = ((ObjectView<CharacterSourceDTO>)dataGridViewCharacters.SelectedRows[0].DataBoundItem).Object;
+                var rpc = RolePlayCharacterAsset.LoadFromFile(rpcSource.Source);
+                _rpcForm.Close();
+                _rpcForm = new RolePlayCharacterWF.MainForm();
+                _rpcForm.EditAssetInstance(() => rpc);
+                FormHelper.ShowFormInContainerControl(this.tabControl1.TabPages[1], _rpcForm);
+                this.tabControl1.SelectTab(1);
+                
+                buttonRemoveCharacter.Enabled = true;
+            }
 		}
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -546,5 +528,46 @@ namespace IntegratedAuthoringToolWF
 
             MessageBox.Show(validationMessage);
         }
+
+        private void tabPage2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridViewCharacters_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        protected override void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _rpcForm.Close();
+            _rpcForm = new RolePlayCharacterWF.MainForm();
+            
+            CreateNewAsset();
+        }
+
+
+        protected override void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dataGridViewCharacters.ClearSelection();
+            _rpcForm.Close();
+            Close();
+        }
+
+        protected override void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _rpcForm.LoadedAsset?.Save();
+            _rpcForm.ClearModified();
+            SaveAsset();
+        }
+
+        protected override void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _rpcForm.LoadedAsset?.Save();
+            _rpcForm.ClearModified();
+            SaveAssetAs();
+        }
+
     }
 }

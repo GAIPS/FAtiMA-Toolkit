@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Forms;
-using AssetManagerPackage;
-using GAIPS.AssetEditorTools;
 
-namespace IntegratedAuthoringToolWF
+namespace Teste
 {
     static class Program
     {
@@ -13,14 +14,9 @@ namespace IntegratedAuthoringToolWF
         [STAThread]
         static void Main()
         {
-			AssetManager.Instance.Bridge = new ApplicationBridge();
-
-			Application.EnableVisualStyles();
+            Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
-	        var form = new MainForm();
-			form.CreateNewAsset();
-            Application.Run(form);
+            Application.Run(new Form1());
         }
     }
 }

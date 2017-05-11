@@ -43,8 +43,13 @@ namespace GAIPS.AssetEditorTools
             ReloadEditor();
         }
 
+        public void ClearModified()
+        {
+            _wasModified = false;
+            UpdateWindowTitle();
+        }
 
-		public void SetModified()
+        public void SetModified()
 		{
 			if (_wasModified)
 				return;
@@ -122,16 +127,16 @@ namespace GAIPS.AssetEditorTools
 			ReloadEditor();
 		}
 
-		public void EditAssetInstance(Func<T> externalAssetResolver)
-		{
-			var newBool = externalAssetResolver != null;
+        public void EditAssetInstance(Func<T> externalAssetResolver)
+        {
+            var newBool = externalAssetResolver != null;
 
-			newToolStripMenuItem.Enabled = !newBool;
-			openToolStripMenuItem.Enabled = !newBool;
-			saveAsToolStripMenuItem.Enabled = !newBool;
+            newToolStripMenuItem.Enabled = !newBool;
+            openToolStripMenuItem.Enabled = !newBool;
+            saveAsToolStripMenuItem.Enabled = !newBool;
 
-			_getExternalAssetInstance = externalAssetResolver;
-		}
+            _getExternalAssetInstance = externalAssetResolver;
+        }
 
 		public void ReloadEditor()
 		{
@@ -146,7 +151,7 @@ namespace GAIPS.AssetEditorTools
 			}
 		}
 
-		private void newToolStripMenuItem_Click(object sender, EventArgs e)
+		protected virtual void newToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			CreateNewAsset();
 		}
@@ -169,17 +174,17 @@ namespace GAIPS.AssetEditorTools
 			ReloadEditor();
 		}
 
-		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+		protected virtual void saveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			SaveAsset();
 		}
 
-		private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+		protected virtual void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			SaveAssetAs();
 		}
 
-		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+		protected virtual void exitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Close();
 		}
@@ -194,7 +199,7 @@ namespace GAIPS.AssetEditorTools
 			if (!_wasModified)
 				return true;
 
-			var result = MessageBox.Show("The asset was modified but not saved.\nDo you wish to save now?", "File not saved",
+			var result = MessageBox.Show("The asset "+LoadedAsset.AssetFilePath+" was modified but not saved.\nDo you wish to save now?", "File not saved",
 				MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
 
 			switch (result)

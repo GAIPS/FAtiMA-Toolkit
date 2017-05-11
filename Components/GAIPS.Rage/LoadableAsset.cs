@@ -63,7 +63,7 @@ namespace GAIPS.Rage
 		{
 			if(string.IsNullOrEmpty(m_assetFilepath))
 				throw new Exception("No default file path defined for the asset. Please use SaveToFile(filepath).");
-
+            
 			SaveToFile(m_assetFilepath);
 		}
 
