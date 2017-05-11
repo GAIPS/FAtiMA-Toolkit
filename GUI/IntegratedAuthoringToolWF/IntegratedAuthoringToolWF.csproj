@@ -57,12 +57,6 @@
     <Compile Include="BaseIATForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DialogueEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DialogueEditorForm.Designer.cs">
-      <DependentUpon>DialogueEditorForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUIDialogStateAction.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -96,9 +90,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddOrEditDialogueActionForm.resx">
       <DependentUpon>AddOrEditDialogueActionForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DialogueEditorForm.resx">
-      <DependentUpon>DialogueEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
