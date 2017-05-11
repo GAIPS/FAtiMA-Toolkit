@@ -74,13 +74,13 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonPlayerRemoveDialogueAction_Click(object sender, System.EventArgs e)
         {
-        /*    IList<Guid> itemsToRemove = new List<Guid>();
+            IList<Guid> itemsToRemove = new List<Guid>();
             for (int i = 0; i < dataGridViewPlayerDialogueActions.SelectedRows.Count; i++)
             {
                 var item = ((ObjectView<GUIDialogStateAction>)dataGridViewPlayerDialogueActions.SelectedRows[i].DataBoundItem).Object;
                 itemsToRemove.Add(item.Id);
             }
-            _iatAsset.RemoveDialogueActions(PLAYER, itemsToRemove);*/
+            _iatAsset.RemoveDialogueActions(PLAYER, itemsToRemove);
 			RefreshPlayerDialogs();
 			_parentForm.SetModified();
         }

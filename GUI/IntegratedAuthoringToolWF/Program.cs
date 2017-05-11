@@ -20,6 +20,7 @@ namespace IntegratedAuthoringToolWF
 
 	        var form = new MainForm();
 			form.CreateNewAsset();
+            form.InitializeDialogueForm();
 			Application.Run(form);
         }
     }

@@ -30,16 +30,20 @@ namespace IntegratedAuthoringToolWF
         public MainForm()
 		{
 			InitializeComponent();
-
 			buttonEditCharacter.Enabled = false;
 			buttonRemoveCharacter.Enabled = false;
+        }
+
+
+        public void InitializeDialogueForm()
+        {
             _playerDialogs = new BindingListView<GUIDialogStateAction>(new List<GUIDialogStateAction>());
             dataGridViewPlayerDialogueActions.DataSource = _playerDialogs;
-           // RefreshPlayerDialogs();
+            RefreshPlayerDialogs();
 
             _agentDialogs = new BindingListView<GUIDialogStateAction>(new List<GUIDialogStateAction>());
             dataGridViewAgentDialogueActions.DataSource = _agentDialogs;
-            //RefreshAgentDialogs();
+            RefreshAgentDialogs();
             stateCounter = 0;
             totalSize = 0;
         }
@@ -216,12 +220,78 @@ namespace IntegratedAuthoringToolWF
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+
+        private void buttonAgentAddDialogAction_Click(object sender, EventArgs e)
+        {
+            new AddOrEditDialogueActionForm(this, false).ShowDialog();
+            RefreshAgentDialogs();
+        }
+
+        private void buttonAddPlayerDialogueAction_Click_1(object sender, EventArgs e)
+        {
+            new AddOrEditDialogueActionForm(this, true).ShowDialog();
+            RefreshPlayerDialogs();
+        }
+
+        private void buttonPlayerEditDialogueAction_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void buttonPlayerDuplicateDialogueAction_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonPlayerRemoveDialogueAction_Click(object sender, EventArgs e)
+        {
+            IList<Guid> itemsToRemove = new List<Guid>();
+            for (int i = 0; i < dataGridViewPlayerDialogueActions.SelectedRows.Count; i++)
+            {
+                var item = ((ObjectView<GUIDialogStateAction>)dataGridViewPlayerDialogueActions.SelectedRows[i].DataBoundItem).Object;
+                itemsToRemove.Add(item.Id);
+            }
+             LoadedAsset.RemoveDialogueActions(PLAYER, itemsToRemove);
+             RefreshPlayerDialogs();
+             this.SetModified();
+        }
+
+        private void buttonAgentEditDialogAction_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonAgentDuplicateDialogueAction_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonAgentRemoveDialogAction_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonImportExcel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonExportExcel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonImportTxt_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonTTS_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonValidate_Click(object sender, EventArgs e)
         {
 
         }

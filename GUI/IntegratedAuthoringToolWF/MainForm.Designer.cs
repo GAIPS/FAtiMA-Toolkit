@@ -326,6 +326,7 @@
             this.buttonPlayerDuplicateDialogueAction.TabIndex = 15;
             this.buttonPlayerDuplicateDialogueAction.Text = "Duplicate";
             this.buttonPlayerDuplicateDialogueAction.UseVisualStyleBackColor = true;
+            this.buttonPlayerDuplicateDialogueAction.Click += new System.EventHandler(this.buttonPlayerDuplicateDialogueAction_Click);
             // 
             // buttonPlayerEditDialogueAction
             // 
@@ -335,6 +336,7 @@
             this.buttonPlayerEditDialogueAction.TabIndex = 14;
             this.buttonPlayerEditDialogueAction.Text = "Edit";
             this.buttonPlayerEditDialogueAction.UseVisualStyleBackColor = true;
+            this.buttonPlayerEditDialogueAction.Click += new System.EventHandler(this.buttonPlayerEditDialogueAction_Click);
             // 
             // dataGridViewPlayerDialogueActions
             // 
@@ -391,6 +393,7 @@
             this.buttonAddPlayerDialogueAction.TabIndex = 10;
             this.buttonAddPlayerDialogueAction.Text = "Add";
             this.buttonAddPlayerDialogueAction.UseVisualStyleBackColor = true;
+            this.buttonAddPlayerDialogueAction.Click += new System.EventHandler(this.buttonAddPlayerDialogueAction_Click_1);
             // 
             // buttonPlayerRemoveDialogueAction
             // 
@@ -400,6 +403,7 @@
             this.buttonPlayerRemoveDialogueAction.TabIndex = 11;
             this.buttonPlayerRemoveDialogueAction.Text = "Remove";
             this.buttonPlayerRemoveDialogueAction.UseVisualStyleBackColor = true;
+            this.buttonPlayerRemoveDialogueAction.Click += new System.EventHandler(this.buttonPlayerRemoveDialogueAction_Click);
             // 
             // groupBox3
             // 
@@ -424,6 +428,7 @@
             this.buttonAgentDuplicateDialogueAction.TabIndex = 16;
             this.buttonAgentDuplicateDialogueAction.Text = "Duplicate";
             this.buttonAgentDuplicateDialogueAction.UseVisualStyleBackColor = true;
+            this.buttonAgentDuplicateDialogueAction.Click += new System.EventHandler(this.buttonAgentDuplicateDialogueAction_Click);
             // 
             // buttonAgentEditDialogAction
             // 
@@ -433,6 +438,7 @@
             this.buttonAgentEditDialogAction.TabIndex = 14;
             this.buttonAgentEditDialogAction.Text = "Edit";
             this.buttonAgentEditDialogAction.UseVisualStyleBackColor = true;
+            this.buttonAgentEditDialogAction.Click += new System.EventHandler(this.buttonAgentEditDialogAction_Click);
             // 
             // dataGridViewAgentDialogueActions
             // 
@@ -489,6 +495,7 @@
             this.buttonAgentAddDialogAction.TabIndex = 10;
             this.buttonAgentAddDialogAction.Text = "Add";
             this.buttonAgentAddDialogAction.UseVisualStyleBackColor = true;
+            this.buttonAgentAddDialogAction.Click += new System.EventHandler(this.buttonAgentAddDialogAction_Click);
             // 
             // buttonAgentRemoveDialogAction
             // 
@@ -498,6 +505,7 @@
             this.buttonAgentRemoveDialogAction.TabIndex = 11;
             this.buttonAgentRemoveDialogAction.Text = "Remove";
             this.buttonAgentRemoveDialogAction.UseVisualStyleBackColor = true;
+            this.buttonAgentRemoveDialogAction.Click += new System.EventHandler(this.buttonAgentRemoveDialogAction_Click);
             // 
             // buttonValidate
             // 
@@ -508,6 +516,7 @@
             this.buttonValidate.TabIndex = 22;
             this.buttonValidate.Text = "Validate";
             this.buttonValidate.UseVisualStyleBackColor = true;
+            this.buttonValidate.Click += new System.EventHandler(this.buttonValidate_Click);
             // 
             // buttonTTS
             // 
@@ -518,6 +527,7 @@
             this.buttonTTS.TabIndex = 20;
             this.buttonTTS.Text = "Text-To-Speech";
             this.buttonTTS.UseVisualStyleBackColor = true;
+            this.buttonTTS.Click += new System.EventHandler(this.buttonTTS_Click);
             // 
             // buttonImportTxt
             // 
@@ -528,7 +538,7 @@
             this.buttonImportTxt.TabIndex = 21;
             this.buttonImportTxt.Text = "Import Txt";
             this.buttonImportTxt.UseVisualStyleBackColor = true;
-            this.buttonImportTxt.Click += new System.EventHandler(this.button1_Click_1);
+            this.buttonImportTxt.Click += new System.EventHandler(this.buttonImportTxt_Click);
             // 
             // buttonImportExcel
             // 
@@ -539,7 +549,7 @@
             this.buttonImportExcel.TabIndex = 6;
             this.buttonImportExcel.Text = "Import Excel";
             this.buttonImportExcel.UseVisualStyleBackColor = true;
-            this.buttonImportExcel.Click += new System.EventHandler(this.button1_Click);
+            this.buttonImportExcel.Click += new System.EventHandler(this.buttonImportExcel_Click);
             // 
             // buttonExportExcel
             // 
@@ -550,13 +560,14 @@
             this.buttonExportExcel.TabIndex = 19;
             this.buttonExportExcel.Text = "Export Excel";
             this.buttonExportExcel.UseVisualStyleBackColor = true;
+            this.buttonExportExcel.Click += new System.EventHandler(this.buttonExportExcel_Click);
             // 
             // tabPage2
             // 
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(753, 731);
+            this.tabPage2.Size = new System.Drawing.Size(495, 488);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Role Play Character Editor";
             this.tabPage2.UseVisualStyleBackColor = true;
