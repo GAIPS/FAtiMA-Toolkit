@@ -35,7 +35,7 @@ namespace EmotionalAppraisal.OCCModel
 				emoType = (desirability > 0) ? OCCEmotionType.Gratitude : OCCEmotionType.Anger;
 			}
 
-			return new OCCBaseEmotion(emoType, potential, evt.Id, direction);
+			return new OCCBaseEmotion(emoType, potential, evt.Id, direction, evt.EventName);
 		}
 
 		private static OCCBaseEmotion OCCAppraiseWellBeing(uint evtId, Name eventName, float desirability) {
