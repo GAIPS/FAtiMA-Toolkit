@@ -9,6 +9,8 @@ namespace RolePlayCharacter
 
         public static readonly Name STRONGEST_EMOTION_PROPERTY_NAME = (Name)"StrongestEmotion";
 
+        public static readonly Name STRONGEST_EMOTION_FOR_EVENT_PROPERTY_NAME = (Name)"StrongestEmotionForEvent";
+
         public static readonly Name STRONGEST_WELL_BEING_EMOTION_PROPERTY_NAME = (Name)"StrongestWellBeingEmotion";
 
         public static readonly Name STRONGEST_ATTRIBUTION_PROPERTY_NAME = (Name)"StrongestAttributionEmotion";

@@ -407,6 +407,7 @@ namespace RolePlayCharacter
         {
             registry.RegistDynamicProperty(RPCConsts.MOOD_PROPERTY_NAME, MoodPropertyCalculator);
             registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator);
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_FOR_EVENT_PROPERTY_NAME, StrongestEmotionForEventCalculator);
             registry.RegistDynamicProperty(RPCConsts.STRONGEST_WELL_BEING_EMOTION_PROPERTY_NAME,
                 StrongestWellBeingEmotionCalculator);
             registry.RegistDynamicProperty(RPCConsts.STRONGEST_ATTRIBUTION_PROPERTY_NAME,
@@ -556,11 +557,11 @@ namespace RolePlayCharacter
 
 
     private IEnumerable<DynamicPropertyResult> StrongestEmotionCalculator(IQueryContext context, Name x)
-		{
-			if (context.Perspective != Name.SELF_SYMBOL)
+        {
+            if (context.Perspective != Name.SELF_SYMBOL)
 				yield break;
 
-			var emo = m_emotionalState.GetStrongestEmotion();
+            var emo = m_emotionalState.GetStrongestEmotion();
 			if (emo == null)
 				yield break;
 
@@ -583,6 +584,38 @@ namespace RolePlayCharacter
 						yield return new DynamicPropertyResult((Name)emoValue, c);
 				}
 			}
+        }
+
+        private IEnumerable<DynamicPropertyResult> StrongestEmotionForEventCalculator(IQueryContext context, Name x, Name cause)
+        {
+            if (context.Perspective != Name.SELF_SYMBOL)
+                yield break;
+            
+            var emo = m_emotionalState.GetStrongestEmotion(cause, m_am);
+            if (emo == null)
+            {
+                yield break;
+            }
+
+            var emoValue = emo.EmotionType;
+
+            if (x.IsVariable)
+            {
+                var sub = new Substitution(x, context.Perspective);
+                foreach (var c in context.Constraints)
+                {
+                    if (c.AddSubstitution(sub))
+                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                }
+            }
+            else
+            {
+                foreach (var resultPair in context.AskPossibleProperties(x))
+                {
+                    foreach (var c in resultPair.Item2)
+                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                }
+            }
         }
 
 

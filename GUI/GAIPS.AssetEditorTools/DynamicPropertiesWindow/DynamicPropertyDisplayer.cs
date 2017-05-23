@@ -56,6 +56,12 @@ namespace GAIPS.AssetEditorTools.DynamicPropertiesWindow
             new DynamicPropertyEntry()
             {
                 Origin = "Emotional Appraisal Asset",
+                PropertyTemplate = "StrongestEmotionForEvent([x],[y])",
+                Description = "The type of the current strongest emotion that agent [x] is feeling caused by event [y]"
+            },
+            new DynamicPropertyEntry()
+            {
+                Origin = "Emotional Appraisal Asset",
                 PropertyTemplate = "StrongestWellBeingEmotion([x])",
                 Description = "The type of the current strongest emotion that agent [x] is feeling among well being emotions (Joy, Distress)."
             },
