@@ -276,10 +276,12 @@ namespace EmotionalAppraisal
 			m_kb.Tell(Name.BuildName(name), null, p);
         }
 
-		private void UpdateEmotions(IAppraisalFrame frame, IEmotionalState emotionalState, AM am)
-		{
-			if (_lastFrameAppraisal >= frame.LastChange)
-				return;
+        private void UpdateEmotions(IAppraisalFrame frame, IEmotionalState emotionalState, AM am)
+        {
+            if (_lastFrameAppraisal > frame.LastChange)
+            {
+                return;
+            }
 
 			var emotions = m_occAffectDerivator.AffectDerivation(this, frame);
 			foreach (var emotion in emotions)
