@@ -52,6 +52,22 @@ namespace RolePlayCharacterTutorial
                 rpc.Update();
                Console.ReadLine();
 
+
+                if (x == 10)
+                {
+                    var event1 = EventHelper.ActionEnd("Player", "Kick", rpc.CharacterName.ToString());
+
+                    rpc.Perceive(new[] { event1 });
+                    action = rpc.Decide().FirstOrDefault();
+                    rpc.SaveToFile("../../../Examples/RPCTest-OutputEvent.rpc");
+                    rpc.Update();
+                }
+
+
+                if (x == 11)
+                {
+                    rpc.ResetEmotionalState();
+                }
                 if (x == 25)
                 {
                     var event1 = EventHelper.ActionEnd("Player", "Kick", rpc.CharacterName.ToString());

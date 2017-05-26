@@ -149,11 +149,12 @@ namespace EmotionalAppraisal
       
 
         /// <summary>
-        /// Clears all the emotions in the EmotionalState
+        /// Clears all the emotions in the EmotionalState and reset the mood to 0
         /// </summary>
         public void Clear()
         {
             this.emotionPool.Clear();
+            this.mood = new Mood();
         }
 
         /// <summary>

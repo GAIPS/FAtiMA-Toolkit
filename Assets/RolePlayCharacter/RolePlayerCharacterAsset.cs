@@ -241,6 +241,10 @@ namespace RolePlayCharacter
             return currentActiveEmotions.MaxValue(a => a.Intensity);
         }
 
+        public void ResetEmotionalState()
+        {
+            this.m_emotionalState.Clear();
+        }
 
         /// <summary>
         /// Returns all the associated information regarding an event

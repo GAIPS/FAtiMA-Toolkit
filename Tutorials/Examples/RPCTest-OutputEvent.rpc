@@ -22,39 +22,18 @@
 			"CommeillFautAssetSource": null,
 			"EmotionalState":
 				{
-					"Mood": -2.92329,
-					"initialTick": 27,
+					"Mood": -1.5,
+					"initialTick": 28,
 					"EmotionalPool": [
 						{
-							"Intensity": 3,
+							"Intensity": 5,
 							"Decay": 1,
 							"Threshold": 1,
-							"CauseId": 3,
-							"Direction": "Player",
-							"EmotionType": "Anger",
-							"Valence": "Negative",
-							"AppraisalVariables": ["DESIRABILITY", "PRAISEWORTHINESS"],
-							"InfluenceMood": true
-						}, 
-						{
-							"Intensity": 2.27,
-							"Decay": 1,
-							"Threshold": 1,
-							"CauseId": 3,
+							"CauseId": 4,
+							"EventName": "Event(Action-End, Player, Kick, Sam)",
 							"EmotionType": "Distress",
 							"Valence": "Negative",
 							"AppraisalVariables": ["DESIRABILITY"],
-							"InfluenceMood": true
-						}, 
-						{
-							"Intensity": 4.4743,
-							"Decay": 1,
-							"Threshold": 1,
-							"CauseId": 3,
-							"Direction": "Player",
-							"EmotionType": "Reproach",
-							"Valence": "Negative",
-							"AppraisalVariables": ["PRAISEWORTHINESS"],
 							"InfluenceMood": true
 						}],
 					"AppraisalConfiguration":
@@ -69,7 +48,7 @@
 				},
 			"AutobiographicMemory":
 				{
-					"Tick": 27,
+					"Tick": 28,
 					"records": [
 						{
 							"classId": 0,
@@ -94,8 +73,18 @@
 							"Id": 3,
 							"Type": "Action-End",
 							"Subject": "Player",
-							"Timestamp": 27,
-							"LinkedEmotions": ["Anger", "Distress", "Reproach"],
+							"Timestamp": 12,
+							"LinkedEmotions": ["Distress"],
+							"Action": "Kick",
+							"Target": "Sam"
+						}, 
+						{
+							"classId": 0,
+							"Id": 4,
+							"Type": "Action-End",
+							"Subject": "Player",
+							"Timestamp": 28,
+							"LinkedEmotions": ["Distress"],
 							"Action": "Kick",
 							"Target": "Sam"
 						}]
