@@ -2,9 +2,6 @@
 using AssetManagerPackage;
 using RolePlayCharacter;
 using System.Linq;
-using EmotionalAppraisal;
-using EmotionalAppraisal.DTOs;
-
 
 namespace RolePlayCharacterTutorial
 {

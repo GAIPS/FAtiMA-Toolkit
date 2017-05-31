@@ -284,10 +284,10 @@ namespace IntegratedAuthoringToolWF
                 var playerDialogs = ImportWorkSheet(excelDoc, "Player Dialogs").ToArray();
                 var agentDialogs = ImportWorkSheet(excelDoc, "Agent Dialogs").ToArray();
 
-                //Clear all actions
+                //Clear all actions from the asset
                 LoadedAsset.RemoveDialogueActions(PLAYER, LoadedAsset.GetDialogueActionsBySpeaker(PLAYER).ToArray());
-                LoadedAsset.RemoveDialogueActions(AGENT, LoadedAsset.GetDialogueActionsBySpeaker(PLAYER).ToArray());
-                
+                LoadedAsset.RemoveDialogueActions(AGENT, LoadedAsset.GetDialogueActionsBySpeaker(AGENT).ToArray());
+
                 foreach (var d in playerDialogs)
                     LoadedAsset.AddPlayerDialogAction(d);
 
@@ -416,7 +416,7 @@ namespace IntegratedAuthoringToolWF
             File.SetAttributes(fileName.DirectoryName, FileAttributes.Normal);
 
             LoadedAsset.RemoveDialogueActions(PLAYER, LoadedAsset.GetDialogueActionsBySpeaker(PLAYER).ToArray());
-            LoadedAsset.RemoveDialogueActions(AGENT, LoadedAsset.GetDialogueActionsBySpeaker(PLAYER).ToArray());
+            LoadedAsset.RemoveDialogueActions(AGENT, LoadedAsset.GetDialogueActionsBySpeaker(AGENT).ToArray());
 
             int stateCounter = 0;
             var lines = File.ReadAllLines(fileName.FullName);
