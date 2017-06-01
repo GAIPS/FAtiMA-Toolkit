@@ -243,35 +243,36 @@ namespace AutobiographicMemory
 
 		//LastEvent
 		private static readonly Name LAST_EVENT_ID_PROPERTY_NAME = Name.BuildName("LastEventId");
-		private IEnumerable<DynamicPropertyResult> LastEventIdPropertyCalculator(IQueryContext context, Name type, Name subject, Name def, Name target)
-		{
-			if(!context.Perspective.Match(Name.SELF_SYMBOL))
-				yield break;
+        private IEnumerable<DynamicPropertyResult> LastEventIdPropertyCalculator(IQueryContext context, Name type, Name subject, Name def, Name target)
+        {
+            if (!context.Perspective.Match(Name.SELF_SYMBOL))
+                yield break;
 
-			var key = Name.BuildName((Name)AMConsts.EVENT, type, subject, def, target);
+            var key = Name.BuildName((Name)AMConsts.EVENT, type, subject, def, target);
 
-			ulong min = ulong.MinValue;
-			var lastEvents = m_registry.Values.OrderByDescending(e => e.Timestamp).TakeWhile(e =>
-			{
-				if (e.Timestamp >= min)
-				{
-					min = e.Timestamp;
-					return true;
-				}
-				return false;
-			});
+            ulong min = ulong.MinValue;
+            var lastEvents = m_registry.Values.OrderByDescending(e => e.Timestamp).TakeWhile(e =>
+            {
+                if (e.Timestamp >= min)
+                {
+                    min = e.Timestamp;
+                    return true;
+                }
+                return false;
+            });
 
-			foreach (var le in lastEvents)
-			{
-				IEnumerable<Substitution> set;
-				if (Unifier.Unify(le.EventName, key, out set))
-					yield return new DynamicPropertyResult(Name.BuildName(le.Id), new SubstitutionSet(set));
-			}
-		}
+            //	foreach (var le in lastEvents)
+            //		{
+            var le = lastEvents.Last();
 
-		#endregion
+            IEnumerable<Substitution> set;
+            if (Unifier.Unify(le.EventName, key, out set))
+                yield return new DynamicPropertyResult(Name.BuildName(le.Id), new SubstitutionSet(set));
+        }
 
-		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+        #endregion
+
+        public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			dataHolder.SetValue("Tick",Tick);
 			dataHolder.SetValue("records", m_registry.Values.ToArray());
