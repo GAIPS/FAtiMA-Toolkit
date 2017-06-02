@@ -39,25 +39,30 @@ namespace RolePlayCharacterWF
 		{
 			_assetRequester = assetRequester;
 			_path.Text = assetPath;
-		}
+      
+        }
 
 		private void button1_Click(object sender, EventArgs e)
 		{
 			var path = _controlForm.SelectAssetFileFromBrowser();
+            
 			if(path==null)
 				return;
-
+         
 			try
 			{
-				LoadableAsset<TAsset>.LoadFromFile(path);
-				_path.Text = path;
+				var asset = LoadableAsset<TAsset>.LoadFromFile(path);
+				_path.Text = asset.AssetFilePath;
 				OnPathChanged?.Invoke(this, new EventArgs());
-			}
+                EditAsset();
+            }
 			catch (Exception ex)
 			{
 				MessageBox.Show(ex.Message + "-" + ex.StackTrace, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
-		}
+
+           
+        }
 
 		private void _clearButton_Click(object sender, EventArgs e)
 		{
