@@ -485,7 +485,7 @@ namespace CommeillFaut
                     char[] delims = {',', '(', ')'};
 
                     var result = action.Split(delims);
-                   // Console.WriteLine("action: " + action + " result0 " + result[0] + " result1 " + result[1] + " result2 " + result[2] + " result3 " + result[3] + " resul4 " + result[4] + " resul5 " + result[5] + " resul6 " + result[6] + " 7 " + result[7] );
+                //    Console.WriteLine("action: " + action + " result0 " + result[0] + " result1 " + result[1] + " result2 " + result[2] + " result3 " + result[3] + " resul4 " + result[4] + " resul5 " + result[5] + " resul6 " + result[6] + " 7 " + result[7] );
                     var initiator = e.GetNTerm(2);
                     var target = e.GetNTerm(4);
                     var seName = result[4];
@@ -493,7 +493,7 @@ namespace CommeillFaut
                     var socialExchange = m_SocialExchanges.Find(x => x.ActionName.ToString() == seName);
 
                     Console.WriteLine("CIF Asset Perceive, Character: " + initiator + " ended " + seName + " towards " +
-                                      target + " result " + seResult + "\n");
+                                      target + " result " + seResult + "social excahnge name" + socialExchange.ActionName + "\n");
 
                     EndSE(socialExchange, initiator, target, seResult);
                 }

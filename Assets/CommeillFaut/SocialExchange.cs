@@ -197,6 +197,7 @@ namespace CommeillFaut
 
             foreach (var ef in newEffectList)
             {
+                Console.WriteLine("Effects: " + me + " " + initiator + " "+ Target + " "+ resp + " " + ef + " " + isSpectator);
                 ApplyKeywordEffects(me, initiator, Target, resp, ef, isSpectator);
             }
           
@@ -262,11 +263,11 @@ namespace CommeillFaut
             {
                 if (!isInitiator && !spectator)
                 {
-                    if (me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")")) != null)
+                    if (me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + initiator.ToString() + ")")) != null)
                     {
                         value =
                             Convert.ToInt32(
-                                me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")")).ToString());
+                                me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + initiator.ToString() + ")")).ToString());
                         value += Convert.ToInt32(words[3]);
 
                     }
@@ -276,7 +277,7 @@ namespace CommeillFaut
                     }
 
                     var insert = "" + value;
-                    me.Tell((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")"), (Name)insert);
+                    me.Tell((Name)(words[0] + "(" + me.Perspective + "," + initiator.ToString() + ")"), (Name)insert);
                     
                 }
                 else if (spectator)
