@@ -350,10 +350,20 @@ namespace RolePlayCharacter
 
                     }
                     this.AddKnownAgent(e.GetNTerm(2));
-                    m_commeillFautAsset.AppraiseEvents(events, m_kb);
+                   var cif_Events = m_commeillFautAsset.AppraiseEvents(events, m_kb);
+                    if (cif_Events.Count >0)
+                    {
+                        var toPerceive = new List<Name>();
+                        foreach (var ev in cif_Events)
+                        {
+                           var newEvent = EventHelper.PropertyChange(ev.Key.ToString(), ev.Value.ToString(), this.CharacterName.ToString());
+                            toPerceive.Add(newEvent);
+                        }
+                        Perceive(toPerceive);
+                    }
+                   
 
-
-
+                    
 
                 }
 

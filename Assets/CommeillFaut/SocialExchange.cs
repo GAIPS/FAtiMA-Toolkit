@@ -171,7 +171,7 @@ namespace CommeillFaut
 
 
 
-        public void ApplyConsequences(KB me, Name initiator, Name Target, string response, bool isSpectator)
+        public Dictionary<Name, Name> ApplyConsequences(KB me, Name initiator, Name Target, string response, bool isSpectator)
         {
             int resp = 0;
 
@@ -180,7 +180,7 @@ namespace CommeillFaut
             
            
             
-            Console.WriteLine(" Much effects, such response: " + response);
+          //  Console.WriteLine(" Much effects, such response: " + response);
             var newEffectList = new List<String>();
 
             foreach (var effect in EffectsList)
@@ -194,24 +194,26 @@ namespace CommeillFaut
             }
                                      // Ideally we would be able to insert any 
 
-
+            var retList = new Dictionary<Name, Name>();
             foreach (var ef in newEffectList)
             {
                 Console.WriteLine("Effects: " + me + " " + initiator + " "+ Target + " "+ resp + " " + ef + " " + isSpectator);
-                ApplyKeywordEffects(me, initiator, Target, resp, ef, isSpectator);
+                var retPair = ApplyKeywordEffects(me, initiator, Target, resp, ef, isSpectator);
+                if(retPair.Key!=null)
+                retList.Add(retPair.Key, retPair.Value);
             }
-          
-            
+
+            return retList;
            
         }
 
-        public void ApplyKeywordEffects(KB me, Name initiator, Name other, int result, string keyword, bool spectator)
+        public KeyValuePair<Name,Name> ApplyKeywordEffects(KB me, Name initiator, Name other, int result, string keyword, bool spectator)
         {
             char[] delimitedChars = {'(', ')', ','};
             bool isInitiator = (initiator == me.Perspective);
             string[] words = keyword.Split(delimitedChars);
             var value = 0;
-            Console.WriteLine("Effects Keyword: " +  keyword);
+           // Console.WriteLine("Effects Keyword: " +  keyword);
                                        // social network but we don't store them just yet   Attraction(Initiator,Target,3)
                 if (words[1] == "Initiator")
                 {
@@ -224,7 +226,7 @@ namespace CommeillFaut
                                 Convert.ToInt32(
                                     me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")")).ToString());
                             value += Convert.ToInt32(words[3]);
-
+                        
                         }
                         else
                         {
@@ -232,10 +234,9 @@ namespace CommeillFaut
                         }
 
                         var insert = "" + value;
-                        me.Tell((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")"), (Name) insert);
-                        return;
+                    return new KeyValuePair<Name, Name>(Name.BuildName(words[0] + "(" + me.Perspective + "," + other.ToString() + ")"), Name.BuildName(insert));
                     }
-                else if (spectator)
+                    else if (spectator)
                 {
                     if (me.AskProperty((Name)(words[0] + "(" + initiator + "," + other + ")")) != null)
                     {
@@ -252,9 +253,10 @@ namespace CommeillFaut
                     }
 
                     var insert = "" + value;
-                    me.Tell((Name)(words[0] + "(" + initiator + "," + other.ToString() + ")"), (Name)insert);
-                }
 
+                    return new KeyValuePair<Name, Name>(Name.BuildName(words[0] + "(" + initiator + "," + other.ToString() + ")"), Name.BuildName(insert));
+
+                }
 
 
             }
@@ -277,8 +279,9 @@ namespace CommeillFaut
                     }
 
                     var insert = "" + value;
-                    me.Tell((Name)(words[0] + "(" + me.Perspective + "," + initiator.ToString() + ")"), (Name)insert);
-                    
+              
+                    return new KeyValuePair<Name, Name>(Name.BuildName(words[0] + "(" + me.Perspective + "," + initiator.ToString() + ")"), Name.BuildName(insert));
+
                 }
                 else if (spectator)
                 {
@@ -297,12 +300,18 @@ namespace CommeillFaut
                     }
 
                       var insert = "" + value;
-                    me.Tell((Name)(words[0] + "(" + other + "," + initiator + ")"), (Name)insert);
+                    
+
+                    return new KeyValuePair<Name, Name>(Name.BuildName(words[0] + "(" + other + "," + initiator + ")"), Name.BuildName(insert));
+
+
+
                 }
             }
 
 
 
+            return new KeyValuePair<Name, Name>();
 
         }
 

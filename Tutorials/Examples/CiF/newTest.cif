@@ -34,7 +34,11 @@
 						{
 							"dictionary": [{
 									"key": "Positive",
-									"value": ["Friendship(Initiator, Target, 4)", "Friendship(Target, Initiator, 5)"]}]
+									"value": ["Friendship(Initiator, Target, 4)", "Friendship(Target, Initiator, 5)"]},
+									{
+									"key": "Negative",
+									"value": ["Friendship(Initiator, Target, -4)", "Friendship(Target, Initiator, -5)"]}
+									]
 						}
 				
 				}, 
@@ -69,7 +73,11 @@
 						{
 							"dictionary": [{
 									"key": "Positive",
-									"value": ["Attraction(Initiator, Target, 4)", "Attraction(Target, Initiator, 5)"]}]
+									"value": ["Attraction(Initiator, Target, 4)", "Attraction(Target, Initiator, 5)"]},
+									{
+									"key": "Negative",
+									"value": ["Attraction(Initiator, Target, -4)", "Attraction(Target, Initiator, -5)"]}
+									]
 						}
 				}, 
 				{
@@ -104,7 +112,11 @@
 							"dictionary": [
 								{
 									"key": "Negative",
-									"value": ["Attraction(Initiator, Target, -4)", "Attraction(Target, Initiator, -4)"]
+									"value": ["Friendship(Initiator, Target, -6)", "Friendship(Target, Initiator, -6)"]
+								},
+								{
+									"key": "Positive",
+									"value": ["Friendship(Initiator, Target, -1)", "Friendship(Target, Initiator, -1)"]
 								}]
 						}
 				}],

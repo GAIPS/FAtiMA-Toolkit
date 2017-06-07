@@ -14,6 +14,7 @@ using KnowledgeBase;
 using WellFormedNames.Collections;
 
 
+
 namespace CommeillFaut
 {
        [Serializable]
@@ -431,7 +432,7 @@ namespace CommeillFaut
 
 
         #region Appraisal
-        public void AppraiseEvents(IEnumerable<Name> eventNames, KB kb)
+        public Dictionary<Name, Name> AppraiseEvents(IEnumerable<Name> eventNames, KB kb)
         {
             foreach (var e in eventNames.Select(e => e.RemoveSelfPerspective(kb.Perspective)))
             {
@@ -495,11 +496,11 @@ namespace CommeillFaut
                     Console.WriteLine("CIF Asset Perceive, Character: " + initiator + " ended " + seName + " towards " +
                                       target + " result " + seResult + "social excahnge name" + socialExchange.ActionName + "\n");
 
-                    EndSE(socialExchange, initiator, target, seResult);
+                    return EndSE(socialExchange, initiator, target, seResult);
                 }
-
+                
             }
-
+            return new Dictionary<Name, Name>();
         }
 
         public void StartSE(SocialExchange socialExchange, Name initiator, Name target)
@@ -541,7 +542,7 @@ namespace CommeillFaut
         }
 
 
-        public void EndSE(SocialExchange socialExchange, Name initiator, Name target, string result)
+        public Dictionary<Name,Name> EndSE(SocialExchange socialExchange, Name initiator, Name target, string result)
         {
             
 
@@ -550,7 +551,7 @@ namespace CommeillFaut
                 {
                     Console.WriteLine("I'm the target");
                     m_kB.Tell(Name.BuildName("DialogueState(" + initiator + ")"), Name.BuildName("Start"), Name.BuildName("SELF"));
-                m_SocialExchanges.Find(x => x.ActionName.ToString() == socialExchange.ActionName.ToString()).ApplyConsequences(m_kB, initiator, target, result,false);
+              return  m_SocialExchanges.Find(x => x.ActionName.ToString() == socialExchange.ActionName.ToString()).ApplyConsequences(m_kB, initiator, target, result,false);
             }
 
                 else if (initiator == m_kB.Perspective)
@@ -558,12 +559,12 @@ namespace CommeillFaut
                 Console.WriteLine("I'm the initiator");
                 m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(false), Name.BuildName("SELF"));
                     m_kB.Tell(Name.BuildName("DialogueState(" + target + ")"), Name.BuildName("Start"), Name.BuildName("SELF"));
-                m_SocialExchanges.Find(x => x.ActionName.ToString() == socialExchange.ActionName.ToString()).ApplyConsequences(m_kB,initiator ,target, result, false);
+              return  m_SocialExchanges.Find(x => x.ActionName.ToString() == socialExchange.ActionName.ToString()).ApplyConsequences(m_kB,initiator ,target, result, false);
 
             }
                 else
                 {
-                m_SocialExchanges.Find(x => x.ActionName.ToString() == socialExchange.ActionName.ToString()).ApplyConsequences(m_kB, initiator,target, result, true);
+             return   m_SocialExchanges.Find(x => x.ActionName.ToString() == socialExchange.ActionName.ToString()).ApplyConsequences(m_kB, initiator,target, result, true);
 
             }
 
