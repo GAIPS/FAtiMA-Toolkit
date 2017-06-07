@@ -10,10 +10,9 @@
 						{
 							"SELF":
 								{
-									"DialogueState(Mary)": "Start",
-									"DialogueState(Kate)": "Start",
 									"Friendship(SELF, Kate)": 10,
-									"Attraction(SELF, Mary)": 10
+									"Attraction(SELF, Mary)": 10,
+									"Attraction(SELF, Kate)": -10
 									
 								}
 						}
@@ -23,22 +22,40 @@
 					"AppraisalWeight": 1,
 					"Rules": [
 						{
-							"EventName": "Event(Action-End, *, Speak(*, *, *, Negative), *)",
+							"EventName": "Event(Property-Change, SELF, Friendship(SELF, *), [x])",
 							"Conditions":
 								{
-									"Set": []
+									"Set": ["[x] > 10"]
 								},
-							"Desirability": -5,
-							"Praiseworthiness": -5
+							"Desirability": 8,
+							"Praiseworthiness": 8
 						}, 
 						{
-							"EventName": "Event(Action-End, *, Speak(*, *, *, Positive), *)",
+							"EventName": "Event(Property-Change, SELF, Friendship(SELF, *), [x])",
 							"Conditions":
 								{
-									"Set": []
+									"Set": ["[x] < -10"]
 								},
-							"Desirability": 7,
-							"Praiseworthiness": 7
+							"Desirability": -8,
+							"Praiseworthiness": -8
+						},
+						{
+							"EventName": "Event(Property-Change, SELF, Attraction(SELF, *), [x])",
+							"Conditions":
+								{
+									"Set": ["[x] > 10"]
+								},
+							"Desirability": 8,
+							"Praiseworthiness": 8
+						}, 
+						{
+							"EventName": "Event(Property-Change, SELF, Attraction(SELF, *), [x])",
+							"Conditions":
+								{
+									"Set": ["[x] < -10"]
+								},
+							"Desirability": -8,
+							"Praiseworthiness": -8
 						}]
 				},
 			"EmotionDispositions": [
