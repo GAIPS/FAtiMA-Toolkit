@@ -9,8 +9,7 @@ namespace RolePlayCharacterTutorial
     {
         static void Main(string[] args)
         {
-			AssetManager.Instance.Bridge = new BasicIOBridge();
-            //Loading the asset
+		    //Loading the asset
 	        var rpc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/RPCTest.rpc");
             rpc.LoadAssociatedAssets();
 

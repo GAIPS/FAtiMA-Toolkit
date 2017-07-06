@@ -125,10 +125,15 @@ namespace GAIPS.Rage
 
 		protected static I GetInterface<I>()
 		{
-			if (AssetManager.Instance.Bridge != null && AssetManager.Instance.Bridge is I)
+            if (AssetManager.Instance.Bridge != null && AssetManager.Instance.Bridge is I)
 			{
 				return (I) (AssetManager.Instance.Bridge);
-			}
+            }
+            else if(AssetManager.Instance.Bridge == null)
+            {
+                AssetManager.Instance.Bridge = new BasicIOBridge();
+                return (I)(AssetManager.Instance.Bridge);
+            }
 			return default(I);
 		}
 	}

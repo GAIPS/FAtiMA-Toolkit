@@ -16,7 +16,6 @@ namespace EmotionalDecisionMakingTutorial
         //This is a small console program to exemplify the main functionality of the Emotional Decision Making Asset
         static void Main(string[] args)
         {
-			AssetManager.Instance.Bridge = new BasicIOBridge();
 			//First we construct a new instance of the EmotionalDecisionMakingAsset class
 			var edm = new EmotionalDecisionMakingAsset();
 

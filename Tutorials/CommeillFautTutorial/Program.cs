@@ -29,9 +29,6 @@ namespace CommeillFautTutorial
 
         static void Main(string[] args)
         {
-            AssetManager.Instance.Bridge = new BasicIOBridge();
-
-         
 
             var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/CiF/newCiF.iat");
             rpcList = new List<RolePlayCharacterAsset>();

@@ -14,8 +14,7 @@ namespace SocialImportanceTutorial
         //This is a small console program to exemplify the main functionality of the Social Importance Asset
         static void Main(string[] args)
         {
-			AssetManager.Instance.Bridge = new BasicIOBridge();
-            var siTarget = "Player";
+			var siTarget = "Player";
             
             //First, we load the asset from an existing profile
             var siAsset = SocialImportanceAsset.LoadFromFile("../../../Examples/SITest.si");

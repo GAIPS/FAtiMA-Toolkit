@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BasicIOBridge.cs" />
     <Compile Include="LoadableAsset.cs" />
     <Compile Include="PathUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

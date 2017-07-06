@@ -15,7 +15,6 @@ namespace EmotionalAppraisalTutorial
         //This is a small console program to exemplify the main functionality of the Emotional Appraisal Asset
         static void Main(string[] args)
         {
-			AssetManager.Instance.Bridge = new BasicIOBridge();
 			var kickEvent = (Name)"Event(Action-End, John, Kick, Player)";
 
             // To create a new asset it is required to tell the name of the agent which will correpond to the perspective of the "SELF" 

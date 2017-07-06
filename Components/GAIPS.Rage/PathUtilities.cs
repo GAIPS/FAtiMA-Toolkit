@@ -12,26 +12,6 @@ namespace GAIPS.Rage
 		public const char DirectorySeparatorChar = '\\';
 		public const char AltDirectorySeparatorChar = '/';
 		public static readonly char[] ValidSeparatorCharacters = new[] {DirectorySeparatorChar, AltDirectorySeparatorChar};
-		////private static bool IsDirChar(char c)
-		//{
-		//	return c == System.IO.Path.DirectorySeparatorChar || c == System.IO.Path.AltDirectorySeparatorChar;
-		//}
-
-		//public static bool IsPathRooted(string path)
-		//{
-		//	if (IsDirChar(path[0]))
-		//		return true;
-
-		//	if (char.IsLetter(path, 0) && path[1] == ':' && IsDirChar(path[3]))
-		//		return true;
-
-		//	return false;
-		//}
-
-		//public static bool HasExtension(string path)
-		//{
-
-		//}
 
 		public static string GetDirectoryName(string path)
 		{

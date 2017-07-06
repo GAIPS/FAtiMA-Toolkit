@@ -10,7 +10,6 @@ namespace IntegratedAuthoringToolTutorial
     {
         static void Main(string[] args)
         {
-            AssetManager.Instance.Bridge = new BasicIOBridge();
             var playerStr = IATConsts.PLAYER;
          
             //Loading the asset
