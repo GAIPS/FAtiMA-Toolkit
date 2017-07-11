@@ -45,6 +45,7 @@ namespace IntegratedAuthoringTool
             m_playerDialogues = new DialogActionDictionary();
             m_agentDialogues = new DialogActionDictionary();
 	        m_characterSources = new List<CharacterSourceDTO>();
+          
         }
 
 		/// <summary>
@@ -53,9 +54,10 @@ namespace IntegratedAuthoringTool
         public IEnumerable<CharacterSourceDTO> GetAllCharacterSources()
         {
 	        return m_characterSources.Select(p => new CharacterSourceDTO() {Id = p.Id, Source = ToAbsolutePath(p.Source)});
+
         }
 
-
+        
         public static string GenerateUtteranceId(string utterance)
         {
             utterance = utterance.RemoveWhiteSpace();

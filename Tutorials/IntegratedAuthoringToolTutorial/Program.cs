@@ -13,13 +13,13 @@ namespace IntegratedAuthoringToolTutorial
             var playerStr = IATConsts.PLAYER;
          
             //Loading the asset
-           var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/IATTest.iat");
-           var currentState = IATConsts.INITIAL_DIALOGUE_STATE;
-
+            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/IATTest.iat");
+            var currentState = IATConsts.INITIAL_DIALOGUE_STATE;
             var rpc = RolePlayCharacterAsset.LoadFromFile(iat.GetAllCharacterSources().FirstOrDefault().Source);
             rpc.LoadAssociatedAssets();
             iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
 
+            iat.GetAllCharacterSources().ToList();
             while (currentState != IATConsts.TERMINAL_DIALOGUE_STATE)
             {
                 var playerDialogs = iat.GetDialogueActionsByState(playerStr, currentState);
@@ -46,7 +46,8 @@ namespace IntegratedAuthoringToolTutorial
                 currentState = chosenDialog.NextState;
                 var dialogStateChangeEvt = EventHelper.PropertyChange(string.Format(IATConsts.DIALOGUE_STATE_PROPERTY,playerStr), chosenDialog.NextState, playerStr);
 
-                rpc.Perceive(new[] { speakEvt, dialogStateChangeEvt });
+                rpc.Perceive(speakEvt);
+                rpc.Perceive(dialogStateChangeEvt);
                 var characterActions = rpc.Decide();
 
                 var characterAction = characterActions.FirstOrDefault();

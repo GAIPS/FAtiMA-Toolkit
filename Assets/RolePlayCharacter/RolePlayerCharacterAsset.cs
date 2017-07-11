@@ -319,6 +319,14 @@ namespace RolePlayCharacter
             return result;
         }
 
+
+        //This method is here only to facilitate the integration with python
+        public void Perceive(Name evt)
+        {
+            this.Perceive(new[] { evt });
+        }
+
+
         public void Perceive(IEnumerable<Name> events)
         {
             m_socialImportanceAsset.InvalidateCachedSI();
@@ -370,8 +378,6 @@ namespace RolePlayCharacter
             }
 
             m_emotionalAppraisalAsset.AppraiseEvents(events, m_emotionalState, m_am, m_kb);
-
-
         }
 
 
