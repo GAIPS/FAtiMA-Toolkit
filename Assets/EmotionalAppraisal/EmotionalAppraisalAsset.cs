@@ -205,21 +205,21 @@ namespace EmotionalAppraisal
 		/// emotions.
 		/// </summary>
 		/// <param name="eventNames">A set of string representation of the events to appraise</param>
-		public void AppraiseEvents(IEnumerable<Name> eventNames, IEmotionalState emotionalState, AM am, KB kb)
+		public void AppraiseEvents(IEnumerable<Name> eventNames, IEnumerable<Name> perspectives, IEmotionalState emotionalState, AM am, KB kb)
 		{
 			var appraisalFrame = new InternalAppraisalFrame();
             appraisalFrame.Perspective = kb.Perspective;
+            var idx = 0;
 			foreach (var n in eventNames)
 			{
-				var evtN = n.RemoveSelfPerspective((Name)Perspective);
-				
-                var evt = am.RecordEvent(evtN, am.Tick);
+                var evt = am.RecordEvent(n, am.Tick);
 				var propEvt = evt as IPropertyChangedEvent;
 				if (propEvt != null)
 				{
 					var fact = propEvt.Property;
 					var value = propEvt.NewValue;
-                    kb.Tell(fact, value, Name.SELF_SYMBOL);
+                    kb.Tell(fact, value, perspectives.ElementAt(idx));
+                    idx++;
 				}
 
 				appraisalFrame.Reset(evt);
@@ -229,9 +229,20 @@ namespace EmotionalAppraisal
 			}
 		}
 
+        public void AppraiseEvents(IEnumerable<Name> eventNames, IEnumerable<Name> perspectives, IEmotionalState emotionalState, AM am)
+        {
+            AppraiseEvents(eventNames, perspectives, emotionalState, am, m_kb);
+        }
+
         public void AppraiseEvents(IEnumerable<Name> eventNames, IEmotionalState emotionalState, AM am)
         {
-            AppraiseEvents(eventNames, emotionalState, am, m_kb);
+            var perspectives = new List<Name>();
+            foreach(var name in eventNames)
+            {
+                perspectives.Add(Name.SELF_SYMBOL);
+            }
+
+            AppraiseEvents(eventNames, perspectives, emotionalState, am, m_kb);
         }
 
         /// <summary>

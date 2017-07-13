@@ -178,7 +178,7 @@ namespace RolePlayCharacter
             {
                 var name = Name.BuildName(bel.Name).SwapTerms(ea.Perspective, CharacterName);
                 var value = Name.BuildName(bel.Value).SwapTerms(ea.Perspective, CharacterName);
-                m_kb.Tell(name, value, (Name) bel.Perspective);
+                m_kb.Tell(name, value, (Name)bel.Perspective);
             }
 
             m_emotionalAppraisalAsset = ea;
@@ -315,71 +315,79 @@ namespace RolePlayCharacter
         /// <returns>The string value of the belief, or null if no belief exists.</returns>
         public string GetBeliefValue(string beliefName, string perspective = Name.SELF_STRING)
         {
-            var result = m_kb.AskProperty((Name) beliefName, (Name) perspective)?.ToString();
+            var result = m_kb.AskProperty((Name)beliefName, (Name)perspective)?.ToString();
             return result;
         }
 
-
-        //This method is here only to facilitate the integration with python
         public void Perceive(Name evt)
         {
-            this.Perceive(new[] { evt });
+            this.Perceive(evt, Name.SELF_SYMBOL);
         }
 
+        public void Perceive(Name evt, Name observer)
+        {
+            this.Perceive(new[] { evt }, new[] { observer });
+        }
 
         public void Perceive(IEnumerable<Name> events)
         {
-            m_socialImportanceAsset.InvalidateCachedSI();
-
-            foreach (var e in events.Select(e => e.RemoveSelfPerspective(m_kb.Perspective)))
+            var observers = new List<Name>();
+            foreach (var e in events)
             {
-
-                if (RPCConsts.ACTION_START_EVENT_PROTOTYPE.Match(e))
-                {
-                    var subject = e.GetNTerm(2);
-
-                    if (subject == this.CharacterName)
-                    {
-                        CurrentActionName = e.GetNTerm(3);
-                        CurrentActionTarget = e.GetNTerm(4);
-                    }
-                    //Add agent
-                    this.AddKnownAgent(subject);
-
-                }
-                if (RPCConsts.ACTION_END_EVENT_PROTOTYPE.Match(e))
-                {
-                    var evt = EventHelper.ActionEnd(this.CharacterName.ToString(), CurrentActionName?.ToString(),
-                        CurrentActionTarget?.ToString());
-                    if (evt.Match(e))
-                    {
-                        CurrentActionName = null;
-                        CurrentActionTarget = null;
-
-                    }
-                    this.AddKnownAgent(e.GetNTerm(2));
-                   var cif_Events = m_commeillFautAsset.AppraiseEvents(events, m_kb);
-                    if (cif_Events.Count >0)
-                    {
-                        var toPerceive = new List<Name>();
-                        foreach (var ev in cif_Events)
-                        {
-                           var newEvent = EventHelper.PropertyChange(ev.Key.ToString(), ev.Value.ToString(), this.CharacterName.ToString());
-                            toPerceive.Add(newEvent);
-                        }
-                        Perceive(toPerceive);
-                    }
-                   
-
-                    
-
-                }
-
+                observers.Add(Name.SELF_SYMBOL);
             }
-
-            m_emotionalAppraisalAsset.AppraiseEvents(events, m_emotionalState, m_am, m_kb);
+            this.Perceive(events, observers);
         }
 
+        public void Perceive(IEnumerable<Name> events, IEnumerable<Name> observers)
+        {
+            m_socialImportanceAsset.InvalidateCachedSI();
+
+            var idx = 0;
+            foreach (var e in events)
+            {
+                var observer = observers.ElementAt(idx);
+                if(observer == Name.SELF_SYMBOL)
+                {
+                    if (RPCConsts.ACTION_START_EVENT_PROTOTYPE.Match(e))
+                    {
+                        var subject = e.GetNTerm(2);
+
+                        if (subject == this.CharacterName)
+                        {
+                            CurrentActionName = e.GetNTerm(3);
+                            CurrentActionTarget = e.GetNTerm(4);
+                        }
+                        //Add agent
+                        this.AddKnownAgent(subject);
+                    }
+                    if (RPCConsts.ACTION_END_EVENT_PROTOTYPE.Match(e))
+                    {
+                        var actEndEvt = EventHelper.ActionEnd(this.CharacterName.ToString(), CurrentActionName?.ToString(),
+                            CurrentActionTarget?.ToString());
+                        if (actEndEvt.Match(e))
+                        {
+                            CurrentActionName = null;
+                            CurrentActionTarget = null;
+                        }
+                        this.AddKnownAgent(e.GetNTerm(2));
+                        var cif_Events = m_commeillFautAsset.AppraiseEvents(new[] { e }, m_kb);
+                        if (cif_Events.Count > 0)
+                        {
+                            var toPerceive = new List<Name>();
+                            foreach (var ev in cif_Events)
+                            {
+                                var newEvent = EventHelper.PropertyChange(ev.Key.ToString(), ev.Value.ToString(), this.CharacterName.ToString());
+                                toPerceive.Add(newEvent);
+                            }
+                            Perceive(toPerceive);
+                        }
+                    }
+                }
+                m_emotionalAppraisalAsset.AppraiseEvents(events, observers, m_emotionalState, m_am, m_kb);
+                idx++;
+            }
+        }
 
         public IEnumerable<IAction> Decide()
         {
@@ -398,8 +406,6 @@ namespace RolePlayCharacter
 
             return TakeBestActions(sociallyAcceptedActions).Shuffle();
         }
-
-
 
         private void AddKnownAgent(Name agentName)
         {
@@ -485,7 +491,7 @@ namespace RolePlayCharacter
         }
 
 
-        private static readonly Name ROUND_TO_TENS_METHOD_TEMPLATE = (Name) "RoundtoTensMethod";
+        private static readonly Name ROUND_TO_TENS_METHOD_TEMPLATE = (Name)"RoundtoTensMethod";
 
         private IEnumerable<DynamicPropertyResult> RoundtoTensMethodCalculator(IQueryContext context, Name x, Name digits)
         {
@@ -504,9 +510,9 @@ namespace RolePlayCharacter
 
                             var toRet = Convert.ToDouble(sub.Value.ToString());
                             // Console.WriteLine("Round method calculation for: " + x.ToString() + " the value : " + toRet);
-                            toRet = toRet/toTens;
+                            toRet = toRet / toTens;
                             toRet = Math.Round(toRet, 0);
-                            toRet = toRet*toTens;
+                            toRet = toRet * toTens;
                             //      Console.WriteLine("Round method calculation for: " + x.ToString() + " rounded value " + sub.Value.ToString()+ " result : " + toRet);
 
                             yield return new DynamicPropertyResult(Name.BuildName(toRet), c);
@@ -516,7 +522,7 @@ namespace RolePlayCharacter
             }
         }
 
-        private static readonly Name ROUND_METHOD_TEMPLATE = (Name) "RoundMethod";
+        private static readonly Name ROUND_METHOD_TEMPLATE = (Name)"RoundMethod";
 
         private IEnumerable<DynamicPropertyResult> RoundMethodCalculator(IQueryContext context, Name x, Name digits)
         {
@@ -553,7 +559,7 @@ namespace RolePlayCharacter
 
 
 
-        private static readonly Name RANDOM_METHOD_TEMPLATE = (Name) "Random";
+        private static readonly Name RANDOM_METHOD_TEMPLATE = (Name)"Random";
 
         private IEnumerable<DynamicPropertyResult> RandomCalculator(IQueryContext context, Name min, Name max)
         {
@@ -566,51 +572,51 @@ namespace RolePlayCharacter
             var toRet = rand.Next(minValue, maxValue);
             // Console.WriteLine("Round method calculation for: " + x.ToString() + " the value : " + toRet);
             var subSet = new SubstitutionSet();
-           //        Console.WriteLine("Random method calculation for:" + minValue + " max " + maxValue + " to return value: " + toRet);
+            //        Console.WriteLine("Random method calculation for:" + minValue + " max " + maxValue + " to return value: " + toRet);
 
             yield return new DynamicPropertyResult(Name.BuildName(toRet), subSet);
         }
 
-    
-
-    
 
 
-    private IEnumerable<DynamicPropertyResult> StrongestEmotionCalculator(IQueryContext context, Name x)
+
+
+
+        private IEnumerable<DynamicPropertyResult> StrongestEmotionCalculator(IQueryContext context, Name x)
         {
             if (context.Perspective != Name.SELF_SYMBOL)
-				yield break;
+                yield break;
 
             var emo = m_emotionalState.GetStrongestEmotion();
-			if (emo == null)
-				yield break;
+            if (emo == null)
+                yield break;
 
-			var emoValue = emo.EmotionType;
+            var emoValue = emo.EmotionType;
 
-			if (x.IsVariable)
-			{
-				var sub = new Substitution(x, context.Perspective);
-				foreach (var c in context.Constraints)
-				{
-					if (c.AddSubstitution(sub))
-						yield return new DynamicPropertyResult((Name)emoValue, c);
-				}
-			}
-			else
-			{
-				foreach (var resultPair in context.AskPossibleProperties(x))
-				{
-					foreach (var c in resultPair.Item2)
-						yield return new DynamicPropertyResult((Name)emoValue, c);
-				}
-			}
+            if (x.IsVariable)
+            {
+                var sub = new Substitution(x, context.Perspective);
+                foreach (var c in context.Constraints)
+                {
+                    if (c.AddSubstitution(sub))
+                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                }
+            }
+            else
+            {
+                foreach (var resultPair in context.AskPossibleProperties(x))
+                {
+                    foreach (var c in resultPair.Item2)
+                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                }
+            }
         }
 
         private IEnumerable<DynamicPropertyResult> StrongestEmotionForEventCalculator(IQueryContext context, Name x, Name cause)
         {
             if (context.Perspective != Name.SELF_SYMBOL)
                 yield break;
-            
+
             var emo = m_emotionalState.GetStrongestEmotion(cause, m_am);
             if (emo == null)
             {
@@ -778,141 +784,141 @@ namespace RolePlayCharacter
         }
 
         private static readonly Name EMOTION_INTENSITY_TEMPLATE = (Name)"EmotionIntensity";
-		private IEnumerable<DynamicPropertyResult> EmotionIntensityPropertyCalculator(IQueryContext context, Name x, Name y)
-		{
-			List<DynamicPropertyResult> result = new List<DynamicPropertyResult>();
-			if (context.Perspective != Name.SELF_SYMBOL)
-				return result;
+        private IEnumerable<DynamicPropertyResult> EmotionIntensityPropertyCalculator(IQueryContext context, Name x, Name y)
+        {
+            List<DynamicPropertyResult> result = new List<DynamicPropertyResult>();
+            if (context.Perspective != Name.SELF_SYMBOL)
+                return result;
 
-			Name entity = x;
-			Name emotionName = y;
+            Name entity = x;
+            Name emotionName = y;
 
-			if (entity.IsVariable)
-			{
-				var newSub = new Substitution(entity, context.Perspective);
-				var newC = context.Constraints.Where(c => c.AddSubstitution(newSub));
-				if (newC.Any())
-					result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, context.Queryable, context.Perspective, newC));
-			}
-			else
-			{
-				foreach (var resultPair in context.AskPossibleProperties(entity))
-				{
-					result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, context.Queryable, context.Perspective, resultPair.Item2));
-				}
-			}
-			return result;
-		}
+            if (entity.IsVariable)
+            {
+                var newSub = new Substitution(entity, context.Perspective);
+                var newC = context.Constraints.Where(c => c.AddSubstitution(newSub));
+                if (newC.Any())
+                    result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, context.Queryable, context.Perspective, newC));
+            }
+            else
+            {
+                foreach (var resultPair in context.AskPossibleProperties(entity))
+                {
+                    result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, context.Queryable, context.Perspective, resultPair.Item2));
+                }
+            }
+            return result;
+        }
 
-		private IEnumerable<DynamicPropertyResult> GetEmotionsForEntity(IEmotionalState state,
-			Name emotionName, WellFormedNames.IQueryable kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
-		{
-			if (emotionName.IsVariable)
-			{
-				foreach (var emotion in state.GetAllEmotions())
-				{
-					var sub = new Substitution(emotionName, (Name)emotion.EmotionType);
-					foreach (var c in constraints)
-					{
-						if (c.Conflicts(sub))
-							continue;
+        private IEnumerable<DynamicPropertyResult> GetEmotionsForEntity(IEmotionalState state,
+            Name emotionName, WellFormedNames.IQueryable kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
+        {
+            if (emotionName.IsVariable)
+            {
+                foreach (var emotion in state.GetAllEmotions())
+                {
+                    var sub = new Substitution(emotionName, (Name)emotion.EmotionType);
+                    foreach (var c in constraints)
+                    {
+                        if (c.Conflicts(sub))
+                            continue;
 
-						var newConstraints = new SubstitutionSet(c);
-						newConstraints.AddSubstitution(sub);
-						yield return new DynamicPropertyResult(Name.BuildName(emotion.Intensity), newConstraints);
-					}
-				}
-			}
-			else
-			{
-				foreach (var resultPair in kb.AskPossibleProperties(emotionName, perspective, constraints))
-				{
-					string emotionKey = resultPair.Item1.ToString();
-					var emotion = state.GetEmotionsByType(emotionKey).OrderByDescending(e => e.Intensity).FirstOrDefault();
-					float value = emotion?.Intensity ?? 0;
-					foreach (var c in resultPair.Item2)
-						yield return new DynamicPropertyResult(Name.BuildName(value), c);
-				}
-			}
-		}
+                        var newConstraints = new SubstitutionSet(c);
+                        newConstraints.AddSubstitution(sub);
+                        yield return new DynamicPropertyResult(Name.BuildName(emotion.Intensity), newConstraints);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var resultPair in kb.AskPossibleProperties(emotionName, perspective, constraints))
+                {
+                    string emotionKey = resultPair.Item1.ToString();
+                    var emotion = state.GetEmotionsByType(emotionKey).OrderByDescending(e => e.Intensity).FirstOrDefault();
+                    float value = emotion?.Intensity ?? 0;
+                    foreach (var c in resultPair.Item2)
+                        yield return new DynamicPropertyResult(Name.BuildName(value), c);
+                }
+            }
+        }
 
-		private static readonly Name IS_AGENT_TEMPLATE = (Name)"IsAgent";
-		private IEnumerable<DynamicPropertyResult> IsAgentPropertyCalculator(IQueryContext context, Name x)
-		{
-			if (context.Perspective != Name.SELF_SYMBOL)
-				yield break;
+        private static readonly Name IS_AGENT_TEMPLATE = (Name)"IsAgent";
+        private IEnumerable<DynamicPropertyResult> IsAgentPropertyCalculator(IQueryContext context, Name x)
+        {
+            if (context.Perspective != Name.SELF_SYMBOL)
+                yield break;
 
-			if (x.IsVariable)
-			{
-				var otherAgentsSubstitutions = m_otherAgents.Keys.Append(CharacterName).Select(n => new Substitution(x, n));
+            if (x.IsVariable)
+            {
+                var otherAgentsSubstitutions = m_otherAgents.Keys.Append(CharacterName).Select(n => new Substitution(x, n));
 
-				foreach (var s in otherAgentsSubstitutions)
-				{
-					foreach (var set in context.Constraints)
-					{
-						if(set.Conflicts(s))
-							continue;
+                foreach (var s in otherAgentsSubstitutions)
+                {
+                    foreach (var set in context.Constraints)
+                    {
+                        if (set.Conflicts(s))
+                            continue;
 
-						var r = new SubstitutionSet(set);
-						r.AddSubstitution(s);
-						yield return new DynamicPropertyResult(Name.BuildName(true), r);
-					}
-				}
+                        var r = new SubstitutionSet(set);
+                        r.AddSubstitution(s);
+                        yield return new DynamicPropertyResult(Name.BuildName(true), r);
+                    }
+                }
 
-				yield break;
-			}
+                yield break;
+            }
 
-			foreach (var prop in context.AskPossibleProperties(x))
-			{
-				var i = prop.Item1;
-				if (m_otherAgents.ContainsKey(i) || i == CharacterName)
-				{
-					foreach (var p in prop.Item2)
-					{
-						yield return new DynamicPropertyResult(i, p);
-					}
-				}
-			}
-		}
+            foreach (var prop in context.AskPossibleProperties(x))
+            {
+                var i = prop.Item1;
+                if (m_otherAgents.ContainsKey(i) || i == CharacterName)
+                {
+                    foreach (var p in prop.Item2)
+                    {
+                        yield return new DynamicPropertyResult(i, p);
+                    }
+                }
+            }
+        }
 
-		#endregion
+        #endregion
 
-		/// @cond DEV
-		#region ICustomSerialization
+        /// @cond DEV
+        #region ICustomSerialization
 
-		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
-		{
-			dataHolder.SetValue("KnowledgeBase", m_kb);
-			dataHolder.SetValue("BodyName", this.BodyName);
-			dataHolder.SetValue("VoiceName", this.VoiceName);
-			dataHolder.SetValue("EmotionalAppraisalAssetSource", this.m_emotionalAppraisalAssetSource);
-			dataHolder.SetValue("EmotionalDecisionMakingSource", this.m_emotionalDecisionMakingAssetSource);
-			dataHolder.SetValue("SocialImportanceAssetSource", this.m_socialImportanceAssetSource);
-			dataHolder.SetValue("CommeillFautAssetSource", this.m_commeillFautAssetSource);
-			dataHolder.SetValue("EmotionalState", m_emotionalState);
-			dataHolder.SetValue("AutobiographicMemory", m_am);
-			dataHolder.SetValue("OtherAgents", m_otherAgents);
-		}
+        public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+        {
+            dataHolder.SetValue("KnowledgeBase", m_kb);
+            dataHolder.SetValue("BodyName", this.BodyName);
+            dataHolder.SetValue("VoiceName", this.VoiceName);
+            dataHolder.SetValue("EmotionalAppraisalAssetSource", this.m_emotionalAppraisalAssetSource);
+            dataHolder.SetValue("EmotionalDecisionMakingSource", this.m_emotionalDecisionMakingAssetSource);
+            dataHolder.SetValue("SocialImportanceAssetSource", this.m_socialImportanceAssetSource);
+            dataHolder.SetValue("CommeillFautAssetSource", this.m_commeillFautAssetSource);
+            dataHolder.SetValue("EmotionalState", m_emotionalState);
+            dataHolder.SetValue("AutobiographicMemory", m_am);
+            dataHolder.SetValue("OtherAgents", m_otherAgents);
+        }
 
-		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
-		{
-			m_allowAuthoring = true;
+        public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+        {
+            m_allowAuthoring = true;
 
-			m_kb = dataHolder.GetValue<KB>("KnowledgeBase");
-			this.BodyName = dataHolder.GetValue<string>("BodyName");
-			this.VoiceName = dataHolder.GetValue<string>("VoiceName");
-			this.m_emotionalAppraisalAssetSource = dataHolder.GetValue<string>("EmotionalAppraisalAssetSource");
-			this.m_emotionalDecisionMakingAssetSource = dataHolder.GetValue<string>("EmotionalDecisionMakingSource");
-			this.m_socialImportanceAssetSource = dataHolder.GetValue<string>("SocialImportanceAssetSource");
-			this.m_commeillFautAssetSource = dataHolder.GetValue<string>("CommeillFautAssetSource");
-			m_emotionalState = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
-			m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
-			m_otherAgents = dataHolder.GetValue<Dictionary<Name, AgentEntry>>("OtherAgents");
-			if (m_otherAgents == null) { m_otherAgents = new Dictionary<Name, AgentEntry>(); }
-			BindToRegistry(m_kb);
-		}
+            m_kb = dataHolder.GetValue<KB>("KnowledgeBase");
+            this.BodyName = dataHolder.GetValue<string>("BodyName");
+            this.VoiceName = dataHolder.GetValue<string>("VoiceName");
+            this.m_emotionalAppraisalAssetSource = dataHolder.GetValue<string>("EmotionalAppraisalAssetSource");
+            this.m_emotionalDecisionMakingAssetSource = dataHolder.GetValue<string>("EmotionalDecisionMakingSource");
+            this.m_socialImportanceAssetSource = dataHolder.GetValue<string>("SocialImportanceAssetSource");
+            this.m_commeillFautAssetSource = dataHolder.GetValue<string>("CommeillFautAssetSource");
+            m_emotionalState = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
+            m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
+            m_otherAgents = dataHolder.GetValue<Dictionary<Name, AgentEntry>>("OtherAgents");
+            if (m_otherAgents == null) { m_otherAgents = new Dictionary<Name, AgentEntry>(); }
+            BindToRegistry(m_kb);
+        }
 
-		/// @endcond
-		#endregion
-	}
+        /// @endcond
+        #endregion
+    }
 }

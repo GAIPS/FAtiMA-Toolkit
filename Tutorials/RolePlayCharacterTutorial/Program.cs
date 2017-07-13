@@ -1,6 +1,7 @@
 ﻿using System;
 using RolePlayCharacter;
 using System.Linq;
+using WellFormedNames;
 
 namespace RolePlayCharacterTutorial
 {
@@ -22,10 +23,13 @@ namespace RolePlayCharacterTutorial
             Console.WriteLine("Strongest emotion: " + rpc.GetStrongestActiveEmotion()?.EmotionType + "-" + rpc.GetStrongestActiveEmotion()?.Intensity);
             Console.WriteLine("First Response: " + action?.Name + ", Target:" + action?.Target.ToString());
 
+            var event11 = EventHelper.PropertyChange("Likes(Bananas)", "true", rpc.CharacterName.ToString());
+            rpc.Perceive(event11, Name.UNIVERSAL_SYMBOL);
+            rpc.SaveToFile("../../../Examples/RPCTest-Output.rpc");
             var event2 = EventHelper.ActionStart(rpc.CharacterName.ToString(), action?.Name.ToString(), "Player");
 
-            rpc.Perceive(new[] { event2 });
-            var busyAction = rpc.Decide().FirstOrDefault(); ;
+            rpc.Perceive(event2);
+            var busyAction = rpc.Decide().FirstOrDefault();
 
             Console.WriteLine("Second Response: " + busyAction?.Name + ", Target:" + action?.Target.ToString());
 

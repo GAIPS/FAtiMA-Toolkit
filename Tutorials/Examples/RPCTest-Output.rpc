@@ -11,18 +11,22 @@
 								{
 									"IsFriend(Player)": true,
 									"Likes(Sam, Kick)": false
+								},
+							"Universal":
+								{
+									"Likes(Bananas)": true
 								}
 						}
 				},
 			"BodyName": "Female",
 			"VoiceName": "",
-			"EmotionalAppraisalAssetSource": "\\Examples\\EATest.ea",
-			"EmotionalDecisionMakingSource": "\\Examples\\EDMTest.edm",
+			"EmotionalAppraisalAssetSource": "../../../Examples\\EATest.ea",
+			"EmotionalDecisionMakingSource": "../../../Examples\\EDMTest.edm",
 			"SocialImportanceAssetSource": null,
 			"CommeillFautAssetSource": null,
 			"EmotionalState":
 				{
-					"Mood": 0,
+					"Mood": 4.863275,
 					"initialTick": 0,
 					"EmotionalPool": [],
 					"AppraisalConfiguration":
@@ -37,78 +41,27 @@
 				},
 			"AutobiographicMemory":
 				{
-					"Tick": 163,
+					"Tick": 1,
 					"records": [
 						{
 							"classId": 0,
 							"Id": 1,
-							"Type": "Action-Start",
+							"Type": "Property-Change",
 							"Subject": "Sam",
 							"Timestamp": 1,
-							"Action": "Compliment",
-							"Target": "Player"
-						}, 
-						{
-							"classId": 0,
-							"Id": 2,
-							"Type": "Action-End",
-							"Subject": "Sam",
-							"Timestamp": 1,
-							"Action": "Compliment",
-							"Target": "Player"
-						}, 
-						{
-							"classId": 0,
-							"Id": 3,
-							"Type": "Action-End",
-							"Subject": "Player",
-							"Timestamp": 12,
-							"LinkedEmotions": ["Distress"],
-							"Action": "Kick",
-							"Target": "Sam"
-						}, 
-						{
-							"classId": 0,
-							"Id": 4,
-							"Type": "Action-End",
-							"Subject": "Player",
-							"Timestamp": 28,
-							"LinkedEmotions": ["Distress"],
-							"Action": "Kick",
-							"Target": "Sam"
+							"Property": "Likes(Bananas)",
+							"NewValue": true
 						}]
 				},
 			"OtherAgents":
 				{
-					"dictionary": [
-						{
-							"key": "Player",
-							"value":
-								{
-									"Name": "Player",
-									"EmotionalState":
-										{
-											"Mood": 0,
-											"initialTick": 0,
-											"EmotionalPool": [],
-											"AppraisalConfiguration":
-												{
-													"HalfLifeDecayConstant": 0.5,
-													"EmotionInfluenceOnMoodFactor": 0.3,
-													"MoodInfluenceOnEmotionFactor": 0.3,
-													"MinimumMoodValueForInfluencingEmotions": 0.5,
-													"EmotionalHalfLifeDecayTime": 15,
-													"MoodHalfLifeDecayTime": 60
-												}
-										}
-								}
-						}]
+					"dictionary": []
 				}
 		},
 	"types": [
 		{
 			"TypeId": 0,
-			"ClassName": "AutobiographicMemory.AM+ActionEvent, AutobiographicMemory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+			"ClassName": "AutobiographicMemory.AM+PropertyChangeEvent, AutobiographicMemory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 		}, 
 		{
 			"TypeId": 1,
