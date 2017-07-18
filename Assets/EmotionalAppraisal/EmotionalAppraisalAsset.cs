@@ -158,11 +158,12 @@ namespace EmotionalAppraisal
 
 		public IEnumerable<BeliefDTO> GetAllBeliefs()
 		{
-			return m_kb.GetAllBeliefs().Select(b => new BeliefDTO
-			{
-				Name = b.Name.ToString(),
-				Perspective = b.Perspective.ToString(),
-				Value = b.Value.ToString()
+            return m_kb.GetAllBeliefs().Select(b => new BeliefDTO
+            {
+                Name = b.Name.ToString(),
+                Perspective = b.Perspective.ToString(),
+                Value = b.Value.ToString(),
+                Certainty = b.Certainty
 			});
 		}
 

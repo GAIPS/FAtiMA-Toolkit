@@ -20,25 +20,65 @@ namespace KnowledgeBase
 	{
 		private const int MAX_TOM_LVL = 2;
 
+        private class BeliefValue
+        {
+            public Name Value { get; private set; }
+            public float Certainty { get; private set; }
+
+            public BeliefValue(Name value)
+            {
+                this.Value = value;
+                this.Certainty = 1.0f;
+            }
+
+            public BeliefValue(Name value, float certainty)
+            {
+                this.Value = value;
+                this.Certainty = certainty;
+            }
+
+            public string Serialize()
+            {
+                return this.Value + ", " + this.Certainty;
+            }
+
+            public static BeliefValue Deserialize(string value)
+            {
+                var aux = value.RemoveWhiteSpace();
+                if (aux.Contains(","))
+                {
+                    var split = aux.Split(',');
+                    return new BeliefValue((Name)split[0], float.Parse(split[1]));
+                }
+                else
+                {
+                    return new BeliefValue((Name)aux);
+                }
+            }
+        }
+
 		private sealed class KnowledgeEntry
 		{
-			private Name m_universal = null;
-			private Dictionary<Name, Name> m_perspectives;
+			private BeliefValue m_universal = null;
+			private Dictionary<Name, BeliefValue> m_perspectives;
 
-			public Name GetValueFor(Name mindKey, Name finalPerspective)
+			public BeliefValue GetValueFor(Name mindKey, Name finalPerspective)
 			{
-				Name value;
-				if ((m_perspectives != null) && m_perspectives.TryGetValue(mindKey, out value))
-					return value.SwapTerms(Name.SELF_SYMBOL,finalPerspective);
+				BeliefValue belief;
+				if ((m_perspectives != null) && m_perspectives.TryGetValue(mindKey, out belief))
+                {
+                    return new BeliefValue(belief.Value.SwapTerms(Name.SELF_SYMBOL, finalPerspective),
+                        belief.Certainty);
+                }
 
-				return m_universal;
+                return m_universal;
 			}
 
 			public void TellValueFor(Name perspective, Name value)
 			{
 				if (perspective.IsUniversal)
 				{
-					m_universal = value;
+					m_universal = new BeliefValue(value);
 					return;
 				}
 
@@ -47,7 +87,7 @@ namespace KnowledgeBase
 					if(value==null)
 						return;
 
-					m_perspectives = new Dictionary<Name, Name>();
+					m_perspectives = new Dictionary<Name, BeliefValue>();
 				}
 
 				if (value == null)
@@ -56,8 +96,11 @@ namespace KnowledgeBase
 					if (m_perspectives.Count == 0)
 						m_perspectives = null;
 				}
-				else
-					m_perspectives[perspective] = value;
+                else
+                {
+                    var bValue = new BeliefValue(value);
+                    m_perspectives[perspective] = bValue;
+                }
 			}
 
 			public bool IsEmpty()
@@ -65,7 +108,7 @@ namespace KnowledgeBase
 				return (m_perspectives == null) && (m_universal == null);
 			}
 
-			public IEnumerable<KeyValuePair<Name, Name>> GetPerspectives()
+			public IEnumerable<KeyValuePair<Name, BeliefValue>> GetPerspectives()
 			{
 				if (m_perspectives != null)
 				{
@@ -74,7 +117,7 @@ namespace KnowledgeBase
 				}
 
 				if(m_universal!=null)
-					yield return new KeyValuePair<Name, Name>(Name.UNIVERSAL_SYMBOL, m_universal);
+					yield return new KeyValuePair<Name, BeliefValue>(Name.UNIVERSAL_SYMBOL, m_universal);
 			}
 
 			public IEnumerable<Name> GetAllStoredPerspectives()
@@ -259,11 +302,12 @@ namespace KnowledgeBase
 			{
 				foreach (var perspective in entry.Value.GetPerspectives())
 				{
-					yield return new Belief()
-					{
-						Name = entry.Key,
-						Perspective = perspective.Key,
-						Value = perspective.Value
+                    yield return new Belief()
+                    {
+                        Name = entry.Key,
+                        Perspective = perspective.Key,
+                        Value = perspective.Value.Value,
+                        Certainty = perspective.Value.Certainty
 					};
 				}
 			}
@@ -361,7 +405,7 @@ namespace KnowledgeBase
 					var value = r.Key.GetValueFor(mind_key,GetFinalPerspective(ToMList));
 					if (value == null)
 						continue;
-					yield return Tuples.Create(value, r.Distinct());
+					yield return Tuples.Create(value.Value, r.Distinct());
 				}
 			}
 		}
@@ -384,10 +428,15 @@ namespace KnowledgeBase
 		
 		public void Tell(Name property, Name value)
 		{
-			Tell(property,value,Name.SELF_SYMBOL);
+			Tell(property,value,Name.SELF_SYMBOL,1.0f);
 		}
 
-		public void Tell(Name property, Name value, Name perspective)
+        public void Tell(Name property, Name value, Name perspective)
+        {
+            Tell(property, value, perspective, 1.0f);
+        }
+
+        public void Tell(Name property, Name value, Name perspective, float certainty)
 		{
 			if (property.IsPrimitive)
 				throw new ArgumentException("The given property name cannot be a primitive value.",nameof(property));
@@ -575,7 +624,7 @@ namespace KnowledgeBase
 		private string Perspective2String(Name perception)
 		{
 			if (perception.IsUniversal)
-				return "Universal";
+				return Name.UNIVERSAL_STRING;
 
 			return perception.ToString();
 		}
@@ -588,7 +637,7 @@ namespace KnowledgeBase
 #else
 			c = StringComparison.InvariantCultureIgnoreCase;
 #endif
-			if (string.Equals(str, "universal", c))
+			if (string.Equals(str, Name.UNIVERSAL_STRING, c))
 				return Name.UNIVERSAL_SYMBOL;
 
 			return Name.BuildName(str);
@@ -612,7 +661,7 @@ namespace KnowledgeBase
 						knowledge[key] = node;
 					}
 
-					((IObjectGraphNode)node)[entry.Key.ToString()] = dataHolder.ParentGraph.BuildNode(perspective.Value);
+                    ((IObjectGraphNode)node)[entry.Key.ToString()] = dataHolder.ParentGraph.BuildNode(perspective.Value.Serialize());
 				}
 			}
 		}
@@ -641,11 +690,11 @@ namespace KnowledgeBase
 				foreach (var field in holder)
 				{
 					var property = (Name) field.FieldName;
-					var value = field.FieldNode.RebuildObject<Name>();
+					var value = BeliefValue.Deserialize(field.FieldNode.RebuildObject<string>());
 					if(value==null)
 						continue;
 					
-					Tell(property,value,perspective);
+					Tell(property,value.Value, perspective, value.Certainty);
 				}
 			}
 		}

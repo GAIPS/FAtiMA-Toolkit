@@ -13,20 +13,23 @@
 		/// The value that is believed that this property has.
 		/// </summary>
 		public string Value { get; set; }
-		/// <summary>
-		/// From which perspective does this property holds this value. 
-		/// </summary>
-		/// <example>
-		/// I belief that this sky is blue.
-		/// Name = <b>Color(Sky)</b>
-		/// Value = <b>Blue</b>
-		/// Perspective = <b>SELF</b>
-		/// 
-		/// I belief that John believes that the sky is green.
-		/// Name = <b>Color(Sky)</b>
-		/// Value = <b>Green</b>
-		/// Perspective = <b>John</b>
-		/// </example>
-		public string Perspective { get; set; }
+
+        public float Certainty { get; set; }
+
+        /// <summary>
+        /// From which perspective does this property holds this value. 
+        /// </summary>
+        /// <example>
+        /// I belief that this sky is blue.
+        /// Name = <b>Color(Sky)</b>
+        /// Value = <b>Blue</b>
+        /// Perspective = <b>SELF</b>
+        /// 
+        /// I belief that John believes that the sky is green.
+        /// Name = <b>Color(Sky)</b>
+        /// Value = <b>Green</b>
+        /// Perspective = <b>John</b>
+        /// </example>
+        public string Perspective { get; set; }
     }
 }

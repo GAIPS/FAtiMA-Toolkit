@@ -8,5 +8,6 @@ namespace KnowledgeBase
         public Name Name { get; set; }
 		public Name Perspective { get; set; }
 		public Name Value { get; set; }
+        public float Certainty { get; set; }
      }
 }

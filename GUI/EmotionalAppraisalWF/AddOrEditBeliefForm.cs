@@ -18,9 +18,8 @@ namespace EmotionalAppraisalWF
             _knowledgeBaseVm = kbVM;
             _beliefToEdit = beliefToEdit;
 
-            //Default Values 
-	        beliefVisibilityComboBox.DataSource = KnowledgeBaseVM.KnowledgeVisibilities;
-            beliefVisibilityComboBox.SelectedIndex = 0;
+            perspectiveTextBox.Text = "SELF"; //Default Value
+            certaintyTextBox.Text = "1";
 
             if (beliefToEdit != null)
             {
@@ -29,7 +28,8 @@ namespace EmotionalAppraisalWF
 
                 beliefNameTextBox.Text = beliefToEdit.Name;
                 beliefValueTextBox.Text = beliefToEdit.Value;
-                beliefVisibilityComboBox.Text = beliefToEdit.Perspective;
+                perspectiveTextBox.Text = beliefToEdit.Perspective;
+                certaintyTextBox.Text = certaintyTextBox.Text;
             }
         }
 
@@ -37,15 +37,16 @@ namespace EmotionalAppraisalWF
         {
             //clear errors
             addBeliefErrorProvider.Clear();
-            var newBelief = new BeliefDTO
-            {
-                Name = this.beliefNameTextBox.Text.Trim(),
-				Perspective = this.beliefVisibilityComboBox.Text,
-                Value = this.beliefValueTextBox.Text.Trim()
-            };
 
             try
             {
+                var newBelief = new BeliefDTO
+                {
+                    Name = this.beliefNameTextBox.Text.Trim(),
+                    Perspective = this.perspectiveTextBox.Text.Trim(),
+                    Value = this.beliefValueTextBox.Text.Trim(),
+                    Certainty = float.Parse(this.certaintyTextBox.Text.Trim())
+                };
                 if (_beliefToEdit != null)
                 {
                     _knowledgeBaseVm.RemoveBeliefs(new[] {_beliefToEdit});
