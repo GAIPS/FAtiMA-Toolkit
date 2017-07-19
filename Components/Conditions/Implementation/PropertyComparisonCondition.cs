@@ -10,10 +10,10 @@ namespace Conditions
 		private sealed class PropertyComparisonCondition : Condition
 		{
 			private readonly ComparisonOperator Operator;
-			private readonly IValueRetriver Property1;
-			private readonly IValueRetriver Property2;
+			private readonly IValueRetriever Property1;
+			private readonly IValueRetriever Property2;
 
-			public PropertyComparisonCondition(IValueRetriver property1, IValueRetriver property2, ComparisonOperator op)
+			public PropertyComparisonCondition(IValueRetriever property1, IValueRetriever property2, ComparisonOperator op)
 			{
 				Property1 = property1;
 				Property2 = property2;
@@ -22,10 +22,10 @@ namespace Conditions
 
 			protected override IEnumerable<SubstitutionSet> CheckActivation(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
-				var r1 = Property1.Retrive(db,perspective, constraints).GroupBy(p => p.Item1, p => p.Item2);
+				var r1 = Property1.Retrieve(db,perspective, constraints).GroupBy(p => p.Item1, p => p.Item2);
 				foreach (var g in r1)
 				{
-					foreach (var crossPair in Property2.Retrive(db,perspective, g))
+					foreach (var crossPair in Property2.Retrieve(db,perspective, g))
 					{
 						if (CompareValues(g.Key, crossPair.Item1, Operator))
 							yield return crossPair.Item2;

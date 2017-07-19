@@ -87,7 +87,7 @@ namespace Tests.KnowledgeBase
 		public void Test_AskProperty_Self()
 		{
 			var kb = new KB((Name)"John");
-			var value = Name.BuildName(kb.AskProperty(Name.SELF_SYMBOL).ToString());
+			var value = Name.BuildName(kb.AskProperty(Name.SELF_SYMBOL).Value.ToString());
 			Assert.AreEqual(value, kb.Perspective);
 		}
 
@@ -215,7 +215,7 @@ namespace Tests.KnowledgeBase
 		{
 			Name v = (Name)str;
 			KB kb = new KB((Name)"Me");
-			var value = kb.AskProperty(v);
+			var value = kb.AskProperty(v).Value;
 			Assert.NotNull(value);
 
 			Assert.AreEqual(value, Name.BuildName(expect));
@@ -242,7 +242,7 @@ namespace Tests.KnowledgeBase
 
 			var r = kb.AskProperty(Name.BuildName(queryPerdicate), Name.BuildName(queryPerspective));
 			bool b;
-			if (!r.TryConvertToValue(out b))
+			if (!r.Value.TryConvertToValue(out b))
 				Assert.Fail();
 
 			Assert.IsTrue(b);
@@ -267,7 +267,7 @@ namespace Tests.KnowledgeBase
 
 			var n = kb.AskProperty(Name.BuildName("IsPerson(Mary)"));
 			bool b;
-			if(!n.TryConvertToValue(out b))
+			if(!n.Value.TryConvertToValue(out b))
 				Assert.Fail();
 			Assert.True(b);
 		}
@@ -284,7 +284,7 @@ namespace Tests.KnowledgeBase
 
 			var n = kb.AskProperty(Name.BuildName("IsPerson(Mary)"), Name.BuildName("John(Self)"));
 			bool b;
-			if(!n.TryConvertToValue(out b))
+			if(!n.Value.TryConvertToValue(out b))
 				Assert.Fail();
 			Assert.True(b);
 		}
@@ -374,7 +374,7 @@ namespace Tests.KnowledgeBase
 			{
 				foreach (var v2 in context.AskPossibleProperties(y))
 				{
-					var c2 = Name.BuildName((Name)"Con", v1.Item1, v2.Item1);
+					var c2 = Name.BuildName((Name)"Con", v1.Item1.Value, v2.Item1.Value);
 					foreach (var s in v2.Item2)
 					{
 						yield return new DynamicPropertyResult(c2, s);
@@ -390,7 +390,7 @@ namespace Tests.KnowledgeBase
 			var kb = TestFactory.PopulatedTestMemory();
 			kb.RegistDynamicProperty((Name)"Concat", Test_Concat_Dynamic_Property);
 
-			var results = new HashSet<Name>(kb.AskPossibleProperties((Name)expression, Name.SELF_SYMBOL, null).Select(r => r.Item1));
+			var results = new HashSet<Name>(kb.AskPossibleProperties((Name)expression, Name.SELF_SYMBOL, null).Select(r => r.Item1.Value));
 			var expected = new HashSet<Name>(expectedResult.Select(s => (Name) s));
 			Assert.True(results.SetEquals(expected));
 		}
@@ -418,14 +418,14 @@ namespace Tests.KnowledgeBase
 			var me = (Name) "Ana";
 			var kb = new KB(me);
 			kb.Tell((Name)"A(B)",Name.SELF_SYMBOL);
-			Assert.AreEqual(kb.AskProperty((Name) "A(B)"), me);
+			Assert.AreEqual(kb.AskProperty((Name) "A(B)").Value, me);
 
 			me = (Name) "John";
 			kb.SetPerspective(me);
-			Assert.AreEqual(kb.AskProperty((Name)"A(B)"), me);
+			Assert.AreEqual(kb.AskProperty((Name)"A(B)").Value, me);
 
 			kb.Tell((Name)"A(B)", Name.SELF_SYMBOL,(Name)"Ana");
-			Assert.AreEqual(kb.AskProperty((Name)"A(B)", (Name)"Ana"), (Name)"Ana");
+			Assert.AreEqual(kb.AskProperty((Name)"A(B)", (Name)"Ana").Value, (Name)"Ana");
 		}
 	}
 }

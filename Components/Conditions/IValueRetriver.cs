@@ -6,9 +6,9 @@ namespace Conditions
 {
 	public abstract partial class Condition
 	{
-		private interface IValueRetriver
+		private interface IValueRetriever
 		{
-			IEnumerable<Pair<Name, SubstitutionSet>> Retrive(IQueryable db, Name perpective, IEnumerable<SubstitutionSet> constraints);
+			IEnumerable<Pair<Name, SubstitutionSet>> Retrieve(IQueryable db, Name perpective, IEnumerable<SubstitutionSet> constraints);
 
 			Name InnerName { get; }
 			bool HasModifier { get; }

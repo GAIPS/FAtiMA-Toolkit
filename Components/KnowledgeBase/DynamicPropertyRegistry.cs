@@ -10,7 +10,7 @@ using IQueryable = WellFormedNames.IQueryable;
 
 namespace KnowledgeBase
 {
-	using BeliefPair = Pair<Name, IEnumerable<SubstitutionSet>>;
+	using BeliefPair = Pair<UncertainValue, IEnumerable<SubstitutionSet>>;
 
 	public class DynamicPropertyRegistry : IDynamicPropertiesRegistry
 	{
@@ -52,38 +52,17 @@ namespace KnowledgeBase
 
 			public IEnumerable<DynamicPropertyResult> Evaluate(IQueryable kb, Name perspective, SubstitutionSet args2, IEnumerable<SubstitutionSet> constraints)
 			{
-				//var dic = ObjectPool<Dictionary<Name, Name>>.GetObject();
 				var args = ObjectPool<List<Name>>.GetObject();
-
-				try
+                try
 				{
-					//foreach(var s in args2)
-					//{
-					//	var p = s.Variable.RemoveBoundedVariables(TMP_MARKER);
-					//	dic[p] = s.Value;
-					//	if (!s.Value.IsVariable)
-					//		continue;
-					//	dic[s.Value] = p;
-					//}
-
 					args.AddRange(_parameters.Select(p => args2[p]).Select(v => v == null ? Name.UNIVERSAL_SYMBOL : v.RemoveBoundedVariables(TMP_MARKER)));
-					//args.AddRange(_parameters.Select(p =>
-					//{
-					//	Name v;
-					//	if (dic.TryGetValue(p, out v))
-					//		return v;
-					//	return Name.UNIVERSAL_SYMBOL;
-					//}));
-
+				
 					return _surogate(new QueryContext(kb, constraints, perspective), args);
 				}
 				finally
 				{
 					args.Clear();
 					ObjectPool<List<Name>>.Recycle(args);
-
-					//dic.Clear();
-					//ObjectPool<Dictionary<Name, Name>>.Recycle(dic);
 				}
 			}
 		}
@@ -106,7 +85,7 @@ namespace KnowledgeBase
 
 			public IEnumerable<BeliefPair> Evaluate(IQueryable kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
-				return _entry.Evaluate(kb, perspective, _variable, constraints).GroupBy(p => p.Value, p => p.Constraints).Select(g => Tuples.Create(g.Key,g.Distinct()));
+				return _entry.Evaluate(kb, perspective, _variable, constraints).GroupBy(p => p.Value, p => p.Constraints).Select(g => Tuples.Create(new UncertainValue(g.Key),g.Distinct()));
 			}
 		}
 
@@ -231,7 +210,7 @@ namespace KnowledgeBase
             
 			foreach (var g in results.GroupBy(p => p.Value, p => p.Constraints))
 			{
-				yield return Tuples.Create(g.Key, g.Distinct());
+				yield return Tuples.Create(new UncertainValue(g.Key), g.Distinct());
 			}
 		}
 

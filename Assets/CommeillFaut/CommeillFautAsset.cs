@@ -108,11 +108,9 @@ namespace CommeillFaut
 
                 if (value != -1)
                 {
-                 
-
                     var sub =
                         new SubstitutionSet(new Substitution[]
-                            {new Substitution(Name.BuildName("[x]"), t.Item1)});
+                            {new Substitution(Name.BuildName("[x]"),t.Item1.Value)});
                     sub.AddSubstitution(seSub);
 
                     var roundedValue = Floor(value);
@@ -387,19 +385,11 @@ namespace CommeillFaut
 
         public void AddToActorList(Name actor)
         {
-           
-
-
-         var number =   m_kB.AskProperty(Name.BuildName("NumberOfTargets"), m_kB.Perspective);
-
+            var number =   m_kB.AskProperty(Name.BuildName("NumberOfTargets"), m_kB.Perspective).Value;
             if (number == null) number = Name.BuildName(0);
-           
             var value = Int32.Parse(number.ToString()) + 1;
             m_kB.Tell(Name.BuildName("NumberOfTargets"), Name.BuildName(value), m_kB.Perspective);
             m_kB.Tell(Name.BuildName("Target(" + value + ")"), actor, m_kB.Perspective);
-
-
-
         }
 
 

@@ -400,7 +400,7 @@ namespace SocialImportance
 
             foreach (var t in context.AskPossibleProperties(target))
 			{
-				var si = internal_GetSocialImportance(t.Item1, context.Perspective);
+				var si = internal_GetSocialImportance(t.Item1.Value, context.Perspective);
 				foreach (var s in t.Item2)
 					yield return new DynamicPropertyResult(Name.BuildName(si), s);
 			}

@@ -1,7 +1,7 @@
 {
 	"root":
 		{
-			"classId": 2,
+			"classId": 1,
 			"KnowledgeBase":
 				{
 					"Perspective": "Sam",
@@ -10,11 +10,13 @@
 							"SELF":
 								{
 									"IsFriend(Player)": "True, 1",
+									"Likes(Bananas)": "True, 1",
+									"Likes(Chocolate)": "True, 0.2",
 									"Likes(Sam, Kick)": "False, 1"
 								},
-							"*":
+							"SELF(Jonas)":
 								{
-									"Likes(Bananas)": "True, 1"
+									"Likes(Pupppies)": "True, 1"
 								}
 						}
 				},
@@ -46,24 +48,6 @@
 						{
 							"classId": 0,
 							"Id": 1,
-							"Type": "Property-Change",
-							"Subject": "Sam",
-							"Timestamp": 1,
-							"Property": "Likes(Bananas)",
-							"NewValue": true
-						}, 
-						{
-							"classId": 1,
-							"Id": 2,
-							"Type": "Action-Start",
-							"Subject": "Sam",
-							"Timestamp": 1,
-							"Action": "Compliment",
-							"Target": "Player"
-						}, 
-						{
-							"classId": 1,
-							"Id": 3,
 							"Type": "Action-End",
 							"Subject": "Sam",
 							"Timestamp": 1,
@@ -79,14 +63,10 @@
 	"types": [
 		{
 			"TypeId": 0,
-			"ClassName": "AutobiographicMemory.AM+PropertyChangeEvent, AutobiographicMemory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-		}, 
-		{
-			"TypeId": 1,
 			"ClassName": "AutobiographicMemory.AM+ActionEvent, AutobiographicMemory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 		}, 
 		{
-			"TypeId": 2,
+			"TypeId": 1,
 			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 		}]
 }

@@ -231,7 +231,7 @@ namespace AutobiographicMemory
 			foreach (var pair in context.AskPossibleProperties(id))
 			{
 				uint idValue;
-				if(!pair.Item1.TryConvertToValue(out idValue))
+				if(!pair.Item1.Value.TryConvertToValue(out idValue))
 					continue;
 
 				var record = m_registry[idValue];

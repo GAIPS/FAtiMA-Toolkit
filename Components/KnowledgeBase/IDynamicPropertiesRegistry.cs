@@ -28,7 +28,7 @@ namespace KnowledgeBase
 		IEnumerable<SubstitutionSet> Constraints { get; }
 		Name Perspective { get; }
 
-		IEnumerable<Pair<Name, IEnumerable<SubstitutionSet>>> AskPossibleProperties(Name property);
+		IEnumerable<Pair<UncertainValue, IEnumerable<SubstitutionSet>>> AskPossibleProperties(Name property);
 	}
 
 	public struct DynamicPropertyResult

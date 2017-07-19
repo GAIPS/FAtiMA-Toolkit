@@ -8,10 +8,10 @@ namespace Conditions
 	{
 		private class PredicateCondition : Condition
 		{
-			private readonly IValueRetriver m_predicate;
+			private readonly IValueRetriever m_predicate;
 			private readonly bool m_invert;
 
-			public PredicateCondition(IValueRetriver p, bool expectedResult)
+			public PredicateCondition(IValueRetriever p, bool expectedResult)
 			{
 				m_predicate = p;
 				m_invert = !expectedResult;
@@ -19,7 +19,7 @@ namespace Conditions
 
 			protected override IEnumerable<SubstitutionSet> CheckActivation(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
-				foreach (var pair in m_predicate.Retrive(db, perspective, constraints))
+				foreach (var pair in m_predicate.Retrieve(db, perspective, constraints))
 				{
 					bool b;
 					if(!pair.Item1.TryConvertToValue(out b))

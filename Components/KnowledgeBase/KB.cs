@@ -13,72 +13,35 @@ using SerializationUtilities.Attributes;
 
 namespace KnowledgeBase
 {
-	using BeliefPair = Pair<Name, IEnumerable<SubstitutionSet>>;
+	using BeliefValueSubsPair = Pair<UncertainValue, IEnumerable<SubstitutionSet>>;
 
 	[Serializable]
 	public partial class KB : IQueryable, ICustomSerialization
 	{
 		private const int MAX_TOM_LVL = 2;
 
-        private class BeliefValue
-        {
-            public Name Value { get; private set; }
-            public float Certainty { get; private set; }
-
-            public BeliefValue(Name value)
-            {
-                this.Value = value;
-                this.Certainty = 1.0f;
-            }
-
-            public BeliefValue(Name value, float certainty)
-            {
-                this.Value = value;
-                this.Certainty = certainty;
-            }
-
-            public string Serialize()
-            {
-                return this.Value + ", " + this.Certainty;
-            }
-
-            public static BeliefValue Deserialize(string value)
-            {
-                var aux = value.RemoveWhiteSpace();
-                if (aux.Contains(","))
-                {
-                    var split = aux.Split(',');
-                    return new BeliefValue((Name)split[0], float.Parse(split[1]));
-                }
-                else
-                {
-                    return new BeliefValue((Name)aux);
-                }
-            }
-        }
-
 		private sealed class KnowledgeEntry
 		{
-			private BeliefValue m_universal = null;
-			private Dictionary<Name, BeliefValue> m_perspectives;
+			private UncertainValue m_universal = null;
+			private Dictionary<Name, UncertainValue> m_perspectives;
 
-			public BeliefValue GetValueFor(Name mindKey, Name finalPerspective)
+			public UncertainValue GetValueFor(Name mindKey, Name finalPerspective)
 			{
-				BeliefValue belief;
+				UncertainValue belief;
 				if ((m_perspectives != null) && m_perspectives.TryGetValue(mindKey, out belief))
                 {
-                    return new BeliefValue(belief.Value.SwapTerms(Name.SELF_SYMBOL, finalPerspective),
+                    return new UncertainValue(belief.Value.SwapTerms(Name.SELF_SYMBOL, finalPerspective),
                         belief.Certainty);
                 }
 
                 return m_universal;
 			}
 
-			public void TellValueFor(Name perspective, Name value)
+			public void TellValueFor(Name perspective, Name value, float certainty)
 			{
 				if (perspective.IsUniversal)
 				{
-					m_universal = new BeliefValue(value);
+					m_universal = new UncertainValue(value);
 					return;
 				}
 
@@ -87,7 +50,7 @@ namespace KnowledgeBase
 					if(value==null)
 						return;
 
-					m_perspectives = new Dictionary<Name, BeliefValue>();
+					m_perspectives = new Dictionary<Name, UncertainValue>();
 				}
 
 				if (value == null)
@@ -98,7 +61,7 @@ namespace KnowledgeBase
 				}
                 else
                 {
-                    var bValue = new BeliefValue(value);
+                    var bValue = new UncertainValue(value,certainty);
                     m_perspectives[perspective] = bValue;
                 }
 			}
@@ -108,7 +71,7 @@ namespace KnowledgeBase
 				return (m_perspectives == null) && (m_universal == null);
 			}
 
-			public IEnumerable<KeyValuePair<Name, BeliefValue>> GetPerspectives()
+			public IEnumerable<KeyValuePair<Name, UncertainValue>> GetPerspectives()
 			{
 				if (m_perspectives != null)
 				{
@@ -117,7 +80,7 @@ namespace KnowledgeBase
 				}
 
 				if(m_universal!=null)
-					yield return new KeyValuePair<Name, BeliefValue>(Name.UNIVERSAL_SYMBOL, m_universal);
+					yield return new KeyValuePair<Name, UncertainValue>(Name.UNIVERSAL_SYMBOL, m_universal);
 			}
 
 			public IEnumerable<Name> GetAllStoredPerspectives()
@@ -193,8 +156,6 @@ namespace KnowledgeBase
 			if (!(y.IsVariable || y.IsComposed))
 				return Enumerable.Empty<DynamicPropertyResult>();
 
-			//var pairs = context.AskPossibleProperties(x).ToArray();
-
 			List<DynamicPropertyResult> results = ObjectPool<List<DynamicPropertyResult>>.GetObject();
 			try
 			{
@@ -233,7 +194,7 @@ namespace KnowledgeBase
 						{
 							foreach (var x2 in context.AskPossibleProperties(x))
 							{
-								if (x2.Item1 == t)
+                                if (x2.Item1.Value == t)
 								{
 									var r = Name.BuildName(true);
 									foreach (var s in x2.Item2)
@@ -313,12 +274,13 @@ namespace KnowledgeBase
 			}
 	    }
 
-		public Name AskProperty(Name property)
+        public UncertainValue AskProperty(Name property)
 		{
 			return AskProperty(property, Name.SELF_SYMBOL);
 		}
 
-		public Name AskProperty(Name property, Name perspective)
+        
+        public UncertainValue AskProperty(Name property, Name perspective)
 		{
 			if (!property.IsGrounded)
 				throw new ArgumentException("The given Well Formed Name must be grounded",nameof(property));
@@ -332,7 +294,8 @@ namespace KnowledgeBase
 			throw new Exception("More the 1 property found");
 		}
 
-		public IEnumerable<BeliefPair> AskPossibleProperties(Name property, Name perspective, IEnumerable<SubstitutionSet> constraints)
+
+		public IEnumerable<BeliefValueSubsPair> AskPossibleProperties(Name property, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
 			if (constraints == null)
 				constraints = new[] { new SubstitutionSet() };
@@ -347,7 +310,7 @@ namespace KnowledgeBase
 					property = p;
 				}
 
-				return new[] { Tuples.Create(property, constraints) };
+				return new[] { Tuples.Create(new UncertainValue(property), constraints) };
 			}
 
 			var ToMList = AssertPerspective(perspective, nameof(perspective));
@@ -355,7 +318,7 @@ namespace KnowledgeBase
 			return internal_AskPossibleProperties(property, ToMList, constraints);
 		}
 
-		private IEnumerable<BeliefPair> internal_AskPossibleProperties(Name property, List<Name> ToMList, IEnumerable<SubstitutionSet> constraints)
+		private IEnumerable<BeliefValueSubsPair> internal_AskPossibleProperties(Name property, List<Name> ToMList, IEnumerable<SubstitutionSet> constraints)
 		{
 			property = RemovePropertyPerspective(property, ToMList);
 
@@ -385,7 +348,7 @@ namespace KnowledgeBase
 			{
 				if (g.Key.IsPrimitive)
 				{
-					yield return Tuples.Create(g.Key, (IEnumerable<SubstitutionSet>)g);
+					yield return Tuples.Create(new UncertainValue(g.Key),(IEnumerable<SubstitutionSet>)g);
 					continue;
 				}
 
@@ -405,7 +368,7 @@ namespace KnowledgeBase
 					var value = r.Key.GetValueFor(mind_key,GetFinalPerspective(ToMList));
 					if (value == null)
 						continue;
-					yield return Tuples.Create(value.Value, r.Distinct());
+					yield return Tuples.Create(new UncertainValue(value.Value, value.Certainty), r.Distinct());
 				}
 			}
 		}
@@ -464,7 +427,7 @@ namespace KnowledgeBase
 				m_knowledgeStorage[fact] = entry;
 			}
 
-			entry.TellValueFor(mind_key,value);
+			entry.TellValueFor(mind_key,value,certainty);
 			if (entry.IsEmpty())
 				m_knowledgeStorage.Remove(fact);
 		}
@@ -522,7 +485,7 @@ namespace KnowledgeBase
 					if(found)
 						throw new Exception($"{nameof(KB)} found multiple valid values for {property}");
 
-					value = it.Current.Item1;
+					value = it.Current.Item1.Value;
 					found = true;
 				}
 			}
@@ -690,7 +653,7 @@ namespace KnowledgeBase
 				foreach (var field in holder)
 				{
 					var property = (Name) field.FieldName;
-					var value = BeliefValue.Deserialize(field.FieldNode.RebuildObject<string>());
+					var value = UncertainValue.Deserialize(field.FieldNode.RebuildObject<string>());
 					if(value==null)
 						continue;
 					

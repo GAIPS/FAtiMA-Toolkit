@@ -6,7 +6,7 @@ namespace Conditions
 {
 	public abstract partial class Condition
 	{
-		private class PropertyValueRetriver : IValueRetriver
+		private class PropertyValueRetriver : IValueRetriever
 		{
 			private readonly Name m_name;
 
@@ -15,12 +15,13 @@ namespace Conditions
 				m_name = name;
 			}
 
-			public IEnumerable<Pair<Name, SubstitutionSet>> Retrive(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
+			public IEnumerable<Pair<Name, SubstitutionSet>> Retrieve
+                (IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
 				foreach (var pair in db.AskPossibleProperties(m_name, perspective, constraints))
 				{
 					foreach (var s in pair.Item2)
-						yield return Tuples.Create(pair.Item1, s);
+						yield return Tuples.Create(pair.Item1.Value, s);
 				}
 			}
 

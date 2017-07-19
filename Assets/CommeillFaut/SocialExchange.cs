@@ -242,8 +242,7 @@ namespace CommeillFaut
                     {
                         value =
                             Convert.ToInt32(
-                                me.AskProperty(me.AskProperty((Name)(words[0] + "(" + initiator + "," + other + ")")))
-                                    .ToString());
+                                me.AskProperty(me.AskProperty((Name)(words[0] + "(" + initiator + "," + other + ")")).Value).Value.ToString());
                         value += Convert.ToInt32(words[3]);
                     }
 
@@ -288,9 +287,7 @@ namespace CommeillFaut
                     if (me.AskProperty((Name) (words[0] + "(" + other + "," + initiator + ")")) != null)
                     {
                         value =
-                            Convert.ToInt32(
-                                me.AskProperty(me.AskProperty((Name) (words[0] + "(" + other + "," + initiator + ")")))
-                                    .ToString());
+                            Convert.ToInt32(me.AskProperty(me.AskProperty((Name) (words[0] + "(" + other + "," + initiator + ")")).Value).Value.ToString());
                         value += Convert.ToInt32(words[3]);
                     }
 

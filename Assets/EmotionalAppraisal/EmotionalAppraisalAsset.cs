@@ -354,11 +354,7 @@ namespace EmotionalAppraisal
 		{
 			return m_kb.AssertPerspective(perspective);
 		}
-
-		public IEnumerable<Pair<Name, IEnumerable<SubstitutionSet>>> AskPossibleProperties(Name property, Name perspective, IEnumerable<SubstitutionSet> constraints)
-		{
-			return m_kb.AskPossibleProperties(property, perspective, constraints);
-		}
+        
 
 		public IDynamicPropertiesRegistry DynamicPropertiesRegistry => m_kb;
 	}

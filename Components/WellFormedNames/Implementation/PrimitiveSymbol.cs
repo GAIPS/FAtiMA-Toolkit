@@ -92,6 +92,9 @@ namespace WellFormedNames
 				if (s == null)
 					return false;
 
+                if (m_value == null)
+                    return false;
+
 				return m_value.Equals(s.m_value);
 			}
 

@@ -137,8 +137,8 @@ namespace Conditions
 
 		private static Condition internal_buildCondition(string modifier1, Name v1, string modifier2, Name v2, ComparisonOperator op)
 		{
-			IValueRetriver value1 = ConvertToValueRetriever(modifier1, v1);
-			IValueRetriver value2 = ConvertToValueRetriever(modifier2, v2);
+			IValueRetriever value1 = ConvertToValueRetriever(modifier1, v1);
+			IValueRetriever value2 = ConvertToValueRetriever(modifier2, v2);
 
 			if (value1.Equals(value2))
 				throw new InvalidOperationException("Both given property names are intrinsically equal. Condition would always return a constant result.");
@@ -158,7 +158,7 @@ namespace Conditions
 
 			if (value1.InnerName.IsPrimitive != value2.InnerName.IsPrimitive)
 			{
-				IValueRetriver prop = value1.InnerName.IsPrimitive ? value2 : value1;
+				IValueRetriever prop = value1.InnerName.IsPrimitive ? value2 : value1;
 				string str = (value1.InnerName.IsPrimitive ? value1.InnerName : value2.InnerName).ToString();
 				op = v1.IsPrimitive ? op.Mirror() : op;
 
@@ -180,7 +180,7 @@ namespace Conditions
 			return new PropertyComparisonCondition(value1,value2, op);
 		}
 
-		private static IValueRetriver ConvertToValueRetriever(string modifier, Name name)
+		private static IValueRetriever ConvertToValueRetriever(string modifier, Name name)
 		{
 			if(string.IsNullOrEmpty(modifier))
 				return new PropertyValueRetriver(name);

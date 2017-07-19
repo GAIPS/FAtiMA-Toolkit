@@ -10,11 +10,11 @@ namespace Conditions
 	{
 		private sealed class PrimitiveComparisonCondition : Condition
 		{
-			private readonly IValueRetriver m_retriver;
+			private readonly IValueRetriever m_retriver;
 			private readonly Name m_value;
 			private readonly ComparisonOperator m_operation;
 
-			public PrimitiveComparisonCondition(IValueRetriver prop, Name value, ComparisonOperator op)
+			public PrimitiveComparisonCondition(IValueRetriever prop, Name value, ComparisonOperator op)
 			{
 				m_retriver = prop;
 				m_value = value;
@@ -23,8 +23,10 @@ namespace Conditions
 
 			protected override IEnumerable<SubstitutionSet> CheckActivation(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
-				Name realValue = db.AskPossibleProperties(m_value, perspective, null).First().Item1;
-				foreach (var pair in m_retriver.Retrive(db,perspective, constraints))
+
+                Name realValue = db.AskPossibleProperties(m_value, perspective, null).First().Item1.Value;
+
+				foreach (var pair in m_retriver.Retrieve(db,perspective, constraints))
 				{
 					if (CompareValues(pair.Item1, realValue, m_operation))
 						yield return pair.Item2;

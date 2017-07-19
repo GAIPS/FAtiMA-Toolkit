@@ -35,6 +35,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\KnowledgeBase\KnowledgeBase.csproj">
+      <Project>{04d51847-0676-480a-9ea0-d0a58d894556}</Project>
+      <Name>KnowledgeBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SerializationUtilities\SerializationUtilities.csproj">
       <Project>{21e0f2d3-bc3e-4005-8bd3-2f079cd52b86}</Project>
       <Name>SerializationUtilities</Name>

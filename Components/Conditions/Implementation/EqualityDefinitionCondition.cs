@@ -8,9 +8,9 @@ namespace Conditions
 		private sealed class EqualityDefinitionCondition : Condition
 		{
 			private Name m_variable;
-			private IValueRetriver m_other;
+			private IValueRetriever m_other;
 
-			public EqualityDefinitionCondition(Name variable, IValueRetriver other)
+			public EqualityDefinitionCondition(Name variable, IValueRetriever other)
 			{
 				m_variable = variable;
 				m_other = other;
@@ -18,7 +18,7 @@ namespace Conditions
 
 			protected override IEnumerable<SubstitutionSet> CheckActivation(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
-				foreach (var result in m_other.Retrive(db, perspective, constraints))
+				foreach (var result in m_other.Retrieve(db, perspective, constraints))
 				{
 					var sub = new Substitution(m_variable, result.Item1);
 					if (result.Item2.AddSubstitution(sub))

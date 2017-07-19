@@ -14,7 +14,7 @@ namespace RolePlayCharacterTutorial
             rpc.LoadAssociatedAssets();
 
             Console.WriteLine("Starting Mood: " + rpc.Mood);
-           var action = rpc.Decide().FirstOrDefault();
+            var action = rpc.Decide().FirstOrDefault();
             rpc.Update();
 
             Console.WriteLine("The name of the character loaded is: " + rpc.CharacterName);
@@ -23,12 +23,11 @@ namespace RolePlayCharacterTutorial
             Console.WriteLine("Strongest emotion: " + rpc.GetStrongestActiveEmotion()?.EmotionType + "-" + rpc.GetStrongestActiveEmotion()?.Intensity);
             Console.WriteLine("First Response: " + action?.Name + ", Target:" + action?.Target.ToString());
 
-            var event11 = EventHelper.PropertyChange("Likes(Bananas)", "true", rpc.CharacterName.ToString());
-            rpc.Perceive(event11, Name.UNIVERSAL_SYMBOL);
+            rpc.UpdateBelief("Likes(Bananas)", "True");
+            rpc.UpdateBelief("Likes(Chocolate)", "True", 0.2f);
+            rpc.UpdateBelief("Likes(Pupppies)", "True", 1, "Jonas");
             rpc.SaveToFile("../../../Examples/RPCTest-Output.rpc");
-            var event2 = EventHelper.ActionStart(rpc.CharacterName.ToString(), action?.Name.ToString(), "Player");
-
-            rpc.Perceive(event2);
+            
             var busyAction = rpc.Decide().FirstOrDefault();
 
             Console.WriteLine("Second Response: " + busyAction?.Name + ", Target:" + action?.Target.ToString());
