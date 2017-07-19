@@ -20,13 +20,13 @@
 				},
 			"BodyName": "Female",
 			"VoiceName": "",
-			"EmotionalAppraisalAssetSource": "../../..\\Examples\\EATest.ea",
-			"EmotionalDecisionMakingSource": "../../..\\Examples\\EDMTest.edm",
+			"EmotionalAppraisalAssetSource": "../../../Examples/EATest.ea",
+			"EmotionalDecisionMakingSource": "../../../Examples/EDMTest.edm",
 			"SocialImportanceAssetSource": null,
 			"CommeillFautAssetSource": null,
 			"EmotionalState":
 				{
-					"Mood": 0,
+					"Mood": 4.863275,
 					"initialTick": 0,
 					"EmotionalPool": [],
 					"AppraisalConfiguration":
@@ -41,7 +41,7 @@
 				},
 			"AutobiographicMemory":
 				{
-					"Tick": 15,
+					"Tick": 1,
 					"records": [
 						{
 							"classId": 0,
@@ -69,43 +69,11 @@
 							"Timestamp": 1,
 							"Action": "Compliment",
 							"Target": "Player"
-						}, 
-						{
-							"classId": 1,
-							"Id": 4,
-							"Type": "Action-End",
-							"Subject": "Player",
-							"Timestamp": 12,
-							"LinkedEmotions": ["Distress"],
-							"Action": "Kick",
-							"Target": "Sam"
 						}]
 				},
 			"OtherAgents":
 				{
-					"dictionary": [
-						{
-							"key": "Player",
-							"value":
-								{
-									"Name": "Player",
-									"EmotionalState":
-										{
-											"Mood": 0,
-											"initialTick": 0,
-											"EmotionalPool": [],
-											"AppraisalConfiguration":
-												{
-													"HalfLifeDecayConstant": 0.5,
-													"EmotionInfluenceOnMoodFactor": 0.3,
-													"MoodInfluenceOnEmotionFactor": 0.3,
-													"MinimumMoodValueForInfluencingEmotions": 0.5,
-													"EmotionalHalfLifeDecayTime": 15,
-													"MoodHalfLifeDecayTime": 60
-												}
-										}
-								}
-						}]
+					"dictionary": []
 				}
 		},
 	"types": [

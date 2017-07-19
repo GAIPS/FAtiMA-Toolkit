@@ -37,7 +37,7 @@ namespace GAIPS.Rage
 				if (d == "..")
 					result = GetDirectoryName(result);
 				else
-					result += DirectorySeparatorChar + d;
+					result += AltDirectorySeparatorChar + d;
 			}
 
 			return result;
