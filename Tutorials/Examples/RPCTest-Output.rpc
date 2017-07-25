@@ -9,10 +9,12 @@
 						{
 							"SELF":
 								{
+									"IsCheap(A)": "False, 1",
+									"IsFriend(A)": "True, 1",
 									"IsFriend(Player)": "True, 1",
+									"IsUgly(A)": "False, 1",
 									"Likes(Bananas)": "True, 1",
-									"Likes(Chocolate)": "True, 0.2",
-									"Likes(Sam, Kick)": "False, 1"
+									"Likes(Chocolate)": "True, 0.2"
 								},
 							"SELF(Jonas)":
 								{
@@ -22,13 +24,13 @@
 				},
 			"BodyName": "Female",
 			"VoiceName": "",
-			"EmotionalAppraisalAssetSource": "../../../Examples/EATest.ea",
+			"EmotionalAppraisalAssetSource": null,
 			"EmotionalDecisionMakingSource": "../../../Examples/EDMTest.edm",
 			"SocialImportanceAssetSource": null,
 			"CommeillFautAssetSource": null,
 			"EmotionalState":
 				{
-					"Mood": 4.863275,
+					"Mood": 3.685673,
 					"initialTick": 0,
 					"EmotionalPool": [],
 					"AppraisalConfiguration":
@@ -43,7 +45,7 @@
 				},
 			"AutobiographicMemory":
 				{
-					"Tick": 1,
+					"Tick": 11,
 					"records": [
 						{
 							"classId": 0,
@@ -58,7 +60,19 @@
 			"OtherAgents":
 				{
 					"dictionary": []
-				}
+				},
+			"UnifierLog": [
+				{
+					"Message": "Constraints: ([x]/A)"
+				}, 
+				{
+					"Message": "Constraints: ([x]/A)",
+					"Tick": 1
+				}, 
+				{
+					"Message": "Constraints: ([x]/A)",
+					"Tick": 1
+				}]
 		},
 	"types": [
 		{

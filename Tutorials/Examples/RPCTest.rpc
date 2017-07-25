@@ -7,12 +7,18 @@
 					"Perspective": "Sam",
 					"Knowledge":
 						{
-
+							"SELF":
+								{
+                  "IsFriend(Player)": "True, 1",
+                  "IsFriend(A)": "True, 1",
+                  "IsUgly(A)": "False, 1",
+                  "IsCheap(A)": "False, 1"
+								}
 						}
 				},
 			"BodyName": "Female",
 			"VoiceName": "",
-			"EmotionalAppraisalAssetSource": "EATest.ea",
+			"EmotionalAppraisalAssetSource": null,
 			"EmotionalDecisionMakingSource": "EDMTest.edm",
 			"SocialImportanceAssetSource": null,
 			"CommeillFautAssetSource": null,

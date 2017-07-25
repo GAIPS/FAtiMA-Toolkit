@@ -9,10 +9,12 @@
 						{
 							"SELF":
 								{
+									"IsCheap(A)": "False, 1",
+									"IsFriend(A)": "True, 1",
 									"IsFriend(Player)": "True, 1",
+									"IsUgly(A)": "False, 1",
 									"Likes(Bananas)": "True, 1",
-									"Likes(Chocolate)": "True, 1",
-									"Likes(Sam, Kick)": "False, 1"
+									"Likes(Chocolate)": "True, 0.2"
 								},
 							"SELF(Jonas)":
 								{
@@ -22,26 +24,15 @@
 				},
 			"BodyName": "Female",
 			"VoiceName": "",
-			"EmotionalAppraisalAssetSource": "../Examples/EATest.ea",
+			"EmotionalAppraisalAssetSource": null,
 			"EmotionalDecisionMakingSource": "../Examples/EDMTest.edm",
 			"SocialImportanceAssetSource": null,
 			"CommeillFautAssetSource": null,
 			"EmotionalState":
 				{
-					"Mood": -1.5,
-					"initialTick": 28,
-					"EmotionalPool": [
-						{
-							"Intensity": 5,
-							"Decay": 1,
-							"Threshold": 1,
-							"CauseId": 3,
-							"EventName": "Event(Action-End, Player, Kick, Sam)",
-							"EmotionType": "Distress",
-							"Valence": "Negative",
-							"AppraisalVariables": ["DESIRABILITY"],
-							"InfluenceMood": true
-						}],
+					"Mood": 3.584888,
+					"initialTick": 0,
+					"EmotionalPool": [],
 					"AppraisalConfiguration":
 						{
 							"HalfLifeDecayConstant": 0.5,
@@ -54,7 +45,7 @@
 				},
 			"AutobiographicMemory":
 				{
-					"Tick": 28,
+					"Tick": 12,
 					"records": [
 						{
 							"classId": 0,
@@ -62,7 +53,7 @@
 							"Type": "Action-End",
 							"Subject": "Sam",
 							"Timestamp": 1,
-							"Action": "Compliment",
+							"Action": "-",
 							"Target": "Player"
 						}, 
 						{
@@ -71,17 +62,6 @@
 							"Type": "Action-End",
 							"Subject": "Player",
 							"Timestamp": 12,
-							"LinkedEmotions": ["Distress"],
-							"Action": "Kick",
-							"Target": "Sam"
-						}, 
-						{
-							"classId": 0,
-							"Id": 3,
-							"Type": "Action-End",
-							"Subject": "Player",
-							"Timestamp": 28,
-							"LinkedEmotions": ["Distress"],
 							"Action": "Kick",
 							"Target": "Sam"
 						}]

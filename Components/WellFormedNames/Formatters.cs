@@ -16,6 +16,10 @@ namespace WellFormedNames
 			if (n.IsPrimitive)
 			{
 				var obj = n.GetValue();
+                if (obj == null)
+                {
+                    return serializationGraph.BuildStringNode(n.ToString());
+                }
 				if (obj.GetType().GetTypeCode() == Utilities.TypeCode.String)
 					return serializationGraph.BuildStringNode((string)obj);
 				return serializationGraph.BuildPrimitiveNode((ValueType)obj);

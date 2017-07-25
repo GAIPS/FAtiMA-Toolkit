@@ -17,7 +17,7 @@
 					"Target": "Player",
 					"Conditions":
 						{
-							"Set": ["Mood(SELF) >= 0"]
+							"Set": ["IsFriend([x]) = True", "IsUgly([x]) = False", "Log([x]) = true", "Mood(SELF) >= 0"]
 						}
 				}, 
 				{

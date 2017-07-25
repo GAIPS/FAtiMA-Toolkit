@@ -14,12 +14,13 @@ using SerializationUtilities.Attributes;
 namespace KnowledgeBase
 {
 	using BeliefValueSubsPair = Pair<UncertainValue, IEnumerable<SubstitutionSet>>;
-
+        
 	[Serializable]
 	public partial class KB : IQueryable, ICustomSerialization
 	{
 		private const int MAX_TOM_LVL = 2;
 
+        
 		private sealed class KnowledgeEntry
 		{
 			private UncertainValue m_universal = null;
@@ -99,7 +100,7 @@ namespace KnowledgeBase
 		private KB()
 		{
 			m_knowledgeStorage = new NameSearchTree<KnowledgeEntry>();
-			CreateRegistry();
+            CreateRegistry();
 			BindToRegistry(this);
 		}
 
@@ -112,7 +113,6 @@ namespace KnowledgeBase
 		{
 			registry.RegistDynamicProperty(COUNT_TEMPLATE_NEW, CountPropertyCalculator_new);
 			registry.RegistDynamicProperty(HAS_LITERAL_TEMPLATE,HasLiteralPropertyCalculator);
-			registry.RegistDynamicProperty(LOG_TEMPLATE, LogDynamicProperty);
         }
 
 		#region Native Dynamic Properties
@@ -133,21 +133,7 @@ namespace KnowledgeBase
 				yield return new DynamicPropertyResult(count, d);
 		}
 
-        //This is a special property that is only used for debug purposes
-        private static readonly Name LOG_TEMPLATE = Name.BuildName("Log");
-        private static IEnumerable<DynamicPropertyResult> LogDynamicProperty(IQueryContext context, Name x)
-        {
-            var set = context.AskPossibleProperties(x).ToList();
-           
-            IEnumerable<SubstitutionSet> sets;
-            if (set.Count == 0)
-                sets = context.Constraints;
-            else
-                sets = set.SelectMany(s => s.Item2).Distinct();
-
-            foreach (var d in sets)
-                yield return new DynamicPropertyResult(Name.BuildName(0), d);
-        }
+        
 
         //HasLiteral
         private static readonly Name HAS_LITERAL_TEMPLATE = (Name) "HasLiteral";
@@ -609,7 +595,7 @@ namespace KnowledgeBase
 		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			dataHolder.SetValue("Perspective",Perspective);
-			var knowledge = dataHolder.ParentGraph.CreateObjectData();
+            var knowledge = dataHolder.ParentGraph.CreateObjectData();
 			dataHolder.SetValueGraphNode("Knowledge",knowledge);
 			foreach (var entry in m_knowledgeStorage)
 			{
@@ -627,9 +613,9 @@ namespace KnowledgeBase
                     ((IObjectGraphNode)node)[entry.Key.ToString()] = dataHolder.ParentGraph.BuildNode(perspective.Value.Serialize());
 				}
 			}
-		}
+        }
 
-		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+        public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			if(m_knowledgeStorage == null)
 				m_knowledgeStorage = new NameSearchTree<KnowledgeEntry>();

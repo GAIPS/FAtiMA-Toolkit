@@ -1,28 +1,27 @@
-﻿using System;
+﻿using AutobiographicMemory;
+using EmotionalAppraisal.DTOs;
+using SerializationUtilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using AutobiographicMemory;
-using EmotionalAppraisal.DTOs;
-using SerializationUtilities;
 using Utilities;
 using WellFormedNames;
 
 namespace EmotionalAppraisal
 {
-
     [Serializable]
     public class ConcreteEmotionalState : IEmotionalState, ICustomSerialization
     {
         //private EmotionalAppraisalAsset m_parent = null;
         private Dictionary<string, ActiveEmotion> emotionPool;
-        
+
         private Mood mood;
         private EmotionalAppraisalConfiguration appraisalConfiguration;
         private ulong tick;
+
         public ConcreteEmotionalState()
         {
-            
             this.emotionPool = new Dictionary<string, ActiveEmotion>();
 
             this.mood = new Mood();
@@ -58,7 +57,6 @@ namespace EmotionalAppraisal
             emotionPool.Remove(calculateHashString(activeEmotion));
         }
 
-
         /// <summary>
         /// unique hash string calculation function
         /// </summary>
@@ -71,7 +69,7 @@ namespace EmotionalAppraisal
                 var eventType = emotion.EventName.GetNTerm(1);
                 //for property change events the cause of the emotion is just the property names
                 //this means that if a new change to a property occcurs the previous emotion associated with it will be reappraised
-                if(eventType.ToString().EqualsIgnoreCase(AMConsts.PROPERTY_CHANGE))
+                if (eventType.ToString().EqualsIgnoreCase(AMConsts.PROPERTY_CHANGE))
                 {
                     builder.Append(emotion.EventName.GetNTerm(3));
                 }
@@ -99,10 +97,10 @@ namespace EmotionalAppraisal
         }
 
         /// <summary>
-        /// Creates and Adds to the emotional state a new ActiveEmotion based on 
-        /// a received BaseEmotion. However, the ActiveEmotion will be created 
-        /// and added to the emotional state only if the final intensity for 
-        /// the emotion surpasses the threshold for the emotion type. 
+        /// Creates and Adds to the emotional state a new ActiveEmotion based on
+        /// a received BaseEmotion. However, the ActiveEmotion will be created
+        /// and added to the emotional state only if the final intensity for
+        /// the emotion surpasses the threshold for the emotion type.
         /// </summary>
         /// <param name="emotion">the BaseEmotion that creates the ActiveEmotion</param>
         /// <returns>the ActiveEmotion created if it was added to the EmotionalState.
@@ -127,8 +125,8 @@ namespace EmotionalAppraisal
                     reappraisal = true;
 
                 //in both cases we need to remove the old emotion. In the case of reappraisal it is obvious.
-                //In the case of the appraisal of a similar event, we want to aggregate all the similar resulting 
-                //emotions into only one 
+                //In the case of the appraisal of a similar event, we want to aggregate all the similar resulting
+                //emotions into only one
                 emotionPool.Remove(calculateHashString(emotion));
             }
 
@@ -146,8 +144,6 @@ namespace EmotionalAppraisal
             return auxEmotion;
         }
 
-      
-
         /// <summary>
         /// Clears all the emotions in the EmotionalState and reset the mood to 0
         /// </summary>
@@ -162,7 +158,6 @@ namespace EmotionalAppraisal
         /// </summary>
         public void Decay(ulong tick)
         {
-           
             this.mood.DecayMood(this.appraisalConfiguration, tick);
             HashSet<string> toRemove = ObjectPool<HashSet<string>>.GetObject();
             using (var it = this.emotionPool.GetEnumerator())
@@ -174,7 +169,6 @@ namespace EmotionalAppraisal
                     {
                         toRemove.Add(it.Current.Key);
                     }
-                       
                 }
             }
             foreach (var key in toRemove)
@@ -251,7 +245,6 @@ namespace EmotionalAppraisal
             return set.MaxValue(emo => emo.Intensity);
         }
 
-       
         public override string ToString()
         {
             return $"Mood: {this.mood} Emotions: {this.emotionPool}";
@@ -260,7 +253,7 @@ namespace EmotionalAppraisal
         public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             dataHolder.SetValue("Mood", mood.MoodValue);
-            dataHolder.SetValue("initialTick", mood.InitialTick );
+            dataHolder.SetValue("initialTick", mood.InitialTick);
             dataHolder.SetValue("EmotionalPool", emotionPool.Values.ToArray());
             dataHolder.SetValue("AppraisalConfiguration", this.appraisalConfiguration);
         }
@@ -271,7 +264,7 @@ namespace EmotionalAppraisal
                 emotionPool = new Dictionary<string, ActiveEmotion>();
             else
                 emotionPool.Clear();
-            
+
             if (mood == null)
                 mood = new Mood();
 
@@ -283,7 +276,7 @@ namespace EmotionalAppraisal
             mood.SetTick0Value(dataHolder.GetValue<ulong>("initialTick"));
             context.PushContext();
             {
-                context.Context = (ulong)0; //Tick 
+                context.Context = (ulong)0; //Tick
 
                 var emotions = dataHolder.GetValue<ActiveEmotion[]>("EmotionalPool");
                 foreach (var emotion in emotions)
@@ -294,5 +287,4 @@ namespace EmotionalAppraisal
             context.PopContext();
         }
     }
-
 }

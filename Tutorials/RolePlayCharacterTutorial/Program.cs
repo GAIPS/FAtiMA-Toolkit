@@ -12,6 +12,8 @@ namespace RolePlayCharacterTutorial
 		    //Loading the asset
 	        var rpc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/RPCTest.rpc");
             rpc.LoadAssociatedAssets();
+            var json = rpc.SerializeToJSON();
+            rpc.SaveToFile("../../../Examples/RPCTest-Output.rpc");
 
             Console.WriteLine("Starting Mood: " + rpc.Mood);
             var action = rpc.Decide().FirstOrDefault();

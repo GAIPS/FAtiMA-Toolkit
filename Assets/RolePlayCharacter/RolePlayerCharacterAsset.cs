@@ -27,9 +27,19 @@ namespace RolePlayCharacter
         private string m_emotionalAppraisalAssetSource = null;
         private string m_emotionalDecisionMakingAssetSource = null;
         private string m_socialImportanceAssetSource = null;
-      
+
+        [Serializable]
+        private class LogEntry
+        {
+            public string Message { get; set; }
+            public ulong Tick { get; set; }
+        }
+
+        private List<LogEntry> m_log;
+
         public RolePlayCharacterAsset()
         {
+            m_log = new List<LogEntry>();
             m_kb = new KB(RPCConsts.DEFAULT_CHARACTER_NAME);
             m_am = new AM();
             m_emotionalState = new ConcreteEmotionalState();
@@ -272,7 +282,6 @@ namespace RolePlayCharacter
             edm.RegisterKnowledgeBase(m_kb);
             si.RegisterKnowledgeBase(m_kb);
             cfa.RegisterKnowledgeBase(m_kb);
-
             m_allowAuthoring = false;
         }
 
@@ -283,27 +292,21 @@ namespace RolePlayCharacter
 
         public void Perceive(Name evt, Name observer)
         {
-            this.Perceive(new[] { evt }, new[] { observer });
+            this.Perceive(new[] { evt }, observer );
         }
 
         public void Perceive(IEnumerable<Name> events)
         {
-            var observers = new List<Name>();
-            foreach (var e in events)
-            {
-                observers.Add(Name.SELF_SYMBOL);
-            }
-            this.Perceive(events, observers);
+            this.Perceive(events, Name.SELF_SYMBOL);
         }
 
-        public void Perceive(IEnumerable<Name> events, IEnumerable<Name> observers)
+        public void Perceive(IEnumerable<Name> events, Name observer)
         {
             m_socialImportanceAsset.InvalidateCachedSI();
 
             var idx = 0;
             foreach (var e in events)
             {
-                var observer = observers.ElementAt(idx);
                 if (observer == Name.SELF_SYMBOL)
                 {
                     if (RPCConsts.ACTION_START_EVENT_PROTOTYPE.Match(e))
@@ -341,7 +344,7 @@ namespace RolePlayCharacter
                         }
                     }
                 }
-                m_emotionalAppraisalAsset.AppraiseEvents(events, observers, m_emotionalState, m_am, m_kb);
+                m_emotionalAppraisalAsset.AppraiseEvents(events, observer, m_emotionalState, m_am, m_kb);
                 idx++;
             }
         }
@@ -350,9 +353,16 @@ namespace RolePlayCharacter
         {
             m_emotionalState.RemoveEmotion(emotion, m_am);
         }
+
         public void ResetEmotionalState()
         {
             this.m_emotionalState.Clear();
+        }
+        
+        public string SerializeToJSON()
+        {
+            var s = new JSONSerializer();
+            return s.SerializeToJson(this).ToString(true);
         }
 
         /// <summary>
@@ -368,7 +378,7 @@ namespace RolePlayCharacter
         {
             m_kb.Tell((Name)name, (Name)value, (Name)perspective, certainty);
         }
-
+        
         /// <summary>
         /// Updates the associated data regarding a recorded event.
         /// </summary>
@@ -444,6 +454,7 @@ namespace RolePlayCharacter
             registry.RegistDynamicProperty(ROUND_TO_TENS_METHOD_TEMPLATE, RoundtoTensMethodCalculator);
             registry.RegistDynamicProperty(ROUND_METHOD_TEMPLATE, RoundMethodCalculator);
             registry.RegistDynamicProperty(RANDOM_METHOD_TEMPLATE, RandomCalculator);
+            registry.RegistDynamicProperty(LOG_TEMPLATE, LogDynamicProperty);
             m_am.BindToRegistry(registry);
         }
 
@@ -478,6 +489,8 @@ namespace RolePlayCharacter
 
         private static readonly Name ROUND_TO_TENS_METHOD_TEMPLATE = (Name)"RoundtoTensMethod";
 
+        private static readonly Name LOG_TEMPLATE = Name.BuildName("Log");
+
         private IEnumerable<DynamicPropertyResult> EmotionIntensityPropertyCalculator(IQueryContext context, Name x, Name y)
         {
             List<DynamicPropertyResult> result = new List<DynamicPropertyResult>();
@@ -503,6 +516,36 @@ namespace RolePlayCharacter
             }
             return result;
         }
+
+        //This is a special property that is only used for debug purposes
+        private IEnumerable<DynamicPropertyResult> LogDynamicProperty(IQueryContext context, Name varName)
+        {
+            var set = context.AskPossibleProperties(varName).ToList();
+
+            IEnumerable<SubstitutionSet> sets;
+            if (set.Count == 0)
+                sets = context.Constraints;
+            else
+                sets = set.SelectMany(s => s.Item2).Distinct();
+
+
+            foreach (var sub in sets)
+            {
+                foreach (var c in context.Constraints)
+                {
+
+                    this.m_log.Add(new LogEntry
+                    {
+                        Message = "Constraints: " + c.ToString(),
+                        Tick = m_am.Tick
+                    });
+
+                }
+//                this.m_log.Add(new LogEntry {                   Message = "Constraints: " + context.Constraints.ToString() + "P2: " + context.Perspective.ToString() + "P1: " + context.Queryable.Perspective.ToString() +" sub: " +  sub.ToString(), Tick = m_am.Tick });
+                yield return new DynamicPropertyResult(Name.BuildName("true"), sub);
+            }
+        }
+
 
         private IEnumerable<DynamicPropertyResult> GetEmotionsForEntity(IEmotionalState state,
             Name emotionName, WellFormedNames.IQueryable kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
@@ -877,12 +920,16 @@ namespace RolePlayCharacter
             dataHolder.SetValue("EmotionalState", m_emotionalState);
             dataHolder.SetValue("AutobiographicMemory", m_am);
             dataHolder.SetValue("OtherAgents", m_otherAgents);
+            if (m_log.Any())
+            {
+                dataHolder.SetValue("UnifierLog", m_log);
+            }
         }
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             m_allowAuthoring = true;
-
+            m_log = new List<LogEntry>();
             m_kb = dataHolder.GetValue<KB>("KnowledgeBase");
             this.BodyName = dataHolder.GetValue<string>("BodyName");
             this.VoiceName = dataHolder.GetValue<string>("VoiceName");
@@ -894,6 +941,8 @@ namespace RolePlayCharacter
             m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
             m_otherAgents = dataHolder.GetValue<Dictionary<Name, AgentEntry>>("OtherAgents");
             if (m_otherAgents == null) { m_otherAgents = new Dictionary<Name, AgentEntry>(); }
+
+
             BindToRegistry(m_kb);
         }
 
