@@ -10,11 +10,13 @@
 							"SELF":
 								{
 									"IsCheap(A)": "False, 1",
-									"IsFriend(A)": "True, 1",
 									"IsFriend(Player)": "True, 1",
-									"IsUgly(A)": "False, 1",
+									"IsUgly(A)": "3, 1",
+									"IsUgly(B)": "4, 1",
+									"Likes(A)": "4, 1",
+									"Likes(B)": "6, 1",
 									"Likes(Bananas)": "True, 1",
-									"Likes(Chocolate)": "True, 0.2"
+									"Likes(Chocolate)": "True, 0,2"
 								},
 							"SELF(Jonas)":
 								{
@@ -30,7 +32,7 @@
 			"CommeillFautAssetSource": null,
 			"EmotionalState":
 				{
-					"Mood": 3.685673,
+					"Mood": 4.863275,
 					"initialTick": 0,
 					"EmotionalPool": [],
 					"AppraisalConfiguration":
@@ -45,7 +47,7 @@
 				},
 			"AutobiographicMemory":
 				{
-					"Tick": 11,
+					"Tick": 1,
 					"records": [
 						{
 							"classId": 0,
@@ -53,7 +55,7 @@
 							"Type": "Action-End",
 							"Subject": "Sam",
 							"Timestamp": 1,
-							"Action": "Compliment",
+							"Action": "-",
 							"Target": "Player"
 						}]
 				},
@@ -63,14 +65,25 @@
 				},
 			"UnifierLog": [
 				{
-					"Message": "Constraints: ([x]/A)"
+					"Message": "Sub Found: [x]/A"
 				}, 
 				{
-					"Message": "Constraints: ([x]/A)",
+					"Message": "Sub Found: [x]/B"
+				}, 
+				{
+					"Message": "Sub Found: [x]/A",
 					"Tick": 1
 				}, 
 				{
-					"Message": "Constraints: ([x]/A)",
+					"Message": "Sub Found: [x]/B",
+					"Tick": 1
+				}, 
+				{
+					"Message": "Sub Found: [x]/A",
+					"Tick": 1
+				}, 
+				{
+					"Message": "Sub Found: [x]/B",
 					"Tick": 1
 				}]
 		},

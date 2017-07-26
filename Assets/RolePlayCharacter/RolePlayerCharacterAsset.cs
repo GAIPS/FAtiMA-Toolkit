@@ -520,32 +520,19 @@ namespace RolePlayCharacter
         //This is a special property that is only used for debug purposes
         private IEnumerable<DynamicPropertyResult> LogDynamicProperty(IQueryContext context, Name varName)
         {
-            var set = context.AskPossibleProperties(varName).ToList();
-
-            IEnumerable<SubstitutionSet> sets;
-            if (set.Count == 0)
-                sets = context.Constraints;
-            else
-                sets = set.SelectMany(s => s.Item2).Distinct();
-
-
-            foreach (var sub in sets)
+            foreach (var subSet in context.Constraints)
             {
-                foreach (var c in context.Constraints)
+                foreach (var sub in subSet.Where(s => s.Variable == varName))
                 {
-
                     this.m_log.Add(new LogEntry
                     {
-                        Message = "Constraints: " + c.ToString(),
+                        Message = "Sub Found: " + sub,
                         Tick = m_am.Tick
                     });
-
                 }
-//                this.m_log.Add(new LogEntry {                   Message = "Constraints: " + context.Constraints.ToString() + "P2: " + context.Perspective.ToString() + "P1: " + context.Queryable.Perspective.ToString() +" sub: " +  sub.ToString(), Tick = m_am.Tick });
-                yield return new DynamicPropertyResult(Name.BuildName("true"), sub);
+                yield return new DynamicPropertyResult(Name.BuildName("true"), subSet);
             }
         }
-
 
         private IEnumerable<DynamicPropertyResult> GetEmotionsForEntity(IEmotionalState state,
             Name emotionName, WellFormedNames.IQueryable kb, Name perspective, IEnumerable<SubstitutionSet> constraints)

@@ -19,16 +19,25 @@
 						{
 							"Set": ["IsFriend([x]) = True", "IsUgly([x]) = False", "Log([x]) = true", "Mood(SELF) >= 0"]
 						}
-				}, 
-				{
-					"Action": "Speak([cs], [ns], [m], [s])",
+				},
+        {
+          "Action": "Speak([cs], [ns], [m], [s])",
+          "Target": "[x]",
+          "Conditions": {
+            "Set": [ "ValidDialogue([cs], [ns], [m], [s]) = True", "DialogueState([x]) = [cs]" ]
+          },
+          "Priority": 1
+        },
+        {
+					"Action": "Jump",
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["ValidDialogue([cs], [ns], [m], [s]) = True", "DialogueState([x]) = [cs]"]
+							"Set": ["Likes([x]) = [y]", "IsUgly([x]) = [z]", "Log([x]) = True", "[y] < [z]"]
 						},
-					"Priority": 1
-				}]
+					"Priority": 2
+				}
+			]
 		},
 	"types": [
 		{

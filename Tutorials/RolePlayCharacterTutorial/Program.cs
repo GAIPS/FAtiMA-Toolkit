@@ -13,10 +13,10 @@ namespace RolePlayCharacterTutorial
 	        var rpc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/RPCTest.rpc");
             rpc.LoadAssociatedAssets();
             var json = rpc.SerializeToJSON();
-            rpc.SaveToFile("../../../Examples/RPCTest-Output.rpc");
-
+  
             Console.WriteLine("Starting Mood: " + rpc.Mood);
             var action = rpc.Decide().FirstOrDefault();
+            rpc.SaveToFile("../../../Examples/RPCTest-Output.rpc");
             rpc.Update();
 
             Console.WriteLine("The name of the character loaded is: " + rpc.CharacterName);
