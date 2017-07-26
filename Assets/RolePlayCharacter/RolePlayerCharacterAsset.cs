@@ -227,7 +227,7 @@ namespace RolePlayCharacter
         /// </summary>
         /// <param name="beliefName">The name of the belief to return</param>
         /// <returns>The string value of the belief, or null if no belief exists.</returns>
-        public UncertainValue GetBeliefValueAndCertainty(string beliefName, string perspective = Name.SELF_STRING)
+        public ComplexValue GetBeliefValueAndCertainty(string beliefName, string perspective = Name.SELF_STRING)
         {
             return m_kb.AskProperty((Name)beliefName, (Name)perspective);
         }
@@ -502,7 +502,7 @@ namespace RolePlayCharacter
 
             if (entity.IsVariable)
             {
-                var newSub = new Substitution(entity, context.Perspective);
+                var newSub = new Substitution(entity, new ComplexValue(context.Perspective));
                 var newC = context.Constraints.Where(c => c.AddSubstitution(newSub));
                 if (newC.Any())
                     result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, context.Queryable, context.Perspective, newC));
@@ -541,7 +541,7 @@ namespace RolePlayCharacter
             {
                 foreach (var emotion in state.GetAllEmotions())
                 {
-                    var sub = new Substitution(emotionName, (Name)emotion.EmotionType);
+                    var sub = new Substitution(emotionName, new ComplexValue((Name)emotion.EmotionType));
                     foreach (var c in constraints)
                     {
                         if (c.Conflicts(sub))
@@ -573,7 +573,7 @@ namespace RolePlayCharacter
 
             if (x.IsVariable)
             {
-                var otherAgentsSubstitutions = m_otherAgents.Keys.Append(CharacterName).Select(n => new Substitution(x, n));
+                var otherAgentsSubstitutions = m_otherAgents.Keys.Append(CharacterName).Select(n => new Substitution(x, new ComplexValue(n)));
 
                 foreach (var s in otherAgentsSubstitutions)
                 {
@@ -611,7 +611,7 @@ namespace RolePlayCharacter
 
             if (x.IsVariable)
             {
-                var sub = new Substitution(x, context.Perspective);
+                var sub = new Substitution(x, new ComplexValue(context.Perspective));
                 foreach (var c in context.Constraints)
                 {
                     if (c.AddSubstitution(sub))
@@ -657,7 +657,7 @@ namespace RolePlayCharacter
                     {
                         if (sub.Variable == x)
                         {
-                            var toRet = Convert.ToDouble(sub.Value.ToString());
+                            var toRet = Convert.ToDouble(sub.SubValue.ToString());
                             // Console.WriteLine("Round method calculation for: " + x.ToString() + " the value : " + toRet);
                             toRet = Math.Round(toRet, y_value);
                             //        Console.WriteLine("Round method calculation for: " + x.ToString() + " rounded value " + sub.Value.ToString()  + " digits: " + y_value + " result : " + toRet);
@@ -682,7 +682,7 @@ namespace RolePlayCharacter
                     {
                         if (sub.Variable == x)
                         {
-                            var toRet = Convert.ToDouble(sub.Value.ToString());
+                            var toRet = Convert.ToDouble(sub.SubValue.ToString());
                             // Console.WriteLine("Round method calculation for: " + x.ToString() + " the value : " + toRet);
                             toRet = toRet / toTens;
                             toRet = Math.Round(toRet, 0);
@@ -723,7 +723,7 @@ namespace RolePlayCharacter
 
             if (x.IsVariable)
             {
-                var sub = new Substitution(x, context.Perspective);
+                var sub = new Substitution(x, new ComplexValue(context.Perspective));
                 foreach (var c in context.Constraints)
                 {
                     if (c.AddSubstitution(sub))
@@ -768,7 +768,7 @@ namespace RolePlayCharacter
 
             if (x.IsVariable)
             {
-                var sub = new Substitution(x, context.Perspective);
+                var sub = new Substitution(x, new ComplexValue(context.Perspective));
                 foreach (var c in context.Constraints)
                 {
                     if (c.AddSubstitution(sub))
@@ -798,7 +798,7 @@ namespace RolePlayCharacter
 
             if (x.IsVariable)
             {
-                var sub = new Substitution(x, context.Perspective);
+                var sub = new Substitution(x, new ComplexValue(context.Perspective));
                 foreach (var c in context.Constraints)
                 {
                     if (c.AddSubstitution(sub))
@@ -830,7 +830,7 @@ namespace RolePlayCharacter
 
             if (x.IsVariable)
             {
-                var sub = new Substitution(x, context.Perspective);
+                var sub = new Substitution(x, new ComplexValue(context.Perspective));
                 foreach (var c in context.Constraints)
                 {
                     if (c.AddSubstitution(sub))
@@ -873,7 +873,7 @@ namespace RolePlayCharacter
 
             if (x.IsVariable)
             {
-                var sub = new Substitution(x, context.Perspective);
+                var sub = new Substitution(x, new ComplexValue(context.Perspective));
                 foreach (var c in context.Constraints)
                 {
                     if (c.AddSubstitution(sub))

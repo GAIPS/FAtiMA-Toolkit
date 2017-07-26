@@ -204,7 +204,7 @@ namespace Conditions
 					domain[sub.Variable] = set;
 				}
 
-				set.Add(sub.Value);
+				set.Add(sub.SubValue.Value);
 			}
 			return domain;
 		}

@@ -129,13 +129,13 @@ namespace WellFormedNames
 					if (value.ContainsVariable(variable))		//Occurs check to prevent cyclical evaluations
 						return false;
 
-					candidate = new Substitution(variable, value);
+					candidate = new Substitution(variable, new ComplexValue(value));
 				}
 				else if (isVar1) //isVar1 == isVar2 == true
 				{
 					//Case 2: x = x, where x is a variable, ignore it. otherwise add the substitution
 					if (!(p.Item1 == p.Item2))
-						candidate = new Substitution(p.Item1, p.Item2);
+						candidate = new Substitution(p.Item1, new ComplexValue(p.Item2));
 				}
 				else //isVar1 == isVar2 == false
 				{

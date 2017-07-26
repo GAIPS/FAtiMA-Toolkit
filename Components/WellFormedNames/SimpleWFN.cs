@@ -499,7 +499,7 @@ namespace WellFormedNames
             bindings.TryGetValue(var.description, out existingSub);
             if (existingSub != null)
             {
-                if (existingSub.Value.ToString().RemoveWhiteSpace().EqualsIgnoreCase(valDescription))
+                if (existingSub.SubValue.ToString().RemoveWhiteSpace().EqualsIgnoreCase(valDescription))
                     return valLiteralCount;
                 else return -1;
             }

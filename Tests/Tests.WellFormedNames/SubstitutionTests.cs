@@ -14,9 +14,9 @@ namespace Tests.WellFormedNames
 		{
 			var sub = new Substitution(var, val);
 			Assert.That(sub.Variable.ToString() == var);
-			Assert.That(sub.Value.ToString() == val);
+			Assert.That(sub.SubValue.Value.ToString() == val);
 
-			var sub2 = new Substitution(Name.BuildName(var), Name.BuildName(val));
+			var sub2 = new Substitution(Name.BuildName(var),new ComplexValue(Name.BuildName(val)));
 			Assert.That(sub2.Equals(sub));
 		}
 
@@ -33,7 +33,7 @@ namespace Tests.WellFormedNames
 		{
 			var sub = new Substitution(s);
 			Assert.That(sub.Variable.ToString() == var);
-			Assert.That(sub.Value.ToString() == val);
+			Assert.That(sub.SubValue.Value.ToString() == val);
 		}
 
 		[TestCase("/[x]/John")]
@@ -48,7 +48,7 @@ namespace Tests.WellFormedNames
 		public void ToString_AnySubstitution_StringRepresentation(string s)
 		{
 			var sub = new Substitution(s);
-			Assert.That(sub.ToString() == s);
+			Assert.That(sub.ToString() == s + ", " + sub.SubValue.Certainty);
 		}
 	}
 }

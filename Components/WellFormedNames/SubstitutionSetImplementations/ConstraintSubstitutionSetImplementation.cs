@@ -77,10 +77,10 @@ namespace WellFormedNames
 				Constraint c;
 				bool needsBuild = !m_constraints.TryGetValue(s.Variable, out c);
 
-				if (s.Value.IsVariable)
+				if (s.SubValue.Value.IsVariable)
 				{
 					Constraint c2;
-					if (m_constraints.TryGetValue(s.Value, out c2))
+					if (m_constraints.TryGetValue(s.SubValue.Value, out c2))
 					{
 						if (needsBuild)
 						{
@@ -103,8 +103,8 @@ namespace WellFormedNames
 							c.EquivalentVariables.Add(s.Variable);
 						}
 
-						m_constraints[s.Value] = c;
-						c.EquivalentVariables.Add(s.Value);
+						m_constraints[s.SubValue.Value] = c;
+						c.EquivalentVariables.Add(s.SubValue.Value);
 					}
 				}
 				else
@@ -116,7 +116,7 @@ namespace WellFormedNames
 						c.EquivalentVariables.Add(s.Variable);
 					}
 
-					c.Value = s.Value;
+					c.Value = s.SubValue.Value;
 				}
 
 				m_substitutions.Add(s);
@@ -164,16 +164,16 @@ namespace WellFormedNames
 
 				Name G1 = c.Value;
 				Name G2;
-				if (subs.Value.IsVariable)
+				if (subs.SubValue.Value.IsVariable)
 				{
-					if (c.EquivalentVariables.Contains(subs.Value))
+					if (c.EquivalentVariables.Contains(subs.SubValue.Value))
 					{
 						canAdd = false;
 						return false;
 					}
 
 					Constraint c2;
-					if (!m_constraints.TryGetValue(subs.Value, out c2))
+					if (!m_constraints.TryGetValue(subs.SubValue.Value, out c2))
 						return false;
 
 					if (c.Value == null || c2.Value == null)
@@ -187,7 +187,7 @@ namespace WellFormedNames
 						return false;
 
 					canAdd = false;
-					G2 = subs.Value;
+					G2 = subs.SubValue.Value;
 					return !G1.Equals(G2);  //Conflict!!!
 				}
 
@@ -216,7 +216,7 @@ namespace WellFormedNames
 					foreach (var v in constraint.EquivalentVariables)
 					{
 						if (constraint.Value != null)
-							yield return new Substitution(v, constraint.Value.MakeGround(other));
+							yield return new Substitution(v, new ComplexValue(constraint.Value.MakeGround(other)));
 						cloned.Add(v);
 					}
 				}

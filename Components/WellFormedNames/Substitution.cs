@@ -29,17 +29,17 @@ namespace WellFormedNames
 		/// <summary>
 		/// The Name value to substitute the variable with.
 		/// </summary>
-		public Name Value
+		public ComplexValue SubValue
 		{
 			get;
 		}
 
-		private void Validation(Name variable, Name value)
+		private void Validation(Name variable, ComplexValue value)
 		{
 			if (!variable.IsVariable)
 				throw new BadSubstitutionException($"{variable} is not a valid variable definition.");
 
-			if (value.ContainsVariable(variable))
+			if (value.Value.ContainsVariable(variable))
 				throw new BadSubstitutionException($"The substitution {variable}->{value} will create a cyclical reference.");
 		}
 
@@ -49,12 +49,12 @@ namespace WellFormedNames
 		/// <param name="variable">the variable to be replaced</param>
 		/// <param name="value">the new value to apply in the place of the old variable</param>
 		/// <exception cref="BadSubstitutionException">Thrown if the Name given for the variable, is not an actual variable.</exception>
-		public Substitution(Name variable, Name value)
+		public Substitution(Name variable, ComplexValue value)
 		{
 			Validation(variable, value);
 
 			this.Variable = variable;
-			this.Value = value;
+			this.SubValue = value;
 		}
 
 		/// <summary>
@@ -72,9 +72,9 @@ namespace WellFormedNames
 			{
 				var v = Name.BuildName(elem[0]);
 				var n = Name.BuildName(elem[1]);
-				Validation(v, n);
+				Validation(v, new ComplexValue(n));
 				this.Variable = v;
-				this.Value = n;
+				this.SubValue = new ComplexValue(n);
 			}
 			catch (BadSubstitutionException)
 			{
@@ -96,10 +96,10 @@ namespace WellFormedNames
 		{
 			var v = Name.BuildName(variable);
 			var n = Name.BuildName(value);
-			Validation(v, n);
+			Validation(v, new ComplexValue(n));
 
 			this.Variable = v;
-			this.Value = n;
+			this.SubValue = new ComplexValue(n);
 		}
 
 		/// <summary>
@@ -109,7 +109,7 @@ namespace WellFormedNames
 		private Substitution(Substitution substitution)
 		{
 			this.Variable = substitution.Variable;
-			this.Value = substitution.Value;
+			this.SubValue = substitution.SubValue;
 		}
 
 		/// <summary>
@@ -120,7 +120,7 @@ namespace WellFormedNames
 		/// <returns>A new instance, which is a clone of this Substitution, but with every variable identifier changed in order to include the new tag.</returns>
 		public Substitution ReplaceUnboundVariables(string id)
 		{
-			return new Substitution(Variable.ReplaceUnboundVariables(id),Value.ReplaceUnboundVariables(id));
+			return new Substitution(Variable.ReplaceUnboundVariables(id),new ComplexValue(SubValue.Value.ReplaceUnboundVariables(id)));
 		}
 
 		/// <summary>
@@ -134,7 +134,7 @@ namespace WellFormedNames
 		/// </remarks>
 		public Substitution RemoveBoundedVariables(string id)
 		{
-			return new Substitution(Variable.RemoveBoundedVariables(id), Value.RemoveBoundedVariables(id));
+			return new Substitution(Variable.RemoveBoundedVariables(id), new ComplexValue(SubValue.Value.RemoveBoundedVariables(id)));
 		}
 
 		/// @cond DOXYGEN_SHOULD_SKIP_THIS
@@ -145,17 +145,17 @@ namespace WellFormedNames
 			if (s == null)
 				return false;
 
-			return Variable.Equals(s.Variable) && Value.Equals(s.Value);
+			return Variable.Equals(s.Variable) && SubValue.Equals(s.SubValue);
 		}
 
 		public override int GetHashCode()
 		{
-			return Variable.GetHashCode() ^ Value.GetHashCode();
+			return Variable.GetHashCode() ^ SubValue.Value.GetHashCode();
 		}
 
 		public override string ToString()
 		{
-			return $"{Variable}/{Value}";
+			return $"{Variable}/{SubValue}";
 		}
 
 		/// @endcond

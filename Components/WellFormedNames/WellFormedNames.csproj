@@ -31,7 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="UncertainValue.cs" />
+    <Compile Include="ComplexValue.cs" />
     <Compile Include="Collections\NameSearchTree.cs" />
     <Compile Include="Collections\TreeNode.cs" />
     <Compile Include="Exceptions\BadSubstitutionException.cs" />

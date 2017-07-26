@@ -87,7 +87,7 @@ namespace CommeillFaut
             //   Console.WriteLine("VolitionProperty " + socialMoveName.ToString());
 
             var value = -1;
-            var seSub = new Substitution(Name.BuildName("[x]"), Name.BuildName("Peter"));
+            var seSub = new Substitution(Name.BuildName("[x]"), new ComplexValue(Name.BuildName("Peter")));
 
             foreach (var t in context.AskPossibleProperties(Target))
             {
@@ -102,7 +102,7 @@ namespace CommeillFaut
                     {
                     //    Console.WriteLine(" sub: " + socialMoveName + " for " + se.ActionName);
                         value = newValue;
-                        seSub = new Substitution(socialMoveName, se.ActionName);
+                        seSub = new Substitution(socialMoveName, new ComplexValue(se.ActionName));
                     }
                 }
 
@@ -110,7 +110,7 @@ namespace CommeillFaut
                 {
                     var sub =
                         new SubstitutionSet(new Substitution[]
-                            {new Substitution(Name.BuildName("[x]"),t.Item1.Value)});
+                            {new Substitution(Name.BuildName("[x]"), new ComplexValue(t.Item1.Value))});
                     sub.AddSubstitution(seSub);
 
                     var roundedValue = Floor(value);

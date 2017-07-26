@@ -561,7 +561,7 @@ namespace WellFormedNames.Collections
 						//Find bindings with stored variables
 						foreach (var pair in m_nextVariable)
 						{
-							var sub = new Substitution(pair.Key, term);
+							var sub = new Substitution(pair.Key,new ComplexValue(term));
 							if (binding.Conflicts(sub))
 								continue;
 
@@ -583,7 +583,7 @@ namespace WellFormedNames.Collections
 						SubstitutionSet set = binding;
 						if (!pair.Item1.IsVariable || pair.Item1 != term)
 						{
-							var sub = new Substitution(term, pair.Item1);
+							var sub = new Substitution(term, new ComplexValue(pair.Item1));
 							if (binding.Conflicts(sub))
 								continue;
 

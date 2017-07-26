@@ -154,7 +154,7 @@ namespace SocialImportance
 			ValidateKBLink();
 
 			var prp = Name.BuildName(perspective);
-			var a = m_conferalActions.SelectAction(m_kB, prp).OrderByDescending(p=>p.Item2.ConferralSI);
+			var a = m_conferalActions.SelectActions(m_kB, prp).OrderByDescending(p=>p.Item2.ConferralSI);
 			return internal_FilterActions(prp, a.Select(p=>p.Item1)).FirstOrDefault();
 		}
 
@@ -212,7 +212,7 @@ namespace SocialImportance
 			long value = 0;
 			foreach (var a in m_attributionRules)
 			{
-				var sub = new Substitution(a.Target, target);
+				var sub = new Substitution(a.Target, new ComplexValue(target));
 				if (a.Conditions.Evaluate(m_kB, perspective, new[] { new SubstitutionSet(sub) }))
 					value += a.Value;
 			}

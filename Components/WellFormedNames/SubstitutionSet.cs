@@ -176,7 +176,7 @@ namespace WellFormedNames
 				if(value==null)
 					continue;
 
-				var g1 = s.Value.MakeGround(substitutions).MakeGround(this);
+				var g1 = s.SubValue.Value.MakeGround(substitutions).MakeGround(this);
 				var g2 = value.MakeGround(this).MakeGround(substitutions);
 				if (!g1.Equals(g2))
 					return true;

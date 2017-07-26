@@ -45,9 +45,11 @@ namespace Conditions
 	    public IEnumerable<Pair<T, SubstitutionSet>> MatchConditions(IQueryable db, Name perspective, SubstitutionSet constraints)
 		{
 			var constraintSet = new[] { constraints };
+
+            
 			foreach (var e in m_conditions)
 			{
-				if (e.Item1 == null)
+				if (e.Item1 == null) //When there are no conditions in the action
 				{
 					yield return Tuples.Create(e.Item2, new SubstitutionSet(constraints));
 					continue;

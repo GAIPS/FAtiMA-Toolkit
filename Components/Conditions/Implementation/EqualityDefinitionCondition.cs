@@ -20,7 +20,7 @@ namespace Conditions
 			{
 				foreach (var result in m_other.Retrieve(db, perspective, constraints))
 				{
-					var sub = new Substitution(m_variable, result.Item1);
+					var sub = new Substitution(m_variable, new ComplexValue(result.Item1));
 					if (result.Item2.AddSubstitution(sub))
 						yield return result.Item2;
 				}

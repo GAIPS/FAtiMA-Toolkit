@@ -66,7 +66,7 @@ namespace EmotionalDecisionMaking
 			if (ReactiveActions == null)
 				return Enumerable.Empty<IAction>();
 
-            return ReactiveActions.SelectAction(m_kb, Name.SELF_SYMBOL);
+            return ReactiveActions.SelectActions(m_kb, Name.SELF_SYMBOL);
         }
 
 		/// <summary>

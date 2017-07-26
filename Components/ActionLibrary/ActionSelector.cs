@@ -56,7 +56,7 @@ namespace ActionLibrary
 			return GetAllActionDefinitions().FirstOrDefault(t => t.Id == id);
 		}
         
-        public IEnumerable<Pair<IAction,T>> SelectAction(IQueryable knowledgeBase, Name perspective)
+        public IEnumerable<Pair<IAction,T>> SelectActions(IQueryable knowledgeBase, Name perspective)
 		{
 			var validActions = m_actions.MatchConditions(knowledgeBase, perspective, new SubstitutionSet());
 			if(m_validator!=null)

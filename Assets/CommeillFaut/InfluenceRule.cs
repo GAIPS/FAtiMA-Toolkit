@@ -33,7 +33,7 @@ namespace CommeillFaut
         {
            
             var toEvaluate = new ConditionSet(RuleConditions);
-            var sub = new Substitution(Name.BuildName(Target), Name.BuildName(targ));
+            var sub = new Substitution(Name.BuildName(Target), new ComplexValue(Name.BuildName(targ)));
             if (toEvaluate.Evaluate(m_Kb, Name.BuildName(init), new [] { new SubstitutionSet(sub) }))
                 return Value;
             else return 0;

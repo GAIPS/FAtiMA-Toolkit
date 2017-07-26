@@ -212,7 +212,7 @@ namespace AutobiographicMemory
 			{
 				foreach (var record in m_registry.Values)
 				{
-					var idSub = new Substitution(id, Name.BuildName(record.Id));
+					var idSub = new Substitution(id, new ComplexValue(Name.BuildName(record.Id)));
 					foreach (var c in context.Constraints)
 					{
 						if (c.Conflicts(idSub))

@@ -13,7 +13,7 @@ using SerializationUtilities.Attributes;
 
 namespace KnowledgeBase
 {
-	using BeliefValueSubsPair = Pair<UncertainValue, IEnumerable<SubstitutionSet>>;
+	using BeliefValueSubsPair = Pair<ComplexValue, IEnumerable<SubstitutionSet>>;
         
 	[Serializable]
 	public partial class KB : IQueryable, ICustomSerialization
@@ -23,15 +23,15 @@ namespace KnowledgeBase
         
 		private sealed class KnowledgeEntry
 		{
-			private UncertainValue m_universal = null;
-			private Dictionary<Name, UncertainValue> m_perspectives;
+			private ComplexValue m_universal = null;
+			private Dictionary<Name, ComplexValue> m_perspectives;
 
-			public UncertainValue GetValueFor(Name mindKey, Name finalPerspective)
+			public ComplexValue GetValueFor(Name mindKey, Name finalPerspective)
 			{
-				UncertainValue belief;
+				ComplexValue belief;
 				if ((m_perspectives != null) && m_perspectives.TryGetValue(mindKey, out belief))
                 {
-                    return new UncertainValue(belief.Value.SwapTerms(Name.SELF_SYMBOL, finalPerspective),
+                    return new ComplexValue(belief.Value.SwapTerms(Name.SELF_SYMBOL, finalPerspective),
                         belief.Certainty);
                 }
 
@@ -42,7 +42,7 @@ namespace KnowledgeBase
 			{
 				if (perspective.IsUniversal)
 				{
-					m_universal = new UncertainValue(value);
+					m_universal = new ComplexValue(value);
 					return;
 				}
 
@@ -51,7 +51,7 @@ namespace KnowledgeBase
 					if(value==null)
 						return;
 
-					m_perspectives = new Dictionary<Name, UncertainValue>();
+					m_perspectives = new Dictionary<Name, ComplexValue>();
 				}
 
 				if (value == null)
@@ -62,7 +62,7 @@ namespace KnowledgeBase
 				}
                 else
                 {
-                    var bValue = new UncertainValue(value,certainty);
+                    var bValue = new ComplexValue(value,certainty);
                     m_perspectives[perspective] = bValue;
                 }
 			}
@@ -72,7 +72,7 @@ namespace KnowledgeBase
 				return (m_perspectives == null) && (m_universal == null);
 			}
 
-			public IEnumerable<KeyValuePair<Name, UncertainValue>> GetPerspectives()
+			public IEnumerable<KeyValuePair<Name, ComplexValue>> GetPerspectives()
 			{
 				if (m_perspectives != null)
 				{
@@ -81,7 +81,7 @@ namespace KnowledgeBase
 				}
 
 				if(m_universal!=null)
-					yield return new KeyValuePair<Name, UncertainValue>(Name.UNIVERSAL_SYMBOL, m_universal);
+					yield return new KeyValuePair<Name, ComplexValue>(Name.UNIVERSAL_SYMBOL, m_universal);
 			}
 
 			public IEnumerable<Name> GetAllStoredPerspectives()
@@ -165,7 +165,7 @@ namespace KnowledgeBase
 					{
 						if (x.IsVariable)
 						{
-							var sub = new Substitution(x,t);
+							var sub = new Substitution(x,new ComplexValue(t));
 							foreach (var g in context.Constraints)
 							{
 								if(g.Conflicts(sub))
@@ -260,13 +260,13 @@ namespace KnowledgeBase
 			}
 	    }
 
-        public UncertainValue AskProperty(Name property)
+        public ComplexValue AskProperty(Name property)
 		{
 			return AskProperty(property, Name.SELF_SYMBOL);
 		}
 
         
-        public UncertainValue AskProperty(Name property, Name perspective)
+        public ComplexValue AskProperty(Name property, Name perspective)
 		{
 			if (!property.IsGrounded)
 				throw new ArgumentException("The given Well Formed Name must be grounded",nameof(property));
@@ -296,7 +296,7 @@ namespace KnowledgeBase
 					property = p;
 				}
 
-				return new[] { Tuples.Create(new UncertainValue(property), constraints) };
+				return new[] { Tuples.Create(new ComplexValue(property), constraints) };
 			}
 
 			var ToMList = AssertPerspective(perspective, nameof(perspective));
@@ -334,7 +334,7 @@ namespace KnowledgeBase
 			{
 				if (g.Key.IsPrimitive)
 				{
-					yield return Tuples.Create(new UncertainValue(g.Key),(IEnumerable<SubstitutionSet>)g);
+					yield return Tuples.Create(new ComplexValue(g.Key),(IEnumerable<SubstitutionSet>)g);
 					continue;
 				}
 
@@ -354,7 +354,7 @@ namespace KnowledgeBase
 					var value = r.Key.GetValueFor(mind_key,GetFinalPerspective(ToMList));
 					if (value == null)
 						continue;
-					yield return Tuples.Create(new UncertainValue(value.Value, value.Certainty), r.Distinct());
+					yield return Tuples.Create(new ComplexValue(value.Value, value.Certainty), r.Distinct());
 				}
 			}
 		}
@@ -639,7 +639,7 @@ namespace KnowledgeBase
 				foreach (var field in holder)
 				{
 					var property = (Name) field.FieldName;
-					var value = UncertainValue.Deserialize(field.FieldNode.RebuildObject<string>());
+					var value = ComplexValue.Deserialize(field.FieldNode.RebuildObject<string>());
 					if(value==null)
 						continue;
 					
