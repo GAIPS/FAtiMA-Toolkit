@@ -1,4 +1,5 @@
-﻿using Utilities;
+﻿using System.Globalization;
+using Utilities;
 using WellFormedNames;
 
 namespace WellFormedNames
@@ -11,7 +12,7 @@ namespace WellFormedNames
             if (aux.Contains(","))
             {
                 var split = aux.Split(',');
-                return new ComplexValue((Name)split[0], float.Parse(split[1]));
+                return new ComplexValue((Name)split[0], float.Parse(split[1], CultureInfo.InvariantCulture));
             }
             else
             {
@@ -36,7 +37,7 @@ namespace WellFormedNames
 
         public string Serialize()
         {
-            return this.Value + ", " + this.Certainty;
+            return this.Value + ", " + this.Certainty.ToString(CultureInfo.InvariantCulture);
         }
 
         public override bool Equals(object obj)

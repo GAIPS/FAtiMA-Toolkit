@@ -15,13 +15,13 @@ namespace Conditions
 				m_name = name;
 			}
 
-			public IEnumerable<Pair<Name, SubstitutionSet>> Retrieve
+			public IEnumerable<Pair<ComplexValue, SubstitutionSet>> Retrieve
                 (IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
 				foreach (var pair in db.AskPossibleProperties(m_name, perspective, constraints))
 				{
 					foreach (var s in pair.Item2)
-						yield return Tuples.Create(pair.Item1.Value, s);
+						yield return Tuples.Create(new ComplexValue(pair.Item1.Value, pair.Item1.Certainty), s);
 				}
 			}
 

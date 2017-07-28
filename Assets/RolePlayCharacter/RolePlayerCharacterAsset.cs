@@ -184,7 +184,9 @@ namespace RolePlayCharacter
             if (conferralAction != null)
                 sociallyAcceptedActions = sociallyAcceptedActions.Append(conferralAction);
 
-            return TakeBestActions(sociallyAcceptedActions).Shuffle();
+            var decisions = sociallyAcceptedActions.OrderByDescending(a => a.Utility);
+
+            return decisions.Shuffle();
         }
 
         /// <summary>

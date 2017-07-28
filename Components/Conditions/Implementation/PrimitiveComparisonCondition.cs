@@ -28,7 +28,7 @@ namespace Conditions
 
 				foreach (var pair in m_retriver.Retrieve(db,perspective, constraints))
 				{
-					if (CompareValues(pair.Item1, realValue, m_operation))
+					if (CompareValues(pair.Item1.Value, realValue, m_operation))
 						yield return pair.Item2;
 				}
 			}

@@ -15,7 +15,8 @@ namespace RolePlayCharacterTutorial
             var json = rpc.SerializeToJSON();
   
             Console.WriteLine("Starting Mood: " + rpc.Mood);
-            var action = rpc.Decide().FirstOrDefault();
+            var actions = rpc.Decide();
+            var action = actions.FirstOrDefault();
             rpc.SaveToFile("../../../Examples/RPCTest-Output.rpc");
             rpc.Update();
 
@@ -25,9 +26,6 @@ namespace RolePlayCharacterTutorial
             Console.WriteLine("Strongest emotion: " + rpc.GetStrongestActiveEmotion()?.EmotionType + "-" + rpc.GetStrongestActiveEmotion()?.Intensity);
             Console.WriteLine("First Response: " + action?.Name + ", Target:" + action?.Target.ToString());
 
-            rpc.UpdateBelief("Likes(Bananas)", "True");
-            rpc.UpdateBelief("Likes(Chocolate)", "True", 0.2f);
-            rpc.UpdateBelief("Likes(Pupppies)", "True", 1, "Jonas");
             rpc.SaveToFile("../../../Examples/RPCTest-Output.rpc");
             
             var busyAction = rpc.Decide().FirstOrDefault();

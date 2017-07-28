@@ -61,8 +61,10 @@ namespace ActionLibrary
 			var validActions = m_actions.MatchConditions(knowledgeBase, perspective, new SubstitutionSet());
 			if(m_validator!=null)
 				validActions = validActions.Where(p => m_validator((T)p.Item1,perspective, p.Item2));
-			return validActions.Select(p => new Pair<IAction, T>(p.Item1.GenerateAction(p.Item2),p.Item1)).Where(a => a.Item1 != null);
-		}
+
+            var result = validActions.Select(p => new Pair<IAction, T>(p.Item1.GenerateAction(p.Item2), p.Item1)).Where(a => a.Item1 != null);
+            return result;
+        }
 
 		public void OnConditionsUpdated(BaseActionDefinition def, ConditionSet oldConditions)
 		{

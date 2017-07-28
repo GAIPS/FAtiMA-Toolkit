@@ -27,7 +27,7 @@ namespace Conditions
 				{
 					foreach (var crossPair in Property2.Retrieve(db,perspective, g))
 					{
-						if (CompareValues(g.Key, crossPair.Item1, Operator))
+						if (CompareValues(g.Key.Value, crossPair.Item1.Value, Operator))
 							yield return crossPair.Item2;
 					}
 				}

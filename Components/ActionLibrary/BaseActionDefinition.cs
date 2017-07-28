@@ -79,9 +79,14 @@ namespace ActionLibrary
 				return null;
 			
 			var a = new Action(actionName.GetTerms(), targetName);
-			float p = CalculateActionUtility(a);
-			a.Utility = p;
-			OnActionGenerated(a);
+
+            float p = CalculateActionUtility(a);
+            
+            //change the utility of the action by looking at the confidence in each substitution certainty
+            var minCertainty = constraints.Select(s => s.SubValue.Certainty).Min();
+
+            a.Utility = p + minCertainty;
+
 			return a;
 		}
 
@@ -89,8 +94,6 @@ namespace ActionLibrary
 		{
 			Manager = manager;
 		}
-
-		protected virtual void OnActionGenerated(IAction action){}
 
 		protected abstract float CalculateActionUtility(IAction a);
 

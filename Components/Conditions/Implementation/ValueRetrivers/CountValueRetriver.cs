@@ -17,10 +17,10 @@ namespace Conditions
 				m_name = name;
 			}
 
-			public IEnumerable<Pair<Name, SubstitutionSet>> Retrieve(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
+			public IEnumerable<Pair<ComplexValue, SubstitutionSet>> Retrieve(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
 				int count = constraints.Select(c => c[m_name]).Where(n => n != null).Distinct().Count();
-				return constraints.Select(s => Tuples.Create(Name.BuildName(count), s));
+				return constraints.Select(s => Tuples.Create(new ComplexValue(Name.BuildName(count)), s));
 			}
 
 			public Name InnerName

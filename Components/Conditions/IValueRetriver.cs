@@ -8,7 +8,7 @@ namespace Conditions
 	{
 		private interface IValueRetriever
 		{
-			IEnumerable<Pair<Name, SubstitutionSet>> Retrieve(IQueryable db, Name perpective, IEnumerable<SubstitutionSet> constraints);
+			IEnumerable<Pair<ComplexValue, SubstitutionSet>> Retrieve(IQueryable db, Name perpective, IEnumerable<SubstitutionSet> constraints);
 
 			Name InnerName { get; }
 			bool HasModifier { get; }
