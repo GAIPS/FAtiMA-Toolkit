@@ -38,6 +38,7 @@ namespace RolePlayCharacterWF
                 var actionEvent = _eventToEdit as ActionEventDTO;
                 if (actionEvent != null)
                 {
+
                     textBoxSubject.Text = actionEvent.Subject;
                     textBoxObject.Text = actionEvent.Action;
                     textBoxTarget.Text = actionEvent.Target;
@@ -64,13 +65,21 @@ namespace RolePlayCharacterWF
                 
                 }else if (comboBoxEventType.Text == AMConsts.ACTION_START || comboBoxEventType.Text == AMConsts.ACTION_END)
                 {
+                    var act = new ActionEventDTO();
+                    if(comboBoxEventType.Text == AMConsts.ACTION_START) act.ActionState = ActionState.Start;
+                    else act.ActionState = ActionState.Finished;
+
                     newEvent = new ActionEventDTO()
                     {
+                       
+                       ActionState = act.ActionState,
                         Subject = textBoxSubject.Text,
                         Action = textBoxObject.Text,
                         Target = textBoxTarget.Text,
                         Time = ulong.Parse(textBoxTime.Text)
                     };
+
+                    
                 }
 
                 if (_eventToEdit != null)
