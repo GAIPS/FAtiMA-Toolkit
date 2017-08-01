@@ -271,7 +271,7 @@ namespace RolePlayCharacter
             {
                 var name = Name.BuildName(bel.Name).SwapTerms(ea.Perspective, CharacterName);
                 var value = Name.BuildName(bel.Value).SwapTerms(ea.Perspective, CharacterName);
-                m_kb.Tell(name, value, (Name)bel.Perspective);
+                 m_kb.Tell(name, value, (Name)bel.Perspective, bel.Certainty);
             }
 
             m_emotionalAppraisalAsset = ea;

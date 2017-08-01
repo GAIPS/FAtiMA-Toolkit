@@ -10,17 +10,20 @@
 							"SELF":
 								{
 									"IsCheap(A)": "False, 1",
-									"IsFriend(Player)": "True, 1",
+									"isDrunk(Sam)": "True, 1",
+									"IsFriend(Player)": "True, 0.4",
+									"IsNice(Sam)": "True, 1",
 									"IsUgly(A)": "6, 1",
 									"IsUgly(B)": "9, 1",
 									"Likes(A)": "4, 0.2",
-									"Likes(B)": "4, 0.1"
+									"Likes(B)": "4, 0.1",
+									"Likes(Sam, Sarah)": "True, 1"
 								}
 						}
 				},
 			"BodyName": "Female",
 			"VoiceName": "",
-			"EmotionalAppraisalAssetSource": null,
+			"EmotionalAppraisalAssetSource": "../../../Examples/Jonas.ea",
 			"EmotionalDecisionMakingSource": "../../../Examples/EDMTest.edm",
 			"SocialImportanceAssetSource": null,
 			"CommeillFautAssetSource": null,

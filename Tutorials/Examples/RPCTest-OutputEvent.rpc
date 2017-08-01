@@ -10,27 +10,26 @@
 							"SELF":
 								{
 									"IsCheap(A)": "False, 1",
-									"IsFriend(A)": "True, 1",
+									"isDrunk(Sam)": "True, 1",
 									"IsFriend(Player)": "True, 1",
-									"IsUgly(A)": "False, 1",
-									"Likes(Bananas)": "True, 1",
-									"Likes(Chocolate)": "True, 0.2"
-								},
-							"SELF(Jonas)":
-								{
-									"Likes(Pupppies)": "True, 1"
+									"IsNice(Sam)": "True, 1",
+									"IsUgly(A)": "6, 1",
+									"IsUgly(B)": "9, 1",
+									"Likes(A)": "4, 0.2",
+									"Likes(B)": "4, 0.1",
+									"Likes(Sam, Sarah)": "True, 1"
 								}
 						}
 				},
 			"BodyName": "Female",
 			"VoiceName": "",
-			"EmotionalAppraisalAssetSource": null,
+			"EmotionalAppraisalAssetSource": "../Examples/Jonas.ea",
 			"EmotionalDecisionMakingSource": "../Examples/EDMTest.edm",
 			"SocialImportanceAssetSource": null,
 			"CommeillFautAssetSource": null,
 			"EmotionalState":
 				{
-					"Mood": 3.584888,
+					"Mood": 0,
 					"initialTick": 0,
 					"EmotionalPool": [],
 					"AppraisalConfiguration":
@@ -45,7 +44,7 @@
 				},
 			"AutobiographicMemory":
 				{
-					"Tick": 12,
+					"Tick": 28,
 					"records": [
 						{
 							"classId": 0,
@@ -53,7 +52,7 @@
 							"Type": "Action-End",
 							"Subject": "Sam",
 							"Timestamp": 1,
-							"Action": "-",
+							"Action": "Jump",
 							"Target": "Player"
 						}, 
 						{
@@ -62,6 +61,15 @@
 							"Type": "Action-End",
 							"Subject": "Player",
 							"Timestamp": 12,
+							"Action": "Kick",
+							"Target": "Sam"
+						}, 
+						{
+							"classId": 0,
+							"Id": 3,
+							"Type": "Action-End",
+							"Subject": "Player",
+							"Timestamp": 28,
 							"Action": "Kick",
 							"Target": "Sam"
 						}]

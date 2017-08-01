@@ -20,7 +20,7 @@
 				},
 			"BodyName": "Female",
 			"VoiceName": "",
-			"EmotionalAppraisalAssetSource": null,
+			"EmotionalAppraisalAssetSource": "Jonas.ea",
 			"EmotionalDecisionMakingSource": "EDMTest.edm",
 			"SocialImportanceAssetSource": null,
 			"CommeillFautAssetSource": null,

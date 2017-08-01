@@ -10,7 +10,7 @@
 						{
 							"SELF":
 								{
-									"Gender(John)": "Male",
+									"IsFriend(Player)": "True, 0.4",
 									"isDrunk(John)": true,
 									"IsNice(John)": true,
 									"Likes(John, Sarah)": true
