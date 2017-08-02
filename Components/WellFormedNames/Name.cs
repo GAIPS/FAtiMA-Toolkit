@@ -27,9 +27,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Utilities;
 using WellFormedNames.Exceptions;
-#if PORTABLE
-using SerializationUtilities.Attributes;
-#endif
+
 
 namespace WellFormedNames
 {
@@ -519,11 +517,8 @@ namespace WellFormedNames
 				return 1;
 
 			StringComparer c;
-#if PORTABLE
-			c = StringComparer.OrdinalIgnoreCase;
-#else
+
 			c = StringComparer.InvariantCultureIgnoreCase;
-#endif
 
 			return c.Compare(ToString(), other.ToString());
 		}

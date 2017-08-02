@@ -32,6 +32,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="Utilities, Version=1.0.0.19854, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Utilities.1.0.0.19854\lib\net35\Utilities.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\DefaultSerializationSystemAttribute.cs" />
@@ -48,6 +52,7 @@
     <Compile Include="ISerializationContext.cs" />
     <Compile Include="ISerializationData.cs" />
     <Compile Include="ISerializer.cs" />
+    <Compile Include="OneToOneDictionary.cs" />
     <Compile Include="SerializationContext.cs" />
     <Compile Include="SerializationGraph\BaseGraphNode.cs" />
     <Compile Include="SerializationGraph\SerializedDataType.cs" />
@@ -72,12 +77,8 @@
     <Compile Include="TypeTools.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Utilities\Utilities.csproj">
-      <Project>{2021e828-2f7f-4775-9f02-58c68fd72edd}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

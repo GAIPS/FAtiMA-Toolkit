@@ -6,9 +6,7 @@ using System.Text.RegularExpressions;
 using SerializationUtilities.Attributes;
 using SerializationUtilities.SerializationGraph;
 using Utilities;
-#if !PORTABLE
 using System.Runtime.Serialization;
-#endif
 
 namespace SerializationUtilities
 {
@@ -19,21 +17,6 @@ namespace SerializationUtilities
 		private static IAssemblyLoader _assemblyLoader;
 		public static IAssemblyLoader AssemblyLoader {
 			get { return _assemblyLoader; }
-#if PORTABLE
-			set
-			{
-				if(value==null)
-					throw new ArgumentException();
-
-				if (_assemblyLoader != null)
-				{
-					UnbindAssemblyLoader(_assemblyLoader);
-				}
-
-				_assemblyLoader = value;
-				BindAssemblyLoader(_assemblyLoader);
-			}
-#endif
 		}
 
 		private static IInstanceFactory _factory;
@@ -41,17 +24,6 @@ namespace SerializationUtilities
 		public static IInstanceFactory InstanceFactory
 		{
 			get { return _factory; }
-#if PORTABLE
-			set
-			{
-				if(value == null)
-					throw new ArgumentNullException();
-				if(_factory == value)
-					return;
-
-				_factory = value;
-			}
-#endif
 		}
 
 		static SerializationServices()
@@ -69,9 +41,7 @@ namespace SerializationUtilities
 		private static readonly Type[] _validTypes = new[] {typeof (ISerializationSurrogate), typeof (IGraphFormatter)};
 		private static bool _isDirty;
 
-#if !PORTABLE
 		private static readonly IFormatterConverter DEFAULT_FORMATER = new FormatterConverter();
-#endif
 
 		private static void BindAssemblyLoader(IAssemblyLoader loader)
 		{
@@ -228,7 +198,6 @@ namespace SerializationUtilities
 		public static void PopulateWithFieldData(ISerializationData holder, object obj, bool includeBases, bool writeDefaults)
 		{
 			var objType = obj.GetType();
-#if !PORTABLE
 			var serializable = obj as ISerializable;
 			if (serializable != null)
 			{
@@ -243,7 +212,6 @@ namespace SerializationUtilities
 				}
 				return;
 			}
-#endif
 
 			var fields = GetSerializableFields(objType, includeBases);
 			foreach (var f in fields)
@@ -261,7 +229,7 @@ namespace SerializationUtilities
 		public static void ExtractFromFieldData(ISerializationData holder, ref object obj, bool includeBases)
 		{
 			var objType = obj.GetType();
-#if !PORTABLE
+
 			if (obj is ISerializable)
 			{
 				var info = new SerializationInfo(objType, DEFAULT_FORMATER);
@@ -278,7 +246,7 @@ namespace SerializationUtilities
 				c.Invoke(obj, new object[] { info, new StreamingContext() });
 				return;
 			}
-#endif
+
 			var fields = GetSerializableFields(objType, true);
 			foreach (var f in fields)
 			{

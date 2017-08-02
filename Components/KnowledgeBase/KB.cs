@@ -7,9 +7,6 @@ using WellFormedNames;
 using WellFormedNames.Collections;
 using Utilities;
 using IQueryable = WellFormedNames.IQueryable;
-#if PORTABLE
-using SerializationUtilities.Attributes;
-#endif
 
 namespace KnowledgeBase
 {
@@ -581,11 +578,9 @@ namespace KnowledgeBase
 		private Name String2Perspective(string str)
 		{
 			StringComparison c;
-#if PORTABLE
-			c = StringComparison.OrdinalIgnoreCase;
-#else
+
 			c = StringComparison.InvariantCultureIgnoreCase;
-#endif
+
 			if (string.Equals(str, Name.UNIVERSAL_STRING, c))
 				return Name.UNIVERSAL_SYMBOL;
 

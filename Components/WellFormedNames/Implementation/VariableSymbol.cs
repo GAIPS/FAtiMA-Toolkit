@@ -28,11 +28,8 @@ namespace WellFormedNames
 					return false;
 
 				StringComparer c;
-#if PORTABLE
-				c = StringComparer.OrdinalIgnoreCase;
-#else
+
 				c = StringComparer.InvariantCultureIgnoreCase;
-#endif
 
 				return c.Equals(m_variableName, ((VariableSymbol) name).m_variableName);
 			}

@@ -6,9 +6,6 @@ using WellFormedNames;
 using WellFormedNames.Exceptions;
 using IQueryable = WellFormedNames.IQueryable;
 
-#if PORTABLE
-using SerializationUtilities.Attributes;
-#endif
 
 namespace Conditions
 {

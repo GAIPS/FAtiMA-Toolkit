@@ -5,10 +5,6 @@ using AssetPackage;
 using SerializationUtilities;
 using Utilities.Json;
 
-#if PORTABLE
-using SerializationUtilities.Attributes;
-#endif
-
 namespace GAIPS.Rage
 {
 	public abstract class LoadableAsset<T> : BaseAsset where T : LoadableAsset<T>

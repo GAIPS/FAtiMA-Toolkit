@@ -87,11 +87,8 @@ internal abstract class PrimitiveValue : IEquatable<PrimitiveValue>
 				return false;
 
 			StringComparer c;
-#if PORTABLE
-			c = StringComparer.OrdinalIgnoreCase;
-#else
+
 			c = StringComparer.InvariantCultureIgnoreCase;
-#endif
 
 			return c.Equals(value, obj.value);
 		}

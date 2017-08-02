@@ -29,7 +29,7 @@
 			"CommeillFautAssetSource": null,
 			"EmotionalState":
 				{
-					"Mood": 4.863275,
+					"Mood": 4.352753,
 					"initialTick": 0,
 					"EmotionalPool": [],
 					"AppraisalConfiguration":
@@ -44,7 +44,7 @@
 				},
 			"AutobiographicMemory":
 				{
-					"Tick": 1,
+					"Tick": 5,
 					"records": [
 						{
 							"classId": 0,

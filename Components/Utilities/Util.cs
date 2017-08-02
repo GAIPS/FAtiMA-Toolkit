@@ -1,13 +1,10 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
-//using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Utilities
 {
 	public static class Util
 	{
-
         public static void Swap<T>(ref T v1, ref T v2)
 		{
 			T aux = v1;
@@ -26,17 +23,5 @@ namespace Utilities
         {
             return new string(str.ToCharArray().Where(c => !Char.IsWhiteSpace(c)).ToArray());
         }
-
-        /*public static T DeepCopy<T>(T item)
-        {
-            BinaryFormatter formatter = new BinaryFormatter();
-            MemoryStream stream = new MemoryStream();
-            formatter.Serialize(stream, item);
-            stream.Seek(0, SeekOrigin.Begin);
-            T result = (T)formatter.Deserialize(stream);
-            stream.Close();
-            return result;
-        }*/
-
     }
 }

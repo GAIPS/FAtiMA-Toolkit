@@ -3,9 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Utilities;
-#if PORTABLE
-using SerializationUtilities.Attributes;
-#endif
+
 
 namespace WellFormedNames
 {

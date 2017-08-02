@@ -100,7 +100,7 @@ namespace KnowledgeBase
 			if (surrogate == null)
 				throw new ArgumentNullException(nameof(surrogate));
 
-			internal_RegistDynamicProperty(propertyName, surrogate.GetMethodInfo(),
+			internal_RegistDynamicProperty(propertyName, surrogate.Method,
 				(context, args) => surrogate(context, args[0]));
 		}
 
@@ -109,7 +109,7 @@ namespace KnowledgeBase
 			if (surrogate == null)
 				throw new ArgumentNullException(nameof(surrogate));
 
-			internal_RegistDynamicProperty(propertyName, surrogate.GetMethodInfo(),
+			internal_RegistDynamicProperty(propertyName, surrogate.Method,
 				(context, args) => surrogate(context, args[0], args[1]));
 		}
 
@@ -118,7 +118,7 @@ namespace KnowledgeBase
 			if (surrogate == null)
 				throw new ArgumentNullException(nameof(surrogate));
 
-			internal_RegistDynamicProperty(propertyName, surrogate.GetMethodInfo(),
+			internal_RegistDynamicProperty(propertyName, surrogate.Method,
 				(context, args) => surrogate(context, args[0], args[1], args[2]));
 		}
 
@@ -127,7 +127,7 @@ namespace KnowledgeBase
 			if (surrogate == null)
 				throw new ArgumentNullException(nameof(surrogate));
 
-			internal_RegistDynamicProperty(propertyName, surrogate.GetMethodInfo(),
+			internal_RegistDynamicProperty(propertyName, surrogate.Method,
 				(context, args) => surrogate(context, args[0], args[1], args[2], args[3]));
 		}
 

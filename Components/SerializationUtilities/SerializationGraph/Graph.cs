@@ -27,10 +27,9 @@ namespace SerializationUtilities.SerializationGraph
 		private int m_idCounter = 0;
 		private OneToOneDictionary<object, int> m_links = new OneToOneDictionary<object, int>(new ReferenceComparer<object>(), null);
 		private SortedDictionary<int, ObjectGraphNode> m_refs = new SortedDictionary<int, ObjectGraphNode>();
-#if !PORTABLE
 		private HashSet<IDeserializationCallback> m_deserializeCallbackRegist = new HashSet<IDeserializationCallback>();
-#endif
-		private IGraphNode m_root = null;
+
+        private IGraphNode m_root = null;
 		public IGraphNode Root {
 			get
 			{
@@ -291,21 +290,17 @@ namespace SerializationUtilities.SerializationGraph
 		public object DeserializeObject(Type requestedType)
 		{
 			var obj = RebuildObject((BaseGraphNode)Root, requestedType);
-#if !PORTABLE
 			foreach (var callbacks in m_deserializeCallbackRegist)
 				callbacks.OnDeserialization(this);
-#endif
 			return obj;
 		}
 
 		private object RebuildObject(BaseGraphNode nodeToRebuild, Type requestedType)
 		{
 			var obj = internal_RebuildObject(nodeToRebuild, requestedType);
-#if !PORTABLE
 			var callback = obj as IDeserializationCallback;
 			if (callback != null)
 				m_deserializeCallbackRegist.Add(callback);
-#endif
 			return obj;
 		}
 

@@ -704,7 +704,7 @@ namespace RolePlayCharacter
 
             var emotions = m_emotionalState.GetAllEmotions();
 
-            if (emotions.IsEmpty())
+            if (!emotions.Any())
             {
                 yield break;
             }
@@ -715,7 +715,7 @@ namespace RolePlayCharacter
                 || em.EmotionType == OCCEmotionType.Reproach.Name
                 || em.EmotionType == OCCEmotionType.Admiration.Name);
 
-            if (attributionEmotions.IsEmpty())
+            if (!attributionEmotions.Any())
             {
                 yield break;
             }
@@ -749,7 +749,7 @@ namespace RolePlayCharacter
 
             var emotions = m_emotionalState.GetAllEmotions();
 
-            if (emotions.IsEmpty())
+            if (!emotions.Any())
             {
                 yield break;
             }
@@ -760,7 +760,7 @@ namespace RolePlayCharacter
                 || em.EmotionType == OCCEmotionType.Remorse.Name
                 || em.EmotionType == OCCEmotionType.Anger.Name);
 
-            if (compoundEmotions.IsEmpty())
+            if (!compoundEmotions.Any())
             {
                 yield break;
             }
@@ -856,7 +856,7 @@ namespace RolePlayCharacter
 
             var emotions = m_emotionalState.GetAllEmotions();
 
-            if (emotions.IsEmpty())
+            if (!emotions.Any())
             {
                 yield break;
             }
@@ -865,7 +865,7 @@ namespace RolePlayCharacter
                 em => em.EmotionType == OCCEmotionType.Joy.Name
                 || em.EmotionType == OCCEmotionType.Distress.Name);
 
-            if (wellBeingEmotions.IsEmpty())
+            if (!wellBeingEmotions.Any())
             {
                 yield break;
             }
