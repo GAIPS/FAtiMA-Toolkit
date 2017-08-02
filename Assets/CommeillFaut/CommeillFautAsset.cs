@@ -67,6 +67,8 @@ namespace CommeillFaut
             m_kB = kB;
             BindToRegistry(kB);
             InvalidateCachedCIF();
+
+        
         }
 
         #region Dynamic Properties
@@ -84,24 +86,23 @@ namespace CommeillFaut
 
         public IEnumerable<DynamicPropertyResult> VolitionPropertyCalculator(IQueryContext context, Name socialMoveName, Name initator, Name Target)
         {
-            //   Console.WriteLine("VolitionProperty " + socialMoveName.ToString());
-
-            var value = -1;
+            Dictionary<Name, SubstitutionSet> ret = new Dictionary<Name, SubstitutionSet>();
+            var value = -1.0f;
             var seSub = new Substitution(Name.BuildName("[x]"), new ComplexValue(Name.BuildName("Peter")));
 
+          
             foreach (var t in context.AskPossibleProperties(Target))
             {
-           //    Console.WriteLine("Target: " + t.Item1 + "  Original target: " + Target + " found size: " + context.AskPossibleProperties(Target).Count());
 
                 foreach (var se in m_SocialExchanges)
                 {
-                   var newValue = CalculateVolitions(se.ActionName.ToString(), t.Item1.ToString(),
+                   var newValue = CalculateVolitions(se.ActionName.ToString(), t.Item1.Value.ToString(),
                      context.Perspective.ToString());
+               //     Console.WriteLine(" sub: " + socialMoveName + " for " + se.ActionName + " certainty.. : " + newValue + " towards " + t.Item1.Value.ToString());
 
                     if (newValue >= value)
                     {
-                    //    Console.WriteLine(" sub: " + socialMoveName + " for " + se.ActionName);
-                        value = newValue;
+                       value = newValue;
                         seSub = new Substitution(socialMoveName, new ComplexValue(se.ActionName));
                     }
                 }
@@ -110,16 +111,22 @@ namespace CommeillFaut
                 {
                     var sub =
                         new SubstitutionSet(new Substitution[]
-                            {new Substitution(Name.BuildName("[x]"), new ComplexValue(t.Item1.Value))});
-                    sub.AddSubstitution(seSub);
+                            { new Substitution(Name.BuildName("[x]"), new ComplexValue(t.Item1.Value, value))
 
-                    var roundedValue = Floor(value);
+                               , seSub });
 
-                    var stringVolition = CalculateStyle(roundedValue);
+                    //     var roundedValue = Floor(value);
 
-                 //  Console.WriteLine(" Result: " + "Volition(" + socialMoveName + "," + initator + "," + t.Item1.ToString() + ")" + "=" +
-                  //                   stringVolition);
-                    yield return new DynamicPropertyResult(Name.BuildName(stringVolition), sub);
+                  
+                    var stringVolition = CalculateStyle(value);
+
+                  
+
+                    value = -1.0f;
+
+                    ret.Add(Name.BuildName(stringVolition), sub);
+
+                 //   yield return new DynamicPropertyResult(Name.BuildName(stringVolition), sub);
 
                 }
                 else
@@ -128,7 +135,33 @@ namespace CommeillFaut
                     yield break;
 
                 }
+
+
+
             }
+
+            // and now to find the social exchange with the highest certainty 
+
+            Name nameToRet = Name.BuildName("default");
+            SubstitutionSet subToRet = new SubstitutionSet();
+            float minValue = -0.1f;
+            foreach(var index in ret)
+            {
+                if(index.Value.ElementAt(0).SubValue.Certainty > minValue)
+                {
+                    minValue = index.Value.ElementAt(0).SubValue.Certainty;
+                    nameToRet = index.Key;
+                    subToRet = index.Value;
+                }
+            }
+
+            
+
+            Console.WriteLine(" Result: " + nameToRet.ToString() + "  "  + minValue);
+
+            yield return new DynamicPropertyResult(nameToRet, subToRet);
+
+
         }
         
         
@@ -255,7 +288,7 @@ namespace CommeillFaut
          
         }
 
-        public double Floor(int value)
+        public double Floor(float value)
         {
             var toRet = Convert.ToDouble(value);
             // Console.WriteLine("Round method calculation for: " + x.ToString() + " the value : " + toRet);
@@ -268,13 +301,14 @@ namespace CommeillFaut
         }
 
 
-        public string CalculateStyle(double value)
+        public string CalculateStyle(float value)
         {
-            if(value > 0)
-                return value == 10 ? "Positive" : "VeryPositive";
+            Console.WriteLine(" style value: " + value);
+            if(value >= 0.7)
+                return value <= 1 ? "Positive" : "VeryPositive";
 
-            if (value < 0)
-                return value == -10 ? "Negative" : "VeryNegative";
+            if (value < 0.4)
+                return value >= 0 ? "Negative" : "VeryNegative";
            
             return "Neutral";
         }
@@ -328,13 +362,13 @@ namespace CommeillFaut
           return  m_SocialExchanges.Find(x => x.ActionName == socialExchangeName);
         }
 
-        public SocialExchange GetHighestVolition(Dictionary<string, int> _volitions)
+        public SocialExchange GetHighestVolition(Dictionary<string, float> _volitions)
         {
 
             int index = 0;
             var first = _volitions.First();
             string key = first.Key;
-            int compareValue = _volitions[key];
+            float compareValue = _volitions[key];
             
 
             foreach (var aux in _volitions.Keys)
@@ -353,15 +387,15 @@ namespace CommeillFaut
 
       
 
-        public Dictionary<string, int> CalculateSocialMovesVolitions(string target, string perspective)
+        public Dictionary<string, float> CalculateSocialMovesVolitions(string target, string perspective)
         {
 
             
-            Dictionary<string,int> volitions = new Dictionary<string, int>();
+            Dictionary<string,float> volitions = new Dictionary<string, float>();
 
             foreach (var socialMove in m_SocialExchanges)
             {
-                int volitionResult = socialMove.CalculateVolition(perspective, target, this.m_kB);
+                float volitionResult = socialMove.CalculateVolition(perspective, target, this.m_kB);
                 volitions.Add(socialMove.ActionName.ToString(), volitionResult);
 
             }
@@ -376,7 +410,7 @@ namespace CommeillFaut
         }
 
 
-        public int CalculateVolitions(string socialMove, string target, string perpective)
+        public float CalculateVolitions(string socialMove, string target, string perpective)
         {
 
             return m_SocialExchanges.Find(x => x.ActionName.ToString() == socialMove)

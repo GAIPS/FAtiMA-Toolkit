@@ -29,17 +29,39 @@ namespace CommeillFaut
             GUID = Guid.NewGuid();
         }
 
-        public int Result(string init, string targ, KB m_Kb)
+        public float Result(string init, string targ, KB m_Kb)
         {
            
             var toEvaluate = new ConditionSet(RuleConditions);
             var sub = new Substitution(Name.BuildName(Target), new ComplexValue(Name.BuildName(targ)));
-            if (toEvaluate.Evaluate(m_Kb, Name.BuildName(init), new [] { new SubstitutionSet(sub) }))
-                return Value;
-            else return 0;
 
-            //  (a.Conditions.Evaluate(m_ea, perspective, new[] { new SubstitutionSet(sub) }))
+            // m_Kb.AskPossibleProperties(Name.BuildName(targ), Name.BuildName("SELF"), new[] { new SubstitutionSet(sub) });
+
+            //   Console.WriteLine( "uhm " + m_Kb.AskProperty(Name.BuildName("IsFriend(SELF,Peter)")).Certainty + sub.SubValue.Certainty);
+
+
+
+            var eval = toEvaluate.Evaluate(m_Kb, Name.BuildName(init), new[] { new SubstitutionSet(sub) });
+
+            // Console.WriteLine(evaluateResult + " InfluenceRule " + RuleConditions.ToDTO().ConditionSet[0] + " I am " + init + " sub " + Target + " for : " + targ + " certainty " + sub.SubValue.Certainty);
+          if (eval)
+            {
+               
+               
+                var cond = toEvaluate.ToDTO().ConditionSet.GetValue(0).ToString().Split(new[] { '='});
+                cond = cond[0].Split(new[] { ',' });
+            //    Console.WriteLine(" going to get certainty of " + targ + " for this belief " + (cond[0] + "," + targ + ")"));
+                var certainty = m_Kb.AskProperty(Name.BuildName(cond[0] + "," + targ + ")")).Certainty;
+
+                return certainty;
+            }
+               
+            else    return 0;
+            
+           
         }
+
+
         public InfluenceRule(InfluenceRuleDTO dto) : this()
 		{
             SetData(dto);
@@ -59,28 +81,7 @@ namespace CommeillFaut
             return new InfluenceRuleDTO() {Id = GUID, RuleName = RuleName, Initiator = Initiator, Target = Target, Value = Value, RuleConditions = RuleConditions.ToDTO()};
         }
 
-     /*   public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
-        {
-
-
-            dataHolder.SetValue("RuleName", this.RuleName);
-            dataHolder.SetValue("Initiator", this.Initiator);
-            dataHolder.SetValue("Target", this.Target);
-            dataHolder.SetValue("RuleConditions", this.RuleConditions);
-            
-
-
-        }
-
-        public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
-        {
-           
-            RuleName = dataHolder.GetValue<string>("RuleName");
-            Initiator = dataHolder.GetValue<string>("Initiator");
-            Target = dataHolder.GetValue<string>("Target");
-            RuleConditions = dataHolder.GetValue<ConditionSet>("RuleConditions");
-        }*/
-    }
+       }
 
 
 }

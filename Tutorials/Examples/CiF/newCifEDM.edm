@@ -18,7 +18,7 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[sty] = Volition([se], SELF,[x])", "LastEventId(Action-End, [x], Speak(-, -,SE([se],Initiate), [sty]), SELF) = [id]"] 
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "LastEventId(Action-End, [x], Speak(-, -,SE([se],Initiate), [sty]), SELF) = [id]", "[sty] = Volition([se], SELF,[x])"] 
 						},
 					"Priority": 2
 				},
@@ -27,7 +27,7 @@
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[sty] = Volition([se], SELF,[x])", "LastEventId(Action-End, [x], Speak(-, -,SE([se],Answer), [sty]), SELF) = [id]"] 
+							"Set": ["IsAgent([x]) = true", "[x] != SELF", "LastEventId(Action-End, [x], Speak(-, -,SE([se],Answer), [sty]), SELF) = [id]", "[sty] = Volition([se], SELF,[x])"] 
 						},
 					"Priority": 3
 				}

@@ -9,10 +9,10 @@
 					"Knowledge":
 						{
 							"SELF":
-								{									
-									"Attraction(Mary, Peter)": 10,
-									"Friendship(Mary, Kate)": 5,
-									"Attraction(Mary, Kate)": -10
+								{
+									"IsAttracted(Mary, Peter)": "True, 0.9",
+									"IsFriend(Mary, Kate)": "True, 0.2",
+									"IsFriend(Mary, Peter)": "True, 0.5"
 								}
 						}
 				},
@@ -21,7 +21,7 @@
 					"AppraisalWeight": 1,
 					"Rules": [
 						{
-							"EventName": "Event(Property-Change, SELF, Friendship(SELF, *), [x])",
+							"EventName": "Event(Property-Change, SELF, Attraction(SELF, *), [x])",
 							"Conditions":
 								{
 									"Set": ["[x] > 10"]
@@ -30,16 +30,16 @@
 							"Praiseworthiness": 8
 						}, 
 						{
-							"EventName": "Event(Property-Change, SELF, Friendship(SELF, *), [x])",
+							"EventName": "Event(Property-Change, SELF, Attraction(SELF, *), [x])",
 							"Conditions":
 								{
 									"Set": ["[x] < -10"]
 								},
 							"Desirability": -8,
 							"Praiseworthiness": -8
-						},
+						}, 
 						{
-							"EventName": "Event(Property-Change, SELF, Attraction(SELF, *), [x])",
+							"EventName": "Event(Property-Change, SELF, Friendship(SELF, *), [x])",
 							"Conditions":
 								{
 									"Set": ["[x] > 10"]
@@ -48,7 +48,7 @@
 							"Praiseworthiness": 8
 						}, 
 						{
-							"EventName": "Event(Property-Change, SELF, Attraction(SELF, *), [x])",
+							"EventName": "Event(Property-Change, SELF, Friendship(SELF, *), [x])",
 							"Conditions":
 								{
 									"Set": ["[x] < -10"]

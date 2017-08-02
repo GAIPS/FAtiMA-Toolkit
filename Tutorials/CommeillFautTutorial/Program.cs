@@ -37,13 +37,13 @@ namespace CommeillFautTutorial
 
                 var rpc = RolePlayCharacterAsset.LoadFromFile(source.Source);
                
-              
+
                 //rpc.DynamicPropertiesRegistry.RegistDynamicProperty(Name.BuildName("Volition"),cif.VolitionPropertyCalculator);
-                    rpc.LoadAssociatedAssets();
+                rpc.LoadAssociatedAssets();
+               
                 iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
 
                 rpcList.Add(rpc);
-
 
             }
             var cif = CommeillFautAsset.LoadFromFile(rpcList.First().CommeillFautAssetSource);
@@ -69,7 +69,7 @@ namespace CommeillFautTutorial
                           
                     }
 
-          //      actor.SaveToFile("../../../Examples/" + actor.CharacterName + "-output" + ".rpc");
+       //         actor.SaveToFile("../../../Examples/" + actor.CharacterName + "-output1" + ".rpc");
             }
 
            

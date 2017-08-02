@@ -10,9 +10,9 @@
 						{
 						"SELF":{
 								
-									"Attraction(SELF, Mary)": 2,
-									"Friendship(SELF, Mary)": 10,
-									"Attraction(SELF, Peter)": -10
+									"IsFriend(SELF, Mary)": "True, 0.5",
+									"IsAttracted(SELF, Peter)": "True, 0.3"
+									
 									}
 						}
 				},
