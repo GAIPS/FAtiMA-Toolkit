@@ -37,6 +37,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GAIPS.Serialization, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\GAIPS.Serialization.1.5.0\lib\net35\GAIPS.Serialization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="RageAssetManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
@@ -47,6 +51,10 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Utilities, Version=1.0.0.19854, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Utilities.1.0.0.19854\lib\net35\Utilities.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommeillFautAsset.cs" />
@@ -60,7 +68,7 @@
     <Compile Include="SocialExchange.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj">
@@ -82,14 +90,6 @@
     <ProjectReference Include="..\..\Components\KnowledgeBase\KnowledgeBase.csproj">
       <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
       <Name>KnowledgeBase</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\SerializationUtilities\SerializationUtilities.csproj">
-      <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
-      <Name>SerializationUtilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\Utilities\Utilities.csproj">
-      <Project>{2021e828-2f7f-4775-9f02-58c68fd72edd}</Project>
-      <Name>Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
       <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>

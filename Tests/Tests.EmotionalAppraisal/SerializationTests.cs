@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Globalization;
 using EmotionalAppraisal;
-using EmotionalAppraisal.AppraisalRules;
 using EmotionalAppraisal.OCCModel;
 using NUnit.Framework;
 using System.IO;
 using EmotionalAppraisal.DTOs;
-using SerializationUtilities;
 using WellFormedNames;
-using AutobiographicMemory;
 
 namespace Tests.EmotionalAppraisal
 {
@@ -258,7 +255,7 @@ namespace Tests.EmotionalAppraisal
 
 			using (var stream = new MemoryStream())
 			{
-				var formater = new JSONSerializer();
+				var formater = new SerializationUtilities.JSONSerializer();
 				formater.Serialize(stream, asset);
 				stream.Seek(0, SeekOrigin.Begin);
 				Console.WriteLine(new StreamReader(stream).ReadToEnd());
@@ -272,7 +269,7 @@ namespace Tests.EmotionalAppraisal
 
 			using (var stream = new MemoryStream())
 			{
-				var formater = new JSONSerializer();
+				var formater = new SerializationUtilities.JSONSerializer();
 				formater.Serialize(stream, asset);
 				stream.Seek(0, SeekOrigin.Begin);
 				Console.WriteLine(new StreamReader(stream).ReadToEnd());

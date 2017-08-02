@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using GAIPS.AssetEditorTools.DynamicPropertiesWindow;
 using GAIPS.Rage;
-using Utilities;
+using Utilities;  
 
 namespace GAIPS.AssetEditorTools
 {

@@ -5,9 +5,7 @@ using System.Linq;
 using SerializationUtilities;
 using KnowledgeBase;
 using NUnit.Framework;
-using Utilities;
 using WellFormedNames;
-using IQueryable = WellFormedNames.IQueryable;
 
 namespace Tests.KnowledgeBase
 {
