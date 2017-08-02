@@ -86,7 +86,7 @@ namespace CommeillFaut
 
 
 
-        private void Instatiate(int response)
+        private void Instatiate(float response)
         {
             var write = "Instantiating SocialExchange " + ActionName + " \n";
 
@@ -113,10 +113,9 @@ namespace CommeillFaut
             //System.Threading.Thread.Sleep(2000);
         }
 
-        public int CalculateVolition(string init, string _targ, KB m_Kb)
+        public float CalculateVolition(string init, string _targ, KB m_Kb)
         {
-
-            int counter = 0;
+            float counter = 0;
             foreach (var rule in InfluenceRules)
             {
 
@@ -124,11 +123,12 @@ namespace CommeillFaut
                 counter += result.Result(init, _targ, m_Kb);
 
             }
+            Console.WriteLine("Calculating Volition for " + this.ActionName.ToString() + " init: " + init + " targ: " + _targ + " result: " + counter);
             return counter;
         }
 
 
-        private int CalculateResponse(string Init, string _Targ, KB m_Kb)
+        private float CalculateResponse(string Init, string _Targ, KB m_Kb)
         {
 
             return this.CalculateVolition(_Targ, Init, m_Kb);
@@ -224,7 +224,7 @@ namespace CommeillFaut
                         {
                             value =
                                 Convert.ToInt32(
-                                    me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")")).ToString());
+                                    me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")")).Value.ToString());
                             value += Convert.ToInt32(words[3]);
                         
                         }
@@ -268,7 +268,7 @@ namespace CommeillFaut
                     {
                         value =
                             Convert.ToInt32(
-                                me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + initiator.ToString() + ")")).ToString());
+                                me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + initiator.ToString() + ")")).Value.ToString());
                         value += Convert.ToInt32(words[3]);
 
                     }

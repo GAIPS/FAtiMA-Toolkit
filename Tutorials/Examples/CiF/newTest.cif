@@ -7,27 +7,19 @@
 					"Action": "Compliment",
 					"Conditions":
 						{
-							"Set": []
+							"Set": ["IsFriend(SELF, [x]) = True"]
 						},
 					"Intent": "Be Friends",
 					"Instantiation": "",
 					"InfluenceRules": [
-						{
-							"RuleName": "Low Attraction",
-							"Target": "[x]",
-							"Value": -10,
-							"RuleConditions":
-								{
-									"Set": ["Friendship(SELF, [x]) < -5"]
-								}
-						}, 
+						 
 						{
 							"RuleName": "High Friendship",
 							"Target": "[x]",
 							"Value": 10,
 							"RuleConditions":
 								{
-									"Set": ["Friendship(SELF, [x]) > 5"]
+									"Set": ["IsFriend(SELF, [x]) = True"]
 								}
 						}],
 					"EffectsList":
@@ -46,7 +38,7 @@
 					"Action": "Flirt",
 					"Conditions":
 						{
-							"Set": []
+							"Set": ["IsAttracted(SELF, [x]) = True"]
 						},
 					"Intent": "to flirt...",
 					"Instantiation": "",
@@ -57,16 +49,7 @@
 							"Value": 10,
 							"RuleConditions":
 								{
-									"Set": ["Attraction(SELF, [x]) > 5"]
-								}
-						}, 
-						{
-							"RuleName": "Low Attraction",
-							"Target": "[x]",
-							"Value": -10,
-							"RuleConditions":
-								{
-									"Set": ["Attraction(SELF, [x]) < -5"]
+									"Set": ["IsAttracted(SELF, [x]) = True"]
 								}
 						}],
 					"EffectsList":
@@ -84,7 +67,7 @@
 					"Action": "Insult",
 					"Conditions":
 						{
-							"Set": []
+							"Set": ["Friendship(SELF, [x]) = False"]
 						},
 					"Intent": "Insult the other",
 					"Instantiation": "",
@@ -95,16 +78,7 @@
 							"Value": 5,
 							"RuleConditions":
 								{
-									"Set": ["Friendship(SELF, [x]) <= -5"]
-								}
-						}, 
-						{
-							"RuleName": "Lovely",
-							"Target": "[x]",
-							"Value": -5,
-							"RuleConditions":
-								{
-									"Set": ["Friendship(SELF, [x]) >= 5"]
+									"Set": ["Friendship(SELF, [x]) = False"]
 								}
 						}],
 					"EffectsList":

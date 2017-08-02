@@ -47,14 +47,14 @@
 					"Meaning": ["SE(Compliment, Initiate)"],
 					"Style": ["Neutral"],
 					"Utterance": "Hello, you are so very honorable"
-				},
+				}, 
 				{
 					"CurrentState": "-",
 					"NextState": "-",
 					"Meaning": ["SE(Compliment, Initiate)"],
 					"Style": ["Negative"],
 					"Utterance": "Hello, you are so very honorable"
-				},
+				}, 
 				{
 					"CurrentState": "-",
 					"NextState": "-",
@@ -155,7 +155,7 @@
 					"Style": ["Negative"],
 					"Utterance": "Hello, you are so pretty",
 					"UtteranceId": "TTS-19ED81DFFC0B15522E8B02FF8AD1A836"
-				},
+				}, 
 				{
 					"CurrentState": "-",
 					"NextState": "-",
@@ -163,7 +163,7 @@
 					"Style": ["Neutral"],
 					"Utterance": "Hello, you are so pretty",
 					"UtteranceId": "TTS-19ED81DFFC0B15522E8B02FF8AD1A836"
-				},
+				}, 
 				{
 					"CurrentState": "-",
 					"NextState": "-",
@@ -171,7 +171,7 @@
 					"Style": ["Positive"],
 					"Utterance": "Hello, you are so pretty",
 					"UtteranceId": "TTS-19ED81DFFC0B15522E8B02FF8AD1A836"
-				},				
+				}, 
 				{
 					"CurrentState": "-",
 					"NextState": "-",
