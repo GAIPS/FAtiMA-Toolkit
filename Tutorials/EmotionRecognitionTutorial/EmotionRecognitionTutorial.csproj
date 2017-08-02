@@ -60,21 +60,21 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AffectRecognitionComponents\SpeechEmotionRecognition\SpeechEmotionRecognition.csproj">
+    <ProjectReference Include="..\..\AffectRecognitionComponents\FacialEmotionRecognition\FacialEmotionRecognition.csproj">
+      <Project>{dd9b21a0-50dc-4dc2-bf5e-b8d46077d6ec}</Project>
+      <Name>FacialEmotionRecognition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\AffectRecognitionComponents\SpeechEmotionRecognition\SpeechEmotionRecognition.csproj">
       <Project>{284b89e5-85fb-4b3e-bfb7-8bd871a1a230}</Project>
       <Name>SpeechEmotionRecognition</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AffectRecognitionComponents\TextEmotionRecognition\TextEmotionRecognition.csproj">
+    <ProjectReference Include="..\..\AffectRecognitionComponents\TextEmotionRecognition\TextEmotionRecognition.csproj">
       <Project>{d6424009-17fd-4ba3-8f97-2069be13309c}</Project>
       <Name>TextEmotionRecognition</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Assets\RealTimeEmotionRecognition\RealTimeEmotionRecognition.csproj">
+    <ProjectReference Include="..\..\Assets\RealTimeEmotionRecognition\RealTimeEmotionRecognition.csproj">
       <Project>{cc3a5863-e579-4d38-9817-5dc1744703f3}</Project>
       <Name>RealTimeEmotionRecognition</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\FacialEmotionRecognition\FacialEmotionRecognition.csproj">
-      <Project>{dd9b21a0-50dc-4dc2-bf5e-b8d46077d6ec}</Project>
-      <Name>FacialEmotionRecognition</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -52,16 +52,6 @@
     <Compile Include="SerializationTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Components%28Portable%29\SerializationUtilities\SerializationUtilities.csproj">
-      <Project>{21e0f2d3-bc3e-4005-8bd3-2f079cd52b86}</Project>
-      <Name>SerializationUtilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components%28Portable%29\Utilities\Utilities.csproj">
-      <Project>{f5e98df4-ac62-4a15-a989-4300937b95b3}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NUnit.3.4.1\lib\net45\nunit.framework.dll</HintPath>
       <Private>True</Private>
@@ -70,6 +60,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Components\SerializationUtilities\SerializationUtilities.csproj">
+      <Project>{7dd831a6-adca-455b-b02f-53c3a639e79b}</Project>
+      <Name>SerializationUtilities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\Utilities\Utilities.csproj">
+      <Project>{2021e828-2f7f-4775-9f02-58c68fd72edd}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

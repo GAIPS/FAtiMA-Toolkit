@@ -112,8 +112,9 @@ namespace Test.SerializationUtilities
 		[Test,TestCaseSource(typeof(TestCasesGenerator),nameof(TestCasesGenerator.TestCases))]
 		public static void Test(BaseSerializer serializer, Action<MemoryStream> logger, object value,Type type)
 		{
-			SerializationServices.AssemblyLoader = assemblyLoader;
-			SerializationServices.InstanceFactory = factory;
+            //TODO: Ask Pedro
+			/*SerializationServices.AssemblyLoader = assemblyLoader;
+			SerializationServices.InstanceFactory = factory;*/
 
 			object other;
 			using (var mem = new MemoryStream())
@@ -131,8 +132,9 @@ namespace Test.SerializationUtilities
 		[Test]
 		public static void CustomClassSerializationTest()
 		{
-			SerializationServices.AssemblyLoader = assemblyLoader;
-			SerializationServices.InstanceFactory = factory;
+            //TODO: Ask Pedro
+            /*SerializationServices.AssemblyLoader = assemblyLoader;
+			SerializationServices.InstanceFactory = factory;*/
 
 			var value = new SerializationTestClass();
 

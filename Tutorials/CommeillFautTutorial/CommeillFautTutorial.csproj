@@ -90,10 +90,6 @@
       <Project>{823e8a41-5231-4b06-bbab-e62651e15bc7}</Project>
       <Name>SocialImportance</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Components%28Portable%29\SerializationUtilities\SerializationUtilities.csproj">
-      <Project>{21e0f2d3-bc3e-4005-8bd3-2f079cd52b86}</Project>
-      <Name>SerializationUtilities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj">
       <Project>{e011d502-5c0f-4a3f-9f1a-337ff025eb48}</Project>
       <Name>ActionLibrary</Name>
@@ -117,10 +113,6 @@
     <ProjectReference Include="..\..\Components\Utilities\Utilities.csproj">
       <Project>{2021e828-2f7f-4775-9f02-58c68fd72edd}</Project>
       <Name>Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\ValueDomains\ValueDomains.csproj">
-      <Project>{b439d1f1-11ed-4983-a762-593ad1c0d57e}</Project>
-      <Name>ValueDomains</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
       <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>

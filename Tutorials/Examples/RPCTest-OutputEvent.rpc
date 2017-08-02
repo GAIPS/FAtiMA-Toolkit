@@ -11,7 +11,7 @@
 								{
 									"IsCheap(A)": "False, 1",
 									"isDrunk(Sam)": "True, 1",
-									"IsFriend(Player)": "True, 1",
+									"IsFriend(Player)": "True, 0.4",
 									"IsNice(Sam)": "True, 1",
 									"IsUgly(A)": "6, 1",
 									"IsUgly(B)": "9, 1",

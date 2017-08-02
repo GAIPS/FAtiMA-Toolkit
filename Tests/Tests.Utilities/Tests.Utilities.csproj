@@ -54,13 +54,13 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Components%28Portable%29\Utilities\Utilities.csproj">
-      <Project>{f5e98df4-ac62-4a15-a989-4300937b95b3}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Components\KnowledgeBase\KnowledgeBase.csproj">
       <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
       <Name>KnowledgeBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\Utilities\Utilities.csproj">
+      <Project>{2021e828-2f7f-4775-9f02-58c68fd72edd}</Project>
+      <Name>Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
       <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
