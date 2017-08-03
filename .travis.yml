@@ -1,2 +1,4 @@
 language: csharp
 solution: FAtiMA-Toolkit.sln
+befors_script:
+ - nuget sources Add -Name LocalPackages -Source ./LocalPackagesRepository 
