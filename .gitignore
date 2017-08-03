@@ -2,7 +2,7 @@ bin
 obj
 *.suo
 *.coverage
-/packages
+packages/
 /ExportDlls
 *.user
 TestResults
