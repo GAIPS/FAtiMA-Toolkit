@@ -1,0 +1,87 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "AffectRecognitionComponents", "AffectRecognitionComponents", "{2E00B3C3-ADFA-42BA-99F0-99C3CB6B7763}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDARecognition", "AffectRecognitionComponents\EDARecognition\EDARecognition.csproj", "{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FacialEmotionRecognition", "AffectRecognitionComponents\FacialEmotionRecognition\FacialEmotionRecognition.csproj", "{DD9B21A0-50DC-4DC2-BF5E-B8D46077D6EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeechEmotionRecognition", "AffectRecognitionComponents\SpeechEmotionRecognition\SpeechEmotionRecognition.csproj", "{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextEmotionRecognition", "AffectRecognitionComponents\TextEmotionRecognition\TextEmotionRecognition.csproj", "{D6424009-17FD-4BA3-8F97-2069BE13309C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tutorials", "Tutorials", "{51DF972D-0C72-42E3-907F-1CC5EC2407BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionRecognitionTutorial", "Tutorials\EmotionRecognitionTutorial\EmotionRecognitionTutorial.csproj", "{5A9B44DE-14D0-4D83-B238-A70F85C3765A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestData", "TestData", "{4820D2BD-E2C6-48FB-8030-4B8F1860DF49}"
+	ProjectSection(SolutionItems) = preProject
+		TestData\anger.wav = TestData\anger.wav
+		TestData\FURIA Fuzzy Logic Rules.txt = TestData\FURIA Fuzzy Logic Rules.txt
+		TestData\Kiavash1.jpg = TestData\Kiavash1.jpg
+		TestData\shape_predictor_68_face_landmarks.dat = TestData\shape_predictor_68_face_landmarks.dat
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GUI", "GUI", "{DD6C9FF2-1A84-4798-AD21-0691517478A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionRecognitionWF", "GUI\EmotionRecognitionWF\EmotionRecognitionWF.csproj", "{72DC878A-DC05-4828-8E84-560D3B4C5F0F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealTimeEmotionRecognition", "RealTimeEmotionRecognition\RealTimeEmotionRecognition.csproj", "{CC3A5863-E579-4D38-9817-5DC1744703F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDARecognitionWF", "GUI\EDARecognitionWF\EDARecognitionWF.csproj", "{1CF85D83-9922-4C4C-BC0F-47E6A01B5FEC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD9B21A0-50DC-4DC2-BF5E-B8D46077D6EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD9B21A0-50DC-4DC2-BF5E-B8D46077D6EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD9B21A0-50DC-4DC2-BF5E-B8D46077D6EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD9B21A0-50DC-4DC2-BF5E-B8D46077D6EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6424009-17FD-4BA3-8F97-2069BE13309C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A9B44DE-14D0-4D83-B238-A70F85C3765A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A9B44DE-14D0-4D83-B238-A70F85C3765A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A9B44DE-14D0-4D83-B238-A70F85C3765A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A9B44DE-14D0-4D83-B238-A70F85C3765A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72DC878A-DC05-4828-8E84-560D3B4C5F0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72DC878A-DC05-4828-8E84-560D3B4C5F0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72DC878A-DC05-4828-8E84-560D3B4C5F0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72DC878A-DC05-4828-8E84-560D3B4C5F0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC3A5863-E579-4D38-9817-5DC1744703F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC3A5863-E579-4D38-9817-5DC1744703F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC3A5863-E579-4D38-9817-5DC1744703F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC3A5863-E579-4D38-9817-5DC1744703F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1CF85D83-9922-4C4C-BC0F-47E6A01B5FEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1CF85D83-9922-4C4C-BC0F-47E6A01B5FEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1CF85D83-9922-4C4C-BC0F-47E6A01B5FEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1CF85D83-9922-4C4C-BC0F-47E6A01B5FEC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CAC723A2-C070-4C79-AB68-CAA5BDE8733A} = {2E00B3C3-ADFA-42BA-99F0-99C3CB6B7763}
+		{DD9B21A0-50DC-4DC2-BF5E-B8D46077D6EC} = {2E00B3C3-ADFA-42BA-99F0-99C3CB6B7763}
+		{284B89E5-85FB-4B3E-BFB7-8BD871A1A230} = {2E00B3C3-ADFA-42BA-99F0-99C3CB6B7763}
+		{D6424009-17FD-4BA3-8F97-2069BE13309C} = {2E00B3C3-ADFA-42BA-99F0-99C3CB6B7763}
+		{5A9B44DE-14D0-4D83-B238-A70F85C3765A} = {51DF972D-0C72-42E3-907F-1CC5EC2407BA}
+		{72DC878A-DC05-4828-8E84-560D3B4C5F0F} = {DD6C9FF2-1A84-4798-AD21-0691517478A2}
+		{1CF85D83-9922-4C4C-BC0F-47E6A01B5FEC} = {DD6C9FF2-1A84-4798-AD21-0691517478A2}
+	EndGlobalSection
+EndGlobal

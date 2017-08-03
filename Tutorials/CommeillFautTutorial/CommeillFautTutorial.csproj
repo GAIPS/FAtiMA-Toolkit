@@ -54,14 +54,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\AffectRecognitionComponents\EDARecognition\EDARecognition.csproj">
-      <Project>{cac723a2-c070-4c79-ab68-caa5bde8733a}</Project>
-      <Name>EDARecognition</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\AffectRecognitionComponents\SpeechEmotionRecognition\SpeechEmotionRecognition.csproj">
-      <Project>{284b89e5-85fb-4b3e-bfb7-8bd871a1a230}</Project>
-      <Name>SpeechEmotionRecognition</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Assets\CommeillFaut\CommeillFaut.csproj">
       <Project>{ba21951c-1799-4d0f-aa99-62df857f3b71}</Project>
       <Name>CommeillFaut</Name>
@@ -77,10 +69,6 @@
     <ProjectReference Include="..\..\Assets\IntegratedAuthoringTool\IntegratedAuthoringTool.csproj">
       <Project>{f6ad95a5-889c-41a4-b613-b81f09a424ee}</Project>
       <Name>IntegratedAuthoringTool</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Assets\RealTimeEmotionRecognition\RealTimeEmotionRecognition.csproj">
-      <Project>{cc3a5863-e579-4d38-9817-5dc1744703f3}</Project>
-      <Name>RealTimeEmotionRecognition</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Assets\RolePlayCharacter\RolePlayCharacter.csproj">
       <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>

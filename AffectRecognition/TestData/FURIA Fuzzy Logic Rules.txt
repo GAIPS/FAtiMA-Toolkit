@@ -1,0 +1,74 @@
+@echo off
+REM Copyright 2017 Open University of the Netherlands (OUNL)
+REM
+REM Authors: Kiavash Bahreini, Wim van der Vegt.
+REM Organization: Open University of the Netherlands (OUNL).
+REM Project: The RAGE project
+REM Project URL: http://rageproject.eu.
+REM Task: T2.3 of the RAGE project; Development of assets for emotion detection. 
+REM 
+REM For any questions please contact: 
+REM
+REM Kiavash Bahreini via kiavash.bahreini [AT] ou [DOT] nl
+REM and/or
+REM Wim van der Vegt via wim.vandervegt [AT] ou [DOT] nl
+REM
+REM Licensed under the Apache License, Version 2.0 (the "License");
+REM you may not use this file except in compliance with the License.
+REM This project has received funding from the European Union’s Horizon
+REM 2020 research and innovation programme under grant agreement No 644187.
+REM You may obtain a copy of the License at
+REM
+REM http://www.apache.org/licenses/LICENSE-2.0
+REM
+REM Unless required by applicable law or agreed to in writing, software
+REM distributed under the License is distributed on an "AS IS" BASIS,
+REM WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+REM See the License for the specific language governing permissions and
+REM limitations under the License.
+REM
+REM FURIA FUZZY LOGIC RULES are used for emotion detection functionality 
+REM of the EmotionDetectionAsset and the EmotionDetectionAsset_Demo.
+
+FURIA rules:
+===========
+
+(V30 in [159.608, 160.424, inf, inf]) and (V35 in [30.0655, 30.2536, inf, inf]) => Emotions=Happy (CF = 0.97)
+(V31 in [-inf, -inf, 9.85016, 9.96286]) and (V51 in [35.5078, 35.5856, inf, inf]) and (V10 in [22.9748, 23.0757, inf, inf]) and (V0 in [-inf, -inf, 24.8358, 24.9599]) => Emotions=Happy (CF = 0.98)
+(V32 in [-inf, -inf, 13.8022, 14.6793]) and (V34 in [25.1647, 25.4542, inf, inf]) and (V50 in [3.7724, 3.79234, inf, inf]) and (V48 in [64.551, 66.8476, inf, inf]) => Emotions=Happy (CF = 0.9)
+(V31 in [-inf, -inf, 12.4074, 16.2636]) and (V35 in [25.6426, 27.0878, inf, inf]) and (V37 in [21.4168, 21.5797, inf, inf]) and (V0 in [-inf, -inf, 21.1748, 21.9187]) => Emotions=Happy (CF = 0.95)
+(V32 in [-inf, -inf, 5.15255, 5.16574]) and (V32 in [4.97626, 5.05265, inf, inf]) => Emotions=Happy (CF = 0.66)
+(V34 in [-inf, -inf, 15.1591, 15.3646]) and (V42 in [-inf, -inf, 73.6283, 74.5163]) and (V32 in [17.9646, 17.9917, inf, inf]) and (V13 in [68.61, 70.3929, inf, inf]) and (V37 in [-inf, -inf, 22.5483, 22.8643]) => Emotions=Sad (CF = 0.94)
+(V33 in [142.341, 142.606, inf, inf]) and (V44 in [51.9081, 52.9607, inf, inf]) and (V50 in [-inf, -inf, 3.15842, 3.18719]) and (V31 in [14.1431, 14.4425, inf, inf]) => Emotions=Sad (CF = 0.82)
+(V46 in [-inf, -inf, 84.9609, 85.074]) and (V51 in [36.248, 36.6846, inf, inf]) => Emotions=Sad (CF = 0.81)
+(V42 in [-inf, -inf, 54.362, 54.4623]) and (V3 in [49.4672, 53.9726, inf, inf]) and (V18 in [48.7314, 48.7806, inf, inf]) => Emotions=Sad (CF = 0.84)
+(V1 in [-inf, -inf, 6.82602, 7.03498]) and (V15 in [14.5889, 15.0512, inf, inf]) => Emotions=Sad (CF = 0.53)
+(V30 in [-inf, -inf, 126.304, 149.554]) and (V34 in [33.9611, 34.0477, inf, inf]) => Emotions=Surprise (CF = 0.99)
+(V8 in [40.2461, 40.3331, inf, inf]) and (V12 in [-inf, -inf, 45.1865, 45.2721]) => Emotions=Surprise (CF = 0.98)
+(V17 in [17.0409, 17.0477, inf, inf]) and (V17 in [-inf, -inf, 17.1027, 17.1054]) => Emotions=Surprise (CF = 0.68)
+(V48 in [-inf, -inf, 42.3974, 43.2472]) => Emotions=Surprise (CF = 0.6)
+(V26 in [38.6598, 40.2364, inf, inf]) and (V50 in [3.61388, 3.62035, inf, inf]) and (V19 in [86.8202, 87.1376, inf, inf]) and (V32 in [-inf, -inf, 22.3228, 22.4199]) and (V44 in [48.7314, 48.8141, inf, inf]) => Emotions=Fear (CF = 0.9)
+(V49 in [-inf, -inf, 95.8395, 96.2791]) and (V49 in [93.3419, 94.0108, inf, inf]) and (V8 in [35.0195, 35.6748, inf, inf]) and (V30 in [112.548, 127.911, inf, inf]) => Emotions=Fear (CF = 0.84)
+(V33 in [113.647, 120.77, inf, inf]) and (V35 in [19.8265, 20.2393, inf, inf]) and (V22 in [41.6335, 41.8665, inf, inf]) and (V51 in [34.8844, 35.0913, inf, inf]) and (V12 in [-inf, -inf, 56.658, 56.7193]) => Emotions=Fear (CF = 0.87)
+(V26 in [-inf, -inf, 26.9489, 27.5973]) and (V8 in [-inf, -inf, 25.3267, 26.1046]) and (V21 in [59.7436, 60.0864, inf, inf]) => Emotions=Disgust (CF = 0.96)
+(V26 in [-inf, -inf, 35.8377, 36.2538]) and (V30 in [-inf, -inf, 151.318, 151.76]) and (V35 in [18.6981, 18.7149, inf, inf]) and (V8 in [-inf, -inf, 25.9913, 26.0754]) and (V50 in [3.1012, 3.21448, inf, inf]) and (V51 in [-inf, -inf, 40.4826, 40.6054]) => Emotions=Disgust (CF = 0.96)
+(V26 in [-inf, -inf, 35.4509, 35.8195]) and (V30 in [-inf, -inf, 160.168, 160.675]) and (V42 in [91.4652, 91.8476, inf, inf]) and (V9 in [28.8713, 31.4661, inf, inf]) and (V16 in [-inf, -inf, 151.557, 151.794]) => Emotions=Disgust (CF = 0.94)
+(V28 in [-inf, -inf, 38.1572, 38.3107]) and (V31 in [7.43669, 10.1433, inf, inf]) and (V26 in [-inf, -inf, 30.9638, 31.4521]) and (V4 in [-inf, -inf, 46.4321, 46.5831]) and (V45 in [74.4759, 75.0686, inf, inf]) => Emotions=Disgust (CF = 0.94)
+(V28 in [-inf, -inf, 38.1572, 38.3782]) and (V32 in [8.70181, 8.71473, inf, inf]) and (V9 in [35.9909, 36.1861, inf, inf]) and (V8 in [-inf, -inf, 27.817, 27.929]) and (V14 in [-inf, -inf, 46.8177, 47.5595]) and (V8 in [17.2892, 18.9069, inf, inf]) => Emotions=Disgust (CF = 0.93)
+(V28 in [-inf, -inf, 38.1572, 39.6233]) and (V32 in [15.3773, 15.6442, inf, inf]) and (V23 in [-inf, -inf, 90, 92.4002]) and (V6 in [34.6599, 35.2154, inf, inf]) and (V2 in [144.482, 144.492, inf, inf]) => Emotions=Disgust (CF = 0.9)
+(V10 in [-inf, -inf, 26.4547, 27.2133]) and (V17 in [13.8931, 14.1754, inf, inf]) and (V11 in [-inf, -inf, 117.723, 118.822]) and (V7 in [112.807, 113.395, inf, inf]) and (V0 in [-inf, -inf, 24.2531, 28.1416]) => Emotions=Disgust (CF = 0.86)
+(V7 in [115.258, 117.446, inf, inf]) and (V34 in [-inf, -inf, 17.2653, 19.2307]) and (V30 in [152.184, 152.257, inf, inf]) and (V36 in [141.526, 141.77, inf, inf]) => Emotions=Anger (CF = 0.93)
+(V11 in [122.859, 124.442, inf, inf]) and (V22 in [33.0558, 33.6901, inf, inf]) and (V8 in [-inf, -inf, 21.139, 21.5363]) => Emotions=Anger (CF = 0.9)
+(V11 in [114.76, 115.918, inf, inf]) and (V34 in [-inf, -inf, 17.0449, 17.049]) and (V39 in [-inf, -inf, 137.883, 138.125]) and (V19 in [86.0353, 86.1859, inf, inf]) => Emotions=Anger (CF = 0.82)
+(V11 in [123.048, 124.509, inf, inf]) and (V51 in [-inf, -inf, 33.6707, 33.6995]) and (V18 in [52.6819, 53.231, inf, inf]) => Emotions=Anger (CF = 0.83)
+(V34 in [-inf, -inf, 22.8636, 23.1986]) and (V31 in [-inf, -inf, 10.1964, 10.3628]) and (V46 in [-inf, -inf, 107.21, 107.447]) and (V47 in [-inf, -inf, 3.29176, 3.4244]) => Emotions=Anger (CF = 0.82)
+(V5 in [-inf, -inf, 68.4986, 68.8774]) and (V35 in [-inf, -inf, 18.6981, 18.7149]) and (V13 in [-inf, -inf, 66.8664, 67.7345]) and (V51 in [-inf, -inf, 39.3543, 39.4115]) => Emotions=Anger (CF = 0.92)
+(V34 in [-inf, -inf, 26.5651, 26.7055]) and (V20 in [39.2894, 39.6233, inf, inf]) and (V45 in [-inf, -inf, 78.9618, 78.9745]) and (V38 in [19.9831, 20.0674, inf, inf]) and (V8 in [-inf, -inf, 35.4327, 36.92]) and (V30 in [-inf, -inf, 156.633, 157.079]) and (V44 in [38.5527, 38.6598, inf, inf]) => Emotions=Neutral (CF = 0.98)
+(V35 in [-inf, -inf, 27.2363, 27.3464]) and (V28 in [38.1572, 38.6598, inf, inf]) and (V6 in [38.9806, 39.1219, inf, inf]) and (V50 in [-inf, -inf, 3.61388, 3.64164]) and (V45 in [-inf, -inf, 79.5199, 79.6952]) => Emotions=Neutral (CF = 0.95)
+(V34 in [-inf, -inf, 28.1313, 28.9551]) and (V28 in [38.1572, 38.4537, inf, inf]) and (V9 in [39.7376, 39.8419, inf, inf]) and (V19 in [-inf, -inf, 86.6335, 87.0364]) and (V50 in [-inf, -inf, 3.61207, 3.62575]) => Emotions=Neutral (CF = 0.93)
+(V34 in [-inf, -inf, 26.8913, 26.9486]) and (V20 in [33.6901, 35.8195, inf, inf]) and (V12 in [-inf, -inf, 58.3317, 58.6666]) and (V22 in [-inf, -inf, 38.7933, 39.0939]) and (V33 in [-inf, -inf, 152.969, 152.971]) and (V43 in [50.7021, 50.8786, inf, inf]) => Emotions=Neutral (CF = 0.94)
+(V33 in [88.1516, 121.909, inf, inf]) and (V28 in [38.1572, 38.6238, inf, inf]) and (V51 in [-inf, -inf, 35.422, 36.0181]) and (V43 in [-inf, -inf, 51.481, 51.6839]) and (V32 in [13.4486, 13.6831, inf, inf]) and (V26 in [-inf, -inf, 43.2643, 43.3844]) and (V36 in [-inf, -inf, 146.691, 146.723]) => Emotions=Neutral (CF = 0.97)
+(V35 in [-inf, -inf, 29.0332, 32.685]) and (V8 in [26.5308, 26.5651, inf, inf]) and (V29 in [-inf, -inf, 85.6013, 85.9144]) and (V44 in [-inf, -inf, 51.953, 52.0023]) and (V5 in [-inf, -inf, 75.7986, 76.0875]) and (V18 in [-inf, -inf, 61.0736, 64.9831]) => Emotions=Neutral (CF = 0.95)
+(V33 in [118.764, 120.426, inf, inf]) and (V27 in [-inf, -inf, 57.0948, 64.7327]) and (V49 in [104.517, 104.534, inf, inf]) and (V51 in [-inf, -inf, 33.918, 34.2595]) and (V5 in [73.3444, 73.7261, inf, inf]) and (V33 in [-inf, -inf, 136.4, 149.673]) => Emotions=Neutral (CF = 0.96)
+
+Number of Rules : 37

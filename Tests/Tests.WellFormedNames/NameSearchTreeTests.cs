@@ -94,33 +94,7 @@ namespace Tests.WellFormedNames
 			tree.Add(n2, 0);
 			Assert.IsTrue(tree.Unify(test1).All(r => r.Item1 == 0));
 	    }
-		/*
-        [TestCase("x", "1")]
-        [TestCase("x(a)", "2")]
-        [TestCase("x(a, b)", "3")]
-        public void TryMatchValue_EmptySearchTree_False(string nameStr, string value)
-        {
-            var tree = new NameSearchTree<string>();
-            var name = Name.BuildName(nameStr);
-            string res;
-            Assert.That(!tree.TryMatchValue(name, out res));
-            Assert.That(tree[name] == null);
-        }
-
-        [TestCase("x", "1")]
-        [TestCase("x(a)", "2")]
-        [TestCase("x(a, b)", "3")]
-        public void TryMatchValue_SearchTreeThatContainsName_True(string nameStr, string value)
-        {
-            var tree = new NameSearchTree<string>();
-            var name = Name.BuildName(nameStr);
-            tree.Add(name, value);
-            string res;
-            Assert.That(tree.TryMatchValue(name, out res));
-            Assert.That(res == value);
-            Assert.That(tree[name] == value);
-        }
-		*/
+		
 		private class TestFactory
 		{
 			private static string[] inputStrings = new string[]
