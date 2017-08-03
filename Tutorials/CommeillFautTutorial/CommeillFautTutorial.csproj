@@ -102,14 +102,6 @@
       <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
       <Name>WellFormedNames</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\GUI\AuthorialAgentsWF\AuthorialAgentsWF.csproj">
-      <Project>{15fdc9b4-c348-4561-9e7e-2c278c058bc8}</Project>
-      <Name>AuthorialAgentsWF</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\GUI\GAIPS.AssetEditorTools\GAIPS.AssetEditorTools.csproj">
-      <Project>{c61fb19d-e715-4eb4-afca-27ff81a14777}</Project>
-      <Name>GAIPS.AssetEditorTools</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Tests\Tests.Conditions\Tests.Conditions.csproj">
       <Project>{19b1fa8e-d302-4af8-a53d-2a9aa469bcc7}</Project>
       <Name>Tests.Conditions</Name>

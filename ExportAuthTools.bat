@@ -1,6 +1,6 @@
 @echo off
 
-SET includeDirectories=GUI
+SET includeDirectories=AuthoringTools
 SET exportBat=toolExport.bat
 
 IF "%~1"=="" (

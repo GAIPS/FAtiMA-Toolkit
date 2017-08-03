@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using CommeillFaut.DTOs;
 using Conditions;
-using Conditions.DTOs;
-using EmotionalAppraisal;
 using KnowledgeBase;
-using SerializationUtilities;
 using WellFormedNames;
-
 
 namespace CommeillFaut
 {
@@ -21,17 +16,16 @@ namespace CommeillFaut
         public string Target { get; private set; }
         public string Initiator { get; private set; }
         public int Value { get; private set; }
-      public ConditionSet RuleConditions { get; private set; }
+        public ConditionSet RuleConditions { get; private set; }
 
-
-    protected InfluenceRule()
+        protected InfluenceRule()
         {
             GUID = Guid.NewGuid();
         }
 
         public float Result(string init, string targ, KB m_Kb)
         {
-           
+
             var toEvaluate = new ConditionSet(RuleConditions);
             var sub = new Substitution(Name.BuildName(Target), new ComplexValue(Name.BuildName(targ)));
 
@@ -44,26 +38,26 @@ namespace CommeillFaut
             var eval = toEvaluate.Evaluate(m_Kb, Name.BuildName(init), new[] { new SubstitutionSet(sub) });
 
             // Console.WriteLine(evaluateResult + " InfluenceRule " + RuleConditions.ToDTO().ConditionSet[0] + " I am " + init + " sub " + Target + " for : " + targ + " certainty " + sub.SubValue.Certainty);
-          if (eval)
+            if (eval)
             {
-               
-               
-                var cond = toEvaluate.ToDTO().ConditionSet.GetValue(0).ToString().Split(new[] { '='});
+
+
+                var cond = toEvaluate.ToDTO().ConditionSet.GetValue(0).ToString().Split(new[] { '=' });
                 cond = cond[0].Split(new[] { ',' });
-            //    Console.WriteLine(" going to get certainty of " + targ + " for this belief " + (cond[0] + "," + targ + ")"));
+                //    Console.WriteLine(" going to get certainty of " + targ + " for this belief " + (cond[0] + "," + targ + ")"));
                 var certainty = m_Kb.AskProperty(Name.BuildName(cond[0] + "," + targ + ")")).Certainty;
 
                 return certainty;
             }
-               
-            else    return 0;
-            
-           
+
+            else return 0;
+
+
         }
 
 
         public InfluenceRule(InfluenceRuleDTO dto) : this()
-		{
+        {
             SetData(dto);
         }
 
@@ -72,16 +66,15 @@ namespace CommeillFaut
             RuleName = dto.RuleName;
             Initiator = dto.Initiator;
             Target = dto.Target;
-            Value = dto.Value;;
+            Value = dto.Value; ;
             RuleConditions = new ConditionSet(dto.RuleConditions);
         }
 
         public InfluenceRuleDTO ToDTO()
         {
-            return new InfluenceRuleDTO() {Id = GUID, RuleName = RuleName, Initiator = Initiator, Target = Target, Value = Value, RuleConditions = RuleConditions.ToDTO()};
+            return new InfluenceRuleDTO() { Id = GUID, RuleName = RuleName, Initiator = Initiator, Target = Target, Value = Value, RuleConditions = RuleConditions.ToDTO() };
         }
 
-       }
-
+    }
 
 }
