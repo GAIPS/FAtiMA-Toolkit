@@ -1,4 +1,4 @@
 language: csharp
 solution: FAtiMA-Toolkit.sln
-befors_script:
+before_install:
  - nuget sources Add -Name LocalPackages -Source ./LocalPackagesRepository 
