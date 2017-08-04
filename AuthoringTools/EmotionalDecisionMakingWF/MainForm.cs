@@ -4,7 +4,6 @@ using System.Linq;
 using System.Windows.Forms;
 using EmotionalDecisionMaking;
 using EmotionalDecisionMaking.DTOs;
-using EmotionalDecisionMakingWF.Properties;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 
