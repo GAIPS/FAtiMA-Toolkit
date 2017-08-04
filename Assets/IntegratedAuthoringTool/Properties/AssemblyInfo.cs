@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("IntegratedAuthoringTool")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("The Integrated Authoring Tool is an asset designed to be the central hub for game developers when creating a new storytelling scenario or adapting existing ones. It allows the configuration of the general aspects of the scenario, and provides quick access to the authoring tools of the Role-Play Character asset")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("GAIPS")]
 [assembly: AssemblyProduct("IntegratedAuthoringTool")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]

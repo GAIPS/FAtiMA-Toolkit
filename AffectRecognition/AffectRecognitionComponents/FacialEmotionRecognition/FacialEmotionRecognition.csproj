@@ -31,10 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EmotionDetectionAsset">
-      <HintPath>..\..\DllDependencies\EmotionDetectionAsset.dll</HintPath>
+      <HintPath>..\..\..\DllDependencies\EmotionDetectionAsset.dll</HintPath>
     </Reference>
     <Reference Include="RageAssetManager">
-      <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
+      <HintPath>..\..\..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

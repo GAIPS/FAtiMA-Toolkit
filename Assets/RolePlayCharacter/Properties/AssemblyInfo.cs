@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("RolePlayCharacter")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("The Role-Play Character (RPC) asset facilitates the creation and configuration of virtual characters that have socio-emotional behaviour. This is achieved by integrating the functionality provided by several individual assets.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("RolePlayCharacter")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2016")]
+[assembly: AssemblyCompany("GAIPS")]
+[assembly: AssemblyProduct("GAIPS.RolePlayCharacter")]
+[assembly: AssemblyCopyright("Copyright ©")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
