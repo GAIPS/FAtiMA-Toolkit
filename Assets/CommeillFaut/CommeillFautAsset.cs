@@ -86,11 +86,12 @@ namespace CommeillFaut
 
         public IEnumerable<DynamicPropertyResult> VolitionPropertyCalculator(IQueryContext context, Name socialMoveName, Name initator, Name Target)
         {
-            Dictionary<Name, SubstitutionSet> ret = new Dictionary<Name, SubstitutionSet>();
+            Dictionary<SubstitutionSet, Name> ret = new Dictionary<SubstitutionSet, Name>();
             var value = -1.0f;
             var seSub = new Substitution(Name.BuildName("[x]"), new ComplexValue(Name.BuildName("Peter")));
-
-          
+            var socialMoveAux = "";
+            var stringVolition = "";
+            
             foreach (var t in context.AskPossibleProperties(Target))
             {
 
@@ -103,6 +104,7 @@ namespace CommeillFaut
                     if (newValue >= value)
                     {
                        value = newValue;
+                        socialMoveAux = se.ActionName.ToString();
                         seSub = new Substitution(socialMoveName, new ComplexValue(se.ActionName));
                     }
                 }
@@ -118,13 +120,14 @@ namespace CommeillFaut
                     //     var roundedValue = Floor(value);
 
                   
-                    var stringVolition = CalculateStyle(value);
+                    stringVolition = CalculateStyle(value);
 
+                    sub.AddSubstitution(new Substitution(Name.BuildName("[sty]"), new ComplexValue(Name.BuildName(stringVolition), 1)));
                   
 
                     value = -1.0f;
 
-                    ret.Add(Name.BuildName(stringVolition), sub);
+                    ret.Add(sub, Name.BuildName(socialMoveAux));
 
                  //   yield return new DynamicPropertyResult(Name.BuildName(stringVolition), sub);
 
@@ -147,11 +150,11 @@ namespace CommeillFaut
             float minValue = -0.1f;
             foreach(var index in ret)
             {
-                if(index.Value.ElementAt(0).SubValue.Certainty > minValue)
+                if(index.Key.ElementAt(0).SubValue.Certainty > minValue)
                 {
-                    minValue = index.Value.ElementAt(0).SubValue.Certainty;
-                    nameToRet = index.Key;
-                    subToRet = index.Value;
+                    minValue = index.Key.ElementAt(0).SubValue.Certainty;
+                    nameToRet = index.Value;
+                    subToRet = index.Key;
                 }
             }
 
@@ -159,7 +162,9 @@ namespace CommeillFaut
 
             Console.WriteLine(" Result: " + nameToRet.ToString() + "  "  + minValue);
 
-            yield return new DynamicPropertyResult(nameToRet, subToRet);
+          //  subToRet.ElementAt(0).SubValue.Certainty = 1;
+
+            yield return new DynamicPropertyResult(Name.BuildName(stringVolition), subToRet);
 
 
         }

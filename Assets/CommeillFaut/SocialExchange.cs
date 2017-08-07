@@ -212,52 +212,57 @@ namespace CommeillFaut
             char[] delimitedChars = {'(', ')', ','};
             bool isInitiator = (initiator == me.Perspective);
             string[] words = keyword.Split(delimitedChars);
-            var value = 0;
-           // Console.WriteLine("Effects Keyword: " +  keyword);
-                                       // social network but we don't store them just yet   Attraction(Initiator,Target,3)
-                if (words[1] == "Initiator")
+            var value = 0.0f;
+            // Console.WriteLine("Effects Keyword: " +  keyword);
+            // social network but we don't store them just yet   Attraction(Initiator,Target,3)
+            if (words[1] == "Initiator")
+            {
+                if (isInitiator)
                 {
-                    if (isInitiator)
+
+                    if (me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")")) != null)
                     {
+                        value = me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")")).Certainty;
+                        if (value <= 1)
+                            value += 0.2f;
 
-                        if (me.AskProperty((Name) (words[0] + "(" + me.Perspective + ","  + other.ToString() + ")")) != null)
-                        {
-                            value =
-                                Convert.ToInt32(
-                                    me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")")).Value.ToString());
-                            value += Convert.ToInt32(words[3]);
-                        
-                        }
-                        else
-                        {
-                            value = Convert.ToInt32(words[3]);
-                        }
-
-                        var insert = "" + value;
-                    return new KeyValuePair<Name, Name>(Name.BuildName(words[0] + "(" + me.Perspective + "," + other.ToString() + ")"), Name.BuildName(insert));
                     }
-                    else if (spectator)
+                    else
+                    {
+                        value = 0.2f;
+                    }
+
+                    // var insert = "" + value;
+
+                    me.Tell((Name.BuildName(words[0] + "(" + me.Perspective + "," + other.ToString() + ")")), Name.BuildName("True"), me.Perspective, value);
+
+                    return new KeyValuePair<Name, Name>();
+
+                    //return new KeyValuePair<Name, Name>(Name.BuildName(words[0] + "(" + me.Perspective + "," + other.ToString() + ")"), Name.BuildName(insert));
+                }
+                else if (spectator)
                 {
                     if (me.AskProperty((Name)(words[0] + "(" + initiator + "," + other + ")")) != null)
                     {
-                        value =
-                            Convert.ToInt32(
-                                me.AskProperty(me.AskProperty((Name)(words[0] + "(" + initiator + "," + other + ")")).Value).Value.ToString());
-                        value += Convert.ToInt32(words[3]);
+                        value = me.AskProperty((Name)(words[0] + "(" + initiator + "," + other + ")")).Certainty;
+                        if (value <= 1)
+                            value += 0.2f;
+
                     }
 
                     else
                     {
-                        value = Convert.ToInt32(words[3]);
+                        value = 0.2f;
+
+                        me.Tell((Name)(words[0] + "(" + initiator + "," + other + ")"), Name.BuildName("True"), initiator, value);
+
+                        //    return new KeyValuePair<Name, Name>(Name.BuildName(words[0] + "(" + initiator + "," + other.ToString() + ")"), Name.BuildName(insert));
+
+                        return new KeyValuePair<Name, Name>();
                     }
 
-                    var insert = "" + value;
-
-                    return new KeyValuePair<Name, Name>(Name.BuildName(words[0] + "(" + initiator + "," + other.ToString() + ")"), Name.BuildName(insert));
 
                 }
-
-
             }
 
             if (words[1] == "Target")
@@ -266,44 +271,48 @@ namespace CommeillFaut
                 {
                     if (me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + initiator.ToString() + ")")) != null)
                     {
-                        value =
-                            Convert.ToInt32(
-                                me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + initiator.ToString() + ")")).Value.ToString());
-                        value += Convert.ToInt32(words[3]);
+                        value =  me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + initiator.ToString() + ")")).Certainty;
+                            if (value <= 1)
+                                value += 0.2f;
 
-                    }
+                        }
                     else
                     {
-                        value = Convert.ToInt32(words[3]);
+                            value = 0.2f;
                     }
 
-                    var insert = "" + value;
-              
-                    return new KeyValuePair<Name, Name>(Name.BuildName(words[0] + "(" + me.Perspective + "," + initiator.ToString() + ")"), Name.BuildName(insert));
+                        //   var insert = "" + value;
 
-                }
+                        me.Tell(Name.BuildName(words[0] + "(" + me.Perspective + "," + initiator.ToString() + ")"), Name.BuildName("True"), me.Perspective, value);
+
+                        //    return new KeyValuePair<Name, Name>(Name.BuildName(words[0] + "(" + me.Perspective + "," + initiator.ToString() + ")"), Name.BuildName(insert));
+
+                        return new KeyValuePair<Name, Name>();
+
+                    }
                 else if (spectator)
                 {
                     if (me.AskProperty((Name) (words[0] + "(" + other + "," + initiator + ")")) != null)
                     {
-                        value =
-                            Convert.ToInt32(me.AskProperty(me.AskProperty((Name) (words[0] + "(" + other + "," + initiator + ")")).Value).Value.ToString());
-                        value += Convert.ToInt32(words[3]);
-                    }
+                        value = me.AskProperty((Name) (words[0] + "(" + other + "," + initiator + ")")).Certainty;
+                            if (value <= 1)
+                                value += 0.2f;
+                        }
 
                     else
                     {
-                        value = Convert.ToInt32(words[3]);
+                        value =0.2f;
                     }
 
-                      var insert = "" + value;
-                    
-
-                    return new KeyValuePair<Name, Name>(Name.BuildName(words[0] + "(" + other + "," + initiator + ")"), Name.BuildName(insert));
+                        me.Tell(Name.BuildName(words[0] + "(" + other + "," + initiator + ")"), Name.BuildName("True"), other,  value);
 
 
 
-                }
+                        //   return new KeyValuePair<Name, Name>(Name.BuildName(words[0] + "(" + other + "," + initiator + ")"), Name.BuildName(insert));
+
+                        return new KeyValuePair<Name, Name>();
+
+                    }
             }
 
 

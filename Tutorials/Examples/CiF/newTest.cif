@@ -7,7 +7,7 @@
 					"Action": "Compliment",
 					"Conditions":
 						{
-							"Set": ["IsFriend(SELF, [x]) = True"]
+							"Set": []
 						},
 					"Intent": "Be Friends",
 					"Instantiation": "",
@@ -26,73 +26,13 @@
 						{
 							"dictionary": [{
 									"key": "Positive",
-									"value": ["Friendship(Initiator, Target, 4)", "Friendship(Target, Initiator, 5)"]},
+									"value": ["IsFriend(SELF, [x]) = True", "IsFriend([x], SELF) = True"]},
 									{
 									"key": "Negative",
-									"value": ["Friendship(Initiator, Target, -4)", "Friendship(Target, Initiator, -5)"]}
+									"value": ["IsFriend(SELF, [x]) = True", "IsFriend([x], SELF) = True"]}
 									]
 						}
 				
-				}, 
-				{
-					"Action": "Flirt",
-					"Conditions":
-						{
-							"Set": ["IsAttracted(SELF, [x]) = True"]
-						},
-					"Intent": "to flirt...",
-					"Instantiation": "",
-					"InfluenceRules": [
-						{
-							"RuleName": "High Attraction",
-							"Target": "[x]",
-							"Value": 10,
-							"RuleConditions":
-								{
-									"Set": ["IsAttracted(SELF, [x]) = True"]
-								}
-						}],
-					"EffectsList":
-						{
-							"dictionary": [{
-									"key": "Positive",
-									"value": ["Attraction(Initiator, Target, 4)", "Attraction(Target, Initiator, 5)"]},
-									{
-									"key": "Negative",
-									"value": ["Attraction(Initiator, Target, -4)", "Attraction(Target, Initiator, -5)"]}
-									]
-						}
-				}, 
-				{
-					"Action": "Insult",
-					"Conditions":
-						{
-							"Set": ["Friendship(SELF, [x]) = False"]
-						},
-					"Intent": "Insult the other",
-					"Instantiation": "",
-					"InfluenceRules": [
-						{
-							"RuleName": "Disgusting",
-							"Target": "[x]",
-							"Value": 5,
-							"RuleConditions":
-								{
-									"Set": ["Friendship(SELF, [x]) = False"]
-								}
-						}],
-					"EffectsList":
-						{
-							"dictionary": [
-								{
-									"key": "Negative",
-									"value": ["Friendship(Initiator, Target, -6)", "Friendship(Target, Initiator, -6)"]
-								},
-								{
-									"key": "Positive",
-									"value": ["Friendship(Initiator, Target, -1)", "Friendship(Target, Initiator, -1)"]
-								}]
-						}
 				}],
 			"_triggerRules":
 				{
