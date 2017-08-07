@@ -430,7 +430,7 @@ namespace EmotionRecognitionWF
 
                         img = reader.ReadVideoFrame();
 
-                        TimeSpan ts = TimeSpan.FromMilliseconds((1000.0 * i) / reader.FrameRate);
+                        TimeSpan ts = TimeSpan.FromMilliseconds((1000.0 * i) / reader.FrameRate.ToDouble());
 
                         label1.Text = ts.ToString("G");
 

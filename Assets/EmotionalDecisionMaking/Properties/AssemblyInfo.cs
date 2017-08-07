@@ -5,9 +5,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("EmotionalDecisionMaking")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("The Emotional Decision Making asset is used for the creation of non-player characters whose decisions are impacted by their emotional state. To achieve this, the asset offers a logical reasoner that the game developer can use to define the rules for the character's decision making process. These rules can depend not only on the characters' emotions but also on the occurrence of certain previous events and the belief in certain properties about the world.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("GAIPS")]
 [assembly: AssemblyProduct("EmotionalDecisionMaking")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]

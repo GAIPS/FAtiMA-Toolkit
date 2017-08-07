@@ -36,8 +36,44 @@
     <StartupObject>RolePlayCharacterWF.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ActionLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\ActionLibrary.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AutobiographicMemory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\AutobiographicMemory.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CommeillFaut, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\CommeillFaut.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Conditions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\Conditions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EmotionalAppraisal, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\EmotionalAppraisal.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EmotionalDecisionMaking, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\EmotionalDecisionMaking.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Equin.ApplicationFramework.BindingListView, Version=1.4.5222.35545, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Equin.ApplicationFramework.BindingListView.1.4.5222.35545\lib\net40-Client\Equin.ApplicationFramework.BindingListView.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GAIPS.Rage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\GAIPS.Rage.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GAIPS.Serialization, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GAIPS.Serialization.1.5.0\lib\net35\GAIPS.Serialization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="KnowledgeBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\KnowledgeBase.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -45,6 +81,14 @@
     <Reference Include="RageAssetManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
+    </Reference>
+    <Reference Include="RolePlayCharacter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\RolePlayCharacter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SocialImportanceAsset, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\SocialImportanceAsset.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -59,6 +103,14 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="UIAutomationProvider" />
+    <Reference Include="Utilities, Version=1.0.0.19854, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Utilities.1.0.0.19854\lib\net35\Utilities.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="WellFormedNames, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\WellFormedNames.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
@@ -134,38 +186,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Components\AutobiographicMemory\AutobiographicMemory.csproj">
-      <Project>{c1cc38c5-72f5-4545-b4f7-c65b2883909c}</Project>
-      <Name>AutobiographicMemory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
-      <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
-      <Name>GAIPS.Rage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\KnowledgeBase\KnowledgeBase.csproj">
-      <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
-      <Name>KnowledgeBase</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
-      <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
-      <Name>WellFormedNames</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Assets\EmotionalAppraisal\EmotionalAppraisal.csproj">
-      <Project>{0a2a1ee9-bd5d-44aa-a22d-291612488f06}</Project>
-      <Name>EmotionalAppraisal</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Assets\RolePlayCharacter\RolePlayCharacter.csproj">
-      <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
-      <Name>RolePlayCharacter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Assets\SocialImportance\SocialImportance.csproj">
-      <Project>{823e8a41-5231-4b06-bbab-e62651e15bc7}</Project>
-      <Name>SocialImportance</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Assets\EmotionalDecisionMaking\EmotionalDecisionMaking.csproj">
-      <Project>{a1e56f5c-eaac-43e5-a922-5b244168ea5c}</Project>
-      <Name>EmotionalDecisionMaking</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EmotionalAppraisalWF\EmotionalAppraisalWF.csproj">
       <Project>{36ef269c-7ab2-4029-bbf4-18f908af46f6}</Project>
       <Name>EmotionalAppraisalWF</Name>
