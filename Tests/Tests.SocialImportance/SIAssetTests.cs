@@ -159,31 +159,5 @@ namespace Tests.SocialImportance
 			Assert.AreEqual(baSiValue,ba);
 		}
 
-		[TestCase("Diego","Give(Drink)")]
-		[TestCase("Mary", "Give(Best-Drink)")]
-		[TestCase("Robot", null)]
-		public static void Test_Conferrals(string name, string expectedResult)
-		{
-			var n = new BeliefDTO()
-			{
-				Name = $"AskedDrink({name})",
-				Perspective = "Self",
-				Value = "true"
-			};
-			
-            ASSET_TO_TEST.LinkedKB.Tell((Name)n.Name,(Name)n.Value,(Name)n.Perspective);
-			var a = ASSET_TO_TEST.DecideConferral(Name.SELF_STRING);
-			ASSET_TO_TEST.LinkedKB.Tell((Name)n.Name, null, (Name)n.Perspective); 
-			if (string.IsNullOrEmpty(expectedResult))
-			{
-				if(a==null)
-					Assert.Pass();
-				else
-					Assert.Fail();
-			}
-
-			var an = (Name)expectedResult;
-			Assert.AreEqual(an, a.Name);
-		}
 	}
 }
