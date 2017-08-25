@@ -1,4 +1,4 @@
-﻿namespace EmotionalAppraisal.DTOs
+﻿namespace RolePlayCharacter
 {
 	/// <summary>
 	/// Data Type Object Class for the representation of a belief that the asset has about a property of the world

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using EmotionalAppraisal;
 using EmotionalAppraisal.OCCModel;
 using NUnit.Framework;
@@ -14,8 +13,8 @@ namespace Tests.EmotionalAppraisal
 	{
 		private static EmotionalAppraisalAsset BuildTestAsset()
 		{//Emotional System Setup
-			var m_emotionalAppraisalAsset = new EmotionalAppraisalAsset("Agent");
-			m_emotionalAppraisalAsset.SetPerspective("Test");
+			var m_emotionalAppraisalAsset = new EmotionalAppraisalAsset();
+            //	m_emotionalAppraisalAsset.SetPerspective("Test");
 
 			//Setup Emotional Disposition
 
@@ -124,127 +123,8 @@ namespace Tests.EmotionalAppraisal
 			//m_emotionalAppraisalAsset.AppraiseEvents(new []{ "Event(Action-Finished,Player,Slap,self)" });
 
 			//Add knowledge
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "Strength(John)",
-				Perspective = "self",
-				Value = "5"
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "Strength(Mary)",
-				Perspective = "self",
-				Value = "3"
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "Strength(Leonidas)",
-				Perspective = "self",
-				Value = "500"
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "Strength(Goku)",
-				Perspective = "self",
-				Value = "9001"
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "Strength(SuperMan)",
-				Perspective = "self",
-				Value = ulong.MaxValue.ToString()
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "Strength(Saitama)",
-				Perspective = "self",
-				Value = double.MaxValue.ToString(CultureInfo.InvariantCulture)
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "Race(Saitama)",
-				Perspective = "self",
-				Value = "human"
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "Race(Mary)",
-				Perspective = "self",
-				Value = "human"
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "Race(John)",
-				Perspective = "self",
-				Value = "human"
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "Race(Leonidas)",
-				Perspective = "self",
-				Value = "human"
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "Race(Goku)",
-				Perspective = "self",
-				Value = "sayian"
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "Race(Superman)",
-				Perspective = "self",
-				Value = "kriptonian"
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "Job(Superman)",
-				Perspective = "self",
-				Value = "super-hero"
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "Job(Jeonidas)",
-				Perspective = "self",
-				Value = "king"
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "AKA(Saitama)",
-				Perspective = "self",
-				Value = "One-Punch_Man"
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "AKA(Saitama)",
-				Perspective = "self",
-				Value = "Caped_Baldy"
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "AKA(Superman)",
-				Perspective = "self",
-				Value = "Clark_Kent"
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "AKA(Goku)",
-				Perspective = "self",
-				Value = "Kakarot"
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "Hobby(Saitama)",
-				Perspective = "self",
-				Value = "super-hero"
-			});
-			m_emotionalAppraisalAsset.AddOrUpdateBelief(new BeliefDTO()
-			{
-				Name = "Hobby(Goku)",
-				Perspective = "self",
-				Value = "training"
-			});
-
+		
+	
 			return m_emotionalAppraisalAsset;
 		}
 

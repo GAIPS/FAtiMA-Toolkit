@@ -1,24 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using System.Windows.Forms;
-using AutobiographicMemory.DTOs;
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
-using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
-using GAIPS.AssetEditorTools.DynamicPropertiesWindow;
 using Conditions.DTOs;
 
 namespace EmotionalAppraisalWF
 {
 	public partial class MainForm : BaseEAForm
     {
-        
-        private KnowledgeBaseVM _knowledgeBaseVM;
         private AppraisalRulesVM _appraisalRulesVM;
         private EmotionDispositionsVM _emotionDispositionsVM;
         
@@ -44,15 +37,8 @@ namespace EmotionalAppraisalWF
 			dataGridViewAppraisalRules.Columns[PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Conditions)].Visible = false;
 			conditionSetEditor.View = _appraisalRulesVM.CurrentRuleConditions;
 
-			//KB
-			_knowledgeBaseVM = new KnowledgeBaseVM(this);
-			dataGridViewBeliefs.DataSource = _knowledgeBaseVM.Beliefs;
-
-			this.textBoxPerspective.Text = _knowledgeBaseVM.Perspective;
-			this.richTextBoxDescription.Text = asset.Description;
-
+            this.richTextBoxDescription.Text = asset.Description;
             _wasModified = false;
-
 		}
 
 		#region EmotionalStateTab
@@ -75,44 +61,7 @@ namespace EmotionalAppraisalWF
 
         #endregion
 
-        #region KnowledgeBaseTab
-
-        private void addBeliefButton_Click(object sender, EventArgs e)
-        {
-            var addBeliefForm = new AddOrEditBeliefForm(_knowledgeBaseVM);
-            addBeliefForm.ShowDialog();
-        }
-
-        private void editButton_Click(object sender, EventArgs e)
-        {
-            if (dataGridViewBeliefs.SelectedRows.Count == 1)
-            {
-                var selectedBelief = ((ObjectView<BeliefDTO>) dataGridViewBeliefs.SelectedRows[0].DataBoundItem).Object;
-                var addBeliefForm = new AddOrEditBeliefForm(_knowledgeBaseVM, selectedBelief);
-                addBeliefForm.ShowDialog();
-            }
-        }
-
-        private void removeBeliefButton_Click(object sender, EventArgs e)
-        {
-            IList<BeliefDTO> beliefsToRemove = new List<BeliefDTO>();
-            for (int i = 0; i < dataGridViewBeliefs.SelectedRows.Count; i++)
-            {
-                var belief = ((ObjectView<BeliefDTO>) dataGridViewBeliefs.SelectedRows[i].DataBoundItem).Object;
-                beliefsToRemove.Add(belief);
-            }
-            _knowledgeBaseVM.RemoveBeliefs(beliefsToRemove);
-        }
-
-        private void dataGridViewBeliefs_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if (e.RowIndex != -1) //exclude header cells
-            {
-                this.editButton_Click(sender, e);
-            }
-        }
-
-		#endregion
+        
 
 		#region Appraisal Rules
 		
@@ -213,34 +162,12 @@ namespace EmotionalAppraisalWF
             }
         }
 
-		private void OnScreenChanged(object sender, EventArgs e)
-		{
-			_knowledgeBaseVM.UpdatePerspective();
-		}
-
 		private void groupBox1_Enter(object sender, EventArgs e)
         {
 
         }
 
-        private void dataGridViewBeliefs_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void textBoxPerspective_TextChanged_1(object sender, EventArgs e)
-        {
-            if (IsLoading)
-                return;
-
-            if (!string.IsNullOrEmpty(textBoxPerspective.Text))
-            {
-                _knowledgeBaseVM.Perspective = textBoxPerspective.Text;
-                _knowledgeBaseVM.UpdatePerspective();
-                SetModified();
-            }
-        }
-
+       
         private void richTextBoxDescription_TextChanged_1(object sender, EventArgs e)
         {
             LoadedAsset.Description = richTextBoxDescription.Text;

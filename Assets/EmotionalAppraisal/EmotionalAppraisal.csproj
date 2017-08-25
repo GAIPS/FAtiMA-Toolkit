@@ -55,7 +55,6 @@
     <Compile Include="ConcreteEmotionalState.cs" />
     <Compile Include="DTOs\AppraisalRuleDTO.cs" />
     <Compile Include="DTOs\EmotionDTO.cs" />
-    <Compile Include="DTOs\BeliefDTO.cs" />
     <Compile Include="DTOs\EmotionDispositionDTO.cs" />
     <Compile Include="EmotionalAppraisalAsset.cs" />
     <Compile Include="EmotionalAppraisalConfiguration.cs" />

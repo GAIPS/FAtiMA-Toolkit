@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
-using EmotionalAppraisal.DTOs;
-using EmotionalAppraisalWF.Properties;
-using EmotionalAppraisalWF.ViewModels;
+using RolePlayCharacterWF.ViewModels;
+using RolePlayCharacter;
 
-namespace EmotionalAppraisalWF
+namespace RolePlayCharacterWF
 {
     public partial class AddOrEditBeliefForm : Form
     {
@@ -23,8 +22,8 @@ namespace EmotionalAppraisalWF
 
             if (beliefToEdit != null)
             {
-                this.Text = Resources.AddOrEditBeliefForm_AddOrEditBeliefForm_Edit_Belief;
-                this.addOrEditBeliefButton.Text = Resources.AddOrEditBeliefForm_AddOrEditBeliefForm_Update;
+                this.Text = "Edit Belief";
+                this.addOrEditBeliefButton.Text = "Update";
 
                 beliefNameTextBox.Text = beliefToEdit.Name;
                 beliefValueTextBox.Text = beliefToEdit.Value;

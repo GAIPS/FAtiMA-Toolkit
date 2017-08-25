@@ -209,7 +209,8 @@ namespace RolePlayCharacter
             {
                 Name = b.Name.ToString(),
                 Perspective = b.Perspective.ToString(),
-                Value = b.Value.ToString()
+                Value = b.Value.ToString(),
+                Certainty = b.Certainty
             });
         }
 
@@ -259,20 +260,12 @@ namespace RolePlayCharacter
         public void LoadAssociatedAssets()
         {
             var charName = CharacterName.ToString();
-            EmotionalAppraisalAsset ea = Loader(m_emotionalAppraisalAssetSource,
-                () => new EmotionalAppraisalAsset(charName));
-            ea.SetPerspective(charName);
-            EmotionalDecisionMakingAsset edm = Loader(m_emotionalDecisionMakingAssetSource,
-                () => new EmotionalDecisionMakingAsset());
+
+            EmotionalAppraisalAsset ea = Loader(m_emotionalAppraisalAssetSource, () => new EmotionalAppraisalAsset());
+     
+            EmotionalDecisionMakingAsset edm = Loader(m_emotionalDecisionMakingAssetSource, () => new EmotionalDecisionMakingAsset());
             SocialImportanceAsset si = Loader(m_socialImportanceAssetSource, () => new SocialImportanceAsset());
             CommeillFautAsset cfa = Loader(m_commeillFautAssetSource, () => new CommeillFautAsset());
-
-            foreach (var bel in ea.GetAllBeliefs())
-            {
-                var name = Name.BuildName(bel.Name).SwapTerms(ea.Perspective, CharacterName);
-                var value = Name.BuildName(bel.Value).SwapTerms(ea.Perspective, CharacterName);
-                 m_kb.Tell(name, value, (Name)bel.Perspective, bel.Certainty);
-            }
 
             m_emotionalAppraisalAsset = ea;
             m_emotionalDecisionMakingAsset = edm;
@@ -374,6 +367,17 @@ namespace RolePlayCharacter
         {
             Tick++;
             m_emotionalState.Decay(Tick);
+        }
+
+        /// <summary>
+        /// Removes a belief from the asset's knowledge base.
+        /// </summary>
+        /// <param name="name">The name of the belief to remove.</param>
+        /// <param name="perspective">The perspective of the belief to remove</param>
+        public void RemoveBelief(string name, string perspective)
+        {
+            var p = (Name)perspective;
+            m_kb.Tell(Name.BuildName(name), null, p);
         }
 
         public void UpdateBelief(string name, string value, float certainty = 1, string perspective = Name.SELF_STRING)

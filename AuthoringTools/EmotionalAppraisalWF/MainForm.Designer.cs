@@ -116,7 +116,6 @@
             this.dynamicPropertyListing.SelectedIndex = 0;
             this.dynamicPropertyListing.Size = new System.Drawing.Size(545, 401);
             this.dynamicPropertyListing.TabIndex = 1;
-            this.dynamicPropertyListing.SelectedIndexChanged += new System.EventHandler(this.OnScreenChanged);
             // 
             // knowledgeBaseTabPage
             // 
@@ -192,7 +191,6 @@
             this.textBoxPerspective.Name = "textBoxPerspective";
             this.textBoxPerspective.Size = new System.Drawing.Size(469, 20);
             this.textBoxPerspective.TabIndex = 10;
-            this.textBoxPerspective.TextChanged += new System.EventHandler(this.textBoxPerspective_TextChanged_1);
             // 
             // label2
             // 
@@ -258,7 +256,6 @@
             this.editButton.TabIndex = 6;
             this.editButton.Text = "Edit";
             this.editButton.UseVisualStyleBackColor = true;
-            this.editButton.Click += new System.EventHandler(this.editButton_Click);
             // 
             // addBeliefButton
             // 
@@ -268,7 +265,6 @@
             this.addBeliefButton.TabIndex = 4;
             this.addBeliefButton.Text = "Add";
             this.addBeliefButton.UseVisualStyleBackColor = true;
-            this.addBeliefButton.Click += new System.EventHandler(this.addBeliefButton_Click);
             // 
             // removeBeliefButton
             // 
@@ -278,7 +274,6 @@
             this.removeBeliefButton.TabIndex = 5;
             this.removeBeliefButton.Text = "Remove";
             this.removeBeliefButton.UseVisualStyleBackColor = true;
-            this.removeBeliefButton.Click += new System.EventHandler(this.removeBeliefButton_Click);
             // 
             // dataGridViewBeliefs
             // 
@@ -302,8 +297,6 @@
             this.dataGridViewBeliefs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewBeliefs.Size = new System.Drawing.Size(513, 177);
             this.dataGridViewBeliefs.TabIndex = 4;
-            this.dataGridViewBeliefs.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewBeliefs_CellContentClick);
-            this.dataGridViewBeliefs.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewBeliefs_CellMouseDoubleClick);
             // 
             // appraisalRulesTagePage
             // 

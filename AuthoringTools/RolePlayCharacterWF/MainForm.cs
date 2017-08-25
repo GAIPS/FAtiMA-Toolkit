@@ -16,6 +16,7 @@ namespace RolePlayCharacterWF
         private const string MOOD_FORMAT = "0.00";
         private EmotionalStateVM _emotionalStateVM;
         private AutobiographicalMemoryVM _autobiographicalMemoryVM;
+        private KnowledgeBaseVM _knowledgeBaseVM;
 
         public MainForm()
         {
@@ -52,8 +53,70 @@ namespace RolePlayCharacterWF
                 LoadedAsset.SocialImportanceAssetSource = siAssetControl1.Path;
                 return SocialImportance.SocialImportanceAsset.LoadFromFile(LoadedAsset.SocialImportanceAssetSource);
             });
+
+            //KB
+            _knowledgeBaseVM = new KnowledgeBaseVM(this);
+            //dataGridViewBeliefs.DataSource = _knowledgeBaseVM.Beliefs;
         }
 
+        private void OnScreenChanged(object sender, EventArgs e)
+        {
+            _knowledgeBaseVM.UpdatePerspective();
+        }
+
+        /*
+        private void textBoxPerspective_TextChanged_1(object sender, EventArgs e)
+        {
+            if (IsLoading)
+                return;
+
+            if (!string.IsNullOrEmpty(textBoxPerspective.Text))
+            {
+                _knowledgeBaseVM.Perspective = textBoxPerspective.Text;
+                _knowledgeBaseVM.UpdatePerspective();
+                SetModified();
+            }
+        }*/
+
+
+        /*
+        private void addBeliefButton_Click(object sender, EventArgs e)
+        {
+            var addBeliefForm = new AddOrEditBeliefForm(_knowledgeBaseVM);
+            addBeliefForm.ShowDialog();
+        }*/
+
+        /*
+    private void editButton_Click(object sender, EventArgs e)
+    {
+        if (dataGridViewBeliefs.SelectedRows.Count == 1)
+        {
+            var selectedBelief = ((ObjectView<BeliefDTO>)dataGridViewBeliefs.SelectedRows[0].DataBoundItem).Object;
+            var addBeliefForm = new AddOrEditBeliefForm(_knowledgeBaseVM, selectedBelief);
+            addBeliefForm.ShowDialog();
+        }
+    }*/
+
+        /*
+    private void removeBeliefButton_Click(object sender, EventArgs e)
+    {
+        IList<BeliefDTO> beliefsToRemove = new List<BeliefDTO>();
+        for (int i = 0; i < dataGridViewBeliefs.SelectedRows.Count; i++)
+        {
+            var belief = ((ObjectView<BeliefDTO>)dataGridViewBeliefs.SelectedRows[i].DataBoundItem).Object;
+            beliefsToRemove.Add(belief);
+        }
+        _knowledgeBaseVM.RemoveBeliefs(beliefsToRemove);
+    }*/
+
+        /*
+            private void dataGridViewBeliefs_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+            {
+                if (e.RowIndex != -1) //exclude header cells
+                {
+                    this.editButton_Click(sender, e);
+                }
+            }*/
         private void textBoxCharacterName_TextChanged(object sender, EventArgs e)
         {
             if (IsLoading)

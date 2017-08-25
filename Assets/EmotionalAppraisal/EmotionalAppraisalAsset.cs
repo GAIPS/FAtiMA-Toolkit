@@ -20,7 +20,6 @@ namespace EmotionalAppraisal
     [Serializable]
     public sealed partial class EmotionalAppraisalAsset : LoadableAsset<EmotionalAppraisalAsset>, ICustomSerialization
     {
-        private KB m_kb;
         private ReactiveAppraisalDerivator m_appraisalDerivator;
         private Dictionary<string, EmotionDisposition> m_emotionDispositions;
         private EmotionDisposition m_defaultEmotionalDisposition;
@@ -31,13 +30,6 @@ namespace EmotionalAppraisal
         [NonSerialized]
         private OCCAffectDerivationComponent m_occAffectDerivator;
 
-        /// <summary>
-        /// Indicates the name of the agent that corresponds to "SELF"
-        /// </summary>
-		public Name Perspective
-        {
-            get { return m_kb.Perspective; }
-        }
 
         public EmotionDispositionDTO DefaultEmotionDisposition
         {
@@ -111,7 +103,7 @@ namespace EmotionalAppraisal
         /// <param name="emotionalAppraisalRule">the AppraisalRule to add</param>
         public void AddOrUpdateAppraisalRule(AppraisalRuleDTO emotionalAppraisalRule)
         {
-            m_appraisalDerivator.AddOrUpdateAppraisalRule(emotionalAppraisalRule, m_kb.Perspective);
+            m_appraisalDerivator.AddOrUpdateAppraisalRule(emotionalAppraisalRule);
         }
 
         /// <summary>
@@ -157,39 +149,13 @@ namespace EmotionalAppraisal
             }
         }
 
-        public IEnumerable<BeliefDTO> GetAllBeliefs()
-        {
-            return m_kb.GetAllBeliefs().Select(b => new BeliefDTO
-            {
-                Name = b.Name.ToString(),
-                Perspective = b.Perspective.ToString(),
-                Value = b.Value.ToString(),
-                Certainty = b.Certainty
-            });
-        }
-
-        /// <summary>
-        /// Change the perspective of the memories of the asset.
-        /// Use this to change "name" which the asset identifies as itself.
-        /// </summary>
-        /// <param name="newPerspective">The string containing the new perspective of the asset.</param>
-        public void SetPerspective(string newPerspective)
-        {
-            var p = (Name)newPerspective;
-            if (p == m_kb.Perspective)
-                return;
-            m_kb.SetPerspective(p);
-        }
-
         /// <summary>
         /// Asset constructor.
         /// Creates a new empty Emotional Appraisal Asset.
         /// </summary>
         /// <param name="perspective">The initial perspective of the asset.</param>
-        public EmotionalAppraisalAsset(string perspective)
+        public EmotionalAppraisalAsset()
         {
-            m_kb = new KB((Name)perspective);
-
             m_emotionDispositions = new Dictionary<string, EmotionDisposition>();
             m_defaultEmotionalDisposition = new EmotionDisposition("*", 1, 1);
             m_occAffectDerivator = new OCCAffectDerivationComponent();
@@ -228,56 +194,9 @@ namespace EmotionalAppraisal
             }
         }
 
-        public void AppraiseEvents(IEnumerable<Name> eventNames, Name perspective, IEmotionalState emotionalState, AM am)
+        public void AppraiseEvents(IEnumerable<Name> eventNames, IEmotionalState emotionalState, AM am, KB kb)
         {
-            AppraiseEvents(eventNames, perspective, emotionalState, am, m_kb);
-        }
-
-        public void AppraiseEvents(IEnumerable<Name> eventNames, IEmotionalState emotionalState, AM am)
-        {
-            AppraiseEvents(eventNames, Name.SELF_SYMBOL, emotionalState, am, m_kb);
-        }
-
-        /// <summary>
-        /// Adds a new belief to the asset's knowledge base.
-        /// If the belief already exists, its value is updated.
-        /// </summary>
-        /// <param name="belief">The dto containing the parameters for the belief to add or update.</param>
-        public void AddOrUpdateBelief(BeliefDTO belief)
-        {
-            m_kb.Tell(Name.BuildName(belief.Name), Name.BuildName(belief.Value), Name.BuildName(belief.Perspective));
-        }
-
-        /// <summary>
-        /// Return the value associated to a belief.
-        /// </summary>
-        /// <param name="beliefName">The name of the belief to return</param>
-        /// <returns>The string value of the belief, or null if no belief exists.</returns>
-        public string GetBeliefValue(string beliefName, string perspective = Name.SELF_STRING)
-        {
-            var result = m_kb.AskProperty((Name)beliefName, (Name)perspective)?.ToString();
-            return result;
-        }
-
-        /// <summary>
-        /// Asks if the asset has a specific belief.
-        /// </summary>
-        /// <param name="name">The belief name to determine if any value is associated to it.</param>
-        /// <returns>True if the requested belief has a value. False otherwise.</returns>
-        public bool BeliefExists(string name)
-        {
-            return m_kb.BeliefExists(Name.BuildName(name));
-        }
-
-        /// <summary>
-        /// Removes a belief from the asset's knowledge base.
-        /// </summary>
-        /// <param name="name">The name of the belief to remove.</param>
-        /// <param name="perspective">The perspective of the belief to remove</param>
-        public void RemoveBelief(string name, string perspective)
-        {
-            var p = (Name)perspective;
-            m_kb.Tell(Name.BuildName(name), null, p);
+            AppraiseEvents(eventNames, Name.SELF_SYMBOL, emotionalState, am, kb);
         }
 
         private void UpdateEmotions(IAppraisalFrame frame, IEmotionalState emotionalState, AM am)
@@ -305,7 +224,6 @@ namespace EmotionalAppraisal
         public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             dataHolder.SetValue("Description", Description);
-            dataHolder.SetValue("KnowledgeBase", m_kb);
             dataHolder.SetValue("AppraisalRules", m_appraisalDerivator);
             dataHolder.SetValue("EmotionDispositions", m_emotionDispositions.Values.Prepend(m_defaultEmotionalDisposition).ToArray());
         }
@@ -314,7 +232,6 @@ namespace EmotionalAppraisal
         {
             Description = dataHolder.GetValue<string>("Description");
 
-            m_kb = dataHolder.GetValue<KB>("KnowledgeBase");
             m_appraisalDerivator = dataHolder.GetValue<ReactiveAppraisalDerivator>("AppraisalRules");
             m_occAffectDerivator = new OCCAffectDerivationComponent();
 
@@ -343,10 +260,5 @@ namespace EmotionalAppraisal
         #endregion ICustomSerialization
 
         /// @endcond
-
-        public Name AssertPerspective(Name perspective)
-        {
-            return m_kb.AssertPerspective(perspective);
-        }
     }
 }

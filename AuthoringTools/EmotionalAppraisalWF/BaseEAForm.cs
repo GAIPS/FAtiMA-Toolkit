@@ -5,11 +5,9 @@ namespace EmotionalAppraisalWF
 {
 	public class BaseEAForm : BaseAssetForm<EmotionalAppraisalAsset>
 	{
-		private const string DEFAULT_PERSPECTIVE = "Nameless";
-
 		protected override EmotionalAppraisalAsset CreateEmptyAsset()
 		{
-			return new EmotionalAppraisalAsset(DEFAULT_PERSPECTIVE);
+			return new EmotionalAppraisalAsset();
 		}
 		
 		protected override string GetAssetFileFilters()

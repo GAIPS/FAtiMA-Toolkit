@@ -37,27 +37,27 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ActionLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\ActionLibrary.dll</HintPath>
+      <HintPath>..\packages\RolePlayCharacter.1.1.0.0\lib\net35\ActionLibrary.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="AutobiographicMemory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\AutobiographicMemory.dll</HintPath>
+      <HintPath>..\packages\RolePlayCharacter.1.1.0.0\lib\net35\AutobiographicMemory.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="CommeillFaut, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\CommeillFaut.dll</HintPath>
+      <HintPath>..\packages\RolePlayCharacter.1.1.0.0\lib\net35\CommeillFaut.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Conditions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\Conditions.dll</HintPath>
+      <HintPath>..\packages\RolePlayCharacter.1.1.0.0\lib\net35\Conditions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EmotionalAppraisal, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\EmotionalAppraisal.dll</HintPath>
+    <Reference Include="EmotionalAppraisal, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RolePlayCharacter.1.1.0.0\lib\net35\EmotionalAppraisal.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EmotionalDecisionMaking, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\EmotionalDecisionMaking.dll</HintPath>
+      <HintPath>..\packages\RolePlayCharacter.1.1.0.0\lib\net35\EmotionalDecisionMaking.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Equin.ApplicationFramework.BindingListView, Version=1.4.5222.35545, Culture=neutral, processorArchitecture=MSIL">
@@ -65,7 +65,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="GAIPS.Rage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\GAIPS.Rage.dll</HintPath>
+      <HintPath>..\packages\RolePlayCharacter.1.1.0.0\lib\net35\GAIPS.Rage.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GAIPS.Serialization, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -73,7 +73,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="KnowledgeBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\KnowledgeBase.dll</HintPath>
+      <HintPath>..\packages\RolePlayCharacter.1.1.0.0\lib\net35\KnowledgeBase.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PresentationCore" />
@@ -82,12 +82,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
-    <Reference Include="RolePlayCharacter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\RolePlayCharacter.dll</HintPath>
+    <Reference Include="RolePlayCharacter, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RolePlayCharacter.1.1.0.0\lib\net35\RolePlayCharacter.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SocialImportanceAsset, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\SocialImportanceAsset.dll</HintPath>
+      <HintPath>..\packages\RolePlayCharacter.1.1.0.0\lib\net35\SocialImportanceAsset.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -108,7 +108,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="WellFormedNames, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RolePlayCharacter.1.0.0.0\lib\net35\WellFormedNames.dll</HintPath>
+      <HintPath>..\packages\RolePlayCharacter.1.1.0.0\lib\net35\WellFormedNames.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WindowsBase" />
@@ -120,6 +120,12 @@
     </Compile>
     <Compile Include="AddOrEditAutobiographicalEventForm.Designer.cs">
       <DependentUpon>AddOrEditAutobiographicalEventForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddOrEditBeliefForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddOrEditBeliefForm.Designer.cs">
+      <DependentUpon>AddOrEditBeliefForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AddOrEditEmotionForm.cs">
       <SubType>Form</SubType>
@@ -149,8 +155,12 @@
     </Compile>
     <Compile Include="ViewModels\AutobiographicalMemoryVM.cs" />
     <Compile Include="ViewModels\EmotionalStateVM.cs" />
+    <Compile Include="ViewModels\KnowledgeBaseVM.cs" />
     <EmbeddedResource Include="AddOrEditAutobiographicalEventForm.resx">
       <DependentUpon>AddOrEditAutobiographicalEventForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddOrEditBeliefForm.resx">
+      <DependentUpon>AddOrEditBeliefForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AddOrEditEmotionForm.resx">
       <DependentUpon>AddOrEditEmotionForm.cs</DependentUpon>

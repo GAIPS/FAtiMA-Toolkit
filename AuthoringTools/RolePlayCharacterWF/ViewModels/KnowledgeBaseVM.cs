@@ -1,27 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using EmotionalAppraisal;
-using EmotionalAppraisal.DTOs;
-using EmotionalAppraisalWF.Properties;
 using Equin.ApplicationFramework;
 using WellFormedNames;
+using RolePlayCharacter;
 
-namespace EmotionalAppraisalWF.ViewModels
+namespace RolePlayCharacterWF.ViewModels
 {
     public class KnowledgeBaseVM
     {
-	    private BaseEAForm _mainForm;
+	    private BaseRPCForm _mainForm;
 
-	    private EmotionalAppraisalAsset emotionalAppraisalAsset => _mainForm.LoadedAsset;
+	    private RolePlayCharacterAsset _rpcAsset => _mainForm.LoadedAsset;
 
 	    public BindingListView<BeliefDTO> Beliefs {get;}
 
 		public string Perspective { get; set; }
 
-		public KnowledgeBaseVM(BaseEAForm form)
+		public KnowledgeBaseVM(BaseRPCForm form)
 		{
 			_mainForm = form;
-			Perspective = emotionalAppraisalAsset.Perspective.ToString();
+			Perspective = _rpcAsset.CharacterName.ToString();
 			Beliefs = new BindingListView<BeliefDTO>(new List<BeliefDTO>());
 			UpdateBeliefList();
         }
@@ -29,17 +27,17 @@ namespace EmotionalAppraisalWF.ViewModels
 		public void UpdatePerspective()
 		{
 			var n = (Name) Perspective;
-			if((Name)emotionalAppraisalAsset.Perspective == n)
+			if((Name)_rpcAsset.CharacterName == n)
 				return;
 
-			emotionalAppraisalAsset.SetPerspective(Perspective);
+            _rpcAsset.CharacterName = (Name)Perspective;
 			UpdateBeliefList();
 		}
 
 	    public void UpdateBeliefList()
 	    {
 			Beliefs.DataSource.Clear();
-		    foreach (var b in emotionalAppraisalAsset.GetAllBeliefs())
+		    foreach (var b in _rpcAsset.GetAllBeliefs())
 				Beliefs.DataSource.Add(b);
 
 			Beliefs.Refresh();
@@ -49,11 +47,11 @@ namespace EmotionalAppraisalWF.ViewModels
 
         public void AddBelief(BeliefDTO belief)
         {
-            if (emotionalAppraisalAsset.BeliefExists(belief.Name))
+            if (_rpcAsset.m_kb.BeliefExists((Name)belief.Name))
             {
-                throw new Exception(Resources.BeliefAlreadyExistsExceptionMessage);
+                throw new Exception("This belief already exists");
             }
-            emotionalAppraisalAsset.AddOrUpdateBelief(belief);
+            _rpcAsset.UpdateBelief(belief.Name, belief.Value, belief.Certainty, belief.Perspective);
             Beliefs.DataSource.Add(belief);
             Beliefs.Refresh();
 			_mainForm.SetModified();
@@ -63,7 +61,7 @@ namespace EmotionalAppraisalWF.ViewModels
         {
             foreach (var beliefDto in beliefs)
             {
-                emotionalAppraisalAsset.RemoveBelief(beliefDto.Name, beliefDto.Perspective);
+                _rpcAsset.RemoveBelief(beliefDto.Name, beliefDto.Perspective);
                 Beliefs.DataSource.Remove(beliefDto);
             }
             Beliefs.Refresh();

@@ -53,7 +53,7 @@ namespace EmotionalAppraisal.AppraisalRules
 		/// Adds an emotional reaction to an event
 		/// </summary>
 		/// <param name="emotionalAppraisalRule">the AppraisalRule to add</param>
-		public void AddOrUpdateAppraisalRule(AppraisalRuleDTO emotionalAppraisalRuleDTO, Name perspective)
+		public void AddOrUpdateAppraisalRule(AppraisalRuleDTO emotionalAppraisalRuleDTO)
 		{
 			AppraisalRule existingRule = GetAppraisalRule(emotionalAppraisalRuleDTO.Id);
 		    if (existingRule != null)
@@ -68,10 +68,10 @@ namespace EmotionalAppraisal.AppraisalRules
 		    {
 			    existingRule = new AppraisalRule(emotionalAppraisalRuleDTO);
 		    }
-			AddEmotionalReaction(existingRule, perspective);
+			AddEmotionalReaction(existingRule);
 		}
 
-        public void AddEmotionalReaction(AppraisalRule appraisalRule, Name perspective)
+        public void AddEmotionalReaction(AppraisalRule appraisalRule)
         {
             var name = appraisalRule.EventName;
 
@@ -170,27 +170,6 @@ namespace EmotionalAppraisal.AppraisalRules
 			}
 		}
 
-		public void InverseAppraisal(EmotionalAppraisalAsset emotionalModule, IAppraisalFrame frame)
-		{
-			float desirability = frame.GetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY);
-			float praiseworthiness = frame.GetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS);
-
-			if (desirability != 0 || praiseworthiness != 0)
-			{
-				var eventName = frame.AppraisedEvent.EventName.ApplySelfPerspective(emotionalModule.Perspective);
-				AppraisalRule r = new AppraisalRule(eventName,null);
-				r.Desirability = desirability;
-				r.Praiseworthiness = praiseworthiness;
-				//r.EventObject = frame.AppraisedEvent.ToIdentifierName().RemovePerspective(emotionalModule.Perspective);
-				AddEmotionalReaction(r, emotionalModule.Perspective);
-			}
-		}
-
-		public IAppraisalFrame Reappraisal(EmotionalAppraisalAsset emotionalModule)
-		{
-			return null;
-		}
-
 		#endregion
 
 		#region Custom Serializer
@@ -214,7 +193,7 @@ namespace EmotionalAppraisal.AppraisalRules
 		    foreach (var r in rules)
 		    {
 				r.Id = Guid.NewGuid();
-                AddEmotionalReaction(r, null);
+                AddEmotionalReaction(r);
             }
 		}
 
