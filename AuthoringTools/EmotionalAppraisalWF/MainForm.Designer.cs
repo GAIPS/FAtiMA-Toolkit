@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             this.dynamicPropertyListing = new System.Windows.Forms.TabControl();
             this.knowledgeBaseTabPage = new System.Windows.Forms.TabPage();
             this.groupBox11 = new System.Windows.Forms.GroupBox();
@@ -68,11 +67,11 @@
             this.buttonEditEmotionDisposition = new System.Windows.Forms.Button();
             this.buttonAddEmotionDisposition = new System.Windows.Forms.Button();
             this.buttonRemoveEmotionDisposition = new System.Windows.Forms.Button();
-            this.decayErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.decayErrorProvider = new System.Windows.Forms.ErrorProvider();
+            this.toolTip = new System.Windows.Forms.ToolTip();
+            this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource();
+            this.timer1 = new System.Windows.Forms.Timer();
+            this.mainFormBindingSource = new System.Windows.Forms.BindingSource();
             this.dynamicPropertyListing.SuspendLayout();
             this.knowledgeBaseTabPage.SuspendLayout();
             this.groupBox11.SuspendLayout();
@@ -297,6 +296,7 @@
             this.dataGridViewBeliefs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewBeliefs.Size = new System.Drawing.Size(513, 177);
             this.dataGridViewBeliefs.TabIndex = 4;
+            this.dataGridViewBeliefs.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewBeliefs_CellMouseDoubleClick);
             // 
             // appraisalRulesTagePage
             // 

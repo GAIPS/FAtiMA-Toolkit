@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Equin.ApplicationFramework;
 using WellFormedNames;
 using RolePlayCharacter;
+using KnowledgeBase;
 
 namespace RolePlayCharacterWF.ViewModels
 {
@@ -14,25 +15,12 @@ namespace RolePlayCharacterWF.ViewModels
 
 	    public BindingListView<BeliefDTO> Beliefs {get;}
 
-		public string Perspective { get; set; }
-
 		public KnowledgeBaseVM(BaseRPCForm form)
 		{
 			_mainForm = form;
-			Perspective = _rpcAsset.CharacterName.ToString();
 			Beliefs = new BindingListView<BeliefDTO>(new List<BeliefDTO>());
 			UpdateBeliefList();
         }
-
-		public void UpdatePerspective()
-		{
-			var n = (Name) Perspective;
-			if((Name)_rpcAsset.CharacterName == n)
-				return;
-
-            _rpcAsset.CharacterName = (Name)Perspective;
-			UpdateBeliefList();
-		}
 
 	    public void UpdateBeliefList()
 	    {
@@ -47,10 +35,15 @@ namespace RolePlayCharacterWF.ViewModels
 
         public void AddBelief(BeliefDTO belief)
         {
+            //This step is required to avoid storing beliefs with the SELF Keyword in their value or name
+            belief.Name = ((Name)belief.Name).RemoveSelfPerspective(_rpcAsset.CharacterName).ToString();
+            belief.Value = ((Name)belief.Value).RemoveSelfPerspective(_rpcAsset.CharacterName).ToString();
+
             if (_rpcAsset.m_kb.BeliefExists((Name)belief.Name))
             {
                 throw new Exception("This belief already exists");
             }
+            
             _rpcAsset.UpdateBelief(belief.Name, belief.Value, belief.Certainty, belief.Perspective);
             Beliefs.DataSource.Add(belief);
             Beliefs.Refresh();
