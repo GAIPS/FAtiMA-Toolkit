@@ -46,9 +46,9 @@
     <Compile Include="MovingSampleSet.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\RealTimeEmotionRecognition\RealTimeEmotionRecognition.csproj">
+    <ProjectReference Include="..\..\MultimodalEmotionDetection\MultimodalEmotionDetection.csproj">
       <Project>{cc3a5863-e579-4d38-9817-5dc1744703f3}</Project>
-      <Name>RealTimeEmotionRecognition</Name>
+      <Name>MultimodalEmotionDetection</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

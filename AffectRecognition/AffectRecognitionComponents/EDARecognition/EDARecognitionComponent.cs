@@ -3,7 +3,7 @@ using System.Linq;
 using System.Diagnostics;
 using System;
 using System.IO;
-using RealTimeEmotionRecognition;
+using MultimodalEmotionDetection;
 
 namespace EDARecognition
 {

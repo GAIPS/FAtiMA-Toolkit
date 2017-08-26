@@ -1,7 +1,7 @@
 ﻿using AssetPackage;
 using FacialEmotionRecognition;
-using RealTimeEmotionRecognition;
-using RealTimeEmotionRecognition.FusionPolicies;
+using MultimodalEmotionDetection;
+using MultimodalEmotionDetection.FusionPolicies;
 using SpeechEmotionRecognition;
 using System;
 using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace EmotionRecognitionTutorial
         static void Main(string[] args)
         {
             Console.WriteLine("Initializing and configuring recognition components...");
-            RealTimeEmotionRecognitionAsset rtER = new RealTimeEmotionRecognitionAsset();
+            MultimodalEmotionDetectionAsset rtER = new MultimodalEmotionDetectionAsset();
             TextEmotionRecognitionComponent textER = new TextEmotionRecognitionComponent() { DecayWindow = 10 };
             SpeechEmotionRecognitionComponent speechER = new SpeechEmotionRecognitionComponent() { DecayWindow = 10 };
             FacialEmotionRecognitionComponent facialER = new FacialEmotionRecognitionComponent();

@@ -4,8 +4,9 @@ using TextEmotionRecognition.DTOs;
 using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using RealTimeEmotionRecognition;
+using MultimodalEmotionDetection;
 using System.Linq;
+using System.Text;
 
 namespace TextEmotionRecognition
 {
@@ -14,14 +15,18 @@ namespace TextEmotionRecognition
         public const string DEFAULT_LANGUAGE = "English";
         public const string DEFAULT_LSA_CORPUS = "TASA";
         public const string DEFAULT_LDA_CORPUS = "TASA";
+        public const string DEFAULT_WORD2VEC_CORPUS = "";
+        public const int DEFAULT_GRANULARITY = 1;
         public const string DEFAULT_SERVICE_URI = "http://readerbench.com:8080/sentiment-analysis";
 
         public string Language { get; set; }
         public string LSACorpus { get; set; }
         public string LDACorpus { get; set; }
+        public string Word2VecCorpus { get; set; }
         public string ServiceURI { get; set; }
         public bool PostTagging { get; set; }
         public bool Dialogism { get; set; }
+        public int Granularity { get; set; } 
 
         public float DecayWindow { get; set; }
         private DateTime SampleTime { get; set; }
@@ -42,6 +47,8 @@ namespace TextEmotionRecognition
             this.LSACorpus = DEFAULT_LSA_CORPUS;
             this.LDACorpus = DEFAULT_LDA_CORPUS;
             this.ServiceURI = DEFAULT_SERVICE_URI;
+            this.Granularity = DEFAULT_GRANULARITY;
+            this.Word2VecCorpus = DEFAULT_WORD2VEC_CORPUS;
 
             this.PostTagging = false;
             this.Dialogism = false;
@@ -69,12 +76,12 @@ namespace TextEmotionRecognition
 
                 var responseDTO = JsonConvert.DeserializeObject<SentimentAnalysisResponseDTO>(result);
 
-                this.CurrentSample = responseDTO.Data[0].Valences.Select(v => new AffectiveInformation { Name = v.Content, Score = v.Score });
+                this.CurrentSample = responseDTO.Data[0].Valences.Select(v => new AffectiveInformation { Name = v.Valence, Score = v.Score });
                 this.SampleTime = DateTime.Now;
 
                 return this.CurrentSample; 
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 return null;
             }
@@ -83,11 +90,22 @@ namespace TextEmotionRecognition
         private HttpWebRequest CreateRequest(string text)
         {
             var escapedText = Uri.EscapeDataString(text);
-            string parameters = "?text=" + escapedText + "&lang=" + this.Language + "&lsa=" + this.LSACorpus + "&lda=" + this.LDACorpus + "&pos-tagging=" + this.PostTagging + "&dialogism=" + this.Dialogism;
+            string parameters = "?text=" + escapedText + "&language=" + this.Language + "&lsa=" + this.LSACorpus + "&lda=" + this.LDACorpus + "&w2v=''" + "&pos-tagging=" +  this.PostTagging + "&dialogism=" + this.Dialogism + "&granularity=" + this.Granularity;
             
-            HttpWebRequest request = WebRequest.Create(new Uri(this.ServiceURI + parameters)) as HttpWebRequest;
+            HttpWebRequest request = WebRequest.Create(new Uri(this.ServiceURI)) as HttpWebRequest;
 
             request.Method = "POST";
+            request.ContentType = "text/plain";
+
+            var bodyString = "{\"text\":\"" + escapedText + "\",\"language\":\"" + this.Language + "\",\"lsa\":\"" + this.LSACorpus + "\",\"lda\":\"" + this.LDACorpus + "\",\"w2v\":\"" + this.Word2VecCorpus + "\",\"pos-tagging\":\"" + this.PostTagging + "\",\"dialogism\":\"" + this.Dialogism + "\",\"granularity\":\"" + this.Granularity + "\"}";
+            var bodyData = Encoding.UTF8.GetBytes(bodyString);
+
+            request.ContentLength = bodyData.Length;
+
+            var newStream = request.GetRequestStream();
+            newStream.Write(bodyData, 0, bodyData.Length);
+            newStream.Close();
+            
 
             return request;
         }
