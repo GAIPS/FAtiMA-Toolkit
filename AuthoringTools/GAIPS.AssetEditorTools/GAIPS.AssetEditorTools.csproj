@@ -96,19 +96,22 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="AutobiographicMemory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EmotionalAppraisal.1.4.0\lib\net35\AutobiographicMemory.dll</HintPath>
+      <HintPath>..\packages\EmotionalAppraisal.1.4.1.0\lib\net35\AutobiographicMemory.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Conditions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EmotionalAppraisal.1.4.0\lib\net35\Conditions.dll</HintPath>
+      <HintPath>..\packages\EmotionalAppraisal.1.4.1.0\lib\net35\Conditions.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="EmotionalAppraisal, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EmotionalAppraisal.1.4.1.0\lib\net35\EmotionalAppraisal.dll</HintPath>
     </Reference>
     <Reference Include="Equin.ApplicationFramework.BindingListView, Version=1.4.5222.35545, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Equin.ApplicationFramework.BindingListView.1.4.5222.35545\lib\net40-Client\Equin.ApplicationFramework.BindingListView.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GAIPS.Rage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EmotionalAppraisal.1.4.0\lib\net35\GAIPS.Rage.dll</HintPath>
+      <HintPath>..\packages\EmotionalAppraisal.1.4.1.0\lib\net35\GAIPS.Rage.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GAIPS.Serialization, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -116,7 +119,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="KnowledgeBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EmotionalAppraisal.1.4.0\lib\net35\KnowledgeBase.dll</HintPath>
+      <HintPath>..\packages\EmotionalAppraisal.1.4.1.0\lib\net35\KnowledgeBase.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="RageAssetManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -133,7 +136,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="WellFormedNames, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EmotionalAppraisal.1.4.0\lib\net35\WellFormedNames.dll</HintPath>
+      <HintPath>..\packages\EmotionalAppraisal.1.4.1.0\lib\net35\WellFormedNames.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
