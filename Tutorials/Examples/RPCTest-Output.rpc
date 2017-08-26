@@ -10,14 +10,11 @@
 							"SELF":
 								{
 									"IsCheap(A)": "False, 1",
-									"isDrunk(Sam)": "True, 1",
-									"IsFriend(Player)": "True, 0.4",
-									"IsNice(Sam)": "True, 1",
+									"IsFriend(Player)": "True, 1",
 									"IsUgly(A)": "6, 1",
 									"IsUgly(B)": "9, 1",
 									"Likes(A)": "4, 0.2",
-									"Likes(B)": "4, 0.1",
-									"Likes(Sam, Sarah)": "True, 1"
+									"Likes(B)": "4, 0.1"
 								}
 						}
 				},
@@ -29,7 +26,7 @@
 			"CommeillFautAssetSource": null,
 			"EmotionalState":
 				{
-					"Mood": 4.352753,
+					"Mood": 4.863275,
 					"initialTick": 0,
 					"EmotionalPool": [],
 					"AppraisalConfiguration":
@@ -44,7 +41,7 @@
 				},
 			"AutobiographicMemory":
 				{
-					"Tick": 5,
+					"Tick": 1,
 					"records": [
 						{
 							"classId": 0,
@@ -68,6 +65,6 @@
 		}, 
 		{
 			"TypeId": 1,
-			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null"
 		}]
 }

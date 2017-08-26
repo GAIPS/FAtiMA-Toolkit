@@ -174,5 +174,9 @@ namespace EmotionalAppraisalWF
             SetModified();
         }
 
+        private void dataGridViewBeliefs_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+
+        }
     }
 }

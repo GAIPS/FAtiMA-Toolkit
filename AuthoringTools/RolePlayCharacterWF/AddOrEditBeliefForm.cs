@@ -56,6 +56,7 @@ namespace RolePlayCharacterWF
                 {
                     _knowledgeBaseVm.AddBelief(newBelief);
                 }
+                Close();
             }
             catch (Exception ex)
             {
