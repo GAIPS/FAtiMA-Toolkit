@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Equin.ApplicationFramework;
 using AutobiographicMemory.DTOs;
 using EmotionalAppraisal.DTOs;
+using GAIPS.AssetEditorTools;
 
 namespace RolePlayCharacterWF
 {
@@ -17,6 +18,8 @@ namespace RolePlayCharacterWF
         private EmotionalStateVM _emotionalStateVM;
         private AutobiographicalMemoryVM _autobiographicalMemoryVM;
         private KnowledgeBaseVM _knowledgeBaseVM;
+        private EmotionalAppraisalWF.MainForm _eaForm = new EmotionalAppraisalWF.MainForm();
+
 
         public MainForm()
         {
@@ -38,11 +41,7 @@ namespace RolePlayCharacterWF
             this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
             this.dataGridViewAM.DataSource = _autobiographicalMemoryVM.Events;
 
-            eaAssetControl1.SetAsset(asset.EmotionalAppraisalAssetSource, () =>
-            {
-                LoadedAsset.EmotionalAppraisalAssetSource = eaAssetControl1.Path;
-                return EmotionalAppraisal.EmotionalAppraisalAsset.LoadFromFile(LoadedAsset.EmotionalAppraisalAssetSource);
-            });
+            
             edmAssetControl1.SetAsset(asset.EmotionalDecisionMakingSource, () =>
              {
                  LoadedAsset.EmotionalDecisionMakingSource = edmAssetControl1.Path;
@@ -110,7 +109,7 @@ namespace RolePlayCharacterWF
             if (IsLoading)
                 return;
 
-            LoadedAsset.EmotionalAppraisalAssetSource = eaAssetControl1.Path;
+            LoadedAsset.EmotionalAppraisalAssetSource = pathTextBoxEA.Text;
             SetModified();
         }
 
@@ -302,8 +301,35 @@ namespace RolePlayCharacterWF
             }
         }
 
+        private void tableLayoutPanel10_Paint(object sender, PaintEventArgs e)
+        {
 
-        
+        }
+
+        private void pathTextBoxEA_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void createNewEAButton_Click(object sender, EventArgs e)
+        {
+            var asset = _eaForm.CreateAndSaveEmptyAsset(false);
+            if (asset == null)
+                return;
+
+            LoadedAsset.EmotionalAppraisalAssetSource = asset.AssetFilePath;
+
+            SetModified();
+            _eaForm.EditAssetInstance(() => asset);
+            FormHelper.ShowFormInContainerControl(this.panelEA, _eaForm);
+        }
+
+        private void _clearButton_Click(object sender, EventArgs e)
+        {
+            LoadedAsset.EmotionalAppraisalAssetSource = null;
+            SetModified();
+            _eaForm.Hide();
+        }
     }
 }
 
