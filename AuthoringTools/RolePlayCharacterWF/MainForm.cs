@@ -9,6 +9,10 @@ using Equin.ApplicationFramework;
 using AutobiographicMemory.DTOs;
 using EmotionalAppraisal.DTOs;
 using GAIPS.AssetEditorTools;
+using EmotionalAppraisal;
+using EmotionalDecisionMaking;
+using SocialImportance;
+using CommeillFaut;
 
 namespace RolePlayCharacterWF
 {
@@ -19,6 +23,9 @@ namespace RolePlayCharacterWF
         private AutobiographicalMemoryVM _autobiographicalMemoryVM;
         private KnowledgeBaseVM _knowledgeBaseVM;
         private EmotionalAppraisalWF.MainForm _eaForm = new EmotionalAppraisalWF.MainForm();
+        private EmotionalDecisionMakingWF.MainForm _edmForm = new EmotionalDecisionMakingWF.MainForm();
+        private SocialImportanceWF.MainForm _siForm = new SocialImportanceWF.MainForm();
+        private CommeillFautWF.MainForm _cifForm = new CommeillFautWF.MainForm();
 
 
         public MainForm()
@@ -41,17 +48,56 @@ namespace RolePlayCharacterWF
             this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
             this.dataGridViewAM.DataSource = _autobiographicalMemoryVM.Events;
 
-            /*
-            edmAssetControl1.SetAsset(asset.EmotionalDecisionMakingSource, () =>
-             {
-                 LoadedAsset.EmotionalDecisionMakingSource = edmAssetControl1.Path;
-                 return EmotionalDecisionMaking.EmotionalDecisionMakingAsset.LoadFromFile(LoadedAsset.EmotionalDecisionMakingSource);
-             });
-            siAssetControl1.SetAsset(asset.SocialImportanceAssetSource, () =>
+            //EA ASSET
+            this.pathTextBoxEA.Text = asset.EmotionalAppraisalAssetSource;
+            if (string.IsNullOrEmpty(asset.EmotionalAppraisalAssetSource))
             {
-                LoadedAsset.SocialImportanceAssetSource = siAssetControl1.Path;
-                return SocialImportance.SocialImportanceAsset.LoadFromFile(LoadedAsset.SocialImportanceAssetSource);
-            });*/
+                _eaForm.Hide();
+            }else
+            {
+                var ea = EmotionalAppraisalAsset.LoadFromFile(asset.EmotionalAppraisalAssetSource);
+                _eaForm.LoadedAsset = ea;
+                FormHelper.ShowFormInContainerControl(this.panelEA, _eaForm);
+            }
+
+            //EDM ASSET
+            this.textBoxPathEDM.Text = asset.EmotionalDecisionMakingSource;
+            if (string.IsNullOrEmpty(asset.EmotionalDecisionMakingSource))
+            {
+                _edmForm.Hide();
+            }
+            else
+            {
+                var edm = EmotionalDecisionMakingAsset.LoadFromFile(asset.EmotionalDecisionMakingSource);
+                _edmForm.LoadedAsset = edm;
+                FormHelper.ShowFormInContainerControl(this.panelEDM, _edmForm);
+            }
+
+            //SI ASSET
+            this.textBoxPathSI.Text = asset.SocialImportanceAssetSource;
+            if (string.IsNullOrEmpty(asset.SocialImportanceAssetSource))
+            {
+                _siForm.Hide();
+            }
+            else
+            {
+                var si = SocialImportanceAsset.LoadFromFile(asset.SocialImportanceAssetSource);
+                _siForm.LoadedAsset = si;
+                FormHelper.ShowFormInContainerControl(this.panelSI, _siForm);
+            }
+
+            //CIF ASSET
+            this.textBoxPathCIF.Text = asset.CommeillFautAssetSource;
+            if (string.IsNullOrEmpty(asset.CommeillFautAssetSource))
+            {
+                _cifForm.Hide();
+            }
+            else
+            {
+                var cif = CommeillFautAsset.LoadFromFile(asset.CommeillFautAssetSource);
+                _cifForm.LoadedAsset = cif;
+                FormHelper.ShowFormInContainerControl(this.panelCIF, _cifForm);
+            }
 
             //KB
             _knowledgeBaseVM = new KnowledgeBaseVM(this);
@@ -286,28 +332,54 @@ namespace RolePlayCharacterWF
 
         private void createNewEAButton_Click(object sender, EventArgs e)
         {
+            if(LoadedAsset.AssetFilePath == null)
+            {
+                MessageBox.Show("You must first save the RPC asset");
+                return;
+            }
+
             _eaForm = new EmotionalAppraisalWF.MainForm();
             var asset = _eaForm.CreateAndSaveEmptyAsset(false);
             if (asset == null)
                 return;
 
             LoadedAsset.EmotionalAppraisalAssetSource = asset.AssetFilePath;
-            pathTextBoxEA.Text = asset.AssetFilePath;
             SetModified();
-            FormHelper.ShowFormInContainerControl(this.panelEA, _eaForm);
+            ReloadEditor();
         }
 
+        private void buttonNewEDM_Click(object sender, EventArgs e)
+        {
+            if (LoadedAsset.AssetFilePath == null)
+            {
+                MessageBox.Show("You must first save the RPC asset");
+                return;
+            }
+
+            _edmForm = new EmotionalDecisionMakingWF.MainForm();
+            var asset = _edmForm.CreateAndSaveEmptyAsset(false);
+            if (asset == null)
+                return;
+
+            LoadedAsset.EmotionalDecisionMakingSource = asset.AssetFilePath;
+            SetModified();
+            ReloadEditor();
+        }
         private void openEAButton_Click(object sender, EventArgs e)
         {
+            if (LoadedAsset.AssetFilePath == null)
+            {
+                MessageBox.Show("You must first save the RPC asset");
+                return;
+            }
             _eaForm = new EmotionalAppraisalWF.MainForm();
             var asset = _eaForm.SelectAndOpenAssetFromBrowser();
             if (asset == null)
                 return;
 
             LoadedAsset.EmotionalAppraisalAssetSource = asset.AssetFilePath;
-            pathTextBoxEA.Text = asset.AssetFilePath;
             SetModified();
-            FormHelper.ShowFormInContainerControl(this.panelEA, _eaForm);
+            ReloadEditor();
         }
 
 
@@ -319,17 +391,158 @@ namespace RolePlayCharacterWF
             _eaForm.Hide();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
 
-        }
 
         private void buttonNewCIF_Click(object sender, EventArgs e)
         {
+            if (LoadedAsset.AssetFilePath == null)
+            {
+                MessageBox.Show("You must first save the RPC asset");
+                return;
+            }
 
+            _cifForm = new CommeillFautWF.MainForm();
+            var asset = _cifForm.CreateAndSaveEmptyAsset(false);
+            if (asset == null)
+                return;
+
+            LoadedAsset.CommeillFautAssetSource = asset.AssetFilePath;
+            SetModified();
+            ReloadEditor();
         }
 
+        protected override void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CreateNewAsset();
+        }
+
+
         
+
+        protected override bool SaveAsset()
+        {
+            SaveSubAssets();
+            return base.SaveAsset();
+        }
+
+        protected override bool SaveAssetAs()
+        {
+            SaveSubAssets();
+            return base.SaveAssetAs();
+        }
+
+        private void SaveSubAssets()
+        {
+            if (_eaForm.LoadedAsset != null)
+            {
+                _eaForm.SaveAssetToFile(_eaForm.LoadedAsset, _eaForm.LoadedAsset.AssetFilePath);
+            }
+            if (_edmForm.LoadedAsset != null)
+            {
+                _edmForm.SaveAssetToFile(_edmForm.LoadedAsset, _edmForm.LoadedAsset.AssetFilePath);
+            }
+            if (_siForm.LoadedAsset != null)
+            {
+                _siForm.SaveAssetToFile(_siForm.LoadedAsset, _siForm.LoadedAsset.AssetFilePath);
+            }
+            if (_cifForm.LoadedAsset != null)
+            {
+                _cifForm.SaveAssetToFile(_cifForm.LoadedAsset, _cifForm.LoadedAsset.AssetFilePath);
+            }
+        }
+
+        private void buttonOpenEDM_Click(object sender, EventArgs e)
+        {
+            if (LoadedAsset.AssetFilePath == null)
+            {
+                MessageBox.Show("You must first save the RPC asset");
+                return;
+            }
+            _edmForm = new EmotionalDecisionMakingWF.MainForm();
+            var asset = _edmForm.SelectAndOpenAssetFromBrowser();
+            if (asset == null)
+                return;
+
+            LoadedAsset.EmotionalDecisionMakingSource = asset.AssetFilePath;
+            SetModified();
+            ReloadEditor();
+        }
+
+        private void buttonClearEDM_Click(object sender, EventArgs e)
+        {
+            LoadedAsset.EmotionalDecisionMakingSource = null;
+            textBoxPathEDM.Text = null;
+            SetModified();
+            _edmForm.Hide();
+        }
+
+        private void buttonNewSI_Click(object sender, EventArgs e)
+        {
+            if (LoadedAsset.AssetFilePath == null)
+            {
+                MessageBox.Show("You must first save the RPC asset");
+                return;
+            }
+
+            _siForm = new SocialImportanceWF.MainForm();
+            var asset = _siForm.CreateAndSaveEmptyAsset(false);
+            if (asset == null)
+                return;
+
+            LoadedAsset.SocialImportanceAssetSource = asset.AssetFilePath;
+            SetModified();
+            ReloadEditor();
+        }
+
+        private void buttonOpenSI_Click(object sender, EventArgs e)
+        {
+            if (LoadedAsset.AssetFilePath == null)
+            {
+                MessageBox.Show("You must first save the RPC asset");
+                return;
+            }
+            _siForm = new SocialImportanceWF.MainForm();
+            var asset = _siForm.SelectAndOpenAssetFromBrowser();
+            if (asset == null)
+                return;
+
+            LoadedAsset.SocialImportanceAssetSource = asset.AssetFilePath;
+            SetModified();
+            ReloadEditor();
+        }
+
+        private void buttonClearSI_Click(object sender, EventArgs e)
+        {
+            LoadedAsset.SocialImportanceAssetSource = null;
+            textBoxPathSI.Text = null;
+            SetModified();
+            _siForm.Hide();
+        }
+
+        private void buttonOpenCif_Click(object sender, EventArgs e)
+        {
+            if (LoadedAsset.AssetFilePath == null)
+            {
+                MessageBox.Show("You must first save the RPC asset");
+                return;
+            }
+            _cifForm = new CommeillFautWF.MainForm();
+            var asset = _cifForm.SelectAndOpenAssetFromBrowser();
+            if (asset == null)
+                return;
+
+            LoadedAsset.CommeillFautAssetSource = asset.AssetFilePath;
+            SetModified();
+            ReloadEditor();
+        }
+
+        private void buttonClearCIF_Click(object sender, EventArgs e)
+        {
+            LoadedAsset.CommeillFautAssetSource = null;
+            textBoxPathCIF.Text = null;
+            SetModified();
+            _cifForm.Hide();
+        }
     }
 }
 

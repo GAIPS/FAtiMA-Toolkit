@@ -87,21 +87,21 @@ namespace RolePlayCharacterWF
             this.pathTextBoxEA = new System.Windows.Forms.TextBox();
             this.createNewEAButton = new System.Windows.Forms.Button();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.panelEDM = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.buttonOpenEDM = new System.Windows.Forms.Button();
             this.buttonClearEDM = new System.Windows.Forms.Button();
             this.textBoxPathEDM = new System.Windows.Forms.TextBox();
             this.buttonNewEDM = new System.Windows.Forms.Button();
             this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.panelSI = new System.Windows.Forms.Panel();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.buttonOpenSI = new System.Windows.Forms.Button();
             this.buttonClearSI = new System.Windows.Forms.Button();
             this.textBoxPathSI = new System.Windows.Forms.TextBox();
             this.buttonNewSI = new System.Windows.Forms.Button();
             this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.panel3 = new System.Windows.Forms.Panel();
+            this.panelCIF = new System.Windows.Forms.Panel();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.buttonOpenCif = new System.Windows.Forms.Button();
             this.buttonClearCIF = new System.Windows.Forms.Button();
@@ -831,7 +831,7 @@ namespace RolePlayCharacterWF
             // 
             // tabPage4
             // 
-            this.tabPage4.Controls.Add(this.panel1);
+            this.tabPage4.Controls.Add(this.panelEDM);
             this.tabPage4.Controls.Add(this.groupBox3);
             this.tabPage4.Location = new System.Drawing.Point(4, 25);
             this.tabPage4.Name = "tabPage4";
@@ -840,15 +840,15 @@ namespace RolePlayCharacterWF
             this.tabPage4.Text = "Decision Making";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // panel1
+            // panelEDM
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panelEDM.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Location = new System.Drawing.Point(5, 65);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(717, 309);
-            this.panel1.TabIndex = 17;
+            this.panelEDM.Location = new System.Drawing.Point(5, 65);
+            this.panelEDM.Name = "panelEDM";
+            this.panelEDM.Size = new System.Drawing.Size(717, 309);
+            this.panelEDM.TabIndex = 17;
             // 
             // groupBox3
             // 
@@ -874,7 +874,7 @@ namespace RolePlayCharacterWF
             this.buttonOpenEDM.TabIndex = 15;
             this.buttonOpenEDM.Text = "Open";
             this.buttonOpenEDM.UseVisualStyleBackColor = true;
-            this.buttonOpenEDM.Click += new System.EventHandler(this.button1_Click);
+            this.buttonOpenEDM.Click += new System.EventHandler(this.buttonOpenEDM_Click);
             // 
             // buttonClearEDM
             // 
@@ -885,6 +885,7 @@ namespace RolePlayCharacterWF
             this.buttonClearEDM.TabIndex = 16;
             this.buttonClearEDM.Text = "Clear";
             this.buttonClearEDM.UseVisualStyleBackColor = true;
+            this.buttonClearEDM.Click += new System.EventHandler(this.buttonClearEDM_Click);
             // 
             // textBoxPathEDM
             // 
@@ -905,10 +906,11 @@ namespace RolePlayCharacterWF
             this.buttonNewEDM.TabIndex = 18;
             this.buttonNewEDM.Text = "New";
             this.buttonNewEDM.UseVisualStyleBackColor = true;
+            this.buttonNewEDM.Click += new System.EventHandler(this.buttonNewEDM_Click);
             // 
             // tabPage6
             // 
-            this.tabPage6.Controls.Add(this.panel2);
+            this.tabPage6.Controls.Add(this.panelSI);
             this.tabPage6.Controls.Add(this.groupBox5);
             this.tabPage6.Location = new System.Drawing.Point(4, 25);
             this.tabPage6.Name = "tabPage6";
@@ -918,15 +920,15 @@ namespace RolePlayCharacterWF
             this.tabPage6.Text = "Social Importance";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
-            // panel2
+            // panelSI
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panelSI.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.Location = new System.Drawing.Point(5, 65);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(717, 309);
-            this.panel2.TabIndex = 17;
+            this.panelSI.Location = new System.Drawing.Point(5, 65);
+            this.panelSI.Name = "panelSI";
+            this.panelSI.Size = new System.Drawing.Size(717, 309);
+            this.panelSI.TabIndex = 17;
             // 
             // groupBox5
             // 
@@ -952,6 +954,7 @@ namespace RolePlayCharacterWF
             this.buttonOpenSI.TabIndex = 15;
             this.buttonOpenSI.Text = "Open";
             this.buttonOpenSI.UseVisualStyleBackColor = true;
+            this.buttonOpenSI.Click += new System.EventHandler(this.buttonOpenSI_Click);
             // 
             // buttonClearSI
             // 
@@ -962,6 +965,7 @@ namespace RolePlayCharacterWF
             this.buttonClearSI.TabIndex = 16;
             this.buttonClearSI.Text = "Clear";
             this.buttonClearSI.UseVisualStyleBackColor = true;
+            this.buttonClearSI.Click += new System.EventHandler(this.buttonClearSI_Click);
             // 
             // textBoxPathSI
             // 
@@ -982,10 +986,11 @@ namespace RolePlayCharacterWF
             this.buttonNewSI.TabIndex = 18;
             this.buttonNewSI.Text = "New";
             this.buttonNewSI.UseVisualStyleBackColor = true;
+            this.buttonNewSI.Click += new System.EventHandler(this.buttonNewSI_Click);
             // 
             // tabPage7
             // 
-            this.tabPage7.Controls.Add(this.panel3);
+            this.tabPage7.Controls.Add(this.panelCIF);
             this.tabPage7.Controls.Add(this.groupBox6);
             this.tabPage7.Location = new System.Drawing.Point(4, 25);
             this.tabPage7.Name = "tabPage7";
@@ -995,15 +1000,15 @@ namespace RolePlayCharacterWF
             this.tabPage7.Text = "CIF";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
-            // panel3
+            // panelCIF
             // 
-            this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.panelCIF.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel3.Location = new System.Drawing.Point(5, 65);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(717, 309);
-            this.panel3.TabIndex = 17;
+            this.panelCIF.Location = new System.Drawing.Point(5, 65);
+            this.panelCIF.Name = "panelCIF";
+            this.panelCIF.Size = new System.Drawing.Size(717, 309);
+            this.panelCIF.TabIndex = 17;
             // 
             // groupBox6
             // 
@@ -1029,6 +1034,7 @@ namespace RolePlayCharacterWF
             this.buttonOpenCif.TabIndex = 15;
             this.buttonOpenCif.Text = "Open";
             this.buttonOpenCif.UseVisualStyleBackColor = true;
+            this.buttonOpenCif.Click += new System.EventHandler(this.buttonOpenCif_Click);
             // 
             // buttonClearCIF
             // 
@@ -1039,6 +1045,7 @@ namespace RolePlayCharacterWF
             this.buttonClearCIF.TabIndex = 16;
             this.buttonClearCIF.Text = "Clear";
             this.buttonClearCIF.UseVisualStyleBackColor = true;
+            this.buttonClearCIF.Click += new System.EventHandler(this.buttonClearCIF_Click);
             // 
             // textBoxPathCIF
             // 
@@ -1163,7 +1170,7 @@ namespace RolePlayCharacterWF
         private System.Windows.Forms.Button clearEAButton;
         private System.Windows.Forms.Button createNewEAButton;
         private System.Windows.Forms.Panel panelEA;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelEDM;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Button buttonOpenEDM;
         private System.Windows.Forms.Button buttonClearEDM;
@@ -1171,13 +1178,13 @@ namespace RolePlayCharacterWF
         private System.Windows.Forms.Button buttonNewEDM;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.TabPage tabPage7;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panelSI;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.Button buttonOpenSI;
         private System.Windows.Forms.Button buttonClearSI;
         private System.Windows.Forms.TextBox textBoxPathSI;
         private System.Windows.Forms.Button buttonNewSI;
-        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panelCIF;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Button buttonOpenCif;
         private System.Windows.Forms.Button buttonClearCIF;

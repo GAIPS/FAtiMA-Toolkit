@@ -409,7 +409,7 @@ namespace GAIPS.AssetEditorTools
 
 		#region Protected Members
         
-		protected bool SaveAsset()
+		protected virtual bool SaveAsset()
 		{
             var path = GetAssetCurrentPath(LoadedAsset);
 			if (string.IsNullOrEmpty(path))
@@ -421,7 +421,7 @@ namespace GAIPS.AssetEditorTools
 			return true;
 		}
 
-		protected bool SaveAssetAs()
+		protected virtual bool SaveAssetAs()
 		{
 			var sfd = new SaveFileDialog();
 			sfd.Filter = GetAssetFileFilters() + "|All Files|*.*";

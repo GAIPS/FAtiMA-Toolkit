@@ -184,6 +184,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CommeillFautWF\CommeillFautWF.csproj">
+      <Project>{fd251a80-d5d3-4776-b323-37496fd9c550}</Project>
+      <Name>CommeillFautWF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EmotionalAppraisalWF\EmotionalAppraisalWF.csproj">
       <Project>{36ef269c-7ab2-4029-bbf4-18f908af46f6}</Project>
       <Name>EmotionalAppraisalWF</Name>
