@@ -26,7 +26,7 @@ namespace IntegratedAuthoringToolWF
         private readonly string PLAYER = IATConsts.PLAYER;
         private readonly string AGENT = IATConsts.AGENT;
         private BindingListView<CharacterSourceDTO> _characterSources;
-		private RolePlayCharacterWF.MainForm _rpcForm = new RolePlayCharacterWF.MainForm();
+        private RolePlayCharacterWF.MainForm _rpcForm = new RolePlayCharacterWF.MainForm();
 
         public MainForm()
 		{
@@ -70,23 +70,27 @@ namespace IntegratedAuthoringToolWF
 
 		private void buttonCreateCharacter_Click(object sender, EventArgs e)
 		{
-			var asset = _rpcForm.CreateAndSaveEmptyAsset(false);
+            _rpcForm = new RolePlayCharacterWF.MainForm();
+            var asset = _rpcForm.CreateAndSaveEmptyAsset(false);
 			if (asset == null)
 				return;
-                                   
-            LoadedAsset.AddNewCharacterSource(new CharacterSourceDTO() {Source = asset.AssetFilePath});
-			_characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
-			_characterSources.Refresh();
-			SetModified();
 
-            var rpc = RolePlayCharacterAsset.LoadFromFile(asset.AssetFilePath);
-            _rpcForm.EditAssetInstance(() => rpc);
+            var rpcAsset = RolePlayCharacterAsset.LoadFromFile(asset.AssetFilePath);
+         
             FormHelper.ShowFormInContainerControl(this.tabControl1.TabPages[1], _rpcForm);
             this.tabControl1.SelectTab(1);
+            _rpcForm.LoadedAsset = rpcAsset;
+
+
+            LoadedAsset.AddNewCharacterSource(new CharacterSourceDTO() { Source = asset.AssetFilePath });
+            _characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
+            _characterSources.Refresh();
+            SetModified();
         }
 
 		private void buttonAddCharacter_Click(object sender, EventArgs e)
 		{
+            _rpcForm = new RolePlayCharacterWF.MainForm();
 			var rpc = _rpcForm.SelectAndOpenAssetFromBrowser();
 			if (rpc == null)
 				return;
@@ -156,7 +160,7 @@ namespace IntegratedAuthoringToolWF
                 var rpc = RolePlayCharacterAsset.LoadFromFile(rpcSource.Source);
                 _rpcForm.Close();
                 _rpcForm = new RolePlayCharacterWF.MainForm();
-                _rpcForm.EditAssetInstance(() => rpc);
+                _rpcForm.LoadedAsset = rpc;
                 FormHelper.ShowFormInContainerControl(this.tabControl1.TabPages[1], _rpcForm);
                 this.tabControl1.SelectTab(1);
                 
@@ -554,18 +558,24 @@ namespace IntegratedAuthoringToolWF
             _rpcForm.Close();
             Close();
         }
-
+        
         protected override void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _rpcForm.LoadedAsset?.Save();
-            _rpcForm.ClearModified();
+            if(_rpcForm.LoadedAsset != null)
+            {
+                _rpcForm.SaveAssetToFile(_rpcForm.LoadedAsset, _rpcForm.LoadedAsset.AssetFilePath);
+                _rpcForm.ClearModified();
+            }
             SaveAsset();
         }
 
         protected override void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _rpcForm.LoadedAsset?.Save();
-            _rpcForm.ClearModified();
+            if (_rpcForm.LoadedAsset != null)
+            {
+                _rpcForm.SaveAssetToFile(_rpcForm.LoadedAsset, _rpcForm.LoadedAsset.AssetFilePath);
+                _rpcForm.ClearModified();
+            }
             SaveAssetAs();
         }
 

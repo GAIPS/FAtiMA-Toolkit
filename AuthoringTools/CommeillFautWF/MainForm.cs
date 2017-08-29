@@ -89,18 +89,10 @@ namespace CommeillFautWF
 
         }
 
-     
-        protected override void OnWillSaveAsset(CommeillFautAsset asset)
-        {
-         Refresh();
-            
-
-        }
 
         private void Refresh()
         {
             OnAssetDataLoaded(this.LoadedAsset);
-            
         }
 
         private void button2_Click(object sender, EventArgs e)

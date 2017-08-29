@@ -136,9 +136,6 @@
     <Compile Include="BaseRPCForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConcreteAssetControls.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -147,12 +144,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="BaseAssetControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BaseAssetControl.Designer.cs">
-      <DependentUpon>BaseAssetControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="ViewModels\AutobiographicalMemoryVM.cs" />
     <Compile Include="ViewModels\EmotionalStateVM.cs" />
     <Compile Include="ViewModels\KnowledgeBaseVM.cs" />
@@ -177,9 +168,6 @@
     </Compile>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BaseAssetControl.resx">
-      <DependentUpon>BaseAssetControl.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

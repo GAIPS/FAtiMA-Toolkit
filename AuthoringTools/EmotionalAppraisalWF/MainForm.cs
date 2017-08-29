@@ -37,7 +37,6 @@ namespace EmotionalAppraisalWF
 			dataGridViewAppraisalRules.Columns[PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Conditions)].Visible = false;
 			conditionSetEditor.View = _appraisalRulesVM.CurrentRuleConditions;
 
-            this.richTextBoxDescription.Text = asset.Description;
             _wasModified = false;
 		}
 
@@ -61,7 +60,6 @@ namespace EmotionalAppraisalWF
 
         #endregion
 
-        
 
 		#region Appraisal Rules
 		
@@ -166,14 +164,8 @@ namespace EmotionalAppraisalWF
         {
 
         }
-
-       
-        private void richTextBoxDescription_TextChanged_1(object sender, EventArgs e)
-        {
-            LoadedAsset.Description = richTextBoxDescription.Text;
-            SetModified();
-        }
-
+               
+     
         private void dataGridViewBeliefs_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
 

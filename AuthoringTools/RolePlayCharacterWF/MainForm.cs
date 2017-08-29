@@ -41,7 +41,7 @@ namespace RolePlayCharacterWF
             this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
             this.dataGridViewAM.DataSource = _autobiographicalMemoryVM.Events;
 
-            
+            /*
             edmAssetControl1.SetAsset(asset.EmotionalDecisionMakingSource, () =>
              {
                  LoadedAsset.EmotionalDecisionMakingSource = edmAssetControl1.Path;
@@ -51,7 +51,7 @@ namespace RolePlayCharacterWF
             {
                 LoadedAsset.SocialImportanceAssetSource = siAssetControl1.Path;
                 return SocialImportance.SocialImportanceAsset.LoadFromFile(LoadedAsset.SocialImportanceAssetSource);
-            });
+            });*/
 
             //KB
             _knowledgeBaseVM = new KnowledgeBaseVM(this);
@@ -101,33 +101,6 @@ namespace RolePlayCharacterWF
                 return;
 
             LoadedAsset.VoiceName = textBoxCharacterVoice.Text;
-            SetModified();
-        }
-
-        private void eaAssetControl1_OnPathChanged(object sender, EventArgs e)
-        {
-            if (IsLoading)
-                return;
-
-            LoadedAsset.EmotionalAppraisalAssetSource = pathTextBoxEA.Text;
-            SetModified();
-        }
-
-        private void edmAssetControl1_OnPathChanged(object sender, EventArgs e)
-        {
-            if (IsLoading)
-                return;
-
-            LoadedAsset.EmotionalDecisionMakingSource = edmAssetControl1.Path;
-            SetModified();
-        }
-
-        private void siAssetControl1_OnPathChanged(object sender, EventArgs e)
-        {
-            if (IsLoading)
-                return;
-
-            LoadedAsset.SocialImportanceAssetSource = siAssetControl1.Path;
             SetModified();
         }
 
@@ -313,23 +286,50 @@ namespace RolePlayCharacterWF
 
         private void createNewEAButton_Click(object sender, EventArgs e)
         {
+            _eaForm = new EmotionalAppraisalWF.MainForm();
             var asset = _eaForm.CreateAndSaveEmptyAsset(false);
             if (asset == null)
                 return;
 
             LoadedAsset.EmotionalAppraisalAssetSource = asset.AssetFilePath;
-
+            pathTextBoxEA.Text = asset.AssetFilePath;
             SetModified();
-            _eaForm.EditAssetInstance(() => asset);
             FormHelper.ShowFormInContainerControl(this.panelEA, _eaForm);
         }
+
+        private void openEAButton_Click(object sender, EventArgs e)
+        {
+            _eaForm = new EmotionalAppraisalWF.MainForm();
+            var asset = _eaForm.SelectAndOpenAssetFromBrowser();
+            if (asset == null)
+                return;
+
+            LoadedAsset.EmotionalAppraisalAssetSource = asset.AssetFilePath;
+            pathTextBoxEA.Text = asset.AssetFilePath;
+            SetModified();
+            FormHelper.ShowFormInContainerControl(this.panelEA, _eaForm);
+        }
+
 
         private void _clearButton_Click(object sender, EventArgs e)
         {
             LoadedAsset.EmotionalAppraisalAssetSource = null;
+            pathTextBoxEA.Text = null; 
             SetModified();
             _eaForm.Hide();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonNewCIF_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 }
 

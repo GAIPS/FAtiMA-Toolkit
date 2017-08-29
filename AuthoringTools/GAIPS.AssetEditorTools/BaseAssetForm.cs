@@ -14,7 +14,6 @@ namespace GAIPS.AssetEditorTools
 	public abstract partial class BaseAssetForm<T> : Form
 		where T : LoadableAsset<T>
 	{
-		private Func<T> _getExternalAssetInstance = null;
 		protected bool _wasModified;
 
 		protected BaseAssetForm()
@@ -26,8 +25,7 @@ namespace GAIPS.AssetEditorTools
 		[Description("The title name of the editor."), Category("Appearance")]
 		public string EditorName { get; set; }
 
-		public bool IsEditingOutsideInstance => _getExternalAssetInstance != null;
-		public T LoadedAsset { get; private set; }
+		public T LoadedAsset { get; set; }
 
 		protected bool IsLoading { get; private set; }
 
@@ -35,11 +33,6 @@ namespace GAIPS.AssetEditorTools
         private void OnLoad(object sender, EventArgs e)
         {
             UpdateWindowTitle();
-            if (LoadedAsset == null)
-            {
-                if (_getExternalAssetInstance != null)
-                    LoadedAsset = _getExternalAssetInstance();
-            }
             ReloadEditor();
         }
 
@@ -75,7 +68,9 @@ namespace GAIPS.AssetEditorTools
 			{
 				try
 				{
-					return LoadAssetFromFile(path);
+                    var asset = LoadAssetFromFile(path);
+                    this.LoadedAsset = asset;
+                    return asset;
 				}
 				catch (Exception ex)
 				{
@@ -111,7 +106,8 @@ namespace GAIPS.AssetEditorTools
 
 			var asset = CreateEmptyAsset();
 			SaveAssetToFile(asset, sfd.FileName);
-			return asset;
+            this.LoadedAsset = asset;
+            return asset;
 		}
 
 		public void CreateNewAsset()
@@ -120,30 +116,18 @@ namespace GAIPS.AssetEditorTools
 				return;
 
 			LoadedAsset = CreateEmptyAsset();
-			_getExternalAssetInstance = null;
 			_wasModified = false;
 			UpdateWindowTitle();
 
 			ReloadEditor();
 		}
 
-        public void EditAssetInstance(Func<T> externalAssetResolver)
-        {
-            var newBool = externalAssetResolver != null;
-
-            newToolStripMenuItem.Enabled = !newBool;
-            openToolStripMenuItem.Enabled = !newBool;
-            saveAsToolStripMenuItem.Enabled = !newBool;
-
-            _getExternalAssetInstance = externalAssetResolver;
-        }
-
 		public void ReloadEditor()
 		{
 			IsLoading = true;
 			try
 			{
-				OnAssetDataLoaded(LoadedAsset);
+                OnAssetDataLoaded(LoadedAsset);
 			}
 			finally
 			{
@@ -164,8 +148,6 @@ namespace GAIPS.AssetEditorTools
 			var asset = SelectAndOpenAssetFromBrowser();
 			if (asset == null)
 				return;
-
-			_getExternalAssetInstance = null;
 
 			LoadedAsset = asset;
 			_wasModified = false;
@@ -463,9 +445,8 @@ namespace GAIPS.AssetEditorTools
 			return LoadableAsset<T>.LoadFromFile(path);
 		}
 
-		protected void SaveAssetToFile(T asset, string path)
+		public void SaveAssetToFile(T asset, string path)
 		{
-			OnWillSaveAsset(asset);
 			asset.SaveToFile(path);
 		}
 
@@ -477,10 +458,6 @@ namespace GAIPS.AssetEditorTools
 		protected abstract string GetAssetFileFilters();
 
 		protected virtual void OnAssetDataLoaded(T asset)
-		{
-		}
-
-		protected virtual void OnWillSaveAsset(T asset)
 		{
 		}
 

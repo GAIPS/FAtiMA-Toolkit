@@ -28,21 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.dynamicPropertyListing = new System.Windows.Forms.TabControl();
-            this.knowledgeBaseTabPage = new System.Windows.Forms.TabPage();
-            this.groupBox11 = new System.Windows.Forms.GroupBox();
-            this.richTextBoxDescription = new System.Windows.Forms.RichTextBox();
-            this.groupBox10 = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
-            this.textBoxPerspective = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.editButton = new System.Windows.Forms.Button();
-            this.addBeliefButton = new System.Windows.Forms.Button();
-            this.removeBeliefButton = new System.Windows.Forms.Button();
-            this.dataGridViewBeliefs = new System.Windows.Forms.DataGridView();
             this.appraisalRulesTagePage = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -67,20 +54,12 @@
             this.buttonEditEmotionDisposition = new System.Windows.Forms.Button();
             this.buttonAddEmotionDisposition = new System.Windows.Forms.Button();
             this.buttonRemoveEmotionDisposition = new System.Windows.Forms.Button();
-            this.decayErrorProvider = new System.Windows.Forms.ErrorProvider();
-            this.toolTip = new System.Windows.Forms.ToolTip();
-            this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource();
-            this.timer1 = new System.Windows.Forms.Timer();
-            this.mainFormBindingSource = new System.Windows.Forms.BindingSource();
+            this.decayErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.dynamicPropertyListing.SuspendLayout();
-            this.knowledgeBaseTabPage.SuspendLayout();
-            this.groupBox11.SuspendLayout();
-            this.groupBox10.SuspendLayout();
-            this.tableLayoutPanel11.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBeliefs)).BeginInit();
             this.appraisalRulesTagePage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -107,7 +86,6 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dynamicPropertyListing.Appearance = System.Windows.Forms.TabAppearance.Buttons;
-            this.dynamicPropertyListing.Controls.Add(this.knowledgeBaseTabPage);
             this.dynamicPropertyListing.Controls.Add(this.appraisalRulesTagePage);
             this.dynamicPropertyListing.Controls.Add(this.emotionDispositionTabPage);
             this.dynamicPropertyListing.Location = new System.Drawing.Point(12, 26);
@@ -115,188 +93,6 @@
             this.dynamicPropertyListing.SelectedIndex = 0;
             this.dynamicPropertyListing.Size = new System.Drawing.Size(545, 401);
             this.dynamicPropertyListing.TabIndex = 1;
-            // 
-            // knowledgeBaseTabPage
-            // 
-            this.knowledgeBaseTabPage.Controls.Add(this.groupBox11);
-            this.knowledgeBaseTabPage.Controls.Add(this.groupBox10);
-            this.knowledgeBaseTabPage.Controls.Add(this.groupBox1);
-            this.knowledgeBaseTabPage.Location = new System.Drawing.Point(4, 25);
-            this.knowledgeBaseTabPage.Name = "knowledgeBaseTabPage";
-            this.knowledgeBaseTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.knowledgeBaseTabPage.Size = new System.Drawing.Size(537, 372);
-            this.knowledgeBaseTabPage.TabIndex = 1;
-            this.knowledgeBaseTabPage.Text = "Knowledge Base";
-            this.knowledgeBaseTabPage.UseVisualStyleBackColor = true;
-            // 
-            // groupBox11
-            // 
-            this.groupBox11.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox11.Controls.Add(this.richTextBoxDescription);
-            this.groupBox11.Location = new System.Drawing.Point(6, 303);
-            this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(519, 63);
-            this.groupBox11.TabIndex = 16;
-            this.groupBox11.TabStop = false;
-            this.groupBox11.Text = "Description";
-            // 
-            // richTextBoxDescription
-            // 
-            this.richTextBoxDescription.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBoxDescription.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBoxDescription.CausesValidation = false;
-            this.richTextBoxDescription.Location = new System.Drawing.Point(9, 19);
-            this.richTextBoxDescription.Multiline = false;
-            this.richTextBoxDescription.Name = "richTextBoxDescription";
-            this.richTextBoxDescription.Size = new System.Drawing.Size(507, 38);
-            this.richTextBoxDescription.TabIndex = 0;
-            this.richTextBoxDescription.Text = "";
-            this.richTextBoxDescription.TextChanged += new System.EventHandler(this.richTextBoxDescription_TextChanged_1);
-            // 
-            // groupBox10
-            // 
-            this.groupBox10.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox10.Controls.Add(this.tableLayoutPanel11);
-            this.groupBox10.Location = new System.Drawing.Point(3, 3);
-            this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(525, 54);
-            this.groupBox10.TabIndex = 15;
-            this.groupBox10.TabStop = false;
-            this.groupBox10.Text = "Perspective";
-            // 
-            // tableLayoutPanel11
-            // 
-            this.tableLayoutPanel11.ColumnCount = 2;
-            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel11.Controls.Add(this.textBoxPerspective, 1, 0);
-            this.tableLayoutPanel11.Controls.Add(this.label2, 0, 0);
-            this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel11.Location = new System.Drawing.Point(3, 16);
-            this.tableLayoutPanel11.Name = "tableLayoutPanel11";
-            this.tableLayoutPanel11.RowCount = 1;
-            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(519, 35);
-            this.tableLayoutPanel11.TabIndex = 11;
-            // 
-            // textBoxPerspective
-            // 
-            this.textBoxPerspective.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxPerspective.Location = new System.Drawing.Point(47, 7);
-            this.textBoxPerspective.Name = "textBoxPerspective";
-            this.textBoxPerspective.Size = new System.Drawing.Size(469, 20);
-            this.textBoxPerspective.TabIndex = 10;
-            // 
-            // label2
-            // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.label2.Location = new System.Drawing.Point(3, 11);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Name:";
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.tableLayoutPanel1);
-            this.groupBox1.Location = new System.Drawing.Point(3, 63);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(525, 237);
-            this.groupBox1.TabIndex = 8;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Beliefs";
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.dataGridViewBeliefs, 0, 1);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 16);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(519, 218);
-            this.tableLayoutPanel1.TabIndex = 7;
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.Controls.Add(this.editButton, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.addBeliefButton, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.removeBeliefButton, 2, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel2.MinimumSize = new System.Drawing.Size(0, 31);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(513, 31);
-            this.tableLayoutPanel2.TabIndex = 3;
-            // 
-            // editButton
-            // 
-            this.editButton.Location = new System.Drawing.Point(63, 3);
-            this.editButton.Name = "editButton";
-            this.editButton.Size = new System.Drawing.Size(70, 23);
-            this.editButton.TabIndex = 6;
-            this.editButton.Text = "Edit";
-            this.editButton.UseVisualStyleBackColor = true;
-            // 
-            // addBeliefButton
-            // 
-            this.addBeliefButton.Location = new System.Drawing.Point(3, 3);
-            this.addBeliefButton.Name = "addBeliefButton";
-            this.addBeliefButton.Size = new System.Drawing.Size(54, 23);
-            this.addBeliefButton.TabIndex = 4;
-            this.addBeliefButton.Text = "Add";
-            this.addBeliefButton.UseVisualStyleBackColor = true;
-            // 
-            // removeBeliefButton
-            // 
-            this.removeBeliefButton.Location = new System.Drawing.Point(139, 3);
-            this.removeBeliefButton.Name = "removeBeliefButton";
-            this.removeBeliefButton.Size = new System.Drawing.Size(70, 23);
-            this.removeBeliefButton.TabIndex = 5;
-            this.removeBeliefButton.Text = "Remove";
-            this.removeBeliefButton.UseVisualStyleBackColor = true;
-            // 
-            // dataGridViewBeliefs
-            // 
-            this.dataGridViewBeliefs.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.dataGridViewBeliefs.AllowUserToAddRows = false;
-            this.dataGridViewBeliefs.AllowUserToDeleteRows = false;
-            this.dataGridViewBeliefs.AllowUserToOrderColumns = true;
-            this.dataGridViewBeliefs.AllowUserToResizeRows = false;
-            this.dataGridViewBeliefs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewBeliefs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridViewBeliefs.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
-            this.dataGridViewBeliefs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewBeliefs.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewBeliefs.Location = new System.Drawing.Point(3, 38);
-            this.dataGridViewBeliefs.Name = "dataGridViewBeliefs";
-            this.dataGridViewBeliefs.ReadOnly = true;
-            this.dataGridViewBeliefs.RowHeadersVisible = false;
-            this.dataGridViewBeliefs.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewBeliefs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewBeliefs.Size = new System.Drawing.Size(513, 177);
-            this.dataGridViewBeliefs.TabIndex = 4;
-            this.dataGridViewBeliefs.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewBeliefs_CellMouseDoubleClick);
             // 
             // appraisalRulesTagePage
             // 
@@ -651,15 +447,6 @@
             this.Text = "";
             this.Controls.SetChildIndex(this.dynamicPropertyListing, 0);
             this.dynamicPropertyListing.ResumeLayout(false);
-            this.knowledgeBaseTabPage.ResumeLayout(false);
-            this.groupBox11.ResumeLayout(false);
-            this.groupBox10.ResumeLayout(false);
-            this.tableLayoutPanel11.ResumeLayout(false);
-            this.tableLayoutPanel11.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewBeliefs)).EndInit();
             this.appraisalRulesTagePage.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
@@ -686,14 +473,7 @@
 
         #endregion
         private System.Windows.Forms.TabControl dynamicPropertyListing;
-        private System.Windows.Forms.TabPage knowledgeBaseTabPage;
         private System.Windows.Forms.TabPage appraisalRulesTagePage;
-        private System.Windows.Forms.Button addBeliefButton;
-        private System.Windows.Forms.Button removeBeliefButton;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.Button editButton;
         private System.Windows.Forms.TabPage emotionDispositionTabPage;
         private System.Windows.Forms.BindingSource mainFormBindingSource;
         private System.Windows.Forms.BindingSource emotionListItemBindingSource;
@@ -714,7 +494,6 @@
         private System.Windows.Forms.DataGridView dataGridViewAppraisalRules;
         private System.Windows.Forms.ErrorProvider decayErrorProvider;
         private System.Windows.Forms.ToolTip toolTip;
-        private System.Windows.Forms.DataGridView dataGridViewBeliefs;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.SplitContainer splitContainer1;
 		private System.Windows.Forms.GroupBox groupBox8;
@@ -722,12 +501,6 @@
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
-        private System.Windows.Forms.GroupBox groupBox10;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
-        private System.Windows.Forms.TextBox textBoxPerspective;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.GroupBox groupBox11;
-        private System.Windows.Forms.RichTextBox richTextBoxDescription;
         private System.Windows.Forms.Button buttonDuplicateAppraisalRule;
     }
 }
