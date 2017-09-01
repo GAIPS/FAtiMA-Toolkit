@@ -431,7 +431,7 @@ namespace RolePlayCharacterWF
             return base.SaveAssetAs();
         }
 
-        private void SaveSubAssets()
+        public void SaveSubAssets()
         {
             if (_eaForm.LoadedAsset != null)
             {

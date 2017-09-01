@@ -94,7 +94,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxScenarioName.Location = new System.Drawing.Point(70, 15);
             this.textBoxScenarioName.Name = "textBoxScenarioName";
-            this.textBoxScenarioName.Size = new System.Drawing.Size(195, 20);
+            this.textBoxScenarioName.Size = new System.Drawing.Size(243, 20);
             this.textBoxScenarioName.TabIndex = 0;
             this.textBoxScenarioName.TextChanged += new System.EventHandler(this.textBoxScenarioName_TextChanged);
             // 
@@ -115,7 +115,7 @@
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Location = new System.Drawing.Point(12, 178);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(253, 339);
+            this.groupBox1.Size = new System.Drawing.Size(301, 339);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Characters";
@@ -132,7 +132,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(247, 320);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(295, 320);
             this.tableLayoutPanel1.TabIndex = 15;
             // 
             // dataGridViewCharacters
@@ -153,7 +153,7 @@
             this.dataGridViewCharacters.RowHeadersVisible = false;
             this.dataGridViewCharacters.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewCharacters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewCharacters.Size = new System.Drawing.Size(241, 279);
+            this.dataGridViewCharacters.Size = new System.Drawing.Size(289, 279);
             this.dataGridViewCharacters.TabIndex = 13;
             this.dataGridViewCharacters.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCharacters_CellContentClick);
             this.dataGridViewCharacters.SelectionChanged += new System.EventHandler(this.dataGridViewCharacters_SelectionChanged);
@@ -166,7 +166,7 @@
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(241, 29);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(289, 29);
             this.flowLayoutPanel1.TabIndex = 14;
             // 
             // buttonCreateCharacter
@@ -216,7 +216,7 @@
             this.textBoxScenarioDescription.Multiline = true;
             this.textBoxScenarioDescription.Name = "textBoxScenarioDescription";
             this.textBoxScenarioDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxScenarioDescription.Size = new System.Drawing.Size(250, 95);
+            this.textBoxScenarioDescription.Size = new System.Drawing.Size(298, 95);
             this.textBoxScenarioDescription.TabIndex = 3;
             this.textBoxScenarioDescription.TextChanged += new System.EventHandler(this.textBoxScenarioDescription_TextChanged);
             // 
@@ -238,8 +238,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(899, 521);
-            this.splitContainer1.SplitterDistance = 280;
+            this.splitContainer1.Size = new System.Drawing.Size(1056, 521);
+            this.splitContainer1.SplitterDistance = 328;
             this.splitContainer1.TabIndex = 5;
             // 
             // tabControl1
@@ -252,7 +252,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(603, 514);
+            this.tabControl1.Size = new System.Drawing.Size(712, 514);
             this.tabControl1.TabIndex = 20;
             // 
             // tabPageDialogue
@@ -266,7 +266,7 @@
             this.tabPageDialogue.Location = new System.Drawing.Point(4, 22);
             this.tabPageDialogue.Name = "tabPageDialogue";
             this.tabPageDialogue.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDialogue.Size = new System.Drawing.Size(595, 488);
+            this.tabPageDialogue.Size = new System.Drawing.Size(653, 488);
             this.tabPageDialogue.TabIndex = 0;
             this.tabPageDialogue.Text = "Dialogue Editor";
             this.tabPageDialogue.UseVisualStyleBackColor = true;
@@ -288,7 +288,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.groupBox3);
-            this.splitContainer2.Size = new System.Drawing.Size(586, 438);
+            this.splitContainer2.Size = new System.Drawing.Size(644, 438);
             this.splitContainer2.SplitterDistance = 217;
             this.splitContainer2.TabIndex = 23;
             // 
@@ -302,7 +302,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(586, 217);
+            this.groupBox2.Size = new System.Drawing.Size(644, 217);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Player Dialogue Actions";
@@ -371,7 +371,7 @@
             this.dataGridViewPlayerDialogueActions.RowHeadersVisible = false;
             this.dataGridViewPlayerDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewPlayerDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewPlayerDialogueActions.Size = new System.Drawing.Size(574, 160);
+            this.dataGridViewPlayerDialogueActions.Size = new System.Drawing.Size(632, 160);
             this.dataGridViewPlayerDialogueActions.TabIndex = 13;
             // 
             // buttonAddPlayerDialogueAction
@@ -404,7 +404,7 @@
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox3.Location = new System.Drawing.Point(0, 0);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(586, 217);
+            this.groupBox3.Size = new System.Drawing.Size(644, 217);
             this.groupBox3.TabIndex = 15;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Agent Dialogue Actions";
@@ -473,7 +473,7 @@
             this.dataGridViewAgentDialogueActions.RowHeadersVisible = false;
             this.dataGridViewAgentDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAgentDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAgentDialogueActions.Size = new System.Drawing.Size(574, 160);
+            this.dataGridViewAgentDialogueActions.Size = new System.Drawing.Size(632, 160);
             this.dataGridViewAgentDialogueActions.TabIndex = 13;
             // 
             // buttonAgentAddDialogAction
@@ -556,7 +556,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(595, 488);
+            this.tabPage2.Size = new System.Drawing.Size(704, 488);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Role Play Character Editor";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -566,7 +566,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(899, 545);
+            this.ClientSize = new System.Drawing.Size(1056, 545);
             this.Controls.Add(this.splitContainer1);
             this.EditorName = "Integrated Authoring Tool";
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

@@ -19,10 +19,17 @@ namespace IntegratedAuthoringToolWF
 			InitializeComponent();
 		}
 
-		private void AboutForm_Load(object sender, EventArgs e)
+        public static void Display(string format, params object[] param)
+
+        {
+            var jonas = String.Format(format, param);
+        }
+
+        private void AboutForm_Load(object sender, EventArgs e)
 		{
-			var a = Assembly.GetExecutingAssembly();
-			_versionLabel.Text = $"Version {a.GetName().Version}";
+            var a = Assembly.GetEntryAssembly();
+            
+            _versionLabel.Text = $"Version {a.GetName().Version}";
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -37,6 +44,24 @@ namespace IntegratedAuthoringToolWF
 
         private void label1_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void _versionLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var a = Assembly.GetExecutingAssembly();
+            string output = string.Empty;
+            foreach (AssemblyName an in a.GetReferencedAssemblies())
+            {
+                output += string.Format("Name={0}, Version={1} \n", an.Name, an.Version);
+            }
+            MessageBox.Show(output);
+            
 
         }
     }

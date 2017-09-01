@@ -564,6 +564,7 @@ namespace IntegratedAuthoringToolWF
             if(_rpcForm.LoadedAsset != null)
             {
                 _rpcForm.SaveAssetToFile(_rpcForm.LoadedAsset, _rpcForm.LoadedAsset.AssetFilePath);
+                _rpcForm.SaveSubAssets();
                 _rpcForm.ClearModified();
             }
             SaveAsset();
@@ -574,6 +575,7 @@ namespace IntegratedAuthoringToolWF
             if (_rpcForm.LoadedAsset != null)
             {
                 _rpcForm.SaveAssetToFile(_rpcForm.LoadedAsset, _rpcForm.LoadedAsset.AssetFilePath);
+                _rpcForm.SaveSubAssets();
                 _rpcForm.ClearModified();
             }
             SaveAssetAs();
