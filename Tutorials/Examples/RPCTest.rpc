@@ -10,8 +10,8 @@
 							"SELF":
 								{
                   "IsFriend(Player)": "True, 1",
-                  "Likes(A)": "4, 0.2",
-                  "Likes(B)": "4, 0.1",
+                  "Likes(A)": "4, 1",
+                  "Likes(B)": "4, 1",
                   "IsUgly(A)": "6, 1",
                   "IsUgly(B)": "9, 1",
                   "IsCheap(A)": "False, 1"

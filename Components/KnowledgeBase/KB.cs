@@ -158,7 +158,7 @@ namespace KnowledgeBase
 
 				foreach (var c in candidates)
 				{
-					foreach (var t in c.GetTerms().Skip(1))
+					foreach (var t in c.GetTerms())
 					{
 						if (x.IsVariable)
 						{

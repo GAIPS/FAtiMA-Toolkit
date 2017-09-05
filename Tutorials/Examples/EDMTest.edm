@@ -5,14 +5,12 @@
 			"DefaultActionPriority": 0,
 			"ActionTendencies": [
         {
-					"Action": "Jump",
-					"Target": "[x]",
-					"Conditions":
-						{
-							"Set": ["Likes([x]) = [y]", "IsUgly([x]) = [z]", "[y] < [z]"]
-						},
-					"Priority": 2
-				}
+          "Action": "Jump",
+          "Target": "[x]",
+          "Conditions": {
+            "Set": [ "HasLiteral(A,A(B)) = True", "[x] = B"]
+          }
+        }
 			]
 		},
 	"types": [
