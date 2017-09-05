@@ -72,8 +72,9 @@ namespace SocialImportanceWF.ViewModels
 		{
 			m_loading = true;
 
-			RuleList.DataSource = _parent.LoadedAsset.GetAttributionRules().ToList();
-			RuleList.Refresh();
+            var aux = _parent.LoadedAsset.GetAttributionRules().ToList();
+            RuleList.DataSource = aux;
+            RuleList.Refresh();
 
 			ConditionSetView.SetData(null);
 

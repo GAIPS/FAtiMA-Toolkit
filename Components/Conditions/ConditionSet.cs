@@ -222,7 +222,9 @@ namespace Conditions
 
 		public ConditionSetDTO ToDTO()
 		{
-			return new ConditionSetDTO() {Quantifier = this.Quantifier,ConditionSet =   m_conditions?.Select(c => c.ToString()).ToArray()};
+			return new ConditionSetDTO() {
+                Quantifier = this.Quantifier,
+                ConditionSet =   m_conditions?.Select(c => c.ToString()).ToArray()};
 		}
 
 		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)

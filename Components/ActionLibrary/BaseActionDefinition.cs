@@ -81,13 +81,21 @@ namespace ActionLibrary
 			var a = new Action(actionName.GetTerms(), targetName);
 
             float p = CalculateActionUtility(a);
-            
+
             //change the utility of the action by looking at the confidence in each substitution certainty
-            var minCertainty = constraints.Select(s => s.SubValue.Certainty).Min();
 
-            a.Utility = p + minCertainty;
+            if (constraints.Any())
+            {
+                var minCertainty = constraints.Select(s => s.SubValue.Certainty)?.Min();
+                a.Utility = p + minCertainty.Value;
+            }
+            else
+            {
+                a.Utility = p;
+            }
 
-			return a;
+
+            return a;
 		}
 
 		internal void OnManagerSet(IActionSelector manager)

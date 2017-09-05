@@ -287,32 +287,6 @@ namespace SocialImportance
 			}
 		}
 
-		public void ReplaceClaim(ClaimDTO oldClaim, ClaimDTO newClaim)
-		{
-			var oldN = (Name)oldClaim.ActionTemplate;
-			if(!m_claimTree.ContainsKey(oldN))
-				throw new ArgumentException($"No claim for \"{oldN}\" action template was found.");
-
-			var newN = (Name) newClaim.ActionTemplate;
-			if (oldN == newN)
-			{
-				m_claimTree[oldN] = newClaim.ClaimSI;
-				return;
-			}
-
-			if(m_claimTree.ContainsKey(newN))
-				throw new ArgumentException($"There is already a claim associated to \"{newN}\" action template.");
-
-			m_claimTree.Remove(oldN);
-			m_claimTree.Add(newN,newClaim.ClaimSI);
-		}
-
-		public bool RemoveClaim(string actionTemplate)
-		{
-			var n = (Name) actionTemplate;
-			return m_claimTree.Remove(n);
-		}
-
 		#endregion
 
 		#region Conferrals
@@ -423,6 +397,11 @@ namespace SocialImportance
 		{
 			m_attributionRules = new HashSet<AttributionRule>(dataHolder.GetValue<AttributionRule[]>("AttributionRules"));
 			
+            foreach(var rule in m_attributionRules)
+            {
+                rule.GUID = Guid.NewGuid();
+            }
+
 			var claims = dataHolder.GetValue<ClaimDTO[]>("Claims");
 			m_claimTree = new NameSearchTree<uint>();
 			foreach (var c in claims)
