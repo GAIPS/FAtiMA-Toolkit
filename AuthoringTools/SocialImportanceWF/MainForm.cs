@@ -10,9 +10,7 @@ namespace SocialImportanceWF
 	public partial class MainForm : BaseSIForm
 	{
 		private AttributionRuleVM _attributionRulesVM;
-		private ClaimsVM _claimsVM;
-		private ConferralsVM _conferralsVM;
-
+	
 		public MainForm()
 		{
 			InitializeComponent();
@@ -24,20 +22,6 @@ namespace SocialImportanceWF
 			
 			_attRuleConditionSetEditor.View = _attributionRulesVM.ConditionSetView;
 
-			//Claims
-			_claimsVM = new ClaimsVM(this);
-			_claimDataView.DataController = _claimsVM;
-
-			//Conferrals
-			_conferralsVM = new ConferralsVM(this);
-			_conferralsDataView.DataController = _conferralsVM;
-			_conferralsDataView.OnSelectionChanged += () =>
-			{
-				var c = ((ObjectView<ConferralDTO>) _conferralsDataView.CurrentlySelected)?.Object;
-				_conferralsVM.SetSelectedCondition(c == null?Guid.Empty : c.Id);
-			};
-
-			_conferralsConditionSetEditor.View = _conferralsVM.ConditionsView;
 		}
 
 		private void OnRuleSelectionChanged()
@@ -61,16 +45,13 @@ namespace SocialImportanceWF
 			_attRulesDataView.ClearSelection();
 			_attRulesDataView.GetColumnByName(PropertyUtil.GetPropertyName<AttributionRuleDTO>(dto => dto.Id)).Visible = false;
 			_attRulesDataView.GetColumnByName(PropertyUtil.GetPropertyName<AttributionRuleDTO>(dto => dto.Conditions)).Visible = false;
-
-			_claimsVM.Reload();
-			_claimDataView.ClearSelection();
-
-			_conferralsVM.Reload();
-			_conferralsDataView.ClearSelection();
-			_conferralsDataView.GetColumnByName(PropertyUtil.GetPropertyName<ConferralDTO>(dto => dto.Id)).Visible = false;
-			_conferralsDataView.GetColumnByName(PropertyUtil.GetPropertyName<ConferralDTO>(dto => dto.Conditions)).Visible = false;
 		}
 
-		#endregion
-	}
+        #endregion
+
+        private void _attRulesDataView_Load(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

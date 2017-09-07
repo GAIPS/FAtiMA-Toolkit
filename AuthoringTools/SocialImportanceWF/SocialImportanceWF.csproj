@@ -36,23 +36,11 @@
     <StartupObject>SocialImportanceWF.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AddOrEditConferralForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AddOrEditConferralForm.Designer.cs">
-      <DependentUpon>AddOrEditConferralForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="AddOrEditAttributionRuleForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AddOrEditAttributionRuleForm.Designer.cs">
       <DependentUpon>AddOrEditAttributionRuleForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AddOrEditClaimForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AddOrEditClaimForm.Designer.cs">
-      <DependentUpon>AddOrEditClaimForm.cs</DependentUpon>
     </Compile>
     <Compile Include="BaseSIForm.cs">
       <SubType>Form</SubType>
@@ -66,16 +54,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\AttributionRuleVM.cs" />
-    <Compile Include="ViewModels\ClaimsVM.cs" />
-    <Compile Include="ViewModels\ConferralsVM.cs" />
-    <EmbeddedResource Include="AddOrEditConferralForm.resx">
-      <DependentUpon>AddOrEditConferralForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="AddOrEditAttributionRuleForm.resx">
       <DependentUpon>AddOrEditAttributionRuleForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AddOrEditClaimForm.resx">
-      <DependentUpon>AddOrEditClaimForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -105,19 +85,19 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ActionLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SocialImportanceAsset.1.0.0.0\lib\net35\ActionLibrary.dll</HintPath>
+      <HintPath>..\packages\SocialImportanceAsset.1.5.0\lib\net35\ActionLibrary.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="AutobiographicMemory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SocialImportanceAsset.1.0.0.0\lib\net35\AutobiographicMemory.dll</HintPath>
+      <HintPath>..\packages\SocialImportanceAsset.1.5.0\lib\net35\AutobiographicMemory.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Conditions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SocialImportanceAsset.1.0.0.0\lib\net35\Conditions.dll</HintPath>
+      <HintPath>..\packages\SocialImportanceAsset.1.5.0\lib\net35\Conditions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="EmotionalAppraisal, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SocialImportanceAsset.1.0.0.0\lib\net35\EmotionalAppraisal.dll</HintPath>
+    <Reference Include="EmotionalAppraisal, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SocialImportanceAsset.1.5.0\lib\net35\EmotionalAppraisal.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Equin.ApplicationFramework.BindingListView, Version=1.4.5222.35545, Culture=neutral, processorArchitecture=MSIL">
@@ -125,7 +105,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="GAIPS.Rage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SocialImportanceAsset.1.0.0.0\lib\net35\GAIPS.Rage.dll</HintPath>
+      <HintPath>..\packages\SocialImportanceAsset.1.5.0\lib\net35\GAIPS.Rage.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GAIPS.Serialization, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -133,15 +113,15 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="KnowledgeBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SocialImportanceAsset.1.0.0.0\lib\net35\KnowledgeBase.dll</HintPath>
+      <HintPath>..\packages\SocialImportanceAsset.1.5.0\lib\net35\KnowledgeBase.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="RageAssetManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
-    <Reference Include="SocialImportanceAsset, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SocialImportanceAsset.1.0.0.0\lib\net35\SocialImportanceAsset.dll</HintPath>
+    <Reference Include="SocialImportanceAsset, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SocialImportanceAsset.1.5.0\lib\net35\SocialImportanceAsset.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -152,7 +132,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="WellFormedNames, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SocialImportanceAsset.1.0.0.0\lib\net35\WellFormedNames.dll</HintPath>
+      <HintPath>..\packages\SocialImportanceAsset.1.5.0\lib\net35\WellFormedNames.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>

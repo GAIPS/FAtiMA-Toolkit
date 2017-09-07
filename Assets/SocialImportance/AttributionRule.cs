@@ -9,7 +9,7 @@ namespace SocialImportance
 	internal class AttributionRule
 	{
 		[NonSerialized]
-		public readonly Guid GUID;
+		public Guid GUID;
 
 		public string RuleName { get; private set; }
 		public Name Target { get; private set; }
@@ -36,7 +36,12 @@ namespace SocialImportance
 
 		public AttributionRuleDTO ToDTO()
 		{
-			return new AttributionRuleDTO() {Id = GUID, RuleName = RuleName, Target = Target.ToString(),Value = Value,Conditions = Conditions.ToDTO()};
+			return new AttributionRuleDTO() {
+                Id = GUID,
+                RuleName = RuleName,
+                Target = Target.ToString(),
+                Value = Value,
+                Conditions = Conditions.ToDTO()};
 		}
 	}
 }

@@ -1,20 +1,35 @@
 {
-	"root":
-		{
-			"classId": 0,
-			"DefaultActionPriority": 0,
-			"ActionTendencies": [
-        {
-					"Action": "Jump",
-					"Target": "[x]",
-					"Conditions":
-						{
-							"Set": ["Likes([x]) = [y]", "IsUgly([x]) = [z]", "[y] < [z]"]
-						},
-					"Priority": 2
-				}
-			]
-		},
+  "root": {
+    "classId": 0,
+    "DefaultActionPriority": 0,
+    "ActionTendencies": [
+      {
+        "Action": "Jump",
+        "Target": "A",
+        "Conditions": {
+          "Set": [ ]
+        },
+        "Priority": 1
+      },
+      {
+        "Action": "Jump",
+        "Target": "B",
+        "Conditions": {
+          "Set": [ ]
+        },
+        "Priority": 2
+      },
+      {
+        "Action": "Jump",
+        "Target": "C",
+        "Conditions": {
+          "Set": [ ]
+        },
+        "Priority" :  1
+      }
+
+    ]
+  },
 	"types": [
 		{
 			"TypeId": 0,

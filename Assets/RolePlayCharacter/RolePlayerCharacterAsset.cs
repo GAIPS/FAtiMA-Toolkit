@@ -179,14 +179,13 @@ namespace RolePlayCharacter
                 };
 
             var possibleActions = m_emotionalDecisionMakingAsset.Decide();
-            var sociallyAcceptedActions = m_socialImportanceAsset.FilterActions(Name.SELF_STRING, possibleActions);
-            var conferralAction = m_socialImportanceAsset.DecideConferral(Name.SELF_STRING);
-            if (conferralAction != null)
-                sociallyAcceptedActions = sociallyAcceptedActions.Append(conferralAction);
 
-            var decisions = sociallyAcceptedActions.OrderByDescending(a => a.Utility);
+            var maxUtility = possibleActions.Max(a => a.Utility);
 
-            return decisions.Shuffle();
+            var topActions = possibleActions.Where(a => a.Utility == maxUtility).Shuffle();
+
+            var remainder = possibleActions.Where(a => a.Utility != maxUtility);
+            return topActions.Concat(remainder);
         }
 
         /// <summary>

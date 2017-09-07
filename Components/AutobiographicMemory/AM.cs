@@ -4,10 +4,8 @@ using System.Linq;
 using AutobiographicMemory.DTOs;
 using SerializationUtilities;
 using KnowledgeBase;
-using Utilities;
 using WellFormedNames;
 using WellFormedNames.Collections;
-using IQueryable = WellFormedNames.IQueryable;
 
 namespace AutobiographicMemory
 {
@@ -187,9 +185,7 @@ namespace AutobiographicMemory
 		private static readonly Name EVENT_ID_PROPERTY_NAME = Name.BuildName("EventId");
 		private IEnumerable<DynamicPropertyResult> EventIdPropertyCalculator(IQueryContext context, Name type, Name subject, Name def, Name target)
 		{
-			if (!context.Perspective.Match(Name.SELF_SYMBOL))
-				yield break;
-			
+            
 			var key = Name.BuildName((Name)AMConsts.EVENT, type, subject, def, target);
 			foreach (var c in context.Constraints)
 			{
@@ -205,9 +201,7 @@ namespace AutobiographicMemory
 		private static readonly Name EVENT_ELAPSED_TIME_PROPERTY_NAME = Name.BuildName("EventElapsedTime");
 		private IEnumerable<DynamicPropertyResult> EventAgePropertyCalculator(IQueryContext context, Name id)
 		{
-			if(!context.Perspective.Match(Name.SELF_SYMBOL))
-				yield break;
-
+		
 			if (id.IsVariable)
 			{
 				foreach (var record in m_registry.Values)
@@ -245,9 +239,7 @@ namespace AutobiographicMemory
 		private static readonly Name LAST_EVENT_ID_PROPERTY_NAME = Name.BuildName("LastEventId");
         private IEnumerable<DynamicPropertyResult> LastEventIdPropertyCalculator(IQueryContext context, Name type, Name subject, Name def, Name target)
         {
-            if (!context.Perspective.Match(Name.SELF_SYMBOL))
-                yield break;
-
+        
             var key = Name.BuildName((Name)AMConsts.EVENT, type, subject, def, target);
 
             ulong min = ulong.MinValue;
@@ -261,8 +253,6 @@ namespace AutobiographicMemory
                 return false;
             });
 
-            //	foreach (var le in lastEvents)
-            //		{
             var le = lastEvents.Last();
 
             IEnumerable<Substitution> set;
