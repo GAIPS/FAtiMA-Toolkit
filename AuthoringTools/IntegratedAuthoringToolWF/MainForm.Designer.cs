@@ -266,7 +266,7 @@
             this.tabPageDialogue.Location = new System.Drawing.Point(4, 22);
             this.tabPageDialogue.Name = "tabPageDialogue";
             this.tabPageDialogue.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDialogue.Size = new System.Drawing.Size(653, 488);
+            this.tabPageDialogue.Size = new System.Drawing.Size(704, 488);
             this.tabPageDialogue.TabIndex = 0;
             this.tabPageDialogue.Text = "Dialogue Editor";
             this.tabPageDialogue.UseVisualStyleBackColor = true;

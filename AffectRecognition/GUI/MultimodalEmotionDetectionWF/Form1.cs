@@ -84,6 +84,16 @@ namespace MultimodalEmotionDetectionWF
 
         #endregion Fields
 
+#if WIN64
+
+        const String wrapper = @".\dlibwrapper_x64.dll";
+
+#else
+
+        const String wrapper = @".\dlibwrapper.dll";
+
+#endif
+
         #region Constructors
 
         public Form1(EmotionDetectionAsset eda)
@@ -164,7 +174,7 @@ namespace MultimodalEmotionDetectionWF
             {
                 Int32 cnt = 0;
 
-                foreach (KeyValuePair<EmotionDetectionAsset.RECT, List<EmotionDetectionAsset.POINT>> kvp in this.EDA.Faces)
+                foreach (KeyValuePair<EmotionDetectionAsset.RECT, List<EmotionDetectionAsset.POINT>> kvp in eda.Faces)
                 {
                     //! Faces
                     //
@@ -194,7 +204,8 @@ namespace MultimodalEmotionDetectionWF
                     //
                     foreach (EmotionDetectionAsset.POINT p in kvp.Value)
                     {
-                        g.FillRectangle(new SolidBrush(Color.Red), new Rectangle(p.X - 1, p.Y - 1, 3, 3));
+                        g.FillRectangle(new SolidBrush(Color.Red), new Rectangle(p.X - 2, p.Y - 2, 5, 5));
+                        //g.FillRectangle(new SolidBrush(Color.Red), new Rectangle(p.X - 1, p.Y - 1, 3, 3));
                     }
                 }
             }
