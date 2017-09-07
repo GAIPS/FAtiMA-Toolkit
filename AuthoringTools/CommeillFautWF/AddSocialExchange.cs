@@ -49,8 +49,7 @@ namespace CommeillFautWF
             _vm = vm;
 
             moveName.Text = social.ActionName.ToString();
-            IntentTextBox.Text = social.Intent;
-            InstantiationTextBox.Text = social.Instantiation;
+           
 
            
             AddedObject = social.ToDTO();
@@ -75,7 +74,7 @@ namespace CommeillFautWF
                     foreach (var list in AddedObject.Effects[key])
                     {
                         listBox2.Items.Add(key);
-                        listBox3.Items.Add(list);
+                  //      listBox3.Items.Add(list);
                     }
                 }
 
@@ -92,8 +91,7 @@ namespace CommeillFautWF
             {
                
                 Action = moveName.Text,
-                Intent =  IntentTextBox.Text,
-                Instantiation = InstantiationTextBox.Text,
+         
                 InfluenceRules = new List<InfluenceRuleDTO>() 
                 
             };
@@ -120,7 +118,7 @@ namespace CommeillFautWF
     }
 }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button4_Click(object sender, EventArgs e)
         {
            
             _influenceRuleVm = new InfluenceRuleVM(_vm, AddedObject);
@@ -166,15 +164,11 @@ namespace CommeillFautWF
 
         }
 
-        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            textBox1.Text = listBox2.SelectedItem.ToString();
-            numericUpDown1.Value = Convert.ToInt32(listBox3.Items[listBox2.SelectedIndex].ToString());
-        }
+      
 
         private void button3_Click(object sender, EventArgs e)
         {
-            var key = (numericUpDown1.Value).ToString();
+          /*  var key = (numericUpDown1.Value).ToString();
 
             if (AddedObject.Effects.ContainsKey(key))
                 AddedObject.Effects[key].Add(textBox1.Text);
@@ -185,13 +179,13 @@ namespace CommeillFautWF
                 AddedObject.Effects.Add(key, newList);
             }
             
-            Reload();
+            Reload();*/
         }
 
         public void Reload()
         {
+            listBox1.Items.Clear();
             listBox2.Items.Clear();
-            listBox3.Items.Clear();
 
             if (AddedObject.Effects != null)
                 foreach (var key in AddedObject.Effects.Keys)
@@ -200,10 +194,20 @@ namespace CommeillFautWF
                     foreach (var list in AddedObject.Effects[key])
                     {
                         listBox2.Items.Add(key);
-                        listBox3.Items.Add(list);
+                        //listBox3.Items.Add(list);
                     }
                 }
 
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
 
         }
     }

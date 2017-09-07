@@ -33,11 +33,11 @@ namespace CommeillFautWF
         protected override void OnAssetDataLoaded(CommeillFautAsset asset)
         {
             this.SocialExchangeBox.Items.Clear();
-            this.ExchangeList1.Text = "";
+          
 
             if (asset?.m_SocialExchanges != null)
             {
-                this.ExchangeList1.Text = "Number of Social Exchanges: " + asset.m_SocialExchanges.Count;
+              
                 
                 foreach (var move in asset.m_SocialExchanges)
                 {
