@@ -33,16 +33,18 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.SocialExchangeBox = new System.Windows.Forms.ListBox();
             this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.SocialExchangeBox = new System.Windows.Forms.ListBox();
             this.TriggerRulesBox = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
             this.AddTriggerRule = new System.Windows.Forms.Button();
             this.EditTriggerRule = new System.Windows.Forms.Button();
             this.DeleteTriggerRule = new System.Windows.Forms.Button();
+            this.triggerRulesDTOBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.triggerRulesDTOBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // contextMenuStrip1
@@ -67,6 +69,7 @@
             this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.button4);
+            this.groupBox1.Controls.Add(this.SocialExchangeBox);
             this.groupBox1.Location = new System.Drawing.Point(0, 40);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(658, 196);
@@ -85,26 +88,6 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(379, 28);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(101, 32);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Refresh";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // SocialExchangeBox
-            // 
-            this.SocialExchangeBox.FormattingEnabled = true;
-            this.SocialExchangeBox.ItemHeight = 17;
-            this.SocialExchangeBox.Location = new System.Drawing.Point(16, 120);
-            this.SocialExchangeBox.Name = "SocialExchangeBox";
-            this.SocialExchangeBox.Size = new System.Drawing.Size(499, 89);
-            this.SocialExchangeBox.TabIndex = 6;
-            this.SocialExchangeBox.SelectedIndexChanged += new System.EventHandler(this.SocialExchangeBox_SelectedIndexChanged);
-            // 
             // button3
             // 
             this.button3.Location = new System.Drawing.Point(262, 28);
@@ -114,6 +97,16 @@
             this.button3.Text = "Remove";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(379, 28);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(101, 32);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "Refresh";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button4
             // 
@@ -125,11 +118,21 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // SocialExchangeBox
+            // 
+            this.SocialExchangeBox.FormattingEnabled = true;
+            this.SocialExchangeBox.ItemHeight = 17;
+            this.SocialExchangeBox.Location = new System.Drawing.Point(16, 66);
+            this.SocialExchangeBox.Name = "SocialExchangeBox";
+            this.SocialExchangeBox.Size = new System.Drawing.Size(499, 89);
+            this.SocialExchangeBox.TabIndex = 6;
+            this.SocialExchangeBox.SelectedIndexChanged += new System.EventHandler(this.SocialExchangeBox_SelectedIndexChanged);
+            // 
             // TriggerRulesBox
             // 
             this.TriggerRulesBox.FormattingEnabled = true;
             this.TriggerRulesBox.ItemHeight = 17;
-            this.TriggerRulesBox.Location = new System.Drawing.Point(16, 336);
+            this.TriggerRulesBox.Location = new System.Drawing.Point(16, 311);
             this.TriggerRulesBox.Name = "TriggerRulesBox";
             this.TriggerRulesBox.Size = new System.Drawing.Size(499, 89);
             this.TriggerRulesBox.TabIndex = 9;
@@ -147,7 +150,7 @@
             // 
             // AddTriggerRule
             // 
-            this.AddTriggerRule.Location = new System.Drawing.Point(16, 279);
+            this.AddTriggerRule.Location = new System.Drawing.Point(16, 268);
             this.AddTriggerRule.Name = "AddTriggerRule";
             this.AddTriggerRule.Size = new System.Drawing.Size(113, 37);
             this.AddTriggerRule.TabIndex = 11;
@@ -157,7 +160,7 @@
             // 
             // EditTriggerRule
             // 
-            this.EditTriggerRule.Location = new System.Drawing.Point(146, 279);
+            this.EditTriggerRule.Location = new System.Drawing.Point(146, 268);
             this.EditTriggerRule.Name = "EditTriggerRule";
             this.EditTriggerRule.Size = new System.Drawing.Size(113, 37);
             this.EditTriggerRule.TabIndex = 12;
@@ -167,13 +170,17 @@
             // 
             // DeleteTriggerRule
             // 
-            this.DeleteTriggerRule.Location = new System.Drawing.Point(290, 279);
+            this.DeleteTriggerRule.Location = new System.Drawing.Point(290, 268);
             this.DeleteTriggerRule.Name = "DeleteTriggerRule";
             this.DeleteTriggerRule.Size = new System.Drawing.Size(113, 37);
             this.DeleteTriggerRule.TabIndex = 13;
             this.DeleteTriggerRule.Text = "Delete";
             this.DeleteTriggerRule.UseVisualStyleBackColor = true;
             this.DeleteTriggerRule.Click += new System.EventHandler(this.DeleteTriggerRule_Click);
+            // 
+            // triggerRulesDTOBindingSource
+            // 
+            this.triggerRulesDTOBindingSource.DataSource = typeof(CommeillFaut.DTOs.TriggerRulesDTO);
             // 
             // MainForm
             // 
@@ -188,19 +195,18 @@
             this.Controls.Add(this.AddTriggerRule);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.TriggerRulesBox);
-            this.Controls.Add(this.SocialExchangeBox);
             this.Controls.Add(this.groupBox1);
             this.Name = "MainForm";
             this.Text = "Comme ill Faut";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Controls.SetChildIndex(this.groupBox1, 0);
-            this.Controls.SetChildIndex(this.SocialExchangeBox, 0);
             this.Controls.SetChildIndex(this.TriggerRulesBox, 0);
             this.Controls.SetChildIndex(this.label2, 0);
             this.Controls.SetChildIndex(this.AddTriggerRule, 0);
             this.Controls.SetChildIndex(this.EditTriggerRule, 0);
             this.Controls.SetChildIndex(this.DeleteTriggerRule, 0);
             this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.triggerRulesDTOBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -221,6 +227,7 @@
         private System.Windows.Forms.Button AddTriggerRule;
         private System.Windows.Forms.Button EditTriggerRule;
         private System.Windows.Forms.Button DeleteTriggerRule;
+        private System.Windows.Forms.BindingSource triggerRulesDTOBindingSource;
     }
 }
 

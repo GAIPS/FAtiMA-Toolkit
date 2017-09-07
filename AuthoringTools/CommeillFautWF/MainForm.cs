@@ -172,6 +172,11 @@ namespace CommeillFautWF
 
         }
 
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
 
 
         //    protected override void OnWillSaveAsset(CommeillFautAsset asset)

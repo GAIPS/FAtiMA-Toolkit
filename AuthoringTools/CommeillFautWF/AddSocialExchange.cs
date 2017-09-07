@@ -121,32 +121,6 @@ namespace CommeillFautWF
         private void button4_Click(object sender, EventArgs e)
         {
            
-            _influenceRuleVm = new InfluenceRuleVM(_vm, AddedObject);
-
-            if (listBox1.SelectedItem == null)
-                new AddInfluenceRule(_influenceRuleVm, new InfluenceRuleDTO(), moveName.Text).ShowDialog();
-            else
-            {
-                new AddInfluenceRule(_influenceRuleVm, AddedObject.InfluenceRules[listBox1.SelectedIndex], moveName.Text).ShowDialog();
-
-            }
-
-            AddedObject.InfluenceRules = _influenceRuleVm.RuleList.ToList();
-
-            MessageBox.Show(" Button2 Click" + AddedObject.Action + " count " + AddedObject.InfluenceRules.Count);
-          //  _vm.AddSocialMove(AddedObject);
-            listBox1.Items.Clear();
-
-
-
-            if (AddedObject.InfluenceRules != null)
-            {
-                foreach (var cond in AddedObject.InfluenceRules)
-                {
-                    
-                    this.listBox1.Items.Add(cond.RuleName);
-                }
-            }
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -187,6 +161,14 @@ namespace CommeillFautWF
             listBox1.Items.Clear();
             listBox2.Items.Clear();
 
+
+            if (AddedObject.InfluenceRules != null)
+                foreach (var key in AddedObject.InfluenceRules)
+                {
+
+                    listBox1.Items.Add(key.RuleName);
+                }
+
             if (AddedObject.Effects != null)
                 foreach (var key in AddedObject.Effects.Keys)
                 {
@@ -209,6 +191,80 @@ namespace CommeillFautWF
         private void groupBox2_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void button4_Click_1(object sender, EventArgs e)
+        {
+
+            _influenceRuleVm = new InfluenceRuleVM(_vm, AddedObject);
+
+            
+                new AddInfluenceRule(_influenceRuleVm, new InfluenceRuleDTO(), moveName.Text).ShowDialog();
+
+            
+
+            AddedObject.InfluenceRules = _influenceRuleVm.RuleList.ToList();
+
+           
+            //  _vm.AddSocialMove(AddedObject);
+            listBox1.Items.Clear();
+
+
+
+            if (AddedObject.InfluenceRules != null)
+            {
+                foreach (var cond in AddedObject.InfluenceRules)
+                {
+
+                    this.listBox1.Items.Add(cond.RuleName);
+                }
+            }
+            Reload();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+
+            _influenceRuleVm = new InfluenceRuleVM(_vm, AddedObject);
+
+            if (listBox1.SelectedItem == null)
+                return;
+            else
+            {
+                new AddInfluenceRule(_influenceRuleVm, AddedObject.InfluenceRules[listBox1.SelectedIndex], moveName.Text).ShowDialog();
+
+            }
+
+            AddedObject.InfluenceRules = _influenceRuleVm.RuleList.ToList();
+
+
+            //  _vm.AddSocialMove(AddedObject);
+            listBox1.Items.Clear();
+
+
+
+            if (AddedObject.InfluenceRules != null)
+            {
+                foreach (var cond in AddedObject.InfluenceRules)
+                {
+
+                    this.listBox1.Items.Add(cond.RuleName);
+                }
+            }
+            Reload();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+
+            int todelete_index = listBox1.SelectedIndex;
+            if (todelete_index >= 0)
+            {
+                InfluenceRuleDTO todelete = AddedObject.InfluenceRules[todelete_index];
+
+                AddedObject.InfluenceRules.Remove(todelete);
+            }
+            Reload();
         }
     }
 }
