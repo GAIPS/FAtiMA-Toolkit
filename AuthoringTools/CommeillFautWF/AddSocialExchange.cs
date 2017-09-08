@@ -68,17 +68,16 @@ namespace CommeillFautWF
             } else AddedObject.InfluenceRules = new List<InfluenceRuleDTO>();
 
             if(AddedObject.Effects != null)
-                foreach (var key in AddedObject.Effects.Keys)
+
+                foreach (var ef in AddedObject.Effects)
                 {
-                   
-                    foreach (var list in AddedObject.Effects[key])
+                    foreach (var val in ef.Value)
                     {
-                        listBox2.Items.Add(key);
-                  //      listBox3.Items.Add(list);
+                        dataGridView1.Rows.Add(val, ef.Key);
                     }
                 }
 
-         //   else AddedObject.Effects = new Dictionary<int, List<string>>();
+            //   else AddedObject.Effects = new Dictionary<int, List<string>>();
 
             //	NameBox.Text = (_dto. == Guid.Empty) ? "Add" : "Update";
         }
@@ -159,7 +158,7 @@ namespace CommeillFautWF
         public void Reload()
         {
             listBox1.Items.Clear();
-            listBox2.Items.Clear();
+            dataGridView1.Rows.Clear();
 
 
             if (AddedObject.InfluenceRules != null)
@@ -170,15 +169,15 @@ namespace CommeillFautWF
                 }
 
             if (AddedObject.Effects != null)
-                foreach (var key in AddedObject.Effects.Keys)
-                {
 
-                    foreach (var list in AddedObject.Effects[key])
+                foreach (var ef in AddedObject.Effects)
+                {
+                    foreach (var val in ef.Value)
                     {
-                        listBox2.Items.Add(key);
-                        //listBox3.Items.Add(list);
+                        dataGridView1.Rows.Add(val, ef.Key);
                     }
                 }
+
 
 
         }
@@ -297,6 +296,10 @@ namespace CommeillFautWF
             }
             Reload();
         }
-    
+
+        private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
