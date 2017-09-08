@@ -266,5 +266,37 @@ namespace CommeillFautWF
             }
             Reload();
         }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+
+
+            if (listBox1.SelectedItem == null)
+                new AddConsequence(this._vm, AddedObject).ShowDialog();
+            else
+            {
+                new AddConsequence(this._vm, AddedObject).ShowDialog();
+
+            }
+
+         //   AddedObject.Effects = _influenceRuleVm.RuleList.ToList();
+
+
+            //  _vm.AddSocialMove(AddedObject);
+            listBox1.Items.Clear();
+
+
+
+            if (AddedObject.InfluenceRules != null)
+            {
+                foreach (var cond in AddedObject.InfluenceRules)
+                {
+
+                    this.listBox1.Items.Add(cond.RuleName);
+                }
+            }
+            Reload();
+        }
+    
     }
 }
