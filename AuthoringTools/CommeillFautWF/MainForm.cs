@@ -28,28 +28,23 @@ namespace CommeillFautWF
             InitializeComponent();
             _socialExchangesVM = new SocialExchangesVM(this);
             _triggerRules = new TriggerRulesVM(this);
+
         }
 
         protected override void OnAssetDataLoaded(CommeillFautAsset asset)
         {
-            this.SocialExchangeBox.Items.Clear();
+         //   genericPropertyDataGridControler1..Clear();
           
 
             if (asset?.m_SocialExchanges != null)
             {
-              
-                
-                foreach (var move in asset.m_SocialExchanges)
-                {
-                    if(move != null)
-                        if(move.ActionName!=null)
-                        this.SocialExchangeBox.Items.Add(move.ActionName);
-                }
+                dataGridView1.DataSource = asset.m_SocialExchanges;
+               
             
                 foreach (var move in asset._TriggerRules._triggerRules.Keys)
                 {
-                    if (move?.RuleName != null)
-                        this.TriggerRulesBox.Items.Add(move.RuleName);
+         //           if (move?.RuleName != null)
+        //                this.TriggerRulesBox.Items.Add(move.RuleName);
                 }
             }
         }
@@ -95,41 +90,35 @@ namespace CommeillFautWF
             OnAssetDataLoaded(this.LoadedAsset);
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Refresh();
-        }
-
-        private void button3_Click(object sender, EventArgs e)
+        private void RemoveClick(object sender, EventArgs e)
         {
 
-            int todelete_index = SocialExchangeBox.SelectedIndex;
-            if (todelete_index >= 0)
-            {
-                SocialExchange todelete = LoadedAsset.m_SocialExchanges[todelete_index];
+            var toDelete = dataGridView1.SelectedRows;
 
-                LoadedAsset.RemoveSocialExchange(todelete);
-            }
+            foreach (var del in toDelete)
+                this.LoadedAsset.m_SocialExchanges.Remove((SocialExchange)del);
+
+            
             Refresh();
+
         }
+
+       
 
         private void SocialExchangeBox_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void EditClick(object sender, EventArgs e)
         {
 
 
-            int toedit_index = SocialExchangeBox.SelectedIndex;
+            var toedit_index = dataGridView1.SelectedRows[0].Index;
 
             if (toedit_index >= 0)
             {
                 SocialExchange toEdit = LoadedAsset.m_SocialExchanges[toedit_index];
-
-            
-
                 new AddSocialExchange(this._socialExchangesVM, toEdit).ShowDialog();
 
             }
@@ -156,7 +145,7 @@ namespace CommeillFautWF
         private void DeleteTriggerRule_Click(object sender, EventArgs e)
         {
 
-            string toDeleteName = TriggerRulesBox.SelectedItem.ToString();
+        /*    string toDeleteName = TriggerRulesBox.SelectedItem.ToString();
 
             if (toDeleteName != "")
             {
@@ -164,7 +153,7 @@ namespace CommeillFautWF
 
                 LoadedAsset.RemoveTriggerRuleByName(toDeleteName);
             }
-            Refresh();
+            Refresh();*/
         }
 
         private void EditTriggerRule_Click(object sender, EventArgs e)
@@ -173,6 +162,25 @@ namespace CommeillFautWF
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void genericPropertyDataGridControler1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void AddClick(object sender, EventArgs e)
+        {
+
+            new AddSocialExchange(this._socialExchangesVM).ShowDialog();
+
+            Refresh();
+
+        }
+
+        private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
         {
 
         }
