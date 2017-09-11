@@ -3,6 +3,7 @@ using RolePlayCharacter;
 using IntegratedAuthoringTool;
 using System;
 using System.Linq;
+using WellFormedNames;
 
 namespace IntegratedAuthoringToolTutorial
 {
@@ -22,7 +23,7 @@ namespace IntegratedAuthoringToolTutorial
             iat.GetAllCharacterSources().ToList();
             while (currentState != IATConsts.TERMINAL_DIALOGUE_STATE)
             {
-                var playerDialogs = iat.GetDialogueActionsByState(playerStr, currentState);
+                var playerDialogs = iat.GetDialogueActionsByState(currentState);
 
                 Console.WriteLine("Current Dialogue State: " + currentState);
                 Console.WriteLine("Available choices: ");
@@ -55,7 +56,6 @@ namespace IntegratedAuthoringToolTutorial
                 if (characterAction.Key.ToString() == IATConsts.DIALOG_ACTION_KEY)
                 {
                     var dialog = iat.GetDialogueActions(
-                        IATConsts.AGENT,
                         characterAction.Parameters[0],
                         characterAction.Parameters[1],
                         characterAction.Parameters[2],
@@ -63,7 +63,7 @@ namespace IntegratedAuthoringToolTutorial
                     Console.WriteLine("\n" + rpc.CharacterName + ": " + dialog.Utterance + "\n");
                     currentState = characterAction.Parameters[1].ToString();
                     Console.WriteLine("\nMood: " + rpc.Mood);
-                   // rpc.SaveToFile("../../../ Examples/IATTest.iat");
+                   
                 }
                 else
                 {
