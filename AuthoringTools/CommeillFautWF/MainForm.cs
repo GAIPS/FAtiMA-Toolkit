@@ -33,19 +33,16 @@ namespace CommeillFautWF
 
         protected override void OnAssetDataLoaded(CommeillFautAsset asset)
         {
-         //   genericPropertyDataGridControler1..Clear();
-          
+            this.dataGridView1.DataSource = null;
+            dataGridView1.Rows.Clear();
 
             if (asset?.m_SocialExchanges != null)
             {
                 dataGridView1.DataSource = asset.m_SocialExchanges;
-               
-            
-                foreach (var move in asset._TriggerRules._triggerRules.Keys)
-                {
-         //           if (move?.RuleName != null)
-        //                this.TriggerRulesBox.Items.Add(move.RuleName);
-                }
+            }
+            if (asset?._TriggerRules._triggerRules != null)
+            {
+                dataGridView1.DataSource = asset._TriggerRules._triggerRules;
             }
         }
 
@@ -92,14 +89,16 @@ namespace CommeillFautWF
 
         private void RemoveClick(object sender, EventArgs e)
         {
+          if(  dataGridView1.SelectedCells.Count == 1)
+            {
+                var toDelete = dataGridView1.SelectedCells[0].Value;
+                    this.LoadedAsset.m_SocialExchanges.Remove(LoadedAsset.m_SocialExchanges.Find(x=>x.ActionName.ToString() == toDelete.ToString()));
 
-            var toDelete = dataGridView1.SelectedRows;
-
-            foreach (var del in toDelete)
-                this.LoadedAsset.m_SocialExchanges.Remove((SocialExchange)del);
-
+                }
             
-            Refresh();
+           
+            this.Refresh();
+            SetModified();
 
         }
 
@@ -114,7 +113,7 @@ namespace CommeillFautWF
         {
 
 
-            var toedit_index = dataGridView1.SelectedRows[0].Index;
+            var toedit_index = dataGridView1.SelectedCells[0].RowIndex;
 
             if (toedit_index >= 0)
             {
@@ -144,21 +143,30 @@ namespace CommeillFautWF
 
         private void DeleteTriggerRule_Click(object sender, EventArgs e)
         {
-
-        /*    string toDeleteName = TriggerRulesBox.SelectedItem.ToString();
-
-            if (toDeleteName != "")
+            if (dataGridView1.SelectedCells.Count == 1)
             {
-               
+                var toDelete = (InfluenceRuleDTO)dataGridView2.SelectedCells[0].Value;
+                this.LoadedAsset._TriggerRules.RemoveTriggerRule(LoadedAsset._TriggerRules._triggerRules.ToList().Find(x => x.Key.RuleName.ToString() == toDelete.RuleName).Key);
 
-                LoadedAsset.RemoveTriggerRuleByName(toDeleteName);
             }
-            Refresh();*/
+
+
+            this.Refresh();
+            SetModified();
         }
 
         private void EditTriggerRule_Click(object sender, EventArgs e)
         {
 
+            var toedit_index = dataGridView2.SelectedCells[0].RowIndex;
+
+            if (toedit_index >= 0)
+            {
+                var toEdit = LoadedAsset._TriggerRules._triggerRules.ElementAt(toedit_index);
+                new AddTriggerRule(new TriggerRulesVM(this)).ShowDialog();
+
+            }
+            Refresh();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -181,6 +189,11 @@ namespace CommeillFautWF
         }
 
         private void dataGridView1_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridView2_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }

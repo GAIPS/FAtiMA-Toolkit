@@ -71,9 +71,9 @@
             // 
             // NameBox
             // 
-            this.NameBox.Location = new System.Drawing.Point(257, 512);
+            this.NameBox.Location = new System.Drawing.Point(293, 648);
             this.NameBox.Name = "NameBox";
-            this.NameBox.Size = new System.Drawing.Size(84, 34);
+            this.NameBox.Size = new System.Drawing.Size(131, 50);
             this.NameBox.TabIndex = 3;
             this.NameBox.Text = "Add";
             this.NameBox.UseVisualStyleBackColor = true;
@@ -83,7 +83,7 @@
             // 
             this.moveName.Location = new System.Drawing.Point(186, 16);
             this.moveName.Name = "moveName";
-            this.moveName.Size = new System.Drawing.Size(160, 31);
+            this.moveName.Size = new System.Drawing.Size(160, 25);
             this.moveName.TabIndex = 4;
             this.moveName.Text = "";
             // 
@@ -98,7 +98,7 @@
             this.groupBox1.Controls.Add(this.button7);
             this.groupBox1.Location = new System.Drawing.Point(26, 68);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(642, 219);
+            this.groupBox1.Size = new System.Drawing.Size(642, 220);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Influence Rules";
@@ -152,7 +152,7 @@
             this.groupBox3.Controls.Add(this.button6);
             this.groupBox3.Location = new System.Drawing.Point(21, 50);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(621, 341);
+            this.groupBox3.Size = new System.Drawing.Size(621, 299);
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Affected Variables";
@@ -221,7 +221,7 @@
             this.groupBox2.Controls.Add(this.groupBox3);
             this.groupBox2.Location = new System.Drawing.Point(26, 293);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(679, 435);
+            this.groupBox2.Size = new System.Drawing.Size(679, 349);
             this.groupBox2.TabIndex = 10;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Consequences";
@@ -231,7 +231,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(733, 781);
+            this.ClientSize = new System.Drawing.Size(733, 799);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.moveName);
             this.Controls.Add(this.NameBox);

@@ -95,7 +95,7 @@ namespace CommeillFautTutorial
 
 
 
-                        rpc.SaveToFile("../../../Examples/" + rpc.CharacterName + "-output" + ".rpc");
+                        rpc.SaveToFile("../../../Examples/CiF/" + rpc.CharacterName + "-output" + ".rpc");
                   
 
                 }
