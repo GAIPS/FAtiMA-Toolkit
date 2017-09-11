@@ -60,22 +60,12 @@ namespace CommeillFautWF
 
             if (social.InfluenceRules != null)
             {
-              foreach (var cond in social.InfluenceRules)
-              {
-             
-                        this.listBox1.Items.Add(cond.RuleName);
-                }
-            } else AddedObject.InfluenceRules = new List<InfluenceRuleDTO>();
+                dataGridView2.DataSource = social.InfluenceRules;
+
+            }
 
             if(AddedObject.Effects != null)
-
-                foreach (var ef in AddedObject.Effects)
-                {
-                    foreach (var val in ef.Value)
-                    {
-                        dataGridView1.Rows.Add(val, ef.Key);
-                    }
-                }
+                dataGridView1.DataSource = AddedObject.Effects;
 
             //   else AddedObject.Effects = new Dictionary<int, List<string>>();
 
@@ -157,26 +147,18 @@ namespace CommeillFautWF
 
         public void Reload()
         {
-            listBox1.Items.Clear();
+
+            this.dataGridView1.DataSource = null;
             dataGridView1.Rows.Clear();
 
-
-            if (AddedObject.InfluenceRules != null)
-                foreach (var key in AddedObject.InfluenceRules)
-                {
-
-                    listBox1.Items.Add(key.RuleName);
-                }
-
-            if (AddedObject.Effects != null)
-
-                foreach (var ef in AddedObject.Effects)
-                {
-                    foreach (var val in ef.Value)
-                    {
-                        dataGridView1.Rows.Add(val, ef.Key);
-                    }
-                }
+            if (AddedObject?.InfluenceRules != null)
+            {
+                dataGridView2.DataSource = AddedObject.InfluenceRules;
+            }
+            if (AddedObject?.Effects != null)
+            {
+                dataGridView1.DataSource = AddedObject.Effects;
+            }
 
 
 
@@ -192,7 +174,7 @@ namespace CommeillFautWF
 
         }
 
-        private void button4_Click_1(object sender, EventArgs e)
+        private void AddInfluenceRule_Click(object sender, EventArgs e)
         {
 
             _influenceRuleVm = new InfluenceRuleVM(_vm, AddedObject);
@@ -202,14 +184,10 @@ namespace CommeillFautWF
 
             
 
-            AddedObject.InfluenceRules = _influenceRuleVm.RuleList.ToList();
+          /*  AddedObject.InfluenceRules = _influenceRuleVm.RuleList.ToList();
 
            
-            //  _vm.AddSocialMove(AddedObject);
-            listBox1.Items.Clear();
-
-
-
+         
             if (AddedObject.InfluenceRules != null)
             {
                 foreach (var cond in AddedObject.InfluenceRules)
@@ -217,83 +195,48 @@ namespace CommeillFautWF
 
                     this.listBox1.Items.Add(cond.RuleName);
                 }
-            }
+            }*/ 
             Reload();
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void EditInfluenceRule_Click(object sender, EventArgs e)
         {
 
             _influenceRuleVm = new InfluenceRuleVM(_vm, AddedObject);
 
-            if (listBox1.SelectedItem == null)
-                return;
-            else
+            if (dataGridView1.SelectedCells.Count == 1)
             {
-                new AddInfluenceRule(_influenceRuleVm, AddedObject.InfluenceRules[listBox1.SelectedIndex], moveName.Text).ShowDialog();
-
+                InfluenceRule toEdit = (InfluenceRule)dataGridView1.SelectedCells[0].Value;
+                new AddInfluenceRule(_influenceRuleVm, toEdit.ToDTO(), moveName.Text).ShowDialog();
             }
 
-            AddedObject.InfluenceRules = _influenceRuleVm.RuleList.ToList();
 
-
-            //  _vm.AddSocialMove(AddedObject);
-            listBox1.Items.Clear();
-
-
-
-            if (AddedObject.InfluenceRules != null)
-            {
-                foreach (var cond in AddedObject.InfluenceRules)
-                {
-
-                    this.listBox1.Items.Add(cond.RuleName);
-                }
-            }
             Reload();
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void RemoveInfluenceRule_Click(object sender, EventArgs e)
         {
 
-            int todelete_index = listBox1.SelectedIndex;
-            if (todelete_index >= 0)
+            if (dataGridView1.SelectedCells.Count == 1)
             {
-                InfluenceRuleDTO todelete = AddedObject.InfluenceRules[todelete_index];
+                var toDelete = dataGridView1.SelectedCells[0].Value;
+                this.AddedObject.InfluenceRules.Remove(AddedObject.InfluenceRules.Find(x => x.RuleName.ToString() == toDelete.ToString()));
 
-                AddedObject.InfluenceRules.Remove(todelete);
             }
-            Reload();
+
+
+            this.Refresh();
+            
         }
 
-        private void button3_Click_1(object sender, EventArgs e)
+        private void AddEffect_Click(object sender, EventArgs e)
         {
 
 
-            if (listBox1.SelectedItem == null)
+           
                 new AddConsequence(this._vm, AddedObject).ShowDialog();
-            else
-            {
-                new AddConsequence(this._vm, AddedObject).ShowDialog();
-
-            }
-
-         //   AddedObject.Effects = _influenceRuleVm.RuleList.ToList();
-
-
-            //  _vm.AddSocialMove(AddedObject);
-            listBox1.Items.Clear();
-
-
-
-            if (AddedObject.InfluenceRules != null)
-            {
-                foreach (var cond in AddedObject.InfluenceRules)
-                {
-
-                    this.listBox1.Items.Add(cond.RuleName);
-                }
-            }
+            
+         
             Reload();
         }
 

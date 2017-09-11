@@ -42,7 +42,7 @@ namespace CommeillFautWF
             }
             if (asset?._TriggerRules._triggerRules != null)
             {
-                dataGridView1.DataSource = asset._TriggerRules._triggerRules;
+                dataGridView2.DataSource = asset._TriggerRules._triggerRules;
             }
         }
 
@@ -112,15 +112,13 @@ namespace CommeillFautWF
         private void EditClick(object sender, EventArgs e)
         {
 
-
-            var toedit_index = dataGridView1.SelectedCells[0].RowIndex;
-
-            if (toedit_index >= 0)
+            if (dataGridView1.SelectedCells.Count == 1)
             {
-                SocialExchange toEdit = LoadedAsset.m_SocialExchanges[toedit_index];
-                new AddSocialExchange(this._socialExchangesVM, toEdit).ShowDialog();
-
+                string toEdit = dataGridView1.SelectedCells[0].Value.ToString();
+                new AddSocialExchange(this._socialExchangesVM, LoadedAsset.m_SocialExchanges.Find(x=>x.ActionName.ToString() == toEdit)).ShowDialog();
             }
+
+        
             Refresh();
         }
 
