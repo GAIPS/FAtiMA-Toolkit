@@ -33,10 +33,7 @@ namespace CommeillFautWF
             AddedObject = new SocialExchangeDTO();
            
             _vm = vm;
-       //     _influenceRuleVm = new InfluenceRuleVM(vm, "ay");
-            //	NameBox.Text = (_dto. == Guid.Empty) ? "Add" : "Update";
-
-//           AddedObject.Effects = new Dictionary<int, List<string>>();
+    
             AddedObject.InfluenceRules = new List<InfluenceRuleDTO>();
         }
 
@@ -49,7 +46,7 @@ namespace CommeillFautWF
             _vm = vm;
 
             moveName.Text = social.ActionName.ToString();
-           
+            IntentTextBox.Text = social.Intent.ToString();
 
            
             AddedObject = social.ToDTO();
@@ -60,7 +57,7 @@ namespace CommeillFautWF
 
             if (social.InfluenceRules != null)
             {
-                dataGridView2.DataSource = social.InfluenceRules;
+              //  dataGridView2.DataSource = social.InfluenceRules;
 
             }
 
@@ -80,7 +77,7 @@ namespace CommeillFautWF
             {
                
                 Action = moveName.Text,
-         
+                Intent = IntentTextBox.Text,
                 InfluenceRules = new List<InfluenceRuleDTO>() 
                 
             };
@@ -153,7 +150,7 @@ namespace CommeillFautWF
 
             if (AddedObject?.InfluenceRules != null)
             {
-                dataGridView2.DataSource = AddedObject.InfluenceRules;
+      //          dataGridView2.DataSource = AddedObject.InfluenceRules;
             }
             if (AddedObject?.Effects != null)
             {
@@ -241,6 +238,16 @@ namespace CommeillFautWF
         }
 
         private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void influenceRuleBindingSource_CurrentChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
 
         }
