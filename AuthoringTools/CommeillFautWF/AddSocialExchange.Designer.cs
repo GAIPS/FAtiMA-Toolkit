@@ -28,15 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.NameBox = new System.Windows.Forms.Button();
             this.moveName = new System.Windows.Forms.RichTextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.button7 = new System.Windows.Forms.Button();
+            this.influenceRuleBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Variable = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -44,11 +41,19 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.groupBox1.SuspendLayout();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.conditionSetEditorControl1 = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
+            this.genericPropertyDataGridControler1 = new GAIPS.AssetEditorTools.GenericPropertyDataGridControler();
+            this.label2 = new System.Windows.Forms.Label();
+            this.IntentTextBox = new System.Windows.Forms.RichTextBox();
+            ((System.ComponentModel.ISupportInitialize)(this.influenceRuleBindingSource)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.groupBox2.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -71,7 +76,7 @@
             // 
             // NameBox
             // 
-            this.NameBox.Location = new System.Drawing.Point(293, 648);
+            this.NameBox.Location = new System.Drawing.Point(335, 583);
             this.NameBox.Name = "NameBox";
             this.NameBox.Size = new System.Drawing.Size(131, 50);
             this.NameBox.TabIndex = 3;
@@ -87,86 +92,40 @@
             this.moveName.TabIndex = 4;
             this.moveName.Text = "";
             // 
-            // groupBox1
+            // influenceRuleBindingSource
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.button5);
-            this.groupBox1.Controls.Add(this.button4);
-            this.groupBox1.Controls.Add(this.listBox1);
-            this.groupBox1.Controls.Add(this.button7);
-            this.groupBox1.Location = new System.Drawing.Point(26, 68);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(642, 220);
-            this.groupBox1.TabIndex = 9;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Influence Rules";
-            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(267, 33);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(96, 32);
-            this.button5.TabIndex = 7;
-            this.button5.Text = "Remove";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(21, 33);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(108, 32);
-            this.button4.TabIndex = 0;
-            this.button4.Text = "Add";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click_1);
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(21, 86);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(455, 116);
-            this.listBox1.TabIndex = 1;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
-            // 
-            // button7
-            // 
-            this.button7.Location = new System.Drawing.Point(147, 33);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(95, 32);
-            this.button7.TabIndex = 8;
-            this.button7.Text = "Edit";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.influenceRuleBindingSource.DataSource = typeof(CommeillFaut.InfluenceRule);
+            this.influenceRuleBindingSource.CurrentChanged += new System.EventHandler(this.influenceRuleBindingSource_CurrentChanged);
             // 
             // groupBox3
             // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.dataGridView1);
             this.groupBox3.Controls.Add(this.button3);
             this.groupBox3.Controls.Add(this.button2);
             this.groupBox3.Controls.Add(this.button6);
-            this.groupBox3.Location = new System.Drawing.Point(21, 50);
+            this.groupBox3.Location = new System.Drawing.Point(6, 16);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(621, 299);
+            this.groupBox3.Size = new System.Drawing.Size(689, 390);
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Affected Variables";
             // 
             // dataGridView1
             // 
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Variable,
             this.Result});
-            this.dataGridView1.Location = new System.Drawing.Point(20, 85);
+            this.dataGridView1.Location = new System.Drawing.Point(16, 78);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(535, 231);
+            this.dataGridView1.Size = new System.Drawing.Size(635, 306);
             this.dataGridView1.TabIndex = 7;
             // 
             // Variable
@@ -213,37 +172,98 @@
             this.button6.Text = "Add";
             this.button6.UseVisualStyleBackColor = true;
             // 
-            // groupBox2
+            // tabControl1
             // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.groupBox3);
-            this.groupBox2.Location = new System.Drawing.Point(26, 293);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(679, 349);
-            this.groupBox2.TabIndex = 10;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Consequences";
-            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Location = new System.Drawing.Point(26, 111);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(766, 453);
+            this.tabControl1.TabIndex = 10;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.conditionSetEditorControl1);
+            this.tabPage1.Controls.Add(this.genericPropertyDataGridControler1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(758, 424);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Starting Conditions";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.groupBox3);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(725, 412);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Consequences";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // conditionSetEditorControl1
+            // 
+            this.conditionSetEditorControl1.Location = new System.Drawing.Point(4, 208);
+            this.conditionSetEditorControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.conditionSetEditorControl1.Name = "conditionSetEditorControl1";
+            this.conditionSetEditorControl1.Size = new System.Drawing.Size(664, 194);
+            this.conditionSetEditorControl1.TabIndex = 3;
+            this.conditionSetEditorControl1.View = null;
+            // 
+            // genericPropertyDataGridControler1
+            // 
+            this.genericPropertyDataGridControler1.AllowMuliSelect = false;
+            this.genericPropertyDataGridControler1.Location = new System.Drawing.Point(0, 3);
+            this.genericPropertyDataGridControler1.Margin = new System.Windows.Forms.Padding(0);
+            this.genericPropertyDataGridControler1.Name = "genericPropertyDataGridControler1";
+            this.genericPropertyDataGridControler1.Size = new System.Drawing.Size(672, 201);
+            this.genericPropertyDataGridControler1.TabIndex = 4;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(133, 65);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(47, 17);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "Intent:";
+            // 
+            // IntentTextBox
+            // 
+            this.IntentTextBox.Location = new System.Drawing.Point(186, 62);
+            this.IntentTextBox.Name = "IntentTextBox";
+            this.IntentTextBox.Size = new System.Drawing.Size(160, 25);
+            this.IntentTextBox.TabIndex = 12;
+            this.IntentTextBox.Text = "";
+            this.IntentTextBox.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // AddSocialExchange
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(733, 799);
-            this.Controls.Add(this.groupBox2);
+            this.ClientSize = new System.Drawing.Size(794, 645);
+            this.Controls.Add(this.IntentTextBox);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.moveName);
             this.Controls.Add(this.NameBox);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.groupBox1);
             this.Name = "AddSocialExchange";
             this.Text = "Add Social Exchange";
             this.Load += new System.EventHandler(this.AddSocialExchange_Load);
-            this.groupBox1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.influenceRuleBindingSource)).EndInit();
             this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.groupBox2.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -256,11 +276,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button NameBox;
         private System.Windows.Forms.RichTextBox moveName;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button7;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Variable;
@@ -268,6 +283,13 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.BindingSource influenceRuleBindingSource;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private GAIPS.AssetEditorTools.ConditionSetEditorControl conditionSetEditorControl1;
+        private GAIPS.AssetEditorTools.GenericPropertyDataGridControler genericPropertyDataGridControler1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.RichTextBox IntentTextBox;
     }
 }

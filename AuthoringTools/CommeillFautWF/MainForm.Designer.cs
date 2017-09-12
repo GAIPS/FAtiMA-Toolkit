@@ -33,18 +33,18 @@
             this.TabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.actionNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.intentDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EditSE = new System.Windows.Forms.Button();
             this.RemoveSE = new System.Windows.Forms.Button();
             this.AddSE = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.triggerRulesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.triggerRulesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.EditTriggerRules = new System.Windows.Forms.Button();
             this.RemoveTriggerRules = new System.Windows.Forms.Button();
             this.AddTriggerRule = new System.Windows.Forms.Button();
-            this.triggerRulesDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.actionNameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.intentDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.socialExchangeBindingSource)).BeginInit();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -63,12 +63,13 @@
             this.TabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.TabControl.Appearance = System.Windows.Forms.TabAppearance.Buttons;
             this.TabControl.Controls.Add(this.tabPage1);
             this.TabControl.Controls.Add(this.tabPage2);
             this.TabControl.Location = new System.Drawing.Point(12, 40);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
-            this.TabControl.Size = new System.Drawing.Size(1068, 387);
+            this.TabControl.Size = new System.Drawing.Size(859, 455);
             this.TabControl.TabIndex = 15;
             // 
             // tabPage1
@@ -77,30 +78,44 @@
             this.tabPage1.Controls.Add(this.EditSE);
             this.tabPage1.Controls.Add(this.RemoveSE);
             this.tabPage1.Controls.Add(this.AddSE);
-            this.tabPage1.Location = new System.Drawing.Point(4, 26);
+            this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1060, 357);
+            this.tabPage1.Size = new System.Drawing.Size(851, 422);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Social Exchange";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // dataGridView1
             // 
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.actionNameDataGridViewTextBoxColumn,
             this.intentDataGridViewTextBoxColumn});
             this.dataGridView1.DataSource = this.socialExchangeBindingSource;
-            this.dataGridView1.Location = new System.Drawing.Point(-16, 78);
+            this.dataGridView1.Location = new System.Drawing.Point(23, 75);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(1894, 1171);
+            this.dataGridView1.Size = new System.Drawing.Size(822, 341);
             this.dataGridView1.TabIndex = 11;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick_1);
+            // 
+            // actionNameDataGridViewTextBoxColumn
+            // 
+            this.actionNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.actionNameDataGridViewTextBoxColumn.DataPropertyName = "ActionName";
+            this.actionNameDataGridViewTextBoxColumn.FillWeight = 73.09644F;
+            this.actionNameDataGridViewTextBoxColumn.HeaderText = "ActionName";
+            this.actionNameDataGridViewTextBoxColumn.Name = "actionNameDataGridViewTextBoxColumn";
+            this.actionNameDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // intentDataGridViewTextBoxColumn
+            // 
+            this.intentDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.intentDataGridViewTextBoxColumn.DataPropertyName = "Intent";
+            this.intentDataGridViewTextBoxColumn.FillWeight = 126.9036F;
+            this.intentDataGridViewTextBoxColumn.HeaderText = "Intent";
+            this.intentDataGridViewTextBoxColumn.Name = "intentDataGridViewTextBoxColumn";
             // 
             // EditSE
             // 
@@ -141,10 +156,10 @@
             this.tabPage2.Controls.Add(this.EditTriggerRules);
             this.tabPage2.Controls.Add(this.RemoveTriggerRules);
             this.tabPage2.Controls.Add(this.AddTriggerRule);
-            this.tabPage2.Location = new System.Drawing.Point(4, 26);
+            this.tabPage2.Location = new System.Drawing.Point(4, 29);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1060, 357);
+            this.tabPage2.Size = new System.Drawing.Size(1060, 354);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Trigger Rules";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -161,9 +176,17 @@
             this.dataGridView2.Location = new System.Drawing.Point(19, 80);
             this.dataGridView2.Name = "dataGridView2";
             this.dataGridView2.RowTemplate.Height = 24;
-            this.dataGridView2.Size = new System.Drawing.Size(1002, 271);
+            this.dataGridView2.Size = new System.Drawing.Size(1002, 268);
             this.dataGridView2.TabIndex = 15;
             this.dataGridView2.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView2_CellContentClick);
+            // 
+            // triggerRulesDataGridViewTextBoxColumn
+            // 
+            this.triggerRulesDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.triggerRulesDataGridViewTextBoxColumn.DataPropertyName = "_triggerRules";
+            this.triggerRulesDataGridViewTextBoxColumn.HeaderText = "Trigger Rules";
+            this.triggerRulesDataGridViewTextBoxColumn.Name = "triggerRulesDataGridViewTextBoxColumn";
+            this.triggerRulesDataGridViewTextBoxColumn.ReadOnly = true;
             // 
             // triggerRulesBindingSource
             // 
@@ -202,31 +225,6 @@
             this.AddTriggerRule.UseVisualStyleBackColor = true;
             this.AddTriggerRule.Click += new System.EventHandler(this.AddTriggerRule_Click);
             // 
-            // triggerRulesDataGridViewTextBoxColumn
-            // 
-            this.triggerRulesDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.triggerRulesDataGridViewTextBoxColumn.DataPropertyName = "_triggerRules";
-            this.triggerRulesDataGridViewTextBoxColumn.HeaderText = "Trigger Rules";
-            this.triggerRulesDataGridViewTextBoxColumn.Name = "triggerRulesDataGridViewTextBoxColumn";
-            this.triggerRulesDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // actionNameDataGridViewTextBoxColumn
-            // 
-            this.actionNameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.actionNameDataGridViewTextBoxColumn.DataPropertyName = "ActionName";
-            this.actionNameDataGridViewTextBoxColumn.FillWeight = 73.09644F;
-            this.actionNameDataGridViewTextBoxColumn.HeaderText = "ActionName";
-            this.actionNameDataGridViewTextBoxColumn.Name = "actionNameDataGridViewTextBoxColumn";
-            this.actionNameDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // intentDataGridViewTextBoxColumn
-            // 
-            this.intentDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.intentDataGridViewTextBoxColumn.DataPropertyName = "Intent";
-            this.intentDataGridViewTextBoxColumn.FillWeight = 126.9036F;
-            this.intentDataGridViewTextBoxColumn.HeaderText = "Intent";
-            this.intentDataGridViewTextBoxColumn.Name = "intentDataGridViewTextBoxColumn";
-            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -234,7 +232,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(1385, 479);
+            this.ClientSize = new System.Drawing.Size(871, 507);
             this.Controls.Add(this.TabControl);
             this.Name = "MainForm";
             this.Text = "Comme ill Faut";
