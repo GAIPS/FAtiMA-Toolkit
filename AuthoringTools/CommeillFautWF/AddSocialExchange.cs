@@ -11,6 +11,7 @@ using CommeillFaut;
 using CommeillFaut.DTOs;
 using CommeillFautWF.Properties;
 using CommeillFautWF.ViewModels;
+using Equin.ApplicationFramework;
 using WellFormedNames;
 
 namespace CommeillFautWF
@@ -42,31 +43,28 @@ namespace CommeillFautWF
 
             InitializeComponent();
             AddedObject = social.ToDTO();
-
+        
             _vm = vm;
-
+            _influenceRuleVm = new InfluenceRuleVM(_vm, AddedObject);
+            if (social.ActionName != null)
             moveName.Text = social.ActionName.ToString();
-            IntentTextBox.Text = social.Intent.ToString();
+            if (social.Intent != null)
+                IntentTextBox.Text = social.Intent.ToString();
 
            
             AddedObject = social.ToDTO();
 
-          
+            genericPropertyDataGridControler1.DataController = _influenceRuleVm;
+            genericPropertyDataGridControler1.OnSelectionChanged += OnRuleSelectionChanged;
 
-            //         _influenceRuleVm = new InfluenceRuleVM(vm, social.ActionName.ToString());
+            conditionSetEditorControl1.View = _influenceRuleVm.ConditionSetView;
 
-            if (social.InfluenceRules != null)
-            {
-              //  dataGridView2.DataSource = social.InfluenceRules;
+            button1.Text = (AddedObject.Id == Guid.Empty) ? "Add" : "Update";
 
-            }
-
-            if(AddedObject.Effects != null)
+            if (AddedObject.Effects != null)
                 dataGridView1.DataSource = AddedObject.Effects;
 
-            //   else AddedObject.Effects = new Dictionary<int, List<string>>();
-
-            //	NameBox.Text = (_dto. == Guid.Empty) ? "Add" : "Update";
+         
         }
 
         private void NameBox_Click(object sender, EventArgs e)
@@ -124,7 +122,19 @@ namespace CommeillFautWF
 
         }
 
-      
+        private void OnRuleSelectionChanged()
+        {
+            var obj = genericPropertyDataGridControler1.CurrentlySelected;
+            if (obj == null)
+            {
+                _influenceRuleVm.Selection = Guid.Empty;
+                return;
+            }
+
+            var dto = ((ObjectView<InfluenceRuleDTO>)obj).Object;
+            _influenceRuleVm.Selection = dto.Id;
+        }
+
 
         private void button3_Click(object sender, EventArgs e)
         {
@@ -142,58 +152,15 @@ namespace CommeillFautWF
             Reload();*/
         }
 
-        public void Reload()
-        {
-
-            this.dataGridView1.DataSource = null;
-            dataGridView1.Rows.Clear();
-
-            if (AddedObject?.InfluenceRules != null)
-            {
-      //          dataGridView2.DataSource = AddedObject.InfluenceRules;
-            }
-            if (AddedObject?.Effects != null)
-            {
-                dataGridView1.DataSource = AddedObject.Effects;
-            }
-
-
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox2_Enter(object sender, EventArgs e)
-        {
-
-        }
-
         private void AddInfluenceRule_Click(object sender, EventArgs e)
         {
 
             _influenceRuleVm = new InfluenceRuleVM(_vm, AddedObject);
 
             
-                new AddInfluenceRule(_influenceRuleVm, new InfluenceRuleDTO(), moveName.Text).ShowDialog();
-
-            
-
-          /*  AddedObject.InfluenceRules = _influenceRuleVm.RuleList.ToList();
+                new AddOrEditInfluenceRuleForm(_influenceRuleVm, new InfluenceRuleDTO()).ShowDialog();
 
            
-         
-            if (AddedObject.InfluenceRules != null)
-            {
-                foreach (var cond in AddedObject.InfluenceRules)
-                {
-
-                    this.listBox1.Items.Add(cond.RuleName);
-                }
-            }*/ 
-            Reload();
         }
 
         private void EditInfluenceRule_Click(object sender, EventArgs e)
@@ -207,8 +174,6 @@ namespace CommeillFautWF
                 new AddInfluenceRule(_influenceRuleVm, toEdit.ToDTO(), moveName.Text).ShowDialog();
             }
 
-
-            Reload();
         }
 
         private void RemoveInfluenceRule_Click(object sender, EventArgs e)
@@ -234,7 +199,7 @@ namespace CommeillFautWF
                 new AddConsequence(this._vm, AddedObject).ShowDialog();
             
          
-            Reload();
+         
         }
 
         private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
@@ -248,6 +213,11 @@ namespace CommeillFautWF
         }
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void genericPropertyDataGridControler1_Load(object sender, EventArgs e)
         {
 
         }
