@@ -43,9 +43,9 @@
             this.button6 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.conditionSetEditorControl1 = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
             this.genericPropertyDataGridControler1 = new GAIPS.AssetEditorTools.GenericPropertyDataGridControler();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.label2 = new System.Windows.Forms.Label();
             this.IntentTextBox = new System.Windows.Forms.RichTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.influenceRuleBindingSource)).BeginInit();
@@ -64,7 +64,6 @@
             this.label1.Size = new System.Drawing.Size(157, 17);
             this.label1.TabIndex = 1;
             this.label1.Text = "Social Exchange Name:";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // button1
             // 
@@ -197,17 +196,6 @@
             this.tabPage1.Text = "Starting Conditions";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.groupBox3);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(725, 412);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Consequences";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
             // conditionSetEditorControl1
             // 
             this.conditionSetEditorControl1.Location = new System.Drawing.Point(4, 208);
@@ -220,11 +208,24 @@
             // genericPropertyDataGridControler1
             // 
             this.genericPropertyDataGridControler1.AllowMuliSelect = false;
+            this.genericPropertyDataGridControler1.DataBindings.Add(new System.Windows.Forms.Binding("Tag", this.influenceRuleBindingSource, "RuleName", true));
             this.genericPropertyDataGridControler1.Location = new System.Drawing.Point(0, 3);
             this.genericPropertyDataGridControler1.Margin = new System.Windows.Forms.Padding(0);
             this.genericPropertyDataGridControler1.Name = "genericPropertyDataGridControler1";
             this.genericPropertyDataGridControler1.Size = new System.Drawing.Size(672, 201);
             this.genericPropertyDataGridControler1.TabIndex = 4;
+            this.genericPropertyDataGridControler1.Load += new System.EventHandler(this.genericPropertyDataGridControler1_Load);
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.groupBox3);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(758, 424);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Consequences";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
