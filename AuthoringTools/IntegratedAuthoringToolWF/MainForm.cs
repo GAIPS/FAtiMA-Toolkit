@@ -21,8 +21,7 @@ namespace IntegratedAuthoringToolWF
 	public partial class MainForm : BaseIATForm
 	{
         
-        private BindingListView<GUIDialogStateAction> _playerDialogs;
-        private BindingListView<GUIDialogStateAction> _agentDialogs;
+        private BindingListView<GUIDialogStateAction> _dialogs;
         private readonly string PLAYER = IATConsts.PLAYER;
         private readonly string AGENT = IATConsts.AGENT;
         private BindingListView<CharacterSourceDTO> _characterSources;
@@ -35,23 +34,14 @@ namespace IntegratedAuthoringToolWF
         }
         
 
-        private void RefreshPlayerDialogs()
+        private void RefreshDialogs()
         {
-            _playerDialogs.DataSource = LoadedAsset.GetDialogueActionsBySpeaker(
+            _dialogs.DataSource = LoadedAsset.GetDialogueActionsBySpeaker(
                 PLAYER).Select(d => new GUIDialogStateAction(d)).ToList();
-            _playerDialogs.Refresh();
-            dataGridViewPlayerDialogueActions.Columns["Id"].Visible = false;
+            _dialogs.Refresh();
+            dataGridViewDialogueActions.Columns["Id"].Visible = false;
 
         }
-
-        private void RefreshAgentDialogs()
-        {
-            _agentDialogs.DataSource = LoadedAsset.GetDialogueActionsBySpeaker(
-             AGENT).Select(d => new GUIDialogStateAction(d)).ToList();
-            _agentDialogs.Refresh();
-            dataGridViewAgentDialogueActions.Columns["Id"].Visible = false;
-        }
-
        
         protected override void OnAssetDataLoaded(IntegratedAuthoringToolAsset asset)
 		{
@@ -59,13 +49,9 @@ namespace IntegratedAuthoringToolWF
 			textBoxScenarioDescription.Text = asset.ScenarioDescription;
 			_characterSources = new BindingListView<CharacterSourceDTO>(asset.GetAllCharacterSources().ToList());
 			dataGridViewCharacters.DataSource = _characterSources;
-            _playerDialogs = new BindingListView<GUIDialogStateAction>(new List<GUIDialogStateAction>());
-            dataGridViewPlayerDialogueActions.DataSource = _playerDialogs;
-            RefreshPlayerDialogs();
-
-            _agentDialogs = new BindingListView<GUIDialogStateAction>(new List<GUIDialogStateAction>());
-            dataGridViewAgentDialogueActions.DataSource = _agentDialogs;
-            RefreshAgentDialogs();
+            _dialogs = new BindingListView<GUIDialogStateAction>(new List<GUIDialogStateAction>());
+            dataGridViewDialogueActions.DataSource = _dialogs;
+            RefreshDialogs();
         }
 
 		private void buttonCreateCharacter_Click(object sender, EventArgs e)
@@ -178,34 +164,27 @@ namespace IntegratedAuthoringToolWF
 
         }
 
-
-        private void buttonAgentAddDialogAction_Click(object sender, EventArgs e)
-        {
-            new AddOrEditDialogueActionForm(this, false).ShowDialog();
-            RefreshAgentDialogs();
-        }
-
-        private void buttonAddPlayerDialogueAction_Click_1(object sender, EventArgs e)
+        private void buttonAddDialogueAction_Click_1(object sender, EventArgs e)
         {
             new AddOrEditDialogueActionForm(this, true).ShowDialog();
-            RefreshPlayerDialogs();
+            RefreshDialogs();
         }
 
-        private void buttonPlayerEditDialogueAction_Click(object sender, EventArgs e)
+        private void buttonEditDialogueAction_Click(object sender, EventArgs e)
         {
-            if (dataGridViewPlayerDialogueActions.SelectedRows.Count == 1)
+            if (dataGridViewDialogueActions.SelectedRows.Count == 1)
             {
-                var item = ((ObjectView<GUIDialogStateAction>)dataGridViewPlayerDialogueActions.SelectedRows[0].DataBoundItem).Object;
+                var item = ((ObjectView<GUIDialogStateAction>)dataGridViewDialogueActions.SelectedRows[0].DataBoundItem).Object;
                 new AddOrEditDialogueActionForm(this, true, item.Id).ShowDialog();
-                RefreshPlayerDialogs();
+                RefreshDialogs();
             }
         }
 
-        private void buttonPlayerDuplicateDialogueAction_Click(object sender, EventArgs e)
+        private void buttonDuplicateDialogueAction_Click(object sender, EventArgs e)
         {
-            if (dataGridViewPlayerDialogueActions.SelectedRows.Count == 1)
+            if (dataGridViewDialogueActions.SelectedRows.Count == 1)
             {
-                var item = ((ObjectView<GUIDialogStateAction>)dataGridViewPlayerDialogueActions.SelectedRows[0].DataBoundItem).Object;
+                var item = ((ObjectView<GUIDialogStateAction>)dataGridViewDialogueActions.SelectedRows[0].DataBoundItem).Object;
 
                 var newDialogueAction = new DialogueStateActionDTO
                 {
@@ -216,64 +195,23 @@ namespace IntegratedAuthoringToolWF
                     Utterance = item.Utterance
                 };
                 LoadedAsset.AddPlayerDialogAction(newDialogueAction);
-                RefreshPlayerDialogs();
+                RefreshDialogs();
             }
         }
 
-        private void buttonPlayerRemoveDialogueAction_Click(object sender, EventArgs e)
+        private void buttonRemoveDialogueAction_Click(object sender, EventArgs e)
         {
             IList<Guid> itemsToRemove = new List<Guid>();
-            for (int i = 0; i < dataGridViewPlayerDialogueActions.SelectedRows.Count; i++)
+            for (int i = 0; i < dataGridViewDialogueActions.SelectedRows.Count; i++)
             {
-                var item = ((ObjectView<GUIDialogStateAction>)dataGridViewPlayerDialogueActions.SelectedRows[i].DataBoundItem).Object;
+                var item = ((ObjectView<GUIDialogStateAction>)dataGridViewDialogueActions.SelectedRows[i].DataBoundItem).Object;
                 itemsToRemove.Add(item.Id);
             }
              LoadedAsset.RemoveDialogueActions(PLAYER, itemsToRemove);
-             RefreshPlayerDialogs();
+             RefreshDialogs();
              this.SetModified();
         }
 
-        private void buttonAgentEditDialogAction_Click(object sender, EventArgs e)
-        {
-            if (dataGridViewAgentDialogueActions.SelectedRows.Count == 1)
-            {
-                var item = ((ObjectView<GUIDialogStateAction>)dataGridViewAgentDialogueActions.SelectedRows[0].DataBoundItem).Object;
-                new AddOrEditDialogueActionForm(this, false, item.Id).ShowDialog();
-                RefreshAgentDialogs();
-            }
-        }
-
-        private void buttonAgentDuplicateDialogueAction_Click(object sender, EventArgs e)
-        {
-             if (dataGridViewAgentDialogueActions.SelectedRows.Count == 1)
-            {
-                var item = ((ObjectView<GUIDialogStateAction>)dataGridViewAgentDialogueActions.SelectedRows[0].DataBoundItem).Object;
-
-                var newDialogueAction = new DialogueStateActionDTO
-                {
-                    CurrentState = item.CurrentState,
-                    NextState = item.NextState,
-                    Meaning = item.Meaning.Split(',').Where(s => !string.IsNullOrEmpty(s)).ToArray(),
-                    Style = item.Style.Split(',').Where(s => !string.IsNullOrEmpty(s)).ToArray(),
-                    Utterance = item.Utterance
-                };
-                LoadedAsset.AddAgentDialogAction(newDialogueAction);
-                RefreshAgentDialogs();
-            }
-        }
-
-        private void buttonAgentRemoveDialogAction_Click(object sender, EventArgs e)
-        {
-            IList<Guid> itemsToRemove = new List<Guid>();
-            for (int i = 0; i < dataGridViewAgentDialogueActions.SelectedRows.Count; i++)
-            {
-                var item = ((ObjectView<GUIDialogStateAction>)dataGridViewAgentDialogueActions.SelectedRows[i].DataBoundItem).Object;
-                itemsToRemove.Add(item.Id);
-            }
-            LoadedAsset.RemoveDialogueActions(AGENT, itemsToRemove);
-            RefreshAgentDialogs();
-            SetModified();
-        }
 
         private void buttonImportExcel_Click(object sender, EventArgs e)
         {
@@ -299,8 +237,7 @@ namespace IntegratedAuthoringToolWF
                     LoadedAsset.AddAgentDialogAction(d);
             }
 
-            RefreshPlayerDialogs();
-            RefreshAgentDialogs();
+            RefreshDialogs();
         }
 
         private static IEnumerable<DialogueStateActionDTO> ImportWorkSheet(ExcelPackage package, string workSheetName)
@@ -443,8 +380,7 @@ namespace IntegratedAuthoringToolWF
                 }
             }
 
-            RefreshPlayerDialogs();
-            RefreshAgentDialogs();
+            RefreshDialogs();
         }
 
         private DialogueStateActionDTO GenerateDialogueActionFromLine(string line, int totalSize, ref int stateCounter)
@@ -581,5 +517,9 @@ namespace IntegratedAuthoringToolWF
             SaveAssetAs();
         }
 
+        private void groupBox2_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }

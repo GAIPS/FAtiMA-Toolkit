@@ -157,6 +157,7 @@
             this._dialogOptions.Name = "_dialogOptions";
             this._dialogOptions.Size = new System.Drawing.Size(365, 21);
             this._dialogOptions.TabIndex = 9;
+            this._dialogOptions.SelectedIndexChanged += new System.EventHandler(this._dialogOptions_SelectedIndexChanged);
             this._dialogOptions.SelectionChangeCommitted += new System.EventHandler(this._dialogOptions_SelectionChangeCommitted);
             // 
             // label1

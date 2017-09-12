@@ -78,17 +78,5 @@ namespace IntegratedAuthoringToolWF
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-		private void OnLoad(object sender, EventArgs e)
-		{
-			if (_isPlayerDialogue && _dialogueStateActionToEdit == null)
-				this.Text = "Add Player Dialogue Action";
-			else if (_isPlayerDialogue && _dialogueStateActionToEdit != null)
-				this.Text = "Update Player Dialogue Action";
-			else if (!_isPlayerDialogue && _dialogueStateActionToEdit == null)
-				this.Text = "Add Agent Dialogue Action";
-			else if (!_isPlayerDialogue && _dialogueStateActionToEdit != null)
-				this.Text = "Update Agent Dialogue Action";
-		}
 	}
 }

@@ -405,5 +405,10 @@ namespace IntegratedAuthoringToolWF
 				return action(control);
 			}
 		}
-	}
+
+        private void _dialogOptions_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
 }
