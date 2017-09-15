@@ -14,17 +14,30 @@ using WellFormedNames;
 
 namespace CommeillFautWF.ViewModels
 {
-   public class SocialExchangesVM 
+   public class SocialExchangesVM : IDataGridViewController
     {
       
         public readonly BaseCIFForm _mainForm;
         private bool m_loading;
         public CommeillFautAsset _cifAsset => _mainForm.LoadedAsset;
+        private Guid _currentlySelected = Guid.Empty;
         public BindingListView<SocialExchangeDTO> SocialExchanges { get; private set; }
-  
-     //   public Dictionary<string, InfluenceRuleDTO> InfluenceRulesDiccionary;
 
-        
+        //   public Dictionary<string, InfluenceRuleDTO> InfluenceRulesDiccionary;
+
+        public Guid Selection
+        {
+            get { return _currentlySelected; }
+            set
+            {
+                if (_currentlySelected == value)
+                    return;
+
+                _currentlySelected = value;
+                UpdateSelected();
+            }
+        }
+
         public SocialExchangesVM(BaseCIFForm parent)
         {
             
@@ -35,13 +48,29 @@ namespace CommeillFautWF.ViewModels
          
         }
 
-     
+        public SocialExchangesVM(BaseCIFForm parent, CommeillFautAsset asset)
+        {
+            _mainForm = parent;
+          
+            var _aux = new List<SocialExchangeDTO>();
+            foreach (var s in asset.m_SocialExchanges)
+                _aux.Add(s.ToDTO());
+            SocialExchanges = new BindingListView<SocialExchangeDTO>(_aux);
+           
+            //      InfluenceRulesDiccionary = new Dictionary<string, InfluenceRuleDTO>();
+            m_loading = false;
+        }
+
+
         public void Reload()
         {
             m_loading = true;
 
-            SocialExchanges.Refresh();
-     
+            var _aux = new List<SocialExchangeDTO>();
+            foreach (var s in _cifAsset.m_SocialExchanges)
+                _aux.Add(s.ToDTO());
+            SocialExchanges = new BindingListView<SocialExchangeDTO>(_aux);
+
             m_loading = false;
         }
 
@@ -63,20 +92,82 @@ namespace CommeillFautWF.ViewModels
           
         }
 
- /*       public void AddOrUpdateInfluenceRule(InfluenceRuleDTO dto)
+        public object AddElement()
         {
-            if (addedRules.Find(x => x.RuleName == dto.RuleName) != null)
-            {
-                addedRules.Remove(addedRules.Find(x => x.RuleName == dto.RuleName));
-                addedRules.Add(dto);
-            }
-          else  addedRules.Add(dto);
-           _mainForm.SetModified();
-           this.Reload();
+
+            var dto = new SocialExchangeDTO();
+            var dialog = new AddSocialExchange(this, new SocialExchange(dto));
+            dialog.ShowDialog();
+            return dialog.AddedObject;
+
         }
 
-      
-*/
+        public IEnumerable<object> EditElements(IEnumerable<object> elementsToEdit)
+        {
+            List<object> result = new List<object>();
+            foreach (var dto in elementsToEdit.Cast<ObjectView<SocialExchangeDTO>>().Select(v => v.Object))
+            {
+                try
+                {
+                    var dialog = new AddSocialExchange(this, new SocialExchange(dto));
+                    dialog.ShowDialog();
+                    if (dialog.AddedObject != null)
+                        result.Add(dialog.AddedObject);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            return result;
+        }
+
+        public uint RemoveElements(IEnumerable<object> elementsToRemove)
+        {
+            uint count = 0;
+            foreach (var dto in elementsToRemove.Cast<ObjectView<SocialExchangeDTO>>().Select(v => v.Object))
+            {
+                try
+                {
+                    RemoveSocialExchangeById(dto.Id);
+                    count++;
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+            if (count > 0)
+            {
+                Reload();
+                _mainForm.SetModified();
+            }
+
+            return count;
+        }
+
+        public void RemoveSocialExchangeById(Guid id)
+        {
+            var se = SocialExchanges.FirstOrDefault(a => a.Id == id);
+            if (se == null)
+                throw new Exception("Social Exchange not found");
+            _cifAsset.RemoveSocialExchange(new SocialExchange(se));
+            Reload();
+        }
+        private void UpdateSelected()
+        {
+            if (m_loading)
+                return;
+
+   
+        }
+
+        public IList GetElements()
+        {
+            return SocialExchanges;
+        }
     }
 }
 
