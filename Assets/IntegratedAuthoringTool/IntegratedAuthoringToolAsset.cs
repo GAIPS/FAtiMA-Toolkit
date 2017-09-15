@@ -118,14 +118,14 @@ namespace IntegratedAuthoringTool
 			this.RemoveDialogueActions(new[] { dialogueStateActionToEdit });
 		}
 
-	    public DialogueStateActionDTO GetDialogActionById(string speaker, Guid id)
+	    public DialogueStateActionDTO GetDialogActionById(Guid id)
 	    {
 		    return m_dialogues.GetDialogById(id).ToDTO();
 	    }
 
         public Name BuildSpeakActionName(string speaker, Guid id)
         {
-            var dialogue = new DialogStateAction(GetDialogActionById(speaker, id));
+            var dialogue = new DialogStateAction(GetDialogActionById(id));
             return dialogue.BuildSpeakAction();
         }
 
