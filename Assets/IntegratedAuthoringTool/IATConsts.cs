@@ -14,7 +14,5 @@ namespace IntegratedAuthoringTool
         public static readonly string AGENT = "Agent";
         public static readonly string DIALOG_ACTION_KEY = "Speak";
         public static readonly string TTS_PREFIX = "TTS-";
-        public static readonly string STYLES_PACKAGING_NAME = "S";
-        public static readonly string MEANINGS_PACKAGING_NAME = "M";
     }
 }

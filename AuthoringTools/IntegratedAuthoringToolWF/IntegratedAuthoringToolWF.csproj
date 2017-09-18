@@ -57,7 +57,6 @@
     <Compile Include="BaseIATForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUIDialogStateAction.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -128,27 +127,27 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ActionLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IntegratedAuthoringTool.1.1.0\lib\net35\ActionLibrary.dll</HintPath>
+      <HintPath>..\packages\IntegratedAuthoringTool.1.3.0.0\lib\net35\ActionLibrary.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="AutobiographicMemory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IntegratedAuthoringTool.1.1.0\lib\net35\AutobiographicMemory.dll</HintPath>
+      <HintPath>..\packages\IntegratedAuthoringTool.1.3.0.0\lib\net35\AutobiographicMemory.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="CommeillFaut, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IntegratedAuthoringTool.1.1.0\lib\net35\CommeillFaut.dll</HintPath>
+      <HintPath>..\packages\IntegratedAuthoringTool.1.3.0.0\lib\net35\CommeillFaut.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Conditions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IntegratedAuthoringTool.1.1.0\lib\net35\Conditions.dll</HintPath>
+      <HintPath>..\packages\IntegratedAuthoringTool.1.3.0.0\lib\net35\Conditions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EmotionalAppraisal, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IntegratedAuthoringTool.1.1.0\lib\net35\EmotionalAppraisal.dll</HintPath>
+      <HintPath>..\packages\IntegratedAuthoringTool.1.3.0.0\lib\net35\EmotionalAppraisal.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EmotionalDecisionMaking, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IntegratedAuthoringTool.1.1.0\lib\net35\EmotionalDecisionMaking.dll</HintPath>
+      <HintPath>..\packages\IntegratedAuthoringTool.1.3.0.0\lib\net35\EmotionalDecisionMaking.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EPPlus, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
@@ -160,19 +159,19 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="GAIPS.Rage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IntegratedAuthoringTool.1.1.0\lib\net35\GAIPS.Rage.dll</HintPath>
+      <HintPath>..\packages\IntegratedAuthoringTool.1.3.0.0\lib\net35\GAIPS.Rage.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GAIPS.Serialization, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\GAIPS.Serialization.1.5.0\lib\net35\GAIPS.Serialization.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="IntegratedAuthoringTool, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IntegratedAuthoringTool.1.1.0\lib\net35\IntegratedAuthoringTool.dll</HintPath>
+    <Reference Include="IntegratedAuthoringTool, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IntegratedAuthoringTool.1.3.0.0\lib\net35\IntegratedAuthoringTool.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="KnowledgeBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IntegratedAuthoringTool.1.1.0\lib\net35\KnowledgeBase.dll</HintPath>
+      <HintPath>..\packages\IntegratedAuthoringTool.1.3.0.0\lib\net35\KnowledgeBase.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="NAudio, Version=1.5.4.0, Culture=neutral, processorArchitecture=MSIL">
@@ -192,11 +191,11 @@
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
     <Reference Include="RolePlayCharacter, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IntegratedAuthoringTool.1.1.0\lib\net35\RolePlayCharacter.dll</HintPath>
+      <HintPath>..\packages\IntegratedAuthoringTool.1.3.0.0\lib\net35\RolePlayCharacter.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SocialImportanceAsset, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IntegratedAuthoringTool.1.1.0\lib\net35\SocialImportanceAsset.dll</HintPath>
+    <Reference Include="SocialImportanceAsset, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IntegratedAuthoringTool.1.3.0.0\lib\net35\SocialImportanceAsset.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SoundTouch.Net, Version=1.9.2.0, Culture=neutral, processorArchitecture=MSIL">
@@ -215,7 +214,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="WellFormedNames, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IntegratedAuthoringTool.1.1.0\lib\net35\WellFormedNames.dll</HintPath>
+      <HintPath>..\packages\IntegratedAuthoringTool.1.3.0.0\lib\net35\WellFormedNames.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>

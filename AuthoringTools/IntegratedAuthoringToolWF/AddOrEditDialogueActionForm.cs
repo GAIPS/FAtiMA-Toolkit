@@ -23,14 +23,12 @@ namespace IntegratedAuthoringToolWF
 		public AddOrEditDialogueActionForm(MainForm form, bool isPlayerDialogue, Guid dialogId) : this(form,isPlayerDialogue)
 		{
 			buttonAddOrUpdate.Text = "Update";
-			_dialogueStateActionToEdit =
-				form.LoadedAsset.GetDialogActionById(
-					isPlayerDialogue ? IATConsts.PLAYER : IATConsts.AGENT, dialogId);
+			_dialogueStateActionToEdit = form.LoadedAsset.GetDialogActionById(dialogId);
 
 			textBoxCurrentState.Text = _dialogueStateActionToEdit.CurrentState;
 			textBoxNextState.Text = _dialogueStateActionToEdit.NextState;
-			textBoxMeaning.Text = _dialogueStateActionToEdit.Meaning.Length == 0 ? string.Empty : _dialogueStateActionToEdit.Meaning.Aggregate((s, s1) => s + ", " + s1);
-			textBoxStyle.Text = _dialogueStateActionToEdit.Style.Length == 0 ? string.Empty : _dialogueStateActionToEdit.Style.Aggregate((s, s1) => s + ", " + s1);
+            textBoxMeaning.Text = _dialogueStateActionToEdit.Meaning;
+            textBoxStyle.Text = _dialogueStateActionToEdit.Style;
 			textBoxUtterance.Text = _dialogueStateActionToEdit.Utterance;
 		}
 
@@ -42,33 +40,18 @@ namespace IntegratedAuthoringToolWF
                 {
                     CurrentState = textBoxCurrentState.Text,
 					NextState = textBoxNextState.Text,
-					Meaning = textBoxMeaning.Text.Split(',').Where(s => !string.IsNullOrEmpty(s)).ToArray(),
-                    Style = textBoxStyle.Text.Split(',').Where(s => !string.IsNullOrEmpty(s)).ToArray(),
+					Meaning = textBoxMeaning.Text,
+                    Style = textBoxStyle.Text,
                     Utterance = textBoxUtterance.Text
                 };
 
                 if (_dialogueStateActionToEdit == null)
                 {
-                    if (_isPlayerDialogue)
-                    {
-                        _iatAsset.AddPlayerDialogAction(newDialogueAction);
-                    }
-                    else
-                    {
-                        _iatAsset.AddAgentDialogAction(newDialogueAction);
-                    }
+                    _iatAsset.AddDialogAction(newDialogueAction);
                 }
                 else
                 {
-                    if (_isPlayerDialogue)
-                    {
-                        _iatAsset.EditPlayerDialogAction(_dialogueStateActionToEdit, newDialogueAction);
-                    }
-                    else
-                    {
-                        _iatAsset.EditAgentDialogAction(_dialogueStateActionToEdit, newDialogueAction);
-                    }
-
+                    _iatAsset.EditDialogAction(_dialogueStateActionToEdit, newDialogueAction);
                 }
 				_parentForm.SetModified();
                 this.Close();
@@ -78,17 +61,5 @@ namespace IntegratedAuthoringToolWF
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-		private void OnLoad(object sender, EventArgs e)
-		{
-			if (_isPlayerDialogue && _dialogueStateActionToEdit == null)
-				this.Text = "Add Player Dialogue Action";
-			else if (_isPlayerDialogue && _dialogueStateActionToEdit != null)
-				this.Text = "Update Player Dialogue Action";
-			else if (!_isPlayerDialogue && _dialogueStateActionToEdit == null)
-				this.Text = "Add Agent Dialogue Action";
-			else if (!_isPlayerDialogue && _dialogueStateActionToEdit != null)
-				this.Text = "Update Agent Dialogue Action";
-		}
 	}
 }

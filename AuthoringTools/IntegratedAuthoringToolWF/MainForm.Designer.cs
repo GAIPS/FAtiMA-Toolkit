@@ -31,9 +31,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.textBoxScenarioName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -49,19 +46,12 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPageDialogue = new System.Windows.Forms.TabPage();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.dataGridViewDialogueActions = new System.Windows.Forms.DataGridView();
             this.buttonPlayerDuplicateDialogueAction = new System.Windows.Forms.Button();
             this.buttonPlayerEditDialogueAction = new System.Windows.Forms.Button();
-            this.dataGridViewPlayerDialogueActions = new System.Windows.Forms.DataGridView();
             this.buttonAddPlayerDialogueAction = new System.Windows.Forms.Button();
             this.buttonPlayerRemoveDialogueAction = new System.Windows.Forms.Button();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.buttonAgentDuplicateDialogueAction = new System.Windows.Forms.Button();
-            this.buttonAgentEditDialogAction = new System.Windows.Forms.Button();
-            this.dataGridViewAgentDialogueActions = new System.Windows.Forms.DataGridView();
-            this.buttonAgentAddDialogAction = new System.Windows.Forms.Button();
-            this.buttonAgentRemoveDialogAction = new System.Windows.Forms.Button();
             this.buttonValidate = new System.Windows.Forms.Button();
             this.buttonTTS = new System.Windows.Forms.Button();
             this.buttonImportTxt = new System.Windows.Forms.Button();
@@ -78,14 +68,8 @@
             this.splitContainer1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPageDialogue.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPlayerDialogueActions)).BeginInit();
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAgentDialogueActions)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDialogueActions)).BeginInit();
             this.SuspendLayout();
             // 
             // textBoxScenarioName
@@ -94,7 +78,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxScenarioName.Location = new System.Drawing.Point(70, 15);
             this.textBoxScenarioName.Name = "textBoxScenarioName";
-            this.textBoxScenarioName.Size = new System.Drawing.Size(243, 20);
+            this.textBoxScenarioName.Size = new System.Drawing.Size(313, 20);
             this.textBoxScenarioName.TabIndex = 0;
             this.textBoxScenarioName.TextChanged += new System.EventHandler(this.textBoxScenarioName_TextChanged);
             // 
@@ -115,7 +99,7 @@
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
             this.groupBox1.Location = new System.Drawing.Point(12, 178);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(301, 339);
+            this.groupBox1.Size = new System.Drawing.Size(371, 339);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Characters";
@@ -132,7 +116,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(295, 320);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(365, 320);
             this.tableLayoutPanel1.TabIndex = 15;
             // 
             // dataGridViewCharacters
@@ -153,7 +137,7 @@
             this.dataGridViewCharacters.RowHeadersVisible = false;
             this.dataGridViewCharacters.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewCharacters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewCharacters.Size = new System.Drawing.Size(289, 279);
+            this.dataGridViewCharacters.Size = new System.Drawing.Size(359, 279);
             this.dataGridViewCharacters.TabIndex = 13;
             this.dataGridViewCharacters.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCharacters_CellContentClick);
             this.dataGridViewCharacters.SelectionChanged += new System.EventHandler(this.dataGridViewCharacters_SelectionChanged);
@@ -166,7 +150,7 @@
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 3);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(289, 29);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(359, 29);
             this.flowLayoutPanel1.TabIndex = 14;
             // 
             // buttonCreateCharacter
@@ -216,7 +200,7 @@
             this.textBoxScenarioDescription.Multiline = true;
             this.textBoxScenarioDescription.Name = "textBoxScenarioDescription";
             this.textBoxScenarioDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxScenarioDescription.Size = new System.Drawing.Size(298, 95);
+            this.textBoxScenarioDescription.Size = new System.Drawing.Size(368, 95);
             this.textBoxScenarioDescription.TabIndex = 3;
             this.textBoxScenarioDescription.TextChanged += new System.EventHandler(this.textBoxScenarioDescription_TextChanged);
             // 
@@ -238,8 +222,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(1056, 521);
-            this.splitContainer1.SplitterDistance = 328;
+            this.splitContainer1.Size = new System.Drawing.Size(1285, 521);
+            this.splitContainer1.SplitterDistance = 398;
             this.splitContainer1.TabIndex = 5;
             // 
             // tabControl1
@@ -252,12 +236,12 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(712, 514);
+            this.tabControl1.Size = new System.Drawing.Size(871, 514);
             this.tabControl1.TabIndex = 20;
             // 
             // tabPageDialogue
             // 
-            this.tabPageDialogue.Controls.Add(this.splitContainer2);
+            this.tabPageDialogue.Controls.Add(this.groupBox2);
             this.tabPageDialogue.Controls.Add(this.buttonValidate);
             this.tabPageDialogue.Controls.Add(this.buttonTTS);
             this.tabPageDialogue.Controls.Add(this.buttonImportTxt);
@@ -266,46 +250,75 @@
             this.tabPageDialogue.Location = new System.Drawing.Point(4, 22);
             this.tabPageDialogue.Name = "tabPageDialogue";
             this.tabPageDialogue.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDialogue.Size = new System.Drawing.Size(704, 488);
+            this.tabPageDialogue.Size = new System.Drawing.Size(863, 488);
             this.tabPageDialogue.TabIndex = 0;
             this.tabPageDialogue.Text = "Dialogue Editor";
             this.tabPageDialogue.UseVisualStyleBackColor = true;
             // 
-            // splitContainer2
-            // 
-            this.splitContainer2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.splitContainer2.Location = new System.Drawing.Point(6, 6);
-            this.splitContainer2.Name = "splitContainer2";
-            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer2.Panel1
-            // 
-            this.splitContainer2.Panel1.Controls.Add(this.groupBox2);
-            // 
-            // splitContainer2.Panel2
-            // 
-            this.splitContainer2.Panel2.Controls.Add(this.groupBox3);
-            this.splitContainer2.Size = new System.Drawing.Size(644, 438);
-            this.splitContainer2.SplitterDistance = 217;
-            this.splitContainer2.TabIndex = 23;
-            // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.dataGridViewDialogueActions);
             this.groupBox2.Controls.Add(this.buttonPlayerDuplicateDialogueAction);
             this.groupBox2.Controls.Add(this.buttonPlayerEditDialogueAction);
-            this.groupBox2.Controls.Add(this.dataGridViewPlayerDialogueActions);
             this.groupBox2.Controls.Add(this.buttonAddPlayerDialogueAction);
             this.groupBox2.Controls.Add(this.buttonPlayerRemoveDialogueAction);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(0, 0);
+            this.groupBox2.Location = new System.Drawing.Point(6, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(644, 217);
+            this.groupBox2.Size = new System.Drawing.Size(851, 445);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Player Dialogue Actions";
+            this.groupBox2.Text = "Dialogue Actions";
+            this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
+            // 
+            // dataGridViewPlayerDialogueActions
+            // 
+            this.dataGridViewDialogueActions.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.dataGridViewDialogueActions.AllowUserToAddRows = false;
+            this.dataGridViewDialogueActions.AllowUserToDeleteRows = false;
+            this.dataGridViewDialogueActions.AllowUserToOrderColumns = true;
+            this.dataGridViewDialogueActions.AllowUserToResizeRows = false;
+            this.dataGridViewDialogueActions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewDialogueActions.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewDialogueActions.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewDialogueActions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridViewDialogueActions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewDialogueActions.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridViewDialogueActions.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.dataGridViewDialogueActions.Location = new System.Drawing.Point(6, 58);
+            this.dataGridViewDialogueActions.Name = "dataGridViewPlayerDialogueActions";
+            this.dataGridViewDialogueActions.ReadOnly = true;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewDialogueActions.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridViewDialogueActions.RowHeadersVisible = false;
+            this.dataGridViewDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(839, 381);
+            this.dataGridViewDialogueActions.TabIndex = 13;
             // 
             // buttonPlayerDuplicateDialogueAction
             // 
@@ -315,7 +328,7 @@
             this.buttonPlayerDuplicateDialogueAction.TabIndex = 15;
             this.buttonPlayerDuplicateDialogueAction.Text = "Duplicate";
             this.buttonPlayerDuplicateDialogueAction.UseVisualStyleBackColor = true;
-            this.buttonPlayerDuplicateDialogueAction.Click += new System.EventHandler(this.buttonPlayerDuplicateDialogueAction_Click);
+            this.buttonPlayerDuplicateDialogueAction.Click += new System.EventHandler(this.buttonDuplicateDialogueAction_Click);
             // 
             // buttonPlayerEditDialogueAction
             // 
@@ -325,54 +338,7 @@
             this.buttonPlayerEditDialogueAction.TabIndex = 14;
             this.buttonPlayerEditDialogueAction.Text = "Edit";
             this.buttonPlayerEditDialogueAction.UseVisualStyleBackColor = true;
-            this.buttonPlayerEditDialogueAction.Click += new System.EventHandler(this.buttonPlayerEditDialogueAction_Click);
-            // 
-            // dataGridViewPlayerDialogueActions
-            // 
-            this.dataGridViewPlayerDialogueActions.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.dataGridViewPlayerDialogueActions.AllowUserToAddRows = false;
-            this.dataGridViewPlayerDialogueActions.AllowUserToDeleteRows = false;
-            this.dataGridViewPlayerDialogueActions.AllowUserToOrderColumns = true;
-            this.dataGridViewPlayerDialogueActions.AllowUserToResizeRows = false;
-            this.dataGridViewPlayerDialogueActions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewPlayerDialogueActions.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridViewPlayerDialogueActions.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewPlayerDialogueActions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
-            this.dataGridViewPlayerDialogueActions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewPlayerDialogueActions.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridViewPlayerDialogueActions.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewPlayerDialogueActions.Location = new System.Drawing.Point(6, 51);
-            this.dataGridViewPlayerDialogueActions.Name = "dataGridViewPlayerDialogueActions";
-            this.dataGridViewPlayerDialogueActions.ReadOnly = true;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewPlayerDialogueActions.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
-            this.dataGridViewPlayerDialogueActions.RowHeadersVisible = false;
-            this.dataGridViewPlayerDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewPlayerDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewPlayerDialogueActions.Size = new System.Drawing.Size(632, 160);
-            this.dataGridViewPlayerDialogueActions.TabIndex = 13;
+            this.buttonPlayerEditDialogueAction.Click += new System.EventHandler(this.buttonEditDialogueAction_Click);
             // 
             // buttonAddPlayerDialogueAction
             // 
@@ -382,7 +348,7 @@
             this.buttonAddPlayerDialogueAction.TabIndex = 10;
             this.buttonAddPlayerDialogueAction.Text = "Add";
             this.buttonAddPlayerDialogueAction.UseVisualStyleBackColor = true;
-            this.buttonAddPlayerDialogueAction.Click += new System.EventHandler(this.buttonAddPlayerDialogueAction_Click_1);
+            this.buttonAddPlayerDialogueAction.Click += new System.EventHandler(this.buttonAddDialogueAction_Click_1);
             // 
             // buttonPlayerRemoveDialogueAction
             // 
@@ -392,109 +358,7 @@
             this.buttonPlayerRemoveDialogueAction.TabIndex = 11;
             this.buttonPlayerRemoveDialogueAction.Text = "Remove";
             this.buttonPlayerRemoveDialogueAction.UseVisualStyleBackColor = true;
-            this.buttonPlayerRemoveDialogueAction.Click += new System.EventHandler(this.buttonPlayerRemoveDialogueAction_Click);
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.buttonAgentDuplicateDialogueAction);
-            this.groupBox3.Controls.Add(this.buttonAgentEditDialogAction);
-            this.groupBox3.Controls.Add(this.dataGridViewAgentDialogueActions);
-            this.groupBox3.Controls.Add(this.buttonAgentAddDialogAction);
-            this.groupBox3.Controls.Add(this.buttonAgentRemoveDialogAction);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(0, 0);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(644, 217);
-            this.groupBox3.TabIndex = 15;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Agent Dialogue Actions";
-            // 
-            // buttonAgentDuplicateDialogueAction
-            // 
-            this.buttonAgentDuplicateDialogueAction.Location = new System.Drawing.Point(126, 19);
-            this.buttonAgentDuplicateDialogueAction.Name = "buttonAgentDuplicateDialogueAction";
-            this.buttonAgentDuplicateDialogueAction.Size = new System.Drawing.Size(70, 23);
-            this.buttonAgentDuplicateDialogueAction.TabIndex = 16;
-            this.buttonAgentDuplicateDialogueAction.Text = "Duplicate";
-            this.buttonAgentDuplicateDialogueAction.UseVisualStyleBackColor = true;
-            this.buttonAgentDuplicateDialogueAction.Click += new System.EventHandler(this.buttonAgentDuplicateDialogueAction_Click);
-            // 
-            // buttonAgentEditDialogAction
-            // 
-            this.buttonAgentEditDialogAction.Location = new System.Drawing.Point(66, 19);
-            this.buttonAgentEditDialogAction.Name = "buttonAgentEditDialogAction";
-            this.buttonAgentEditDialogAction.Size = new System.Drawing.Size(54, 23);
-            this.buttonAgentEditDialogAction.TabIndex = 14;
-            this.buttonAgentEditDialogAction.Text = "Edit";
-            this.buttonAgentEditDialogAction.UseVisualStyleBackColor = true;
-            this.buttonAgentEditDialogAction.Click += new System.EventHandler(this.buttonAgentEditDialogAction_Click);
-            // 
-            // dataGridViewAgentDialogueActions
-            // 
-            this.dataGridViewAgentDialogueActions.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.dataGridViewAgentDialogueActions.AllowUserToAddRows = false;
-            this.dataGridViewAgentDialogueActions.AllowUserToDeleteRows = false;
-            this.dataGridViewAgentDialogueActions.AllowUserToOrderColumns = true;
-            this.dataGridViewAgentDialogueActions.AllowUserToResizeRows = false;
-            this.dataGridViewAgentDialogueActions.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewAgentDialogueActions.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridViewAgentDialogueActions.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewAgentDialogueActions.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
-            this.dataGridViewAgentDialogueActions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewAgentDialogueActions.DefaultCellStyle = dataGridViewCellStyle5;
-            this.dataGridViewAgentDialogueActions.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewAgentDialogueActions.Location = new System.Drawing.Point(6, 51);
-            this.dataGridViewAgentDialogueActions.Name = "dataGridViewAgentDialogueActions";
-            this.dataGridViewAgentDialogueActions.ReadOnly = true;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewAgentDialogueActions.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
-            this.dataGridViewAgentDialogueActions.RowHeadersVisible = false;
-            this.dataGridViewAgentDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewAgentDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAgentDialogueActions.Size = new System.Drawing.Size(632, 160);
-            this.dataGridViewAgentDialogueActions.TabIndex = 13;
-            // 
-            // buttonAgentAddDialogAction
-            // 
-            this.buttonAgentAddDialogAction.Location = new System.Drawing.Point(6, 19);
-            this.buttonAgentAddDialogAction.Name = "buttonAgentAddDialogAction";
-            this.buttonAgentAddDialogAction.Size = new System.Drawing.Size(54, 23);
-            this.buttonAgentAddDialogAction.TabIndex = 10;
-            this.buttonAgentAddDialogAction.Text = "Add";
-            this.buttonAgentAddDialogAction.UseVisualStyleBackColor = true;
-            this.buttonAgentAddDialogAction.Click += new System.EventHandler(this.buttonAgentAddDialogAction_Click);
-            // 
-            // buttonAgentRemoveDialogAction
-            // 
-            this.buttonAgentRemoveDialogAction.Location = new System.Drawing.Point(202, 19);
-            this.buttonAgentRemoveDialogAction.Name = "buttonAgentRemoveDialogAction";
-            this.buttonAgentRemoveDialogAction.Size = new System.Drawing.Size(70, 23);
-            this.buttonAgentRemoveDialogAction.TabIndex = 11;
-            this.buttonAgentRemoveDialogAction.Text = "Remove";
-            this.buttonAgentRemoveDialogAction.UseVisualStyleBackColor = true;
-            this.buttonAgentRemoveDialogAction.Click += new System.EventHandler(this.buttonAgentRemoveDialogAction_Click);
+            this.buttonPlayerRemoveDialogueAction.Click += new System.EventHandler(this.buttonRemoveDialogueAction_Click);
             // 
             // buttonValidate
             // 
@@ -556,7 +420,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(704, 488);
+            this.tabPage2.Size = new System.Drawing.Size(863, 488);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Role Play Character Editor";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -566,7 +430,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1056, 545);
+            this.ClientSize = new System.Drawing.Size(1285, 545);
             this.Controls.Add(this.splitContainer1);
             this.EditorName = "Integrated Authoring Tool";
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -586,14 +450,8 @@
             this.splitContainer1.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.tabPageDialogue.ResumeLayout(false);
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPlayerDialogueActions)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAgentDialogueActions)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDialogueActions)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -621,19 +479,12 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPageDialogue;
-        private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button buttonPlayerDuplicateDialogueAction;
         private System.Windows.Forms.Button buttonPlayerEditDialogueAction;
-        private System.Windows.Forms.DataGridView dataGridViewPlayerDialogueActions;
+        private System.Windows.Forms.DataGridView dataGridViewDialogueActions;
         private System.Windows.Forms.Button buttonAddPlayerDialogueAction;
         private System.Windows.Forms.Button buttonPlayerRemoveDialogueAction;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button buttonAgentDuplicateDialogueAction;
-        private System.Windows.Forms.Button buttonAgentEditDialogAction;
-        private System.Windows.Forms.DataGridView dataGridViewAgentDialogueActions;
-        private System.Windows.Forms.Button buttonAgentAddDialogAction;
-        private System.Windows.Forms.Button buttonAgentRemoveDialogAction;
     }
 }
 

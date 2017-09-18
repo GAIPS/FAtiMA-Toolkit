@@ -173,7 +173,6 @@
 			this.MinimumSize = new System.Drawing.Size(16, 253);
 			this.Name = "AddOrEditDialogueActionForm";
 			this.Text = "Add Dialogue Action";
-			this.Load += new System.EventHandler(this.OnLoad);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

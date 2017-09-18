@@ -130,7 +130,7 @@ namespace CommeillFautTutorial
                     Console.WriteLine("Dialogue:");
                     Console.WriteLine("Current State: " + action.Parameters[0].ToString());
                     Console.WriteLine(initiator.CharacterName + " says: ''" +
-                                      iat.GetDialogueActions(IATConsts.PLAYER, action.Parameters[0],action.Parameters[1], action.Parameters[2], action.Parameters[3]).FirstOrDefault().Utterance + "'' to " + action.Target);
+                                      iat.GetDialogueActions(action.Parameters[0],action.Parameters[1], action.Parameters[2], action.Parameters[3]).FirstOrDefault().Utterance + "'' to " + action.Target);
                     Console.WriteLine("Next State: " + action.Parameters[1].ToString());
 
 
