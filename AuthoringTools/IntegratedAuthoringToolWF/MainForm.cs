@@ -21,7 +21,7 @@ namespace IntegratedAuthoringToolWF
 	public partial class MainForm : BaseIATForm
 	{
         
-        private BindingListView<GUIDialogStateAction> _dialogs;
+        private BindingListView<DialogueStateActionDTO> _dialogs;
         private readonly string PLAYER = IATConsts.PLAYER;
         private readonly string AGENT = IATConsts.AGENT;
         private BindingListView<CharacterSourceDTO> _characterSources;
@@ -36,9 +36,10 @@ namespace IntegratedAuthoringToolWF
 
         private void RefreshDialogs()
         {
-            _dialogs.DataSource = LoadedAsset.GetAllDialogueActions().ToList();
+            _dialogs.DataSource = LoadedAsset.GetAllDialogueActions().Select(d => d.ToDTO()).ToList();
             _dialogs.Refresh();
             dataGridViewDialogueActions.Columns["Id"].Visible = false;
+            dataGridViewDialogueActions.Columns["UtteranceId"].Visible = false;
 
         }
        
@@ -48,7 +49,7 @@ namespace IntegratedAuthoringToolWF
 			textBoxScenarioDescription.Text = asset.ScenarioDescription;
 			_characterSources = new BindingListView<CharacterSourceDTO>(asset.GetAllCharacterSources().ToList());
 			dataGridViewCharacters.DataSource = _characterSources;
-            _dialogs = new BindingListView<GUIDialogStateAction>(new List<GUIDialogStateAction>());
+            _dialogs = new BindingListView<DialogueStateActionDTO>(new List<DialogueStateActionDTO>());
             dataGridViewDialogueActions.DataSource = _dialogs;
             RefreshDialogs();
         }
@@ -173,7 +174,7 @@ namespace IntegratedAuthoringToolWF
         {
             if (dataGridViewDialogueActions.SelectedRows.Count == 1)
             {
-                var item = ((ObjectView<GUIDialogStateAction>)dataGridViewDialogueActions.SelectedRows[0].DataBoundItem).Object;
+                var item = ((ObjectView<DialogueStateActionDTO>)dataGridViewDialogueActions.SelectedRows[0].DataBoundItem).Object;
                 new AddOrEditDialogueActionForm(this, true, item.Id).ShowDialog();
                 RefreshDialogs();
             }
@@ -183,7 +184,7 @@ namespace IntegratedAuthoringToolWF
         {
             if (dataGridViewDialogueActions.SelectedRows.Count == 1)
             {
-                var item = ((ObjectView<GUIDialogStateAction>)dataGridViewDialogueActions.SelectedRows[0].DataBoundItem).Object;
+                var item = ((ObjectView<DialogueStateActionDTO>)dataGridViewDialogueActions.SelectedRows[0].DataBoundItem).Object;
 
                 var newDialogueAction = new DialogueStateActionDTO
                 {
@@ -203,7 +204,7 @@ namespace IntegratedAuthoringToolWF
             IList<Guid> itemsToRemove = new List<Guid>();
             for (int i = 0; i < dataGridViewDialogueActions.SelectedRows.Count; i++)
             {
-                var item = ((ObjectView<GUIDialogStateAction>)dataGridViewDialogueActions.SelectedRows[i].DataBoundItem).Object;
+                var item = ((ObjectView<DialogueStateActionDTO>)dataGridViewDialogueActions.SelectedRows[i].DataBoundItem).Object;
                 itemsToRemove.Add(item.Id);
             }
              LoadedAsset.RemoveDialogueActions(itemsToRemove);
@@ -252,9 +253,9 @@ namespace IntegratedAuthoringToolWF
                 {
                     CurrentState = rowValues[0],
                     NextState = rowValues[1],
-                    Utterance = rowValues[2],
-                    Meaning = rowValues[3],
-                    Style = rowValues[4]
+                    Meaning = rowValues[2],
+                    Style = rowValues[3],
+                    Utterance = rowValues[4]
                 };
 
                 yield return value;
@@ -298,17 +299,15 @@ namespace IntegratedAuthoringToolWF
             //Column Headers
             {
                 var header = worksheet.Cells[2, 1, 2, 5];
-                header.Style.Font.Bold = true;
-                var border = header.Style.Border;
-                border.Bottom.Style = border.Top.Style = border.Left.Style = border.Right.Style = ExcelBorderStyle.Thin;
+                
                 header.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 header.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
                 worksheet.Cells[2, 1].Value = "Current State";
                 worksheet.Cells[2, 2].Value = "Next State";
-                worksheet.Cells[2, 3].Value = "Utterance";
-                worksheet.Cells[2, 4].Value = "Meanings";
-                worksheet.Cells[2, 5].Value = "Styles";
+                worksheet.Cells[2, 3].Value = "Meaning";
+                worksheet.Cells[2, 4].Value = "Style";
+                worksheet.Cells[2, 5].Value = "Utterance";
             }
 
             worksheet.View.FreezePanes(3, 1);
@@ -317,15 +316,13 @@ namespace IntegratedAuthoringToolWF
             foreach (var d in dialogActions)
             {
                 var line = worksheet.Cells[cellIndex, 1, cellIndex, 5];
-                var border = line.Style.Border;
-                border.Bottom.Style = border.Top.Style = border.Left.Style = border.Right.Style = ExcelBorderStyle.Thin;
                 line.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
                 worksheet.Cells[cellIndex, 1].Value = d.CurrentState;
                 worksheet.Cells[cellIndex, 2].Value = d.NextState;
-                worksheet.Cells[cellIndex, 3].Value = d.Utterance;
-                worksheet.Cells[cellIndex, 4].Value = d.Meaning.AggregateToString(", ");
-                worksheet.Cells[cellIndex, 5].Value = d.Style.AggregateToString(", ");
+                worksheet.Cells[cellIndex, 3].Value = d.Meaning;
+                worksheet.Cells[cellIndex, 4].Value = d.Style;
+                worksheet.Cells[cellIndex, 5].Value = d.Utterance;
 
                 cellIndex++;
             }
