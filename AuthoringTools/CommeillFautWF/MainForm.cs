@@ -40,11 +40,9 @@ namespace CommeillFautWF
             genericPropertyDataGridControler1.OnSelectionChanged += OnRuleSelectionChanged;
 
 
-          
-            if (asset?._TriggerRules._triggerRules != null)
-            {
-                dataGridView2.DataSource = asset._TriggerRules._triggerRules;
-            }
+            _triggerRules = new TriggerRulesVM(this, asset);
+      //      TriggerRulesDataGridController.DataController = _triggerRules;
+            TriggerRulesDataGridController.OnSelectionChanged += OnRuleSelectionChanged;
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -84,7 +82,7 @@ namespace CommeillFautWF
         }
 
 
-        private void Refresh()
+       public override void Refresh()
         {
             OnAssetDataLoaded(this.LoadedAsset);
         }
@@ -119,22 +117,22 @@ namespace CommeillFautWF
 
         private void DeleteTriggerRule_Click(object sender, EventArgs e)
         {
-            if (dataGridView2.SelectedCells.Count == 1)
+ /*           if (dataGridView2.SelectedCells.Count == 1)
             {
                 var toDelete = (InfluenceRuleDTO)dataGridView2.SelectedCells[0].Value;
                 this.LoadedAsset._TriggerRules.RemoveTriggerRule(LoadedAsset._TriggerRules._triggerRules.ToList().Find(x => x.Key.RuleName.ToString() == toDelete.RuleName).Key);
 
-            }
+            }*/
 
 
-            this.Refresh();
+           
             SetModified();
         }
 
         private void EditTriggerRule_Click(object sender, EventArgs e)
         {
 
-            var toedit_index = dataGridView2.SelectedCells[0].RowIndex;
+         /*   var toedit_index = dataGridView2.SelectedCells[0].RowIndex;
 
             if (toedit_index >= 0)
             {
@@ -142,7 +140,7 @@ namespace CommeillFautWF
                 new AddTriggerRule(new TriggerRulesVM(this)).ShowDialog();
 
             }
-            Refresh();
+            Refresh();*/
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -189,6 +187,11 @@ namespace CommeillFautWF
         }
 
         private void genericPropertyDataGridControler1_Load_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TriggerRulesDataGridController_Load(object sender, EventArgs e)
         {
 
         }

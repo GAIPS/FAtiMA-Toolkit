@@ -139,7 +139,7 @@ namespace CommeillFaut
         public override String ToString()
         {
 
-            return base.ActionName + " " + Intent + " " + "\n";
+            return base.ActionName + " " + Intent + " " + this.Id + "\n";
         }
 
 

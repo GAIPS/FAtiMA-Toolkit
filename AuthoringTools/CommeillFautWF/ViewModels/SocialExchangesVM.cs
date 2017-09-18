@@ -66,11 +66,13 @@ namespace CommeillFautWF.ViewModels
         {
             m_loading = true;
 
+        
             var _aux = new List<SocialExchangeDTO>();
             foreach (var s in _cifAsset.m_SocialExchanges)
                 _aux.Add(s.ToDTO());
             SocialExchanges = new BindingListView<SocialExchangeDTO>(_aux);
 
+            SocialExchanges.Refresh();
             m_loading = false;
         }
 
@@ -83,13 +85,13 @@ namespace CommeillFautWF.ViewModels
 
             else _cifAsset.AddExchange(newSocialExchange);
 
-            
-            
-      //      SocialExchanges.DataSource = _cifAsset.m_SocialExchanges.ToList();
-        //    SocialExchanges.Refresh();
+
+
             _mainForm.SetModified();
+            _mainForm.Refresh();
+
             Reload();
-          
+
         }
 
         public object AddElement()
@@ -98,6 +100,10 @@ namespace CommeillFautWF.ViewModels
             var dto = new SocialExchangeDTO();
             var dialog = new AddSocialExchange(this, new SocialExchange(dto));
             dialog.ShowDialog();
+            _mainForm.SetModified();
+            _mainForm.Refresh();
+
+            Reload();
             return dialog.AddedObject;
 
         }
@@ -130,7 +136,8 @@ namespace CommeillFautWF.ViewModels
             {
                 try
                 {
-                    RemoveSocialExchangeById(dto.Id);
+                    RemoveSocialExchangeByName(dto.Action);
+                   
                     count++;
                 }
                 catch (Exception e)
@@ -154,6 +161,19 @@ namespace CommeillFautWF.ViewModels
             if (se == null)
                 throw new Exception("Social Exchange not found");
             _cifAsset.RemoveSocialExchange(new SocialExchange(se));
+            Reload();
+        }
+
+        public void RemoveSocialExchangeByName(string _name)
+        {
+            var se = _cifAsset.m_SocialExchanges.FirstOrDefault(a => a.ActionName.ToString() == _name);
+           
+            if (se == null)
+                throw new Exception("Social Exchange not found");
+            _cifAsset.RemoveSocialExchange(se);
+            _mainForm.SetModified();
+            _mainForm.Refresh();
+
             Reload();
         }
         private void UpdateSelected()

@@ -34,7 +34,21 @@ namespace CommeillFautWF.ViewModels
          
         }
 
-     
+        public TriggerRulesVM(BaseCIFForm parent, CommeillFautAsset asset)
+        {
+            _mainForm = parent;
+
+            var _aux = new List<InfluenceRuleDTO>();
+         /*   foreach (var s in asset._TriggerRules)
+                _aux.Add(s.ToDTO());
+            _TriggerRulesDtos = new BindingListView<TriggerRulesDTO>(_aux);*/
+
+            //      InfluenceRulesDiccionary = new Dictionary<string, InfluenceRuleDTO>();
+            m_loading = false;
+        }
+
+
+
         public void Reload()
         {
             m_loading = true;

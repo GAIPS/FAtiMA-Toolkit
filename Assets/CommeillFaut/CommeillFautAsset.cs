@@ -345,8 +345,9 @@ namespace CommeillFaut
 
         public void RemoveSocialExchange(SocialExchange torem)
         {
-          
+            Console.WriteLine(" I'm removing this " + torem.ActionName);
                 m_SocialExchanges.Remove(torem);
+            Console.Read();
            
         }
 
