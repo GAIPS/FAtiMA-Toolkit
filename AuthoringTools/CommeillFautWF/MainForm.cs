@@ -38,10 +38,14 @@ namespace CommeillFautWF
             _socialExchangesVM = new SocialExchangesVM(this, asset);
             genericPropertyDataGridControler1.DataController = _socialExchangesVM;
             genericPropertyDataGridControler1.OnSelectionChanged += OnRuleSelectionChanged;
-
-
+            genericPropertyDataGridControler1.GetColumnByName("Initiator").Visible = false;
+            genericPropertyDataGridControler1.GetColumnByName("Target").Visible = false;
+            genericPropertyDataGridControler1.GetColumnByName("Id").Visible = false;
+            genericPropertyDataGridControler1.GetColumnByName("Conditions").Visible = false;
             _triggerRules = new TriggerRulesVM(this, asset);
-      //      TriggerRulesDataGridController.DataController = _triggerRules;
+
+
+         //   TriggerRulesDataGridController.DataController = _triggerRules;
             TriggerRulesDataGridController.OnSelectionChanged += OnRuleSelectionChanged;
         }
 
