@@ -50,10 +50,17 @@ namespace CommeillFautWF
 
         private void AddTriggerRule_Load(object sender, EventArgs e)
         {
+            Vm._cifAsset._TriggerRules.AddTriggerRule(new InfluenceRuleDTO(), "newrule");
+            Close();
+        }
+        private void AddTriggerRule_Click(object sender, EventArgs e)
+        {
 
         }
 
+        private void label6_Click(object sender, EventArgs e)
+        {
 
-       
+        }
     }
 }

@@ -81,12 +81,12 @@ namespace CommeillFautWF.ViewModels
         {
             _mainForm = parent;
 
-            var _aux = new List<InfluenceRuleDTO>();
-            foreach (var s in asset._TriggerRules._triggerRules)
-                _aux.Add(s.Key);
-            _TriggerRulesDtos = new BindingListView<TriggerRulesDTO>(_aux);
+            var uhm = new List<TriggerRulesDTO>();
+            uhm.Add(asset._TriggerRules.ToDTO());
 
-            //      InfluenceRulesDiccionary = new Dictionary<string, InfluenceRuleDTO>();
+
+            _TriggerRulesDtos = new BindingListView<TriggerRulesDTO>(uhm);
+
             m_loading = false;
         }
 
@@ -96,8 +96,8 @@ namespace CommeillFautWF.ViewModels
         {
             m_loading = true;
 
-            foreach (var trig in _cifAsset._TriggerRules._triggerRules)
-                _TriggerRulesDtos.DataSource.Add(trig);
+     //       foreach (var trig in _cifAsset._TriggerRules._triggerRules)
+      //          _TriggerRulesDtos.DataSource.Add(trig);
 
 
             _TriggerRulesDtos.Refresh();
