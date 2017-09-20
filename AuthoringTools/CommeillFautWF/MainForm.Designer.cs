@@ -33,14 +33,15 @@
             this.TabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.genericPropertyDataGridControler1 = new GAIPS.AssetEditorTools.GenericPropertyDataGridControler();
-            this.triggerRulesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.TriggerRulesDataGridController = new GAIPS.AssetEditorTools.GenericPropertyDataGridControler();
+            this.triggerRulesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.conditionSetEditorControl1 = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
+            this.genericPropertyDataGridControler2 = new GAIPS.AssetEditorTools.GenericPropertyDataGridControler();
             ((System.ComponentModel.ISupportInitialize)(this.socialExchangeBindingSource)).BeginInit();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.triggerRulesBindingSource)).BeginInit();
             this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.triggerRulesBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // socialExchangeBindingSource
@@ -58,7 +59,7 @@
             this.TabControl.Location = new System.Drawing.Point(12, 40);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
-            this.TabControl.Size = new System.Drawing.Size(859, 455);
+            this.TabControl.Size = new System.Drawing.Size(869, 495);
             this.TabControl.TabIndex = 15;
             // 
             // tabPage1
@@ -67,7 +68,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(851, 422);
+            this.tabPage1.Size = new System.Drawing.Size(861, 462);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Social Exchange";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -78,40 +79,55 @@
             this.genericPropertyDataGridControler1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.genericPropertyDataGridControler1.Location = new System.Drawing.Point(-4, 3);
+            this.genericPropertyDataGridControler1.Location = new System.Drawing.Point(3, 3);
             this.genericPropertyDataGridControler1.Margin = new System.Windows.Forms.Padding(0);
             this.genericPropertyDataGridControler1.Name = "genericPropertyDataGridControler1";
-            this.genericPropertyDataGridControler1.Size = new System.Drawing.Size(855, 358);
+            this.genericPropertyDataGridControler1.Size = new System.Drawing.Size(847, 376);
             this.genericPropertyDataGridControler1.TabIndex = 0;
             this.genericPropertyDataGridControler1.Load += new System.EventHandler(this.genericPropertyDataGridControler1_Load_1);
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.genericPropertyDataGridControler2);
+            this.tabPage2.Controls.Add(this.conditionSetEditorControl1);
+            this.tabPage2.Location = new System.Drawing.Point(4, 29);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(861, 462);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Trigger Rules";
+            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // triggerRulesBindingSource
             // 
             this.triggerRulesBindingSource.DataSource = typeof(CommeillFaut.TriggerRules);
             // 
-            // tabPage2
+            // conditionSetEditorControl1
             // 
-            this.tabPage2.Controls.Add(this.TriggerRulesDataGridController);
-            this.tabPage2.Location = new System.Drawing.Point(4, 29);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(851, 422);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Trigger Rules";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // TriggerRulesDataGridController
-            // 
-            this.TriggerRulesDataGridController.AllowMuliSelect = false;
-            this.TriggerRulesDataGridController.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.conditionSetEditorControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.TriggerRulesDataGridController.Location = new System.Drawing.Point(3, 3);
-            this.TriggerRulesDataGridController.Margin = new System.Windows.Forms.Padding(0);
-            this.TriggerRulesDataGridController.Name = "TriggerRulesDataGridController";
-            this.TriggerRulesDataGridController.Size = new System.Drawing.Size(820, 269);
-            this.TriggerRulesDataGridController.TabIndex = 0;
-            this.TriggerRulesDataGridController.Load += new System.EventHandler(this.TriggerRulesDataGridController_Load);
+            this.conditionSetEditorControl1.Location = new System.Drawing.Point(4, 154);
+            this.conditionSetEditorControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.conditionSetEditorControl1.MinimumSize = new System.Drawing.Size(5, 120);
+            this.conditionSetEditorControl1.Name = "conditionSetEditorControl1";
+            this.conditionSetEditorControl1.Size = new System.Drawing.Size(836, 212);
+            this.conditionSetEditorControl1.TabIndex = 0;
+            this.conditionSetEditorControl1.View = null;
+            // 
+            // genericPropertyDataGridControler2
+            // 
+            this.genericPropertyDataGridControler2.AllowMuliSelect = false;
+            this.genericPropertyDataGridControler2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.genericPropertyDataGridControler2.Location = new System.Drawing.Point(4, 0);
+            this.genericPropertyDataGridControler2.Margin = new System.Windows.Forms.Padding(0);
+            this.genericPropertyDataGridControler2.MinimumSize = new System.Drawing.Size(5, 150);
+            this.genericPropertyDataGridControler2.Name = "genericPropertyDataGridControler2";
+            this.genericPropertyDataGridControler2.Size = new System.Drawing.Size(844, 150);
+            this.genericPropertyDataGridControler2.TabIndex = 1;
+            this.genericPropertyDataGridControler2.Load += new System.EventHandler(this.genericPropertyDataGridControler2_Load);
             // 
             // MainForm
             // 
@@ -120,7 +136,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(871, 507);
+            this.ClientSize = new System.Drawing.Size(881, 547);
             this.Controls.Add(this.TabControl);
             this.Name = "MainForm";
             this.Text = "Comme ill Faut";
@@ -129,8 +145,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.socialExchangeBindingSource)).EndInit();
             this.TabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.triggerRulesBindingSource)).EndInit();
             this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.triggerRulesBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -143,7 +159,8 @@
         private System.Windows.Forms.TabPage tabPage1;
         private GAIPS.AssetEditorTools.GenericPropertyDataGridControler genericPropertyDataGridControler1;
         private System.Windows.Forms.TabPage tabPage2;
-        private GAIPS.AssetEditorTools.GenericPropertyDataGridControler TriggerRulesDataGridController;
+        private GAIPS.AssetEditorTools.GenericPropertyDataGridControler genericPropertyDataGridControler2;
+        private GAIPS.AssetEditorTools.ConditionSetEditorControl conditionSetEditorControl1;
     }
 }
 

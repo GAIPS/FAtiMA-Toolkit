@@ -351,8 +351,8 @@ namespace CommeillFaut
         {
 
             base.GetObjectData(dataHolder, context);
-            dataHolder.SetValue("Intent", this.Intent);
-            dataHolder.SetValue("Instantiation", this.Instantiation);
+            dataHolder.SetValue("Description", this.Intent);
+    
             dataHolder.SetValue("InfluenceRules", this.InfluenceRules);
             dataHolder.SetValue("EffectsList", this.EffectsList);
 
@@ -364,8 +364,8 @@ namespace CommeillFaut
         {
             base.SetObjectData(dataHolder, context);
            
-            Intent = dataHolder.GetValue<string>("Intent");
-            Instantiation = dataHolder.GetValue<string>("Instantiation");
+            Intent = dataHolder.GetValue<string>("Description");
+        
             InfluenceRules = dataHolder.GetValue<List<InfluenceRule>>("InfluenceRules");
             EffectsList = dataHolder.GetValue<Dictionary<string,List<string>>>("EffectsList");
          

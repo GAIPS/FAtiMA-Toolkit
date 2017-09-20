@@ -71,16 +71,7 @@
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(145, 22);
             this.numericUpDown1.TabIndex = 3;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(346, 286);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(182, 46);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Add";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+
             // 
             // panel1
             // 
@@ -117,7 +108,7 @@
             this.label4.Size = new System.Drawing.Size(97, 17);
             this.label4.TabIndex = 4;
             this.label4.Text = "SocialNetwork";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
+       //     this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // label5
             // 
@@ -136,7 +127,7 @@
             this.label6.Size = new System.Drawing.Size(54, 17);
             this.label6.TabIndex = 6;
             this.label6.Text = "Target:";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
+        //    this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // label7
             // 
@@ -146,17 +137,7 @@
             this.label7.Size = new System.Drawing.Size(89, 17);
             this.label7.TabIndex = 7;
             this.label7.Text = "AddedValue:";
-            // 
-            // button2
-            // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(93, 105);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(232, 102);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "AddInfluenceRule";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+
             // 
             // AddTriggerRule
             // 
