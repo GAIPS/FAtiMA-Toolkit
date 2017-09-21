@@ -71,7 +71,7 @@ namespace CommeillFautWF.ViewModels
             foreach (var s in _cifAsset.m_SocialExchanges)
                 _aux.Add(s.ToDTO());
             SocialExchanges = new BindingListView<SocialExchangeDTO>(_aux);
-
+           
             SocialExchanges.Refresh();
             m_loading = false;
         }

@@ -38,11 +38,20 @@ namespace CommeillFautWF
             _socialExchangesVM = new SocialExchangesVM(this, asset);
             genericPropertyDataGridControler1.DataController = _socialExchangesVM;
             genericPropertyDataGridControler1.OnSelectionChanged += OnRuleSelectionChanged;
+            genericPropertyDataGridControler1.GetColumnByName("Initiator").Visible = false;
+            genericPropertyDataGridControler1.GetColumnByName("Target").Visible = false;
+            genericPropertyDataGridControler1.GetColumnByName("Id").Visible = false;
+            genericPropertyDataGridControler1.GetColumnByName("Conditions").Visible = false;
 
 
             _triggerRules = new TriggerRulesVM(this, asset);
-      //      TriggerRulesDataGridController.DataController = _triggerRules;
-            TriggerRulesDataGridController.OnSelectionChanged += OnRuleSelectionChanged;
+            genericPropertyDataGridControler2.DataController = _triggerRules;
+    //        genericPropertyDataGridControler2.GetColumnByName("Id").Visible = false;
+            genericPropertyDataGridControler2.OnSelectionChanged += OnRuleSelectionChanged;
+            conditionSetEditorControl1.View = _triggerRules.ConditionSetView;
+
+        //   button1.Text = (AddedObject.Id == Guid.Empty) ? "Add" : "Update";
+
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -108,41 +117,8 @@ namespace CommeillFautWF
 
         }
 
-        private void AddTriggerRule_Click(object sender, EventArgs e)
-        {
-            new AddTriggerRule(this._triggerRules).ShowDialog();
 
-            Refresh();
-        }
-
-        private void DeleteTriggerRule_Click(object sender, EventArgs e)
-        {
- /*           if (dataGridView2.SelectedCells.Count == 1)
-            {
-                var toDelete = (InfluenceRuleDTO)dataGridView2.SelectedCells[0].Value;
-                this.LoadedAsset._TriggerRules.RemoveTriggerRule(LoadedAsset._TriggerRules._triggerRules.ToList().Find(x => x.Key.RuleName.ToString() == toDelete.RuleName).Key);
-
-            }*/
-
-
-           
-            SetModified();
-        }
-
-        private void EditTriggerRule_Click(object sender, EventArgs e)
-        {
-
-         /*   var toedit_index = dataGridView2.SelectedCells[0].RowIndex;
-
-            if (toedit_index >= 0)
-            {
-                var toEdit = LoadedAsset._TriggerRules._triggerRules.ElementAt(toedit_index);
-                new AddTriggerRule(new TriggerRulesVM(this)).ShowDialog();
-
-            }
-            Refresh();*/
-        }
-
+      
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -196,13 +172,10 @@ namespace CommeillFautWF
 
         }
 
+        private void genericPropertyDataGridControler2_Load(object sender, EventArgs e)
+        {
 
-
-        //    protected override void OnWillSaveAsset(CommeillFautAsset asset)
-        //   {
-        //      MessageBox.Show("alo alo");
-        //     OnAssetDataLoaded(CurrentAsset);
-        // }
+        }
     }
 
 }

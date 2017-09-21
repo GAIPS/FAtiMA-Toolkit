@@ -25,17 +25,7 @@ namespace CommeillFautWF
             _dto = dto;
             _vm = vm;
 
-            if (dto.Effects != null)
-            {
-                foreach (var ef in dto.Effects)
-                {
-                    foreach (var val in ef.Value)
-                    {
-                        dataGridView1.Rows.Add(val, ef.Key);
-                    }
-                }
-
-            }
+       
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -61,6 +51,22 @@ namespace CommeillFautWF
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var consequenceName = richTextBox1.Text.ToString();
+            var affectedVar = richTextBox2.ToString();
+            var seResult = richTextBox3.ToString();
+
+            var add = new List<string>();
+            if (affectedVar != "")
+            add = new List<string>() { affectedVar };
+            _dto.Effects.Add(seResult,add );
+
+       //     MessageBox.Show(" uhm " + _dto.Effects.Count );
+
+            Close();
         }
     }
 }

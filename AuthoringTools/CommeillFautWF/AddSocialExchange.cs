@@ -62,7 +62,8 @@ namespace CommeillFautWF
             button1.Text = (AddedObject.Id == Guid.Empty) ? "Add" : "Update";
 
             if (AddedObject.Effects != null)
-                dataGridView1.DataSource = AddedObject.Effects;
+                foreach(var ef in AddedObject.Effects)
+                dataGridView1.Rows.Add(ef.Value, ef.Key);
 
          
         }
@@ -196,11 +197,12 @@ namespace CommeillFautWF
 
 
            
-                new AddConsequence(this._vm, AddedObject).ShowDialog();
-            
-         
+           var obj =  new AddConsequence(this._vm, AddedObject).ShowDialog();
+            MessageBox.Show(" you're back! " + AddedObject.Effects.Count);
+            Refresh();
          
         }
+
 
         private void listBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -220,6 +222,29 @@ namespace CommeillFautWF
         private void genericPropertyDataGridControler1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            AddEffect_Click(sender, e);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedCells.Count == 1)
+            {
+                var toDelete = (string)dataGridView1.SelectedCells[0].Value;
+                this.AddedObject.Effects.Remove(toDelete);
+
+            }
+
+
+            this.Refresh();
         }
     }
 }

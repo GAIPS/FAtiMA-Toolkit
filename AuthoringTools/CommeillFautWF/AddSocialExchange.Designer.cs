@@ -126,6 +126,7 @@
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.Size = new System.Drawing.Size(635, 306);
             this.dataGridView1.TabIndex = 7;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // Variable
             // 
@@ -160,6 +161,7 @@
             this.button2.TabIndex = 5;
             this.button2.Text = "Remove";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button6
             // 
@@ -170,6 +172,7 @@
             this.button6.TabIndex = 4;
             this.button6.Text = "Add";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // tabControl1
             // 
@@ -230,17 +233,17 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(133, 65);
+            this.label2.Location = new System.Drawing.Point(27, 65);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(47, 17);
+            this.label2.Size = new System.Drawing.Size(79, 17);
             this.label2.TabIndex = 11;
-            this.label2.Text = "Intent:";
+            this.label2.Text = "Description";
             // 
             // IntentTextBox
             // 
             this.IntentTextBox.Location = new System.Drawing.Point(186, 62);
             this.IntentTextBox.Name = "IntentTextBox";
-            this.IntentTextBox.Size = new System.Drawing.Size(160, 25);
+            this.IntentTextBox.Size = new System.Drawing.Size(378, 31);
             this.IntentTextBox.TabIndex = 12;
             this.IntentTextBox.Text = "";
             this.IntentTextBox.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
