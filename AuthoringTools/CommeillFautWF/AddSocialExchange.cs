@@ -56,6 +56,8 @@ namespace CommeillFautWF
 
             genericPropertyDataGridControler1.DataController = _influenceRuleVm;
             genericPropertyDataGridControler1.OnSelectionChanged += OnRuleSelectionChanged;
+            genericPropertyDataGridControler1.GetColumnByName("Initiator").Visible = false;
+            genericPropertyDataGridControler1.GetColumnByName("Id").Visible = false;
 
             conditionSetEditorControl1.View = _influenceRuleVm.ConditionSetView;
 
@@ -236,6 +238,7 @@ namespace CommeillFautWF
         {
             if (dataGridView1.SelectedCells.Count == 1)
             {
+
                 var toDelete = dataGridView1.SelectedCells[0].RowIndex;
 
                 AddedObject.Effects.Remove(AddedObject.Effects.ElementAt(toDelete).Key);
@@ -267,8 +270,31 @@ namespace CommeillFautWF
 
 
                     }
-                    else dataGridView1.Rows.Add(ef.Key, ef.Value.FirstOrDefault());
+                    else dataGridView1.Rows.Add(ef.Value.FirstOrDefault(), ef.Key);
                 }
+
+            }
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            var originalCount = AddedObject.Effects.Count;
+            if (dataGridView1.SelectedCells.Count == 1)
+            {
+                var toDelete = dataGridView1.SelectedCells[0].RowIndex;
+
+               
+
+                List<string> selectedConsequence = new List<string>();
+                selectedConsequence.Add(dataGridView1.SelectedCells[0].OwningRow.Cells[0].Value.ToString());
+                selectedConsequence.Add(dataGridView1.SelectedCells[0].OwningRow.Cells[1].Value.ToString());
+                selectedConsequence.Add(dataGridView1.SelectedCells[0].OwningRow.Cells[2].Value.ToString());
+
+                var obj = new AddConsequence(this._vm, AddedObject, selectedConsequence).ShowDialog();
+                if(AddedObject.Effects.Count > originalCount)
+                    AddedObject.Effects.Remove(AddedObject.Effects.ElementAt(toDelete).Key);
+
+                ReloadConsequences();
 
             }
         }
