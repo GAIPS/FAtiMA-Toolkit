@@ -3,24 +3,17 @@
 		{
 			"classId": 0,
 			"Description": null,
-			"KnowledgeBase":
-				{
-					"Perspective": "John",
-					"Knowledge":
-						{
-							"SELF":
-								{
-									"IsFriend(Player)": "True, 0.4",
-									"isDrunk(John)": true,
-									"IsNice(John)": true,
-									"Likes(John, Sarah)": true
-								}
-						}
-				},
 			"AppraisalRules":
 				{
 					"AppraisalWeight": 1,
-					"Rules": []
+					"Rules": [
+						{
+							"EventName": "Event(Action-End, *, [x], *)",
+              "Conditions": {
+                "Set": [ "Likes(Action, [x]) = True" ]
+              },
+              "Desirability": 2
+						}]
 				},
 			"EmotionDispositions": [
 				{

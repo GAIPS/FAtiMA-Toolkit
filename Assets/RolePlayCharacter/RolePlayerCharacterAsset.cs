@@ -180,7 +180,14 @@ namespace RolePlayCharacter
 
             var possibleActions = m_emotionalDecisionMakingAsset.Decide();
 
-            var maxUtility = possibleActions.Max(a => a.Utility);
+            var maxUtility = float.MinValue;
+            foreach(var a in possibleActions)
+            {
+                if(a.Utility > maxUtility)
+                {
+                    maxUtility = a.Utility;
+                }
+            }
 
             var topActions = possibleActions.Where(a => a.Utility == maxUtility).Shuffle();
 

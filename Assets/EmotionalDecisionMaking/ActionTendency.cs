@@ -16,7 +16,7 @@ namespace EmotionalDecisionMaking
 			set { m_priority = value < 0 ? 0 : value; }
 		}
 
-		public ActionTendency(Name actionName) : this(actionName,Name.NIL_SYMBOL) {}
+		public ActionTendency(Name actionName) : this(actionName, Name.NIL_SYMBOL) {}
 
 		public ActionTendency(Name actionName, Name target) : this(actionName, target, new ConditionSet()) {}
 
@@ -25,8 +25,7 @@ namespace EmotionalDecisionMaking
 			m_priority = DEFAULT_ACTION_PRIORITY;
 		}
 
-		public ActionTendency(ReactionDTO dto)
-			: base(dto)
+		public ActionTendency(ReactionDTO dto) : base(dto)
 		{
 			Priority = dto.Priority;
 		}

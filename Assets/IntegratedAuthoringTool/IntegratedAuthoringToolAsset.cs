@@ -140,17 +140,17 @@ namespace IntegratedAuthoringTool
 
             if (nextState.ToString() != Name.UNIVERSAL_STRING)
             {
-                actions = actions.Where(d => d.CurrentState == currentState);
+                actions = actions.Where(d => d.NextState == nextState);
             }
 
             if (meaning.ToString() != Name.UNIVERSAL_STRING)
             {
-                actions = actions.Where(d => d.CurrentState == currentState);
+                actions = actions.Where(d => d.Meaning == meaning);
             }
 
             if (style.ToString() != Name.UNIVERSAL_STRING)
             {
-                actions = actions.Where(d => d.CurrentState == currentState);
+                actions = actions.Where(d => d.Style == style);
             }
 
             var retList = new List<DialogueStateActionDTO>();
