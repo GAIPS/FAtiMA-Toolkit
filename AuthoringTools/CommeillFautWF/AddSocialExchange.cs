@@ -56,15 +56,14 @@ namespace CommeillFautWF
 
             genericPropertyDataGridControler1.DataController = _influenceRuleVm;
             genericPropertyDataGridControler1.OnSelectionChanged += OnRuleSelectionChanged;
+            genericPropertyDataGridControler1.GetColumnByName("Initiator").Visible = false;
+            genericPropertyDataGridControler1.GetColumnByName("Id").Visible = false;
 
             conditionSetEditorControl1.View = _influenceRuleVm.ConditionSetView;
 
             button1.Text = (AddedObject.Id == Guid.Empty) ? "Add" : "Update";
 
-            if (AddedObject.Effects != null)
-                foreach(var ef in AddedObject.Effects)
-                dataGridView1.Rows.Add(ef.Value, ef.Key);
-
+            ReloadConsequences();
          
         }
 
@@ -183,6 +182,7 @@ namespace CommeillFautWF
             if (dataGridView1.SelectedCells.Count == 1)
             {
                 var toDelete = dataGridView1.SelectedCells[0].Value;
+
                 this.AddedObject.InfluenceRules.Remove(AddedObject.InfluenceRules.Find(x => x.RuleName.ToString() == toDelete.ToString()));
 
             }
@@ -198,8 +198,8 @@ namespace CommeillFautWF
 
            
            var obj =  new AddConsequence(this._vm, AddedObject).ShowDialog();
-            MessageBox.Show(" you're back! " + AddedObject.Effects.Count);
-            Refresh();
+        
+            ReloadConsequences();
          
         }
 
@@ -238,13 +238,65 @@ namespace CommeillFautWF
         {
             if (dataGridView1.SelectedCells.Count == 1)
             {
-                var toDelete = (string)dataGridView1.SelectedCells[0].Value;
-                this.AddedObject.Effects.Remove(toDelete);
 
+                var toDelete = dataGridView1.SelectedCells[0].RowIndex;
+
+                AddedObject.Effects.Remove(AddedObject.Effects.ElementAt(toDelete).Key);
+               
             }
 
 
-            this.Refresh();
+            ReloadConsequences();
+        }
+
+        private void ReloadConsequences()
+        {
+
+            dataGridView1.Rows.Clear();
+
+            if (AddedObject.Effects != null)
+            {
+
+               
+                foreach (var ef in AddedObject.Effects)
+                {
+                    var variables = "";
+                    if (ef.Value.Count > 1)
+                    {
+                        for (int i = 1; i < ef.Value.Count; i++)
+                            variables += ef.Value[i];
+                        
+                        dataGridView1.Rows.Add(ef.Value.FirstOrDefault(), ef.Key,variables);
+
+
+                    }
+                    else dataGridView1.Rows.Add(ef.Value.FirstOrDefault(), ef.Key);
+                }
+
+            }
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            var originalCount = AddedObject.Effects.Count;
+            if (dataGridView1.SelectedCells.Count == 1)
+            {
+                var toDelete = dataGridView1.SelectedCells[0].RowIndex;
+
+               
+
+                List<string> selectedConsequence = new List<string>();
+                selectedConsequence.Add(dataGridView1.SelectedCells[0].OwningRow.Cells[0].Value.ToString());
+                selectedConsequence.Add(dataGridView1.SelectedCells[0].OwningRow.Cells[1].Value.ToString());
+                selectedConsequence.Add(dataGridView1.SelectedCells[0].OwningRow.Cells[2].Value.ToString());
+
+                var obj = new AddConsequence(this._vm, AddedObject, selectedConsequence).ShowDialog();
+                if(AddedObject.Effects.Count > originalCount)
+                    AddedObject.Effects.Remove(AddedObject.Effects.ElementAt(toDelete).Key);
+
+                ReloadConsequences();
+
+            }
         }
     }
 }

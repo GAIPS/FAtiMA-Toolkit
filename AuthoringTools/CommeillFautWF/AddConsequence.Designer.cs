@@ -40,11 +40,12 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(31, 93);
+            this.label1.Location = new System.Drawing.Point(30, 132);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(120, 17);
             this.label1.TabIndex = 1;
             this.label1.Text = "Affected Variable:";
+            this.label1.Click += new System.EventHandler(this.label1_Click_1);
             // 
             // button1
             // 
@@ -59,7 +60,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(31, 139);
+            this.label2.Location = new System.Drawing.Point(30, 93);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(160, 17);
             this.label2.TabIndex = 4;
@@ -93,7 +94,7 @@
             // 
             // richTextBox3
             // 
-            this.richTextBox3.Location = new System.Drawing.Point(206, 136);
+            this.richTextBox3.Location = new System.Drawing.Point(206, 129);
             this.richTextBox3.Name = "richTextBox3";
             this.richTextBox3.Size = new System.Drawing.Size(179, 27);
             this.richTextBox3.TabIndex = 10;

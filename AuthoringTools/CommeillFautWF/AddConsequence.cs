@@ -28,6 +28,19 @@ namespace CommeillFautWF
        
         }
 
+        public AddConsequence(SocialExchangesVM vm, SocialExchangeDTO dto, List<string> obj)
+        {
+            InitializeComponent();
+
+            _dto = dto;
+            _vm = vm;
+            richTextBox1.Text = obj.ElementAt(0);
+            richTextBox2.Text = obj.ElementAt(1);
+            richTextBox3.Text = obj.ElementAt(2);
+
+
+        }
+
         private void label1_Click(object sender, EventArgs e)
         {
 
@@ -55,18 +68,21 @@ namespace CommeillFautWF
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var consequenceName = richTextBox1.Text.ToString();
-            var affectedVar = richTextBox2.ToString();
-            var seResult = richTextBox3.ToString();
+            var consequenceName = richTextBox1.Text;
+            var affectedVar = richTextBox3.Text;
+            var seResult = richTextBox2.Text;
 
             var add = new List<string>();
             if (affectedVar != "")
-            add = new List<string>() { affectedVar };
+                add = new List<string>() { consequenceName, affectedVar };
             _dto.Effects.Add(seResult,add );
 
-       //     MessageBox.Show(" uhm " + _dto.Effects.Count );
-
             Close();
+        }
+
+        private void label1_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }
