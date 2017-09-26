@@ -24,7 +24,7 @@ namespace Conditions
 		//    this.Id = Guid.NewGuid();
 		//}
 
-        public IEnumerable<SubstitutionSet> UnifyEvaluate(IQueryable kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
+        public IEnumerable<SubstitutionSet> Unify(IQueryable kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
 			if (constraints == null || !constraints.Any())
 				constraints = new[] { new SubstitutionSet()};
@@ -34,7 +34,7 @@ namespace Conditions
 
 		public bool Evaluate(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
-			return UnifyEvaluate(db,perspective, constraints).Any();
+			return Unify(db,perspective, constraints).Any();
 		}
 
 		protected abstract IEnumerable<SubstitutionSet> CheckActivation(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints);

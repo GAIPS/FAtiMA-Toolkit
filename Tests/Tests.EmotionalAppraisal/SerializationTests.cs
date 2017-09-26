@@ -84,38 +84,39 @@ namespace Tests.EmotionalAppraisal
 			var angerDisposition = new EmotionDisposition(OCCEmotionType.Anger.Name, 5, 3);
 			m_emotionalAppraisalAsset.AddEmotionDisposition(angerDisposition.ToDto());
 
-			//Setup appraisal rules
+            //Setup appraisal rules
 
-			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
-			{
-				EventMatchingTemplate = (Name)"Event(Action-End,*,Pet,self)",
-				Desirability = 10
+            m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
+            {
+                EventMatchingTemplate = (Name)"Event(Action-End,*,Pet,self)",
+                Desirability = (Name)"10"
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
                 EventMatchingTemplate = (Name)"Event(Action-End,*,Slap,self)",
-                Desirability = -10
-			});
+                Desirability = (Name)"10"
+            });
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
                 EventMatchingTemplate = (Name)"Event(Action-End,*,Feed,self)",
-				Desirability = 5,
-				Praiseworthiness = 10
-			});
+				Desirability = (Name)"5",
+
+                Praiseworthiness = (Name)"10"
+            });
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
                 EventMatchingTemplate = (Name)"Event(Action-End,*,Talk(High,Mad),self)",
-                Desirability = -7,
-				Praiseworthiness = -15
-			});
+                Desirability = (Name)"-7",
+                Praiseworthiness = (Name)"-15"
+            });
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
                 EventMatchingTemplate = (Name)"Event(Action-End,*,Talk(Low,Happy),self)",
-                Praiseworthiness = 5
+                Praiseworthiness = (Name)"5"
 			});
 			
 			//Generate emotion

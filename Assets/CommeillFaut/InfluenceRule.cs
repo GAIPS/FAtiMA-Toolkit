@@ -3,6 +3,7 @@ using CommeillFaut.DTOs;
 using Conditions;
 using KnowledgeBase;
 using WellFormedNames;
+using System.Linq;
 
 namespace CommeillFaut
 {
@@ -35,7 +36,7 @@ namespace CommeillFaut
 
 
 
-            var eval = toEvaluate.Evaluate(m_Kb, Name.BuildName(init), new[] { new SubstitutionSet(sub) });
+            var eval = toEvaluate.Unify(m_Kb, Name.BuildName(init), new[] { new SubstitutionSet(sub) }).Any();
 
             // Console.WriteLine(evaluateResult + " InfluenceRule " + RuleConditions.ToDTO().ConditionSet[0] + " I am " + init + " sub " + Target + " for : " + targ + " certainty " + sub.SubValue.Certainty);
             if (eval)

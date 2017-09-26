@@ -213,8 +213,10 @@ namespace SocialImportance
 			foreach (var a in m_attributionRules)
 			{
 				var sub = new Substitution(a.Target, new ComplexValue(target));
-				if (a.Conditions.Evaluate(m_kB, perspective, new[] { new SubstitutionSet(sub) }))
-					value += a.Value;
+				if (a.Conditions.Unify(m_kB, perspective, new[] { new SubstitutionSet(sub) }).Any())
+                {
+                    value += a.Value;
+                }
 			}
 			return value<1?1:(uint)value;
 		}
