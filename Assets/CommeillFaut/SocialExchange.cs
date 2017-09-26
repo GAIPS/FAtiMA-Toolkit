@@ -6,7 +6,6 @@ using ActionLibrary.DTOs;
 using CommeillFaut.DTOs;
 using Conditions;
 using Conditions.DTOs;
-using EmotionalAppraisal;
 using KnowledgeBase;
 using WellFormedNames;
 using SerializationUtilities;
@@ -30,24 +29,17 @@ namespace CommeillFaut
 
         int Response { get; set; }
 
-        public String State { get; set; }
-
-        public String Instantiation { get; set; }
-
-        public List<InfluenceRule> InfluenceRules { get; set; }
-
-        public Dictionary<string,List<string>> EffectsList { get; set; }
+        public InfluenceRule InfluenceRule { get; set; }
 
         public SocialExchange(String name) : base(WellFormedNames.Name.BuildName(name), WellFormedNames.Name.BuildName("Empty"), new ConditionSet(new ConditionSetDTO()))
         
             {
-            State = "Initialized";
+            
      
             Intent = "";
-            Instantiation = "";
+          
 
-            InfluenceRules = new List<InfluenceRule>();
-            EffectsList = new Dictionary<string,List<string>>();
+            InfluenceRule = new InfluenceRule(new InfluenceRuleDTO());
 
         }
 
@@ -55,33 +47,20 @@ namespace CommeillFaut
         public SocialExchange(SocialExchangeDTO s) : base(s)
         {
 
-         
 
-            InfluenceRules = new List<InfluenceRule>();
+
+            InfluenceRule = new InfluenceRule(s.InfluenceRule);
             //      Name = s.SocialExchangeName;
-            if(s.InfluenceRules!=null)
-            foreach (var inf in s.InfluenceRules)
-            {
-                InfluenceRules.Add(new InfluenceRule(inf));
-            }
-            EffectsList = s.Effects ?? new Dictionary<string, List<string>>();
+
             Intent = s.Intent;
-            Instantiation = s.Instantiation;
+
         }
 
         public SocialExchange(SocialExchange other) : base(other)
 		{
          
             Intent = other.Intent;
-		    Instantiation = other.Instantiation;
-
-            if (other.InfluenceRules != null)
-                foreach (var inf in other.InfluenceRules)
-                {
-                    InfluenceRules.Add(inf);
-                }
-
-		    EffectsList = other.EffectsList;
+            InfluenceRule = other.InfluenceRule;
 		}
 
 
@@ -116,13 +95,12 @@ namespace CommeillFaut
         public float CalculateVolition(string init, string _targ, KB m_Kb)
         {
             float counter = 0;
-            foreach (var rule in InfluenceRules)
-            {
+           
 
-                var result = rule;
-                counter += result.Result(init, _targ, m_Kb);
+              
+                counter += InfluenceRule.Result(init, _targ, m_Kb);
 
-            }
+            
             Console.WriteLine("Calculating Volition for " + this.ActionName.ToString() + " init: " + init + " targ: " + _targ + " result: " + counter);
             return counter;
         }
@@ -160,8 +138,6 @@ namespace CommeillFaut
 
          //   ApplyConsequences(init_Kb, targ_Kb, response);
 
-            State = "Completed";
-
 
             write = " SocialExchange Completed: " + base.ActionName + " Initator: " + init + " Target: " + targ + " result : " + response + "\n";
 
@@ -183,16 +159,7 @@ namespace CommeillFaut
           //  Console.WriteLine(" Much effects, such response: " + response);
             var newEffectList = new List<String>();
 
-            foreach (var effect in EffectsList)
-            {
-              
-                if (effect.Key == response)
-                {
-                    newEffectList = effect.Value;
-                   
-                }
-            }
-                                     // Ideally we would be able to insert any 
+                                 // Ideally we would be able to insert any 
 
             var retList = new Dictionary<Name, Name>();
             foreach (var ef in newEffectList)
@@ -325,25 +292,16 @@ namespace CommeillFaut
         {
             
             Intent = dto.Intent;
-            Instantiation = dto.Instantiation;
-
-            foreach (var go in dto.InfluenceRules)
-            {
-                InfluenceRules.Add(new InfluenceRule(go));
-            }
-        
+            InfluenceRule = new InfluenceRule(dto.InfluenceRule);
+           
             SetFromDTO(dto);
         }
 
         public SocialExchangeDTO ToDTO()
         {
-            List<InfluenceRuleDTO> ret = new List<InfluenceRuleDTO>();
-
-            foreach (var inf in InfluenceRules)
-            {
-               ret.Add(inf.ToDTO());
-            }
-            return new SocialExchangeDTO() {Action = ActionName.ToString(), Intent = Intent, Instantiation = Instantiation, InfluenceRules = ret, Effects = EffectsList};
+        
+           
+            return new SocialExchangeDTO() {Action = ActionName.ToString(), Intent = Intent, InfluenceRule = InfluenceRule.ToDTO()};
         }
 
 
@@ -353,8 +311,8 @@ namespace CommeillFaut
             base.GetObjectData(dataHolder, context);
             dataHolder.SetValue("Description", this.Intent);
     
-            dataHolder.SetValue("InfluenceRules", this.InfluenceRules);
-            dataHolder.SetValue("EffectsList", this.EffectsList);
+            dataHolder.SetValue("InfluenceRule", this.InfluenceRule);
+          
 
     
            
@@ -366,32 +324,20 @@ namespace CommeillFaut
            
             Intent = dataHolder.GetValue<string>("Description");
         
-            InfluenceRules = dataHolder.GetValue<List<InfluenceRule>>("InfluenceRules");
-            EffectsList = dataHolder.GetValue<Dictionary<string,List<string>>>("EffectsList");
+            InfluenceRule = dataHolder.GetValue<InfluenceRule>("InfluenceRule");
          
         }
 
-        public void AddInfluenceRule(InfluenceRule infrul)
+       public void SetInfluenceRule(InfluenceRule rule)
         {
-
-            InfluenceRules.Add(infrul);
-
+            InfluenceRule = rule;
         }
 
-        public void EditInfluenceRule(InfluenceRule infrul)
+        public void SetInfluenceRule(InfluenceRuleDTO rule)
         {
-            InfluenceRules.Remove(InfluenceRules.Find(x => x.RuleName == infrul.RuleName));
-            InfluenceRules.Add(infrul);
-
+            InfluenceRule = new InfluenceRule(rule);
         }
 
-
-        public void RemoveInfluenceRule(InfluenceRule infrul)
-        {
-            InfluenceRules.Remove(InfluenceRules.Find(x => x.RuleName == infrul.RuleName));
-          
-
-        }
 
         protected override float CalculateActionUtility(IAction a)
         {

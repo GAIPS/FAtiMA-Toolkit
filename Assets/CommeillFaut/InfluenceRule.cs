@@ -14,8 +14,6 @@ namespace CommeillFaut
 
         public string RuleName { get; private set; }
         public string Target { get; private set; }
-        public string Initiator { get; private set; }
-        public int Value { get; private set; }
         public ConditionSet RuleConditions { get; private set; }
 
         protected InfluenceRule()
@@ -56,7 +54,7 @@ namespace CommeillFaut
         }
 
 
-        public InfluenceRule(InfluenceRuleDTO dto) : this()
+        public InfluenceRule(InfluenceRuleDTO dto)
         {
             SetData(dto);
         }
@@ -64,15 +62,15 @@ namespace CommeillFaut
         public void SetData(InfluenceRuleDTO dto)
         {
             RuleName = dto.RuleName;
-            Initiator = dto.Initiator;
             Target = dto.Target;
-            Value = dto.Value; ;
             RuleConditions = new ConditionSet(dto.RuleConditions);
         }
 
+      
+
         public InfluenceRuleDTO ToDTO()
         {
-            return new InfluenceRuleDTO() { Id = GUID, RuleName = RuleName, Initiator = Initiator, Target = Target, Value = Value, RuleConditions = RuleConditions.ToDTO() };
+            return new InfluenceRuleDTO() { Id = GUID, RuleName = RuleName, Target = Target, RuleConditions = RuleConditions.ToDTO() };
         }
 
     }
