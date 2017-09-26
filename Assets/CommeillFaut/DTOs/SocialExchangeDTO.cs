@@ -31,21 +31,13 @@ namespace CommeillFaut.DTOs
         public string Intent { get; set; }
 
 
-        /// <summary>
-        /// The instanciation of a social exchange, if all conditions are valid.
-        /// </summary>
-        public string Instantiation { get; set; } // care
 
         /// <summary>
         /// The condition set used to validate this rule.
         /// </summary>
-        public List<InfluenceRuleDTO> InfluenceRules { get; set; }
+        public InfluenceRuleDTO InfluenceRule { get; set; }
 
-        /// <summary>
-        /// What happens when the social Exchange is completed.
-        /// </summary>
-        public Dictionary<string,List<string>> Effects { get; set; }
-
+      
      
     }
 }

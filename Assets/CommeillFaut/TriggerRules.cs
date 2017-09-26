@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using CommeillFaut.DTOs;
 using Conditions;
 using Conditions.DTOs;
-using EmotionalAppraisal;
 using KnowledgeBase;
 using SerializationUtilities;
 using WellFormedNames;

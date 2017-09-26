@@ -20,12 +20,6 @@ namespace CommeillFaut.DTOs
         /// </summary>
         public string Target { get; set; }
 
-        public string Initiator { get; set; }
-        /// <summary>
-        /// The value to be attributed to the target, if all conditions are valid.
-        /// </summary>
-        public int Value { get; set; }
-
         /// <summary>
         /// The condition set used to validate this rule.
         /// </summary>
