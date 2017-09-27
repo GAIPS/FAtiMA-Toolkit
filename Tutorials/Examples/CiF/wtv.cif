@@ -1,0 +1,53 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"SocialExchanges": [
+				{
+					"Action": "Flirt",
+					"Conditions":
+						{
+							"Set": []
+						},
+					"Description": "toFlirt",
+					"InfluenceRule":
+						{
+							"RuleName": "",
+							"Target": "[x]",
+							"RuleConditions":
+								{
+									"Set": ["True = [x]"]
+								}
+						}
+				}, 
+				{
+					"Action": "Compliment",
+					"Conditions":
+						{
+							"Set": []
+						},
+					"Description": "I'm your friend!",
+					"InfluenceRule":
+						{
+							"RuleName": "",
+							"Target": "[x]",
+							"RuleConditions":
+								{
+									"Set": []
+								}
+						}
+				}],
+			"_triggerRules":
+				{
+					"_triggerRules":
+						{
+							"dictionary": []
+						}
+				}
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "CommeillFaut.CommeillFautAsset, CommeillFaut, Version=1.7.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

@@ -75,7 +75,7 @@ namespace CommeillFautWF
             var add = new List<string>();
             if (affectedVar != "")
                 add = new List<string>() { consequenceName, affectedVar };
-            _dto.Effects.Add(seResult,add );
+           
 
             Close();
         }

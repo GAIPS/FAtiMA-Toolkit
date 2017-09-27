@@ -28,9 +28,7 @@ namespace CommeillFautWF
 		    _vm = vm;
 
         
-            genericPropertyDataGridControler1.DataController = _vm;
-            genericPropertyDataGridControler1.OnSelectionChanged += OnRuleSelectionChanged;
-
+    
           conditionSetEditorControl1.View = _vm.ConditionSetView;
 
             button1.Text = (_dto.Id == Guid.Empty) ? "Add" : "Update";

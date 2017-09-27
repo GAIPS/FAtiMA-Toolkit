@@ -30,7 +30,7 @@ namespace CommeillFautTutorial
         static void Main(string[] args)
         {
 
-            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/CiF/CIFVERSION2.iat");
+            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/CiF/CIFVERSION3.iat");
             rpcList = new List<RolePlayCharacterAsset>();
 
 
@@ -38,11 +38,11 @@ namespace CommeillFautTutorial
             {
 
                 var rpc = RolePlayCharacterAsset.LoadFromFile(source.Source);
-               
+
 
                 //rpc.DynamicPropertiesRegistry.RegistDynamicProperty(Name.BuildName("Volition"),cif.VolitionPropertyCalculator);
                 rpc.LoadAssociatedAssets();
-               
+
                 iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
 
                 rpcList.Add(rpc);
@@ -57,7 +57,22 @@ namespace CommeillFautTutorial
             };
             cif.AddExchange(newDTO);
 
-            cif.m_SocialExchanges.FirstOrDefault().SetInfluenceRule(new InfluenceRule(new InfluenceRuleDTO()));
+
+            var condSET = new ConditionSetDTO() { ConditionSet = new string[]{ "[x]=true" } };
+
+
+            var inf = new InfluenceRuleDTO()
+            {
+                RuleName = "uhm",
+                Target = "[x]",
+                RuleConditions = condSET
+        };
+
+          
+
+          
+
+            cif.m_SocialExchanges.FirstOrDefault().SetInfluenceRule(inf);
 
 
             cif.Save();

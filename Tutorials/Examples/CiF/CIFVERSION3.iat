@@ -1,0 +1,14 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"ScenarioName": null,
+			"Description": null,
+			"CharacterSources": ["newRPC.rpc"]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "IntegratedAuthoringTool.IntegratedAuthoringToolAsset, IntegratedAuthoringTool, Version=1.6.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

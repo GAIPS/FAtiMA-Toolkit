@@ -25,7 +25,6 @@ namespace CommeillFautWF
             if (dto != null)
             {
                 _ruleDescriptionTextBox.Text = dto.RuleName;
-                _valueFieldBox.Value = dto.Value;
                 _targetVariableBox.Value = (Name) dto.Target;
             }
 
@@ -37,10 +36,8 @@ namespace CommeillFautWF
             try
             {
                 _dto.RuleName = _ruleDescriptionTextBox.Text;
-                _dto.Value = _valueFieldBox.Value;
                 _dto.Target = _targetVariableBox.Value.ToString();
               
-                AddedObject = _vm.AddOrUpdateInfluenceRule(_dto);
             }
             catch (Exception e)
             {

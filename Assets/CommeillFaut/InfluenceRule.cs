@@ -66,15 +66,19 @@ namespace CommeillFaut
             {
                 RuleName = "";
                 Target = "[x]";
+                RuleConditions = new ConditionSet();
             }
             else
             {
                 if (dto.RuleName != null)
                     RuleName = dto.RuleName;
-                if (Target != null)
+                else RuleName = "";
+                if (dto.Target != null)
                     Target = dto.Target;
-                if(RuleConditions != null)
+                else Target = "[x]";
+                if (dto.RuleConditions != null)
                     RuleConditions = new ConditionSet(dto.RuleConditions);
+                else RuleConditions = new ConditionSet();
             }
           
         }
