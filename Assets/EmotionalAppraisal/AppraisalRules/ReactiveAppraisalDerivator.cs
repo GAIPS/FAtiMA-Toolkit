@@ -34,40 +34,42 @@ namespace EmotionalAppraisal.AppraisalRules
 			this.Rules = new NameSearchTree<HashSet<AppraisalRule>>();
 		}
 		
-
         
 		public AppraisalRule Evaluate(IBaseEvent evt, IQueryable kb, Name perspective)
 		{
             var eventInPerspective = evt.EventName.ApplySelfPerspective(perspective);
             foreach (var possibleAppraisals in Rules.Unify(eventInPerspective))
 			{
-				var substitutions = new[] { possibleAppraisals.Item2 };
+				var substitutions = new[] { possibleAppraisals.Item2 }; //this adds the subs found in the eventName
 				foreach (var appRule in possibleAppraisals.Item1)
 				{
-                    var finalSubs = appRule.Conditions.Unify(kb, Name.SELF_SYMBOL, substitutions).FirstOrDefault();
-                    if (finalSubs != null)
+                    var finalSubsList = appRule.Conditions.Unify(kb, Name.SELF_SYMBOL, substitutions);
+
+                    //The appraisal will only consider the substitution set that it has the most certainty in
+                    var mostCertainSubSet = this.DetermineSubstitutionSetWithMostCertainty(finalSubsList);
+                    if (mostCertainSubSet != null)
                     {
                         if (appRule.Desirability.IsVariable)
                         {
-                            var pSub = finalSubs.Where(s => s.Variable == appRule.Desirability).First();
-                            if (pSub == null)
-                                return null;
+                            var pSub = mostCertainSubSet.Where(s => s.Variable == appRule.Desirability).First();
+                            if (pSub == null) return null;
                             appRule.Desirability = pSub.SubValue.Value;
-                           
                         }
-
                         if (appRule.Praiseworthiness.IsVariable)
                         {
-                            var pSub = finalSubs.Where(s => s.Variable == appRule.Praiseworthiness).First();
-                            if (pSub == null)
-                                return null;
+                            var pSub = mostCertainSubSet.Where(s => s.Variable == appRule.Praiseworthiness).First();
+                            if (pSub == null) return null;
                             appRule.Praiseworthiness = pSub.SubValue.Value;
-                            float f;
-                            if (!float.TryParse(appRule.Desirability.ToString(), out f))
-                            {
-                                throw new ArgumentException("Praiseworthiness can only be a float value");
-                            }
                         }
+
+                        //Modify the appraisal variables based on the certainty of the substitutions
+                        var minCertainty = mostCertainSubSet.FindMinimumCertainty();
+
+                        var aux = float.Parse(appRule.Desirability.ToString()) * minCertainty;
+                        appRule.Desirability = Name.BuildName(aux);
+
+                        aux = float.Parse(appRule.Praiseworthiness.ToString()) * minCertainty;
+                        appRule.Praiseworthiness = Name.BuildName(aux);
 
                         return appRule;
                     }
@@ -76,6 +78,24 @@ namespace EmotionalAppraisal.AppraisalRules
 			}
 			return null;
 		}
+
+
+
+        private SubstitutionSet DetermineSubstitutionSetWithMostCertainty(IEnumerable<SubstitutionSet> subSets)
+        {
+            SubstitutionSet result = null;
+            var max = float.MinValue;
+            foreach (var subSet in subSets)
+            {
+                var minCertainty = subSet.FindMinimumCertainty();
+                if(minCertainty > max)
+                {
+                    max = minCertainty;
+                    result = subSet;
+                }
+            }
+            return result;
+        }
 
 		/// <summary>
 		/// Adds an emotional reaction to an event
@@ -200,6 +220,14 @@ namespace EmotionalAppraisal.AppraisalRules
 		    foreach (var r in rules)
 		    {
 				r.Id = Guid.NewGuid();
+                if (r.Desirability == null)
+                {
+                    r.Desirability = (Name)"0";
+                }
+                if (r.Praiseworthiness == null)
+                {
+                    r.Praiseworthiness = (Name)"0";
+                }
                 AddEmotionalReaction(r);
             }
 		}

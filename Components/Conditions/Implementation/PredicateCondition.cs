@@ -19,14 +19,18 @@ namespace Conditions
 
 			protected override IEnumerable<SubstitutionSet> CheckActivation(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
-				foreach (var pair in m_predicate.Retrieve(db, perspective, constraints))
+                var subs = m_predicate.Retrieve(db, perspective, constraints);
+
+                foreach (var pair in subs)
 				{
 					bool b;
 					if(!pair.Item1.Value.TryConvertToValue(out b))
 						continue;
 
-					if(b!=m_invert)
-						yield return pair.Item2;
+                    if (b != m_invert)
+                    {
+                       yield return pair.Item2;
+                    }
 				}
 			}
 

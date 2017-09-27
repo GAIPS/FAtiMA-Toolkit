@@ -45,8 +45,25 @@ namespace EmotionalAppraisal.AppraisalRules
 	    {
 		    m_id = (appraisalRuleDTO.Id == Guid.Empty)?Guid.NewGuid() : appraisalRuleDTO.Id;
             EventName = (Name)appraisalRuleDTO.EventMatchingTemplate;
-	        Desirability = appraisalRuleDTO.Desirability;
-	        Praiseworthiness = appraisalRuleDTO.Praiseworthiness;
+
+            if (appraisalRuleDTO.Desirability == null)
+            {
+                Desirability = (Name)"0";
+            }
+            else
+            {
+                Desirability = appraisalRuleDTO.Desirability;
+            }
+
+            if (appraisalRuleDTO.Praiseworthiness == null)
+            {
+                Praiseworthiness = (Name)"0";
+            }
+            else
+            {
+                Praiseworthiness = appraisalRuleDTO.Praiseworthiness;
+            }
+
 			Conditions = appraisalRuleDTO.Conditions==null ? new ConditionSet() : new ConditionSet(appraisalRuleDTO.Conditions);
 	    }
 

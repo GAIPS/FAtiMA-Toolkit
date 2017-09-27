@@ -10,7 +10,7 @@
 						{
 							"EventName": "Event(Action-End, *, [x], *)",
               "Conditions": {
-                "Set": [ "Likes(Action, [x]) = True", "[d] = 20" ]
+                "Set": [ "Hates([j]) > 5", "Likes([y], [x]) = True", "[d] = 20" ]
               },
               "Desirability": "[d]"
 						}]

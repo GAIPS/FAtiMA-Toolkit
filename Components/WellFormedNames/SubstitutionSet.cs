@@ -263,6 +263,17 @@ namespace WellFormedNames
 			}
 		}
 
-		/// @endcond
-	}
+
+        public float FindMinimumCertainty()
+        {
+            var result = float.MaxValue;
+            foreach (var sub in this)
+            {
+                if (sub.SubValue.Certainty < result)
+                    result = sub.SubValue.Certainty;
+            }
+            return result;
+        }
+        /// @endcond
+    }
 }

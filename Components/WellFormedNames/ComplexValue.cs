@@ -21,7 +21,7 @@ namespace WellFormedNames
         }
 
         public Name Value { get; private set; }
-        public float Certainty { get; private set; }
+        public float Certainty { get; set; }
 
         public ComplexValue(Name value)
         {

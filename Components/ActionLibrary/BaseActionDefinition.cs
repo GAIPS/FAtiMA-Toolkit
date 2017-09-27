@@ -86,8 +86,8 @@ namespace ActionLibrary
 
             if (constraints.Any())
             {
-                var minCertainty = constraints.Select(s => s.SubValue.Certainty)?.Min();
-                a.Utility = p + minCertainty.Value;
+                var minCertainty = constraints.FindMinimumCertainty();
+                a.Utility = p + minCertainty;
             }
             else
             {

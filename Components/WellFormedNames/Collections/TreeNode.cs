@@ -583,7 +583,8 @@ namespace WellFormedNames.Collections
 						SubstitutionSet set = binding;
 						if (!pair.Item1.IsVariable || pair.Item1 != term)
 						{
-							var sub = new Substitution(term, new ComplexValue(pair.Item1));
+                            //Very odd trick to make certainty work
+                            var sub = new Substitution(term, new ComplexValue(pair.Item1, -1));
 							if (binding.Conflicts(sub))
 								continue;
 

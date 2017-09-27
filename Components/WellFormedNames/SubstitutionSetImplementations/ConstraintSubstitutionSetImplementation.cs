@@ -41,15 +41,7 @@ namespace WellFormedNames
 				m_substitutions = new HashSet<Substitution>();
 				m_constraints = new Dictionary<Name, Constraint>();
 			}
-			/*
-			~Constraints()
-			{
-				m_constraints.Clear();
-				m_substitutions.Clear();
 
-				GC.ReRegisterForFinalize(this);
-			}
-			*/
 			public Name GetValue(Name variable)
 			{
 				Constraint c;
@@ -71,6 +63,9 @@ namespace WellFormedNames
 			{
 				return m_substitutions.Count;
 			}
+
+
+            
 
 			public void AddSubstitution(Substitution s)
 			{

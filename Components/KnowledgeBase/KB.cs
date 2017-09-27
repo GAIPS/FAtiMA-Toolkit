@@ -351,7 +351,18 @@ namespace KnowledgeBase
 					var value = r.Key.GetValueFor(mind_key,GetFinalPerspective(ToMList));
 					if (value == null)
 						continue;
-					yield return Tuples.Create(new ComplexValue(value.Value, value.Certainty), r.Distinct());
+                    var subSets = r.Distinct();
+                    foreach(var set in subSets)
+                    {
+                        foreach(var sub in set)
+                        {
+                            if(sub.SubValue.Certainty == -1) //Trick
+                            {
+                                sub.SubValue.Certainty = value.Certainty;
+                            }
+                        }
+                    }
+					yield return Tuples.Create(new ComplexValue(value.Value, value.Certainty), subSets);
 				}
 			}
 		}

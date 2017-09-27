@@ -28,7 +28,10 @@ namespace EmotionalAppraisalTutorial
             var kb = new KB((Name)"John");
 
 
-            kb.Tell((Name)"Likes(Action, Kick)", (Name)"True");
+            kb.Tell((Name)"Hates(Jonas)", (Name)"7", (Name)"SELF", 0.1f);
+            kb.Tell((Name)"Hates(Maria)", (Name)"8", (Name)"SELF", 0.9f);
+            kb.Tell((Name)"Likes(Action2, Kick)", (Name)"True", (Name)"SELF", 0.2f);
+            kb.Tell((Name)"Likes(Action, Kick)", (Name)"True", (Name)"SELF", 0.6f);
 
             var emotionalState = new ConcreteEmotionalState();
 
