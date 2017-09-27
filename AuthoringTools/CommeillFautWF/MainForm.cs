@@ -35,6 +35,7 @@ namespace CommeillFautWF
 
         protected override void OnAssetDataLoaded(CommeillFautAsset asset)
         {
+            
             _socialExchangesVM = new SocialExchangesVM(this, asset);
             genericPropertyDataGridControler1.DataController = _socialExchangesVM;
             genericPropertyDataGridControler1.OnSelectionChanged += OnRuleSelectionChanged;
@@ -42,15 +43,14 @@ namespace CommeillFautWF
             genericPropertyDataGridControler1.GetColumnByName("Target").Visible = false;
             genericPropertyDataGridControler1.GetColumnByName("Id").Visible = false;
             genericPropertyDataGridControler1.GetColumnByName("Conditions").Visible = false;
+            genericPropertyDataGridControler1.GetColumnByName("InfluenceRule").Visible = false;
 
 
             _triggerRules = new TriggerRulesVM(this, asset);
             genericPropertyDataGridControler2.DataController = _triggerRules;
-    //        genericPropertyDataGridControler2.GetColumnByName("Id").Visible = false;
             genericPropertyDataGridControler2.OnSelectionChanged += OnRuleSelectionChanged;
             conditionSetEditorControl1.View = _triggerRules.ConditionSetView;
 
-        //   button1.Text = (AddedObject.Id == Guid.Empty) ? "Add" : "Update";
 
         }
 

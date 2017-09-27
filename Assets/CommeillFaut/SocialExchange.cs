@@ -292,7 +292,9 @@ namespace CommeillFaut
         {
             
             Intent = dto.Intent;
-            InfluenceRule = new InfluenceRule(dto.InfluenceRule);
+            if (dto.InfluenceRule != null)
+                InfluenceRule = new InfluenceRule(dto.InfluenceRule);
+            else InfluenceRule = new InfluenceRule(new InfluenceRuleDTO()); 
            
             SetFromDTO(dto);
         }

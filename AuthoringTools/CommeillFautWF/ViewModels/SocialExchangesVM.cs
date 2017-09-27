@@ -23,8 +23,6 @@ namespace CommeillFautWF.ViewModels
         private Guid _currentlySelected = Guid.Empty;
         public BindingListView<SocialExchangeDTO> SocialExchanges { get; private set; }
 
-        //   public Dictionary<string, InfluenceRuleDTO> InfluenceRulesDiccionary;
-
         public Guid Selection
         {
             get { return _currentlySelected; }
@@ -54,7 +52,9 @@ namespace CommeillFautWF.ViewModels
           
             var _aux = new List<SocialExchangeDTO>();
             foreach (var s in asset.m_SocialExchanges)
+            {
                 _aux.Add(s.ToDTO());
+            }
             SocialExchanges = new BindingListView<SocialExchangeDTO>(_aux);
            
             //      InfluenceRulesDiccionary = new Dictionary<string, InfluenceRuleDTO>();
@@ -98,7 +98,7 @@ namespace CommeillFautWF.ViewModels
         {
 
             var dto = new SocialExchangeDTO();
-            var dialog = new AddSocialExchange(this, new SocialExchange(dto));
+            var dialog = new AddSocialExchange(this);
             dialog.ShowDialog();
             _mainForm.SetModified();
             _mainForm.Refresh();

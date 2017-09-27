@@ -30,17 +30,19 @@ namespace CommeillFautTutorial
         static void Main(string[] args)
         {
 
-            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/CiF/newCiF.iat");
+            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/CiF/CIFVERSION3.iat");
             rpcList = new List<RolePlayCharacterAsset>();
+
+
             foreach (var source in iat.GetAllCharacterSources())
             {
 
                 var rpc = RolePlayCharacterAsset.LoadFromFile(source.Source);
-               
+
 
                 //rpc.DynamicPropertiesRegistry.RegistDynamicProperty(Name.BuildName("Volition"),cif.VolitionPropertyCalculator);
                 rpc.LoadAssociatedAssets();
-               
+
                 iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
 
                 rpcList.Add(rpc);
@@ -48,7 +50,36 @@ namespace CommeillFautTutorial
             }
             var cif = CommeillFautAsset.LoadFromFile(rpcList.First().CommeillFautAssetSource);
 
-            foreach (var actor in rpcList)
+            var newDTO = new SocialExchangeDTO
+            {
+                Action = "Flirt",
+                Intent = "toFlirt"
+            };
+            cif.AddExchange(newDTO);
+
+
+            var condSET = new ConditionSetDTO() { ConditionSet = new string[]{ "[x]=true" } };
+
+
+            var inf = new InfluenceRuleDTO()
+            {
+                RuleName = "uhm",
+                Target = "[x]",
+                RuleConditions = condSET
+        };
+
+          
+
+          
+
+            cif.m_SocialExchanges.FirstOrDefault().SetInfluenceRule(inf);
+
+
+            cif.Save();
+
+
+
+            /*foreach (var actor in rpcList)
             {
 
               
@@ -176,16 +207,18 @@ namespace CommeillFautTutorial
                     finalEvents.Add(EventHelper.PropertyChange("HasFloor(" + next.CharacterName + ")", "true",
                         "Random"));
 
-
+    
                     next.Perceive(finalEvents);
                 }
+
+    */
                 Console.ReadKey();
             }
         }
 
 
     }
-}
+
 
 
 

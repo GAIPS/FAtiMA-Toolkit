@@ -62,9 +62,25 @@ namespace CommeillFaut
 
         public void SetData(InfluenceRuleDTO dto)
         {
-            RuleName = dto.RuleName;
-            Target = dto.Target;
-            RuleConditions = new ConditionSet(dto.RuleConditions);
+            if (dto == null)
+            {
+                RuleName = "";
+                Target = "[x]";
+                RuleConditions = new ConditionSet();
+            }
+            else
+            {
+                if (dto.RuleName != null)
+                    RuleName = dto.RuleName;
+                else RuleName = "";
+                if (dto.Target != null)
+                    Target = dto.Target;
+                else Target = "[x]";
+                if (dto.RuleConditions != null)
+                    RuleConditions = new ConditionSet(dto.RuleConditions);
+                else RuleConditions = new ConditionSet();
+            }
+          
         }
 
       

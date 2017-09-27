@@ -34,40 +34,33 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ActionLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommeillFaut.1.1.0.0\lib\net35\ActionLibrary.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\CommeillFaut.1.7.0\lib\net35\ActionLibrary.dll</HintPath>
     </Reference>
     <Reference Include="AutobiographicMemory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommeillFaut.1.1.0.0\lib\net35\AutobiographicMemory.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\CommeillFaut.1.7.0\lib\net35\AutobiographicMemory.dll</HintPath>
     </Reference>
-    <Reference Include="CommeillFaut, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommeillFaut.1.1.0.0\lib\net35\CommeillFaut.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CommeillFaut, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommeillFaut.1.7.0\lib\net35\CommeillFaut.dll</HintPath>
     </Reference>
     <Reference Include="Conditions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommeillFaut.1.1.0.0\lib\net35\Conditions.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\CommeillFaut.1.7.0\lib\net35\Conditions.dll</HintPath>
     </Reference>
-    <Reference Include="EmotionalAppraisal, Version=1.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommeillFaut.1.1.0.0\lib\net35\EmotionalAppraisal.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="EmotionalAppraisal, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommeillFaut.1.7.0\lib\net35\EmotionalAppraisal.dll</HintPath>
     </Reference>
     <Reference Include="Equin.ApplicationFramework.BindingListView, Version=1.4.5222.35545, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Equin.ApplicationFramework.BindingListView.1.4.5222.35545\lib\net40-Client\Equin.ApplicationFramework.BindingListView.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GAIPS.Rage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommeillFaut.1.1.0.0\lib\net35\GAIPS.Rage.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\CommeillFaut.1.7.0\lib\net35\GAIPS.Rage.dll</HintPath>
     </Reference>
     <Reference Include="GAIPS.Serialization, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\GAIPS.Serialization.1.5.0\lib\net35\GAIPS.Serialization.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="KnowledgeBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommeillFaut.1.1.0.0\lib\net35\KnowledgeBase.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\CommeillFaut.1.7.0\lib\net35\KnowledgeBase.dll</HintPath>
     </Reference>
     <Reference Include="RageAssetManager">
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
@@ -88,8 +81,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="WellFormedNames, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommeillFaut.1.1.0.0\lib\net35\WellFormedNames.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\CommeillFaut.1.7.0\lib\net35\WellFormedNames.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -167,13 +159,27 @@
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\CommeillFaut.CommeillFautAsset.datasource" />
-    <None Include="Properties\DataSources\CommeillFaut.DTOs.CommeillFautDTO.datasource" />
-    <None Include="Properties\DataSources\CommeillFaut.DTOs.InfluenceRuleDTO.datasource" />
-    <None Include="Properties\DataSources\CommeillFaut.DTOs.SocialExchangeDTO.datasource" />
-    <None Include="Properties\DataSources\CommeillFaut.DTOs.TriggerRulesDTO.datasource" />
-    <None Include="Properties\DataSources\CommeillFaut.InfluenceRule.datasource" />
-    <None Include="Properties\DataSources\CommeillFaut.SocialExchange.datasource" />
-    <None Include="Properties\DataSources\CommeillFaut.TriggerRules.datasource" />
+    <None Include="Properties\DataSources\CommeillFaut.DTOs.CommeillFautDTO.datasource">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\DataSources\CommeillFaut.DTOs.InfluenceRuleDTO.datasource">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\DataSources\CommeillFaut.DTOs.SocialExchangeDTO.datasource">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\DataSources\CommeillFaut.DTOs.TriggerRulesDTO.datasource">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\DataSources\CommeillFaut.InfluenceRule.datasource">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\DataSources\CommeillFaut.SocialExchange.datasource">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\DataSources\CommeillFaut.TriggerRules.datasource">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
