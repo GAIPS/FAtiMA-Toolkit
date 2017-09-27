@@ -23,13 +23,22 @@ namespace EmotionalAppraisal.AppraisalRules
 		public Name EventName { get; set; }
 		public ConditionSet Conditions { get; set; }
 
-       
-		public AppraisalRule(Name eventName, ConditionSet conditions = null)
+        /// <summary>
+        ///     Desirability of the event
+        /// </summary>
+        public Name Desirability { get; set; }
+
+        /// <summary>
+        ///     Praiseworthiness of the event
+        /// </summary>
+        public Name Praiseworthiness { get; set; }
+
+        public AppraisalRule(Name eventName, ConditionSet conditions = null)
 		{
 			m_id = Guid.NewGuid();
 			EventName = eventName;
 			Conditions = conditions ?? new ConditionSet();
-			Desirability = Praiseworthiness = 0;
+			Desirability = Praiseworthiness = (Name)"0";
 		}
 
 	    public AppraisalRule(AppraisalRuleDTO appraisalRuleDTO)
@@ -52,22 +61,9 @@ namespace EmotionalAppraisal.AppraisalRules
 			Conditions = new ConditionSet(other.Conditions);
 			Desirability = other.Desirability;
 			Praiseworthiness = other.Praiseworthiness;
-			//DesirabilityForOther = other.DesirabilityForOther;
-			//Like = other.Like;
-			//ReferencedEventName = (Name)other.ReferencedEventName.Clone();
-			//if (Other != null)
-			//	Other = (Name) other.Other.Clone();
 		}
 
-		/// <summary>
-		///     Desirability of the event
-		/// </summary>
-		public float Desirability { get; set; }
-
-	    /// <summary>
-		///     Praiseworthiness of the event
-		/// </summary>
-		public float Praiseworthiness { get; set; }
+	
 
 	}
 }

@@ -5,8 +5,6 @@ namespace Conditions
 {
 	public interface IConditionEvaluator
 	{
-		IEnumerable<SubstitutionSet> UnifyEvaluate(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints);
-
-		bool Evaluate(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints);
+		IEnumerable<SubstitutionSet> Unify(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints);
 	}
 }

@@ -10,9 +10,9 @@
 						{
 							"EventName": "Event(Action-End, *, [x], *)",
               "Conditions": {
-                "Set": [ "Likes(Action, [x]) = True" ]
+                "Set": [ "Likes(Action, [x]) = True", "[d] = 20" ]
               },
-              "Desirability": 2
+              "Desirability": "[d]"
 						}]
 				},
 			"EmotionDispositions": [

@@ -34,16 +34,44 @@ namespace EmotionalAppraisal.AppraisalRules
 			this.Rules = new NameSearchTree<HashSet<AppraisalRule>>();
 		}
 		
+
+        
 		public AppraisalRule Evaluate(IBaseEvent evt, IQueryable kb, Name perspective)
 		{
             var eventInPerspective = evt.EventName.ApplySelfPerspective(perspective);
             foreach (var possibleAppraisals in Rules.Unify(eventInPerspective))
 			{
-				var conditions = new[] {possibleAppraisals.Item2};
-				foreach (var appraisal in possibleAppraisals.Item1)
+				var substitutions = new[] { possibleAppraisals.Item2 };
+				foreach (var appRule in possibleAppraisals.Item1)
 				{
-					if (appraisal.Conditions.Evaluate(kb, Name.SELF_SYMBOL, conditions))
-						return appraisal;	
+                    var finalSubs = appRule.Conditions.Unify(kb, Name.SELF_SYMBOL, substitutions).FirstOrDefault();
+                    if (finalSubs != null)
+                    {
+                        if (appRule.Desirability.IsVariable)
+                        {
+                            var pSub = finalSubs.Where(s => s.Variable == appRule.Desirability).First();
+                            if (pSub == null)
+                                return null;
+                            appRule.Desirability = pSub.SubValue.Value;
+                           
+                        }
+
+                        if (appRule.Praiseworthiness.IsVariable)
+                        {
+                            var pSub = finalSubs.Where(s => s.Variable == appRule.Praiseworthiness).First();
+                            if (pSub == null)
+                                return null;
+                            appRule.Praiseworthiness = pSub.SubValue.Value;
+                            float f;
+                            if (!float.TryParse(appRule.Desirability.ToString(), out f))
+                            {
+                                throw new ArgumentException("Praiseworthiness can only be a float value");
+                            }
+                        }
+
+                        return appRule;
+                    }
+						
 				}
 			}
 			return null;
@@ -109,25 +137,6 @@ namespace EmotionalAppraisal.AppraisalRules
 			return Rules.SelectMany(r => r.Value).FirstOrDefault(a => a.Id == id);
 		}
 
-		////todo: this method is overly complex due to the nature of how rules are stored. with time try to refactor this
-  //      private KeyValuePair<Name, HashSet<AppraisalRule>> findExistingAppraisalRule(Guid id, out AppraisalRule rule)
-	 //   {
-	 //       foreach (var ruleNamePair in Rules)
-	 //       {
-	 //           var ruleSet = ruleNamePair.Value;
-	 //           foreach (var appraisalRule in ruleSet)
-	 //           {
-  //                  if (appraisalRule.Id == id)
-  //                  {
-  //                      rule = appraisalRule;
-  //                      return ruleNamePair;
-  //                  }
-  //              }
-	 //       }
-  //          rule = null;
-  //          return Rules.FirstOrDefault();
-	 //   }
-        
         public IEnumerable<AppraisalRule> GetAppraisalRules()
 	    {
 	        return Rules.Values.SelectMany(set => set);
@@ -143,30 +152,28 @@ namespace EmotionalAppraisal.AppraisalRules
 
 		public void Appraisal(KB kb, IBaseEvent evt, IWritableAppraisalFrame frame)
 		{
-			AppraisalRule selfEvaluation = Evaluate(evt, kb, kb.Perspective);
-			if (selfEvaluation != null)
+			AppraisalRule activeRule = Evaluate(evt, kb, kb.Perspective);
+			if (activeRule != null)
 			{
-				if (selfEvaluation.Desirability != 0)
-					frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, selfEvaluation.Desirability);
+				if (activeRule.Desirability != null)
+                {
+                    float des;
+                    if (!float.TryParse(activeRule.Desirability.ToString(), out des))
+                    {
+                        throw new ArgumentException("Desirability can only be a float value");
+                    }
+                    frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, des);
+                }
 
-				//if (selfEvaluation.DesirabilityForOther != 0)
-				//{
-				//	string other;
-				//	if (selfEvaluation.Other != null)
-				//		other = selfEvaluation.Other.ToString();
-				//	else if (evt.Target != null)
-				//		other = evt.Target;
-				//	else
-				//		other = evt.Subject;
-
-				//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER + other, selfEvaluation.DesirabilityForOther);
-				//}
-
-				if (selfEvaluation.Praiseworthiness != 0)
-					frame.SetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS, selfEvaluation.Praiseworthiness);
-
-				//if (selfEvaluation.Like != 0)
-				//	frame.SetAppraisalVariable(OCCAppraisalVariables.LIKE, selfEvaluation.Like);
+                if (activeRule.Praiseworthiness != null)
+                {
+                    float p;
+                    if (!float.TryParse(activeRule.Praiseworthiness.ToString(), out p))
+                    {
+                        throw new ArgumentException("Desirability can only be a float value");
+                    }
+                    frame.SetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS, p);
+                }
 			}
 		}
 

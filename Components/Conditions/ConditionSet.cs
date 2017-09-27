@@ -80,7 +80,7 @@ namespace Conditions
 			return new ConditionSet(quantifier,m_conditions);
 		}
 
-		public IEnumerable<SubstitutionSet> UnifyEvaluate(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
+		public IEnumerable<SubstitutionSet> Unify(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
 		{
 			if (constraints == null || !constraints.Any())
 				constraints = new[] {new SubstitutionSet()};
@@ -94,11 +94,7 @@ namespace Conditions
 			return UniversalEvaluate(db,perspective,constraints);
 		}
 
-		public bool Evaluate(IQueryable db, Name perspective, IEnumerable<SubstitutionSet> constraints)
-		{
-			return UnifyEvaluate(db,perspective, constraints).Any();
-		}
-
+		
 		IEnumerator IEnumerable.GetEnumerator()
 		{
 			return GetEnumerator();
@@ -133,7 +129,7 @@ namespace Conditions
 			sets.AddRange(constraints.Select(c => new SubstitutionSet(c)));
 			foreach (var c in m_conditions)
 			{
-				aux.AddRange(c.UnifyEvaluate(db,perspective, sets));
+				aux.AddRange(c.Unify(db,perspective, sets));
 				Util.Swap(ref sets, ref aux);
 				aux.Clear();
 				if (sets.Count == 0)
@@ -154,7 +150,7 @@ namespace Conditions
 			{
 				foreach (var c in m_conditions)
 				{
-					aux.AddRange(c.UnifyEvaluate(db,perspective, sets));
+					aux.AddRange(c.Unify(db,perspective, sets));
 					Util.Swap(ref sets, ref aux);
 					aux.Clear();
 					var newDomain = BuildDomain(sets);

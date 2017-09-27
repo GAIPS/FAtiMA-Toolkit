@@ -25,7 +25,7 @@ namespace Tests.Conditions
 				kb.Tell((Name)s[0], (Name)s[1]);
 
 			var set = new ConditionSet(LogicalQuantifier.Existential,TEST_CONDITIONS);
-			Assert.True(set.Evaluate(kb, Name.SELF_SYMBOL, null));
+			Assert.True(set.Unify(kb, Name.SELF_SYMBOL, null).Any());
 		}
 
 		[TestCase("Likes(Money):true", "Likes(Health):true", "Has(Money):false", "Has(Health):false")]
@@ -36,7 +36,7 @@ namespace Tests.Conditions
 				kb.Tell((Name)s[0], (Name)s[1]);
 
 			var set = new ConditionSet(LogicalQuantifier.Existential, TEST_CONDITIONS);
-			Assert.False(set.Evaluate(kb, Name.SELF_SYMBOL, null));
+			Assert.False(set.Unify(kb, Name.SELF_SYMBOL, null).Any());
 		}
 
 		[TestCase("Likes(Money):true", "Likes(Health):true", "Has(Money):false", "Has(Health):false")]
@@ -49,7 +49,7 @@ namespace Tests.Conditions
 				kb.Tell((Name)s[0], (Name)s[1]);
 
 			var set = new ConditionSet(LogicalQuantifier.Universal, TEST_CONDITIONS);
-			Assert.False(set.Evaluate(kb, Name.SELF_SYMBOL, null));
+			Assert.False(set.Unify(kb, Name.SELF_SYMBOL, null).Any());
 		}
 
 		[TestCase("Likes(Money):true", "Likes(Health):true", "Has(Money):true", "Has(Health):true")]
@@ -60,7 +60,7 @@ namespace Tests.Conditions
 				kb.Tell((Name)s[0], (Name)s[1]);
 
 			var set = new ConditionSet(LogicalQuantifier.Universal, TEST_CONDITIONS);
-			Assert.True(set.Evaluate(kb, Name.SELF_SYMBOL, null));
+			Assert.True(set.Unify(kb, Name.SELF_SYMBOL, null).Any());
 		}
 	}
 }

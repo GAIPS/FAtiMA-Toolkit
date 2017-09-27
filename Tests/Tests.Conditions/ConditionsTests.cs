@@ -148,7 +148,7 @@ namespace Tests.Conditions
 		{
 			var set = constraints!=null?new[]{new SubstitutionSet(constraints.Select(c => new Substitution(c)))}:null;
 			var conds = new ConditionSet(conditions.Select(Condition.Parse));
-			Assert.AreEqual(result, conds.Evaluate(_kb, Name.SELF_SYMBOL, set));
+			Assert.AreEqual(result, conds.Unify(_kb, Name.SELF_SYMBOL, set).Any());
 		}
 
 		[Test]
