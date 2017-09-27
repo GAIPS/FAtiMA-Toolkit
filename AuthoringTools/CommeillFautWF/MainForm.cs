@@ -48,11 +48,9 @@ namespace CommeillFautWF
 
             _triggerRules = new TriggerRulesVM(this, asset);
             genericPropertyDataGridControler2.DataController = _triggerRules;
-    //        genericPropertyDataGridControler2.GetColumnByName("Id").Visible = false;
             genericPropertyDataGridControler2.OnSelectionChanged += OnRuleSelectionChanged;
             conditionSetEditorControl1.View = _triggerRules.ConditionSetView;
 
-        //   button1.Text = (AddedObject.Id == Guid.Empty) ? "Add" : "Update";
 
         }
 
