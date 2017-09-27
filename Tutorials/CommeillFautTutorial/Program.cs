@@ -30,8 +30,10 @@ namespace CommeillFautTutorial
         static void Main(string[] args)
         {
 
-            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/CiF/newCiF.iat");
+            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/CiF/CIFVERSION2.iat");
             rpcList = new List<RolePlayCharacterAsset>();
+
+
             foreach (var source in iat.GetAllCharacterSources())
             {
 
@@ -48,7 +50,21 @@ namespace CommeillFautTutorial
             }
             var cif = CommeillFautAsset.LoadFromFile(rpcList.First().CommeillFautAssetSource);
 
-            foreach (var actor in rpcList)
+            var newDTO = new SocialExchangeDTO
+            {
+                Action = "Flirt",
+                Intent = "toFlirt"
+            };
+            cif.AddExchange(newDTO);
+
+            cif.m_SocialExchanges.FirstOrDefault().SetInfluenceRule(new InfluenceRule(new InfluenceRuleDTO()));
+
+
+            cif.Save();
+
+
+
+            /*foreach (var actor in rpcList)
             {
 
               
@@ -176,16 +192,18 @@ namespace CommeillFautTutorial
                     finalEvents.Add(EventHelper.PropertyChange("HasFloor(" + next.CharacterName + ")", "true",
                         "Random"));
 
-
+    
                     next.Perceive(finalEvents);
                 }
+
+    */
                 Console.ReadKey();
             }
         }
 
 
     }
-}
+
 
 
 
