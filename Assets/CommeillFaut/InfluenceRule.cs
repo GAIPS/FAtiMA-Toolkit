@@ -28,22 +28,12 @@ namespace CommeillFaut
             var toEvaluate = new ConditionSet(RuleConditions);
             var sub = new Substitution(Name.BuildName(Target), new ComplexValue(Name.BuildName(targ)));
 
-            // m_Kb.AskPossibleProperties(Name.BuildName(targ), Name.BuildName("SELF"), new[] { new SubstitutionSet(sub) });
-
-            //   Console.WriteLine( "uhm " + m_Kb.AskProperty(Name.BuildName("IsFriend(SELF,Peter)")).Certainty + sub.SubValue.Certainty);
-
-
-
             var eval = toEvaluate.Unify(m_Kb, Name.BuildName(init), new[] { new SubstitutionSet(sub) }).Any();
 
-            // Console.WriteLine(evaluateResult + " InfluenceRule " + RuleConditions.ToDTO().ConditionSet[0] + " I am " + init + " sub " + Target + " for : " + targ + " certainty " + sub.SubValue.Certainty);
             if (eval)
             {
-
-
                 var cond = toEvaluate.ToDTO().ConditionSet.GetValue(0).ToString().Split(new[] { '=' });
                 cond = cond[0].Split(new[] { ',' });
-                //    Console.WriteLine(" going to get certainty of " + targ + " for this belief " + (cond[0] + "," + targ + ")"));
                 var certainty = m_Kb.AskProperty(Name.BuildName(cond[0] + "," + targ + ")")).Certainty;
 
                 return certainty;

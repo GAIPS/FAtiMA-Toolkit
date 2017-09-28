@@ -19,6 +19,7 @@
 			"EmotionalState":
 				{
 					"Mood": 0,
+					"initialTick": 0,
 					"EmotionalPool": [],
 					"AppraisalConfiguration":
 						{
@@ -34,11 +35,15 @@
 				{
 					"Tick": 0,
 					"records": []
+				},
+			"OtherAgents":
+				{
+					"dictionary": []
 				}
 		},
 	"types": [
 		{
 			"TypeId": 0,
-			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null"
 		}]
 }

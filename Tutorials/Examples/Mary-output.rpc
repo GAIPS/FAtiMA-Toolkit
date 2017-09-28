@@ -9,23 +9,22 @@
 						{
 							"SELF":
 								{
-									"DialogueState(Kate)": "Start",
-									"DialogueState(Peter)": "Start",
-									"HasFloor(Mary)": true,
-									"Attraction(Mary, Peter)": 10,
-									"Friendship(Mary, Kate)": 5
+									"IsAttracted(Mary, Peter)": "True, 0.9",
+									"IsFriend(Mary, Kate)": "True, 0.2",
+									"IsFriend(Mary, Peter)": "True, 0.5"
 								}
 						}
 				},
 			"BodyName": "Female",
 			"VoiceName": "Hazel",
-			"EmotionalAppraisalAssetSource": "../../../Examples/CiF\\Mary.ea",
-			"EmotionalDecisionMakingSource": "../../../Examples/CiF\\newCifEDM.edm",
+			"EmotionalAppraisalAssetSource": "../../../Examples/CiF/Mary.ea",
+			"EmotionalDecisionMakingSource": "../../../Examples/CiF/newCifEDM.edm",
 			"SocialImportanceAssetSource": null,
-			"CommeillFautAssetSource": "../../../Examples/CiF\\newTest.cif",
+			"CommeillFautAssetSource": "../../../Examples/CiF/newTest.cif",
 			"EmotionalState":
 				{
 					"Mood": 0,
+					"initialTick": 0,
 					"EmotionalPool": [],
 					"AppraisalConfiguration":
 						{
@@ -71,6 +70,7 @@
 									"EmotionalState":
 										{
 											"Mood": 0,
+											"initialTick": 0,
 											"EmotionalPool": [],
 											"AppraisalConfiguration":
 												{
@@ -92,6 +92,7 @@
 									"EmotionalState":
 										{
 											"Mood": 0,
+											"initialTick": 0,
 											"EmotionalPool": [],
 											"AppraisalConfiguration":
 												{

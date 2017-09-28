@@ -4,18 +4,21 @@
 			"classId": 0,
 			"KnowledgeBase":
 				{
-					"Perspective": "Peter",
+					"Perspective": "CIF2",
 					"Knowledge":
 						{
-
+							"SELF":
+								{
+									"IsFriend(CIF2, CIF1)": "True, 0.2"
+								}
 						}
 				},
-			"BodyName": "Male",
-			"VoiceName": "David",
-			"EmotionalAppraisalAssetSource": "Peter.ea",
+			"BodyName": null,
+			"VoiceName": null,
+			"EmotionalAppraisalAssetSource": null,
 			"EmotionalDecisionMakingSource": "newCifEDM.edm",
 			"SocialImportanceAssetSource": null,
-			"CommeillFautAssetSource": "newTest.cif",
+			"CommeillFautAssetSource": "wtv.cif",
 			"EmotionalState":
 				{
 					"Mood": 0,
@@ -44,6 +47,6 @@
 	"types": [
 		{
 			"TypeId": 0,
-			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.4.0.0, Culture=neutral, PublicKeyToken=null"
 		}]
 }

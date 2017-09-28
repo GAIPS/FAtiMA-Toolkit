@@ -309,7 +309,7 @@ namespace CommeillFaut
         public string CalculateStyle(float value)
         {
             Console.WriteLine(" style value: " + value);
-            if(value >= 0.7)
+            if(value > 0.6)
                 return value <= 1 ? "Positive" : "VeryPositive";
 
             if (value < 0.4)
@@ -371,7 +371,6 @@ namespace CommeillFaut
         public SocialExchange GetHighestVolition(Dictionary<string, float> _volitions)
         {
 
-            int index = 0;
             var first = _volitions.First();
             string key = first.Key;
             float compareValue = _volitions[key];

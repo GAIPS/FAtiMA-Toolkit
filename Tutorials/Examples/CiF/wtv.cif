@@ -4,23 +4,6 @@
 			"classId": 0,
 			"SocialExchanges": [
 				{
-					"Action": "Flirt",
-					"Conditions":
-						{
-							"Set": []
-						},
-					"Description": "toFlirt",
-					"InfluenceRule":
-						{
-							"RuleName": "",
-							"Target": "[x]",
-							"RuleConditions":
-								{
-									"Set": ["True = [x]"]
-								}
-						}
-				}, 
-				{
 					"Action": "Compliment",
 					"Conditions":
 						{
@@ -29,11 +12,11 @@
 					"Description": "I'm your friend!",
 					"InfluenceRule":
 						{
-							"RuleName": "",
+							"RuleName": "Friend?",
 							"Target": "[x]",
 							"RuleConditions":
 								{
-									"Set": []
+									"Set": ["IsFriend(SELF, [x]) = True"]
 								}
 						}
 				}],

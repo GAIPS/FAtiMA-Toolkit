@@ -4,7 +4,7 @@
 			"classId": 0,
 			"ScenarioName": null,
 			"Description": null,
-			"CharacterSources": ["newRPC.rpc"]
+			"CharacterSources": ["newRPC.rpc", "CIF2.rpc"]
 		},
 	"types": [
 		{
