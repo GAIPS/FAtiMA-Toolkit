@@ -5,33 +5,31 @@
 			"DefaultActionPriority": 2,
 			"ActionTendencies": [
 				{
-					"Action": "Speak(-, -,SE([se],Initiate), [sty])",
+					"Action": "Speak(-, -, SE([se], Initiate), [sty])",
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "[sty] = Volition([se], SELF,[x])"] 
+							"Set": ["IsAgent([x]) = True", "[x] != SELF", "Volition([se], SELF, [x]) = [sty]", "[sty] = Positive"]
 						},
 					"Priority": 1
-				},				
+				}, 
 				{
-					"Action": "Speak(-, -,SE([se],Answer), [sty])",
+					"Action": "Speak(-, -, SE([se], Answer), [sty])",
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "LastEventId(Action-End, [x], Speak(-, -,SE([se],Initiate), [sty]), SELF) = [id]", "[sty] = Volition([se], SELF,[x])"] 
-						},
-					"Priority": 2
-				},
+							"Set": ["IsAgent([x]) = True", "[x] != SELF", "LastEventId(Action-End, [x], Speak(-, -, SE([se], Initiate), [sty]), SELF) = [id]", "Volition([se], SELF, [x]) = [sty]"]
+						}
+				}, 
 				{
-					"Action": "Speak(-,-,SE([se],Finalize), [sty])",
+					"Action": "Speak(-, -, SE([se], Finalize), [sty])",
 					"Target": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = true", "[x] != SELF", "LastEventId(Action-End, [x], Speak(-, -,SE([se],Answer), [sty]), SELF) = [id]", "[sty] = Volition([se], SELF,[x])"] 
+							"Set": ["IsAgent([x]) = True", "[x] != SELF", "LastEventId(Action-End, [x], Speak(-, -, SE([se], Answer), [sty]), SELF) = [id]", "Volition([se], SELF, [x]) = [sty]"]
 						},
 					"Priority": 3
-				}
-				]
+				}]
 		},
 	"types": [
 		{

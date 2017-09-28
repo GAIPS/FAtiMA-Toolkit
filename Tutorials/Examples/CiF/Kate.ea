@@ -3,25 +3,12 @@
 		{
 			"classId": 0,
 			"Description": null,
-			"KnowledgeBase":
-				{
-					"Perspective": "Kate",
-					"Knowledge":
-						{
-						"SELF":{
-								
-									"IsFriend(SELF, Mary)": "True, 0.5",
-									"IsAttracted(SELF, Peter)": "True, 0.3"
-									
-									}
-						}
-				},
 			"AppraisalRules":
 				{
 					"AppraisalWeight": 1,
-				"Rules": [
+					"Rules": [
 						{
-							"EventName": "Event(Property-Change, SELF, Friendship(SELF, *), [x])",
+							"EventName": "Event(Property-Change, SELF, Attraction(SELF, *), [x])",
 							"Conditions":
 								{
 									"Set": ["[x] > 10"]
@@ -30,16 +17,16 @@
 							"Praiseworthiness": 8
 						}, 
 						{
-							"EventName": "Event(Property-Change, SELF, Friendship(SELF, *), [x])",
+							"EventName": "Event(Property-Change, SELF, Attraction(SELF, *), [x])",
 							"Conditions":
 								{
 									"Set": ["[x] < -10"]
 								},
 							"Desirability": -8,
 							"Praiseworthiness": -8
-						},
+						}, 
 						{
-							"EventName": "Event(Property-Change, SELF, Attraction(SELF, *), [x])",
+							"EventName": "Event(Property-Change, SELF, Friendship(SELF, *), [x])",
 							"Conditions":
 								{
 									"Set": ["[x] > 10"]
@@ -48,7 +35,7 @@
 							"Praiseworthiness": 8
 						}, 
 						{
-							"EventName": "Event(Property-Change, SELF, Attraction(SELF, *), [x])",
+							"EventName": "Event(Property-Change, SELF, Friendship(SELF, *), [x])",
 							"Conditions":
 								{
 									"Set": ["[x] < -10"]
@@ -67,6 +54,6 @@
 	"types": [
 		{
 			"TypeId": 0,
-			"ClassName": "EmotionalAppraisal.EmotionalAppraisalAsset, EmotionalAppraisal, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+			"ClassName": "EmotionalAppraisal.EmotionalAppraisalAsset, EmotionalAppraisal, Version=1.4.1.0, Culture=neutral, PublicKeyToken=null"
 		}]
 }

@@ -9,22 +9,22 @@
 						{
 							"SELF":
 								{
-									"DialogueState(Kate)": "Start",
-									"DialogueState(Mary)": "Start",
-									"Attraction(Peter, Mary)": 10,
-									"Friendship(Peter, Kate)": 10
+									"IsAttracted(Peter, Mary)": "True, 0.9",
+									"IsFriend(Peter, Kate)": "True, 0",
+									"IsFriend(Peter, Mary)": "True, 0.3"
 								}
 						}
 				},
 			"BodyName": "Male",
 			"VoiceName": "David",
-			"EmotionalAppraisalAssetSource": "../../../Examples/CiF\\Peter.ea",
-			"EmotionalDecisionMakingSource": "../../../Examples/CiF\\newCifEDM.edm",
+			"EmotionalAppraisalAssetSource": "../../../Examples/Examples/Examples/CiF/Peter.ea",
+			"EmotionalDecisionMakingSource": "../../../Examples/Examples/Examples/CiF/newCifEDM.edm",
 			"SocialImportanceAssetSource": null,
-			"CommeillFautAssetSource": "../../../Examples/CiF\\newTest.cif",
+			"CommeillFautAssetSource": "../../../Examples/Examples/Examples/CiF/newTest.cif",
 			"EmotionalState":
 				{
 					"Mood": 0,
+					"initialTick": 0,
 					"EmotionalPool": [],
 					"AppraisalConfiguration":
 						{
@@ -70,6 +70,7 @@
 									"EmotionalState":
 										{
 											"Mood": 0,
+											"initialTick": 0,
 											"EmotionalPool": [],
 											"AppraisalConfiguration":
 												{
@@ -91,6 +92,7 @@
 									"EmotionalState":
 										{
 											"Mood": 0,
+											"initialTick": 0,
 											"EmotionalPool": [],
 											"AppraisalConfiguration":
 												{

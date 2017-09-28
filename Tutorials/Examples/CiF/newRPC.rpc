@@ -4,16 +4,19 @@
 			"classId": 0,
 			"KnowledgeBase":
 				{
-					"Perspective": "Nameless",
+					"Perspective": "CIF1",
 					"Knowledge":
 						{
-
+							"SELF":
+								{
+									"IsFriend(CIF1, CIF2)": "True, 1"
+								}
 						}
 				},
 			"BodyName": null,
 			"VoiceName": null,
 			"EmotionalAppraisalAssetSource": null,
-			"EmotionalDecisionMakingSource": null,
+			"EmotionalDecisionMakingSource": "newCifEDM.edm",
 			"SocialImportanceAssetSource": null,
 			"CommeillFautAssetSource": "wtv.cif",
 			"EmotionalState":
