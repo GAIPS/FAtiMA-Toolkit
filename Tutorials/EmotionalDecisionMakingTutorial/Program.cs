@@ -26,23 +26,26 @@ namespace EmotionalDecisionMakingTutorial
             edm.RegisterKnowledgeBase(kb);
 
             //create a reaction rule
-            var reaction = new ReactionDTO {Action = "Kick", Priority = 0, Target = "Player" };
+            var reaction = new ReactionDTO {Action = "Kick", Priority = "4", Target = "Player" };
 
             //add the reaction rule
             var id = edm.AddReaction(reaction);
             
             edm.AddReactionCondition(id, "LikesToFight(SELF) = True");
-            var actions = edm.Decide();
+            //var actions = edm.Decide();
 
             Console.WriteLine("Decisions: ");
-            foreach (var a in actions)
-            {
-                Console.WriteLine(a.Name.ToString());
-            }
+     
             
             //this is how you can load the asset from a file
             edm = EmotionalDecisionMakingAsset.LoadFromFile("../../../Examples/EDMTest.edm");
-                        
+            edm.RegisterKnowledgeBase(kb);
+            var actions = edm.Decide();
+
+            foreach (var a in actions)
+            {
+              Console.WriteLine(a.Name.ToString() + " p: " + a.Utility);
+            }
             Console.ReadKey();
         }
     }

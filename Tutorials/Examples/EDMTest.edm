@@ -1,15 +1,15 @@
 {
   "root": {
     "classId": 0,
-    "DefaultActionPriority": 0,
+    "DefaultActionPriority": "3",
     "ActionTendencies": [
       {
-        "Action": "Jump",
+        "Action": "TestAction",
         "Target": "A",
         "Conditions": {
-          "Set": [ ]
+          "Set": [ "[p] = 20" ]
         },
-        "Priority": 1
+        "Priority": "[p]"
       },
       {
         "Action": "Jump",
@@ -17,7 +17,7 @@
         "Conditions": {
           "Set": [ ]
         },
-        "Priority": 2
+        "Priority": "2"
       },
       {
         "Action": "Jump",
@@ -25,7 +25,7 @@
         "Conditions": {
           "Set": [ ]
         },
-        "Priority" :  1
+        "Priority" :  "1"
       }
 
     ]

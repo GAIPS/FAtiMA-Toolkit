@@ -14,7 +14,9 @@ namespace ActionLibrary
 
 		public Guid Id { get; private set; }
 		public Name Target { get; private set; }
-		internal IActionSelector Manager { get; private set; }
+        public Name Priority { get; set; }
+
+        internal IActionSelector Manager { get; private set; }
 
 		private Name m_actionTemplate;
 		public Name ActionName {
@@ -68,7 +70,7 @@ namespace ActionLibrary
 			AssertAndInitialize(Name.BuildName(dto.Action),Name.BuildName(dto.Target),new ConditionSet(dto.Conditions));
 		}
 
-		internal IAction GenerateAction(SubstitutionSet constraints)
+		public IAction GenerateAction(SubstitutionSet constraints)
 		{
 			var actionName = m_actionTemplate.MakeGround(constraints);
 			if (!actionName.IsGrounded)
@@ -77,13 +79,15 @@ namespace ActionLibrary
 			var targetName = Target.MakeGround(constraints);
 			if (!targetName.IsGrounded)
 				return null;
-			
-			var a = new Action(actionName.GetTerms(), targetName);
 
-            float p = CalculateActionUtility(a);
+            var priority = Priority.MakeGround(constraints);
+            if (!priority.IsGrounded)
+                return null;
 
-            //change the utility of the action by looking at the confidence in each substitution certainty
+            var a = new Action(actionName.GetTerms(), targetName);
 
+            //Determine Priority (Utility)
+            float p = float.Parse(priority.ToString());
             if (constraints.Any())
             {
                 var minCertainty = constraints.FindMinimumCertainty();
@@ -102,8 +106,6 @@ namespace ActionLibrary
 		{
 			Manager = manager;
 		}
-
-		protected abstract float CalculateActionUtility(IAction a);
 
 		public Name GetActionTemplate()
 		{

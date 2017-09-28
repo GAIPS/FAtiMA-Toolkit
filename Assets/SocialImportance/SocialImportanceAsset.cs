@@ -28,7 +28,6 @@ namespace SocialImportance
 		private KB m_kB;
 		private HashSet<AttributionRule> m_attributionRules;
 		private NameSearchTree<uint> m_claimTree;
-		private ActionSelector<Conferral> m_conferalActions;
 
 		//Volatile Statements
 		private NameSearchTree<NameSearchTree<float>> m_cachedSI = new NameSearchTree<NameSearchTree<float>>();
@@ -45,7 +44,6 @@ namespace SocialImportance
 			m_kB = null;
 			m_attributionRules = new HashSet<AttributionRule>();
 			m_claimTree = new NameSearchTree<uint>();
-			m_conferalActions = new ActionSelector<Conferral>(ValidateConferral);
 
 			m_cachedSI = new NameSearchTree<NameSearchTree<float>>();
 		}
@@ -136,77 +134,6 @@ namespace SocialImportance
 			m_cachedSI.Clear();
 		}
 
-		/// <summary>
-		/// Request a conferral action from the Social Importance Asset.
-		/// </summary>
-		/// <remarks>
-		/// The action will be generated based on the defined Conferrals, and will always be the
-		/// maximum valued conferral that can still respect the asset's defined Claims.
-		/// </remarks>
-		/// <param name="perspective">
-		/// From which perspective do we want to generate the action.
-		/// If the perspective is diferent from "self", it will be like the asset predicting which action will be
-		/// executed by the entity defined in the perspective.
-		/// </param>
-		/// <returns>The action we want to execute or predict.</returns>
-		public IAction DecideConferral(string perspective)
-		{
-			ValidateKBLink();
-
-			var prp = Name.BuildName(perspective);
-			var a = m_conferalActions.SelectActions(m_kB, prp).OrderByDescending(p=>p.Item2.ConferralSI);
-			return internal_FilterActions(prp, a.Select(p=>p.Item1)).FirstOrDefault();
-		}
-
-		/// <summary>
-		/// Filters a set of actions using the defined Social Importance Claims.
-		/// </summary>
-		/// <param name="perspective">
-		/// From which perspective do we want to filter the actions.
-		/// If the perspective is diferent from "self", it will be like the asset is
-		/// evaluating desirable action from another entity's point of view.
-		/// </param>
-		/// <param name="actionsToFilter">
-		/// The set of actions we want to filter.
-		/// </param>
-		/// <returns>
-		/// The set of filtered actions.
-		/// No action returned will have a Claim value higher that the Social Importance
-		/// attributed to the target of the action.
-		/// </returns>
-		/// <see cref="ClaimDTO"/>
-		public IEnumerable<IAction> FilterActions(string perspective, IEnumerable<IAction> actionsToFilter)
-		{
-			ValidateKBLink();
-
-			var p = Name.BuildName(perspective);
-			return internal_FilterActions(p, actionsToFilter);
-		}
-
-		private IEnumerable<IAction> internal_FilterActions(Name perspective, IEnumerable<IAction> actionsToFilter)
-		{
-			perspective = m_kB.AssertPerspective(perspective);
-			foreach (var a in actionsToFilter)
-			{
-				uint minSI;
-				if (m_claimTree.TryGetValue(a.Name, out minSI))
-					if (internal_GetSocialImportance(a.Target, perspective) < minSI)
-						continue;
-
-				yield return a;
-			}
-		}
-
-		private bool ValidateConferral(Conferral c,Name perspective, SubstitutionSet set)
-		{
-			var t = c.Target.MakeGround(set);
-			if (!t.IsGrounded)
-				return false;
-
-			var si = internal_GetSocialImportance(t, perspective);
-			return si >= c.ConferralSI;
-		}
-
 		private uint CalculateSI(Name target, Name perspective)
 		{
 			long value = 0;
@@ -291,36 +218,6 @@ namespace SocialImportance
 
 		#endregion
 
-		#region Conferrals
-
-		public IEnumerable<ConferralDTO> GetConferrals()
-		{
-			return m_conferalActions.GetAllActionDefinitions().Select(c => c.ToDTO());
-		}
-
-		public ConferralDTO AddConferral(ConferralDTO conferral)
-		{
-			var c = new Conferral(conferral);
-			m_conferalActions.AddActionDefinition(c);
-			return c.ToDTO();
-		}
-
-		public void UpdateConferralData(ConferralDTO conferral)
-		{
-			var c = m_conferalActions.GetActionDefinition(conferral.Id);
-			m_conferalActions.RemoveActionDefinition(c);
-			c.SetData(conferral);
-			m_conferalActions.AddActionDefinition(c);
-		}
-
-		public void RemoveConferralById(Guid id)
-		{
-			var c = m_conferalActions.GetActionDefinition(id);
-			m_conferalActions.RemoveActionDefinition(c);
-		}
-
-		#endregion
-
 		/// <summary>
 		/// Load a Social Importance Asset definition from a DTO object.
 		/// </summary>
@@ -344,15 +241,6 @@ namespace SocialImportance
 					m_claimTree.Add(n, c.ClaimSI);
 				}
 			}
-
-			m_conferalActions.Clear();
-			if (dto.Conferral != null)
-			{
-				foreach (var con in dto.Conferral.Select(c => new Conferral(c)))
-				{
-					m_conferalActions.AddActionDefinition(con);
-				}
-			}
 		}
 
 		/// <summary>
@@ -362,8 +250,8 @@ namespace SocialImportance
 		{
 			var at = m_attributionRules.Select(a => a.ToDTO()).ToArray();
 			var claims = m_claimTree.Select(p => new ClaimDTO() { ActionTemplate = p.Key.ToString(), ClaimSI = p.Value }).ToArray();
-			var conferrals = m_conferalActions.GetAllActionDefinitions().Select(c => c.ToDTO()).ToArray();
-			return new SocialImportanceDTO() { AttributionRules = at, Claims = claims, Conferral = conferrals };
+			
+			return new SocialImportanceDTO() { AttributionRules = at, Claims = claims};
 		}
 
 		#endregion
@@ -373,7 +261,6 @@ namespace SocialImportance
 		private static readonly Name SI_DYNAMIC_PROPERTY_NAME = Name.BuildName("SI");
 		private IEnumerable<DynamicPropertyResult> SIPropertyCalculator(IQueryContext context, Name target)
 		{
-
             foreach (var t in context.AskPossibleProperties(target))
 			{
 				var si = internal_GetSocialImportance(t.Item1.Value, context.Perspective);
@@ -392,7 +279,6 @@ namespace SocialImportance
 		{
 			dataHolder.SetValue("AttributionRules",m_attributionRules.ToArray());
 			dataHolder.SetValue("Claims",m_claimTree.Select(p=>new ClaimDTO() {ActionTemplate = p.Key.ToString(),ClaimSI = p.Value}).ToArray());
-			dataHolder.SetValue("Conferrals",m_conferalActions.GetAllActionDefinitions().ToArray());
 		}
 
 		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
@@ -408,11 +294,6 @@ namespace SocialImportance
 			m_claimTree = new NameSearchTree<uint>();
 			foreach (var c in claims)
 				m_claimTree.Add(Name.BuildName(c.ActionTemplate), c.ClaimSI);
-
-			var conferrals = dataHolder.GetValue<Conferral[]>("Conferrals");
-			m_conferalActions = new ActionSelector<Conferral>(ValidateConferral);
-			foreach (var c in conferrals)
-				m_conferalActions.AddActionDefinition(c);
 
 			m_cachedSI = new NameSearchTree<NameSearchTree<float>>();
 		}

@@ -1,4 +1,5 @@
 ﻿using ActionLibrary.DTOs;
+using WellFormedNames;
 
 namespace EmotionalDecisionMaking.DTOs
 {
@@ -7,6 +8,6 @@ namespace EmotionalDecisionMaking.DTOs
 	/// </summary>
 	public class ReactionDTO : ActionDefinitionDTO
     {
-		public float Priority { get; set; }
+		public string Priority { get; set; }
 	}
 }

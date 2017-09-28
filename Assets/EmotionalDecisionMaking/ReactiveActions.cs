@@ -9,18 +9,13 @@ namespace EmotionalDecisionMaking
 {
 	public sealed class ReactiveActions
 	{
-		private float m_defaultActionCooldown = 2;
-		public float DefaultActionCooldown
-		{
-			get { return m_defaultActionCooldown; }
-			set { m_defaultActionCooldown = value < 0 ? 0 : value; }
-		}
+        public Name DefaultActionPriority;
 
 		private ActionSelector<ActionTendency> m_actionTendencies;
 
 		public ReactiveActions()
 		{
-			m_actionTendencies = new ActionSelector<ActionTendency>(null);
+			m_actionTendencies = new ActionSelector<ActionTendency>();
 		}
 
 		public void AddActionTendency(ActionTendency at)

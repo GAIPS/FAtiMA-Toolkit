@@ -8,13 +8,7 @@ namespace EmotionalDecisionMaking
 {
 	public class ActionTendency : BaseActionDefinition
 	{
-		private const float DEFAULT_ACTION_PRIORITY = 1f;
-
-		private float m_priority;
-		public float Priority {
-			get { return m_priority; }
-			set { m_priority = value < 0 ? 0 : value; }
-		}
+		
 
 		public ActionTendency(Name actionName) : this(actionName, Name.NIL_SYMBOL) {}
 
@@ -22,31 +16,27 @@ namespace EmotionalDecisionMaking
 
 		public ActionTendency(Name actionName, Name target, ConditionSet activationConditions) : base(actionName, target, activationConditions)
 		{
-			m_priority = DEFAULT_ACTION_PRIORITY;
+            Priority = (Name)"1"; //Default
 		}
 
 		public ActionTendency(ReactionDTO dto) : base(dto)
 		{
-			Priority = dto.Priority;
+			Priority = (Name)dto.Priority;
 		}
 
 		public ReactionDTO ToDTO()
 		{
 			return FillDTO(new ReactionDTO()
 			{
-				Priority = this.Priority
+				Priority = this.Priority.ToString()
 			});
 		}
 
-		protected override float CalculateActionUtility(IAction a)
-		{
-			return m_priority;
-		}
-
+		
 		public override void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			base.GetObjectData(dataHolder, context);
-			if(!(context.Context is float) || (Priority != (float)context.Context))
+			if(!(context.Context is Name) || (Priority != (Name)context.Context))
 				dataHolder.SetValue("Priority", Priority);
 		}
 
@@ -54,9 +44,9 @@ namespace EmotionalDecisionMaking
 		{
 			base.SetObjectData(dataHolder, context);
 			if (dataHolder.ContainsField("Priority"))
-				Priority = dataHolder.GetValue<float>("Priority");
+				Priority = dataHolder.GetValue<Name>("Priority");
 			else
-				Priority = context.Context as float? ?? DEFAULT_ACTION_PRIORITY;
+				Priority = context.Context as Name ?? (Name)"1";
 		}
 	}
 }

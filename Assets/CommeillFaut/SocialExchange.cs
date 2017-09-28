@@ -341,11 +341,5 @@ namespace CommeillFaut
         }
 
 
-        protected override float CalculateActionUtility(IAction a)
-        {
-            throw new NotImplementedException();
-        }
-
-
     }
 }

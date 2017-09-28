@@ -49,17 +49,11 @@ namespace EmotionalAppraisal.AppraisalRules
                     var mostCertainSubSet = this.DetermineSubstitutionSetWithMostCertainty(finalSubsList);
                     if (mostCertainSubSet != null)
                     {
-                        if (appRule.Desirability.IsVariable)
+                        appRule.Desirability = appRule.Desirability.MakeGround(mostCertainSubSet);
+                        appRule.Praiseworthiness = appRule.Praiseworthiness.MakeGround(mostCertainSubSet);
+                        if (!appRule.Desirability.IsGrounded || !appRule.Praiseworthiness.IsGrounded)
                         {
-                            var pSub = mostCertainSubSet.Where(s => s.Variable == appRule.Desirability).First();
-                            if (pSub == null) return null;
-                            appRule.Desirability = pSub.SubValue.Value;
-                        }
-                        if (appRule.Praiseworthiness.IsVariable)
-                        {
-                            var pSub = mostCertainSubSet.Where(s => s.Variable == appRule.Praiseworthiness).First();
-                            if (pSub == null) return null;
-                            appRule.Praiseworthiness = pSub.SubValue.Value;
+                           return null;
                         }
 
                         //Modify the appraisal variables based on the certainty of the substitutions

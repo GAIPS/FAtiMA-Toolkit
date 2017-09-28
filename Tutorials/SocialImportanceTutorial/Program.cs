@@ -26,7 +26,6 @@ namespace SocialImportanceTutorial
             siAsset.RegisterKnowledgeBase(kb);
             
             Console.WriteLine("The SI attributed to "+siTarget+" is:" + siAsset.GetSocialImportance(siTarget));
-            Console.WriteLine("Conferral to execute: " + siAsset.DecideConferral("SELF")?.Key);
 
             Console.ReadKey();
         }

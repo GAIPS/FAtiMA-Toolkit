@@ -14,13 +14,7 @@ namespace ActionLibrary
 		where T: BaseActionDefinition
 	{
 		private ConditionMapper<T> m_actions = new ConditionMapper<T>();
-		private readonly ActionSelectionFunction<T>  m_validator;
-
-		public ActionSelector(ActionSelectionFunction<T> validationFunction)
-		{
-			m_validator = validationFunction;
-		}
-
+		
 		public void AddActionDefinition(T actionDef)
 		{
 			if(actionDef.Manager!=null)
@@ -59,10 +53,8 @@ namespace ActionLibrary
         public IEnumerable<Pair<IAction,T>> SelectActions(IQueryable knowledgeBase, Name perspective)
 		{
 			var validActions = m_actions.MatchConditions(knowledgeBase, perspective, new SubstitutionSet());
-			if(m_validator!=null)
-				validActions = validActions.Where(p => m_validator((T)p.Item1,perspective, p.Item2));
-
             var result = validActions.Select(p => new Pair<IAction, T>(p.Item1.GenerateAction(p.Item2), p.Item1)).Where(a => a.Item1 != null);
+
             return result;
         }
 
