@@ -96,6 +96,7 @@ namespace CommeillFautTutorial
             List<Name> _events = new List<Name>();
             List<IAction> _actions = new List<IAction>();
 
+            IAction action = null;
             while (true)
             {
                 _actions.Clear();
@@ -105,7 +106,8 @@ namespace CommeillFautTutorial
                     Console.WriteLine("Character perceiving: " + rpc.CharacterName);
 
                     rpc.Perceive(_events);
-                    _actions.Add(rpc.Decide().FirstOrDefault());
+                    foreach (var a in rpc.Decide().ToList())
+                        _actions.Add(a); 
 
 
 
@@ -118,13 +120,17 @@ namespace CommeillFautTutorial
                 }
 
                 _events.Clear();
+             
+                    var randomGen = new Random(Guid.NewGuid().GetHashCode());
 
-                var randomGen = new Random();
+                    var pos = randomGen.Next(rpcList.Count);
+                    Console.WriteLine("randompos : " + pos);
+                    var initiator = rpcList.ElementAt(pos);
 
-                var pos = randomGen.Next(rpcList.Count);
-                var initiator = rpcList.ElementAt(pos);
-                var action = _actions.ElementAt(pos);
-
+                if(_actions.Count > 0)
+                    action = _actions.ElementAt(pos);
+                
+                
 
                 Console.WriteLine();
 

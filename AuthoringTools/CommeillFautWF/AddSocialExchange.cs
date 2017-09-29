@@ -32,10 +32,13 @@ namespace CommeillFautWF
 
             InitializeComponent();
             AddedObject = new SocialExchangeDTO();
+            AddedObject.InfluenceRule = new InfluenceRuleDTO();
+
+            
             _influenceRuleVm = new InfluenceRuleVM(_vm, AddedObject);
             _vm = vm;
-            AddedObject.InfluenceRule = new InfluenceRuleDTO();
             conditionSetEditorControl1.View = _influenceRuleVm.ConditionSetView;
+            
         }
 
         public AddSocialExchange(SocialExchangesVM vm, SocialExchange social)

@@ -44,10 +44,15 @@ namespace CommeillFautWF.ViewModels
           
             _SocialExchangeDto = dto;
             Rule = new InfluenceRuleDTO();
-           
+
             if (dto?.InfluenceRule != null)
 
                 Rule = dto.InfluenceRule;
+            else
+            {
+                Rule = new InfluenceRuleDTO();
+                Rule.RuleConditions = new ConditionSetDTO();
+            }
 
             ConditionSetView = new ConditionSetView();
             ConditionSetView.SetData(Rule.RuleConditions);

@@ -9,6 +9,7 @@
 						{
 							"SELF":
 								{
+									"IsAttracted(CIF2, CIF1)": "False, 1",
 									"IsFriend(CIF2, CIF1)": "True, 0.2"
 								}
 						}

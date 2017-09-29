@@ -19,6 +19,23 @@
 									"Set": ["IsFriend(SELF, [x]) = True"]
 								}
 						}
+				}, 
+				{
+					"Action": "Flirt",
+					"Conditions":
+						{
+							"Set": []
+						},
+					"Description": "When 2 people are attracted to each other...",
+					"InfluenceRule":
+						{
+							"RuleName": "",
+							"Target": "[x]",
+							"RuleConditions":
+								{
+									"Set": ["IsAttracted(SELF, [x]) = True"]
+								}
+						}
 				}],
 			"_triggerRules":
 				{
