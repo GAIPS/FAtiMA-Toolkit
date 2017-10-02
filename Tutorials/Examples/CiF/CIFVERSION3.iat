@@ -4,7 +4,32 @@
 			"classId": 0,
 			"ScenarioName": null,
 			"Description": null,
-			"CharacterSources": ["newRPC.rpc", "CIF2.rpc"]
+			"CharacterSources": ["newRPC.rpc", "CIF2.rpc"],
+			"Dialogues": [
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Flirt, Initiate)",
+					"Style": "Positive",
+					"Utterance": "Hey there sweet thing",
+					"UtteranceId": "TTS-7EE86176370B90D7D4823380A7D1287E"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Flirt, Answer)",
+					"Style": "Negative",
+					"Utterance": "Piss off!",
+					"UtteranceId": "TTS-93AA4E26A48D42F0187B6FB99753FA82"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Flirt, Finalize)",
+					"Style": "Positive",
+					"Utterance": "Ok thank you!",
+					"UtteranceId": "TTS-2C96CD897C26D0C6B1058F3B810B6511"
+				}]
 		},
 	"types": [
 		{

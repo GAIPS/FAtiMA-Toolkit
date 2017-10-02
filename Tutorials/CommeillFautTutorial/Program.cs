@@ -106,9 +106,14 @@ namespace CommeillFautTutorial
                     Console.WriteLine("Character perceiving: " + rpc.CharacterName);
 
                     rpc.Perceive(_events);
-                    foreach (var a in rpc.Decide().ToList())
-                        _actions.Add(a); 
+                    var decisions = rpc.Decide();
+                    _actions.Add(decisions.FirstOrDefault());
 
+                    foreach (var act in decisions)
+                    {
+                        Console.WriteLine(rpc.CharacterName + " has this action: " + act.Name);
+                        
+                    }
 
 
 
@@ -124,14 +129,13 @@ namespace CommeillFautTutorial
                     var randomGen = new Random(Guid.NewGuid().GetHashCode());
 
                     var pos = randomGen.Next(rpcList.Count);
-                    Console.WriteLine("randompos : " + pos);
+                int i = 0;
+                  
                     var initiator = rpcList.ElementAt(pos);
-
-                if(_actions.Count > 0)
+                
+               
                     action = _actions.ElementAt(pos);
-                
-                
-
+              
                 Console.WriteLine();
 
 
@@ -152,8 +156,8 @@ namespace CommeillFautTutorial
                     Console.WriteLine();
                     Console.WriteLine("Dialogue:");
                     Console.WriteLine("Current State: " + action.Parameters[0].ToString());
-                    //Console.WriteLine(initiator.CharacterName + " says: ''" +
-                     //                 iat.GetDialogueActions(action.Parameters[0], action.Parameters[1], action.Parameters[2], action.Parameters[3]).FirstOrDefault().Utterance + "'' to " + action.Target);
+                //    Console.WriteLine(initiator.CharacterName + " says: ''" +
+                 //                    iat.GetDialogueActions(action.Parameters[0], action.Parameters[1], action.Parameters[2], action.Parameters[3]).FirstOrDefault().Utterance + "'' to " + action.Target);
                     Console.WriteLine("Next State: " + action.Parameters[1].ToString());
 
 

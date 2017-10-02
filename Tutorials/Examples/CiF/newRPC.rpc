@@ -10,7 +10,7 @@
 							"SELF":
 								{
 									"IsAttracted(CIF1, CIF2)": "True, 1",
-									"IsFriend(CIF1, CIF2)": "True, 1"
+									"IsFriend(CIF1, CIF2)": "True, 0.8"
 								}
 						}
 				},

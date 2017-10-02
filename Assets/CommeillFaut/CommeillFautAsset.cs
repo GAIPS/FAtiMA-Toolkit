@@ -91,83 +91,106 @@ namespace CommeillFaut
             var seSub = new Substitution(Name.BuildName("[x]"), new ComplexValue(Name.BuildName("Peter")));
             var socialMoveAux = "";
             var stringVolition = "";
-            
+
             foreach (var t in context.AskPossibleProperties(Target))
             {
 
                 foreach (var se in m_SocialExchanges)
                 {
-                   var newValue = CalculateVolitions(se.ActionName.ToString(), t.Item1.Value.ToString(),
-                     context.Perspective.ToString());
-               //     Console.WriteLine(" sub: " + socialMoveName + " for " + se.ActionName + " certainty.. : " + newValue + " towards " + t.Item1.Value.ToString());
+                    var newValue = CalculateVolitions(se.ActionName.ToString(), t.Item1.Value.ToString(),
+                      context.Perspective.ToString());
+                    //     Console.WriteLine(" sub: " + socialMoveName + " for " + se.ActionName + " certainty.. : " + newValue + " towards " + t.Item1.Value.ToString());
 
-                    if (newValue >= value)
+                    /*          if (newValue >= value)
+                              {
+                                 value = newValue;
+                                  socialMoveAux = se.ActionName.ToString();
+
+                              }
+                          }*/
+
+                    if (newValue != -1)
                     {
-                       value = newValue;
-                        socialMoveAux = se.ActionName.ToString();
-                        seSub = new Substitution(socialMoveName, new ComplexValue(se.ActionName));
-                    }
-                }
 
-                if (value != -1)
-                {
-                    var sub =
-                        new SubstitutionSet(new Substitution[]
-                            { new Substitution(Name.BuildName("[x]"), new ComplexValue(t.Item1.Value, value))
+                        /*          var maxVolitions = m_SocialExchanges.Where(x => CalculateVolitions(x.ActionName.ToString(), t.Item1.Value.ToString(),
+                                 context.Perspective.ToString()) == value);*/
+
+
+                        //           foreach (var option in maxVolitions)
+                        //          {
+                        seSub = new Substitution(socialMoveName, new ComplexValue(se.ActionName));
+
+                        var sub =
+                            new SubstitutionSet(new Substitution[]
+                                { new Substitution(Name.BuildName("[x]"), new ComplexValue(t.Item1.Value, newValue))
 
                                , seSub });
 
-                    //     var roundedValue = Floor(value);
+                        //     var roundedValue = Floor(value);
 
-                  
-                    stringVolition = CalculateStyle(value);
 
-                    sub.AddSubstitution(new Substitution(Name.BuildName("[sty]"), new ComplexValue(Name.BuildName(stringVolition), 1)));
-                  
+                        stringVolition = CalculateStyle(newValue);
 
-                    value = -1.0f;
+                        sub.AddSubstitution(new Substitution(Name.BuildName("[sty]"), new ComplexValue(Name.BuildName(stringVolition), 1)));
 
-                    ret.Add(sub, Name.BuildName(socialMoveAux));
 
-                 //   yield return new DynamicPropertyResult(Name.BuildName(stringVolition), sub);
+                        // value = -1.0f;
 
-                }
-                else
-                {
-                    Console.WriteLine("No such social exchange with that name found \n");
-                    yield break;
+                        // ret.Add(sub, Name.BuildName(option.ActionName));
 
+                        //    Console.WriteLine(" Result: " + newValue + "  trying to add: " + sub);
+
+                        yield return new DynamicPropertyResult(Name.BuildName(stringVolition), sub);
+
+                    }
                 }
 
 
+                //   yield return new DynamicPropertyResult(Name.BuildName(stringVolition), sub);
 
-            }
+                //         }
+        /*    }      else
+                    {
+                        Console.WriteLine("No such social exchange with that name found \n");
+                        yield break;
+                        */
+                    }
 
-            // and now to find the social exchange with the highest certainty 
 
-            Name nameToRet = Name.BuildName("default");
-            SubstitutionSet subToRet = new SubstitutionSet();
-            float minValue = -0.1f;
-            foreach(var index in ret)
-            {
-                if(index.Key.ElementAt(0).SubValue.Certainty > minValue)
-                {
-                    minValue = index.Key.ElementAt(0).SubValue.Certainty;
-                    nameToRet = index.Value;
-                    subToRet = index.Key;
+
                 }
-            }
 
+                // and now to find the social exchange with the highest certainty 
+                /*
+                            List<Name> namesToRet = new List<Name>() {Name.BuildName("default") };
+                            List<SubstitutionSet> subSToRet = new List<SubstitutionSet>();
+
+                            float minValue = -0.1f;
+
+                            foreach (var index in ret)
+                            {
+                                if(index.Key.ElementAt(0).SubValue.Certainty > minValue)
+                                {
+                                    minValue = index.Key.ElementAt(0).SubValue.Certainty;
+
+                                }
+                            }
+
+                            var MaxValues = ret.Where(x => x.Key.ElementAt(0).SubValue.Certainty == minValue);
+
+
+
+
+                            //  subToRet.ElementAt(0).SubValue.Certainty = 1;
+
+                            foreach (var s in MaxValues)
+                            {
+                                Console.WriteLine(" Result: " + s.Value.ToString() + "  " + minValue + " uhm: " + MaxValues.Count() + " ret values " + ret.Count());
+                                yield return new DynamicPropertyResult(s.Value, s.Key);
+                        */    
+                
             
-
-            Console.WriteLine(" Result: " + nameToRet.ToString() + "  "  + minValue);
-
-          //  subToRet.ElementAt(0).SubValue.Certainty = 1;
-
-            yield return new DynamicPropertyResult(Name.BuildName(stringVolition), subToRet);
-
-
-        }
+        
         
         
 
@@ -441,6 +464,7 @@ namespace CommeillFaut
 
         public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
+            
                dataHolder.SetValue("SocialExchanges", m_SocialExchanges.ToArray());
             ConditionList = new Dictionary<string, string[]>();
 
@@ -450,8 +474,10 @@ namespace CommeillFaut
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
+            
             m_SocialExchanges = new List<SocialExchange>(dataHolder.GetValue<SocialExchange[]>("SocialExchanges"));
-   
+            foreach (var s in m_SocialExchanges)
+                s.GUID = Guid.NewGuid();
             _TriggerRules = dataHolder.GetValue<TriggerRules>("_triggerRules");
             m_cachedCIF = new NameSearchTree<NameSearchTree<float>>();
         }

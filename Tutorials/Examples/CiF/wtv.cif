@@ -4,23 +4,6 @@
 			"classId": 0,
 			"SocialExchanges": [
 				{
-					"Action": "Compliment",
-					"Conditions":
-						{
-							"Set": []
-						},
-					"Description": "I'm your friend!",
-					"InfluenceRule":
-						{
-							"RuleName": "Friend?",
-							"Target": "[x]",
-							"RuleConditions":
-								{
-									"Set": ["IsFriend(SELF, [x]) = True"]
-								}
-						}
-				}, 
-				{
 					"Action": "Flirt",
 					"Conditions":
 						{
@@ -34,6 +17,23 @@
 							"RuleConditions":
 								{
 									"Set": ["IsAttracted(SELF, [x]) = True"]
+								}
+						}
+				}, 
+				{
+					"Action": "Compliment",
+					"Conditions":
+						{
+							"Set": []
+						},
+					"Description": "Friends",
+					"InfluenceRule":
+						{
+							"RuleName": "",
+							"Target": "[x]",
+							"RuleConditions":
+								{
+									"Set": ["IsFriend(SELF, [x]) = True"]
 								}
 						}
 				}],

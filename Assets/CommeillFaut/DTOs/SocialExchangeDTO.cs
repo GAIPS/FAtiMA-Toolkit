@@ -8,12 +8,12 @@ namespace CommeillFaut.DTOs
     [Serializable]
     public class SocialExchangeDTO : ActionDefinitionDTO 
     {
-       // public Guid Id { get; set; }
+        public new Guid Id { get; set; }
 
         /// <summary>
         /// The social exchange name/description string.
-       
-        
+
+
 
         /// <summary>
         /// The condition variable that represents the initiator name 
