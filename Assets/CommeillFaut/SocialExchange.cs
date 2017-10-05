@@ -31,14 +31,10 @@ namespace CommeillFaut
 
         public InfluenceRule InfluenceRule { get; set; }
 
-        public SocialExchange(String name) : base(WellFormedNames.Name.BuildName(name), WellFormedNames.Name.BuildName("Empty"), new ConditionSet(new ConditionSetDTO()))
+        public SocialExchange(String name) : base(WellFormedNames.Name.BuildName(name), Name.NIL_SYMBOL, Name.NIL_SYMBOL, Name.SELF_SYMBOL, new ConditionSet(new ConditionSetDTO()))
         
             {
-            
-     
             Intent = "";
-          
-
             InfluenceRule = new InfluenceRule(new InfluenceRuleDTO());
 
         }

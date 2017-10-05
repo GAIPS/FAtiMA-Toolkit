@@ -14,6 +14,8 @@ namespace ActionLibrary
 
 		public Guid Id { get; private set; }
 		public Name Target { get; private set; }
+        public Name Type { get; set; }
+        public Name Identity { get; set; }
         public Name Priority { get; set; }
 
         internal IActionSelector Manager { get; private set; }
@@ -36,7 +38,7 @@ namespace ActionLibrary
 			}
 		}
 
-		private void AssertAndInitialize(Name actionTemplate, Name target, ConditionSet activationConditions)
+		private void AssertAndInitialize(Name actionTemplate, Name target, Name type, Name identity, ConditionSet activationConditions)
 		{
 			var terms = actionTemplate.GetTerms().ToArray();
 			var name = terms[0];
@@ -49,12 +51,14 @@ namespace ActionLibrary
 			Id = Guid.NewGuid();
 			m_actionTemplate = actionTemplate;
 			Target = target;
+            Type = type;
+            Identity = identity;
 			ActivationConditions = activationConditions;
 		}
 
-		protected BaseActionDefinition(Name actionTemplate, Name target, ConditionSet activationConditions)
+		protected BaseActionDefinition(Name actionTemplate, Name target, Name type, Name identity, ConditionSet activationConditions)
 		{
-			AssertAndInitialize(actionTemplate,target, activationConditions);
+			AssertAndInitialize(actionTemplate,target, type, identity, activationConditions);
 		}
 
 		protected BaseActionDefinition(BaseActionDefinition other)
@@ -67,7 +71,7 @@ namespace ActionLibrary
 
 		protected BaseActionDefinition(ActionDefinitionDTO dto)
 		{
-			AssertAndInitialize(Name.BuildName(dto.Action),Name.BuildName(dto.Target),new ConditionSet(dto.Conditions));
+			AssertAndInitialize(Name.BuildName(dto.Action),Name.BuildName(dto.Target), Name.BuildName(dto.Type), Name.BuildName(dto.Identity), new ConditionSet(dto.Conditions));
 		}
 
 		public IAction GenerateAction(SubstitutionSet constraints)
@@ -144,17 +148,21 @@ namespace ActionLibrary
 		public virtual void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			dataHolder.SetValue("Action",GetActionTemplate());
-			if (Target != null && Target != Name.NIL_SYMBOL)
-				dataHolder.SetValue("Target",Target);
-			dataHolder.SetValue("Conditions",ActivationConditions);
+			dataHolder.SetValue("Target",Target);
+            dataHolder.SetValue("Type", Target);
+            dataHolder.SetValue("Identity", Target);
+            dataHolder.SetValue("Conditions",ActivationConditions);
 		}
 
 		public virtual void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			var actionTemplate = dataHolder.GetValue<Name>("Action");
 			var target = dataHolder.ContainsField("Target") ? dataHolder.GetValue<Name>("Target") : Name.NIL_SYMBOL;
-			var conditions = dataHolder.GetValue<ConditionSet>("Conditions");
-			AssertAndInitialize(actionTemplate, target, conditions);
+            var type = dataHolder.ContainsField("Type") ? dataHolder.GetValue<Name>("Type") : Name.NIL_SYMBOL;
+            var identity = dataHolder.ContainsField("Identity") ? dataHolder.GetValue<Name>("Identity") : Name.SELF_SYMBOL;
+            var conditions = dataHolder.GetValue<ConditionSet>("Conditions");
+
+			AssertAndInitialize(actionTemplate, target, type, identity, conditions);
 		}
 	}
 }

@@ -8,13 +8,11 @@ namespace EmotionalDecisionMaking
 {
 	public class ActionTendency : BaseActionDefinition
 	{
-		
+		public ActionTendency(Name actionName) : this(actionName, Name.NIL_SYMBOL, Name.NIL_SYMBOL, Name.SELF_SYMBOL) {}
 
-		public ActionTendency(Name actionName) : this(actionName, Name.NIL_SYMBOL) {}
+		public ActionTendency(Name actionName, Name target, Name type, Name identity) : this(actionName, target, type, identity, new ConditionSet()) {}
 
-		public ActionTendency(Name actionName, Name target) : this(actionName, target, new ConditionSet()) {}
-
-		public ActionTendency(Name actionName, Name target, ConditionSet activationConditions) : base(actionName, target, activationConditions)
+		public ActionTendency(Name actionName, Name target, Name type, Name identity, ConditionSet activationConditions) : base(actionName, target, type, identity, activationConditions)
 		{
             Priority = (Name)"1"; //Default
 		}

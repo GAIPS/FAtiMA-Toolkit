@@ -23,9 +23,17 @@ namespace ActionLibrary.DTOs
 		/// The target of the action, if any.
 		/// </summary>
 		public string Target { get; set; }
-		/// <summary>
-		/// The set of conditions that must be true for this action execution.
-		/// </summary>
-		public ConditionSetDTO Conditions { get; set; }
+        /// <summary>
+        /// The type of the action (e.g. verbal, nonverbal)
+        /// </summary>
+        public string Type { get; set; }
+        /// <summary>
+        /// The name of the identity that is associated to the action (default is SELF)
+        /// </summary>
+        public string Identity { get; set; }
+        /// <summary>
+        /// The set of conditions that must be true for this action execution.
+        /// </summary>
+        public ConditionSetDTO Conditions { get; set; }
 	}
 }

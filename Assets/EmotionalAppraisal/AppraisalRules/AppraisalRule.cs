@@ -20,8 +20,9 @@ namespace EmotionalAppraisal.AppraisalRules
 		private Guid m_id;
 
 		public Guid Id { get { return m_id; } set { m_id = value; } }
-		public Name EventName { get; set; }
-		public ConditionSet Conditions { get; set; }
+        public Name Identity { get; set; }
+        public Name EventName { get; set; }
+        public ConditionSet Conditions { get; set; }
 
         /// <summary>
         ///     Desirability of the event
@@ -33,17 +34,11 @@ namespace EmotionalAppraisal.AppraisalRules
         /// </summary>
         public Name Praiseworthiness { get; set; }
 
-        public AppraisalRule(Name eventName, ConditionSet conditions = null)
-		{
-			m_id = Guid.NewGuid();
-			EventName = eventName;
-			Conditions = conditions ?? new ConditionSet();
-			Desirability = Praiseworthiness = (Name)"0";
-		}
 
 	    public AppraisalRule(AppraisalRuleDTO appraisalRuleDTO)
 	    {
 		    m_id = (appraisalRuleDTO.Id == Guid.Empty)?Guid.NewGuid() : appraisalRuleDTO.Id;
+            Identity = (appraisalRuleDTO.Identity == null) ? Name.SELF_SYMBOL : appraisalRuleDTO.Identity;
             EventName = (Name)appraisalRuleDTO.EventMatchingTemplate;
 
             if (appraisalRuleDTO.Desirability == null)
@@ -75,12 +70,11 @@ namespace EmotionalAppraisal.AppraisalRules
 		{
 			m_id = other.m_id;
 			EventName = other.EventName;
+            Identity = other.Identity;
 			Conditions = new ConditionSet(other.Conditions);
 			Desirability = other.Desirability;
 			Praiseworthiness = other.Praiseworthiness;
 		}
-
-	
 
 	}
 }

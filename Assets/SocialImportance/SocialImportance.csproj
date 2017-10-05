@@ -32,7 +32,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AttributionRule.cs" />
-    <Compile Include="Conferral.cs" />
     <Compile Include="DTOs\AttributionRuleDTO.cs" />
     <Compile Include="DTOs\ClaimDTO.cs" />
     <Compile Include="DTOs\ConferralDTO.cs" />
