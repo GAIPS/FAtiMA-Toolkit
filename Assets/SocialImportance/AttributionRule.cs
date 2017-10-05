@@ -10,9 +10,9 @@ namespace SocialImportance
 	{
 		[NonSerialized]
 		public Guid GUID;
-
 		public string RuleName { get; private set; }
-		public Name Target { get; private set; }
+        public Name Identity { get; private set; }
+        public Name Target { get; private set; }
 		public int Value { get; private set; }
 		public ConditionSet Conditions { get; private set; }
 
@@ -29,6 +29,7 @@ namespace SocialImportance
 		public void SetData(AttributionRuleDTO dto)
 		{
 			RuleName = dto.RuleName;
+            Identity = string.IsNullOrEmpty(dto.Identity) ? Name.SELF_SYMBOL : (Name)dto.Identity;
 			Target = (Name)dto.Target;
 			Value = dto.Value;
 			Conditions = new ConditionSet(dto.Conditions);
@@ -38,6 +39,7 @@ namespace SocialImportance
 		{
 			return new AttributionRuleDTO() {
                 Id = GUID,
+                Identity = Identity.ToString(),
                 RuleName = RuleName,
                 Target = Target.ToString(),
                 Value = Value,
