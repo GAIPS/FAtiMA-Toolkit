@@ -32,11 +32,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Action.cs" />
-    <Compile Include="ActionSelector.cs" />
     <Compile Include="BaseActionDefinition.cs" />
     <Compile Include="DTOs\ActionDefinitionDTO.cs" />
     <Compile Include="IAction.cs" />
-    <Compile Include="IActionSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

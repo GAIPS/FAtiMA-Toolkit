@@ -17,6 +17,7 @@ namespace Conditions
 	public sealed class ConditionSet : IEnumerable<Condition>, IConditionEvaluator, ICustomSerialization
 	{
 		public LogicalQuantifier Quantifier { get; }
+       
 
 		[NonSerialized]
 		private List<Condition> m_conditions;

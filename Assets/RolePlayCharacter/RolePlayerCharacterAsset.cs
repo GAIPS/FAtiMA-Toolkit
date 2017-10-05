@@ -171,6 +171,11 @@ namespace RolePlayCharacter
 
         public IEnumerable<IAction> Decide()
         {
+            return this.Decide(Name.UNIVERSAL_SYMBOL);
+        }
+
+        public IEnumerable<IAction> Decide(Name actionType)
+        {
             if (CurrentActionName != null)
                 return new IAction[]
                 {
@@ -178,7 +183,7 @@ namespace RolePlayCharacter
                         CurrentActionTarget)
                 };
 
-            var possibleActions = m_emotionalDecisionMakingAsset.Decide();
+            var possibleActions = m_emotionalDecisionMakingAsset.Decide(actionType);
 
             var maxUtility = float.MinValue;
             foreach(var a in possibleActions)

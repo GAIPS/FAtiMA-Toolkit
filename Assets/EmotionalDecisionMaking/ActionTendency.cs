@@ -8,6 +8,7 @@ namespace EmotionalDecisionMaking
 {
 	public class ActionTendency : BaseActionDefinition
 	{
+
 		public ActionTendency(Name actionName) : this(actionName, Name.NIL_SYMBOL, Name.NIL_SYMBOL, Name.SELF_SYMBOL) {}
 
 		public ActionTendency(Name actionName, Name target, Name type, Name identity) : this(actionName, target, type, identity, new ConditionSet()) {}
@@ -30,7 +31,7 @@ namespace EmotionalDecisionMaking
 			});
 		}
 
-		
+
 		public override void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			base.GetObjectData(dataHolder, context);

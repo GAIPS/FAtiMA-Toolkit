@@ -18,8 +18,6 @@ namespace ActionLibrary
         public Name Identity { get; set; }
         public Name Priority { get; set; }
 
-        internal IActionSelector Manager { get; private set; }
-
 		private Name m_actionTemplate;
 		public Name ActionName {
 			get { return m_actionTemplate.GetFirstTerm(); }
@@ -34,7 +32,6 @@ namespace ActionLibrary
 
 				var old = m_activationConditions;
 				m_activationConditions = value;
-				Manager?.OnConditionsUpdated(this,old);
 			}
 		}
 
@@ -104,11 +101,6 @@ namespace ActionLibrary
 
 
             return a;
-		}
-
-		internal void OnManagerSet(IActionSelector manager)
-		{
-			Manager = manager;
 		}
 
 		public Name GetActionTemplate()

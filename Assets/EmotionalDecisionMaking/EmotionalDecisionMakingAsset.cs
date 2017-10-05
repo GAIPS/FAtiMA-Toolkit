@@ -57,7 +57,7 @@ namespace EmotionalDecisionMaking
 		/// </summary>
 		/// <returns>The set of actions that the assets wants to execute</returns>
 		/// <exception cref="Exception">Thrown if there is no Emotional Appraisal Asset registed in this asset.</exception>
-        public IEnumerable<IAction> Decide()
+        public IEnumerable<IAction> Decide(Name actionType)
         {
             if (m_kb == null)
                 throw new Exception(
@@ -66,14 +66,16 @@ namespace EmotionalDecisionMaking
 			if (ReactiveActions == null)
 				return Enumerable.Empty<IAction>();
 
-            return ReactiveActions.SelectActions(m_kb, Name.SELF_SYMBOL);
+            return ReactiveActions.SelectActions(m_kb, Name.SELF_SYMBOL, actionType);
         }
 
-		/// <summary>
-		/// Adds a new reactive action to the asset.
-		/// </summary>
-		/// <param name="newReaction">The DTO containing the parameters needed to generate a reaction.</param>
-		/// <returns>The unique identifier of the newly created reaction.</returns>
+
+
+        /// <summary>
+        /// Adds a new reactive action to the asset.
+        /// </summary>
+        /// <param name="newReaction">The DTO containing the parameters needed to generate a reaction.</param>
+        /// <returns>The unique identifier of the newly created reaction.</returns>
         public Guid AddReaction(ReactionDTO newReaction)
         {
             var newActionTendency = new ActionTendency(newReaction);
