@@ -50,12 +50,16 @@ namespace CommeillFautWF
 
         private void AddTriggerRule_Load(object sender, EventArgs e)
         {
-            Vm._cifAsset._TriggerRules.AddTriggerRule(new InfluenceRuleDTO(), "newrule");
-            Close();
+          //  Vm._cifAsset._TriggerRules.AddTriggerRule(new InfluenceRuleDTO(), "newrule");
+          //  Close();
         }
         private void AddTriggerRule_Click(object sender, EventArgs e)
         {
-
+            var socialNetwork = textBox1.Text;
+            var target = textBox3.Text;
+            var numericValue = numericUpDown1.Value;
+          //  Vm._cifAsset._TriggerRules.AddTriggerRule(new InfluenceRuleDTO() { RuleName = }, "newrule");
+            Close();
         }
 
         private void label6_Click(object sender, EventArgs e)

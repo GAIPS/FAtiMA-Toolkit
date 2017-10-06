@@ -18,7 +18,7 @@
 			"VoiceName": null,
 			"EmotionalAppraisalAssetSource": null,
 			"EmotionalDecisionMakingSource": "newCifEDM.edm",
-			"SocialImportanceAssetSource": null,
+			"SocialImportanceAssetSource": "CIFVERSION3.si",
 			"CommeillFautAssetSource": "wtv.cif",
 			"EmotionalState":
 				{

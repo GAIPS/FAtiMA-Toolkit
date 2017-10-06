@@ -553,9 +553,6 @@ namespace CommeillFaut
                     var seResult = result[6];
                     var SocialExchange = m_SocialExchanges.Find(x => x.ActionName.ToString() == seName);
 
-                    Console.WriteLine("CIF Asset Perceive, Character: " + initiator + " responded " + seName + " towards " +
-                                      target + "\n");
-
                     SEResponse(SocialExchange, initiator, target, seResult);
                 }
 
@@ -573,9 +570,6 @@ namespace CommeillFaut
                     var seName = result[4];
                     var seResult = result[7];
                     var socialExchange = m_SocialExchanges.Find(x => x.ActionName.ToString() == seName);
-
-                    Console.WriteLine("CIF Asset Perceive, Character: " + initiator + " ended " + seName + " towards " +
-                                      target + " result " + seResult + "social excahnge name" + socialExchange.ActionName + "\n");
 
                     return EndSE(socialExchange, initiator, target, seResult);
                 }

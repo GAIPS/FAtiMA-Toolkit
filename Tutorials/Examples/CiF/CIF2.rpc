@@ -9,6 +9,7 @@
 						{
 							"SELF":
 								{
+									"IsEnemy(CIF1)": "True, 1",
 									"IsAttracted(CIF2, CIF1)": "False, 1",
 									"IsFriend(CIF2, CIF1)": "True, 0.2"
 								}
@@ -18,7 +19,7 @@
 			"VoiceName": null,
 			"EmotionalAppraisalAssetSource": null,
 			"EmotionalDecisionMakingSource": "newCifEDM.edm",
-			"SocialImportanceAssetSource": null,
+			"SocialImportanceAssetSource": "CIFVERSION3.si",
 			"CommeillFautAssetSource": "wtv.cif",
 			"EmotionalState":
 				{
