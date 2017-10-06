@@ -137,7 +137,8 @@ namespace CommeillFautTutorial
                     action = _actions.ElementAt(pos);
               
                 Console.WriteLine();
-
+                if(action == null)
+                Console.WriteLine(initiator.CharacterName + " does not have any action to do ");
 
                 if (action != null)
                 {
