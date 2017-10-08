@@ -1,2 +1,4 @@
 build:
     project: FAtiMA-Toolkit.sln
+before_build:
+- nuget sources Add -Name LocalPackages -Source $TRAVIS_BUILD_DIR/LocalPackagesRepository 
