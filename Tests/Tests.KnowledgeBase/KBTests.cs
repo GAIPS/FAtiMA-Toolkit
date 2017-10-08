@@ -395,7 +395,7 @@ namespace Tests.KnowledgeBase
 
 		[TestCase("[x]","[y]",0)]
 		[TestCase("[x]", "John", 0)]
-		[TestCase("[x]", "Meaning(Toast,Baegle)", 2)]
+		[TestCase("[x]", "Meaning(Toast,Baegle)", 3)]
 		[TestCase("Toast", "Meaning(Toast,Baegle)", 1)]
 		[TestCase("Dougnut", "Meaning(Toast,Baegle)", 0)]
 		[TestCase("Dougnut", "Meaning([x],Baegle)", 0)]

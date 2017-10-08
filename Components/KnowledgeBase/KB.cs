@@ -17,8 +17,7 @@ namespace KnowledgeBase
 	{
 		private const int MAX_TOM_LVL = 2;
 
-        
-		private sealed class KnowledgeEntry
+        private sealed class KnowledgeEntry
 		{
 			private ComplexValue m_universal = null;
 			private Dictionary<Name, ComplexValue> m_perspectives;
@@ -88,11 +87,12 @@ namespace KnowledgeBase
 		}
 
 		private NameSearchTree<KnowledgeEntry> m_knowledgeStorage;
+ 
 
-		/// <summary>
-		/// Indicates the default mapping of "SELF"
-		/// </summary>
-		public Name Perspective { get; private set; }
+        /// <summary>
+        /// Indicates the default mapping of "SELF"
+        /// </summary>
+        public Name Perspective { get; private set; }
 
 		private KB()
 		{
@@ -105,6 +105,7 @@ namespace KnowledgeBase
 		{
 			SetPerspective(perspective);
 		}
+
 
 		private void BindToRegistry(IDynamicPropertiesRegistry registry)
 		{

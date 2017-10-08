@@ -12,7 +12,6 @@ namespace CommeillFaut
     {
         [NonSerialized]
         public readonly Guid GUID;
-
         public string RuleName { get; private set; }
         public string Target { get; private set; }
         public ConditionSet RuleConditions { get; private set; }

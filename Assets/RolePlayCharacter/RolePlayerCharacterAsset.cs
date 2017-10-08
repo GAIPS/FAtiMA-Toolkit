@@ -22,6 +22,9 @@ namespace RolePlayCharacter
     [Serializable]
     public sealed class RolePlayCharacterAsset : LoadableAsset<RolePlayCharacterAsset>, ICustomSerialization
     {
+        [NonSerialized]
+        private Dictionary<Name, Identity> m_activeIdentities;
+
         private bool m_allowAuthoring;
         private string m_commeillFautAssetSource = null;
         private string m_emotionalAppraisalAssetSource = null;
@@ -40,6 +43,7 @@ namespace RolePlayCharacter
         public RolePlayCharacterAsset()
         {
             m_log = new List<LogEntry>();
+            m_activeIdentities = new Dictionary<Name, Identity>();
             m_kb = new KB(RPCConsts.DEFAULT_CHARACTER_NAME);
             m_am = new AM();
             m_emotionalState = new ConcreteEmotionalState();
@@ -136,6 +140,9 @@ namespace RolePlayCharacter
             get { return m_am.Tick; }
             set { m_am.Tick = value; }
         }
+
+
+
 
         /// <summary>
         /// An identifier for the voice that is used by the character
@@ -364,7 +371,24 @@ namespace RolePlayCharacter
         {
             this.m_emotionalState.Clear();
         }
-        
+
+        public void ActivateIdentity(Identity id)
+        {
+            var previous = GetActiveIdentities().Where(x => x.Category == id.Category).FirstOrDefault();
+            if (previous != null) m_activeIdentities.Remove(previous.Name);
+            m_activeIdentities[id.Name] = id;
+        }
+
+        public void DeactivateIdentity(Identity id)
+        {
+            m_activeIdentities.Remove(id.Name);
+        }
+
+        public IEnumerable<Identity> GetActiveIdentities()
+        {
+            return m_activeIdentities.Values;
+        }
+
         public string SerializeToJSON()
         {
             var s = new JSONSerializer();

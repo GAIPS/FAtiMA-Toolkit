@@ -1,0 +1,5 @@
+language: csharp
+solution: FAtiMA-Toolkit.sln
+before_install:
+ - ls -la
+ - nuget sources Add -Name LocalPackages -Source $TRAVIS_BUILD_DIR/LocalPackagesRepository 
