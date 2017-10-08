@@ -1,2 +1,4 @@
+before_build:
+  - nuget restore
 build:
     project: FAtiMA-Toolkit.sln
