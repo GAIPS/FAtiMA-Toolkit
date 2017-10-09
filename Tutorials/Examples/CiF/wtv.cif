@@ -33,27 +33,11 @@
 							"Target": "[x]",
 							"RuleConditions":
 								{
-									"Set": ["IsFriend(SELF, [x]) = True"]
+									"Set": ["SI([x])>= 20", "IsAttracted(SELF, [x]) = True"]
 								}
 						}
-				},
-				{
-					"Action": "Insult",
-					"Conditions":
-						{
-							"Set": []
-						},
-					"Description": "When you hate your enemies",
-					"InfluenceRule":
-						{
-							"RuleName": "",
-							"Target": "[x]",
-							"RuleConditions":
-								{
-									"Set": ["IsEnemy([x]) = True"]
-								}
-						}
-				}],
+				}
+				],
 			"_triggerRules":
 				{
 					"_triggerRules":

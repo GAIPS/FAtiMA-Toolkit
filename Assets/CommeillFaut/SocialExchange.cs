@@ -97,7 +97,7 @@ namespace CommeillFaut
                 counter += InfluenceRule.Result(init, _targ, m_Kb);
             
             
-         //   Console.WriteLine("Calculating Volition for " + this.ActionName.ToString() + " init: " + init + " targ: " + _targ + " result: " + counter);
+            Console.WriteLine("Calculating Volition for " + this.ActionName.ToString() + " init: " + init + " targ: " + _targ + " result: " + counter);
             return counter;
         }
 
