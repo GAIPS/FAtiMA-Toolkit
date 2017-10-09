@@ -23,19 +23,30 @@ namespace CommeillFaut
 
         public float Result(string init, string targ, KB m_Kb)
         {
-
+            float toRet = 0.0f;
+            var totalCertainty = 0.0f;
+            int totalConds = RuleConditions.Count();
             var toEvaluate = new ConditionSet(RuleConditions);
             var sub = new Substitution(Name.BuildName(Target), new ComplexValue(Name.BuildName(targ)));
-
-            var eval = toEvaluate.Unify(m_Kb, Name.BuildName(init), new[] { new SubstitutionSet(sub) }).Any();
-
-            if (eval)
+            var eval = toEvaluate.Unify(m_Kb, Name.BuildName(init), new[] { new SubstitutionSet(sub) });
+            if (eval.Any())
             {
-                var cond = toEvaluate.ToDTO().ConditionSet.GetValue(0).ToString().Split(new[] { '=' });
-                cond = cond[0].Split(new[] { ',' });
-                var certainty = m_Kb.AskProperty(Name.BuildName(cond[0] + "," + targ + ")")).Certainty;
+                var cond = "";
+                var toAsk = new string[] { };
+                foreach (var c in toEvaluate)
+                {
+                    cond = c.ToString();
+                    toAsk = cond.Split(')');
+                    toAsk[0] += ")";
+                   toAsk[0] =  toAsk[0].Replace("[x]", targ);
+                    var certainty = m_Kb.AskProperty(Name.BuildName(toAsk[0])).Certainty;
+                    totalCertainty += certainty;
+                }
 
-                return certainty;
+                toRet = totalCertainty / totalConds;
+
+                return toRet;
+               
             }
 
             else return 0;

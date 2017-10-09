@@ -9,9 +9,8 @@
 						{
 							"SELF":
 								{
-									"IsEnemy(CIF1)": "True, 1",
 									"IsAttracted(CIF2, CIF1)": "False, 1",
-									"IsFriend(CIF2, CIF1)": "True, 0.2"
+									"IsFriend(CIF1)": "True, 0.3"
 								}
 						}
 				},

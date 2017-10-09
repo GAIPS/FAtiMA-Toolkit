@@ -68,7 +68,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(861, 462);
+            this.tabPage1.Size = new System.Drawing.Size(861, 427);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Social Exchange";
             this.tabPage1.UseVisualStyleBackColor = true;
