@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="AgentEntry.cs" />
     <Compile Include="BeliefDTO.cs" />
+    <Compile Include="Identity.cs" />
     <Compile Include="RPCConsts.cs" />
     <Compile Include="EventHelper.cs" />
     <Compile Include="RolePlayerCharacterAsset.cs" />

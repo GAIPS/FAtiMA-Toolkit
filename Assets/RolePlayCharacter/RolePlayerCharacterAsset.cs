@@ -496,6 +496,7 @@ namespace RolePlayCharacter
             registry.RegistDynamicProperty(ROUND_METHOD_TEMPLATE, RoundMethodCalculator);
             registry.RegistDynamicProperty(RANDOM_METHOD_TEMPLATE, RandomCalculator);
             registry.RegistDynamicProperty(LOG_TEMPLATE, LogDynamicProperty);
+            registry.RegistDynamicProperty(IS_SALIENT_TEMPLATE, IsSalientPropertyCalculator);
             m_am.BindToRegistry(registry);
         }
 
@@ -529,6 +530,8 @@ namespace RolePlayCharacter
         private static readonly Name ROUND_METHOD_TEMPLATE = (Name)"RoundMethod";
 
         private static readonly Name ROUND_TO_TENS_METHOD_TEMPLATE = (Name)"RoundtoTensMethod";
+
+        private static readonly Name IS_SALIENT_TEMPLATE = (Name)"IsSalient";
 
         private static readonly Name LOG_TEMPLATE = Name.BuildName("Log");
 
@@ -671,6 +674,23 @@ namespace RolePlayCharacter
                 }
             }
         }
+        
+        private IEnumerable<DynamicPropertyResult> IsSalientPropertyCalculator(IQueryContext context, Name identity)
+        {
+            foreach (var c in context.Constraints)
+            {
+                identity = identity.MakeGround(c);
+                if (identity.IsGrounded)
+                {
+                    if (m_activeIdentities.ContainsKey(identity))
+                    {
+                        yield return new DynamicPropertyResult(Name.BuildName(true), c);
+                    }//todo:check if we must also return false;
+                }
+            }
+        }
+
+
         private IEnumerable<DynamicPropertyResult> RandomCalculator(IQueryContext context, Name min, Name max)
         {
             var minValue = Convert.ToInt32(min.ToString());
@@ -679,10 +699,8 @@ namespace RolePlayCharacter
             Random rand = new Random();
 
             var toRet = rand.Next(minValue, maxValue);
-            // Console.WriteLine("Round method calculation for: " + x.ToString() + " the value : " + toRet);
             var subSet = new SubstitutionSet();
-            //        Console.WriteLine("Random method calculation for:" + minValue + " max " + maxValue + " to return value: " + toRet);
-
+            
             yield return new DynamicPropertyResult(Name.BuildName(toRet), subSet);
         }
 
@@ -958,6 +976,7 @@ namespace RolePlayCharacter
         {
             m_allowAuthoring = true;
             m_log = new List<LogEntry>();
+            m_activeIdentities = new Dictionary<Name, Identity>();
             m_kb = dataHolder.GetValue<KB>("KnowledgeBase");
             this.BodyName = dataHolder.GetValue<string>("BodyName");
             this.VoiceName = dataHolder.GetValue<string>("VoiceName");

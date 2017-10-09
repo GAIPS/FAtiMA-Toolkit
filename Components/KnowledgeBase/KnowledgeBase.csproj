@@ -45,7 +45,6 @@
     <Compile Include="Belief.cs" />
     <Compile Include="DynamicPropertyDTO.cs" />
     <Compile Include="DynamicPropertyRegistry.cs" />
-    <Compile Include="Identity.cs" />
     <Compile Include="IDynamicPropertiesRegistry.cs" />
     <Compile Include="KB.cs" />
     <Compile Include="KBDynamicProperties.cs" />
