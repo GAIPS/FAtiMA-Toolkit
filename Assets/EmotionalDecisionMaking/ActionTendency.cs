@@ -13,7 +13,7 @@ namespace EmotionalDecisionMaking
 
 		public ActionTendency(Name actionName, Name target, Name type, Name identity) : this(actionName, target, type, identity, new ConditionSet()) {}
 
-		public ActionTendency(Name actionName, Name target, Name type, Name identity, ConditionSet activationConditions) : base(actionName, target, type, identity, activationConditions)
+		public ActionTendency(Name actionName, Name target, Name type, Name identity, ConditionSet activationConditions) : base(actionName, target, type, activationConditions)
 		{
             Priority = (Name)"1"; //Default
 		}

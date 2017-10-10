@@ -28,10 +28,6 @@ namespace ActionLibrary.DTOs
         /// </summary>
         public string Type { get; set; }
         /// <summary>
-        /// The name of the identity that is associated to the action (default is SELF)
-        /// </summary>
-        public string Identity { get; set; }
-        /// <summary>
         /// The set of conditions that must be true for this action execution.
         /// </summary>
         public ConditionSetDTO Conditions { get; set; }

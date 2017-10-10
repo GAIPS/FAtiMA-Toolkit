@@ -15,10 +15,6 @@ namespace EmotionalAppraisal.DTOs
 		/// </summary>
 		public Guid Id { get; set; }
         /// <summary>
-        /// The identity that is associated to this appraisal rule
-        /// </summary>
-        public Name Identity { get; set; }
-        /// <summary>
         /// The matching template for the events we want to appraise with this rule.
         /// </summary>
         public Name EventMatchingTemplate { get; set; }

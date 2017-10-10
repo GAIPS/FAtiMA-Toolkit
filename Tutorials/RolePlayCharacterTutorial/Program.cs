@@ -13,6 +13,8 @@ namespace RolePlayCharacterTutorial
 	        var rpc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/RPCTest.rpc");
             rpc.LoadAssociatedAssets();
             rpc.ActivateIdentity(new Identity { Category = (Name)"Culture", Name = (Name)"Portuguese" });
+            rpc.ActivateIdentity(new Identity { Category = (Name)"Culture", Name = (Name)"Chinese" });
+            rpc.ActivateIdentity(new Identity { Category = (Name)"Gamer", Name = (Name)"HardcoreGamer" });
             Console.WriteLine("Starting Mood: " + rpc.Mood);
             var actions = rpc.Decide();
             var action = actions.FirstOrDefault();

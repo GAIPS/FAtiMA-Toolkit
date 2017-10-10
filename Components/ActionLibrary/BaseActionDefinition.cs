@@ -15,7 +15,6 @@ namespace ActionLibrary
 		public Guid Id { get; private set; }
 		public Name Target { get; private set; }
         public Name Type { get; set; }
-        public Name Identity { get; set; }
         public Name Priority { get; set; }
 
 		private Name m_actionTemplate;
@@ -35,7 +34,7 @@ namespace ActionLibrary
 			}
 		}
 
-		private void AssertAndInitialize(Name actionTemplate, Name target, Name type, Name identity, ConditionSet activationConditions)
+		private void AssertAndInitialize(Name actionTemplate, Name target, Name type, ConditionSet activationConditions)
 		{
 			var terms = actionTemplate.GetTerms().ToArray();
 			var name = terms[0];
@@ -49,13 +48,12 @@ namespace ActionLibrary
 			m_actionTemplate = actionTemplate;
 			Target = target;
             Type = type;
-            Identity = identity;
 			ActivationConditions = activationConditions;
 		}
 
-		protected BaseActionDefinition(Name actionTemplate, Name target, Name type, Name identity, ConditionSet activationConditions)
+		protected BaseActionDefinition(Name actionTemplate, Name target, Name type, ConditionSet activationConditions)
 		{
-			AssertAndInitialize(actionTemplate,target, type, identity, activationConditions);
+			AssertAndInitialize(actionTemplate,target, type, activationConditions);
 		}
 
 		protected BaseActionDefinition(BaseActionDefinition other)
@@ -68,7 +66,7 @@ namespace ActionLibrary
 
 		protected BaseActionDefinition(ActionDefinitionDTO dto)
 		{
-			AssertAndInitialize(Name.BuildName(dto.Action),Name.BuildName(dto.Target), Name.BuildName(dto.Type), Name.BuildName(dto.Identity), new ConditionSet(dto.Conditions));
+			AssertAndInitialize(Name.BuildName(dto.Action),Name.BuildName(dto.Target), Name.BuildName(dto.Type), new ConditionSet(dto.Conditions));
 		}
 
 		public IAction GenerateAction(SubstitutionSet constraints)
@@ -153,8 +151,7 @@ namespace ActionLibrary
             var type = dataHolder.ContainsField("Type") ? dataHolder.GetValue<Name>("Type") : Name.NIL_SYMBOL;
             var identity = dataHolder.ContainsField("Identity") ? dataHolder.GetValue<Name>("Identity") : Name.SELF_SYMBOL;
             var conditions = dataHolder.GetValue<ConditionSet>("Conditions");
-
-			AssertAndInitialize(actionTemplate, target, type, identity, conditions);
+			AssertAndInitialize(actionTemplate, target, type, conditions);
 		}
 	}
 }
