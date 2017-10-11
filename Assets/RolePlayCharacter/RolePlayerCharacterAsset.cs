@@ -574,7 +574,7 @@ namespace RolePlayCharacter
                         Tick = m_am.Tick
                     });
                 }
-                yield return new DynamicPropertyResult(Name.BuildName("true"), subSet);
+                yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(true)), subSet);
             }
         }
 
@@ -593,7 +593,7 @@ namespace RolePlayCharacter
 
                         var newConstraints = new SubstitutionSet(c);
                         newConstraints.AddSubstitution(sub);
-                        yield return new DynamicPropertyResult(Name.BuildName(emotion.Intensity), newConstraints);
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(emotion.Intensity)), newConstraints);
                     }
                 }
             }
@@ -605,7 +605,7 @@ namespace RolePlayCharacter
                     var emotion = state.GetEmotionsByType(emotionKey).OrderByDescending(e => e.Intensity).FirstOrDefault();
                     float value = emotion?.Intensity ?? 0;
                     foreach (var c in resultPair.Item2)
-                        yield return new DynamicPropertyResult(Name.BuildName(value), c);
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(value)), c);
                 }
             }
         }
@@ -628,7 +628,7 @@ namespace RolePlayCharacter
 
                         var r = new SubstitutionSet(set);
                         r.AddSubstitution(s);
-                        yield return new DynamicPropertyResult(Name.BuildName(true), r);
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(true)), r);
                     }
                 }
 
@@ -642,7 +642,7 @@ namespace RolePlayCharacter
                 {
                     foreach (var p in prop.Item2)
                     {
-                        yield return new DynamicPropertyResult(i, p);
+                        yield return new DynamicPropertyResult(new ComplexValue(i), p);
                     }
                 }
             }
@@ -659,7 +659,7 @@ namespace RolePlayCharacter
                 foreach (var c in context.Constraints)
                 {
                     if (c.AddSubstitution(sub))
-                        yield return new DynamicPropertyResult(Name.BuildName(m_emotionalState.Mood), c);
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(m_emotionalState.Mood)), c);
                 }
             }
             else
@@ -669,7 +669,7 @@ namespace RolePlayCharacter
                     var v = m_emotionalState.Mood;
                     foreach (var c in resultPair.Item2)
                     {
-                        yield return new DynamicPropertyResult(Name.BuildName(v), c);
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(v)), c);
                     }
                 }
             }
@@ -677,10 +677,10 @@ namespace RolePlayCharacter
         
         private IEnumerable<DynamicPropertyResult> IsSalientPropertyCalculator(IQueryContext context, Name identity)
         {
-            foreach (var c in context.Constraints)            {                identity = identity.MakeGround(c);                if (identity.IsGrounded)                {                    if (m_activeIdentities.ContainsKey(identity))                    {                        var id = m_activeIdentities[identity];                                                yield return new DynamicPropertyResult(Name.BuildName(true), c);                    }
+            foreach (var c in context.Constraints)            {                identity = identity.MakeGround(c);                if (identity.IsGrounded)                {                    if (m_activeIdentities.ContainsKey(identity))                    {                        var id = m_activeIdentities[identity];                                                yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(true), id.Salience), c);                    }
                     else
                     {
-                        yield return new DynamicPropertyResult(Name.BuildName(false), c);
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(false)), c);
                     }
                 }            }        }
 
@@ -694,7 +694,7 @@ namespace RolePlayCharacter
             var toRet = rand.Next(minValue, maxValue);
             var subSet = new SubstitutionSet();
             
-            yield return new DynamicPropertyResult(Name.BuildName(toRet), subSet);
+            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(toRet)), subSet);
         }
 
         private IEnumerable<DynamicPropertyResult> RoundMethodCalculator(IQueryContext context, Name x, Name digits)
@@ -714,7 +714,7 @@ namespace RolePlayCharacter
                             toRet = Math.Round(toRet, y_value);
                             //        Console.WriteLine("Round method calculation for: " + x.ToString() + " rounded value " + sub.Value.ToString()  + " digits: " + y_value + " result : " + toRet);
 
-                            yield return new DynamicPropertyResult(Name.BuildName(toRet), c);
+                            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(toRet)), c);
                         }
                     }
                 }
@@ -741,7 +741,7 @@ namespace RolePlayCharacter
                             toRet = toRet * toTens;
                             //      Console.WriteLine("Round method calculation for: " + x.ToString() + " rounded value " + sub.Value.ToString()+ " result : " + toRet);
 
-                            yield return new DynamicPropertyResult(Name.BuildName(toRet), c);
+                            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(toRet)), c);
                         }
                     }
                 }
@@ -779,7 +779,7 @@ namespace RolePlayCharacter
                 foreach (var c in context.Constraints)
                 {
                     if (c.AddSubstitution(sub))
-                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
                 }
             }
             else
@@ -787,7 +787,7 @@ namespace RolePlayCharacter
                 foreach (var resultPair in context.AskPossibleProperties(x))
                 {
                     foreach (var c in resultPair.Item2)
-                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
                 }
             }
         }
@@ -824,7 +824,7 @@ namespace RolePlayCharacter
                 foreach (var c in context.Constraints)
                 {
                     if (c.AddSubstitution(sub))
-                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
                 }
             }
             else
@@ -832,7 +832,7 @@ namespace RolePlayCharacter
                 foreach (var resultPair in context.AskPossibleProperties(x))
                 {
                     foreach (var c in resultPair.Item2)
-                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
                 }
             }
         }
@@ -854,7 +854,7 @@ namespace RolePlayCharacter
                 foreach (var c in context.Constraints)
                 {
                     if (c.AddSubstitution(sub))
-                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
                 }
             }
             else
@@ -862,7 +862,7 @@ namespace RolePlayCharacter
                 foreach (var resultPair in context.AskPossibleProperties(x))
                 {
                     foreach (var c in resultPair.Item2)
-                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
                 }
             }
         }
@@ -886,7 +886,7 @@ namespace RolePlayCharacter
                 foreach (var c in context.Constraints)
                 {
                     if (c.AddSubstitution(sub))
-                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                        yield return new DynamicPropertyResult(new ComplexValue ((Name)emoValue), c);
                 }
             }
             else
@@ -894,7 +894,7 @@ namespace RolePlayCharacter
                 foreach (var resultPair in context.AskPossibleProperties(x))
                 {
                     foreach (var c in resultPair.Item2)
-                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                        yield return new DynamicPropertyResult(new ComplexValue ((Name)emoValue), c);
                 }
             }
         }
@@ -929,7 +929,7 @@ namespace RolePlayCharacter
                 foreach (var c in context.Constraints)
                 {
                     if (c.AddSubstitution(sub))
-                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
                 }
             }
             else
@@ -937,7 +937,7 @@ namespace RolePlayCharacter
                 foreach (var resultPair in context.AskPossibleProperties(x))
                 {
                     foreach (var c in resultPair.Item2)
-                        yield return new DynamicPropertyResult((Name)emoValue, c);
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
                 }
             }
         }

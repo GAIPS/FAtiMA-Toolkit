@@ -85,7 +85,7 @@ namespace KnowledgeBase
 
 			public IEnumerable<BeliefPair> Evaluate(IQueryable kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
 			{
-				return _entry.Evaluate(kb, perspective, _variable, constraints).GroupBy(p => p.Value, p => p.Constraints).Select(g => Tuples.Create(new ComplexValue(g.Key),g.Distinct()));
+				return _entry.Evaluate(kb, perspective, _variable, constraints).GroupBy(p => p.Value, p => p.Constraints).Select(g => Tuples.Create(g.Key,g.Distinct()));
 			}
 		}
 
@@ -210,7 +210,7 @@ namespace KnowledgeBase
             
 			foreach (var g in results.GroupBy(p => p.Value, p => p.Constraints))
 			{
-				yield return Tuples.Create(new ComplexValue(g.Key), g.Distinct());
+				yield return Tuples.Create(g.Key, g.Distinct());
 			}
 		}
 

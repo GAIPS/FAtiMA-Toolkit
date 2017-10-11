@@ -265,7 +265,7 @@ namespace SocialImportance
 			{
 				var si = internal_GetSocialImportance(t.Item1.Value, context.Perspective);
 				foreach (var s in t.Item2)
-					yield return new DynamicPropertyResult(Name.BuildName(si), s);
+					yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(si)), s);
 			}
 		}
 

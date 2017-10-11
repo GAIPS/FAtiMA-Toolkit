@@ -33,10 +33,10 @@ namespace KnowledgeBase
 
 	public struct DynamicPropertyResult
 	{
-		public readonly Name Value;
+		public readonly ComplexValue Value;
 		public readonly SubstitutionSet Constraints;
 
-		public DynamicPropertyResult(Name value, SubstitutionSet constraint)
+		public DynamicPropertyResult(ComplexValue value, SubstitutionSet constraint)
 		{
 			Value = value;
 			Constraints = constraint;
