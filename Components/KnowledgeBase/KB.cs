@@ -128,7 +128,7 @@ namespace KnowledgeBase
 				sets = set.SelectMany(s => s.Item2).Distinct();
 
 			foreach (var d in sets)
-				yield return new DynamicPropertyResult(count, d);
+				yield return new DynamicPropertyResult(new ComplexValue(count,1.0f), d);
 		}
 
         
@@ -171,7 +171,7 @@ namespace KnowledgeBase
 
 								var s = new SubstitutionSet(g);
 								s.AddSubstitution(sub);
-								results.Add(new DynamicPropertyResult(Name.BuildName(true),s));
+								results.Add(new DynamicPropertyResult(new ComplexValue(Name.BuildName(true)),s));
 							}
 						}
 						else
@@ -183,7 +183,7 @@ namespace KnowledgeBase
 									var r = Name.BuildName(true);
 									foreach (var s in x2.Item2)
 									{
-										results.Add(new DynamicPropertyResult(r, s));
+										results.Add(new DynamicPropertyResult(new ComplexValue(r), s));
 									}
 								}
 							}

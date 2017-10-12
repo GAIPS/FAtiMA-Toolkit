@@ -49,7 +49,7 @@
 							"Type": "Action-End",
 							"Subject": "Sam",
 							"Timestamp": 1,
-							"Action": "Jump",
+							"Action": "TestAction",
 							"Target": "Player"
 						}]
 				},

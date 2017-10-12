@@ -192,7 +192,7 @@ namespace AutobiographicMemory
 				foreach (var pair in m_typeIndexes.Unify(key, c))
 				{
 					foreach (var id in pair.Item1)
-						yield return new DynamicPropertyResult(Name.BuildName(id), new SubstitutionSet(pair.Item2));
+						yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(id)), new SubstitutionSet(pair.Item2));
 				}
 			}
 		}
@@ -216,7 +216,7 @@ namespace AutobiographicMemory
 						newSet.AddSubstitution(idSub);
 
 						var value = Tick - record.Timestamp;
-						yield return new DynamicPropertyResult(Name.BuildName(value), newSet);
+						yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(value)), newSet);
 					}
 				}
 				yield break;
@@ -231,7 +231,7 @@ namespace AutobiographicMemory
 				var record = m_registry[idValue];
 				var value = (Tick - record.Timestamp);
 				foreach (var c in pair.Item2)
-					yield return new DynamicPropertyResult(Name.BuildName(value), c);
+					yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(value)), c);
 			}
 		}
 
@@ -257,7 +257,7 @@ namespace AutobiographicMemory
 
             IEnumerable<Substitution> set;
             if (Unifier.Unify(le.EventName, key, out set))
-                yield return new DynamicPropertyResult(Name.BuildName(le.Id), new SubstitutionSet(set));
+                yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(le.Id)), new SubstitutionSet(set));
         }
 
         #endregion

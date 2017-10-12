@@ -205,7 +205,9 @@ namespace IntegratedAuthoringTool
 
 			var key = Name.BuildName(string.Format(IATConsts.DIALOG_ACTION_KEY + "({0},{1},{2},{3})",
                 currentState, nextState, meaning, style)); 
-     		var results = context.Constraints.SelectMany(c => m_dialogues.GetAllDialogsForKey(key,c)).Select(p => new DynamicPropertyResult(Name.BuildName(true), p.Item2));
+
+     		var results = context.Constraints.SelectMany(c => m_dialogues.GetAllDialogsForKey(key,c)).Select(p =>
+                new DynamicPropertyResult(new ComplexValue(Name.BuildName(true)), p.Item2));
 		    return results;
 		}
 

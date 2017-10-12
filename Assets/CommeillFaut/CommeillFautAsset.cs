@@ -130,7 +130,7 @@ namespace CommeillFaut
 
                                     sub.AddSubstitution(new Substitution(Name.BuildName("[sty]"), new ComplexValue(Name.BuildName(stringVolition), 1)));
 
-                                    yield return new DynamicPropertyResult(Name.BuildName(stringVolition), sub);
+                                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(stringVolition)), sub);
 
                                 }
                             }
@@ -154,7 +154,7 @@ namespace CommeillFaut
 
                                 sub.AddSubstitution(new Substitution(Name.BuildName("[sty]"), new ComplexValue(Name.BuildName(stringVolition), 1)));
 
-                                yield return new DynamicPropertyResult(Name.BuildName(stringVolition), sub);
+                                yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(stringVolition)), sub);
 
                             }
                         }
@@ -190,7 +190,7 @@ namespace CommeillFaut
                                         stringVolition = CalculateStyle(newValue);
 
                                         sub.AddSubstitution(new Substitution(Name.BuildName("[sty]"), new ComplexValue(Name.BuildName(stringVolition), 1)));
-                                        yield return new DynamicPropertyResult(Name.BuildName(stringVolition), sub);
+                                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(stringVolition)), sub);
 
                                     }
                                 }
@@ -213,7 +213,7 @@ namespace CommeillFaut
 
                                     sub.AddSubstitution(new Substitution(Name.BuildName("[sty]"), new ComplexValue(Name.BuildName(stringVolition), 1)));
 
-                                    yield return new DynamicPropertyResult(Name.BuildName(stringVolition), sub);
+                                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(stringVolition)), sub);
 
                                 }
                             }

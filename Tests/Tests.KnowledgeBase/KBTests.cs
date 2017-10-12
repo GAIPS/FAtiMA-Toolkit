@@ -375,7 +375,7 @@ namespace Tests.KnowledgeBase
 					var c2 = Name.BuildName((Name)"Con", v1.Item1.Value, v2.Item1.Value);
 					foreach (var s in v2.Item2)
 					{
-						yield return new DynamicPropertyResult(c2, s);
+						yield return new DynamicPropertyResult(new ComplexValue(c2), s);
 					}
 				}
 			}
