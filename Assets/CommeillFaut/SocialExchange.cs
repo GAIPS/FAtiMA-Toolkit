@@ -156,16 +156,64 @@ namespace CommeillFaut
                                  // Ideally we would be able to insert any 
 
             var retList = new Dictionary<Name, Name>();
-            foreach (var ef in newEffectList)
+            var toAlter = "";
+            var newCertainty = 0.0f;
+            var kbInit = "";
+            var kbTarget = "";
+
+            if(me.Perspective == initiator)
             {
-                Console.WriteLine("Effects: " + me + " " + initiator + " "+ Target + " "+ resp + " " + ef + " " + isSpectator);
-                var retPair = ApplyKeywordEffects(me, initiator, Target, resp, ef, isSpectator);
-                if(retPair.Key!=null)
-                retList.Add(retPair.Key, retPair.Value);
+                kbInit = initiator.ToString();
+                kbTarget = Target.ToString();
+            }
+            else if(me.Perspective == Target){
+
+                kbInit = Target.ToString();
+                kbTarget = initiator.ToString();
             }
 
+
+            foreach (var cond in this.InfluenceRule.RuleConditions)
+            {
+              
+
+
+                toAlter = cond.ToString();
+                toAlter = toAlter.Replace("[x]", kbTarget);
+                toAlter = toAlter.Replace("SELF", kbInit);
+                var newString = toAlter.Split('=', '>', '<');
+                var certainty = me.AskProperty(Name.BuildName(newString[0])).Certainty;
+                Console.WriteLine("Old certainty of variable: "+ newString[0]+ " v: " + certainty);
+
+                if(response == "Positive")
+                newCertainty = certainty + 0.2f;
+                else newCertainty = certainty - 0.2f;
+
+                if (!newString[0].Contains("SI"))
+                {
+                    var value = me.AskProperty(Name.BuildName(newString[0])).Value;
+                    me.Tell(Name.BuildName(newString[0]), value, me.Perspective, newCertainty);
+                    Console.WriteLine("New certainty of variable: " + newString[0] + " v: " + newCertainty);
+                }
+                else
+                {
+                    Console.WriteLine("uhm");
+                }
+               
+            }
+
+          
+
             return retList;
-           
+
+            /* foreach (var ef in newEffectList)
+           {
+               Console.WriteLine("Effects: " + me + " " + initiator + " "+ Target + " "+ resp + " " + ef + " " + isSpectator);
+               var retPair = ApplyKeywordEffects(me, initiator, Target, resp, ef, isSpectator);
+               if(retPair.Key!=null)
+               retList.Add(retPair.Key, retPair.Value);
+           }*/
+
         }
 
         public KeyValuePair<Name,Name> ApplyKeywordEffects(KB me, Name initiator, Name other, int result, string keyword, bool spectator)

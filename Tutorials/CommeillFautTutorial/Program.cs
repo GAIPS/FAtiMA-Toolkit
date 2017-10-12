@@ -86,7 +86,7 @@ namespace CommeillFautTutorial
                         var changed = new[] { EventHelper.ActionEnd(anotherActor.CharacterName.ToString(), "Enters", "Room") };
                         actor.Perceive(changed);
                     }
-
+                    
                 }
                 //         actor.SaveToFile("../../../Examples/" + actor.CharacterName + "-output1" + ".rpc");
             }
@@ -161,9 +161,7 @@ namespace CommeillFautTutorial
                  //                    iat.GetDialogueActions(action.Parameters[0], action.Parameters[1], action.Parameters[2], action.Parameters[3]).FirstOrDefault().Utterance + "'' to " + action.Target);
                     Console.WriteLine("Next State: " + action.Parameters[1].ToString());
 
-
                 }
-
                 Console.WriteLine();
                 Console.ReadKey();
             }

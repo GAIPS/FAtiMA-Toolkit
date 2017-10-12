@@ -16,7 +16,7 @@
 							"Target": "[x]",
 							"RuleConditions":
 								{
-									"Set": ["IsAttracted(SELF, [x]) = True"]
+									"Set": ["SI([x]) < -10"]
 								}
 						}
 				}, 
@@ -33,7 +33,7 @@
 							"Target": "[x]",
 							"RuleConditions":
 								{
-									"Set": ["SI([x])>= 20", "IsAttracted(SELF, [x]) = True"]
+									"Set": ["SI([x])>= 20"]
 								}
 						}
 				}

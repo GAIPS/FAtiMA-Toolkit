@@ -370,7 +370,6 @@ namespace CommeillFaut
         }
         public void UpdateSocialExchange(SocialExchangeDTO newReaction)
         {
-
           
 
             m_SocialExchanges.Remove(m_SocialExchanges.Find(x => x.ActionName.ToString() == newReaction.Action));
