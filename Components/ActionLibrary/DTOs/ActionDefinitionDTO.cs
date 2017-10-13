@@ -24,6 +24,10 @@ namespace ActionLibrary.DTOs
 		/// </summary>
 		public string Target { get; set; }
         /// <summary>
+		/// The priority of the action.
+		/// </summary>
+        public string Priority { get; set; }
+        /// <summary>
         /// The type of the action (e.g. verbal, nonverbal)
         /// </summary>
         public string Type { get; set; }

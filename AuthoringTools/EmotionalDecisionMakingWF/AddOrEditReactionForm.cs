@@ -24,7 +24,8 @@ namespace EmotionalDecisionMakingWF
                 this.addOrEditButton.Text = Resources.UpdateButtonLabel;
                 textBoxAction.Text = reactionToEdit.Action;
                 textBoxTarget.Text = reactionToEdit.Target;
-                textBoxPriority.Text = reactionToEdit.Priority.ToString();
+                textBoxPriority.Text = reactionToEdit.Priority;
+                textBoxType.Text = reactionToEdit.Type;
             }
         }
 
@@ -33,15 +34,13 @@ namespace EmotionalDecisionMakingWF
         {
             try
             {
-	            float priority;
-	            if (!float.TryParse(textBoxPriority.Text, out priority))
-		            priority = 0;
 
                 var newReaction = new ReactionDTO
                 {
                     Action = textBoxAction.Text,
                     Target = textBoxTarget.Text,
-                    Priority = priority.ToString()
+                    Priority = textBoxPriority.Text,
+                    Type = textBoxPriority.Text,
                 };
 
                 if (_reactionToEdit != null)

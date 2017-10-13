@@ -8,7 +8,7 @@ using WellFormedNames;
 namespace ActionLibrary
 {
 	[Serializable]
-	public abstract class BaseActionDefinition : ICustomSerialization
+	public class ActionDefinition : ICustomSerialization
 	{
 		private ConditionSet m_activationConditions = null;
 
@@ -34,7 +34,7 @@ namespace ActionLibrary
 			}
 		}
 
-		private void AssertAndInitialize(Name actionTemplate, Name target, Name type, ConditionSet activationConditions)
+		private void AssertAndInitialize(Name actionTemplate, Name target, Name priority, Name type, ConditionSet activationConditions)
 		{
 			var terms = actionTemplate.GetTerms().ToArray();
 			var name = terms[0];
@@ -44,19 +44,22 @@ namespace ActionLibrary
 			if (target.IsComposed)
 				throw new ArgumentException("Action Definition Target must be a symbol definition", nameof(target));
 
-			Id = Guid.NewGuid();
+            Priority = priority;
+
+
+            Id = Guid.NewGuid();
 			m_actionTemplate = actionTemplate;
 			Target = target;
             Type = type;
 			ActivationConditions = activationConditions;
 		}
 
-		protected BaseActionDefinition(Name actionTemplate, Name target, Name type, ConditionSet activationConditions)
+		protected ActionDefinition(Name actionTemplate, Name target, Name priority, Name type, ConditionSet activationConditions)
 		{
-			AssertAndInitialize(actionTemplate,target, type, activationConditions);
+			AssertAndInitialize(actionTemplate,target, priority, type, activationConditions);
 		}
 
-		protected BaseActionDefinition(BaseActionDefinition other)
+		protected ActionDefinition(ActionDefinition other)
 		{
 			Id = other.Id;
 			m_actionTemplate = other.m_actionTemplate;
@@ -64,9 +67,9 @@ namespace ActionLibrary
 			ActivationConditions = new ConditionSet(other.ActivationConditions);
 		}
 
-		protected BaseActionDefinition(ActionDefinitionDTO dto)
+		public ActionDefinition(ActionDefinitionDTO dto)
 		{
-			AssertAndInitialize(Name.BuildName(dto.Action),Name.BuildName(dto.Target), Name.BuildName(dto.Type), new ConditionSet(dto.Conditions));
+			AssertAndInitialize(Name.BuildName(dto.Action),Name.BuildName(dto.Target), Name.BuildName(dto.Priority), Name.BuildName(dto.Type), new ConditionSet(dto.Conditions));
 		}
 
 		public IAction GenerateAction(SubstitutionSet constraints)
@@ -112,6 +115,7 @@ namespace ActionLibrary
 			dto.Action = m_actionTemplate.ToString();
 			dto.Target = Target.ToString();
 			dto.Conditions = m_activationConditions.ToDTO();
+            dto.Type = Type.ToString();
 			return dto;
 		}
 
@@ -129,29 +133,44 @@ namespace ActionLibrary
 
 		public override bool Equals(object obj)
 		{
-			var def = obj as BaseActionDefinition;
+			var def = obj as ActionDefinition;
 			if (def == null)
 				return false;
 			return def.Id == Id;
 		}
-		
-		public virtual void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+
+
+        public ActionDefinitionDTO ToDTO()
+        {
+            return FillDTO(new ActionDefinitionDTO()
+            {
+                Priority = this.Priority.ToString()
+            });
+        }
+
+        public virtual void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			dataHolder.SetValue("Action",GetActionTemplate());
 			dataHolder.SetValue("Target",Target);
             dataHolder.SetValue("Type", Target);
-            dataHolder.SetValue("Identity", Target);
             dataHolder.SetValue("Conditions",ActivationConditions);
-		}
+            if (!(context.Context is Name) || (Priority != (Name)context.Context))
+                dataHolder.SetValue("Priority", Priority);
+            
+        }
 
 		public virtual void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			var actionTemplate = dataHolder.GetValue<Name>("Action");
 			var target = dataHolder.ContainsField("Target") ? dataHolder.GetValue<Name>("Target") : Name.NIL_SYMBOL;
             var type = dataHolder.ContainsField("Type") ? dataHolder.GetValue<Name>("Type") : Name.NIL_SYMBOL;
-            var identity = dataHolder.ContainsField("Identity") ? dataHolder.GetValue<Name>("Identity") : Name.SELF_SYMBOL;
             var conditions = dataHolder.GetValue<ConditionSet>("Conditions");
-			AssertAndInitialize(actionTemplate, target, type, conditions);
+            Name priority;
+            if (dataHolder.ContainsField("Priority"))
+                priority = dataHolder.GetValue<Name>("Priority");
+            else
+                priority = context.Context as Name ?? (Name)"1";
+            AssertAndInitialize(actionTemplate, target, priority, type, conditions);
 		}
 	}
 }

@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Action.cs" />
-    <Compile Include="BaseActionDefinition.cs" />
+    <Compile Include="ActionDefinition.cs" />
     <Compile Include="DTOs\ActionDefinitionDTO.cs" />
     <Compile Include="IAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

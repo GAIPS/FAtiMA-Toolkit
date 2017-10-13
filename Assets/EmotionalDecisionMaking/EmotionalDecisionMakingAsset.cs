@@ -5,11 +5,11 @@ using ActionLibrary;
 using Conditions;
 using Conditions.DTOs;
 using EmotionalAppraisal;
-using EmotionalDecisionMaking.DTOs;
 using GAIPS.Rage;
 using SerializationUtilities;
 using WellFormedNames;
 using IQueryable = WellFormedNames.IQueryable;
+using ActionLibrary.DTOs;
 
 namespace EmotionalDecisionMaking
 {
@@ -27,7 +27,7 @@ namespace EmotionalDecisionMaking
 		/// </summary>
 		public EmotionalDecisionMakingAsset()
         {
-            ReactiveActions = new ReactiveActions();
+            ReactiveActions = new ActionTendencies();
         }
 
 		protected override string OnAssetLoaded()
@@ -35,7 +35,7 @@ namespace EmotionalDecisionMaking
 			return null;
 		}
 
-		private ReactiveActions ReactiveActions { get; set; }
+		private ActionTendencies ReactiveActions { get; set; }
 
 		/// <summary>
 		/// Registers an Emotional Appraisal Asset to be used by
@@ -76,10 +76,10 @@ namespace EmotionalDecisionMaking
         /// </summary>
         /// <param name="newReaction">The DTO containing the parameters needed to generate a reaction.</param>
         /// <returns>The unique identifier of the newly created reaction.</returns>
-        public Guid AddReaction(ReactionDTO newReaction)
+        public Guid AddReaction(ActionDefinitionDTO newReaction)
         {
-            var newActionTendency = new ActionTendency(newReaction);
-            this.ReactiveActions.AddActionTendency(newActionTendency);
+            var newActionTendency = new ActionDefinition(newReaction);
+            this.ReactiveActions.AddActionDefinition(newActionTendency);
             return newActionTendency.Id;
         }
 
@@ -88,7 +88,7 @@ namespace EmotionalDecisionMaking
 		/// </summary>
 		/// <param name="reactionToEdit">The DTO of the reaction we want to update</param>
 		/// <param name="newReaction">The DTO containing the new reaction data</param>
-        public void UpdateReaction(ReactionDTO reactionToEdit, ReactionDTO newReaction)
+        public void UpdateReaction(ActionDefinitionDTO reactionToEdit, ActionDefinitionDTO newReaction)
         {
 	        newReaction.Conditions = reactionToEdit.Conditions;
             var newId = this.AddReaction(newReaction);
@@ -97,20 +97,20 @@ namespace EmotionalDecisionMaking
 
 		public void UpdateReactionConditions(Guid reactionId, ConditionSetDTO conditionSet)
 		{
-			var action = ReactiveActions.GetActionTendency(reactionId);
+			var action = ReactiveActions.GetActionDefinition(reactionId);
 			action.ActivationConditions = new ConditionSet(conditionSet);
 
 			ReactiveActions.RemoveAction(reactionId);
-			ReactiveActions.AddActionTendency(action);
+			ReactiveActions.AddActionDefinition(action);
 		}
 
 		/// <summary>
 		/// Retrives the definitions of all the stored reactions.
 		/// </summary>
 		/// <returns>A set of DTOs containing the data of all reactions.</returns>
-		public IEnumerable<ReactionDTO> GetAllReactions()
+		public IEnumerable<ActionDefinitionDTO> GetAllReactions()
         {
-	        return ReactiveActions.GetAllActionTendencies().Select(at => at.ToDTO());
+	        return ReactiveActions.GetAllActionDefinitions().Select(at => at.ToDTO());
         }
 
 		/// <summary>
@@ -119,9 +119,9 @@ namespace EmotionalDecisionMaking
 		/// <param name="id">The unique identifier of the reaction to retrieve.</param>
 		/// <returns>The DTO containing the data of the requested action, or null if
 		/// no reaction with the given id was found.</returns>
-        public ReactionDTO GetReaction(Guid id)
+        public ActionDefinitionDTO GetReaction(Guid id)
         {
-            return this.ReactiveActions.GetActionTendency(id)?.ToDTO();
+            return this.ReactiveActions.GetActionDefinition(id)?.ToDTO();
         }
 
 		/// <summary>
@@ -143,9 +143,9 @@ namespace EmotionalDecisionMaking
 		/// <param name="newCondition">The condition we want to add to the requested reaction.</param>
         public void AddReactionCondition(Guid selectedReactionId, string newCondition)
         {
-            var conditions = this.ReactiveActions.GetActionTendency(selectedReactionId).ActivationConditions;
+            var conditions = this.ReactiveActions.GetActionDefinition(selectedReactionId).ActivationConditions;
             var c = Condition.Parse(newCondition);
-            this.ReactiveActions.GetActionTendency(selectedReactionId).ActivationConditions = conditions.Add(c);
+            this.ReactiveActions.GetActionDefinition(selectedReactionId).ActivationConditions = conditions.Add(c);
         }
 
 		/// <summary>
@@ -155,7 +155,7 @@ namespace EmotionalDecisionMaking
 		/// <param name="conditionsToRemove">The condition we want to remove from the requested reaction.</param>
 		public void RemoveReactionConditions(Guid selectedReactionId, IEnumerable<string> conditionsToRemove)
         {
-	        var at = this.ReactiveActions.GetActionTendency(selectedReactionId);
+	        var at = this.ReactiveActions.GetActionDefinition(selectedReactionId);
 	        var conds = conditionsToRemove.Select(Condition.Parse).Aggregate(at.ActivationConditions, (current, c) => current.Remove(c));
 			at.ActivationConditions = conds;
         }
@@ -180,21 +180,21 @@ namespace EmotionalDecisionMaking
 			dataHolder.SetValue("DefaultActionPriority", defaultActionCooldown);
 			context.PushContext();
 			context.Context = defaultActionCooldown;
-			dataHolder.SetValue("ActionTendencies", ReactiveActions.GetAllActionTendencies().ToArray());
+			dataHolder.SetValue("ActionTendencies", ReactiveActions.GetAllActionDefinitions().ToArray());
 			context.PopContext();
 		}
 
 		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			if(ReactiveActions==null)
-				ReactiveActions=new ReactiveActions();
+				ReactiveActions=new ActionTendencies();
 
 			ReactiveActions.DefaultActionPriority = dataHolder.GetValue<Name>("DefaultActionPriority");
 			context.PushContext();
 			context.Context = ReactiveActions.DefaultActionPriority;
-			var ats = dataHolder.GetValue<ActionTendency[]>("ActionTendencies");
+			var ats = dataHolder.GetValue<ActionDefinition[]>("ActionTendencies");
 			foreach (var at in ats)
-				ReactiveActions.AddActionTendency(at);
+				ReactiveActions.AddActionDefinition(at);
 			context.PopContext();
 		}
 

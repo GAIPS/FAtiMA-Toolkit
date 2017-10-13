@@ -4,10 +4,10 @@ using ActionLibrary;
 using AssetManagerPackage;
 using EmotionalAppraisal;
 using EmotionalDecisionMaking;
-using EmotionalDecisionMaking.DTOs;
 using GAIPS.Rage;
 using WellFormedNames;
 using KnowledgeBase;
+using ActionLibrary.DTOs;
 
 namespace EmotionalDecisionMakingTutorial
 {
@@ -26,7 +26,7 @@ namespace EmotionalDecisionMakingTutorial
             edm.RegisterKnowledgeBase(kb);
 
             //create a reaction rule
-            var reaction = new ReactionDTO {Action = "Kick", Priority = "4", Target = "Player" };
+            var reaction = new ActionDefinitionDTO {Action = "Kick", Priority = "4", Target = "Player" };
 
             //add the reaction rule
             var id = edm.AddReaction(reaction);

@@ -67,8 +67,8 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10.24096F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel2.Controls.Add(this.add_button, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.remove_button, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.quantifierComboBox, 4, 0);
@@ -109,9 +109,9 @@
             this.quantifierComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.quantifierComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.quantifierComboBox.FormattingEnabled = true;
-            this.quantifierComboBox.Location = new System.Drawing.Point(707, 3);
+            this.quantifierComboBox.Location = new System.Drawing.Point(666, 3);
             this.quantifierComboBox.Name = "quantifierComboBox";
-            this.quantifierComboBox.Size = new System.Drawing.Size(120, 21);
+            this.quantifierComboBox.Size = new System.Drawing.Size(161, 21);
             this.quantifierComboBox.TabIndex = 3;
             this.quantifierComboBox.SelectedIndexChanged += new System.EventHandler(this.quantifierComboBox_SelectedIndexChanged);
             // 
@@ -119,10 +119,10 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(587, 7);
+            this.label1.Location = new System.Drawing.Point(586, 7);
             this.label1.Margin = new System.Windows.Forms.Padding(7);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(110, 22);
+            this.label1.Size = new System.Drawing.Size(70, 22);
             this.label1.TabIndex = 4;
             this.label1.Text = "Quantifier:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;

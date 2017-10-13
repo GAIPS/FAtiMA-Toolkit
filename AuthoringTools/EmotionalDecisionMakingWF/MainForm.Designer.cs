@@ -57,7 +57,7 @@
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox7.Location = new System.Drawing.Point(0, 0);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(495, 276);
+            this.groupBox7.Size = new System.Drawing.Size(589, 276);
             this.groupBox7.TabIndex = 3;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Decision Rules";
@@ -113,7 +113,7 @@
             this.dataGridViewReactiveActions.RowHeadersVisible = false;
             this.dataGridViewReactiveActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewReactiveActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(483, 216);
+            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(577, 216);
             this.dataGridViewReactiveActions.TabIndex = 2;
             this.dataGridViewReactiveActions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewReactiveActions_CellMouseDoubleClick);
             this.dataGridViewReactiveActions.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReactiveActions_RowEnter);
@@ -126,7 +126,7 @@
             this.groupBox8.Controls.Add(this.conditionSetEditor);
             this.groupBox8.Location = new System.Drawing.Point(0, 3);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(495, 171);
+            this.groupBox8.Size = new System.Drawing.Size(589, 171);
             this.groupBox8.TabIndex = 11;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Conditions";
@@ -136,9 +136,10 @@
             this.conditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.conditionSetEditor.Location = new System.Drawing.Point(3, 16);
             this.conditionSetEditor.Name = "conditionSetEditor";
-            this.conditionSetEditor.Size = new System.Drawing.Size(489, 152);
+            this.conditionSetEditor.Size = new System.Drawing.Size(583, 152);
             this.conditionSetEditor.TabIndex = 0;
             this.conditionSetEditor.View = null;
+            this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);
             // 
             // groupBox2
             // 
@@ -147,7 +148,7 @@
             this.groupBox2.Controls.Add(this.richTextBoxDescription);
             this.groupBox2.Location = new System.Drawing.Point(0, 180);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(495, 89);
+            this.groupBox2.Size = new System.Drawing.Size(589, 89);
             this.groupBox2.TabIndex = 16;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Description";
@@ -162,7 +163,7 @@
             this.richTextBoxDescription.Location = new System.Drawing.Point(9, 19);
             this.richTextBoxDescription.Multiline = false;
             this.richTextBoxDescription.Name = "richTextBoxDescription";
-            this.richTextBoxDescription.Size = new System.Drawing.Size(480, 64);
+            this.richTextBoxDescription.Size = new System.Drawing.Size(574, 64);
             this.richTextBoxDescription.TabIndex = 0;
             this.richTextBoxDescription.Text = "";
             // 
@@ -183,7 +184,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox8);
             this.splitContainer1.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer1.Size = new System.Drawing.Size(495, 553);
+            this.splitContainer1.Size = new System.Drawing.Size(589, 553);
             this.splitContainer1.SplitterDistance = 276;
             this.splitContainer1.TabIndex = 17;
             // 
@@ -191,7 +192,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(519, 592);
+            this.ClientSize = new System.Drawing.Size(613, 592);
             this.Controls.Add(this.splitContainer1);
             this.EditorName = "EDM Editor";
             this.Name = "MainForm";

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.IO;
 using EmotionalDecisionMaking;
-using EmotionalDecisionMaking.DTOs;
 using SerializationUtilities;
+using ActionLibrary.DTOs;
 using NUnit.Framework;
 
 namespace Tests.EmotionalDecisionMaking
@@ -14,8 +14,8 @@ namespace Tests.EmotionalDecisionMaking
 		{
 			var asset = new EmotionalDecisionMakingAsset();
 
-			asset.AddReaction(new ReactionDTO() {Action = "Speak([speachType])", Target = "[x]"});
-			asset.AddReaction(new ReactionDTO() { Action = "Speak(formal)", Target = "[x]" });
+			asset.AddReaction(new ActionDefinitionDTO() {Action = "Speak([speachType])", Target = "[x]"});
+			asset.AddReaction(new ActionDefinitionDTO() { Action = "Speak(formal)", Target = "[x]" });
 			return asset;
 		}
 

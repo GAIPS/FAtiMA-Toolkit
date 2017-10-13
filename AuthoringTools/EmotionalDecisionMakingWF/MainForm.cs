@@ -30,7 +30,8 @@ namespace EmotionalDecisionMakingWF
 	    protected override void OnAssetDataLoaded(EmotionalDecisionMakingAsset asset)
 	    {
 		    _reactiveActions.DataSource = LoadedAsset.GetAllReactions().ToList();
-			dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ReactionDTO>(dto => dto.Id)].Visible = false;
+            dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ReactionDTO>(dto => dto.Priority)].DisplayIndex = 3;
+            dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ReactionDTO>(dto => dto.Id)].Visible = false;
 			dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ReactionDTO>(dto => dto.Conditions)].Visible = false;
 
 			if (_reactiveActions.Any())
@@ -101,6 +102,11 @@ namespace EmotionalDecisionMakingWF
         }
 
         private void groupBox7_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void conditionSetEditor_Load(object sender, EventArgs e)
         {
 
         }
