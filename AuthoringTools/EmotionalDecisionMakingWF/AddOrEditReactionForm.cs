@@ -41,7 +41,7 @@ namespace EmotionalDecisionMakingWF
                 {
                     Action = textBoxAction.Text,
                     Target = textBoxTarget.Text,
-                    Priority = priority
+                    Priority = priority.ToString()
                 };
 
                 if (_reactionToEdit != null)
