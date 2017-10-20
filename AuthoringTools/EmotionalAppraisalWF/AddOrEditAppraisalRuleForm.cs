@@ -51,8 +51,8 @@ namespace EmotionalAppraisalWF
                     (Name)textBoxSubject.Text,
                     (Name)textBoxObject.Text,
                     (Name)textBoxTarget.Text),
-                Desirability = int.Parse(comboBoxDesirability.Text),
-                Praiseworthiness = int.Parse(comboBoxPraiseworthiness.Text),
+                Desirability = Int32.Parse(comboBoxDesirability.Text),
+                Praiseworthiness = Int32.Parse(comboBoxPraiseworthiness.Text),
                 Conditions = new ConditionSetDTO()
             };
             try
