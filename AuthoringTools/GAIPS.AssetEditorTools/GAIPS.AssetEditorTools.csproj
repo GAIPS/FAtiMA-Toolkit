@@ -127,8 +127,8 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="Utilities, Version=1.0.0.25542, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Utilities.1.0.0.25542\lib\net35\Utilities.dll</HintPath>
+    <Reference Include="Utilities, Version=1.0.0.19854, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Utilities.1.0.0.19854\lib\net35\Utilities.dll</HintPath>
     </Reference>
     <Reference Include="WellFormedNames, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EmotionalAppraisal.1.4.1\lib\net35\WellFormedNames.dll</HintPath>
