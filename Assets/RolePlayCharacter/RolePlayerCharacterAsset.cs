@@ -673,16 +673,31 @@ namespace RolePlayCharacter
                     }
                 }
             }
-        }
-        
+        }
+
+        
+
         private IEnumerable<DynamicPropertyResult> IsSalientPropertyCalculator(IQueryContext context, Name identity)
         {
-            foreach (var c in context.Constraints)            {                identity = identity.MakeGround(c);                if (identity.IsGrounded)                {                    if (m_activeIdentities.ContainsKey(identity))                    {                        var id = m_activeIdentities[identity];                                                yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(true), id.Salience), c);                    }
+            foreach (var c in context.Constraints)
+            {
+                identity = identity.MakeGround(c);
+                if (identity.IsGrounded)
+                {
+                    if (m_activeIdentities.ContainsKey(identity))
+                    {
+                        var id = m_activeIdentities[identity];
+                        
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(true), id.Salience), c);
+                    }
                     else
                     {
                         yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(false)), c);
                     }
-                }            }        }
+                }
+            }
+        }
+
 
         private IEnumerable<DynamicPropertyResult> RandomCalculator(IQueryContext context, Name min, Name max)
         {

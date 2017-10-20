@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using EmotionalDecisionMaking;
-using EmotionalDecisionMaking.DTOs;
+using ActionLibrary.DTOs;
 using EmotionalDecisionMakingWF.Properties;
 
 namespace EmotionalDecisionMakingWF
@@ -9,9 +9,9 @@ namespace EmotionalDecisionMakingWF
     public partial class AddOrEditReactionForm : Form
     {
         private EmotionalDecisionMakingAsset _edmAsset;
-        private ReactionDTO _reactionToEdit;
+        private ActionDefinitionDTO _reactionToEdit;
 
-        public AddOrEditReactionForm(EmotionalDecisionMakingAsset edmAsset, ReactionDTO reactionToEdit = null)
+        public AddOrEditReactionForm(EmotionalDecisionMakingAsset edmAsset, ActionDefinitionDTO reactionToEdit = null)
         {
             InitializeComponent();
 
@@ -35,7 +35,7 @@ namespace EmotionalDecisionMakingWF
             try
             {
 
-                var newReaction = new ReactionDTO
+                var newReaction = new ActionDefinitionDTO
                 {
                     Action = textBoxAction.Text,
                     Target = textBoxTarget.Text,

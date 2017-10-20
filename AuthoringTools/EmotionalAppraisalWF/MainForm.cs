@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.ViewModels;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 using Conditions.DTOs;
-
+using EmotionalAppraisal;
 namespace EmotionalAppraisalWF
 {
 	public partial class MainForm : BaseEAForm

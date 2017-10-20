@@ -171,6 +171,7 @@ namespace EmotionalDecisionMaking
             this.RemoveReactionConditions(selectedReactionID, new[] {conditionToEdit});
             this.AddReactionCondition(selectedReactionID, newCondition);
         }
+        
 
 #region Serialization
 

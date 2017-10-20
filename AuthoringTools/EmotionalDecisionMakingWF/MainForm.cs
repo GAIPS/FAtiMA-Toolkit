@@ -3,15 +3,15 @@ using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
 using EmotionalDecisionMaking;
-using EmotionalDecisionMaking.DTOs;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
+using ActionLibrary.DTOs;
 
 namespace EmotionalDecisionMakingWF
 {
     public partial class MainForm : BaseEDMForm
     {
-		private BindingListView<ReactionDTO> _reactiveActions;
+		private BindingListView<ActionDefinitionDTO> _reactiveActions;
 	    private ConditionSetView _conditionSetView;
         private Guid _selectedActionId;
 
@@ -23,16 +23,16 @@ namespace EmotionalDecisionMakingWF
 			conditionSetEditor.View = _conditionSetView;
 			_conditionSetView.OnDataChanged += conditionSetView_OnDataChanged;
 
-			this._reactiveActions = new BindingListView<ReactionDTO>((IList)null);
+			this._reactiveActions = new BindingListView<ActionDefinitionDTO>((IList)null);
 			dataGridViewReactiveActions.DataSource = this._reactiveActions;
 		}
 
 	    protected override void OnAssetDataLoaded(EmotionalDecisionMakingAsset asset)
 	    {
 		    _reactiveActions.DataSource = LoadedAsset.GetAllReactions().ToList();
-            dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ReactionDTO>(dto => dto.Priority)].DisplayIndex = 3;
-            dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ReactionDTO>(dto => dto.Id)].Visible = false;
-			dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ReactionDTO>(dto => dto.Conditions)].Visible = false;
+            dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ActionDefinitionDTO>(dto => dto.Priority)].DisplayIndex = 3;
+            dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ActionDefinitionDTO>(dto => dto.Id)].Visible = false;
+			dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ActionDefinitionDTO>(dto => dto.Conditions)].Visible = false;
 
 			if (_reactiveActions.Any())
 			{
@@ -49,7 +49,7 @@ namespace EmotionalDecisionMakingWF
 
         private void dataGridViewReactiveActions_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
-            var reaction = ((ObjectView<ReactionDTO>)dataGridViewReactiveActions.Rows[e.RowIndex].DataBoundItem).Object;
+            var reaction = ((ObjectView<ActionDefinitionDTO>)dataGridViewReactiveActions.Rows[e.RowIndex].DataBoundItem).Object;
             _selectedActionId = reaction.Id;
 
 	        var ra = LoadedAsset.GetReaction(_selectedActionId);
@@ -59,7 +59,7 @@ namespace EmotionalDecisionMakingWF
         private void buttonRemoveReaction_Click(object sender, EventArgs e)
         {
 	        var ids = dataGridViewReactiveActions.SelectedRows.Cast<DataGridViewRow>()
-		        .Select(r => ((ObjectView<ReactionDTO>) r.DataBoundItem).Object.Id).ToList();
+		        .Select(r => ((ObjectView<ActionDefinitionDTO>) r.DataBoundItem).Object.Id).ToList();
 
 			LoadedAsset.RemoveReactions(ids);
             _reactiveActions.DataSource = LoadedAsset.GetAllReactions().ToList();
@@ -79,7 +79,7 @@ namespace EmotionalDecisionMakingWF
         {
             if (dataGridViewReactiveActions.SelectedRows.Count == 1)
             {
-                var selectedReaction = ((ObjectView<ReactionDTO>)dataGridViewReactiveActions.
+                var selectedReaction = ((ObjectView<ActionDefinitionDTO>)dataGridViewReactiveActions.
                    SelectedRows[0].DataBoundItem).Object;
                 new AddOrEditReactionForm(LoadedAsset,selectedReaction).ShowDialog();
             }
@@ -88,7 +88,7 @@ namespace EmotionalDecisionMakingWF
 			SetModified();
         }
 
-		private void UpdateConditions(ReactionDTO reaction)
+		private void UpdateConditions(ActionDefinitionDTO reaction)
 		{
 			_conditionSetView.SetData(reaction?.Conditions);
 		}

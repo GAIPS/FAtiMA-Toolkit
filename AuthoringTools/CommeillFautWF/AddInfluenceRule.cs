@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using CommeillFaut;
 using Equin.ApplicationFramework;
 using CommeillFaut.DTOs;
 using CommeillFautWF.ViewModels;
@@ -27,7 +26,6 @@ namespace CommeillFautWF
             _dto = dto;
 		    _vm = vm;
 
-        
     
           conditionSetEditorControl1.View = _vm.ConditionSetView;
 
