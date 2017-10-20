@@ -1,0 +1,33 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"AttributionRules": [
+				{
+					"RuleName": "All Friends",
+					"Target": "[x]",
+					"Value": 20,
+					"Conditions":
+						{
+							"Set": ["IsFriend([x]) = True"]
+						}
+				},
+				{
+					"RuleName": "Decrease",
+					"Target": "[x]",
+					"Value": -25,
+					"Conditions":
+						{
+							"Set": ["LastEventId(Action-End, [x], Speak(-, -, SE([se], Finalize), [sty]), SELF) = [id]"]
+						}
+				
+				}],
+			"Claims": [],
+			"Conferrals": []
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "SocialImportance.SocialImportanceAsset, SocialImportanceAsset, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}
