@@ -37,6 +37,12 @@ To get started, we recommed that you check the code examples of each asset in th
 The following repository contains the source code for a game prototype that was made in Unity to showcase the toolkit: 
 https://github.com/GAIPS-INESC-ID/FAtiMA-Toolkit-UnityDemo
 
+### FAtiMA-Toolkit Integrated Authoring Tool Video Demonstration:
+https://www.youtube.com/watch?v=6-oLZ_DJW2U
+
+### FAtiMA-Toolkit Role Play Character Tool Video Demonstration:
+https://www.youtube.com/watch?v=2WgKs3-iI7g
+
 ### Integrated Authoring Tool
 An integrated authoring tool is now available for Windows users: 
 
