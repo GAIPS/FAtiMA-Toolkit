@@ -1,0 +1,47 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"ScenarioName": "TestingEmotionsScenario",
+			"Description": "Scenario meant to test the ComputeEmotions button",
+			"CharacterSources": ["John.rpc", "Sarah.rpc"],
+			"Dialogues": [
+				{
+					"CurrentState": "Start",
+					"NextState": "NS1",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "Not today!",
+					"UtteranceId": "TTS-3380D69E698B5CD70D0D9F3F23294CE1"
+				}, 
+				{
+					"CurrentState": "NS1",
+					"NextState": "NS2",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "Oh Hi",
+					"UtteranceId": "TTS-7E798B169CB3947A147B61FBA5FA0F04"
+				}, 
+				{
+					"CurrentState": "NS2",
+					"NextState": "End",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "Oh Goodbye!",
+					"UtteranceId": "TTS-99E4C0A095925D1AAB2662E7802EC20F"
+				}, 
+				{
+					"CurrentState": "Start",
+					"NextState": "NS1",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "Good Morning",
+					"UtteranceId": "TTS-55B9E608315D8A9195C174C96C100C23"
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "IntegratedAuthoringTool.IntegratedAuthoringToolAsset, IntegratedAuthoringTool, Version=1.7.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

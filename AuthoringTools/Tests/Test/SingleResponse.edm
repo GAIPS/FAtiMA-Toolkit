@@ -1,0 +1,34 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"DefaultActionPriority": 2,
+			"ActionTendencies": [
+				{
+					"Action": "Speak([cs], [ns], [m], [s])",
+					"Target": "[x]",
+					"Type": "[x]",
+					"Conditions":
+						{
+							"Set": ["IsAgent([x]) = True", "[x] != SELF", "ValidDialogue([cs], [ns], [m], [s]) = True", "DialogueState([x]) = [cs]", "Positive = [s]"]
+						},
+					"Priority": 1
+				},
+				{
+					"Action": "Speak([cs], [ns], *, *)",
+					"Target": "[x]",
+					"Type": "[x]",
+					"Conditions":
+						{
+							"Set": ["IsAgent([x]) = True", "[x] != SELF", "ValidDialogue([cs], [ns], *, *) = True", "DialogueState([x]) = [cs]"]
+						},
+					"Priority": 1
+				}
+				]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "EmotionalDecisionMaking.EmotionalDecisionMakingAsset, EmotionalDecisionMaking, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

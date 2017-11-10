@@ -14,25 +14,32 @@ namespace IntegratedAuthoringToolTutorial
             var playerStr = IATConsts.PLAYER;
          
             //Loading the asset
-            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/IATTest.iat");
-            var currentState = IATConsts.INITIAL_DIALOGUE_STATE;
+            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/CiF/CIFVERSION3.iat");
+            var currentState = "-";
             var rpc = RolePlayCharacterAsset.LoadFromFile(iat.GetAllCharacterSources().FirstOrDefault().Source);
+            Console.WriteLine(" rpc " + rpc.CharacterName);
             rpc.LoadAssociatedAssets();
             iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
 
             iat.GetAllCharacterSources().ToList();
-            while (currentState != IATConsts.TERMINAL_DIALOGUE_STATE)
+      //      while (currentState != IATConsts.TERMINAL_DIALOGUE_STATE)
+       //     {
+
+
+            foreach(var dia in iat.GetAllDialogueActions())
             {
+                Console.WriteLine("this is args dialogue line" + dia.Utterance);
+            }
                 var playerDialogs = iat.GetDialogueActionsByState(currentState);
 
                 Console.WriteLine("Current Dialogue State: " + currentState);
-                Console.WriteLine("Available choices: ");
+                Console.WriteLine("Available choices: " + playerDialogs.Count());
 
                 for (int i = 0; i < playerDialogs.Count(); i++)
                 {
                     Console.WriteLine(i + " - " + playerDialogs.ElementAt(i).Utterance);
                 }
-                int pos = -1;
+        /*        int pos = -1;
 
                 do
                 {
@@ -69,7 +76,7 @@ namespace IntegratedAuthoringToolTutorial
                 {
                     Console.WriteLine("\n" + rpc.CharacterName + ": " + characterAction.Name + "\n");
                 }
-            }
+            }*/
             Console.WriteLine("Dialogue Reached a Terminal State");
             Console.ReadKey();
         }

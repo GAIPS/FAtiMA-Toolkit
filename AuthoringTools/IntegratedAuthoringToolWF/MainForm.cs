@@ -445,6 +445,163 @@ namespace IntegratedAuthoringToolWF
             MessageBox.Show(validationMessage);
         }
 
+
+        private void CalculateEmotions(object sender, EventArgs e)
+        {
+            Dictionary<RolePlayCharacter.RolePlayCharacterAsset, List<string>> emotionList = new Dictionary<RolePlayCharacterAsset, List<string>>();
+
+            IntegratedAuthoringToolAsset loadedIAT = this.LoadedAsset;
+
+            List<RolePlayCharacterAsset> rpcList = new List<RolePlayCharacterAsset>();
+
+            List<WellFormedNames.Name> _eventList = new List<WellFormedNames.Name>();
+
+            foreach (var rpc in loadedIAT.GetAllCharacterSources())
+            {
+               var actor = RolePlayCharacterAsset.LoadFromFile(rpc.Source); ;
+
+                actor.LoadAssociatedAssets();
+
+                loadedIAT.BindToRegistry(actor.DynamicPropertiesRegistry);
+
+                rpcList.Add(actor);
+            }
+
+            foreach (var actor in rpcList)
+            {
+                
+              
+                foreach (var anotherActor in rpcList)
+                {
+                    if (actor != anotherActor)
+                    {
+
+
+                        var changed = new[] { EventHelper.ActionEnd(anotherActor.CharacterName.ToString(), "Enters", "Room") };
+                        actor.Perceive(changed);
+                    }
+
+                }
+
+                emotionList.Add(actor, new List<string>());
+                   // actor.SaveToFile("../../../Tests/" + actor.CharacterName + "-output1" + ".rpc");
+            }
+
+
+            string validationMessage = "";
+
+
+
+            var act = rpcList.FirstOrDefault().Decide();
+
+            if (act == null) {
+               foreach(var r in rpcList)
+                {
+                    act = r.Decide();
+                    if (act != null)
+                        break;
+                }
+                
+               }
+
+             while (!act.IsEmpty()) {  // Stopping condition kinda shaky
+
+                _eventList.Clear();
+
+                foreach (var rpc in rpcList)
+
+                {
+
+
+                    act = rpc.Decide();
+
+                    if (act.FirstOrDefault() == null) continue;
+
+                    foreach (var action in act)
+                    {
+
+                            foreach (var rpctoPerceive in rpcList)
+                            {
+                                if (rpctoPerceive != rpc)
+                                {
+                                    if (action.Name.ToString().Contains("Speak"))
+                                        _eventList.Add(EventHelper.PropertyChange("DialogueState(" + rpc.CharacterName.ToString() + ")", action.Parameters.ElementAt(1).ToString(), rpc.CharacterName.ToString()));
+
+                                    _eventList.Add(EventHelper.ActionEnd(rpc.CharacterName.ToString(), action.Name.ToString(), action.Target.ToString()));
+
+
+                                }
+                            }
+                        
+                    }
+
+                }
+
+                foreach (var rpc in rpcList)
+                {
+
+                    foreach (var ev in _eventList) // need to test if ...mmmmaybe
+                        rpc.Perceive(ev);
+
+                    foreach (var emot in rpc.GetAllActiveEmotions())
+                    {
+                        if (!emotionList[rpc].Contains(emot.Type))
+                            emotionList[rpc].Add(emot.Type);
+
+                    }
+
+                }
+    
+    //    rpc.SaveToFile("../../../Tests/" + rpc.CharacterName + "-output1" + ".rpc");
+            }
+
+            if (emotionList.Count > 0)
+            {
+                validationMessage = "Simulation result: " + "\n";
+
+                foreach (var rpc in emotionList.Keys)
+                {
+                    
+                    validationMessage += rpc.CharacterName.ToString() + " felt: " + "\n";
+
+                    foreach (var emot in emotionList[rpc])
+                    {
+                        validationMessage += "Emotion: " + emot + "\n";
+                    }
+                }
+              
+               
+            }
+            else
+            {
+                validationMessage += "No emotions detected";
+            }
+
+            MessageBox.Show(validationMessage);
+
+
+
+        }
+
+
+        private List<EmotionalAppraisal.DTOs.EmotionDTO> updateEmotionList(List<EmotionalAppraisal.DTOs.EmotionDTO> b, List<RolePlayCharacterAsset> rpcList) 
+        {
+
+            
+            foreach(var rpc in rpcList)
+            {
+            //     rpc.Perceive(EventHelper.ActionEnd("SELF" d.ToString(), );
+
+                foreach (var e in rpc.GetAllActiveEmotions())
+                    b.Add(e);
+
+
+            }
+
+            return b;
+
+        }
+
         private void tabPage2_Click(object sender, EventArgs e)
         {
 
@@ -496,6 +653,11 @@ namespace IntegratedAuthoringToolWF
         private void groupBox2_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void computeEmotions_Click(object sender, EventArgs e)
+        {
+            CalculateEmotions(sender, e);
         }
     }
 }

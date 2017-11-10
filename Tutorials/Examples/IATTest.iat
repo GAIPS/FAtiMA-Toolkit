@@ -5,38 +5,9 @@
 			"ScenarioName": "IATTest",
 			"Description": "Testing Scenario",
 			"CharacterSources": ["RPCTest.rpc"],
-			"PlayerDialogues": [
-				{
+			"Dialogues": [
+			{
 					"CurrentState": "Start",
-					"NextState": "S2",
-					"Meaning": ["M1", "M2"],
-					"Style": ["S1"],
-					"Utterance": "Hi"
-				}, 
-				{
-					"CurrentState": "S3",
-					"NextState": "End",
-					"Meaning": [],
-					"Style": [],
-					"Utterance": "Goodbye"
-				}, 
-				{
-					"CurrentState": "Start",
-					"NextState": "End",
-					"Meaning": ["1"],
-					"Style": ["2"],
-					"Utterance": "Olaaaa"
-				}, 
-				{
-					"CurrentState": "Start",
-					"NextState": "End",
-					"Meaning": ["1"],
-					"Style": ["2"],
-					"Utterance": "owwww"
-				}],
-			"AgentDialogues": [
-				{
-					"CurrentState": "S2",
 					"NextState": "S3",
 					"Meaning": [],
 					"Style": [],
