@@ -15,7 +15,7 @@
 				},
 			"BodyName": null,
 			"VoiceName": null,
-			"EmotionalAppraisalAssetSource": "EmotionTest.ea",
+			"EmotionalAppraisalAssetSource": "SarahEA.ea",
 			"EmotionalDecisionMakingSource": "SingleResponse.edm",
 			"SocialImportanceAssetSource": null,
 			"CommeillFautAssetSource": null,

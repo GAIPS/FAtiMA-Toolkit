@@ -557,7 +557,7 @@ namespace IntegratedAuthoringToolWF
 
             if (emotionList.Count > 0)
             {
-                validationMessage = "Simulation result: " + "\n";
+                validationMessage = "Simulation result:                " + "\n";
 
                 foreach (var rpc in emotionList.Keys)
                 {
