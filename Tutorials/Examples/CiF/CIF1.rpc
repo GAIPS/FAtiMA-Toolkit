@@ -9,14 +9,15 @@
 						{
 							"SELF":
 								{
-									"IsAttracted(CIF1, CIF2)": "True, 0.3",
-									"IsFriend(CIF2)": "True, 1"
+									"IsAttracted(CIF1, CIF2)": "False, 1",
+									"IsFriend(CIF1, CIF2)": "True, 1",
+									"HasFloor(CIF1)": "True, 1"
 								}
 						}
 				},
 			"BodyName": null,
 			"VoiceName": null,
-			"EmotionalAppraisalAssetSource": null,
+			"EmotionalAppraisalAssetSource": "EAVERSION3.ea",
 			"EmotionalDecisionMakingSource": "newCifEDM.edm",
 			"SocialImportanceAssetSource": "CIFVERSION3.si",
 			"CommeillFautAssetSource": "wtv.cif",
@@ -48,6 +49,6 @@
 	"types": [
 		{
 			"TypeId": 0,
-			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.4.0.0, Culture=neutral, PublicKeyToken=null"
+			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null"
 		}]
 }

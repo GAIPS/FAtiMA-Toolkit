@@ -103,7 +103,7 @@ namespace CommeillFautTutorial
                 foreach (var rpc in rpcList)
                 {
 
-                    Console.WriteLine("Character perceiving: " + rpc.CharacterName);
+                    Console.WriteLine("Character perceiving: " + rpc.CharacterName + " its mood: " + rpc.Mood);
 
                     rpc.Perceive(_events);
                     var decisions = rpc.Decide();
@@ -151,8 +151,10 @@ namespace CommeillFautTutorial
                     _events.Add(EventHelper.ActionEnd(initiator.CharacterName.ToString(), action.Name.ToString(),
                         action.Target.ToString()));
 
-                    //         _events.Add(EventHelper.PropertyChange("DialogueState(" + initiator.CharacterName.ToString() + ")",
-                    //                                   action.Parameters[1].ToString(), action.Target.ToString()));
+                    initiator.Perceive(EventHelper.PropertyChange("HasFloor(" + initiator.CharacterName.ToString() + ")", "False", initiator.CharacterName.ToString()));
+
+                    rpcList.Find(x => x.CharacterName.ToString() == action.Target.ToString()).Perceive(EventHelper.PropertyChange("HasFloor(" + action.Target.ToString() + ")", "True", action.Target.ToString()));
+              
 
                     Console.WriteLine();
                     Console.WriteLine("Dialogue:");

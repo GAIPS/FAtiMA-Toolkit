@@ -12,10 +12,10 @@
 						{
 							"Set": ["IsAgent([x]) = True", "[x] != SELF", "ValidDialogue([cs], [ns], [m], [s]) = True", "DialogueState([x]) = [cs]", "Positive = [s]"]
 						},
-					"Priority": 1
+					"Priority": 2
 				}, 
 				{
-					"Action": "Speak([cs], [ns], *, *)",
+					"Action": "Speak([cs], [ns], *, Negative)",
 					"Target": "[x]",
 					"Type": "[x]",
 					"Conditions":

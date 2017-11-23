@@ -5,10 +5,13 @@
 			"SocialExchanges": [
 				{
 					"Action": "Flirt",
+					"Target": "-",
+					"Type": "-",
 					"Conditions":
 						{
 							"Set": []
 						},
+					"Priority": 2,
 					"Description": "When 2 people are attracted to each other...",
 					"InfluenceRule":
 						{
@@ -16,16 +19,19 @@
 							"Target": "[x]",
 							"RuleConditions":
 								{
-									"Set": ["SI([x]) < -10"]
+									"Set": ["SI([x]) >= 40", "IsAttracted(SELF, [x]) = True"]
 								}
 						}
 				}, 
 				{
 					"Action": "Compliment",
+					"Target": "-",
+					"Type": "-",
 					"Conditions":
 						{
 							"Set": []
 						},
+					"Priority": 1,
 					"Description": "Friends",
 					"InfluenceRule":
 						{
@@ -33,11 +39,10 @@
 							"Target": "[x]",
 							"RuleConditions":
 								{
-									"Set": ["SI([x])>= 20"]
+									"Set": ["SI([x]) >= 10", "IsFriend(SELF, [x]) = True"]
 								}
 						}
-				}
-				],
+				}],
 			"_triggerRules":
 				{
 					"_triggerRules":

@@ -170,7 +170,7 @@ namespace CommeillFaut
                 kbTarget = initiator.ToString();
             }
 
-
+/*
             foreach (var cond in this.InfluenceRule.RuleConditions)
             {
               
@@ -187,6 +187,9 @@ namespace CommeillFaut
                 newCertainty = certainty + 0.2f;
                 else newCertainty = certainty - 0.2f;
 
+                if (newCertainty > 1) newCertainty = 1;
+                else if (newCertainty < 0) newCertainty = 0;
+
                 if (!newString[0].Contains("SI"))
                 {
                     var value = me.AskProperty(Name.BuildName(newString[0])).Value;
@@ -200,7 +203,7 @@ namespace CommeillFaut
                
             }
 
-          
+          */
 
             return retList;
 

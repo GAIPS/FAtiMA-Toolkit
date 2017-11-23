@@ -623,7 +623,6 @@ namespace CommeillFaut
 
                 if (target == m_kB.Perspective)
                 {
-                    Console.WriteLine("I'm the target");
                     m_kB.Tell(Name.BuildName("DialogueState(" + initiator + ")"), Name.BuildName("Start"), Name.BuildName("SELF"));
               return  m_SocialExchanges.Find(x => x.ActionName.ToString() == socialExchange.ActionName.ToString()).ApplyConsequences(m_kB, initiator, target, result,false);
             }

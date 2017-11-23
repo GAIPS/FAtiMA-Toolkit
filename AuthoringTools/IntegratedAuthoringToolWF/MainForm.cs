@@ -448,7 +448,7 @@ namespace IntegratedAuthoringToolWF
 
         private void CalculateEmotions(object sender, EventArgs e)
         {
-            Dictionary<RolePlayCharacter.RolePlayCharacterAsset, List<string>> emotionList = new Dictionary<RolePlayCharacterAsset, List<string>>();
+            Dictionary<string, Dictionary<string, int>> emotionList = new Dictionary<string, Dictionary<string, int>>();
 
             IntegratedAuthoringToolAsset loadedIAT = this.LoadedAsset;
 
@@ -458,7 +458,7 @@ namespace IntegratedAuthoringToolWF
 
             foreach (var rpc in loadedIAT.GetAllCharacterSources())
             {
-               var actor = RolePlayCharacterAsset.LoadFromFile(rpc.Source); ;
+                var actor = RolePlayCharacterAsset.LoadFromFile(rpc.Source); ;
 
                 actor.LoadAssociatedAssets();
 
@@ -469,8 +469,8 @@ namespace IntegratedAuthoringToolWF
 
             foreach (var actor in rpcList)
             {
-                
-              
+
+
                 foreach (var anotherActor in rpcList)
                 {
                     if (actor != anotherActor)
@@ -483,35 +483,44 @@ namespace IntegratedAuthoringToolWF
 
                 }
 
-                emotionList.Add(actor, new List<string>());
-                   // actor.SaveToFile("../../../Tests/" + actor.CharacterName + "-output1" + ".rpc");
+                emotionList.Add(actor.CharacterName.ToString(), new Dictionary<string, int>());
+                // actor.SaveToFile("../../../Tests/" + actor.CharacterName + "-output1" + ".rpc");
             }
 
 
             string validationMessage = "";
 
 
+            var rpcActions = new Dictionary<ActionLibrary.IAction, RolePlayCharacterAsset>();
 
             var act = rpcList.FirstOrDefault().Decide();
 
-            if (act == null) {
-               foreach(var r in rpcList)
+            if (act == null)
+            {
+                foreach (var r in rpcList)
                 {
                     act = r.Decide();
                     if (act != null)
+                    {
+                        rpcActions.Add(act.FirstOrDefault(), r);
                         break;
+                    }
+                    
                 }
-                
-               }
 
-             while (!act.IsEmpty()) {  // Stopping condition kinda shaky
+            }
+           
+            int timestamp = 0;
 
-                _eventList.Clear();
+            while (rpcActions.Keys != null)
+            {  // Stopping condition kinda shaky
+
+
+                rpcActions = new Dictionary<ActionLibrary.IAction, RolePlayCharacterAsset>();
+
 
                 foreach (var rpc in rpcList)
-
                 {
-
 
                     act = rpc.Decide();
 
@@ -519,41 +528,63 @@ namespace IntegratedAuthoringToolWF
 
                     foreach (var action in act)
                     {
+                        rpcActions.Add(action, rpc);
 
-                            foreach (var rpctoPerceive in rpcList)
-                            {
-                                if (rpctoPerceive != rpc)
-                                {
-                                    if (action.Name.ToString().Contains("Speak"))
-                                        _eventList.Add(EventHelper.PropertyChange("DialogueState(" + rpc.CharacterName.ToString() + ")", action.Parameters.ElementAt(1).ToString(), rpc.CharacterName.ToString()));
-
-                                    _eventList.Add(EventHelper.ActionEnd(rpc.CharacterName.ToString(), action.Name.ToString(), action.Target.ToString()));
-
-
-                                }
-                            }
-                        
                     }
 
                 }
+
+                // COPY the rpc list without linked refereces
+
+                var newList = new List<RolePlayCharacterAsset>();  // mmm is the new list linked to the other? to be tested
+
+
+                foreach (var action in rpcActions)
+                {
+
+                    // COPY the rpc list without linked refereces
+
+                    var newListAux = new List<RolePlayCharacterAsset>(rpcList);  // mmm is the new list linked to the other? to be tested
+
+                    foreach (var rpctoPerceive in newListAux)
+                    {
+                        _eventList = new List<WellFormedNames.Name>();
+
+                        if (rpctoPerceive.CharacterName != action.Value.CharacterName)
+                        {
+                            if (action.Key.Name.ToString().Contains("Speak") && action.Key.Target == rpctoPerceive.CharacterName)
+                                _eventList.Add(EventHelper.PropertyChange("DialogueState(" + action.Value.CharacterName.ToString() + ")", action.Key.Parameters.ElementAt(1).ToString(), action.Value.CharacterName.ToString()));
+
+                            _eventList.Add(EventHelper.ActionEnd(action.Value.CharacterName.ToString(), action.Key.Name.ToString(), action.Key.Target.ToString()));
+
+                            rpctoPerceive.Perceive(_eventList);
+
+                         
+                            newList.Add(rpctoPerceive);
+                        }
+                    }
+
+                }
+
+                rpcList.Clear();
+                rpcList = newList;
 
                 foreach (var rpc in rpcList)
                 {
 
-                    foreach (var ev in _eventList) // need to test if ...mmmmaybe
-                        rpc.Perceive(ev);
-
                     foreach (var emot in rpc.GetAllActiveEmotions())
                     {
-                        if (!emotionList[rpc].Contains(emot.Type))
-                            emotionList[rpc].Add(emot.Type);
+                        if (!emotionList[rpc.CharacterName.ToString()].Keys.Contains(emot.Type))
+                            emotionList[rpc.CharacterName.ToString()].Add(emot.Type, (timestamp + 1));
 
                     }
 
                 }
-    
-    //    rpc.SaveToFile("../../../Tests/" + rpc.CharacterName + "-output1" + ".rpc");
+                timestamp++;
+                if (timestamp > 1) break;
+
             }
+
 
             if (emotionList.Count > 0)
             {
@@ -561,16 +592,18 @@ namespace IntegratedAuthoringToolWF
 
                 foreach (var rpc in emotionList.Keys)
                 {
-                    
-                    validationMessage += rpc.CharacterName.ToString() + " felt: " + "\n";
+
+                    validationMessage += rpc + " felt: " + "\n";
 
                     foreach (var emot in emotionList[rpc])
                     {
-                        validationMessage += "Emotion: " + emot + "\n";
+                        var lastFor = timestamp - emot.Value;
+                        double timePercentage = ((double)lastFor / (double)timestamp) * 100;
+                        validationMessage += "Emotion: " + emot.Key + " ( " + timePercentage + "% of total scenario time)\n";
                     }
                 }
-              
-               
+
+
             }
             else
             {
@@ -581,7 +614,8 @@ namespace IntegratedAuthoringToolWF
 
 
 
-        }
+
+         }
 
 
         private List<EmotionalAppraisal.DTOs.EmotionDTO> updateEmotionList(List<EmotionalAppraisal.DTOs.EmotionDTO> b, List<RolePlayCharacterAsset> rpcList) 

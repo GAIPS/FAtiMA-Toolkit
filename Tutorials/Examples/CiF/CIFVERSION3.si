@@ -4,26 +4,33 @@
 			"classId": 0,
 			"AttributionRules": [
 				{
-					"RuleName": "All Friends",
+					"RuleName": "Friendship",
+					"Target": "[x]",
+					"Value": 10,
+					"Conditions":
+						{
+							"Set": ["IsFriend(SELF, [x]) = True"]
+						}
+				}, 
+				{
+					"RuleName": "Attracted To",
 					"Target": "[x]",
 					"Value": 20,
 					"Conditions":
 						{
-							"Set": ["IsFriend([x]) = True"]
+							"Set": ["IsAttracted(SELF, [x]) = True"]
 						}
-				},
+				}, 
 				{
-					"RuleName": "Decrease",
+					"RuleName": "Good Mood",
 					"Target": "[x]",
-					"Value": -25,
+					"Value": 40,
 					"Conditions":
 						{
-							"Set": ["LastEventId(Action-End, [x], Speak(-, -, SE([se], Finalize), [sty]), SELF) = [id]"]
+							"Set": ["Mood(SELF) > 5"]
 						}
-				
 				}],
-			"Claims": [],
-			"Conferrals": []
+			"Claims": []
 		},
 	"types": [
 		{
