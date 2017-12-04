@@ -33,8 +33,9 @@ namespace EmotionalDecisionMakingWF
             dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ActionDefinitionDTO>(dto => dto.Priority)].DisplayIndex = 3;
             dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ActionDefinitionDTO>(dto => dto.Id)].Visible = false;
 			dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ActionDefinitionDTO>(dto => dto.Conditions)].Visible = false;
+            dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ActionDefinitionDTO>(dto => dto.Type)].Visible = false;
 
-			if (_reactiveActions.Any())
+            if (_reactiveActions.Any())
 			{
 				var ra = LoadedAsset.GetReaction(_reactiveActions.First().Id);
 				UpdateConditions(ra);

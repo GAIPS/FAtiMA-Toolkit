@@ -127,7 +127,8 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="ActionLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IntegratedAuthoringTool.1.7.0\lib\net35\ActionLibrary.dll</HintPath>
+      <HintPath>..\packages\EmotionalDecisionMaking.1.2.0\lib\net35\ActionLibrary.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="AutobiographicMemory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EmotionalAppraisal.1.4.1.0\lib\net35\AutobiographicMemory.dll</HintPath>
@@ -145,7 +146,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="EmotionalDecisionMaking, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IntegratedAuthoringTool.1.7.0\lib\net35\EmotionalDecisionMaking.dll</HintPath>
+      <HintPath>..\packages\EmotionalDecisionMaking.1.2.0\lib\net35\EmotionalDecisionMaking.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EPPlus, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
