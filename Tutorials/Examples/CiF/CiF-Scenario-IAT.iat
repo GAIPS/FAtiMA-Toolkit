@@ -1,0 +1,191 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"ScenarioName": "CifScenario",
+			"Description": "Testing the new cif dialogue combination",
+			"CharacterSources": ["John.rpc", "Sarah.rpc", "Mary.rpc"],
+			"Dialogues": [
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Flirt, Initiate)",
+					"Style": "Positive",
+					"Utterance": "Hii, I just wanted to say that I think you really cute",
+					"UtteranceId": "TTS-D70ADC8D58BD14E5126508571D48DB7F"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Compliment, Initiate)",
+					"Style": "Positive",
+					"Utterance": "I think you are a really good friend",
+					"UtteranceId": "TTS-982D34C6EEE2C5931C512158CF742E8E"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Flirt, Finalize)",
+					"Style": "Positive",
+					"Utterance": "I'm glad we talked!",
+					"UtteranceId": "TTS-AF7BD631D37BDD55DCDFC162D7DA93F5"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Flirt, Finalize)",
+					"Style": "Neutral",
+					"Utterance": "I see....",
+					"UtteranceId": "TTS-66F7D83B19540F96100601895EBB92F2"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Flirt, Finalize)",
+					"Style": "Negative",
+					"Utterance": "Piss off!",
+					"UtteranceId": "TTS-93AA4E26A48D42F0187B6FB99753FA82"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Compliment, Finalize)",
+					"Style": "Negative",
+					"Utterance": "Why did I even talk to you",
+					"UtteranceId": "TTS-3A477C62FC9295C8878CE1ABE77C7674"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Compliment, Finalize)",
+					"Style": "Positive",
+					"Utterance": "See you later my friend",
+					"UtteranceId": "TTS-D9FF52347CFDB243379B47AAFDCB1CD3"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Compliment, Finalize)",
+					"Style": "Neutral",
+					"Utterance": "OK....I guess I'll see you around",
+					"UtteranceId": "TTS-056F54233CAFFCEAC7E4301C58992F82"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Compliment, Answer)",
+					"Style": "Negative",
+					"Utterance": "Go AWAY! Creep!",
+					"UtteranceId": "TTS-69DAEB5F8941C6A56543CD4BD7124444"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Compliment, Answer)",
+					"Style": "Positive",
+					"Utterance": "Thank you, that means so much to me",
+					"UtteranceId": "TTS-50813C7E614CFC064104F169E0C6B7BB"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Compliment, Answer)",
+					"Style": "Neutral",
+					"Utterance": "Uhm...",
+					"UtteranceId": "TTS-221E1B6D7BCBBC6E8D5B2F4582FEDF19"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Flirt, Answer)",
+					"Style": "Positive",
+					"Utterance": "Thank you babe! You are really cute too",
+					"UtteranceId": "TTS-92B74288AF6A293E9AD6FD6C03438408"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Flirt, Answer)",
+					"Style": "Negative",
+					"Utterance": "You idiot...you're the worst",
+					"UtteranceId": "TTS-B624FF3102C9F9AF13C452A0DD4430AE"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Insult, Finalize)",
+					"Style": "Positive",
+					"Utterance": "Glad we talked",
+					"UtteranceId": "TTS-F9EF5777D7F806C03B10AD4CC3A7C9C8"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Insult, Finalize)",
+					"Style": "Neutral",
+					"Utterance": "Idiot",
+					"UtteranceId": "TTS-498B4DDC9F957ECA6473923163DD117F"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Insult, Finalize)",
+					"Style": "Negative",
+					"Utterance": "If you die, I won't go to your funeral",
+					"UtteranceId": "TTS-67D793FE53888B4B95EBBA0A41AE7211"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Insult, Answer)",
+					"Style": "Neutral",
+					"Utterance": "What did you just say?",
+					"UtteranceId": "TTS-A7A19BB11D67766D7873BC2AA7F31F0A"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Insult, Answer)",
+					"Style": "Negative",
+					"Utterance": "Fuck you!",
+					"UtteranceId": "TTS-B05B7068FA23A00369D26BBF3C6133A1"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Insult, Answer)",
+					"Style": "Positive",
+					"Utterance": "Why are you doing this?",
+					"UtteranceId": "TTS-7FF5191CFD6736A546936560C3F7FFE8"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Insult, Initiate)",
+					"Style": "Negative",
+					"Utterance": "Is your family tree a circle?",
+					"UtteranceId": "TTS-FB2F7F94A259B2F46DA07632C518E164"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Insult, Initiate)",
+					"Style": "Neutral",
+					"Utterance": "You look like a chicken Mcnugget",
+					"UtteranceId": "TTS-FF9BD9AAA8C43A715E7E19ED013A0519"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Insult, Initiate)",
+					"Style": "Positive",
+					"Utterance": "You bring everyone a lot of joy, when you leave the room",
+					"UtteranceId": "TTS-B1CCAE5E24A675DEA2DBE213F7080C76"
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "IntegratedAuthoringTool.IntegratedAuthoringToolAsset, IntegratedAuthoringTool, Version=1.7.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

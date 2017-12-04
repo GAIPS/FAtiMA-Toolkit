@@ -4,23 +4,23 @@
 			"classId": 0,
 			"KnowledgeBase":
 				{
-					"Perspective": "CIF1",
+					"Perspective": "John",
 					"Knowledge":
 						{
 							"SELF":
 								{
-									"IsAttracted(CIF1, CIF2)": "False, 1",
-									"IsFriend(CIF1, CIF2)": "True, 1",
-									"HasFloor(CIF1)": "True, 1"
+									"HasFloor(John)": "True, 1",
+									"IsAttracted(John, Sarah)": "False, 1",
+									"IsFriend(John, Mary)": "True, 1"
 								}
 						}
 				},
-			"BodyName": null,
-			"VoiceName": null,
-			"EmotionalAppraisalAssetSource": "EAVERSION3.ea",
-			"EmotionalDecisionMakingSource": "newCifEDM.edm",
-			"SocialImportanceAssetSource": "CIFVERSION3.si",
-			"CommeillFautAssetSource": "wtv.cif",
+			"BodyName": "Male",
+			"VoiceName": "Male",
+			"EmotionalAppraisalAssetSource": "CiF-Scenario-EA.ea",
+			"EmotionalDecisionMakingSource": "CiF-Scenario-EDM.edm",
+			"SocialImportanceAssetSource": "CiF-Scenario-SI.si",
+			"CommeillFautAssetSource": "CiF-Scenario-CiF.cif",
 			"EmotionalState":
 				{
 					"Mood": 0,

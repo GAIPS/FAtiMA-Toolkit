@@ -10,7 +10,7 @@
 					"Type": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = True", "[x] != SELF", "HasFloor(SELF) = True" ,"Volition([se], SELF, [x]) = [sty]", "Positive = [sty]"]
+							"Set": ["IsAgent([x]) = True", "[x] != SELF", "HasFloor(SELF) = True", "Volition([se], SELF, [x]) = [sty]", "Positive = [sty]"]
 						},
 					"Priority": 1
 				}, 
@@ -20,9 +20,8 @@
 					"Type": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = True", "[x] != SELF","HasFloor(SELF) = True" , "LastEventId(Action-End, [x], Speak(-, -, SE([se], Initiate), Positive), SELF) = [id]", "Volition([se], SELF, [x]) = [sty]"]
-						},
-						"Priority": 2
+							"Set": ["IsAgent([x]) = True", "[x] != SELF", "HasFloor(SELF) = True", "LastEventId(Action-End, [x], Speak(-, -, SE([se], Initiate), Positive), SELF) = [id]", "Volition([se], SELF, [x]) = [sty]"]
+						}
 				}, 
 				{
 					"Action": "Speak(-, -, SE([se], Finalize), [sty])",
@@ -30,7 +29,7 @@
 					"Type": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = True", "[x] != SELF","HasFloor(SELF) = True" , "LastEventId(Action-End, [x], Speak(-, -, SE([se], Answer), [sty]), SELF) = [id]", "Volition([se], SELF, [x]) = [sty]"]
+							"Set": ["IsAgent([x]) = True", "[x] != SELF", "HasFloor(SELF) = True", "LastEventId(Action-End, [x], Speak(-, -, SE([se], Answer), [sty]), SELF) = [id]", "Volition([se], SELF, [x]) = [sty]"]
 						},
 					"Priority": 3
 				}]

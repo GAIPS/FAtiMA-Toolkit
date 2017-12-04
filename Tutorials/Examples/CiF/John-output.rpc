@@ -1,0 +1,215 @@
+{
+	"root":
+		{
+			"classId": 2,
+			"KnowledgeBase":
+				{
+					"Perspective": "John",
+					"Knowledge":
+						{
+							"SELF":
+								{
+									"DialogueState(Mary)": "Start, 1",
+									"HasFloor(John)": "False, 1",
+									"IsAttracted(John, Sarah)": "False, 1",
+									"IsFriend(John, Mary)": "True, 1"
+								}
+						}
+				},
+			"BodyName": "Male",
+			"VoiceName": "Male",
+			"EmotionalAppraisalAssetSource": "../../../Examples/CiF/CiF-Scenario-EA.ea",
+			"EmotionalDecisionMakingSource": "../../../Examples/CiF/CiF-Scenario-EDM.edm",
+			"SocialImportanceAssetSource": "../../../Examples/CiF/CiF-Scenario-SI.si",
+			"CommeillFautAssetSource": "../../../Examples/CiF/CiF-Scenario-CiF.cif",
+			"EmotionalState":
+				{
+					"Mood": 4.91715,
+					"initialTick": 0,
+					"EmotionalPool": [
+						{
+							"Intensity": 5,
+							"Decay": 1,
+							"Threshold": 1,
+							"CauseId": 6,
+							"Direction": "Mary",
+							"EventName": "Event(Action-End, Mary, Speak(-, -, SE(Compliment, Answer), Positive), John)",
+							"EmotionType": "Gratitude",
+							"Valence": "Positive",
+							"AppraisalVariables": ["DESIRABILITY", "PRAISEWORTHINESS"],
+							"InfluenceMood": true
+						}, 
+						{
+							"Intensity": 5.45,
+							"Decay": 1,
+							"Threshold": 1,
+							"CauseId": 6,
+							"EventName": "Event(Action-End, Mary, Speak(-, -, SE(Compliment, Answer), Positive), John)",
+							"EmotionType": "Joy",
+							"Valence": "Positive",
+							"AppraisalVariables": ["DESIRABILITY"],
+							"InfluenceMood": true
+						}, 
+						{
+							"Intensity": 5.9405,
+							"Decay": 1,
+							"Threshold": 1,
+							"CauseId": 6,
+							"Direction": "Mary",
+							"EventName": "Event(Action-End, Mary, Speak(-, -, SE(Compliment, Answer), Positive), John)",
+							"EmotionType": "Admiration",
+							"Valence": "Positive",
+							"AppraisalVariables": ["PRAISEWORTHINESS"],
+							"InfluenceMood": true
+						}],
+					"AppraisalConfiguration":
+						{
+							"HalfLifeDecayConstant": 0.5,
+							"EmotionInfluenceOnMoodFactor": 0.3,
+							"MoodInfluenceOnEmotionFactor": 0.3,
+							"MinimumMoodValueForInfluencingEmotions": 0.5,
+							"EmotionalHalfLifeDecayTime": 15,
+							"MoodHalfLifeDecayTime": 60
+						}
+				},
+			"AutobiographicMemory":
+				{
+					"Tick": 0,
+					"records": [
+						{
+							"classId": 0,
+							"Id": 1,
+							"Type": "Action-End",
+							"Subject": "Sarah",
+							"Timestamp": 0,
+							"Action": "Enters",
+							"Target": "Room"
+						}, 
+						{
+							"classId": 0,
+							"Id": 2,
+							"Type": "Action-End",
+							"Subject": "Mary",
+							"Timestamp": 0,
+							"Action": "Enters",
+							"Target": "Room"
+						}, 
+						{
+							"classId": 1,
+							"Id": 3,
+							"Type": "Property-Change",
+							"Subject": "John",
+							"Timestamp": 0,
+							"Property": "HasFloor(John)",
+							"NewValue": false
+						}, 
+						{
+							"classId": 0,
+							"Id": 4,
+							"Type": "Action-End",
+							"Subject": "John",
+							"Timestamp": 0,
+							"Action": "Speak(-, -, SE(Compliment, Initiate), Positive)",
+							"Target": "Mary"
+						}, 
+						{
+							"classId": 1,
+							"Id": 5,
+							"Type": "Property-Change",
+							"Subject": "John",
+							"Timestamp": 0,
+							"Property": "HasFloor(John)",
+							"NewValue": true
+						}, 
+						{
+							"classId": 0,
+							"Id": 6,
+							"Type": "Action-End",
+							"Subject": "Mary",
+							"Timestamp": 0,
+							"LinkedEmotions": ["Gratitude", "Joy", "Admiration"],
+							"Action": "Speak(-, -, SE(Compliment, Answer), Positive)",
+							"Target": "John"
+						}, 
+						{
+							"classId": 1,
+							"Id": 7,
+							"Type": "Property-Change",
+							"Subject": "John",
+							"Timestamp": 0,
+							"Property": "HasFloor(John)",
+							"NewValue": false
+						}, 
+						{
+							"classId": 0,
+							"Id": 8,
+							"Type": "Action-End",
+							"Subject": "John",
+							"Timestamp": 0,
+							"Action": "Speak(-, -, SE(Compliment, Finalize), Positive)",
+							"Target": "Mary"
+						}]
+				},
+			"OtherAgents":
+				{
+					"dictionary": [
+						{
+							"key": "Sarah",
+							"value":
+								{
+									"Name": "Sarah",
+									"EmotionalState":
+										{
+											"Mood": 0,
+											"initialTick": 0,
+											"EmotionalPool": [],
+											"AppraisalConfiguration":
+												{
+													"HalfLifeDecayConstant": 0.5,
+													"EmotionInfluenceOnMoodFactor": 0.3,
+													"MoodInfluenceOnEmotionFactor": 0.3,
+													"MinimumMoodValueForInfluencingEmotions": 0.5,
+													"EmotionalHalfLifeDecayTime": 15,
+													"MoodHalfLifeDecayTime": 60
+												}
+										}
+								}
+						}, 
+						{
+							"key": "Mary",
+							"value":
+								{
+									"Name": "Mary",
+									"EmotionalState":
+										{
+											"Mood": 0,
+											"initialTick": 0,
+											"EmotionalPool": [],
+											"AppraisalConfiguration":
+												{
+													"HalfLifeDecayConstant": 0.5,
+													"EmotionInfluenceOnMoodFactor": 0.3,
+													"MoodInfluenceOnEmotionFactor": 0.3,
+													"MinimumMoodValueForInfluencingEmotions": 0.5,
+													"EmotionalHalfLifeDecayTime": 15,
+													"MoodHalfLifeDecayTime": 60
+												}
+										}
+								}
+						}]
+				}
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "AutobiographicMemory.AM+ActionEvent, AutobiographicMemory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}, 
+		{
+			"TypeId": 1,
+			"ClassName": "AutobiographicMemory.AM+PropertyChangeEvent, AutobiographicMemory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}, 
+		{
+			"TypeId": 2,
+			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

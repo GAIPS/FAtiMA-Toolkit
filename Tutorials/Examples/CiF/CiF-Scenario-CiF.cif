@@ -42,6 +42,26 @@
 									"Set": ["SI([x]) >= 10", "IsFriend(SELF, [x]) = True"]
 								}
 						}
+				}, 
+				{
+					"Action": "Insult",
+					"Target": "-",
+					"Type": "-",
+					"Conditions":
+						{
+							"Set": []
+						},
+					"Priority": 1,
+					"Description": "NotFriends",
+					"InfluenceRule":
+						{
+							"RuleName": "",
+							"Target": "[x]",
+							"RuleConditions":
+								{
+									"Set": ["SI([x]) <= 0", "IsFriend(SELF, [x]) = False"]
+								}
+						}
 				}],
 			"_triggerRules":
 				{

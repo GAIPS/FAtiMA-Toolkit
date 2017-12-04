@@ -8,16 +8,6 @@
 					"AppraisalWeight": 1,
 					"Rules": [
 						{
-							"EventName": "Event(Action-End, [x], Speak(*, *, *, Positive), SELF)",
-							"Conditions":
-								{
-									"Set": []
-								},
-							"Desirability": 6,
-							"Praiseworthiness": 6
-						},
-						
-						{
 							"EventName": "Event(Action-End, [x], Speak(*, *, *, Negative), SELF)",
 							"Conditions":
 								{
@@ -25,6 +15,15 @@
 								},
 							"Desirability": -6,
 							"Praiseworthiness": -6
+						}, 
+						{
+							"EventName": "Event(Action-End, [x], Speak(*, *, *, Positive), SELF)",
+							"Conditions":
+								{
+									"Set": []
+								},
+							"Desirability": 6,
+							"Praiseworthiness": 6
 						}]
 				},
 			"EmotionDispositions": [

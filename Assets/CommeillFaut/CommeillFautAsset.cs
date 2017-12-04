@@ -629,7 +629,6 @@ namespace CommeillFaut
 
                 else if (initiator == m_kB.Perspective)
                 {
-                Console.WriteLine("I'm the initiator");
                 m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(false), Name.BuildName("SELF"));
                     m_kB.Tell(Name.BuildName("DialogueState(" + target + ")"), Name.BuildName("Start"), Name.BuildName("SELF"));
               return  m_SocialExchanges.Find(x => x.ActionName.ToString() == socialExchange.ActionName.ToString()).ApplyConsequences(m_kB,initiator ,target, result, false);
