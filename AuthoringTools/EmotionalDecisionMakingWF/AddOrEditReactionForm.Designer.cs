@@ -38,8 +38,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.addBeliefErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.textBoxPriority = new System.Windows.Forms.TextBox();
-            this.textBoxType = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.emotionalAppraisalAssetBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.addBeliefErrorProvider)).BeginInit();
             this.SuspendLayout();
@@ -55,7 +53,7 @@
             // 
             // addOrEditButton
             // 
-            this.addOrEditButton.Location = new System.Drawing.Point(131, 258);
+            this.addOrEditButton.Location = new System.Drawing.Point(129, 209);
             this.addOrEditButton.Name = "addOrEditButton";
             this.addOrEditButton.Size = new System.Drawing.Size(75, 23);
             this.addOrEditButton.TabIndex = 25;
@@ -106,31 +104,13 @@
             this.textBoxPriority.Size = new System.Drawing.Size(260, 20);
             this.textBoxPriority.TabIndex = 21;
             // 
-            // textBoxType
-            // 
-            this.textBoxType.Location = new System.Drawing.Point(40, 214);
-            this.textBoxType.Name = "textBoxType";
-            this.textBoxType.Size = new System.Drawing.Size(260, 20);
-            this.textBoxType.TabIndex = 27;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(40, 191);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(34, 13);
-            this.label4.TabIndex = 26;
-            this.label4.Text = "Type:";
-            // 
             // AddOrEditReactionForm
             // 
             this.AcceptButton = this.addOrEditButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(340, 293);
-            this.Controls.Add(this.textBoxType);
-            this.Controls.Add(this.label4);
+            this.ClientSize = new System.Drawing.Size(340, 258);
             this.Controls.Add(this.textBoxPriority);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.addOrEditButton);
@@ -160,7 +140,5 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ErrorProvider addBeliefErrorProvider;
         private System.Windows.Forms.TextBox textBoxPriority;
-        private System.Windows.Forms.TextBox textBoxType;
-        private System.Windows.Forms.Label label4;
     }
 }

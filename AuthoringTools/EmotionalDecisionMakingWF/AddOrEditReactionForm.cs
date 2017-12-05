@@ -25,7 +25,7 @@ namespace EmotionalDecisionMakingWF
                 textBoxAction.Text = reactionToEdit.Action;
                 textBoxTarget.Text = reactionToEdit.Target;
                 textBoxPriority.Text = reactionToEdit.Priority;
-                textBoxType.Text = reactionToEdit.Type;
+                //textBoxType.Text = reactionToEdit.Type;
             }
         }
 
@@ -40,7 +40,7 @@ namespace EmotionalDecisionMakingWF
                     Action = textBoxAction.Text,
                     Target = textBoxTarget.Text,
                     Priority = textBoxPriority.Text,
-                    Type = textBoxType.Text,
+                   // Type = textBoxType.Text,
                 };
 
                 if (_reactionToEdit != null)
