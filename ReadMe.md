@@ -33,6 +33,11 @@ With these goals in mind, the toolkit is composed of several assets. Each has a 
 ### Tutorials
 To get started, we recommed that you check the code examples of each asset in the project folder named *Tutorials*
 
+
+### Unity Starter Kit
+To start using a compiled version of the toolkit in your Unity game, download the following zip and read the instructions therein:
+https://www.dropbox.com/s/br7bngsinbns4tl/UnityStarterKit.zip?dl=0
+
 ### Unity Demo Repository
 The following repository contains the source code for a game prototype that was made in Unity to showcase the toolkit: 
 https://github.com/GAIPS-INESC-ID/FAtiMA-Toolkit-UnityDemo
@@ -46,15 +51,14 @@ https://www.youtube.com/watch?v=2WgKs3-iI7g
 ### Integrated Authoring Tool
 An integrated authoring tool is now available for Windows users: 
 
-- Version 1.3: https://dl.dropboxusercontent.com/u/9291794/RAGE/AuthoringTools-2016-Dec-30.zip
+- Version 1.3: https://www.dropbox.com/s/1a0w73vrnyl2f7a/AuthoringTools-2016-Dec-30.zip?dl=0
 
-- Version 1.4: https://dl.dropboxusercontent.com/u/9291794/RAGE/AuthoringTools-2017-Feb-10.zip
+- Version 1.4: https://www.dropbox.com/s/wuxrdlxntxnj18h/AuthoringTools-2017-Feb-10.zip?dl=0
 
-### WebGL
-Try the toolkit now directly from your browser: https://dl.dropboxusercontent.com/u/9291794/RAGE/SpaceModules-2016-Dec-30-WebGL/index.html
+- Version 1.7: https://www.dropbox.com/s/gh0m837pyzbc786/AuthoringTools-2017-Dec.zip?dl=0
 
 ### Android
-We also support android: https://dl.dropboxusercontent.com/u/9291794/RAGE/FAtiMA-Demo.apk
+We also support android: https://www.dropbox.com/s/vdebxhowao3yqcw/FAtiMA-Demo.apk?dl=0
 
 ### Documentation
 For each asset, there is a pdf document describing its API in the folder named *Documentation*
