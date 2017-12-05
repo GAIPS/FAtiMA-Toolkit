@@ -33,6 +33,8 @@ With these goals in mind, the toolkit is composed of several assets. Each has a 
 ### Tutorials
 To get started, we recommed that you check the code examples of each asset in the project folder named *Tutorials*
 
+### Training Materials
+https://www.dropbox.com/s/k7ymaqwr6wftytr/FAtiMA-GALA-Tutorial.pdf?dl=0
 
 ### Unity Starter Kit
 To start using a compiled version of the toolkit in your Unity game, download the following zip and read the instructions therein:
