@@ -32,19 +32,28 @@ namespace EmotionalDecisionMakingTutorial
             var id = edm.AddReaction(reaction);
             
             edm.AddReactionCondition(id, "LikesToFight(SELF) = True");
-            //var actions = edm.Decide();
+            var actions = edm.Decide(Name.UNIVERSAL_SYMBOL);
 
             Console.WriteLine("Decisions: ");
-     
-            
+            foreach (var a in actions)
+            {
+                Console.WriteLine(a.Name.ToString() + " p: " + a.Utility);
+            }
+
             //this is how you can load the asset from a file
+            Console.WriteLine("Loading From File: ");
             edm = EmotionalDecisionMakingAsset.LoadFromFile("../../../Examples/EDMTest.edm");
             edm.RegisterKnowledgeBase(kb);
-            var actions = edm.Decide(Name.UNIVERSAL_SYMBOL);
+            actions = edm.Decide(Name.UNIVERSAL_SYMBOL);
 
             foreach (var a in actions)
             {
               Console.WriteLine(a.Name.ToString() + " p: " + a.Utility);
+            }
+            Console.WriteLine("Decisions: ");
+            foreach (var a in actions)
+            {
+                Console.WriteLine(a.Name.ToString() + " p: " + a.Utility);
             }
             Console.ReadKey();
         }

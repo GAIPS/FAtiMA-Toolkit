@@ -46,7 +46,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{25
 		Tutorials\Examples\ghu.cif = Tutorials\Examples\ghu.cif
 		Tutorials\Examples\IATTest.iat = Tutorials\Examples\IATTest.iat
 		Tutorials\Examples\john.rpc = Tutorials\Examples\john.rpc
-		Tutorials\Examples\jonas.ea = Tutorials\Examples\jonas.ea
 		Tutorials\Examples\pls.cif = Tutorials\Examples\pls.cif
 		Tutorials\Examples\RPCTest-Output.rpc = Tutorials\Examples\RPCTest-Output.rpc
 		Tutorials\Examples\RPCTest.rpc = Tutorials\Examples\RPCTest.rpc
