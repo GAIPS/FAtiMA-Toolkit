@@ -38,7 +38,7 @@ GALA 2017 Tutorial Presentation: https://www.dropbox.com/s/k7ymaqwr6wftytr/FAtiM
 
 ### Unity Starter Kit
 To start using a compiled version of the toolkit in your Unity game, download the following zip and read the instructions therein:
-https://www.dropbox.com/s/br7bngsinbns4tl/UnityStarterKit.zip?dl=0
+https://www.dropbox.com/s/kl06lbanwkbwrqx/UnityStarterKit.zip?dl=0
 
 ### Unity Demo Repository
 The following repository contains the source code for a game prototype that was made in Unity to showcase the toolkit: 
