@@ -345,17 +345,7 @@ namespace RolePlayCharacter
                             CurrentActionTarget = null;
                         }
                         this.AddKnownAgent(e.GetNTerm(2));
-                        var cif_Events = m_commeillFautAsset.AppraiseEvents(new[] { e }, m_kb);
-                        if (cif_Events.Count > 0)
-                        {
-                            var toPerceive = new List<Name>();
-                            foreach (var ev in cif_Events)
-                            {
-                                var newEvent = EventHelper.PropertyChange(ev.Key.ToString(), ev.Value.ToString(), this.CharacterName.ToString());
-                                toPerceive.Add(newEvent);
-                            }
-                            Perceive(toPerceive);
-                        }
+                      
                     }
                 }
                 m_emotionalAppraisalAsset.AppraiseEvents(events, observer, m_emotionalState, m_am, m_kb);
