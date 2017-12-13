@@ -266,7 +266,11 @@ namespace WellFormedNames
 
         public float FindMinimumCertainty()
         {
+            if (this.IsEmpty())
+                return 1;
             var result = float.MaxValue;
+
+            
             foreach (var sub in this)
             {
                 if (sub.SubValue.Certainty < result)
