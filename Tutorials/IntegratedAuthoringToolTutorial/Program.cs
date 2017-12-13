@@ -12,34 +12,27 @@ namespace IntegratedAuthoringToolTutorial
         static void Main(string[] args)
         {
             var playerStr = IATConsts.PLAYER;
-         
+
             //Loading the asset
-            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/CiF/CIFVERSION3.iat");
-            var currentState = "-";
+            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/IATTest.iat");
+            var currentState = IATConsts.INITIAL_DIALOGUE_STATE;
             var rpc = RolePlayCharacterAsset.LoadFromFile(iat.GetAllCharacterSources().FirstOrDefault().Source);
-            Console.WriteLine(" rpc " + rpc.CharacterName);
             rpc.LoadAssociatedAssets();
             iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
 
             iat.GetAllCharacterSources().ToList();
-      //      while (currentState != IATConsts.TERMINAL_DIALOGUE_STATE)
-       //     {
-
-
-            foreach(var dia in iat.GetAllDialogueActions())
+            while (currentState != IATConsts.TERMINAL_DIALOGUE_STATE)
             {
-                Console.WriteLine("this is args dialogue line" + dia.Utterance);
-            }
                 var playerDialogs = iat.GetDialogueActionsByState(currentState);
 
                 Console.WriteLine("Current Dialogue State: " + currentState);
-                Console.WriteLine("Available choices: " + playerDialogs.Count());
+                Console.WriteLine("Available choices: ");
 
                 for (int i = 0; i < playerDialogs.Count(); i++)
                 {
                     Console.WriteLine(i + " - " + playerDialogs.ElementAt(i).Utterance);
                 }
-        /*        int pos = -1;
+                int pos = -1;
 
                 do
                 {
@@ -52,7 +45,7 @@ namespace IntegratedAuthoringToolTutorial
                 var speakEvt = EventHelper.ActionEnd(playerStr, actionName.ToString(), rpc.CharacterName.ToString());
 
                 currentState = chosenDialog.NextState;
-                var dialogStateChangeEvt = EventHelper.PropertyChange(string.Format(IATConsts.DIALOGUE_STATE_PROPERTY,playerStr), chosenDialog.NextState, playerStr);
+                var dialogStateChangeEvt = EventHelper.PropertyChange(string.Format(IATConsts.DIALOGUE_STATE_PROPERTY, playerStr), chosenDialog.NextState, playerStr);
 
                 rpc.Perceive(speakEvt);
                 rpc.Perceive(dialogStateChangeEvt);
@@ -70,13 +63,13 @@ namespace IntegratedAuthoringToolTutorial
                     Console.WriteLine("\n" + rpc.CharacterName + ": " + dialog.Utterance + "\n");
                     currentState = characterAction.Parameters[1].ToString();
                     Console.WriteLine("\nMood: " + rpc.Mood);
-                   
+
                 }
                 else
                 {
                     Console.WriteLine("\n" + rpc.CharacterName + ": " + characterAction.Name + "\n");
                 }
-            }*/
+            }
             Console.WriteLine("Dialogue Reached a Terminal State");
             Console.ReadKey();
         }

@@ -15,23 +15,15 @@ namespace EmotionalAppraisalTutorial
         {
 			var kickEvent = Name.BuildName("Event(Action-End, Player, Kick, John)");
 
-            EmotionalAppraisalAsset ea = EmotionalAppraisalAsset.LoadFromFile("../../../Examples/jonas.ea");
+            EmotionalAppraisalAsset ea = EmotionalAppraisalAsset.LoadFromFile("../../../Examples/EATest.ea");
 
             //The following lines add an appraisal rule that will make the kickEvent be perceived as undesirable
             //Normally, these rules should be authored using the AuthoringTool provided with the asset but they can also be added dynamically
-           /* var rule = new AppraisalRuleDTO {
-                EventMatchingTemplate = (Name)"Event(Action-End, [s], Kick, *)", Desirability = 4};
-            ea.AddOrUpdateAppraisalRule(rule);*/
+            var rule = new AppraisalRuleDTO {EventMatchingTemplate = (Name)"Event(Action-End, [s], Kick, *)", Desirability = (Name)"4"};
+            ea.AddOrUpdateAppraisalRule(rule);
 
-            
             var am = new AM();
             var kb = new KB((Name)"John");
-
-
-            kb.Tell((Name)"Hates(Jonas)", (Name)"7", (Name)"SELF", 0.1f);
-            kb.Tell((Name)"Hates(Maria)", (Name)"8", (Name)"SELF", 0.9f);
-            kb.Tell((Name)"Likes(Action2, Kick)", (Name)"True", (Name)"SELF", 0.2f);
-            kb.Tell((Name)"Likes(Action, Kick)", (Name)"True", (Name)"SELF", 0.6f);
 
             var emotionalState = new ConcreteEmotionalState();
 

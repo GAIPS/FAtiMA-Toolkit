@@ -33,10 +33,14 @@ With these goals in mind, the toolkit is composed of several assets. Each has a 
 ### Tutorials
 To get started, we recommed that you check the code examples of each asset in the project folder named *Tutorials*
 
+### Training Materials
+- GALA 2017 Tutorial Presentation: https://www.dropbox.com/s/k7ymaqwr6wftytr/FAtiMA-GALA-Tutorial.pdf?dl=0
+- IAJ Lecture 1: https://www.dropbox.com/s/w6fhgtjh3jlnhwn/IAJ-FAtiMA-Part1.pdf?dl=0
+- IAJ Lecture 2: https://www.dropbox.com/s/y6ldivwlqunpl3g/IAJ-FAtiMA-Part2.pdf?dl=0
 
 ### Unity Starter Kit
 To start using a compiled version of the toolkit in your Unity game, download the following zip and read the instructions therein:
-https://www.dropbox.com/s/br7bngsinbns4tl/UnityStarterKit.zip?dl=0
+https://www.dropbox.com/s/kl06lbanwkbwrqx/UnityStarterKit.zip?dl=0
 
 ### Unity Demo Repository
 The following repository contains the source code for a game prototype that was made in Unity to showcase the toolkit: 
