@@ -42,8 +42,17 @@ To get started, we recommed that you check the code examples of each asset in th
 To start using a compiled version of the toolkit in your Unity game, download the following zip and read the instructions therein:
 https://www.dropbox.com/s/kl06lbanwkbwrqx/UnityStarterKit.zip?dl=0
 
+### Executable Demos
+The following demos can be executed without Unity and they can be used to test different scenarios created with the Integrated Authoring Tool.
+
+- One 3D Character (Windows) https://www.dropbox.com/s/h6ras4855577qw4/FAtiMA%20One%20Character%20Demo%20-%20Windows.zip?dl=0
+- Two 3D Characters (Windows) https://www.dropbox.com/s/tki3pimdontcwbw/FAtiMA%20Two%20Characters%20Demo%20%28Win%29.zip?dl=0
+
+- One 3D Character (MAC OS) https://www.dropbox.com/s/mggvqksvynf6g5c/FAtiMA%20One%20Character%20Demo%20%28MAC%29.app.zip?dl=0
+- Two 3D Characters (MAC OS) https://www.dropbox.com/s/z65msotfd7vehh6/FAtiMA%20Two%20Characters%20Demo%20%28MAC%29.app.zip?dl=0
+
 ### Unity Demo Repository
-The following repository contains the source code for a game prototype that was made in Unity to showcase the toolkit: 
+The following repository contains the source code for the prototypes made in Unity to showcase the toolkit: 
 https://github.com/GAIPS-INESC-ID/FAtiMA-Toolkit-UnityDemo
 
 ### FAtiMA-Toolkit Integrated Authoring Tool Video Demonstration:
