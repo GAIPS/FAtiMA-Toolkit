@@ -8,6 +8,7 @@ using EmotionalAppraisal.OCCModel;
 using EmotionalDecisionMaking;
 using GAIPS.Rage;
 using KnowledgeBase;
+using MCTS;
 using SerializationUtilities;
 using SocialImportance;
 using System;
@@ -140,9 +141,6 @@ namespace RolePlayCharacter
             get { return m_am.Tick; }
             set { m_am.Tick = value; }
         }
-
-
-
 
         /// <summary>
         /// An identifier for the voice that is used by the character
@@ -290,11 +288,14 @@ namespace RolePlayCharacter
             m_socialImportanceAsset = si;
             m_commeillFautAsset = cfa;
 
+            MCTSAsset mcts = new MCTSAsset();
+
             //Dynamic properties
             BindToRegistry(m_kb);
             edm.RegisterKnowledgeBase(m_kb);
             si.RegisterKnowledgeBase(m_kb);
             cfa.RegisterKnowledgeBase(m_kb);
+            mcts.RegisterKnowledgeBase(m_kb);
             m_allowAuthoring = false;
         }
 

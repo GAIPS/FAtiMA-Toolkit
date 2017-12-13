@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnowledgeBase", "Components\KnowledgeBase\KnowledgeBase.csproj", "{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}"
 EndProject
@@ -82,6 +82,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{3FF8BC01-3
 		Tutorials\Examples\Data\Kiavash1.jpg = Tutorials\Examples\Data\Kiavash1.jpg
 		Tutorials\Examples\Data\shape_predictor_68_face_landmarks.dat = Tutorials\Examples\Data\shape_predictor_68_face_landmarks.dat
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCTS", "Assets\MCTS\MCTS.csproj", "{DE99BF53-F11C-4148-A98E-5054B46004D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCTSTutorial", "Tutorials\MCTSTutorial\MCTSTutorial.csproj", "{C4592114-A95A-45AE-AAFC-4738F39FD4A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -185,6 +189,14 @@ Global
 		{4207A3D8-E526-4E5F-8E1D-F748A01EF34D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4207A3D8-E526-4E5F-8E1D-F748A01EF34D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4207A3D8-E526-4E5F-8E1D-F748A01EF34D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE99BF53-F11C-4148-A98E-5054B46004D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE99BF53-F11C-4148-A98E-5054B46004D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE99BF53-F11C-4148-A98E-5054B46004D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE99BF53-F11C-4148-A98E-5054B46004D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4592114-A95A-45AE-AAFC-4738F39FD4A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4592114-A95A-45AE-AAFC-4738F39FD4A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4592114-A95A-45AE-AAFC-4738F39FD4A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4592114-A95A-45AE-AAFC-4738F39FD4A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -216,5 +228,7 @@ Global
 		{BB9973F4-6832-424C-A596-941AFCD7FC80} = {2C13F768-C122-4B7F-A08A-9E8AB520F6D2}
 		{4207A3D8-E526-4E5F-8E1D-F748A01EF34D} = {2C13F768-C122-4B7F-A08A-9E8AB520F6D2}
 		{3FF8BC01-314A-4450-BB84-DC12CE0C54EE} = {256F51DD-798C-49D4-A299-C71630787409}
+		{DE99BF53-F11C-4148-A98E-5054B46004D1} = {C929932E-8ED8-4B6E-960E-4C4695E39CC1}
+		{C4592114-A95A-45AE-AAFC-4738F39FD4A7} = {2C13F768-C122-4B7F-A08A-9E8AB520F6D2}
 	EndGlobalSection
 EndGlobal
