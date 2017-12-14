@@ -39,6 +39,8 @@ namespace EmotionalAppraisal.AppraisalRules
 		{
           //  var eventInPerspective = evt.EventName.ApplySelfPerspective(perspective);
 
+            // TODOOOOOoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+
             var newRules = new NameSearchTree<HashSet<AppraisalRule>>();
             foreach (var rule in Rules)
             {
