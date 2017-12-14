@@ -472,16 +472,6 @@ namespace CommeillFaut
                 .CalculateVolition(perpective, target, this.m_kB);
         }
 
-        public void AddToActorList(Name actor)
-        {
-            var number =   m_kB.AskProperty(Name.BuildName("NumberOfTargets"), m_kB.Perspective).Value;
-            if (number == null) number = Name.BuildName(0);
-            var value = Int32.Parse(number.ToString()) + 1;
-            m_kB.Tell(Name.BuildName("NumberOfTargets"), Name.BuildName(value), m_kB.Perspective);
-            m_kB.Tell(Name.BuildName("Target(" + value + ")"), actor, m_kB.Perspective);
-        }
-
-
         public List<Name> getActorList()
         {
             return _actorsList;

@@ -357,10 +357,7 @@ namespace CommeillFaut
             dataHolder.SetValue("Description", this.Intent);
     
             dataHolder.SetValue("InfluenceRule", this.InfluenceRule);
-          
-
-    
-           
+     
         }
 
         public override void SetObjectData(ISerializationData dataHolder, ISerializationContext context)

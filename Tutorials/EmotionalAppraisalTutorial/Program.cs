@@ -13,7 +13,7 @@ namespace EmotionalAppraisalTutorial
         //This is a small console program to exemplify the main functionality of the Emotional Appraisal Asset
         static void Main(string[] args)
         {
-			var kickEvent = Name.BuildName("Event(Action-End, ss, ss, John)");
+			var kickEvent = Name.BuildName("Event(Action-End, John, *, *)");
 
             EmotionalAppraisalAsset ea = EmotionalAppraisalAsset.LoadFromFile("../../../Examples/EATest.ea");
 
@@ -27,6 +27,8 @@ namespace EmotionalAppraisalTutorial
             
             var am = new AM();
             var kb = new KB((Name)"John");
+
+            kb.Tell(Name.BuildName("Likes(Mary)"), Name.BuildName("John"), Name.BuildName("SELF"));
 
             var emotionalState = new ConcreteEmotionalState();
 

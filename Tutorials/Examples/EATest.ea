@@ -3,39 +3,23 @@
 		{
 			"classId": 0,
 			"Description": null,
-			"KnowledgeBase":
-				{
-					"Perspective": "Person",
-					"Knowledge":
-						{
-							"SELF":
-								{
-									"IsFriend(Player)": true,
-									"Likes(Person, Kick)": false
-								}
-						}
-				},
 			"AppraisalRules":
 				{
 					"AppraisalWeight": 1,
 					"Rules": [
 						{
-							"EventName": "Event(*, *, [x], SELF)",
+							"EventName": "Event(Action-End, [x], *, *)",
 							"Conditions":
 								{
-									"Set": ["Likes(SELF, [x]) = False"]
+									"Set": ["[x] = SELF"]
 								},
-							"Desirability": "-6"
+							"Desirability": -10,
+							"Praiseworthiness": -10
 						}]
 				},
 			"EmotionDispositions": [
 				{
 					"Emotion": "*",
-					"Decay": 1,
-					"Threshold": 1
-				}, 
-				{
-					"Emotion": "Admiration",
 					"Decay": 1,
 					"Threshold": 1
 				}]
