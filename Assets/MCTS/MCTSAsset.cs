@@ -1,5 +1,7 @@
 ﻿using KnowledgeBase;
+using SerializationUtilities;
 using System.Collections.Generic;
+using System.IO;
 using WellFormedNames;
 
 namespace MCTS
@@ -43,12 +45,25 @@ namespace MCTS
             registry.UnregistDynamicProperty(MCTS_DYNAMIC_PROPERTY_NAME);
         }
 
-        private IEnumerable<DynamicPropertyResult> MCTSSearch(IQueryContext context, Name depth)
+        //This is where the main body of the MCTS Search must be implemented
+        private IEnumerable<DynamicPropertyResult> MCTSSearch(IQueryContext context, Name actionVar, Name targetVar)
         {
-            //This is just an example of how to return the value Jump for every possible subset
+            //How to clone the KB with our JSON serializer
+            var jsonSerializer = new JSONSerializer();
+            var memStream = new MemoryStream();
+            var json = jsonSerializer.SerializeToJson(this.m_kb);
+            var kbCloned = jsonSerializer.DeserializeFromJson<KB>(json);
+            
+            //This is just an example of how to always return the action "Pick" with target "Wood1"
+            var actionSub = new Substitution(actionVar, new ComplexValue(Name.BuildName("Pick")));
+            var targetSub = new Substitution(targetVar, new ComplexValue(Name.BuildName("Wood1")));
+
             foreach (var subSet in context.Constraints)
             {
-                yield return new DynamicPropertyResult(new ComplexValue((Name)"Jump"), subSet);
+                subSet.AddSubstitution(actionSub);
+                subSet.AddSubstitution(targetSub);
+
+                yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(true),1.0f), subSet);
             }
         }
     }

@@ -1,0 +1,21 @@
+{
+  "root": {
+    "classId": 0,
+    "DefaultActionPriority": "3",
+    "ActionTendencies": [
+      {
+        "Action": "[a]",
+        "Target": "[t]",
+        "Conditions": {
+          "Set": [ "MCTS([a],[t]) = True" ]
+        },
+        "Priority": "1"
+      }
+    ]
+  },
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "EmotionalDecisionMaking.EmotionalDecisionMakingAsset, EmotionalDecisionMaking, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

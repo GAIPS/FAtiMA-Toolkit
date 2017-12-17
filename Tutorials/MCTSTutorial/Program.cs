@@ -1,9 +1,6 @@
 ﻿using RolePlayCharacter;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MCTSTutorial
 {
@@ -12,7 +9,7 @@ namespace MCTSTutorial
         static void Main(string[] args)
         {
             //Loading the asset
-            var rpc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/RPCTest.rpc");
+            var rpc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/RPC-MCTS.rpc");
             rpc.LoadAssociatedAssets();
             Console.WriteLine("Starting Mood: " + rpc.Mood);
             var actions = rpc.Decide();
