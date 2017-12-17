@@ -8,10 +8,10 @@
 					"AppraisalWeight": 1,
 					"Rules": [
 						{
-							"EventName": "Event(Action-End, [x], *, *)",
+							"EventName": "Event(Action-End, John, *, *)",
 							"Conditions":
 								{
-									"Set": ["[x] = SELF"]
+									"Set": [" [x] = True "]
 								},
 							"Desirability": -10,
 							"Praiseworthiness": -10

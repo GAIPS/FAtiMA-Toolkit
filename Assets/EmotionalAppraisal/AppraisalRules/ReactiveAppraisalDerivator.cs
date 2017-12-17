@@ -37,21 +37,19 @@ namespace EmotionalAppraisal.AppraisalRules
         
 		public AppraisalRule Evaluate(IBaseEvent evt, IQueryable kb, Name perspective)
 		{
-          //  var eventInPerspective = evt.EventName.ApplySelfPerspective(perspective);
+            var auxEvt = evt.EventName.SwapTerms(perspective, Name.SELF_SYMBOL);
 
-            // TODOOOOOoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-
-            var newRules = new NameSearchTree<HashSet<AppraisalRule>>();
-            foreach (var rule in Rules)
-            {
-               var key = rule.Key.ApplyToTerms(x=>x.SwapTerms(Name.SELF_SYMBOL, perspective));
-                newRules.Add(key, rule.Value);
-            }
-
-            //evt.EventName.SwapTerms(Name.SELF_SYMBOL, perspective);
-
-            foreach (var possibleAppraisals in newRules.Unify(evt.EventName))
+            foreach (var possibleAppraisals in this.Rules.Unify(auxEvt))
 			{
+                //This next for loop is to prevent a problem with using appraisal rules that contain SELF
+                //This will replace all the subs with SELF with the name of the perspective  
+                foreach (var sub in possibleAppraisals.Item2)
+                {
+                    if (sub.SubValue.Value == Name.SELF_SYMBOL)
+                    {
+                        sub.SubValue = new ComplexValue(perspective);
+                    }
+                }
 				var substitutions = new[] { possibleAppraisals.Item2 }; //this adds the subs found in the eventName
 				foreach (var appRule in possibleAppraisals.Item1)
 				{

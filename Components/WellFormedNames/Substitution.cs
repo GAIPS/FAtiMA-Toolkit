@@ -29,7 +29,7 @@ namespace WellFormedNames
 		/// </summary>
 		public ComplexValue SubValue
 		{
-			get;
+			get; set;
 		}
 
 		private void Validation(Name variable, ComplexValue value)
