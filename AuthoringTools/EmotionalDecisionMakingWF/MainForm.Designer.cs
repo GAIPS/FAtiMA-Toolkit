@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.buttonDuplicateReaction = new System.Windows.Forms.Button();
             this.buttonEditReaction = new System.Windows.Forms.Button();
             this.buttonAddReaction = new System.Windows.Forms.Button();
             this.buttonRemoveReaction = new System.Windows.Forms.Button();
@@ -50,6 +51,7 @@
             // 
             // groupBox7
             // 
+            this.groupBox7.Controls.Add(this.buttonDuplicateReaction);
             this.groupBox7.Controls.Add(this.buttonEditReaction);
             this.groupBox7.Controls.Add(this.buttonAddReaction);
             this.groupBox7.Controls.Add(this.buttonRemoveReaction);
@@ -62,6 +64,16 @@
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Decision Rules";
             this.groupBox7.Enter += new System.EventHandler(this.groupBox7_Enter);
+            // 
+            // buttonDuplicateReaction
+            // 
+            this.buttonDuplicateReaction.Location = new System.Drawing.Point(142, 19);
+            this.buttonDuplicateReaction.Name = "buttonDuplicateReaction";
+            this.buttonDuplicateReaction.Size = new System.Drawing.Size(70, 23);
+            this.buttonDuplicateReaction.TabIndex = 10;
+            this.buttonDuplicateReaction.Text = "Duplicate";
+            this.buttonDuplicateReaction.UseVisualStyleBackColor = true;
+            this.buttonDuplicateReaction.Click += new System.EventHandler(this.buttonDuplicateReaction_Click);
             // 
             // buttonEditReaction
             // 
@@ -85,7 +97,7 @@
             // 
             // buttonRemoveReaction
             // 
-            this.buttonRemoveReaction.Location = new System.Drawing.Point(142, 19);
+            this.buttonRemoveReaction.Location = new System.Drawing.Point(218, 19);
             this.buttonRemoveReaction.Name = "buttonRemoveReaction";
             this.buttonRemoveReaction.Size = new System.Drawing.Size(70, 23);
             this.buttonRemoveReaction.TabIndex = 8;
@@ -222,6 +234,7 @@
         private System.Windows.Forms.RichTextBox richTextBoxDescription;
         private System.Windows.Forms.SplitContainer splitContainer1;
 		private GAIPS.AssetEditorTools.ConditionSetEditorControl conditionSetEditor;
-	}
+        private System.Windows.Forms.Button buttonDuplicateReaction;
+    }
 }
 

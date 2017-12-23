@@ -89,7 +89,7 @@ namespace GAIPS.AssetEditorTools
 			if(!hasData)
 				return;
 
-			_view.AddÑewDefaultCondition();
+			_view.AddNewDefaultCondition();
 		}
 
 		private void remove_button_Click(object sender, EventArgs e)

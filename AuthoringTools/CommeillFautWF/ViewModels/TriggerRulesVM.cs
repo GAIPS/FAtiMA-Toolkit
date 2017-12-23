@@ -82,7 +82,10 @@ namespace CommeillFautWF.ViewModels
             _mainForm = parent;
 
             var uhm = new List<TriggerRulesDTO>();
-            uhm.Add(asset._TriggerRules.ToDTO());
+            if (asset != null)
+            {
+                uhm.Add(asset._TriggerRules.ToDTO());
+            }
 
 
             _TriggerRulesDtos = new BindingListView<TriggerRulesDTO>(uhm);

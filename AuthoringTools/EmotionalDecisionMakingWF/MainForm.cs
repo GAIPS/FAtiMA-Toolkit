@@ -6,6 +6,7 @@ using EmotionalDecisionMaking;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 using ActionLibrary.DTOs;
+using Conditions.DTOs;
 
 namespace EmotionalDecisionMakingWF
 {
@@ -18,18 +19,17 @@ namespace EmotionalDecisionMakingWF
 		public MainForm()
         {
             InitializeComponent();
-
-			_conditionSetView = new ConditionSetView();
-			conditionSetEditor.View = _conditionSetView;
-			_conditionSetView.OnDataChanged += conditionSetView_OnDataChanged;
-
 			this._reactiveActions = new BindingListView<ActionDefinitionDTO>((IList)null);
 			dataGridViewReactiveActions.DataSource = this._reactiveActions;
 		}
 
 	    protected override void OnAssetDataLoaded(EmotionalDecisionMakingAsset asset)
 	    {
-		    _reactiveActions.DataSource = LoadedAsset.GetAllReactions().ToList();
+            _conditionSetView = new ConditionSetView();
+            conditionSetEditor.View = _conditionSetView;
+            _conditionSetView.OnDataChanged += conditionSetView_OnDataChanged;
+
+            _reactiveActions.DataSource = LoadedAsset.GetAllReactions().ToList();
             dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ActionDefinitionDTO>(dto => dto.Priority)].DisplayIndex = 3;
             dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ActionDefinitionDTO>(dto => dto.Id)].Visible = false;
 			dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ActionDefinitionDTO>(dto => dto.Conditions)].Visible = false;
@@ -45,7 +45,9 @@ namespace EmotionalDecisionMakingWF
 		private void conditionSetView_OnDataChanged()
 		{
 			LoadedAsset.UpdateReactionConditions(_selectedActionId, _conditionSetView.GetData());
-			SetModified();
+            _reactiveActions.DataSource = LoadedAsset.GetAllReactions().ToList();
+            _reactiveActions.Refresh();
+            SetModified();
 		}
 
         private void dataGridViewReactiveActions_RowEnter(object sender, DataGridViewCellEventArgs e)
@@ -110,6 +112,30 @@ namespace EmotionalDecisionMakingWF
         private void conditionSetEditor_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonDuplicateReaction_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewReactiveActions.SelectedRows.Count == 1)
+            {
+                var a = ((ObjectView<ActionDefinitionDTO>)dataGridViewReactiveActions.SelectedRows[0].DataBoundItem).Object;
+                var duplicateAction = new ActionDefinitionDTO
+                {
+                    Action = a.Action,
+                    Priority = a.Priority,
+                    Target = a.Target,
+                    Type = a.Type,
+                    Conditions = new ConditionSetDTO
+                    {
+                        Quantifier = a.Conditions.Quantifier,
+                        ConditionSet = (string[])a.Conditions.ConditionSet?.Clone()
+                    }
+                };
+                LoadedAsset.AddReaction(duplicateAction);
+                _reactiveActions.DataSource = LoadedAsset.GetAllReactions().ToList();
+                _reactiveActions.Refresh();
+                SetModified();
+            }
         }
     }
 }

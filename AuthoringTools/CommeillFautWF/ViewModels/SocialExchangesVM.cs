@@ -38,29 +38,22 @@ namespace CommeillFautWF.ViewModels
 
         public SocialExchangesVM(BaseCIFForm parent)
         {
-            
             _mainForm = parent;
-		    SocialExchanges = new BindingListView<SocialExchangeDTO>((IList)null);
-      //      InfluenceRulesDiccionary = new Dictionary<string, InfluenceRuleDTO>();
-            m_loading = false;
-         
-        }
-
-        public SocialExchangesVM(BaseCIFForm parent, CommeillFautAsset asset)
-        {
-            _mainForm = parent;
-          
             var _aux = new List<SocialExchangeDTO>();
-            foreach (var s in asset.m_SocialExchanges)
+            if(_cifAsset != null)
             {
-                _aux.Add(s.ToDTO());
+                foreach (var s in _cifAsset.m_SocialExchanges)
+                {
+                    _aux.Add(s.ToDTO());
+                }
             }
+            
             SocialExchanges = new BindingListView<SocialExchangeDTO>(_aux);
-           
-            //      InfluenceRulesDiccionary = new Dictionary<string, InfluenceRuleDTO>();
-            m_loading = false;
-        }
 
+            // InfluenceRulesDiccionary = new Dictionary<string, InfluenceRuleDTO>();
+            m_loading = false;
+
+        }
 
         public void Reload()
         {

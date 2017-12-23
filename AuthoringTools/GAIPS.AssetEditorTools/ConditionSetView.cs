@@ -54,7 +54,7 @@ namespace GAIPS.AssetEditorTools
 			return new ConditionSetDTO() {ConditionSet = Conditions.Count == 0?null:Conditions.Select(c => c.Condition).ToArray(),Quantifier = Quantifier};
 		}
 
-		public void AddÑewDefaultCondition()
+		public void AddNewDefaultCondition()
 		{
 			if(!HasData)
 				return;

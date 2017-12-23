@@ -18,33 +18,24 @@ namespace CommeillFautWF
     public partial class MainForm : BaseCIFForm
     {
         private SocialExchangesVM _socialExchangesVM;
-        //   private ClaimsVM _claimsVM;
-        //   private ConferralsVM _conferralsVM;
-
         private TriggerRulesVM _triggerRules;
-
 
         public MainForm()
         {
-
             InitializeComponent();
-            _socialExchangesVM = new SocialExchangesVM(this);
-            _triggerRules = new TriggerRulesVM(this);
-
         }
 
         protected override void OnAssetDataLoaded(CommeillFautAsset asset)
         {
             
-            _socialExchangesVM = new SocialExchangesVM(this, asset);
+            _socialExchangesVM = new SocialExchangesVM(this);
             genericPropertyDataGridControler1.DataController = _socialExchangesVM;
             genericPropertyDataGridControler1.OnSelectionChanged += OnRuleSelectionChanged;
-            genericPropertyDataGridControler1.GetColumnByName("Social Exchange")
             genericPropertyDataGridControler1.GetColumnByName("Initiator").Visible = false;
             genericPropertyDataGridControler1.GetColumnByName("Target").Visible = false;
             genericPropertyDataGridControler1.GetColumnByName("Id").Visible = false;
             genericPropertyDataGridControler1.GetColumnByName("Conditions").Visible = false;
-            genericPropertyDataGridControler1.GetColumnByName("Priority").Visible = false;
+//            genericPropertyDataGridControler1.GetColumnByName("Priority").Visible = false;
             genericPropertyDataGridControler1.GetColumnByName("InfluenceRule").Visible = false;
 
 
