@@ -96,7 +96,7 @@ namespace EmotionalAppraisalWF
                     Conditions = new ConditionSetDTO
                     {
                         Quantifier = selectedAppraisalRule.Conditions.Quantifier,
-                        ConditionSet = (string[])selectedAppraisalRule.Conditions.ConditionSet.Clone()
+                        ConditionSet = (string[])selectedAppraisalRule.Conditions.ConditionSet?.Clone()
                     }
                 };
                 _appraisalRulesVM.AddOrUpdateAppraisalRule(duplicateRule);
@@ -166,6 +166,11 @@ namespace EmotionalAppraisalWF
                
      
         private void dataGridViewBeliefs_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+
+        }
+
+        private void conditionSetEditor_Load(object sender, EventArgs e)
         {
 
         }

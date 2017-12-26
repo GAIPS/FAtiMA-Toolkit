@@ -133,7 +133,7 @@ namespace IntegratedAuthoringToolWF
 		private void ShowAbout()
 		{
 			var form = new AboutForm();
-			form.ShowDialog();
+			form.ShowDialog(this);
 		}
 
 		#endregion
@@ -166,7 +166,7 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonAddDialogueAction_Click_1(object sender, EventArgs e)
         {
-            new AddOrEditDialogueActionForm(this, true).ShowDialog();
+            new AddOrEditDialogueActionForm(this).ShowDialog(this);
             RefreshDialogs();
         }
 
@@ -175,7 +175,7 @@ namespace IntegratedAuthoringToolWF
             if (dataGridViewDialogueActions.SelectedRows.Count == 1)
             {
                 var item = ((ObjectView<DialogueStateActionDTO>)dataGridViewDialogueActions.SelectedRows[0].DataBoundItem).Object;
-                new AddOrEditDialogueActionForm(this, true, item.Id).ShowDialog();
+                new AddOrEditDialogueActionForm(this, true, item.Id).ShowDialog(this);
                 RefreshDialogs();
             }
         }
@@ -692,6 +692,33 @@ namespace IntegratedAuthoringToolWF
         private void computeEmotions_Click(object sender, EventArgs e)
         {
             CalculateEmotions(sender, e);
+        }
+
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.D)
+            {
+                if (this.dataGridViewDialogueActions.Focused)
+                {
+                    this.buttonDuplicateDialogueAction_Click(sender, e);
+                }
+            }
+
+            if (e.KeyCode == Keys.Delete)
+            {
+                if (this.dataGridViewDialogueActions.Focused)
+                {
+                    this.buttonRemoveDialogueAction_Click(sender, e);
+                }
+            }
+
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (this.dataGridViewDialogueActions.Focused)
+                {
+                    this.buttonEditDialogueAction_Click(sender, e);
+                }
+            }
         }
     }
 }

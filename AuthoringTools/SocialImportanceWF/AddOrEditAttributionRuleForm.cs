@@ -44,5 +44,10 @@ namespace SocialImportanceWF
 			}
 			Close();
 		}
-	}
+
+        private void _valueFieldBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

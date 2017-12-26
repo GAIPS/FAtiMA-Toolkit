@@ -33,6 +33,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this._titleLabel = new System.Windows.Forms.Label();
             this._versionLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -40,7 +41,6 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.button2 = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tableLayoutPanel2.SuspendLayout();
@@ -61,19 +61,20 @@
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 6);
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 0, 7);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(5, 5);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(7, 6);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 9;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.63844F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 12F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 6F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 12F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45.76659F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.59496F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(537, 457);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 49F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(715, 563);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // pictureBox1
@@ -83,7 +84,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(537, 120);
+            this.pictureBox1.Size = new System.Drawing.Size(715, 150);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -98,34 +99,47 @@
             this.tableLayoutPanel2.Controls.Add(this.button1, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.button2, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 415);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 513);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 42F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(537, 42);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(715, 50);
             this.tableLayoutPanel2.TabIndex = 3;
             // 
             // button1
             // 
             this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.button1.Location = new System.Drawing.Point(361, 3);
+            this.button1.Location = new System.Drawing.Point(480, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(173, 36);
+            this.button1.Size = new System.Drawing.Size(231, 42);
             this.button1.TabIndex = 0;
             this.button1.Text = "Close";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(4, 4);
+            this.button2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(230, 42);
+            this.button2.TabIndex = 1;
+            this.button2.Text = "View Loaded Assemblies";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // _titleLabel
             // 
             this._titleLabel.AutoSize = true;
             this._titleLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._titleLabel.Location = new System.Drawing.Point(3, 130);
+            this._titleLabel.Location = new System.Drawing.Point(4, 162);
+            this._titleLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this._titleLabel.Name = "_titleLabel";
-            this._titleLabel.Size = new System.Drawing.Size(531, 20);
+            this._titleLabel.Size = new System.Drawing.Size(707, 20);
             this._titleLabel.TabIndex = 1;
             this._titleLabel.Text = "FAtiMA Toolkit - Integrated Authoring Tool";
             this._titleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -134,9 +148,10 @@
             // 
             this._versionLabel.AutoSize = true;
             this._versionLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._versionLabel.Location = new System.Drawing.Point(3, 155);
+            this._versionLabel.Location = new System.Drawing.Point(4, 188);
+            this._versionLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this._versionLabel.Name = "_versionLabel";
-            this._versionLabel.Size = new System.Drawing.Size(531, 13);
+            this._versionLabel.Size = new System.Drawing.Size(707, 16);
             this._versionLabel.TabIndex = 2;
             this._versionLabel.Text = "<version>";
             this._versionLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -146,9 +161,10 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(3, 178);
+            this.label1.Location = new System.Drawing.Point(4, 216);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(531, 164);
+            this.label1.Size = new System.Drawing.Size(707, 205);
             this.label1.TabIndex = 4;
             this.label1.Text = resources.GetString("label1.Text");
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -167,22 +183,22 @@
             this.tableLayoutPanel3.Controls.Add(this.pictureBox4, 1, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.AddColumns;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 342);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 421);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(537, 73);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(715, 92);
             this.tableLayoutPanel3.TabIndex = 5;
             // 
             // pictureBox2
             // 
             this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox2.Image = global::IntegratedAuthoringToolWF.Properties.Resources.RAGE_logo;
-            this.pictureBox2.Location = new System.Drawing.Point(326, 5);
-            this.pictureBox2.Margin = new System.Windows.Forms.Padding(5);
+            this.pictureBox2.Location = new System.Drawing.Point(436, 6);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(97, 63);
+            this.pictureBox2.Size = new System.Drawing.Size(129, 80);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 0;
             this.pictureBox2.TabStop = false;
@@ -191,10 +207,10 @@
             // 
             this.pictureBox3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox3.Image = global::IntegratedAuthoringToolWF.Properties.Resources.inescid_logo;
-            this.pictureBox3.Location = new System.Drawing.Point(219, 5);
-            this.pictureBox3.Margin = new System.Windows.Forms.Padding(5);
+            this.pictureBox3.Location = new System.Drawing.Point(293, 6);
+            this.pictureBox3.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(97, 63);
+            this.pictureBox3.Size = new System.Drawing.Size(129, 80);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox3.TabIndex = 1;
             this.pictureBox3.TabStop = false;
@@ -203,36 +219,28 @@
             // 
             this.pictureBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox4.Image = global::IntegratedAuthoringToolWF.Properties.Resources.gaips_logo;
-            this.pictureBox4.Location = new System.Drawing.Point(112, 5);
-            this.pictureBox4.Margin = new System.Windows.Forms.Padding(5);
+            this.pictureBox4.Location = new System.Drawing.Point(150, 6);
+            this.pictureBox4.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(97, 63);
+            this.pictureBox4.Size = new System.Drawing.Size(129, 80);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox4.TabIndex = 2;
             this.pictureBox4.TabStop = false;
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(3, 3);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(173, 36);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "View Loaded Assemblies";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // AboutForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(547, 467);
+            this.ClientSize = new System.Drawing.Size(729, 575);
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutPanel1);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AboutForm";
-            this.Padding = new System.Windows.Forms.Padding(5);
+            this.Padding = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.Text = "About";

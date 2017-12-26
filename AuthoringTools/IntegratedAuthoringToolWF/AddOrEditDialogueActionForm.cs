@@ -11,16 +11,14 @@ namespace IntegratedAuthoringToolWF
 	    private MainForm _parentForm;
         private IntegratedAuthoringToolAsset _iatAsset => _parentForm.LoadedAsset;
         private readonly DialogueStateActionDTO _dialogueStateActionToEdit;
-        private readonly bool _isPlayerDialogue;
 
-        public AddOrEditDialogueActionForm(MainForm form, bool isPlayerDialogue)
+        public AddOrEditDialogueActionForm(MainForm form)
         {
             InitializeComponent();
 	        _parentForm = form;
-            _isPlayerDialogue = isPlayerDialogue;
         }
 
-		public AddOrEditDialogueActionForm(MainForm form, bool isPlayerDialogue, Guid dialogId) : this(form,isPlayerDialogue)
+		public AddOrEditDialogueActionForm(MainForm form, bool isPlayerDialogue, Guid dialogId) : this(form)
 		{
 			buttonAddOrUpdate.Text = "Update";
 			_dialogueStateActionToEdit = form.LoadedAsset.GetDialogActionById(dialogId);
@@ -61,5 +59,13 @@ namespace IntegratedAuthoringToolWF
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-	}
+
+        private void AddOrEditDialogueActionForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Escape)
+            {
+                this.Close();
+            }
+        }
+    }
 }

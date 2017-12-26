@@ -543,6 +543,21 @@ namespace RolePlayCharacterWF
             SetModified();
             _cifForm.Hide();
         }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void groupBox7_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

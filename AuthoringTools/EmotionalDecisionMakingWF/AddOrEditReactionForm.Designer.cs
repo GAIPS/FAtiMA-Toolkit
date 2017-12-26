@@ -45,17 +45,19 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(40, 32);
+            this.label1.Location = new System.Drawing.Point(53, 39);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(40, 13);
+            this.label1.Size = new System.Drawing.Size(48, 16);
             this.label1.TabIndex = 14;
             this.label1.Text = "Action:";
             // 
             // addOrEditButton
             // 
-            this.addOrEditButton.Location = new System.Drawing.Point(129, 209);
+            this.addOrEditButton.Location = new System.Drawing.Point(172, 257);
+            this.addOrEditButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.addOrEditButton.Name = "addOrEditButton";
-            this.addOrEditButton.Size = new System.Drawing.Size(75, 23);
+            this.addOrEditButton.Size = new System.Drawing.Size(100, 28);
             this.addOrEditButton.TabIndex = 25;
             this.addOrEditButton.Text = "Add";
             this.addOrEditButton.UseVisualStyleBackColor = true;
@@ -63,33 +65,37 @@
             // 
             // textBoxAction
             // 
-            this.textBoxAction.Location = new System.Drawing.Point(40, 54);
+            this.textBoxAction.Location = new System.Drawing.Point(53, 66);
+            this.textBoxAction.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBoxAction.Name = "textBoxAction";
-            this.textBoxAction.Size = new System.Drawing.Size(260, 20);
+            this.textBoxAction.Size = new System.Drawing.Size(345, 22);
             this.textBoxAction.TabIndex = 17;
             // 
             // textBoxTarget
             // 
-            this.textBoxTarget.Location = new System.Drawing.Point(40, 105);
+            this.textBoxTarget.Location = new System.Drawing.Point(53, 129);
+            this.textBoxTarget.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBoxTarget.Name = "textBoxTarget";
-            this.textBoxTarget.Size = new System.Drawing.Size(260, 20);
+            this.textBoxTarget.Size = new System.Drawing.Size(345, 22);
             this.textBoxTarget.TabIndex = 18;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(40, 134);
+            this.label3.Location = new System.Drawing.Point(53, 165);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 13);
+            this.label3.Size = new System.Drawing.Size(52, 16);
             this.label3.TabIndex = 16;
             this.label3.Text = "Priority:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(40, 84);
+            this.label2.Location = new System.Drawing.Point(53, 103);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(41, 13);
+            this.label2.Size = new System.Drawing.Size(51, 16);
             this.label2.TabIndex = 15;
             this.label2.Text = "Target:";
             // 
@@ -99,18 +105,19 @@
             // 
             // textBoxPriority
             // 
-            this.textBoxPriority.Location = new System.Drawing.Point(40, 157);
+            this.textBoxPriority.Location = new System.Drawing.Point(53, 193);
+            this.textBoxPriority.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBoxPriority.Name = "textBoxPriority";
-            this.textBoxPriority.Size = new System.Drawing.Size(260, 20);
+            this.textBoxPriority.Size = new System.Drawing.Size(345, 22);
             this.textBoxPriority.TabIndex = 21;
             // 
             // AddOrEditReactionForm
             // 
             this.AcceptButton = this.addOrEditButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(340, 258);
+            this.ClientSize = new System.Drawing.Size(453, 318);
             this.Controls.Add(this.textBoxPriority);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.addOrEditButton);
@@ -118,7 +125,9 @@
             this.Controls.Add(this.textBoxTarget);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.Name = "AddOrEditReactionForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

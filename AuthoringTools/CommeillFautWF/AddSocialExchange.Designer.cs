@@ -45,9 +45,9 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 19);
+            this.label1.Location = new System.Drawing.Point(23, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(157, 17);
+            this.label1.Size = new System.Drawing.Size(152, 16);
             this.label1.TabIndex = 1;
             this.label1.Text = "Social Exchange Name:";
             // 
@@ -65,10 +65,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.NameBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.NameBox.Location = new System.Drawing.Point(334, 349);
-            this.NameBox.MinimumSize = new System.Drawing.Size(80, 40);
+            this.NameBox.Location = new System.Drawing.Point(358, 354);
+            this.NameBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.NameBox.MinimumSize = new System.Drawing.Size(80, 39);
             this.NameBox.Name = "NameBox";
-            this.NameBox.Size = new System.Drawing.Size(118, 44);
+            this.NameBox.Size = new System.Drawing.Size(117, 44);
             this.NameBox.TabIndex = 3;
             this.NameBox.Text = "Add";
             this.NameBox.UseVisualStyleBackColor = true;
@@ -76,9 +77,10 @@
             // 
             // moveName
             // 
-            this.moveName.Location = new System.Drawing.Point(186, 16);
+            this.moveName.Location = new System.Drawing.Point(187, 16);
+            this.moveName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.moveName.Name = "moveName";
-            this.moveName.Size = new System.Drawing.Size(160, 25);
+            this.moveName.Size = new System.Drawing.Size(547, 25);
             this.moveName.TabIndex = 4;
             this.moveName.Text = "";
             // 
@@ -92,15 +94,16 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(23, 57);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(79, 17);
+            this.label2.Size = new System.Drawing.Size(76, 16);
             this.label2.TabIndex = 11;
             this.label2.Text = "Description";
             // 
             // IntentTextBox
             // 
-            this.IntentTextBox.Location = new System.Drawing.Point(186, 54);
+            this.IntentTextBox.Location = new System.Drawing.Point(187, 54);
+            this.IntentTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.IntentTextBox.Name = "IntentTextBox";
-            this.IntentTextBox.Size = new System.Drawing.Size(361, 28);
+            this.IntentTextBox.Size = new System.Drawing.Size(547, 29);
             this.IntentTextBox.TabIndex = 12;
             this.IntentTextBox.Text = "";
             this.IntentTextBox.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
@@ -113,7 +116,7 @@
             this.conditionSetEditorControl1.Location = new System.Drawing.Point(7, 26);
             this.conditionSetEditorControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.conditionSetEditorControl1.Name = "conditionSetEditorControl1";
-            this.conditionSetEditorControl1.Size = new System.Drawing.Size(772, 210);
+            this.conditionSetEditorControl1.Size = new System.Drawing.Size(773, 210);
             this.conditionSetEditorControl1.TabIndex = 3;
             this.conditionSetEditorControl1.View = null;
             // 
@@ -124,8 +127,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.conditionSetEditorControl1);
             this.groupBox1.Location = new System.Drawing.Point(26, 98);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(786, 243);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox1.Size = new System.Drawing.Size(788, 242);
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Starting Conditions:";
@@ -141,6 +146,8 @@
             this.Controls.Add(this.moveName);
             this.Controls.Add(this.NameBox);
             this.Controls.Add(this.label1);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "AddSocialExchange";
             this.Text = "Add Social Exchange";
             this.Load += new System.EventHandler(this.AddSocialExchange_Load);

@@ -85,10 +85,10 @@ namespace EmotionalDecisionMakingWF
                 var selectedReaction = ((ObjectView<ActionDefinitionDTO>)dataGridViewReactiveActions.
                    SelectedRows[0].DataBoundItem).Object;
                 new AddOrEditReactionForm(LoadedAsset,selectedReaction).ShowDialog();
+                _reactiveActions.DataSource = LoadedAsset.GetAllReactions().ToList();
+                _reactiveActions.Refresh();
+                SetModified();
             }
-            _reactiveActions.DataSource = LoadedAsset.GetAllReactions().ToList();
-            _reactiveActions.Refresh();
-			SetModified();
         }
 
 		private void UpdateConditions(ActionDefinitionDTO reaction)

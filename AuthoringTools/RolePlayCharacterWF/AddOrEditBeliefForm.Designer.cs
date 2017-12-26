@@ -51,18 +51,20 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(40, 32);
+            this.label1.Location = new System.Drawing.Point(53, 39);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 13);
+            this.label1.Size = new System.Drawing.Size(48, 16);
             this.label1.TabIndex = 14;
             this.label1.Text = "Name:";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // addOrEditBeliefButton
             // 
-            this.addOrEditBeliefButton.Location = new System.Drawing.Point(133, 255);
+            this.addOrEditBeliefButton.Location = new System.Drawing.Point(177, 314);
+            this.addOrEditBeliefButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.addOrEditBeliefButton.Name = "addOrEditBeliefButton";
-            this.addOrEditBeliefButton.Size = new System.Drawing.Size(75, 23);
+            this.addOrEditBeliefButton.Size = new System.Drawing.Size(100, 28);
             this.addOrEditBeliefButton.TabIndex = 30;
             this.addOrEditBeliefButton.Text = "Add";
             this.addOrEditBeliefButton.UseVisualStyleBackColor = true;
@@ -70,26 +72,29 @@
             // 
             // beliefNameTextBox
             // 
-            this.beliefNameTextBox.Location = new System.Drawing.Point(40, 54);
+            this.beliefNameTextBox.Location = new System.Drawing.Point(53, 66);
+            this.beliefNameTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.beliefNameTextBox.Name = "beliefNameTextBox";
-            this.beliefNameTextBox.Size = new System.Drawing.Size(260, 20);
+            this.beliefNameTextBox.Size = new System.Drawing.Size(345, 22);
             this.beliefNameTextBox.TabIndex = 17;
             this.beliefNameTextBox.TextChanged += new System.EventHandler(this.beliefNameTextBox_TextChanged);
             // 
             // beliefValueTextBox
             // 
-            this.beliefValueTextBox.Location = new System.Drawing.Point(40, 105);
+            this.beliefValueTextBox.Location = new System.Drawing.Point(53, 129);
+            this.beliefValueTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.beliefValueTextBox.Name = "beliefValueTextBox";
-            this.beliefValueTextBox.Size = new System.Drawing.Size(260, 20);
+            this.beliefValueTextBox.Size = new System.Drawing.Size(345, 22);
             this.beliefValueTextBox.TabIndex = 18;
             this.beliefValueTextBox.TextChanged += new System.EventHandler(this.beliefValueTextBox_TextChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(39, 137);
+            this.label3.Location = new System.Drawing.Point(52, 169);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(66, 13);
+            this.label3.Size = new System.Drawing.Size(83, 16);
             this.label3.TabIndex = 16;
             this.label3.Text = "Perspective:";
             this.label3.Click += new System.EventHandler(this.label3_Click_1);
@@ -97,9 +102,10 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(40, 84);
+            this.label2.Location = new System.Drawing.Point(53, 103);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(37, 13);
+            this.label2.Size = new System.Drawing.Size(46, 16);
             this.label2.TabIndex = 15;
             this.label2.Text = "Value:";
             this.label2.Click += new System.EventHandler(this.label2_Click_1);
@@ -110,34 +116,37 @@
             // 
             // perspectiveTextBox
             // 
-            this.perspectiveTextBox.Location = new System.Drawing.Point(40, 158);
+            this.perspectiveTextBox.Location = new System.Drawing.Point(53, 194);
+            this.perspectiveTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.perspectiveTextBox.Name = "perspectiveTextBox";
-            this.perspectiveTextBox.Size = new System.Drawing.Size(260, 20);
+            this.perspectiveTextBox.Size = new System.Drawing.Size(345, 22);
             this.perspectiveTextBox.TabIndex = 21;
             // 
             // certaintyTextBox
             // 
-            this.certaintyTextBox.Location = new System.Drawing.Point(40, 213);
+            this.certaintyTextBox.Location = new System.Drawing.Point(53, 262);
+            this.certaintyTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.certaintyTextBox.Name = "certaintyTextBox";
-            this.certaintyTextBox.Size = new System.Drawing.Size(260, 20);
+            this.certaintyTextBox.Size = new System.Drawing.Size(345, 22);
             this.certaintyTextBox.TabIndex = 23;
             // 
             // labelCertainty
             // 
             this.labelCertainty.AutoSize = true;
-            this.labelCertainty.Location = new System.Drawing.Point(40, 192);
+            this.labelCertainty.Location = new System.Drawing.Point(53, 236);
+            this.labelCertainty.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelCertainty.Name = "labelCertainty";
-            this.labelCertainty.Size = new System.Drawing.Size(51, 13);
+            this.labelCertainty.Size = new System.Drawing.Size(63, 16);
             this.labelCertainty.TabIndex = 22;
             this.labelCertainty.Text = "Certainty:";
             // 
             // AddOrEditBeliefForm
             // 
             this.AcceptButton = this.addOrEditBeliefButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(340, 307);
+            this.ClientSize = new System.Drawing.Size(453, 378);
             this.Controls.Add(this.certaintyTextBox);
             this.Controls.Add(this.labelCertainty);
             this.Controls.Add(this.perspectiveTextBox);
@@ -147,7 +156,9 @@
             this.Controls.Add(this.beliefValueTextBox);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.Name = "AddOrEditBeliefForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

@@ -133,5 +133,10 @@ namespace GAIPS.AssetEditorTools.DynamicPropertiesWindow
 		{
 			_dynamicPropertiesListView.DataSource = new BindingListView<DynamicPropertyEntry>(DYN_PROPERTIES);
 		}
-	}
+
+        private void DynamicPropertyDisplayer_Load(object sender, System.EventArgs e)
+        {
+
+        }
+    }
 }

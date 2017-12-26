@@ -40,18 +40,20 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(40, 32);
+            this.label1.Location = new System.Drawing.Point(53, 39);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(34, 13);
+            this.label1.Size = new System.Drawing.Size(43, 16);
             this.label1.TabIndex = 14;
             this.label1.Text = "Type:";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // addOrEditButton
             // 
-            this.addOrEditButton.Location = new System.Drawing.Point(131, 94);
+            this.addOrEditButton.Location = new System.Drawing.Point(175, 116);
+            this.addOrEditButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.addOrEditButton.Name = "addOrEditButton";
-            this.addOrEditButton.Size = new System.Drawing.Size(75, 23);
+            this.addOrEditButton.Size = new System.Drawing.Size(100, 28);
             this.addOrEditButton.TabIndex = 20;
             this.addOrEditButton.Text = "Add";
             this.addOrEditButton.UseVisualStyleBackColor = true;
@@ -61,26 +63,29 @@
             // 
             this.comboBoxEmotionType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxEmotionType.FormattingEnabled = true;
-            this.comboBoxEmotionType.Location = new System.Drawing.Point(40, 53);
+            this.comboBoxEmotionType.Location = new System.Drawing.Point(53, 65);
+            this.comboBoxEmotionType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBoxEmotionType.Name = "comboBoxEmotionType";
-            this.comboBoxEmotionType.Size = new System.Drawing.Size(88, 21);
+            this.comboBoxEmotionType.Size = new System.Drawing.Size(116, 24);
             this.comboBoxEmotionType.TabIndex = 19;
             this.comboBoxEmotionType.SelectedIndexChanged += new System.EventHandler(this.beliefVisibilityComboBox_SelectedIndexChanged_1);
             // 
             // textBoxCauseId
             // 
-            this.textBoxCauseId.Location = new System.Drawing.Point(216, 53);
+            this.textBoxCauseId.Location = new System.Drawing.Point(288, 65);
+            this.textBoxCauseId.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBoxCauseId.Name = "textBoxCauseId";
-            this.textBoxCauseId.Size = new System.Drawing.Size(74, 20);
+            this.textBoxCauseId.Size = new System.Drawing.Size(97, 22);
             this.textBoxCauseId.TabIndex = 17;
             this.textBoxCauseId.TextChanged += new System.EventHandler(this.beliefNameTextBox_TextChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(216, 32);
+            this.label3.Location = new System.Drawing.Point(288, 39);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(52, 13);
+            this.label3.Size = new System.Drawing.Size(64, 16);
             this.label3.TabIndex = 16;
             this.label3.Text = "Cause Id:";
             this.label3.Click += new System.EventHandler(this.label3_Click_1);
@@ -88,9 +93,10 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(146, 32);
+            this.label2.Location = new System.Drawing.Point(195, 39);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(49, 13);
+            this.label2.Size = new System.Drawing.Size(59, 16);
             this.label2.TabIndex = 15;
             this.label2.Text = "Intensity:";
             this.label2.Click += new System.EventHandler(this.label2_Click_1);
@@ -110,19 +116,20 @@
             "8",
             "9",
             "10"});
-            this.comboBoxIntensity.Location = new System.Drawing.Point(146, 53);
+            this.comboBoxIntensity.Location = new System.Drawing.Point(195, 65);
+            this.comboBoxIntensity.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.comboBoxIntensity.Name = "comboBoxIntensity";
-            this.comboBoxIntensity.Size = new System.Drawing.Size(49, 21);
+            this.comboBoxIntensity.Size = new System.Drawing.Size(64, 24);
             this.comboBoxIntensity.TabIndex = 21;
             this.comboBoxIntensity.SelectedIndexChanged += new System.EventHandler(this.comboBoxIntensity_SelectedIndexChanged);
             // 
             // AddOrEditEmotionForm
             // 
             this.AcceptButton = this.addOrEditButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(336, 139);
+            this.ClientSize = new System.Drawing.Size(448, 171);
             this.Controls.Add(this.comboBoxIntensity);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.addOrEditButton);
@@ -130,7 +137,9 @@
             this.Controls.Add(this.textBoxCauseId);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.MaximizeBox = false;
             this.Name = "AddOrEditEmotionForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
