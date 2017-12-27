@@ -137,10 +137,10 @@ namespace RolePlayCharacterWF
             // 
             this.tabPage7.Controls.Add(this.panelCIF);
             this.tabPage7.Controls.Add(this.groupBox6);
-            this.tabPage7.Location = new System.Drawing.Point(4, 25);
+            this.tabPage7.Location = new System.Drawing.Point(4, 28);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(831, 477);
+            this.tabPage7.Size = new System.Drawing.Size(821, 474);
             this.tabPage7.TabIndex = 6;
             this.tabPage7.Text = "CIF";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -152,7 +152,7 @@ namespace RolePlayCharacterWF
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelCIF.Location = new System.Drawing.Point(5, 65);
             this.panelCIF.Name = "panelCIF";
-            this.panelCIF.Size = new System.Drawing.Size(977, 356);
+            this.panelCIF.Size = new System.Drawing.Size(810, 406);
             this.panelCIF.TabIndex = 17;
             // 
             // groupBox6
@@ -165,7 +165,7 @@ namespace RolePlayCharacterWF
             this.groupBox6.Controls.Add(this.buttonNewCIF);
             this.groupBox6.Location = new System.Drawing.Point(5, 3);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(977, 56);
+            this.groupBox6.Size = new System.Drawing.Size(810, 56);
             this.groupBox6.TabIndex = 16;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Source";
@@ -199,7 +199,7 @@ namespace RolePlayCharacterWF
             this.textBoxPathCIF.Location = new System.Drawing.Point(299, 19);
             this.textBoxPathCIF.Name = "textBoxPathCIF";
             this.textBoxPathCIF.ReadOnly = true;
-            this.textBoxPathCIF.Size = new System.Drawing.Size(672, 22);
+            this.textBoxPathCIF.Size = new System.Drawing.Size(505, 22);
             this.textBoxPathCIF.TabIndex = 13;
             // 
             // buttonNewCIF
@@ -217,10 +217,10 @@ namespace RolePlayCharacterWF
             // 
             this.tabPage6.Controls.Add(this.panelSI);
             this.tabPage6.Controls.Add(this.groupBox5);
-            this.tabPage6.Location = new System.Drawing.Point(4, 25);
+            this.tabPage6.Location = new System.Drawing.Point(4, 28);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(831, 477);
+            this.tabPage6.Size = new System.Drawing.Size(821, 474);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Social Importance";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -232,7 +232,7 @@ namespace RolePlayCharacterWF
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelSI.Location = new System.Drawing.Point(5, 65);
             this.panelSI.Name = "panelSI";
-            this.panelSI.Size = new System.Drawing.Size(820, 397);
+            this.panelSI.Size = new System.Drawing.Size(810, 403);
             this.panelSI.TabIndex = 17;
             // 
             // groupBox5
@@ -245,7 +245,7 @@ namespace RolePlayCharacterWF
             this.groupBox5.Controls.Add(this.buttonNewSI);
             this.groupBox5.Location = new System.Drawing.Point(5, 3);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(820, 56);
+            this.groupBox5.Size = new System.Drawing.Size(810, 56);
             this.groupBox5.TabIndex = 16;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Source";
@@ -279,7 +279,7 @@ namespace RolePlayCharacterWF
             this.textBoxPathSI.Location = new System.Drawing.Point(299, 19);
             this.textBoxPathSI.Name = "textBoxPathSI";
             this.textBoxPathSI.ReadOnly = true;
-            this.textBoxPathSI.Size = new System.Drawing.Size(515, 22);
+            this.textBoxPathSI.Size = new System.Drawing.Size(505, 22);
             this.textBoxPathSI.TabIndex = 13;
             // 
             // buttonNewSI
@@ -297,9 +297,9 @@ namespace RolePlayCharacterWF
             // 
             this.tabPage4.Controls.Add(this.panelEDM);
             this.tabPage4.Controls.Add(this.groupBox3);
-            this.tabPage4.Location = new System.Drawing.Point(4, 25);
+            this.tabPage4.Location = new System.Drawing.Point(4, 28);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(831, 477);
+            this.tabPage4.Size = new System.Drawing.Size(821, 474);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Decision Making";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -311,7 +311,7 @@ namespace RolePlayCharacterWF
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelEDM.Location = new System.Drawing.Point(5, 65);
             this.panelEDM.Name = "panelEDM";
-            this.panelEDM.Size = new System.Drawing.Size(980, 359);
+            this.panelEDM.Size = new System.Drawing.Size(813, 406);
             this.panelEDM.TabIndex = 17;
             // 
             // groupBox3
@@ -324,7 +324,7 @@ namespace RolePlayCharacterWF
             this.groupBox3.Controls.Add(this.buttonNewEDM);
             this.groupBox3.Location = new System.Drawing.Point(5, 3);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(980, 56);
+            this.groupBox3.Size = new System.Drawing.Size(813, 56);
             this.groupBox3.TabIndex = 16;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Source";
@@ -358,7 +358,7 @@ namespace RolePlayCharacterWF
             this.textBoxPathEDM.Location = new System.Drawing.Point(299, 19);
             this.textBoxPathEDM.Name = "textBoxPathEDM";
             this.textBoxPathEDM.ReadOnly = true;
-            this.textBoxPathEDM.Size = new System.Drawing.Size(675, 22);
+            this.textBoxPathEDM.Size = new System.Drawing.Size(508, 22);
             this.textBoxPathEDM.TabIndex = 13;
             // 
             // buttonNewEDM
@@ -376,9 +376,9 @@ namespace RolePlayCharacterWF
             // 
             this.tabPage3.Controls.Add(this.panelEA);
             this.tabPage3.Controls.Add(this.groupBox2);
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Location = new System.Drawing.Point(4, 28);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(831, 477);
+            this.tabPage3.Size = new System.Drawing.Size(821, 474);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Emotional Appraisal";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -390,7 +390,7 @@ namespace RolePlayCharacterWF
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelEA.Location = new System.Drawing.Point(5, 65);
             this.panelEA.Name = "panelEA";
-            this.panelEA.Size = new System.Drawing.Size(980, 359);
+            this.panelEA.Size = new System.Drawing.Size(813, 406);
             this.panelEA.TabIndex = 15;
             // 
             // groupBox2
@@ -403,7 +403,7 @@ namespace RolePlayCharacterWF
             this.groupBox2.Controls.Add(this.createNewEAButton);
             this.groupBox2.Location = new System.Drawing.Point(5, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(980, 56);
+            this.groupBox2.Size = new System.Drawing.Size(813, 56);
             this.groupBox2.TabIndex = 14;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Source";
@@ -437,7 +437,7 @@ namespace RolePlayCharacterWF
             this.pathTextBoxEA.Location = new System.Drawing.Point(299, 19);
             this.pathTextBoxEA.Name = "pathTextBoxEA";
             this.pathTextBoxEA.ReadOnly = true;
-            this.pathTextBoxEA.Size = new System.Drawing.Size(675, 22);
+            this.pathTextBoxEA.Size = new System.Drawing.Size(508, 22);
             this.pathTextBoxEA.TabIndex = 13;
             this.pathTextBoxEA.TextChanged += new System.EventHandler(this.pathTextBoxEA_TextChanged);
             // 
@@ -455,10 +455,10 @@ namespace RolePlayCharacterWF
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.tableLayoutPanel4);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Location = new System.Drawing.Point(4, 28);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(831, 477);
+            this.tabPage2.Size = new System.Drawing.Size(821, 474);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Autobiographical Memory";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -477,7 +477,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 206F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(976, 415);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(809, 462);
             this.tableLayoutPanel4.TabIndex = 0;
             this.tableLayoutPanel4.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel4_Paint);
             // 
@@ -491,7 +491,7 @@ namespace RolePlayCharacterWF
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(3, 63);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(970, 349);
+            this.groupBox4.Size = new System.Drawing.Size(803, 396);
             this.groupBox4.TabIndex = 16;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Event Records";
@@ -527,7 +527,7 @@ namespace RolePlayCharacterWF
             this.dataGridViewAM.RowHeadersVisible = false;
             this.dataGridViewAM.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAM.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAM.Size = new System.Drawing.Size(961, 294);
+            this.dataGridViewAM.Size = new System.Drawing.Size(794, 341);
             this.dataGridViewAM.TabIndex = 10;
             // 
             // buttonEditEvent
@@ -566,7 +566,7 @@ namespace RolePlayCharacterWF
             this.groupBox9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox9.Location = new System.Drawing.Point(3, 3);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(970, 54);
+            this.groupBox9.Size = new System.Drawing.Size(803, 54);
             this.groupBox9.TabIndex = 15;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Time";
@@ -585,7 +585,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(834, 35);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(794, 35);
             this.tableLayoutPanel6.TabIndex = 13;
             // 
             // label4
@@ -617,10 +617,10 @@ namespace RolePlayCharacterWF
             // tabPage5
             // 
             this.tabPage5.Controls.Add(this.groupBox1);
-            this.tabPage5.Location = new System.Drawing.Point(4, 25);
+            this.tabPage5.Location = new System.Drawing.Point(4, 28);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(831, 477);
+            this.tabPage5.Size = new System.Drawing.Size(821, 474);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Knowledge Base";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -631,7 +631,7 @@ namespace RolePlayCharacterWF
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(825, 471);
+            this.groupBox1.Size = new System.Drawing.Size(815, 468);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Beliefs";
@@ -648,7 +648,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel8.RowCount = 2;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(819, 450);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(809, 447);
             this.tableLayoutPanel8.TabIndex = 7;
             // 
             // tableLayoutPanel9
@@ -666,7 +666,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 1;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(813, 31);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(803, 31);
             this.tableLayoutPanel9.TabIndex = 3;
             // 
             // editButton
@@ -719,7 +719,7 @@ namespace RolePlayCharacterWF
             this.dataGridViewBeliefs.RowHeadersVisible = false;
             this.dataGridViewBeliefs.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewBeliefs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewBeliefs.Size = new System.Drawing.Size(813, 409);
+            this.dataGridViewBeliefs.Size = new System.Drawing.Size(803, 409);
             this.dataGridViewBeliefs.TabIndex = 4;
             this.dataGridViewBeliefs.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewBeliefs_CellMouseDoubleClick);
             // 
@@ -729,7 +729,7 @@ namespace RolePlayCharacterWF
             this.tabPage1.Location = new System.Drawing.Point(4, 28);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(831, 474);
+            this.tabPage1.Size = new System.Drawing.Size(821, 474);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Emotional State";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -748,7 +748,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(884, 391);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(799, 462);
             this.tableLayoutPanel3.TabIndex = 2;
             this.tableLayoutPanel3.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel3_Paint);
             // 
@@ -763,7 +763,7 @@ namespace RolePlayCharacterWF
             this.emotionGroupBox.Controls.Add(this.emotionsDataGridView);
             this.emotionGroupBox.Location = new System.Drawing.Point(3, 67);
             this.emotionGroupBox.Name = "emotionGroupBox";
-            this.emotionGroupBox.Size = new System.Drawing.Size(878, 321);
+            this.emotionGroupBox.Size = new System.Drawing.Size(793, 392);
             this.emotionGroupBox.TabIndex = 1;
             this.emotionGroupBox.TabStop = false;
             this.emotionGroupBox.Text = "Emotions";
@@ -818,7 +818,7 @@ namespace RolePlayCharacterWF
             this.emotionsDataGridView.RowHeadersVisible = false;
             this.emotionsDataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.emotionsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.emotionsDataGridView.Size = new System.Drawing.Size(858, 267);
+            this.emotionsDataGridView.Size = new System.Drawing.Size(781, 338);
             this.emotionsDataGridView.TabIndex = 2;
             // 
             // moodGroupBox
@@ -827,7 +827,7 @@ namespace RolePlayCharacterWF
             this.moodGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.moodGroupBox.Location = new System.Drawing.Point(3, 3);
             this.moodGroupBox.Name = "moodGroupBox";
-            this.moodGroupBox.Size = new System.Drawing.Size(878, 58);
+            this.moodGroupBox.Size = new System.Drawing.Size(793, 58);
             this.moodGroupBox.TabIndex = 14;
             this.moodGroupBox.TabStop = false;
             this.moodGroupBox.Text = "Mood";
@@ -844,14 +844,14 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 1;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(872, 37);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(787, 37);
             this.tableLayoutPanel7.TabIndex = 12;
             // 
             // moodValueLabel
             // 
             this.moodValueLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.moodValueLabel.AutoSize = true;
-            this.moodValueLabel.Location = new System.Drawing.Point(825, 10);
+            this.moodValueLabel.Location = new System.Drawing.Point(740, 10);
             this.moodValueLabel.Name = "moodValueLabel";
             this.moodValueLabel.Size = new System.Drawing.Size(44, 16);
             this.moodValueLabel.TabIndex = 5;
@@ -864,7 +864,7 @@ namespace RolePlayCharacterWF
             this.moodTrackBar.Location = new System.Drawing.Point(3, 3);
             this.moodTrackBar.Minimum = -10;
             this.moodTrackBar.Name = "moodTrackBar";
-            this.moodTrackBar.Size = new System.Drawing.Size(816, 31);
+            this.moodTrackBar.Size = new System.Drawing.Size(731, 31);
             this.moodTrackBar.TabIndex = 11;
             this.moodTrackBar.Scroll += new System.EventHandler(this.moodTrackBar_Scroll);
             // 
@@ -884,7 +884,7 @@ namespace RolePlayCharacterWF
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(839, 506);
+            this.tabControl1.Size = new System.Drawing.Size(829, 506);
             this.tabControl1.TabIndex = 13;
             // 
             // textBoxCharacterName
