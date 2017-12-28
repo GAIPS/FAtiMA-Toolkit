@@ -4,11 +4,26 @@
 	{
 		private static readonly SingleConvertionProvider PROVIDER = new SingleConvertionProvider();
 
-		public FloatFieldBox() : base(0, PROVIDER)
+        public bool HasBounds { get; set; } = false;
+        public float MinValue { get; set; }
+        public float MaxValue { get; set; }
+
+        public FloatFieldBox() : base(0, PROVIDER)
 		{
 		}
 
-		private class SingleConvertionProvider : ITypeConversionProvider<float>
+        protected override bool ValidateValue(float value)
+        {
+            if (HasBounds && value < MinValue)
+                return false;
+
+            if (HasBounds && value > MaxValue)
+                return false;
+
+            return true;
+        }
+
+        private class SingleConvertionProvider : ITypeConversionProvider<float>
 		{
 			public bool TryToParseType(string str, out float value)
 			{

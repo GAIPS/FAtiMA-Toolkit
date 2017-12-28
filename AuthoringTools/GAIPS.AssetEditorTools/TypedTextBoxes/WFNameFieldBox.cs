@@ -6,14 +6,12 @@ namespace GAIPS.AssetEditorTools.TypedTextBoxes
 	public class WFNameFieldBox : TypedFieldBox<Name>
 	{
 		public bool AllowVariable { get; set; } = true;
-		public bool AllowProperty { get; set; } = true;
-		public bool AllowUniversal { get; set; } = true;
+		public bool AllowLiteral { get; set; } = true;
+        public bool AllowComposedName { get; set; } = true;
+        public bool AllowUniversal { get; set; } = true;
 
-		public WFNameFieldBox() : base(WellFormedNames.Name.NIL_SYMBOL, FORMATTER)
-		{
-
-		}
-
+		public WFNameFieldBox() : base(WellFormedNames.Name.NIL_SYMBOL, FORMATTER){}
+        
 		protected override bool ValidateValue(Name value)
 		{
 			if (!AllowVariable && value.IsVariable)
@@ -22,10 +20,13 @@ namespace GAIPS.AssetEditorTools.TypedTextBoxes
 			if (!AllowUniversal && value.IsUniversal)
 				return false;
 
-			if (!AllowProperty && value.IsConstant)
+			if (!AllowLiteral && value.IsPrimitive)
 				return false;
 
-			return true;
+            if (!AllowComposedName && value.IsComposed)
+                return false;
+
+            return true;
 		}
 
 		private static readonly NameConverter FORMATTER = new NameConverter();

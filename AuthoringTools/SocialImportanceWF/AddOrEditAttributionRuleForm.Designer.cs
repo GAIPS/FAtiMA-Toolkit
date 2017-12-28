@@ -81,7 +81,7 @@
             // 
             // _targetVariableBox
             // 
-            this._targetVariableBox.AllowProperty = false;
+            this._targetVariableBox.AllowLiteral = false;
             this._targetVariableBox.AllowUniversal = false;
             this._targetVariableBox.AllowVariable = true;
             this._targetVariableBox.Location = new System.Drawing.Point(312, 86);

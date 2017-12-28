@@ -32,14 +32,14 @@
             this.emotionalAppraisalAssetBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.addOrEditBeliefButton = new System.Windows.Forms.Button();
-            this.beliefNameTextBox = new System.Windows.Forms.TextBox();
-            this.beliefValueTextBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.addBeliefErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.perspectiveTextBox = new System.Windows.Forms.TextBox();
-            this.certaintyTextBox = new System.Windows.Forms.TextBox();
             this.labelCertainty = new System.Windows.Forms.Label();
+            this.beliefValueTextBox = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
+            this.beliefNameTextBox = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
+            this.perspectiveTextBox = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
+            this.certaintyTextBox = new GAIPS.AssetEditorTools.TypedTextBoxes.FloatFieldBox();
             ((System.ComponentModel.ISupportInitialize)(this.emotionalAppraisalAssetBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.addBeliefErrorProvider)).BeginInit();
             this.SuspendLayout();
@@ -62,31 +62,13 @@
             // addOrEditBeliefButton
             // 
             this.addOrEditBeliefButton.Location = new System.Drawing.Point(177, 314);
-            this.addOrEditBeliefButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.addOrEditBeliefButton.Margin = new System.Windows.Forms.Padding(4);
             this.addOrEditBeliefButton.Name = "addOrEditBeliefButton";
             this.addOrEditBeliefButton.Size = new System.Drawing.Size(100, 28);
-            this.addOrEditBeliefButton.TabIndex = 30;
+            this.addOrEditBeliefButton.TabIndex = 9;
             this.addOrEditBeliefButton.Text = "Add";
             this.addOrEditBeliefButton.UseVisualStyleBackColor = true;
             this.addOrEditBeliefButton.Click += new System.EventHandler(this.addOrEditBeliefButton_Click);
-            // 
-            // beliefNameTextBox
-            // 
-            this.beliefNameTextBox.Location = new System.Drawing.Point(53, 66);
-            this.beliefNameTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.beliefNameTextBox.Name = "beliefNameTextBox";
-            this.beliefNameTextBox.Size = new System.Drawing.Size(345, 22);
-            this.beliefNameTextBox.TabIndex = 17;
-            this.beliefNameTextBox.TextChanged += new System.EventHandler(this.beliefNameTextBox_TextChanged);
-            // 
-            // beliefValueTextBox
-            // 
-            this.beliefValueTextBox.Location = new System.Drawing.Point(53, 129);
-            this.beliefValueTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.beliefValueTextBox.Name = "beliefValueTextBox";
-            this.beliefValueTextBox.Size = new System.Drawing.Size(345, 22);
-            this.beliefValueTextBox.TabIndex = 18;
-            this.beliefValueTextBox.TextChanged += new System.EventHandler(this.beliefValueTextBox_TextChanged);
             // 
             // label3
             // 
@@ -114,22 +96,6 @@
             // 
             this.addBeliefErrorProvider.ContainerControl = this;
             // 
-            // perspectiveTextBox
-            // 
-            this.perspectiveTextBox.Location = new System.Drawing.Point(53, 194);
-            this.perspectiveTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.perspectiveTextBox.Name = "perspectiveTextBox";
-            this.perspectiveTextBox.Size = new System.Drawing.Size(345, 22);
-            this.perspectiveTextBox.TabIndex = 21;
-            // 
-            // certaintyTextBox
-            // 
-            this.certaintyTextBox.Location = new System.Drawing.Point(53, 262);
-            this.certaintyTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.certaintyTextBox.Name = "certaintyTextBox";
-            this.certaintyTextBox.Size = new System.Drawing.Size(345, 22);
-            this.certaintyTextBox.TabIndex = 23;
-            // 
             // labelCertainty
             // 
             this.labelCertainty.AutoSize = true;
@@ -140,6 +106,48 @@
             this.labelCertainty.TabIndex = 22;
             this.labelCertainty.Text = "Certainty:";
             // 
+            // beliefValueTextBox
+            // 
+            this.beliefValueTextBox.AllowLiteral = true;
+            this.beliefValueTextBox.AllowUniversal = true;
+            this.beliefValueTextBox.AllowVariable = true;
+            this.beliefValueTextBox.Location = new System.Drawing.Point(53, 129);
+            this.beliefValueTextBox.Name = "beliefValueTextBox";
+            this.beliefValueTextBox.Size = new System.Drawing.Size(345, 22);
+            this.beliefValueTextBox.TabIndex = 6;
+            // 
+            // beliefNameTextBox
+            // 
+            this.beliefNameTextBox.AllowLiteral = true;
+            this.beliefNameTextBox.AllowUniversal = true;
+            this.beliefNameTextBox.AllowVariable = true;
+            this.beliefNameTextBox.Location = new System.Drawing.Point(53, 66);
+            this.beliefNameTextBox.Name = "beliefNameTextBox";
+            this.beliefNameTextBox.Size = new System.Drawing.Size(345, 22);
+            this.beliefNameTextBox.TabIndex = 5;
+            // 
+            // perspectiveTextBox
+            // 
+            this.perspectiveTextBox.AllowLiteral = true;
+            this.perspectiveTextBox.AllowUniversal = true;
+            this.perspectiveTextBox.AllowVariable = true;
+            this.perspectiveTextBox.Location = new System.Drawing.Point(53, 198);
+            this.perspectiveTextBox.Name = "perspectiveTextBox";
+            this.perspectiveTextBox.Size = new System.Drawing.Size(345, 22);
+            this.perspectiveTextBox.TabIndex = 7;
+            this.perspectiveTextBox.TextChanged += new System.EventHandler(this.perspectiveTextBox_TextChanged);
+            // 
+            // certaintyTextBox
+            // 
+            this.certaintyTextBox.HasBounds = false;
+            this.certaintyTextBox.Location = new System.Drawing.Point(53, 267);
+            this.certaintyTextBox.MaxValue = 0F;
+            this.certaintyTextBox.MinValue = 0F;
+            this.certaintyTextBox.Name = "certaintyTextBox";
+            this.certaintyTextBox.Size = new System.Drawing.Size(345, 22);
+            this.certaintyTextBox.TabIndex = 8;
+            this.certaintyTextBox.TextChanged += new System.EventHandler(this.floatFieldBox1_TextChanged_1);
+            // 
             // AddOrEditBeliefForm
             // 
             this.AcceptButton = this.addOrEditBeliefButton;
@@ -148,17 +156,17 @@
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(453, 378);
             this.Controls.Add(this.certaintyTextBox);
-            this.Controls.Add(this.labelCertainty);
             this.Controls.Add(this.perspectiveTextBox);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.addOrEditBeliefButton);
             this.Controls.Add(this.beliefNameTextBox);
             this.Controls.Add(this.beliefValueTextBox);
+            this.Controls.Add(this.labelCertainty);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.addOrEditBeliefButton);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "AddOrEditBeliefForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -175,13 +183,13 @@
         private System.Windows.Forms.BindingSource emotionalAppraisalAssetBindingSource;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button addOrEditBeliefButton;
-        private System.Windows.Forms.TextBox beliefNameTextBox;
-        private System.Windows.Forms.TextBox beliefValueTextBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ErrorProvider addBeliefErrorProvider;
-        private System.Windows.Forms.TextBox certaintyTextBox;
         private System.Windows.Forms.Label labelCertainty;
-        private System.Windows.Forms.TextBox perspectiveTextBox;
+        private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox beliefValueTextBox;
+        private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox perspectiveTextBox;
+        private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox beliefNameTextBox;
+        private GAIPS.AssetEditorTools.TypedTextBoxes.FloatFieldBox certaintyTextBox;
     }
 }

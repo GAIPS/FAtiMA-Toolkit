@@ -14,21 +14,30 @@ namespace RolePlayCharacterWF
         {
             InitializeComponent();
             
+            //DefaultValues
+            perspectiveTextBox.Value = WellFormedNames.Name.SELF_SYMBOL;
+            certaintyTextBox.Value = 1;
+
+            //Restrictions
+            certaintyTextBox.HasBounds = true;
+            certaintyTextBox.MaxValue = 1;
+            certaintyTextBox.MinValue = 0;
+            beliefNameTextBox.AllowLiteral = false;
+            beliefValueTextBox.AllowComposedName = false;
+
+
             _knowledgeBaseVm = kbVM;
             _beliefToEdit = beliefToEdit;
-
-            perspectiveTextBox.Text = "SELF"; //Default Value
-            certaintyTextBox.Text = "1";
 
             if (beliefToEdit != null)
             {
                 this.Text = "Edit Belief";
                 this.addOrEditBeliefButton.Text = "Update";
 
-                beliefNameTextBox.Text = beliefToEdit.Name;
-                beliefValueTextBox.Text = beliefToEdit.Value;
-                perspectiveTextBox.Text = beliefToEdit.Perspective;
-                certaintyTextBox.Text = certaintyTextBox.Text;
+                beliefNameTextBox.Value = (WellFormedNames.Name)beliefToEdit.Name;
+                beliefValueTextBox.Value = (WellFormedNames.Name)beliefToEdit.Value;
+                perspectiveTextBox.Value = (WellFormedNames.Name)beliefToEdit.Perspective;
+                certaintyTextBox.Value = beliefToEdit.Certainty;
             }
         }
 
@@ -36,15 +45,14 @@ namespace RolePlayCharacterWF
         {
             //clear errors
             addBeliefErrorProvider.Clear();
-
             try
             {
                 var newBelief = new BeliefDTO
                 {
-                    Name = this.beliefNameTextBox.Text.Trim(),
-                    Perspective = this.perspectiveTextBox.Text.Trim(),
-                    Value = this.beliefValueTextBox.Text.Trim(),
-                    Certainty = float.Parse(this.certaintyTextBox.Text.Trim())
+                    Name = this.beliefNameTextBox.Value.ToString(),
+                    Perspective = this.perspectiveTextBox.Value.ToString(),
+                    Value = this.beliefValueTextBox.Value.ToString(),
+                    Certainty = this.certaintyTextBox.Value
                 };
                 if (_beliefToEdit != null)
                 {
@@ -100,6 +108,26 @@ namespace RolePlayCharacterWF
         }
 
         private void AddOrEditBeliefForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void certaintyTextBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void floatFieldBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void floatFieldBox1_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void perspectiveTextBox_TextChanged(object sender, EventArgs e)
         {
 
         }

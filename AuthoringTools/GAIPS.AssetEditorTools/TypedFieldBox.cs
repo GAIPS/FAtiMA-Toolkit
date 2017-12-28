@@ -34,8 +34,8 @@ namespace GAIPS.AssetEditorTools
 		[Browsable(false)]
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		public new string Text {
-			get { throw new InvalidOperationException();}
-			set { throw new InvalidOperationException();}
+			get { throw new InvalidOperationException("Invalid Access to the Property 'Text'");}
+			set { throw new InvalidOperationException("Invalid Access to the Property 'Text'");}
 		}
 
 		protected TypedFieldBox(T defaultValue, ITypeConversionProvider<T> conversionProvider)
@@ -73,8 +73,11 @@ namespace GAIPS.AssetEditorTools
 			T newValue;
 			if (ConversionProvider.TryToParseType(base.Text, out newValue))
 			{
-				_value = newValue;
-				DispatchOnValueChanged(new EventArgs());
+                if (ValidateValue(newValue))
+                {
+                    _value = newValue;
+                    DispatchOnValueChanged(new EventArgs());
+                }
 			}
 
 			UpdateText();
