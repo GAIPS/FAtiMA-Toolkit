@@ -13,13 +13,15 @@ namespace RolePlayCharacterWF.ViewModels
 	    private RolePlayCharacterAsset _rpcAsset => _mainForm.LoadedAsset;
 
         public BindingListView<EventDTO> Events {get;}
+        public WellFormedNames.Name CharName { get; }
 
-		public static readonly string[] EventTypes = { AMConsts.ACTION_START, AMConsts.ACTION_END, AMConsts.PROPERTY_CHANGE };
+		public static readonly string[] EventTypes = { AMConsts.ACTION_END, AMConsts.ACTION_START, AMConsts.PROPERTY_CHANGE };
 
 		public AutobiographicalMemoryVM(BaseRPCForm form)
 		{
 			_mainForm = form;
             this.Events = new BindingListView<EventDTO>(_rpcAsset.EventRecords.ToList());
+            this.CharName = _rpcAsset.CharacterName;
         }
      
         public void AddEventRecord(EventDTO newEvent)

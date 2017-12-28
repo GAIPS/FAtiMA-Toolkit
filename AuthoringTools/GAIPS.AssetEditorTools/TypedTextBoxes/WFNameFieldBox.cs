@@ -9,8 +9,9 @@ namespace GAIPS.AssetEditorTools.TypedTextBoxes
 		public bool AllowLiteral { get; set; } = true;
         public bool AllowComposedName { get; set; } = true;
         public bool AllowUniversal { get; set; } = true;
+        public bool AllowNil { get; set; } = true;
 
-		public WFNameFieldBox() : base(WellFormedNames.Name.NIL_SYMBOL, FORMATTER){}
+        public WFNameFieldBox() : base(WellFormedNames.Name.NIL_SYMBOL, FORMATTER){}
         
 		protected override bool ValidateValue(Name value)
 		{
@@ -24,6 +25,9 @@ namespace GAIPS.AssetEditorTools.TypedTextBoxes
 				return false;
 
             if (!AllowComposedName && value.IsComposed)
+                return false;
+
+            if (!AllowNil && value == WellFormedNames.Name.NIL_SYMBOL)
                 return false;
 
             return true;

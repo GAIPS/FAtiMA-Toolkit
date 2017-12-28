@@ -16,15 +16,25 @@ namespace RolePlayCharacterWF
             
             //DefaultValues
             perspectiveTextBox.Value = WellFormedNames.Name.SELF_SYMBOL;
+            beliefValueTextBox.Value = WellFormedNames.Name.BuildName("True");
             certaintyTextBox.Value = 1;
 
             //Restrictions
             certaintyTextBox.HasBounds = true;
             certaintyTextBox.MaxValue = 1;
             certaintyTextBox.MinValue = 0;
-            beliefNameTextBox.AllowLiteral = false;
-            beliefValueTextBox.AllowComposedName = false;
 
+            beliefNameTextBox.AllowLiteral = false;
+            beliefNameTextBox.AllowNil = false;
+            beliefNameTextBox.AllowUniversal = false;
+            beliefNameTextBox.AllowVariable = false;
+
+            beliefValueTextBox.AllowComposedName = false;
+            beliefValueTextBox.AllowNil = false;
+            beliefValueTextBox.AllowUniversal = false;
+            beliefValueTextBox.AllowVariable = false;
+
+            perspectiveTextBox.AllowNil = true;
 
             _knowledgeBaseVm = kbVM;
             _beliefToEdit = beliefToEdit;

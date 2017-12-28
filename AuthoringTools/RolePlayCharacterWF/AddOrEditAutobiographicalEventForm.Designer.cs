@@ -32,16 +32,16 @@
             this.label1 = new System.Windows.Forms.Label();
             this.addOrEditButton = new System.Windows.Forms.Button();
             this.addBeliefErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.textBoxTime = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.textBoxSubject = new System.Windows.Forms.TextBox();
-            this.textBoxObject = new System.Windows.Forms.TextBox();
             this.labelObject = new System.Windows.Forms.Label();
-            this.textBoxTarget = new System.Windows.Forms.TextBox();
             this.labelTarget = new System.Windows.Forms.Label();
             this.comboBoxEventType = new System.Windows.Forms.ComboBox();
             this.emotionalAppraisalAssetBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.textBoxTime = new GAIPS.AssetEditorTools.TypedTextBoxes.Int32FieldBox();
+            this.textBoxTarget = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
+            this.textBoxObject = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
+            this.textBoxSubject = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             ((System.ComponentModel.ISupportInitialize)(this.addBeliefErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emotionalAppraisalAssetBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -60,7 +60,7 @@
             // addOrEditButton
             // 
             this.addOrEditButton.Location = new System.Drawing.Point(148, 463);
-            this.addOrEditButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.addOrEditButton.Margin = new System.Windows.Forms.Padding(4);
             this.addOrEditButton.Name = "addOrEditButton";
             this.addOrEditButton.Size = new System.Drawing.Size(100, 28);
             this.addOrEditButton.TabIndex = 40;
@@ -71,15 +71,6 @@
             // addBeliefErrorProvider
             // 
             this.addBeliefErrorProvider.ContainerControl = this;
-            // 
-            // textBoxTime
-            // 
-            this.textBoxTime.Location = new System.Drawing.Point(53, 399);
-            this.textBoxTime.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.textBoxTime.Name = "textBoxTime";
-            this.textBoxTime.Size = new System.Drawing.Size(301, 22);
-            this.textBoxTime.TabIndex = 30;
-            this.textBoxTime.TextChanged += new System.EventHandler(this.textBoxTime_TextChanged);
             // 
             // label2
             // 
@@ -103,24 +94,6 @@
             this.label3.Text = "Subject:";
             this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
-            // textBoxSubject
-            // 
-            this.textBoxSubject.Location = new System.Drawing.Point(53, 158);
-            this.textBoxSubject.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.textBoxSubject.Name = "textBoxSubject";
-            this.textBoxSubject.Size = new System.Drawing.Size(301, 22);
-            this.textBoxSubject.TabIndex = 25;
-            this.textBoxSubject.TextChanged += new System.EventHandler(this.textBoxSubject_TextChanged);
-            // 
-            // textBoxObject
-            // 
-            this.textBoxObject.Location = new System.Drawing.Point(53, 236);
-            this.textBoxObject.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.textBoxObject.Name = "textBoxObject";
-            this.textBoxObject.Size = new System.Drawing.Size(301, 22);
-            this.textBoxObject.TabIndex = 27;
-            this.textBoxObject.TextChanged += new System.EventHandler(this.textBoxObject_TextChanged);
-            // 
             // labelObject
             // 
             this.labelObject.AutoSize = true;
@@ -131,15 +104,6 @@
             this.labelObject.TabIndex = 26;
             this.labelObject.Text = "Action:";
             this.labelObject.Click += new System.EventHandler(this.labelObject_Click);
-            // 
-            // textBoxTarget
-            // 
-            this.textBoxTarget.Location = new System.Drawing.Point(53, 318);
-            this.textBoxTarget.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.textBoxTarget.Name = "textBoxTarget";
-            this.textBoxTarget.Size = new System.Drawing.Size(301, 22);
-            this.textBoxTarget.TabIndex = 29;
-            this.textBoxTarget.TextChanged += new System.EventHandler(this.textBoxTarget_TextChanged);
             // 
             // labelTarget
             // 
@@ -157,7 +121,7 @@
             this.comboBoxEventType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxEventType.FormattingEnabled = true;
             this.comboBoxEventType.Location = new System.Drawing.Point(53, 71);
-            this.comboBoxEventType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBoxEventType.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxEventType.Name = "comboBoxEventType";
             this.comboBoxEventType.Size = new System.Drawing.Size(297, 24);
             this.comboBoxEventType.TabIndex = 15;
@@ -168,26 +132,69 @@
             // 
             this.emotionalAppraisalAssetBindingSource.DataSource = typeof(EmotionalAppraisal.EmotionalAppraisalAsset);
             // 
+            // textBoxTime
+            // 
+            this.textBoxTime.Location = new System.Drawing.Point(52, 403);
+            this.textBoxTime.Name = "textBoxTime";
+            this.textBoxTime.Size = new System.Drawing.Size(302, 22);
+            this.textBoxTime.TabIndex = 19;
+            // 
+            // textBoxTarget
+            // 
+            this.textBoxTarget.AllowComposedName = true;
+            this.textBoxTarget.AllowLiteral = true;
+            this.textBoxTarget.AllowNil = true;
+            this.textBoxTarget.AllowUniversal = true;
+            this.textBoxTarget.AllowVariable = true;
+            this.textBoxTarget.Location = new System.Drawing.Point(53, 318);
+            this.textBoxTarget.Name = "textBoxTarget";
+            this.textBoxTarget.Size = new System.Drawing.Size(301, 22);
+            this.textBoxTarget.TabIndex = 18;
+            // 
+            // textBoxObject
+            // 
+            this.textBoxObject.AllowComposedName = true;
+            this.textBoxObject.AllowLiteral = true;
+            this.textBoxObject.AllowNil = true;
+            this.textBoxObject.AllowUniversal = true;
+            this.textBoxObject.AllowVariable = true;
+            this.textBoxObject.Location = new System.Drawing.Point(53, 236);
+            this.textBoxObject.Name = "textBoxObject";
+            this.textBoxObject.Size = new System.Drawing.Size(301, 22);
+            this.textBoxObject.TabIndex = 17;
+            // 
+            // textBoxSubject
+            // 
+            this.textBoxSubject.AllowComposedName = true;
+            this.textBoxSubject.AllowLiteral = true;
+            this.textBoxSubject.AllowNil = true;
+            this.textBoxSubject.AllowUniversal = true;
+            this.textBoxSubject.AllowVariable = true;
+            this.textBoxSubject.Location = new System.Drawing.Point(53, 158);
+            this.textBoxSubject.Name = "textBoxSubject";
+            this.textBoxSubject.Size = new System.Drawing.Size(301, 22);
+            this.textBoxSubject.TabIndex = 16;
+            // 
             // AddOrEditAutobiographicalEventForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(395, 530);
-            this.Controls.Add(this.comboBoxEventType);
-            this.Controls.Add(this.textBoxTarget);
-            this.Controls.Add(this.labelTarget);
-            this.Controls.Add(this.textBoxObject);
-            this.Controls.Add(this.labelObject);
             this.Controls.Add(this.textBoxSubject);
-            this.Controls.Add(this.label3);
+            this.Controls.Add(this.textBoxObject);
+            this.Controls.Add(this.textBoxTarget);
             this.Controls.Add(this.textBoxTime);
+            this.Controls.Add(this.comboBoxEventType);
+            this.Controls.Add(this.labelTarget);
+            this.Controls.Add(this.labelObject);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.addOrEditButton);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "AddOrEditAutobiographicalEventForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
@@ -206,13 +213,13 @@
         private System.Windows.Forms.Button addOrEditButton;
         private System.Windows.Forms.ErrorProvider addBeliefErrorProvider;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBoxTime;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBoxSubject;
         private System.Windows.Forms.ComboBox comboBoxEventType;
-        private System.Windows.Forms.TextBox textBoxTarget;
         private System.Windows.Forms.Label labelTarget;
-        private System.Windows.Forms.TextBox textBoxObject;
         private System.Windows.Forms.Label labelObject;
+        private GAIPS.AssetEditorTools.TypedTextBoxes.Int32FieldBox textBoxTime;
+        private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxSubject;
+        private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxObject;
+        private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxTarget;
     }
 }

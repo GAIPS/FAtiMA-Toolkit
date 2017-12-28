@@ -15,6 +15,20 @@ namespace RolePlayCharacterWF
         {
             InitializeComponent();
 
+            textBoxSubject.Value = amVM.CharName;
+
+            //Restrictions
+            textBoxSubject.AllowNil = false;
+            textBoxSubject.AllowUniversal = false;
+            textBoxSubject.AllowVariable = false;
+
+            textBoxTarget.AllowUniversal = false;
+            textBoxTarget.AllowVariable = false;
+
+            textBoxObject.AllowVariable = false;
+            textBoxObject.AllowUniversal = false;
+            textBoxObject.AllowNil = false;
+
             _autobiographicalMemoryVm = amVM;
             _eventToEdit = eventToEdit;
 
@@ -30,19 +44,18 @@ namespace RolePlayCharacterWF
                 if (propertyEvent != null)
                 { 
                     comboBoxEventType.Text = AMConsts.PROPERTY_CHANGE.ToString();
-                    textBoxSubject.Text = propertyEvent.Subject;
-                    textBoxObject.Text = propertyEvent.Property;
-                    textBoxTarget.Text = propertyEvent.NewValue;
-                    textBoxTime.Text = propertyEvent.Time.ToString();
+                    textBoxSubject.Value = (WellFormedNames.Name)propertyEvent.Subject;
+                    textBoxObject.Value = (WellFormedNames.Name)propertyEvent.Property;
+                    textBoxTarget.Value = (WellFormedNames.Name)propertyEvent.NewValue;
+                    textBoxTime.Value = (int)propertyEvent.Time;
                 }
                 var actionEvent = _eventToEdit as ActionEventDTO;
                 if (actionEvent != null)
                 {
-
-                    textBoxSubject.Text = actionEvent.Subject;
-                    textBoxObject.Text = actionEvent.Action;
-                    textBoxTarget.Text = actionEvent.Target;
-                    textBoxTime.Text = actionEvent.Time.ToString();
+                    textBoxSubject.Value = (WellFormedNames.Name)actionEvent.Subject;
+                    textBoxObject.Value = (WellFormedNames.Name)actionEvent.Action;
+                    textBoxTarget.Value = (WellFormedNames.Name)actionEvent.Target;
+                    textBoxTime.Value = (int)actionEvent.Time;
                 }
 
             }
@@ -57,10 +70,10 @@ namespace RolePlayCharacterWF
                 {
                     newEvent = new PropertyChangeEventDTO
                     {
-                        Subject = textBoxSubject.Text,
-                        Property = textBoxObject.Text,
-                        NewValue = textBoxTarget.Text,
-                        Time = ulong.Parse(textBoxTime.Text)
+                        Subject = textBoxSubject.Value.ToString(),
+                        Property = textBoxObject.Value.ToString(),
+                        NewValue = textBoxTarget.Value.ToString(),
+                        Time = (ulong)textBoxTime.Value
                     };
                 
                 }else if (comboBoxEventType.Text == AMConsts.ACTION_START || comboBoxEventType.Text == AMConsts.ACTION_END)
@@ -71,15 +84,12 @@ namespace RolePlayCharacterWF
 
                     newEvent = new ActionEventDTO()
                     {
-                       
-                       ActionState = act.ActionState,
-                        Subject = textBoxSubject.Text,
-                        Action = textBoxObject.Text,
-                        Target = textBoxTarget.Text,
-                        Time = ulong.Parse(textBoxTime.Text)
+                        ActionState = act.ActionState,
+                        Subject = textBoxSubject.Value.ToString(),
+                        Action = textBoxObject.Value.ToString(),
+                        Target = textBoxTarget.Value.ToString(),
+                        Time = (ulong)textBoxTime.Value
                     };
-
-                    
                 }
 
                 if (_eventToEdit != null)
