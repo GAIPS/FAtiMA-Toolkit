@@ -15,7 +15,7 @@ namespace GAIPS.AssetEditorTools.TypedTextBoxes
         
 		protected override bool ValidateValue(Name value)
 		{
-			if (!AllowVariable && value.IsVariable)
+			if (!AllowVariable && !value.IsGrounded)
 				return false;
 
 			if (!AllowUniversal && value.IsUniversal)

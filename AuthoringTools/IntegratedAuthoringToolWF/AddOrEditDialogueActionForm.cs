@@ -15,7 +15,21 @@ namespace IntegratedAuthoringToolWF
         public AddOrEditDialogueActionForm(MainForm form)
         {
             InitializeComponent();
-	        _parentForm = form;
+
+            textBoxCurrentState.AllowComposedName = false;
+            textBoxNextState.AllowComposedName = false;
+
+            textBoxCurrentState.AllowVariable = false;
+            textBoxNextState.AllowVariable = false;
+            textBoxMeaning.AllowVariable = false;
+            textBoxStyle.AllowVariable = false;
+
+            textBoxCurrentState.AllowUniversal = false;
+            textBoxNextState.AllowUniversal = false;
+            textBoxMeaning.AllowUniversal = false;
+            textBoxStyle.AllowUniversal = false;
+
+            _parentForm = form;
         }
 
 		public AddOrEditDialogueActionForm(MainForm form, bool isPlayerDialogue, Guid dialogId) : this(form)
@@ -23,10 +37,10 @@ namespace IntegratedAuthoringToolWF
 			buttonAddOrUpdate.Text = "Update";
 			_dialogueStateActionToEdit = form.LoadedAsset.GetDialogActionById(dialogId);
 
-			textBoxCurrentState.Text = _dialogueStateActionToEdit.CurrentState;
-			textBoxNextState.Text = _dialogueStateActionToEdit.NextState;
-            textBoxMeaning.Text = _dialogueStateActionToEdit.Meaning;
-            textBoxStyle.Text = _dialogueStateActionToEdit.Style;
+			textBoxCurrentState.Value = (WellFormedNames.Name)_dialogueStateActionToEdit.CurrentState;
+			textBoxNextState.Value = (WellFormedNames.Name)_dialogueStateActionToEdit.NextState;
+            textBoxMeaning.Value = (WellFormedNames.Name)_dialogueStateActionToEdit.Meaning;
+            textBoxStyle.Value = (WellFormedNames.Name)_dialogueStateActionToEdit.Style;
 			textBoxUtterance.Text = _dialogueStateActionToEdit.Utterance;
 		}
 
@@ -36,10 +50,10 @@ namespace IntegratedAuthoringToolWF
             {
                 var newDialogueAction = new DialogueStateActionDTO
                 {
-                    CurrentState = textBoxCurrentState.Text,
-					NextState = textBoxNextState.Text,
-					Meaning = textBoxMeaning.Text,
-                    Style = textBoxStyle.Text,
+                    CurrentState = textBoxCurrentState.Value.ToString(),
+					NextState = textBoxNextState.Value.ToString(),
+					Meaning = textBoxMeaning.Value.ToString(),
+                    Style = textBoxStyle.Value.ToString(),
                     Utterance = textBoxUtterance.Text
                 };
 

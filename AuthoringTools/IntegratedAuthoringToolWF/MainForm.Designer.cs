@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.textBoxScenarioName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.KeyPreview = true;
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.dataGridViewCharacters = new System.Windows.Forms.DataGridView();
@@ -249,7 +248,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1158, 680);
+            this.tabControl1.Size = new System.Drawing.Size(1157, 680);
             this.tabControl1.TabIndex = 20;
             // 
             // tabPageDialogue
@@ -264,7 +263,7 @@
             this.tabPageDialogue.Margin = new System.Windows.Forms.Padding(5);
             this.tabPageDialogue.Name = "tabPageDialogue";
             this.tabPageDialogue.Padding = new System.Windows.Forms.Padding(5);
-            this.tabPageDialogue.Size = new System.Drawing.Size(1150, 651);
+            this.tabPageDialogue.Size = new System.Drawing.Size(1149, 651);
             this.tabPageDialogue.TabIndex = 0;
             this.tabPageDialogue.Text = "Dialogue Editor";
             this.tabPageDialogue.UseVisualStyleBackColor = true;
@@ -283,7 +282,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(1134, 585);
+            this.groupBox2.Size = new System.Drawing.Size(1134, 582);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dialogue Actions";
@@ -310,8 +309,8 @@
             this.dataGridViewDialogueActions.RowHeadersVisible = false;
             this.dataGridViewDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(1118, 501);
-            this.dataGridViewDialogueActions.TabIndex = 13;
+            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(1118, 498);
+            this.dataGridViewDialogueActions.TabIndex = 14;
             // 
             // buttonPlayerDuplicateDialogueAction
             // 
@@ -319,7 +318,7 @@
             this.buttonPlayerDuplicateDialogueAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonPlayerDuplicateDialogueAction.Name = "buttonPlayerDuplicateDialogueAction";
             this.buttonPlayerDuplicateDialogueAction.Size = new System.Drawing.Size(93, 30);
-            this.buttonPlayerDuplicateDialogueAction.TabIndex = 15;
+            this.buttonPlayerDuplicateDialogueAction.TabIndex = 12;
             this.buttonPlayerDuplicateDialogueAction.Text = "Duplicate";
             this.buttonPlayerDuplicateDialogueAction.UseVisualStyleBackColor = true;
             this.buttonPlayerDuplicateDialogueAction.Click += new System.EventHandler(this.buttonDuplicateDialogueAction_Click);
@@ -330,7 +329,7 @@
             this.buttonPlayerEditDialogueAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonPlayerEditDialogueAction.Name = "buttonPlayerEditDialogueAction";
             this.buttonPlayerEditDialogueAction.Size = new System.Drawing.Size(72, 30);
-            this.buttonPlayerEditDialogueAction.TabIndex = 14;
+            this.buttonPlayerEditDialogueAction.TabIndex = 11;
             this.buttonPlayerEditDialogueAction.Text = "Edit";
             this.buttonPlayerEditDialogueAction.UseVisualStyleBackColor = true;
             this.buttonPlayerEditDialogueAction.Click += new System.EventHandler(this.buttonEditDialogueAction_Click);
@@ -352,7 +351,7 @@
             this.buttonPlayerRemoveDialogueAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonPlayerRemoveDialogueAction.Name = "buttonPlayerRemoveDialogueAction";
             this.buttonPlayerRemoveDialogueAction.Size = new System.Drawing.Size(93, 30);
-            this.buttonPlayerRemoveDialogueAction.TabIndex = 11;
+            this.buttonPlayerRemoveDialogueAction.TabIndex = 13;
             this.buttonPlayerRemoveDialogueAction.Text = "Remove";
             this.buttonPlayerRemoveDialogueAction.UseVisualStyleBackColor = true;
             this.buttonPlayerRemoveDialogueAction.Click += new System.EventHandler(this.buttonRemoveDialogueAction_Click);
@@ -360,11 +359,11 @@
             // buttonValidate
             // 
             this.buttonValidate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonValidate.Location = new System.Drawing.Point(513, 601);
+            this.buttonValidate.Location = new System.Drawing.Point(513, 598);
             this.buttonValidate.Margin = new System.Windows.Forms.Padding(4);
             this.buttonValidate.Name = "buttonValidate";
             this.buttonValidate.Size = new System.Drawing.Size(143, 30);
-            this.buttonValidate.TabIndex = 22;
+            this.buttonValidate.TabIndex = 19;
             this.buttonValidate.Text = "Validate";
             this.buttonValidate.UseVisualStyleBackColor = true;
             this.buttonValidate.Click += new System.EventHandler(this.buttonValidate_Click);
@@ -372,11 +371,11 @@
             // buttonTTS
             // 
             this.buttonTTS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonTTS.Location = new System.Drawing.Point(355, 601);
+            this.buttonTTS.Location = new System.Drawing.Point(355, 598);
             this.buttonTTS.Margin = new System.Windows.Forms.Padding(4);
             this.buttonTTS.Name = "buttonTTS";
             this.buttonTTS.Size = new System.Drawing.Size(151, 30);
-            this.buttonTTS.TabIndex = 20;
+            this.buttonTTS.TabIndex = 18;
             this.buttonTTS.Text = "Text-To-Speech";
             this.buttonTTS.UseVisualStyleBackColor = true;
             this.buttonTTS.Click += new System.EventHandler(this.buttonTTS_Click);
@@ -384,11 +383,11 @@
             // buttonImportTxt
             // 
             this.buttonImportTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonImportTxt.Location = new System.Drawing.Point(232, 601);
+            this.buttonImportTxt.Location = new System.Drawing.Point(232, 598);
             this.buttonImportTxt.Margin = new System.Windows.Forms.Padding(4);
             this.buttonImportTxt.Name = "buttonImportTxt";
             this.buttonImportTxt.Size = new System.Drawing.Size(115, 30);
-            this.buttonImportTxt.TabIndex = 21;
+            this.buttonImportTxt.TabIndex = 17;
             this.buttonImportTxt.Text = "Import Txt";
             this.buttonImportTxt.UseVisualStyleBackColor = true;
             this.buttonImportTxt.Click += new System.EventHandler(this.buttonImportTxt_Click);
@@ -396,11 +395,11 @@
             // buttonImportExcel
             // 
             this.buttonImportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonImportExcel.Location = new System.Drawing.Point(8, 601);
+            this.buttonImportExcel.Location = new System.Drawing.Point(8, 598);
             this.buttonImportExcel.Margin = new System.Windows.Forms.Padding(4);
             this.buttonImportExcel.Name = "buttonImportExcel";
             this.buttonImportExcel.Size = new System.Drawing.Size(101, 30);
-            this.buttonImportExcel.TabIndex = 6;
+            this.buttonImportExcel.TabIndex = 15;
             this.buttonImportExcel.Text = "Import Excel";
             this.buttonImportExcel.UseVisualStyleBackColor = true;
             this.buttonImportExcel.Click += new System.EventHandler(this.buttonImportExcel_Click);
@@ -408,11 +407,11 @@
             // buttonExportExcel
             // 
             this.buttonExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonExportExcel.Location = new System.Drawing.Point(117, 601);
+            this.buttonExportExcel.Location = new System.Drawing.Point(117, 598);
             this.buttonExportExcel.Margin = new System.Windows.Forms.Padding(4);
             this.buttonExportExcel.Name = "buttonExportExcel";
             this.buttonExportExcel.Size = new System.Drawing.Size(107, 30);
-            this.buttonExportExcel.TabIndex = 19;
+            this.buttonExportExcel.TabIndex = 16;
             this.buttonExportExcel.Text = "Export Excel";
             this.buttonExportExcel.UseVisualStyleBackColor = true;
             this.buttonExportExcel.Click += new System.EventHandler(this.buttonExportExcel_Click);
@@ -423,7 +422,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(5);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(5);
-            this.tabPage2.Size = new System.Drawing.Size(1150, 654);
+            this.tabPage2.Size = new System.Drawing.Size(1149, 654);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Role Play Character Editor";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -437,6 +436,7 @@
             this.EditorName = "Integrated Authoring Tool";
             this.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(1214, 549);
             this.Name = "MainForm";

@@ -33,12 +33,12 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.textBoxCurrentState = new System.Windows.Forms.TextBox();
-            this.textBoxNextState = new System.Windows.Forms.TextBox();
-            this.textBoxMeaning = new System.Windows.Forms.TextBox();
-            this.textBoxStyle = new System.Windows.Forms.TextBox();
             this.textBoxUtterance = new System.Windows.Forms.TextBox();
             this.buttonAddOrUpdate = new System.Windows.Forms.Button();
+            this.textBoxStyle = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
+            this.textBoxMeaning = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
+            this.textBoxNextState = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
+            this.textBoxCurrentState = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             this.SuspendLayout();
             // 
             // label2
@@ -79,9 +79,9 @@
             this.label5.Location = new System.Drawing.Point(415, 97);
             this.label5.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(48, 16);
+            this.label5.Size = new System.Drawing.Size(41, 16);
             this.label5.TabIndex = 4;
-            this.label5.Text = "Styles:";
+            this.label5.Text = "Style:";
             // 
             // label6
             // 
@@ -93,42 +93,6 @@
             this.label6.TabIndex = 5;
             this.label6.Text = "Utterance:";
             // 
-            // textBoxCurrentState
-            // 
-            this.textBoxCurrentState.Location = new System.Drawing.Point(144, 47);
-            this.textBoxCurrentState.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.textBoxCurrentState.Name = "textBoxCurrentState";
-            this.textBoxCurrentState.Size = new System.Drawing.Size(229, 22);
-            this.textBoxCurrentState.TabIndex = 7;
-            // 
-            // textBoxNextState
-            // 
-            this.textBoxNextState.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxNextState.Location = new System.Drawing.Point(503, 47);
-            this.textBoxNextState.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.textBoxNextState.Name = "textBoxNextState";
-            this.textBoxNextState.Size = new System.Drawing.Size(249, 22);
-            this.textBoxNextState.TabIndex = 8;
-            // 
-            // textBoxMeaning
-            // 
-            this.textBoxMeaning.Location = new System.Drawing.Point(144, 95);
-            this.textBoxMeaning.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.textBoxMeaning.Name = "textBoxMeaning";
-            this.textBoxMeaning.Size = new System.Drawing.Size(229, 22);
-            this.textBoxMeaning.TabIndex = 9;
-            // 
-            // textBoxStyle
-            // 
-            this.textBoxStyle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxStyle.Location = new System.Drawing.Point(503, 95);
-            this.textBoxStyle.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
-            this.textBoxStyle.Name = "textBoxStyle";
-            this.textBoxStyle.Size = new System.Drawing.Size(249, 22);
-            this.textBoxStyle.TabIndex = 10;
-            // 
             // textBoxUtterance
             // 
             this.textBoxUtterance.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -137,7 +101,7 @@
             this.textBoxUtterance.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBoxUtterance.Name = "textBoxUtterance";
             this.textBoxUtterance.Size = new System.Drawing.Size(607, 22);
-            this.textBoxUtterance.TabIndex = 11;
+            this.textBoxUtterance.TabIndex = 17;
             // 
             // buttonAddOrUpdate
             // 
@@ -147,22 +111,70 @@
             this.buttonAddOrUpdate.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.buttonAddOrUpdate.Name = "buttonAddOrUpdate";
             this.buttonAddOrUpdate.Size = new System.Drawing.Size(101, 28);
-            this.buttonAddOrUpdate.TabIndex = 12;
+            this.buttonAddOrUpdate.TabIndex = 19;
             this.buttonAddOrUpdate.Text = "Add";
             this.buttonAddOrUpdate.UseVisualStyleBackColor = true;
             this.buttonAddOrUpdate.Click += new System.EventHandler(this.buttonAddOrUpdate_Click);
+            // 
+            // textBoxStyle
+            // 
+            this.textBoxStyle.AllowComposedName = true;
+            this.textBoxStyle.AllowLiteral = true;
+            this.textBoxStyle.AllowNil = true;
+            this.textBoxStyle.AllowUniversal = true;
+            this.textBoxStyle.AllowVariable = true;
+            this.textBoxStyle.Location = new System.Drawing.Point(503, 95);
+            this.textBoxStyle.Name = "textBoxStyle";
+            this.textBoxStyle.Size = new System.Drawing.Size(248, 22);
+            this.textBoxStyle.TabIndex = 16;
+            // 
+            // textBoxMeaning
+            // 
+            this.textBoxMeaning.AllowComposedName = true;
+            this.textBoxMeaning.AllowLiteral = true;
+            this.textBoxMeaning.AllowNil = true;
+            this.textBoxMeaning.AllowUniversal = true;
+            this.textBoxMeaning.AllowVariable = true;
+            this.textBoxMeaning.Location = new System.Drawing.Point(144, 95);
+            this.textBoxMeaning.Name = "textBoxMeaning";
+            this.textBoxMeaning.Size = new System.Drawing.Size(229, 22);
+            this.textBoxMeaning.TabIndex = 15;
+            // 
+            // textBoxNextState
+            // 
+            this.textBoxNextState.AllowComposedName = true;
+            this.textBoxNextState.AllowLiteral = true;
+            this.textBoxNextState.AllowNil = true;
+            this.textBoxNextState.AllowUniversal = true;
+            this.textBoxNextState.AllowVariable = true;
+            this.textBoxNextState.Location = new System.Drawing.Point(503, 47);
+            this.textBoxNextState.Name = "textBoxNextState";
+            this.textBoxNextState.Size = new System.Drawing.Size(248, 22);
+            this.textBoxNextState.TabIndex = 14;
+            // 
+            // textBoxCurrentState
+            // 
+            this.textBoxCurrentState.AllowComposedName = true;
+            this.textBoxCurrentState.AllowLiteral = true;
+            this.textBoxCurrentState.AllowNil = true;
+            this.textBoxCurrentState.AllowUniversal = true;
+            this.textBoxCurrentState.AllowVariable = true;
+            this.textBoxCurrentState.Location = new System.Drawing.Point(144, 47);
+            this.textBoxCurrentState.Name = "textBoxCurrentState";
+            this.textBoxCurrentState.Size = new System.Drawing.Size(229, 22);
+            this.textBoxCurrentState.TabIndex = 13;
             // 
             // AddOrEditDialogueActionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(789, 263);
-            this.Controls.Add(this.buttonAddOrUpdate);
-            this.Controls.Add(this.textBoxUtterance);
             this.Controls.Add(this.textBoxStyle);
             this.Controls.Add(this.textBoxMeaning);
             this.Controls.Add(this.textBoxNextState);
             this.Controls.Add(this.textBoxCurrentState);
+            this.Controls.Add(this.buttonAddOrUpdate);
+            this.Controls.Add(this.textBoxUtterance);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
@@ -187,11 +199,11 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox textBoxCurrentState;
-        private System.Windows.Forms.TextBox textBoxNextState;
-        private System.Windows.Forms.TextBox textBoxMeaning;
-        private System.Windows.Forms.TextBox textBoxStyle;
         private System.Windows.Forms.TextBox textBoxUtterance;
         private System.Windows.Forms.Button buttonAddOrUpdate;
+        private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxCurrentState;
+        private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxNextState;
+        private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxMeaning;
+        private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxStyle;
     }
 }
