@@ -55,7 +55,7 @@
             // addOrEditButton
             // 
             this.addOrEditButton.Location = new System.Drawing.Point(172, 257);
-            this.addOrEditButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.addOrEditButton.Margin = new System.Windows.Forms.Padding(4);
             this.addOrEditButton.Name = "addOrEditButton";
             this.addOrEditButton.Size = new System.Drawing.Size(100, 28);
             this.addOrEditButton.TabIndex = 25;
@@ -66,7 +66,7 @@
             // textBoxAction
             // 
             this.textBoxAction.Location = new System.Drawing.Point(53, 66);
-            this.textBoxAction.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxAction.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxAction.Name = "textBoxAction";
             this.textBoxAction.Size = new System.Drawing.Size(345, 22);
             this.textBoxAction.TabIndex = 17;
@@ -74,7 +74,7 @@
             // textBoxTarget
             // 
             this.textBoxTarget.Location = new System.Drawing.Point(53, 129);
-            this.textBoxTarget.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxTarget.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxTarget.Name = "textBoxTarget";
             this.textBoxTarget.Size = new System.Drawing.Size(345, 22);
             this.textBoxTarget.TabIndex = 18;
@@ -106,7 +106,7 @@
             // textBoxPriority
             // 
             this.textBoxPriority.Location = new System.Drawing.Point(53, 193);
-            this.textBoxPriority.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxPriority.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxPriority.Name = "textBoxPriority";
             this.textBoxPriority.Size = new System.Drawing.Size(345, 22);
             this.textBoxPriority.TabIndex = 21;
@@ -127,11 +127,14 @@
             this.Controls.Add(this.label2);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "AddOrEditReactionForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Reaction";
+            this.Load += new System.EventHandler(this.AddOrEditReactionForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddOrEditReactionForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.emotionalAppraisalAssetBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.addBeliefErrorProvider)).EndInit();
             this.ResumeLayout(false);

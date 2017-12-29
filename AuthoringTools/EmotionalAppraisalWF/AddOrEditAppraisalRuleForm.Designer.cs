@@ -51,7 +51,7 @@
             // addOrEditButton
             // 
             this.addOrEditButton.Location = new System.Drawing.Point(155, 540);
-            this.addOrEditButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.addOrEditButton.Margin = new System.Windows.Forms.Padding(4);
             this.addOrEditButton.Name = "addOrEditButton";
             this.addOrEditButton.Size = new System.Drawing.Size(100, 28);
             this.addOrEditButton.TabIndex = 20;
@@ -72,7 +72,7 @@
             this.comboBoxEventType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxEventType.FormattingEnabled = true;
             this.comboBoxEventType.Location = new System.Drawing.Point(43, 60);
-            this.comboBoxEventType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBoxEventType.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxEventType.Name = "comboBoxEventType";
             this.comboBoxEventType.Size = new System.Drawing.Size(343, 24);
             this.comboBoxEventType.TabIndex = 32;
@@ -81,7 +81,7 @@
             // textBoxTarget
             // 
             this.textBoxTarget.Location = new System.Drawing.Point(43, 308);
-            this.textBoxTarget.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxTarget.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxTarget.Name = "textBoxTarget";
             this.textBoxTarget.Size = new System.Drawing.Size(343, 22);
             this.textBoxTarget.TabIndex = 39;
@@ -99,7 +99,7 @@
             // textBoxObject
             // 
             this.textBoxObject.Location = new System.Drawing.Point(43, 226);
-            this.textBoxObject.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxObject.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxObject.Name = "textBoxObject";
             this.textBoxObject.Size = new System.Drawing.Size(343, 22);
             this.textBoxObject.TabIndex = 37;
@@ -118,7 +118,7 @@
             // textBoxSubject
             // 
             this.textBoxSubject.Location = new System.Drawing.Point(43, 146);
-            this.textBoxSubject.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxSubject.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxSubject.Name = "textBoxSubject";
             this.textBoxSubject.Size = new System.Drawing.Size(343, 22);
             this.textBoxSubject.TabIndex = 35;
@@ -148,7 +148,7 @@
             // textBoxDesirability
             // 
             this.textBoxDesirability.Location = new System.Drawing.Point(43, 396);
-            this.textBoxDesirability.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxDesirability.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxDesirability.Name = "textBoxDesirability";
             this.textBoxDesirability.Size = new System.Drawing.Size(343, 22);
             this.textBoxDesirability.TabIndex = 41;
@@ -166,7 +166,7 @@
             // textBoxPraiseworthiness
             // 
             this.textBoxPraiseworthiness.Location = new System.Drawing.Point(44, 485);
-            this.textBoxPraiseworthiness.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxPraiseworthiness.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxPraiseworthiness.Name = "textBoxPraiseworthiness";
             this.textBoxPraiseworthiness.Size = new System.Drawing.Size(343, 22);
             this.textBoxPraiseworthiness.TabIndex = 43;
@@ -202,11 +202,14 @@
             this.Controls.Add(this.addOrEditButton);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "AddOrEditAppraisalRuleForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Appraisal Rule";
+            this.Load += new System.EventHandler(this.AddOrEditAppraisalRuleForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddOrEditAppraisalRuleForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.addBeliefErrorProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emotionalAppraisalAssetBindingSource)).EndInit();
             this.ResumeLayout(false);

@@ -59,5 +59,17 @@ namespace EmotionalDecisionMakingWF
 	        this.Close();
         }
 
+        private void AddOrEditReactionForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void AddOrEditReactionForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close();
+            }
+        }
     }
 }

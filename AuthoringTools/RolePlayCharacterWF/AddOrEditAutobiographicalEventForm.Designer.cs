@@ -38,10 +38,10 @@
             this.labelTarget = new System.Windows.Forms.Label();
             this.comboBoxEventType = new System.Windows.Forms.ComboBox();
             this.emotionalAppraisalAssetBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.textBoxTime = new GAIPS.AssetEditorTools.TypedTextBoxes.Int32FieldBox();
-            this.textBoxTarget = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
-            this.textBoxObject = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             this.textBoxSubject = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
+            this.textBoxObject = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
+            this.textBoxTarget = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
+            this.textBoxTime = new GAIPS.AssetEditorTools.TypedTextBoxes.Int32FieldBox();
             ((System.ComponentModel.ISupportInitialize)(this.addBeliefErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emotionalAppraisalAssetBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -132,24 +132,17 @@
             // 
             this.emotionalAppraisalAssetBindingSource.DataSource = typeof(EmotionalAppraisal.EmotionalAppraisalAsset);
             // 
-            // textBoxTime
+            // textBoxSubject
             // 
-            this.textBoxTime.Location = new System.Drawing.Point(52, 403);
-            this.textBoxTime.Name = "textBoxTime";
-            this.textBoxTime.Size = new System.Drawing.Size(302, 22);
-            this.textBoxTime.TabIndex = 19;
-            // 
-            // textBoxTarget
-            // 
-            this.textBoxTarget.AllowComposedName = true;
-            this.textBoxTarget.AllowLiteral = true;
-            this.textBoxTarget.AllowNil = true;
-            this.textBoxTarget.AllowUniversal = true;
-            this.textBoxTarget.AllowVariable = true;
-            this.textBoxTarget.Location = new System.Drawing.Point(53, 318);
-            this.textBoxTarget.Name = "textBoxTarget";
-            this.textBoxTarget.Size = new System.Drawing.Size(301, 22);
-            this.textBoxTarget.TabIndex = 18;
+            this.textBoxSubject.AllowComposedName = true;
+            this.textBoxSubject.AllowLiteral = true;
+            this.textBoxSubject.AllowNil = true;
+            this.textBoxSubject.AllowUniversal = true;
+            this.textBoxSubject.AllowVariable = true;
+            this.textBoxSubject.Location = new System.Drawing.Point(53, 158);
+            this.textBoxSubject.Name = "textBoxSubject";
+            this.textBoxSubject.Size = new System.Drawing.Size(301, 22);
+            this.textBoxSubject.TabIndex = 16;
             // 
             // textBoxObject
             // 
@@ -163,17 +156,24 @@
             this.textBoxObject.Size = new System.Drawing.Size(301, 22);
             this.textBoxObject.TabIndex = 17;
             // 
-            // textBoxSubject
+            // textBoxTarget
             // 
-            this.textBoxSubject.AllowComposedName = true;
-            this.textBoxSubject.AllowLiteral = true;
-            this.textBoxSubject.AllowNil = true;
-            this.textBoxSubject.AllowUniversal = true;
-            this.textBoxSubject.AllowVariable = true;
-            this.textBoxSubject.Location = new System.Drawing.Point(53, 158);
-            this.textBoxSubject.Name = "textBoxSubject";
-            this.textBoxSubject.Size = new System.Drawing.Size(301, 22);
-            this.textBoxSubject.TabIndex = 16;
+            this.textBoxTarget.AllowComposedName = true;
+            this.textBoxTarget.AllowLiteral = true;
+            this.textBoxTarget.AllowNil = true;
+            this.textBoxTarget.AllowUniversal = true;
+            this.textBoxTarget.AllowVariable = true;
+            this.textBoxTarget.Location = new System.Drawing.Point(53, 318);
+            this.textBoxTarget.Name = "textBoxTarget";
+            this.textBoxTarget.Size = new System.Drawing.Size(301, 22);
+            this.textBoxTarget.TabIndex = 18;
+            // 
+            // textBoxTime
+            // 
+            this.textBoxTime.Location = new System.Drawing.Point(52, 403);
+            this.textBoxTime.Name = "textBoxTime";
+            this.textBoxTime.Size = new System.Drawing.Size(302, 22);
+            this.textBoxTime.TabIndex = 19;
             // 
             // AddOrEditAutobiographicalEventForm
             // 
@@ -194,12 +194,14 @@
             this.Controls.Add(this.addOrEditButton);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "AddOrEditAutobiographicalEventForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Event Record";
             this.Load += new System.EventHandler(this.AddOrEditAutobiographicalEventForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddOrEditAutobiographicalEventForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.addBeliefErrorProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emotionalAppraisalAssetBindingSource)).EndInit();
             this.ResumeLayout(false);

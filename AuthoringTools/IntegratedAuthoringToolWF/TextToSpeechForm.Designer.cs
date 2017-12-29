@@ -66,7 +66,7 @@
             this.textBox1.AcceptsReturn = true;
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBox1.Location = new System.Drawing.Point(4, 44);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -81,7 +81,7 @@
             this._testSpeechButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this._testSpeechButton.Dock = System.Windows.Forms.DockStyle.Top;
             this._testSpeechButton.Location = new System.Drawing.Point(4, 4);
-            this._testSpeechButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this._testSpeechButton.Margin = new System.Windows.Forms.Padding(4);
             this._testSpeechButton.Name = "_testSpeechButton";
             this._testSpeechButton.Size = new System.Drawing.Size(109, 26);
             this._testSpeechButton.TabIndex = 1;
@@ -94,7 +94,7 @@
             this._voiceComboBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this._voiceComboBox.FormattingEnabled = true;
             this._voiceComboBox.Location = new System.Drawing.Point(4, 4);
-            this._voiceComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this._voiceComboBox.Margin = new System.Windows.Forms.Padding(4);
             this._voiceComboBox.Name = "_voiceComboBox";
             this._voiceComboBox.Size = new System.Drawing.Size(482, 24);
             this._voiceComboBox.TabIndex = 2;
@@ -104,7 +104,7 @@
             // 
             this._speachRateSlider.Dock = System.Windows.Forms.DockStyle.Fill;
             this._speachRateSlider.Location = new System.Drawing.Point(4, 55);
-            this._speachRateSlider.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this._speachRateSlider.Margin = new System.Windows.Forms.Padding(4);
             this._speachRateSlider.Maximum = 3000;
             this._speachRateSlider.Minimum = 300;
             this._speachRateSlider.Name = "_speachRateSlider";
@@ -128,7 +128,7 @@
             // 
             this._pitchSlider.Dock = System.Windows.Forms.DockStyle.Fill;
             this._pitchSlider.Location = new System.Drawing.Point(4, 157);
-            this._pitchSlider.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this._pitchSlider.Margin = new System.Windows.Forms.Padding(4);
             this._pitchSlider.Minimum = -10;
             this._pitchSlider.Name = "_pitchSlider";
             this._pitchSlider.Size = new System.Drawing.Size(482, 43);
@@ -140,7 +140,7 @@
             // 
             this._generateAllButton.Dock = System.Windows.Forms.DockStyle.Top;
             this._generateAllButton.Location = new System.Drawing.Point(4, 209);
-            this._generateAllButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this._generateAllButton.Margin = new System.Windows.Forms.Padding(4);
             this._generateAllButton.Name = "_generateAllButton";
             this._generateAllButton.Size = new System.Drawing.Size(109, 42);
             this._generateAllButton.TabIndex = 7;
@@ -151,7 +151,7 @@
             // _rateTextBox
             // 
             this._rateTextBox.Location = new System.Drawing.Point(104, 4);
-            this._rateTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this._rateTextBox.Margin = new System.Windows.Forms.Padding(4);
             this._rateTextBox.Name = "_rateTextBox";
             this._rateTextBox.Size = new System.Drawing.Size(132, 22);
             this._rateTextBox.TabIndex = 8;
@@ -162,7 +162,7 @@
             this._dialogOptions.Dock = System.Windows.Forms.DockStyle.Fill;
             this._dialogOptions.FormattingEnabled = true;
             this._dialogOptions.Location = new System.Drawing.Point(130, 4);
-            this._dialogOptions.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this._dialogOptions.Margin = new System.Windows.Forms.Padding(4);
             this._dialogOptions.Name = "_dialogOptions";
             this._dialogOptions.Size = new System.Drawing.Size(489, 24);
             this._dialogOptions.TabIndex = 9;
@@ -192,7 +192,7 @@
             this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(4, 4);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -208,7 +208,7 @@
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel3, 0, 2);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(7, 6);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 3;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -228,7 +228,7 @@
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(4, 288);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -245,7 +245,7 @@
             this.tableLayoutPanel5.Controls.Add(this._generateButton, 0, 4);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel5.Location = new System.Drawing.Point(502, 4);
-            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 6;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -262,7 +262,7 @@
             this._visemeDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this._visemeDisplay.ErrorImage = global::IntegratedAuthoringToolWF.Properties.Resources._0_silence;
             this._visemeDisplay.Location = new System.Drawing.Point(5, 44);
-            this._visemeDisplay.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this._visemeDisplay.Margin = new System.Windows.Forms.Padding(4);
             this._visemeDisplay.Name = "_visemeDisplay";
             this._visemeDisplay.Size = new System.Drawing.Size(107, 101);
             this._visemeDisplay.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -274,7 +274,7 @@
             this._generateButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this._generateButton.Dock = System.Windows.Forms.DockStyle.Top;
             this._generateButton.Location = new System.Drawing.Point(4, 159);
-            this._generateButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this._generateButton.Margin = new System.Windows.Forms.Padding(4);
             this._generateButton.Name = "_generateButton";
             this._generateButton.Size = new System.Drawing.Size(109, 42);
             this._generateButton.TabIndex = 9;
@@ -295,7 +295,7 @@
             this.tableLayoutPanel4.Controls.Add(this._speachRateSlider, 0, 1);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(4, 4);
-            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 5;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
@@ -328,7 +328,7 @@
             this.label3.AutoSize = true;
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label3.Location = new System.Drawing.Point(4, 4);
-            this.label3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.label3.Margin = new System.Windows.Forms.Padding(4);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(92, 43);
             this.label3.TabIndex = 7;
@@ -355,7 +355,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(4, 4);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.label2.Margin = new System.Windows.Forms.Padding(4);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(83, 16);
             this.label2.TabIndex = 9;
@@ -368,7 +368,7 @@
             this.ClientSize = new System.Drawing.Size(645, 567);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MinimumSize = new System.Drawing.Size(661, 606);
             this.Name = "TextToSpeechForm";
             this.Padding = new System.Windows.Forms.Padding(7, 6, 7, 6);

@@ -696,28 +696,45 @@ namespace IntegratedAuthoringToolWF
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Control && e.KeyCode == Keys.D)
-            {
-                if (this.dataGridViewDialogueActions.Focused)
-                {
-                    this.buttonDuplicateDialogueAction_Click(sender, e);
-                }
-            }
+       
+        }
 
-            if (e.KeyCode == Keys.Delete)
+        private void dataGridViewDialogueActions_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridViewDialogueActions_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+           
+        }
+
+        private void dataGridViewDialogueActions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex != -1) //exclude header cells
             {
-                if (this.dataGridViewDialogueActions.Focused)
-                {
+                this.buttonEditDialogueAction_Click(sender, e);
+            }
+        }
+
+        private void dataGridViewDialogueActions_KeyPress(object sender, KeyPressEventArgs e)
+        {
+           
+        }
+
+        private void dataGridViewDialogueActions_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Enter:
+                     this.buttonEditDialogueAction_Click(sender, e);
+                     break;
+                case Keys.D:
+                    if(e.Control) this.buttonDuplicateDialogueAction_Click(sender, e);
+                    break;
+                case Keys.Delete:
                     this.buttonRemoveDialogueAction_Click(sender, e);
-                }
-            }
-
-            if (e.KeyCode == Keys.Enter)
-            {
-                if (this.dataGridViewDialogueActions.Focused)
-                {
-                    this.buttonEditDialogueAction_Click(sender, e);
-                }
+                    break;
             }
         }
     }

@@ -81,5 +81,10 @@ namespace IntegratedAuthoringToolWF
                 this.Close();
             }
         }
+
+        private void AddOrEditDialogueActionForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

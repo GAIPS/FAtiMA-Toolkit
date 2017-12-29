@@ -25,7 +25,12 @@ namespace SocialImportanceWF
 			_valueFieldBox.Value = dto.Value;
 			_targetVariableBox.Value = (Name) dto.Target;
 
-			button1.Text = (_dto.Id == Guid.Empty) ? "Add" : "Update";
+            if(_dto.Id != Guid.Empty)
+            {
+                this.Text = "Edit SI Attribution Rule";
+                button1.Text = "Update";
+            }
+			
 		}
 
 		private void Update_Rule(object sender, EventArgs evt)

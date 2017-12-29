@@ -51,7 +51,7 @@
             // addOrEditButton
             // 
             this.addOrEditButton.Location = new System.Drawing.Point(175, 116);
-            this.addOrEditButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.addOrEditButton.Margin = new System.Windows.Forms.Padding(4);
             this.addOrEditButton.Name = "addOrEditButton";
             this.addOrEditButton.Size = new System.Drawing.Size(100, 28);
             this.addOrEditButton.TabIndex = 20;
@@ -64,7 +64,7 @@
             this.comboBoxEmotionType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxEmotionType.FormattingEnabled = true;
             this.comboBoxEmotionType.Location = new System.Drawing.Point(53, 65);
-            this.comboBoxEmotionType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBoxEmotionType.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxEmotionType.Name = "comboBoxEmotionType";
             this.comboBoxEmotionType.Size = new System.Drawing.Size(116, 24);
             this.comboBoxEmotionType.TabIndex = 19;
@@ -73,7 +73,7 @@
             // textBoxCauseId
             // 
             this.textBoxCauseId.Location = new System.Drawing.Point(288, 65);
-            this.textBoxCauseId.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxCauseId.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxCauseId.Name = "textBoxCauseId";
             this.textBoxCauseId.Size = new System.Drawing.Size(97, 22);
             this.textBoxCauseId.TabIndex = 17;
@@ -117,7 +117,7 @@
             "9",
             "10"});
             this.comboBoxIntensity.Location = new System.Drawing.Point(195, 65);
-            this.comboBoxIntensity.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBoxIntensity.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxIntensity.Name = "comboBoxIntensity";
             this.comboBoxIntensity.Size = new System.Drawing.Size(64, 24);
             this.comboBoxIntensity.TabIndex = 21;
@@ -139,12 +139,14 @@
             this.Controls.Add(this.label2);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "AddOrEditEmotionForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Emotion";
             this.Load += new System.EventHandler(this.AddOrEditBeliefForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddOrEditEmotionForm_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

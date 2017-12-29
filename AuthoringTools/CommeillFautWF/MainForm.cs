@@ -18,7 +18,6 @@ namespace CommeillFautWF
     public partial class MainForm : BaseCIFForm
     {
         private SocialExchangesVM _socialExchangesVM;
-        private TriggerRulesVM _triggerRules;
 
         public MainForm()
         {
@@ -35,16 +34,9 @@ namespace CommeillFautWF
             genericPropertyDataGridControler1.GetColumnByName("Target").Visible = false;
             genericPropertyDataGridControler1.GetColumnByName("Id").Visible = false;
             genericPropertyDataGridControler1.GetColumnByName("Conditions").Visible = false;
-//            genericPropertyDataGridControler1.GetColumnByName("Priority").Visible = false;
+            genericPropertyDataGridControler1.GetColumnByName("Priority").Visible = false;
+            genericPropertyDataGridControler1.GetColumnByName("Type").Visible = false;
             genericPropertyDataGridControler1.GetColumnByName("InfluenceRule").Visible = false;
-
-
-            _triggerRules = new TriggerRulesVM(this, asset);
-            genericPropertyDataGridControler2.DataController = _triggerRules;
-            genericPropertyDataGridControler2.OnSelectionChanged += OnRuleSelectionChanged;
-            conditionSetEditorControl1.View = _triggerRules.ConditionSetView;
-
-
         }
 
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)

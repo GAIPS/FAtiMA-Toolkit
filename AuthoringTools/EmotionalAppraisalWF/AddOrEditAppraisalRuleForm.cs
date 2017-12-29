@@ -87,5 +87,18 @@ namespace EmotionalAppraisalWF
         {
 
         }
+
+        private void AddOrEditAppraisalRuleForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void AddOrEditAppraisalRuleForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close();
+            }
+        }
     }
 }

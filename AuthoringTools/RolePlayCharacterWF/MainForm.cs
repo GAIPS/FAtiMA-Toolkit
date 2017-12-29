@@ -285,22 +285,10 @@ namespace RolePlayCharacterWF
         private void addBeliefButton_Click(object sender, EventArgs e)
         {
             var addBeliefForm = new AddOrEditBeliefForm(_knowledgeBaseVM);
-            addBeliefForm.ShowDialog();
+            addBeliefForm.ShowDialog(this);
         }
 
-        private void editButton_Click(object sender, EventArgs e)
-        {
-            if (dataGridViewBeliefs.SelectedRows.Count == 1)
-            {
-
-                var selectedBelief = ((ObjectView<RolePlayCharacter.BeliefDTO>)dataGridViewBeliefs.SelectedRows[0].DataBoundItem).Object;
-                
-                var addBeliefForm = new AddOrEditBeliefForm(_knowledgeBaseVM, selectedBelief);
-                addBeliefForm.ShowDialog();
-            }
-            
-        }
-
+  
         private void removeBeliefButton_Click(object sender, EventArgs e)
         {
             IList<RolePlayCharacter.BeliefDTO> beliefsToRemove = new List<RolePlayCharacter.BeliefDTO>();
@@ -316,7 +304,7 @@ namespace RolePlayCharacterWF
         {
             if (e.RowIndex != -1) //exclude header cells
             {
-                this.editButton_Click(sender, e);
+                this.buttonEdit_Click(sender, e);
             }
         }
 
@@ -557,6 +545,39 @@ namespace RolePlayCharacterWF
         private void groupBox7_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonEdit_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewBeliefs.SelectedRows.Count == 1)
+            {
+                var selectedBelief = ((ObjectView<RolePlayCharacter.BeliefDTO>)dataGridViewBeliefs.SelectedRows[0].DataBoundItem).Object;
+
+                var addBeliefForm = new AddOrEditBeliefForm(_knowledgeBaseVM, selectedBelief);
+                addBeliefForm.ShowDialog();
+            }
+        }
+
+        private void duplicateButton_Click(object sender, EventArgs e)
+        {
+            if (dataGridViewAM.SelectedRows.Count == 1)
+            {
+                var selectedEvent = ((ObjectView<EventDTO>)dataGridViewAM.SelectedRows[0].DataBoundItem).Object;
+                _autobiographicalMemoryVM.AddEventRecord(selectedEvent);
+            }
+        }
+
+        private void dataGridViewBeliefs_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Enter:
+                    this.buttonEdit_Click(sender, e);
+                    break;
+                case Keys.Delete:
+                    this.removeBeliefButton_Click(sender, e);
+                    break;
+            }
         }
     }
 }

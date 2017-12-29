@@ -59,7 +59,7 @@
             this.splitContainer1.Panel1.Controls.Add(this.label2);
             this.splitContainer1.Panel1.Controls.Add(this._ruleDescriptionTextBox);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
-            this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(10, 10, 10, 10);
+            this.splitContainer1.Panel1.Padding = new System.Windows.Forms.Padding(10);
             this.splitContainer1.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
             // 
             // splitContainer1.Panel2
@@ -78,7 +78,9 @@
             // 
             // _targetVariableBox
             // 
+            this._targetVariableBox.AllowComposedName = true;
             this._targetVariableBox.AllowLiteral = false;
+            this._targetVariableBox.AllowNil = true;
             this._targetVariableBox.AllowUniversal = false;
             this._targetVariableBox.AllowVariable = true;
             this._targetVariableBox.Location = new System.Drawing.Point(234, 65);
@@ -160,7 +162,7 @@
             this.Controls.Add(this.splitContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "AddOrEditInfluenceRuleForm";
-            this.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.Padding = new System.Windows.Forms.Padding(3);
             this.Load += new System.EventHandler(this.AddOrEditInfluenceRuleForm_Load);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();

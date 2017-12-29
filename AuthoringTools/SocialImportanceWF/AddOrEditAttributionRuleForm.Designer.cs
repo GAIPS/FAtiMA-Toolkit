@@ -29,14 +29,14 @@
 		private void InitializeComponent()
 		{
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this._valueFieldBox = new GAIPS.AssetEditorTools.TypedTextBoxes.Int32FieldBox();
-            this._targetVariableBox = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this._ruleDescriptionTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.button1 = new System.Windows.Forms.Button();
+            this._valueFieldBox = new GAIPS.AssetEditorTools.TypedTextBoxes.Int32FieldBox();
+            this._targetVariableBox = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -47,8 +47,10 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer1.IsSplitterFixed = true;
             this.splitContainer1.Location = new System.Drawing.Point(4, 4);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -69,26 +71,7 @@
             this.splitContainer1.SplitterDistance = 136;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // _valueFieldBox
-            // 
-            this._valueFieldBox.Location = new System.Drawing.Point(17, 86);
-            this._valueFieldBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this._valueFieldBox.Name = "_valueFieldBox";
-            this._valueFieldBox.Size = new System.Drawing.Size(285, 22);
-            this._valueFieldBox.TabIndex = 6;
-            this._valueFieldBox.TextChanged += new System.EventHandler(this._valueFieldBox_TextChanged);
-            // 
-            // _targetVariableBox
-            // 
-            this._targetVariableBox.AllowLiteral = false;
-            this._targetVariableBox.AllowUniversal = false;
-            this._targetVariableBox.AllowVariable = true;
-            this._targetVariableBox.Location = new System.Drawing.Point(312, 86);
-            this._targetVariableBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this._targetVariableBox.Name = "_targetVariableBox";
-            this._targetVariableBox.Size = new System.Drawing.Size(277, 22);
-            this._targetVariableBox.TabIndex = 7;
+            this.splitContainer1.TabStop = false;
             // 
             // label3
             // 
@@ -113,7 +96,7 @@
             // _ruleDescriptionTextBox
             // 
             this._ruleDescriptionTextBox.Location = new System.Drawing.Point(17, 33);
-            this._ruleDescriptionTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this._ruleDescriptionTextBox.Margin = new System.Windows.Forms.Padding(4);
             this._ruleDescriptionTextBox.Name = "_ruleDescriptionTextBox";
             this._ruleDescriptionTextBox.Size = new System.Drawing.Size(572, 22);
             this._ruleDescriptionTextBox.TabIndex = 1;
@@ -150,13 +133,35 @@
             // 
             this.button1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.button1.Location = new System.Drawing.Point(237, 4);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(132, 31);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "button1";
+            this.button1.TabIndex = 4;
+            this.button1.Text = "Add";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Update_Rule);
+            // 
+            // _valueFieldBox
+            // 
+            this._valueFieldBox.Location = new System.Drawing.Point(17, 86);
+            this._valueFieldBox.Margin = new System.Windows.Forms.Padding(4);
+            this._valueFieldBox.Name = "_valueFieldBox";
+            this._valueFieldBox.Size = new System.Drawing.Size(285, 22);
+            this._valueFieldBox.TabIndex = 2;
+            this._valueFieldBox.TextChanged += new System.EventHandler(this._valueFieldBox_TextChanged);
+            // 
+            // _targetVariableBox
+            // 
+            this._targetVariableBox.AllowComposedName = true;
+            this._targetVariableBox.AllowLiteral = false;
+            this._targetVariableBox.AllowNil = true;
+            this._targetVariableBox.AllowUniversal = false;
+            this._targetVariableBox.AllowVariable = true;
+            this._targetVariableBox.Location = new System.Drawing.Point(312, 86);
+            this._targetVariableBox.Margin = new System.Windows.Forms.Padding(4);
+            this._targetVariableBox.Name = "_targetVariableBox";
+            this._targetVariableBox.Size = new System.Drawing.Size(277, 22);
+            this._targetVariableBox.TabIndex = 3;
             // 
             // AddOrEditAttributionRuleForm
             // 
@@ -166,9 +171,11 @@
             this.Controls.Add(this.splitContainer1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "AddOrEditAttributionRuleForm";
-            this.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Padding = new System.Windows.Forms.Padding(4);
+            this.Text = "Add SI Attribution Rule";
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);

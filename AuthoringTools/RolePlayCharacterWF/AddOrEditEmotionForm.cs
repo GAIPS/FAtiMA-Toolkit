@@ -102,5 +102,13 @@ namespace RolePlayCharacterWF
             }
             
       }
+
+      private void AddOrEditEmotionForm_KeyDown(object sender, KeyEventArgs e)
+      {
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close();
+            }
+      }
     }
 }

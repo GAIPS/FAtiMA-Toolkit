@@ -155,9 +155,12 @@ namespace CommeillFautWF
 
         }
 
-        
-    
-
-      
+        private void AddSocialExchange_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close();
+            }
+        }
     }
 }

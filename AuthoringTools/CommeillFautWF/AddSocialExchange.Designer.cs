@@ -114,7 +114,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.conditionSetEditorControl1.Location = new System.Drawing.Point(7, 26);
-            this.conditionSetEditorControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.conditionSetEditorControl1.Margin = new System.Windows.Forms.Padding(4);
             this.conditionSetEditorControl1.Name = "conditionSetEditorControl1";
             this.conditionSetEditorControl1.Size = new System.Drawing.Size(773, 210);
             this.conditionSetEditorControl1.TabIndex = 3;
@@ -147,10 +147,12 @@
             this.Controls.Add(this.NameBox);
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "AddSocialExchange";
             this.Text = "Add Social Exchange";
             this.Load += new System.EventHandler(this.AddSocialExchange_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddSocialExchange_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.influenceRuleBindingSource)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);

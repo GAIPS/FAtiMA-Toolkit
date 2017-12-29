@@ -56,7 +56,7 @@
             // addOrEditButton
             // 
             this.addOrEditButton.Location = new System.Drawing.Point(161, 116);
-            this.addOrEditButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.addOrEditButton.Margin = new System.Windows.Forms.Padding(4);
             this.addOrEditButton.Name = "addOrEditButton";
             this.addOrEditButton.Size = new System.Drawing.Size(100, 28);
             this.addOrEditButton.TabIndex = 20;
@@ -69,7 +69,7 @@
             this.comboBoxEmotionType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxEmotionType.FormattingEnabled = true;
             this.comboBoxEmotionType.Location = new System.Drawing.Point(53, 65);
-            this.comboBoxEmotionType.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBoxEmotionType.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxEmotionType.Name = "comboBoxEmotionType";
             this.comboBoxEmotionType.Size = new System.Drawing.Size(116, 24);
             this.comboBoxEmotionType.TabIndex = 19;
@@ -106,7 +106,7 @@
             this.comboBoxThreshold.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxThreshold.FormattingEnabled = true;
             this.comboBoxThreshold.Location = new System.Drawing.Point(288, 65);
-            this.comboBoxThreshold.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBoxThreshold.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxThreshold.Name = "comboBoxThreshold";
             this.comboBoxThreshold.Size = new System.Drawing.Size(75, 24);
             this.comboBoxThreshold.TabIndex = 21;
@@ -121,7 +121,7 @@
             this.comboBoxDecay.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxDecay.FormattingEnabled = true;
             this.comboBoxDecay.Location = new System.Drawing.Point(195, 65);
-            this.comboBoxDecay.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBoxDecay.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxDecay.Name = "comboBoxDecay";
             this.comboBoxDecay.Size = new System.Drawing.Size(79, 24);
             this.comboBoxDecay.TabIndex = 22;
@@ -142,12 +142,14 @@
             this.Controls.Add(this.label2);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "AddOrEditEmotionDispositionForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Emotion Disposition";
             this.Load += new System.EventHandler(this.AddOrEditBeliefForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddOrEditEmotionDispositionForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.addBeliefErrorProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emotionalAppraisalAssetBindingSource)).EndInit();
             this.ResumeLayout(false);

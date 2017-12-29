@@ -174,5 +174,26 @@ namespace EmotionalAppraisalWF
         {
 
         }
+
+        private void dataGridViewAppraisalRules_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridViewAppraisalRules_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Enter:
+                    this.buttonEditAppraisalRule_Click(sender, e);
+                    break;
+                case Keys.D:
+                    if (e.Control) this.buttonDuplicateAppraisalRule_Click(sender, e);
+                    break;
+                case Keys.Delete:
+                    this.buttonRemoveAppraisalRule_Click(sender, e);
+                    break;
+            }
+        }
     }
 }

@@ -55,10 +55,10 @@
             this.groupBox7.Controls.Add(this.dataGridViewReactiveActions);
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox7.Location = new System.Drawing.Point(0, 0);
-            this.groupBox7.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
-            this.groupBox7.Size = new System.Drawing.Size(785, 305);
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox7.Size = new System.Drawing.Size(785, 304);
             this.groupBox7.TabIndex = 3;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Decision Rules";
@@ -67,7 +67,7 @@
             // buttonDuplicateReaction
             // 
             this.buttonDuplicateReaction.Location = new System.Drawing.Point(189, 23);
-            this.buttonDuplicateReaction.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonDuplicateReaction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonDuplicateReaction.Name = "buttonDuplicateReaction";
             this.buttonDuplicateReaction.Size = new System.Drawing.Size(93, 28);
             this.buttonDuplicateReaction.TabIndex = 10;
@@ -78,7 +78,7 @@
             // buttonEditReaction
             // 
             this.buttonEditReaction.Location = new System.Drawing.Point(88, 23);
-            this.buttonEditReaction.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonEditReaction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonEditReaction.Name = "buttonEditReaction";
             this.buttonEditReaction.Size = new System.Drawing.Size(93, 28);
             this.buttonEditReaction.TabIndex = 9;
@@ -89,7 +89,7 @@
             // buttonAddReaction
             // 
             this.buttonAddReaction.Location = new System.Drawing.Point(8, 23);
-            this.buttonAddReaction.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonAddReaction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonAddReaction.Name = "buttonAddReaction";
             this.buttonAddReaction.Size = new System.Drawing.Size(72, 28);
             this.buttonAddReaction.TabIndex = 7;
@@ -100,7 +100,7 @@
             // buttonRemoveReaction
             // 
             this.buttonRemoveReaction.Location = new System.Drawing.Point(291, 23);
-            this.buttonRemoveReaction.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonRemoveReaction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonRemoveReaction.Name = "buttonRemoveReaction";
             this.buttonRemoveReaction.Size = new System.Drawing.Size(93, 28);
             this.buttonRemoveReaction.TabIndex = 8;
@@ -123,13 +123,13 @@
             this.dataGridViewReactiveActions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewReactiveActions.ImeMode = System.Windows.Forms.ImeMode.On;
             this.dataGridViewReactiveActions.Location = new System.Drawing.Point(8, 66);
-            this.dataGridViewReactiveActions.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.dataGridViewReactiveActions.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewReactiveActions.Name = "dataGridViewReactiveActions";
             this.dataGridViewReactiveActions.ReadOnly = true;
             this.dataGridViewReactiveActions.RowHeadersVisible = false;
             this.dataGridViewReactiveActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewReactiveActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(769, 231);
+            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(769, 230);
             this.dataGridViewReactiveActions.TabIndex = 2;
             this.dataGridViewReactiveActions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewReactiveActions_CellMouseDoubleClick);
             this.dataGridViewReactiveActions.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReactiveActions_RowEnter);
@@ -141,9 +141,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox8.Controls.Add(this.conditionSetEditor);
             this.groupBox8.Location = new System.Drawing.Point(4, 4);
-            this.groupBox8.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox8.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox8.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox8.Size = new System.Drawing.Size(773, 363);
             this.groupBox8.TabIndex = 11;
             this.groupBox8.TabStop = false;
@@ -153,7 +153,7 @@
             // 
             this.conditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.conditionSetEditor.Location = new System.Drawing.Point(4, 19);
-            this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4);
             this.conditionSetEditor.Name = "conditionSetEditor";
             this.conditionSetEditor.Size = new System.Drawing.Size(765, 340);
             this.conditionSetEditor.TabIndex = 0;
@@ -166,7 +166,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.splitContainer1.Location = new System.Drawing.Point(16, 33);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -178,7 +178,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox8);
             this.splitContainer1.Size = new System.Drawing.Size(785, 681);
-            this.splitContainer1.SplitterDistance = 305;
+            this.splitContainer1.SplitterDistance = 304;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 17;
             // 
@@ -190,7 +190,8 @@
             this.Controls.Add(this.splitContainer1);
             this.EditorName = "EDM Editor";
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "Form1";
             this.Controls.SetChildIndex(this.splitContainer1, 0);

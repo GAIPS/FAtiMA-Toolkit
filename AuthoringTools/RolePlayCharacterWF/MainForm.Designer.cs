@@ -74,7 +74,7 @@ namespace RolePlayCharacterWF
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
-            this.editButton = new System.Windows.Forms.Button();
+            this.buttonEdit = new System.Windows.Forms.Button();
             this.addBeliefButton = new System.Windows.Forms.Button();
             this.removeBeliefButton = new System.Windows.Forms.Button();
             this.dataGridViewBeliefs = new System.Windows.Forms.DataGridView();
@@ -137,10 +137,10 @@ namespace RolePlayCharacterWF
             // 
             this.tabPage7.Controls.Add(this.panelCIF);
             this.tabPage7.Controls.Add(this.groupBox6);
-            this.tabPage7.Location = new System.Drawing.Point(4, 28);
+            this.tabPage7.Location = new System.Drawing.Point(4, 25);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(821, 474);
+            this.tabPage7.Size = new System.Drawing.Size(821, 477);
             this.tabPage7.TabIndex = 6;
             this.tabPage7.Text = "CIF";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -217,10 +217,10 @@ namespace RolePlayCharacterWF
             // 
             this.tabPage6.Controls.Add(this.panelSI);
             this.tabPage6.Controls.Add(this.groupBox5);
-            this.tabPage6.Location = new System.Drawing.Point(4, 28);
+            this.tabPage6.Location = new System.Drawing.Point(4, 25);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(821, 474);
+            this.tabPage6.Size = new System.Drawing.Size(821, 477);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Social Importance";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -297,9 +297,9 @@ namespace RolePlayCharacterWF
             // 
             this.tabPage4.Controls.Add(this.panelEDM);
             this.tabPage4.Controls.Add(this.groupBox3);
-            this.tabPage4.Location = new System.Drawing.Point(4, 28);
+            this.tabPage4.Location = new System.Drawing.Point(4, 25);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(821, 474);
+            this.tabPage4.Size = new System.Drawing.Size(821, 477);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Decision Making";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -376,9 +376,9 @@ namespace RolePlayCharacterWF
             // 
             this.tabPage3.Controls.Add(this.panelEA);
             this.tabPage3.Controls.Add(this.groupBox2);
-            this.tabPage3.Location = new System.Drawing.Point(4, 28);
+            this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(821, 474);
+            this.tabPage3.Size = new System.Drawing.Size(821, 477);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Emotional Appraisal";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -390,7 +390,7 @@ namespace RolePlayCharacterWF
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelEA.Location = new System.Drawing.Point(5, 65);
             this.panelEA.Name = "panelEA";
-            this.panelEA.Size = new System.Drawing.Size(813, 403);
+            this.panelEA.Size = new System.Drawing.Size(813, 397);
             this.panelEA.TabIndex = 15;
             // 
             // groupBox2
@@ -455,10 +455,10 @@ namespace RolePlayCharacterWF
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.tableLayoutPanel4);
-            this.tabPage2.Location = new System.Drawing.Point(4, 28);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(821, 474);
+            this.tabPage2.Size = new System.Drawing.Size(821, 477);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Autobiographical Memory";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -477,7 +477,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 206F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(809, 459);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(809, 447);
             this.tableLayoutPanel4.TabIndex = 0;
             this.tableLayoutPanel4.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel4_Paint);
             // 
@@ -491,7 +491,7 @@ namespace RolePlayCharacterWF
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(3, 63);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(803, 393);
+            this.groupBox4.Size = new System.Drawing.Size(803, 381);
             this.groupBox4.TabIndex = 16;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Event Records";
@@ -527,7 +527,7 @@ namespace RolePlayCharacterWF
             this.dataGridViewAM.RowHeadersVisible = false;
             this.dataGridViewAM.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAM.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAM.Size = new System.Drawing.Size(794, 338);
+            this.dataGridViewAM.Size = new System.Drawing.Size(794, 326);
             this.dataGridViewAM.TabIndex = 10;
             // 
             // buttonEditEvent
@@ -653,13 +653,14 @@ namespace RolePlayCharacterWF
             // 
             // tableLayoutPanel9
             // 
-            this.tableLayoutPanel9.ColumnCount = 3;
+            this.tableLayoutPanel9.ColumnCount = 4;
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel9.Controls.Add(this.editButton, 0, 0);
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel9.Controls.Add(this.buttonEdit, 0, 0);
             this.tableLayoutPanel9.Controls.Add(this.addBeliefButton, 0, 0);
-            this.tableLayoutPanel9.Controls.Add(this.removeBeliefButton, 2, 0);
+            this.tableLayoutPanel9.Controls.Add(this.removeBeliefButton, 3, 0);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel9.MinimumSize = new System.Drawing.Size(0, 31);
@@ -669,15 +670,15 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel9.Size = new System.Drawing.Size(803, 31);
             this.tableLayoutPanel9.TabIndex = 3;
             // 
-            // editButton
+            // buttonEdit
             // 
-            this.editButton.Location = new System.Drawing.Point(63, 3);
-            this.editButton.Name = "editButton";
-            this.editButton.Size = new System.Drawing.Size(70, 23);
-            this.editButton.TabIndex = 6;
-            this.editButton.Text = "Edit";
-            this.editButton.UseVisualStyleBackColor = true;
-            this.editButton.Click += new System.EventHandler(this.editButton_Click);
+            this.buttonEdit.Location = new System.Drawing.Point(63, 3);
+            this.buttonEdit.Name = "buttonEdit";
+            this.buttonEdit.Size = new System.Drawing.Size(70, 23);
+            this.buttonEdit.TabIndex = 5;
+            this.buttonEdit.Text = "Edit";
+            this.buttonEdit.UseVisualStyleBackColor = true;
+            this.buttonEdit.Click += new System.EventHandler(this.buttonEdit_Click);
             // 
             // addBeliefButton
             // 
@@ -694,7 +695,7 @@ namespace RolePlayCharacterWF
             this.removeBeliefButton.Location = new System.Drawing.Point(139, 3);
             this.removeBeliefButton.Name = "removeBeliefButton";
             this.removeBeliefButton.Size = new System.Drawing.Size(70, 23);
-            this.removeBeliefButton.TabIndex = 5;
+            this.removeBeliefButton.TabIndex = 6;
             this.removeBeliefButton.Text = "Remove";
             this.removeBeliefButton.UseVisualStyleBackColor = true;
             this.removeBeliefButton.Click += new System.EventHandler(this.removeBeliefButton_Click);
@@ -720,8 +721,9 @@ namespace RolePlayCharacterWF
             this.dataGridViewBeliefs.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewBeliefs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewBeliefs.Size = new System.Drawing.Size(803, 409);
-            this.dataGridViewBeliefs.TabIndex = 4;
+            this.dataGridViewBeliefs.TabIndex = 8;
             this.dataGridViewBeliefs.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewBeliefs_CellMouseDoubleClick);
+            this.dataGridViewBeliefs.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridViewBeliefs_KeyDown);
             // 
             // tabPage1
             // 
@@ -748,7 +750,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(799, 459);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(799, 441);
             this.tableLayoutPanel3.TabIndex = 2;
             this.tableLayoutPanel3.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel3_Paint);
             // 
@@ -763,7 +765,7 @@ namespace RolePlayCharacterWF
             this.emotionGroupBox.Controls.Add(this.emotionsDataGridView);
             this.emotionGroupBox.Location = new System.Drawing.Point(3, 67);
             this.emotionGroupBox.Name = "emotionGroupBox";
-            this.emotionGroupBox.Size = new System.Drawing.Size(793, 389);
+            this.emotionGroupBox.Size = new System.Drawing.Size(793, 371);
             this.emotionGroupBox.TabIndex = 1;
             this.emotionGroupBox.TabStop = false;
             this.emotionGroupBox.Text = "Emotions";
@@ -818,7 +820,7 @@ namespace RolePlayCharacterWF
             this.emotionsDataGridView.RowHeadersVisible = false;
             this.emotionsDataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.emotionsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.emotionsDataGridView.Size = new System.Drawing.Size(781, 335);
+            this.emotionsDataGridView.Size = new System.Drawing.Size(781, 317);
             this.emotionsDataGridView.TabIndex = 2;
             // 
             // moodGroupBox
@@ -1063,7 +1065,6 @@ namespace RolePlayCharacterWF
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel8;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
-        private System.Windows.Forms.Button editButton;
         private System.Windows.Forms.Button addBeliefButton;
         private System.Windows.Forms.Button removeBeliefButton;
         private System.Windows.Forms.DataGridView dataGridViewBeliefs;
@@ -1115,6 +1116,7 @@ namespace RolePlayCharacterWF
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.Button buttonEdit;
     }
 }
 
