@@ -45,11 +45,13 @@ https://www.dropbox.com/s/kl06lbanwkbwrqx/UnityStarterKit.zip?dl=0
 ### Executable Demos
 The following demos can be executed without Unity and they can be used to test different scenarios created with the Integrated Authoring Tool.
 
-- One 3D Character (Windows) https://www.dropbox.com/s/h6ras4855577qw4/FAtiMA%20One%20Character%20Demo%20-%20Windows.zip?dl=0
-- Two 3D Characters (Windows) https://www.dropbox.com/s/tki3pimdontcwbw/FAtiMA%20Two%20Characters%20Demo%20%28Win%29.zip?dl=0
+Note: These have been recently updated to correct a bug that occurred when the strongest emotion for one of the characcters corresponded to Shame/Pride/Gratitude
 
-- One 3D Character (MAC OS) https://www.dropbox.com/s/mggvqksvynf6g5c/FAtiMA%20One%20Character%20Demo%20%28MAC%29.app.zip?dl=0
-- Two 3D Characters (MAC OS) https://www.dropbox.com/s/z65msotfd7vehh6/FAtiMA%20Two%20Characters%20Demo%20%28MAC%29.app.zip?dl=0
+- One 3D Character (Windows)  https://www.dropbox.com/s/b8tufrab8vq5f7x/FAtiMA%20One%20Character%20Demo%28Win%29.zip?dl=0
+- Two 3D Characters (Windows) https://www.dropbox.com/s/mc4t6qx96jc89r9/FAtiMA%20Two%20Characters%20Demo%20%28Win%29.zip?dl=0
+
+- One 3D Character (MAC OS) https://www.dropbox.com/s/z223tcz7e93ii4u/FAtiMA%20One%20Character%20Demo%20%28MAC%29.app.zip?dl=0
+- Two 3D Characters (MAC OS) https://www.dropbox.com/s/ohkprq5m5d0nyhi/FAtiMA%20Two%20Characters%20Demo%20%28MAC%29.app.zip?dl=0
 
 ### Unity Demo Repository
 The following repository contains the source code for the prototypes made in Unity to showcase the toolkit: 
