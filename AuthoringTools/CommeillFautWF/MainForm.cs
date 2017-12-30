@@ -34,7 +34,7 @@ namespace CommeillFautWF
             genericPropertyDataGridControler1.GetColumnByName("Target").Visible = false;
             genericPropertyDataGridControler1.GetColumnByName("Id").Visible = false;
             genericPropertyDataGridControler1.GetColumnByName("Conditions").Visible = false;
-            genericPropertyDataGridControler1.GetColumnByName("Priority").Visible = false;
+            //genericPropertyDataGridControler1.GetColumnByName("Priority").Visible = false;
             genericPropertyDataGridControler1.GetColumnByName("Type").Visible = false;
             genericPropertyDataGridControler1.GetColumnByName("InfluenceRule").Visible = false;
         }
@@ -160,6 +160,22 @@ namespace CommeillFautWF
         private void genericPropertyDataGridControler2_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void genericPropertyDataGridControler1_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+               /* case Keys.Enter:
+                    this.butt(sender, e);
+                    break;
+                case Keys.D:
+                    if (e.Control) this.buttonDuplicateDialogueAction_Click(sender, e);
+                    break;
+                case Keys.Delete:
+                    this.buttonRemoveDialogueAction_Click(sender, e);
+                    break;*/
+            }
         }
     }
 

@@ -32,8 +32,8 @@
             this.socialExchangeBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.TabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.triggerRulesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.genericPropertyDataGridControler1 = new GAIPS.AssetEditorTools.GenericPropertyDataGridControler();
+            this.triggerRulesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.socialExchangeBindingSource)).BeginInit();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -70,13 +70,9 @@
             this.tabPage1.Text = "Social Exchange";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
-            // triggerRulesBindingSource
-            // 
-            this.triggerRulesBindingSource.DataSource = typeof(CommeillFaut.TriggerRules);
-            // 
             // genericPropertyDataGridControler1
             // 
-            this.genericPropertyDataGridControler1.AllowMuliSelect = false;
+            this.genericPropertyDataGridControler1.AllowMuliSelect = true;
             this.genericPropertyDataGridControler1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -86,6 +82,11 @@
             this.genericPropertyDataGridControler1.Size = new System.Drawing.Size(847, 394);
             this.genericPropertyDataGridControler1.TabIndex = 0;
             this.genericPropertyDataGridControler1.Load += new System.EventHandler(this.genericPropertyDataGridControler1_Load_1);
+            this.genericPropertyDataGridControler1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.genericPropertyDataGridControler1_KeyDown);
+            // 
+            // triggerRulesBindingSource
+            // 
+            this.triggerRulesBindingSource.DataSource = typeof(CommeillFaut.TriggerRules);
             // 
             // MainForm
             // 

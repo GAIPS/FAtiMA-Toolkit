@@ -63,8 +63,8 @@ namespace IntegratedAuthoringToolWF
 
             var rpcAsset = RolePlayCharacterAsset.LoadFromFile(asset.AssetFilePath);
          
-            FormHelper.ShowFormInContainerControl(this.tabControl1.TabPages[1], _rpcForm);
-            this.tabControl1.SelectTab(1);
+            FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[1], _rpcForm);
+            this.tabControlIAT.SelectTab(1);
             _rpcForm.LoadedAsset = rpcAsset;
 
 
@@ -147,8 +147,8 @@ namespace IntegratedAuthoringToolWF
                 _rpcForm.Close();
                 _rpcForm = new RolePlayCharacterWF.MainForm();
                 _rpcForm.LoadedAsset = rpc;
-                FormHelper.ShowFormInContainerControl(this.tabControl1.TabPages[1], _rpcForm);
-                this.tabControl1.SelectTab(1);
+                FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[1], _rpcForm);
+                this.tabControlIAT.SelectTab(1);
                 
                 buttonRemoveCharacter.Enabled = true;
             }

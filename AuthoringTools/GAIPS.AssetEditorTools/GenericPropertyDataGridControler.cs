@@ -123,7 +123,17 @@ namespace GAIPS.AssetEditorTools
 
 		private void UpdateButtons()
 		{
-			_editButton.Enabled = _removeButton.Enabled = SelectedObjects.Any();
+			_editButton.Enabled = _duplicateButton.Enabled = _removeButton.Enabled = SelectedObjects.Any();
 		}
-	}
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void _duplicateButton_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

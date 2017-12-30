@@ -52,7 +52,7 @@
             this.tabControl.Cursor = System.Windows.Forms.Cursors.Default;
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(4, 4);
-            this.tabControl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabControl.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(957, 636);
@@ -62,9 +62,9 @@
             // 
             this.tabPage1.Controls.Add(this.tableLayoutPanel1);
             this.tabPage1.Location = new System.Drawing.Point(4, 28);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
             this.tabPage1.Size = new System.Drawing.Size(949, 604);
             this.tabPage1.TabIndex = 3;
             this.tabPage1.Text = "Attribution Rules";
@@ -92,9 +92,9 @@
             this.groupBox1.Controls.Add(this._attRulesDataView);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(4, 4);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(933, 290);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
@@ -102,7 +102,7 @@
             // 
             // _attRulesDataView
             // 
-            this._attRulesDataView.AllowMuliSelect = false;
+            this._attRulesDataView.AllowMuliSelect = true;
             this._attRulesDataView.Dock = System.Windows.Forms.DockStyle.Fill;
             this._attRulesDataView.Location = new System.Drawing.Point(4, 19);
             this._attRulesDataView.Margin = new System.Windows.Forms.Padding(0);
@@ -116,9 +116,9 @@
             this.groupBox2.Controls.Add(this._attRuleConditionSetEditor);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(4, 302);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox2.Size = new System.Drawing.Size(933, 290);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
@@ -128,7 +128,7 @@
             // 
             this._attRuleConditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
             this._attRuleConditionSetEditor.Location = new System.Drawing.Point(4, 19);
-            this._attRuleConditionSetEditor.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this._attRuleConditionSetEditor.Margin = new System.Windows.Forms.Padding(5);
             this._attRuleConditionSetEditor.Name = "_attRuleConditionSetEditor";
             this._attRuleConditionSetEditor.Size = new System.Drawing.Size(925, 267);
             this._attRuleConditionSetEditor.TabIndex = 0;
@@ -141,7 +141,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 24);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Padding = new System.Windows.Forms.Padding(4);
             this.panel1.Size = new System.Drawing.Size(965, 644);
             this.panel1.TabIndex = 2;
             // 
@@ -153,7 +153,7 @@
             this.Controls.Add(this.panel1);
             this.EditorName = "Social Importance Editor";
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "";
             this.Controls.SetChildIndex(this.panel1, 0);
@@ -178,5 +178,5 @@
 		private System.Windows.Forms.GroupBox groupBox2;
 		private GAIPS.AssetEditorTools.ConditionSetEditorControl _attRuleConditionSetEditor;
 		private GAIPS.AssetEditorTools.GenericPropertyDataGridControler _attRulesDataView;
-	}
+    }
 }
