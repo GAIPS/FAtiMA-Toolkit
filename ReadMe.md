@@ -47,11 +47,12 @@ The following demos can be executed without Unity and they can be used to test d
 
 Note: These have been recently updated to correct a bug that occurred when the strongest emotion for one of the characcters corresponded to Shame/Pride/Gratitude
 
+(*****NEW*****) The demo with two 3D characters had a severe issue that prevented Dialogue States from working properly. This problem has now been fixed.
+
 - One 3D Character (Windows)  https://www.dropbox.com/s/b8tufrab8vq5f7x/FAtiMA%20One%20Character%20Demo%28Win%29.zip?dl=0
-- Two 3D Characters (Windows) https://www.dropbox.com/s/mc4t6qx96jc89r9/FAtiMA%20Two%20Characters%20Demo%20%28Win%29.zip?dl=0
+- Two 3D Characters (Windows) https://www.dropbox.com/s/px94m3qw3wf8eyk/FAtiMA%20Two%20Characters%20Demo%20%28Win%29%20Fixed.zip?dl=0
 
 - One 3D Character (MAC OS) https://www.dropbox.com/s/z223tcz7e93ii4u/FAtiMA%20One%20Character%20Demo%20%28MAC%29.app.zip?dl=0
-- Two 3D Characters (MAC OS) https://www.dropbox.com/s/ohkprq5m5d0nyhi/FAtiMA%20Two%20Characters%20Demo%20%28MAC%29.app.zip?dl=0
 
 ### Unity Demo Repository
 The following repository contains the source code for the prototypes made in Unity to showcase the toolkit: 
