@@ -9,16 +9,24 @@
 			{
 					"CurrentState": "Start",
 					"NextState": "Greeting",
-					"Meaning": "-",
-					"Style": "-",
+				    "Meaning": "SE(Flirt, Initiate)",
+					"Style": "Positive",
+					"Utterance": "Hi you look great!",
+					"UtteranceId": "TTS-D70ADC8D58BD14E5126508571D48DB7F"
+				},
+				{
+					"CurrentState": "Start",
+					"NextState": "Greeting",
+				    "Meaning": "SE(Compliment, Initiate)",
+					"Style": "Positive",
 					"Utterance": "Hi how are you?",
 					"UtteranceId": "TTS-D70ADC8D58BD14E5126508571D48DB7F"
 				},
 				{
 					"CurrentState": "Greeting",
 					"NextState": "S1",
-					"Meaning": "-",
-					"Style": "-",
+					"Meaning": "SE(Compliment, Initiate)",
+					"Style": "Positive",
 					"Utterance": "I'm okay",
 					"UtteranceId": "TTS-D70ADC8D58BD14E5126508571D48DB7F"
 				},

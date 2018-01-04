@@ -189,7 +189,8 @@ namespace AutobiographicMemory
 			var key = Name.BuildName((Name)AMConsts.EVENT, type, subject, def, target);
 			foreach (var c in context.Constraints)
 			{
-				foreach (var pair in m_typeIndexes.Unify(key, c))
+                var unifiedSet = m_typeIndexes.Unify(key, c);
+                foreach (var pair in unifiedSet)
 				{
 					foreach (var id in pair.Item1)
 						yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(id)), new SubstitutionSet(pair.Item2));
@@ -239,10 +240,11 @@ namespace AutobiographicMemory
 		private static readonly Name LAST_EVENT_ID_PROPERTY_NAME = Name.BuildName("LastEventId");
         private IEnumerable<DynamicPropertyResult> LastEventIdPropertyCalculator(IQueryContext context, Name type, Name subject, Name def, Name target)
         {
-        
-            var key = Name.BuildName((Name)AMConsts.EVENT, type, subject, def, target);
+
+
 
             ulong min = ulong.MinValue;
+
             var lastEvents = m_registry.Values.OrderByDescending(e => e.Timestamp).TakeWhile(e =>
             {
                 if (e.Timestamp >= min)
@@ -256,8 +258,67 @@ namespace AutobiographicMemory
             var le = lastEvents.Last();
 
             IEnumerable<Substitution> set;
-            if (Unifier.Unify(le.EventName, key, out set))
-                yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(le.Id)), new SubstitutionSet(set));
+
+            var newType = type;
+            if (type.IsUniversal)
+                newType = le.Type;
+
+            var newSubject = subject;
+
+            if (subject.IsUniversal)
+                newSubject = le.Subject;
+
+            var newDef = def;
+
+            if (def.IsUniversal)
+                newDef = le.EventName;
+
+
+
+
+            // if the subject is a Variable
+
+            if (subject.IsVariable)
+            {
+                foreach (var subj in context.AskPossibleProperties(subject))
+                {
+                    newSubject = subj.Item1.Value;
+
+                    var key = Name.BuildName((Name)AMConsts.EVENT, newType, newSubject, newDef, target);  // event to match
+
+                    if (Unifier.Unify(le.EventName, key, out set))
+                    {
+
+                        var sub = new Substitution(subject, new ComplexValue(newSubject));
+
+                        foreach (var c in context.Constraints)
+                        {
+                            if (c.Conflicts(sub))
+                                continue;
+
+                            var newConstraints = new SubstitutionSet(c);
+                            newConstraints.AddSubstitution(sub);
+
+                            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(le.Id)), newConstraints);
+                        }
+                    }
+
+                }
+
+            }
+            else   // if the subject is not a variable, aka Sarah or Peter
+            {
+                var key = Name.BuildName((Name)AMConsts.EVENT, newType, newSubject, newDef, target);  // event to match
+
+                if (Unifier.Unify(le.EventName, key, out set))
+                {
+                    foreach (var c in context.Constraints)
+                    {
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(le.Id)), c);
+                    }
+
+                }
+            }
         }
 
         #endregion
