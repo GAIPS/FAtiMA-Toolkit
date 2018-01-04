@@ -48,30 +48,7 @@ namespace CommeillFautTutorial
                 rpcList.Add(rpc);
 
             }
-            /*         var cif = CommeillFautAsset.LoadFromFile(rpcList.First().CommeillFautAssetSource);
-
-                     var newDTO = new SocialExchangeDTO
-                     {
-                         Action = "Flirt",
-                         Intent = "toFlirt"
-                     };
-                     cif.AddExchange(newDTO);
-
-
-                     var condSET = new ConditionSetDTO() { ConditionSet = new string[]{ "IsFriend(SELF, [x]) = True" } };
-
-
-                     var inf = new InfluenceRuleDTO()
-                     {
-                         RuleName = "Friend?",
-                         Target = "[x]",
-                         RuleConditions = condSET
-                 };
-
-                     cif.m_SocialExchanges.FirstOrDefault().SetInfluenceRule(inf);
-                     cif.Save();
-                     */
-
+          
 
             foreach (var actor in rpcList)
             {
@@ -142,26 +119,34 @@ namespace CommeillFautTutorial
 
                 if (action != null)
                 {
-                    Console.WriteLine("Action: " + initiator.CharacterName + " does " + action.Name + " to " +
-                                      action.Target + "\n" + action.Parameters[1]);
 
-                    //    _events.Add(EventHelper.ActionStart(initiator.CharacterName.ToString(), action.Name.ToString(),
-                    //        action.Target.ToString()));
+                    var initiatorName = initiator.CharacterName.ToString();
+                    var targetName = action.Target.ToString();
+                    var nextState = action.Parameters[1].ToString();
+                    var currentState = action.Parameters[0].ToString();
 
-                    _events.Add(EventHelper.ActionEnd(initiator.CharacterName.ToString(), action.Name.ToString(),
+                    Console.WriteLine("Action: " + initiatorName + " does " + action.Name + " to " +
+                                     targetName + "\n" + action.Parameters[1]);
+
+                    _events.Add(EventHelper.ActionEnd(initiatorName, action.Name.ToString(),
                         action.Target.ToString()));
 
-                    initiator.Perceive(EventHelper.PropertyChange("HasFloor(" + initiator.CharacterName.ToString() + ")", "False", initiator.CharacterName.ToString()));
+                    initiator.Perceive(EventHelper.PropertyChange("Has(Floor)", targetName, initiatorName));
+                    if (nextState != "*" && nextState != "-")
+                    {
+                        initiator.Perceive(EventHelper.PropertyChange("DialogueState(" + targetName + ")", nextState, initiatorName));
+                        rpcList.Find(x => x.CharacterName.ToString() == targetName).Perceive(EventHelper.PropertyChange("DialogueState(" + initiatorName + ")", nextState, initiatorName));
 
-                    rpcList.Find(x => x.CharacterName.ToString() == action.Target.ToString()).Perceive(EventHelper.PropertyChange("HasFloor(" + action.Target.ToString() + ")", "True", action.Target.ToString()));
-              
+                    }
+                    rpcList.Find(x => x.CharacterName.ToString() == targetName).Perceive(EventHelper.PropertyChange("Has(Floor)",targetName, initiatorName));
+                 
 
                     Console.WriteLine();
                     Console.WriteLine("Dialogue:");
-                    Console.WriteLine("Current State: " + action.Parameters[0].ToString());
-                //    Console.WriteLine(initiator.CharacterName + " says: ''" +
-                 //                    iat.GetDialogueActions(action.Parameters[0], action.Parameters[1], action.Parameters[2], action.Parameters[3]).FirstOrDefault().Utterance + "'' to " + action.Target);
-                    Console.WriteLine("Next State: " + action.Parameters[1].ToString());
+                    Console.WriteLine("Current State: " + currentState);
+                    Console.WriteLine(initiator.CharacterName + " says: ''" +
+                                     iat.GetDialogueActions(action.Parameters[0], action.Parameters[1], action.Parameters[2], action.Parameters[3]).FirstOrDefault().Utterance + "'' to " + targetName);
+                    Console.WriteLine("Next State: " + nextState);
 
                 }
                 Console.WriteLine();

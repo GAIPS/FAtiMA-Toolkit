@@ -52,8 +52,8 @@ namespace EmotionalAppraisalWF
                     (Name)textBoxSubject.Text,
                     (Name)textBoxObject.Text,
                     (Name)textBoxTarget.Text),
-                Desirability = Int32.Parse(textBoxDesirability.Text),
-                Praiseworthiness = Int32.Parse(textBoxPraiseworthiness.Text),
+                Desirability = WellFormedNames.Name.BuildName(textBoxDesirability.Text),
+                Praiseworthiness = WellFormedNames.Name.BuildName(textBoxPraiseworthiness.Text),
                 Conditions = new ConditionSetDTO()
                 };
            

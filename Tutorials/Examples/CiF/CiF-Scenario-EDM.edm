@@ -5,12 +5,12 @@
 			"DefaultActionPriority": 2,
 			"ActionTendencies": [
 				{
-					"Action": "Speak(-, -, SE([se], Initiate), [sty])",
+					"Action": "Speak(*, *, SE(Compliment, Initiate), [s])",
 					"Target": "[x]",
 					"Type": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = True", "[x] != SELF", "HasFloor(SELF) = True", "Volition([se], SELF, [x]) = [sty]", "Positive = [sty]"]
+							"Set": ["IsAgent([x]) = True", "[x] != SELF", "Has(Floor) = SELF", "Volition(Compliment, SELF, [x]) = [s]", "[s] = Positive"]
 						},
 					"Priority": 1
 				}, 
@@ -20,7 +20,7 @@
 					"Type": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = True", "[x] != SELF", "HasFloor(SELF) = True", "LastEventId(Action-End, [x], Speak(-, -, SE([se], Initiate), Positive), SELF) = [id]", "Volition([se], SELF, [x]) = [sty]"]
+							"Set": ["IsAgent([x]) = True", "[x] != SELF", "Has(Floor) = SELF", "LastEventId(Action-End, [x], Speak(-, -, SE([se], Initiate), Positive), SELF) !=null" , "Volition([se], SELF, [x]) = [sty]"]
 						}
 				}, 
 				{
@@ -29,10 +29,21 @@
 					"Type": "[x]",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = True", "[x] != SELF", "HasFloor(SELF) = True", "LastEventId(Action-End, [x], Speak(-, -, SE([se], Answer), [sty]), SELF) = [id]", "Volition([se], SELF, [x]) = [sty]"]
+							"Set": ["IsAgent([x]) = True", "[x] != SELF", "Has(Floor) = SELF", "LastEventId(Action-End, [x], Speak(-, -, SE([se], Answer), [sty]), SELF) = [id]", "Volition([se], SELF, [x]) = [sty]"]
 						},
 					"Priority": 3
-				}]
+				},
+				{
+					"Action": "Speak([cs], [ns], -, [sty])",
+					"Target": "[x]",
+					"Type": "[x]",
+					"Conditions":
+						{
+							"Set": ["Has(Floor) = SELF", "ValidDialogue([cs], [ns], *, [sty]) = True", "DialogueState([x]) = [cs]"]
+						},
+						"Priority": 1						
+				}
+			]
 		},
 	"types": [
 		{

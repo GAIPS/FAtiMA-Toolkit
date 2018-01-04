@@ -87,7 +87,7 @@ namespace CommeillFaut
         public IEnumerable<DynamicPropertyResult> VolitionPropertyCalculator(IQueryContext context, Name socialMoveName, Name initator, Name Target)
         {
             Dictionary<SubstitutionSet, Name> ret = new Dictionary<SubstitutionSet, Name>();
-            var seSub = new Substitution(Name.BuildName("[x]"), new ComplexValue(Name.BuildName("Peter")));
+            var seSub = new Substitution(Name.BuildName("[x]"), new ComplexValue(Name.BuildName("default")));
             var stringVolition = "";
             var possibleSE = new List<SocialExchange>();
             bool SEConstraint = false;
@@ -107,7 +107,7 @@ namespace CommeillFaut
                     {
                         var seName = exchange.ActionName.ToString();
 
-                        if (Target.IsVariable)
+                        if (Target.IsVariable)  // aka Target = [x]
                         {
 
                             foreach (var targ in context.AskPossibleProperties(Target))
@@ -118,17 +118,18 @@ namespace CommeillFaut
                                 if (newValue != -1)
                                 {
 
-                                    seSub = new Substitution(socialMoveName, new ComplexValue(Name.BuildName(seName)));
+                                    //  seSub = new Substitution(socialMoveName, new ComplexValue(Name.BuildName(seName)));
 
                                     var sub =
                                         new SubstitutionSet(new Substitution[]
-                                            { new Substitution(Name.BuildName("[x]"), new ComplexValue(targ.Item1.Value, 1))
+                                            { new Substitution(Target, new ComplexValue(targ.Item1.Value, 1))
+                                            });
 
-                                   , seSub });
+                                  // , seSub });
 
                                     stringVolition = CalculateStyle(newValue);
 
-                                    sub.AddSubstitution(new Substitution(Name.BuildName("[sty]"), new ComplexValue(Name.BuildName(stringVolition), 1)));
+                                   // sub.AddSubstitution(new Substitution(Name.BuildName("[sty]"), new ComplexValue(Name.BuildName(stringVolition), 1)));
 
                                     yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(stringVolition)), sub);
 
@@ -144,17 +145,15 @@ namespace CommeillFaut
                             if (newValue != -1)
                             {
 
-                                var sub =
-                                    new SubstitutionSet(new Substitution[]
-                                        { new Substitution(Name.BuildName("[x]"), new ComplexValue(Target, 1))
+                              
 
-                               });
+                              
 
                                 stringVolition = CalculateStyle(newValue);
 
-                                sub.AddSubstitution(new Substitution(Name.BuildName("[sty]"), new ComplexValue(Name.BuildName(stringVolition), 1)));
+                            //    sub.AddSubstitution(new Substitution(Name.BuildName("[sty]"), new ComplexValue(Name.BuildName(stringVolition), 1)));
 
-                                yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(stringVolition)), sub);
+                                yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(stringVolition)), new SubstitutionSet());
 
                             }
                         }
@@ -162,12 +161,12 @@ namespace CommeillFaut
                 }
             }
 
-                    if (socialMoveName.IsVariable && !SEConstraint)
+                    if (socialMoveName.IsVariable && !SEConstraint) // socialMoveName = [se]
                     {
                         foreach (var se in m_SocialExchanges)
                         {
 
-                            if (Target.IsVariable)
+                            if (Target.IsVariable)  // target  = [x] or any other variable
                             {
 
                                 foreach (var targ in context.AskPossibleProperties(Target))
@@ -183,20 +182,20 @@ namespace CommeillFaut
 
                                         var sub =
                                             new SubstitutionSet(new Substitution[]
-                                                { new Substitution(Name.BuildName("[x]"), new ComplexValue(targ.Item1.Value, 1))
+                                                { new Substitution(Target, new ComplexValue(targ.Item1.Value, 1))
 
                                    , seSub });
 
                                         stringVolition = CalculateStyle(newValue);
 
-                                        sub.AddSubstitution(new Substitution(Name.BuildName("[sty]"), new ComplexValue(Name.BuildName(stringVolition), 1)));
+                                       // sub.AddSubstitution(new Substitution(Name.BuildName("[sty]"), new ComplexValue(Name.BuildName(stringVolition), 1)));
                                         yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(stringVolition)), sub);
 
                                     }
                                 }
 
                             }
-                            else
+                            else   // Target = Sarah or John or ...
                             {
                                 var seName = se.ActionName.ToString();
                                 var newValue = CalculateVolitions(seName, Target.ToString(),
@@ -205,15 +204,12 @@ namespace CommeillFaut
                                 if (newValue != -1)
                                 {
 
-                                    var sub =
-                                             new SubstitutionSet(new Substitution[]
-                                                 { new Substitution(Name.BuildName("[x]"), new ComplexValue(Target, 1)) });
 
                                     stringVolition = CalculateStyle(newValue);
 
-                                    sub.AddSubstitution(new Substitution(Name.BuildName("[sty]"), new ComplexValue(Name.BuildName(stringVolition), 1)));
+                                 //   sub.AddSubstitution(new Substitution(Name.BuildName("[sty]"), new ComplexValue(Name.BuildName(stringVolition), 1)));
 
-                                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(stringVolition)), sub);
+                                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(stringVolition)), new SubstitutionSet());
 
                                 }
                             }

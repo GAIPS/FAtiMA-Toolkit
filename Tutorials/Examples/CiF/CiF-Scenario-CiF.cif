@@ -39,7 +39,7 @@
 							"Target": "[x]",
 							"RuleConditions":
 								{
-									"Set": ["SI([x]) >= 10", "IsFriend(SELF, [x]) = True"]
+									"Set": ["IsFriend(SELF, [x]) = True"]
 								}
 						}
 				}, 
