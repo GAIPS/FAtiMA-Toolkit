@@ -241,8 +241,6 @@ namespace AutobiographicMemory
         private IEnumerable<DynamicPropertyResult> LastEventIdPropertyCalculator(IQueryContext context, Name type, Name subject, Name def, Name target)
         {
 
-
-
             ulong min = ulong.MinValue;
 
             var lastEvents = m_registry.Values.OrderByDescending(e => e.Timestamp).TakeWhile(e =>

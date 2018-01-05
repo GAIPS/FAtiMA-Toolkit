@@ -7,6 +7,7 @@ using Conditions.DTOs;
 using GAIPS.Rage;
 using AutobiographicMemory.DTOs;
 using AutobiographicMemory;
+using Conditions;
 
 namespace Tests.AutobiographicMemory
 {
@@ -62,31 +63,57 @@ namespace Tests.AutobiographicMemory
         [Test]
         public ulong TestAMMultipleTicks(int eventNumber)
         {
-          
+            var am = BuildAMAsset();
             int i = 0;
             for(i = 0; i < eventNumber - 1; i++)
-                AutMemory.RecordEvent(new EventDTO());
+                am.RecordEvent(new EventDTO() {});
 
-            return AutMemory.Tick;
+            return am.Tick;
         }
 
 
-   /*     [Test]
-        public void TestLastEventID()
+        [TestCase("Enter", "Sarah", "John", "LastEventId(Action-End, [x], Speak(*, *, SE([se], Initiate), Positive), SELF) !=null")]
+        [TestCase("Speak(*, *, SE(Flirt, Initiate), Positive)", "Sarah", "John", "LastEventId(Action-End, [x], Speak(*, *, SE([se], Initiate), Positive), SELF) !=null")]
+        [Test]
+        public void Test_DP_LastEventID_NoMatch(string actionInMemory, string actionInMemorySubject, string actionInMemoryTarget, string lastEventMethod)
         {
+            var rpc = BuildRPCAsset();
 
-            KnowledgeBase.DTOs.DynamicPropertyDTO dynamicProperty = new KnowledgeBase.DTOs.DynamicPropertyDTO();
-            
-            foreach (var r in RPC.DynamicPropertiesRegistry.GetDynamicProperties())
-                if (r.PropertyTemplate.ToString().Contains("LastEventID"))
-                    dynamicProperty = r;
 
-            AutMemory.
-            AutMemory.RecordEvent(new EventDTO() { Event = EventHelper.ActionEnd("Matt", "talked", "John").ToString(), Id = 0, Subject = "Matt", Time = 0 });
-            */
-            
+            rpc.Perceive(EventHelper.ActionEnd(actionInMemorySubject, actionInMemory, actionInMemoryTarget));
 
-        //}
+
+            var condSet = new ConditionSet();
+            var cond = Condition.Parse(lastEventMethod);
+
+            condSet = condSet.Add(cond);
+
+           var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL,null);
+
+           Assert.IsEmpty(result);
+
+       }
+
+        [TestCase("Enter", "Matt", "Matt", "LastEventId(Action-End, SELF , Enter, SELF) !=null")]
+        [Test]
+        public void Test_DP_LastEventID_Match(string actionInMemory, string actionInMemorySubject, string actionInMemoryTarget, string lastEventMethod)
+        {
+            var rpc = BuildRPCAsset();
+
+
+            rpc.Perceive(EventHelper.ActionEnd(actionInMemorySubject, actionInMemory, actionInMemoryTarget));
+
+
+            var condSet = new ConditionSet();
+            var cond = Condition.Parse(lastEventMethod);
+
+            condSet = condSet.Add(cond);
+
+            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+
+            Assert.IsNotEmpty(result);
+
+        }
 
     }
 };
