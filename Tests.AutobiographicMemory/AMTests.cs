@@ -92,6 +92,9 @@ namespace Tests.AutobiographicMemory
 
 
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, [x], Speak(*, *, SE([se], Initiate), Positive), SELF)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S1, SE(Flirt, Initiate), Positive), Sarah)=2")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Sarah, *, Matt)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-Start, *, *, *)=[id]")]
         [Test]
         public void Test_DP_LastEventID_NoMatch(int eventSet, string context, string lastEventMethodCall)
         {
