@@ -57,21 +57,6 @@ namespace Tests.AutobiographicMemory
         }
 
 
-        [TestCase(3, ExpectedResult = 3)]
-        [TestCase(5, ExpectedResult = 5)]
-        [TestCase(10, ExpectedResult = 10)]
-        [Test]
-        public ulong TestAMMultipleTicks(int eventNumber)
-        {
-            var am = BuildAMAsset();
-            int i = 0;
-            for(i = 0; i < eventNumber - 1; i++)
-                am.RecordEvent(new EventDTO() {});
-
-            return am.Tick;
-        }
-
-
         [TestCase("Enter", "Sarah", "John", "LastEventId(Action-End, [x], Speak(*, *, SE([se], Initiate), Positive), SELF) !=null")]
         [TestCase("Speak(*, *, SE(Flirt, Initiate), Positive)", "Sarah", "John", "LastEventId(Action-End, [x], Speak(*, *, SE([se], Initiate), Positive), SELF) !=null")]
         [Test]
