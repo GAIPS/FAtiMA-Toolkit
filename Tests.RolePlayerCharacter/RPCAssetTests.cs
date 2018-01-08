@@ -2,9 +2,9 @@
 using RolePlayCharacter;
 using WellFormedNames;
 using KnowledgeBase;
-using NUnit.Framework;
 using Conditions.DTOs;
 using GAIPS.Rage;
+using NUnit.Framework;
 
 
 namespace Tests.RolePlayCharacter

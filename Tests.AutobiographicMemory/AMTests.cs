@@ -2,12 +2,14 @@
 using RolePlayCharacter;
 using WellFormedNames;
 using KnowledgeBase;
-using NUnit.Framework;
 using Conditions.DTOs;
 using GAIPS.Rage;
+using System.Collections;
 using AutobiographicMemory.DTOs;
 using AutobiographicMemory;
 using Conditions;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace Tests.AutobiographicMemory
 {
@@ -16,6 +18,9 @@ namespace Tests.AutobiographicMemory
     {
 
         private static AM AutMemory = BuildAMAsset();
+
+
+        private Dictionary<int, List<string>> eventSets;
 
         private static AM BuildAMAsset()
         {
@@ -27,6 +32,35 @@ namespace Tests.AutobiographicMemory
             return am;
 
         }
+
+
+
+        private void PopulateEventSet(int set)
+        {
+            eventSets = new Dictionary<int, List<string>>();
+            var eventList = new List<string>();
+
+            if (set == 1)
+            {
+                eventList= new List<string>()
+                {
+                    EventHelper.ActionEnd("Matt", "EntersRoom", "Sarah").ToString(),
+                EventHelper.ActionEnd("Matt", "Speak(Start, S1, -, -)", "Sarah").ToString(),
+                EventHelper.ActionEnd("Matt", "Speak(Start, S1, -, Polite)", "Sarah").ToString(),
+                EventHelper.ActionEnd("Matt", "Speak(Start, S1, Silly, Polite)", "Sarah").ToString(),
+                EventHelper.PropertyChange("Has(Floor)", "Sarah", "Matt").ToString(),
+                EventHelper.ActionEnd("Matt", "Speak(Start, S1, SE(Flirt, Initiate), Positive)", "Sarah").ToString()
+    
+            };
+            
+            }
+
+          
+                eventSets.Add(set, eventList);
+            
+            
+
+        } 
 
         private static RolePlayCharacterAsset RPC = BuildRPCAsset();
 
@@ -57,48 +91,91 @@ namespace Tests.AutobiographicMemory
         }
 
 
-        [TestCase("Enter", "Sarah", "John", "LastEventId(Action-End, [x], Speak(*, *, SE([se], Initiate), Positive), SELF) !=null")]
-        [TestCase("Speak(*, *, SE(Flirt, Initiate), Positive)", "Sarah", "John", "LastEventId(Action-End, [x], Speak(*, *, SE([se], Initiate), Positive), SELF) !=null")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, [x], Speak(*, *, SE([se], Initiate), Positive), SELF)=[id]")]
         [Test]
-        public void Test_DP_LastEventID_NoMatch(string actionInMemory, string actionInMemorySubject, string actionInMemoryTarget, string lastEventMethod)
+        public void Test_DP_LastEventID_NoMatch(int eventSet, string context, string lastEventMethodCall)
         {
             var rpc = BuildRPCAsset();
+            PopulateEventSet(eventSet);
 
+            foreach (var eve in eventSets[eventSet])
+                rpc.Perceive((Name)eve);
 
-            rpc.Perceive(EventHelper.ActionEnd(actionInMemorySubject, actionInMemory, actionInMemoryTarget));
+            // Build the context, parsin the conditions:
 
+            var conditions = context.Split(',');
+
+            IEnumerable<SubstitutionSet> resultingConstraints;
 
             var condSet = new ConditionSet();
-            var cond = Condition.Parse(lastEventMethod);
 
+            var cond = Condition.Parse(conditions[0]);
+
+            // Apply conditions to RPC
+            foreach (var res in conditions)
+            {
+                cond = Condition.Parse(res);
+                condSet = condSet.Add(cond);
+
+               
+            }
+            resultingConstraints = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(lastEventMethodCall);
             condSet = condSet.Add(cond);
 
-           var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL,null);
+           
+           var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, resultingConstraints);
 
            Assert.IsEmpty(result);
 
        }
 
-        [TestCase("Enter", "Matt", "Matt", "LastEventId(Action-End, SELF , Enter, SELF) !=null")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S1, SE(Flirt, Initiate), Positive), Sarah)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, *, Sarah)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, *, *, *)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, *, *)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(*, *, *, *)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S1, *, Positive), Sarah)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S1, *, *), *)=[id]")]
         [Test]
-        public void Test_DP_LastEventID_Match(string actionInMemory, string actionInMemorySubject, string actionInMemoryTarget, string lastEventMethod)
-        {
+        public void Test_DP_LastEventID_Match(int eventSet, string context, string lastEventMethodCall) {
             var rpc = BuildRPCAsset();
+            PopulateEventSet(eventSet);
 
+            foreach (var eve in eventSets[eventSet])
+                rpc.Perceive((Name)eve);
 
-            rpc.Perceive(EventHelper.ActionEnd(actionInMemorySubject, actionInMemory, actionInMemoryTarget));
+            // Build the context, parsin the conditions:
 
+            var conditions = context.Split(',');
+
+            IEnumerable<SubstitutionSet> resultingConstraints;
 
             var condSet = new ConditionSet();
-            var cond = Condition.Parse(lastEventMethod);
 
+            var cond = Condition.Parse(conditions[0]);
+
+            // Apply conditions to RPC
+            foreach (var res in conditions)
+            {
+                cond = Condition.Parse(res);
+                condSet = condSet.Add(cond);
+
+
+            }
+            resultingConstraints = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(lastEventMethodCall);
             condSet = condSet.Add(cond);
 
-            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
 
-            Assert.IsNotEmpty(result);
+            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, resultingConstraints);
+
+           Assert.IsNotEmpty(result);
 
         }
-
     }
 };
