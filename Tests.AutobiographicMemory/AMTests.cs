@@ -44,11 +44,12 @@ namespace Tests.AutobiographicMemory
             {
                 eventList= new List<string>()
                 {
-                    EventHelper.ActionEnd("Matt", "EntersRoom", "Sarah").ToString(),
+                EventHelper.ActionEnd("Matt", "EntersRoom", "Sarah").ToString(),
                 EventHelper.ActionEnd("Matt", "Speak(Start, S1, -, -)", "Sarah").ToString(),
                 EventHelper.ActionEnd("Matt", "Speak(Start, S1, -, Polite)", "Sarah").ToString(),
                 EventHelper.ActionEnd("Matt", "Speak(Start, S1, Silly, Polite)", "Sarah").ToString(),
                 EventHelper.PropertyChange("Has(Floor)", "Sarah", "Matt").ToString(),
+                //THIS SHOULD BE THE LAST EVENT
                 EventHelper.ActionEnd("Matt", "Speak(Start, S1, SE(Flirt, Initiate), Positive)", "Sarah").ToString()
     
             };
@@ -95,6 +96,10 @@ namespace Tests.AutobiographicMemory
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S1, SE(Flirt, Initiate), Positive), Sarah)=2")]
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Sarah, *, Matt)=[id]")]
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-Start, *, *, *)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, *, *, *)=4")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, *, Speak(*, *, SE([se], Initiate), Positive), *)=4")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Property-Change, *, *, *)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(*, *, *, *)=1")]
         [Test]
         public void Test_DP_LastEventID_NoMatch(int eventSet, string context, string lastEventMethodCall)
         {
@@ -102,8 +107,10 @@ namespace Tests.AutobiographicMemory
             PopulateEventSet(eventSet);
 
             foreach (var eve in eventSets[eventSet])
+            {
                 rpc.Perceive((Name)eve);
-
+                rpc.Tick++;
+            }
             // Build the context, parsin the conditions:
 
             var conditions = context.Split(',');
@@ -136,19 +143,25 @@ namespace Tests.AutobiographicMemory
        }
 
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S1, SE(Flirt, Initiate), Positive), Sarah)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S1, SE(*, Initiate), Positive), Sarah)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S1, SE(Flirt, Initiate), Positive), Sarah)=5")]
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, *, Sarah)=[id]")]
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, *, *, *)=[id]")]
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, *, *)=[id]")]
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(*, *, *, *)=[id]")]
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S1, *, Positive), Sarah)=[id]")]
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S1, *, *), *)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S1, *, *), *)=5")]
         [Test]
         public void Test_DP_LastEventID_Match(int eventSet, string context, string lastEventMethodCall) {
             var rpc = BuildRPCAsset();
             PopulateEventSet(eventSet);
 
             foreach (var eve in eventSets[eventSet])
+            {
                 rpc.Perceive((Name)eve);
+                rpc.Tick++;
+            }
 
             // Build the context, parsin the conditions:
 

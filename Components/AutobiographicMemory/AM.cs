@@ -243,80 +243,45 @@ namespace AutobiographicMemory
 
             ulong min = ulong.MinValue;
 
-            var lastEvents = m_registry.Values.OrderByDescending(e => e.Timestamp).TakeWhile(e =>
+
+            var allEvents = m_registry.Values;
+
+           
+            foreach(var eve in allEvents)
             {
-                if (e.Timestamp >= min)
-                {
-                    min = e.Timestamp;
-                    return true;
-                }
-                return false;
-            });
-
-            var le = lastEvents.Last();
-
-            IEnumerable<Substitution> set;
-
-            var newType = type;
-            if (type.IsUniversal)
-                newType = le.Type;
-
-            var newSubject = subject;
-
-            if (subject.IsUniversal)
-                newSubject = le.Subject;
-
-            var newDef = def;
-
-            if (def.IsUniversal)
-                newDef = le.EventName;
-
-
-
-
-            // if the subject is a Variable
-
-            if (subject.IsVariable)
-            {
-                foreach (var subj in context.AskPossibleProperties(subject))
-                {
-                    newSubject = subj.Item1.Value;
-
-                    var key = Name.BuildName((Name)AMConsts.EVENT, newType, newSubject, newDef, target);  // event to match
-
-                    if (Unifier.Unify(le.EventName, key, out set))
-                    {
-
-                        var sub = new Substitution(subject, new ComplexValue(newSubject));
-
-                        foreach (var c in context.Constraints)
-                        {
-                            if (c.Conflicts(sub))
-                                continue;
-
-                            var newConstraints = new SubstitutionSet(c);
-                            newConstraints.AddSubstitution(sub);
-
-                            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(le.Id)), newConstraints);
-                        }
-                    }
-
-                }
-
+                if (eve.Timestamp >= min)
+                    min = eve.Timestamp;
             }
-            else   // if the subject is not a variable, aka Sarah or Peter
-            {
-                var key = Name.BuildName((Name)AMConsts.EVENT, newType, newSubject, newDef, target);  // event to match
 
-                if (Unifier.Unify(le.EventName, key, out set))
-                {
-                    foreach (var c in context.Constraints)
+            var lastEvents =  m_registry.Where(x => x.Value.Timestamp == min);
+
+
+
+    
+            var lastIndexes = new NameSearchTree<List<uint>>();
+
+          //  Now we get a similar object as m_typeIndexes but only with the last events
+            foreach (var ind in m_typeIndexes)
+                foreach (var eve in lastEvents)
+                    if (ind.Key.ToString() == eve.Value.EventName.ToString())
+                        lastIndexes.Add(ind);
+
+
+
+            // Now that we have the events of the last tick we can now ask the context 
+
+            var key = Name.BuildName((Name)AMConsts.EVENT, type, subject, def, target);
+                     foreach (var c in context.Constraints)
                     {
-                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(le.Id)), c);
-                    }
-
-                }
-            }
+                         var unifiedSet = lastIndexes.Unify(key, c);
+                         foreach (var pair in unifiedSet)
+                         {
+                             foreach (var id in pair.Item1)
+                                 yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(id)), new SubstitutionSet(pair.Item2));
+                         }
+                     }
+                     
+           
         }
 
         #endregion
