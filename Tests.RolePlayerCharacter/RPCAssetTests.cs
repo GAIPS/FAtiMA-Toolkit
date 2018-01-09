@@ -4,8 +4,9 @@ using WellFormedNames;
 using KnowledgeBase;
 using Conditions.DTOs;
 using GAIPS.Rage;
+using System.Collections.Generic;
 using NUnit.Framework;
-
+using Conditions;
 
 namespace Tests.RolePlayCharacter
 {
@@ -13,21 +14,48 @@ namespace Tests.RolePlayCharacter
     public class RPCAssetTests
     {
 
-        private static RolePlayCharacterAsset ASSET_TO_TEST = BuildAsset();
 
-        private static RolePlayCharacterAsset BuildAsset()
+
+
+        private Dictionary<int, List<string>> eventSets;
+
+
+        private void PopulateEventSet(int set)
+        {
+            eventSets = new Dictionary<int, List<string>>();
+            var eventList = new List<string>();
+
+            if (set == 1)
+            {
+                eventList = new List<string>()
+                {
+                EventHelper.ActionEnd("Matt", "EntersRoom", "Sarah").ToString(),
+                EventHelper.ActionEnd("Sarah", "EntersRoom", "Matt").ToString(),
+                EventHelper.ActionEnd("Matt", "Speak(Start, S1, -, -)", "Sarah").ToString(),
+                EventHelper.ActionEnd("Matt", "Speak(Start, S1, -, Polite)", "Sarah").ToString(),
+                EventHelper.ActionEnd("Matt", "Speak(Start, S1, Silly, Polite)", "Sarah").ToString(),
+                EventHelper.PropertyChange("Has(Floor)", "Sarah", "Matt").ToString(),
+                //THIS SHOULD BE THE LAST EVENT
+                EventHelper.ActionEnd("Matt", "Speak(Start, S1, SE(Flirt, Initiate), Positive)", "Sarah").ToString()
+
+            };
+
+            }
+
+
+            eventSets.Add(set, eventList);
+
+
+
+        }
+
+        private static RolePlayCharacterAsset RPC = BuildRPCAsset();
+
+        private static RolePlayCharacterAsset BuildRPCAsset()
         {
             var kb = new KB((Name)"Matt");
-            /*  #region Set KB
-              kb.Tell((Name)"IsPerson(Matt)", (Name)"true", (Name)"*");
-              kb.Tell((Name)"IsPerson(Mary)", (Name)"true", (Name)"*");
-              kb.Tell((Name)"IsPerson(Robot)", (Name)"true", (Name)"Diego");
-              kb.Tell((Name)"IsOutsider(Diego)", (Name)"true", (Name)"*");
-              kb.Tell((Name)"IsOutsider(Diego)", (Name)"false", (Name)"Robot");
-              kb.Tell((Name)"IsFriends(Matt,Mary)", (Name)"true", (Name)"SELF");
-              kb.Tell((Name)"IsFriends(Matt,Diego)", (Name)"false", (Name)"SELF");
-              */
-            #region RPC especification
+
+
             var rpc = new RolePlayCharacterAsset
             {
                 BodyName = "Male",
@@ -41,26 +69,24 @@ namespace Tests.RolePlayCharacter
 
         }
 
-        #endregion
-
         [Test]
         public void TestCharacterName()
         {
-            var r = BuildAsset();
+            var r = BuildRPCAsset();
             Assert.AreEqual("Matt", r.CharacterName.ToString());
         }
 
         [Test]
         public void TestBodyName()
         {
-            var r = BuildAsset();
+            var r = BuildRPCAsset();
             Assert.AreEqual("Male", r.BodyName.ToString());
         }
 
         [Test]
         public void TestVoiceName()
         {
-            var r = BuildAsset();
+            var r = BuildRPCAsset();
             Assert.AreEqual("Male", r.VoiceName.ToString());
         }
 
@@ -68,13 +94,13 @@ namespace Tests.RolePlayCharacter
         [Test]
         public bool TestEventRecording(string subject, string evt, string target)
         {
-            var rpc = BuildAsset();
+            var rpc = BuildRPCAsset();
 
             var eve = EventHelper.ActionEnd(subject, evt, target);
 
             rpc.Perceive(eve);
 
-           var records = rpc.EventRecords;
+            var records = rpc.EventRecords;
 
             bool ret = false;
             foreach (var r in records)
@@ -82,9 +108,110 @@ namespace Tests.RolePlayCharacter
                     ret = true;
 
             return ret;
-            
+
 
         }
+        #region Test RPC Dynamic Properties
+        [TestCase(1, "[x] = Sarah", "isAgent([x])=False")]
+        [TestCase(1, "[x] = Matt", "isAgent([x])=False")]
+        [TestCase(1, "[x] = Sarah", "isAgent(EntersRoom)=False")]
+        [TestCase(1, "", "isAgent(False)=True")]
+        [Test]
+        public void Test_DP_isAgent_NoMatch(int eventSet, string context, string lastEventMethodCall)
+        {
+            var rpc = BuildRPCAsset();
+            PopulateEventSet(eventSet);
+
+            foreach (var eve in eventSets[eventSet])
+            {
+                rpc.Perceive((Name)eve);
+                rpc.Tick++;
+            }
+
+            // Initializing
+            var condSet = new ConditionSet();
+            var cond = Condition.Parse("[x] = True");
+            IEnumerable<SubstitutionSet> resultingConstraints = new List<SubstitutionSet>();
+
+            if (context != "")
+            {
+                var conditions = context.Split(',');
+
+                 
+                cond = Condition.Parse(conditions[0]);
+
+                // Apply conditions to RPC
+                foreach (var res in conditions)
+                {
+                    cond = Condition.Parse(res);
+                    condSet = condSet.Add(cond);
+
+
+                }
+                resultingConstraints = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+            }
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(lastEventMethodCall);
+            condSet = condSet.Add(cond);
+
+
+            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, resultingConstraints);
+
+            Assert.IsEmpty(result);
+        }
+
+        [TestCase(1, "", "isAgent([x])=True")]
+        [TestCase(1, "", "isAgent(Sarah)=True")]
+        [TestCase(1, "", "isAgent(Matt)=True")]
+        [TestCase(1, "[x] = Sarah", "isAgent([x])=True")]
+        [Test]
+        public void Test_DP_isAgent_Match(int eventSet, string context, string lastEventMethodCall)
+        {
+            var rpc = BuildRPCAsset();
+            PopulateEventSet(eventSet);
+
+            foreach (var eve in eventSets[eventSet])
+            {
+                rpc.Perceive((Name)eve);
+                rpc.Tick++;
+            }
+
+            // Initializing
+            var condSet = new ConditionSet();
+            var cond = Condition.Parse("[x] = True");
+            IEnumerable<SubstitutionSet> resultingConstraints = new List<SubstitutionSet>();
+
+            if (context != "")
+            {
+                var conditions = context.Split(',');
+
+
+                cond = Condition.Parse(conditions[0]);
+
+                // Apply conditions to RPC
+                foreach (var res in conditions)
+                {
+                    cond = Condition.Parse(res);
+                    condSet = condSet.Add(cond);
+
+
+                }
+                resultingConstraints = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+            }
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(lastEventMethodCall);
+            condSet = condSet.Add(cond);
+
+
+            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, resultingConstraints);
+
+            Assert.IsNotEmpty(result);
+        }
+
+
+        #endregion
     }
 };
 
