@@ -180,5 +180,133 @@ namespace Tests.AutobiographicMemory
            Assert.IsNotEmpty(result);
 
         }
+
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, EntersRoom, Sarah)=0")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, [x], [y], [z])=0")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, [x], EntersRoom, [z])=0")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(Start, S1, -, -), Sarah)=1")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(Start, S1, -, Polite), Sarah)=2")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(Start, S1, Silly, Polite), Sarah)=3")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Property-Change, Matt, Has(Floor), Sarah)=4")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(Start, S1, SE(Flirt, Initiate), Positive), Sarah)=5")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Flirt, Initiate), *), Sarah)=5")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Flirt, *), *), Sarah)=5")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId([action], [x], [y], [z])=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(*, [x], [y], [z])= [id]")]
+        [Test]
+        public void Test_DP_EventID_Match(int eventSet, string context, string MethodCall)
+        {
+            var rpc = BuildRPCAsset();
+            PopulateEventSet(eventSet);
+
+            foreach (var eve in eventSets[eventSet])
+                rpc.Perceive((Name)eve);
+
+            // Build the context, parsin the conditions:
+
+            var conditions = context.Split(',');
+
+            IEnumerable<SubstitutionSet> resultingConstraints;
+
+            var condSet = new ConditionSet();
+
+            var cond = Condition.Parse(conditions[0]);
+
+            // Apply conditions to RPC
+            foreach (var res in conditions)
+            {
+                cond = Condition.Parse(res);
+                condSet = condSet.Add(cond);
+
+
+            }
+            resultingConstraints = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(MethodCall);
+            condSet = condSet.Add(cond);
+
+
+            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, resultingConstraints);
+
+         /*   // what is the id I'm looking for
+            var wantedSub = cond.ToString().Split('=');
+
+            foreach (var sub in result)
+            {
+                if(sub)
+            }*/ 
+
+            Assert.IsNotEmpty(result);
+
+        }
+
+        // Wrong ID
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, EntersRoom, Sarah)=1")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, [x], [y], [z])=4")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, [x], EntersRoom, [z])=1")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(Start, S1, -, -), Sarah)=0")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(Start, S1, -, Polite), Sarah)=1")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(Start, S1, Silly, Polite), Sarah)=4")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Property-Change, Matt, Has(Floor), Sarah)=3")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(Start, S1, SE(Flirt, Initiate), Positive), Sarah)=1")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Flirt, Initiate), *), Sarah)=4")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Flirt, *), *), Sarah)=1")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(*, *,*, *)=6")]
+        // No action like this happened
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Flirt, Answer), *), Sarah)=5")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Compliment, *), *), Sarah)=5")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Flirt, Answer), *), Sarah)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Compliment, *), *), Sarah)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Property-Change, Sarah, Has(Floor), Matt)=4")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(*, Sarah, Has(Floor), Matt)=4")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(*, [x], [y], [z])=-1")]
+        [Test]
+        public void Test_DP_EventID_NoMatch(int eventSet, string context, string MethodCall)
+        {
+            var rpc = BuildRPCAsset();
+            PopulateEventSet(eventSet);
+
+            foreach (var eve in eventSets[eventSet])
+                rpc.Perceive((Name)eve);
+
+            // Build the context, parsin the conditions:
+
+            var conditions = context.Split(',');
+
+            IEnumerable<SubstitutionSet> resultingConstraints;
+
+            var condSet = new ConditionSet();
+
+            var cond = Condition.Parse(conditions[0]);
+
+            // Apply conditions to RPC
+            foreach (var res in conditions)
+            {
+                cond = Condition.Parse(res);
+                condSet = condSet.Add(cond);
+
+
+            }
+            resultingConstraints = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(MethodCall);
+            condSet = condSet.Add(cond);
+
+
+            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, resultingConstraints);
+
+            /*   // what is the id I'm looking for
+               var wantedSub = cond.ToString().Split('=');
+
+               foreach (var sub in result)
+               {
+                   if(sub)
+               }*/
+
+            Assert.IsEmpty(result);
+
+        }
     }
 };
