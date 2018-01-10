@@ -639,7 +639,9 @@ namespace RolePlayCharacter
             }
         }
 
-        private IEnumerable<DynamicPropertyResult> MoodPropertyCalculator(IQueryContext context, Name x)
+        private IEnumerable<DynamicPropertyResult> MoodPropertyCalculator(IQueryContext context, Name x) 
+            
+            // Should only accept SELF, its rpc Name our a variable that should be subbed by its name
         {
             if (context.Perspective != Name.SELF_SYMBOL)
                 yield break;

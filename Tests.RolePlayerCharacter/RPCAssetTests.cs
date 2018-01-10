@@ -62,6 +62,7 @@ namespace Tests.RolePlayCharacter
                 VoiceName = "Male",
                 CharacterName = (Name)"Matt",
                 m_kb = kb,
+                
             };
 
             rpc.LoadAssociatedAssets();
@@ -210,8 +211,74 @@ namespace Tests.RolePlayCharacter
             Assert.IsNotEmpty(result);
         }
 
+        [TestCase(1, "isAgent([x])=True", "Mood(Matt) = [m]")]
+        [TestCase(1, "", "Mood(SELF) = [m]")]
+        [TestCase(1, "isAgent(Matt)=True", "Mood([x]) = [m]")]
+        [TestCase(1, "isAgent([x])=True", "Mood([x]) = 0")]
+        [TestCase(1, "isAgent([x])=True", "Mood([x]) < 5")]
+        [TestCase(1, "isAgent([x])=True, [m] < 5", "Mood(Matt) = [m]")]
+        [TestCase(1, "isAgent([x])=True, [m] < 5", "Mood([x]) = [m]")]
+        [TestCase(1, "isAgent([x])=True, [m] < 5", "Mood(SELF) = [m]")]
 
-        #endregion
-    }
-};
+        public void Test_DP_Mood_Match(int eventSet, string context, string lastEventMethodCall)
+        {
+
+            /*EmotionalAppraisal.EmotionalAppraisalAsset ea = new EmotionalAppraisal.EmotionalAppraisalAsset();
+
+            var conditionDto = new ConditionSetDTO() { ConditionSet = new string[] { "[x] != True" } };
+            ea.AddOrUpdateAppraisalRule(new EmotionalAppraisal.DTOs.AppraisalRuleDTO()
+            {
+                Conditions = conditionDto,
+                EventMatchingTemplate = (Name)"Event(Action-End, *, Speak(*, *, *, Positive), *)",
+                Desirability = Name.BuildName(7),
+                Praiseworthiness = Name.BuildName(7),
+            });
+
+    */
+            var rpc = BuildRPCAsset();
+            PopulateEventSet(eventSet);
+
+            foreach (var eve in eventSets[eventSet])
+            {
+                rpc.Perceive((Name)eve);
+                rpc.Tick++;
+            }
+
+            // Initializing
+            var condSet = new ConditionSet();
+            var cond = Condition.Parse("[x] = True");
+            IEnumerable<SubstitutionSet> resultingConstraints = new List<SubstitutionSet>();
+
+            if (context != "")
+            {
+                var conditions = context.Split(',');
+
+
+                cond = Condition.Parse(conditions[0]);
+
+                // Apply conditions to RPC
+                foreach (var res in conditions)
+                {
+                    cond = Condition.Parse(res);
+                    condSet = condSet.Add(cond);
+
+
+                }
+                resultingConstraints = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+            }
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(lastEventMethodCall);
+            condSet = condSet.Add(cond);
+
+
+            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, resultingConstraints);
+
+            Assert.IsNotEmpty(result);
+
+        }
+
+            #endregion
+        }
+    };
 
