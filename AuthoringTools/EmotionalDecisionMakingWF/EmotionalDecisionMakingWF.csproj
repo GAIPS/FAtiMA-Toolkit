@@ -36,34 +36,13 @@
     <StartupObject>EmotionalDecisionMakingWF.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ActionLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EmotionalDecisionMaking.1.2.0\lib\net35\ActionLibrary.dll</HintPath>
-    </Reference>
-    <Reference Include="AutobiographicMemory, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EmotionalDecisionMaking.1.2.0\lib\net35\AutobiographicMemory.dll</HintPath>
-    </Reference>
-    <Reference Include="Conditions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EmotionalDecisionMaking.1.2.0\lib\net35\Conditions.dll</HintPath>
-    </Reference>
-    <Reference Include="EmotionalAppraisal, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EmotionalDecisionMaking.1.2.0\lib\net35\EmotionalAppraisal.dll</HintPath>
-    </Reference>
-    <Reference Include="EmotionalDecisionMaking, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EmotionalDecisionMaking.1.2.0\lib\net35\EmotionalDecisionMaking.dll</HintPath>
-    </Reference>
     <Reference Include="Equin.ApplicationFramework.BindingListView, Version=1.4.5222.35545, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Equin.ApplicationFramework.BindingListView.1.4.5222.35545\lib\net40-Client\Equin.ApplicationFramework.BindingListView.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="GAIPS.Rage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EmotionalDecisionMaking.1.2.0\lib\net35\GAIPS.Rage.dll</HintPath>
-    </Reference>
     <Reference Include="GAIPS.Serialization, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\GAIPS.Serialization.1.5.0\lib\net35\GAIPS.Serialization.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="KnowledgeBase, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EmotionalDecisionMaking.1.2.0\lib\net35\KnowledgeBase.dll</HintPath>
     </Reference>
     <Reference Include="RageAssetManager">
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
@@ -82,9 +61,6 @@
     <Reference Include="Utilities, Version=1.0.0.19854, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Utilities.1.0.0.19854\lib\net35\Utilities.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="WellFormedNames, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EmotionalDecisionMaking.1.2.0\lib\net35\WellFormedNames.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

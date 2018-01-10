@@ -4,7 +4,6 @@ using System.Linq;
 using ActionLibrary;
 using Conditions;
 using Conditions.DTOs;
-using EmotionalAppraisal;
 using GAIPS.Rage;
 using SerializationUtilities;
 using WellFormedNames;
@@ -61,7 +60,7 @@ namespace EmotionalDecisionMaking
         {
             if (m_kb == null)
                 throw new Exception(
-                    $"Unlinked to a {nameof(EmotionalAppraisalAsset)}. Use {nameof(RegisterKnowledgeBase)} before calling any method.");
+                    $"Unlinked to a KB. Use {nameof(RegisterKnowledgeBase)} before calling any method.");
 
 			if (ReactiveActions == null)
 				return Enumerable.Empty<IAction>();

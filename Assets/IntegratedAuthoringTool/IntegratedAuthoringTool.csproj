@@ -42,19 +42,15 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj">
-      <Project>{E011D502-5C0F-4A3F-9F1A-337FF025EB48}</Project>
+      <Project>{e011d502-5c0f-4a3f-9f1a-337ff025eb48}</Project>
       <Name>ActionLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\AutobiographicMemory\AutobiographicMemory.csproj">
-      <Project>{C1CC38C5-72F5-4545-B4F7-C65B2883909C}</Project>
-      <Name>AutobiographicMemory</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
       <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
       <Name>GAIPS.Rage</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Components\KnowledgeBase\KnowledgeBase.csproj">
-      <Project>{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}</Project>
+      <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
       <Name>KnowledgeBase</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">

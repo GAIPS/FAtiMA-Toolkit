@@ -8,7 +8,6 @@ using Conditions;
 using Conditions.DTOs;
 using SerializationUtilities;
 using WellFormedNames;
-using EmotionalAppraisal;
 using GAIPS.Rage;
 using KnowledgeBase;
 using WellFormedNames.Collections;
@@ -519,71 +518,6 @@ namespace CommeillFaut
 
         #endregion
 
-
-        #region Appraisal
-        public Dictionary<Name, Name> AppraiseEvents(IEnumerable<Name> eventNames, KB kb)
-        {
-            foreach (var e in eventNames.Select(e => e.RemoveSelfPerspective(kb.Perspective)))
-            {
-
-                if (e.GetNTerm(3).ToString().Contains("SE(") && e.GetNTerm(3).ToString().Contains("Initiate"))
-                {
-
-                    var action = e.GetNTerm(3).ToString();
-
-                    char[] delims = {',', '(', ')'};
-
-                    var result = action.Split(delims);
-
-                    var initiator = e.GetNTerm(2);
-                    var target = e.GetNTerm(4);
-                    var seName = result[4];
-                    var SocialExchange = m_SocialExchanges.Find(x => x.ActionName.ToString() == seName);
-
-
-                    StartSE(SocialExchange, initiator, target);
-                }
-
-                else if (e.GetNTerm(3).ToString().Contains("SE(") && e.GetNTerm(3).ToString().Contains("Answer"))
-                {
-
-                    var action = e.GetNTerm(3).ToString();
-
-                    char[] delims = {',', '(', ')'};
-
-                    var result = action.Split(delims);
-
-                    var initiator = e.GetNTerm(2);
-                    var target = e.GetNTerm(4);
-                    var seName = result[4];
-                    var seResult = result[6];
-                    var SocialExchange = m_SocialExchanges.Find(x => x.ActionName.ToString() == seName);
-
-                    SEResponse(SocialExchange, initiator, target, seResult);
-                }
-
-                else if (e.GetNTerm(3).ToString().Contains("SE(") && e.GetNTerm(3).ToString().Contains("Finalize"))
-                {
-                   
-                    var action = e.GetNTerm(3).ToString();
-
-                    char[] delims = {',', '(', ')'};
-
-                    var result = action.Split(delims);
-                //    Console.WriteLine("action: " + action + " result0 " + result[0] + " result1 " + result[1] + " result2 " + result[2] + " result3 " + result[3] + " resul4 " + result[4] + " resul5 " + result[5] + " resul6 " + result[6] + " 7 " + result[7] );
-                    var initiator = e.GetNTerm(2);
-                    var target = e.GetNTerm(4);
-                    var seName = result[4];
-                    var seResult = result[7];
-                    var socialExchange = m_SocialExchanges.Find(x => x.ActionName.ToString() == seName);
-
-                    return EndSE(socialExchange, initiator, target, seResult);
-                }
-                
-            }
-            return new Dictionary<Name, Name>();
-        }
-
         public void StartSE(SocialExchange socialExchange, Name initiator, Name target)
         {
 
@@ -653,7 +587,6 @@ namespace CommeillFaut
 
         }
 
-#endregion
         /// <summary>
         /// Load a Social Importance Asset definition from a DTO object.
         /// </summary>

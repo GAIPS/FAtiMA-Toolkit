@@ -38,7 +38,6 @@
     <Reference Include="RageAssetManager">
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
     <Reference Include="Utilities, Version=1.0.0.19854, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Utilities.1.0.0.19854\lib\net35\Utilities.dll</HintPath>
       <Private>True</Private>

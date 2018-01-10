@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ActionLibrary;
-using EmotionalAppraisal;
 using GAIPS.Rage;
 using KnowledgeBase;
 using SerializationUtilities;
@@ -81,7 +79,7 @@ namespace SocialImportance
 		private void ValidateKBLink()
 		{
 			if(m_kB==null)
-				throw new InvalidOperationException($"Cannot execute operation as an instance of {nameof(EmotionalAppraisalAsset)} was not registed in this asset.");
+				throw new InvalidOperationException($"Cannot execute operation as an instance of KB was not registed in this asset.");
 		}
 
 		/// <summary>
@@ -233,14 +231,6 @@ namespace SocialImportance
 			m_attributionRules.UnionWith(dto.AttributionRules.Select(adto => new AttributionRule(adto)));
 
 			m_claimTree.Clear();
-			if (dto.Claims != null)
-			{
-				foreach (var c in dto.Claims)
-				{
-					var n = Name.BuildName(c.ActionTemplate);
-					m_claimTree.Add(n, c.ClaimSI);
-				}
-			}
 		}
 
 		/// <summary>
@@ -251,7 +241,7 @@ namespace SocialImportance
 			var at = m_attributionRules.Select(a => a.ToDTO()).ToArray();
 			var claims = m_claimTree.Select(p => new ClaimDTO() { ActionTemplate = p.Key.ToString(), ClaimSI = p.Value }).ToArray();
 			
-			return new SocialImportanceDTO() { AttributionRules = at, Claims = claims};
+			return new SocialImportanceDTO() { AttributionRules = at};
 		}
 
 		#endregion
