@@ -1,9 +1,6 @@
-﻿using System;
-using RolePlayCharacter;
+﻿using RolePlayCharacter;
 using WellFormedNames;
 using KnowledgeBase;
-using Conditions.DTOs;
-using GAIPS.Rage;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Conditions;
@@ -13,12 +10,7 @@ namespace Tests.RolePlayCharacter
     [TestFixture]
     public class RPCAssetTests
     {
-
-
-
-
         private Dictionary<int, List<string>> eventSets;
-
 
         private void PopulateEventSet(int set)
         {

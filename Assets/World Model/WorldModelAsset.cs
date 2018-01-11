@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using GAIPS.Rage;
 using WellFormedNames;
-using Utilities;
-using SerializationUtilities;
 using KnowledgeBase;
-using Conditions;
 using Conditions.DTOs;
-using WellFormedNames.Collections;
-using IQueryable = WellFormedNames.IQueryable;
 using WorldModel.DTOs;
 using AutobiographicMemory;
 
@@ -19,7 +13,6 @@ namespace WorldModel
     [Serializable]
     public sealed partial class WorldModelAsset : LoadableAsset<WorldModelAsset>
     {
-
 
         private StateModifierDerivator m_stateDerivator;
 
