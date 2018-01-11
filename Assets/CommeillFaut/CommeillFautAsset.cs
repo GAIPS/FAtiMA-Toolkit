@@ -96,7 +96,7 @@ namespace CommeillFaut
             //   Console.WriteLine("Contraint: " + c.ToString());
 
             foreach (var s in context.AskPossibleProperties(socialMoveName))
-            {
+                {
                 if (m_SocialExchanges.Find(x => x.ActionName == s.Item1.Value) != null)
                 {
                     SEConstraint = true;

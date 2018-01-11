@@ -223,18 +223,6 @@ namespace Tests.RolePlayCharacter
         public void Test_DP_Mood_Match(int eventSet, string context, string lastEventMethodCall)
         {
 
-            /*EmotionalAppraisal.EmotionalAppraisalAsset ea = new EmotionalAppraisal.EmotionalAppraisalAsset();
-
-            var conditionDto = new ConditionSetDTO() { ConditionSet = new string[] { "[x] != True" } };
-            ea.AddOrUpdateAppraisalRule(new EmotionalAppraisal.DTOs.AppraisalRuleDTO()
-            {
-                Conditions = conditionDto,
-                EventMatchingTemplate = (Name)"Event(Action-End, *, Speak(*, *, *, Positive), *)",
-                Desirability = Name.BuildName(7),
-                Praiseworthiness = Name.BuildName(7),
-            });
-
-    */
             var rpc = BuildRPCAsset();
             PopulateEventSet(eventSet);
 
