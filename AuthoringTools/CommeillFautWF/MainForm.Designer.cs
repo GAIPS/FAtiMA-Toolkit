@@ -83,11 +83,6 @@
             this.genericPropertyDataGridControler1.TabIndex = 0;
             this.genericPropertyDataGridControler1.Load += new System.EventHandler(this.genericPropertyDataGridControler1_Load_1);
             this.genericPropertyDataGridControler1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.genericPropertyDataGridControler1_KeyDown);
-            // 
-            // triggerRulesBindingSource
-            // 
-            this.triggerRulesBindingSource.DataSource = typeof(CommeillFaut.TriggerRules);
-            // 
             // MainForm
             // 
             this.AllowDrop = true;
