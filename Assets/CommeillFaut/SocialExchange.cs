@@ -57,33 +57,7 @@ namespace CommeillFaut
 
 
 
-        private void Instatiate(float response)
-        {
-            var write = "Instantiating SocialExchange " + ActionName + " \n";
-
-
-            write += Initiator + " wants to " + Intent + " with " + targ + "\n";
-
-            Console.WriteLine(write);
-
-
-           if(response > 0)
-                write = targ + " accepted the " + this.ActionName + " Social Exchange \n";
-           else if (response == 0)
-                write = targ + " is neutral to the " + this.ActionName + " Social Exchange \n";
-           else 
-                write = targ + " rejected the " + this.ActionName + " Social Exchange \n";
-
-
-            Console.WriteLine(write);
-
-
-          
-            write = " Social Exchange" + base.ActionName + " completed \n";
-            Console.WriteLine(write);
-            //System.Threading.Thread.Sleep(2000);
-        }
-
+      
         public float CalculateVolition(string init, string _targ, KB m_Kb)
         {
             float counter = 0;
@@ -113,223 +87,7 @@ namespace CommeillFaut
         }
 
 
-        public void LaunchSocialExchange(string init, string _targ, KB init_Kb, KB targ_Kb)
-        {
-            Initiator = init;
-            targ = _targ;
-
-            var write = "Launching SocialExchange: " + base.ActionName + " Initator: " + init + " Target: " + targ + "\n";
-
-            Console.WriteLine(write);
-
-           
-            var response = CalculateResponse(init, targ, targ_Kb);
-            Console.WriteLine("Response result: " + response );
-
-            Instatiate(response);
-
-         //   ApplyConsequences(init_Kb, targ_Kb, response);
-
-
-            write = " SocialExchange Completed: " + base.ActionName + " Initator: " + init + " Target: " + targ + " result : " + response + "\n";
-
-            Console.WriteLine(write);
-
-        }
-
-
-
-        public Dictionary<Name, Name> ApplyConsequences(KB me, Name initiator, Name Target, string response, bool isSpectator)
-        {
-            int resp = 0;
-
-            response = response.Trim();
-            
-            
-           
-            
-          //  Console.WriteLine(" Much effects, such response: " + response);
-            var newEffectList = new List<String>();
-
-                                 // Ideally we would be able to insert any 
-
-            var retList = new Dictionary<Name, Name>();
-            var toAlter = "";
-            var newCertainty = 0.0f;
-            var kbInit = "";
-            var kbTarget = "";
-
-            if(me.Perspective == initiator)
-            {
-                kbInit = initiator.ToString();
-                kbTarget = Target.ToString();
-            }
-            else if(me.Perspective == Target){
-
-                kbInit = Target.ToString();
-                kbTarget = initiator.ToString();
-            }
-
-/*
-            foreach (var cond in this.InfluenceRule.RuleConditions)
-            {
-              
-
-
-                toAlter = cond.ToString();
-                toAlter = toAlter.Replace("[x]", kbTarget);
-                toAlter = toAlter.Replace("SELF", kbInit);
-                var newString = toAlter.Split('=', '>', '<');
-                var certainty = me.AskProperty(Name.BuildName(newString[0])).Certainty;
-                Console.WriteLine("Old certainty of variable: "+ newString[0]+ " v: " + certainty);
-
-                if(response == "Positive")
-                newCertainty = certainty + 0.2f;
-                else newCertainty = certainty - 0.2f;
-
-                if (newCertainty > 1) newCertainty = 1;
-                else if (newCertainty < 0) newCertainty = 0;
-
-                if (!newString[0].Contains("SI"))
-                {
-                    var value = me.AskProperty(Name.BuildName(newString[0])).Value;
-                    me.Tell(Name.BuildName(newString[0]), value, me.Perspective, newCertainty);
-                    Console.WriteLine("New certainty of variable: " + newString[0] + " v: " + newCertainty);
-                }
-                else
-                {
-                    Console.WriteLine("uhm");
-                }
-               
-            }
-
-          */
-
-            return retList;
-
-            /* foreach (var ef in newEffectList)
-           {
-               Console.WriteLine("Effects: " + me + " " + initiator + " "+ Target + " "+ resp + " " + ef + " " + isSpectator);
-               var retPair = ApplyKeywordEffects(me, initiator, Target, resp, ef, isSpectator);
-               if(retPair.Key!=null)
-               retList.Add(retPair.Key, retPair.Value);
-           }*/
-
-        }
-
-        public KeyValuePair<Name,Name> ApplyKeywordEffects(KB me, Name initiator, Name other, int result, string keyword, bool spectator)
-        {
-            char[] delimitedChars = {'(', ')', ','};
-            bool isInitiator = (initiator == me.Perspective);
-            string[] words = keyword.Split(delimitedChars);
-            var value = 0.0f;
-            // Console.WriteLine("Effects Keyword: " +  keyword);
-            // social network but we don't store them just yet   Attraction(Initiator,Target,3)
-            if (words[1] == "Initiator")
-            {
-                if (isInitiator)
-                {
-
-                    if (me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")")) != null)
-                    {
-                        value = me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + other.ToString() + ")")).Certainty;
-                        if (value <= 1)
-                            value += 0.2f;
-
-                    }
-                    else
-                    {
-                        value = 0.2f;
-                    }
-
-                    // var insert = "" + value;
-
-                    me.Tell((Name.BuildName(words[0] + "(" + me.Perspective + "," + other.ToString() + ")")), Name.BuildName("True"), me.Perspective, value);
-
-                    return new KeyValuePair<Name, Name>();
-
-                    //return new KeyValuePair<Name, Name>(Name.BuildName(words[0] + "(" + me.Perspective + "," + other.ToString() + ")"), Name.BuildName(insert));
-                }
-                else if (spectator)
-                {
-                    if (me.AskProperty((Name)(words[0] + "(" + initiator + "," + other + ")")) != null)
-                    {
-                        value = me.AskProperty((Name)(words[0] + "(" + initiator + "," + other + ")")).Certainty;
-                        if (value <= 1)
-                            value += 0.2f;
-
-                    }
-
-                    else
-                    {
-                        value = 0.2f;
-
-                        me.Tell((Name)(words[0] + "(" + initiator + "," + other + ")"), Name.BuildName("True"), initiator, value);
-
-                        //    return new KeyValuePair<Name, Name>(Name.BuildName(words[0] + "(" + initiator + "," + other.ToString() + ")"), Name.BuildName(insert));
-
-                        return new KeyValuePair<Name, Name>();
-                    }
-
-
-                }
-            }
-
-            if (words[1] == "Target")
-            {
-                if (!isInitiator && !spectator)
-                {
-                    if (me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + initiator.ToString() + ")")) != null)
-                    {
-                        value =  me.AskProperty((Name)(words[0] + "(" + me.Perspective + "," + initiator.ToString() + ")")).Certainty;
-                            if (value <= 1)
-                                value += 0.2f;
-
-                        }
-                    else
-                    {
-                            value = 0.2f;
-                    }
-
-                        //   var insert = "" + value;
-
-                        me.Tell(Name.BuildName(words[0] + "(" + me.Perspective + "," + initiator.ToString() + ")"), Name.BuildName("True"), me.Perspective, value);
-
-                        //    return new KeyValuePair<Name, Name>(Name.BuildName(words[0] + "(" + me.Perspective + "," + initiator.ToString() + ")"), Name.BuildName(insert));
-
-                        return new KeyValuePair<Name, Name>();
-
-                    }
-                else if (spectator)
-                {
-                    if (me.AskProperty((Name) (words[0] + "(" + other + "," + initiator + ")")) != null)
-                    {
-                        value = me.AskProperty((Name) (words[0] + "(" + other + "," + initiator + ")")).Certainty;
-                            if (value <= 1)
-                                value += 0.2f;
-                        }
-
-                    else
-                    {
-                        value =0.2f;
-                    }
-
-                        me.Tell(Name.BuildName(words[0] + "(" + other + "," + initiator + ")"), Name.BuildName("True"), other,  value);
-
-
-
-                        //   return new KeyValuePair<Name, Name>(Name.BuildName(words[0] + "(" + other + "," + initiator + ")"), Name.BuildName(insert));
-
-                        return new KeyValuePair<Name, Name>();
-
-                    }
-            }
-
-
-
-            return new KeyValuePair<Name, Name>();
-
-        }
+    
 
         public void SetData(SocialExchangeDTO dto)
         {
@@ -368,6 +126,17 @@ namespace CommeillFaut
         
             InfluenceRule = dataHolder.GetValue<InfluenceRule>("InfluenceRule");
          
+        }
+
+        
+        public void AddInfluenceRule(InfluenceRule rule)
+        {
+            this.InfluenceRule = rule;
+        }
+
+        public void RemoveInfluenceRule(InfluenceRule rule)
+        {
+            InfluenceRule = null;
         }
 
        public void SetInfluenceRule(InfluenceRule rule)

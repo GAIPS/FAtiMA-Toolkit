@@ -29,7 +29,7 @@ namespace Tests.CommeillFaut
                 {
                     RuleConditions = new Conditions.DTOs.ConditionSetDTO()
                     {
-                        ConditionSet = new string[] { "[x] != True" }
+                        ConditionSet = new string[] { "Has(Floor) != Start" }
 
                     },
                     Target = "[x]",
@@ -216,6 +216,7 @@ namespace Tests.CommeillFaut
 
         }
 
+#region Serialization Tests
 
         [TestCase]
         public void CommeillFaut_Serialization_Test()
@@ -246,6 +247,42 @@ namespace Tests.CommeillFaut
                 var obj = formater.Deserialize(stream);
             }
         }
+#endregion
+
+       // [TestCase]
+        public void Test_CIF_UpdateSocialExchange()
+        {
+            var cif = BuildCIFAsset();
+
+            var initialValue = cif.GetSocialMove((Name)"Flirt").InfluenceRule.RuleConditions.Count;
+
+            var se = cif.GetSocialMove((Name)"Flirt");
+
+            var inf = se.InfluenceRule;
+
+            se.RemoveInfluenceRule(inf);
+
+            cif.UpdateSocialExchange(se.ToDTO());
+
+            Assert.IsNull(cif.GetSocialMove((Name)"Flirt").InfluenceRule);
+
+        }
+
+
+        [TestCase]
+        public void Test_CIF_RemoveSocialExchange()
+        {
+            var cif = BuildCIFAsset();
+
+            var se = cif.GetSocialMove((Name)"Flirt");
+
+            cif.RemoveSocialExchange(se);
+
+            Assert.IsEmpty(cif.m_SocialExchanges);
+
+        }
+
+
 
     }
 
