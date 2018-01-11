@@ -101,35 +101,6 @@ namespace Tests.SocialImportance
 							}
 						}
 					}
-				},
-				Conferral = new[]
-				{
-					new ConferralDTO()
-					{
-						Action = "Give(Drink)",
-						ConferralSI = 10,
-						Target = "[x]",
-						Conditions = new ConditionSetDTO()
-						{
-							ConditionSet = new []
-							{
-								"AskedDrink([x])=true"
-							}
-						}
-					},
-					new ConferralDTO()
-					{
-						Action = "Give(Best-Drink)",
-						ConferralSI = 23,
-						Target = "[x]",
-						Conditions = new ConditionSetDTO()
-						{
-							ConditionSet = new []
-							{
-								"AskedDrink([x])=true"
-							}
-						}
-					}
 				}
 			};
 			#endregion

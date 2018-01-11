@@ -105,6 +105,26 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Assets\SocialImportance\SocialImportance.csproj">
+      <Project>{823e8a41-5231-4b06-bbab-e62651e15bc7}</Project>
+      <Name>SocialImportance</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\Conditions\Conditions.csproj">
+      <Project>{59041269-e52e-4cdd-84e0-92fdcfbf270d}</Project>
+      <Name>Conditions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
+      <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
+      <Name>GAIPS.Rage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\KnowledgeBase\KnowledgeBase.csproj">
+      <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
+      <Name>KnowledgeBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
+      <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
+      <Name>WellFormedNames</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GAIPS.AssetEditorTools\GAIPS.AssetEditorTools.csproj">
       <Project>{c61fb19d-e715-4eb4-afca-27ff81a14777}</Project>
       <Name>GAIPS.AssetEditorTools</Name>

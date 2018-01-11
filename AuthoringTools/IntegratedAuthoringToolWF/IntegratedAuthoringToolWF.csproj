@@ -116,6 +116,30 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Assets\EmotionalAppraisal\EmotionalAppraisal.csproj">
+      <Project>{0a2a1ee9-bd5d-44aa-a22d-291612488f06}</Project>
+      <Name>EmotionalAppraisal</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Assets\RolePlayCharacter\RolePlayCharacter.csproj">
+      <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
+      <Name>RolePlayCharacter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj">
+      <Project>{e011d502-5c0f-4a3f-9f1a-337ff025eb48}</Project>
+      <Name>ActionLibrary</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
+      <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
+      <Name>GAIPS.Rage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\KnowledgeBase\KnowledgeBase.csproj">
+      <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
+      <Name>KnowledgeBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
+      <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
+      <Name>WellFormedNames</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GAIPS.AssetEditorTools\GAIPS.AssetEditorTools.csproj">
       <Project>{c61fb19d-e715-4eb4-afca-27ff81a14777}</Project>
       <Name>GAIPS.AssetEditorTools</Name>
@@ -126,9 +150,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="CommeillFaut, Version=1.7.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IntegratedAuthoringTool.1.7.0\lib\net35\CommeillFaut.dll</HintPath>
-    </Reference>
     <Reference Include="EPPlus, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
       <HintPath>..\packages\EPPlus.4.1.0\lib\net40\EPPlus.dll</HintPath>
       <Private>True</Private>
@@ -159,9 +180,6 @@
     <Reference Include="RageAssetManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
-    </Reference>
-    <Reference Include="RolePlayCharacter, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\IntegratedAuthoringTool.1.7.0\lib\net35\RolePlayCharacter.dll</HintPath>
     </Reference>
     <Reference Include="SocialImportanceAsset, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\IntegratedAuthoringTool.1.7.0\lib\net35\SocialImportanceAsset.dll</HintPath>
