@@ -7,6 +7,8 @@ using Conditions;
 using RolePlayCharacter;
 using KnowledgeBase;
 using WellFormedNames;
+using SerializationUtilities;
+using System.IO;
 
 namespace Tests.CommeillFaut
 {
@@ -215,7 +217,35 @@ namespace Tests.CommeillFaut
         }
 
 
+        [TestCase]
+        public void CommeillFaut_Serialization_Test()
+        {
+            var asset = BuildCIFAsset();
 
+            using (var stream = new MemoryStream())
+            {
+                var formater = new JSONSerializer();
+                formater.Serialize(stream, asset);
+                stream.Seek(0, SeekOrigin.Begin);
+                Console.WriteLine(new StreamReader(stream).ReadToEnd());
+            }
+        }
+
+        [TestCase]
+        public void CommeillFaut_DeSerialization_Test()
+        {
+            var asset = BuildCIFAsset();
+
+            using (var stream = new MemoryStream())
+            {
+                var formater = new JSONSerializer();
+                formater.Serialize(stream, asset);
+                stream.Seek(0, SeekOrigin.Begin);
+                Console.WriteLine(new StreamReader(stream).ReadToEnd());
+                stream.Seek(0, SeekOrigin.Begin);
+                var obj = formater.Deserialize(stream);
+            }
+        }
 
     }
 

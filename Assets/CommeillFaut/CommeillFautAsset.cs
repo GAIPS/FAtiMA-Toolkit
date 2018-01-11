@@ -23,7 +23,6 @@ namespace CommeillFaut
         public KB m_kB;
         public List<SocialExchange> m_SocialExchanges { get; set; }
         public Dictionary<string, string[]> ConditionList;
-        public TriggerRules _TriggerRules;
         private List<Name> _actorsList;
 
         //Volatile Statements
@@ -44,7 +43,6 @@ namespace CommeillFaut
             m_SocialExchanges = new List<SocialExchange>();
             ConditionList = new Dictionary<string, string[]>();
             m_cachedCIF = new NameSearchTree<NameSearchTree<float>>();
-            _TriggerRules = new TriggerRules();
             _actorsList = new List<Name>();
         }
 
@@ -83,7 +81,7 @@ namespace CommeillFaut
 
         private static readonly Name VOLITION_PROPERTY_TEMPLATE = (Name)"Volition";
 
-        public IEnumerable<DynamicPropertyResult> VolitionPropertyCalculator(IQueryContext context, Name socialMoveName, Name initator, Name Target)
+        public IEnumerable<DynamicPropertyResult> VolitionPropertyCalculator(IQueryContext context, Name socialMoveName, Name initiator, Name Target)
         {
             Dictionary<SubstitutionSet, Name> ret = new Dictionary<SubstitutionSet, Name>();
           //  var seSub = new Substitution(Name.BuildName("[x]"), new ComplexValue(Name.BuildName("default")));
@@ -94,6 +92,13 @@ namespace CommeillFaut
             //   Console.WriteLine(" socialmovename" + socialMoveName);
             //    foreach (var c in context.Constraints)
             //   Console.WriteLine("Contraint: " + c.ToString());
+
+
+            if (context.Perspective != Name.SELF_SYMBOL)
+                yield break;
+
+            if (initiator == Target)
+                yield break;
 
             foreach (var s in context.AskPossibleProperties(socialMoveName))
                 {
@@ -312,14 +317,6 @@ namespace CommeillFaut
         }
 
 
-
-
-        public void CheckTriggerRules()
-        {
-            _TriggerRules.Verify(this.m_kB);
-        }
-
-   
         public Guid AddExchange(SocialExchangeDTO newExchange)
         {
             var newSocialExchange = new SocialExchange(newExchange);
@@ -341,14 +338,7 @@ namespace CommeillFaut
         }
 
 
-        public Guid AddTriggerRule(InfluenceRuleDTO rule, string cond)
-        {
-
-            return _TriggerRules.AddTriggerRule(rule, cond);
-        }
-        /// <summary>
-        /// Updates a reaction definition.
-        /// </summary>
+     
         public void UpdateSocialExchange(SocialExchangeDTO reactionToEdit, SocialExchangeDTO newReaction)
         {
             m_SocialExchanges.Remove(new SocialExchange(reactionToEdit));
@@ -384,6 +374,8 @@ namespace CommeillFaut
            
             return "Neutral";
         }
+
+
         public void UpdateSocialExchange(SocialExchangeDTO newReaction)
         {
           
@@ -392,13 +384,6 @@ namespace CommeillFaut
 
             m_SocialExchanges.Add(new SocialExchange(newReaction));
         }
-
-
-        public void UpdateTriggerRule(InfluenceRuleDTO rule, string cond)
-        {
-           _TriggerRules.UpdateTriggerRule(rule, cond);
-        }
-
 
         public void RemoveSocialExchanges(IList<Guid> toRemove)
         {
@@ -415,18 +400,6 @@ namespace CommeillFaut
                 m_SocialExchanges.Remove(torem);
             Console.Read();
            
-        }
-
-        public void RemoveTriggerRule(InfluenceRuleDTO rule)
-        {
-
-            _TriggerRules.RemoveTriggerRule(rule);
-        }
-
-        public void RemoveTriggerRuleByName(string ruleName)
-        {
-            
-            _TriggerRules.RemoveTriggerRuleByName(ruleName);
         }
 
         public SocialExchange GetSocialMove(Name socialExchangeName)
@@ -501,8 +474,6 @@ namespace CommeillFaut
                dataHolder.SetValue("SocialExchanges", m_SocialExchanges.ToArray());
             ConditionList = new Dictionary<string, string[]>();
 
-            dataHolder.SetValue("_triggerRules", _TriggerRules);
-
         }
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
@@ -511,81 +482,13 @@ namespace CommeillFaut
             m_SocialExchanges = new List<SocialExchange>(dataHolder.GetValue<SocialExchange[]>("SocialExchanges"));
             foreach (var s in m_SocialExchanges)
                 s.GUID = Guid.NewGuid();
-            _TriggerRules = dataHolder.GetValue<TriggerRules>("_triggerRules");
             m_cachedCIF = new NameSearchTree<NameSearchTree<float>>();
         }
 
 
         #endregion
 
-        public void StartSE(SocialExchange socialExchange, Name initiator, Name target)
-        {
-
-
-            if (initiator == m_kB.Perspective)
-            {
-
-                m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(false), Name.BuildName("SELF"));
-
-             }
-
-            else if (target == m_kB.Perspective)
-            {
-                m_kB.Tell(Name.BuildName("DialogueState(" + initiator + ")"), Name.BuildName("Respond" + socialExchange.ActionName), Name.BuildName("SELF"));
-
-                m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(true), Name.BuildName("SELF"));
-            }
-           
-
-           
-        }
-
-        public void SEResponse(SocialExchange socialExchange, Name initiator, Name target, string result)
-        {
-            if (initiator == m_kB.Perspective)
-            {
-
-                m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(false), Name.BuildName("SELF"));
-
-            }
-
-            else if (target == m_kB.Perspective)
-            {
-                m_kB.Tell(Name.BuildName("DialogueState(" + initiator + ")"), Name.BuildName("End" + socialExchange.ActionName), Name.BuildName("SELF"));
-                m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(true), Name.BuildName("SELF"));
-            }
-        }
-
-
-        public Dictionary<Name,Name> EndSE(SocialExchange socialExchange, Name initiator, Name target, string result)
-        {
-            
-
-
-                if (target == m_kB.Perspective)
-                {
-                    m_kB.Tell(Name.BuildName("DialogueState(" + initiator + ")"), Name.BuildName("Start"), Name.BuildName("SELF"));
-              return  m_SocialExchanges.Find(x => x.ActionName.ToString() == socialExchange.ActionName.ToString()).ApplyConsequences(m_kB, initiator, target, result,false);
-            }
-
-                else if (initiator == m_kB.Perspective)
-                {
-                m_kB.Tell(Name.BuildName("HasFloor(SELF)"), Name.BuildName(false), Name.BuildName("SELF"));
-                    m_kB.Tell(Name.BuildName("DialogueState(" + target + ")"), Name.BuildName("Start"), Name.BuildName("SELF"));
-              return  m_SocialExchanges.Find(x => x.ActionName.ToString() == socialExchange.ActionName.ToString()).ApplyConsequences(m_kB,initiator ,target, result, false);
-
-            }
-                else
-                {
-             return   m_SocialExchanges.Find(x => x.ActionName.ToString() == socialExchange.ActionName.ToString()).ApplyConsequences(m_kB, initiator,target, result, true);
-
-            }
-
-
-
-
-
-        }
+       
 
         /// <summary>
         /// Load a Social Importance Asset definition from a DTO object.
@@ -609,9 +512,6 @@ namespace CommeillFaut
                 }
             }
 
-            _TriggerRules = dto._triggerRules;
-
-
         }
 
         /// <summary>
@@ -621,7 +521,7 @@ namespace CommeillFaut
         {
             var at = m_SocialExchanges.Select(a => a.ToDTO()).ToArray();
           
-            return new CommeillFautDTO() { _SocialExchangesDtos = at, _triggerRules = _TriggerRules};
+            return new CommeillFautDTO() { _SocialExchangesDtos = at};
         }
 
    

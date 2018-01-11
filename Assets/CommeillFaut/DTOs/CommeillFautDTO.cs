@@ -13,13 +13,5 @@ namespace CommeillFaut.DTOs
 		/// </summary>
 		public SocialExchangeDTO[] _SocialExchangesDtos;
 
-        /// <summary>
-        /// The set of Claims used to determine if a action is socially acceptable.
-        /// </summary>
-//		public InfluenceRuleDTO[] _InfluenceRuleDtos;
-        /// <summary>
-        /// 
-        public TriggerRules _triggerRules;
-
     }
 }
