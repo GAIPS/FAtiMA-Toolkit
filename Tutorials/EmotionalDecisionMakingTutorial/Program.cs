@@ -25,13 +25,13 @@ namespace EmotionalDecisionMakingTutorial
             kb.Tell((Name)"LikesToFight(SELF)", (Name)"True");
             edm.RegisterKnowledgeBase(kb);
 
-            //create a reaction rule
-            var reaction = new ActionDefinitionDTO {Action = "Kick", Priority = "4", Target = "Player" };
+            //create an action rule
+            var actionRule = new ActionRuleDTO {Action = "Kick", Priority = "4", Target = "Player" };
 
             //add the reaction rule
-            var id = edm.AddReaction(reaction);
+            var id = edm.AddActionRule(actionRule);
             
-            edm.AddReactionCondition(id, "LikesToFight(SELF) = True");
+            edm.AddRuleCondition(id, "LikesToFight(SELF) = True");
             var actions = edm.Decide(Name.UNIVERSAL_SYMBOL);
 
             Console.WriteLine("Decisions: ");

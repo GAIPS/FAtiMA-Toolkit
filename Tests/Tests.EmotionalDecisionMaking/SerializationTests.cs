@@ -14,8 +14,8 @@ namespace Tests.EmotionalDecisionMaking
 		{
 			var asset = new EmotionalDecisionMakingAsset();
 
-			asset.AddReaction(new ActionDefinitionDTO() {Action = "Speak([speachType])", Target = "[x]"});
-			asset.AddReaction(new ActionDefinitionDTO() { Action = "Speak(formal)", Target = "[x]" });
+			asset.AddActionRule(new ActionRuleDTO() {Action = "Speak([speachType])", Target = "[x]"});
+			asset.AddActionRule(new ActionRuleDTO() { Action = "Speak(formal)", Target = "[x]" });
 			return asset;
 		}
 
