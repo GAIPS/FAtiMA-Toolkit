@@ -18,15 +18,19 @@ namespace EmotionalDecisionMaking
 	[Serializable]
     public sealed class EmotionalDecisionMakingAsset : LoadableAsset<EmotionalDecisionMakingAsset>, ICustomSerialization
     {
+        public static readonly Name DEFAULT_PRIORITY = Name.BuildName(1);
+
         private IQueryable m_kb = null;
 
-		/// <summary>
-		/// Asset constructor.
-		/// Creates a new empty Emotional Decision Making asset.
-		/// </summary>
-		public EmotionalDecisionMakingAsset()
+        private List<ActionRule> m_actionRules;
+
+        /// <summary>
+        /// Asset constructor.
+        /// Creates a new empty Emotional Decision Making asset.
+        /// </summary>
+        public EmotionalDecisionMakingAsset()
         {
-            ReactiveActions = new ActionTendencies();
+            m_actionRules = new List<ActionRule>();
         }
 
 		protected override string OnAssetLoaded()
@@ -34,7 +38,6 @@ namespace EmotionalDecisionMaking
 			return null;
 		}
 
-		private ActionTendencies ReactiveActions { get; set; }
 
 		/// <summary>
 		/// Registers an Emotional Appraisal Asset to be used by
@@ -62,113 +65,133 @@ namespace EmotionalDecisionMaking
                 throw new Exception(
                     $"Unlinked to a KB. Use {nameof(RegisterKnowledgeBase)} before calling any method.");
 
-			if (ReactiveActions == null)
+			if (m_actionRules == null)
 				return Enumerable.Empty<IAction>();
 
-            return ReactiveActions.SelectActions(m_kb, Name.SELF_SYMBOL, actionType);
+            
+            var result = new List<IAction>();
+
+            foreach (var at in m_actionRules)
+            {
+                if (actionType != Name.UNIVERSAL_SYMBOL && actionType != at.Layer)
+                    continue;
+
+                if (at.ActivationConditions == null) // empty condition set
+                {
+                    result.Add(at.GenerateAction(new SubstitutionSet()));
+                }
+                else
+                {
+                    foreach (var set in at.ActivationConditions.Unify(m_kb, Name.SELF_SYMBOL, null))
+                    {
+                        result.Add(at.GenerateAction(set));
+                    }
+                }
+            }
+            return result;
+
+
         }
-
-
-
         /// <summary>
         /// Adds a new reactive action to the asset.
         /// </summary>
-        /// <param name="newReaction">The DTO containing the parameters needed to generate a reaction.</param>
-        /// <returns>The unique identifier of the newly created reaction.</returns>
-        public Guid AddReaction(ActionDefinitionDTO newReaction)
+        /// <param name="newRuleDto">The DTO containing the parameters needed to generate an action rule.</param>
+        /// <returns>The unique identifier of the newly created action rule.</returns>
+        public Guid AddActionRule(ActionRuleDTO newRuleDto)
         {
-            var newActionTendency = new ActionDefinition(newReaction);
-            this.ReactiveActions.AddActionDefinition(newActionTendency);
-            return newActionTendency.Id;
+            var newActionRule = new ActionRule(newRuleDto);
+            m_actionRules.Add(newActionRule);
+            return newActionRule.Id;
         }
 
-		/// <summary>
-		/// Updates a reaction definition.
-		/// </summary>
-		/// <param name="reactionToEdit">The DTO of the reaction we want to update</param>
-		/// <param name="newReaction">The DTO containing the new reaction data</param>
-        public void UpdateReaction(ActionDefinitionDTO reactionToEdit, ActionDefinitionDTO newReaction)
+        /// <summary>
+        /// Updates an action rule definition.
+        /// </summary>
+        /// <param name="ruleToEdit">The DTO of the action rule we want to update</param>
+        /// <param name="newRule">The DTO containing the new action rule data</param>
+        public void UpdateActionRule(ActionRuleDTO ruleToEdit, ActionRuleDTO newRule)
         {
-	        newReaction.Conditions = reactionToEdit.Conditions;
-            var newId = this.AddReaction(newReaction);
-			ReactiveActions.RemoveAction(reactionToEdit.Id);
+	        newRule.Conditions = ruleToEdit.Conditions;
+            var newAt = new ActionRule(newRule);
+            var oldAt = m_actionRules.Where(a => a.Id == ruleToEdit.Id).FirstOrDefault();
+            var i = m_actionRules.IndexOf(oldAt);
+            m_actionRules[i] = new ActionRule(newRule);
         }
 
-		public void UpdateReactionConditions(Guid reactionId, ConditionSetDTO conditionSet)
+		public void UpdateRuleConditions(Guid ruleId, ConditionSetDTO conditionSet)
 		{
-			var action = ReactiveActions.GetActionDefinition(reactionId);
-			action.ActivationConditions = new ConditionSet(conditionSet);
-
-			ReactiveActions.RemoveAction(reactionId);
-			ReactiveActions.AddActionDefinition(action);
+			var rule = m_actionRules.Where(a => a.Id == ruleId).FirstOrDefault();
+            rule.ActivationConditions = new ConditionSet(conditionSet);
 		}
 
-		/// <summary>
-		/// Retrives the definitions of all the stored reactions.
-		/// </summary>
-		/// <returns>A set of DTOs containing the data of all reactions.</returns>
-		public IEnumerable<ActionDefinitionDTO> GetAllReactions()
+        /// <summary>
+        /// Retrives the definitions of all the stored action rules.
+        /// </summary>
+        /// <returns>A set of DTOs containing the data of all action rules.</returns>
+        public IEnumerable<ActionRuleDTO> GetAllActionRules()
         {
-	        return ReactiveActions.GetAllActionDefinitions().Select(at => at.ToDTO());
+	        return m_actionRules.Select(at => at.ToDTO());
         }
 
-		/// <summary>
-		/// Retrieves the definitions of a single reaction.
-		/// </summary>
-		/// <param name="id">The unique identifier of the reaction to retrieve.</param>
-		/// <returns>The DTO containing the data of the requested action, or null if
-		/// no reaction with the given id was found.</returns>
-        public ActionDefinitionDTO GetReaction(Guid id)
+        /// <summary>
+        /// Retrieves the definitions of a single action rule.
+        /// </summary>
+        /// <param name="id">The unique identifier of the action rule to retrieve.</param>
+        /// <returns>The DTO containing the data of the requested action, or null if
+        /// no action rule with the given id was found.</returns>
+        public ActionRuleDTO GetActionRule(Guid id)
         {
-            return this.ReactiveActions.GetActionDefinition(id)?.ToDTO();
+            return m_actionRules.Where(a => a.Id == id).FirstOrDefault()?.ToDTO();
         }
 
-		/// <summary>
-		/// Removes a set of reactions from the asset.
-		/// </summary>
-		/// <param name="reactionsToRemove">A set of unique identifiers of the reactions we want to remove.</param>
-        public void RemoveReactions(IList<Guid> reactionsToRemove)
+        /// <summary>
+        /// Removes a set of action rules from the asset.
+        /// </summary>
+        /// <param name="rulesToRemove">A set of unique identifiers of the action rules we want to remove.</param>
+        public void RemoveActionRules(IList<Guid> rulesToRemove)
         {
-            foreach (var id in reactionsToRemove)
+            foreach (var id in rulesToRemove)
             {
-                this.ReactiveActions.RemoveAction(id);
+                var r = m_actionRules.Where(a => a.Id == id).FirstOrDefault();
+                this.m_actionRules.Remove(r);
             }
         }
 
-		/// <summary>
-		/// Adds a new activation condition to a reaction.
-		/// </summary>
-		/// <param name="selectedReactionId">The unique identifier of the reaction we want to modify.</param>
-		/// <param name="newCondition">The condition we want to add to the requested reaction.</param>
-        public void AddReactionCondition(Guid selectedReactionId, string newCondition)
+        /// <summary>
+        /// Adds a new activation condition to a action rule.
+        /// </summary>
+        /// <param name="selectedRuleId">The unique identifier of the action rule we want to modify.</param>
+        /// <param name="newCondition">The condition we want to add to the requested action rule.</param>
+        public void AddRuleCondition(Guid selectedRuleId, string newCondition)
         {
-            var conditions = this.ReactiveActions.GetActionDefinition(selectedReactionId).ActivationConditions;
+            var r = m_actionRules.Where(a => a.Id == selectedRuleId).FirstOrDefault();
+            var conditions = r.ActivationConditions;
             var c = Condition.Parse(newCondition);
-            this.ReactiveActions.GetActionDefinition(selectedReactionId).ActivationConditions = conditions.Add(c);
+            r.ActivationConditions = conditions.Add(c);
         }
 
-		/// <summary>
-		/// Removes a set of activation conditions from a reaction.
-		/// </summary>
-		/// <param name="selectedReactionId">The unique identifier of the reaction we want to modify.</param>
-		/// <param name="conditionsToRemove">The condition we want to remove from the requested reaction.</param>
-		public void RemoveReactionConditions(Guid selectedReactionId, IEnumerable<string> conditionsToRemove)
+        /// <summary>
+        /// Removes a set of activation conditions from a action rule.
+        /// </summary>
+        /// <param name="ruleId">The unique identifier of the action rule we want to modify.</param>
+        /// <param name="conditionsToRemove">The condition we want to remove from the requested action rule.</param>
+        public void RemoveRuleConditions(Guid ruleId, IEnumerable<string> conditionsToRemove)
         {
-	        var at = this.ReactiveActions.GetActionDefinition(selectedReactionId);
-	        var conds = conditionsToRemove.Select(Condition.Parse).Aggregate(at.ActivationConditions, (current, c) => current.Remove(c));
+            var at = m_actionRules.Where(a => a.Id == ruleId).FirstOrDefault();
+            var conds = conditionsToRemove.Select(Condition.Parse).Aggregate(at.ActivationConditions, (current, c) => current.Remove(c));
 			at.ActivationConditions = conds;
         }
 
-		/// <summary>
-		/// Swaps a condition from a reaction for another.
-		/// </summary>
-		/// <param name="selectedReactionID">The unique identifier of the reaction we want to modify.</param>
-		/// <param name="conditionToEdit">The condition of the reaction we want to be substituted.</param>
-		/// <param name="newCondition">The new condition we want the reaction to have.</param>
-		public void UpdateRectionCondition(Guid selectedReactionID, string conditionToEdit, string newCondition)
+        /// <summary>
+        /// Swaps a condition from a action rule for another.
+        /// </summary>
+        /// <param name="ruleId">The unique identifier of the action rule we want to modify.</param>
+        /// <param name="conditionToEdit">The condition of the action rule we want to be substituted.</param>
+        /// <param name="newCondition">The new condition we want the action rule to have.</param>
+        public void UpdateRuleCondition(Guid ruleId, string conditionToEdit, string newCondition)
         {
-            this.RemoveReactionConditions(selectedReactionID, new[] {conditionToEdit});
-            this.AddReactionCondition(selectedReactionID, newCondition);
+            this.RemoveRuleConditions(ruleId, new[] {conditionToEdit});
+            this.AddRuleCondition(ruleId, newCondition);
         }
         
 
@@ -176,26 +199,16 @@ namespace EmotionalDecisionMaking
 
 		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
-			var defaultActionCooldown = ReactiveActions.DefaultActionPriority;
-			dataHolder.SetValue("DefaultActionPriority", defaultActionCooldown);
-			context.PushContext();
-			context.Context = defaultActionCooldown;
-			dataHolder.SetValue("ActionTendencies", ReactiveActions.GetAllActionDefinitions().ToArray());
-			context.PopContext();
+            dataHolder.SetValue("ActionTendencies", m_actionRules.ToArray());
 		}
 
 		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
-			if(ReactiveActions==null)
-				ReactiveActions=new ActionTendencies();
-
-			ReactiveActions.DefaultActionPriority = dataHolder.GetValue<Name>("DefaultActionPriority");
-			context.PushContext();
-			context.Context = ReactiveActions.DefaultActionPriority;
-			var ats = dataHolder.GetValue<ActionDefinition[]>("ActionTendencies");
+			if(m_actionRules == null)
+                m_actionRules = new List<ActionRule>();
+			var ats = dataHolder.GetValue<ActionRule[]>("ActionTendencies");
 			foreach (var at in ats)
-				ReactiveActions.AddActionDefinition(at);
-			context.PopContext();
+				m_actionRules.Add(at);
 		}
 
 #endregion

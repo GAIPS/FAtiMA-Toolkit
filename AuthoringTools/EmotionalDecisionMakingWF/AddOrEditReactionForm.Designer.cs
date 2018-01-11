@@ -38,6 +38,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.addBeliefErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
             this.textBoxPriority = new System.Windows.Forms.TextBox();
+            this.textBoxLayer = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.emotionalAppraisalAssetBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.addBeliefErrorProvider)).BeginInit();
             this.SuspendLayout();
@@ -54,7 +56,7 @@
             // 
             // addOrEditButton
             // 
-            this.addOrEditButton.Location = new System.Drawing.Point(172, 257);
+            this.addOrEditButton.Location = new System.Drawing.Point(176, 315);
             this.addOrEditButton.Margin = new System.Windows.Forms.Padding(4);
             this.addOrEditButton.Name = "addOrEditButton";
             this.addOrEditButton.Size = new System.Drawing.Size(100, 28);
@@ -111,13 +113,33 @@
             this.textBoxPriority.Size = new System.Drawing.Size(345, 22);
             this.textBoxPriority.TabIndex = 21;
             // 
+            // textBoxLayer
+            // 
+            this.textBoxLayer.Location = new System.Drawing.Point(53, 261);
+            this.textBoxLayer.Margin = new System.Windows.Forms.Padding(4);
+            this.textBoxLayer.Name = "textBoxLayer";
+            this.textBoxLayer.Size = new System.Drawing.Size(345, 22);
+            this.textBoxLayer.TabIndex = 23;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(53, 233);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(45, 16);
+            this.label4.TabIndex = 26;
+            this.label4.Text = "Layer:";
+            // 
             // AddOrEditReactionForm
             // 
             this.AcceptButton = this.addOrEditButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(453, 318);
+            this.ClientSize = new System.Drawing.Size(453, 368);
+            this.Controls.Add(this.textBoxLayer);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.textBoxPriority);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.addOrEditButton);
@@ -132,7 +154,7 @@
             this.MaximizeBox = false;
             this.Name = "AddOrEditReactionForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Add Reaction";
+            this.Text = "Add Action Rule";
             this.Load += new System.EventHandler(this.AddOrEditReactionForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddOrEditReactionForm_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.emotionalAppraisalAssetBindingSource)).EndInit();
@@ -152,5 +174,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ErrorProvider addBeliefErrorProvider;
         private System.Windows.Forms.TextBox textBoxPriority;
+        private System.Windows.Forms.TextBox textBoxLayer;
+        private System.Windows.Forms.Label label4;
     }
 }

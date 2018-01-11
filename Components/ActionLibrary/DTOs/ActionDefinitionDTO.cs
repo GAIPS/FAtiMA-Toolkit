@@ -6,7 +6,7 @@ namespace ActionLibrary.DTOs
 	/// <summary>
 	/// Data Type Object Class for defining an Action.
 	/// </summary>
-	public class ActionDefinitionDTO
+	public class ActionRuleDTO
 	{
 		/// <summary>
 		/// The unique identifier of the action that this DTO is describing
@@ -28,9 +28,9 @@ namespace ActionLibrary.DTOs
 		/// </summary>
         public string Priority { get; set; }
         /// <summary>
-        /// The type of the action (e.g. verbal, nonverbal)
+        /// The layer associated to the action (e.g. verbal, nonverbal)
         /// </summary>
-        public string Type { get; set; }
+        public string Layer { get; set; }
         /// <summary>
         /// The set of conditions that must be true for this action execution.
         /// </summary>

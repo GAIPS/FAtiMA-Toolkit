@@ -14,7 +14,7 @@ namespace CommeillFaut
 {
 
     [Serializable]
-    public class SocialExchange : ActionDefinition
+    public class SocialExchange : ActionRule
     {
     
         public String Intent { get; set; }

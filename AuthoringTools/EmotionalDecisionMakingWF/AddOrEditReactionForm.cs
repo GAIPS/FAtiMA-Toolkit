@@ -9,9 +9,9 @@ namespace EmotionalDecisionMakingWF
     public partial class AddOrEditReactionForm : Form
     {
         private EmotionalDecisionMakingAsset _edmAsset;
-        private ActionDefinitionDTO _reactionToEdit;
+        private ActionRuleDTO _reactionToEdit;
 
-        public AddOrEditReactionForm(EmotionalDecisionMakingAsset edmAsset, ActionDefinitionDTO reactionToEdit = null)
+        public AddOrEditReactionForm(EmotionalDecisionMakingAsset edmAsset, ActionRuleDTO reactionToEdit = null)
         {
             InitializeComponent();
 
@@ -25,7 +25,7 @@ namespace EmotionalDecisionMakingWF
                 textBoxAction.Text = reactionToEdit.Action;
                 textBoxTarget.Text = reactionToEdit.Target;
                 textBoxPriority.Text = reactionToEdit.Priority;
-                //textBoxType.Text = reactionToEdit.Type;
+                textBoxLayer.Text = reactionToEdit.Layer;
             }
         }
 
@@ -34,22 +34,21 @@ namespace EmotionalDecisionMakingWF
         {
             try
             {
-
-                var newReaction = new ActionDefinitionDTO
+                var newReaction = new ActionRuleDTO
                 {
                     Action = textBoxAction.Text,
                     Target = textBoxTarget.Text,
                     Priority = textBoxPriority.Text,
-                   // Type = textBoxType.Text,
+                    Layer = textBoxLayer.Text,
                 };
 
                 if (_reactionToEdit != null)
                 {
-                    _edmAsset.UpdateReaction(_reactionToEdit, newReaction);
+                    _edmAsset.UpdateActionRule(_reactionToEdit, newReaction);
                 }
                 else
                 {
-                    _edmAsset.AddReaction(newReaction);
+                    _edmAsset.AddActionRule(newReaction);
                 }
             }
             catch (Exception ex)

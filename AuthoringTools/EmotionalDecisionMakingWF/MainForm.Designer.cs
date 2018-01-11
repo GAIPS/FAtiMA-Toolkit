@@ -61,7 +61,7 @@
             this.groupBox7.Size = new System.Drawing.Size(785, 304);
             this.groupBox7.TabIndex = 3;
             this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Decision Rules";
+            this.groupBox7.Text = "Action Rules";
             this.groupBox7.Enter += new System.EventHandler(this.groupBox7_Enter);
             // 
             // buttonDuplicateReaction
@@ -131,6 +131,7 @@
             this.dataGridViewReactiveActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewReactiveActions.Size = new System.Drawing.Size(769, 230);
             this.dataGridViewReactiveActions.TabIndex = 2;
+            this.dataGridViewReactiveActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReactiveActions_CellContentClick);
             this.dataGridViewReactiveActions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewReactiveActions_CellMouseDoubleClick);
             this.dataGridViewReactiveActions.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReactiveActions_RowEnter);
             // 
@@ -144,7 +145,7 @@
             this.groupBox8.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox8.Size = new System.Drawing.Size(773, 363);
+            this.groupBox8.Size = new System.Drawing.Size(773, 361);
             this.groupBox8.TabIndex = 11;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Conditions";
@@ -155,7 +156,7 @@
             this.conditionSetEditor.Location = new System.Drawing.Point(4, 19);
             this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4);
             this.conditionSetEditor.Name = "conditionSetEditor";
-            this.conditionSetEditor.Size = new System.Drawing.Size(765, 340);
+            this.conditionSetEditor.Size = new System.Drawing.Size(765, 338);
             this.conditionSetEditor.TabIndex = 0;
             this.conditionSetEditor.View = null;
             this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);

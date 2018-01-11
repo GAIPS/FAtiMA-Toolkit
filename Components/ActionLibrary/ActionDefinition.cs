@@ -8,13 +8,13 @@ using WellFormedNames;
 namespace ActionLibrary
 {
 	[Serializable]
-	public class ActionDefinition : ICustomSerialization
+	public class ActionRule : ICustomSerialization
 	{
 		private ConditionSet m_activationConditions = null;
 
 		public Guid Id { get; private set; }
 		public Name Target { get; private set; }
-        public Name Type { get; set; }
+        public Name Layer { get; set; }
         public Name Priority { get; set; }
 
 		private Name m_actionTemplate;
@@ -34,7 +34,7 @@ namespace ActionLibrary
 			}
 		}
 
-		private void AssertAndInitialize(Name actionTemplate, Name target, Name priority, Name type, ConditionSet activationConditions)
+		private void AssertAndInitialize(Name actionTemplate, Name target, Name priority, Name layer, ConditionSet activationConditions)
 		{
 			var terms = actionTemplate.GetTerms().ToArray();
 			var name = terms[0];
@@ -48,26 +48,28 @@ namespace ActionLibrary
             Id = Guid.NewGuid();
 			m_actionTemplate = actionTemplate;
 			Target = target;
-            Type = type;
+            Layer = layer;
 			ActivationConditions = activationConditions;
 		}
 
-		protected ActionDefinition(Name actionTemplate, Name target, Name priority, Name type, ConditionSet activationConditions)
+		protected ActionRule(Name actionTemplate, Name target, Name priority, Name type, ConditionSet activationConditions)
 		{
 			AssertAndInitialize(actionTemplate,target, priority, type, activationConditions);
 		}
 
-		protected ActionDefinition(ActionDefinition other)
+		protected ActionRule(ActionRule other)
 		{
 			Id = other.Id;
 			m_actionTemplate = other.m_actionTemplate;
 			Target = other.Target;
+            Priority = other.Priority;
+            Layer = other.Layer;
 			ActivationConditions = new ConditionSet(other.ActivationConditions);
 		}
 
-		public ActionDefinition(ActionDefinitionDTO dto)
+		public ActionRule(ActionRuleDTO dto)
 		{
-			AssertAndInitialize(Name.BuildName(dto.Action),Name.BuildName(dto.Target), Name.BuildName(dto.Priority), Name.BuildName(dto.Type), new ConditionSet(dto.Conditions));
+			AssertAndInitialize(Name.BuildName(dto.Action),Name.BuildName(dto.Target), Name.BuildName(dto.Priority), Name.BuildName(dto.Layer), new ConditionSet(dto.Conditions));
 		}
 
 		public IAction GenerateAction(SubstitutionSet constraints)
@@ -107,20 +109,22 @@ namespace ActionLibrary
 			return m_actionTemplate;
 		}
 
-		protected T FillDTO<T>(T dto) where T : ActionDefinitionDTO
+		protected T FillDTO<T>(T dto) where T : ActionRuleDTO
 		{
 			dto.Id = Id;
 			dto.Action = m_actionTemplate.ToString();
 			dto.Target = Target.ToString();
 			dto.Conditions = m_activationConditions.ToDTO();
-            dto.Type = Type.ToString();
+            dto.Layer = Layer.ToString();
 			return dto;
 		}
 
-		protected void SetFromDTO<T>(T dto) where T : ActionDefinitionDTO
+		protected void SetFromDTO<T>(T dto) where T : ActionRuleDTO
 		{
 			m_actionTemplate = (Name) dto.Action;
 			Target = (Name) dto.Target;
+            Priority = (Name)dto.Priority;
+            Layer = (Name)dto.Layer;
 			m_activationConditions = new ConditionSet(dto.Conditions);
 		}
 
@@ -131,16 +135,16 @@ namespace ActionLibrary
 
 		public override bool Equals(object obj)
 		{
-			var def = obj as ActionDefinition;
+			var def = obj as ActionRule;
 			if (def == null)
 				return false;
 			return def.Id == Id;
 		}
 
 
-        public ActionDefinitionDTO ToDTO()
+        public ActionRuleDTO ToDTO()
         {
-            return FillDTO(new ActionDefinitionDTO()
+            return FillDTO(new ActionRuleDTO()
             {
                 Priority = this.Priority.ToString()
             });
@@ -150,7 +154,7 @@ namespace ActionLibrary
 		{
 			dataHolder.SetValue("Action",GetActionTemplate());
 			dataHolder.SetValue("Target",Target);
-            dataHolder.SetValue("Type", Target);
+            dataHolder.SetValue("Layer", Layer);
             dataHolder.SetValue("Conditions",ActivationConditions);
             if (!(context.Context is Name) || (Priority != (Name)context.Context))
                 dataHolder.SetValue("Priority", Priority);
@@ -161,7 +165,7 @@ namespace ActionLibrary
 		{
 			var actionTemplate = dataHolder.GetValue<Name>("Action");
 			var target = dataHolder.ContainsField("Target") ? dataHolder.GetValue<Name>("Target") : Name.NIL_SYMBOL;
-            var type = dataHolder.ContainsField("Type") ? dataHolder.GetValue<Name>("Type") : Name.NIL_SYMBOL;
+            var type = dataHolder.ContainsField("Layer") ? dataHolder.GetValue<Name>("Layer") : Name.NIL_SYMBOL;
             var conditions = dataHolder.GetValue<ConditionSet>("Conditions");
             Name priority;
             if (dataHolder.ContainsField("Priority"))

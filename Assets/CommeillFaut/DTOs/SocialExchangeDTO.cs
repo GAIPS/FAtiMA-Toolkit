@@ -6,7 +6,7 @@ using Conditions.DTOs;
 namespace CommeillFaut.DTOs
 {
     [Serializable]
-    public class SocialExchangeDTO : ActionDefinitionDTO 
+    public class SocialExchangeDTO : ActionRuleDTO 
     {
         public new Guid Id { get; set; }
 
