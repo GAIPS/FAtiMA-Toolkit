@@ -96,22 +96,41 @@ namespace CommeillFaut
             float toRet = 0.0f;
             var totalCertainty = 0.0f;
             int totalConds = Conditions.Count();
-            var toEvaluate = Conditions;
-            var sub = new Substitution(Name.BuildName(Target), new ComplexValue(Name.BuildName(targ)));
-            var eval = toEvaluate.Unify(m_Kb, Name.BuildName(init), new[] { new SubstitutionSet(sub) });
-            if (eval.Any())
+
+            if (init == targ) return 0;
+
+            var targetSub = new Substitution(Target, new ComplexValue(targ));
+            var initiatorSub = new Substitution(Target, new ComplexValue(init));
+
+            var constraints = new SubstitutionSet();
+            constraints.AddSubstitution(targetSub);
+            constraints.AddSubstitution(initiatorSub);
+
+
+            foreach (var c in Conditions) // For instance SI([x]) >= 40
             {
-                var cond = "";
-                var toAsk = new string[] { };
-                foreach (var c in toEvaluate)
+
+               var resultingConstraints = c.Unify(m_Kb, init, new[] { constraints } );  // Whats the sub here [x]/John
+
+                var total = 0.0f;
+                var totalSets = resultingConstraints.Count();
+                foreach (var res in resultingConstraints)
                 {
-                    cond = c.ToString();
-                    toAsk = cond.Split(')');
-                    toAsk[0] += ")";
-               //     toAsk[0] = toAsk[0].Replace("[x]", targ);
-                    var certainty = m_Kb.AskProperty(Name.BuildName(toAsk[0])).Certainty;
-                    totalCertainty += certainty;
+                    if (resultingConstraints.Count() > 0)
+                    {
+                        var condition = c.ToString();
+
+                        var certainty = res.FindMinimumCertainty();  // How do I ask SI(John) >= 40 and get its certainty
+
+                        total += certainty;
+                    }
+
                 }
+
+                var averageCertainty = total / totalSets;
+                totalCertainty += averageCertainty;
+            }
+       
 
                 toRet = totalCertainty / totalConds;
 
@@ -119,8 +138,7 @@ namespace CommeillFaut
 
             }
 
-            else return 0;
         }
 
     }
-}
+
