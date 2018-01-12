@@ -16,117 +16,111 @@ namespace CommeillFaut
     [Serializable]
     public class SocialExchange : ICustomSerialization
     {
-        public String Intent { get; set; }
-
-        
+             
         public Guid Id { get; private set; }
-        public Name Target { get; private set; }
 
-        private Name m_actionTemplate;
-        public Name ActionName
-        {
-            get { return m_actionTemplate.GetFirstTerm(); }
-        }
+        public string Description { get; set; }
 
+        public Name Name { get; set; }
 
-        int Response { get; set; }
+        public ConditionSet Conditions { get; set; }
 
-        public InfluenceRule InfluenceRule { get; set; }
+        /// The Social Exchange Name
+        /// </summary>
+        public Name Initiator { get; set; }
 
-        public SocialExchange(String name) 
-        {
-            Intent = "";
-            InfluenceRule = new InfluenceRule(new InfluenceRuleDTO());
-        }
+        /// The Social Exchange Name
+        /// </summary>
+        public Name Target { get; set; }
 
 
         public SocialExchange(SocialExchangeDTO s) 
         {
-
-
-
-            InfluenceRule = new InfluenceRule(s.InfluenceRule);
-            //      Name = s.SocialExchangeName;
-
-            Intent = s.Intent;
-
+            Name = s.Name;
+            Description = s.Description;
+            Conditions = new ConditionSet(s.Conditions);
+            Id = new Guid();
+            Initiator = s.Initiator;
+            Target = s.Target;
+            
         }
-
-        public SocialExchange(SocialExchange other)
-		{
-         
-            Intent = other.Intent;
-            InfluenceRule = other.InfluenceRule;
-		}
-
-
 
       
-        public float CalculateVolition(string init, string _targ, KB m_Kb)
-        {
-            float counter = 0;
-           
-
-              
-                counter += InfluenceRule.Result(init, _targ, m_Kb);
-            
-            
-            Console.WriteLine("Calculating Volition for " + this.ActionName.ToString() + " init: " + init + " targ: " + _targ + " result: " + counter);
-            return counter;
-        }
-
-
-        private float CalculateResponse(string Init, string _Targ, KB m_Kb)
-        {
-
-            return this.CalculateVolition(_Targ, Init, m_Kb);
-
-           
-        }
-
+       
         public override String ToString()
         {
-            return ActionName + " " + Intent + " " + this.Id + "\n";
+            return Name + " " + Description + " " + this.Id + "\n";
         }
 
         public SocialExchangeDTO ToDTO()
         {
-            return new SocialExchangeDTO() {Action = ActionName.ToString(), Intent = Intent, InfluenceRule = InfluenceRule.ToDTO()};
+            return new SocialExchangeDTO() {Name = this.Name, Description = this.Description, Initiator = this.Initiator, Target = this.Target, Conditions = this.Conditions.ToDTO(), Id = this.Id};
         }
         
        public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
-            dataHolder.SetValue("Description", this.Intent);
-            dataHolder.SetValue("InfluenceRule", this.InfluenceRule);
+            dataHolder.SetValue("Name", this.Name);
+            dataHolder.SetValue("Description", this.Description);
+            dataHolder.SetValue("Initiator",this.Initiator);
+            dataHolder.SetValue("Target", this.Target);
+            dataHolder.SetValue("Conditions", this.Conditions);
+
+
         }
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
-            Intent = dataHolder.GetValue<string>("Description");
-            InfluenceRule = dataHolder.GetValue<InfluenceRule>("InfluenceRule");
+            Name = dataHolder.GetValue<Name>("Name");
+            Description = dataHolder.GetValue<string>("Description");
+            Initiator = dataHolder.GetValue<Name>("Initiator");
+            Target = dataHolder.GetValue<Name>("Target");
+            Conditions = dataHolder.GetValue<ConditionSet>("Conditions");
         }
 
         
-        public void AddInfluenceRule(InfluenceRule rule)
+        public void AddCondition(Condition cond)
         {
-            this.InfluenceRule = rule;
+            this.Conditions.Add(cond);
         }
 
-        public void RemoveInfluenceRule(InfluenceRule rule)
+        public void RemoveCondition(Condition cond)
         {
-            InfluenceRule = null;
+            this.Conditions.Remove(cond);
         }
 
-       public void SetInfluenceRule(InfluenceRule rule)
-        {
-            InfluenceRule = rule;
-        }
 
-        public void SetInfluenceRule(InfluenceRuleDTO rule)
-        {
-            InfluenceRule = new InfluenceRule(rule);
-        }
 
+
+        public float VolitionValue(Name init, Name targ, KB m_Kb)
+        {
+            float toRet = 0.0f;
+            var totalCertainty = 0.0f;
+            int totalConds = Conditions.Count();
+            var toEvaluate = Conditions;
+            var sub = new Substitution(Name.BuildName(Target), new ComplexValue(Name.BuildName(targ)));
+            var eval = toEvaluate.Unify(m_Kb, Name.BuildName(init), new[] { new SubstitutionSet(sub) });
+            if (eval.Any())
+            {
+                var cond = "";
+                var toAsk = new string[] { };
+                foreach (var c in toEvaluate)
+                {
+                    cond = c.ToString();
+                    toAsk = cond.Split(')');
+                    toAsk[0] += ")";
+               //     toAsk[0] = toAsk[0].Replace("[x]", targ);
+                    var certainty = m_Kb.AskProperty(Name.BuildName(toAsk[0])).Certainty;
+                    totalCertainty += certainty;
+                }
+
+                toRet = totalCertainty / totalConds;
+
+                return toRet;
+
+            }
+
+            else return 0;
+        }
 
     }
 }

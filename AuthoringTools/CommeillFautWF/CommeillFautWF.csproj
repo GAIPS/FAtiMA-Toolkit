@@ -67,18 +67,6 @@
     <Compile Include="AddConsequence.Designer.cs">
       <DependentUpon>AddConsequence.cs</DependentUpon>
     </Compile>
-    <Compile Include="AddInfluenceRule.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AddInfluenceRule.Designer.cs">
-      <DependentUpon>AddInfluenceRule.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AddOrEditInfluenceRuleForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AddOrEditInfluenceRuleForm.Designer.cs">
-      <DependentUpon>AddOrEditInfluenceRuleForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="AddSocialExchange.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,16 +84,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\InfluenceRuleVM.cs" />
     <Compile Include="ViewModels\SocialExchangesVM.cs" />
     <EmbeddedResource Include="AddConsequence.resx">
       <DependentUpon>AddConsequence.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AddInfluenceRule.resx">
-      <DependentUpon>AddInfluenceRule.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="AddOrEditInfluenceRuleForm.resx">
-      <DependentUpon>AddOrEditInfluenceRuleForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AddSocialExchange.resx">
       <DependentUpon>AddSocialExchange.cs</DependentUpon>

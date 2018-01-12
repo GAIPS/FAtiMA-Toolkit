@@ -21,7 +21,7 @@ namespace CommeillFautWF
      
 
         private SocialExchangesVM _vm;
-        private InfluenceRuleVM _influenceRuleVm;
+     
 
       
 
@@ -32,12 +32,12 @@ namespace CommeillFautWF
 
             InitializeComponent();
             AddedObject = new SocialExchangeDTO();
-            AddedObject.InfluenceRule = new InfluenceRuleDTO();
+        
 
             
-            _influenceRuleVm = new InfluenceRuleVM(_vm, AddedObject);
+        
             _vm = vm;
-            conditionSetEditorControl1.View = _influenceRuleVm.ConditionSetView;
+    
             
         }
 
@@ -48,16 +48,14 @@ namespace CommeillFautWF
             AddedObject = social.ToDTO();
         
             _vm = vm;
-            _influenceRuleVm = new InfluenceRuleVM(_vm, AddedObject);
-            if (social.ActionName != null)
-            moveName.Text = social.ActionName.ToString();
-            if (social.Intent != null)
-                IntentTextBox.Text = social.Intent.ToString();
+            if (social.Name != null)
+            moveName.Text = social.Name.ToString();
+            if (social.Description != null)
+                IntentTextBox.Text = social.Description.ToString();
 
            
             AddedObject = social.ToDTO();
 
-            conditionSetEditorControl1.View = _influenceRuleVm.ConditionSetView;
 
             button1.Text = (AddedObject.Id == Guid.Empty) ? "Add" : "Update";
 
@@ -70,25 +68,20 @@ namespace CommeillFautWF
            SocialExchangeDTO  _dto = new SocialExchangeDTO()
             {
                
-                Action = moveName.Text,
-                Intent = IntentTextBox.Text,
-                InfluenceRule = new InfluenceRuleDTO() 
+                Name = (Name)moveName.Text,
+                Description = IntentTextBox.Text,
                 
             };
 
 
-            if (AddedObject?.InfluenceRule != null)
-                _dto.InfluenceRule.RuleConditions = _influenceRuleVm.ConditionSetView.GetData();
-
-           // MessageBox.Show("We found that " + _dto.InfluenceRule.RuleConditions.ConditionSet.Count());
+          
 
             try
             {
               
                 AddedObject = _dto;
                 _vm.AddSocialMove(_dto);
-       //         MessageBox.Show("Added Social Exchange: " + _dto.Action);
-          
+    
             Close();
         }
         catch (Exception ex) {

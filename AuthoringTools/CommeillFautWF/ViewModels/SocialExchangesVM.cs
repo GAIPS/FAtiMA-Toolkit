@@ -73,7 +73,7 @@ namespace CommeillFautWF.ViewModels
         {
 
             
-            if (_cifAsset.m_SocialExchanges.Find(x=>x.ActionName.ToString() == newSocialExchange.Action) != null)
+            if (_cifAsset.m_SocialExchanges.Find(x=>x.Name == newSocialExchange.Name) != null)
                 _cifAsset.UpdateSocialExchange(newSocialExchange);
 
             else _cifAsset.AddExchange(newSocialExchange);
@@ -129,7 +129,7 @@ namespace CommeillFautWF.ViewModels
             {
                 try
                 {
-                    RemoveSocialExchangeByName(dto.Action);
+                    RemoveSocialExchangeByName(dto.Name.ToString());
                    
                     count++;
                 }
@@ -159,7 +159,7 @@ namespace CommeillFautWF.ViewModels
 
         public void RemoveSocialExchangeByName(string _name)
         {
-            var se = _cifAsset.m_SocialExchanges.FirstOrDefault(a => a.ActionName.ToString() == _name);
+            var se = _cifAsset.m_SocialExchanges.FirstOrDefault(a => a.Name.ToString() == _name);
            
             if (se == null)
                 throw new Exception("Social Exchange not found");

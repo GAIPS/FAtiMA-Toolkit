@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using ActionLibrary.DTOs;
 using Conditions.DTOs;
+using WellFormedNames;
 
 namespace CommeillFaut.DTOs
 {
@@ -10,29 +11,28 @@ namespace CommeillFaut.DTOs
     {
         public new Guid Id { get; set; }
 
-        public string Action { get; set; }
+        /// The Social Exchange Name
+        /// </summary>
+        public Name Name { get; set; }
 
-        /// <summary>
-        /// The condition variable that represents the initiator name 
+        /// The description of the Social Exchange
         /// </summary>
-        public string Initiator { get; set; }
+        public string Description { get; set; }
 
-        /// <summary>
-        /// The condition variable that represents the targe name
+        /// The Social Exchange Name
         /// </summary>
-        public string Target { get; set; }
-        
-        /// <summary>
-        /// The description od the social exchange
+        public Name Initiator { get; set; }
+
+        /// The Social Exchange Name
         /// </summary>
-        public string Intent { get; set; }
+        public Name Target { get; set; }
 
         /// <summary>
         /// The condition set used to validate this rule.
         /// </summary>
-        public InfluenceRuleDTO InfluenceRule { get; set; }
+        public ConditionSetDTO Conditions { get; set; }
 
-      
-     
+
+
     }
 }

@@ -22,11 +22,6 @@ namespace CommeillFaut
 
         public KB m_kB;
         public List<SocialExchange> m_SocialExchanges { get; set; }
-        public Dictionary<string, string[]> ConditionList;
-        private List<Name> _actorsList;
-
-        //Volatile Statements
-        private NameSearchTree<NameSearchTree<float>> m_cachedCIF = new NameSearchTree<NameSearchTree<float>>();
 
         /// <summary>
         /// The Comme ill Faut constructor
@@ -41,9 +36,7 @@ namespace CommeillFaut
         {
             m_kB = null;
             m_SocialExchanges = new List<SocialExchange>();
-            ConditionList = new Dictionary<string, string[]>();
-            m_cachedCIF = new NameSearchTree<NameSearchTree<float>>();
-            _actorsList = new List<Name>();
+          
         }
 
         /// <summary>
@@ -63,8 +56,7 @@ namespace CommeillFaut
 
             m_kB = kB;
             BindToRegistry(kB);
-            InvalidateCachedCIF();
-
+         
         
         }
 
@@ -102,22 +94,21 @@ namespace CommeillFaut
 
             foreach (var s in context.AskPossibleProperties(socialMoveName))
                 {
-                if (m_SocialExchanges.Find(x => x.ActionName == s.Item1.Value) != null)
+                if (m_SocialExchanges.Find(x => x.Name == s.Item1.Value) != null)
                 {
                     SEConstraint = true;
-                    possibleSE = m_SocialExchanges.Where(x => x.ActionName == s.Item1.Value).ToList();
+                    possibleSE = m_SocialExchanges.Where(x => x.Name == s.Item1.Value).ToList();
 
                     foreach (var exchange in possibleSE)
                     {
-                        var seName = exchange.ActionName.ToString();
+                        var seName = exchange.Name.ToString();
 
                         if (Target.IsVariable)  // aka Target = [x]
                         {
 
                             foreach (var targ in context.AskPossibleProperties(Target))
                             {
-                                var newValue = CalculateVolitions(seName, targ.Item1.Value.ToString(),
-                              context.Perspective.ToString());
+                                var newValue = CalculateSocialMoveVolition((Name)seName, initiator, Target);
 
                                 if (newValue != -1)
                                 {
@@ -147,8 +138,8 @@ namespace CommeillFaut
 
                         else
                         {
-                            var newValue = CalculateVolitions(seName, Target.ToString(),
-                             context.Perspective.ToString());
+                          
+                            var newValue = CalculateSocialMoveVolition((Name)seName, initiator, Target);
 
                             if (newValue != -1)
                             {
@@ -182,9 +173,9 @@ namespace CommeillFaut
 
                         foreach (var targ in context.AskPossibleProperties(Target))
                         {
-                            var seName = se.ActionName.ToString();
-                            var newValue = CalculateVolitions(seName, targ.Item1.Value.ToString(),
-                          context.Perspective.ToString());
+                            var seName = se.Name.ToString();
+                            
+                            var newValue = CalculateSocialMoveVolition(se.Name, initiator,Target);
 
                             if (newValue != -1)
                             {
@@ -222,9 +213,8 @@ namespace CommeillFaut
                     }
                     else   // Target = Sarah or John or ...
                     {
-                        var seName = se.ActionName.ToString();
-                        var newValue = CalculateVolitions(seName, Target.ToString(),
-                         context.Perspective.ToString());
+                        var newValue = CalculateSocialMoveVolition(se.Name, initiator,
+                        Target);
 
                         if (newValue != -1)
                         {
@@ -257,64 +247,7 @@ namespace CommeillFaut
         }
 
 
-        /// <summary>
-        /// Calculate the Volition value of a given target, in a particular perspective.
-        /// If no perspective is given, the current agent's perspective is used as default.
-        /// </summary>
-        /// <remarks>
-        /// All values calculated by this method are automatically cached, in order to optimize future searches.
-        /// If the values are needed to be recalculated, call InvalidateCachedSI() to clear the cached values.
-        /// </remarks>
-        /// <param name="target">The name of target which we want to calculate the SI</param>
-        /// <param name="perspective">From which perspective do we want to calculate de SI.</param>
-        /// <returns>The value of Social Importance attributed to given target by the perspective of a particular agent.</returns>
-        public string GetSocialVolition(string target, string perspective = "self")
-        {
-            ValidateEALink();
 
-            var t = Name.BuildName(target);
-            if (!t.IsPrimitive)
-                throw new ArgumentException("must be a primitive name", nameof(target));
-
-            var p = m_kB.AssertPerspective(Name.BuildName(perspective));
-
-            return internal_GetSocialVolition(t, p);
-        }
-
-        private string internal_GetSocialVolition(Name target, Name perspective)
-        {
-            Console.WriteLine("internal Get social Volition");
-            NameSearchTree<float> targetDict;
-            string ret_value = "";
-            if (!m_cachedCIF.TryGetValue(perspective, out targetDict))
-            {
-                targetDict = new NameSearchTree<float>();
-                m_cachedCIF[perspective] = targetDict;
-            }
-
-          
-            float value;
-            if (!targetDict.TryGetValue(target, out value))
-            {
-             
-                var action = CalculateSocialMove(target.ToString(), perspective.ToString());
-                ret_value = action.ActionName.ToString();
-               
-                targetDict[target] = value;
-            }
-         
-        //    Console.WriteLine("retvalue: " + ret_value + " target " + target + " perpective " + perspective);
-            return ret_value;
-        }
-
-
-        /// <summary>
-        /// Clears all cached Social Importance values, allowing new values to be recalculated uppon request.
-        /// </summary>
-        public void InvalidateCachedCIF()
-        {
-            m_cachedCIF.Clear();
-        }
 
 
         public Guid AddExchange(SocialExchangeDTO newExchange)
@@ -327,7 +260,7 @@ namespace CommeillFaut
               {
 
               // m_SocialExchanges = new List<SocialExchange>();
-            if(m_SocialExchanges.Find(x => x.ActionName.ToString() == newExchange.Action) != null)
+            if(m_SocialExchanges.Find(x => x.Name == newExchange.Name) != null)
                     UpdateSocialExchange(newExchange);
 
                    else m_SocialExchanges.Add(newSocialExchange);
@@ -376,11 +309,13 @@ namespace CommeillFaut
         }
 
 
+
+
         public void UpdateSocialExchange(SocialExchangeDTO newReaction)
         {
           
 
-            m_SocialExchanges.Remove(m_SocialExchanges.Find(x => x.ActionName.ToString() == newReaction.Action));
+            m_SocialExchanges.Remove(m_SocialExchanges.Find(x => x.Name == newReaction.Name));
 
             m_SocialExchanges.Add(new SocialExchange(newReaction));
         }
@@ -396,7 +331,7 @@ namespace CommeillFaut
 
         public void RemoveSocialExchange(SocialExchange torem)
         {
-            Console.WriteLine(" I'm removing this " + torem.ActionName);
+            Console.WriteLine(" I'm removing this " + torem.Name);
                 m_SocialExchanges.Remove(torem);
             Console.Read();
            
@@ -404,67 +339,15 @@ namespace CommeillFaut
 
         public SocialExchange GetSocialMove(Name socialExchangeName)
         {
-          return  m_SocialExchanges.Find(x => x.ActionName == socialExchangeName);
+          return  m_SocialExchanges.Find(x => x.Name == socialExchangeName);
         }
 
-        public SocialExchange GetHighestVolition(Dictionary<string, float> _volitions)
+
+        public float CalculateSocialMoveVolition(Name seName, Name initiator, Name target)
         {
-
-            var first = _volitions.First();
-            string key = first.Key;
-            float compareValue = _volitions[key];
-            
-
-            foreach (var aux in _volitions.Keys)
-            {
-                if (compareValue < _volitions[aux])
-                {
-                    compareValue = _volitions[aux];
-                    key = aux;
-                }
-            }
-           
-           
-            return m_SocialExchanges.Find(x =>x.ActionName.ToString() == key);
-
+         return   m_SocialExchanges.Find(x => x.Name == seName).VolitionValue(initiator, target, this.m_kB);
         }
 
-      
-
-        public Dictionary<string, float> CalculateSocialMovesVolitions(string target, string perspective)
-        {
-
-            
-            Dictionary<string,float> volitions = new Dictionary<string, float>();
-
-            foreach (var socialMove in m_SocialExchanges)
-            {
-                float volitionResult = socialMove.CalculateVolition(perspective, target, this.m_kB);
-                volitions.Add(socialMove.ActionName.ToString(), volitionResult);
-
-            }
-            return volitions;
-        }
-
-
-        public SocialExchange CalculateSocialMove(string target, string perpective)
-        {
-
-            return GetHighestVolition(CalculateSocialMovesVolitions(target, perpective));
-        }
-
-
-        public float CalculateVolitions(string socialMove, string target, string perpective)
-        {
-
-            return m_SocialExchanges.Find(x => x.ActionName.ToString() == socialMove)
-                .CalculateVolition(perpective, target, this.m_kB);
-        }
-
-        public List<Name> getActorList()
-        {
-            return _actorsList;
-        }
 
         #region Custom Serialization
 
@@ -472,7 +355,6 @@ namespace CommeillFaut
         {
             
                dataHolder.SetValue("SocialExchanges", m_SocialExchanges.ToArray());
-            ConditionList = new Dictionary<string, string[]>();
 
         }
 
@@ -480,7 +362,6 @@ namespace CommeillFaut
         {
             
             m_SocialExchanges = new List<SocialExchange>(dataHolder.GetValue<SocialExchange[]>("SocialExchanges"));
-            m_cachedCIF = new NameSearchTree<NameSearchTree<float>>();
         }
 
 
@@ -500,7 +381,7 @@ namespace CommeillFaut
         public void LoadFromDTO(CommeillFautDTO dto)
         {
             m_SocialExchanges.Clear();
-            _actorsList = new List<Name>();
+
 
             if (dto._SocialExchangesDtos != null)
             {
