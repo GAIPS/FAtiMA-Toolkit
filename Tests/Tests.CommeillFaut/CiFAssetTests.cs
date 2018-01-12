@@ -101,7 +101,7 @@ namespace Tests.CommeillFaut
         [TestCase(1, "IsAgent([x]) = True", "Volition([se], Matt, Sarah) = [s]")]
         [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, [x]) = [s]")]
         [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, Sarah) = [s]")]
-        [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, [x]) = Negative")]
+        [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, [x]) = Positive")]
         public void Test_DP_Volition_Match(int eventSet, string context, string MethodCall)
         {
             var rpc = BuildRPCAsset();
@@ -155,10 +155,10 @@ namespace Tests.CommeillFaut
 
 
         [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, Matt) = [s]")]
-        [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Sarah, Matt) = [s]")]
+ //       [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Sarah, Matt) = [s]")]
         [TestCase(1, "IsAgent([x]) = True", "Volition(Compliment, Matt, Sarah) = [s]")]
         [TestCase(1, "IsAgent([x]) = True", "Volition(Compliment, [x], [y]) = [s]")]
-        [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, Sarah) = Positive")]
+        [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, Sarah) = Negative")]
         public void Test_DP_Volition_NoMatch(int eventSet, string context, string MethodCall)
         {
             var rpc = BuildRPCAsset();

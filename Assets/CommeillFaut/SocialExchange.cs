@@ -97,8 +97,10 @@ namespace CommeillFaut
             var totalCertainty = 0.0f;
             int totalConds = Conditions.Count();
 
-            var targetSub = new Substitution(Name.BuildName(Target), new ComplexValue(Name.BuildName(targ)));
-            var initiatorSub = new Substitution(Name.BuildName(Target), new ComplexValue(Name.BuildName(init)));
+            if (init == targ) return 0;
+
+            var targetSub = new Substitution(Target, new ComplexValue(targ));
+            var initiatorSub = new Substitution(Target, new ComplexValue(init));
 
             var constraints = new SubstitutionSet();
             constraints.AddSubstitution(targetSub);
