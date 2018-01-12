@@ -80,12 +80,12 @@ namespace CommeillFaut
         
         public void AddCondition(Condition cond)
         {
-            this.Conditions.Add(cond);
+            Conditions = Conditions.Add(cond);
         }
 
         public void RemoveCondition(Condition cond)
         {
-            this.Conditions.Remove(cond);
+            Conditions  = Conditions.Remove(cond);
         }
 
 

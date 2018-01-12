@@ -243,22 +243,22 @@ namespace Tests.CommeillFaut
         }
 #endregion
 
-       // [TestCase]
+        [TestCase]
         public void Test_CIF_UpdateSocialExchange()
         {
             var cif = BuildCIFAsset();
 
-          /*  var initialValue = cif.GetSocialMove((Name)"Flirt").InfluenceRule.RuleConditions.Count;
+            var initialValue = cif.GetSocialMove((Name)"Flirt").Conditions.Count;
 
             var se = cif.GetSocialMove((Name)"Flirt");
 
-            var inf = se.InfluenceRule;
+            var c = Condition.Parse("[x] != False");
 
-            se.RemoveInfluenceRule(inf);
+            se.AddCondition(c);
 
             cif.UpdateSocialExchange(se.ToDTO());
 
-            Assert.IsNull(cif.GetSocialMove((Name)"Flirt").InfluenceRule);*/
+            Assert.AreEqual(cif.GetSocialMove((Name)"Flirt").Conditions.Count, (initialValue + 1) );
 
         }
 

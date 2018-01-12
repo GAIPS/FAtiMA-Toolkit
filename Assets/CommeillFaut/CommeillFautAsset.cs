@@ -277,14 +277,6 @@ namespace CommeillFaut
             m_SocialExchanges.Add(new SocialExchange(newReaction));
         }
 
-        public void RemoveSocialExchanges(IList<Guid> toRemove)
-        {
-            foreach (var id in toRemove)
-            {
-                m_SocialExchanges.Remove(m_SocialExchanges.Find(x => new Guid() == id));
-            }
-        }
-
 
         public void RemoveSocialExchange(SocialExchange torem)
         {
@@ -326,7 +318,7 @@ namespace CommeillFaut
        
 
         /// <summary>
-        /// Load a Social Importance Asset definition from a DTO object.
+        /// Load a Comme ill Faut Asset definition from a DTO object.
         /// </summary>
         /// <remarks>
         /// Use this to procedurally configure the asset.
