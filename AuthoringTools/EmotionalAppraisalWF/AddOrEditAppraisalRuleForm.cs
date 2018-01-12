@@ -22,8 +22,8 @@ namespace EmotionalAppraisalWF
             _appraisalRuleToEdit = ruleToEdit;
 
             //defaultValues
-            textBoxDesirability.Text = "0";
-            textBoxPraiseworthiness.Text = "0";
+            textBoxDesirability.Value = WellFormedNames.Name.BuildName("0");
+            textBoxPraiseworthiness.Value = WellFormedNames.Name.BuildName("0");
             comboBoxEventType.DataSource = AppraisalRulesVM.EventTypes;
 
             if (ruleToEdit != null)
@@ -31,11 +31,11 @@ namespace EmotionalAppraisalWF
                 this.Text = Resources.EditAppraisalRuleFormTitle;
                 this.addOrEditButton.Text = Resources.UpdateButtonLabel;
                 comboBoxEventType.Text = ruleToEdit.EventMatchingTemplate.GetNTerm(1).ToString();
-                textBoxSubject.Text = ruleToEdit.EventMatchingTemplate.GetNTerm(2).ToString();
-                textBoxObject.Text = ruleToEdit.EventMatchingTemplate.GetNTerm(3).ToString();
-                textBoxTarget.Text = ruleToEdit.EventMatchingTemplate.GetNTerm(4).ToString();
-                textBoxDesirability.Text = ruleToEdit.Desirability.ToString();
-                textBoxPraiseworthiness.Text = ruleToEdit.Praiseworthiness.ToString();
+                textBoxSubject.Value = ruleToEdit.EventMatchingTemplate.GetNTerm(2);
+                textBoxObject.Value = ruleToEdit.EventMatchingTemplate.GetNTerm(3);
+                textBoxTarget.Value = ruleToEdit.EventMatchingTemplate.GetNTerm(4);
+                textBoxDesirability.Value = ruleToEdit.Desirability;
+                textBoxPraiseworthiness.Value = ruleToEdit.Praiseworthiness;
             }
         }
 
@@ -49,12 +49,12 @@ namespace EmotionalAppraisalWF
                     EventMatchingTemplate = WellFormedNames.Name.BuildName(
                     (Name)AMConsts.EVENT, 
                     (Name)comboBoxEventType.Text,
-                    (Name)textBoxSubject.Text,
-                    (Name)textBoxObject.Text,
-                    (Name)textBoxTarget.Text),
-                Desirability = WellFormedNames.Name.BuildName(textBoxDesirability.Text),
-                Praiseworthiness = WellFormedNames.Name.BuildName(textBoxPraiseworthiness.Text),
-                Conditions = new ConditionSetDTO()
+                    textBoxSubject.Value,
+                    textBoxObject.Value,
+                    textBoxTarget.Value),
+                    Desirability = textBoxDesirability.Value,
+                    Praiseworthiness = textBoxPraiseworthiness.Value,
+                    Conditions = new ConditionSetDTO()
                 };
            
                 if (_appraisalRuleToEdit != null)
