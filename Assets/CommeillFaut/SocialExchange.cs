@@ -14,29 +14,33 @@ namespace CommeillFaut
 {
 
     [Serializable]
-    public class SocialExchange : ActionRule
+    public class SocialExchange : ICustomSerialization
     {
-    
         public String Intent { get; set; }
 
-        public Guid GUID;
+        
+        public Guid Id { get; private set; }
+        public Name Target { get; private set; }
 
-        public string Initiator { get; set; }
+        private Name m_actionTemplate;
+        public Name ActionName
+        {
+            get { return m_actionTemplate.GetFirstTerm(); }
+        }
 
-       public string targ { get; set; }
 
         int Response { get; set; }
 
         public InfluenceRule InfluenceRule { get; set; }
 
-        public SocialExchange(String name) : base(WellFormedNames.Name.BuildName(name), Name.NIL_SYMBOL, Name.BuildName(1), Name.NIL_SYMBOL, new ConditionSet(new ConditionSetDTO()))
+        public SocialExchange(String name) 
         {
             Intent = "";
             InfluenceRule = new InfluenceRule(new InfluenceRuleDTO());
         }
 
 
-        public SocialExchange(SocialExchangeDTO s) : base(s)
+        public SocialExchange(SocialExchangeDTO s) 
         {
 
 
@@ -48,7 +52,7 @@ namespace CommeillFaut
 
         }
 
-        public SocialExchange(SocialExchange other) : base(other)
+        public SocialExchange(SocialExchange other)
 		{
          
             Intent = other.Intent;
@@ -82,50 +86,24 @@ namespace CommeillFaut
 
         public override String ToString()
         {
-
-            return base.ActionName + " " + Intent + " " + this.Id + "\n";
-        }
-
-
-    
-
-        public void SetData(SocialExchangeDTO dto)
-        {
-            
-            Intent = dto.Intent;
-            if (dto.InfluenceRule != null)
-                InfluenceRule = new InfluenceRule(dto.InfluenceRule);
-            else InfluenceRule = new InfluenceRule(new InfluenceRuleDTO()); 
-           
-            SetFromDTO(dto);
+            return ActionName + " " + Intent + " " + this.Id + "\n";
         }
 
         public SocialExchangeDTO ToDTO()
         {
-        
-           
             return new SocialExchangeDTO() {Action = ActionName.ToString(), Intent = Intent, InfluenceRule = InfluenceRule.ToDTO()};
         }
-
-
-       public override void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+        
+       public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
-
-            base.GetObjectData(dataHolder, context);
             dataHolder.SetValue("Description", this.Intent);
-    
             dataHolder.SetValue("InfluenceRule", this.InfluenceRule);
-     
         }
 
-        public override void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+        public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
-            base.SetObjectData(dataHolder, context);
-           
             Intent = dataHolder.GetValue<string>("Description");
-        
             InfluenceRule = dataHolder.GetValue<InfluenceRule>("InfluenceRule");
-         
         }
 
         

@@ -33,9 +33,6 @@ namespace CommeillFautWF
             genericPropertyDataGridControler1.GetColumnByName("Initiator").Visible = false;
             genericPropertyDataGridControler1.GetColumnByName("Target").Visible = false;
             genericPropertyDataGridControler1.GetColumnByName("Id").Visible = false;
-            genericPropertyDataGridControler1.GetColumnByName("Conditions").Visible = false;
-            //genericPropertyDataGridControler1.GetColumnByName("Priority").Visible = false;
-            genericPropertyDataGridControler1.GetColumnByName("Type").Visible = false;
             genericPropertyDataGridControler1.GetColumnByName("InfluenceRule").Visible = false;
         }
 

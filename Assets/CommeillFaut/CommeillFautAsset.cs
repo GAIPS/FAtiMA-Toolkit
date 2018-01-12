@@ -480,8 +480,6 @@ namespace CommeillFaut
         {
             
             m_SocialExchanges = new List<SocialExchange>(dataHolder.GetValue<SocialExchange[]>("SocialExchanges"));
-            foreach (var s in m_SocialExchanges)
-                s.GUID = Guid.NewGuid();
             m_cachedCIF = new NameSearchTree<NameSearchTree<float>>();
         }
 
