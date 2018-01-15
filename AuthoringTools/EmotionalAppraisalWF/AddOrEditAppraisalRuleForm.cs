@@ -21,7 +21,16 @@ namespace EmotionalAppraisalWF
             _appraisalRulesVM = ruleVM;
             _appraisalRuleToEdit = ruleToEdit;
 
+            //validationRules
+            textBoxSubject.AllowNil = false;
+            textBoxSubject.AllowComposedName = false;
+            textBoxDesirability.OnlyIntOrVariable = true;
+            textBoxPraiseworthiness.OnlyIntOrVariable = true;
+
             //defaultValues
+            textBoxSubject.Value = WellFormedNames.Name.UNIVERSAL_SYMBOL;
+            textBoxObject.Value = WellFormedNames.Name.UNIVERSAL_SYMBOL;
+            textBoxTarget.Value = WellFormedNames.Name.UNIVERSAL_SYMBOL;
             textBoxDesirability.Value = WellFormedNames.Name.BuildName("0");
             textBoxPraiseworthiness.Value = WellFormedNames.Name.BuildName("0");
             comboBoxEventType.DataSource = AppraisalRulesVM.EventTypes;

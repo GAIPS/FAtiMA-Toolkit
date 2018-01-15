@@ -143,5 +143,24 @@ namespace EmotionalDecisionMakingWF
         {
 
         }
+
+        private void dataGridViewReactiveActions_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Enter:
+                    this.buttonEditReaction_Click(sender, e);
+                    //This next line is necessary to prevent the default behaviour from ocurring
+                    e.Handled = true;
+                    break;
+                case Keys.D:
+                    if (e.Control) this.buttonDuplicateReaction_Click(sender, e);
+                    break;
+                case Keys.Delete:
+                    this.buttonRemoveReaction_Click(sender, e);
+                    break;
+            }
+
+        }
     }
 }

@@ -5,7 +5,8 @@ namespace GAIPS.AssetEditorTools.TypedTextBoxes
 {
 	public class WFNameFieldBox : TypedFieldBox<Name>
 	{
-		public bool AllowVariable { get; set; } = true;
+        public bool OnlyIntOrVariable { get; set; } = false;
+        public bool AllowVariable { get; set; } = true;
 		public bool AllowLiteral { get; set; } = true;
         public bool AllowComposedName { get; set; } = true;
         public bool AllowUniversal { get; set; } = true;
@@ -15,6 +16,17 @@ namespace GAIPS.AssetEditorTools.TypedTextBoxes
         
 		protected override bool ValidateValue(Name value)
 		{
+            if (OnlyIntOrVariable)
+            {
+                if (value.IsVariable)
+                    return true;
+                else
+                {
+                    int res;
+                    return int.TryParse(value.ToString(), out res);
+                }
+            }
+
 			if (!AllowVariable && !value.IsGrounded)
 				return false;
 

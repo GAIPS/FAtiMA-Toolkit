@@ -83,11 +83,7 @@
             this.moveName.Size = new System.Drawing.Size(547, 25);
             this.moveName.TabIndex = 4;
             this.moveName.Text = "";
-            // 
-            // influenceRuleBindingSource
-            // 
-            this.influenceRuleBindingSource.DataSource = typeof(CommeillFaut.InfluenceRule);
-            this.influenceRuleBindingSource.CurrentChanged += new System.EventHandler(this.influenceRuleBindingSource_CurrentChanged);
+          
             // 
             // label2
             // 
