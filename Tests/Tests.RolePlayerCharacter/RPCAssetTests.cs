@@ -125,6 +125,95 @@ namespace Tests.RolePlayCharacter
 
 
         }
+
+/*
+        [TestCase]
+        public void Test_RPC_AddEventRecord()
+        {
+            var rpc = BuildRPCAsset();
+
+            var eve = EventHelper.ActionEnd("SELF", "EntersRoom", "Sarah");
+
+            var dto = new AutobiographicMemory.DTOs.EventDTO()
+            {
+
+                Subject = "Matt",
+                Event = EventHelper.ActionEnd("SELF", "EntersRoom", "Sarah").ToString(),
+                Id = 30,
+                Time = 1
+            };
+
+            
+            rpc.AddEventRecord(dto);
+
+
+            Assert.IsNotEmpty(rpc.EventRecords);
+        }
+        */
+
+        [TestCase("Dialogue(State)", "Start")]
+        [TestCase("Dialogue(Matt)", "0")]
+        public void Test_RPC_BeliefValue(string belief, string value)
+        {
+            var rpc = BuildRPCAsset();
+
+            rpc.m_kb.Tell((Name)belief, (Name)value);
+
+            var beliefs = rpc.GetAllBeliefs();
+
+            Assert.AreEqual(value, rpc.GetBeliefValue(belief));
+
+            Assert.IsNotEmpty(rpc.GetAllBeliefs());
+
+            rpc.RemoveBelief(belief, "SELF");
+
+
+            Assert.IsEmpty(rpc.GetAllBeliefs());
+
+        }
+
+
+        [TestCase("Dialogue(State)", "Start", "0.4")]
+        [TestCase("Dialogue(Matt)", "0", "1.0")]
+        public void Test_RPC_BeliefValueAnCertainty(string belief, string value, string certainty)
+        {
+            var rpc = BuildRPCAsset();
+
+            rpc.m_kb.Tell((Name)belief, (Name)value, (Name)"SELF", Convert.ToSingle(certainty));
+
+            var beliefs = rpc.GetAllBeliefs();
+
+            Assert.AreEqual(Convert.ToSingle(certainty), rpc.GetBeliefValueAndCertainty(belief).Certainty);
+        }
+
+
+
+
+        [TestCase]
+        public void Test_RPC_GetAllBeliefs()
+        {
+            var rpc = BuildRPCAsset();
+
+            var originalbeliefs = rpc.GetAllBeliefs();
+
+            int count = 0;
+            foreach (var b in originalbeliefs)
+                count++;
+
+
+            rpc.m_kb.Tell((Name)"Love(Sarah)", (Name)"True");
+
+            var afterbeliefs = rpc.GetAllBeliefs();
+
+            int countafter = 0;
+            foreach (var b in originalbeliefs)
+                countafter++;
+
+
+            Assert.AreEqual((count + 1), countafter);
+        }
+
+
         #region Test RPC Dynamic Properties
         [TestCase(1, "[x] = Sarah", "isAgent([x])=False")]
         [TestCase(1, "[x] = Matt", "isAgent([x])=False")]
