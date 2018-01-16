@@ -97,7 +97,7 @@ namespace CommeillFaut
             var totalCertainty = 0.0f;
             int totalConds = Conditions.Count();
 
-            if (init == targ) return 0;
+            if (init == targ) return -1;
 
             var targetSub = new Substitution(Target, new ComplexValue(targ));
             var initiatorSub = new Substitution(Target, new ComplexValue(init));

@@ -1,9 +1,13 @@
 ﻿using RolePlayCharacter;
 using WellFormedNames;
+using System.IO;
+using System;
 using KnowledgeBase;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Conditions;
+using SerializationUtilities;
+using EmotionalAppraisal;
 
 namespace Tests.RolePlayCharacter
 {
@@ -48,6 +52,19 @@ namespace Tests.RolePlayCharacter
             var kb = new KB((Name)"Matt");
 
 
+            var ea = new EmotionalAppraisalAsset();
+
+            var appraisalRule = new EmotionalAppraisal.DTOs.AppraisalRuleDTO()
+            {
+                Conditions = new Conditions.DTOs.ConditionSetDTO(),
+                EventMatchingTemplate = (Name)"Event(*, *,*, *)",
+                Desirability = Name.BuildName(2),
+                Praiseworthiness = Name.BuildName(2)
+            };
+
+            ea.AddOrUpdateAppraisalRule(appraisalRule);
+           
+
             var rpc = new RolePlayCharacterAsset
             {
                 BodyName = "Male",
@@ -57,6 +74,10 @@ namespace Tests.RolePlayCharacter
                 
             };
 
+            ea.SaveToFile("Tests/UnitTestAuxEA");
+
+            var path = ea.AssetFilePath;
+            rpc.EmotionalAppraisalAssetSource = path;
             rpc.LoadAssociatedAssets();
             return rpc;
 
@@ -104,6 +125,95 @@ namespace Tests.RolePlayCharacter
 
 
         }
+
+/*
+        [TestCase]
+        public void Test_RPC_AddEventRecord()
+        {
+            var rpc = BuildRPCAsset();
+
+            var eve = EventHelper.ActionEnd("SELF", "EntersRoom", "Sarah");
+
+            var dto = new AutobiographicMemory.DTOs.EventDTO()
+            {
+
+                Subject = "Matt",
+                Event = EventHelper.ActionEnd("SELF", "EntersRoom", "Sarah").ToString(),
+                Id = 30,
+                Time = 1
+            };
+
+            
+            rpc.AddEventRecord(dto);
+
+
+            Assert.IsNotEmpty(rpc.EventRecords);
+        }
+        */
+
+        [TestCase("Dialogue(State)", "Start")]
+        [TestCase("Dialogue(Matt)", "0")]
+        public void Test_RPC_BeliefValue(string belief, string value)
+        {
+            var rpc = BuildRPCAsset();
+
+            rpc.m_kb.Tell((Name)belief, (Name)value);
+
+            var beliefs = rpc.GetAllBeliefs();
+
+            Assert.AreEqual(value, rpc.GetBeliefValue(belief));
+
+            Assert.IsNotEmpty(rpc.GetAllBeliefs());
+
+            rpc.RemoveBelief(belief, "SELF");
+
+
+            Assert.IsEmpty(rpc.GetAllBeliefs());
+
+        }
+
+
+        [TestCase("Dialogue(State)", "Start", "0.4")]
+        [TestCase("Dialogue(Matt)", "0", "1.0")]
+        public void Test_RPC_BeliefValueAnCertainty(string belief, string value, string certainty)
+        {
+            var rpc = BuildRPCAsset();
+
+            rpc.m_kb.Tell((Name)belief, (Name)value, (Name)"SELF", Convert.ToSingle(certainty));
+
+            var beliefs = rpc.GetAllBeliefs();
+
+            Assert.AreEqual(Convert.ToSingle(certainty), rpc.GetBeliefValueAndCertainty(belief).Certainty);
+        }
+
+
+
+
+        [TestCase]
+        public void Test_RPC_GetAllBeliefs()
+        {
+            var rpc = BuildRPCAsset();
+
+            var originalbeliefs = rpc.GetAllBeliefs();
+
+            int count = 0;
+            foreach (var b in originalbeliefs)
+                count++;
+
+
+            rpc.m_kb.Tell((Name)"Love(Sarah)", (Name)"True");
+
+            var afterbeliefs = rpc.GetAllBeliefs();
+
+            int countafter = 0;
+            foreach (var b in originalbeliefs)
+                countafter++;
+
+
+            Assert.AreEqual((count + 1), countafter);
+        }
+
+
         #region Test RPC Dynamic Properties
         [TestCase(1, "[x] = Sarah", "isAgent([x])=False")]
         [TestCase(1, "[x] = Matt", "isAgent([x])=False")]
@@ -258,7 +368,338 @@ namespace Tests.RolePlayCharacter
 
         }
 
-            #endregion
+        [TestCase(1, "isAgent([x])=True", "StrongestAttributionEmotion([x]) = [m]")]
+        [TestCase(1, "isAgent([x])=True", "StrongestAttributionEmotion(Matt) = [m]")]
+        public void Test_DP_StrongestAttributionEmotion_Match(int eventSet, string context, string lastEventMethodCall)
+        {
+
+            var rpc = BuildRPCAsset();
+            PopulateEventSet(eventSet);
+
+            foreach (var eve in eventSets[eventSet])
+            {
+                rpc.Perceive((Name)eve);
+                rpc.Tick++;
+            }
+
+            // Initializing
+            var condSet = new ConditionSet();
+            var cond = Condition.Parse("[x] = True");
+            IEnumerable<SubstitutionSet> resultingConstraints = new List<SubstitutionSet>();
+
+            if (context != "")
+            {
+                var conditions = context.Split(',');
+
+
+                cond = Condition.Parse(conditions[0]);
+
+                // Apply conditions to RPC
+                foreach (var res in conditions)
+                {
+                    cond = Condition.Parse(res);
+                    condSet = condSet.Add(cond);
+
+
+                }
+                resultingConstraints = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+            }
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(lastEventMethodCall);
+            condSet = condSet.Add(cond);
+
+
+            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, resultingConstraints);
+
+            Assert.IsNotEmpty(result);
+
         }
+
+        [TestCase(1, "isAgent([x])=True", "StrongestEmotion([x]) = [m]")]
+        [TestCase(1, "isAgent([x])=True", "StrongestEmotion(Matt) = [m]")]
+        public void Test_DP_StrongestEmotion_Match(int eventSet, string context, string lastEventMethodCall)
+        {
+
+            var rpc = BuildRPCAsset();
+            PopulateEventSet(eventSet);
+
+            foreach (var eve in eventSets[eventSet])
+            {
+                rpc.Perceive((Name)eve);
+                rpc.Tick++;
+            }
+
+            // Initializing
+            var condSet = new ConditionSet();
+            var cond = Condition.Parse("[x] = True");
+            IEnumerable<SubstitutionSet> resultingConstraints = new List<SubstitutionSet>();
+
+            if (context != "")
+            {
+                var conditions = context.Split(',');
+
+
+                cond = Condition.Parse(conditions[0]);
+
+                // Apply conditions to RPC
+                foreach (var res in conditions)
+                {
+                    cond = Condition.Parse(res);
+                    condSet = condSet.Add(cond);
+
+
+                }
+                resultingConstraints = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+            }
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(lastEventMethodCall);
+            condSet = condSet.Add(cond);
+
+
+            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, resultingConstraints);
+
+            Assert.IsNotEmpty(result);
+
+        }
+
+        [TestCase(1, "isAgent([x])=True", "StrongestEmotionForEvent([x], *) = [m]")]
+        [TestCase(1, "isAgent([x])=True", "StrongestEmotionForEvent([x], [y]) = [m]")]
+        [TestCase(1, "isAgent([x])=True", "StrongestEmotionForEvent(Matt, [y]) = [m]")]
+        [TestCase(1, "isAgent([x])=True", "StrongestEmotionForEvent([x], Event(Action-End, Matt, EntersRoom, Sarah)) = [m]")]
+        [TestCase(1, "isAgent([x])=True", "StrongestEmotionForEvent(Matt, Event(Action-End, Matt, EntersRoom, Sarah)) = [m]")]
+        public void Test_DP_StrongestEmotionForEvent_Match(int eventSet, string context, string lastEventMethodCall)   // TO DO
+        {
+
+            var rpc = BuildRPCAsset();
+            PopulateEventSet(eventSet);
+
+            foreach (var eve in eventSets[eventSet])
+            {
+                rpc.Perceive((Name)eve);
+                rpc.Tick++;
+            }
+
+            // Initializing
+            var condSet = new ConditionSet();
+            var cond = Condition.Parse("[x] = True");
+            IEnumerable<SubstitutionSet> resultingConstraints = new List<SubstitutionSet>();
+
+            if (context != "")
+            {
+                var conditions = context.Split(',');
+
+
+                cond = Condition.Parse(conditions[0]);
+
+                // Apply conditions to RPC
+                foreach (var res in conditions)
+                {
+                    cond = Condition.Parse(res);
+                    condSet = condSet.Add(cond);
+
+
+                }
+                resultingConstraints = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+            }
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(lastEventMethodCall);
+            condSet = condSet.Add(cond);
+
+
+            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, resultingConstraints);
+
+            Assert.IsNotEmpty(result);
+
+        }
+
+        [TestCase(1, "isAgent([x])=True", "StrongestWellBeingEmotion([x]) = [m]")]
+        [TestCase(1, "isAgent([x])=True", "StrongestWellBeingEmotion(Matt) = [m]")]
+        public void Test_DP_StrongestWellBeingEmotion_Match(int eventSet, string context, string lastEventMethodCall)
+        {
+
+            var rpc = BuildRPCAsset();
+            PopulateEventSet(eventSet);
+
+            foreach (var eve in eventSets[eventSet])
+            {
+                rpc.Perceive((Name)eve);
+                rpc.Tick++;
+            }
+
+            // Initializing
+            var condSet = new ConditionSet();
+            var cond = Condition.Parse("[x] = True");
+            IEnumerable<SubstitutionSet> resultingConstraints = new List<SubstitutionSet>();
+
+            if (context != "")
+            {
+                var conditions = context.Split(',');
+
+
+                cond = Condition.Parse(conditions[0]);
+
+                // Apply conditions to RPC
+                foreach (var res in conditions)
+                {
+                    cond = Condition.Parse(res);
+                    condSet = condSet.Add(cond);
+
+
+                }
+                resultingConstraints = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+            }
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(lastEventMethodCall);
+            condSet = condSet.Add(cond);
+
+
+            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, resultingConstraints);
+
+            Assert.IsNotEmpty(result);
+
+        }
+
+
+        [TestCase(1, "isAgent([x])=True", "StrongestCompoundEmotion([x]) = [m]")]
+        [TestCase(1, "isAgent([x])=True", "StrongestCompoundEmotion(Matt) = [m]")]
+        public void Test_DP_StrongestCompoundEmotion_Match(int eventSet, string context, string lastEventMethodCall)
+        {
+
+            var rpc = BuildRPCAsset();
+            PopulateEventSet(eventSet);
+
+            foreach (var eve in eventSets[eventSet])
+            {
+                rpc.Perceive((Name)eve);
+                rpc.Tick++;
+            }
+
+            // Initializing
+            var condSet = new ConditionSet();
+            var cond = Condition.Parse("[x] = True");
+            IEnumerable<SubstitutionSet> resultingConstraints = new List<SubstitutionSet>();
+
+            if (context != "")
+            {
+                var conditions = context.Split(',');
+
+
+                cond = Condition.Parse(conditions[0]);
+
+                // Apply conditions to RPC
+                foreach (var res in conditions)
+                {
+                    cond = Condition.Parse(res);
+                    condSet = condSet.Add(cond);
+
+
+                }
+                resultingConstraints = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+            }
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(lastEventMethodCall);
+            condSet = condSet.Add(cond);
+
+
+            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, resultingConstraints);
+
+            Assert.IsNotEmpty(result);
+
+        }
+
+
+        [TestCase(1, "isAgent([x])=True", "EmotionIntensity([x], Gratification) = [m]")]
+        [TestCase(1, "isAgent([x])=True", "EmotionIntensity(Matt, Gratification) = [m]")]
+        [TestCase(1, "isAgent([x])=True", "EmotionIntensity([x], [y]) = [m]")]
+        public void Test_DP_EmotionIntensity_Match(int eventSet, string context, string lastEventMethodCall)
+        {
+
+            var rpc = BuildRPCAsset();
+            PopulateEventSet(eventSet);
+
+            foreach (var eve in eventSets[eventSet])
+            {
+                rpc.Perceive((Name)eve);
+                rpc.Tick++;
+            }
+
+            // Initializing
+            var condSet = new ConditionSet();
+            var cond = Condition.Parse("[x] = True");
+            IEnumerable<SubstitutionSet> resultingConstraints = new List<SubstitutionSet>();
+
+            if (context != "")
+            {
+                var conditions = context.Split(',');
+
+
+                cond = Condition.Parse(conditions[0]);
+
+                // Apply conditions to RPC
+                foreach (var res in conditions)
+                {
+                    cond = Condition.Parse(res);
+                    condSet = condSet.Add(cond);
+
+
+                }
+                resultingConstraints = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+            }
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(lastEventMethodCall);
+            condSet = condSet.Add(cond);
+
+
+            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, resultingConstraints);
+
+            Assert.IsNotEmpty(result);
+
+        }
+        #endregion
+
+
+
+        #region Serialization Tests
+
+
+
+        [TestCase]
+        public void RPC_Serialization_Test()
+        {
+            var asset = BuildRPCAsset();
+
+            using (var stream = new MemoryStream())
+            {
+                var formater = new JSONSerializer();
+                formater.Serialize(stream, asset);
+                stream.Seek(0, SeekOrigin.Begin);
+                Console.WriteLine(new StreamReader(stream).ReadToEnd());
+            }
+        }
+
+        [TestCase]
+        public void RPC_Deserialization_Test()
+        {
+            var asset = BuildRPCAsset();
+
+            using (var stream = new MemoryStream())
+            {
+                var formater = new JSONSerializer();
+                formater.Serialize(stream, asset);
+                stream.Seek(0, SeekOrigin.Begin);
+                Console.WriteLine(new StreamReader(stream).ReadToEnd());
+                stream.Seek(0, SeekOrigin.Begin);
+                var obj = formater.Deserialize(stream);
+            }
+        }
+
+        #endregion
+    }
     };
 

@@ -155,7 +155,6 @@ namespace Tests.CommeillFaut
 
 
         [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, Matt) = [s]")]
- //       [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Sarah, Matt) = [s]")]
         [TestCase(1, "IsAgent([x]) = True", "Volition(Compliment, Matt, Sarah) = [s]")]
         [TestCase(1, "IsAgent([x]) = True", "Volition(Compliment, [x], [y]) = [s]")]
         [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, Sarah) = Negative")]
@@ -357,6 +356,48 @@ namespace Tests.CommeillFaut
             Assert.AreEqual(cif.m_SocialExchanges[0].Name.ToString(), "Compliment");
 
            
+        }
+
+
+        [TestCase]
+        public void Test_CIF_SE_AddCondition()
+        {
+            var cif = BuildCIFAsset();
+
+            var se = cif.GetSocialMove((Name)"Flirt");
+
+            var totalCondsBefore = se.Conditions.Count;
+
+            se.AddCondition(Condition.Parse("[x] != Start"));
+
+            Assert.AreEqual((totalCondsBefore + 1), se.Conditions.Count);
+
+        }
+
+        [TestCase]
+        public void Test_CIF_SE_RemoveCondition()
+        {
+            var cif = BuildCIFAsset();
+
+            var se = cif.GetSocialMove((Name)"Flirt");
+
+          se.RemoveCondition(Condition.Parse("Has(Floor) != Start"));
+
+            Assert.IsEmpty(se.Conditions);
+
+        }
+
+        [TestCase]
+        public void Test_CIF_SE_ToString()
+        {
+            var cif = BuildCIFAsset();
+
+            var se = cif.GetSocialMove((Name)"Flirt");
+
+            var expectedResult = "Flirt When I'm atracted to... " + new Guid() + "\n";
+
+            Assert.AreEqual(se.ToString(), expectedResult);
+
         }
     }
 
