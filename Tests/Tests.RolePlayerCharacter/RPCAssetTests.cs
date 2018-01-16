@@ -172,6 +172,31 @@ namespace Tests.RolePlayCharacter
 
         }
 
+        [TestCase("Dialogue(State)", "Start")]
+        [TestCase("Dialogue(Matt)", "0")]
+        public void Test_RPC_UpdateBeliefValue(string belief, string value)
+        {
+            var rpc = BuildRPCAsset();
+
+            rpc.m_kb.Tell((Name)belief, (Name)value);
+
+            var beliefs = rpc.GetAllBeliefs();
+
+            Assert.AreEqual(value, rpc.GetBeliefValue(belief));
+
+            Assert.IsNotEmpty(rpc.GetAllBeliefs());
+
+            rpc.Update();
+
+            var originalValue = rpc.GetBeliefValue(belief);
+
+            rpc.UpdateBelief(belief, "newvalue");
+
+            Assert.AreEqual("newvalue", rpc.GetBeliefValue(belief));
+
+
+        }
+
 
         [TestCase("Dialogue(State)", "Start", "0.4")]
         [TestCase("Dialogue(Matt)", "0", "1.0")]
@@ -212,6 +237,89 @@ namespace Tests.RolePlayCharacter
 
             Assert.AreEqual((count + 1), countafter);
         }
+
+
+
+        [TestCase]
+        public void Test_RPC_ActiveEmotions()
+        {
+
+            var rpc = BuildRPCAsset();
+            PopulateEventSet(1);
+
+            var events = new List<Name>(); 
+
+            foreach (var eve in eventSets[1])
+            {
+                events.Add((Name)eve);
+            }
+
+            rpc.Perceive(events);
+
+
+            Assert.IsNotEmpty(rpc.GetAllActiveEmotions());
+
+
+            var intensity = -1.0f;
+            EmotionalAppraisal.DTOs.EmotionDTO maxEmotion = new EmotionalAppraisal.DTOs.EmotionDTO();
+            foreach (var e in rpc.GetAllActiveEmotions())
+            {
+                if (e.Intensity > intensity)
+                {
+                    intensity = e.Intensity;
+                    maxEmotion = e;
+                }
+            }
+
+
+                Assert.AreEqual(maxEmotion.Type, rpc.GetStrongestActiveEmotion().EmotionType);
+        }
+
+
+        [TestCase]
+        public void Test_RPC_SetMood()
+        {
+
+            var rpc = BuildRPCAsset();
+            PopulateEventSet(1);
+
+            var events = new List<Name>();
+
+            foreach (var eve in eventSets[1])
+            {
+                events.Add((Name)eve);
+            }
+
+            rpc.Perceive(events);
+
+            var originalMood = rpc.Mood;
+
+            rpc.Mood = 3.0f;
+
+            Assert.AreNotEqual(originalMood, rpc.Mood);
+        }
+
+        [TestCase]
+        public void Test_RPC_GetEventDetails()
+        {
+
+            var rpc = BuildRPCAsset();
+            PopulateEventSet(1);
+
+            foreach (var eve in eventSets[1])
+            {
+                rpc.Perceive((Name)eve);
+                rpc.Update();
+            }
+
+            uint counter = 0;
+            foreach (var eve in eventSets[1])
+            {
+                Assert.IsNotNull(rpc.GetEventDetails(counter));
+                counter++;
+            }
+        }
+
 
 
         #region Test RPC Dynamic Properties
