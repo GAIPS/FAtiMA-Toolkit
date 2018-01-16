@@ -27,11 +27,6 @@ namespace CommeillFaut
         /// The Comme ill Faut constructor
         /// </summary>
 
-        public KB LinkedEA
-        {
-            get { return m_kB; }
-        }
-
         public CommeillFautAsset()
         {
             m_kB = null;
@@ -197,14 +192,6 @@ namespace CommeillFaut
 
         #endregion
 
-        private void ValidateEALink()
-        {
-            if (m_kB == null)
-                throw new InvalidOperationException($"Cannot execute operation as an instance of {nameof(CommeillFautAsset)} was not registed in this asset.");
-        }
-
-
-
 
 
         public Guid AddExchange(SocialExchangeDTO newExchange)
@@ -227,30 +214,6 @@ namespace CommeillFaut
             return new Guid();
         }
 
-
-     
-        public void UpdateSocialExchange(SocialExchangeDTO reactionToEdit, SocialExchangeDTO newReaction)
-        {
-            m_SocialExchanges.Remove(new SocialExchange(reactionToEdit));
-
-            var newId = this.AddExchange(newReaction);
-
-           
-            
-         
-        }
-
-        public double Floor(float value)
-        {
-            var toRet = Convert.ToDouble(value);
-            // Console.WriteLine("Round method calculation for: " + x.ToString() + " the value : " + toRet);
-            toRet = toRet / 10;
-            toRet = Math.Round(toRet, 0);
-            toRet = toRet * 10;
-         //   Console.WriteLine("Round method calculation for: " + x.ToString() + " rounded value " + sub.Value.ToString() + " result : " + toRet);
-
-            return toRet;
-        }
 
 
         public string CalculateStyle(float value)

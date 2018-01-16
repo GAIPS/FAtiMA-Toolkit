@@ -277,7 +277,87 @@ namespace Tests.CommeillFaut
         }
 
 
+        [TestCase]
+        public void Test_CIF_AddSocialExchange()
+        {
+            var cif = BuildCIFAsset();
 
+            var originalCount = cif.m_SocialExchanges.Count;
+
+            var seDTO = new SocialExchangeDTO()
+            {
+                Name = Name.BuildName("Compliment"),
+                Description = "When I'm atracted to...",
+                Conditions = new Conditions.DTOs.ConditionSetDTO()
+                {
+                    ConditionSet = new string[] { "[x] != Start" }
+                },
+                Initiator = Name.BuildName("[i]"),
+                Target = Name.BuildName("[x]")
+            };
+
+         
+            cif.AddExchange(seDTO);
+
+
+            Assert.AreEqual(cif.m_SocialExchanges.Count, (originalCount + 1));
+
+        }
+
+        [TestCase]
+        public void Test_CIF_GetDTO()
+        {
+            var cif = BuildCIFAsset();
+
+            var dto = cif.GetDTO();
+       
+            Assert.AreEqual(dto._SocialExchangesDtos.Length, cif.m_SocialExchanges.Count);
+
+        }
+
+
+        [TestCase(0.5f, "Neutral")]
+        [TestCase(0.75f, "Positive")]
+        [TestCase(0.3f, "Negative")]
+        public void Test_CIF_StyleCalculator(float value, string output)
+        {
+            var cif = BuildCIFAsset();
+
+            var result = cif.CalculateStyle(value);
+
+            Assert.AreEqual(output, result);
+
+        }
+
+        [TestCase]
+        public void Test_CIF_LoadFromDTO()
+        {
+            var cif = BuildCIFAsset();
+
+            var seDTO = new SocialExchangeDTO()
+            {
+                Name = Name.BuildName("Compliment"),
+                Description = "When we are friends..",
+                Conditions = new Conditions.DTOs.ConditionSetDTO()
+                {
+                    ConditionSet = new string[] { "[x] != Start" }
+                },
+                Initiator = Name.BuildName("[i]"),
+                Target = Name.BuildName("[x]")
+            };
+
+            var cifDTO = new CommeillFautDTO()
+            {
+                _SocialExchangesDtos = new[] { seDTO }
+            };
+
+
+            cif.LoadFromDTO(cifDTO);
+
+            Assert.AreEqual(cif.m_SocialExchanges[0].Name.ToString(), "Compliment");
+
+           
+        }
     }
 
 };
