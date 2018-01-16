@@ -121,6 +121,10 @@
       <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
       <Name>GAIPS.Rage</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
+      <Project>{BC47528F-FBF6-465E-BB0E-F68F50F31C13}</Project>
+      <Name>WellFormedNames</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GAIPS.AssetEditorTools\GAIPS.AssetEditorTools.csproj">
       <Project>{c61fb19d-e715-4eb4-afca-27ff81a14777}</Project>
       <Name>GAIPS.AssetEditorTools</Name>

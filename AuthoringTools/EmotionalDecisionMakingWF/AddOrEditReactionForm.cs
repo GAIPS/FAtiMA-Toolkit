@@ -17,15 +17,25 @@ namespace EmotionalDecisionMakingWF
 
             _edmAsset = edmAsset;
             _reactionToEdit = reactionToEdit;
+
+            textBoxAction.Value = (WellFormedNames.Name)"A";
+            textBoxPriority.Value = (WellFormedNames.Name)"1";
             
+            //validators
+            textBoxAction.AllowNil = false;
+            textBoxAction.AllowUniversal = false;
+            textBoxTarget.AllowUniversal = false;
+            textBoxTarget.AllowComposedName = false;
+            textBoxPriority.OnlyIntOrVariable = true;
+
             if (reactionToEdit != null)
             {
                 this.Text = Resources.EditReactionFormTitle;
                 this.addOrEditButton.Text = Resources.UpdateButtonLabel;
-                textBoxAction.Text = reactionToEdit.Action;
-                textBoxTarget.Text = reactionToEdit.Target;
-                textBoxPriority.Text = reactionToEdit.Priority;
-                textBoxLayer.Text = reactionToEdit.Layer;
+                textBoxAction.Value = reactionToEdit.Action;
+                textBoxTarget.Value = reactionToEdit.Target;
+                textBoxPriority.Value = reactionToEdit.Priority;
+                textBoxLayer.Value = reactionToEdit.Layer;
             }
         }
 
@@ -36,10 +46,10 @@ namespace EmotionalDecisionMakingWF
             {
                 var newReaction = new ActionRuleDTO
                 {
-                    Action = textBoxAction.Text,
-                    Target = textBoxTarget.Text,
-                    Priority = textBoxPriority.Text,
-                    Layer = textBoxLayer.Text,
+                    Action = textBoxAction.Value,
+                    Target = textBoxTarget.Value,
+                    Priority = textBoxPriority.Value,
+                    Layer = textBoxLayer.Value,
                 };
 
                 if (_reactionToEdit != null)

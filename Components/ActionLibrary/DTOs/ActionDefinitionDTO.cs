@@ -1,5 +1,6 @@
 ﻿using System;
 using Conditions.DTOs;
+using WellFormedNames;
 
 namespace ActionLibrary.DTOs
 {
@@ -18,19 +19,19 @@ namespace ActionLibrary.DTOs
 		/// <example>
 		/// Attack([type],[strength])
 		/// </example>
-		public string Action { get; set; }
+		public Name Action { get; set; }
 		/// <summary>
 		/// The target of the action, if any.
 		/// </summary>
-		public string Target { get; set; }
+		public Name Target { get; set; }
         /// <summary>
 		/// The priority of the action.
 		/// </summary>
-        public string Priority { get; set; }
+        public Name Priority { get; set; }
         /// <summary>
         /// The layer associated to the action (e.g. verbal, nonverbal)
         /// </summary>
-        public string Layer { get; set; }
+        public Name Layer { get; set; }
         /// <summary>
         /// The set of conditions that must be true for this action execution.
         /// </summary>

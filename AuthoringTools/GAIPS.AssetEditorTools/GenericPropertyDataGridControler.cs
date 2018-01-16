@@ -86,23 +86,28 @@ namespace GAIPS.AssetEditorTools
 			}
 		}
 
-		private void OnEditButton_Click(object sender, EventArgs e)
+        private void _duplicateButton_Click(object sender, EventArgs e)
+        {
+            var elm = _controller?.DuplicateElement(CurrentlySelected);
+            if (elm != null)
+            {
+                _dataView.ClearSelection();
+                foreach (DataGridViewRow r in _dataView.Rows)
+                {
+                    var b = r.DataBoundItem == elm;
+                    if (r.Selected != b)
+                        r.Selected = b;
+                }
+                RefreshData();
+            }
+        }
+
+        private void OnEditButton_Click(object sender, EventArgs e)
 		{
-			var sucessfullyEdited = _controller?.EditElements(SelectedObjects);
-			if (sucessfullyEdited != null)
+			var sucessfullyEditedObject = _controller?.EditElement(CurrentlySelected);
+			if (sucessfullyEditedObject != null)
 			{
-				var set = new HashSet<object>(sucessfullyEdited);
-				if (set.Count > 0)
-				{
-					_dataView.ClearSelection();
-					foreach (DataGridViewRow r in _dataView.Rows)
-					{
-						var b = set.Contains(r.DataBoundItem);
-						if (r.Selected != b)
-							r.Selected = b;
-					}
-					RefreshData();
-				}
+				RefreshData();
 			}
 		}
 
@@ -131,9 +136,6 @@ namespace GAIPS.AssetEditorTools
 
         }
 
-        private void _duplicateButton_Click(object sender, EventArgs e)
-        {
-
-        }
+     
     }
 }

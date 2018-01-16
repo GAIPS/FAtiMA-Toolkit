@@ -7,7 +7,8 @@ namespace GAIPS.AssetEditorTools
 	{
 		IList GetElements();
 		object AddElement();
-		IEnumerable<object> EditElements(IEnumerable<object> elementsToEdit);
+		object EditElement(object elementToEdit);
+        object DuplicateElement(object elementToDuplicate);
 		uint RemoveElements(IEnumerable<object> elementsToRemove);
 	}
 }

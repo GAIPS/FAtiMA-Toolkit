@@ -134,16 +134,18 @@ namespace SocialImportance
 
 		private uint CalculateSI(Name target, Name perspective)
 		{
-			long value = 0;
+			long result = 0;
 			foreach (var a in m_attributionRules)
 			{
 				var sub = new Substitution(a.Target, new ComplexValue(target));
-				if (a.Conditions.Unify(m_kB, perspective, new[] { new SubstitutionSet(sub) }).Any())
+                var resultSubSet = a.Conditions.Unify(m_kB, perspective, new[] { new SubstitutionSet(sub) });
+                foreach(var set in resultSubSet)
                 {
-                    value += a.Value;
+                    var v = a.Value.MakeGround(set);
+                    result += int.Parse(v.ToString());
                 }
 			}
-			return value<1?1:(uint)value;
+			return result<1?1:(uint)result;
 		}
 
 		/// @cond DOXYGEN_SHOULD_SKIP_THIS

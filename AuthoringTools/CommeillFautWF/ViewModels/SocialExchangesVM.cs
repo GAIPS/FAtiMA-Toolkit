@@ -118,9 +118,26 @@ namespace CommeillFautWF.ViewModels
                     MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-
             return result;
         }
+
+        public object EditElement(object elementToEdit)
+        {
+            var dto = (elementToEdit as ObjectView<SocialExchangeDTO>).Object;
+            /*var dialog = new AddSocialExchange(dto);
+            dialog.ShowDialog(_parent);*/
+            //return dialog.AddedObject;
+            return null;
+        }
+
+
+        public object DuplicateElement(object elementToDuplicate)
+        {
+
+
+            throw new NotImplementedException();
+        }
+
 
         public uint RemoveElements(IEnumerable<object> elementsToRemove)
         {
@@ -181,6 +198,8 @@ namespace CommeillFautWF.ViewModels
         {
             return SocialExchanges;
         }
+
+     
     }
 }
 

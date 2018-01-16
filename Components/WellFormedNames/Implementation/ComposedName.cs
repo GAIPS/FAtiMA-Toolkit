@@ -21,34 +21,7 @@ namespace WellFormedNames
 		{
 			private Symbol RootSymbol;
 			private Name[] Terms;
-			/*
-			private bool m_isGrounded;
-			public override bool IsGrounded
-			{
-				get { return m_isGrounded; }
-			}
-
-			public override bool IsUniversal
-			{
-				get { return false; }
-			}
-
-			public override bool IsVariable
-			{
-				get { return false; }
-			}
-
-			public override bool IsPrimitive
-			{
-				get { return false; }
-			}
-
-			private bool m_isConstant;
-			public override bool IsConstant
-			{
-				get { return m_isConstant; }
-			}
-			*/
+			
 			public override int NumberOfTerms
 			{
 				get { return Terms.Length + 1; }

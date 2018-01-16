@@ -18,10 +18,16 @@ namespace SocialImportanceWF
 		{
 			InitializeComponent();
 
-			_dto = dto;
-			_vm = vm;
+            //Validators
+            _targetVariableBox.AllowUniversal = false;
+            _targetVariableBox.AllowNil = false;
+            _targetVariableBox.AllowComposedName = false;
+            _targetVariableBox.AllowLiteral = false;
+            _valueFieldBox.OnlyIntOrVariable = true;
 
-			_ruleDescriptionTextBox.Text = dto.RuleName;
+            _dto = dto;
+			_vm = vm;
+			_ruleDescriptionTextBox.Text = dto.Description;
 			_valueFieldBox.Value = dto.Value;
 			_targetVariableBox.Value = (Name) dto.Target;
 
@@ -37,9 +43,9 @@ namespace SocialImportanceWF
 		{
 			try
 			{
-				_dto.RuleName = _ruleDescriptionTextBox.Text;
+				_dto.Description = _ruleDescriptionTextBox.Text;
 				_dto.Value = _valueFieldBox.Value;
-				_dto.Target = _targetVariableBox.Value.ToString();
+				_dto.Target = _targetVariableBox.Value;
 				AddedObject = _vm.AddOrUpdateRule(_dto);
 			}
 			catch (Exception e)
@@ -51,6 +57,11 @@ namespace SocialImportanceWF
 		}
 
         private void _valueFieldBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void AddOrEditAttributionRuleForm_Load(object sender, EventArgs e)
         {
 
         }

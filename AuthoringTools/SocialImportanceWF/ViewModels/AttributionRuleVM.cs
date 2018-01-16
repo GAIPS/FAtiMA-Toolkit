@@ -76,7 +76,8 @@ namespace SocialImportanceWF.ViewModels
             RuleList.DataSource = aux;
             RuleList.Refresh();
 
-			ConditionSetView.SetData(null);
+			if(CurrentlySelectedRule == null) 
+                ConditionSetView.SetData(null);
 
 			m_loading = false;
 		}
@@ -122,34 +123,34 @@ namespace SocialImportanceWF.ViewModels
 
 		public object AddElement()
 		{ 
-			var dto = new AttributionRuleDTO() { RuleName = "New Attribution Rule", Value = 1, Target = "-" };
+			var dto = new AttributionRuleDTO()
+            {
+                Description = "-",
+                Value = WellFormedNames.Name.BuildName("[v]"),
+                Target = WellFormedNames.Name.BuildName("[t]")
+            };
 			var dialog = new AddOrEditAttributionRuleForm(this, dto);
 			dialog.ShowDialog(_parent);
 			return dialog.AddedObject;
 		}
 
-		public IEnumerable<object> EditElements(IEnumerable<object> elementsToEdit)
+		public object EditElement(object elementToEdit)
 		{
-			List<object> result = new List<object>();
-			foreach (var dto in elementsToEdit.Cast<ObjectView<AttributionRuleDTO>>().Select(v => v.Object))
-			{
-				try
-				{
-					var dialog = new AddOrEditAttributionRuleForm(this, dto);
-					dialog.ShowDialog(_parent);
-					if (dialog.AddedObject!=null)
-						result.Add(dialog.AddedObject);
-				}
-				catch (Exception e)
-				{
-					MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				}
-			}
-
-			return result;
+            var dto = (elementToEdit as ObjectView<AttributionRuleDTO>).Object;
+        	var dialog = new AddOrEditAttributionRuleForm(this, dto);
+		    dialog.ShowDialog(_parent);
+            return dialog.AddedObject;
 		}
 
-		public uint RemoveElements(IEnumerable<object> elementsToRemove)
+
+        public object DuplicateElement(object elementToDuplicate)
+        {
+            var dto = (elementToDuplicate as ObjectView<AttributionRuleDTO>).Object;
+            dto.Id = Guid.Empty;
+            return AddOrUpdateRule(dto);
+        }
+
+        public uint RemoveElements(IEnumerable<object> elementsToRemove)
 		{
 			uint count = 0;
 			foreach (var dto in elementsToRemove.Cast<ObjectView<AttributionRuleDTO>>().Select(v => v.Object))
@@ -174,6 +175,7 @@ namespace SocialImportanceWF.ViewModels
 			return count;
 		}
 
-		#endregion
-	}
+
+        #endregion
+    }
 }

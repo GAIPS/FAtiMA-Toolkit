@@ -11,8 +11,6 @@ namespace Tests.SocialImportance
 	[TestFixture]
 	public class SIAssetTests
 	{
-		private static SocialImportanceAsset ASSET_TO_TEST = BuildAsset();
-
 		private static SocialImportanceAsset BuildAsset()
 		{
 			var kb = new KB((Name)"Matt");
@@ -38,21 +36,22 @@ namespace Tests.SocialImportance
 				{
 					new AttributionRuleDTO()
 					{
-						Target = "[target]",
-						Value = 20,
+						Target = (Name)"[target]",
+						Value = (Name)"[v]",
 						Conditions = new ConditionSetDTO()
 						{
 							ConditionSet = new []
 							{
 								"IsPerson([target]) = true",
-								"[target] != Self"
+								"[target] != Self",
+                                "[v] = 20"
 							}
 						}
 					},
 					new AttributionRuleDTO()
 					{
-						Target = "[target]",
-						Value = -1,
+						Target =  (Name)"[target]",
+						Value =  (Name)"-1",
 						Conditions = new ConditionSetDTO()
 						{
 							ConditionSet = new []
@@ -64,8 +63,8 @@ namespace Tests.SocialImportance
 					},
 					new AttributionRuleDTO()
 					{
-						Target = "[target]",
-						Value = 15,
+						Target = (Name)"[target]",
+						Value = (Name)"15",
 						Conditions = new ConditionSetDTO()
 						{
 							ConditionSet = new []
@@ -76,8 +75,8 @@ namespace Tests.SocialImportance
 					},
 					new AttributionRuleDTO()
 					{
-						Target = "[target]",
-						Value = 10,
+						Target = (Name)"[target]",
+						Value = (Name)"10",
 						Conditions = new ConditionSetDTO()
 						{
 							ConditionSet = new []
@@ -90,8 +89,8 @@ namespace Tests.SocialImportance
 					},
 					new AttributionRuleDTO()
 					{
-						Target = "[target]",
-						Value = 1,
+						Target = (Name)"[target]",
+						Value = (Name)"1",
 						Conditions = new ConditionSetDTO()
 						{
 							ConditionSet = new []
@@ -122,9 +121,11 @@ namespace Tests.SocialImportance
 		[TestCase("Thomas", "Robot", 1, 20)]
 		public static void Test_SI_Values(string a, string b, float abSiValue, float baSiValue)
 		{
-			ASSET_TO_TEST.InvalidateCachedSI();
-			var ab = ASSET_TO_TEST.GetSocialImportance(b, a); 
-			var ba = ASSET_TO_TEST.GetSocialImportance(a, b);
+            var asset = BuildAsset();
+            asset.InvalidateCachedSI();
+
+			var ab = asset.GetSocialImportance(b, a); 
+			var ba = asset.GetSocialImportance(a, b);
 
 			Assert.AreEqual(abSiValue,ab);
 			Assert.AreEqual(baSiValue,ba);

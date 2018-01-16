@@ -31,7 +31,7 @@ namespace IntegratedAuthoringTool
 			m_dialogDictionary[action.Id] = action;
 		}
 
-		public bool RemoveDialog(Guid id)
+        public bool RemoveDialog(Guid id)
 		{
 			DialogStateAction d;
 			if (!m_dialogDictionary.TryGetValue(id, out d))

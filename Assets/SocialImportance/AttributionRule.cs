@@ -12,7 +12,7 @@ namespace SocialImportance
 		public Guid GUID;
 		public string RuleName { get; private set; }
         public Name Target { get; private set; }
-		public int Value { get; private set; }
+		public Name Value { get; private set; }
 		public ConditionSet Conditions { get; private set; }
 
 		protected AttributionRule()
@@ -27,8 +27,8 @@ namespace SocialImportance
 
 		public void SetData(AttributionRuleDTO dto)
 		{
-			RuleName = dto.RuleName;
-			Target = (Name)dto.Target;
+			RuleName = dto.Description;
+			Target = dto.Target;
 			Value = dto.Value;
 			Conditions = new ConditionSet(dto.Conditions);
 		}
@@ -37,8 +37,8 @@ namespace SocialImportance
 		{
 			return new AttributionRuleDTO() {
                 Id = GUID,
-                RuleName = RuleName,
-                Target = Target.ToString(),
+                Description = RuleName,
+                Target = Target,
                 Value = Value,
                 Conditions = Conditions.ToDTO()};
 		}

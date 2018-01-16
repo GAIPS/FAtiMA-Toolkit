@@ -69,7 +69,7 @@ namespace ActionLibrary
 
 		public ActionRule(ActionRuleDTO dto)
 		{
-			AssertAndInitialize(Name.BuildName(dto.Action),Name.BuildName(dto.Target), Name.BuildName(dto.Priority), Name.BuildName(dto.Layer), new ConditionSet(dto.Conditions));
+			AssertAndInitialize(dto.Action,dto.Target,dto.Priority,dto.Layer, new ConditionSet(dto.Conditions));
 		}
 
 		public IAction GenerateAction(SubstitutionSet constraints)
@@ -112,10 +112,10 @@ namespace ActionLibrary
 		protected T FillDTO<T>(T dto) where T : ActionRuleDTO
 		{
 			dto.Id = Id;
-			dto.Action = m_actionTemplate.ToString();
-			dto.Target = Target.ToString();
+			dto.Action = m_actionTemplate;
+			dto.Target = Target;
 			dto.Conditions = m_activationConditions.ToDTO();
-            dto.Layer = Layer.ToString();
+            dto.Layer = Layer;
 			return dto;
 		}
 
@@ -141,12 +141,16 @@ namespace ActionLibrary
 			return def.Id == Id;
 		}
 
-
         public ActionRuleDTO ToDTO()
         {
             return FillDTO(new ActionRuleDTO()
             {
-                Priority = this.Priority.ToString()
+                Action = this.ActionName,
+                Conditions = m_activationConditions.ToDTO(),
+                Id = this.Id,
+                Layer = this.Layer,
+                Target = this.Target,
+                Priority = this.Priority
             });
         }
 

@@ -1,26 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
-using Equin.ApplicationFramework;
+﻿using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
-using WellFormedNames;
-using RolePlayCharacter;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using RolePlayCharacter;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Windows.Forms;
 using Utilities;
 using Utilities.DataStructures;
-using System.Drawing;
 
 namespace IntegratedAuthoringToolWF
 {
-	public partial class MainForm : BaseIATForm
-	{
-        
+    public partial class MainForm : BaseIATForm
+    {
         private BindingListView<DialogueStateActionDTO> _dialogs;
         private readonly string PLAYER = IATConsts.PLAYER;
         private readonly string AGENT = IATConsts.AGENT;
@@ -28,11 +25,10 @@ namespace IntegratedAuthoringToolWF
         private RolePlayCharacterWF.MainForm _rpcForm = new RolePlayCharacterWF.MainForm();
 
         public MainForm()
-		{
-			InitializeComponent();
-			buttonRemoveCharacter.Enabled = false;
+        {
+            InitializeComponent();
+            buttonRemoveCharacter.Enabled = false;
         }
-        
 
         private void RefreshDialogs()
         {
@@ -40,33 +36,31 @@ namespace IntegratedAuthoringToolWF
             _dialogs.Refresh();
             dataGridViewDialogueActions.Columns["Id"].Visible = false;
             dataGridViewDialogueActions.Columns["UtteranceId"].Visible = false;
-
         }
-       
+
         protected override void OnAssetDataLoaded(IntegratedAuthoringToolAsset asset)
-		{
-			textBoxScenarioName.Text = asset.ScenarioName;
-			textBoxScenarioDescription.Text = asset.ScenarioDescription;
-			_characterSources = new BindingListView<CharacterSourceDTO>(asset.GetAllCharacterSources().ToList());
-			dataGridViewCharacters.DataSource = _characterSources;
+        {
+            textBoxScenarioName.Text = asset.ScenarioName;
+            textBoxScenarioDescription.Text = asset.ScenarioDescription;
+            _characterSources = new BindingListView<CharacterSourceDTO>(asset.GetAllCharacterSources().ToList());
+            dataGridViewCharacters.DataSource = _characterSources;
             _dialogs = new BindingListView<DialogueStateActionDTO>(new List<DialogueStateActionDTO>());
             dataGridViewDialogueActions.DataSource = _dialogs;
             RefreshDialogs();
         }
 
-		private void buttonCreateCharacter_Click(object sender, EventArgs e)
-		{
+        private void buttonCreateCharacter_Click(object sender, EventArgs e)
+        {
             _rpcForm = new RolePlayCharacterWF.MainForm();
             var asset = _rpcForm.CreateAndSaveEmptyAsset(false);
-			if (asset == null)
-				return;
+            if (asset == null)
+                return;
 
             var rpcAsset = RolePlayCharacterAsset.LoadFromFile(asset.AssetFilePath);
-         
+
             FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[1], _rpcForm);
             this.tabControlIAT.SelectTab(1);
             _rpcForm.LoadedAsset = rpcAsset;
-
 
             LoadedAsset.AddNewCharacterSource(new CharacterSourceDTO() { Source = asset.AssetFilePath });
             _characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
@@ -74,73 +68,73 @@ namespace IntegratedAuthoringToolWF
             SetModified();
         }
 
-		private void buttonAddCharacter_Click(object sender, EventArgs e)
-		{
+        private void buttonAddCharacter_Click(object sender, EventArgs e)
+        {
             _rpcForm = new RolePlayCharacterWF.MainForm();
-			var rpc = _rpcForm.SelectAndOpenAssetFromBrowser();
-			if (rpc == null)
-				return;
+            var rpc = _rpcForm.SelectAndOpenAssetFromBrowser();
+            if (rpc == null)
+                return;
 
-			LoadedAsset.AddNewCharacterSource(new CharacterSourceDTO()
-			{
-				Source =  rpc.AssetFilePath
-			});
+            LoadedAsset.AddNewCharacterSource(new CharacterSourceDTO()
+            {
+                Source = rpc.AssetFilePath
+            });
 
-			_characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
-			_characterSources.Refresh();
-			SetModified();
+            _characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
+            _characterSources.Refresh();
+            SetModified();
         }
 
-		private void textBoxScenarioName_TextChanged(object sender, EventArgs e)
-		{
-			if (IsLoading)
-				return;
+        private void textBoxScenarioName_TextChanged(object sender, EventArgs e)
+        {
+            if (IsLoading)
+                return;
 
-			LoadedAsset.ScenarioName = textBoxScenarioName.Text;
-			SetModified();
-		}
+            LoadedAsset.ScenarioName = textBoxScenarioName.Text;
+            SetModified();
+        }
 
-		private void textBoxScenarioDescription_TextChanged(object sender, EventArgs e)
-		{
-			if (IsLoading)
-				return;
+        private void textBoxScenarioDescription_TextChanged(object sender, EventArgs e)
+        {
+            if (IsLoading)
+                return;
 
-			LoadedAsset.ScenarioDescription = textBoxScenarioDescription.Text;
-			SetModified();
-		}
+            LoadedAsset.ScenarioDescription = textBoxScenarioDescription.Text;
+            SetModified();
+        }
 
-		private void buttonRemoveCharacter_Click(object sender, EventArgs e)
-		{
-			IList<int> charactersToRemove = new List<int>();
-			for (var i = 0; i < dataGridViewCharacters.SelectedRows.Count; i++)
-			{
-				var character = ((ObjectView<CharacterSourceDTO>) dataGridViewCharacters.SelectedRows[i].DataBoundItem).Object;
-				Form f;
-				charactersToRemove.Add(character.Id);
-			}
+        private void buttonRemoveCharacter_Click(object sender, EventArgs e)
+        {
+            IList<int> charactersToRemove = new List<int>();
+            for (var i = 0; i < dataGridViewCharacters.SelectedRows.Count; i++)
+            {
+                var character = ((ObjectView<CharacterSourceDTO>)dataGridViewCharacters.SelectedRows[i].DataBoundItem).Object;
+                Form f;
+                charactersToRemove.Add(character.Id);
+            }
 
-			LoadedAsset.RemoveCharacters(charactersToRemove);
-			_characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
-			_characterSources.Refresh();
+            LoadedAsset.RemoveCharacters(charactersToRemove);
+            _characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
+            _characterSources.Refresh();
             _rpcForm.Close();
-			SetModified();
+            SetModified();
             dataGridViewCharacters.ClearSelection();
         }
 
-		#region About
+        #region About
 
-		[MenuItem("About",Priority = int.MaxValue)]
-		private void ShowAbout()
-		{
-			var form = new AboutForm();
-			form.ShowDialog(this);
-		}
+        [MenuItem("About", Priority = int.MaxValue)]
+        private void ShowAbout()
+        {
+            var form = new AboutForm();
+            form.ShowDialog(this);
+        }
 
-		#endregion
+        #endregion About
 
-		private void dataGridViewCharacters_SelectionChanged(object sender, EventArgs e)
-		{
-            if(dataGridViewCharacters.SelectedRows.Count > 0)
+        private void dataGridViewCharacters_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dataGridViewCharacters.SelectedRows.Count > 0)
             {
                 var rpcSource = ((ObjectView<CharacterSourceDTO>)dataGridViewCharacters.SelectedRows[0].DataBoundItem).Object;
                 var rpc = RolePlayCharacterAsset.LoadFromFile(rpcSource.Source);
@@ -149,19 +143,17 @@ namespace IntegratedAuthoringToolWF
                 _rpcForm.LoadedAsset = rpc;
                 FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[1], _rpcForm);
                 this.tabControlIAT.SelectTab(1);
-                
+
                 buttonRemoveCharacter.Enabled = true;
             }
-		}
+        }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
         }
 
         private void groupBoxDialogueEditor_Enter(object sender, EventArgs e)
         {
-
         }
 
         private void buttonAddDialogueAction_Click_1(object sender, EventArgs e)
@@ -207,11 +199,10 @@ namespace IntegratedAuthoringToolWF
                 var item = ((ObjectView<DialogueStateActionDTO>)dataGridViewDialogueActions.SelectedRows[i].DataBoundItem).Object;
                 itemsToRemove.Add(item.Id);
             }
-             LoadedAsset.RemoveDialogueActions(itemsToRemove);
-             RefreshDialogs();
-             this.SetModified();
+            LoadedAsset.RemoveDialogueActions(itemsToRemove);
+            RefreshDialogs();
+            this.SetModified();
         }
-
 
         private void buttonImportExcel_Click(object sender, EventArgs e)
         {
@@ -227,7 +218,7 @@ namespace IntegratedAuthoringToolWF
 
                 //Clear all actions from the asset
                 LoadedAsset.RemoveDialogueActions(LoadedAsset.GetAllDialogueActions().Select(d => d.ToDTO()));
-                
+
                 foreach (var d in dialogs)
                     LoadedAsset.AddDialogAction(d);
             }
@@ -277,7 +268,6 @@ namespace IntegratedAuthoringToolWF
             }
         }
 
-
         private static void ExportWorkSheet(ExcelPackage package, string workSheetName, IEnumerable<DialogueStateActionDTO> dialogActions)
         {
             var worksheet = package.Workbook.Worksheets.Add(workSheetName);
@@ -299,7 +289,7 @@ namespace IntegratedAuthoringToolWF
             //Column Headers
             {
                 var header = worksheet.Cells[2, 1, 2, 5];
-                
+
                 header.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
                 header.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
 
@@ -335,7 +325,6 @@ namespace IntegratedAuthoringToolWF
             }
         }
 
-
         private void buttonImportTxt_Click(object sender, EventArgs e)
         {
             var ofd = new OpenFileDialog();
@@ -354,7 +343,6 @@ namespace IntegratedAuthoringToolWF
 
             foreach (var line in lines)
             {
-              
                 var add = GenerateDialogueActionFromLine(line, totalSize, ref stateCounter);
                 LoadedAsset.AddDialogAction(add);
             }
@@ -371,7 +359,7 @@ namespace IntegratedAuthoringToolWF
             var result = line.Split(delimitedchars);
             var currentState = "";
             var nextState = "";
-            
+
             if (stateCounter == 0)
             {
                 currentState = IATConsts.INITIAL_DIALOGUE_STATE;
@@ -399,7 +387,7 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonTTS_Click(object sender, EventArgs e)
         {
-            var dialogs = LoadedAsset.GetAllDialogueActions().Select(d=>d.ToDTO()).ToArray();
+            var dialogs = LoadedAsset.GetAllDialogueActions().Select(d => d.ToDTO()).ToArray();
             var t = new TextToSpeechForm(dialogs);
             t.Show(this);
         }
@@ -427,7 +415,6 @@ namespace IntegratedAuthoringToolWF
             unreachableStatesDescription = unreachableStatesDescription.Remove(unreachableStatesDescription.Length - 2);
             unreachableStatesDescription += "]";
 
-
             string validationMessage;
 
             if (unreachableStatesCount > 0)
@@ -444,7 +431,6 @@ namespace IntegratedAuthoringToolWF
 
             MessageBox.Show(validationMessage);
         }
-
 
         private void CalculateEmotions(object sender, EventArgs e)
         {
@@ -469,27 +455,20 @@ namespace IntegratedAuthoringToolWF
 
             foreach (var actor in rpcList)
             {
-
-
                 foreach (var anotherActor in rpcList)
                 {
                     if (actor != anotherActor)
                     {
-
-
                         var changed = new[] { EventHelper.ActionEnd(anotherActor.CharacterName.ToString(), "Enters", "Room") };
                         actor.Perceive(changed);
                     }
-
                 }
 
                 emotionList.Add(actor.CharacterName.ToString(), new Dictionary<string, int>());
                 // actor.SaveToFile("../../../Tests/" + actor.CharacterName + "-output1" + ".rpc");
             }
 
-
             string validationMessage = "";
-
 
             var rpcActions = new Dictionary<ActionLibrary.IAction, RolePlayCharacterAsset>();
 
@@ -505,23 +484,17 @@ namespace IntegratedAuthoringToolWF
                         rpcActions.Add(act.FirstOrDefault(), r);
                         break;
                     }
-                    
                 }
-
             }
-           
+
             int timestamp = 0;
 
             while (rpcActions.Keys != null)
             {  // Stopping condition kinda shaky
-
-
                 rpcActions = new Dictionary<ActionLibrary.IAction, RolePlayCharacterAsset>();
-
 
                 foreach (var rpc in rpcList)
                 {
-
                     act = rpc.Decide();
 
                     if (act.FirstOrDefault() == null) continue;
@@ -529,19 +502,15 @@ namespace IntegratedAuthoringToolWF
                     foreach (var action in act)
                     {
                         rpcActions.Add(action, rpc);
-
                     }
-
                 }
 
                 // COPY the rpc list without linked refereces
 
                 var newList = new List<RolePlayCharacterAsset>();  // mmm is the new list linked to the other? to be tested
 
-
                 foreach (var action in rpcActions)
                 {
-
                     // COPY the rpc list without linked refereces
 
                     var newListAux = new List<RolePlayCharacterAsset>(rpcList);  // mmm is the new list linked to the other? to be tested
@@ -559,11 +528,9 @@ namespace IntegratedAuthoringToolWF
 
                             rpctoPerceive.Perceive(_eventList);
 
-                         
                             newList.Add(rpctoPerceive);
                         }
                     }
-
                 }
 
                 rpcList.Clear();
@@ -571,20 +538,15 @@ namespace IntegratedAuthoringToolWF
 
                 foreach (var rpc in rpcList)
                 {
-
                     foreach (var emot in rpc.GetAllActiveEmotions())
                     {
                         if (!emotionList[rpc.CharacterName.ToString()].Keys.Contains(emot.Type))
                             emotionList[rpc.CharacterName.ToString()].Add(emot.Type, (timestamp + 1));
-
                     }
-
                 }
                 timestamp++;
                 if (timestamp > 1) break;
-
             }
-
 
             if (emotionList.Count > 0)
             {
@@ -592,7 +554,6 @@ namespace IntegratedAuthoringToolWF
 
                 foreach (var rpc in emotionList.Keys)
                 {
-
                     validationMessage += rpc + " felt: " + "\n";
 
                     foreach (var emot in emotionList[rpc])
@@ -602,8 +563,6 @@ namespace IntegratedAuthoringToolWF
                         validationMessage += "Emotion: " + emot.Key + " ( " + timePercentage + "% of total scenario time)\n";
                     }
                 }
-
-
             }
             else
             {
@@ -611,49 +570,36 @@ namespace IntegratedAuthoringToolWF
             }
 
             MessageBox.Show(validationMessage);
+        }
 
-
-
-
-         }
-
-
-        private List<EmotionalAppraisal.DTOs.EmotionDTO> updateEmotionList(List<EmotionalAppraisal.DTOs.EmotionDTO> b, List<RolePlayCharacterAsset> rpcList) 
+        private List<EmotionalAppraisal.DTOs.EmotionDTO> updateEmotionList(List<EmotionalAppraisal.DTOs.EmotionDTO> b, List<RolePlayCharacterAsset> rpcList)
         {
-
-            
-            foreach(var rpc in rpcList)
+            foreach (var rpc in rpcList)
             {
-            //     rpc.Perceive(EventHelper.ActionEnd("SELF" d.ToString(), );
+                //     rpc.Perceive(EventHelper.ActionEnd("SELF" d.ToString(), );
 
                 foreach (var e in rpc.GetAllActiveEmotions())
                     b.Add(e);
-
-
             }
 
             return b;
-
         }
 
         private void tabPage2_Click(object sender, EventArgs e)
         {
-
         }
 
         private void dataGridViewCharacters_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
         }
 
         protected override void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _rpcForm.Close();
             _rpcForm = new RolePlayCharacterWF.MainForm();
-            
+
             CreateNewAsset();
         }
-
 
         protected override void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -661,10 +607,10 @@ namespace IntegratedAuthoringToolWF
             _rpcForm.Close();
             Close();
         }
-        
+
         protected override void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(_rpcForm.LoadedAsset != null)
+            if (_rpcForm.LoadedAsset != null)
             {
                 _rpcForm.SaveAssetToFile(_rpcForm.LoadedAsset, _rpcForm.LoadedAsset.AssetFilePath);
                 _rpcForm.SaveSubAssets();
@@ -686,7 +632,6 @@ namespace IntegratedAuthoringToolWF
 
         private void groupBox2_Enter(object sender, EventArgs e)
         {
-
         }
 
         private void computeEmotions_Click(object sender, EventArgs e)
@@ -696,17 +641,14 @@ namespace IntegratedAuthoringToolWF
 
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
-       
         }
 
         private void dataGridViewDialogueActions_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
         }
 
         private void dataGridViewDialogueActions_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-           
         }
 
         private void dataGridViewDialogueActions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -719,7 +661,6 @@ namespace IntegratedAuthoringToolWF
 
         private void dataGridViewDialogueActions_KeyPress(object sender, KeyPressEventArgs e)
         {
-           
         }
 
         private void dataGridViewDialogueActions_KeyDown(object sender, KeyEventArgs e)
@@ -727,11 +668,14 @@ namespace IntegratedAuthoringToolWF
             switch (e.KeyCode)
             {
                 case Keys.Enter:
-                     this.buttonEditDialogueAction_Click(sender, e);
-                     break;
-                case Keys.D:
-                    if(e.Control) this.buttonDuplicateDialogueAction_Click(sender, e);
+                    this.buttonEditDialogueAction_Click(sender, e);
+                    e.Handled = true;
                     break;
+
+                case Keys.D:
+                    if (e.Control) this.buttonDuplicateDialogueAction_Click(sender, e);
+                    break;
+
                 case Keys.Delete:
                     this.buttonRemoveDialogueAction_Click(sender, e);
                     break;
