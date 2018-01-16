@@ -63,6 +63,10 @@
       <Project>{a1e56f5c-eaac-43e5-a922-5b244168ea5c}</Project>
       <Name>EmotionalDecisionMaking</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
+      <Project>{BC47528F-FBF6-465E-BB0E-F68F50F31C13}</Project>
+      <Name>WellFormedNames</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

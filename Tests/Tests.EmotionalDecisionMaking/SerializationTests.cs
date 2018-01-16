@@ -4,6 +4,7 @@ using EmotionalDecisionMaking;
 using SerializationUtilities;
 using ActionLibrary.DTOs;
 using NUnit.Framework;
+using WellFormedNames;
 
 namespace Tests.EmotionalDecisionMaking
 {
@@ -14,8 +15,8 @@ namespace Tests.EmotionalDecisionMaking
 		{
 			var asset = new EmotionalDecisionMakingAsset();
 
-			asset.AddActionRule(new ActionRuleDTO() {Action = "Speak([speachType])", Target = "[x]"});
-			asset.AddActionRule(new ActionRuleDTO() { Action = "Speak(formal)", Target = "[x]" });
+			asset.AddActionRule(new ActionRuleDTO() {Action = Name.BuildName("Speak([speachType])"), Target = Name.BuildName("[x]")});
+			asset.AddActionRule(new ActionRuleDTO() { Action = Name.BuildName("Speak(formal)"), Target = Name.BuildName("[x]") });
 			return asset;
 		}
 

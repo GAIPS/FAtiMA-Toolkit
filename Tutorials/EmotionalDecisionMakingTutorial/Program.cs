@@ -26,7 +26,7 @@ namespace EmotionalDecisionMakingTutorial
             edm.RegisterKnowledgeBase(kb);
 
             //create an action rule
-            var actionRule = new ActionRuleDTO {Action = "Kick", Priority = "4", Target = "Player" };
+            var actionRule = new ActionRuleDTO {Action = Name.BuildName("Kick"), Priority = Name.BuildName("4"), Target = (Name)"Player" };
 
             //add the reaction rule
             var id = edm.AddActionRule(actionRule);
