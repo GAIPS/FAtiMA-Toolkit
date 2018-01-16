@@ -136,6 +136,17 @@ namespace GAIPS.AssetEditorTools
 
         }
 
-     
+        private void _dataView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void _dataView_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.RowIndex != -1) //exclude header cells
+            {
+                this.OnEditButton_Click(sender, e);
+            }
+        }
     }
 }
