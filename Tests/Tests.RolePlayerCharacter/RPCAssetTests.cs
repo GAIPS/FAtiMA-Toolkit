@@ -51,7 +51,7 @@ namespace Tests.RolePlayCharacter
 
         private static RolePlayCharacterAsset RPC = BuildRPCAsset();
 
-        private static RolePlayCharacterAsset BuildRPCAsset()
+        private static RolePlayCharacterAsset BuildEmotionalRPCAsset()
         {
             var kb = new KB((Name)"Matt");
 
@@ -77,32 +77,53 @@ namespace Tests.RolePlayCharacter
                 m_kb = kb,
                 
             };
-            
+
             ea.SaveToFile("Tests/UnitTestAuxEA");
 
             var path = ea.AssetFilePath;
             rpc.EmotionalAppraisalAssetSource = path;
+
+            rpc.LoadAssociatedAssets();
+            return rpc;
+
+        }
+
+        private static RolePlayCharacterAsset BuildRPCAsset()
+        {
+            var kb = new KB((Name)"Matt");
+
+
+            var rpc = new RolePlayCharacterAsset
+            {
+                BodyName = "Male",
+                VoiceName = "Male",
+                CharacterName = (Name)"Matt",
+                m_kb = kb,
+
+            };
+
+
             rpc.LoadAssociatedAssets();
             return rpc;
 
         }
 
         [Test]
-        public void TestCharacterName()
+        public void Test_rpc_CharacterName()
         {
             var r = BuildRPCAsset();
             Assert.AreEqual("Matt", r.CharacterName.ToString());
         }
 
         [Test]
-        public void TestBodyName()
+        public void Test_RPC_BodyName()
         {
             var r = BuildRPCAsset();
             Assert.AreEqual("Male", r.BodyName.ToString());
         }
 
         [Test]
-        public void TestVoiceName()
+        public void Test_RPC_VoiceName()
         {
             var r = BuildRPCAsset();
             Assert.AreEqual("Male", r.VoiceName.ToString());
@@ -130,30 +151,6 @@ namespace Tests.RolePlayCharacter
 
         }
 
-        /*
-                [TestCase]
-                public void Test_RPC_AddEventRecord()
-                {
-                    var rpc = BuildRPCAsset();
-
-                    var eve = EventHelper.ActionEnd("SELF", "EntersRoom", "Sarah");
-
-                    var dto = new AutobiographicMemory.DTOs.EventDTO()
-                    {
-
-                        Subject = "Matt",
-                        Event = EventHelper.ActionEnd("SELF", "EntersRoom", "Sarah").ToString(),
-                        Id = 30,
-                        Time = 1
-                    };
-
-
-                    rpc.AddEventRecord(dto);
-
-
-                    Assert.IsNotEmpty(rpc.EventRecords);
-                }
-                */
 
         [TestCase]
         public void Test_RPC_AssetSources()
@@ -334,7 +331,7 @@ namespace Tests.RolePlayCharacter
         public void Test_RPC_ActiveEmotions()
         {
 
-            var rpc = BuildRPCAsset();
+            var rpc = BuildEmotionalRPCAsset();
             PopulateEventSet(1);
 
             var events = new List<Name>(); 
@@ -369,7 +366,6 @@ namespace Tests.RolePlayCharacter
         [TestCase]
         public void Test_RPC_SetMood()
         {
-
             var rpc = BuildRPCAsset();
             PopulateEventSet(1);
 
@@ -571,7 +567,7 @@ namespace Tests.RolePlayCharacter
         public void Test_DP_StrongestAttributionEmotion_Match(int eventSet, string context, string lastEventMethodCall)
         {
 
-            var rpc = BuildRPCAsset();
+            var rpc = BuildEmotionalRPCAsset();
             PopulateEventSet(eventSet);
 
             foreach (var eve in eventSets[eventSet])
@@ -619,7 +615,7 @@ namespace Tests.RolePlayCharacter
         public void Test_DP_StrongestEmotion_Match(int eventSet, string context, string lastEventMethodCall)
         {
 
-            var rpc = BuildRPCAsset();
+            var rpc = BuildEmotionalRPCAsset();
             PopulateEventSet(eventSet);
 
             foreach (var eve in eventSets[eventSet])
@@ -670,7 +666,7 @@ namespace Tests.RolePlayCharacter
         public void Test_DP_StrongestEmotionForEvent_Match(int eventSet, string context, string lastEventMethodCall)   // TO DO
         {
 
-            var rpc = BuildRPCAsset();
+            var rpc = BuildEmotionalRPCAsset();
             PopulateEventSet(eventSet);
 
             foreach (var eve in eventSets[eventSet])
@@ -718,7 +714,7 @@ namespace Tests.RolePlayCharacter
         public void Test_DP_StrongestWellBeingEmotion_Match(int eventSet, string context, string lastEventMethodCall)
         {
 
-            var rpc = BuildRPCAsset();
+            var rpc = BuildEmotionalRPCAsset();
             PopulateEventSet(eventSet);
 
             foreach (var eve in eventSets[eventSet])
@@ -767,7 +763,7 @@ namespace Tests.RolePlayCharacter
         public void Test_DP_StrongestCompoundEmotion_Match(int eventSet, string context, string lastEventMethodCall)
         {
 
-            var rpc = BuildRPCAsset();
+            var rpc = BuildEmotionalRPCAsset();
             PopulateEventSet(eventSet);
 
             foreach (var eve in eventSets[eventSet])
@@ -817,7 +813,7 @@ namespace Tests.RolePlayCharacter
         public void Test_DP_EmotionIntensity_Match(int eventSet, string context, string lastEventMethodCall)
         {
 
-            var rpc = BuildRPCAsset();
+            var rpc = BuildEmotionalRPCAsset();
             PopulateEventSet(eventSet);
 
             foreach (var eve in eventSets[eventSet])
