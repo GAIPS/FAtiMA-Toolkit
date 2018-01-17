@@ -274,7 +274,7 @@ namespace RolePlayCharacter
         /// <summary>
         /// Loads the associated assets from the defined sources and prevents further authoring of the asset
         /// </summary>
-        public void LoadAssociatedAssets(JsonObject ea)
+        public void LoadAssociatedAssets()
         {
             var charName = CharacterName.ToString();
 

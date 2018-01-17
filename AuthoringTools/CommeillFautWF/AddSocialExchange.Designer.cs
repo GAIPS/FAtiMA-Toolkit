@@ -31,15 +31,12 @@
             this.components = new System.ComponentModel.Container();
             this.label1 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.NameBox = new System.Windows.Forms.Button();
-            this.moveName = new System.Windows.Forms.RichTextBox();
             this.influenceRuleBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label2 = new System.Windows.Forms.Label();
-            this.IntentTextBox = new System.Windows.Forms.RichTextBox();
-            this.conditionSetEditorControl1 = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.nameTextBox = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
+            this.textBoxDescription = new System.Windows.Forms.TextBox();
+            this.buttonAdd = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.influenceRuleBindingSource)).BeginInit();
-            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -47,9 +44,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(23, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(152, 16);
+            this.label1.Size = new System.Drawing.Size(48, 16);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Social Exchange Name:";
+            this.label1.Text = "Name:";
             // 
             // button1
             // 
@@ -59,98 +56,67 @@
             this.button1.TabIndex = 0;
             this.button1.Text = "uhm";
             // 
-            // NameBox
-            // 
-            this.NameBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.NameBox.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.NameBox.Location = new System.Drawing.Point(358, 354);
-            this.NameBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.NameBox.MinimumSize = new System.Drawing.Size(80, 39);
-            this.NameBox.Name = "NameBox";
-            this.NameBox.Size = new System.Drawing.Size(117, 44);
-            this.NameBox.TabIndex = 3;
-            this.NameBox.Text = "Add";
-            this.NameBox.UseVisualStyleBackColor = true;
-            this.NameBox.Click += new System.EventHandler(this.NameBox_Click);
-            // 
-            // moveName
-            // 
-            this.moveName.Location = new System.Drawing.Point(187, 16);
-            this.moveName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.moveName.Name = "moveName";
-            this.moveName.Size = new System.Drawing.Size(547, 25);
-            this.moveName.TabIndex = 4;
-            this.moveName.Text = "";
-          
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(23, 57);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(76, 16);
+            this.label2.Size = new System.Drawing.Size(79, 16);
             this.label2.TabIndex = 11;
-            this.label2.Text = "Description";
+            this.label2.Text = "Description:";
             // 
-            // IntentTextBox
+            // nameTextBox
             // 
-            this.IntentTextBox.Location = new System.Drawing.Point(187, 54);
-            this.IntentTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.IntentTextBox.Name = "IntentTextBox";
-            this.IntentTextBox.Size = new System.Drawing.Size(547, 29);
-            this.IntentTextBox.TabIndex = 12;
-            this.IntentTextBox.Text = "";
-            this.IntentTextBox.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
+            this.nameTextBox.AllowComposedName = true;
+            this.nameTextBox.AllowLiteral = true;
+            this.nameTextBox.AllowNil = true;
+            this.nameTextBox.AllowUniversal = true;
+            this.nameTextBox.AllowVariable = true;
+            this.nameTextBox.Location = new System.Drawing.Point(118, 18);
+            this.nameTextBox.Name = "nameTextBox";
+            this.nameTextBox.OnlyIntOrVariable = false;
+            this.nameTextBox.Size = new System.Drawing.Size(442, 22);
+            this.nameTextBox.TabIndex = 13;
             // 
-            // conditionSetEditorControl1
+            // textBoxDescription
             // 
-            this.conditionSetEditorControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.textBoxDescription.Location = new System.Drawing.Point(118, 52);
+            this.textBoxDescription.Name = "textBoxDescription";
+            this.textBoxDescription.Size = new System.Drawing.Size(442, 22);
+            this.textBoxDescription.TabIndex = 14;
+            // 
+            // buttonAdd
+            // 
+            this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.conditionSetEditorControl1.Location = new System.Drawing.Point(7, 26);
-            this.conditionSetEditorControl1.Margin = new System.Windows.Forms.Padding(4);
-            this.conditionSetEditorControl1.Name = "conditionSetEditorControl1";
-            this.conditionSetEditorControl1.Size = new System.Drawing.Size(773, 210);
-            this.conditionSetEditorControl1.TabIndex = 3;
-            this.conditionSetEditorControl1.View = null;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.conditionSetEditorControl1);
-            this.groupBox1.Location = new System.Drawing.Point(26, 98);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(788, 242);
-            this.groupBox1.TabIndex = 14;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Starting Conditions:";
+            this.buttonAdd.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.buttonAdd.Location = new System.Drawing.Point(262, 93);
+            this.buttonAdd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonAdd.MinimumSize = new System.Drawing.Size(80, 39);
+            this.buttonAdd.Name = "buttonAdd";
+            this.buttonAdd.Size = new System.Drawing.Size(80, 39);
+            this.buttonAdd.TabIndex = 3;
+            this.buttonAdd.Text = "Add";
+            this.buttonAdd.UseVisualStyleBackColor = true;
             // 
             // AddSocialExchange
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(833, 409);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.IntentTextBox);
+            this.ClientSize = new System.Drawing.Size(607, 143);
+            this.Controls.Add(this.textBoxDescription);
+            this.Controls.Add(this.nameTextBox);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.moveName);
-            this.Controls.Add(this.NameBox);
+            this.Controls.Add(this.buttonAdd);
             this.Controls.Add(this.label1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "AddSocialExchange";
             this.Text = "Add Social Exchange";
-            this.Load += new System.EventHandler(this.AddSocialExchange_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddSocialExchange_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.influenceRuleBindingSource)).EndInit();
-            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -161,12 +127,10 @@
        
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button NameBox;
-        private System.Windows.Forms.RichTextBox moveName;
         private System.Windows.Forms.BindingSource influenceRuleBindingSource;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.RichTextBox IntentTextBox;
-        private GAIPS.AssetEditorTools.ConditionSetEditorControl conditionSetEditorControl1;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox nameTextBox;
+        private System.Windows.Forms.TextBox textBoxDescription;
+        private System.Windows.Forms.Button buttonAdd;
     }
 }
