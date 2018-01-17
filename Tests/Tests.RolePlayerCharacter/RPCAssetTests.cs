@@ -8,6 +8,10 @@ using NUnit.Framework;
 using Conditions;
 using SerializationUtilities;
 using EmotionalAppraisal;
+using EmotionalDecisionMaking;
+using CommeillFaut;
+using SocialImportance;
+using ActionLibrary;
 
 namespace Tests.RolePlayCharacter
 {
@@ -73,7 +77,7 @@ namespace Tests.RolePlayCharacter
                 m_kb = kb,
                 
             };
-
+            
             ea.SaveToFile("Tests/UnitTestAuxEA");
 
             var path = ea.AssetFilePath;
@@ -126,30 +130,116 @@ namespace Tests.RolePlayCharacter
 
         }
 
-/*
+        /*
+                [TestCase]
+                public void Test_RPC_AddEventRecord()
+                {
+                    var rpc = BuildRPCAsset();
+
+                    var eve = EventHelper.ActionEnd("SELF", "EntersRoom", "Sarah");
+
+                    var dto = new AutobiographicMemory.DTOs.EventDTO()
+                    {
+
+                        Subject = "Matt",
+                        Event = EventHelper.ActionEnd("SELF", "EntersRoom", "Sarah").ToString(),
+                        Id = 30,
+                        Time = 1
+                    };
+
+
+                    rpc.AddEventRecord(dto);
+
+
+                    Assert.IsNotEmpty(rpc.EventRecords);
+                }
+                */
+
         [TestCase]
-        public void Test_RPC_AddEventRecord()
+        public void Test_RPC_AssetSources()
         {
-            var rpc = BuildRPCAsset();
 
-            var eve = EventHelper.ActionEnd("SELF", "EntersRoom", "Sarah");
+            var kb = new KB((Name)"Matt");
 
-            var dto = new AutobiographicMemory.DTOs.EventDTO()
+            var rpc = new RolePlayCharacterAsset
             {
+                BodyName = "Male",
+                VoiceName = "Male",
+                CharacterName = (Name)"Matt",
+                m_kb = kb,
 
-                Subject = "Matt",
-                Event = EventHelper.ActionEnd("SELF", "EntersRoom", "Sarah").ToString(),
-                Id = 30,
-                Time = 1
             };
 
-            
-            rpc.AddEventRecord(dto);
+            var edm = new EmotionalDecisionMakingAsset();
 
+            edm.SaveToFile("Tests/EmptyEDM");
 
-            Assert.IsNotEmpty(rpc.EventRecords);
+            var edmPath = edm.AssetFilePath;
+
+            var cif = new CommeillFautAsset();
+
+            cif.SaveToFile("Tests/EmptyCIF");
+
+            var cifPath = cif.AssetFilePath;
+
+            var si = new SocialImportanceAsset();
+
+            si.SaveToFile("Tests/EmtpySI");
+
+            var siPath = si.AssetFilePath;
+
+            rpc.CommeillFautAssetSource = cifPath;
+            rpc.EmotionalDecisionMakingSource = edmPath;
+            rpc.SocialImportanceAssetSource = siPath;
+
+            rpc.LoadAssociatedAssets();
+
+            Assert.IsNotNull(rpc.DynamicPropertiesRegistry);
+            Assert.IsNotEmpty(rpc.CommeillFautAssetSource);
+            Assert.IsNotEmpty(rpc.EmotionalDecisionMakingSource);
+            Assert.IsNotEmpty(rpc.SocialImportanceAssetSource);
         }
-        */
+
+        [TestCase]
+        public void Test_RPC_Decide()
+        {
+
+            var kb = new KB((Name)"Matt");
+
+            var rpc = new RolePlayCharacterAsset
+            {
+                BodyName = "Male",
+                VoiceName = "Male",
+                CharacterName = (Name)"Matt",
+                m_kb = kb,
+
+            };
+
+            var edm = new EmotionalDecisionMakingAsset();
+
+            edm.AddActionRule(new ActionLibrary.DTOs.ActionRuleDTO() { Action = (Name)"EnterRoom", Priority = Name.BuildName(3), Target = (Name)"[x]", Conditions = new Conditions.DTOs.ConditionSetDTO() { ConditionSet = new string[] { "[x]!=SELF" } } });
+
+            edm.SaveToFile("Tests/EmptyEDM");
+
+            var edmPath = edm.AssetFilePath;
+
+            rpc.EmotionalDecisionMakingSource = edmPath;
+
+            rpc.LoadAssociatedAssets();
+
+            PopulateEventSet(1);
+
+            foreach (var eve in eventSets[1])
+            {
+                rpc.Perceive((Name)eve);
+                rpc.Update();
+            }
+
+            var actions = rpc.Decide();
+
+            Assert.IsNotNull(actions);
+        }
+
 
         [TestCase("Dialogue(State)", "Start")]
         [TestCase("Dialogue(Matt)", "0")]
