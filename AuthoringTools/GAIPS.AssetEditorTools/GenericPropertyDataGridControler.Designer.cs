@@ -140,6 +140,7 @@
             this._dataView.TabIndex = 5;
             this._dataView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this._dataView_CellContentClick);
             this._dataView.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this._dataView_CellMouseDoubleClick);
+            this._dataView.KeyDown += new System.Windows.Forms.KeyEventHandler(this._dataView_KeyDown);
             // 
             // tableLayoutPanel2
             // 

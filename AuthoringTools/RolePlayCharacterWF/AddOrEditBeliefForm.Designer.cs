@@ -126,6 +126,7 @@
             this.perspectiveTextBox.AllowVariable = true;
             this.perspectiveTextBox.Location = new System.Drawing.Point(53, 198);
             this.perspectiveTextBox.Name = "perspectiveTextBox";
+            this.perspectiveTextBox.OnlyIntOrVariable = false;
             this.perspectiveTextBox.Size = new System.Drawing.Size(345, 22);
             this.perspectiveTextBox.TabIndex = 7;
             this.perspectiveTextBox.TextChanged += new System.EventHandler(this.perspectiveTextBox_TextChanged);
@@ -139,8 +140,10 @@
             this.beliefNameTextBox.AllowVariable = true;
             this.beliefNameTextBox.Location = new System.Drawing.Point(53, 66);
             this.beliefNameTextBox.Name = "beliefNameTextBox";
+            this.beliefNameTextBox.OnlyIntOrVariable = false;
             this.beliefNameTextBox.Size = new System.Drawing.Size(345, 22);
             this.beliefNameTextBox.TabIndex = 5;
+            this.beliefNameTextBox.TextChanged += new System.EventHandler(this.beliefNameTextBox_TextChanged_1);
             // 
             // beliefValueTextBox
             // 
@@ -151,6 +154,7 @@
             this.beliefValueTextBox.AllowVariable = true;
             this.beliefValueTextBox.Location = new System.Drawing.Point(53, 129);
             this.beliefValueTextBox.Name = "beliefValueTextBox";
+            this.beliefValueTextBox.OnlyIntOrVariable = false;
             this.beliefValueTextBox.Size = new System.Drawing.Size(345, 22);
             this.beliefValueTextBox.TabIndex = 6;
             // 

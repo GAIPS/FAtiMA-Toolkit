@@ -13,8 +13,9 @@ namespace RolePlayCharacterWF
         public AddOrEditBeliefForm(KnowledgeBaseVM kbVM, BeliefDTO beliefToEdit = null)
         {
             InitializeComponent();
-            
+
             //DefaultValues
+            beliefNameTextBox.Value = WellFormedNames.Name.BuildName("Bel(A)");
             perspectiveTextBox.Value = WellFormedNames.Name.SELF_SYMBOL;
             beliefValueTextBox.Value = WellFormedNames.Name.BuildName("True");
             certaintyTextBox.Value = 1;
@@ -148,6 +149,11 @@ namespace RolePlayCharacterWF
             {
                 this.Close();
             }
+        }
+
+        private void beliefNameTextBox_TextChanged_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

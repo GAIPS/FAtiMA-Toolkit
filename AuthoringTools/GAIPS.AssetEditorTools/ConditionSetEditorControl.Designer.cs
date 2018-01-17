@@ -159,6 +159,7 @@
             this.dataView.Size = new System.Drawing.Size(774, 450);
             this.dataView.TabIndex = 1;
             this.dataView.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataView_CellBeginEdit);
+            this.dataView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataView_CellContentClick);
             this.dataView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataView_CellEndEdit);
             this.dataView.SelectionChanged += new System.EventHandler(this.dataView_SelectionChanged);
             // 

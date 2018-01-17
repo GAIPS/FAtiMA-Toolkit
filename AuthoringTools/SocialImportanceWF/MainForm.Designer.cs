@@ -156,6 +156,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "";
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.Controls.SetChildIndex(this.panel1, 0);
             this.tabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);

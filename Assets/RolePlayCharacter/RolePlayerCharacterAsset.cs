@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities;
+using Utilities.Json;
 using WellFormedNames;
 using IQueryable = WellFormedNames.IQueryable;
 
@@ -273,7 +274,7 @@ namespace RolePlayCharacter
         /// <summary>
         /// Loads the associated assets from the defined sources and prevents further authoring of the asset
         /// </summary>
-        public void LoadAssociatedAssets()
+        public void LoadAssociatedAssets(JsonObject ea)
         {
             var charName = CharacterName.ToString();
 

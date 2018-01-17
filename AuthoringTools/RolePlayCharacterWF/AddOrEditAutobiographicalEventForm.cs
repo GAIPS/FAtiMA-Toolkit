@@ -32,6 +32,8 @@ namespace RolePlayCharacterWF
             _autobiographicalMemoryVm = amVM;
             _eventToEdit = eventToEdit;
 
+            textBoxObject.Value = WellFormedNames.Name.BuildName("A(P1)");
+
             comboBoxEventType.DataSource = AutobiographicalMemoryVM.EventTypes;
             
             if (eventToEdit != null)

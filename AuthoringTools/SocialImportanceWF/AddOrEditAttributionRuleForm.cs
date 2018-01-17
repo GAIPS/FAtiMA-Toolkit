@@ -55,9 +55,13 @@ namespace SocialImportanceWF
 			}
 			Close();
 		}
-
-        private void _valueFieldBox_TextChanged(object sender, EventArgs e)
+        
+        private void KeyDownEvent(object sender, KeyEventArgs e)
         {
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close();
+            }
 
         }
 
@@ -65,5 +69,15 @@ namespace SocialImportanceWF
         {
 
         }
+
+        private void AddOrEditAttributionRuleForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                this.Close();
+            }
+        }
     }
 }
+
+

@@ -573,6 +573,7 @@ namespace RolePlayCharacterWF
             {
                 case Keys.Enter:
                     this.buttonEdit_Click(sender, e);
+                    e.Handled = true;
                     break;
                 case Keys.Delete:
                     this.removeBeliefButton_Click(sender, e);
@@ -583,6 +584,33 @@ namespace RolePlayCharacterWF
         private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
         {
 
+        }
+
+        private void dataGridViewBeliefs_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridViewAM_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridViewAM_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Enter:
+                    this.buttonEditEvent_Click(sender, e);
+                    e.Handled = true;
+                    break;
+                case Keys.D:
+                    if (e.Control) this.buttonDuplicateEventRecord_Click(sender, e);
+                    break;
+                case Keys.Delete:
+                    this.buttonRemoveEventRecord_Click(sender, e);
+                    break;
+            }
         }
     }
 }

@@ -188,5 +188,12 @@ namespace GAIPS.AssetEditorTools
 			dataView.Rows[index + 1].Selected=true;
 			updateMoveButtonStatus(true);
 		}
-	}
+
+        private void dataView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+       
+    }
 }

@@ -148,5 +148,22 @@ namespace GAIPS.AssetEditorTools
                 this.OnEditButton_Click(sender, e);
             }
         }
+
+        private void _dataView_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Enter:
+                    this.OnEditButton_Click(sender, e);
+                    e.Handled = true;
+                    break;
+                case Keys.D:
+                    if (e.Control) this._duplicateButton_Click(sender, e);
+                    break;
+                case Keys.Delete:
+                    this.OnRemoveButton_Click(sender, e);
+                    break;
+            }
+        }
     }
 }

@@ -186,6 +186,7 @@ namespace EmotionalAppraisalWF
             {
                 case Keys.Enter:
                     this.buttonEditAppraisalRule_Click(sender, e);
+                    e.Handled = true;
                     break;
                 case Keys.D:
                     if (e.Control) this.buttonDuplicateAppraisalRule_Click(sender, e);
