@@ -9,5 +9,7 @@ namespace GAIPS.AssetEditorTools
 			var f = new ProgressForm(taskTitle,task);
 			f.ShowDialog();
 		}
+
+
 	}
 }

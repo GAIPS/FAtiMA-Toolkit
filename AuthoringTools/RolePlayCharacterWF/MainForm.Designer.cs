@@ -137,10 +137,10 @@ namespace RolePlayCharacterWF
             // 
             this.tabPage7.Controls.Add(this.panelCIF);
             this.tabPage7.Controls.Add(this.groupBox6);
-            this.tabPage7.Location = new System.Drawing.Point(4, 28);
+            this.tabPage7.Location = new System.Drawing.Point(4, 25);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(821, 474);
+            this.tabPage7.Size = new System.Drawing.Size(821, 477);
             this.tabPage7.TabIndex = 6;
             this.tabPage7.Text = "CIF";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -297,9 +297,9 @@ namespace RolePlayCharacterWF
             // 
             this.tabPage4.Controls.Add(this.panelEDM);
             this.tabPage4.Controls.Add(this.groupBox3);
-            this.tabPage4.Location = new System.Drawing.Point(4, 25);
+            this.tabPage4.Location = new System.Drawing.Point(4, 28);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(821, 477);
+            this.tabPage4.Size = new System.Drawing.Size(821, 474);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Decision Making";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -311,7 +311,7 @@ namespace RolePlayCharacterWF
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelEDM.Location = new System.Drawing.Point(5, 65);
             this.panelEDM.Name = "panelEDM";
-            this.panelEDM.Size = new System.Drawing.Size(813, 403);
+            this.panelEDM.Size = new System.Drawing.Size(813, 400);
             this.panelEDM.TabIndex = 17;
             // 
             // groupBox3
@@ -753,7 +753,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(799, 426);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(799, 423);
             this.tableLayoutPanel3.TabIndex = 2;
             this.tableLayoutPanel3.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel3_Paint);
             // 
@@ -768,7 +768,7 @@ namespace RolePlayCharacterWF
             this.emotionGroupBox.Controls.Add(this.emotionsDataGridView);
             this.emotionGroupBox.Location = new System.Drawing.Point(3, 67);
             this.emotionGroupBox.Name = "emotionGroupBox";
-            this.emotionGroupBox.Size = new System.Drawing.Size(793, 356);
+            this.emotionGroupBox.Size = new System.Drawing.Size(793, 353);
             this.emotionGroupBox.TabIndex = 1;
             this.emotionGroupBox.TabStop = false;
             this.emotionGroupBox.Text = "Emotions";
@@ -823,7 +823,7 @@ namespace RolePlayCharacterWF
             this.emotionsDataGridView.RowHeadersVisible = false;
             this.emotionsDataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.emotionsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.emotionsDataGridView.Size = new System.Drawing.Size(781, 302);
+            this.emotionsDataGridView.Size = new System.Drawing.Size(781, 299);
             this.emotionsDataGridView.TabIndex = 2;
             // 
             // moodGroupBox

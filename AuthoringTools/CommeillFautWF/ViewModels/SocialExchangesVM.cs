@@ -13,11 +13,13 @@ using WellFormedNames;
 namespace CommeillFautWF.ViewModels
 {
    public class SocialExchangesVM : IDataGridViewController
-    {
+   {
         public readonly BaseCIFForm _mainForm;
         private bool m_loading;
+
         public CommeillFautAsset _cifAsset => _mainForm.LoadedAsset;
         private Guid _currentlySelected = Guid.Empty;
+
         public BindingListView<SocialExchangeDTO> SocialExchanges { get; private set; }
 
         public ConditionSetView ConditionSetView { get; }
@@ -96,13 +98,12 @@ namespace CommeillFautWF.ViewModels
         }
 
 
-        public SocialExchangeDTO AddOrUpdateSocialExchange(SocialExchangeDTO dto)
+        public void AddOrUpdateSocialExchange(SocialExchangeDTO dto)
         {
             var resultId = _cifAsset.AddOrUpdateExchange(dto);
             _mainForm.SetModified();
             _mainForm.Refresh();
             Reload();
-            return _cifAsset.GetSocialExchange(resultId);
         }
 
         public object AddElement()
@@ -114,7 +115,7 @@ namespace CommeillFautWF.ViewModels
             };
             var dialog = new AddSocialExchange(this, dto);
             dialog.ShowDialog(_mainForm);
-            return dialog.AddedObject.Id;
+            return dialog.AddedObject;
         }
 
         public object EditElement(object elementToEdit)

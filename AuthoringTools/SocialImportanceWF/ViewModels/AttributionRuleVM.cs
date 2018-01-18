@@ -13,7 +13,8 @@ namespace SocialImportanceWF.ViewModels
 	public class AttributionRuleVM : IDataGridViewController
     {
 		private BaseSIForm _parent;
-		private Guid _currentlySelected = Guid.Empty;
+        
+        private Guid _currentlySelected = Guid.Empty;
 		private bool m_loading = false;
 
 		public BindingListView<AttributionRuleDTO> RuleList { get; }
@@ -28,47 +29,21 @@ namespace SocialImportanceWF.ViewModels
 				UpdateSelected();
 			}
 		}
-
-		public ConditionSetView ConditionSetView { get; }
+		
 
 		public AttributionRuleVM(BaseSIForm parent)
 		{
 			_parent = parent;
+            
+            
 			RuleList = new BindingListView<AttributionRuleDTO>((IList)null);
-			ConditionSetView = new ConditionSetView();
-			ConditionSetView.OnDataChanged += ConditionSetView_OnDataChanged;
+			
 		}
 
-		public AttributionRuleDTO CurrentlySelectedRule {
-			get
-			{
-				if (_currentlySelected == Guid.Empty)
-					return null;
+		
 
-				var rule = RuleList.FirstOrDefault(r => r.Id == _currentlySelected);
-				if (rule == null)
-					throw new Exception("Attribution rule not found");
 
-				return rule;
-			}
-		}
-
-		private void ConditionSetView_OnDataChanged()
-		{
-			if(m_loading)
-				return;
-
-			var rule = CurrentlySelectedRule;
-
-			if (rule==null)
-				return;
-
-			rule.Conditions = ConditionSetView.GetData();
-			_parent.LoadedAsset.UpdateAttributionRule(rule);
-			_parent.SetModified();
-		}
-
-		public void Reload()
+	/*	public void Reload()
 		{
 			m_loading = true;
 
@@ -80,7 +55,7 @@ namespace SocialImportanceWF.ViewModels
                 ConditionSetView.SetData(null);
 
 			m_loading = false;
-		}
+		}*/
 
 		public ObjectView<AttributionRuleDTO> AddOrUpdateRule(AttributionRuleDTO dto)
 		{
@@ -120,20 +95,18 @@ namespace SocialImportanceWF.ViewModels
 			return RuleList;
 		}
 
-		public object AddElement()
-		{ 
-			var dto = new AttributionRuleDTO()
+        public object AddElement()
+        {
+            var dto = new AttributionRuleDTO()
             {
                 Description = "-",
                 Value = WellFormedNames.Name.BuildName("[v]"),
                 Target = WellFormedNames.Name.BuildName("[t]")
             };
-			var dialog = new AddOrEditAttributionRuleForm(this, dto);
-			dialog.ShowDialog(_parent);
+            var dialog = new AddOrEditAttributionRuleForm(this, dto);
+            dialog.ShowDialog(_parent);
             return dialog.AddedObject;
-		}
-
-    
+        }
 
 		public object EditElement(object elementToEdit)
 		{
@@ -175,6 +148,8 @@ namespace SocialImportanceWF.ViewModels
 
 			return count;
 		}
+
+       
 
 
         #endregion

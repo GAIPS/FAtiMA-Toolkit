@@ -7,7 +7,7 @@ namespace GAIPS.AssetEditorTools
 {
 	public interface IDataGridViewController
 	{
-		IList GetElements();
+	    IList GetElements();
         object AddElement();
 		object EditElement(object elementToEdit);
         object DuplicateElement(object elementToDuplicate);

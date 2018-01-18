@@ -107,6 +107,7 @@
             this.socialExchangesDataView.Name = "socialExchangesDataView";
             this.socialExchangesDataView.Size = new System.Drawing.Size(772, 316);
             this.socialExchangesDataView.TabIndex = 0;
+            this.socialExchangesDataView.Load += new System.EventHandler(this.socialExchangesDataView_Load);
             // 
             // groupBox2
             // 

@@ -26,7 +26,6 @@ namespace CommeillFautWF
 
         protected override void OnAssetDataLoaded(CommeillFautAsset asset)
         {
-            
             _socialExchangesVM = new SocialExchangesVM(this);
             socialExchangesDataView.DataController = _socialExchangesVM;
             socialExchangesDataView.OnSelectionChanged += OnRuleSelectionChanged;
@@ -34,7 +33,6 @@ namespace CommeillFautWF
             socialExchangesDataView.GetColumnByName("Target").Visible = false;
             socialExchangesDataView.GetColumnByName("Id").Visible = false;
             socialExchangesDataView.GetColumnByName("Conditions").Visible = false;
-
         }
 
         public override void Refresh()
@@ -55,6 +53,10 @@ namespace CommeillFautWF
             _socialExchangesVM.Selection = dto.Id;
         }
 
+        private void socialExchangesDataView_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }

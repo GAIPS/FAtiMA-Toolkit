@@ -2,6 +2,7 @@
 using CommeillFaut.DTOs;
 using CommeillFautWF.Properties;
 using CommeillFautWF.ViewModels;
+using Equin.ApplicationFramework;
 using System;
 using System.Windows.Forms;
 using WellFormedNames;
@@ -11,19 +12,19 @@ namespace CommeillFautWF
     public partial class AddSocialExchange : Form
     {
         private SocialExchangesVM _vm;
-        public SocialExchangeDTO AddedObject { get; set; } = null;
+        
+        public ObjectView<SocialExchangeDTO> AddedObject { get; set; } = null;
 
         public AddSocialExchange(SocialExchangesVM vm, SocialExchangeDTO seDto)
         {
             InitializeComponent();
-            AddedObject = seDto;
             _vm = vm;
             if (seDto.Name != null)
                 nameTextBox.Value = seDto.Name;
             if (seDto.Description != null)
                 textBoxDescription.Text = seDto.Description;
 
-            buttonAdd.Text = (AddedObject.Id == Guid.Empty) ? "Add" : "Update";
+            buttonAdd.Text = (seDto.Id == Guid.Empty) ? "Add" : "Update";
         }
 
 
@@ -39,9 +40,9 @@ namespace CommeillFautWF
         {
             try
             {
-                AddedObject.Name = nameTextBox.Value;
-                AddedObject.Description = textBoxDescription.Text;
-                AddedObject = _vm.AddOrUpdateSocialExchange(AddedObject);
+                AddedObject.Object.Name = nameTextBox.Value;
+                AddedObject.Object.Description = textBoxDescription.Text;
+                _vm.AddOrUpdateSocialExchange(AddedObject.Object);
                 Close();
             }
             catch (Exception ex)
