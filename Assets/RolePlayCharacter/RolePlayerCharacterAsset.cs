@@ -349,7 +349,7 @@ namespace RolePlayCharacter
                       
                     }
                 }
-                m_emotionalAppraisalAsset.AppraiseEvents(events, observer, m_emotionalState, m_am, m_kb);
+                m_emotionalAppraisalAsset.AppraiseEvents(new[] { e }, observer, m_emotionalState, m_am, m_kb);
                 idx++;
             }
         }
@@ -471,7 +471,7 @@ namespace RolePlayCharacter
             }
         }
 
-        private void BindToRegistry(IDynamicPropertiesRegistry registry)
+        public void BindToRegistry(IDynamicPropertiesRegistry registry)
         {
             registry.RegistDynamicProperty(RPCConsts.MOOD_PROPERTY_NAME, MoodPropertyCalculator);
             registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator);
@@ -504,12 +504,12 @@ namespace RolePlayCharacter
 
         public KB m_kb;
         private AM m_am;
-        private CommeillFautAsset m_commeillFautAsset;
-        private EmotionalAppraisalAsset m_emotionalAppraisalAsset;
-        private EmotionalDecisionMakingAsset m_emotionalDecisionMakingAsset;
+        public CommeillFautAsset m_commeillFautAsset;
+        public EmotionalAppraisalAsset m_emotionalAppraisalAsset;
+        public EmotionalDecisionMakingAsset m_emotionalDecisionMakingAsset;
         private ConcreteEmotionalState m_emotionalState;
         private Dictionary<Name, AgentEntry> m_otherAgents;
-        private SocialImportanceAsset m_socialImportanceAsset;
+        public SocialImportanceAsset m_socialImportanceAsset;
         #endregion RolePlayCharater Fields
         #region Dynamic Properties
 
