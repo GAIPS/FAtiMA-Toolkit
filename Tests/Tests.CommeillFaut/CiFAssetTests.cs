@@ -34,7 +34,7 @@ namespace Tests.CommeillFaut
             };
 
             var cif1 = new CommeillFautAsset();
-            cif1.AddExchange(seDTO);
+            cif1.AddOrUpdateExchange(seDTO);
   
             return cif1;
 
@@ -247,9 +247,9 @@ namespace Tests.CommeillFaut
         {
             var cif = BuildCIFAsset();
 
-            var initialValue = cif.GetSocialMove((Name)"Flirt").Conditions.Count;
+            var se = cif.m_SocialExchanges.Find(x => x.Name == (Name)"Flirt");
 
-            var se = cif.GetSocialMove((Name)"Flirt");
+            var initialValue = se.Conditions.Count;
 
             var c = Condition.Parse("[x] != False");
 
@@ -257,7 +257,7 @@ namespace Tests.CommeillFaut
 
             cif.UpdateSocialExchange(se.ToDTO());
 
-            Assert.AreEqual(cif.GetSocialMove((Name)"Flirt").Conditions.Count, (initialValue + 1) );
+            Assert.AreEqual(cif.m_SocialExchanges.Find(x => x.Name == (Name)"Flirt").Conditions.Count, (initialValue + 1) );
 
         }
 
@@ -267,9 +267,9 @@ namespace Tests.CommeillFaut
         {
             var cif = BuildCIFAsset();
 
-            var se = cif.GetSocialMove((Name)"Flirt");
+            var se = cif.m_SocialExchanges.Find(x => x.Name == (Name)"Flirt");
 
-            cif.RemoveSocialExchange(se);
+            cif.RemoveSocialExchange(se.Id);
 
             Assert.IsEmpty(cif.m_SocialExchanges);
 
@@ -296,7 +296,7 @@ namespace Tests.CommeillFaut
             };
 
          
-            cif.AddExchange(seDTO);
+            cif.AddOrUpdateExchange(seDTO);
 
 
             Assert.AreEqual(cif.m_SocialExchanges.Count, (originalCount + 1));
@@ -364,7 +364,7 @@ namespace Tests.CommeillFaut
         {
             var cif = BuildCIFAsset();
 
-            var se = cif.GetSocialMove((Name)"Flirt");
+            var se = cif.m_SocialExchanges.Find(x=>x.Name == (Name)"Flirt");
 
             var totalCondsBefore = se.Conditions.Count;
 
@@ -379,9 +379,9 @@ namespace Tests.CommeillFaut
         {
             var cif = BuildCIFAsset();
 
-            var se = cif.GetSocialMove((Name)"Flirt");
+            var se = cif.m_SocialExchanges.Find(x => x.Name == (Name)"Flirt");
 
-          se.RemoveCondition(Condition.Parse("Has(Floor) != Start"));
+            se.RemoveCondition(Condition.Parse("Has(Floor) != Start"));
 
             Assert.IsEmpty(se.Conditions);
 
@@ -392,11 +392,10 @@ namespace Tests.CommeillFaut
         {
             var cif = BuildCIFAsset();
 
-            var se = cif.GetSocialMove((Name)"Flirt");
+            var se = cif.m_SocialExchanges.Find(x => x.Name == (Name)"Flirt");
 
-            var expectedResult = "Flirt When I'm atracted to... " + new Guid() + "\n";
 
-            Assert.AreEqual(se.ToString(), expectedResult);
+            Assert.IsTrue(se.ToString().Contains("Flirt"));
 
         }
     }
