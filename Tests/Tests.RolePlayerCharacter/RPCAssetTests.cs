@@ -78,12 +78,20 @@ namespace Tests.RolePlayCharacter
                 
             };
 
-            ea.SaveToFile("Tests/UnitTestAuxEA");
+            rpc.m_emotionalAppraisalAsset = ea;
 
-            var path = ea.AssetFilePath;
-            rpc.EmotionalAppraisalAssetSource = path;
+            rpc.BindToRegistry(rpc.m_kb);
 
-            rpc.LoadAssociatedAssets();
+
+
+            EmotionalDecisionMakingAsset edm =  new EmotionalDecisionMakingAsset();
+            SocialImportanceAsset si =  new SocialImportanceAsset();
+            CommeillFautAsset cfa = new CommeillFautAsset();
+
+             rpc.m_emotionalAppraisalAsset = ea;
+            rpc.m_emotionalDecisionMakingAsset = edm;
+            rpc.m_socialImportanceAsset = si;
+            rpc.m_commeillFautAsset = cfa;
             return rpc;
 
         }
@@ -167,34 +175,24 @@ namespace Tests.RolePlayCharacter
 
             };
 
-            var edm = new EmotionalDecisionMakingAsset();
+            var edmPath = "Tests/EmptyEDM";
 
-            edm.SaveToFile("Tests/EmptyEDM");
+            var cifPath = "Tests/EmptyCIF";
 
-            var edmPath = edm.AssetFilePath;
+            var siPath = "Tests/EmtpySI";
 
-            var cif = new CommeillFautAsset();
-
-            cif.SaveToFile("Tests/EmptyCIF");
-
-            var cifPath = cif.AssetFilePath;
-
-            var si = new SocialImportanceAsset();
-
-            si.SaveToFile("Tests/EmtpySI");
-
-            var siPath = si.AssetFilePath;
+            var eaPath = "Tests/EmptyEA";
 
             rpc.CommeillFautAssetSource = cifPath;
             rpc.EmotionalDecisionMakingSource = edmPath;
             rpc.SocialImportanceAssetSource = siPath;
-
-            rpc.LoadAssociatedAssets();
+            rpc.EmotionalAppraisalAssetSource = eaPath;
 
             Assert.IsNotNull(rpc.DynamicPropertiesRegistry);
             Assert.IsNotEmpty(rpc.CommeillFautAssetSource);
             Assert.IsNotEmpty(rpc.EmotionalDecisionMakingSource);
             Assert.IsNotEmpty(rpc.SocialImportanceAssetSource);
+            Assert.IsNotEmpty(rpc.EmotionalAppraisalAssetSource);
         }
 
         [TestCase]
@@ -203,27 +201,16 @@ namespace Tests.RolePlayCharacter
 
             var kb = new KB((Name)"Matt");
 
-            var rpc = new RolePlayCharacterAsset
-            {
-                BodyName = "Male",
-                VoiceName = "Male",
-                CharacterName = (Name)"Matt",
-                m_kb = kb,
-
-            };
+            var rpc = BuildEmotionalRPCAsset();
 
             var edm = new EmotionalDecisionMakingAsset();
 
             edm.AddActionRule(new ActionLibrary.DTOs.ActionRuleDTO() { Action = (Name)"EnterRoom", Priority = Name.BuildName(3), Target = (Name)"[x]", Conditions = new Conditions.DTOs.ConditionSetDTO() { ConditionSet = new string[] { "[x]!=SELF" } } });
 
-            edm.SaveToFile("Tests/EmptyEDM");
+            rpc.m_emotionalDecisionMakingAsset = edm;
 
-            var edmPath = edm.AssetFilePath;
-
-            rpc.EmotionalDecisionMakingSource = edmPath;
-
-            rpc.LoadAssociatedAssets();
-
+            edm.RegisterKnowledgeBase(rpc.m_kb);
+            
             PopulateEventSet(1);
 
             foreach (var eve in eventSets[1])
@@ -301,6 +288,7 @@ namespace Tests.RolePlayCharacter
 
 
 
+
         [TestCase]
         public void Test_RPC_GetAllBeliefs()
         {
@@ -332,6 +320,7 @@ namespace Tests.RolePlayCharacter
         {
 
             var rpc = BuildEmotionalRPCAsset();
+
             PopulateEventSet(1);
 
             var events = new List<Name>(); 
@@ -361,6 +350,43 @@ namespace Tests.RolePlayCharacter
 
                 Assert.AreEqual(maxEmotion.Type, rpc.GetStrongestActiveEmotion().EmotionType);
         }
+
+
+        [TestCase]
+        public void Test_RPC_ForgetEvent()
+        {
+
+            var rpc = BuildEmotionalRPCAsset();
+
+            PopulateEventSet(1);
+
+            var events = new List<Name>();
+
+            foreach (var eve in eventSets[1])
+            {
+                events.Add((Name)eve);
+            }
+
+            rpc.Perceive(events);
+
+
+            Assert.IsNotEmpty(rpc.EventRecords);
+
+
+            int counter = 0;
+
+            foreach (var eve in events)
+            {
+                rpc.ForgetEvent((uint)counter);
+                counter++;
+            }
+
+            Assert.IsEmpty(rpc.EventRecords);
+
+        }
+
+
+
 
 
         [TestCase]
