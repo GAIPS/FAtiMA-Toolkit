@@ -349,7 +349,7 @@ namespace RolePlayCharacter
                       
                     }
                 }
-                m_emotionalAppraisalAsset.AppraiseEvents(events, observer, m_emotionalState, m_am, m_kb);
+                m_emotionalAppraisalAsset.AppraiseEvents(new[] { e }, observer, m_emotionalState, m_am, m_kb);
                 idx++;
             }
         }
