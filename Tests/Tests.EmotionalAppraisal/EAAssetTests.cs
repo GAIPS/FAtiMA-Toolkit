@@ -15,6 +15,7 @@ namespace Tests.EmotionalAppraisal
 
         private Dictionary<int, List<Name>> events;
 
+
         private void BuildDataSet()
         {
 
@@ -122,7 +123,53 @@ namespace Tests.EmotionalAppraisal
             Assert.AreEqual(count, 5);
 		}
 
-		[TestCase]
+        [TestCase]
+        public void Test_EA_RemoveAppraisalRules()
+        {
+            var asset = BuildTestAsset();
+
+            List<AppraisalRuleDTO> rules = new List<AppraisalRuleDTO>();
+
+            foreach (var r in asset.GetAllAppraisalRules())
+                rules.Add(r);
+
+            asset.RemoveAppraisalRules(rules);
+                     
+
+            Assert.IsEmpty(asset.GetAllAppraisalRules());
+        }
+
+
+        [TestCase]
+        public void Test_EA_EmotionDisposition()
+        {
+            var asset = BuildTestAsset();
+
+            var dispositions = asset.EmotionDispositions;
+
+            List<string> types = new List<string>();
+
+            foreach (var e in dispositions)
+                types.Add(e.Emotion);
+
+            foreach (var t in types)
+                asset.RemoveEmotionDisposition(t);
+                    
+            Assert.IsEmpty(asset.EmotionDispositions);
+        }
+
+        [TestCase]
+        public void Test_EA_SetDefaultEmotionDisposition()
+        {
+            var asset = BuildTestAsset();
+
+            asset.DefaultEmotionDisposition = new EmotionDisposition(OCCEmotionType.Admiration.Name, 5, 3).ToDto();
+
+            Assert.IsNotNull(asset.DefaultEmotionDisposition);
+
+        }
+
+        [TestCase]
 		public void Test_EA_GetAllAppraisalRuleCondition()
 		{
 			var asset = BuildTestAsset();
@@ -130,7 +177,7 @@ namespace Tests.EmotionalAppraisal
             foreach(var c in asset.GetAllAppraisalRules())
             Assert.IsNull(c.Conditions.ConditionSet);
 
-            System.Guid id = new Guid(); ;
+            System.Guid id = new Guid();
 
             foreach (var c in asset.GetAllAppraisalRules())
             {
