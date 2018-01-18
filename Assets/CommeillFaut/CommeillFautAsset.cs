@@ -51,8 +51,6 @@ namespace CommeillFaut
 
             m_kB = kB;
             BindToRegistry(kB);
-         
-        
         }
 
         #region Dynamic Properties
@@ -179,9 +177,7 @@ namespace CommeillFaut
                             else yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(stringVolition)), subSet);
 
                         }
-
                     }
-
             }
         }
 
@@ -192,29 +188,27 @@ namespace CommeillFaut
 
         #endregion
 
-
-
-        public Guid AddExchange(SocialExchangeDTO newExchange)
+        public Guid AddOrUpdateExchange(SocialExchangeDTO dto)
         {
-            var newSocialExchange = new SocialExchange(newExchange);
-
-            
-      
-            if(m_SocialExchanges != null)
-              {
-
-              // m_SocialExchanges = new List<SocialExchange>();
-            if(m_SocialExchanges.Find(x => x.Name == newExchange.Name) != null)
-                    UpdateSocialExchange(newExchange);
-
-                   else m_SocialExchanges.Add(newSocialExchange);
-
-               
+            var se = new SocialExchange(dto);
+            var str = se.ToString();
+            var idx = m_SocialExchanges.FindIndex(x => x.Id == dto.Id);
+            if(idx < 0)
+            {
+                m_SocialExchanges.Add(se);
             }
-            return new Guid();
+            else
+                m_SocialExchanges[idx] = new SocialExchange(dto);
+            
+            return se.Id;
         }
 
-
+        public void RemoveSocialExchange(Guid id)
+        {
+            var exchange = m_SocialExchanges.Find(se => se.Id == id);
+            if (exchange != null)
+                m_SocialExchanges.Remove(exchange);
+        }
 
         public string CalculateStyle(float value)
         {
@@ -228,29 +222,17 @@ namespace CommeillFaut
             return "Neutral";
         }
 
-
-
-
         public void UpdateSocialExchange(SocialExchangeDTO newReaction)
         {
-          
-
             m_SocialExchanges.Remove(m_SocialExchanges.Find(x => x.Name == newReaction.Name));
 
             m_SocialExchanges.Add(new SocialExchange(newReaction));
         }
 
-
-        public void RemoveSocialExchange(SocialExchange torem)
+    
+        public SocialExchangeDTO GetSocialExchange(Guid id)
         {
-           
-                m_SocialExchanges.Remove(torem);
-           
-        }
-
-        public SocialExchange GetSocialMove(Name socialExchangeName)
-        {
-          return  m_SocialExchanges.Find(x => x.Name == socialExchangeName);
+            return m_SocialExchanges.Find(x => x.Id == id).ToDTO();
         }
 
 

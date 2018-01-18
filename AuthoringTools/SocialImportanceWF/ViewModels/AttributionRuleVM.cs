@@ -11,7 +11,7 @@ using SocialImportance.DTOs;
 namespace SocialImportanceWF.ViewModels
 {
 	public class AttributionRuleVM : IDataGridViewController
-	{
+    {
 		private BaseSIForm _parent;
 		private Guid _currentlySelected = Guid.Empty;
 		private bool m_loading = false;
@@ -91,10 +91,9 @@ namespace SocialImportanceWF.ViewModels
 
 			_parent.SetModified();
 			Reload();
-
-			var index = RuleList.Find(PropertyUtil.GetPropertyDescriptor<AttributionRuleDTO>("Id"), dto.Id);
-			return RuleList[index];
-		}
+            var i = RuleList.Find(PropertyUtil.GetPropertyDescriptor<AttributionRuleDTO>("Id"), dto.Id);
+            return RuleList[i];
+        }
 
 		private void UpdateSelected()
 		{
@@ -131,8 +130,10 @@ namespace SocialImportanceWF.ViewModels
             };
 			var dialog = new AddOrEditAttributionRuleForm(this, dto);
 			dialog.ShowDialog(_parent);
-			return dialog.AddedObject;
+            return dialog.AddedObject;
 		}
+
+    
 
 		public object EditElement(object elementToEdit)
 		{

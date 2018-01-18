@@ -99,6 +99,7 @@
             this.buttonAdd.TabIndex = 3;
             this.buttonAdd.Text = "Add";
             this.buttonAdd.UseVisualStyleBackColor = true;
+            this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
             // 
             // AddSocialExchange
             // 
@@ -115,6 +116,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "AddSocialExchange";
             this.Text = "Add Social Exchange";
+            this.Load += new System.EventHandler(this.AddSocialExchange_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddSocialExchange_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.influenceRuleBindingSource)).EndInit();
             this.ResumeLayout(false);

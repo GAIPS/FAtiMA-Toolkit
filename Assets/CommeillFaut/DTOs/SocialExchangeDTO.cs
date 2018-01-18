@@ -9,7 +9,7 @@ namespace CommeillFaut.DTOs
     [Serializable]
     public class SocialExchangeDTO 
     {
-        public new Guid Id { get; set; }
+        public Guid Id { get; set; }
 
         /// The Social Exchange Name
         /// </summary>

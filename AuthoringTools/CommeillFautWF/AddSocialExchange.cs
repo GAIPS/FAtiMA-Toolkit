@@ -13,49 +13,19 @@ namespace CommeillFautWF
         private SocialExchangesVM _vm;
         public SocialExchangeDTO AddedObject { get; set; } = null;
 
-        public AddSocialExchange(SocialExchangesVM vm)
+        public AddSocialExchange(SocialExchangesVM vm, SocialExchangeDTO seDto)
         {
             InitializeComponent();
-            AddedObject = new SocialExchangeDTO();
-
+            AddedObject = seDto;
             _vm = vm;
+            if (seDto.Name != null)
+                nameTextBox.Value = seDto.Name;
+            if (seDto.Description != null)
+                textBoxDescription.Text = seDto.Description;
+
+            buttonAdd.Text = (AddedObject.Id == Guid.Empty) ? "Add" : "Update";
         }
 
-        public AddSocialExchange(SocialExchangesVM vm, SocialExchange se)
-        {
-            InitializeComponent();
-            AddedObject = se.ToDTO();
-            _vm = vm;
-            if (se.Name != null)
-                nameTextBox.Value = se.Name;
-            if (se.Description != null)
-                textBoxDescription.Text = se.Description;
-
-            AddedObject = se.ToDTO();
-
-            button1.Text = (AddedObject.Id == Guid.Empty) ? "Add" : "Update";
-        }
-
-   /*     private void NameBox_Click(object sender, EventArgs e)
-        {
-            SocialExchangeDTO _dto = new SocialExchangeDTO()
-            {
-                Name = (Name)moveName.Text,
-                Description = IntentTextBox.Text,
-            };
-
-            try
-            {
-                AddedObject = _dto;
-                _vm.AddSocialMove(_dto);
-
-                Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }*/
 
         private void AddSocialExchange_KeyDown(object sender, KeyEventArgs e)
         {
@@ -63,6 +33,26 @@ namespace CommeillFautWF
             {
                 this.Close();
             }
+        }
+
+        private void buttonAdd_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                AddedObject.Name = nameTextBox.Value;
+                AddedObject.Description = textBoxDescription.Text;
+                AddedObject = _vm.AddOrUpdateSocialExchange(AddedObject);
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void AddSocialExchange_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

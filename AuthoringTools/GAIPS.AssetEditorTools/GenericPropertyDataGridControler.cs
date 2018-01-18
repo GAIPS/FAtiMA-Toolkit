@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using Equin.ApplicationFramework;
+using GAIPS.AssetEditorTools;
 
 namespace GAIPS.AssetEditorTools
 {
@@ -73,17 +74,7 @@ namespace GAIPS.AssetEditorTools
 		private void OnAddButton_Click(object sender, EventArgs e)
 		{
 			var elm = _controller?.AddElement();
-			if (elm != null)
-			{
-				_dataView.ClearSelection();
-				foreach (DataGridViewRow r in _dataView.Rows)
-				{
-					var b = r.DataBoundItem == elm;
-					if (r.Selected != b)
-						r.Selected = b;
-				}
-				RefreshData();
-			}
+		
 		}
 
         private void _duplicateButton_Click(object sender, EventArgs e)

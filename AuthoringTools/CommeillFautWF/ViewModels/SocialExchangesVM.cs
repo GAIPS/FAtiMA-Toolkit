@@ -1,27 +1,26 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using CommeillFaut;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 using CommeillFaut.DTOs;
-using CommeillFautWF;
+
 using WellFormedNames;
 
 namespace CommeillFautWF.ViewModels
 {
    public class SocialExchangesVM : IDataGridViewController
     {
-      
         public readonly BaseCIFForm _mainForm;
         private bool m_loading;
         public CommeillFautAsset _cifAsset => _mainForm.LoadedAsset;
         private Guid _currentlySelected = Guid.Empty;
         public BindingListView<SocialExchangeDTO> SocialExchanges { get; private set; }
+
+        public ConditionSetView ConditionSetView { get; }
 
         public Guid Selection
         {
@@ -36,6 +35,17 @@ namespace CommeillFautWF.ViewModels
             }
         }
 
+        public SocialExchangeDTO CurrentlySelectedSE
+        {
+            get
+            {
+                if (_currentlySelected == Guid.Empty)
+                    return null;
+                var currentSe = SocialExchanges.FirstOrDefault(se => se.Id == _currentlySelected);
+                
+                return currentSe;
+            }
+        }
         public SocialExchangesVM(BaseCIFForm parent)
         {
             _mainForm = parent;
@@ -47,12 +57,28 @@ namespace CommeillFautWF.ViewModels
                     _aux.Add(s.ToDTO());
                 }
             }
-            
             SocialExchanges = new BindingListView<SocialExchangeDTO>(_aux);
 
-            // InfluenceRulesDiccionary = new Dictionary<string, InfluenceRuleDTO>();
+            ConditionSetView = new ConditionSetView();
+            ConditionSetView.OnDataChanged += ConditionSetView_OnDataChanged;
+            
             m_loading = false;
+        }
 
+
+        private void ConditionSetView_OnDataChanged()
+        {
+            if (m_loading)
+                return;
+
+            var se = CurrentlySelectedSE;
+
+            if (se == null)
+                return;
+
+            se.Conditions = ConditionSetView.GetData();
+            _mainForm.LoadedAsset.AddOrUpdateExchange(se);
+            _mainForm.SetModified();
         }
 
         public void Reload()
@@ -69,73 +95,43 @@ namespace CommeillFautWF.ViewModels
             m_loading = false;
         }
 
-        public void AddSocialMove(SocialExchangeDTO newSocialExchange)
+
+        public SocialExchangeDTO AddOrUpdateSocialExchange(SocialExchangeDTO dto)
         {
-
-            
-            if (_cifAsset.m_SocialExchanges.Find(x=>x.Name == newSocialExchange.Name) != null)
-                _cifAsset.UpdateSocialExchange(newSocialExchange);
-
-            else _cifAsset.AddExchange(newSocialExchange);
-
-
-
+            var resultId = _cifAsset.AddOrUpdateExchange(dto);
             _mainForm.SetModified();
             _mainForm.Refresh();
-
             Reload();
-
+            return _cifAsset.GetSocialExchange(resultId);
         }
 
         public object AddElement()
         {
-
-            var dto = new SocialExchangeDTO();
-            var dialog = new AddSocialExchange(this);
-            dialog.ShowDialog();
-            _mainForm.SetModified();
-            _mainForm.Refresh();
-
-            Reload();
-            return dialog.AddedObject;
-
-        }
-
-        public IEnumerable<object> EditElements(IEnumerable<object> elementsToEdit)
-        {
-            List<object> result = new List<object>();
-            foreach (var dto in elementsToEdit.Cast<ObjectView<SocialExchangeDTO>>().Select(v => v.Object))
+            var dto = new SocialExchangeDTO()
             {
-                try
-                {
-                    var dialog = new AddSocialExchange(this, new SocialExchange(dto));
-                    dialog.ShowDialog();
-                    if (dialog.AddedObject != null)
-                        result.Add(dialog.AddedObject);
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            return result;
+                Description = "-",
+                Name = Name.BuildName("SE1"),
+            };
+            var dialog = new AddSocialExchange(this, dto);
+            dialog.ShowDialog(_mainForm);
+            return dialog.AddedObject.Id;
         }
 
         public object EditElement(object elementToEdit)
         {
             var dto = (elementToEdit as ObjectView<SocialExchangeDTO>).Object;
-            /*var dialog = new AddSocialExchange(dto);
-            dialog.ShowDialog(_parent);*/
-            //return dialog.AddedObject;
-            return null;
+            var dialog = new AddSocialExchange(this, dto);
+            dialog.ShowDialog(_mainForm);
+            return dialog.AddedObject;
         }
 
 
         public object DuplicateElement(object elementToDuplicate)
         {
-
-
-            throw new NotImplementedException();
+            var dto = (elementToDuplicate as ObjectView<SocialExchangeDTO>).Object;
+            dto.Id = Guid.Empty;
+            var resultId = _cifAsset.AddOrUpdateExchange(dto);
+            return _cifAsset.GetSocialExchange(resultId);
         }
 
 
@@ -146,8 +142,7 @@ namespace CommeillFautWF.ViewModels
             {
                 try
                 {
-                    RemoveSocialExchangeByName(dto.Name.ToString());
-                   
+                    _cifAsset.RemoveSocialExchange(dto.Id);
                     count++;
                 }
                 catch (Exception e)
@@ -155,51 +150,36 @@ namespace CommeillFautWF.ViewModels
                     MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-
             if (count > 0)
             {
                 Reload();
                 _mainForm.SetModified();
+                _mainForm.Refresh();
             }
-
             return count;
         }
 
-        public void RemoveSocialExchangeById(Guid id)
-        {
-            var se = SocialExchanges.FirstOrDefault(a => a.Id == id);
-            if (se == null)
-                throw new Exception("Social Exchange not found");
-            _cifAsset.RemoveSocialExchange(new SocialExchange(se));
-            Reload();
-        }
-
-        public void RemoveSocialExchangeByName(string _name)
-        {
-            var se = _cifAsset.m_SocialExchanges.FirstOrDefault(a => a.Name.ToString() == _name);
-           
-            if (se == null)
-                throw new Exception("Social Exchange not found");
-            _cifAsset.RemoveSocialExchange(se);
-            _mainForm.SetModified();
-            _mainForm.Refresh();
-
-            Reload();
-        }
         private void UpdateSelected()
         {
             if (m_loading)
                 return;
 
-   
+            var rule = CurrentlySelectedSE;
+
+            if (CurrentlySelectedSE == null)
+            {
+                ConditionSetView.SetData(null);
+                return;
+            }
+            m_loading = true;
+            ConditionSetView.SetData(rule.Conditions);
+            m_loading = false;
         }
 
         public IList GetElements()
         {
             return SocialExchanges;
         }
-
-     
     }
 }
 

@@ -36,22 +36,19 @@ namespace CommeillFaut
 
         public SocialExchange(SocialExchangeDTO s) 
         {
+            Id = Guid.NewGuid();
             Name = s.Name;
             Description = s.Description;
-            Conditions = new ConditionSet(s.Conditions);
-            Id = new Guid();
             Initiator = s.Initiator;
             Target = s.Target;
-            
+            Conditions = new ConditionSet(s.Conditions);
         }
-
       
-       
-        public override String ToString()
+        public override string ToString()
         {
-            return Name + " " + Description + " " + this.Id + "\n";
+            return Name + " | " + Description + " | " + this.Id + " | " + Conditions + "\n";
         }
-
+        
         public SocialExchangeDTO ToDTO()
         {
             return new SocialExchangeDTO() {Name = this.Name, Description = this.Description, Initiator = this.Initiator, Target = this.Target, Conditions = this.Conditions.ToDTO(), Id = this.Id};

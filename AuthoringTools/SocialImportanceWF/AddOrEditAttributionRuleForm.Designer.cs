@@ -29,14 +29,14 @@
 		private void InitializeComponent()
 		{
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this._valueFieldBox = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
+            this._targetVariableBox = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this._ruleDescriptionTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.button1 = new System.Windows.Forms.Button();
-            this._valueFieldBox = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
-            this._targetVariableBox = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -68,10 +68,37 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
             this.splitContainer1.Size = new System.Drawing.Size(608, 180);
-            this.splitContainer1.SplitterDistance = 132;
+            this.splitContainer1.SplitterDistance = 130;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
             this.splitContainer1.TabStop = false;
+            // 
+            // _valueFieldBox
+            // 
+            this._valueFieldBox.AllowComposedName = true;
+            this._valueFieldBox.AllowLiteral = true;
+            this._valueFieldBox.AllowNil = true;
+            this._valueFieldBox.AllowUniversal = true;
+            this._valueFieldBox.AllowVariable = true;
+            this._valueFieldBox.Location = new System.Drawing.Point(309, 84);
+            this._valueFieldBox.Name = "_valueFieldBox";
+            this._valueFieldBox.OnlyIntOrVariable = false;
+            this._valueFieldBox.Size = new System.Drawing.Size(277, 22);
+            this._valueFieldBox.TabIndex = 4;
+            // 
+            // _targetVariableBox
+            // 
+            this._targetVariableBox.AllowComposedName = true;
+            this._targetVariableBox.AllowLiteral = false;
+            this._targetVariableBox.AllowNil = true;
+            this._targetVariableBox.AllowUniversal = false;
+            this._targetVariableBox.AllowVariable = true;
+            this._targetVariableBox.Location = new System.Drawing.Point(16, 84);
+            this._targetVariableBox.Margin = new System.Windows.Forms.Padding(4);
+            this._targetVariableBox.Name = "_targetVariableBox";
+            this._targetVariableBox.OnlyIntOrVariable = false;
+            this._targetVariableBox.Size = new System.Drawing.Size(277, 22);
+            this._targetVariableBox.TabIndex = 3;
             // 
             // label3
             // 
@@ -126,8 +153,9 @@
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 43F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(608, 43);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(608, 45);
             this.tableLayoutPanel1.TabIndex = 0;
+            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
             // button1
             // 
@@ -135,38 +163,11 @@
             this.button1.Location = new System.Drawing.Point(237, 4);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(132, 35);
+            this.button1.Size = new System.Drawing.Size(132, 37);
             this.button1.TabIndex = 4;
             this.button1.Text = "Add";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Update_Rule);
-            // 
-            // _valueFieldBox
-            // 
-            this._valueFieldBox.AllowComposedName = true;
-            this._valueFieldBox.AllowLiteral = true;
-            this._valueFieldBox.AllowNil = true;
-            this._valueFieldBox.AllowUniversal = true;
-            this._valueFieldBox.AllowVariable = true;
-            this._valueFieldBox.Location = new System.Drawing.Point(309, 84);
-            this._valueFieldBox.Name = "_valueFieldBox";
-            this._valueFieldBox.OnlyIntOrVariable = false;
-            this._valueFieldBox.Size = new System.Drawing.Size(277, 22);
-            this._valueFieldBox.TabIndex = 4;
-            // 
-            // _targetVariableBox
-            // 
-            this._targetVariableBox.AllowComposedName = true;
-            this._targetVariableBox.AllowLiteral = false;
-            this._targetVariableBox.AllowNil = true;
-            this._targetVariableBox.AllowUniversal = false;
-            this._targetVariableBox.AllowVariable = true;
-            this._targetVariableBox.Location = new System.Drawing.Point(16, 84);
-            this._targetVariableBox.Margin = new System.Windows.Forms.Padding(4);
-            this._targetVariableBox.Name = "_targetVariableBox";
-            this._targetVariableBox.OnlyIntOrVariable = false;
-            this._targetVariableBox.Size = new System.Drawing.Size(277, 22);
-            this._targetVariableBox.TabIndex = 3;
             // 
             // AddOrEditAttributionRuleForm
             // 

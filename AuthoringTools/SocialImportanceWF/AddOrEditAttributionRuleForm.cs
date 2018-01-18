@@ -11,7 +11,6 @@ namespace SocialImportanceWF
 	{
 		private AttributionRuleDTO _dto;
 		private AttributionRuleVM _vm;
-
 		public ObjectView<AttributionRuleDTO> AddedObject { get; private set; } = null;
 
 		public AddOrEditAttributionRuleForm(AttributionRuleVM vm, AttributionRuleDTO dto)
@@ -65,17 +64,22 @@ namespace SocialImportanceWF
 
         }
 
-        private void AddOrEditAttributionRuleForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void AddOrEditAttributionRuleForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
             {
                 this.Close();
             }
+        }
+
+        private void AddOrEditAttributionRuleForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

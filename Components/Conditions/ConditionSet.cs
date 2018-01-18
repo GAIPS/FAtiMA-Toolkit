@@ -238,5 +238,27 @@ namespace Conditions
 			if(set!=null)
 				m_conditions = new List<Condition>(set);
 		}
-	}
+
+        public override string ToString()
+        {
+            if(m_conditions == null || m_conditions.Count == 0)
+            {
+                return "[]";
+            }else if (m_conditions.Count == 1)
+            {
+                return "[ " + m_conditions.First() + " ]";
+            }
+            else
+            {
+                var str = "[ ";
+                foreach (var c in m_conditions)
+                {
+                    str += c.ToString() + ", ";
+                }
+                str = str.Remove(str.Length - 2);
+                return str + "]";
+            }
+        }
+
+    }
 }
