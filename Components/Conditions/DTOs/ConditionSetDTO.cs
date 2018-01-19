@@ -1,8 +1,11 @@
-﻿namespace Conditions.DTOs
+﻿using System;
+
+namespace Conditions.DTOs
 {
 	/// <summary>
 	/// Data Type Object Class for the representation of a condition set
 	/// </summary>
+    [Serializable]
 	public class ConditionSetDTO
 	{
 		/// <summary>

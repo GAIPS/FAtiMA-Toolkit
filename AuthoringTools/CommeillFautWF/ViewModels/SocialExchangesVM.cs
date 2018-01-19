@@ -12,7 +12,7 @@ using WellFormedNames;
 
 namespace CommeillFautWF.ViewModels
 {
-   public class SocialExchangesVM : IDataGridViewController
+   public class SocialExchangesVM
    {
         public readonly BaseCIFForm _mainForm;
         private bool m_loading;
@@ -106,7 +106,7 @@ namespace CommeillFautWF.ViewModels
             Reload();
         }
 
-        public object AddElement()
+        public ObjectView<SocialExchangeDTO> AddElement() 
         {
             var dto = new SocialExchangeDTO()
             {

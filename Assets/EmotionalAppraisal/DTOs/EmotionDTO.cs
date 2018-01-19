@@ -1,9 +1,12 @@
-﻿namespace EmotionalAppraisal.DTOs
+﻿using System;
+
+namespace EmotionalAppraisal.DTOs
 {
-	/// <summary>
-	/// Data Type Object Class for the representation of an Emotion
-	/// </summary>
-	public class EmotionDTO
+    /// <summary>
+    /// Data Type Object Class for the representation of an Emotion
+    /// </summary>
+    [Serializable]
+    public class EmotionDTO
     {
 		/// <summary>
 		/// The emotion type key. Used to uniquely identify the emotion type.

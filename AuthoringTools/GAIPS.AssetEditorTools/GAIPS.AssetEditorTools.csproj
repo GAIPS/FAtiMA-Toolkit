@@ -49,13 +49,6 @@
     <Compile Include="EditorTools.cs" />
     <Compile Include="EditorUtilities.cs" />
     <Compile Include="FormHelper.cs" />
-    <Compile Include="GenericPropertyDataGridControler.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="GenericPropertyDataGridControler.Designer.cs">
-      <DependentUpon>GenericPropertyDataGridControler.cs</DependentUpon>
-    </Compile>
-    <Compile Include="IDataGridViewController.cs" />
     <Compile Include="IProgressBarControler.cs" />
     <Compile Include="MenuItemAttribute.cs" />
     <Compile Include="ProgressForm.cs">
@@ -125,9 +118,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DynamicPropertiesWindow\DynamicPropertyDisplayer.resx">
       <DependentUpon>DynamicPropertyDisplayer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GenericPropertyDataGridControler.resx">
-      <DependentUpon>GenericPropertyDataGridControler.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressForm.resx">
       <DependentUpon>ProgressForm.cs</DependentUpon>

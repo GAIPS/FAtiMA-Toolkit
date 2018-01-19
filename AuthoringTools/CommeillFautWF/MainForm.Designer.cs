@@ -33,7 +33,6 @@
             this.TabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.socialExchangesDataView = new GAIPS.AssetEditorTools.GenericPropertyDataGridControler();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.conditionSetEditorControl1 = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -87,27 +86,12 @@
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.socialExchangesDataView);
-            // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox2);
             this.splitContainer1.Size = new System.Drawing.Size(772, 633);
             this.splitContainer1.SplitterDistance = 316;
             this.splitContainer1.TabIndex = 16;
-            // 
-            // socialExchangesDataView
-            // 
-            this.socialExchangesDataView.AllowMuliSelect = true;
-            this.socialExchangesDataView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.socialExchangesDataView.Location = new System.Drawing.Point(0, 0);
-            this.socialExchangesDataView.Margin = new System.Windows.Forms.Padding(0);
-            this.socialExchangesDataView.Name = "socialExchangesDataView";
-            this.socialExchangesDataView.Size = new System.Drawing.Size(772, 316);
-            this.socialExchangesDataView.TabIndex = 0;
-            this.socialExchangesDataView.Load += new System.EventHandler(this.socialExchangesDataView_Load);
             // 
             // groupBox2
             // 
@@ -181,7 +165,6 @@
         private System.Windows.Forms.TabControl TabControl;
         private System.Windows.Forms.BindingSource triggerRulesBindingSource;
         private System.Windows.Forms.TabPage tabPage1;
-        private GAIPS.AssetEditorTools.GenericPropertyDataGridControler socialExchangesDataView;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.GroupBox groupBox2;

@@ -7,6 +7,8 @@ using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 using Conditions.DTOs;
 using EmotionalAppraisal;
+using GAIPS.Rage;
+
 namespace EmotionalAppraisalWF
 {
 	public partial class MainForm : BaseEAForm
@@ -73,7 +75,7 @@ namespace EmotionalAppraisalWF
 
         private void buttonEditAppraisalRule_Click(object sender, EventArgs e)
         {
-            var selectedAppraisalRule = (AppraisalRuleDTO)EditorTools.GetSelectedDtoFromTable(dataGridViewAppraisalRules);
+            var selectedAppraisalRule = EditorTools.GetSelectedDtoFromTable<AppraisalRuleDTO>(dataGridViewAppraisalRules);
             if(selectedAppraisalRule != null)
                 new AddOrEditAppraisalRuleForm(_appraisalRulesVM, selectedAppraisalRule).ShowDialog();
         }
@@ -81,22 +83,11 @@ namespace EmotionalAppraisalWF
 
         private void buttonDuplicateAppraisalRule_Click(object sender, EventArgs e)
         {
-            var selectedAppraisalRule = (AppraisalRuleDTO)EditorTools.GetSelectedDtoFromTable(dataGridViewAppraisalRules);
+            var selectedAppraisalRule = EditorTools.GetSelectedDtoFromTable<AppraisalRuleDTO>(dataGridViewAppraisalRules);
+
             if (selectedAppraisalRule != null)
             {
-                var duplicateRule = bjectselectedAppraisalRule).Clone();
-            }
-                var duplicateRule = new AppraisalRuleDTO
-                {
-                    EventMatchingTemplate = selectedAppraisalRule.EventMatchingTemplate,
-                    Praiseworthiness = selectedAppraisalRule.Praiseworthiness,
-                    Desirability = selectedAppraisalRule.Desirability,
-                    Conditions = new ConditionSetDTO
-                    {
-                        Quantifier = selectedAppraisalRule.Conditions.Quantifier,
-                        ConditionSet = (string[])selectedAppraisalRule.Conditions.ConditionSet?.Clone()
-                    }
-                };
+                var duplicateRule = CloneHelper.Clone(selectedAppraisalRule);
                 _appraisalRulesVM.AddOrUpdateAppraisalRule(duplicateRule);
             }
         }

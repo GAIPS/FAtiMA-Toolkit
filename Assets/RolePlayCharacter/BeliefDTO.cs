@@ -1,9 +1,12 @@
-﻿namespace RolePlayCharacter
+﻿using System;
+
+namespace RolePlayCharacter
 {
-	/// <summary>
-	/// Data Type Object Class for the representation of a belief that the asset has about a property of the world
-	/// </summary>
-	public class BeliefDTO
+    /// <summary>
+    /// Data Type Object Class for the representation of a belief that the asset has about a property of the world
+    /// </summary>
+    [Serializable]
+    public class BeliefDTO
     {
 		/// <summary>
 		/// The name of the property that this belief refers.
@@ -24,7 +27,6 @@
         /// Name = <b>Color(Sky)</b>
         /// Value = <b>Blue</b>
         /// Perspective = <b>SELF</b>
-        /// 
         /// I belief that John believes that the sky is green.
         /// Name = <b>Color(Sky)</b>
         /// Value = <b>Green</b>

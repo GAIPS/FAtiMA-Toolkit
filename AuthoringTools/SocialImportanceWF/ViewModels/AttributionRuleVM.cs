@@ -10,7 +10,7 @@ using SocialImportance.DTOs;
 
 namespace SocialImportanceWF.ViewModels
 {
-	public class AttributionRuleVM : IDataGridViewController
+	public class AttributionRuleVM
     {
 		private BaseSIForm _parent;
         

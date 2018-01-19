@@ -58,7 +58,7 @@ namespace SocialImportanceWF
 
         private void ConditionSetView_OnDataChanged()
         {
-            var selectedRule = (AttributionRuleDTO)EditorTools.GetSelectedDtoFromTable(dataGridViewAttributionRules);
+            var selectedRule = EditorTools.GetSelectedDtoFromTable<AttributionRuleDTO>(dataGridViewAttributionRules);
             if (selectedRule == null)
                 return;
             selectedRule.Conditions = _conditions.GetData();

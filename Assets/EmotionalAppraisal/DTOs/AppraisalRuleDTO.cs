@@ -4,11 +4,12 @@ using WellFormedNames;
 
 namespace EmotionalAppraisal.DTOs
 {
-	/// <summary>
-	/// Data Type Object Class for the representation of an Appraisal Rule.
-	/// Appraisal rules determines how emotions are generated based on perceived events.
-	/// </summary>
-	public class AppraisalRuleDTO 
+    /// <summary>
+    /// Data Type Object Class for the representation of an Appraisal Rule.
+    /// Appraisal rules determines how emotions are generated based on perceived events.
+    /// </summary>
+    [Serializable]
+    public class AppraisalRuleDTO 
     {
 		/// <summary>
 		/// Unique indentifier of the appraisal rule
@@ -31,10 +32,5 @@ namespace EmotionalAppraisal.DTOs
 		/// If the conditions are not met, the event appraisal is ignored.
 		/// </summary>
 	    public ConditionSetDTO Conditions { get; set; }
-
-        public object Clone()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

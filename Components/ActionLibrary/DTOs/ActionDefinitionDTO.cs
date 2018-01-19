@@ -4,10 +4,11 @@ using WellFormedNames;
 
 namespace ActionLibrary.DTOs
 {
-	/// <summary>
-	/// Data Type Object Class for defining an Action.
-	/// </summary>
-	public class ActionRuleDTO
+    /// <summary>
+    /// Data Type Object Class for defining an Action.
+    /// </summary>
+    [Serializable]
+    public class ActionRuleDTO
 	{
 		/// <summary>
 		/// The unique identifier of the action that this DTO is describing

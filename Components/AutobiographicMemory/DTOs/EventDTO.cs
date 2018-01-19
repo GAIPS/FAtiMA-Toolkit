@@ -1,9 +1,12 @@
-﻿namespace AutobiographicMemory.DTOs
+﻿using System;
+
+namespace AutobiographicMemory.DTOs
 {
-	/// <summary>
-	/// Base Data Type Object Class for the representation of an Event
-	/// </summary>
-	public class EventDTO
+    /// <summary>
+    /// Base Data Type Object Class for the representation of an Event
+    /// </summary>
+    [Serializable]
+    public class EventDTO
     {
 		/// <summary>
 		/// The unique identifier of the event

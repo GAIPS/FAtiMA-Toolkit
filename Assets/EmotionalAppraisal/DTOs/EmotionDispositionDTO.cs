@@ -1,8 +1,11 @@
-﻿namespace EmotionalAppraisal.DTOs
+﻿using System;
+
+namespace EmotionalAppraisal.DTOs
 {
 	/// <summary>
 	/// Data Type Object Class for the representation of the Emotional Dispositions
 	/// </summary>
+    [Serializable]
 	public class EmotionDispositionDTO 
 	{
 		/// <summary>

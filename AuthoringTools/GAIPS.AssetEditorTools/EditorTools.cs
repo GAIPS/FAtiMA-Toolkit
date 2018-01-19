@@ -22,11 +22,11 @@ namespace GAIPS.AssetEditorTools
 			return (T) r;
 		}
 
-        public static object GetSelectedDtoFromTable(DataGridView table )
+        public static T GetSelectedDtoFromTable<T>(DataGridView table )
         {
             if(table.SelectedRows.Count > 0)
-                return ((ObjectView<object>)table.SelectedRows[0].DataBoundItem).Object;
-            return null;
+                return ((ObjectView<T>)table.SelectedRows[0].DataBoundItem).Object;
+            return default(T);
         }
 
         public static void HideColumns(DataGridView table, string[] columnNames)

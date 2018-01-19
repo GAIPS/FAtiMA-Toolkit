@@ -1,9 +1,12 @@
-﻿namespace AutobiographicMemory.DTOs
+﻿using System;
+
+namespace AutobiographicMemory.DTOs
 {
-	/// <summary>
-	/// Data Type Object Class for the representation of an Event referent to an action execution
-	/// </summary>
-	public class ActionEventDTO : EventDTO
+    /// <summary>
+    /// Data Type Object Class for the representation of an Event referent to an action execution
+    /// </summary>
+    [Serializable]
+    public class ActionEventDTO : EventDTO
     {
 		public ActionState ActionState { get; set; }
 
