@@ -34,14 +34,8 @@ namespace SocialImportanceWF.ViewModels
 		public AttributionRuleVM(BaseSIForm parent)
 		{
 			_parent = parent;
-            
-            
 			RuleList = new BindingListView<AttributionRuleDTO>((IList)null);
-			
 		}
-
-		
-
 
 	/*	public void Reload()
 		{
@@ -65,7 +59,7 @@ namespace SocialImportanceWF.ViewModels
 				_parent.LoadedAsset.UpdateAttributionRule(dto);
 
 			_parent.SetModified();
-			Reload();
+			
             var i = RuleList.Find(PropertyUtil.GetPropertyDescriptor<AttributionRuleDTO>("Id"), dto.Id);
             return RuleList[i];
         }
@@ -75,9 +69,9 @@ namespace SocialImportanceWF.ViewModels
 			if(m_loading)
 				return;
 
-			var rule = CurrentlySelectedRule;
+		//	var rule = CurrentlySelectedRule;
 
-			if (rule==null)
+			/*if (rule==null)
 			{
 				ConditionSetView.SetData(null);
 				return;
@@ -85,7 +79,7 @@ namespace SocialImportanceWF.ViewModels
 
 			m_loading = true;
 			ConditionSetView.SetData(rule.Conditions);
-			m_loading = false;
+			m_loading = false;*/
 		}
 
 		#region Implementation of IDataGridViewController
@@ -142,15 +136,12 @@ namespace SocialImportanceWF.ViewModels
 
 			if (count > 0)
 			{
-				Reload();
+				//Reload();
 				_parent.SetModified();
 			}
 
 			return count;
 		}
-
-       
-
 
         #endregion
     }

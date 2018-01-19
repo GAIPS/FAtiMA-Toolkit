@@ -23,17 +23,17 @@ namespace EmotionalAppraisalWF
 		{
 			//Emotion Dispositions
 			_emotionDispositionsVM = new EmotionDispositionsVM(this);
-			comboBoxDefaultDecay.SelectedIndex =
-				comboBoxDefaultDecay.FindString(_emotionDispositionsVM.DefaultDecay.ToString());
-			comboBoxDefaultThreshold.SelectedIndex =
-				comboBoxDefaultThreshold.FindString(_emotionDispositionsVM.DefaultThreshold.ToString());
+			comboBoxDefaultDecay.SelectedIndex = comboBoxDefaultDecay.FindString(_emotionDispositionsVM.DefaultDecay.ToString());
+			comboBoxDefaultThreshold.SelectedIndex = comboBoxDefaultThreshold.FindString(_emotionDispositionsVM.DefaultThreshold.ToString());
 			dataGridViewEmotionDispositions.DataSource = _emotionDispositionsVM.EmotionDispositions;
 
 			//Appraisal Rule
 			_appraisalRulesVM = new AppraisalRulesVM(this);
 			dataGridViewAppraisalRules.DataSource = _appraisalRulesVM.AppraisalRules;
-			dataGridViewAppraisalRules.Columns[PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Id)].Visible = false;
-			dataGridViewAppraisalRules.Columns[PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Conditions)].Visible = false;
+            EditorTools.HideColumns(dataGridViewAppraisalRules, new[] {
+                PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Id),
+                PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Conditions)});
+
 			conditionSetEditor.View = _appraisalRulesVM.CurrentRuleConditions;
 
             _wasModified = false;
@@ -45,7 +45,6 @@ namespace EmotionalAppraisalWF
         {
 			if (IsLoading)
 				return;
-
 			_emotionDispositionsVM.DefaultDecay = int.Parse(comboBoxDefaultDecay.Text);
         }
 
@@ -53,7 +52,6 @@ namespace EmotionalAppraisalWF
         {
 			if (IsLoading)
 				return;
-
 			_emotionDispositionsVM.DefaultThreshold = int.Parse(comboBoxDefaultThreshold.Text);
 		}
 
@@ -75,19 +73,19 @@ namespace EmotionalAppraisalWF
 
         private void buttonEditAppraisalRule_Click(object sender, EventArgs e)
         {
-            if (dataGridViewAppraisalRules.SelectedRows.Count == 1)
-            {
-                var selectedAppraisalRule = ((ObjectView<AppraisalRuleDTO>)dataGridViewAppraisalRules.SelectedRows[0].DataBoundItem).Object;
+            var selectedAppraisalRule = (AppraisalRuleDTO)EditorTools.GetSelectedDtoFromTable(dataGridViewAppraisalRules);
+            if(selectedAppraisalRule != null)
                 new AddOrEditAppraisalRuleForm(_appraisalRulesVM, selectedAppraisalRule).ShowDialog();
-            }
         }
 
 
         private void buttonDuplicateAppraisalRule_Click(object sender, EventArgs e)
         {
-            if (dataGridViewAppraisalRules.SelectedRows.Count == 1)
+            var selectedAppraisalRule = (AppraisalRuleDTO)EditorTools.GetSelectedDtoFromTable(dataGridViewAppraisalRules);
+            if (selectedAppraisalRule != null)
             {
-                var selectedAppraisalRule = ((ObjectView<AppraisalRuleDTO>)dataGridViewAppraisalRules.SelectedRows[0].DataBoundItem).Object;
+                var duplicateRule = bjectselectedAppraisalRule).Clone();
+            }
                 var duplicateRule = new AppraisalRuleDTO
                 {
                     EventMatchingTemplate = selectedAppraisalRule.EventMatchingTemplate,

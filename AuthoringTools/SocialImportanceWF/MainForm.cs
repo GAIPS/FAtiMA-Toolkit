@@ -19,7 +19,6 @@ namespace SocialImportanceWF
 
 		{
 			InitializeComponent();
-
 			//Attribution Rules
 			_attributionRulesVM = new AttributionRuleVM(this);
             _attributionRules = new BindingListView<AttributionRuleDTO>((IList)null);
@@ -34,10 +33,8 @@ namespace SocialImportanceWF
             _conditions = new ConditionSetView();
             _attRuleConditionSetEditor.View = _conditions;
             _conditions.OnDataChanged += ConditionSetView_OnDataChanged;
-
             _attributionRules.DataSource = LoadedAsset.GetAttributionRules().ToList();
-            dataGridViewAttributionRules.Columns[PropertyUtil.GetPropertyName<AttributionRuleDTO>(dto => dto.Id)].Visible = false;
-            dataGridViewAttributionRules.Columns[PropertyUtil.GetPropertyName<AttributionRuleDTO>(dto => dto.Conditions)].Visible = false;
+            EditorTools.HideColumns(dataGridViewAttributionRules, new[] { "Id", "Conditions" });
 		}
 
         #endregion
@@ -46,29 +43,27 @@ namespace SocialImportanceWF
         {
             get
             {
-                if (_currentlySelected == Guid.Empty)
+                /*if (_currentlySelected == Guid.Empty)
                     return null;
 
                 var rule = RuleList.FirstOrDefault(r => r.Id == _currentlySelected);
                 if (rule == null)
                     throw new Exception("Attribution rule not found");
 
-                return rule;
+                return rule;*/
+                return null;
             }
         }
 
 
         private void ConditionSetView_OnDataChanged()
         {
-            
-            var rule =  dataGridViewAttributionRules.SelectedRows[0]
-
-            if (rule == null)
+            var selectedRule = (AttributionRuleDTO)EditorTools.GetSelectedDtoFromTable(dataGridViewAttributionRules);
+            if (selectedRule == null)
                 return;
-
-            rule.Conditions = ConditionSetView.GetData();
-            _parent.LoadedAsset.UpdateAttributionRule(rule);
-            _parent.SetModified();
+            selectedRule.Conditions = _conditions.GetData();
+            LoadedAsset.UpdateAttributionRule(selectedRule);
+            SetModified();
         }
 
         private void _attRulesDataView_Load(object sender, EventArgs e)
