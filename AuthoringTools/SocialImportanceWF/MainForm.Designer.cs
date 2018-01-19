@@ -179,8 +179,9 @@
             this.dataGridViewAttributionRules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewAttributionRules.Size = new System.Drawing.Size(925, 160);
             this.dataGridViewAttributionRules.TabIndex = 2;
-            this.dataGridViewAttributionRules.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAttributionRules_CellContentClick);
-            this.dataGridViewAttributionRules.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAttributionRules_RowEnter);
+            this.dataGridViewAttributionRules.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewAttributionRules_CellMouseDoubleClick);
+            this.dataGridViewAttributionRules.SelectionChanged += new System.EventHandler(this.dataGridViewAttributionRules_SelectionChanged);
+            this.dataGridViewAttributionRules.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridViewAttributionRules_KeyDown);
             // 
             // groupBox4
             // 

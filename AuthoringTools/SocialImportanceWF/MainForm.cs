@@ -12,12 +12,10 @@ namespace SocialImportanceWF
 {
 	public partial class MainForm : BaseSIForm
 	{
-		
         private ConditionSetView _conditions;
         private BindingListView<AttributionRuleDTO> _attributionRules;
 
         public MainForm()
-
 		{
 			InitializeComponent();
 		}
@@ -42,8 +40,9 @@ namespace SocialImportanceWF
 
             _wasModified = false;
 		}
-
         #endregion
+
+
         private void ConditionSetView_OnDataChanged()
         {
             var selectedRule = EditorTools.GetSelectedDtoFromTable<AttributionRuleDTO>(dataGridViewAttributionRules);
@@ -55,15 +54,6 @@ namespace SocialImportanceWF
             SetModified();
         }
 
-        private void dataGridViewAttributionRules_RowEnter(object sender, DataGridViewCellEventArgs e)
-        {
-            var rule = EditorTools.GetSelectedDtoFromTable<AttributionRuleDTO>(this.dataGridViewAttributionRules);
-            if (rule != null)
-            {
-                _conditions.SetData(rule.Conditions);
-            }
-        }
-
         private void buttonAddAttRule_Click(object sender, EventArgs e)
         {
             var newRule = new AttributionRuleDTO()
@@ -73,8 +63,6 @@ namespace SocialImportanceWF
                 Target = WellFormedNames.Name.BuildName("[t]")
             };
             new AddOrEditAttributionRuleForm(LoadedAsset, dataGridViewAttributionRules, newRule).ShowDialog(this);
-            EditorTools.GetSelectedDtoFromTable<AttributionRuleDTO>(this.dataGridViewAttributionRules);
-            dataGridViewAttributionRules_RowEnter(sender, null);
             SetModified();
         }
 
@@ -84,7 +72,6 @@ namespace SocialImportanceWF
             if (rule != null)
             {
                 new AddOrEditAttributionRuleForm(LoadedAsset, dataGridViewAttributionRules, rule).ShowDialog(this);
-                dataGridViewAttributionRules_RowEnter(sender, null);
                 SetModified();
             }
         }
@@ -110,13 +97,44 @@ namespace SocialImportanceWF
                 LoadedAsset.RemoveAttributionRuleById(dto.Id);
             }
             EditorTools.RefreshTable(dataGridViewAttributionRules, LoadedAsset.GetAttributionRules().ToList(), Guid.Empty);
-            _conditions.SetData(null);
             SetModified();
         }
 
-        private void dataGridViewAttributionRules_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void dataGridViewAttributionRules_SelectionChanged(object sender, EventArgs e)
         {
-            
+            var rule = EditorTools.GetSelectedDtoFromTable<AttributionRuleDTO>(this.dataGridViewAttributionRules);
+            if (rule != null)
+            {
+                _conditions.SetData(rule.Conditions);
+            }
+            else
+            {
+                var list = LoadedAsset.GetAttributionRules().Count();
+                var count = _attributionRules.Count;
+                _conditions.SetData(null);
+            }
+        }
+
+        private void dataGridViewAttributionRules_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            buttonEditAttRule_Click(sender, e);
+        }
+
+        private void dataGridViewAttributionRules_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Enter:
+                    this.buttonAddAttRule_Click(sender, e);
+                    e.Handled = true;
+                    break;
+                case Keys.D:
+                    if (e.Control) this.buttonDuplicateAttRule_Click(sender, e);
+                    break;
+                case Keys.Delete:
+                    this.buttonRemoveAttRule_Click(sender, e);
+                    break;
+            }
         }
     }
 }
