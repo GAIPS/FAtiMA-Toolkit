@@ -26,7 +26,11 @@ namespace GAIPS.AssetEditorTools
         public static T GetSelectedDtoFromTable<T>(DataGridView table )
         {
             if(table.SelectedRows.Count > 0)
-                return ((ObjectView<T>)table.SelectedRows[0].DataBoundItem).Object;
+            {
+                var obj = ((ObjectView<T>)table.SelectedRows[0].DataBoundItem).Object;
+                return obj;
+            }
+                
             return default(T);
         }
 
@@ -38,10 +42,23 @@ namespace GAIPS.AssetEditorTools
             }
         }
 
-        public static void RefreshTable<T>(DataGridView table, List<T> list)
+        public static void RefreshTable<T>(DataGridView table, List<T> list, Guid selectId)
         {
-            table.DataSource = list;
-            table.Refresh();
+            table.DataSource = new BindingListView<T>(list); 
+            table.ClearSelection();
+
+            if (selectId == Guid.Empty) return;
+
+            for(int i = 0; i < table.Rows.Count; i++)
+            {
+                var obj = ((ObjectView<T>)table.Rows[i].DataBoundItem).Object;
+                var id = (Guid) obj.GetType().GetProperty("Id").GetValue(obj);
+                if (id == null) return;
+                if (selectId == id)
+                {
+                    table.Rows[i].Selected = true;
+                }
+            }
         }
 	}
 }

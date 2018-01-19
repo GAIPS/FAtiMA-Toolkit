@@ -1,20 +1,26 @@
 ﻿using System;
 using System.Windows.Forms;
-using Equin.ApplicationFramework;
 using SocialImportance.DTOs;
-using SocialImportanceWF.ViewModels;
 using WellFormedNames;
+using SocialImportance;
+using System.Linq;
+using GAIPS.AssetEditorTools;
 
 namespace SocialImportanceWF
 {
 	public partial class AddOrEditAttributionRuleForm : Form
 	{
-		private AttributionRuleDTO _dto;
-		private AttributionRuleVM _vm;
+		private AttributionRuleDTO dto;
+        private SocialImportanceAsset asset;
+        private DataGridView table;
 
-		public AddOrEditAttributionRuleForm(AttributionRuleVM vm, AttributionRuleDTO dto)
+		public AddOrEditAttributionRuleForm(SocialImportanceAsset asset, DataGridView table, AttributionRuleDTO dto)
 		{
 			InitializeComponent();
+
+            this.dto = dto;
+            this.asset = asset;
+            this.table = table;
 
             //Validators
             _targetVariableBox.AllowUniversal = false;
@@ -23,13 +29,11 @@ namespace SocialImportanceWF
             _targetVariableBox.AllowLiteral = false;
             _valueFieldBox.OnlyIntOrVariable = true;
 
-            _dto = dto;
-			_vm = vm;
 			_ruleDescriptionTextBox.Text = dto.Description;
 			_valueFieldBox.Value = dto.Value;
 			_targetVariableBox.Value = (Name) dto.Target;
 
-            if(_dto.Id != Guid.Empty)
+            if(this.dto.Id != Guid.Empty)
             {
                 this.Text = "Edit SI Attribution Rule";
                 button1.Text = "Update";
@@ -41,13 +45,21 @@ namespace SocialImportanceWF
 		{
 			try
 			{
-				_dto.Description = _ruleDescriptionTextBox.Text;
-				_dto.Value = _valueFieldBox.Value;
-				_dto.Target = _targetVariableBox.Value;
-                if(_dto.Id == Guid.Empty) 
-                    LoadedAsset.AddAttributionRule(dto);
-                _vm.AddOrUpdateRule(_dto);
-			}
+				dto.Description = _ruleDescriptionTextBox.Text;
+				dto.Value = _valueFieldBox.Value;
+				dto.Target = _targetVariableBox.Value;
+
+                if (dto.Id == Guid.Empty)
+                {
+                    dto.Id = asset.AddAttributionRule(dto).Id;
+                }
+                else
+                {
+                    asset.UpdateAttributionRule(dto);
+                }
+
+                EditorTools.RefreshTable(table, asset.GetAttributionRules().ToList(), dto.Id);
+            }
 			catch (Exception e)
 			{
 				MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

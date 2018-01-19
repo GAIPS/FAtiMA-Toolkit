@@ -38,8 +38,8 @@
             this.buttonRemoveAttRule = new System.Windows.Forms.Button();
             this.dataGridViewAttributionRules = new System.Windows.Forms.DataGridView();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.panel1 = new System.Windows.Forms.Panel();
             this._attRuleConditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -154,6 +154,7 @@
             this.buttonRemoveAttRule.TabIndex = 8;
             this.buttonRemoveAttRule.Text = "Remove";
             this.buttonRemoveAttRule.UseVisualStyleBackColor = true;
+            this.buttonRemoveAttRule.Click += new System.EventHandler(this.buttonRemoveAttRule_Click);
             // 
             // dataGridViewAttributionRules
             // 
@@ -193,6 +194,16 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Conditions";
             // 
+            // _attRuleConditionSetEditor
+            // 
+            this._attRuleConditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._attRuleConditionSetEditor.Location = new System.Drawing.Point(4, 19);
+            this._attRuleConditionSetEditor.Margin = new System.Windows.Forms.Padding(5);
+            this._attRuleConditionSetEditor.Name = "_attRuleConditionSetEditor";
+            this._attRuleConditionSetEditor.Size = new System.Drawing.Size(933, 335);
+            this._attRuleConditionSetEditor.TabIndex = 0;
+            this._attRuleConditionSetEditor.View = null;
+            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.tabControl);
@@ -203,16 +214,6 @@
             this.panel1.Padding = new System.Windows.Forms.Padding(4);
             this.panel1.Size = new System.Drawing.Size(965, 644);
             this.panel1.TabIndex = 2;
-            // 
-            // _attRuleConditionSetEditor
-            // 
-            this._attRuleConditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._attRuleConditionSetEditor.Location = new System.Drawing.Point(4, 19);
-            this._attRuleConditionSetEditor.Margin = new System.Windows.Forms.Padding(5);
-            this._attRuleConditionSetEditor.Name = "_attRuleConditionSetEditor";
-            this._attRuleConditionSetEditor.Size = new System.Drawing.Size(933, 335);
-            this._attRuleConditionSetEditor.TabIndex = 0;
-            this._attRuleConditionSetEditor.View = null;
             // 
             // MainForm
             // 

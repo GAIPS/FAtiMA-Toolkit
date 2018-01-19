@@ -3,7 +3,6 @@ using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 using SocialImportance;
 using SocialImportance.DTOs;
-using SocialImportanceWF.ViewModels;
 using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
@@ -13,7 +12,7 @@ namespace SocialImportanceWF
 {
 	public partial class MainForm : BaseSIForm
 	{
-		private AttributionRuleVM _attributionRulesVM;
+		
         private ConditionSetView _conditions;
         private BindingListView<AttributionRuleDTO> _attributionRules;
 
@@ -28,7 +27,6 @@ namespace SocialImportanceWF
 		protected override void OnAssetDataLoaded(SocialImportanceAsset asset)
 		{
             //Attribution Rules
-            _attributionRulesVM = new AttributionRuleVM(this);
             _attributionRules = new BindingListView<AttributionRuleDTO>((IList)null);
             dataGridViewAttributionRules.DataSource = this._attributionRules;
 
@@ -53,6 +51,7 @@ namespace SocialImportanceWF
                 return;
             selectedRule.Conditions = _conditions.GetData();
             LoadedAsset.UpdateAttributionRule(selectedRule);
+            
             SetModified();
         }
 
@@ -73,7 +72,8 @@ namespace SocialImportanceWF
                 Value = WellFormedNames.Name.BuildName("[v]"),
                 Target = WellFormedNames.Name.BuildName("[t]")
             };
-            new AddOrEditAttributionRuleForm(_attributionRulesVM, newRule).ShowDialog();
+            new AddOrEditAttributionRuleForm(LoadedAsset, dataGridViewAttributionRules, newRule).ShowDialog(this);
+            SetModified();
         }
 
         private void buttonEditAttRule_Click(object sender, EventArgs e)
@@ -81,13 +81,9 @@ namespace SocialImportanceWF
             var rule = EditorTools.GetSelectedDtoFromTable<AttributionRuleDTO>(this.dataGridViewAttributionRules);
             if (rule != null)
             {
-                new AddOrEditAttributionRuleForm(_attributionRulesVM, rule).ShowDialog();
-                
-                EditorTools.RefreshTable(dataGridViewAttributionRules, LoadedAsset.GetAttributionRules().ToList());
+                new AddOrEditAttributionRuleForm(LoadedAsset, dataGridViewAttributionRules, rule).ShowDialog(this);
                 SetModified();
             }
-
-            
         }
 
         private void buttonDuplicateAttRule_Click(object sender, EventArgs e)
@@ -95,10 +91,23 @@ namespace SocialImportanceWF
             var r = EditorTools.GetSelectedDtoFromTable<AttributionRuleDTO>(this.dataGridViewAttributionRules);
             if (r != null)
             {
-                LoadedAsset.AddAttributionRule(r);
-                EditorTools.RefreshTable(dataGridViewAttributionRules, LoadedAsset.GetAttributionRules().ToList());
+                var newRule = LoadedAsset.AddAttributionRule(r);
+                EditorTools.RefreshTable(dataGridViewAttributionRules, LoadedAsset.GetAttributionRules().ToList(), newRule.Id);
                 SetModified();
             }
+        }
+
+        private void buttonRemoveAttRule_Click(object sender, EventArgs e)
+        {
+            var selRows = dataGridViewAttributionRules.SelectedRows;
+            if (selRows.Count == 0) return;
+            foreach (var r in selRows.Cast<DataGridViewRow>())
+            {
+                var dto = (AttributionRuleDTO)r.DataBoundItem;
+                LoadedAsset.RemoveAttributionRuleById(dto.Id);
+            }
+            EditorTools.RefreshTable(dataGridViewAttributionRules, LoadedAsset.GetAttributionRules().ToList(), Guid.Empty);
+            SetModified();
         }
     }
 }
