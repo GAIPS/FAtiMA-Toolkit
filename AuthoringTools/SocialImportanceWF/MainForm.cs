@@ -73,6 +73,8 @@ namespace SocialImportanceWF
                 Target = WellFormedNames.Name.BuildName("[t]")
             };
             new AddOrEditAttributionRuleForm(LoadedAsset, dataGridViewAttributionRules, newRule).ShowDialog(this);
+            EditorTools.GetSelectedDtoFromTable<AttributionRuleDTO>(this.dataGridViewAttributionRules);
+            dataGridViewAttributionRules_RowEnter(sender, null);
             SetModified();
         }
 
@@ -82,6 +84,7 @@ namespace SocialImportanceWF
             if (rule != null)
             {
                 new AddOrEditAttributionRuleForm(LoadedAsset, dataGridViewAttributionRules, rule).ShowDialog(this);
+                dataGridViewAttributionRules_RowEnter(sender, null);
                 SetModified();
             }
         }
@@ -103,11 +106,17 @@ namespace SocialImportanceWF
             if (selRows.Count == 0) return;
             foreach (var r in selRows.Cast<DataGridViewRow>())
             {
-                var dto = (AttributionRuleDTO)r.DataBoundItem;
+                var dto = ((ObjectView<AttributionRuleDTO>)r.DataBoundItem).Object;
                 LoadedAsset.RemoveAttributionRuleById(dto.Id);
             }
             EditorTools.RefreshTable(dataGridViewAttributionRules, LoadedAsset.GetAttributionRules().ToList(), Guid.Empty);
+            _conditions.SetData(null);
             SetModified();
+        }
+
+        private void dataGridViewAttributionRules_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            
         }
     }
 }

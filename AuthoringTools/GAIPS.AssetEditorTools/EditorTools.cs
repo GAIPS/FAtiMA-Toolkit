@@ -23,7 +23,7 @@ namespace GAIPS.AssetEditorTools
 			return (T) r;
 		}
 
-        public static T GetSelectedDtoFromTable<T>(DataGridView table )
+        public static T GetSelectedDtoFromTable<T>(DataGridView table)
         {
             if(table.SelectedRows.Count > 0)
             {
@@ -44,10 +44,22 @@ namespace GAIPS.AssetEditorTools
 
         public static void RefreshTable<T>(DataGridView table, List<T> list, Guid selectId)
         {
-            table.DataSource = new BindingListView<T>(list); 
+            table.DataSource = new BindingListView<T>(list);
+            table.Refresh();
             table.ClearSelection();
 
-            if (selectId == Guid.Empty) return;
+            if (selectId == Guid.Empty)
+            {
+                if(list.Count > 0)
+                {
+                    table.Rows[0].Selected = true;
+                    return;
+                }
+                else
+                {
+                    return;
+                }
+            }
 
             for(int i = 0; i < table.Rows.Count; i++)
             {
@@ -57,6 +69,7 @@ namespace GAIPS.AssetEditorTools
                 if (selectId == id)
                 {
                     table.Rows[i].Selected = true;
+                    return;
                 }
             }
         }
