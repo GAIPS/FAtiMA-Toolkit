@@ -31,25 +31,25 @@
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this._attRuleConditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.buttonDuplicateAttRule = new System.Windows.Forms.Button();
             this.buttonEditAttRule = new System.Windows.Forms.Button();
             this.buttonAddAttRule = new System.Windows.Forms.Button();
             this.buttonRemoveAttRule = new System.Windows.Forms.Button();
             this.dataGridViewAttributionRules = new System.Windows.Forms.DataGridView();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this._attRuleConditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
             this.tabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAttributionRules)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -63,7 +63,7 @@
             this.tabControl.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(957, 660);
+            this.tabControl.Size = new System.Drawing.Size(957, 636);
             this.tabControl.TabIndex = 1;
             // 
             // tabPage1
@@ -73,7 +73,7 @@
             this.tabPage1.Margin = new System.Windows.Forms.Padding(4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(4);
-            this.tabPage1.Size = new System.Drawing.Size(949, 628);
+            this.tabPage1.Size = new System.Drawing.Size(949, 604);
             this.tabPage1.TabIndex = 3;
             this.tabPage1.Text = "Attribution Rules";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -92,43 +92,9 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox4);
-            this.splitContainer1.Size = new System.Drawing.Size(941, 620);
-            this.splitContainer1.SplitterDistance = 244;
+            this.splitContainer1.Size = new System.Drawing.Size(941, 596);
+            this.splitContainer1.SplitterDistance = 234;
             this.splitContainer1.TabIndex = 1;
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this._attRuleConditionSetEditor);
-            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox4.Location = new System.Drawing.Point(0, 0);
-            this.groupBox4.Margin = new System.Windows.Forms.Padding(4);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox4.Size = new System.Drawing.Size(941, 372);
-            this.groupBox4.TabIndex = 2;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Conditions";
-            // 
-            // _attRuleConditionSetEditor
-            // 
-            this._attRuleConditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._attRuleConditionSetEditor.Location = new System.Drawing.Point(4, 19);
-            this._attRuleConditionSetEditor.Margin = new System.Windows.Forms.Padding(5);
-            this._attRuleConditionSetEditor.Name = "_attRuleConditionSetEditor";
-            this._attRuleConditionSetEditor.Size = new System.Drawing.Size(933, 349);
-            this._attRuleConditionSetEditor.TabIndex = 0;
-            this._attRuleConditionSetEditor.View = null;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.tabControl);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(0);
-            this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(4);
-            this.panel1.Size = new System.Drawing.Size(965, 668);
-            this.panel1.TabIndex = 2;
             // 
             // groupBox7
             // 
@@ -142,10 +108,9 @@
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox7.Size = new System.Drawing.Size(941, 244);
+            this.groupBox7.Size = new System.Drawing.Size(941, 234);
             this.groupBox7.TabIndex = 4;
             this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Attribution Rules";
             // 
             // buttonDuplicateAttRule
             // 
@@ -156,6 +121,7 @@
             this.buttonDuplicateAttRule.TabIndex = 10;
             this.buttonDuplicateAttRule.Text = "Duplicate";
             this.buttonDuplicateAttRule.UseVisualStyleBackColor = true;
+            this.buttonDuplicateAttRule.Click += new System.EventHandler(this.buttonDuplicateAttRule_Click);
             // 
             // buttonEditAttRule
             // 
@@ -166,6 +132,7 @@
             this.buttonEditAttRule.TabIndex = 9;
             this.buttonEditAttRule.Text = "Edit";
             this.buttonEditAttRule.UseVisualStyleBackColor = true;
+            this.buttonEditAttRule.Click += new System.EventHandler(this.buttonEditAttRule_Click);
             // 
             // buttonAddAttRule
             // 
@@ -176,7 +143,7 @@
             this.buttonAddAttRule.TabIndex = 7;
             this.buttonAddAttRule.Text = "Add";
             this.buttonAddAttRule.UseVisualStyleBackColor = true;
-            this.buttonAddAttRule.Click += new System.EventHandler(this.buttonAddReaction_Click);
+            this.buttonAddAttRule.Click += new System.EventHandler(this.buttonAddAttRule_Click);
             // 
             // buttonRemoveAttRule
             // 
@@ -209,8 +176,43 @@
             this.dataGridViewAttributionRules.RowHeadersVisible = false;
             this.dataGridViewAttributionRules.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAttributionRules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAttributionRules.Size = new System.Drawing.Size(925, 170);
+            this.dataGridViewAttributionRules.Size = new System.Drawing.Size(925, 160);
             this.dataGridViewAttributionRules.TabIndex = 2;
+            this.dataGridViewAttributionRules.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAttributionRules_RowEnter);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this._attRuleConditionSetEditor);
+            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox4.Location = new System.Drawing.Point(0, 0);
+            this.groupBox4.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox4.Size = new System.Drawing.Size(941, 358);
+            this.groupBox4.TabIndex = 2;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Conditions";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.tabControl);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 24);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
+            this.panel1.Name = "panel1";
+            this.panel1.Padding = new System.Windows.Forms.Padding(4);
+            this.panel1.Size = new System.Drawing.Size(965, 644);
+            this.panel1.TabIndex = 2;
+            // 
+            // _attRuleConditionSetEditor
+            // 
+            this._attRuleConditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._attRuleConditionSetEditor.Location = new System.Drawing.Point(4, 19);
+            this._attRuleConditionSetEditor.Margin = new System.Windows.Forms.Padding(5);
+            this._attRuleConditionSetEditor.Name = "_attRuleConditionSetEditor";
+            this._attRuleConditionSetEditor.Size = new System.Drawing.Size(933, 335);
+            this._attRuleConditionSetEditor.TabIndex = 0;
+            this._attRuleConditionSetEditor.View = null;
             // 
             // MainForm
             // 
@@ -223,7 +225,6 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "";
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.Controls.SetChildIndex(this.panel1, 0);
             this.tabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -231,10 +232,10 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
             this.groupBox7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAttributionRules)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

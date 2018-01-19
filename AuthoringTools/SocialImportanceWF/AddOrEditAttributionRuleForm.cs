@@ -11,7 +11,6 @@ namespace SocialImportanceWF
 	{
 		private AttributionRuleDTO _dto;
 		private AttributionRuleVM _vm;
-		public ObjectView<AttributionRuleDTO> AddedObject { get; private set; } = null;
 
 		public AddOrEditAttributionRuleForm(AttributionRuleVM vm, AttributionRuleDTO dto)
 		{
@@ -45,7 +44,9 @@ namespace SocialImportanceWF
 				_dto.Description = _ruleDescriptionTextBox.Text;
 				_dto.Value = _valueFieldBox.Value;
 				_dto.Target = _targetVariableBox.Value;
-				AddedObject = _vm.AddOrUpdateRule(_dto);
+                if(_dto.Id == Guid.Empty) 
+                    LoadedAsset.AddAttributionRule(dto);
+                _vm.AddOrUpdateRule(_dto);
 			}
 			catch (Exception e)
 			{

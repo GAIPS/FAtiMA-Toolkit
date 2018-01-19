@@ -1,5 +1,6 @@
 ﻿using Equin.ApplicationFramework;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -35,6 +36,12 @@ namespace GAIPS.AssetEditorTools
             {
                 table.Columns[s].Visible = false;
             }
+        }
+
+        public static void RefreshTable<T>(DataGridView table, List<T> list)
+        {
+            table.DataSource = list;
+            table.Refresh();
         }
 	}
 }

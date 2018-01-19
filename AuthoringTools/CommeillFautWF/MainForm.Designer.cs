@@ -37,6 +37,12 @@
             this.conditionSetEditorControl1 = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.triggerRulesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.buttonDuplicateSE = new System.Windows.Forms.Button();
+            this.buttonEditSE = new System.Windows.Forms.Button();
+            this.buttonAddSE = new System.Windows.Forms.Button();
+            this.buttonRemoveSE = new System.Windows.Forms.Button();
+            this.gridSocialExchanges = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.socialExchangeBindingSource)).BeginInit();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -46,6 +52,8 @@
             this.splitContainer1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.triggerRulesBindingSource)).BeginInit();
+            this.groupBox7.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gridSocialExchanges)).BeginInit();
             this.SuspendLayout();
             // 
             // socialExchangeBindingSource
@@ -85,6 +93,10 @@
             this.splitContainer1.Location = new System.Drawing.Point(3, 2);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.groupBox7);
             // 
             // splitContainer1.Panel2
             // 
@@ -131,6 +143,86 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Starting Conditions:";
             // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.buttonDuplicateSE);
+            this.groupBox7.Controls.Add(this.buttonEditSE);
+            this.groupBox7.Controls.Add(this.buttonAddSE);
+            this.groupBox7.Controls.Add(this.buttonRemoveSE);
+            this.groupBox7.Controls.Add(this.gridSocialExchanges);
+            this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox7.Location = new System.Drawing.Point(0, 0);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox7.Size = new System.Drawing.Size(772, 316);
+            this.groupBox7.TabIndex = 5;
+            this.groupBox7.TabStop = false;
+            // 
+            // buttonDuplicateSE
+            // 
+            this.buttonDuplicateSE.Location = new System.Drawing.Point(189, 23);
+            this.buttonDuplicateSE.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonDuplicateSE.Name = "buttonDuplicateSE";
+            this.buttonDuplicateSE.Size = new System.Drawing.Size(93, 28);
+            this.buttonDuplicateSE.TabIndex = 10;
+            this.buttonDuplicateSE.Text = "Duplicate";
+            this.buttonDuplicateSE.UseVisualStyleBackColor = true;
+            // 
+            // buttonEditSE
+            // 
+            this.buttonEditSE.Location = new System.Drawing.Point(88, 23);
+            this.buttonEditSE.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonEditSE.Name = "buttonEditSE";
+            this.buttonEditSE.Size = new System.Drawing.Size(93, 28);
+            this.buttonEditSE.TabIndex = 9;
+            this.buttonEditSE.Text = "Edit";
+            this.buttonEditSE.UseVisualStyleBackColor = true;
+            // 
+            // buttonAddSE
+            // 
+            this.buttonAddSE.Location = new System.Drawing.Point(8, 23);
+            this.buttonAddSE.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonAddSE.Name = "buttonAddSE";
+            this.buttonAddSE.Size = new System.Drawing.Size(72, 28);
+            this.buttonAddSE.TabIndex = 7;
+            this.buttonAddSE.Text = "Add";
+            this.buttonAddSE.UseVisualStyleBackColor = true;
+            // 
+            // buttonRemoveSE
+            // 
+            this.buttonRemoveSE.Location = new System.Drawing.Point(291, 23);
+            this.buttonRemoveSE.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonRemoveSE.Name = "buttonRemoveSE";
+            this.buttonRemoveSE.Size = new System.Drawing.Size(93, 28);
+            this.buttonRemoveSE.TabIndex = 8;
+            this.buttonRemoveSE.Text = "Remove";
+            this.buttonRemoveSE.UseVisualStyleBackColor = true;
+            // 
+            // gridSocialExchanges
+            // 
+            this.gridSocialExchanges.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.gridSocialExchanges.AllowUserToAddRows = false;
+            this.gridSocialExchanges.AllowUserToDeleteRows = false;
+            this.gridSocialExchanges.AllowUserToOrderColumns = true;
+            this.gridSocialExchanges.AllowUserToResizeRows = false;
+            this.gridSocialExchanges.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.gridSocialExchanges.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.gridSocialExchanges.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.gridSocialExchanges.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.gridSocialExchanges.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.gridSocialExchanges.Location = new System.Drawing.Point(8, 66);
+            this.gridSocialExchanges.Margin = new System.Windows.Forms.Padding(4);
+            this.gridSocialExchanges.Name = "gridSocialExchanges";
+            this.gridSocialExchanges.ReadOnly = true;
+            this.gridSocialExchanges.RowHeadersVisible = false;
+            this.gridSocialExchanges.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.gridSocialExchanges.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.gridSocialExchanges.Size = new System.Drawing.Size(756, 242);
+            this.gridSocialExchanges.TabIndex = 2;
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -155,6 +247,8 @@
             this.splitContainer1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.triggerRulesBindingSource)).EndInit();
+            this.groupBox7.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gridSocialExchanges)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -169,6 +263,12 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.GroupBox groupBox2;
         private GAIPS.AssetEditorTools.ConditionSetEditorControl conditionSetEditorControl1;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.Button buttonDuplicateSE;
+        private System.Windows.Forms.Button buttonEditSE;
+        private System.Windows.Forms.Button buttonAddSE;
+        private System.Windows.Forms.Button buttonRemoveSE;
+        private System.Windows.Forms.DataGridView gridSocialExchanges;
     }
 }
 

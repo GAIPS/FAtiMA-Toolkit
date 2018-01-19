@@ -37,7 +37,7 @@ namespace SocialImportanceWF.ViewModels
 			RuleList = new BindingListView<AttributionRuleDTO>((IList)null);
 		}
 
-	/*	public void Reload()
+		/*public void Reload()
 		{
 			m_loading = true;
 
@@ -51,7 +51,7 @@ namespace SocialImportanceWF.ViewModels
 			m_loading = false;
 		}*/
 
-		public ObjectView<AttributionRuleDTO> AddOrUpdateRule(AttributionRuleDTO dto)
+		public void AddOrUpdateRule(AttributionRuleDTO dto)
 		{
 			if (dto.Id == Guid.Empty)
 				dto = _parent.LoadedAsset.AddAttributionRule(dto);
@@ -59,9 +59,6 @@ namespace SocialImportanceWF.ViewModels
 				_parent.LoadedAsset.UpdateAttributionRule(dto);
 
 			_parent.SetModified();
-			
-            var i = RuleList.Find(PropertyUtil.GetPropertyDescriptor<AttributionRuleDTO>("Id"), dto.Id);
-            return RuleList[i];
         }
 
 		private void UpdateSelected()
