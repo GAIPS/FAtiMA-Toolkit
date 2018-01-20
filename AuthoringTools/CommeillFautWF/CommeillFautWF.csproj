@@ -78,7 +78,6 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\SocialExchangesVM.cs" />
     <EmbeddedResource Include="AddSocialExchange.resx">
       <DependentUpon>AddSocialExchange.cs</DependentUpon>
     </EmbeddedResource>

@@ -12,8 +12,8 @@ namespace SocialImportanceWF
 {
 	public partial class MainForm : BaseSIForm
 	{
-        private ConditionSetView _conditions;
-        private BindingListView<AttributionRuleDTO> _attributionRules;
+        private ConditionSetView conditions;
+        private BindingListView<AttributionRuleDTO> attributionRules;
 
         public MainForm()
 		{
@@ -24,16 +24,15 @@ namespace SocialImportanceWF
 
 		protected override void OnAssetDataLoaded(SocialImportanceAsset asset)
 		{
-            //Attribution Rules
-            _attributionRules = new BindingListView<AttributionRuleDTO>((IList)null);
-            dataGridViewAttributionRules.DataSource = this._attributionRules;
+            attributionRules = new BindingListView<AttributionRuleDTO>((IList)null);
+            dataGridViewAttributionRules.DataSource = this.attributionRules;
 
-            _attRuleConditionSetEditor.View = _conditions;
+            _attRuleConditionSetEditor.View = conditions;
 
-            _conditions = new ConditionSetView();
-            _attRuleConditionSetEditor.View = _conditions;
-            _conditions.OnDataChanged += ConditionSetView_OnDataChanged;
-            _attributionRules.DataSource = LoadedAsset.GetAttributionRules().ToList();
+            conditions = new ConditionSetView();
+            _attRuleConditionSetEditor.View = conditions;
+            conditions.OnDataChanged += ConditionSetView_OnDataChanged;
+            attributionRules.DataSource = LoadedAsset.GetAttributionRules().ToList();
             EditorTools.HideColumns(dataGridViewAttributionRules, new[] {
                 PropertyUtil.GetPropertyName<AttributionRuleDTO>(o => o.Id),
                 PropertyUtil.GetPropertyName<AttributionRuleDTO>(o => o.Conditions) });
@@ -48,7 +47,7 @@ namespace SocialImportanceWF
             var selectedRule = EditorTools.GetSelectedDtoFromTable<AttributionRuleDTO>(dataGridViewAttributionRules);
             if (selectedRule == null)
                 return;
-            selectedRule.Conditions = _conditions.GetData();
+            selectedRule.Conditions = conditions.GetData();
             LoadedAsset.UpdateAttributionRule(selectedRule);
             
             SetModified();
@@ -103,16 +102,8 @@ namespace SocialImportanceWF
         private void dataGridViewAttributionRules_SelectionChanged(object sender, EventArgs e)
         {
             var rule = EditorTools.GetSelectedDtoFromTable<AttributionRuleDTO>(this.dataGridViewAttributionRules);
-            if (rule != null)
-            {
-                _conditions.SetData(rule.Conditions);
-            }
-            else
-            {
-                var list = LoadedAsset.GetAttributionRules().Count();
-                var count = _attributionRules.Count;
-                _conditions.SetData(null);
-            }
+            if (rule != null) conditions.SetData(rule.Conditions);
+            else conditions.SetData(null);
         }
 
         private void dataGridViewAttributionRules_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)

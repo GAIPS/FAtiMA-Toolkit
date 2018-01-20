@@ -49,21 +49,8 @@ namespace GAIPS.AssetEditorTools
             table.ClearSelection();
 
             if (selectId == Guid.Empty) return;
-                /*
-                            if (selectId == Guid.Empty)
-                            {
-                                if(list.Count > 0)
-                                {
-                                    table.Rows[0].Selected = true;
-                                    return;
-                                }
-                                else
-                                {
-                                    return;
-                                }
-                            }*/
-
-                for (int i = 0; i < table.Rows.Count; i++)
+                
+            for (int i = 0; i < table.Rows.Count; i++)
             {
                 var obj = ((ObjectView<T>)table.Rows[i].DataBoundItem).Object;
                 var id = (Guid) obj.GetType().GetProperty("Id").GetValue(obj);

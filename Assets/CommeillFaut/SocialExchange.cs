@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using ActionLibrary;
-using ActionLibrary.DTOs;
 using CommeillFaut.DTOs;
 using Conditions;
-using Conditions.DTOs;
 using KnowledgeBase;
 using WellFormedNames;
 using SerializationUtilities;
@@ -51,7 +47,15 @@ namespace CommeillFaut
         
         public SocialExchangeDTO ToDTO()
         {
-            return new SocialExchangeDTO() {Name = this.Name, Description = this.Description, Initiator = this.Initiator, Target = this.Target, Conditions = this.Conditions.ToDTO(), Id = this.Id};
+            return new SocialExchangeDTO()
+            {
+                Name = this.Name,
+                Description = this.Description,
+                Initiator = this.Initiator,
+                Target = this.Target,
+                Conditions = this.Conditions.ToDTO(),
+                Id = this.Id
+            };
         }
         
        public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)

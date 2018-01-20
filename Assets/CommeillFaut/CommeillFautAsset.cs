@@ -1,37 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
 using CommeillFaut.DTOs;
-using Conditions;
-using Conditions.DTOs;
 using SerializationUtilities;
 using WellFormedNames;
 using GAIPS.Rage;
 using KnowledgeBase;
-using WellFormedNames.Collections;
-
-
 
 namespace CommeillFaut
 {
-       [Serializable]
+    [Serializable]
     public sealed class CommeillFautAsset  : LoadableAsset<CommeillFautAsset>, ICustomSerialization
     {
-
         public KB m_kB;
-        public List<SocialExchange> m_SocialExchanges { get; set; }
+        private List<SocialExchange> m_SocialExchanges { get; set; }
+
+        public IEnumerable<SocialExchangeDTO> GetSocialExchanges()
+        {
+            return m_SocialExchanges.Select(se => se.ToDTO());
+        }
 
         /// <summary>
         /// The Comme ill Faut constructor
         /// </summary>
-
         public CommeillFautAsset()
         {
             m_kB = null;
             m_SocialExchanges = new List<SocialExchange>();
-          
         }
 
         /// <summary>
@@ -57,12 +52,8 @@ namespace CommeillFaut
 
         public void BindToRegistry(IDynamicPropertiesRegistry registry)
         {
-            //       registry.RegistDynamicProperty(CIF_DYNAMIC_PROPERTY_NAME, CIFPropertyCalculator);
-       
             registry.RegistDynamicProperty(VOLITION_PROPERTY_TEMPLATE, VolitionPropertyCalculator);
         }
-
-       
 
         private static readonly Name VOLITION_PROPERTY_TEMPLATE = (Name)"Volition";
 
@@ -81,8 +72,6 @@ namespace CommeillFaut
             if (initiator == Target)
                 yield break;
 
-
-
             List<Name> possibleSEs = new List<Name>();
 
             if (socialMoveName.IsVariable)
@@ -94,7 +83,6 @@ namespace CommeillFaut
                     possibleSEs.Add(se.Name);
             }
             else possibleSEs.Add(socialMoveName);
-
 
             List<Name> possibleInitiators = new List<Name>();
 
@@ -108,7 +96,6 @@ namespace CommeillFaut
             }
             else possibleInitiators.Add(initiator);
 
-
             List<Name> possibleTargets = new List<Name>();
 
             if (Target.IsVariable)
@@ -118,11 +105,8 @@ namespace CommeillFaut
             }
             else possibleTargets.Add(Target);
 
-
-
             foreach (var seName in possibleSEs)
             {
-
                 if (!m_SocialExchanges.Exists(x => x.Name == seName))
                     continue;
 
@@ -193,12 +177,12 @@ namespace CommeillFaut
             var se = new SocialExchange(dto);
             var str = se.ToString();
             var idx = m_SocialExchanges.FindIndex(x => x.Id == dto.Id);
-            if(idx < 0)
+            if (idx < 0)
             {
                 m_SocialExchanges.Add(se);
             }
             else
-                m_SocialExchanges[idx] = new SocialExchange(dto);
+                m_SocialExchanges[idx] = se;
             
             return se.Id;
         }

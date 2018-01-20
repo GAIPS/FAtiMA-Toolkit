@@ -1,30 +1,35 @@
 ﻿using CommeillFaut;
 using CommeillFaut.DTOs;
 using CommeillFautWF.Properties;
-using CommeillFautWF.ViewModels;
-using Equin.ApplicationFramework;
+using GAIPS.AssetEditorTools;
 using System;
+using System.Linq;
 using System.Windows.Forms;
-using WellFormedNames;
 
 namespace CommeillFautWF
 {
     public partial class AddSocialExchange : Form
     {
-        private SocialExchangesVM _vm;
-        
-        public ObjectView<SocialExchangeDTO> AddedObject { get; set; } = null;
+        private SocialExchangeDTO dto;
+        private CommeillFautAsset asset;
+        private DataGridView table;
 
-        public AddSocialExchange(SocialExchangesVM vm, SocialExchangeDTO seDto)
+        public AddSocialExchange(CommeillFautAsset asset, DataGridView table,
+          SocialExchangeDTO dto)
         {
             InitializeComponent();
-            _vm = vm;
-            if (seDto.Name != null)
-                nameTextBox.Value = seDto.Name;
-            if (seDto.Description != null)
-                textBoxDescription.Text = seDto.Description;
 
-            buttonAdd.Text = (seDto.Id == Guid.Empty) ? "Add" : "Update";
+            this.dto = dto;
+            this.asset = asset;
+            this.table = table;
+
+            //Validators (TODO)
+            nameTextBox.Value = dto.Name;
+            textBoxDescription.Text = dto.Description;
+            wfNameInitiator.Value = dto.Initiator;
+            wfNameTarget.Value = dto.Target;
+
+            buttonAdd.Text = (dto.Id == Guid.Empty) ? "Add" : "Update";
         }
 
 
@@ -40,20 +45,18 @@ namespace CommeillFautWF
         {
             try
             {
-                AddedObject.Object.Name = nameTextBox.Value;
-                AddedObject.Object.Description = textBoxDescription.Text;
-                _vm.AddOrUpdateSocialExchange(AddedObject.Object);
+                dto.Name = nameTextBox.Value;
+                dto.Description = textBoxDescription.Text;
+                dto.Target = wfNameTarget.Value;
+                dto.Initiator = wfNameInitiator.Value;
+                var id = asset.AddOrUpdateExchange(dto);
+                EditorTools.RefreshTable(table, asset.GetSocialExchanges().ToList(), id);
                 Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void AddSocialExchange_Load(object sender, EventArgs e)
-        {
-
         }
     }
 }

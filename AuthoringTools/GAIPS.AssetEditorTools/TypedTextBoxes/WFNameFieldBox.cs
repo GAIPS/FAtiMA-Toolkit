@@ -64,7 +64,7 @@ namespace GAIPS.AssetEditorTools.TypedTextBoxes
 
 		public string ToString(Name value)
 			{
-				return value.ToString();
+				return value?.ToString();
 			}
 		}
 	}

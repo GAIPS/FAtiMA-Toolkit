@@ -33,16 +33,16 @@
             this.TabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.conditionSetEditorControl1 = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.triggerRulesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.buttonDuplicateSE = new System.Windows.Forms.Button();
             this.buttonEditSE = new System.Windows.Forms.Button();
             this.buttonAddSE = new System.Windows.Forms.Button();
             this.buttonRemoveSE = new System.Windows.Forms.Button();
             this.gridSocialExchanges = new System.Windows.Forms.DataGridView();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.conditionSetEditorControl = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.triggerRulesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.socialExchangeBindingSource)).BeginInit();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -50,10 +50,10 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.triggerRulesBindingSource)).BeginInit();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridSocialExchanges)).BeginInit();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.triggerRulesBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // socialExchangeBindingSource
@@ -105,44 +105,6 @@
             this.splitContainer1.SplitterDistance = 316;
             this.splitContainer1.TabIndex = 16;
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.conditionSetEditorControl1);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(0, 0);
-            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Size = new System.Drawing.Size(772, 313);
-            this.groupBox2.TabIndex = 15;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Conditions:";
-            // 
-            // conditionSetEditorControl1
-            // 
-            this.conditionSetEditorControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.conditionSetEditorControl1.Location = new System.Drawing.Point(7, 26);
-            this.conditionSetEditorControl1.Margin = new System.Windows.Forms.Padding(4);
-            this.conditionSetEditorControl1.Name = "conditionSetEditorControl1";
-            this.conditionSetEditorControl1.Size = new System.Drawing.Size(757, 281);
-            this.conditionSetEditorControl1.TabIndex = 3;
-            this.conditionSetEditorControl1.View = null;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Location = new System.Drawing.Point(3, 365);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(764, 268);
-            this.groupBox1.TabIndex = 15;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Starting Conditions:";
-            // 
             // groupBox7
             // 
             this.groupBox7.Controls.Add(this.buttonDuplicateSE);
@@ -168,6 +130,7 @@
             this.buttonDuplicateSE.TabIndex = 10;
             this.buttonDuplicateSE.Text = "Duplicate";
             this.buttonDuplicateSE.UseVisualStyleBackColor = true;
+            this.buttonDuplicateSE.Click += new System.EventHandler(this.buttonDuplicateSE_Click);
             // 
             // buttonEditSE
             // 
@@ -178,6 +141,7 @@
             this.buttonEditSE.TabIndex = 9;
             this.buttonEditSE.Text = "Edit";
             this.buttonEditSE.UseVisualStyleBackColor = true;
+            this.buttonEditSE.Click += new System.EventHandler(this.buttonEditSE_Click);
             // 
             // buttonAddSE
             // 
@@ -188,6 +152,7 @@
             this.buttonAddSE.TabIndex = 7;
             this.buttonAddSE.Text = "Add";
             this.buttonAddSE.UseVisualStyleBackColor = true;
+            this.buttonAddSE.Click += new System.EventHandler(this.buttonAddSE_Click);
             // 
             // buttonRemoveSE
             // 
@@ -198,6 +163,7 @@
             this.buttonRemoveSE.TabIndex = 8;
             this.buttonRemoveSE.Text = "Remove";
             this.buttonRemoveSE.UseVisualStyleBackColor = true;
+            this.buttonRemoveSE.Click += new System.EventHandler(this.buttonRemoveSE_Click);
             // 
             // gridSocialExchanges
             // 
@@ -222,6 +188,47 @@
             this.gridSocialExchanges.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gridSocialExchanges.Size = new System.Drawing.Size(756, 242);
             this.gridSocialExchanges.TabIndex = 2;
+            this.gridSocialExchanges.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gridSocialExchanges_CellMouseDoubleClick);
+            this.gridSocialExchanges.SelectionChanged += new System.EventHandler(this.gridSocialExchanges_SelectionChanged);
+            this.gridSocialExchanges.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridSocialExchanges_KeyDown);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.conditionSetEditorControl);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox2.Location = new System.Drawing.Point(0, 0);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox2.Size = new System.Drawing.Size(772, 313);
+            this.groupBox2.TabIndex = 15;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Conditions:";
+            // 
+            // conditionSetEditorControl
+            // 
+            this.conditionSetEditorControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.conditionSetEditorControl.Location = new System.Drawing.Point(7, 26);
+            this.conditionSetEditorControl.Margin = new System.Windows.Forms.Padding(4);
+            this.conditionSetEditorControl.Name = "conditionSetEditorControl";
+            this.conditionSetEditorControl.Size = new System.Drawing.Size(757, 281);
+            this.conditionSetEditorControl.TabIndex = 3;
+            this.conditionSetEditorControl.View = null;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Location = new System.Drawing.Point(3, 365);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox1.Size = new System.Drawing.Size(764, 268);
+            this.groupBox1.TabIndex = 15;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Starting Conditions:";
             // 
             // MainForm
             // 
@@ -245,10 +252,10 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.triggerRulesBindingSource)).EndInit();
             this.groupBox7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.gridSocialExchanges)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.triggerRulesBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -262,7 +269,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private GAIPS.AssetEditorTools.ConditionSetEditorControl conditionSetEditorControl1;
+        private GAIPS.AssetEditorTools.ConditionSetEditorControl conditionSetEditorControl;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.Button buttonDuplicateSE;
         private System.Windows.Forms.Button buttonEditSE;
