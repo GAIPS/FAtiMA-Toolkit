@@ -61,7 +61,7 @@ namespace SocialImportanceWF
                 Value = WellFormedNames.Name.BuildName("[v]"),
                 Target = WellFormedNames.Name.BuildName("[t]")
             };
-            new AddOrEditAttributionRuleForm(LoadedAsset, dataGridViewAttributionRules, newRule).ShowDialog(this);
+            new AddOrEditAttributionRuleForm(LoadedAsset, dataGridViewAttributionRules, newRule,attributionRules).ShowDialog(this);
             SetModified();
         }
 
@@ -70,7 +70,7 @@ namespace SocialImportanceWF
             var rule = EditorTools.GetSelectedDtoFromTable<AttributionRuleDTO>(this.dataGridViewAttributionRules);
             if (rule != null)
             {
-                new AddOrEditAttributionRuleForm(LoadedAsset, dataGridViewAttributionRules, rule).ShowDialog(this);
+                new AddOrEditAttributionRuleForm(LoadedAsset, dataGridViewAttributionRules, rule, attributionRules).ShowDialog(this);
                 SetModified();
             }
         }
@@ -126,6 +126,11 @@ namespace SocialImportanceWF
                     this.buttonRemoveAttRule_Click(sender, e);
                     break;
             }
+        }
+
+        private void dataGridViewAttributionRules_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

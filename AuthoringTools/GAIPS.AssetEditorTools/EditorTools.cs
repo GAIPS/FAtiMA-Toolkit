@@ -42,25 +42,28 @@ namespace GAIPS.AssetEditorTools
             }
         }
 
-        public static void RefreshTable<T>(DataGridView table, List<T> list, Guid selectId)
+          public static void RefreshTable<T>(DataGridView grid, BindingListView<T> table, IEnumerable<T> list, Guid selectId)
         {
-            table.DataSource = new BindingListView<T>(list);
+            var aux = list.ToList();
+            table.DataSource = aux;
             table.Refresh();
-            table.ClearSelection();
+            var idx = grid.CurrentCell.RowIndex;
+            grid.Rows[idx].Selected = false;
 
             if (selectId == Guid.Empty) return;
-                
-            for (int i = 0; i < table.Rows.Count; i++)
+
+            for (int i = 0; i < grid.RowCount; i++)
             {
-                var obj = ((ObjectView<T>)table.Rows[i].DataBoundItem).Object;
-                var id = (Guid) obj.GetType().GetProperty("Id").GetValue(obj);
+                var obj = ((ObjectView<T>)grid.Rows[i].DataBoundItem).Object;
+                var id = (Guid)obj.GetType().GetProperty("Id").GetValue(obj);
                 if (id == null) return;
                 if (selectId == id)
                 {
-                    table.Rows[i].Selected = true;
+                    grid.Rows[i].Selected = true;
                     return;
                 }
             }
         }
-	}
+
+    }
 }

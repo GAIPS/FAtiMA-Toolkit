@@ -5,6 +5,7 @@ using WellFormedNames;
 using SocialImportance;
 using System.Linq;
 using GAIPS.AssetEditorTools;
+using Equin.ApplicationFramework;
 
 namespace SocialImportanceWF
 {
@@ -13,14 +14,16 @@ namespace SocialImportanceWF
 		private AttributionRuleDTO dto;
         private SocialImportanceAsset asset;
         private DataGridView table;
+        private BindingListView<AttributionRuleDTO> list;
 
-		public AddOrEditAttributionRuleForm(SocialImportanceAsset asset, DataGridView table, AttributionRuleDTO dto)
+        public AddOrEditAttributionRuleForm(SocialImportanceAsset asset, DataGridView table, AttributionRuleDTO dto, BindingListView<AttributionRuleDTO> list)
 		{
 			InitializeComponent();
 
             this.dto = dto;
             this.asset = asset;
             this.table = table;
+            this.list = list;
 
             //Validators
             _targetVariableBox.AllowUniversal = false;
@@ -57,8 +60,7 @@ namespace SocialImportanceWF
                 {
                     asset.UpdateAttributionRule(dto);
                 }
-
-                EditorTools.RefreshTable(table, asset.GetAttributionRules().ToList(), dto.Id);
+                EditorTools.RefreshTable(table, list, asset.GetAttributionRules(), dto.Id);
             }
 			catch (Exception e)
 			{
