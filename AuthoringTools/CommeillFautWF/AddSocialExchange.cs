@@ -3,7 +3,6 @@ using CommeillFaut.DTOs;
 using CommeillFautWF.Properties;
 using GAIPS.AssetEditorTools;
 using System;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace CommeillFautWF
@@ -12,7 +11,8 @@ namespace CommeillFautWF
     {
         private SocialExchangeDTO dto;
         private CommeillFautAsset asset;
-        private DataGridView table;
+
+        public Guid UpdatedGuid { get; private set; }
 
         public AddSocialExchange(CommeillFautAsset asset, DataGridView table,
           SocialExchangeDTO dto)
@@ -21,9 +21,12 @@ namespace CommeillFautWF
 
             this.dto = dto;
             this.asset = asset;
-            this.table = table;
 
-            //Validators (TODO)
+            //Validators 
+            EditorTools.AllowOnlyGroundedLiteral(nameTextBox);
+            EditorTools.AllowOnlyVariable(wfNameInitiator);
+            EditorTools.AllowOnlyVariable(wfNameTarget);
+
             nameTextBox.Value = dto.Name;
             textBoxDescription.Text = dto.Description;
             wfNameInitiator.Value = dto.Initiator;
@@ -50,7 +53,6 @@ namespace CommeillFautWF
                 dto.Target = wfNameTarget.Value;
                 dto.Initiator = wfNameInitiator.Value;
                 var id = asset.AddOrUpdateExchange(dto);
-              //  EditorTools.RefreshTable(table, asset.GetSocialExchanges().ToList(), id);
                 Close();
             }
             catch (Exception ex)

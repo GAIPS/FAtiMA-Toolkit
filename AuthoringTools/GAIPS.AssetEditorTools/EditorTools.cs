@@ -1,4 +1,5 @@
 ﻿using Equin.ApplicationFramework;
+using GAIPS.AssetEditorTools.TypedTextBoxes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,13 +43,28 @@ namespace GAIPS.AssetEditorTools
             }
         }
 
-          public static void RefreshTable<T>(DataGridView grid, BindingListView<T> table, IEnumerable<T> list, Guid selectId)
+        public static void AllowOnlyGroundedLiteral(WFNameFieldBox box)
         {
-            var aux = list.ToList();
-            table.DataSource = aux;
+            box.AllowLiteral = true;
+            box.AllowNil = false;
+            box.AllowVariable = false;
+            box.AllowUniversal = false;
+            box.AllowComposedName = false;
+        }
 
+        public static void AllowOnlyVariable(WFNameFieldBox box)
+        {
+            box.AllowVariable = true;
+            box.AllowLiteral = false;
+            box.AllowNil = false;
+            box.AllowVariable = false;
+            box.AllowUniversal = false;
+            box.AllowComposedName = false;
+        }
+
+        public static void HighlightItemInGrid<T>(DataGridView grid, Guid selectId)
+        {
             grid.ClearSelection();
-
             if (selectId == Guid.Empty) return;
 
             for (int i = 0; i < grid.RowCount; i++)

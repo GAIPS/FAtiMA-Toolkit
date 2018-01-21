@@ -155,7 +155,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 43F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(608, 53);
             this.tableLayoutPanel1.TabIndex = 0;
-            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
             // button1
             // 
@@ -182,7 +181,6 @@
             this.Name = "AddOrEditAttributionRuleForm";
             this.Padding = new System.Windows.Forms.Padding(4);
             this.Text = "Add SI Attribution Rule";
-            this.Load += new System.EventHandler(this.AddOrEditAttributionRuleForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddOrEditAttributionRuleForm_KeyDown);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();

@@ -59,7 +59,7 @@ namespace GAIPS.AssetEditorTools
 			if(!HasData)
 				return;
 
-			((IList<ConditionHolder>)Conditions.DataSource).Add((ConditionHolder)"[x]=true");
+			((IList<ConditionHolder>)Conditions.DataSource).Add((ConditionHolder)"Bel([x]) = True");
 			Conditions.Refresh();
 			OnDataChanged?.Invoke();
 			OnRefresh?.Invoke();

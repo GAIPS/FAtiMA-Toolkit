@@ -3,9 +3,6 @@ using System.Windows.Forms;
 using SocialImportance.DTOs;
 using WellFormedNames;
 using SocialImportance;
-using System.Linq;
-using GAIPS.AssetEditorTools;
-using Equin.ApplicationFramework;
 
 namespace SocialImportanceWF
 {
@@ -13,18 +10,17 @@ namespace SocialImportanceWF
 	{
 		private AttributionRuleDTO dto;
         private SocialImportanceAsset asset;
-        private DataGridView table;
-        private BindingListView<AttributionRuleDTO> list;
 
-        public AddOrEditAttributionRuleForm(SocialImportanceAsset asset, DataGridView table, AttributionRuleDTO dto, BindingListView<AttributionRuleDTO> list)
+        public Guid UpdatedGuid { get; private set; }
+
+        public AddOrEditAttributionRuleForm(SocialImportanceAsset asset, AttributionRuleDTO dto)
 		{
 			InitializeComponent();
 
-            this.dto = dto;
             this.asset = asset;
-            this.table = table;
-            this.list = list;
-
+            this.dto = dto;
+            this.UpdatedGuid = Guid.Empty;
+           
             //Validators
             _targetVariableBox.AllowUniversal = false;
             _targetVariableBox.AllowNil = false;
@@ -51,21 +47,17 @@ namespace SocialImportanceWF
 				dto.Description = _ruleDescriptionTextBox.Text;
 				dto.Value = _valueFieldBox.Value;
 				dto.Target = _targetVariableBox.Value;
-
                 if (dto.Id == Guid.Empty)
-                {
-                    dto.Id = asset.AddAttributionRule(dto).Id;
-                }
+                   dto.Id = asset.AddAttributionRule(dto).Id;
                 else
-                {
-                    asset.UpdateAttributionRule(dto);
-                }
-                EditorTools.RefreshTable(table, list, asset.GetAttributionRules(), dto.Id);
+                   asset.UpdateAttributionRule(dto);
+                UpdatedGuid = dto.Id;
             }
 			catch (Exception e)
 			{
 				MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				return;
+                UpdatedGuid = Guid.Empty;
+                return;
 			}
 			Close();
 		}
@@ -85,16 +77,6 @@ namespace SocialImportanceWF
             {
                 this.Close();
             }
-        }
-
-        private void AddOrEditAttributionRuleForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
         }
     }
 }

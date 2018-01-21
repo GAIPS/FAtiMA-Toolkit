@@ -61,8 +61,7 @@ namespace SocialImportanceWF
                 Value = WellFormedNames.Name.BuildName("[v]"),
                 Target = WellFormedNames.Name.BuildName("[t]")
             };
-            new AddOrEditAttributionRuleForm(LoadedAsset, dataGridViewAttributionRules, newRule,attributionRules).ShowDialog(this);
-            SetModified();
+            this.auxAddOrUpdateItem(newRule);
         }
 
         private void buttonEditAttRule_Click(object sender, EventArgs e)
@@ -70,9 +69,20 @@ namespace SocialImportanceWF
             var rule = EditorTools.GetSelectedDtoFromTable<AttributionRuleDTO>(this.dataGridViewAttributionRules);
             if (rule != null)
             {
-                new AddOrEditAttributionRuleForm(LoadedAsset, dataGridViewAttributionRules, rule, attributionRules).ShowDialog(this);
-                SetModified();
+                this.auxAddOrUpdateItem(rule);
             }
+        }
+
+        private void auxAddOrUpdateItem(AttributionRuleDTO item)
+        {
+            var diag = new AddOrEditAttributionRuleForm(LoadedAsset, item);
+            diag.ShowDialog(this);
+            if (diag.UpdatedGuid != Guid.Empty)
+            {
+                attributionRules.DataSource = LoadedAsset.GetAttributionRules().ToList();
+                EditorTools.HighlightItemInGrid<AttributionRuleDTO>(dataGridViewAttributionRules, diag.UpdatedGuid);
+            }
+            SetModified();
         }
 
         private void buttonDuplicateAttRule_Click(object sender, EventArgs e)
@@ -81,7 +91,8 @@ namespace SocialImportanceWF
             if (r != null)
             {
                 var newRule = LoadedAsset.AddAttributionRule(r);
-          EditorTools.RefreshTable(dataGridViewAttributionRules,attributionRules, LoadedAsset.GetAttributionRules().ToList(), newRule.Id);
+                attributionRules.DataSource = LoadedAsset.GetAttributionRules().ToList();
+                EditorTools.HighlightItemInGrid<AttributionRuleDTO>(dataGridViewAttributionRules, newRule.Id);
                 SetModified();
             }
         }
@@ -95,7 +106,8 @@ namespace SocialImportanceWF
                 var dto = ((ObjectView<AttributionRuleDTO>)r.DataBoundItem).Object;
                 LoadedAsset.RemoveAttributionRuleById(dto.Id);
             }
-            EditorTools.RefreshTable(dataGridViewAttributionRules, attributionRules, LoadedAsset.GetAttributionRules().ToList(), Guid.Empty);
+            attributionRules.DataSource = LoadedAsset.GetAttributionRules().ToList();
+            EditorTools.HighlightItemInGrid<AttributionRuleDTO>(dataGridViewAttributionRules, Guid.Empty);
             SetModified();
         }
 
