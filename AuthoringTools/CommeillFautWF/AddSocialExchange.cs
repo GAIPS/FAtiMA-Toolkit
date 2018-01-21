@@ -11,11 +11,9 @@ namespace CommeillFautWF
     {
         private SocialExchangeDTO dto;
         private CommeillFautAsset asset;
-
         public Guid UpdatedGuid { get; private set; }
 
-        public AddSocialExchange(CommeillFautAsset asset, DataGridView table,
-          SocialExchangeDTO dto)
+        public AddSocialExchange(CommeillFautAsset asset, SocialExchangeDTO dto)
         {
             InitializeComponent();
 
@@ -52,7 +50,7 @@ namespace CommeillFautWF
                 dto.Description = textBoxDescription.Text;
                 dto.Target = wfNameTarget.Value;
                 dto.Initiator = wfNameInitiator.Value;
-                var id = asset.AddOrUpdateExchange(dto);
+                UpdatedGuid = asset.AddOrUpdateExchange(dto);
                 Close();
             }
             catch (Exception ex)

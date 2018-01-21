@@ -56,8 +56,7 @@ namespace CommeillFautWF
                 Initiator = WellFormedNames.Name.BuildName("[i]"),
                 Target = WellFormedNames.Name.BuildName("[t]"),
             };
-            new AddSocialExchange(LoadedAsset, gridSocialExchanges, dto).ShowDialog(this);
-            SetModified();
+            auxAddOrUpdateItem(dto);
         }
 
         private void buttonEditSE_Click(object sender, EventArgs e)
@@ -65,10 +64,22 @@ namespace CommeillFautWF
             var rule = EditorTools.GetSelectedDtoFromTable<SocialExchangeDTO>(this.gridSocialExchanges);
             if (rule != null)
             {
-                new AddSocialExchange(LoadedAsset, gridSocialExchanges, rule).ShowDialog(this);
-                SetModified();
+                this.auxAddOrUpdateItem(rule);
             }
         }
+        private void auxAddOrUpdateItem(SocialExchangeDTO item)
+        {
+            var diag = new AddSocialExchange(LoadedAsset, item);
+            diag.ShowDialog(this);
+            if (diag.UpdatedGuid != Guid.Empty)
+            {
+                socialExchanges.DataSource = LoadedAsset.GetSocialExchanges().ToList();
+                EditorTools.HighlightItemInGrid<SocialExchangeDTO>
+                    (gridSocialExchanges, diag.UpdatedGuid);
+            }
+            SetModified();
+        }
+
 
         private void gridSocialExchanges_SelectionChanged(object sender, EventArgs e)
         {
@@ -86,8 +97,8 @@ namespace CommeillFautWF
             {
                 r.Id = Guid.Empty;
                 var newRuleId = LoadedAsset.AddOrUpdateExchange(r);
-                //EditorTools.RefreshTable( gridSocialExchanges, LoadedAsset.GetSocialExchanges().ToList(), newRuleId);
-                SetModified();
+                socialExchanges.DataSource = LoadedAsset.GetSocialExchanges().ToList();
+                EditorTools.HighlightItemInGrid<SocialExchangeDTO>(gridSocialExchanges, newRuleId);
             }
         }
 
@@ -100,7 +111,8 @@ namespace CommeillFautWF
                 var dto = ((ObjectView<SocialExchangeDTO>)r.DataBoundItem).Object;
                 LoadedAsset.RemoveSocialExchange(dto.Id);
             }
-            //EditorTools.RefreshTable(gridSocialExchanges,                LoadedAsset.GetSocialExchanges().ToList(), Guid.Empty);
+            socialExchanges.DataSource = LoadedAsset.GetSocialExchanges().ToList();
+            EditorTools.HighlightItemInGrid<SocialExchangeDTO>(gridSocialExchanges, Guid.Empty);
             SetModified();
         }
 
@@ -114,7 +126,7 @@ namespace CommeillFautWF
             switch (e.KeyCode)
             {
                 case Keys.Enter:
-                    this.buttonAddSE_Click(sender, e);
+                    this.buttonEditSE_Click(sender, e);
                     e.Handled = true;
                     break;
                 case Keys.D:
@@ -125,10 +137,7 @@ namespace CommeillFautWF
                     break;
             }
         }
-
-       
     }
-
 }
 
     
