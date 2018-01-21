@@ -9,6 +9,7 @@ using KnowledgeBase;
 using WellFormedNames;
 using SerializationUtilities;
 using System.IO;
+using System.Linq;
 
 namespace Tests.CommeillFaut
 {
@@ -247,17 +248,19 @@ namespace Tests.CommeillFaut
         {
             var cif = BuildCIFAsset();
 
-            var se = cif.m_SocialExchanges.Find(x => x.Name == (Name)"Flirt");
+            var se = new SocialExchange(cif.GetSocialExchanges().FirstOrDefault(x => x.Name == (Name)"Flirt"));
 
-            var initialValue = se.Conditions.Count;
+            var initialValue = se.Conditions.Count();
 
             var c = Condition.Parse("[x] != False");
 
-            se.AddCondition(c);
+            se. AddCondition(c);
 
             cif.UpdateSocialExchange(se.ToDTO());
 
-            Assert.AreEqual(cif.m_SocialExchanges.Find(x => x.Name == (Name)"Flirt").Conditions.Count, (initialValue + 1) );
+            var aux = cif.GetSocialExchanges().First(x => x.Name == (Name)"Flirt").Conditions.ConditionSet.Count();
+
+            Assert.AreEqual(aux, (initialValue + 1) );
 
         }
 
@@ -267,12 +270,11 @@ namespace Tests.CommeillFaut
         {
             var cif = BuildCIFAsset();
 
-            var se = cif.m_SocialExchanges.Find(x => x.Name == (Name)"Flirt");
+            var se = cif.GetSocialExchanges().First(x => x.Name == (Name)"Flirt");
 
             cif.RemoveSocialExchange(se.Id);
 
-            Assert.IsEmpty(cif.m_SocialExchanges);
-
+            Assert.IsEmpty(cif.GetSocialExchanges());
         }
 
 
@@ -281,7 +283,7 @@ namespace Tests.CommeillFaut
         {
             var cif = BuildCIFAsset();
 
-            var originalCount = cif.m_SocialExchanges.Count;
+            var originalCount = cif.GetSocialExchanges().Count();
 
             var seDTO = new SocialExchangeDTO()
             {
@@ -295,11 +297,8 @@ namespace Tests.CommeillFaut
                 Target = Name.BuildName("[x]")
             };
 
-         
             cif.AddOrUpdateExchange(seDTO);
-
-
-            Assert.AreEqual(cif.m_SocialExchanges.Count, (originalCount + 1));
+            Assert.AreEqual(cif.GetSocialExchanges().Count(), (originalCount + 1));
 
         }
 
@@ -310,7 +309,7 @@ namespace Tests.CommeillFaut
 
             var dto = cif.GetDTO();
        
-            Assert.AreEqual(dto._SocialExchangesDtos.Length, cif.m_SocialExchanges.Count);
+            Assert.AreEqual(dto._SocialExchangesDtos.Length, cif.GetSocialExchanges().Count());
 
         }
 
@@ -352,10 +351,7 @@ namespace Tests.CommeillFaut
 
 
             cif.LoadFromDTO(cifDTO);
-
-            Assert.AreEqual(cif.m_SocialExchanges[0].Name.ToString(), "Compliment");
-
-           
+            Assert.AreEqual(cif.GetSocialExchanges().First().Name.ToString(), "Compliment");
         }
 
 
@@ -364,10 +360,9 @@ namespace Tests.CommeillFaut
         {
             var cif = BuildCIFAsset();
 
-            var se = cif.m_SocialExchanges.Find(x=>x.Name == (Name)"Flirt");
-
+            var seDTO = cif.GetSocialExchanges().First(x=>x.Name == (Name)"Flirt");
+            var se = new SocialExchange(seDTO);
             var totalCondsBefore = se.Conditions.Count;
-
             se.AddCondition(Condition.Parse("[x] != Start"));
 
             Assert.AreEqual((totalCondsBefore + 1), se.Conditions.Count);
@@ -379,7 +374,8 @@ namespace Tests.CommeillFaut
         {
             var cif = BuildCIFAsset();
 
-            var se = cif.m_SocialExchanges.Find(x => x.Name == (Name)"Flirt");
+            var seDTO = cif.GetSocialExchanges().First(x => x.Name == (Name)"Flirt");
+            var se = new SocialExchange(seDTO);
 
             se.RemoveCondition(Condition.Parse("Has(Floor) != Start"));
 
@@ -391,12 +387,8 @@ namespace Tests.CommeillFaut
         public void Test_CIF_SE_ToString()
         {
             var cif = BuildCIFAsset();
-
-            var se = cif.m_SocialExchanges.Find(x => x.Name == (Name)"Flirt");
-
-
+            var se = cif.GetSocialExchanges().First(x => x.Name == (Name)"Flirt");
             Assert.IsTrue(se.ToString().Contains("Flirt"));
-
         }
     }
 

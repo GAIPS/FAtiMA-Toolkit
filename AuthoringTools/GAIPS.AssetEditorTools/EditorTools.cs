@@ -46,9 +46,8 @@ namespace GAIPS.AssetEditorTools
         {
             var aux = list.ToList();
             table.DataSource = aux;
-            table.Refresh();
-            var idx = grid.CurrentCell.RowIndex;
-            grid.Rows[idx].Selected = false;
+
+            grid.ClearSelection();
 
             if (selectId == Guid.Empty) return;
 

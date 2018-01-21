@@ -81,7 +81,7 @@ namespace SocialImportanceWF
             if (r != null)
             {
                 var newRule = LoadedAsset.AddAttributionRule(r);
-                EditorTools.RefreshTable(dataGridViewAttributionRules, LoadedAsset.GetAttributionRules().ToList(), newRule.Id);
+          EditorTools.RefreshTable(dataGridViewAttributionRules,attributionRules, LoadedAsset.GetAttributionRules().ToList(), newRule.Id);
                 SetModified();
             }
         }
@@ -95,7 +95,7 @@ namespace SocialImportanceWF
                 var dto = ((ObjectView<AttributionRuleDTO>)r.DataBoundItem).Object;
                 LoadedAsset.RemoveAttributionRuleById(dto.Id);
             }
-            EditorTools.RefreshTable(dataGridViewAttributionRules, LoadedAsset.GetAttributionRules().ToList(), Guid.Empty);
+            EditorTools.RefreshTable(dataGridViewAttributionRules, attributionRules, LoadedAsset.GetAttributionRules().ToList(), Guid.Empty);
             SetModified();
         }
 

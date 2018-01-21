@@ -86,10 +86,7 @@ namespace CommeillFautWF
             {
                 r.Id = Guid.Empty;
                 var newRuleId = LoadedAsset.AddOrUpdateExchange(r);
-                EditorTools.RefreshTable(
-                    gridSocialExchanges,
-                    LoadedAsset.GetSocialExchanges().ToList(),
-                    newRuleId);
+                //EditorTools.RefreshTable( gridSocialExchanges, LoadedAsset.GetSocialExchanges().ToList(), newRuleId);
                 SetModified();
             }
         }
@@ -103,8 +100,7 @@ namespace CommeillFautWF
                 var dto = ((ObjectView<SocialExchangeDTO>)r.DataBoundItem).Object;
                 LoadedAsset.RemoveSocialExchange(dto.Id);
             }
-            EditorTools.RefreshTable(gridSocialExchanges, 
-                LoadedAsset.GetSocialExchanges().ToList(), Guid.Empty);
+            //EditorTools.RefreshTable(gridSocialExchanges,                LoadedAsset.GetSocialExchanges().ToList(), Guid.Empty);
             SetModified();
         }
 

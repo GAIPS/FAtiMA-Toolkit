@@ -12,7 +12,6 @@ namespace MCTS
 
         private KB m_kb;
 
-
         public MCTSAsset()
         {
             m_kb = null;

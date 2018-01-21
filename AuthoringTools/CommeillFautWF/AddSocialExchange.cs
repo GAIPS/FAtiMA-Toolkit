@@ -50,7 +50,7 @@ namespace CommeillFautWF
                 dto.Target = wfNameTarget.Value;
                 dto.Initiator = wfNameInitiator.Value;
                 var id = asset.AddOrUpdateExchange(dto);
-                EditorTools.RefreshTable(table, asset.GetSocialExchanges().ToList(), id);
+              //  EditorTools.RefreshTable(table, asset.GetSocialExchanges().ToList(), id);
                 Close();
             }
             catch (Exception ex)
