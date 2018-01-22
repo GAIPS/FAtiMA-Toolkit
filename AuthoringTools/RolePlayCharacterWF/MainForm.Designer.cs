@@ -297,9 +297,9 @@ namespace RolePlayCharacterWF
             // 
             this.tabPage4.Controls.Add(this.panelEDM);
             this.tabPage4.Controls.Add(this.groupBox3);
-            this.tabPage4.Location = new System.Drawing.Point(4, 28);
+            this.tabPage4.Location = new System.Drawing.Point(4, 25);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(821, 474);
+            this.tabPage4.Size = new System.Drawing.Size(821, 477);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Decision Making";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -753,7 +753,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(799, 423);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(799, 420);
             this.tableLayoutPanel3.TabIndex = 2;
             this.tableLayoutPanel3.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel3_Paint);
             // 
@@ -768,7 +768,7 @@ namespace RolePlayCharacterWF
             this.emotionGroupBox.Controls.Add(this.emotionsDataGridView);
             this.emotionGroupBox.Location = new System.Drawing.Point(3, 67);
             this.emotionGroupBox.Name = "emotionGroupBox";
-            this.emotionGroupBox.Size = new System.Drawing.Size(793, 353);
+            this.emotionGroupBox.Size = new System.Drawing.Size(793, 350);
             this.emotionGroupBox.TabIndex = 1;
             this.emotionGroupBox.TabStop = false;
             this.emotionGroupBox.Text = "Emotions";
@@ -823,7 +823,7 @@ namespace RolePlayCharacterWF
             this.emotionsDataGridView.RowHeadersVisible = false;
             this.emotionsDataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.emotionsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.emotionsDataGridView.Size = new System.Drawing.Size(781, 299);
+            this.emotionsDataGridView.Size = new System.Drawing.Size(781, 296);
             this.emotionsDataGridView.TabIndex = 2;
             // 
             // moodGroupBox
@@ -900,6 +900,7 @@ namespace RolePlayCharacterWF
             this.textBoxCharacterName.Name = "textBoxCharacterName";
             this.textBoxCharacterName.Size = new System.Drawing.Size(203, 22);
             this.textBoxCharacterName.TabIndex = 3;
+            this.textBoxCharacterName.TextChanged += new System.EventHandler(this.textBoxCharacterName_TextChanged);
             // 
             // textBoxCharacterBody
             // 
@@ -910,6 +911,7 @@ namespace RolePlayCharacterWF
             this.textBoxCharacterBody.Name = "textBoxCharacterBody";
             this.textBoxCharacterBody.Size = new System.Drawing.Size(203, 22);
             this.textBoxCharacterBody.TabIndex = 4;
+            this.textBoxCharacterBody.TextChanged += new System.EventHandler(this.textBoxCharacterBody_TextChanged);
             // 
             // textBoxCharacterVoice
             // 
@@ -920,6 +922,7 @@ namespace RolePlayCharacterWF
             this.textBoxCharacterVoice.Name = "textBoxCharacterVoice";
             this.textBoxCharacterVoice.Size = new System.Drawing.Size(203, 22);
             this.textBoxCharacterVoice.TabIndex = 10;
+            this.textBoxCharacterVoice.TextChanged += new System.EventHandler(this.textBoxCharacterVoice_TextChanged);
             // 
             // label2
             // 

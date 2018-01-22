@@ -62,6 +62,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RPCInspectForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RPCInspectForm.Designer.cs">
+      <DependentUpon>RPCInspectForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="TextToSpeechForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -97,6 +103,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RPCInspectForm.resx">
+      <DependentUpon>RPCInspectForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TextToSpeechForm.resx">
       <DependentUpon>TextToSpeechForm.cs</DependentUpon>

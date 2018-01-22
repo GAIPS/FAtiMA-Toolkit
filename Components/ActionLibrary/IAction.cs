@@ -9,14 +9,14 @@ namespace ActionLibrary
 	public interface IAction
 	{
         /// <summary>
+        /// The name of the action's key (first literal of the action's name)
+        /// </summary>
+        Name Key { get; }
+
+        /// <summary>
         /// The full name of the action to execute (key + parameters)
         /// </summary>
         Name Name { get; }
-
-        /// <summary>
-		/// The name of the action's key (first literal of the action's name)
-		/// </summary>
-		Name Key { get; }
 
         /// <summary>
 		/// The parameters values that the action needs in order for it to be executed.

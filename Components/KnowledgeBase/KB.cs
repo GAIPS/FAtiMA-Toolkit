@@ -111,6 +111,7 @@ namespace KnowledgeBase
 		{
 			registry.RegistDynamicProperty(COUNT_TEMPLATE_NEW, CountPropertyCalculator_new);
 			registry.RegistDynamicProperty(HAS_LITERAL_TEMPLATE,HasLiteralPropertyCalculator);
+            registry.RegistDynamicProperty(MATH_TEMPLATE, MathPropertyCalculator);
         }
 
 		#region Native Dynamic Properties
@@ -131,7 +132,50 @@ namespace KnowledgeBase
 				yield return new DynamicPropertyResult(new ComplexValue(count,1.0f), d);
 		}
 
-        
+        //Math
+        private static readonly Name MATH_TEMPLATE = Name.BuildName("Math");
+        private static IEnumerable<DynamicPropertyResult> MathPropertyCalculator(IQueryContext context, Name x, Name op, Name y)
+        {
+            if (op.IsVariable || op.IsComposed)
+                yield break;
+
+            foreach (var subSet in context.Constraints)
+            {
+                foreach (var xSubs in context.AskPossibleProperties(x).ToList())
+                {
+                    foreach(var ySubs in context.AskPossibleProperties(y).ToList())
+                    {
+                        var xValue = float.Parse(xSubs.Item1.Value.ToString());
+                        var yValue = float.Parse(ySubs.Item1.Value.ToString());
+
+                        if (op.ToString().EqualsIgnoreCase("Plus"))
+                        {
+                            var res = xValue + yValue;
+                            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(res)), subSet);
+                        }
+
+                        if (op.ToString().EqualsIgnoreCase("Minus"))
+                        {
+                            var res = xValue - yValue;
+                            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(res)), subSet);
+                        }
+
+                        if (op.ToString().EqualsIgnoreCase("Times"))
+                        {
+                            var res = xValue * yValue;
+                            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(res)), subSet);
+                        }
+
+                        if (op.ToString().EqualsIgnoreCase("Div"))
+                        {
+                            var res = xValue / yValue;
+                            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(res)), subSet);
+                        }
+
+                    }
+                }
+            }
+        }
 
         //HasLiteral
         private static readonly Name HAS_LITERAL_TEMPLATE = (Name) "HasLiteral";

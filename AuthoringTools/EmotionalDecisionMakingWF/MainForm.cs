@@ -6,7 +6,7 @@ using EmotionalDecisionMaking;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 using ActionLibrary.DTOs;
-using Conditions.DTOs;
+using GAIPS.Rage;
 
 namespace EmotionalDecisionMakingWF
 {
@@ -15,7 +15,7 @@ namespace EmotionalDecisionMakingWF
 		private BindingListView<ActionRuleDTO> _reactiveActions;
 	    private ConditionSetView _conditionSetView;
         private Guid _selectedActionId;
-
+        
 		public MainForm()
         {
             InitializeComponent();
@@ -30,10 +30,16 @@ namespace EmotionalDecisionMakingWF
             _conditionSetView.OnDataChanged += conditionSetView_OnDataChanged;
 
             _reactiveActions.DataSource = LoadedAsset.GetAllActionRules().ToList();
-            dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ActionRuleDTO>(dto => dto.Priority)].DisplayIndex = 3;
-            dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ActionRuleDTO>(dto => dto.Id)].Visible = false;
-			dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ActionRuleDTO>(dto => dto.Conditions)].Visible = false;
 
+            dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ActionRuleDTO>(dto => dto.Priority)].DisplayIndex = 3;
+
+            EditorTools.HideColumns(dataGridViewReactiveActions, new[]
+            {
+                PropertyUtil.GetPropertyName<ActionRuleDTO>( d => d.Id),
+                PropertyUtil.GetPropertyName<ActionRuleDTO>(d => d.Conditions)
+            });
+                
+           
             if (_reactiveActions.Any())
 			{
 				var ra = LoadedAsset.GetActionRule(_reactiveActions.First().Id);
@@ -120,18 +126,7 @@ namespace EmotionalDecisionMakingWF
             if (dataGridViewReactiveActions.SelectedRows.Count == 1)
             {
                 var a = ((ObjectView<ActionRuleDTO>)dataGridViewReactiveActions.SelectedRows[0].DataBoundItem).Object;
-                var duplicateAction = new ActionRuleDTO
-                {
-                    Action = a.Action,
-                    Priority = a.Priority,
-                    Target = a.Target,
-                    Layer = a.Layer,
-                    Conditions = new ConditionSetDTO
-                    {
-                        Quantifier = a.Conditions.Quantifier,
-                        ConditionSet = (string[])a.Conditions.ConditionSet?.Clone()
-                    }
-                };
+                var duplicateAction = CloneHelper.Clone(a); 
                 LoadedAsset.AddActionRule(duplicateAction);
                 _reactiveActions.DataSource = LoadedAsset.GetAllActionRules().ToList();
                 _reactiveActions.Refresh();

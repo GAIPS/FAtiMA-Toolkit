@@ -698,5 +698,19 @@ namespace IntegratedAuthoringToolWF
                     break;
             }
         }
+
+        private void buttonInspect_Click(object sender, EventArgs e)
+        {
+            var rpcSource = EditorTools.GetSelectedDtoFromTable<CharacterSourceDTO>(dataGridViewCharacters);
+
+            if(rpcSource != null)
+            {
+                var rpcAsset = RolePlayCharacterAsset.LoadFromFile(rpcSource.Source);
+                rpcAsset.LoadAssociatedAssets();
+                LoadedAsset.BindToRegistry(rpcAsset.DynamicPropertiesRegistry);
+                new RPCInspectForm(rpcAsset).ShowDialog(this);
+
+            }
+        }
     }
 }

@@ -437,6 +437,7 @@ namespace RolePlayCharacterWF
             {
                 _cifForm.SaveAssetToFile(_cifForm.LoadedAsset, _cifForm.LoadedAsset.AssetFilePath);
             }
+
         }
 
         private void buttonOpenEDM_Click(object sender, EventArgs e)

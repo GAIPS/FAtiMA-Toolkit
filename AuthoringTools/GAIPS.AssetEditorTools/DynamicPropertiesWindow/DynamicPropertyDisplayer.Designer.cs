@@ -45,23 +45,23 @@
             this._dynamicPropertiesListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this._dynamicPropertiesListView.ImeMode = System.Windows.Forms.ImeMode.On;
             this._dynamicPropertiesListView.Location = new System.Drawing.Point(0, 0);
-            this._dynamicPropertiesListView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this._dynamicPropertiesListView.Margin = new System.Windows.Forms.Padding(4);
             this._dynamicPropertiesListView.Name = "_dynamicPropertiesListView";
             this._dynamicPropertiesListView.ReadOnly = true;
             this._dynamicPropertiesListView.RowHeadersVisible = false;
             this._dynamicPropertiesListView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this._dynamicPropertiesListView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this._dynamicPropertiesListView.Size = new System.Drawing.Size(1137, 404);
+            this._dynamicPropertiesListView.Size = new System.Drawing.Size(803, 404);
             this._dynamicPropertiesListView.TabIndex = 12;
             // 
             // DynamicPropertyDisplayer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1137, 404);
+            this.ClientSize = new System.Drawing.Size(803, 404);
             this.Controls.Add(this._dynamicPropertiesListView);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "DynamicPropertyDisplayer";
             this.Text = "Dynamic Properties";
             this.Load += new System.EventHandler(this.DynamicPropertyDisplayer_Load);

@@ -70,7 +70,7 @@
             this.buttonDuplicateReaction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonDuplicateReaction.Name = "buttonDuplicateReaction";
             this.buttonDuplicateReaction.Size = new System.Drawing.Size(93, 28);
-            this.buttonDuplicateReaction.TabIndex = 10;
+            this.buttonDuplicateReaction.TabIndex = 9;
             this.buttonDuplicateReaction.Text = "Duplicate";
             this.buttonDuplicateReaction.UseVisualStyleBackColor = true;
             this.buttonDuplicateReaction.Click += new System.EventHandler(this.buttonDuplicateReaction_Click);
@@ -81,7 +81,7 @@
             this.buttonEditReaction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonEditReaction.Name = "buttonEditReaction";
             this.buttonEditReaction.Size = new System.Drawing.Size(93, 28);
-            this.buttonEditReaction.TabIndex = 9;
+            this.buttonEditReaction.TabIndex = 8;
             this.buttonEditReaction.Text = "Edit";
             this.buttonEditReaction.UseVisualStyleBackColor = true;
             this.buttonEditReaction.Click += new System.EventHandler(this.buttonEditReaction_Click);
@@ -103,7 +103,7 @@
             this.buttonRemoveReaction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonRemoveReaction.Name = "buttonRemoveReaction";
             this.buttonRemoveReaction.Size = new System.Drawing.Size(93, 28);
-            this.buttonRemoveReaction.TabIndex = 8;
+            this.buttonRemoveReaction.TabIndex = 10;
             this.buttonRemoveReaction.Text = "Remove";
             this.buttonRemoveReaction.UseVisualStyleBackColor = true;
             this.buttonRemoveReaction.Click += new System.EventHandler(this.buttonRemoveReaction_Click);
@@ -146,7 +146,7 @@
             this.groupBox8.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox8.Size = new System.Drawing.Size(773, 360);
+            this.groupBox8.Size = new System.Drawing.Size(773, 358);
             this.groupBox8.TabIndex = 11;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Conditions";
@@ -157,7 +157,7 @@
             this.conditionSetEditor.Location = new System.Drawing.Point(4, 19);
             this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4);
             this.conditionSetEditor.Name = "conditionSetEditor";
-            this.conditionSetEditor.Size = new System.Drawing.Size(765, 337);
+            this.conditionSetEditor.Size = new System.Drawing.Size(765, 335);
             this.conditionSetEditor.TabIndex = 0;
             this.conditionSetEditor.View = null;
             this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);

@@ -121,6 +121,10 @@
       <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
       <Name>GAIPS.Rage</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Components\KnowledgeBase\KnowledgeBase.csproj">
+      <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
+      <Name>KnowledgeBase</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
       <Project>{BC47528F-FBF6-465E-BB0E-F68F50F31C13}</Project>
       <Name>WellFormedNames</Name>

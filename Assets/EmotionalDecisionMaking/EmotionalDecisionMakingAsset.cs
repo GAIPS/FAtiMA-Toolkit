@@ -84,14 +84,15 @@ namespace EmotionalDecisionMaking
                 {
                     foreach (var set in at.ActivationConditions.Unify(m_kb, Name.SELF_SYMBOL, null))
                     {
-                        result.Add(at.GenerateAction(set));
+                        var a = at.GenerateAction(set);
+                        if(a!=null) result.Add(a);
                     }
                 }
             }
             return result;
-
-
         }
+
+
         /// <summary>
         /// Adds a new reactive action to the asset.
         /// </summary>
