@@ -408,9 +408,33 @@ namespace Tests.KnowledgeBase
 			Assert.AreEqual(result.Length,num);
 		}
 
-		#endregion
 
-		[Test]
+
+        [TestCase("[x] = 3", "Math(3, Plus, 1)")]
+        [Test]
+        public void Test_DP_Math_Match(string tellKB, string methodCall)
+        {
+            var me = (Name)"Ana";
+            var kb = new KB(me);
+
+            var result = new HashSet<Name>(kb.AskPossibleProperties((Name)methodCall, Name.SELF_SYMBOL, null).Select(r => r.Item1.Value));
+            Assert.IsNotNull(result);
+        }
+
+        [TestCase("IsAgent([x]) = True", "Math(3, Plus, [y])")]
+        [Test]
+        public void Test_DP_Math_NoMatch(string tellKB, string methodCall)
+        {
+            var me = (Name)"Ana";
+            var kb = new KB(me);
+
+            var result = new HashSet<Name>(kb.AskPossibleProperties((Name)methodCall, Name.SELF_SYMBOL, null).Select(r => r.Item1.Value));
+            Assert.IsEmpty(result);
+        }
+
+        #endregion
+
+        [Test]
 		public void Test_Self_Property()
 		{
 			var me = (Name) "Ana";
@@ -425,5 +449,10 @@ namespace Tests.KnowledgeBase
 			kb.Tell((Name)"A(B)", Name.SELF_SYMBOL,(Name)"Ana");
 			Assert.AreEqual(kb.AskProperty((Name)"A(B)", (Name)"Ana").Value, (Name)"Ana");
 		}
+
+
+
+
+
 	}
 }
