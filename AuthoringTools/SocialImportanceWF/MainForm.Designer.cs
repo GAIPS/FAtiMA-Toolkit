@@ -118,7 +118,7 @@
             this.buttonDuplicateAttRule.Margin = new System.Windows.Forms.Padding(4);
             this.buttonDuplicateAttRule.Name = "buttonDuplicateAttRule";
             this.buttonDuplicateAttRule.Size = new System.Drawing.Size(93, 28);
-            this.buttonDuplicateAttRule.TabIndex = 10;
+            this.buttonDuplicateAttRule.TabIndex = 9;
             this.buttonDuplicateAttRule.Text = "Duplicate";
             this.buttonDuplicateAttRule.UseVisualStyleBackColor = true;
             this.buttonDuplicateAttRule.Click += new System.EventHandler(this.buttonDuplicateAttRule_Click);
@@ -129,7 +129,7 @@
             this.buttonEditAttRule.Margin = new System.Windows.Forms.Padding(4);
             this.buttonEditAttRule.Name = "buttonEditAttRule";
             this.buttonEditAttRule.Size = new System.Drawing.Size(93, 28);
-            this.buttonEditAttRule.TabIndex = 9;
+            this.buttonEditAttRule.TabIndex = 8;
             this.buttonEditAttRule.Text = "Edit";
             this.buttonEditAttRule.UseVisualStyleBackColor = true;
             this.buttonEditAttRule.Click += new System.EventHandler(this.buttonEditAttRule_Click);
@@ -151,7 +151,7 @@
             this.buttonRemoveAttRule.Margin = new System.Windows.Forms.Padding(4);
             this.buttonRemoveAttRule.Name = "buttonRemoveAttRule";
             this.buttonRemoveAttRule.Size = new System.Drawing.Size(93, 28);
-            this.buttonRemoveAttRule.TabIndex = 8;
+            this.buttonRemoveAttRule.TabIndex = 10;
             this.buttonRemoveAttRule.Text = "Remove";
             this.buttonRemoveAttRule.UseVisualStyleBackColor = true;
             this.buttonRemoveAttRule.Click += new System.EventHandler(this.buttonRemoveAttRule_Click);
@@ -178,7 +178,7 @@
             this.dataGridViewAttributionRules.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAttributionRules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewAttributionRules.Size = new System.Drawing.Size(925, 160);
-            this.dataGridViewAttributionRules.TabIndex = 2;
+            this.dataGridViewAttributionRules.TabIndex = 11;
             this.dataGridViewAttributionRules.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAttributionRules_CellContentClick);
             this.dataGridViewAttributionRules.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewAttributionRules_CellMouseDoubleClick);
             this.dataGridViewAttributionRules.SelectionChanged += new System.EventHandler(this.dataGridViewAttributionRules_SelectionChanged);

@@ -1,71 +1,60 @@
 ﻿using System;
-using System.Linq;
 using System.Windows.Forms;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
+using GAIPS.AssetEditorTools;
 
 namespace IntegratedAuthoringToolWF
 {
     public partial class AddOrEditDialogueActionForm : Form
     {
-	    private MainForm _parentForm;
-        private IntegratedAuthoringToolAsset _iatAsset => _parentForm.LoadedAsset;
-        private readonly DialogueStateActionDTO _dialogueStateActionToEdit;
+        private IntegratedAuthoringToolAsset asset;
+        private DialogueStateActionDTO dto;
 
-        public AddOrEditDialogueActionForm(MainForm form)
+        public Guid UpdatedGuid { get; private set; }
+        
+
+        public AddOrEditDialogueActionForm(IntegratedAuthoringToolAsset asset, DialogueStateActionDTO dto)
         {
             InitializeComponent();
 
-            textBoxCurrentState.AllowComposedName = false;
-            textBoxNextState.AllowComposedName = false;
+            this.dto = dto;
+            this.asset = asset;
 
-            textBoxCurrentState.AllowVariable = false;
-            textBoxNextState.AllowVariable = false;
+            textBoxCurrentState.Value = (WellFormedNames.Name)dto.CurrentState;
+            textBoxNextState.Value = (WellFormedNames.Name)dto.NextState;
+            textBoxMeaning.Value = (WellFormedNames.Name)dto.Meaning;
+            textBoxStyle.Value = (WellFormedNames.Name)dto.Style;
+            textBoxUtterance.Text = dto.Utterance;
+
+            //validators
+            EditorTools.AllowOnlyGroundedLiteral(textBoxCurrentState);
+            EditorTools.AllowOnlyGroundedLiteral(textBoxNextState);
             textBoxMeaning.AllowVariable = false;
             textBoxStyle.AllowVariable = false;
-
-            textBoxCurrentState.AllowUniversal = false;
-            textBoxNextState.AllowUniversal = false;
-            textBoxMeaning.AllowUniversal = false;
-            textBoxStyle.AllowUniversal = false;
-
-            _parentForm = form;
         }
-
-		public AddOrEditDialogueActionForm(MainForm form, bool isPlayerDialogue, Guid dialogId) : this(form)
-		{
-			buttonAddOrUpdate.Text = "Update";
-			_dialogueStateActionToEdit = form.LoadedAsset.GetDialogActionById(dialogId);
-
-			textBoxCurrentState.Value = (WellFormedNames.Name)_dialogueStateActionToEdit.CurrentState;
-			textBoxNextState.Value = (WellFormedNames.Name)_dialogueStateActionToEdit.NextState;
-            textBoxMeaning.Value = (WellFormedNames.Name)_dialogueStateActionToEdit.Meaning;
-            textBoxStyle.Value = (WellFormedNames.Name)_dialogueStateActionToEdit.Style;
-			textBoxUtterance.Text = _dialogueStateActionToEdit.Utterance;
-		}
 
         private void buttonAddOrUpdate_Click(object sender, EventArgs e)
         {
             try
             {
-                var newDialogueAction = new DialogueStateActionDTO
+                var newDA = new DialogueStateActionDTO
                 {
                     CurrentState = textBoxCurrentState.Value.ToString(),
-					NextState = textBoxNextState.Value.ToString(),
-					Meaning = textBoxMeaning.Value.ToString(),
+                    NextState = textBoxNextState.Value.ToString(),
+                    Meaning = textBoxMeaning.Value.ToString(),
                     Style = textBoxStyle.Value.ToString(),
                     Utterance = textBoxUtterance.Text
                 };
-
-                if (_dialogueStateActionToEdit == null)
+                
+                if ( dto.Id == Guid.Empty)
                 {
-                    _iatAsset.AddDialogAction(newDialogueAction);
+                    UpdatedGuid = asset.AddDialogAction(newDA);
                 }
                 else
                 {
-                    _iatAsset.EditDialogAction(_dialogueStateActionToEdit, newDialogueAction);
+                    UpdatedGuid = asset.EditDialogAction(dto, newDA);
                 }
-				_parentForm.SetModified();
                 this.Close();
             }
             catch (Exception ex)

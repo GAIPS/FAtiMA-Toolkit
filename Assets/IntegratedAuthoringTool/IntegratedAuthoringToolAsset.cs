@@ -102,9 +102,11 @@ namespace IntegratedAuthoringTool
 		/// Adds a new dialogue action 
 		/// </summary>
 		/// <param name="dialogueStateActionDTO">The action to add.</param>
-		public void AddDialogAction(DialogueStateActionDTO dialogueStateActionDTO)
+		public Guid AddDialogAction(DialogueStateActionDTO dialogueStateActionDTO)
 		{
-			m_dialogues.AddDialog(new DialogStateAction(dialogueStateActionDTO));
+            var newDA = new DialogStateAction(dialogueStateActionDTO);
+            m_dialogues.AddDialog(newDA);
+            return newDA.Id;
 		}
 
 		/// <summary>
@@ -112,10 +114,11 @@ namespace IntegratedAuthoringTool
 		/// </summary>
 		/// <param name="dialogueStateActionToEdit">The action to be updated.</param>
 		/// <param name="newDialogueAction">The updated action.</param>
-		public void EditDialogAction(DialogueStateActionDTO dialogueStateActionToEdit, DialogueStateActionDTO newDialogueAction)
+		public Guid EditDialogAction(DialogueStateActionDTO dialogueStateActionToEdit, DialogueStateActionDTO newDialogueAction)
 		{
-			this.AddDialogAction(newDialogueAction);
+			var id = this.AddDialogAction(newDialogueAction);
 			this.RemoveDialogueActions(new[] { dialogueStateActionToEdit });
+            return id;
 		}
 
 	    public DialogueStateActionDTO GetDialogActionById(Guid id)
@@ -131,7 +134,7 @@ namespace IntegratedAuthoringTool
 
         public List<DialogueStateActionDTO> GetDialogueActions(Name currentState, Name nextState, Name meaning, Name style)
         {
-            var actions = GetAllDialogueActions();
+            var actions = (IEnumerable<DialogStateAction>)m_dialogues.ToList();
 
             if (currentState.ToString() != Name.UNIVERSAL_STRING)
             {
@@ -168,9 +171,9 @@ namespace IntegratedAuthoringTool
             return this.GetDialogueActions(Name.BuildName(currentState), Name.UNIVERSAL_SYMBOL, Name.UNIVERSAL_SYMBOL, Name.UNIVERSAL_SYMBOL);
         }
 
-        public IEnumerable<DialogStateAction> GetAllDialogueActions()
+        public IEnumerable<DialogueStateActionDTO> GetAllDialogueActions()
         {
-            return this.m_dialogues;
+            return this.m_dialogues.Select(d => d.ToDTO());
         }
 
         /// <summary>

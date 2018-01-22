@@ -19,6 +19,7 @@ namespace IntegratedAuthoringToolWF
     public partial class MainForm : BaseIATForm
     {
         private BindingListView<DialogueStateActionDTO> _dialogs;
+
         private readonly string PLAYER = IATConsts.PLAYER;
         private readonly string AGENT = IATConsts.AGENT;
         private BindingListView<CharacterSourceDTO> _characterSources;
@@ -32,10 +33,14 @@ namespace IntegratedAuthoringToolWF
 
         private void RefreshDialogs()
         {
-            _dialogs.DataSource = LoadedAsset.GetAllDialogueActions().Select(d => d.ToDTO()).ToList();
-            _dialogs.Refresh();
-            dataGridViewDialogueActions.Columns["Id"].Visible = false;
-            dataGridViewDialogueActions.Columns["UtteranceId"].Visible = false;
+            _dialogs.DataSource = LoadedAsset.GetAllDialogueActions().ToList();
+            EditorTools.HideColumns(dataGridViewDialogueActions, new[]
+                {
+                    PropertyUtil.GetPropertyName<DialogueStateActionDTO>(d => d.Id),
+                    PropertyUtil.GetPropertyName<DialogueStateActionDTO>(d => d.UtteranceId),
+                }
+            );
+
         }
 
         protected override void OnAssetDataLoaded(IntegratedAuthoringToolAsset asset)
@@ -158,19 +163,31 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonAddDialogueAction_Click_1(object sender, EventArgs e)
         {
-            new AddOrEditDialogueActionForm(this).ShowDialog(this);
-            RefreshDialogs();
+            this.auxAddOrUpdateItem(new DialogueStateActionDTO());
         }
 
         private void buttonEditDialogueAction_Click(object sender, EventArgs e)
         {
-            if (dataGridViewDialogueActions.SelectedRows.Count == 1)
+            var rule = EditorTools.GetSelectedDtoFromTable<DialogueStateActionDTO>(this.dataGridViewDialogueActions);
+            if (rule != null)
             {
-                var item = ((ObjectView<DialogueStateActionDTO>)dataGridViewDialogueActions.SelectedRows[0].DataBoundItem).Object;
-                new AddOrEditDialogueActionForm(this, true, item.Id).ShowDialog(this);
-                RefreshDialogs();
+                this.auxAddOrUpdateItem(rule);
             }
         }
+
+        private void auxAddOrUpdateItem(DialogueStateActionDTO item)
+        {
+            var diag = new AddOrEditDialogueActionForm(LoadedAsset, item);
+            diag.ShowDialog(this);
+            if (diag.UpdatedGuid != Guid.Empty)
+            {
+                _dialogs.DataSource = LoadedAsset.GetAllDialogueActions().ToList();
+                EditorTools.HighlightItemInGrid<DialogueStateActionDTO>
+                    (dataGridViewDialogueActions, diag.UpdatedGuid);
+            }
+            SetModified();
+        }
+
 
         private void buttonDuplicateDialogueAction_Click(object sender, EventArgs e)
         {
@@ -217,7 +234,7 @@ namespace IntegratedAuthoringToolWF
                 var dialogs = ImportWorkSheet(excelDoc, "Dialogs").ToArray();
 
                 //Clear all actions from the asset
-                LoadedAsset.RemoveDialogueActions(LoadedAsset.GetAllDialogueActions().Select(d => d.ToDTO()));
+                LoadedAsset.RemoveDialogueActions(LoadedAsset.GetAllDialogueActions());
 
                 foreach (var d in dialogs)
                     LoadedAsset.AddDialogAction(d);
@@ -263,7 +280,7 @@ namespace IntegratedAuthoringToolWF
             var fileName = new FileInfo(sfd.FileName);
             using (var excelDoc = new ExcelPackage())
             {
-                ExportWorkSheet(excelDoc, "Dialogs", LoadedAsset.GetAllDialogueActions().Select(d => d.ToDTO()));
+                ExportWorkSheet(excelDoc, "Dialogs", LoadedAsset.GetAllDialogueActions());
                 excelDoc.SaveAs(fileName);
             }
         }
@@ -335,7 +352,7 @@ namespace IntegratedAuthoringToolWF
             var fileName = new FileInfo(ofd.FileName);
             File.SetAttributes(fileName.DirectoryName, FileAttributes.Normal);
 
-            LoadedAsset.RemoveDialogueActions(LoadedAsset.GetAllDialogueActions().Select(d => d.ToDTO()));
+            LoadedAsset.RemoveDialogueActions(LoadedAsset.GetAllDialogueActions());
 
             int stateCounter = 0;
             var lines = File.ReadAllLines(fileName.FullName);
@@ -387,7 +404,7 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonTTS_Click(object sender, EventArgs e)
         {
-            var dialogs = LoadedAsset.GetAllDialogueActions().Select(d => d.ToDTO()).ToArray();
+            var dialogs = LoadedAsset.GetAllDialogueActions().ToArray();
             var t = new TextToSpeechForm(dialogs);
             t.Show(this);
         }

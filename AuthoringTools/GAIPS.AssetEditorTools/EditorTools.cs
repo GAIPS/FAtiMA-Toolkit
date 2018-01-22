@@ -57,7 +57,6 @@ namespace GAIPS.AssetEditorTools
             box.AllowVariable = true;
             box.AllowLiteral = false;
             box.AllowNil = false;
-            box.AllowVariable = false;
             box.AllowUniversal = false;
             box.AllowComposedName = false;
         }

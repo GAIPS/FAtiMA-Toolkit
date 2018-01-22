@@ -118,7 +118,10 @@ namespace CommeillFautWF
 
         private void gridSocialExchanges_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            buttonEditSE_Click(sender, e);
+            if (e.RowIndex != -1) //exclude header cells
+            {
+                buttonEditSE_Click(sender, e);
+            }
         }
 
         private void gridSocialExchanges_KeyDown(object sender, KeyEventArgs e)
