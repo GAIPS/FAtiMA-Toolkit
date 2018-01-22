@@ -24,5 +24,10 @@ namespace IntegratedAuthoringToolWF
                 PropertyUtil.GetPropertyName<IAction>(a => a.Parameters)
             });
         }
+
+        private void buttonTest_Click(object sender, System.EventArgs e)
+        {
+
+        }
     }
 }
