@@ -6,6 +6,7 @@ using SerializationUtilities;
 using KnowledgeBase;
 using NUnit.Framework;
 using WellFormedNames;
+using Conditions;
 
 namespace Tests.KnowledgeBase
 {
@@ -410,26 +411,116 @@ namespace Tests.KnowledgeBase
 
 
 
-        [TestCase("[x] = 3", "Math(3, Plus, 1)")]
+        [TestCase("[x] = 3", "Math(3, Plus, 1) = [re]", 4.0f)]
+        [TestCase("[x] = 3", "Math([x], Plus, 1) = [re]", 4.0f)]
+        [TestCase("[x] = 3, [y] = 1", "Math([x], Plus, [y]) = [re]", 4.0f)]
+        [TestCase("[x] = 3", "Math([x], Minus, 1) = [re]", 2.0f)]
+        [TestCase("[x] = 3, [y] = 1", "Math([x], Minus, [y]) = [re]", 2.0f)]
+        [TestCase("[x] = 4, [y] = 2", "Math([x], Div, [y]) = [re]", 2.0f)]
+        [TestCase("[x] = 4, [y] = 2", "Math([x], Times, [y]) = [re]", 8.0f)]
+        [TestCase("[x] = 4, [y] = 200", "Math([x], Times, [y]) = [re]", 800.0f)]
         [Test]
-        public void Test_DP_Math_Match(string tellKB, string methodCall)
+        public void Test_DP_Math_Match(string contraints, string methodCall, float result)
         {
             var me = (Name)"Ana";
             var kb = new KB(me);
 
-            var result = new HashSet<Name>(kb.AskPossibleProperties((Name)methodCall, Name.SELF_SYMBOL, null).Select(r => r.Item1.Value));
-            Assert.IsNotNull(result);
+
+            var resultVariable = methodCall.Split('=')[1];
+
+
+            var conditions = contraints.Split(',');
+
+            IEnumerable<SubstitutionSet> resultingConstraints;
+
+            var condSet = new ConditionSet();
+
+            var cond = Condition.Parse(conditions[0]);
+
+            // Apply conditions to RPC
+            foreach (var c in conditions)
+            {
+                cond = Condition.Parse(c);
+                condSet = condSet.Add(cond);
+
+
+            }
+
+            resultingConstraints = condSet.Unify(kb, Name.SELF_SYMBOL, null);
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(methodCall);
+            condSet = condSet.Add(cond);
+
+
+            var res = condSet.Unify(kb, Name.SELF_SYMBOL, resultingConstraints);
+
+            Assert.IsNotEmpty(res);
+
+            Name actualResult = Name.BuildName(0);
+
+            foreach(var v in res.FirstOrDefault())
+            {
+               if(v.Variable == (Name)resultVariable)
+                {
+                    actualResult = v.SubValue.Value;
+                    break;
+                }
+            }
+
+          
+
+            Assert.AreEqual(actualResult, Name.BuildName(result) );
         }
 
-        [TestCase("IsAgent([x]) = True", "Math(3, Plus, [y])")]
+        
+        [TestCase("[y] = 1", "Math([x], Plus, 1) = [re]")]
+        [TestCase("[x] != 1", "Math([x], Plus, 1) = [re]")]
+        [TestCase("[x] = 3", "Math([x], Plus, [y]) = [re]")]
+        [TestCase("[x] = 2", "Math([x], [y], 1) = [re]")]
+        [TestCase("[y] = 1", "Math(3, Plus, [x]) = [re]")]
+        [TestCase("[x] != 1", "Math(3, Plus, [x]) = [re]")]
+        [TestCase("isAgent([x]) = True", "Math([x], Plus, 1) = [re]")]
+        [TestCase("Mood([x]) = 0", "Math([x], Plus, 1) = [re]")]
         [Test]
-        public void Test_DP_Math_NoMatch(string tellKB, string methodCall)
+        public void Test_DP_Math_NoMatch(string contraints, string methodCall)
         {
             var me = (Name)"Ana";
             var kb = new KB(me);
 
-            var result = new HashSet<Name>(kb.AskPossibleProperties((Name)methodCall, Name.SELF_SYMBOL, null).Select(r => r.Item1.Value));
-            Assert.IsEmpty(result);
+
+            var resultVariable = methodCall.Split('=')[1];
+
+
+            var conditions = contraints.Split(',');
+
+            IEnumerable<SubstitutionSet> resultingConstraints;
+
+            var condSet = new ConditionSet();
+
+            var cond = Condition.Parse(conditions[0]);
+
+            // Apply conditions to RPC
+            foreach (var c in conditions)
+            {
+                cond = Condition.Parse(c);
+                condSet = condSet.Add(cond);
+
+
+            }
+
+            resultingConstraints = condSet.Unify(kb, Name.SELF_SYMBOL, null);
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(methodCall);
+            condSet = condSet.Add(cond);
+
+
+            var res = condSet.Unify(kb, Name.SELF_SYMBOL, resultingConstraints);
+
+            Assert.IsEmpty(res);
+
+        
         }
 
         #endregion
