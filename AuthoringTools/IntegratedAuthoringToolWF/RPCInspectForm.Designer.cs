@@ -31,8 +31,8 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dataGridViewDecisions = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.buttonTest = new System.Windows.Forms.Button();
             this.textBoxEvents = new System.Windows.Forms.TextBox();
+            this.buttonTest = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDecisions)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -85,6 +85,15 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Events";
             // 
+            // textBoxEvents
+            // 
+            this.textBoxEvents.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBoxEvents.Location = new System.Drawing.Point(3, 18);
+            this.textBoxEvents.Multiline = true;
+            this.textBoxEvents.Name = "textBoxEvents";
+            this.textBoxEvents.Size = new System.Drawing.Size(763, 176);
+            this.textBoxEvents.TabIndex = 0;
+            // 
             // buttonTest
             // 
             this.buttonTest.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
@@ -95,15 +104,6 @@
             this.buttonTest.Text = "Test";
             this.buttonTest.UseVisualStyleBackColor = true;
             this.buttonTest.Click += new System.EventHandler(this.buttonTest_Click);
-            // 
-            // textBoxEvents
-            // 
-            this.textBoxEvents.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxEvents.Location = new System.Drawing.Point(3, 18);
-            this.textBoxEvents.Multiline = true;
-            this.textBoxEvents.Name = "textBoxEvents";
-            this.textBoxEvents.Size = new System.Drawing.Size(763, 176);
-            this.textBoxEvents.TabIndex = 0;
             // 
             // RPCInspectForm
             // 
@@ -116,7 +116,7 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "RPCInspectForm";
-            this.Text = "RPC Inspect";
+            this.Text = "RPC Inspector";
             this.groupBox1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDecisions)).EndInit();
             this.groupBox2.ResumeLayout(false);
