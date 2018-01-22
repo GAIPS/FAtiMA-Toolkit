@@ -388,7 +388,8 @@ namespace Tests.CommeillFaut
         {
             var cif = BuildCIFAsset();
             var se = cif.GetSocialExchanges().First(x => x.Name == (Name)"Flirt");
-            Assert.IsTrue(se.ToString().Contains("Flirt"));
+            var toString = new SocialExchange(se).ToString();
+            Assert.IsTrue(toString.Contains("Flirt"));
         }
     }
 
