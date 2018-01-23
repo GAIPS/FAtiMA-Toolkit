@@ -69,13 +69,17 @@ https://www.youtube.com/watch?v=6-oLZ_DJW2U
 https://www.youtube.com/watch?v=2WgKs3-iI7g
 
 ### Integrated Authoring Tool
-An integrated authoring tool is now available for Windows users: 
 
-- Version 1.3: https://www.dropbox.com/s/1a0w73vrnyl2f7a/AuthoringTools-2016-Dec-30.zip?dl=0
+The Integrated Authoring tool is a Windows application that is used to create and edit game scenarios with the toolkit. 
+The latest version (2.0) now includes an agent inspector that allows the author to provide a list of events as input and then inspect the emotions and decisions the agent will have in response. 
+
+- Version 2.0: https://www.dropbox.com/s/v2lx81ikvnpvw9q/AuthoringTools-2018-Jan-2.0.zip?dl=0
+
+- Version 1.7: https://www.dropbox.com/s/gh0m837pyzbc786/AuthoringTools-2017-Dec.zip?dl=0-
 
 - Version 1.4: https://www.dropbox.com/s/wuxrdlxntxnj18h/AuthoringTools-2017-Feb-10.zip?dl=0
 
-- Version 1.7: https://www.dropbox.com/s/gh0m837pyzbc786/AuthoringTools-2017-Dec.zip?dl=0
+- Version 1.3: https://www.dropbox.com/s/1a0w73vrnyl2f7a/AuthoringTools-2016-Dec-30.zip?dl=0
 
 ### Android
 We also support android: https://www.dropbox.com/s/vdebxhowao3yqcw/FAtiMA-Demo.apk?dl=0
