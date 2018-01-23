@@ -79,6 +79,7 @@ namespace IntegratedAuthoringToolWF
                 
             }
             textBoxMood.Text = rpcAsset.Mood.ToString();
+            textBoxTick.Text = rpcAsset.Tick.ToString();
             emotions.DataSource = rpcAsset.GetAllActiveEmotions().ToList();
             actions.DataSource = rpcAsset.Decide(wfNameActionLayer.Value).ToList();
         }

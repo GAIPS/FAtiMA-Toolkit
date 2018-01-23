@@ -39,6 +39,8 @@
             this.wfNameActionLayer = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxMood = new System.Windows.Forms.TextBox();
+            this.textBoxTick = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDecisions)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -175,6 +177,7 @@
             // 
             // label2
             // 
+            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(674, 543);
             this.label2.Name = "label2";
@@ -184,17 +187,39 @@
             // 
             // textBoxMood
             // 
+            this.textBoxMood.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxMood.Location = new System.Drawing.Point(726, 540);
             this.textBoxMood.Name = "textBoxMood";
             this.textBoxMood.ReadOnly = true;
             this.textBoxMood.Size = new System.Drawing.Size(59, 22);
             this.textBoxMood.TabIndex = 6;
             // 
+            // textBoxTick
+            // 
+            this.textBoxTick.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxTick.Location = new System.Drawing.Point(609, 540);
+            this.textBoxTick.Name = "textBoxTick";
+            this.textBoxTick.ReadOnly = true;
+            this.textBoxTick.Size = new System.Drawing.Size(59, 22);
+            this.textBoxTick.TabIndex = 8;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(557, 543);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(37, 16);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Tick:";
+            // 
             // RPCInspectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(805, 576);
+            this.Controls.Add(this.textBoxTick);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.textBoxMood);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
@@ -232,5 +257,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxMood;
+        private System.Windows.Forms.TextBox textBoxTick;
+        private System.Windows.Forms.Label label3;
     }
 }

@@ -88,6 +88,7 @@ namespace EmotionalAppraisalWF
             if (selectedAppraisalRule != null)
             {
                 var duplicateRule = CloneHelper.Clone(selectedAppraisalRule);
+                duplicateRule.Id = Guid.Empty;
                 _appraisalRulesVM.AddOrUpdateAppraisalRule(duplicateRule);
             }
         }
