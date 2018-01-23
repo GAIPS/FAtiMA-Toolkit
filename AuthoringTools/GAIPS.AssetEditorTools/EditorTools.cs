@@ -52,6 +52,25 @@ namespace GAIPS.AssetEditorTools
             box.AllowComposedName = false;
         }
 
+        public static void AllowOnlyGroundedLiteralOrNil(WFNameFieldBox box)
+        {
+            box.AllowLiteral = true;
+            box.AllowNil = true;
+            box.AllowVariable = false;
+            box.AllowUniversal = false;
+            box.AllowComposedName = false;
+        }
+
+        public static void AllowOnlyGroundedLiteralOrUniversal(WFNameFieldBox box)
+        {
+            box.AllowLiteral = true;
+            box.AllowNil = false;
+            box.AllowVariable = false;
+            box.AllowUniversal = true;
+            box.AllowComposedName = false;
+        }
+
+
         public static void AllowOnlyVariable(WFNameFieldBox box)
         {
             box.AllowVariable = true;

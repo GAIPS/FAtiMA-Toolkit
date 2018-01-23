@@ -28,8 +28,9 @@ namespace IntegratedAuthoringToolWF
             textBoxUtterance.Text = dto.Utterance;
 
             //validators
-            EditorTools.AllowOnlyGroundedLiteral(textBoxCurrentState);
-            EditorTools.AllowOnlyGroundedLiteral(textBoxNextState);
+            EditorTools.AllowOnlyGroundedLiteralOrNil(textBoxCurrentState);
+            EditorTools.AllowOnlyGroundedLiteralOrNil(textBoxNextState);
+
             textBoxMeaning.AllowVariable = false;
             textBoxStyle.AllowVariable = false;
         }

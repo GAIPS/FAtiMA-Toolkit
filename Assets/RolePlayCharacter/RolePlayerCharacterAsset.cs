@@ -180,7 +180,7 @@ namespace RolePlayCharacter
             return this.Decide(Name.UNIVERSAL_SYMBOL);
         }
 
-        public IEnumerable<IAction> Decide(Name actionType)
+        public IEnumerable<IAction> Decide(Name layer)
         {
             if (CurrentActionName != null)
                 return new IAction[]
@@ -189,7 +189,7 @@ namespace RolePlayCharacter
                         CurrentActionTarget)
                 };
 
-            var possibleActions = m_emotionalDecisionMakingAsset.Decide(actionType);
+            var possibleActions = m_emotionalDecisionMakingAsset.Decide(layer);
 
             var maxUtility = float.MinValue;
             foreach(var a in possibleActions)
