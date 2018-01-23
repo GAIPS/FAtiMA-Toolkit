@@ -42,6 +42,18 @@ namespace GAIPS.AssetEditorTools.DynamicPropertiesWindow
                 Description = "Returs true if [literal] is present in [name] and false otherwise."
             },
             new DynamicPropertyEntry()
+            {
+                Origin = "KnowledgeBase",
+                PropertyTemplate = "Math([arg1], [operation], [arg2])",
+                Description = "Applies the mathematical [operation] to [arg1] and [arg2] and return the result. The [operation] can be either 'Plus', 'Minus', 'Times', 'Div'."
+            },
+            new DynamicPropertyEntry()
+            {
+                Origin = "KnowledgeBase",
+                PropertyTemplate = "ToM([per], [bel])",
+                Description = "Determines the value of belief [bel] according to the perspective [per]."
+            },
+            new DynamicPropertyEntry()
 			{
 				Origin = "Emotional Appraisal Asset",
 				PropertyTemplate = "EmotionIntensity([x], [y])",
@@ -119,6 +131,12 @@ namespace GAIPS.AssetEditorTools.DynamicPropertiesWindow
 				PropertyTemplate = "ValidDialogue([currentState], [nextState], [meaning], [style])",
 				Description = "Finds all possible substitutions that count as valid dialogues"
 			},
+            new DynamicPropertyEntry()
+            {
+                Origin = "CIF",
+                PropertyTemplate = "Volition([se], [initiator], [target])",
+                Description = "Determines the volition for the [initator] agent to act the social exchange [se] to agent [target]. The volition can be either 'Positive', 'Neutral', or 'Negative'."
+            }
         };
 
 		public void ShowOrBringToFront()
