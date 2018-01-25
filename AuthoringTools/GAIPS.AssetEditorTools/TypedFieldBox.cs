@@ -85,8 +85,8 @@ namespace GAIPS.AssetEditorTools
 
 		private void OnKeyPress(object sender, KeyPressEventArgs e)
 		{
-			if (e.KeyChar == (char) Keys.Return)
-				this.FindForm().ActiveControl=null;
+			/*if (e.KeyChar == (char) Keys.Return)
+				this.FindForm().ActiveControl=null;*/
 		}
 
 		private void OnTextChanged(object sender, EventArgs e)
@@ -94,7 +94,11 @@ namespace GAIPS.AssetEditorTools
 			T value;
 			var valid = ConversionProvider.TryToParseType(base.Text, out value);
 			if (valid)
-				valid = ValidateValue(value);
+            {
+                valid = ValidateValue(value);
+                if (valid) _value = value;
+            }
+				
 
 			BackColor = valid ? _normalColor : Color.Red;
 		}
