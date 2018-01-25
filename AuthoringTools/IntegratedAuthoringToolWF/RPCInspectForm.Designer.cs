@@ -103,6 +103,7 @@
             this.textBoxEvents.Location = new System.Drawing.Point(3, 18);
             this.textBoxEvents.Multiline = true;
             this.textBoxEvents.Name = "textBoxEvents";
+            this.textBoxEvents.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.textBoxEvents.Size = new System.Drawing.Size(763, 136);
             this.textBoxEvents.TabIndex = 0;
             // 
@@ -231,6 +232,7 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "RPCInspectForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "RPC Inspector";
             this.Load += new System.EventHandler(this.RPCInspectForm_Load);
             this.groupBox1.ResumeLayout(false);

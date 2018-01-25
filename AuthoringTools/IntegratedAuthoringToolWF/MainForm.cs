@@ -29,6 +29,7 @@ namespace IntegratedAuthoringToolWF
         {
             InitializeComponent();
             buttonRemoveCharacter.Enabled = false;
+            buttonInspect.Enabled = false;
         }
 
         private void RefreshDialogs()
@@ -139,17 +140,17 @@ namespace IntegratedAuthoringToolWF
 
         private void dataGridViewCharacters_SelectionChanged(object sender, EventArgs e)
         {
-            if (dataGridViewCharacters.SelectedRows.Count > 0)
+            var rpcSource = EditorTools.GetSelectedDtoFromTable<CharacterSourceDTO>(dataGridViewCharacters);
+            if (rpcSource != null)
             {
-                var rpcSource = ((ObjectView<CharacterSourceDTO>)dataGridViewCharacters.SelectedRows[0].DataBoundItem).Object;
                 var rpc = RolePlayCharacterAsset.LoadFromFile(rpcSource.Source);
                 _rpcForm.Close();
                 _rpcForm = new RolePlayCharacterWF.MainForm();
                 _rpcForm.LoadedAsset = rpc;
                 FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[1], _rpcForm);
                 this.tabControlIAT.SelectTab(1);
-
                 buttonRemoveCharacter.Enabled = true;
+                buttonInspect.Enabled = true;
             }
         }
 
@@ -701,11 +702,17 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonInspect_Click(object sender, EventArgs e)
         {
+            _rpcForm.LoadedAsset.Save();
             var rpcSource = EditorTools.GetSelectedDtoFromTable<CharacterSourceDTO>(dataGridViewCharacters);
             if(rpcSource != null)
             {
-                new RPCInspectForm(LoadedAsset, rpcSource.Source).ShowDialog(this);
+                new RPCInspectForm(LoadedAsset, rpcSource.Source).Show(this);
             }
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

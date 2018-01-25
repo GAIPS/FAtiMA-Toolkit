@@ -31,6 +31,8 @@ namespace IntegratedAuthoringToolWF
             EditorTools.AllowOnlyGroundedLiteralOrUniversal(wfNameActionLayer);
             wfNameActionLayer.Value = WellFormedNames.Name.UNIVERSAL_SYMBOL;
 
+            this.Text += " - " + rpcSource;
+
             actions = new BindingListView<IAction>((IList)null);
             dataGridViewDecisions.DataSource = actions;
             EditorTools.HideColumns(dataGridViewDecisions, new[]

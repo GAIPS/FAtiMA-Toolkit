@@ -12,24 +12,24 @@ namespace EmotionalDecisionMakingWF
 {
     public partial class MainForm : BaseEDMForm
     {
-		private BindingListView<ActionRuleDTO> _reactiveActions;
-	    private ConditionSetView _conditionSetView;
-        private Guid _selectedActionId;
+		private BindingListView<ActionRuleDTO> actionRules;
+	    private ConditionSetView conditionSetView;
+        private Guid selectedActionId;
         
 		public MainForm()
         {
             InitializeComponent();
-			this._reactiveActions = new BindingListView<ActionRuleDTO>((IList)null);
-			dataGridViewReactiveActions.DataSource = this._reactiveActions;
+			this.actionRules = new BindingListView<ActionRuleDTO>((IList)null);
+			dataGridViewReactiveActions.DataSource = this.actionRules;
 		}
 
 	    protected override void OnAssetDataLoaded(EmotionalDecisionMakingAsset asset)
 	    {
-            _conditionSetView = new ConditionSetView();
-            conditionSetEditor.View = _conditionSetView;
-            _conditionSetView.OnDataChanged += conditionSetView_OnDataChanged;
+            conditionSetView = new ConditionSetView();
+            conditionSetEditor.View = conditionSetView;
+            conditionSetView.OnDataChanged += conditionSetView_OnDataChanged;
 
-            _reactiveActions.DataSource = LoadedAsset.GetAllActionRules().ToList();
+            actionRules.DataSource = LoadedAsset.GetAllActionRules().ToList();
 
             dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ActionRuleDTO>(dto => dto.Priority)].DisplayIndex = 3;
 
@@ -40,27 +40,27 @@ namespace EmotionalDecisionMakingWF
             });
                 
            
-            if (_reactiveActions.Any())
+            if (actionRules.Any())
 			{
-				var ra = LoadedAsset.GetActionRule(_reactiveActions.First().Id);
+				var ra = LoadedAsset.GetActionRule(actionRules.First().Id);
 				UpdateConditions(ra);
 			}
 		}
 		
 		private void conditionSetView_OnDataChanged()
 		{
-			LoadedAsset.UpdateRuleConditions(_selectedActionId, _conditionSetView.GetData());
-            _reactiveActions.DataSource = LoadedAsset.GetAllActionRules().ToList();
-            _reactiveActions.Refresh();
+			LoadedAsset.UpdateRuleConditions(selectedActionId, conditionSetView.GetData());
+            actionRules.DataSource = LoadedAsset.GetAllActionRules().ToList();
+            actionRules.Refresh();
             SetModified();
 		}
 
         private void dataGridViewReactiveActions_RowEnter(object sender, DataGridViewCellEventArgs e)
         {
             var reaction = ((ObjectView<ActionRuleDTO>)dataGridViewReactiveActions.Rows[e.RowIndex].DataBoundItem).Object;
-            _selectedActionId = reaction.Id;
+            selectedActionId = reaction.Id;
 
-	        var ra = LoadedAsset.GetActionRule(_selectedActionId);
+	        var ra = LoadedAsset.GetActionRule(selectedActionId);
 			UpdateConditions(ra);
         }
 
@@ -70,16 +70,22 @@ namespace EmotionalDecisionMakingWF
 		        .Select(r => ((ObjectView<ActionRuleDTO>) r.DataBoundItem).Object.Id).ToList();
 
 			LoadedAsset.RemoveActionRules(ids);
-            _reactiveActions.DataSource = LoadedAsset.GetAllActionRules().ToList();
-            _reactiveActions.Refresh();
+
+            var rules = LoadedAsset.GetAllActionRules().ToList();
+            actionRules.DataSource = rules;
+            actionRules.Refresh();
 			SetModified();
+            if(rules == null || rules.Count == 0)
+            {
+                UpdateConditions(null);
+            }
         }
 
         private void buttonAddReaction_Click(object sender, EventArgs e)
         {
             new AddOrEditReactionForm(LoadedAsset).ShowDialog();
-            _reactiveActions.DataSource = LoadedAsset.GetAllActionRules().ToList();
-            _reactiveActions.Refresh();
+            actionRules.DataSource = LoadedAsset.GetAllActionRules().ToList();
+            actionRules.Refresh();
 			SetModified();
 		}
 
@@ -91,8 +97,8 @@ namespace EmotionalDecisionMakingWF
                    SelectedRows[0].DataBoundItem).Object;
                 
                 new AddOrEditReactionForm(LoadedAsset,selectedReaction).ShowDialog();
-                _reactiveActions.DataSource = LoadedAsset.GetAllActionRules().ToList();
-                 _reactiveActions.Refresh();
+                actionRules.DataSource = LoadedAsset.GetAllActionRules().ToList();
+                 actionRules.Refresh();
                 
                 SetModified();
             }
@@ -100,7 +106,7 @@ namespace EmotionalDecisionMakingWF
 
 		private void UpdateConditions(ActionRuleDTO reaction)
 		{
-			_conditionSetView.SetData(reaction?.Conditions);
+			conditionSetView.SetData(reaction?.Conditions);
 		}
 
 		private void dataGridViewReactiveActions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -128,8 +134,8 @@ namespace EmotionalDecisionMakingWF
                 var a = ((ObjectView<ActionRuleDTO>)dataGridViewReactiveActions.SelectedRows[0].DataBoundItem).Object;
                 var duplicateAction = CloneHelper.Clone(a); 
                 LoadedAsset.AddActionRule(duplicateAction);
-                _reactiveActions.DataSource = LoadedAsset.GetAllActionRules().ToList();
-                _reactiveActions.Refresh();
+                actionRules.DataSource = LoadedAsset.GetAllActionRules().ToList();
+                actionRules.Refresh();
                 SetModified();
             }
         }
@@ -155,6 +161,11 @@ namespace EmotionalDecisionMakingWF
                     this.buttonRemoveReaction_Click(sender, e);
                     break;
             }
+
+        }
+
+        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
+        {
 
         }
     }
