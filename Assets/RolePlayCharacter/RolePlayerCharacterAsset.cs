@@ -73,6 +73,9 @@ namespace RolePlayCharacter
             set { m_commeillFautAssetSource = ToRelativePath(value); }
         }
 
+
+        public bool IsPlayer { get; set; }
+
         /// <summary>
         /// The name of the action that the character is currently executing
         /// </summary>
@@ -182,6 +185,8 @@ namespace RolePlayCharacter
 
         public IEnumerable<IAction> Decide(Name layer)
         {
+            if (m_emotionalDecisionMakingAsset == null) return new List<IAction>();
+
             if (CurrentActionName != null)
                 return new IAction[]
                 {
@@ -201,7 +206,6 @@ namespace RolePlayCharacter
             }
 
             var topActions = possibleActions.Where(a => a.Utility == maxUtility).Shuffle();
-
             var remainder = possibleActions.Where(a => a.Utility != maxUtility);
             return topActions.Concat(remainder);
         }
@@ -423,6 +427,13 @@ namespace RolePlayCharacter
 
             this.m_am.UpdateEvent(eventDTO);
         }
+
+
+        public override string ToString()
+        {
+            return this.CharacterName.ToString() + " "+ this.Mood;
+        }
+
 
         protected override string OnAssetLoaded()
         {

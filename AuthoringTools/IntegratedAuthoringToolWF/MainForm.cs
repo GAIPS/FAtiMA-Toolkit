@@ -1,4 +1,5 @@
-﻿using Equin.ApplicationFramework;
+﻿using ActionLibrary;
+using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
@@ -25,6 +26,8 @@ namespace IntegratedAuthoringToolWF
         private BindingListView<CharacterSourceDTO> _characterSources;
         private RolePlayCharacterWF.MainForm _rpcForm = new RolePlayCharacterWF.MainForm();
 
+        private int currentRPCTabIndex;
+
         public MainForm()
         {
             InitializeComponent();
@@ -39,6 +42,12 @@ namespace IntegratedAuthoringToolWF
                 {
                     PropertyUtil.GetPropertyName<DialogueStateActionDTO>(d => d.Id),
                     PropertyUtil.GetPropertyName<DialogueStateActionDTO>(d => d.UtteranceId),
+                }
+            );
+
+            EditorTools.HideColumns(dataGridViewCharacters, new[]
+                {
+                    PropertyUtil.GetPropertyName<CharacterSourceDTO>(s => s.Source),
                 }
             );
 
@@ -66,6 +75,7 @@ namespace IntegratedAuthoringToolWF
 
             FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[1], _rpcForm);
             this.tabControlIAT.SelectTab(1);
+            this.currentRPCTabIndex = 1;
             _rpcForm.LoadedAsset = rpcAsset;
 
             LoadedAsset.AddNewCharacterSource(new CharacterSourceDTO() { Source = asset.AssetFilePath });
@@ -144,11 +154,13 @@ namespace IntegratedAuthoringToolWF
             if (rpcSource != null)
             {
                 var rpc = RolePlayCharacterAsset.LoadFromFile(rpcSource.Source);
+                var selectedRPCTab = _rpcForm.SelectedTab;
                 _rpcForm.Close();
                 _rpcForm = new RolePlayCharacterWF.MainForm();
                 _rpcForm.LoadedAsset = rpc;
                 FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[1], _rpcForm);
                 this.tabControlIAT.SelectTab(1);
+                _rpcForm.SelectedTab = selectedRPCTab;
                 buttonRemoveCharacter.Enabled = true;
                 buttonInspect.Enabled = true;
             }
@@ -710,9 +722,104 @@ namespace IntegratedAuthoringToolWF
             }
         }
 
+
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private List<RolePlayCharacterAsset> agentsInChat;
+        private List<IAction> playerActions;
+        
+        private void buttonStart_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                this.saveToolStripMenuItem_Click(sender, e);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("The IAT asset must be saved");
+                return;
+            }
+
+            var sources = LoadedAsset.GetAllCharacterSources();
+            if(sources.Count() <= 1)
+            {
+                MessageBox.Show("At least two characters are needed.");
+                return;
+            }
+
+            agentsInChat = new List<RolePlayCharacterAsset>();
+            foreach (var s in sources)
+            {
+                var rpc = RolePlayCharacterAsset.LoadFromFile(s.Source);
+                rpc.LoadAssociatedAssets();
+                LoadedAsset.BindToRegistry(rpc.DynamicPropertiesRegistry);
+                if (rpc.CharacterName.ToString().ToLower().Contains("player"))
+                {
+                    rpc.IsPlayer = true; 
+                }
+
+                agentsInChat.Add(rpc);
+            }
+
+            richTextBoxChat.Text = "Characters were loaded with success (" + DateTime.Now + ")\n";
+            buttonContinue.Enabled = true;
+            textBoxTick.Text = agentsInChat[0].Tick.ToString();
+            this.buttonContinue_Click(sender, e);
+        }
+
+        private void buttonContinue_Click(object sender, EventArgs e)
+        {
+            foreach(var ag in agentsInChat)
+            {
+                var decisions = ag.Decide().Where(a => a.Key.ToString() == IATConsts.DIALOG_ACTION_KEY);
+                if (decisions.Any())
+                {
+                    if (ag.IsPlayer)
+                    {
+                        playerActions = new List<IAction>();
+                        string error;
+                        foreach(var d in decisions)
+                        {
+                            var diag = LoadedAsset.GetDialogAction(d, out error);
+                            if (error != null)
+                            {
+                                richTextBoxChat.AppendText(ag.CharacterName + " : " + error + "\n");
+                            }else
+                            {
+                                playerActions.Add(d);
+                            }
+                        }
+                        listBoxPlayerDialogues.DataSource = playerActions.Select(x =>
+                                "To " + x.Target + " : " + 
+                                LoadedAsset.GetDialogAction(x, out error).Utterance).ToList(); 
+                    }
+                    else
+                    {
+                        var action = decisions.First();
+                        string error;
+                        var diag = LoadedAsset.GetDialogAction(action, out error);
+                        if(error != null)
+                        {
+                            richTextBoxChat.AppendText(ag.CharacterName + " : " +  error + "\n");
+                        }else
+                        {
+                            richTextBoxChat.AppendText(ag.CharacterName + " To " + action.Target + " : " + diag.Utterance +"\n");
+                        }
+                    }
+                }
+            }
+        }
+
+        private void listBoxPlayerDialogues_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var idx = listBoxPlayerDialogues.SelectedIndex;
+            var action = playerActions[idx];
+            richTextBoxChat.Focus();
+            richTextBoxChat.AppendText("Player " + listBoxPlayerDialogues.SelectedItem.ToString() + "\n");
+            
         }
     }
 }

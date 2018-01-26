@@ -13,6 +13,7 @@ using EmotionalAppraisal;
 using EmotionalDecisionMaking;
 using SocialImportance;
 using CommeillFaut;
+using GAIPS.Rage;
 
 namespace RolePlayCharacterWF
 {
@@ -27,6 +28,13 @@ namespace RolePlayCharacterWF
         private SocialImportanceWF.MainForm _siForm = new SocialImportanceWF.MainForm();
         private CommeillFautWF.MainForm _cifForm = new CommeillFautWF.MainForm();
 
+        private int tabSelected;
+
+        public int SelectedTab
+        {
+            get { return tabSelected;}
+            set { tabSelected = value; tabControl1.SelectedIndex = value; }
+        }
 
         public MainForm()
         {
@@ -49,51 +57,51 @@ namespace RolePlayCharacterWF
             this.dataGridViewAM.DataSource = _autobiographicalMemoryVM.Events;
 
             //EA ASSET
-            this.pathTextBoxEA.Text = asset.EmotionalAppraisalAssetSource;
             if (string.IsNullOrEmpty(asset.EmotionalAppraisalAssetSource))
             {
                 _eaForm.Hide();
             }else
             {
+                this.pathTextBoxEA.Text = LoadableAsset<EmotionalDecisionMakingAsset>.ToRelativePath(LoadedAsset.AssetFilePath, asset.EmotionalAppraisalAssetSource);
                 var ea = EmotionalAppraisalAsset.LoadFromFile(asset.EmotionalAppraisalAssetSource);
                 _eaForm.LoadedAsset = ea;
                 FormHelper.ShowFormInContainerControl(this.panelEA, _eaForm);
             }
 
             //EDM ASSET
-            this.textBoxPathEDM.Text = asset.EmotionalDecisionMakingSource;
             if (string.IsNullOrEmpty(asset.EmotionalDecisionMakingSource))
             {
                 _edmForm.Hide();
             }
             else
             {
+                this.textBoxPathEDM.Text = LoadableAsset<EmotionalDecisionMakingAsset>.ToRelativePath(LoadedAsset.AssetFilePath, asset.EmotionalDecisionMakingSource);
                 var edm = EmotionalDecisionMakingAsset.LoadFromFile(asset.EmotionalDecisionMakingSource);
                 _edmForm.LoadedAsset = edm;
                 FormHelper.ShowFormInContainerControl(this.panelEDM, _edmForm);
             }
 
             //SI ASSET
-            this.textBoxPathSI.Text = asset.SocialImportanceAssetSource;
             if (string.IsNullOrEmpty(asset.SocialImportanceAssetSource))
             {
                 _siForm.Hide();
             }
             else
             {
+                this.textBoxPathSI.Text = LoadableAsset<EmotionalDecisionMakingAsset>.ToRelativePath(LoadedAsset.AssetFilePath, asset.SocialImportanceAssetSource);
                 var si = SocialImportanceAsset.LoadFromFile(asset.SocialImportanceAssetSource);
                 _siForm.LoadedAsset = si;
                 FormHelper.ShowFormInContainerControl(this.panelSI, _siForm);
             }
 
             //CIF ASSET
-            this.textBoxPathCIF.Text = asset.CommeillFautAssetSource;
             if (string.IsNullOrEmpty(asset.CommeillFautAssetSource))
             {
                 _cifForm.Hide();
             }
             else
             {
+                this.textBoxPathCIF.Text = LoadableAsset<EmotionalDecisionMakingAsset>.ToRelativePath(LoadedAsset.AssetFilePath, asset.CommeillFautAssetSource);
                 var cif = CommeillFautAsset.LoadFromFile(asset.CommeillFautAssetSource);
                 _cifForm.LoadedAsset = cif;
                 FormHelper.ShowFormInContainerControl(this.panelCIF, _cifForm);
@@ -612,6 +620,16 @@ namespace RolePlayCharacterWF
                     this.buttonRemoveEventRecord_Click(sender, e);
                     break;
             }
+        }
+
+        private void textBoxPathEDM_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.SelectedTab = tabControl1.SelectedIndex;
         }
     }
 }

@@ -101,7 +101,7 @@ namespace GAIPS.Rage
 			return ToAbsolutePath(m_assetFilepath, relativePath);
 		}
 
-		protected static string ToRelativePath(string basePath, string absolutePath)
+		public static string ToRelativePath(string basePath, string absolutePath)
 		{
 			if (!Path.IsPathRooted(absolutePath))
 				return absolutePath;

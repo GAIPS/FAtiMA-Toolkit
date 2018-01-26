@@ -7,5 +7,6 @@ namespace IntegratedAuthoringTool.DTOs
     {
         public int Id { get; set; }
         public string Source { get; set; }
+        public string RelativePath { get; set; }
     }
 }

@@ -10,6 +10,7 @@ using WellFormedNames;
 using Utilities;
 using System.Text;
 using System.Security.Cryptography;
+using ActionLibrary;
 
 namespace IntegratedAuthoringTool
 {
@@ -50,7 +51,7 @@ namespace IntegratedAuthoringTool
         /// </summary>
         public IEnumerable<CharacterSourceDTO> GetAllCharacterSources()
         {
-	        return m_characterSources.Select(p => new CharacterSourceDTO() {Id = p.Id, Source = ToAbsolutePath(p.Source)});
+	        return m_characterSources.Select(p => new CharacterSourceDTO() {Id = p.Id, Source = ToAbsolutePath(p.Source), RelativePath = p.Source});
 
         }
 
@@ -170,6 +171,28 @@ namespace IntegratedAuthoringTool
         {
             return this.GetDialogueActions(Name.BuildName(currentState), Name.UNIVERSAL_SYMBOL, Name.UNIVERSAL_SYMBOL, Name.UNIVERSAL_SYMBOL);
         }
+
+        public DialogueStateActionDTO GetDialogAction(IAction action, out string error)
+        {
+            error = null; 
+
+            if (action.Parameters.Count != 4)
+            {
+                error = "ERROR - Speak action does not have four parameters'" + action + "'\n";
+            }
+
+            var diag = this.GetDialogueActions(action.Parameters[0],
+                                               action.Parameters[1],
+                                               action.Parameters[2],
+                                               action.Parameters[3]).Shuffle().FirstOrDefault();
+            if (diag == null)
+            {
+                error = "ERROR - No dialogue defined for action '" + action + "'\n";
+            }
+
+            return diag;
+        }
+
 
         public IEnumerable<DialogueStateActionDTO> GetAllDialogueActions()
         {
