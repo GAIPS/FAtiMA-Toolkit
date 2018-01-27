@@ -127,7 +127,7 @@ namespace IntegratedAuthoringTool
 		    return m_dialogues.GetDialogById(id).ToDTO();
 	    }
 
-        public Name BuildSpeakActionName(string speaker, Guid id)
+        public Name BuildSpeakActionName(Guid id)
         {
             var dialogue = new DialogStateAction(GetDialogActionById(id));
             return dialogue.BuildSpeakAction();

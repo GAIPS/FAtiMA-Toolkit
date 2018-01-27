@@ -61,6 +61,12 @@ namespace IntegratedAuthoringToolWF
             dataGridViewCharacters.DataSource = _characterSources;
             _dialogs = new BindingListView<DialogueStateActionDTO>(new List<DialogueStateActionDTO>());
             dataGridViewDialogueActions.DataSource = _dialogs;
+
+            //ResetSimulator
+            richTextBoxChat.Clear();
+            buttonContinue.Enabled = false;
+            textBoxTick.Text = "";
+
             RefreshDialogs();
         }
 
@@ -729,7 +735,7 @@ namespace IntegratedAuthoringToolWF
         }
 
         private List<RolePlayCharacterAsset> agentsInChat;
-        private List<IAction> playerActions;
+   
         
         private void buttonStart_Click(object sender, EventArgs e)
         {
@@ -779,47 +785,118 @@ namespace IntegratedAuthoringToolWF
                 {
                     if (ag.IsPlayer)
                     {
-                        playerActions = new List<IAction>();
-                        string error;
-                        foreach(var d in decisions)
-                        {
-                            var diag = LoadedAsset.GetDialogAction(d, out error);
-                            if (error != null)
-                            {
-                                richTextBoxChat.AppendText(ag.CharacterName + " : " + error + "\n");
-                            }else
-                            {
-                                playerActions.Add(d);
-                            }
-                        }
-                        listBoxPlayerDialogues.DataSource = playerActions.Select(x =>
-                                "To " + x.Target + " : " + 
-                                LoadedAsset.GetDialogAction(x, out error).Utterance).ToList(); 
+                        this.determinePlayerDialogueOptions(decisions, ag.CharacterName.ToString());
                     }
                     else
                     {
                         var action = decisions.First();
                         string error;
                         var diag = LoadedAsset.GetDialogAction(action, out error);
-                        if(error != null)
+                        if(error != null )
                         {
+                            richTextBoxChat.Focus();
                             richTextBoxChat.AppendText(ag.CharacterName + " : " +  error + "\n");
-                        }else
+                        }else if(this.ValidateTarget(action, ag.CharacterName.ToString()))
                         {
+                            richTextBoxChat.Focus();
                             richTextBoxChat.AppendText(ag.CharacterName + " To " + action.Target + " : " + diag.Utterance +"\n");
+                            this.auxHandlePropertyChangesForDialogAction(ag.CharacterName.ToString(), action, diag.NextState.ToString());
                         }
                     }
+                }else if (ag.IsPlayer)
+                {
+                    listBoxPlayerDialogues.DataSource = new List<string>();
+                }
+                ag.Update();
+            }
+            //Assumption: All agents have the same tick
+            textBoxTick.Text = agentsInChat[0].Tick.ToString();
+        }
+
+        private List<IAction> playerActions;
+
+        private void determinePlayerDialogueOptions(IEnumerable<IAction> actions, string playerCharName)
+        {
+            playerActions = new List<IAction>();
+            string error;
+            foreach (var a in actions)
+            {
+                var diag = LoadedAsset.GetDialogAction(a, out error);
+                if (error != null)
+                {
+                    richTextBoxChat.Focus();
+                    richTextBoxChat.AppendText(playerCharName + " : " + error + "\n");
+                }
+                else if(this.ValidateTarget(a, playerCharName))
+                {
+                    playerActions.Add(a);
                 }
             }
+            listBoxPlayerDialogues.DataSource = playerActions.Select(x => "To " + x.Target + " : " +
+                    LoadedAsset.GetDialogAction(x, out error).Utterance).ToList();
+        }
+
+
+        private bool ValidateTarget(IAction action, string actor)
+        {
+            var targetAgent = agentsInChat.FirstOrDefault(x => x.CharacterName == action.Target);
+            if(targetAgent == null)
+            {
+                richTextBoxChat.Focus();
+                richTextBoxChat.AppendText(actor + " : Invalid Target '" + action.Target + "' for " + action + "\n");
+                return false;
+            }else return true;
         }
 
         private void listBoxPlayerDialogues_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             var idx = listBoxPlayerDialogues.SelectedIndex;
-            var action = playerActions[idx];
+            var act = playerActions[idx];
             richTextBoxChat.Focus();
             richTextBoxChat.AppendText("Player " + listBoxPlayerDialogues.SelectedItem.ToString() + "\n");
-            
+            var playerRPC = agentsInChat.First(x => x.IsPlayer);
+            string error;
+            var dialog = LoadedAsset.GetDialogAction(act, out error);
+            this.auxHandlePropertyChangesForDialogAction(playerRPC.CharacterName.ToString(), act, dialog.NextState);
+            this.buttonContinue_Click(sender, e);
+        }
+
+        private void auxHandlePropertyChangesForDialogAction(string actor, IAction action, string nextState)
+        {
+            foreach (var agent in agentsInChat)
+            {
+                var evt = EventHelper.ActionEnd(
+                    agent.CharacterName.ToString(),
+                    action.Name.ToString(),
+                    action.Target.ToString());
+                agent.Perceive(evt);
+
+                evt = EventHelper.PropertyChange(
+                    IATConsts.HAS_FLOOR_PROPERTY,
+                    action.Target.ToString(),
+                    agent.CharacterName.ToString());
+                agent.Perceive(evt);
+            }
+
+            //Property Change
+            if (nextState != WellFormedNames.Name.NIL_STRING)
+            {
+                var targetAgent = agentsInChat.FirstOrDefault(x => x.CharacterName == action.Target);
+                targetAgent.Perceive(
+                    EventHelper.PropertyChange(
+                    string.Format(IATConsts.DIALOGUE_STATE_PROPERTY, actor),
+                    nextState,
+                    actor
+                    ));
+
+                var actorAgent = agentsInChat.FirstOrDefault(x => x.CharacterName.ToString() == actor);
+                actorAgent.Perceive(
+                    EventHelper.PropertyChange(
+                    string.Format(IATConsts.DIALOGUE_STATE_PROPERTY, targetAgent.CharacterName.ToString()),
+                    nextState,
+                    actor
+                    ));
+            }
         }
     }
 }
