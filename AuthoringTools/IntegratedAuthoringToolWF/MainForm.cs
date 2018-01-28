@@ -814,6 +814,8 @@ namespace IntegratedAuthoringToolWF
                     }
                     else if (this.ValidateTarget(action, ag.CharacterName.ToString()))
                     {
+                        auxHandlePropertyChangesForDialogAction(ag.CharacterName.ToString(), action, diag.NextState.ToString());
+
                         EditorTools.WriteText(richTextBoxChat,
                            ag.CharacterName + " To " + action.Target + " : ", Color.ForestGreen, false);
 
@@ -822,14 +824,14 @@ namespace IntegratedAuthoringToolWF
                         EditorTools.WriteText(richTextBoxChat,
                             " (" + ag.GetInternalStateString() + " | " + ag.GetSIRelationsString() + ")", Color.DarkRed, true);
 
-                        auxHandlePropertyChangesForDialogAction(ag.CharacterName.ToString(), action, diag.NextState.ToString());
+                        
                     }
                 }
                 ag.Update();
             }
             EditorTools.WriteText(richTextBoxChat, "", Color.Black, true);
 
-            var playerRPC = agentsInChat.First(a => a.IsPlayer = true);
+            var playerRPC = agentsInChat.First(a => a.IsPlayer == true);
             var playerDecisions = playerRPC.Decide().Where(a => a.Key.ToString() == IATConsts.DIALOG_ACTION_KEY);
             if (playerDecisions.Any())
             {
