@@ -506,7 +506,7 @@ namespace IntegratedAuthoringToolWF
 
             string validationMessage = "";
 
-            var rpcActions = new Dictionary<ActionLibrary.IAction, RolePlayCharacterAsset>();
+            var rpcActions = new Dictionary<IAction, RolePlayCharacterAsset>();
 
             var act = rpcList.FirstOrDefault().Decide();
 
@@ -745,14 +745,14 @@ namespace IntegratedAuthoringToolWF
             }
             catch(Exception ex)
             {
-                MessageBox.Show("The IAT asset must be saved");
+                EditorTools.WriteText(richTextBoxChat, "The IAT asset must be saved", Color.Red, true);
                 return;
             }
 
             var sources = LoadedAsset.GetAllCharacterSources();
             if(sources.Count() <= 1)
             {
-                MessageBox.Show("At least two characters are needed.");
+                EditorTools.WriteText(richTextBoxChat, "At least two characters are needed.", Color.Red, true);
                 return;
             }
 
@@ -770,45 +770,77 @@ namespace IntegratedAuthoringToolWF
                 agentsInChat.Add(rpc);
             }
 
-            richTextBoxChat.Text = "Characters were loaded with success (" + DateTime.Now + ")\n";
+            richTextBoxChat.Clear();
+            EditorTools.WriteText(richTextBoxChat, "Characters were loaded with success (" + DateTime.Now + ")", Color.Blue, true);
+            var enterEvents = new List<WellFormedNames.Name>();
+            foreach (var ag in agentsInChat)
+            {
+                enterEvents.Add(EventHelper.ActionEnd(ag.CharacterName.ToString(), "Enters", "-"));
+            }
+
+            foreach (var ag in agentsInChat)
+            {
+                ag.Perceive(enterEvents);
+
+                EditorTools.WriteText(richTextBoxChat, ag.CharacterName + " enters the chat.", Color.Black, false);
+                EditorTools.WriteText(richTextBoxChat, 
+                    " (" + ag.GetInternalStateString() + " | " + ag.GetSIRelationsString()+ ")", Color.DarkRed, true);
+            }
+
+            EditorTools.WriteText(richTextBoxChat, "", Color.Black, true );
+
+
             buttonContinue.Enabled = true;
             textBoxTick.Text = agentsInChat[0].Tick.ToString();
             this.buttonContinue_Click(sender, e);
         }
 
+        
+
         private void buttonContinue_Click(object sender, EventArgs e)
         {
-            foreach(var ag in agentsInChat)
+            foreach (var ag in agentsInChat)
             {
+                if (ag.IsPlayer) continue;
                 var decisions = ag.Decide().Where(a => a.Key.ToString() == IATConsts.DIALOG_ACTION_KEY);
                 if (decisions.Any())
                 {
-                    if (ag.IsPlayer)
+                    var action = decisions.First();
+                    string error;
+                    var diag = LoadedAsset.GetDialogAction(action, out error);
+                    if (error != null)
                     {
-                        this.determinePlayerDialogueOptions(decisions, ag.CharacterName.ToString());
+                        EditorTools.WriteText(richTextBoxChat, ag.CharacterName + " : " + error, Color.Red, true);
                     }
-                    else
+                    else if (this.ValidateTarget(action, ag.CharacterName.ToString()))
                     {
-                        var action = decisions.First();
-                        string error;
-                        var diag = LoadedAsset.GetDialogAction(action, out error);
-                        if(error != null )
-                        {
-                            richTextBoxChat.Focus();
-                            richTextBoxChat.AppendText(ag.CharacterName + " : " +  error + "\n");
-                        }else if(this.ValidateTarget(action, ag.CharacterName.ToString()))
-                        {
-                            richTextBoxChat.Focus();
-                            richTextBoxChat.AppendText(ag.CharacterName + " To " + action.Target + " : " + diag.Utterance +"\n");
-                            this.auxHandlePropertyChangesForDialogAction(ag.CharacterName.ToString(), action, diag.NextState.ToString());
-                        }
+                        EditorTools.WriteText(richTextBoxChat,
+                           ag.CharacterName + " To " + action.Target + " : ", Color.ForestGreen, false);
+
+                        EditorTools.WriteText(richTextBoxChat, diag.Utterance, Color.Black, false);
+
+                        EditorTools.WriteText(richTextBoxChat,
+                            " (" + ag.GetInternalStateString() + " | " + ag.GetSIRelationsString() + ")", Color.DarkRed, true);
+
+                        auxHandlePropertyChangesForDialogAction(ag.CharacterName.ToString(), action, diag.NextState.ToString());
                     }
-                }else if (ag.IsPlayer)
-                {
-                    listBoxPlayerDialogues.DataSource = new List<string>();
                 }
                 ag.Update();
             }
+            EditorTools.WriteText(richTextBoxChat, "", Color.Black, true);
+
+            var playerRPC = agentsInChat.First(a => a.IsPlayer = true);
+            var playerDecisions = playerRPC.Decide().Where(a => a.Key.ToString() == IATConsts.DIALOG_ACTION_KEY);
+            if (playerDecisions.Any())
+            {
+                this.determinePlayerDialogueOptions(playerDecisions, playerRPC.CharacterName.ToString());
+            }
+            else
+            {
+                listBoxPlayerDialogues.DataSource = new List<string>();
+            }
+            playerRPC.Update();
+
             //Assumption: All agents have the same tick
             textBoxTick.Text = agentsInChat[0].Tick.ToString();
         }
@@ -824,8 +856,7 @@ namespace IntegratedAuthoringToolWF
                 var diag = LoadedAsset.GetDialogAction(a, out error);
                 if (error != null)
                 {
-                    richTextBoxChat.Focus();
-                    richTextBoxChat.AppendText(playerCharName + " : " + error + "\n");
+                    EditorTools.WriteText(richTextBoxChat, playerCharName + " : " + error,Color.Red, true);
                 }
                 else if(this.ValidateTarget(a, playerCharName))
                 {
@@ -842,8 +873,8 @@ namespace IntegratedAuthoringToolWF
             var targetAgent = agentsInChat.FirstOrDefault(x => x.CharacterName == action.Target);
             if(targetAgent == null)
             {
-                richTextBoxChat.Focus();
-                richTextBoxChat.AppendText(actor + " : Invalid Target '" + action.Target + "' for " + action + "\n");
+                EditorTools.WriteText(richTextBoxChat, 
+                    actor + " : Invalid Target '" + action.Target + "' for " + action, Color.Red, true);
                 return false;
             }else return true;
         }
@@ -851,9 +882,13 @@ namespace IntegratedAuthoringToolWF
         private void listBoxPlayerDialogues_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             var idx = listBoxPlayerDialogues.SelectedIndex;
+            if (idx == -1) return;
+
             var act = playerActions[idx];
-            richTextBoxChat.Focus();
-            richTextBoxChat.AppendText("Player " + listBoxPlayerDialogues.SelectedItem.ToString() + "\n");
+            
+            EditorTools.WriteText(richTextBoxChat,
+                "Player " + listBoxPlayerDialogues.SelectedItem.ToString(), Color.Blue, true);
+
             var playerRPC = agentsInChat.First(x => x.IsPlayer);
             string error;
             var dialog = LoadedAsset.GetDialogAction(act, out error);
@@ -866,19 +901,21 @@ namespace IntegratedAuthoringToolWF
             foreach (var agent in agentsInChat)
             {
                 var evt = EventHelper.ActionEnd(
-                    agent.CharacterName.ToString(),
+                    actor,
                     action.Name.ToString(),
                     action.Target.ToString());
+
                 agent.Perceive(evt);
 
                 evt = EventHelper.PropertyChange(
                     IATConsts.HAS_FLOOR_PROPERTY,
                     action.Target.ToString(),
-                    agent.CharacterName.ToString());
+                    actor);
+
                 agent.Perceive(evt);
             }
 
-            //Property Change
+          
             if (nextState != WellFormedNames.Name.NIL_STRING)
             {
                 var targetAgent = agentsInChat.FirstOrDefault(x => x.CharacterName == action.Target);

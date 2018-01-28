@@ -431,9 +431,37 @@ namespace RolePlayCharacter
 
         public override string ToString()
         {
-            return this.CharacterName.ToString() + " "+ this.Mood;
+            return this.CharacterName.ToString();
         }
 
+        public string GetInternalStateString()
+        {
+            if (this.GetAllActiveEmotions().Any())
+            {
+                var emotion = GetBeliefValue("StrongestEmotion(SELF)");
+                var intensity = this.GetAllActiveEmotions().Max(e => e.Intensity);
+                return "M: " + this.Mood.ToString("F2") +
+                       " | S. Em: " + emotion + "-" + intensity.ToString("F2");
+            }
+            else return "M: " + this.Mood.ToString("F2");
+        }
+
+        public string GetSIRelationsString()
+        {
+            var result = string.Empty;
+            foreach (var target in this.m_otherAgents.Values)
+            {
+                var siProperty = "SI(" + target.Name + ")";
+                var siToTarget = int.Parse(GetBeliefValue(siProperty));
+                if (siToTarget > 1)
+                {
+                    result += siProperty + ":" + siToTarget + ", ";
+                }
+                
+            }
+            if (result != string.Empty) return result.Remove(result.Length - 2);
+            else return result;
+        }
 
         protected override string OnAssetLoaded()
         {

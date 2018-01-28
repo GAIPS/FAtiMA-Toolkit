@@ -315,7 +315,7 @@ namespace KnowledgeBase
 
 			var results = AskPossibleProperties(property, perspective, null).Select(p => p.Item1).ToArray();
 			if (results.Length==0)
-				return null;
+				return new ComplexValue(Name.NIL_SYMBOL);
 			if (results.Length == 1)
 				return results[0];
 

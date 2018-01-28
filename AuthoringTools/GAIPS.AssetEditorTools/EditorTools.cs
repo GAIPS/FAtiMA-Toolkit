@@ -2,6 +2,7 @@
 using GAIPS.AssetEditorTools.TypedTextBoxes;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -70,6 +71,16 @@ namespace GAIPS.AssetEditorTools
             box.AllowComposedName = false;
         }
 
+        public static void WriteText(RichTextBox box, string text, Color color, bool newLine)
+        {
+            box.SelectionStart = box.TextLength;
+            box.SelectionLength = 0;
+            box.SelectionColor = color;
+            text = text + (newLine ? "\n" : "");
+            box.Focus();
+            box.AppendText(text);
+            box.SelectionColor = box.ForeColor;
+        }
 
         public static void AllowOnlyVariable(WFNameFieldBox box)
         {

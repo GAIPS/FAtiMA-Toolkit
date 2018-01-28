@@ -135,6 +135,7 @@ namespace SocialImportance
 		private uint CalculateSI(Name target, Name perspective)
 		{
 			long result = 0;
+
 			foreach (var a in m_attributionRules)
 			{
 				var sub = new Substitution(a.Target, new ComplexValue(target));
