@@ -41,7 +41,7 @@ namespace IntegratedAuthoringToolTutorial
 
                 var chosenDialog = playerDialogs.ElementAt(pos);
 
-                var actionName = iat.BuildSpeakActionName(playerStr, chosenDialog.Id);
+                var actionName = iat.BuildSpeakActionName(chosenDialog.Id);
                 var speakEvt = EventHelper.ActionEnd(playerStr, actionName.ToString(), rpc.CharacterName.ToString());
 
                 currentState = chosenDialog.NextState;
