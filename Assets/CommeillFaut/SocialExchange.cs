@@ -101,7 +101,7 @@ namespace CommeillFaut
             if (init == targ) return -1;
 
             var targetSub = new Substitution(Target, new ComplexValue(targ));
-            var initiatorSub = new Substitution(Target, new ComplexValue(init));
+            var initiatorSub = new Substitution(Initiator, new ComplexValue(init));
 
             var constraints = new SubstitutionSet();
             constraints.AddSubstitution(targetSub);

@@ -28,7 +28,7 @@ namespace Tests.CommeillFaut
                Description = "When I'm atracted to...",
                Conditions = new Conditions.DTOs.ConditionSetDTO()
                {
-                    ConditionSet = new string[] { "Has(Floor) != Start" }
+                    ConditionSet = new string[] { "Has(Floor) != Start", "[x] = Sarah", " [i] = Matt" }
                },
                Initiator = Name.BuildName("[i]"),
                Target = Name.BuildName("[x]")
@@ -92,17 +92,18 @@ namespace Tests.CommeillFaut
         }
 
 
-
-
+        [TestCase(1, "IsAgent([y]) = True", "Volition(Flirt, [y], Teresa) = Neutral")]
+        [TestCase(1, "IsAgent([x]) = True", "Volition([se], Matt, Sarah) = Positive")]
         [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, [x]) = [s]")]
         [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, SELF, [x]) = [s]")]
         [TestCase(1, "IsAgent([x]) = True", "Volition([se], [y], [x]) = [s]")]
         [TestCase(1, "IsAgent([x]) = True", "Volition([se], [y], Sarah) = [s]")]
+        [TestCase(1, "IsAgent([x]) = True", "Volition([se], Sarah, [x]) = [s]")]
         [TestCase(1, "IsAgent([x]) = True", "Volition([se], SELF, Sarah) = [s]")]
         [TestCase(1, "IsAgent([x]) = True", "Volition([se], Matt, Sarah) = [s]")]
         [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, [x]) = [s]")]
         [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, Sarah) = [s]")]
-        [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, [x]) = Positive")]
+     
         public void Test_DP_Volition_Match(int eventSet, string context, string MethodCall)
         {
             var rpc = BuildRPCAsset();
@@ -374,12 +375,15 @@ namespace Tests.CommeillFaut
         {
             var cif = BuildCIFAsset();
 
+        
             var seDTO = cif.GetSocialExchanges().First(x => x.Name == (Name)"Flirt");
             var se = new SocialExchange(seDTO);
 
+            var originalCount = se.Conditions.Count();
+
             se.RemoveCondition(Condition.Parse("Has(Floor) != Start"));
 
-            Assert.IsEmpty(se.Conditions);
+            Assert.AreEqual(se.Conditions.Count, originalCount - 1);
 
         }
 
