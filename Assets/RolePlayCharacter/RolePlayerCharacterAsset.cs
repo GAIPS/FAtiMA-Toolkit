@@ -666,16 +666,18 @@ namespace RolePlayCharacter
                 yield break;
             }
 
-            foreach (var prop in context.AskPossibleProperties(x))
-            {
-                var i = prop.Item1.Value;
-                if (m_otherAgents.ContainsKey(i) || i == CharacterName)
+            if(m_otherAgents.ContainsKey(x) || x == context.Queryable.Perspective)
+                foreach (var set in context.Constraints)
                 {
-                    foreach (var p in prop.Item2)
-                    {
-                        yield return new DynamicPropertyResult(new ComplexValue(i), p);
-                    }
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(true)), set);
                 }
+            else
+            {
+
+                foreach (var set in context.Constraints)
+                {
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(false)), set);
+                } 
             }
         }
 
