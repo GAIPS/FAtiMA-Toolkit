@@ -174,7 +174,7 @@ namespace MultimodalEmotionDetectionWF
             {
                 Int32 cnt = 0;
 
-                foreach (KeyValuePair<EmotionDetectionAsset.RECT, List<EmotionDetectionAsset.POINT>> kvp in eda.Faces)
+                foreach (KeyValuePair<EmotionDetectionAsset.RECT, List<EmotionDetectionAsset.POINT>> kvp in EDA.Faces)
                 {
                     //! Faces
                     //
