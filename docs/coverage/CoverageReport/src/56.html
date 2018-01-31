@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\Conditions\Implementation\ValueRetrivers\PropertyValueRetriver.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.Collections.Generic;
+using WellFormedNames;
+using Utilities;
+
+namespace Conditions
+{
+	public abstract partial class Condition
+	{
+		private class PropertyValueRetriver : IValueRetriever
+		{
+			private readonly Name m_name;
+
+			public PropertyValueRetriver(Name name)
+			{
+				m_name = name;
+			}
+
+			public IEnumerable&lt;Pair&lt;ComplexValue, SubstitutionSet&gt;&gt; Retrieve
+                (IQueryable db, Name perspective, IEnumerable&lt;SubstitutionSet&gt; constraints)
+			{
+				foreach (var pair in db.AskPossibleProperties(m_name, perspective, constraints))
+				{
+					foreach (var s in pair.Item2)
+						yield return Tuples.Create(new ComplexValue(pair.Item1.Value, pair.Item1.Certainty), s);
+				}
+			}
+
+			public Name InnerName
+			{
+				get { return m_name; }
+			}
+
+			public bool HasModifier
+			{
+				get { return false; }
+			}
+
+			public override string ToString()
+			{
+				return m_name.ToString();
+			}
+
+			public override int GetHashCode()
+			{
+				const int BASE_HASH = 0x0f1c7d73;
+				return BASE_HASH ^ m_name.GetHashCode();
+			}
+
+			public override bool Equals(object obj)
+			{
+				PropertyValueRetriver r = obj as PropertyValueRetriver;
+				if (r == null)
+					return false;
+				return m_name.Equals(r.m_name);
+			}
+		}
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[13,4,13,43,1],[14,4,14,5,1],[15,5,15,19,1],[16,4,16,5,1],[20,4,20,5,1],[21,5,21,12,1],[21,14,21,22,1],[21,23,21,25,1],[21,26,21,84,1],[22,5,22,6,1],[23,6,23,13,1],[23,15,23,20,1],[23,21,23,23,1],[23,24,23,34,1],[24,7,24,95,1],[25,5,25,6,1],[26,4,26,5,1],[30,9,30,10,1],[30,11,30,25,1],[30,26,30,27,1],[35,9,35,10,1],[35,11,35,24,1],[35,25,35,26,1],[39,4,39,5,1],[40,5,40,30,1],[41,4,41,5,1],[44,4,44,5,1],[46,5,46,45,1],[47,4,47,5,1],[50,4,50,5,1],[51,5,51,60,1],[52,5,52,19,1],[53,6,53,19,1],[54,5,54,36,1],[55,4,55,5,1]]);
+    </script>
+  </body>
+</html>

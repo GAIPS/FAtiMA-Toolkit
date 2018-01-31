@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\KnowledgeBase\NameUtilities.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using WellFormedNames;
+
+namespace KnowledgeBase
+{
+	internal static class NameUtilities
+	{
+		public static Name ApplyPerspective(this Name original, Name name)
+		{
+			return original.SwapTerms(name, Name.SELF_SYMBOL);
+		}
+
+		public static Name RemovePerspective(this Name original, Name name)
+		{
+			return original.SwapTerms(Name.SELF_SYMBOL, name);
+		}
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[8,3,8,4,1],[9,4,9,54,1],[10,3,10,4,1],[13,3,13,4,1],[14,4,14,54,1],[15,3,15,4,1]]);
+    </script>
+  </body>
+</html>

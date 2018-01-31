@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\KnowledgeBase\KBDynamicProperties.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.Collections.Generic;
+using System.Linq;
+using KnowledgeBase.DTOs;
+using WellFormedNames;
+
+namespace KnowledgeBase
+{
+	public partial class KB : IDynamicPropertiesRegistry
+	{
+		private DynamicPropertyRegistry _registry;
+
+		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T1 surrogate)
+		{
+			_registry.RegistDynamicProperty(propertyName, surrogate);
+		}
+
+		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T2 surrogate)
+		{
+			_registry.RegistDynamicProperty(propertyName, surrogate);
+		}
+
+		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T3 surrogate)
+		{
+			_registry.RegistDynamicProperty(propertyName, surrogate);
+		}
+
+		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T4 surrogate)
+		{
+			_registry.RegistDynamicProperty(propertyName,surrogate);
+		}
+
+		public void UnregistDynamicProperty(Name propertyTemplate)
+		{
+			_registry.UnregistDynamicProperty(propertyTemplate);
+		}
+
+		public IEnumerable&lt;DynamicPropertyDTO&gt; GetDynamicProperties()
+		{
+			return _registry.GetDynamicProperties();
+		}
+
+		private void CreateRegistry()
+		{
+			_registry = new DynamicPropertyRegistry(Test);
+		}
+
+		private bool Test(Name template)
+		{
+			return m_knowledgeStorage.Unify(template).Any();
+		}
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[13,3,13,4,1],[14,4,14,61,1],[15,3,15,4,1],[18,3,18,4,1],[19,4,19,61,1],[20,3,20,4,1],[23,3,23,4,1],[24,4,24,61,1],[25,3,25,4,1],[28,3,28,4,1],[29,4,29,60,1],[30,3,30,4,1],[33,3,33,4,0],[34,4,34,56,0],[35,3,35,4,0],[38,3,38,4,0],[39,4,39,44,0],[40,3,40,4,0],[43,3,43,4,1],[44,4,44,50,1],[45,3,45,4,1],[48,3,48,4,1],[49,4,49,52,1],[50,3,50,4,1]]);
+    </script>
+  </body>
+</html>

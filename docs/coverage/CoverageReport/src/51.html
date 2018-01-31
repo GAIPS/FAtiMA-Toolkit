@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\Conditions\Implementation\EqualityDefinitionCondition.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.Collections.Generic;
+using WellFormedNames;
+
+namespace Conditions
+{
+	public partial class Condition
+	{
+		private sealed class EqualityDefinitionCondition : Condition
+		{
+			private Name m_variable;
+			private IValueRetriever m_other;
+
+			public EqualityDefinitionCondition(Name variable, IValueRetriever other)
+			{
+				m_variable = variable;
+				m_other = other;
+			}
+
+			protected override IEnumerable&lt;SubstitutionSet&gt; CheckActivation(IQueryable db, Name perspective, IEnumerable&lt;SubstitutionSet&gt; constraints)
+			{
+				foreach (var result in m_other.Retrieve(db, perspective, constraints))
+				{
+					var sub = new Substitution(m_variable, new ComplexValue(result.Item1.Value, result.Item1.Certainty));
+					if (result.Item2.AddSubstitution(sub))
+						yield return result.Item2;
+				}
+			}
+
+			public override string ToString()
+			{
+				return $&quot;{m_other} = {m_variable}&quot;;
+			}
+
+			public override bool Equals(object obj)
+			{
+				var d = obj as EqualityDefinitionCondition;
+				if (d == null)
+					return false;
+
+				if (!m_variable.Equals(d.m_variable))
+					return false;
+
+				return m_other.Equals(d.m_other);
+			}
+
+			public override int GetHashCode()
+			{
+				int baseHash = 0x1b0668c7;
+				return m_variable.GetHashCode() ^ m_other.GetHashCode() ^ baseHash;
+			}
+		}
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[13,4,13,76,1],[14,4,14,5,1],[15,5,15,27,1],[16,5,16,21,1],[17,4,17,5,1],[20,4,20,5,1],[21,5,21,12,1],[21,14,21,24,1],[21,25,21,27,1],[21,28,21,74,1],[22,5,22,6,1],[23,6,23,107,1],[24,6,24,44,1],[25,7,25,33,1],[26,5,26,6,1],[27,4,27,5,1],[30,4,30,5,1],[31,5,31,40,1],[32,4,32,5,1],[35,4,35,5,1],[36,5,36,48,1],[37,5,37,19,1],[38,6,38,19,1],[40,5,40,42,1],[41,6,41,19,1],[43,5,43,38,0],[44,4,44,5,1],[47,4,47,5,1],[48,5,48,31,1],[49,5,49,72,1],[50,4,50,5,1]]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\EmotionalAppraisal\DTOs\EmotionDispositionDTO.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+
+namespace EmotionalAppraisal.DTOs
+{
+	/// &lt;summary&gt;
+	/// Data Type Object Class for the representation of the Emotional Dispositions
+	/// &lt;/summary&gt;
+    [Serializable]
+	public class EmotionDispositionDTO 
+	{
+		/// &lt;summary&gt;
+		/// The emotion type key. Used to uniquely identify the emotion type.
+		/// &lt;/summary&gt;
+		public string Emotion { get; set; }
+		/// &lt;summary&gt;
+		/// The amount of decay the emotion is subjected to at each update.
+		/// The higher the value, the faster the emotion disipates
+		/// &lt;/summary&gt;
+        public int Decay { get; set; }
+		/// &lt;summary&gt;
+		/// The activation threshold for this emotion.
+		/// Lower thresholds allow the emotion to be activated at lower intencities,
+		/// while higher threshold do the oposite.
+		/// &lt;/summary&gt;
+        public int Threshold { get; set; }
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[14,27,14,31,1],[14,32,14,36,1],[19,28,19,32,1],[19,33,19,37,1],[25,32,25,36,1],[25,37,25,41,1]]);
+    </script>
+  </body>
+</html>

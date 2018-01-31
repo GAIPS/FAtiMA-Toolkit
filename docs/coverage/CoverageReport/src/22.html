@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\GAIPS.Rage\BasicIOBridge.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.IO;
+using AssetPackage;
+
+namespace GAIPS.Rage
+{
+    public class BasicIOBridge : IBridge, IDataStorage
+    {
+        public bool Delete(string fileId)
+        {
+            throw new InvalidOperationException();
+        }
+
+        public bool Exists(string fileId)
+        {
+            return File.Exists(fileId);
+        }
+
+        public string[] Files()
+        {
+            throw new InvalidOperationException();
+        }
+
+        public string Load(string fileId)
+        {
+            using (var reader = File.OpenText(fileId))
+            {
+                return reader.ReadToEnd();
+            }
+        }
+
+        public void Save(string fileId, string fileData)
+        {
+            using (var writer = File.CreateText(fileId))
+            {
+                writer.Write(fileData);
+            }
+        }
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[10,9,10,10,0],[11,13,11,51,0],[15,9,15,10,0],[16,13,16,40,0],[17,9,17,10,0],[20,9,20,10,0],[21,13,21,51,0],[25,9,25,10,0],[26,20,26,54,0],[27,13,27,14,0],[28,17,28,43,0],[30,9,30,10,0],[33,9,33,10,0],[34,20,34,56,0],[35,13,35,14,0],[36,17,36,40,0],[37,13,37,14,0],[38,9,38,10,0]]);
+    </script>
+  </body>
+</html>

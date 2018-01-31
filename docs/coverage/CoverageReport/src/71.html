@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\SocialImportance\SocialImportanceAsset.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using GAIPS.Rage;
+using KnowledgeBase;
+using SerializationUtilities;
+using SocialImportance.DTOs;
+using WellFormedNames;
+using WellFormedNames.Collections;
+using WellFormedNames.Exceptions;
+using IQueryable = WellFormedNames.IQueryable;
+
+namespace SocialImportance
+{
+	/// &lt;summary&gt;
+	/// Main class of the Social Importance Asset.
+	/// &lt;/summary&gt;
+	/// &lt;remarks&gt;
+	/// New dynamic properties available by this asset uppon binding it with a Emotional Appraisal Asset:
+	///		- SI([target])
+	///			- Gives the Social Importance value attributed to the given target
+	/// &lt;/remarks&gt;
+	[Serializable]
+	public sealed class SocialImportanceAsset: LoadableAsset&lt;SocialImportanceAsset&gt;, ICustomSerialization
+	{
+		private KB m_kB;
+		private HashSet&lt;AttributionRule&gt; m_attributionRules;
+		private NameSearchTree&lt;uint&gt; m_claimTree;
+
+		//Volatile Statements
+		private NameSearchTree&lt;NameSearchTree&lt;float&gt;&gt; m_cachedSI = new NameSearchTree&lt;NameSearchTree&lt;float&gt;&gt;();
+
+		/// &lt;summary&gt;
+		/// The Knowledge Base that is binded to this Social Importance Asset instance
+		/// &lt;/summary&gt;
+		public KB LinkedKB {
+			get { return m_kB; }
+		}
+
+		public SocialImportanceAsset()
+		{
+			m_kB = null;
+			m_attributionRules = new HashSet&lt;AttributionRule&gt;();
+			m_claimTree = new NameSearchTree&lt;uint&gt;();
+
+			m_cachedSI = new NameSearchTree&lt;NameSearchTree&lt;float&gt;&gt;();
+		}
+
+		/// &lt;summary&gt;
+		/// Binds a KB to this Social Importance Asset instance. Without a KB instance binded to this asset, 
+        /// social importance evaluations will not work properly.
+        /// InvalidateCachedSI() is automatically called by this method.
+        /// &lt;/summary&gt;
+		/// &lt;param name=&quot;kb&quot;&gt;The Knowledge Base to be binded to this asset.&lt;/param&gt;
+		public void RegisterKnowledgeBase(KB kB)
+		{
+			if (m_kB != null)
+			{
+				//Unregist bindings
+				UnbindToRegistry(m_kB);
+				m_kB = null;
+			}
+
+			m_kB = kB;
+			BindToRegistry(kB);
+			InvalidateCachedSI();
+		}
+
+		private void BindToRegistry(IDynamicPropertiesRegistry registry)
+		{
+			registry.RegistDynamicProperty(SI_DYNAMIC_PROPERTY_NAME, SIPropertyCalculator);
+		}
+
+		public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
+		{
+			registry.UnregistDynamicProperty((Name)&quot;SI([target])&quot;);
+		}
+
+		private void ValidateKBLink()
+		{
+			if(m_kB==null)
+				throw new InvalidOperationException($&quot;Cannot execute operation as an instance of KB was not registed in this asset.&quot;);
+		}
+
+		/// &lt;summary&gt;
+		/// Calculate the Social Importance value of a given target, in a particular perspective.
+		/// If no perspective is given, the current agent&#39;s perspective is used as default.
+		/// &lt;/summary&gt;
+		/// &lt;remarks&gt;
+		/// All values calculated by this method are automatically cached, in order to optimize future searches.
+		/// If the values are needed to be recalculated, call InvalidateCachedSI() to clear the cached values.
+		/// &lt;/remarks&gt;
+		/// &lt;param name=&quot;target&quot;&gt;The name of target which we want to calculate the SI&lt;/param&gt;
+		/// &lt;param name=&quot;perspective&quot;&gt;From which perspective do we want to calculate de SI.&lt;/param&gt;
+		/// &lt;returns&gt;The value of Social Importance attributed to given target by the perspective of a particular agent.&lt;/returns&gt;
+		public float GetSocialImportance(string target, string perspective = &quot;self&quot;)
+		{
+			ValidateKBLink();
+
+			var t = Name.BuildName(target);
+			if (!t.IsPrimitive)
+				throw new ArgumentException(&quot;must be a primitive name&quot;, nameof(target));
+
+			var p = m_kB.AssertPerspective(Name.BuildName(perspective));
+
+			return internal_GetSocialImportance(t,p);
+		}
+
+		private float internal_GetSocialImportance(Name target, Name perspective)
+		{
+			NameSearchTree&lt;float&gt; targetDict;
+			if (!m_cachedSI.TryGetValue(perspective, out targetDict))
+			{
+				targetDict = new NameSearchTree&lt;float&gt;();
+				m_cachedSI[perspective] = targetDict;
+			}
+
+			float value;
+			if (!targetDict.TryGetValue(target, out value))
+			{
+				value = CalculateSI(target, perspective);
+				targetDict[target] = value;
+			}
+			return value;
+		}
+
+		/// &lt;summary&gt;
+		/// Clears all cached Social Importance values, allowing new values to be recalculated uppon request.
+		/// &lt;/summary&gt;
+		public void InvalidateCachedSI()
+		{
+			m_cachedSI.Clear();
+		}
+
+		private uint CalculateSI(Name target, Name perspective)
+		{
+			long result = 0;
+
+			foreach (var a in m_attributionRules)
+			{
+				var sub = new Substitution(a.Target, new ComplexValue(target));
+                var resultSubSet = a.Conditions.Unify(m_kB, perspective, new[] { new SubstitutionSet(sub) });
+                foreach(var set in resultSubSet)
+                {
+                    var v = a.Value.MakeGround(set);
+                    result += int.Parse(v.ToString());
+                }
+			}
+			return result&lt;1?1:(uint)result;
+		}
+
+		/// @cond DOXYGEN_SHOULD_SKIP_THIS
+
+		protected override string OnAssetLoaded()
+		{
+			return null;
+		}
+
+		/// @endcond
+
+		#region DTO operations
+
+		#region Attribution Rules
+
+		public IEnumerable&lt;AttributionRuleDTO&gt; GetAttributionRules()
+		{
+			return m_attributionRules.Select(r =&gt; r.ToDTO());
+		}
+
+		public AttributionRuleDTO AddAttributionRule(AttributionRuleDTO ruleDefinition)
+		{
+			var at = new AttributionRule(ruleDefinition);
+			if (m_attributionRules.Add(at))
+				return at.ToDTO();
+
+			return null;
+		}
+
+		public void UpdateAttributionRule(AttributionRuleDTO ruleDefinition)
+		{
+			var rule = m_attributionRules.FirstOrDefault(a =&gt; a.GUID == ruleDefinition.Id);
+			if(rule==null)
+				throw new Exception(&quot;Attribution rule not found&quot;);
+
+			rule.SetData(ruleDefinition);
+		}
+
+		public void RemoveAttributionRuleById(Guid id)
+		{
+			var rule = m_attributionRules.FirstOrDefault(a =&gt; a.GUID == id);
+			if (rule == null)
+				throw new Exception(&quot;Attribution rule not found&quot;);
+
+			m_attributionRules.Remove(rule);
+		}
+
+		#endregion
+
+		#region Claims
+
+		public IEnumerable&lt;ClaimDTO&gt; GetClaims()
+		{
+			return m_claimTree.Select(pair =&gt; new ClaimDTO() {ActionTemplate = pair.Key.ToString(), ClaimSI = pair.Value});
+		}
+
+		public void AddClaim(ClaimDTO claim)
+		{
+			Name n = null;
+			try
+			{
+				n = (Name)claim.ActionTemplate;
+				m_claimTree.Add(n, claim.ClaimSI);
+			}
+			catch (DuplicatedKeyException)
+			{
+				throw new Exception($&quot;There is already a claim associated to the action template \&quot;{n}\&quot;&quot;);
+			}
+		}
+
+		#endregion
+
+		/// &lt;summary&gt;
+		/// Load a Social Importance Asset definition from a DTO object.
+		/// &lt;/summary&gt;
+		/// &lt;remarks&gt;
+		/// Use this to procedurally configure the asset.
+		/// &lt;/remarks&gt;
+		/// &lt;param name=&quot;dto&quot;&gt;
+		/// The DTO containing the data to load
+		/// &lt;/param&gt;
+		public void LoadFromDTO(SocialImportanceDTO dto)
+		{
+			m_attributionRules.Clear();
+			m_attributionRules.UnionWith(dto.AttributionRules.Select(adto =&gt; new AttributionRule(adto)));
+
+			m_claimTree.Clear();
+		}
+
+		/// &lt;summary&gt;
+		/// Returns a DTO containing all the asset&#39;s configurations.
+		/// &lt;/summary&gt;
+		public SocialImportanceDTO GetDTO()
+		{
+			var at = m_attributionRules.Select(a =&gt; a.ToDTO()).ToArray();
+			var claims = m_claimTree.Select(p =&gt; new ClaimDTO() { ActionTemplate = p.Key.ToString(), ClaimSI = p.Value }).ToArray();
+			
+			return new SocialImportanceDTO() { AttributionRules = at};
+		}
+
+		#endregion
+
+		#region Dynamic Properties
+
+		private static readonly Name SI_DYNAMIC_PROPERTY_NAME = Name.BuildName(&quot;SI&quot;);
+		private IEnumerable&lt;DynamicPropertyResult&gt; SIPropertyCalculator(IQueryContext context, Name target)
+		{
+            foreach (var t in context.AskPossibleProperties(target))
+			{
+				var si = internal_GetSocialImportance(t.Item1.Value, context.Perspective);
+				foreach (var s in t.Item2)
+					yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(si)), s);
+			}
+		}
+
+		#endregion
+
+		#region Serialization
+
+		/// @cond DOXYGEN_SHOULD_SKIP_THIS
+
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		{
+			dataHolder.SetValue(&quot;AttributionRules&quot;,m_attributionRules.ToArray());
+			dataHolder.SetValue(&quot;Claims&quot;,m_claimTree.Select(p=&gt;new ClaimDTO() {ActionTemplate = p.Key.ToString(),ClaimSI = p.Value}).ToArray());
+		}
+
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		{
+			m_attributionRules = new HashSet&lt;AttributionRule&gt;(dataHolder.GetValue&lt;AttributionRule[]&gt;(&quot;AttributionRules&quot;));
+			
+            foreach(var rule in m_attributionRules)
+            {
+                rule.GUID = Guid.NewGuid();
+            }
+
+			var claims = dataHolder.GetValue&lt;ClaimDTO[]&gt;(&quot;Claims&quot;);
+			m_claimTree = new NameSearchTree&lt;uint&gt;();
+			foreach (var c in claims)
+				m_claimTree.Add(Name.BuildName(c.ActionTemplate), c.ClaimSI);
+
+			m_cachedSI = new NameSearchTree&lt;NameSearchTree&lt;float&gt;&gt;();
+		}
+
+		/// @endcond
+
+		#endregion
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[31,3,31,106,1],[37,8,37,9,0],[37,10,37,22,0],[37,23,37,24,0],[40,3,40,33,1],[41,3,41,4,1],[42,4,42,16,1],[43,4,43,56,1],[44,4,44,45,1],[46,4,46,61,1],[47,3,47,4,1],[56,3,56,4,1],[57,4,57,21,1],[58,4,58,5,0],[60,5,60,28,0],[61,5,61,17,0],[62,4,62,5,0],[64,4,64,14,1],[65,4,65,23,1],[66,4,66,25,1],[67,3,67,4,1],[70,3,70,4,1],[71,4,71,83,1],[72,3,72,4,1],[75,3,75,4,0],[76,4,76,59,0],[77,3,77,4,0],[80,3,80,4,1],[81,4,81,18,1],[82,5,82,123,0],[83,3,83,4,1],[97,3,97,4,1],[98,4,98,21,1],[100,4,100,35,1],[101,4,101,23,1],[102,5,102,77,0],[104,4,104,64,1],[106,4,106,45,1],[107,3,107,4,1],[110,3,110,4,1],[112,4,112,61,1],[113,4,113,5,1],[114,5,114,46,1],[115,5,115,42,1],[116,4,116,5,1],[119,4,119,51,1],[120,4,120,5,1],[121,5,121,46,1],[122,5,122,32,1],[123,4,123,5,1],[124,4,124,17,1],[125,3,125,4,1],[131,3,131,4,1],[132,4,132,23,1],[133,3,133,4,1],[136,3,136,4,1],[137,4,137,20,1],[139,4,139,11,1],[139,13,139,18,1],[139,19,139,21,1],[139,22,139,40,1],[140,4,140,5,1],[141,5,141,68,1],[142,17,142,110,1],[143,17,143,24,1],[143,25,143,32,1],[143,33,143,35,1],[143,36,143,48,1],[144,17,144,18,1],[145,21,145,53,1],[146,21,146,55,1],[147,17,147,18,1],[148,4,148,5,1],[149,4,149,35,1],[150,3,150,4,1],[155,3,155,4,0],[156,4,156,16,0],[157,3,157,4,0],[166,3,166,4,0],[167,4,167,42,0],[167,42,167,51,0],[167,51,167,53,0],[167,4,167,53,0],[168,3,168,4,0],[171,3,171,4,0],[172,4,172,49,0],[173,4,173,35,0],[174,5,174,23,0],[176,4,176,16,0],[177,3,177,4,0],[180,3,180,4,0],[181,4,181,54,0],[181,54,181,81,0],[181,81,181,83,0],[181,4,181,83,0],[182,4,182,18,0],[183,5,183,55,0],[185,4,185,33,0],[186,3,186,4,0],[189,3,189,4,0],[190,4,190,54,0],[190,54,190,66,0],[190,66,190,68,0],[190,4,190,68,0],[191,4,191,21,0],[192,5,192,55,0],[194,4,194,36,0],[195,3,195,4,0],[202,3,202,4,0],[203,4,203,38,0],[203,38,203,113,0],[203,113,203,115,0],[203,4,203,115,0],[204,3,204,4,0],[207,3,207,4,0],[208,4,208,18,0],[210,4,210,5,0],[211,5,211,36,0],[212,5,212,39,0],[213,4,213,5,0],[214,4,214,34,0],[215,4,215,5,0],[216,5,216,96,0],[218,3,218,4,0],[232,3,232,4,1],[233,4,233,31,1],[234,4,234,69,1],[234,69,234,94,1],[234,94,234,97,1],[234,4,234,97,1],[236,4,236,24,1],[237,3,237,4,1],[243,3,243,4,0],[244,4,244,44,0],[244,44,244,53,0],[244,53,244,65,0],[244,4,244,65,0],[245,4,245,41,0],[245,41,245,112,0],[245,112,245,124,0],[245,4,245,124,0],[247,4,247,62,0],[248,3,248,4,0],[254,3,254,80,1],[256,3,256,4,0],[257,13,257,20,0],[257,22,257,27,0],[257,28,257,30,0],[257,31,257,68,0],[258,4,258,5,0],[259,5,259,79,0],[260,5,260,12,0],[260,14,260,19,0],[260,20,260,22,0],[260,23,260,30,0],[261,6,261,86,0],[262,4,262,5,0],[263,3,263,4,0],[272,3,272,4,0],[273,4,273,73,0],[274,4,274,55,0],[274,55,274,123,0],[274,123,274,136,0],[274,4,274,136,0],[275,3,275,4,0],[278,3,278,4,0],[279,4,279,114,0],[281,13,281,20,0],[281,21,281,29,0],[281,30,281,32,0],[281,33,281,51,0],[282,13,282,14,0],[283,17,283,44,0],[284,13,284,14,0],[286,4,286,59,0],[287,4,287,45,0],[288,4,288,11,0],[288,13,288,18,0],[288,19,288,21,0],[288,22,288,28,0],[289,5,289,66,0],[291,4,291,61,0],[292,3,292,4,0]]);
+    </script>
+  </body>
+</html>

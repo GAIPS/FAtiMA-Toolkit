@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\Conditions\Implementation\PropertyComparisonCondition.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.Collections.Generic;
+using System.Linq;
+using WellFormedNames;
+using IQueryable = WellFormedNames.IQueryable;
+
+namespace Conditions
+{
+	public partial class Condition
+	{
+		private sealed class PropertyComparisonCondition : Condition
+		{
+			private readonly ComparisonOperator Operator;
+			private readonly IValueRetriever Property1;
+			private readonly IValueRetriever Property2;
+
+			public PropertyComparisonCondition(IValueRetriever property1, IValueRetriever property2, ComparisonOperator op)
+			{
+				Property1 = property1;
+				Property2 = property2;
+				Operator = op;
+			}
+
+			protected override IEnumerable&lt;SubstitutionSet&gt; CheckActivation(IQueryable db, Name perspective, IEnumerable&lt;SubstitutionSet&gt; constraints)
+			{
+				var r1 = Property1.Retrieve(db,perspective, constraints).GroupBy(p =&gt; p.Item1, p =&gt; p.Item2);
+				foreach (var g in r1)
+				{
+					foreach (var crossPair in Property2.Retrieve(db,perspective, g))
+					{
+						if (CompareValues(g.Key.Value, crossPair.Item1.Value, Operator))
+							yield return crossPair.Item2;
+					}
+				}
+			}
+
+			public override bool Equals(object obj)
+			{
+				PropertyComparisonCondition c = obj as PropertyComparisonCondition;
+				if (c == null)
+					return false;
+
+				var p1 = c.Property1;
+				var p2 = c.Property2;
+				var op = c.Operator;
+
+				if (Operator != op)
+				{
+					op = op.Mirror();
+					if (Operator != op)
+						return false;
+					var s = p1;
+					p1 = p2;
+					p2 = s;
+				}
+
+				var result = Property1.Equals(p1) &amp;&amp; Property2.Equals(p2);
+				switch (op)
+				{
+					case ComparisonOperator.Equal:
+					case ComparisonOperator.NotEqual:
+						return result || (Property1.Equals(p2) &amp;&amp; Property2.Equals(p1));
+				}
+				return result;
+			}
+
+			public override int GetHashCode()
+			{
+				var p1 = Property1;
+				var p2 = Property2;
+				var op = Operator;
+				switch (op)
+				{
+					case ComparisonOperator.GreatherThan:
+					case ComparisonOperator.GreatherOrEqualThan:
+						op = op.Mirror();
+						var s = p1;
+						p1 = p2;
+						p2 = s;
+						break;
+				}
+
+				var c = op.GetHashCode();
+				return p1.GetHashCode() ^ ~p2.GetHashCode() ^ c;
+			}
+
+			public override string ToString()
+			{
+				return $&quot;{Property1} {OperatorRepresentation(Operator)} {Property2}&quot;;
+			}
+		}
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[16,4,16,115,1],[17,4,17,5,1],[18,5,18,27,1],[19,5,19,27,1],[20,5,20,19,1],[21,4,21,5,1],[24,4,24,5,1],[25,5,25,75,1],[25,75,25,82,1],[25,82,25,89,1],[25,89,25,96,1],[25,96,25,98,1],[25,5,25,98,1],[26,5,26,12,1],[26,14,26,19,1],[26,20,26,22,1],[26,23,26,25,1],[27,5,27,6,1],[28,6,28,13,1],[28,15,28,28,1],[28,29,28,31,1],[28,32,28,69,1],[29,6,29,7,1],[30,7,30,71,1],[31,8,31,37,1],[32,6,32,7,1],[33,5,33,6,1],[34,4,34,5,1],[37,4,37,5,1],[38,5,38,72,1],[39,5,39,19,1],[40,6,40,19,1],[42,5,42,26,1],[43,5,43,26,1],[44,5,44,25,1],[46,5,46,24,1],[47,5,47,6,0],[48,6,48,23,0],[49,6,49,25,0],[50,7,50,20,0],[51,6,51,17,0],[52,6,52,14,0],[53,6,53,13,0],[54,5,54,6,0],[56,5,56,63,1],[57,5,57,16,1],[61,7,61,71,1],[63,5,63,19,0],[64,4,64,5,1],[67,4,67,5,1],[68,5,68,24,1],[69,5,69,24,1],[70,5,70,23,1],[71,5,71,16,1],[75,7,75,24,1],[76,7,76,18,1],[77,7,77,15,1],[78,7,78,14,1],[79,7,79,13,1],[82,5,82,30,1],[83,5,83,53,1],[84,4,84,5,1],[87,4,87,5,0],[88,5,88,74,0],[89,4,89,5,0]]);
+    </script>
+  </body>
+</html>

@@ -115,6 +115,7 @@ namespace CommeillFaut
 
                 var total = 0.0f;
                 var totalSets = resultingConstraints.Count();
+                float averageCertainty = 0;
                 foreach (var res in resultingConstraints)
                 {
                     if (resultingConstraints.Count() > 0)
@@ -128,12 +129,15 @@ namespace CommeillFaut
 
                 }
 
-                var averageCertainty = total / totalSets;
+                if (total != 0)
+                    averageCertainty = total / totalSets;
+                else averageCertainty =  0;
                 totalCertainty += averageCertainty;
             }
-       
 
+            if (totalCertainty != 0)
                 toRet = totalCertainty / totalConds;
+            else toRet = 0;
 
                 return toRet;
 

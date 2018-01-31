@@ -437,7 +437,6 @@ namespace Tests.RolePlayCharacter
         #region Test RPC Dynamic Properties
         [TestCase(1, "[x] = Sarah", "isAgent([x])=False")]
         [TestCase(1, "[x] = Matt", "isAgent([x])=False")]
-        [TestCase(1, "[x] = Sarah", "isAgent(EntersRoom)=False")]
         [TestCase(1, "", "isAgent(False)=True")]
         [Test]
         public void Test_DP_isAgent_NoMatch(int eventSet, string context, string lastEventMethodCall)
@@ -485,8 +484,9 @@ namespace Tests.RolePlayCharacter
         }
 
         [TestCase(1, "", "isAgent([x])=True")]
-        [TestCase(1, "", "isAgent(Sarah)=True")]
-        [TestCase(1, "", "isAgent(Matt)=True")]
+        [TestCase(1, "[result] = True", "isAgent(Sarah)=[result]")]
+        [TestCase(1, "[result] = True", "isAgent(Matt)=[result]")]
+        [TestCase(1, "[result] = False", "isAgent(True)=[result]")]
         [TestCase(1, "[x] = Sarah", "isAgent([x])=True")]
         [Test]
         public void Test_DP_isAgent_Match(int eventSet, string context, string lastEventMethodCall)

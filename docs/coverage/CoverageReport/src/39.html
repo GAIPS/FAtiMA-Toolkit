@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\WellFormedNames\Implementation\ComposedName.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Utilities;
+
+namespace WellFormedNames
+{
+	public partial class Name
+	{
+		/// &lt;summary&gt;
+		/// Well Formed Name composed by several symbols. 
+		/// If S and s1,s2,...sn are symbols, then S(s1,s2,...,sn) is a Composed Name
+		/// the first symbol &quot;S&quot; is called the major symbol and it is followed by a list of
+		/// comma separated parameter symbols (s1,s2,..,sn), which are enclosed in parenthesis.
+		/// 
+		/// @author: Jo&#227;o Dias
+		/// @author: Pedro Gon&#231;alves (C# version)
+		/// &lt;/summary&gt;
+		private class ComposedName : Name
+		{
+			private Symbol RootSymbol;
+			private Name[] Terms;
+			
+			public override int NumberOfTerms
+			{
+				get { return Terms.Length + 1; }
+			}
+
+			/// &lt;summary&gt;
+			/// Creates a new ComposedName, receiving a major symbol, followed by several parameter symbols
+			/// parameter symbols
+			/// &lt;/summary&gt;
+			/// &lt;param name=&quot;head&quot;&gt;The head symbol&lt;/param&gt;
+			/// &lt;param name=&quot;terms&quot;&gt;A set of parameter symbols&lt;/param&gt;
+			public ComposedName(Symbol head, Name[] terms)
+				: base(
+					head.IsGrounded &amp;&amp; terms.All(n=&gt;n.IsGrounded),false,
+					head.IsConstant &amp;&amp; terms.All(n=&gt;n.IsConstant),false,false,true
+				)
+			{
+				RootSymbol = head;
+				Terms = terms;
+			}
+			
+			public override Name GetFirstTerm()
+			{
+				return RootSymbol;
+			}
+
+			public override IEnumerable&lt;Name&gt; GetTerms()
+			{
+				return Terms.Prepend(RootSymbol);
+			}
+
+			public override Name GetNTerm(int index)
+			{
+				if(index&lt;0 || index&gt;Terms.Length)
+					throw new IndexOutOfRangeException();
+
+				if (index == 0)
+					return RootSymbol;
+				index--;
+				return Terms[index];
+			}
+
+			public override IEnumerable&lt;Name&gt; GetLiterals()
+			{
+				return Terms.SelectMany(t =&gt; t.GetLiterals()).Prepend(RootSymbol);
+			}
+
+			public override IEnumerable&lt;Name&gt; GetVariables()
+			{
+				return GetTerms().SelectMany(l =&gt; l.GetVariables());
+			}
+
+			public override bool HasGhostVariable()
+			{
+				return GetTerms().Any(s =&gt; s.HasGhostVariable());
+			}
+
+			public override bool HasSelf()
+			{
+				return GetTerms().Any(s =&gt; s.HasSelf());
+			}
+
+			public override Name SwapTerms(Name original, Name newName)
+			{
+				return new ComposedName((Symbol)RootSymbol.SwapTerms(original,newName), Terms.Select(t =&gt; t.SwapTerms(original,newName)).ToArray());
+			}
+
+			public override Name ReplaceUnboundVariables(string id)
+			{
+				if (IsGrounded)
+					return this;
+
+				return new ComposedName((Symbol)RootSymbol.ReplaceUnboundVariables(id),Terms.Select(t =&gt; t.ReplaceUnboundVariables(id)).ToArray());
+			}
+
+			public override Name RemoveBoundedVariables(string id)
+			{
+				if (IsGrounded)
+					return this;
+
+				return new ComposedName((Symbol)RootSymbol.RemoveBoundedVariables(id), Terms.Select(t =&gt; t.RemoveBoundedVariables(id)).ToArray());
+			}
+
+			public override Name MakeGround(SubstitutionSet bindings)
+			{
+				if (IsGrounded)
+					return this;
+
+				return new ComposedName((Symbol)RootSymbol.MakeGround(bindings), Terms.Select(t =&gt; t.MakeGround(bindings)).ToArray());
+			}
+
+			public override string ToString()
+			{
+				StringBuilder builder = ObjectPool&lt;StringBuilder&gt;.GetObject();
+				builder.Append(RootSymbol);
+				builder.Append(&#39;(&#39;);
+				for (int i = 0; i &lt; Terms.Length; i++)
+				{
+					builder.Append(Terms[i]);
+					if (i + 1 &lt; Terms.Length)
+						builder.Append(&quot;, &quot;);
+				}
+
+				builder.Append(&#39;)&#39;);
+
+				string result = builder.ToString();
+				builder.Length = 0;
+				ObjectPool&lt;StringBuilder&gt;.Recycle(builder);
+				return result;
+			}
+
+			/// &lt;summary&gt;
+			/// Indicates whether the current object is equal to another object of the same type.
+			/// &lt;/summary&gt;
+			/// &lt;returns&gt;
+			/// true if the current object is equal to the &lt;paramref name=&quot;other&quot;/&gt; parameter; otherwise, false.
+			/// &lt;/returns&gt;
+			/// &lt;param name=&quot;other&quot;&gt;An object to compare with this object.&lt;/param&gt;
+			public override bool Equals(Name name)
+			{
+				if (!name.IsComposed)
+					return false;
+
+				if (name.NumberOfTerms != NumberOfTerms)
+					return false;
+
+				return GetTerms().Zip(name.GetTerms(), (n1, n2) =&gt; n1.Equals(n2)).All(b =&gt; b);
+			}
+
+			public override bool Match(Name name)
+			{
+				if (name.IsUniversal)
+					return true;
+
+				var other = name as ComposedName;
+				if (other?.Terms.Length != Terms.Length)
+					return false;
+
+				if (!other.RootSymbol.Match(RootSymbol))
+				{
+					return false;
+				}
+
+				return !Terms.Where((t, i) =&gt; !t.Match(other.Terms[i])).Any();
+			}
+
+			public override Name ApplyToTerms(Func&lt;Name, Name&gt; transformFunction)
+			{
+				return new ComposedName(RootSymbol, Terms.Select(transformFunction).ToArray());
+			}
+
+			public override int GetHashCode()
+			{
+				return GetTerms().Select(t =&gt; t.GetHashCode()).Aggregate((h1, h2) =&gt; h1 ^ h2);
+			}
+
+			/// @endcond
+			public override bool TryConvertToValue&lt;T&gt;(out T value)
+			{
+				value = default(T);
+				return false;
+			}
+		}	 
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[27,9,27,10,1],[27,11,27,35,1],[27,36,27,37,1],[37,7,38,38,1],[38,38,38,50,1],[38,50,39,38,1],[39,38,39,50,1],[39,50,40,6,1],[37,7,40,6,1],[41,4,41,5,1],[42,5,42,23,1],[43,5,43,19,1],[44,4,44,5,1],[47,4,47,5,1],[48,5,48,23,1],[49,4,49,5,1],[52,4,52,5,1],[53,5,53,38,1],[54,4,54,5,1],[57,4,57,5,1],[58,5,58,38,1],[59,6,59,43,0],[61,5,61,20,1],[62,6,62,24,1],[63,5,63,13,1],[64,5,64,25,1],[65,4,65,5,1],[68,4,68,5,0],[69,5,69,34,0],[69,34,69,49,0],[69,49,69,71,0],[69,5,69,71,0],[70,4,70,5,0],[73,4,73,5,1],[74,5,74,39,1],[74,39,74,55,1],[74,55,74,57,1],[74,5,74,57,1],[75,4,75,5,1],[78,4,78,5,0],[79,5,79,32,0],[79,32,79,52,0],[79,52,79,54,0],[79,5,79,54,0],[80,4,80,5,0],[83,4,83,5,1],[84,5,84,32,1],[84,32,84,43,1],[84,43,84,45,1],[84,5,84,45,1],[85,4,85,5,1],[88,4,88,5,1],[89,5,89,95,1],[89,95,89,124,1],[89,124,89,137,1],[89,5,89,137,1],[90,4,90,5,1],[93,4,93,5,1],[94,5,94,20,1],[95,6,95,18,1],[97,5,97,94,1],[97,94,97,123,1],[97,123,97,136,1],[97,5,97,136,1],[98,4,98,5,1],[101,4,101,5,1],[102,5,102,20,1],[103,6,103,18,1],[105,5,105,94,1],[105,94,105,122,1],[105,122,105,135,1],[105,5,105,135,1],[106,4,106,5,1],[109,4,109,5,1],[110,5,110,20,1],[111,6,111,18,1],[113,5,113,88,1],[113,88,113,110,1],[113,110,113,123,1],[113,5,113,123,1],[114,4,114,5,1],[117,4,117,5,1],[118,5,118,67,1],[119,5,119,32,1],[120,5,120,25,1],[121,10,121,19,1],[121,21,121,37,1],[121,39,121,42,1],[122,5,122,6,1],[123,6,123,31,1],[124,6,124,31,1],[125,7,125,28,1],[126,5,126,6,1],[128,5,128,25,1],[130,5,130,40,1],[131,5,131,24,1],[132,5,132,48,1],[133,5,133,19,1],[134,4,134,5,1],[144,4,144,5,1],[145,5,145,26,1],[146,6,146,19,1],[148,5,148,45,1],[149,6,149,19,0],[151,5,151,56,1],[151,56,151,69,1],[151,69,151,80,1],[151,80,151,81,1],[151,81,151,83,1],[151,5,151,83,1],[152,4,152,5,1],[155,4,155,5,1],[156,5,156,26,1],[157,6,157,18,1],[159,5,159,38,1],[160,5,160,45,1],[161,6,161,19,1],[163,5,163,45,1],[164,5,164,6,0],[165,6,165,19,0],[168,5,168,35,1],[168,35,168,59,1],[168,59,168,67,1],[168,5,168,67,1],[169,4,169,5,1],[172,4,172,5,1],[173,5,173,84,1],[174,4,174,5,1],[177,4,177,5,1],[178,5,178,35,1],[178,35,178,50,1],[178,50,178,74,1],[178,74,178,81,1],[178,81,178,83,1],[178,5,178,83,1],[179,4,179,5,1],[183,4,183,5,0],[184,5,184,24,0],[185,5,185,18,0],[186,4,186,5,0]]);
+    </script>
+  </body>
+</html>

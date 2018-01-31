@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\WellFormedNames\SubstitutionSetImplementations\ConstraintSubstitutionSetImplementation.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Utilities;
+
+namespace WellFormedNames
+{
+	public partial class SubstitutionSet
+	{
+		//todo: this class will be instantiated a lot of times. need to find a way to reduce instantiation (pooling)
+		private sealed class Constraints
+		{
+			private sealed class Constraint
+			{
+				public HashSet&lt;Name&gt; EquivalentVariables = new HashSet&lt;Name&gt;();
+				public Name Value;
+
+				public Constraint Clone()
+				{
+					var c = new Constraint();
+					c.EquivalentVariables.UnionWith(EquivalentVariables);
+					c.Value = Value;
+					return c;
+				}
+
+				public void UnionWith(Constraint other)
+				{
+					EquivalentVariables.UnionWith(other.EquivalentVariables);
+					if (Value == null)
+						Value = other.Value;
+				}
+			}
+
+			private HashSet&lt;Substitution&gt; m_substitutions;
+			private Dictionary&lt;Name, Constraint&gt; m_constraints;
+			private int m_hash;
+			private bool m_hashIsDirty = true;
+
+			public Constraints()
+			{
+				m_substitutions = new HashSet&lt;Substitution&gt;();
+				m_constraints = new Dictionary&lt;Name, Constraint&gt;();
+			}
+
+			public Name GetValue(Name variable)
+			{
+				Constraint c;
+				if (m_constraints.TryGetValue(variable, out c))
+				{
+					if (c.Value == null)
+						return c.EquivalentVariables.FirstOrDefault(v =&gt; v != variable);
+					return c.Value;
+				}
+				return null;
+			}
+
+			public bool ContainsVariable(Name variable)
+			{
+				return m_constraints.ContainsKey(variable);
+			}
+
+			public int Count()
+			{
+				return m_substitutions.Count;
+			}
+
+
+            
+
+			public void AddSubstitution(Substitution s)
+			{
+				Constraint c;
+				bool needsBuild = !m_constraints.TryGetValue(s.Variable, out c);
+
+				if (s.SubValue.Value.IsVariable)
+				{
+					Constraint c2;
+					if (m_constraints.TryGetValue(s.SubValue.Value, out c2))
+					{
+						if (needsBuild)
+						{
+							m_constraints[s.Variable] = c2;
+							c2.EquivalentVariables.Add(s.Variable);
+						}
+						else if (!Object.ReferenceEquals(c, c2))
+						{
+							c2.UnionWith(c);
+							foreach (var v in c2.EquivalentVariables)
+								m_constraints[v] = c2;
+						}
+					}
+					else
+					{
+						if (needsBuild)
+						{
+							c = new Constraint();
+							m_constraints[s.Variable] = c;
+							c.EquivalentVariables.Add(s.Variable);
+						}
+
+						m_constraints[s.SubValue.Value] = c;
+						c.EquivalentVariables.Add(s.SubValue.Value);
+					}
+				}
+				else
+				{
+					if (needsBuild)
+					{
+						c = new Constraint();
+						m_constraints[s.Variable] = c;
+						c.EquivalentVariables.Add(s.Variable);
+					}
+
+					c.Value = s.SubValue.Value;
+				}
+
+				m_substitutions.Add(s);
+				m_hashIsDirty = true;
+			}
+
+			public Constraints Clone()
+			{
+				var c = new Constraints();
+				if (!m_hashIsDirty)
+				{
+					c.m_hashIsDirty = false;
+					c.m_hash = m_hash;
+				}
+
+				if (m_substitutions.Count == 0)
+					return c;
+
+				c.m_substitutions.UnionWith(m_substitutions);
+				var cloned = ObjectPool&lt;HashSet&lt;Name&gt;&gt;.GetObject();
+				foreach (var key in m_constraints.Keys)
+				{
+					if (cloned.Contains(key))
+						continue;
+
+					var constraint = m_constraints[key].Clone();
+					foreach (var v in constraint.EquivalentVariables)
+					{
+						c.m_constraints[v] = constraint;
+						cloned.Add(v);
+					}
+				}
+				cloned.Clear();
+				ObjectPool&lt;HashSet&lt;Name&gt;&gt;.Recycle(cloned);
+
+				return c;
+			}
+
+			public bool TestConflict(Substitution subs, SubstitutionSet set, out bool canAdd)
+			{
+				canAdd = true;
+				Constraint c;
+				if (!m_constraints.TryGetValue(subs.Variable, out c))
+					return false;
+
+				Name G1 = c.Value;
+				Name G2;
+				if (subs.SubValue.Value.IsVariable)
+				{
+					if (c.EquivalentVariables.Contains(subs.SubValue.Value))
+					{
+						canAdd = false;
+						return false;
+					}
+
+					Constraint c2;
+					if (!m_constraints.TryGetValue(subs.SubValue.Value, out c2))
+						return false;
+
+					if (c.Value == null || c2.Value == null)
+						return false;
+
+					G2 = c2.Value;
+				}
+				else
+				{
+					if (G1 == null)
+						return false;
+
+					canAdd = false;
+					G2 = subs.SubValue.Value;
+					return !G1.Equals(G2);  //Conflict!!!
+				}
+
+				G1 = G1.MakeGround(set);
+				G2 = G2.MakeGround(set);
+				return !G1.Equals(G2);  //Conflict!!!
+			}
+
+			public IEnumerator&lt;Substitution&gt; GetEnumerator()
+			{
+				return m_substitutions.GetEnumerator();
+			}
+
+			public IEnumerable&lt;Substitution&gt; GetGroundedSubstitutions(SubstitutionSet other)
+			{
+				if (m_substitutions.Count == 0)
+					yield break;
+
+				var cloned = ObjectPool&lt;HashSet&lt;Name&gt;&gt;.GetObject();
+				foreach (var key in m_constraints.Keys)
+				{
+					if (cloned.Contains(key))
+						continue;
+
+					var constraint = m_constraints[key];
+					foreach (var v in constraint.EquivalentVariables)
+					{
+						if (constraint.Value != null)
+							yield return new Substitution(v, new ComplexValue(constraint.Value.MakeGround(other)));
+						cloned.Add(v);
+					}
+				}
+				cloned.Clear();
+				ObjectPool&lt;HashSet&lt;Name&gt;&gt;.Recycle(cloned);
+			}
+
+			public int CalculateHashCode(int emptyHash, SubstitutionSet set)
+			{
+				if (m_hashIsDirty)
+				{
+					m_hash = emptyHash;
+					if (m_substitutions.Count &gt; 0)
+					{
+						var cloned = ObjectPool&lt;HashSet&lt;Name&gt;&gt;.GetObject();
+						foreach (var key in m_constraints.Keys)
+						{
+							if (cloned.Contains(key))
+								continue;
+
+							var constraint = m_constraints[key];
+							m_hash ^= constraint.EquivalentVariables.Select(v =&gt; v.GetHashCode()).Aggregate((h1, h2) =&gt; h1 ^ h2);
+							if (constraint.Value != null)
+								m_hash ^= constraint.Value.GetHashCode();
+						}
+						cloned.Clear();
+						ObjectPool&lt;HashSet&lt;Name&gt;&gt;.Recycle(cloned);
+					}
+					m_hashIsDirty = false;
+				}
+				return m_hash;
+			}
+		}
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[15,5,15,68,1],[19,5,19,6,1],[20,6,20,31,1],[21,6,21,59,1],[22,6,22,22,1],[23,6,23,15,1],[24,5,24,6,1],[27,5,27,6,1],[28,6,28,63,1],[29,6,29,24,1],[30,7,30,27,1],[31,5,31,6,1],[37,4,37,38,1],[39,4,39,24,1],[40,4,40,5,1],[41,5,41,51,1],[42,5,42,56,1],[43,4,43,5,1],[46,4,46,5,1],[48,5,48,52,1],[49,5,49,6,1],[50,6,50,26,1],[51,7,51,56,1],[51,56,51,69,1],[51,69,51,71,1],[51,7,51,71,1],[52,6,52,21,1],[54,5,54,17,1],[55,4,55,5,1],[58,4,58,5,1],[59,5,59,48,1],[60,4,60,5,1],[63,4,63,5,1],[64,5,64,34,1],[65,4,65,5,1],[71,4,71,5,1],[73,5,73,69,1],[75,5,75,37,1],[76,5,76,6,1],[78,6,78,62,1],[79,6,79,7,1],[80,7,80,22,1],[81,7,81,8,1],[82,8,82,39,1],[83,8,83,47,1],[84,7,84,8,1],[85,12,85,47,1],[86,7,86,8,1],[87,8,87,24,1],[88,8,88,15,1],[88,17,88,22,1],[88,23,88,25,1],[88,26,88,48,1],[89,9,89,31,1],[90,7,90,8,1],[91,6,91,7,1],[93,6,93,7,1],[94,7,94,22,1],[95,7,95,8,1],[96,8,96,29,1],[97,8,97,38,1],[98,8,98,46,1],[99,7,99,8,1],[101,7,101,43,1],[102,7,102,51,1],[103,6,103,7,1],[104,5,104,6,1],[106,5,106,6,1],[107,6,107,21,1],[108,6,108,7,1],[109,7,109,28,1],[110,7,110,37,1],[111,7,111,45,1],[112,6,112,7,1],[114,6,114,33,1],[115,5,115,6,1],[117,5,117,28,1],[118,5,118,26,1],[119,4,119,5,1],[122,4,122,5,1],[123,5,123,31,1],[124,5,124,24,1],[125,5,125,6,0],[126,6,126,30,0],[127,6,127,24,0],[128,5,128,6,0],[130,5,130,36,1],[131,6,131,15,1],[133,5,133,50,1],[134,5,134,56,1],[135,5,135,12,1],[135,14,135,21,1],[135,22,135,24,1],[135,25,135,43,1],[136,5,136,6,1],[137,6,137,31,1],[138,7,138,16,0],[140,6,140,50,1],[141,6,141,13,1],[141,15,141,20,1],[141,21,141,23,1],[141,24,141,54,1],[142,6,142,7,1],[143,7,143,39,1],[144,7,144,21,1],[145,6,145,7,1],[146,5,146,6,1],[147,5,147,20,1],[148,5,148,47,1],[150,5,150,14,1],[151,4,151,5,1],[154,4,154,5,1],[155,5,155,19,1],[157,5,157,58,1],[158,6,158,19,1],[160,5,160,23,1],[162,5,162,40,1],[163,5,163,6,1],[164,6,164,62,1],[165,6,165,7,1],[166,7,166,22,1],[167,7,167,20,1],[171,6,171,66,1],[172,7,172,20,1],[174,6,174,46,1],[175,7,175,20,1],[177,6,177,20,1],[178,5,178,6,1],[180,5,180,6,1],[181,6,181,21,1],[182,7,182,20,1],[184,6,184,21,1],[185,6,185,31,1],[186,6,186,28,1],[189,5,189,29,1],[190,5,190,29,1],[191,5,191,27,1],[192,4,192,5,1],[195,4,195,5,1],[196,5,196,44,1],[197,4,197,5,1],[200,4,200,5,1],[201,5,201,36,1],[202,6,202,18,1],[204,5,204,56,1],[205,5,205,12,1],[205,14,205,21,1],[205,22,205,24,1],[205,25,205,43,1],[206,5,206,6,1],[207,6,207,31,1],[208,7,208,16,1],[210,6,210,42,1],[211,6,211,13,1],[211,15,211,20,1],[211,21,211,23,1],[211,24,211,54,1],[212,6,212,7,1],[213,7,213,36,1],[214,8,214,95,1],[215,7,215,21,1],[216,6,216,7,1],[217,5,217,6,1],[218,5,218,20,1],[219,5,219,47,1],[220,4,220,5,1],[223,4,223,5,1],[224,5,224,23,1],[225,5,225,6,1],[226,6,226,25,1],[227,6,227,36,1],[228,6,228,7,1],[229,7,229,58,1],[230,7,230,14,1],[230,16,230,23,1],[230,24,230,26,1],[230,27,230,45,1],[231,7,231,8,1],[232,8,232,33,1],[233,9,233,18,0],[235,8,235,44,1],[236,8,236,61,1],[236,61,236,76,1],[236,76,236,100,1],[236,100,236,107,0],[236,107,236,109,1],[236,8,236,109,1],[237,8,237,37,1],[238,9,238,50,1],[239,7,239,8,1],[240,7,240,22,1],[241,7,241,49,1],[242,6,242,7,1],[243,6,243,28,1],[244,5,244,6,1],[245,5,245,19,1],[246,4,246,5,1]]);
+    </script>
+  </body>
+</html>

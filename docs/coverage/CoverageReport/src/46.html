@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\Conditions\ComparisonOperator.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+namespace Conditions
+{
+	public enum ComparisonOperator : byte
+	{
+		Equal = 7,				//111
+		NotEqual = 0,			//000
+		LessThan = 2,			//010
+		LessOrEqualThan = 3,	//011
+		GreatherThan = 4,		//100
+		GreatherOrEqualThan = 5	//101
+	}
+
+	public static class ComparisonOperatorHelpers
+	{
+		public static ComparisonOperator Invert(this ComparisonOperator op)
+		{
+			return ~op;
+		}
+
+		public static ComparisonOperator Mirror(this ComparisonOperator op)
+		{
+			switch (op)
+			{
+				case ComparisonOperator.LessThan:
+					return ComparisonOperator.GreatherThan;
+				case ComparisonOperator.LessOrEqualThan:
+					return ComparisonOperator.GreatherOrEqualThan;
+				case ComparisonOperator.GreatherThan:
+					return ComparisonOperator.LessThan;
+				case ComparisonOperator.GreatherOrEqualThan:
+					return ComparisonOperator.LessOrEqualThan;
+			}
+			return op;
+		}
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[16,3,16,4,0],[17,4,17,15,0],[18,3,18,4,0],[21,3,21,4,1],[22,4,22,15,1],[25,6,25,45,1],[27,6,27,52,0],[29,6,29,41,1],[31,6,31,48,1],[33,4,33,14,1],[34,3,34,4,1]]);
+    </script>
+  </body>
+</html>

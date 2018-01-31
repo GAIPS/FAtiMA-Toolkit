@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\AutobiographicMemory\Event\BaseEvent.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.Collections.Generic;
+using System.Linq;
+using AutobiographicMemory.DTOs;
+using SerializationUtilities;
+using WellFormedNames;
+
+namespace AutobiographicMemory
+{
+	public sealed partial class AM
+	{
+		private abstract class BaseEvent: IBaseEvent, ICustomSerialization
+		{
+			private HashSet&lt;string&gt; m_linkedEmotions = new HashSet&lt;string&gt;();
+			
+			public uint Id { get; protected set; }
+
+			public IEnumerable&lt;string&gt; LinkedEmotions =&gt; m_linkedEmotions;
+
+			public Name Type { get; private set; }
+
+		    public Name Subject { get; private set; }
+
+			public ulong Timestamp { get; private set; }
+
+            public Name EventName { get; private set; }
+
+            protected BaseEvent(uint id, Name eventName, ulong timestamp)
+			{
+				Id = id;
+	            Type = eventName.GetNTerm(1);
+	            Subject = eventName.GetNTerm(2);
+				Timestamp = timestamp;
+				EventName = eventName;
+			}
+
+			public void LinkEmotion(string emotionType)
+			{
+				m_linkedEmotions.Add(emotionType);
+			}
+
+			public abstract EventDTO ToDTO();
+
+			protected abstract Name BuildEventName();
+
+			public BaseEvent ApplyPerspective(Name name)
+			{
+				return SwapPerspective(name, Name.SELF_SYMBOL);
+			}
+
+			public BaseEvent RemovePerspective(Name name)
+			{
+				return SwapPerspective(Name.SELF_SYMBOL,name);
+			}
+
+			public virtual BaseEvent SwapPerspective(Name oldPerspective, Name newPerspective)
+			{
+				EventName = EventName.SwapTerms(oldPerspective, newPerspective);
+				Subject = Subject.SwapTerms(oldPerspective, newPerspective);
+				return this;
+			}
+
+			public virtual void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+			{
+				dataHolder.SetValue(&quot;Id&quot;, Id);
+				dataHolder.SetValue(&quot;Type&quot;, Type);
+				dataHolder.SetValue(&quot;Subject&quot;, Subject);
+				dataHolder.SetValue(&quot;Timestamp&quot;, Timestamp);
+				if (m_linkedEmotions.Count &gt; 0)
+				{
+					dataHolder.SetValue(&quot;LinkedEmotions&quot;, m_linkedEmotions.ToArray());
+				}
+			}
+
+			public virtual void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+			{
+				Id = dataHolder.GetValue&lt;uint&gt;(&quot;Id&quot;);
+				Type = dataHolder.GetValue&lt;Name&gt;(&quot;Type&quot;);
+				Subject = dataHolder.GetValue&lt;Name&gt;(&quot;Subject&quot;);
+				Timestamp = dataHolder.GetValue&lt;ulong&gt;(&quot;Timestamp&quot;);
+
+				if (m_linkedEmotions == null)
+					m_linkedEmotions = new HashSet&lt;string&gt;();
+				else
+					m_linkedEmotions.Clear();
+				var le = dataHolder.GetValue&lt;string[]&gt;(&quot;LinkedEmotions&quot;);
+				if (le != null &amp;&amp; le.Length &gt; 0)
+					m_linkedEmotions.UnionWith(le);
+
+				EventName = BuildEventName();
+			}
+		}
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[13,4,13,69,1],[15,21,15,25,1],[15,26,15,40,1],[17,49,17,65,0],[19,23,19,27,0],[19,28,19,40,1],[21,29,21,33,1],[21,34,21,46,1],[23,29,23,33,1],[23,34,23,46,1],[25,37,25,41,1],[25,42,25,54,1],[27,13,27,74,1],[28,4,28,5,1],[29,5,29,13,1],[30,14,30,43,1],[31,14,31,46,1],[32,5,32,27,1],[33,5,33,27,1],[34,4,34,5,1],[37,4,37,5,1],[38,5,38,39,1],[39,4,39,5,1],[46,4,46,5,0],[47,5,47,52,0],[48,4,48,5,0],[51,4,51,5,0],[52,5,52,51,0],[53,4,53,5,0],[56,4,56,5,0],[57,5,57,69,0],[58,5,58,65,0],[59,5,59,17,0],[60,4,60,5,0],[63,4,63,5,0],[64,5,64,35,0],[65,5,65,39,0],[66,5,66,45,0],[67,5,67,49,0],[68,5,68,36,0],[69,5,69,6,0],[70,6,70,72,0],[71,5,71,6,0],[72,4,72,5,0],[75,4,75,5,0],[76,5,76,42,0],[77,5,77,46,0],[78,5,78,52,0],[79,5,79,57,0],[81,5,81,34,0],[82,6,82,47,0],[84,6,84,31,0],[85,5,85,62,0],[86,5,86,37,0],[87,6,87,37,0],[89,5,89,34,0],[90,4,90,5,0]]);
+    </script>
+  </body>
+</html>

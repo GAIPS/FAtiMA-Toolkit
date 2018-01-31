@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\EmotionalAppraisal\DTOs\EmotionDTO.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+
+namespace EmotionalAppraisal.DTOs
+{
+    /// &lt;summary&gt;
+    /// Data Type Object Class for the representation of an Emotion
+    /// &lt;/summary&gt;
+    [Serializable]
+    public class EmotionDTO
+    {
+		/// &lt;summary&gt;
+		/// The emotion type key. Used to uniquely identify the emotion type.
+		/// &lt;/summary&gt;
+		public string Type { get; set; }
+		/// &lt;summary&gt;
+		/// The current intencity of the emotion
+		/// &lt;/summary&gt;
+		public float Intensity { get; set; }
+		/// &lt;summary&gt;
+		/// The event that caused the expression of this emotion
+		/// &lt;/summary&gt;
+		public uint CauseEventId { get; set; }
+		/// &lt;summary&gt;
+		/// The string representation of the event that caused this emotion
+		/// &lt;/summary&gt;
+		public string CauseEventName { get; set; }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[14,24,14,28,1],[14,29,14,33,1],[18,28,18,32,1],[18,33,18,37,1],[22,30,22,34,0],[22,35,22,39,1],[26,34,26,38,0],[26,39,26,43,1]]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\RolePlayCharacter\RolePlayerCharacterAsset.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using ActionLibrary;
+using AutobiographicMemory;
+using AutobiographicMemory.DTOs;
+using CommeillFaut;
+using EmotionalAppraisal;
+using EmotionalAppraisal.DTOs;
+using EmotionalAppraisal.OCCModel;
+using EmotionalDecisionMaking;
+using GAIPS.Rage;
+using KnowledgeBase;
+using MCTS;
+using SerializationUtilities;
+using SocialImportance;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Utilities;
+using Utilities.Json;
+using WellFormedNames;
+using IQueryable = WellFormedNames.IQueryable;
+
+namespace RolePlayCharacter
+{
+    [Serializable]
+    public sealed class RolePlayCharacterAsset : LoadableAsset&lt;RolePlayCharacterAsset&gt;, ICustomSerialization
+    {
+        [NonSerialized]
+        private Dictionary&lt;Name, Identity&gt; m_activeIdentities;
+
+        private bool m_allowAuthoring;
+        private string m_commeillFautAssetSource = null;
+        private string m_emotionalAppraisalAssetSource = null;
+        private string m_emotionalDecisionMakingAssetSource = null;
+        private string m_socialImportanceAssetSource = null;
+
+        [Serializable]
+        private class LogEntry
+        {
+            public string Message { get; set; }
+            public ulong Tick { get; set; }
+        }
+
+        private List&lt;LogEntry&gt; m_log;
+
+        public RolePlayCharacterAsset()
+        {
+            m_log = new List&lt;LogEntry&gt;();
+            m_activeIdentities = new Dictionary&lt;Name, Identity&gt;();
+            m_kb = new KB(RPCConsts.DEFAULT_CHARACTER_NAME);
+            m_am = new AM();
+            m_emotionalState = new ConcreteEmotionalState();
+            m_allowAuthoring = true;
+            m_otherAgents = new Dictionary&lt;Name, AgentEntry&gt;();
+            BindToRegistry(m_kb);
+        }
+
+        /// &lt;summary&gt;
+        /// An identifier for the embodiment that is used by the character
+        /// &lt;/summary&gt;
+        public string BodyName { get; set; }
+
+        /// &lt;summary&gt;
+        /// The name of the character
+        /// &lt;/summary&gt;
+        public Name CharacterName
+        {
+            get { return m_kb.Perspective; }
+            set { m_kb.SetPerspective(value); }
+        }
+        public string CommeillFautAssetSource
+        {
+            get { return ToAbsolutePath(m_commeillFautAssetSource); }
+            set { m_commeillFautAssetSource = ToRelativePath(value); }
+        }
+
+
+        public bool IsPlayer { get; set; }
+
+        /// &lt;summary&gt;
+        /// The name of the action that the character is currently executing
+        /// &lt;/summary&gt;
+        public Name CurrentActionName { get; set; }
+
+        /// &lt;summary&gt;
+        /// The target of the action that the character is currently executing
+        /// &lt;/summary&gt;
+        public Name CurrentActionTarget { get; set; }
+
+        public IDynamicPropertiesRegistry DynamicPropertiesRegistry =&gt; m_kb;
+
+        /// &lt;summary&gt;
+        /// The source being used for the Emotional Appraisal Asset
+        /// &lt;/summary&gt;
+        public string EmotionalAppraisalAssetSource
+        {
+            get { return ToAbsolutePath(m_emotionalAppraisalAssetSource); }
+            set { m_emotionalAppraisalAssetSource = ToRelativePath(value); }
+        }
+
+        /// &lt;summary&gt;
+        /// The source being used for the Emotional Decision Making Asset
+        /// &lt;/summary&gt;
+        public string EmotionalDecisionMakingSource
+        {
+            get { return ToAbsolutePath(m_emotionalDecisionMakingAssetSource); }
+            set { m_emotionalDecisionMakingAssetSource = ToRelativePath(value); }
+        }
+
+        /// &lt;summary&gt;
+        /// Gets all the recorded events experienced by the asset.
+        /// &lt;/summary&gt;
+        public IEnumerable&lt;EventDTO&gt; EventRecords
+        {
+            get { return this.m_am.RecallAllEvents().Select(e =&gt; e.ToDTO()); }
+        }
+
+        /// &lt;summary&gt;
+        /// The emotional mood of the agent, which can vary from -10 to 10
+        /// &lt;/summary&gt;
+        public float Mood
+        {
+            get { return m_emotionalState.Mood; }
+            set { m_emotionalState.Mood = value; }
+        }
+
+        public IQueryable Queryable
+        {
+            get { return m_kb; }
+        }
+
+        /// &lt;summary&gt;
+        /// The source being used for the Social Importance Asset
+        /// &lt;/summary&gt;
+        public string SocialImportanceAssetSource
+        {
+            get { return ToAbsolutePath(m_socialImportanceAssetSource); }
+            set { m_socialImportanceAssetSource = ToRelativePath(value); }
+        }
+
+        /// &lt;summary&gt;
+        /// The amount of update ticks this asset as experienced since its initialization
+        /// &lt;/summary&gt;
+        public ulong Tick
+        {
+            get { return m_am.Tick; }
+            set { m_am.Tick = value; }
+        }
+
+        /// &lt;summary&gt;
+        /// An identifier for the voice that is used by the character
+        /// &lt;/summary&gt;
+        public string VoiceName { get; set; }
+        /// &lt;summary&gt;
+        /// Creates a new &lt;b&gt;Active Emotion&lt;/b&gt; and adds it to the asset&#39;s currently experiencing emotions set.
+        /// &lt;/summary&gt;
+        /// &lt;exception cref=&quot;ArgumentException&quot;&gt;
+        /// Thrown if the given emotion is already being experienced by the asset.
+        /// This can happend if in the given EmotionDTO the pair of parameters &lt;b&gt;Type&lt;/b&gt; and &lt;b&gt;CauseEventId&lt;/b&gt;
+        /// are equal to an already existent ActiveEmotion in the asset.
+        /// &lt;/exception&gt;
+        /// &lt;param name=&quot;emotion&quot;&gt;The DTO containing the emotion parameters to be used in the active emotion creation process&lt;/param&gt;
+        /// &lt;returns&gt;The DTO representing the actual emotion added to the active emotion set.&lt;/returns&gt;
+        public EmotionDTO AddActiveEmotion(EmotionDTO emotion)
+        {
+            return m_emotionalState.AddActiveEmotion(emotion, m_am);
+        }
+
+        /// &lt;summary&gt;
+        /// Add an Event Record to the asset&#39;s autobiographical memory
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;eventDTO&quot;&gt;The dto containing the information regarding the event to add&lt;/param&gt;
+        /// &lt;returns&gt;The unique identifier associated to the event&lt;/returns&gt;
+        public uint AddEventRecord(EventDTO eventDTO)
+        {
+            if (!m_allowAuthoring)
+                throw new Exception(&quot;This function is only available during authoring&quot;);
+
+            return this.m_am.RecordEvent(eventDTO).Id;
+        }
+
+        public IEnumerable&lt;IAction&gt; Decide()
+        {
+            return this.Decide(Name.UNIVERSAL_SYMBOL);
+        }
+
+        public IEnumerable&lt;IAction&gt; Decide(Name layer)
+        {
+            if (m_emotionalDecisionMakingAsset == null) return new List&lt;IAction&gt;();
+
+            if (CurrentActionName != null)
+                return new IAction[]
+                {
+                    new ActionLibrary.Action(new Name[] {RPCConsts.COMMITED_ACTION_KEY, CurrentActionName},
+                        CurrentActionTarget)
+                };
+
+            var possibleActions = m_emotionalDecisionMakingAsset.Decide(layer);
+
+            var maxUtility = float.MinValue;
+            foreach(var a in possibleActions)
+            {
+                if(a.Utility &gt; maxUtility)
+                {
+                    maxUtility = a.Utility;
+                }
+            }
+
+            var topActions = possibleActions.Where(a =&gt; a.Utility == maxUtility).Shuffle();
+            var remainder = possibleActions.Where(a =&gt; a.Utility != maxUtility);
+            return topActions.Concat(remainder);
+        }
+
+        /// &lt;summary&gt;
+        /// Removes and forgets an event
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;eventId&quot;&gt;The id of the event to forget.&lt;/param&gt;
+        public void ForgetEvent(uint eventId)
+        {
+            this.m_am.ForgetEvent(eventId);
+        }
+
+        public IEnumerable&lt;EmotionDTO&gt; GetAllActiveEmotions()
+        {
+            return m_emotionalState.GetAllEmotions().Select(e =&gt; e.ToDto(m_am));
+        }
+
+        public IEnumerable&lt;BeliefDTO&gt; GetAllBeliefs()
+        {
+            return m_kb.GetAllBeliefs().Select(b =&gt; new BeliefDTO
+            {
+                Name = b.Name.ToString(),
+                Perspective = b.Perspective.ToString(),
+                Value = b.Value.ToString(),
+                Certainty = b.Certainty
+            });
+        }
+
+        /// &lt;summary&gt;
+        /// Return the value associated to a belief.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;beliefName&quot;&gt;The name of the belief to return&lt;/param&gt;
+        /// &lt;returns&gt;The string value of the belief, or null if no belief exists.&lt;/returns&gt;
+        public string GetBeliefValue(string beliefName, string perspective = Name.SELF_STRING)
+        {
+            var result = m_kb.AskProperty((Name)beliefName, (Name)perspective)?.Value.ToString();
+            return result;
+        }
+
+        /// &lt;summary&gt;
+        /// Return the value associated to a belief and its degree of certainty.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;beliefName&quot;&gt;The name of the belief to return&lt;/param&gt;
+        /// &lt;returns&gt;The string value of the belief, or null if no belief exists.&lt;/returns&gt;
+        public ComplexValue GetBeliefValueAndCertainty(string beliefName, string perspective = Name.SELF_STRING)
+        {
+            return m_kb.AskProperty((Name)beliefName, (Name)perspective);
+        }
+
+        /// &lt;summary&gt;
+        /// Returns all the associated information regarding an event
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;eventId&quot;&gt;The id of the event to retrieve&lt;/param&gt;
+        /// &lt;returns&gt;The dto containing the information of the retrieved event&lt;/returns&gt;
+        public EventDTO GetEventDetails(uint eventId)
+        {
+            return this.m_am.RecallEvent(eventId).ToDTO();
+        }
+
+        /// &lt;summary&gt;
+        /// Retrieves the character&#39;s strongest emotion if any.
+        /// &lt;/summary&gt;
+        public IActiveEmotion GetStrongestActiveEmotion()
+        {
+            IEnumerable&lt;IActiveEmotion&gt; currentActiveEmotions = m_emotionalState.GetAllEmotions();
+            return currentActiveEmotions.MaxValue(a =&gt; a.Intensity);
+        }
+
+        /// &lt;summary&gt;
+        /// Loads the associated assets from the defined sources and prevents further authoring of the asset
+        /// &lt;/summary&gt;
+        public void LoadAssociatedAssets()
+        {
+            var charName = CharacterName.ToString();
+
+            EmotionalAppraisalAsset ea = Loader(m_emotionalAppraisalAssetSource, () =&gt; new EmotionalAppraisalAsset());
+     
+            EmotionalDecisionMakingAsset edm = Loader(m_emotionalDecisionMakingAssetSource, () =&gt; new EmotionalDecisionMakingAsset());
+            SocialImportanceAsset si = Loader(m_socialImportanceAssetSource, () =&gt; new SocialImportanceAsset());
+            CommeillFautAsset cfa = Loader(m_commeillFautAssetSource, () =&gt; new CommeillFautAsset());
+
+            m_emotionalAppraisalAsset = ea;
+            m_emotionalDecisionMakingAsset = edm;
+            m_socialImportanceAsset = si;
+            m_commeillFautAsset = cfa;
+
+            MCTSAsset mcts = new MCTSAsset();
+
+            //Dynamic properties
+            BindToRegistry(m_kb);
+            edm.RegisterKnowledgeBase(m_kb);
+            si.RegisterKnowledgeBase(m_kb);
+            cfa.RegisterKnowledgeBase(m_kb);
+            mcts.RegisterKnowledgeBase(m_kb);
+            m_allowAuthoring = false;
+        }
+
+        public void Perceive(Name evt)
+        {
+            this.Perceive(evt, Name.SELF_SYMBOL);
+        }
+
+        public void Perceive(Name evt, Name observer)
+        {
+            this.Perceive(new[] { evt }, observer );
+        }
+
+        public void Perceive(IEnumerable&lt;Name&gt; events)
+        {
+            this.Perceive(events, Name.SELF_SYMBOL);
+        }
+
+        public void Perceive(IEnumerable&lt;Name&gt; events, Name observer)
+        {
+            m_socialImportanceAsset.InvalidateCachedSI();
+
+            var idx = 0;
+            foreach (var e in events)
+            {
+                if (observer == Name.SELF_SYMBOL)
+                {
+                    if (RPCConsts.ACTION_START_EVENT_PROTOTYPE.Match(e))
+                    {
+                        var subject = e.GetNTerm(2);
+
+                        if (subject == this.CharacterName)
+                        {
+                            CurrentActionName = e.GetNTerm(3);
+                            CurrentActionTarget = e.GetNTerm(4);
+                        }
+                        //Add agent
+                        this.AddKnownAgent(subject);
+                    }
+                    if (RPCConsts.ACTION_END_EVENT_PROTOTYPE.Match(e))
+                    {
+                        var actEndEvt = EventHelper.ActionEnd(this.CharacterName.ToString(), CurrentActionName?.ToString(),
+                            CurrentActionTarget?.ToString());
+                        if (actEndEvt.Match(e))
+                        {
+                            CurrentActionName = null;
+                            CurrentActionTarget = null;
+                        }
+                        this.AddKnownAgent(e.GetNTerm(2));
+                      
+                    }
+                }
+                m_emotionalAppraisalAsset.AppraiseEvents(new[] { e }, observer, m_emotionalState, m_am, m_kb);
+                idx++;
+            }
+        }
+
+        public void RemoveEmotion(EmotionDTO emotion)
+        {
+            m_emotionalState.RemoveEmotion(emotion, m_am);
+        }
+
+        public void ResetEmotionalState()
+        {
+            this.m_emotionalState.Clear();
+        }
+
+        public void ActivateIdentity(Identity id)
+        {
+            var previous = GetActiveIdentities().Where(x =&gt; x.Category == id.Category).FirstOrDefault();
+            if (previous != null) m_activeIdentities.Remove(previous.Name);
+            m_activeIdentities[id.Name] = id;
+        }
+
+        public void DeactivateIdentity(Identity id)
+        {
+            m_activeIdentities.Remove(id.Name);
+        }
+
+        public IEnumerable&lt;Identity&gt; GetActiveIdentities()
+        {
+            return m_activeIdentities.Values;
+        }
+
+        public string SerializeToJSON()
+        {
+            var s = new JSONSerializer();
+            return s.SerializeToJson(this).ToString(true);
+        }
+
+        /// &lt;summary&gt;
+        /// Updates the character&#39;s internal state. Should be called once every game tick.
+        /// &lt;/summary&gt;
+        public void Update()
+        {
+            Tick++;
+            m_emotionalState.Decay(Tick);
+        }
+
+        /// &lt;summary&gt;
+        /// Removes a belief from the asset&#39;s knowledge base.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;name&quot;&gt;The name of the belief to remove.&lt;/param&gt;
+        /// &lt;param name=&quot;perspective&quot;&gt;The perspective of the belief to remove&lt;/param&gt;
+        public void RemoveBelief(string name, string perspective)
+        {
+            var p = (Name)perspective;
+            m_kb.Tell(Name.BuildName(name), null, p);
+        }
+
+        public void UpdateBelief(string name, string value, float certainty = 1, string perspective = Name.SELF_STRING)
+        {
+            m_kb.Tell((Name)name, (Name)value, (Name)perspective, certainty);
+        }
+        
+        /// &lt;summary&gt;
+        /// Updates the associated data regarding a recorded event.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;eventDTO&quot;&gt;The dto containing the information regarding the event to update. The Id field of the dto must match the id of the event we want to update.&lt;/param&gt;
+        public void UpdateEventRecord(EventDTO eventDTO)
+        {
+            if (!m_allowAuthoring)
+                throw new Exception(&quot;This function is only available during authoring&quot;);
+
+            this.m_am.UpdateEvent(eventDTO);
+        }
+
+
+        public override string ToString()
+        {
+            return this.CharacterName.ToString();
+        }
+
+        public string GetInternalStateString()
+        {
+            if (this.GetAllActiveEmotions().Any())
+            {
+                var emotion = GetBeliefValue(&quot;StrongestEmotion(SELF)&quot;);
+                var intensity = this.GetAllActiveEmotions().Max(e =&gt; e.Intensity);
+                return &quot;M: &quot; + this.Mood.ToString(&quot;F2&quot;) +
+                       &quot; | S. Em: &quot; + emotion + &quot;-&quot; + intensity.ToString(&quot;F2&quot;);
+            }
+            else return &quot;M: &quot; + this.Mood.ToString(&quot;F2&quot;);
+        }
+
+        public string GetSIRelationsString()
+        {
+            var result = string.Empty;
+            foreach (var target in this.m_otherAgents.Values)
+            {
+                var siProperty = &quot;SI(&quot; + target.Name + &quot;)&quot;;
+                var siToTarget = int.Parse(GetBeliefValue(siProperty));
+                if (siToTarget &gt; 1)
+                {
+                    result += siProperty + &quot;:&quot; + siToTarget + &quot;, &quot;;
+                }
+                
+            }
+            if (result != string.Empty) return result.Remove(result.Length - 2);
+            else return result;
+        }
+
+        protected override string OnAssetLoaded()
+        {
+            return null;
+        }
+
+        protected override void OnAssetPathChanged(string oldpath)
+        {
+            if (!string.IsNullOrEmpty(m_emotionalAppraisalAssetSource))
+                m_emotionalAppraisalAssetSource = ToRelativePath(AssetFilePath,
+                    ToAbsolutePath(oldpath, m_emotionalAppraisalAssetSource));
+
+            if (!string.IsNullOrEmpty(m_emotionalDecisionMakingAssetSource))
+                m_emotionalDecisionMakingAssetSource = ToRelativePath(AssetFilePath,
+                    ToAbsolutePath(oldpath, m_emotionalDecisionMakingAssetSource));
+
+            if (!string.IsNullOrEmpty(m_socialImportanceAssetSource))
+                m_socialImportanceAssetSource = ToRelativePath(AssetFilePath,
+                    ToAbsolutePath(oldpath, m_socialImportanceAssetSource));
+
+            if (!string.IsNullOrEmpty(m_commeillFautAssetSource))
+                m_commeillFautAssetSource = ToRelativePath(AssetFilePath,
+                    ToAbsolutePath(oldpath, m_commeillFautAssetSource));
+        }
+
+
+        private static IEnumerable&lt;IAction&gt; TakeBestActions(IEnumerable&lt;IAction&gt; enumerable)
+        {
+            float best = float.NegativeInfinity;
+            foreach (var a in enumerable.OrderByDescending(a =&gt; a.Utility))
+            {
+                if (a.Utility &lt; best)
+                    break;
+
+                yield return a;
+                best = a.Utility;
+            }
+        }
+
+        private void AddKnownAgent(Name agentName)
+        {
+            if (agentName != this.CharacterName)
+            {
+                if (!m_otherAgents.ContainsKey(agentName))
+                    m_otherAgents.Add(agentName, new AgentEntry(agentName));
+            }
+        }
+
+        public void BindToRegistry(IDynamicPropertiesRegistry registry)
+        {
+            registry.RegistDynamicProperty(RPCConsts.MOOD_PROPERTY_NAME, MoodPropertyCalculator);
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator);
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_FOR_EVENT_PROPERTY_NAME, StrongestEmotionForEventCalculator);
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_WELL_BEING_EMOTION_PROPERTY_NAME,
+                StrongestWellBeingEmotionCalculator);
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_ATTRIBUTION_PROPERTY_NAME,
+                StrongestAttributionEmotionCalculator);
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_COMPOUND_PROPERTY_NAME,
+                StrongestCompoundEmotionCalculator);
+            registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator);
+            registry.RegistDynamicProperty(IS_AGENT_TEMPLATE, IsAgentPropertyCalculator);
+            registry.RegistDynamicProperty(ROUND_TO_TENS_METHOD_TEMPLATE, RoundtoTensMethodCalculator);
+            registry.RegistDynamicProperty(ROUND_METHOD_TEMPLATE, RoundMethodCalculator);
+            registry.RegistDynamicProperty(RANDOM_METHOD_TEMPLATE, RandomCalculator);
+            registry.RegistDynamicProperty(LOG_TEMPLATE, LogDynamicProperty);
+            registry.RegistDynamicProperty(IS_SALIENT_TEMPLATE, IsSalientPropertyCalculator);
+            m_am.BindToRegistry(registry);
+        }
+
+        private T Loader&lt;T&gt;(string path, Func&lt;T&gt; generateDefault) where T : LoadableAsset&lt;T&gt;
+        {
+            if (string.IsNullOrEmpty(path))
+                return generateDefault();
+
+            return LoadableAsset&lt;T&gt;.LoadFromFile(ToAbsolutePath(path));
+        }
+
+        #region RolePlayCharater Fields
+
+        public KB m_kb;
+        private AM m_am;
+        public CommeillFautAsset m_commeillFautAsset;
+        public EmotionalAppraisalAsset m_emotionalAppraisalAsset;
+        public EmotionalDecisionMakingAsset m_emotionalDecisionMakingAsset;
+        private ConcreteEmotionalState m_emotionalState;
+        private Dictionary&lt;Name, AgentEntry&gt; m_otherAgents;
+        public SocialImportanceAsset m_socialImportanceAsset;
+        #endregion RolePlayCharater Fields
+        #region Dynamic Properties
+
+        private static readonly Name EMOTION_INTENSITY_TEMPLATE = (Name)&quot;EmotionIntensity&quot;;
+
+        private static readonly Name IS_AGENT_TEMPLATE = (Name)&quot;IsAgent&quot;;
+
+        private static readonly Name RANDOM_METHOD_TEMPLATE = (Name)&quot;Random&quot;;
+
+        private static readonly Name ROUND_METHOD_TEMPLATE = (Name)&quot;RoundMethod&quot;;
+
+        private static readonly Name ROUND_TO_TENS_METHOD_TEMPLATE = (Name)&quot;RoundtoTensMethod&quot;;
+
+        private static readonly Name IS_SALIENT_TEMPLATE = (Name)&quot;IsSalient&quot;;
+
+        private static readonly Name LOG_TEMPLATE = Name.BuildName(&quot;Log&quot;);
+
+        private IEnumerable&lt;DynamicPropertyResult&gt; EmotionIntensityPropertyCalculator(IQueryContext context, Name x, Name y)
+        {
+            List&lt;DynamicPropertyResult&gt; result = new List&lt;DynamicPropertyResult&gt;();
+            if (context.Perspective != Name.SELF_SYMBOL)
+                return result;
+
+            Name entity = x;
+            Name emotionName = y;
+
+            if (entity.IsVariable)
+            {
+                var newSub = new Substitution(entity, new ComplexValue(context.Perspective));
+                var newC = context.Constraints.Where(c =&gt; c.AddSubstitution(newSub));
+                if (newC.Any())
+                    result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, context.Queryable, context.Perspective, newC));
+            }
+            else
+            {
+                foreach (var resultPair in context.AskPossibleProperties(entity))
+                {
+                    result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, context.Queryable, context.Perspective, resultPair.Item2));
+                }
+            }
+            return result;
+        }
+
+        //This is a special property that is only used for debug purposes
+        private IEnumerable&lt;DynamicPropertyResult&gt; LogDynamicProperty(IQueryContext context, Name varName)
+        {
+            foreach (var subSet in context.Constraints)
+            {
+                foreach (var sub in subSet.Where(s =&gt; s.Variable == varName))
+                {
+                    this.m_log.Add(new LogEntry
+                    {
+                        Message = &quot;Sub Found: &quot; + sub,
+                        Tick = m_am.Tick
+                    });
+                }
+                yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(true)), subSet);
+            }
+        }
+
+        private IEnumerable&lt;DynamicPropertyResult&gt; GetEmotionsForEntity(IEmotionalState state,
+            Name emotionName, WellFormedNames.IQueryable kb, Name perspective, IEnumerable&lt;SubstitutionSet&gt; constraints)
+        {
+            if (emotionName.IsVariable)
+            {
+                foreach (var emotion in state.GetAllEmotions())
+                {
+                    var sub = new Substitution(emotionName, new ComplexValue((Name)emotion.EmotionType));
+                    foreach (var c in constraints)
+                    {
+                        if (c.Conflicts(sub))
+                            continue;
+
+                        var newConstraints = new SubstitutionSet(c);
+                        newConstraints.AddSubstitution(sub);
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(emotion.Intensity)), newConstraints);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var resultPair in kb.AskPossibleProperties(emotionName, perspective, constraints))
+                {
+                    string emotionKey = resultPair.Item1.Value.ToString();
+                    var emotion = state.GetEmotionsByType(emotionKey).OrderByDescending(e =&gt; e.Intensity).FirstOrDefault();
+                    float value = emotion?.Intensity ?? 0;
+                    foreach (var c in resultPair.Item2)
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(value)), c);
+                }
+            }
+        }
+
+        private IEnumerable&lt;DynamicPropertyResult&gt; IsAgentPropertyCalculator(IQueryContext context, Name x)
+        {
+            if (context.Perspective != Name.SELF_SYMBOL)
+                yield break;
+
+            if (x.IsVariable)
+            {
+                var otherAgentsSubstitutions = m_otherAgents.Keys.Append(CharacterName).Select(n =&gt; new Substitution(x, new ComplexValue(n)));
+
+                foreach (var s in otherAgentsSubstitutions)
+                {
+                    foreach (var set in context.Constraints)
+                    {
+                        if (set.Conflicts(s))
+                            continue;
+
+                        var r = new SubstitutionSet(set);
+                        r.AddSubstitution(s);
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(true)), r);
+                    }
+                }
+
+                yield break;
+            }
+
+            foreach (var prop in context.AskPossibleProperties(x))
+            {
+                var i = prop.Item1.Value;
+                if (m_otherAgents.ContainsKey(i) || i == CharacterName)
+                {
+                    foreach (var p in prop.Item2)
+                    {
+                        yield return new DynamicPropertyResult(new ComplexValue(i), p);
+                    }
+                }
+            }
+        }
+
+        private IEnumerable&lt;DynamicPropertyResult&gt; MoodPropertyCalculator(IQueryContext context, Name x) 
+            
+            // Should only accept SELF, its rpc Name our a variable that should be subbed by its name
+        {
+            if (context.Perspective != Name.SELF_SYMBOL)
+                yield break;
+
+            if (x.IsVariable)
+            {
+                var sub = new Substitution(x, new ComplexValue(context.Perspective));
+                foreach (var c in context.Constraints)
+                {
+                    if (c.AddSubstitution(sub))
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(m_emotionalState.Mood)), c);
+                }
+            }
+            else
+            {
+                foreach (var resultPair in context.AskPossibleProperties(x))
+                {
+                    var v = m_emotionalState.Mood;
+                    foreach (var c in resultPair.Item2)
+                    {
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(v)), c);
+                    }
+                }
+            }
+        }
+
+        
+
+        private IEnumerable&lt;DynamicPropertyResult&gt; IsSalientPropertyCalculator(IQueryContext context, Name identity)
+        {
+            foreach (var c in context.Constraints)
+            {
+                identity = identity.MakeGround(c);
+                if (identity.IsGrounded)
+                {
+                    if (m_activeIdentities.ContainsKey(identity))
+                    {
+                        var id = m_activeIdentities[identity];
+                        
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(true), id.Salience), c);
+                    }
+                    else
+                    {
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(false)), c);
+                    }
+                }
+            }
+        }
+
+
+        private IEnumerable&lt;DynamicPropertyResult&gt; RandomCalculator(IQueryContext context, Name min, Name max)
+        {
+            var minValue = Convert.ToInt32(min.ToString());
+            var maxValue = Convert.ToInt32(max.ToString());
+
+            Random rand = new Random();
+
+            var toRet = rand.Next(minValue, maxValue);
+            var subSet = new SubstitutionSet();
+            
+            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(toRet)), subSet);
+        }
+
+        private IEnumerable&lt;DynamicPropertyResult&gt; RoundMethodCalculator(IQueryContext context, Name x, Name digits)
+        {
+            var y_value = Convert.ToInt32(digits.ToString());
+
+            if (x.IsVariable)
+            {
+                foreach (var c in context.Constraints)
+                {
+                    foreach (var sub in c)
+                    {
+                        if (sub.Variable == x)
+                        {
+                            var toRet = Convert.ToDouble(sub.SubValue.ToString());
+                            // Console.WriteLine(&quot;Round method calculation for: &quot; + x.ToString() + &quot; the value : &quot; + toRet);
+                            toRet = Math.Round(toRet, y_value);
+                            //        Console.WriteLine(&quot;Round method calculation for: &quot; + x.ToString() + &quot; rounded value &quot; + sub.Value.ToString()  + &quot; digits: &quot; + y_value + &quot; result : &quot; + toRet);
+
+                            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(toRet)), c);
+                        }
+                    }
+                }
+            }
+        }
+
+        private IEnumerable&lt;DynamicPropertyResult&gt; RoundtoTensMethodCalculator(IQueryContext context, Name x, Name digits)
+        {
+            var y_value = Convert.ToInt32(digits.ToString());
+            var toTens = Math.Pow(10, y_value);
+
+            if (x.IsVariable)
+            {
+                foreach (var c in context.Constraints)
+                {
+                    foreach (var sub in c)
+                    {
+                        if (sub.Variable == x)
+                        {
+                            var toRet = Convert.ToDouble(sub.SubValue.ToString());
+                            // Console.WriteLine(&quot;Round method calculation for: &quot; + x.ToString() + &quot; the value : &quot; + toRet);
+                            toRet = toRet / toTens;
+                            toRet = Math.Round(toRet, 0);
+                            toRet = toRet * toTens;
+                            //      Console.WriteLine(&quot;Round method calculation for: &quot; + x.ToString() + &quot; rounded value &quot; + sub.Value.ToString()+ &quot; result : &quot; + toRet);
+
+                            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(toRet)), c);
+                        }
+                    }
+                }
+            }
+        }
+        private IEnumerable&lt;DynamicPropertyResult&gt; StrongestAttributionEmotionCalculator(IQueryContext context, Name x)
+        {
+            if (context.Perspective != Name.SELF_SYMBOL)
+                yield break;
+
+            var emotions = m_emotionalState.GetAllEmotions();
+
+            if (!emotions.Any())
+            {
+                yield break;
+            }
+
+            var attributionEmotions = emotions.Where(
+                em =&gt; em.EmotionType == OCCEmotionType.Shame.Name
+                || em.EmotionType == OCCEmotionType.Pride.Name
+                || em.EmotionType == OCCEmotionType.Reproach.Name
+                || em.EmotionType == OCCEmotionType.Admiration.Name);
+
+            if (!attributionEmotions.Any())
+            {
+                yield break;
+            }
+
+            var emo = attributionEmotions.MaxValue(em =&gt; em.Intensity);
+            var emoValue = emo.EmotionType;
+
+            if (x.IsVariable)
+            {
+                var sub = new Substitution(x, new ComplexValue(context.Perspective));
+                foreach (var c in context.Constraints)
+                {
+                    if (c.AddSubstitution(sub))
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
+                }
+            }
+            else
+            {
+                foreach (var resultPair in context.AskPossibleProperties(x))
+                {
+                    foreach (var c in resultPair.Item2)
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
+                }
+            }
+        }
+
+        private IEnumerable&lt;DynamicPropertyResult&gt; StrongestCompoundEmotionCalculator(IQueryContext context, Name x)
+        {
+            if (context.Perspective != Name.SELF_SYMBOL)
+                yield break;
+
+            var emotions = m_emotionalState.GetAllEmotions();
+
+            if (!emotions.Any())
+            {
+                yield break;
+            }
+
+            var compoundEmotions = emotions.Where(
+                em =&gt; em.EmotionType == OCCEmotionType.Gratification.Name
+                || em.EmotionType == OCCEmotionType.Gratitude.Name
+                || em.EmotionType == OCCEmotionType.Remorse.Name
+                || em.EmotionType == OCCEmotionType.Anger.Name);
+
+            if (!compoundEmotions.Any())
+            {
+                yield break;
+            }
+
+            var emo = compoundEmotions.MaxValue(em =&gt; em.Intensity);
+            var emoValue = emo.EmotionType;
+
+            if (x.IsVariable)
+            {
+                var sub = new Substitution(x, new ComplexValue(context.Perspective));
+                foreach (var c in context.Constraints)
+                {
+                    if (c.AddSubstitution(sub))
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
+                }
+            }
+            else
+            {
+                foreach (var resultPair in context.AskPossibleProperties(x))
+                {
+                    foreach (var c in resultPair.Item2)
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
+                }
+            }
+        }
+
+        private IEnumerable&lt;DynamicPropertyResult&gt; StrongestEmotionCalculator(IQueryContext context, Name x)
+        {
+            if (context.Perspective != Name.SELF_SYMBOL)
+                yield break;
+
+            var emo = m_emotionalState.GetStrongestEmotion();
+            if (emo == null)
+                yield break;
+
+            var emoValue = emo.EmotionType;
+
+            if (x.IsVariable)
+            {
+                var sub = new Substitution(x, new ComplexValue(context.Perspective));
+                foreach (var c in context.Constraints)
+                {
+                    if (c.AddSubstitution(sub))
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
+                }
+            }
+            else
+            {
+                foreach (var resultPair in context.AskPossibleProperties(x))
+                {
+                    foreach (var c in resultPair.Item2)
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
+                }
+            }
+        }
+
+        private IEnumerable&lt;DynamicPropertyResult&gt; StrongestEmotionForEventCalculator(IQueryContext context, Name x, Name cause)
+        {
+            if (context.Perspective != Name.SELF_SYMBOL)
+                yield break;
+
+            var emo = m_emotionalState.GetStrongestEmotion(cause, m_am);
+            if (emo == null)
+            {
+                yield break;
+            }
+
+            var emoValue = emo.EmotionType;
+
+            if (x.IsVariable)
+            {
+                var sub = new Substitution(x, new ComplexValue(context.Perspective));
+                foreach (var c in context.Constraints)
+                {
+                    if (c.AddSubstitution(sub))
+                        yield return new DynamicPropertyResult(new ComplexValue ((Name)emoValue), c);
+                }
+            }
+            else
+            {
+                foreach (var resultPair in context.AskPossibleProperties(x))
+                {
+                    foreach (var c in resultPair.Item2)
+                        yield return new DynamicPropertyResult(new ComplexValue ((Name)emoValue), c);
+                }
+            }
+        }
+
+        private IEnumerable&lt;DynamicPropertyResult&gt; StrongestWellBeingEmotionCalculator(IQueryContext context, Name x)
+        {
+            if (context.Perspective != Name.SELF_SYMBOL)
+                yield break;
+
+            var emotions = m_emotionalState.GetAllEmotions();
+
+            if (!emotions.Any())
+            {
+                yield break;
+            }
+
+            var wellBeingEmotions = emotions.Where(
+                em =&gt; em.EmotionType == OCCEmotionType.Joy.Name
+                || em.EmotionType == OCCEmotionType.Distress.Name);
+
+            if (!wellBeingEmotions.Any())
+            {
+                yield break;
+            }
+
+            var emo = wellBeingEmotions.MaxValue(em =&gt; em.Intensity);
+            var emoValue = emo.EmotionType;
+
+            if (x.IsVariable)
+            {
+                var sub = new Substitution(x, new ComplexValue(context.Perspective));
+                foreach (var c in context.Constraints)
+                {
+                    if (c.AddSubstitution(sub))
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
+                }
+            }
+            else
+            {
+                foreach (var resultPair in context.AskPossibleProperties(x))
+                {
+                    foreach (var c in resultPair.Item2)
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
+                }
+            }
+        }
+        #endregion Dynamic Properties
+
+        /// @cond DEV
+
+        #region ICustomSerialization
+
+        public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+        {
+            dataHolder.SetValue(&quot;KnowledgeBase&quot;, m_kb);
+            dataHolder.SetValue(&quot;BodyName&quot;, this.BodyName);
+            dataHolder.SetValue(&quot;VoiceName&quot;, this.VoiceName);
+            dataHolder.SetValue(&quot;EmotionalAppraisalAssetSource&quot;, this.m_emotionalAppraisalAssetSource);
+            dataHolder.SetValue(&quot;EmotionalDecisionMakingSource&quot;, this.m_emotionalDecisionMakingAssetSource);
+            dataHolder.SetValue(&quot;SocialImportanceAssetSource&quot;, this.m_socialImportanceAssetSource);
+            dataHolder.SetValue(&quot;CommeillFautAssetSource&quot;, this.m_commeillFautAssetSource);
+            dataHolder.SetValue(&quot;EmotionalState&quot;, m_emotionalState);
+            dataHolder.SetValue(&quot;AutobiographicMemory&quot;, m_am);
+            dataHolder.SetValue(&quot;OtherAgents&quot;, m_otherAgents);
+            if (m_log.Any())
+            {
+                dataHolder.SetValue(&quot;UnifierLog&quot;, m_log);
+            }
+        }
+
+        public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+        {
+            m_allowAuthoring = true;
+            m_log = new List&lt;LogEntry&gt;();
+            m_activeIdentities = new Dictionary&lt;Name, Identity&gt;();
+            m_kb = dataHolder.GetValue&lt;KB&gt;(&quot;KnowledgeBase&quot;);
+            this.BodyName = dataHolder.GetValue&lt;string&gt;(&quot;BodyName&quot;);
+            this.VoiceName = dataHolder.GetValue&lt;string&gt;(&quot;VoiceName&quot;);
+            this.m_emotionalAppraisalAssetSource = dataHolder.GetValue&lt;string&gt;(&quot;EmotionalAppraisalAssetSource&quot;);
+            this.m_emotionalDecisionMakingAssetSource = dataHolder.GetValue&lt;string&gt;(&quot;EmotionalDecisionMakingSource&quot;);
+            this.m_socialImportanceAssetSource = dataHolder.GetValue&lt;string&gt;(&quot;SocialImportanceAssetSource&quot;);
+            this.m_commeillFautAssetSource = dataHolder.GetValue&lt;string&gt;(&quot;CommeillFautAssetSource&quot;);
+            m_emotionalState = dataHolder.GetValue&lt;ConcreteEmotionalState&gt;(&quot;EmotionalState&quot;);
+            m_am = dataHolder.GetValue&lt;AM&gt;(&quot;AutobiographicMemory&quot;);
+            m_otherAgents = dataHolder.GetValue&lt;Dictionary&lt;Name, AgentEntry&gt;&gt;(&quot;OtherAgents&quot;);
+            if (m_otherAgents == null) { m_otherAgents = new Dictionary&lt;Name, AgentEntry&gt;(); }
+
+
+            BindToRegistry(m_kb);
+        }
+
+        /// @endcond
+
+        #endregion ICustomSerialization
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[31,9,31,57,1],[32,9,32,63,1],[33,9,33,68,1],[34,9,34,61,1],[39,37,39,41,0],[39,42,39,46,0],[40,33,40,37,0],[40,38,40,42,0],[45,9,45,40,1],[46,9,46,10,1],[47,13,47,42,1],[48,13,48,67,1],[49,13,49,61,1],[50,13,50,29,1],[51,13,51,61,1],[52,13,52,37,1],[53,13,53,64,1],[54,13,54,34,1],[55,9,55,10,1],[60,34,60,38,1],[60,39,60,43,1],[67,17,67,18,1],[67,19,67,43,1],[67,44,67,45,1],[68,17,68,18,1],[68,19,68,46,1],[68,47,68,48,1],[72,17,72,18,1],[72,19,72,68,1],[72,69,72,70,1],[73,17,73,18,1],[73,19,73,69,1],[73,70,73,71,1],[77,32,77,36,0],[77,37,77,41,0],[82,41,82,45,1],[82,46,82,50,0],[87,43,87,47,1],[87,48,87,52,0],[89,72,89,76,1],[96,17,96,18,1],[96,19,96,74,1],[96,75,96,76,1],[97,17,97,18,1],[97,19,97,75,1],[97,76,97,77,1],[105,17,105,18,1],[105,19,105,79,1],[105,80,105,81,1],[106,17,106,18,1],[106,19,106,80,1],[106,81,106,82,1],[114,17,114,18,1],[114,19,114,66,1],[114,66,114,75,1],[114,75,114,77,1],[114,19,114,77,1],[114,78,114,79,1],[122,17,122,18,1],[122,19,122,48,1],[122,49,122,50,1],[123,17,123,18,1],[123,19,123,49,1],[123,50,123,51,1],[128,17,128,18,0],[128,19,128,31,0],[128,32,128,33,0],[136,17,136,18,1],[136,19,136,72,1],[136,73,136,74,1],[137,17,137,18,1],[137,19,137,73,1],[137,74,137,75,1],[145,17,145,18,1],[145,19,145,36,1],[145,37,145,38,1],[146,17,146,18,1],[146,19,146,37,1],[146,38,146,39,1],[152,35,152,39,1],[152,40,152,44,1],[164,9,164,10,0],[165,13,165,69,0],[166,9,166,10,0],[174,9,174,10,0],[175,13,175,35,0],[176,17,176,89,0],[178,13,178,55,0],[179,9,179,10,0],[182,9,182,10,1],[183,13,183,55,1],[184,9,184,10,1],[187,9,187,10,1],[188,13,188,56,1],[188,57,188,84,0],[190,13,190,43,1],[191,17,195,19,0],[197,13,197,80,1],[199,13,199,45,1],[200,13,200,20,1],[200,21,200,26,1],[200,27,200,29,1],[200,30,200,45,1],[201,13,201,14,1],[202,17,202,43,1],[203,17,203,18,1],[204,21,204,44,1],[205,17,205,18,1],[206,13,206,14,1],[208,13,208,57,1],[208,57,208,80,0],[208,80,208,92,1],[208,13,208,92,1],[209,13,209,56,1],[209,56,209,79,0],[209,79,209,81,1],[209,13,209,81,1],[210,13,210,49,1],[211,9,211,10,1],[218,9,218,10,1],[219,13,219,44,1],[220,9,220,10,1],[223,9,223,10,1],[224,13,224,66,1],[224,66,224,79,1],[224,79,224,81,1],[224,13,224,81,1],[225,9,225,10,1],[228,9,228,10,1],[229,13,229,53,1],[229,53,235,14,1],[235,14,235,16,1],[229,13,235,16,1],[236,9,236,10,1],[244,9,244,10,1],[245,13,245,98,1],[246,13,246,27,1],[247,9,247,10,1],[255,9,255,10,1],[256,13,256,74,1],[257,9,257,10,1],[265,9,265,10,1],[266,13,266,59,1],[267,9,267,10,1],[273,9,273,10,1],[274,13,274,99,1],[275,13,275,56,1],[275,56,275,67,1],[275,67,275,69,1],[275,13,275,69,1],[276,9,276,10,1],[282,9,282,10,1],[283,13,283,53,1],[285,13,285,88,1],[285,88,285,117,1],[285,117,285,119,1],[285,13,285,119,1],[287,13,287,99,1],[287,99,287,133,1],[287,133,287,135,1],[287,13,287,135,1],[288,13,288,84,1],[288,84,288,111,1],[288,111,288,113,1],[288,13,288,113,1],[289,13,289,77,1],[289,77,289,100,1],[289,100,289,102,1],[289,13,289,102,1],[291,13,291,44,1],[292,13,292,50,1],[293,13,293,42,1],[294,13,294,39,1],[296,13,296,46,1],[299,13,299,34,1],[300,13,300,45,1],[301,13,301,44,1],[302,13,302,45,1],[303,13,303,46,1],[304,13,304,38,1],[305,9,305,10,1],[308,9,308,10,1],[309,13,309,50,1],[310,9,310,10,1],[313,9,313,10,1],[314,13,314,53,1],[315,9,315,10,1],[318,9,318,10,1],[319,13,319,53,1],[320,9,320,10,1],[323,9,323,10,1],[324,13,324,58,1],[326,13,326,25,1],[327,13,327,20,1],[327,22,327,27,1],[327,28,327,30,1],[327,31,327,37,1],[328,13,328,14,1],[329,17,329,50,1],[330,17,330,18,1],[331,21,331,73,1],[332,21,332,22,0],[333,25,333,53,0],[335,25,335,59,0],[336,25,336,26,0],[337,29,337,63,0],[338,29,338,65,0],[339,25,339,26,0],[341,25,341,53,0],[342,21,342,22,0],[343,21,343,71,1],[344,21,344,22,1],[345,25,346,62,1],[347,25,347,48,1],[348,25,348,26,0],[349,29,349,54,0],[350,29,350,56,0],[351,25,351,26,0],[352,25,352,59,1],[354,21,354,22,1],[355,17,355,18,1],[356,17,356,111,1],[357,17,357,23,1],[358,13,358,14,1],[359,9,359,10,1],[362,9,362,10,0],[363,13,363,59,0],[364,9,364,10,0],[367,9,367,10,0],[368,13,368,43,0],[369,9,369,10,0],[372,9,372,10,0],[373,13,373,61,0],[373,61,373,86,0],[373,86,373,105,0],[373,13,373,105,0],[374,13,374,34,0],[374,35,374,76,0],[375,13,375,46,0],[376,9,376,10,0],[379,9,379,10,0],[380,13,380,48,0],[381,9,381,10,0],[384,9,384,10,0],[385,13,385,46,0],[386,9,386,10,0],[389,9,389,10,0],[390,13,390,42,0],[391,13,391,59,0],[392,9,392,10,0],[398,9,398,10,1],[399,13,399,20,1],[400,13,400,42,1],[401,9,401,10,1],[409,9,409,10,1],[410,13,410,39,1],[411,13,411,54,1],[412,9,412,10,1],[415,9,415,10,1],[416,13,416,78,1],[417,9,417,10,1],[424,9,424,10,0],[425,13,425,35,0],[426,17,426,89,0],[428,13,428,45,0],[429,9,429,10,0],[433,9,433,10,0],[434,13,434,50,0],[435,9,435,10,0],[438,9,438,10,0],[439,13,439,51,0],[440,13,440,14,0],[441,17,441,72,0],[442,17,442,70,0],[442,70,442,81,0],[442,81,442,83,0],[442,17,442,83,0],[443,17,444,80,0],[446,18,446,58,0],[447,9,447,10,0],[450,9,450,10,0],[451,13,451,39,0],[452,13,452,20,0],[452,22,452,32,0],[452,33,452,35,0],[452,36,452,61,0],[453,13,453,14,0],[454,17,454,60,0],[455,17,455,72,0],[456,17,456,36,0],[457,17,457,18,0],[458,21,458,68,0],[459,17,459,18,0],[461,13,461,14,0],[462,13,462,40,0],[462,41,462,81,0],[463,18,463,32,0],[464,9,464,10,0],[467,9,467,10,0],[468,13,468,25,0],[469,9,469,10,0],[472,9,472,10,0],[473,13,473,72,0],[474,17,475,79,0],[477,13,477,77,0],[478,17,479,84,0],[481,13,481,70,0],[482,17,483,77,0],[485,13,485,66,0],[486,17,487,73,0],[488,9,488,10,0],[492,9,492,10,0],[493,13,493,49,0],[494,13,494,20,0],[494,22,494,27,0],[494,28,494,30,0],[494,31,494,65,0],[494,65,494,74,0],[494,74,494,75,0],[494,31,494,75,0],[495,13,495,14,0],[496,17,496,38,0],[497,21,497,27,0],[499,17,499,32,0],[500,17,500,34,0],[501,13,501,14,0],[502,9,502,10,0],[505,9,505,10,1],[506,13,506,49,1],[507,13,507,14,1],[508,17,508,59,1],[509,21,509,77,1],[510,13,510,14,1],[511,9,511,10,1],[514,9,514,10,1],[515,13,515,98,1],[516,13,516,115,1],[517,13,517,133,1],[518,13,519,54,1],[520,13,521,56,1],[522,13,523,53,1],[524,13,524,108,1],[525,13,525,90,1],[526,13,526,104,1],[527,13,527,90,1],[528,13,528,86,1],[529,13,529,78,1],[530,13,530,94,1],[531,13,531,43,1],[532,9,532,10,1],[535,9,535,10,1],[536,13,536,44,1],[537,17,537,42,1],[539,13,539,72,0],[540,9,540,10,1],[555,9,555,92,1],[557,9,557,74,1],[559,9,559,78,1],[561,9,561,82,1],[563,9,563,96,1],[565,9,565,78,1],[567,9,567,75,1],[570,9,570,10,1],[571,13,571,84,1],[572,13,572,57,1],[573,17,573,31,0],[575,13,575,29,1],[576,13,576,34,1],[578,13,578,35,1],[579,13,579,14,1],[580,17,580,94,1],[581,17,581,59,1],[581,59,581,84,1],[581,84,581,86,1],[581,17,581,86,1],[582,17,582,32,1],[583,21,583,136,0],[584,13,584,14,1],[586,13,586,14,1],[587,17,587,24,1],[587,26,587,40,1],[587,41,587,43,1],[587,44,587,81,1],[588,17,588,18,1],[589,21,589,148,1],[590,17,590,18,1],[591,13,591,14,1],[592,13,592,27,1],[593,9,593,10,1],[597,9,597,10,0],[598,13,598,20,0],[598,22,598,32,0],[598,33,598,35,0],[598,36,598,55,0],[599,13,599,14,0],[600,17,600,24,0],[600,26,600,33,0],[600,34,600,36,0],[600,37,600,55,0],[600,55,600,76,0],[600,76,600,77,0],[600,37,600,77,0],[601,17,601,18,0],[602,21,606,24,0],[607,17,607,18,0],[608,17,608,104,0],[609,13,609,14,0],[610,9,610,10,0],[614,9,614,10,1],[615,13,615,40,1],[616,13,616,14,0],[617,17,617,24,0],[617,26,617,37,0],[617,38,617,40,0],[617,41,617,63,0],[618,17,618,18,0],[619,21,619,106,0],[620,21,620,28,0],[620,30,620,35,0],[620,36,620,38,0],[620,39,620,50,0],[621,21,621,22,0],[622,25,622,46,0],[623,29,623,38,0],[625,25,625,69,0],[626,25,626,61,0],[627,25,627,133,0],[628,21,628,22,0],[629,17,629,18,0],[630,13,630,14,0],[632,13,632,14,1],[633,17,633,24,1],[633,26,633,40,1],[633,41,633,43,1],[633,44,633,107,1],[634,17,634,18,1],[635,21,635,75,1],[636,21,636,94,1],[636,94,636,105,0],[636,105,636,124,1],[636,21,636,124,1],[637,21,637,59,1],[638,21,638,28,1],[638,30,638,35,1],[638,36,638,38,1],[638,39,638,55,1],[639,25,639,108,1],[640,17,640,18,1],[641,13,641,14,1],[642,9,642,10,1],[645,9,645,10,1],[646,13,646,57,1],[647,17,647,29,0],[649,13,649,30,1],[650,13,650,14,1],[651,17,651,101,1],[651,101,651,141,1],[651,141,651,143,1],[651,17,651,143,1],[653,17,653,24,1],[653,26,653,31,1],[653,32,653,34,1],[653,35,653,59,1],[654,17,654,18,1],[655,21,655,28,1],[655,30,655,37,1],[655,38,655,40,1],[655,41,655,60,1],[656,21,656,22,1],[657,25,657,46,1],[658,29,658,38,1],[660,25,660,58,1],[661,25,661,46,1],[662,25,662,107,1],[663,21,663,22,1],[664,17,664,18,1],[666,17,666,29,1],[669,13,669,20,1],[669,22,669,30,1],[669,31,669,33,1],[669,34,669,66,1],[670,13,670,14,1],[671,17,671,42,1],[672,17,672,72,1],[673,17,673,18,1],[674,21,674,28,1],[674,30,674,35,1],[674,36,674,38,1],[674,39,674,49,1],[675,21,675,22,1],[676,25,676,88,1],[677,21,677,22,1],[678,17,678,18,1],[679,13,679,14,1],[680,9,680,10,1],[685,9,685,10,1],[686,13,686,57,1],[687,17,687,29,0],[689,13,689,30,1],[690,13,690,14,1],[691,17,691,86,1],[692,17,692,24,1],[692,26,692,31,1],[692,32,692,34,1],[692,35,692,54,1],[693,17,693,18,1],[694,21,694,48,1],[695,25,695,124,1],[696,17,696,18,1],[697,13,697,14,1],[699,13,699,14,1],[700,17,700,24,1],[700,26,700,40,1],[700,41,700,43,1],[700,44,700,76,1],[701,17,701,18,1],[702,21,702,51,1],[703,21,703,28,1],[703,30,703,35,1],[703,36,703,38,1],[703,39,703,55,1],[704,21,704,22,1],[705,25,705,104,1],[706,21,706,22,1],[707,17,707,18,1],[708,13,708,14,1],[709,9,709,10,1],[714,9,714,10,0],[715,13,715,20,0],[715,22,715,27,0],[715,28,715,30,0],[715,31,715,50,0],[716,13,716,14,0],[717,17,717,51,0],[718,17,718,41,0],[719,17,719,18,0],[720,21,720,66,0],[721,21,721,22,0],[722,25,722,63,0],[724,25,724,120,0],[725,21,725,22,0],[727,21,727,22,0],[728,25,728,108,0],[729,21,729,22,0],[730,17,730,18,0],[731,13,731,14,0],[732,9,732,10,0],[736,9,736,10,0],[737,13,737,60,0],[738,13,738,60,0],[740,13,740,40,0],[742,13,742,55,0],[743,13,743,48,0],[745,13,745,101,0],[746,9,746,10,0],[749,9,749,10,0],[750,13,750,62,0],[752,13,752,30,0],[753,13,753,14,0],[754,17,754,24,0],[754,26,754,31,0],[754,32,754,34,0],[754,35,754,54,0],[755,17,755,18,0],[756,21,756,28,0],[756,30,756,37,0],[756,38,756,40,0],[756,41,756,42,0],[757,21,757,22,0],[758,25,758,47,0],[759,25,759,26,0],[760,29,760,83,0],[762,29,762,64,0],[765,29,765,112,0],[766,25,766,26,0],[767,21,767,22,0],[768,17,768,18,0],[769,13,769,14,0],[770,9,770,10,0],[773,9,773,10,0],[774,13,774,62,0],[775,13,775,48,0],[777,13,777,30,0],[778,13,778,14,0],[779,17,779,24,0],[779,26,779,31,0],[779,32,779,34,0],[779,35,779,54,0],[780,17,780,18,0],[781,21,781,28,0],[781,30,781,37,0],[781,38,781,40,0],[781,41,781,42,0],[782,21,782,22,0],[783,25,783,47,0],[784,25,784,26,0],[785,29,785,83,0],[787,29,787,52,0],[788,29,788,58,0],[789,29,789,52,0],[792,29,792,112,0],[793,25,793,26,0],[794,21,794,22,0],[795,17,795,18,0],[796,13,796,14,0],[797,9,797,10,0],[799,9,799,10,1],[800,13,800,57,1],[801,17,801,29,0],[803,13,803,62,1],[805,13,805,33,1],[806,13,806,14,0],[807,17,807,29,0],[810,13,811,23,1],[811,23,814,68,1],[814,68,814,70,1],[810,13,814,70,1],[816,13,816,44,1],[817,13,817,14,0],[818,17,818,29,0],[821,13,821,58,1],[821,58,821,70,1],[821,70,821,72,1],[821,13,821,72,1],[822,13,822,44,1],[824,13,824,30,1],[825,13,825,14,1],[826,17,826,86,1],[827,17,827,24,1],[827,26,827,31,1],[827,32,827,34,1],[827,35,827,54,1],[828,17,828,18,1],[829,21,829,48,1],[830,25,830,101,0],[831,17,831,18,1],[832,13,832,14,1],[834,13,834,14,1],[835,17,835,24,1],[835,26,835,40,1],[835,41,835,43,1],[835,44,835,76,1],[836,17,836,18,1],[837,21,837,28,1],[837,30,837,35,1],[837,36,837,38,1],[837,39,837,55,1],[838,25,838,101,1],[839,17,839,18,1],[840,13,840,14,1],[841,9,841,10,1],[844,9,844,10,1],[845,13,845,57,1],[846,17,846,29,0],[848,13,848,62,1],[850,13,850,33,1],[851,13,851,14,0],[852,17,852,29,0],[855,13,856,23,1],[856,23,859,63,1],[859,63,859,65,1],[855,13,859,65,1],[861,13,861,41,1],[862,13,862,14,0],[863,17,863,29,0],[866,13,866,55,1],[866,55,866,67,1],[866,67,866,69,1],[866,13,866,69,1],[867,13,867,44,1],[869,13,869,30,1],[870,13,870,14,1],[871,17,871,86,1],[872,17,872,24,1],[872,26,872,31,1],[872,32,872,34,1],[872,35,872,54,1],[873,17,873,18,1],[874,21,874,48,1],[875,25,875,101,0],[876,17,876,18,1],[877,13,877,14,1],[879,13,879,14,1],[880,17,880,24,1],[880,26,880,40,1],[880,41,880,43,1],[880,44,880,76,1],[881,17,881,18,1],[882,21,882,28,1],[882,30,882,35,1],[882,36,882,38,1],[882,39,882,55,1],[883,25,883,101,1],[884,17,884,18,1],[885,13,885,14,1],[886,9,886,10,1],[889,9,889,10,1],[890,13,890,57,1],[891,17,891,29,0],[893,13,893,62,1],[894,13,894,29,1],[895,17,895,29,0],[897,13,897,44,1],[899,13,899,30,1],[900,13,900,14,1],[901,17,901,86,1],[902,17,902,24,1],[902,26,902,31,1],[902,32,902,34,1],[902,35,902,54,1],[903,17,903,18,1],[904,21,904,48,1],[905,25,905,101,0],[906,17,906,18,1],[907,13,907,14,1],[909,13,909,14,1],[910,17,910,24,1],[910,26,910,40,1],[910,41,910,43,1],[910,44,910,76,1],[911,17,911,18,1],[912,21,912,28,1],[912,30,912,35,1],[912,36,912,38,1],[912,39,912,55,1],[913,25,913,101,1],[914,17,914,18,1],[915,13,915,14,1],[916,9,916,10,1],[919,9,919,10,1],[920,13,920,57,1],[921,17,921,29,0],[923,13,923,73,1],[924,13,924,29,1],[925,13,925,14,1],[926,17,926,29,1],[929,13,929,44,1],[931,13,931,30,1],[932,13,932,14,1],[933,17,933,86,1],[934,17,934,24,1],[934,26,934,31,1],[934,32,934,34,1],[934,35,934,54,1],[935,17,935,18,1],[936,21,936,48,1],[937,25,937,102,0],[938,17,938,18,1],[939,13,939,14,1],[941,13,941,14,1],[942,17,942,24,1],[942,26,942,40,1],[942,41,942,43,1],[942,44,942,76,1],[943,17,943,18,1],[944,21,944,28,1],[944,30,944,35,1],[944,36,944,38,1],[944,39,944,55,1],[945,25,945,102,1],[946,17,946,18,1],[947,13,947,14,1],[948,9,948,10,1],[951,9,951,10,1],[952,13,952,57,1],[953,17,953,29,0],[955,13,955,62,1],[957,13,957,33,1],[958,13,958,14,0],[959,17,959,29,0],[962,13,963,23,1],[963,23,964,66,1],[964,66,964,68,1],[962,13,964,68,1],[966,13,966,42,1],[967,13,967,14,0],[968,17,968,29,0],[971,13,971,56,1],[971,56,971,68,1],[971,68,971,70,1],[971,13,971,70,1],[972,13,972,44,1],[974,13,974,30,1],[975,13,975,14,1],[976,17,976,86,1],[977,17,977,24,1],[977,26,977,31,1],[977,32,977,34,1],[977,35,977,54,1],[978,17,978,18,1],[979,21,979,48,1],[980,25,980,101,0],[981,17,981,18,1],[982,13,982,14,1],[984,13,984,14,1],[985,17,985,24,1],[985,26,985,40,1],[985,41,985,43,1],[985,44,985,76,1],[986,17,986,18,1],[987,21,987,28,1],[987,30,987,35,1],[987,36,987,38,1],[987,39,987,55,1],[988,25,988,101,1],[989,17,989,18,1],[990,13,990,14,1],[991,9,991,10,1],[999,9,999,10,1],[1000,13,1000,56,1],[1001,13,1001,60,1],[1002,13,1002,62,1],[1003,13,1003,104,1],[1004,13,1004,109,1],[1005,13,1005,100,1],[1006,13,1006,92,1],[1007,13,1007,69,1],[1008,13,1008,63,1],[1009,13,1009,63,1],[1010,13,1010,29,1],[1011,13,1011,14,0],[1012,17,1012,58,0],[1013,13,1013,14,0],[1014,9,1014,10,1],[1017,9,1017,10,1],[1018,13,1018,37,1],[1019,13,1019,42,1],[1020,13,1020,67,1],[1021,13,1021,61,1],[1022,13,1022,69,1],[1023,13,1023,71,1],[1024,13,1024,113,1],[1025,13,1025,118,1],[1026,13,1026,109,1],[1027,13,1027,101,1],[1028,13,1028,94,1],[1029,13,1029,68,1],[1030,13,1030,94,1],[1031,13,1031,39,1],[1031,40,1031,41,0],[1031,42,1031,93,0],[1031,94,1031,95,0],[1034,13,1034,34,1],[1035,9,1035,10,1]]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>c:\users\manue\documents\work\fatima\assets\integratedauthoringtool\dialogstateaction.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using IntegratedAuthoringTool.DTOs;
+using WellFormedNames;
+
+namespace IntegratedAuthoringTool
+{
+
+    /// &lt;summary&gt;
+    /// Represents a dialogue action
+    /// &lt;/summary&gt;
+    public class DialogStateAction
+    {
+        
+        public Guid Id { get; private set; }
+        public Name CurrentState { get; private set; }
+        public Name NextState { get; private set; }
+        public Name Meaning { get; private set; }
+        public Name Style { get; private set; }
+        public string Utterance { get; private set; }
+        public string UtteranceId { get; set;}
+
+        /// &lt;summary&gt;
+        /// Creates a new instance of a dialogue action from the corresponding DTO
+        /// &lt;/summary&gt;
+        public DialogStateAction(DialogueStateActionDTO dto)
+        {
+	        this.Id = dto.Id == Guid.Empty?Guid.NewGuid() : dto.Id;
+	        this.CurrentState = Name.BuildName(dto.CurrentState);
+            this.Meaning = Name.BuildName(dto.Meaning);
+	        this.Style = Name.BuildName(dto.Style);
+	        this.NextState = Name.BuildName(dto.NextState);
+            this.Utterance = dto.Utterance;
+            this.UtteranceId = dto.UtteranceId;
+        }
+
+        public Name BuildSpeakAction()
+        {
+            var speakAction = string.Format(IATConsts.DIALOG_ACTION_KEY + &quot;({0},{1},{2},{3})&quot;,
+                CurrentState, NextState,Meaning,Style);
+            return (Name)speakAction;
+        }
+
+        /// &lt;summary&gt;
+        /// Creates a DTO from the dialogue action
+        /// &lt;/summary&gt;
+        public DialogueStateActionDTO ToDTO()
+        {
+            return new DialogueStateActionDTO
+            {
+                Id = this.Id,
+                CurrentState = this.CurrentState.ToString(),
+                NextState = this.NextState.ToString(),
+                Meaning = this.Meaning.ToString(),
+                Style = this.Style.ToString(),
+                Utterance = this.Utterance,
+                UtteranceId = this.UtteranceId
+            };
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[14,26,14,30,0],[14,31,14,43,0],[15,36,15,40,0],[15,41,15,53,0],[16,33,16,37,0],[16,38,16,50,0],[17,31,17,35,0],[17,36,17,48,0],[18,29,18,33,0],[18,34,18,46,0],[19,35,19,39,0],[19,40,19,52,0],[20,37,20,41,0],[20,42,20,46,0],[25,9,25,61,0],[26,9,26,10,0],[27,10,27,65,0],[28,10,28,63,0],[29,13,29,56,0],[30,10,30,49,0],[31,10,31,57,0],[32,13,32,44,0],[33,13,33,48,0],[34,9,34,10,0],[37,9,37,10,0],[38,13,39,56,0],[40,13,40,38,0],[41,9,41,10,0],[47,9,47,10,0],[48,13,57,15,0],[58,9,58,10,0]]);
+    </script>
+  </body>
+</html>

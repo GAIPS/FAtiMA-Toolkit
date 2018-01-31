@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\WellFormedNames\SimpleWFN.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using Utilities;
+using WellFormedNames.Exceptions;
+
+namespace WellFormedNames
+{
+    public class SimpleName
+    {
+        internal List&lt;Literal&gt; literals;
+        internal bool isGrounded;
+
+        public SimpleName(IEnumerable&lt;Literal&gt; literalList)
+        {
+            this.literals = new List&lt;Literal&gt;();
+            this.isGrounded = true;
+
+            // used to reset the depth of the first literal to 0
+            var delta = literalList.FirstOrDefault().depth; 
+
+            foreach (var l in literalList)
+            {
+                this.literals.Add(new Literal(l.description, l.type, l.depth - delta));
+                if (SimpleWFN.IsVariable(l))
+                {
+                    this.isGrounded = false;
+                }
+            }
+        }
+
+        public SimpleName(string description)
+        {
+            this.literals = new List&lt;Literal&gt;();
+            this.isGrounded = true;
+            description = description.RemoveWhiteSpace();
+            var n = Name.BuildName(description); //Substituir
+
+            if (n.IsComposed)
+            {
+                char[] literalLimiterChars = { &#39; &#39;, &#39;,&#39;, &#39;(&#39;, &#39;)&#39; };
+                string[] stringLiterals = description.Split(literalLimiterChars, StringSplitOptions.RemoveEmptyEntries);
+
+                var lPos = 0;
+                var depth = 0;
+                for (int i = 0; i &lt; description.Length; i++)
+                {
+                    //add literal
+                    Literal lit = null;
+                    switch (description[i])
+                    {
+                        case &#39;(&#39;:
+                            this.literals.Add(new Literal(stringLiterals[lPos], LiteralType.Root, depth));
+                            lPos++;
+                            depth++;
+                            break;
+                        case &#39;,&#39;:
+                            if (description[i - 1] != &#39;)&#39;)
+                            {
+                                this.literals.Add(new Literal(stringLiterals[lPos], LiteralType.Param, depth));
+                                lPos++;
+                            }
+                            break;
+                        case &#39;)&#39;:
+                            if (description[i - 1] != &#39;)&#39;)
+                            {
+                                this.literals.Add(new Literal(stringLiterals[lPos], LiteralType.Param, depth));
+                                lPos++;
+                            }
+                            depth--;
+                            break;
+                    }
+                }
+            }
+            else //if n is non composed
+            {
+                this.literals.Add(new Literal(description, LiteralType.Param, 0));
+            }
+
+            //check if grounded
+            foreach (var l in this.literals)
+            {
+                if (SimpleWFN.IsVariable(l))
+                {
+                    this.isGrounded = false;
+                }
+            }
+        }
+
+        public override string ToString()
+        {
+
+            if (this.literals.Count == 1)
+                return this.literals.First().description;
+
+            var litArray = literals.ToArray();
+            var builder = new StringBuilder();
+            builder.Append(litArray[0].description + &quot;(&quot; + litArray[1].description);
+            for (int i = 2; i &lt; litArray.Length; i++)
+            {
+                ToStringHelper(builder, litArray[i - 1], litArray[i]);
+            }
+            builder.Append(&#39;)&#39;, litArray[litArray.Length - 1].depth);
+            
+            return builder.ToString(); 
+        }
+
+        private void ToStringHelper(StringBuilder sb, Literal previous, Literal current)
+        {
+            if (previous.type == LiteralType.Root)
+            {
+                sb.Append(&quot;(&quot; + current.description);
+            }
+            if (previous.type == LiteralType.Param &amp;&amp; current.type == LiteralType.Param)
+            {
+                sb.Append(&#39;)&#39;, previous.depth - current.depth);
+                sb.Append(&quot;,&quot; + current.description);
+            }
+            if (previous.type == LiteralType.Param &amp;&amp; current.type == LiteralType.Root)
+            {
+                sb.Append(&#39;)&#39;, previous.depth - current.depth);
+                sb.Append(&quot;,&quot; + current.description);
+            }
+        }
+
+    }
+
+
+
+    /// &lt;summary&gt;
+	/// This is an experiment to try and reproduce the same functionality of the WFN project but without using objects that have behavior.
+	/// &lt;/summary&gt;
+	/// &lt;remarks&gt;
+    public class SimpleWFN
+    {
+       
+        /// &lt;summary&gt;
+        /// Verifies if a specific variable is contained inside this Name.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;variable&quot;&gt;The variable Name we want to verify&lt;/param&gt;
+        /// &lt;exception cref=&quot;ArgumentException&quot;&gt;Thrown if the given argument is not a variable definition.&lt;/exception&gt;
+        public static bool ContainsVariable(SimpleName name, string variable)
+        {
+            var v = Name.BuildName(variable);
+            if (!v.IsVariable)
+                throw new ArgumentException(&quot;Invalid variable&quot;, variable);
+            return GetVariables(name).Any(l =&gt; l.description.EqualsIgnoreCase(variable));
+        }
+
+
+        public static int GetNumberOfTerms(SimpleName name)
+        {
+            return name.literals.Count(l =&gt; l.depth &lt;= 1);
+        }
+        public static bool ContainsUniversal(SimpleName name)
+        {
+            return name.literals.Any(l =&gt; l.description == Name.UNIVERSAL_STRING);
+        }
+
+        public static IEnumerable&lt;Literal&gt; GetVariables(SimpleName name)
+        {
+            return name.literals.Where(l =&gt; IsVariable(l));
+        }
+
+        public static bool IsVariable(Literal literal)
+        {
+            return literal.description[0] == &#39;[&#39;;
+        }
+
+        public static bool IsGrounded(SimpleName name)
+        {
+            return name.isGrounded;
+        }
+
+        public static bool HasSelf(SimpleName name)
+        {
+            return name.literals.Any(l =&gt; l.description == Name.SELF_STRING);
+        }
+
+        public static SimpleName ReplaceLiterals(SimpleName name, string oldLit, string newLit)
+        {
+            var clone = new SimpleName(name.literals);
+            foreach (var l in clone.literals.Where(l =&gt; l.description == oldLit))
+            {
+                l.description = newLit;
+            }
+            return clone;
+        }
+
+        public static SimpleName AddVariableTag(SimpleName name, string tag)
+        {
+            var clone = new SimpleName(name.literals);
+            foreach (var v in GetVariables(clone))
+            {
+                v.description = v.description.Replace(&quot;]&quot;, tag + &quot;]&quot;);
+            }
+            return clone;
+        }
+
+        public static SimpleName RemoveVariableTag(SimpleName name, string tag)
+        {
+            var clone = new SimpleName(name.literals);
+            foreach (var v in GetVariables(clone))
+            {
+                v.description = v.description.Replace(tag + &quot;]&quot;, &quot;]&quot;);
+            }
+            return clone;
+        }
+
+
+        //not really needed for now but might be useful for building sub names
+        public static SimpleName BuildNameFromNLiteral(SimpleName name, int n)
+        {
+            if (name.literals[n].type != LiteralType.Root)
+                return new SimpleName(name.literals[n].description);
+
+            var list = name.literals.Skip(n + 1).TakeWhile(l =&gt; l.depth &gt; name.literals[n].depth);
+            return new SimpleName(list.Prepend(name.literals[n]));
+        }
+
+        public static SimpleName BuildNameFromContainedLiteral(SimpleName name, Literal literal)
+        {
+           if (literal.type != LiteralType.Root)
+                return new SimpleName(new Literal[] { literal });
+
+            var i = name.literals.IndexOf(literal);
+            var list = name.literals.Skip(i+1).TakeWhile(l =&gt; l.depth &gt; literal.depth);
+            return new SimpleName(list.Prepend(literal));
+        }
+
+
+        //not really needed for now but might be useful for building sub names
+        public static List&lt;SimpleName&gt; GetAllComposedNames(SimpleName name)
+        {
+            List&lt;SimpleName&gt; res = new List&lt;SimpleName&gt;();
+
+            for (int i = 1; i &lt; name.literals.Count; i++)
+            {
+                if (name.literals.ElementAt(i).type == LiteralType.Root)
+                {
+                    res.Add(BuildNameFromNLiteral(name, i));
+                }
+            }
+            return res;
+        }
+            
+        private static int FindJumpUntilDepthN(IList&lt;Literal&gt; list, int currentPos, int depthN)
+        {
+            for (int i = currentPos + 1; i &lt; list.Count; i++)
+            {
+                if (list[i].depth &lt;= depthN)
+                {
+                    return i - currentPos;
+                }
+            }
+            //If the codes reaches here the jump will be to the end of the array
+            return list.Count - currentPos;
+        }
+
+     
+        public static bool Match(SimpleName n1, SimpleName n2)
+        {
+            if (SimpleWFN.GetNumberOfTerms(n1) != SimpleWFN.GetNumberOfTerms(n2))
+                return false;
+
+            var idx1 = 0;
+            var idx2 = 0;
+            do
+            {
+                var l1 = n1.literals[idx1];
+                var l2 = n2.literals[idx2];
+
+                //auxiliary variables
+                bool typesMatch = l1.type == l2.type;
+                bool l1IsUniv = l1.description == Name.UNIVERSAL_STRING;
+                bool l2IsUniv = l2.description == Name.UNIVERSAL_STRING;
+                bool existsUniversal = l1IsUniv || l2IsUniv;
+
+                //The easy matching scenario is when both types match
+                if (typesMatch)
+                {
+                    if (existsUniversal || l1.description.EqualsIgnoreCase(l2.description))
+                    {
+                        idx1++; idx2++;
+                        continue;
+                    }
+                    return false; //no universals and different descritions
+                }
+
+                //eg. matching S with S(A)
+                if (!typesMatch &amp;&amp; !existsUniversal)
+                {
+                    return false;
+                }
+
+                //l1 is a universal and l2 has a different type
+                if (!typesMatch &amp;&amp; l1IsUniv)
+                {
+                    //l1 is a universal parameter and n2 is a root
+                    if (l1.type == LiteralType.Param)
+                    {
+                        // the index on n2 must jump until it reaches the depth of l1 again
+                        idx2 += FindJumpUntilDepthN(n2.literals, idx2, l1.depth);
+                        idx1++;
+                        continue;
+                    }
+                    //a root universal never matches any parameter except a universal
+                    if (l1.type == LiteralType.Root &amp;&amp; !l2IsUniv)
+                        return false;
+                }
+
+                //the last case is when l2 is the universal
+                if (!typesMatch &amp;&amp; l2IsUniv)
+                {
+                    if (l2.type == LiteralType.Param)
+                    {
+                        // the index on n2 must jump until it reaches the depth of n1 again
+                        idx1 += FindJumpUntilDepthN(n1.literals, idx1, l2.depth);
+                        idx2++;
+                        continue;
+                    }
+                    //a root universal never matches any parameter except a universal
+                    if (l2.type == LiteralType.Root &amp;&amp; !l1IsUniv)
+                        return false;
+                }
+            } while (idx1 &lt; n1.literals.Count &amp;&amp; idx2 &lt; n2.literals.Count);
+
+            if (idx1 == n1.literals.Count &amp;&amp; idx2 == n2.literals.Count)
+            {
+                return true; // full match
+            }
+            else
+            {
+                return false; // only partial match
+            }
+        }
+        public static bool MatchDescription(Literal n1, Literal n2)
+        {
+            if (n1.description == Name.UNIVERSAL_STRING ||
+                n2.description == Name.UNIVERSAL_STRING)
+                return true;
+
+            return n1.description.EqualsIgnoreCase(n2.description);
+        }
+
+        public static SimpleName MakeGround(SimpleName n, Dictionary&lt;string, SimpleName&gt; bindings)
+        {
+            var literals = new List&lt;Literal&gt;();
+
+            foreach (var l in n.literals)
+            {
+                if (bindings.ContainsKey(l.description))
+                {
+                    var nameValue = bindings[l.description];
+                    var subName = new SimpleName(nameValue.literals);
+                    foreach(var subL in subName.literals)
+                    {
+                        subL.depth += l.depth;
+                    }
+                    literals.AddRange(subName.literals);
+                }
+                else
+                {
+                    literals.Add(l);
+                }
+            }
+            return new SimpleName(literals);
+        }
+    
+        
+    }
+
+    public static class SimpleUnifier
+    {
+        /// &lt;summary&gt;
+        /// Unifying Method, receives two WellFormedNames and tries 
+        /// to find a list of Substitutions that will make 
+        /// both names syntatically equal. The algorithm performs Occur Check,
+        /// as such the unification of [X] and Luke([X]) will allways fail.
+        /// 
+        /// The method goes on each symbol (for both names) at a time, and tries to find 
+        /// a substitution between them. Take into account that the Unification between
+        /// [X](John,Paul) and Friend(John,[X]) fails because the algorithm considers [X]
+        /// to be the same variable
+        /// &lt;/summary&gt;
+        /// &lt;see cref=&quot;FAtiMA.Core.WellFormedNames.Substitution&quot;/&gt;
+        /// &lt;see cref=&quot;FAtiMA.Core.WellFormedNames.Name&quot;/&gt;
+        /// &lt;param name=&quot;name1&quot;&gt;The first Name&lt;/param&gt;
+        /// &lt;param name=&quot;name2&quot;&gt;The second Name&lt;/param&gt;
+        /// &lt;param name=&quot;bindings&quot;&gt;The out paramenter for the founded substitutions&lt;/param&gt;
+        /// &lt;returns&gt;True if the names are unifiable, in this case the bindings list will contain the found Substitutions, otherwise it will be empty&lt;/returns&gt;
+        public static bool Unify(SimpleName name1, SimpleName name2, out IEnumerable&lt;Substitution&gt; bindings)
+        {
+            bindings = null;
+            if (name1 == null || name2 == null)
+                return false;
+
+            if (SimpleWFN.IsGrounded(name1) &amp;&amp; SimpleWFN.IsGrounded(name2))
+            {
+                if (SimpleWFN.Match(name1, name2))
+                {
+                    bindings = Enumerable.Empty&lt;Substitution&gt;();
+                    return true;
+                }
+                else   {  return false; }
+            }
+
+            bindings = FindSubst(name1, name2);
+            return bindings != null;
+        }
+
+                
+        private static IEnumerable&lt;Substitution&gt; FindSubst(SimpleName n1, SimpleName n2)
+        {
+            // SubstitutionSet bindings = new SubstitutionSet();
+            Dictionary&lt;string, Substitution&gt; bindings = new Dictionary&lt;string, Substitution&gt;();
+            var idx1 = 0;
+            var idx2 = 0;
+
+            do
+            {
+                var l1 = n1.literals[idx1];
+                var l2 = n2.literals[idx2];
+                //neither literal is a variable
+                if (!SimpleWFN.IsVariable(l1) &amp;&amp; !SimpleWFN.IsVariable(l2))
+                {
+                    if (l1.description.EqualsIgnoreCase(l2.description))
+                    {
+                        idx1++; idx2++;
+                        continue;
+                    }
+                    else { return null; }
+                }
+                //both literals are a variable
+                if (SimpleWFN.IsVariable(l1) &amp;&amp; SimpleWFN.IsVariable(l2))
+                {
+                    if (!l1.description.EqualsIgnoreCase(l2.description))
+                    {
+                        if (bindings.ContainsKey(l1.description))
+                            return null;
+                        bindings[l1.description] = new Substitution(l1.description, l2.description);
+                    }    
+                    idx1++; idx2++;
+                    continue;
+                }
+                //only l1 is a variable 
+                if (SimpleWFN.IsVariable(l1) &amp;&amp; !SimpleWFN.IsVariable(l2))
+                {
+                    var res = FindSubsAux(l1, l2, n2, bindings);
+                    if (res == -1)
+                        return null;
+                    else { idx1++; idx2 += res; continue; }
+                }
+                //only l2 is a variable 
+                if (!SimpleWFN.IsVariable(l1) &amp;&amp; SimpleWFN.IsVariable(l2))
+                {
+                    var res = FindSubsAux(l2, l1, n1, bindings);
+                    if (res == -1)
+                        return null;
+                    else { idx1 += res; idx2++; continue; }
+                }
+                throw new Exception(&quot;Unexpected Situation&quot;);
+            } while (idx1 &lt; n1.literals.Count &amp;&amp; idx2 &lt; n2.literals.Count);
+
+            if (idx1 == n1.literals.Count &amp;&amp; idx2 == n2.literals.Count)
+            {
+                return bindings.Values; // full match
+            }
+            else
+            {
+                return null; // only partial match
+            };
+        }
+
+
+        //return the idx jump on the valName or -1 if it can&#39;t add the substitution
+        private static int FindSubsAux(Literal var, Literal val, SimpleName valName, IDictionary&lt;string, Substitution&gt; bindings)
+        {
+            //first, analyse if the value is a composed name or a single parameter 
+            string valDescription;
+            int valLiteralCount;
+            if (val.type == LiteralType.Root)
+            {
+                SimpleName auxName = null;
+                auxName = SimpleWFN.BuildNameFromContainedLiteral(valName, val);
+                valDescription = auxName.ToString();
+                valLiteralCount = auxName.literals.Count;
+            }
+            else
+            {
+                valDescription = val.description;
+                valLiteralCount = 1;
+            }
+            
+            //check if a binding for the same variable already exists
+            Substitution existingSub = null;
+            bindings.TryGetValue(var.description, out existingSub);
+            if (existingSub != null)
+            {
+                if (existingSub.SubValue.ToString().RemoveWhiteSpace().EqualsIgnoreCase(valDescription))
+                    return valLiteralCount;
+                else return -1;
+            }
+            //if there was no existing binding to the variable
+            try
+            {
+                bindings[var.description] = new Substitution(var.description, valDescription);
+                return valLiteralCount;
+            }
+            catch (BadSubstitutionException)
+            {
+                return -1;
+            }
+        }
+    }
+        
+
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[16,9,16,60,1],[17,9,17,10,1],[18,13,18,49,1],[19,13,19,36,1],[22,13,22,60,1],[24,13,24,20,1],[24,22,24,27,1],[24,28,24,30,1],[24,31,24,42,1],[25,13,25,14,1],[26,17,26,88,1],[27,17,27,45,1],[28,17,28,18,1],[29,21,29,45,1],[30,17,30,18,1],[31,13,31,14,1],[32,9,32,10,1],[34,9,34,46,1],[35,9,35,10,1],[36,13,36,49,1],[37,13,37,36,1],[38,13,38,58,1],[39,13,39,49,1],[41,13,41,30,1],[42,13,42,14,1],[43,17,43,69,1],[44,17,44,121,1],[46,17,46,30,1],[47,17,47,31,1],[48,22,48,31,1],[48,33,48,55,1],[48,57,48,60,1],[49,17,49,18,1],[51,21,51,40,1],[52,21,52,44,1],[55,29,55,107,1],[56,29,56,36,1],[57,29,57,37,1],[58,29,58,35,1],[60,29,60,59,1],[61,29,61,30,1],[62,33,62,112,1],[63,33,63,40,1],[64,29,64,30,1],[65,29,65,35,1],[67,29,67,59,1],[68,29,68,30,1],[69,33,69,112,1],[70,33,70,40,1],[71,29,71,30,1],[72,29,72,37,1],[73,29,73,35,1],[75,17,75,18,1],[76,13,76,14,1],[78,13,78,14,1],[79,17,79,83,1],[80,13,80,14,1],[83,13,83,20,1],[83,22,83,27,1],[83,28,83,30,1],[83,31,83,44,1],[84,13,84,14,1],[85,17,85,45,1],[86,17,86,18,1],[87,21,87,45,1],[88,17,88,18,1],[89,13,89,14,1],[90,9,90,10,1],[93,9,93,10,1],[95,13,95,42,1],[96,17,96,58,0],[98,13,98,47,1],[99,13,99,47,1],[100,13,100,85,1],[101,18,101,27,1],[101,29,101,48,1],[101,50,101,53,1],[102,13,102,14,1],[103,17,103,71,1],[104,13,104,14,1],[105,13,105,70,1],[107,13,107,39,1],[108,9,108,10,1],[111,9,111,10,1],[112,13,112,51,1],[113,13,113,14,1],[114,17,114,54,1],[115,13,115,14,1],[116,13,116,89,1],[117,13,117,14,1],[118,17,118,64,1],[119,17,119,54,1],[120,13,120,14,1],[121,13,121,88,1],[122,13,122,14,1],[123,17,123,64,1],[124,17,124,54,1],[125,13,125,14,1],[126,9,126,10,1],[145,9,145,10,0],[146,13,146,46,0],[147,13,147,31,0],[148,17,148,75,0],[149,13,149,48,0],[149,48,149,88,0],[149,88,149,90,0],[149,13,149,90,0],[150,9,150,10,0],[154,9,154,10,1],[155,13,155,45,1],[155,45,155,57,1],[155,57,155,59,1],[155,13,155,59,1],[156,9,156,10,1],[158,9,158,10,0],[159,13,159,43,0],[159,43,159,81,0],[159,81,159,83,0],[159,13,159,83,0],[160,9,160,10,0],[163,9,163,10,1],[164,13,164,45,1],[164,45,164,58,1],[164,58,164,60,1],[164,13,164,60,1],[165,9,165,10,1],[168,9,168,10,1],[169,13,169,50,1],[170,9,170,10,1],[173,9,173,10,1],[174,13,174,36,1],[175,9,175,10,1],[178,9,178,10,1],[179,13,179,43,1],[179,43,179,76,1],[179,76,179,78,1],[179,13,179,78,1],[180,9,180,10,1],[183,9,183,10,1],[184,13,184,55,1],[185,13,185,20,1],[185,22,185,27,1],[185,28,185,30,1],[185,31,185,57,1],[185,57,185,80,1],[185,80,185,81,1],[185,31,185,81,1],[186,13,186,14,1],[187,17,187,40,1],[188,13,188,14,1],[189,13,189,26,1],[190,9,190,10,1],[193,9,193,10,1],[194,13,194,55,1],[195,13,195,20,1],[195,22,195,27,1],[195,28,195,30,1],[195,31,195,50,1],[196,13,196,14,1],[197,17,197,71,1],[198,13,198,14,1],[199,13,199,26,1],[200,9,200,10,1],[203,9,203,10,0],[204,13,204,55,0],[205,13,205,20,0],[205,22,205,27,0],[205,28,205,30,0],[205,31,205,50,0],[206,13,206,14,0],[207,17,207,71,0],[208,13,208,14,0],[209,13,209,26,0],[210,9,210,10,0],[215,9,215,10,0],[216,13,216,59,0],[217,17,217,69,0],[219,13,219,65,0],[219,65,219,97,0],[219,97,219,99,0],[219,13,219,99,0],[220,13,220,67,0],[221,9,221,10,0],[224,9,224,10,1],[225,12,225,49,1],[226,17,226,66,0],[228,13,228,52,1],[229,13,229,63,1],[229,63,229,86,1],[229,86,229,88,1],[229,13,229,88,1],[230,13,230,58,1],[231,9,231,10,1],[236,9,236,10,0],[237,13,237,59,0],[239,18,239,27,0],[239,29,239,52,0],[239,54,239,57,0],[240,13,240,14,0],[241,17,241,73,0],[242,17,242,18,0],[243,21,243,61,0],[244,17,244,18,0],[245,13,245,14,0],[246,13,246,24,0],[247,9,247,10,0],[250,9,250,10,1],[251,18,251,40,1],[251,42,251,56,1],[251,58,251,61,1],[252,13,252,14,1],[253,17,253,45,1],[254,17,254,18,1],[255,21,255,43,1],[257,13,257,14,1],[259,13,259,44,1],[260,9,260,10,1],[264,9,264,10,1],[265,13,265,82,1],[266,17,266,30,1],[268,13,268,26,1],[269,13,269,26,1],[271,13,271,14,1],[272,17,272,44,1],[273,17,273,44,1],[276,17,276,54,1],[277,17,277,73,1],[278,17,278,73,1],[279,17,279,61,1],[282,17,282,32,1],[283,17,283,18,1],[284,21,284,92,1],[285,21,285,22,1],[286,25,286,32,1],[286,33,286,40,1],[287,25,287,34,1],[289,21,289,34,1],[293,17,293,53,1],[294,17,294,18,1],[295,21,295,34,1],[299,17,299,45,1],[300,17,300,18,1],[302,21,302,54,1],[303,21,303,22,1],[305,25,305,82,1],[306,25,306,32,1],[307,25,307,34,1],[310,21,310,66,0],[311,25,311,38,0],[312,17,312,18,0],[315,17,315,45,1],[316,17,316,18,1],[317,21,317,54,1],[318,21,318,22,1],[320,25,320,82,1],[321,25,321,32,1],[322,25,322,34,1],[325,21,325,66,0],[326,25,326,38,0],[327,17,327,18,0],[328,13,328,14,0],[328,15,328,76,1],[330,13,330,72,1],[331,13,331,14,1],[332,17,332,29,1],[335,13,335,14,1],[336,17,336,30,1],[338,9,338,10,1],[340,9,340,10,0],[341,13,342,57,0],[343,17,343,29,0],[345,13,345,68,0],[346,9,346,10,0],[349,9,349,10,1],[350,13,350,48,1],[352,13,352,20,1],[352,22,352,27,1],[352,28,352,30,1],[352,31,352,41,1],[353,13,353,14,1],[354,17,354,57,1],[355,17,355,18,1],[356,21,356,61,1],[357,21,357,70,1],[358,21,358,28,1],[358,29,358,37,1],[358,38,358,40,1],[358,41,358,57,1],[359,21,359,22,1],[360,25,360,47,1],[361,21,361,22,1],[362,21,362,57,1],[363,17,363,18,1],[365,17,365,18,1],[366,21,366,37,1],[367,17,367,18,1],[368,13,368,14,1],[369,13,369,45,1],[370,9,370,10,1],[395,9,395,10,1],[396,13,396,29,1],[397,13,397,48,1],[398,17,398,30,0],[400,13,400,76,1],[401,13,401,14,1],[402,17,402,51,1],[403,17,403,18,0],[404,21,404,65,0],[405,21,405,33,0],[407,24,407,25,1],[407,27,407,40,1],[410,13,410,48,1],[411,13,411,37,1],[412,9,412,10,1],[416,9,416,10,1],[418,13,418,96,1],[419,13,419,26,1],[420,13,420,26,1],[423,13,423,14,1],[424,17,424,44,1],[425,17,425,44,1],[427,17,427,76,1],[428,17,428,18,1],[429,21,429,73,1],[430,21,430,22,1],[431,25,431,32,1],[431,33,431,40,1],[432,25,432,34,1],[434,26,434,27,0],[434,28,434,40,0],[437,17,437,74,1],[438,17,438,18,0],[439,21,439,74,0],[440,21,440,22,0],[441,25,441,66,0],[442,29,442,41,0],[443,25,443,101,0],[444,21,444,22,0],[445,21,445,28,0],[445,29,445,36,0],[446,21,446,30,0],[449,17,449,75,1],[450,17,450,18,1],[451,21,451,65,1],[452,21,452,35,1],[453,25,453,37,1],[454,26,454,27,1],[454,28,454,35,1],[454,36,454,48,1],[454,49,454,58,1],[457,17,457,75,0],[458,17,458,18,0],[459,21,459,65,0],[460,21,460,35,0],[461,25,461,37,0],[462,26,462,27,0],[462,28,462,40,0],[462,41,462,48,0],[462,49,462,58,0],[464,17,464,61,0],[465,15,465,76,1],[467,13,467,72,1],[468,13,468,14,0],[469,17,469,40,0],[472,13,472,14,1],[473,17,473,29,1],[475,9,475,10,1],[480,9,480,10,1],[484,13,484,46,1],[485,13,485,14,1],[486,17,486,43,1],[487,17,487,81,1],[488,17,488,53,1],[489,17,489,58,1],[490,13,490,14,1],[492,13,492,14,1],[493,17,493,50,1],[494,17,494,37,1],[495,13,495,14,1],[498,13,498,45,1],[499,13,499,68,1],[500,13,500,37,1],[501,13,501,14,0],[502,17,502,105,0],[503,21,503,44,0],[504,22,504,32,0],[508,13,508,14,1],[509,17,509,95,1],[510,17,510,40,1],[512,13,512,45,1],[513,13,513,14,1],[514,17,514,27,1],[516,9,516,10,1]]);
+    </script>
+  </body>
+</html>

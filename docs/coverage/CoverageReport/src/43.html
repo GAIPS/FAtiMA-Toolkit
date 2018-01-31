@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\WellFormedNames\Implementation\VariableSymbol.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+
+namespace WellFormedNames
+{
+	public partial class Name
+	{
+		private class VariableSymbol : Symbol
+		{
+			private string m_variableName;
+
+			public VariableSymbol(string name)
+				: base(false, false, false, true, false)
+			{
+				m_variableName = name;
+			}
+
+			/// &lt;summary&gt;
+			/// Indicates whether the current object is equal to another object of the same type.
+			/// &lt;/summary&gt;
+			/// &lt;returns&gt;
+			/// true if the current object is equal to the &lt;paramref name=&quot;other&quot;/&gt; parameter; otherwise, false.
+			/// &lt;/returns&gt;
+			/// &lt;param name=&quot;other&quot;&gt;An object to compare with this object.&lt;/param&gt;
+			public override bool Equals(Name name)
+			{
+				if (!name.IsVariable)
+					return false;
+
+				StringComparer c;
+
+				c = StringComparer.InvariantCultureIgnoreCase;
+
+				return c.Equals(m_variableName, ((VariableSymbol) name).m_variableName);
+			}
+
+			private static readonly int BASE_HASH = &#39;[&#39;.GetHashCode() ^ &#39;]&#39;.GetHashCode();
+			public override int GetHashCode()
+			{
+				return m_variableName.ToUpperInvariant().GetHashCode() ^ BASE_HASH;
+			}
+
+			public override string ToString()
+			{
+				return $&quot;[{m_variableName}]&quot;;
+			}
+
+			public override IEnumerable&lt;Name&gt; GetVariables()
+			{
+				yield return this;
+			}
+
+			public override bool HasGhostVariable()
+			{
+				return m_variableName[0] == &#39;_&#39;;
+			}
+
+			public override bool HasSelf()
+			{
+				return false;
+			}
+
+			public override Name SwapTerms(Name original, Name newName)
+			{
+				return this;
+			}
+
+			public override Name ReplaceUnboundVariables(string id)
+			{
+				return new VariableSymbol(m_variableName + id);
+			}
+
+			public override Name RemoveBoundedVariables(string id)
+			{
+				StringComparison c;
+#if PORTABLE
+				c = StringComparison.OrdinalIgnoreCase;
+#else
+				c = StringComparison.InvariantCultureIgnoreCase;
+#endif
+				if (m_variableName.EndsWith(id,c))
+					return new VariableSymbol(m_variableName.Substring(0,m_variableName.Length-id.Length));
+				return this;
+			}
+
+			public override Name MakeGround(SubstitutionSet bindings)
+			{
+				Name v = bindings[this];
+				if (v == null)
+					return this;
+				return v.MakeGround(bindings);
+			}
+
+			public override bool Match(Name name)
+			{
+				if (name.IsUniversal)
+					return true;
+
+				return Equals(name as VariableSymbol);
+			}
+
+			/// @endcond
+			public override bool TryConvertToValue&lt;T&gt;(out T value)
+			{
+				value = default(T);
+				return false;
+			}
+		}
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[13,7,13,45,1],[14,4,14,5,1],[15,5,15,27,1],[16,4,16,5,1],[26,4,26,5,1],[27,5,27,26,1],[28,6,28,19,1],[32,5,32,51,1],[34,5,34,77,1],[35,4,35,5,1],[37,4,37,82,1],[39,4,39,5,1],[40,5,40,72,1],[41,4,41,5,1],[44,4,44,5,1],[45,5,45,34,1],[46,4,46,5,1],[49,4,49,5,1],[50,5,50,23,1],[51,4,51,5,1],[54,4,54,5,0],[55,5,55,37,0],[56,4,56,5,0],[59,4,59,5,1],[60,5,60,18,1],[61,4,61,5,1],[64,4,64,5,1],[65,5,65,17,1],[66,4,66,5,1],[69,4,69,5,1],[70,5,70,52,1],[71,4,71,5,1],[74,4,74,5,1],[79,5,79,53,1],[81,5,81,39,1],[82,6,82,93,1],[83,5,83,17,0],[84,4,84,5,1],[87,4,87,5,1],[88,5,88,29,1],[89,5,89,19,1],[90,6,90,18,1],[91,5,91,35,1],[92,4,92,5,1],[95,4,95,5,0],[96,5,96,26,0],[97,6,97,18,0],[99,5,99,43,0],[100,4,100,5,0],[104,4,104,5,0],[105,5,105,24,0],[106,5,106,18,0],[107,4,107,5,0]]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\EmotionalAppraisal\Mood.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+
+namespace EmotionalAppraisal
+{
+	/// &lt;summary&gt;
+	/// Class that represents a agent&#39;s mood.
+	/// &lt;/summary&gt;
+	internal class Mood
+	{
+		private float _intensityATt0;
+		private ulong _tickT0;
+		private float _intensity;
+	    
+		/// &lt;summary&gt;
+		/// value that represents mood.
+		/// Mood is ranged between [-10;10], a negative value represents a bad mood,
+		/// a positive value represents good mood and values near 0 represent a neutral mood
+		/// &lt;/summary&gt;
+		/// 
+		public float MoodValue =&gt; this._intensity;
+
+	    public ulong InitialTick =&gt; this._tickT0;
+
+	    public void SetTick0Value(ulong value)
+	    {
+	        _tickT0 = value;
+	    }
+
+		public void SetMoodValue(float value, EmotionalAppraisalConfiguration config)
+		{
+			value = value &lt; -10 ? -10 : (value &gt; 10 ? 10 : value);
+			if (Math.Abs(value) &lt; config.MinimumMoodValueForInfluencingEmotions)
+				value = 0;
+
+            this._intensityATt0 = this._intensity = value;
+		}
+
+		internal Mood()
+		{
+			this._intensityATt0 = this._intensity = 0;
+			this._tickT0 = 0;
+		}
+
+		/// &lt;summary&gt;
+		/// Decays the mood according to the agent&#39;s simulated time
+		/// &lt;/summary&gt;
+		/// &lt;returns&gt;the mood&#39;s intensity after being decayed&lt;/returns&gt;
+		public void DecayMood(EmotionalAppraisalConfiguration config, float tick)
+		{
+			if (this._intensityATt0 == 0)
+			{
+				this._intensity = 0;
+				return;
+			}
+        
+            var delta = (tick - this._tickT0);
+		
+			double lambda = Math.Log(config.HalfLifeDecayConstant)/ config.MoodHalfLifeDecayTime;
+			_intensity = (float)(this._intensityATt0 * Math.Exp(lambda*delta));
+
+            if (Math.Abs(this._intensity) &lt; config.MinimumMoodValueForInfluencingEmotions)
+			{
+				this._intensity = this._intensityATt0 = 0;
+				this._tickT0 = 0;
+			}
+		}
+
+		/// &lt;summary&gt;
+		/// Updates the character&#39;s mood when a given emotion is &quot;felt&quot; by the character. 
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;emotion&quot;&gt;the ActiveEmotion that will influence the agent&#39;s current mood&lt;/param&gt;
+		public void UpdateMood(ActiveEmotion emotion, EmotionalAppraisalConfiguration config, ulong tick)
+		{
+			if (!emotion.InfluenceMood)
+				return;
+            
+		    this._tickT0 = tick;
+			float scale = (float)emotion.Valence;
+			SetMoodValue(this._intensity + scale * (emotion.Intensity * config.EmotionInfluenceOnMoodFactor), config);
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[20,29,20,44,1],[22,34,22,46,1],[25,6,25,7,1],[26,10,26,26,1],[27,6,27,7,1],[30,3,30,4,1],[31,4,31,58,1],[32,4,32,72,1],[33,5,33,15,1],[35,13,35,59,1],[36,3,36,4,1],[38,3,38,18,1],[39,3,39,4,1],[40,4,40,46,1],[41,4,41,21,1],[42,3,42,4,1],[49,3,49,4,1],[50,4,50,33,1],[51,4,51,5,1],[52,5,52,25,1],[53,5,53,12,1],[56,13,56,47,0],[58,4,58,89,0],[59,4,59,71,0],[61,13,61,91,0],[62,4,62,5,0],[63,5,63,47,0],[64,5,64,22,0],[65,4,65,5,0],[66,3,66,4,1],[73,3,73,4,1],[74,4,74,31,1],[75,5,75,12,0],[77,7,77,27,1],[78,4,78,41,1],[79,4,79,110,1],[80,3,80,4,1]]);
+    </script>
+  </body>
+</html>

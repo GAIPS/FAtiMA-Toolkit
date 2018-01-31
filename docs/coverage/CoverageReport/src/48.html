@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\Conditions\ConditionSet.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using SerializationUtilities;
+using Conditions.DTOs;
+using Utilities;
+using WellFormedNames;
+using IQueryable = WellFormedNames.IQueryable;
+
+
+namespace Conditions
+{
+	using VarDomain = Dictionary&lt;Name, HashSet&lt;Name&gt;&gt;;
+
+	[Serializable]
+	public sealed class ConditionSet : IEnumerable&lt;Condition&gt;, IConditionEvaluator, ICustomSerialization
+	{
+		public LogicalQuantifier Quantifier { get; }
+       
+
+		[NonSerialized]
+		private List&lt;Condition&gt; m_conditions;
+
+		public int Count {
+			get { return m_conditions?.Count ?? 0; }
+		}
+
+		public ConditionSet() : this(LogicalQuantifier.Existential,null)
+		{
+		}
+
+		public ConditionSet(IEnumerable&lt;Condition&gt; conditions) : this(LogicalQuantifier.Existential,conditions){}
+
+		public ConditionSet(LogicalQuantifier quantifier, IEnumerable&lt;Condition&gt; conditions)
+		{
+			Quantifier = quantifier;
+			if(conditions!=null)
+				m_conditions = new List&lt;Condition&gt;(conditions.Distinct());
+		}
+
+		public ConditionSet(ConditionSetDTO dto)
+		{
+			if (dto == null)
+			{
+				Quantifier=LogicalQuantifier.Existential;
+				m_conditions = null;
+				return;
+			}
+
+			Quantifier = dto.Quantifier;
+			var conditions = dto.ConditionSet?.Select(c =&gt; Condition.Parse(c)).Distinct();
+			if (conditions != null)
+				m_conditions = new List&lt;Condition&gt;(conditions);
+		}
+
+		public ConditionSet Add(Condition condition)
+		{
+			if (m_conditions!=null &amp;&amp; m_conditions.Contains(condition))
+				return this;
+
+			if(m_conditions==null)
+				return new ConditionSet(Quantifier, new []{ condition });
+
+			return new ConditionSet(Quantifier, m_conditions.Prepend(condition));
+		}
+
+		public ConditionSet Remove(Condition condition)
+		{
+			if (m_conditions==null || !m_conditions.Contains(condition))
+				return this;
+
+			return new ConditionSet(Quantifier, m_conditions.Where(c =&gt; c != condition));
+		}
+
+		public ConditionSet SetQuantifier(LogicalQuantifier quantifier)
+		{
+			if (quantifier == Quantifier)
+				return this;
+
+			return new ConditionSet(quantifier,m_conditions);
+		}
+
+		public IEnumerable&lt;SubstitutionSet&gt; Unify(IQueryable db, Name perspective, IEnumerable&lt;SubstitutionSet&gt; constraints)
+		{
+			if (constraints == null || !constraints.Any())
+				constraints = new[] {new SubstitutionSet()};
+
+			if (m_conditions == null)
+				return constraints;
+
+			if(Quantifier == LogicalQuantifier.Existential)
+				return ExistentialEvaluate(db,perspective, constraints);
+
+			return UniversalEvaluate(db,perspective,constraints);
+		}
+
+		
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
+
+		public IEnumerator&lt;Condition&gt; GetEnumerator()
+		{
+			return m_conditions.GetEnumerator();
+		}
+
+		public override int GetHashCode()
+		{
+			const int EMPTY_HASH = 0x33b65725;
+			return m_conditions.Aggregate(EMPTY_HASH, (current, c) =&gt; current ^ c.GetHashCode());
+		}
+
+		public override bool Equals(object obj)
+		{
+			ConditionSet evaluatorSet = obj as ConditionSet;
+			if(evaluatorSet==null)
+				return false;
+
+			return m_conditions.SequenceEqual(evaluatorSet.m_conditions);
+		}
+
+		#region Evaluation Methods
+
+		private IEnumerable&lt;SubstitutionSet&gt; ExistentialEvaluate(IQueryable db, Name perspective, IEnumerable&lt;SubstitutionSet&gt; constraints)
+		{
+			List&lt;SubstitutionSet&gt; sets = new List&lt;SubstitutionSet&gt;();
+			List&lt;SubstitutionSet&gt; aux = new List&lt;SubstitutionSet&gt;();
+			sets.AddRange(constraints.Select(c =&gt; new SubstitutionSet(c)));
+			foreach (var c in m_conditions)
+			{
+				aux.AddRange(c.Unify(db,perspective, sets));
+				Util.Swap(ref sets, ref aux);
+				aux.Clear();
+				if (sets.Count == 0)
+					break;
+			}
+
+            
+
+			return sets;
+		}
+
+		private IEnumerable&lt;SubstitutionSet&gt; UniversalEvaluate(IQueryable db, Name perspective, IEnumerable&lt;SubstitutionSet&gt; constraints)
+		{
+			var lastDomain = BuildDomain(constraints);
+			List&lt;SubstitutionSet&gt; sets = new List&lt;SubstitutionSet&gt;(constraints);
+			List&lt;SubstitutionSet&gt; aux = new List&lt;SubstitutionSet&gt;();
+			try
+			{
+				foreach (var c in m_conditions)
+				{
+					aux.AddRange(c.Unify(db,perspective, sets));
+					Util.Swap(ref sets, ref aux);
+					aux.Clear();
+					var newDomain = BuildDomain(sets);
+					if (!CompareDomains(lastDomain, newDomain))
+					{
+						RecycleDomain(newDomain);
+						return aux;
+					}
+
+					RecycleDomain(lastDomain);
+					lastDomain = newDomain;
+				}
+
+				return sets;
+			}
+			finally
+			{
+				RecycleDomain(lastDomain);
+			}
+		}
+
+		private bool CompareDomains(VarDomain oldDomain, VarDomain newDomain)
+		{
+			foreach (var o in oldDomain)
+			{
+				HashSet&lt;Name&gt; domain;
+				if (!newDomain.TryGetValue(o.Key, out domain))
+					return false;
+
+				if (o.Value.Count != domain.Count)
+					return false;
+			}
+			return true;
+		}
+
+		private VarDomain BuildDomain(IEnumerable&lt;SubstitutionSet&gt; constraints)
+		{
+			var domain = ObjectPool&lt;Dictionary&lt;Name, HashSet&lt;Name&gt;&gt;&gt;.GetObject();
+			foreach (var sub in constraints.SelectMany(s =&gt; s))
+			{
+				HashSet&lt;Name&gt; set;
+				if (!domain.TryGetValue(sub.Variable, out set))
+				{
+					set = ObjectPool&lt;HashSet&lt;Name&gt;&gt;.GetObject();
+					domain[sub.Variable] = set;
+				}
+
+				set.Add(sub.SubValue.Value);
+			}
+			return domain;
+		}
+
+		private void RecycleDomain(VarDomain domain)
+		{
+			foreach (var set in domain.Values)
+			{
+				set.Clear();
+				ObjectPool&lt;HashSet&lt;Name&gt;&gt;.Recycle(set);
+			}
+			domain.Clear();
+			ObjectPool&lt;Dictionary&lt;Name, HashSet&lt;Name&gt;&gt;&gt;.Recycle(domain);
+		}
+
+		#endregion
+
+		public ConditionSetDTO ToDTO()
+		{
+			return new ConditionSetDTO() {
+                Quantifier = this.Quantifier,
+                ConditionSet =   m_conditions?.Select(c =&gt; c.ToString()).ToArray()};
+		}
+
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		{
+			SerializationServices.PopulateWithFieldData(dataHolder,this,true,false);
+			dataHolder.SetValue(&quot;Set&quot;, (m_conditions ?? Enumerable.Empty&lt;Condition&gt;()).ToArray());
+		}
+
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		{
+			object o = this;
+			SerializationServices.ExtractFromFieldData(dataHolder,ref o,true);
+			var set = dataHolder.GetValue&lt;Condition[]&gt;(&quot;Set&quot;);
+			if(set!=null)
+				m_conditions = new List&lt;Condition&gt;(set);
+		}
+
+        public override string ToString()
+        {
+            if(m_conditions == null || m_conditions.Count == 0)
+            {
+                return &quot;[]&quot;;
+            }else if (m_conditions.Count == 1)
+            {
+                return &quot;[ &quot; + m_conditions.First() + &quot; ]&quot;;
+            }
+            else
+            {
+                var str = &quot;[ &quot;;
+                foreach (var c in m_conditions)
+                {
+                    str += c.ToString() + &quot;, &quot;;
+                }
+                str = str.Remove(str.Length - 2);
+                return str + &quot;]&quot;;
+            }
+        }
+
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[19,41,19,45,1],[26,8,26,9,1],[26,10,26,42,1],[26,43,26,44,1],[29,27,29,67,1],[30,3,30,4,1],[31,3,31,4,1],[33,60,33,106,1],[33,106,33,107,1],[33,107,33,108,1],[35,3,35,87,1],[36,3,36,4,1],[37,4,37,28,1],[38,4,38,24,1],[39,5,39,63,1],[40,3,40,4,1],[42,3,42,43,1],[43,3,43,4,1],[44,4,44,20,1],[45,4,45,5,1],[46,5,46,46,1],[47,5,47,25,1],[48,5,48,12,1],[51,4,51,32,1],[52,4,52,51,1],[52,51,52,69,1],[52,69,52,82,1],[52,4,52,82,1],[53,4,53,27,1],[54,5,54,52,1],[55,3,55,4,1],[58,3,58,4,1],[59,4,59,63,1],[60,5,60,17,0],[62,4,62,26,1],[63,5,63,62,1],[65,4,65,73,1],[66,3,66,4,1],[69,3,69,4,1],[70,4,70,64,1],[71,5,71,17,0],[73,4,73,64,1],[73,64,73,78,1],[73,78,73,81,1],[73,4,73,81,1],[74,3,74,4,1],[77,3,77,4,0],[78,4,78,33,0],[79,5,79,17,0],[81,4,81,53,0],[82,3,82,4,0],[85,3,85,4,1],[86,4,86,50,1],[87,5,87,49,1],[89,4,89,29,1],[90,5,90,24,1],[92,4,92,51,1],[93,5,93,61,1],[95,4,95,57,1],[96,3,96,4,1],[100,3,100,4,0],[101,4,101,27,0],[102,3,102,4,0],[105,3,105,4,1],[106,4,106,40,1],[107,3,107,4,1],[110,3,110,4,0],[112,4,112,62,0],[112,62,112,87,0],[112,87,112,89,0],[112,4,112,89,0],[113,3,113,4,0],[116,3,116,4,1],[117,4,117,52,1],[118,4,118,26,1],[119,5,119,18,1],[121,4,121,65,0],[122,3,122,4,1],[127,3,127,4,1],[128,4,128,61,1],[129,4,129,60,1],[130,4,130,42,1],[130,42,130,64,1],[130,64,130,67,1],[130,4,130,67,1],[131,4,131,11,1],[131,13,131,18,1],[131,19,131,21,1],[131,22,131,34,1],[132,4,132,5,1],[133,5,133,49,1],[134,5,134,34,1],[135,5,135,17,1],[136,5,136,25,1],[137,6,137,12,1],[138,4,138,5,1],[142,4,142,16,1],[143,3,143,4,1],[146,3,146,4,1],[147,4,147,46,1],[148,4,148,72,1],[149,4,149,60,1],[151,4,151,5,1],[152,5,152,12,1],[152,14,152,19,1],[152,20,152,22,1],[152,23,152,35,1],[153,5,153,6,1],[154,6,154,50,1],[155,6,155,35,1],[156,6,156,18,1],[157,6,157,40,1],[158,6,158,49,1],[159,6,159,7,1],[160,7,160,32,1],[161,7,161,18,1],[164,6,164,32,1],[165,6,165,29,1],[166,5,166,6,1],[168,5,168,17,1],[171,4,171,5,1],[172,5,172,31,1],[173,4,173,5,1],[174,3,174,4,1],[177,3,177,4,1],[178,4,178,11,1],[178,13,178,18,1],[178,19,178,21,1],[178,22,178,31,1],[179,4,179,5,1],[181,5,181,51,1],[182,6,182,19,1],[184,5,184,39,1],[185,6,185,19,1],[186,4,186,5,1],[187,4,187,16,1],[188,3,188,4,1],[191,3,191,4,1],[192,4,192,73,1],[193,4,193,11,1],[193,13,193,20,1],[193,21,193,23,1],[193,24,193,52,1],[193,52,193,53,1],[193,53,193,54,1],[193,24,193,54,1],[194,4,194,5,1],[196,5,196,52,1],[197,5,197,6,1],[198,6,198,50,1],[199,6,199,33,1],[200,5,200,6,1],[202,5,202,33,1],[203,4,203,5,1],[204,4,204,18,1],[205,3,205,4,1],[208,3,208,4,1],[209,4,209,11,1],[209,13,209,20,1],[209,21,209,23,1],[209,24,209,37,1],[210,4,210,5,1],[211,5,211,17,1],[212,5,212,44,1],[213,4,213,5,1],[214,4,214,19,1],[215,4,215,64,1],[216,3,216,4,1],[221,3,221,4,1],[222,4,224,60,1],[224,60,224,72,1],[224,72,224,85,1],[222,4,224,85,1],[225,3,225,4,1],[228,3,228,4,1],[229,4,229,76,1],[230,4,230,90,1],[231,3,231,4,1],[234,3,234,4,1],[235,4,235,20,1],[236,4,236,70,1],[237,4,237,54,1],[238,4,238,17,1],[239,5,239,45,1],[240,3,240,4,1],[243,9,243,10,1],[244,13,244,64,1],[245,13,245,14,0],[246,17,246,29,0],[247,19,247,47,1],[248,13,248,14,1],[249,17,249,59,1],[252,13,252,14,1],[253,17,253,32,1],[254,17,254,24,1],[254,26,254,31,1],[254,32,254,34,1],[254,35,254,47,1],[255,17,255,18,1],[256,21,256,48,1],[257,17,257,18,1],[258,17,258,50,1],[259,17,259,34,1],[261,9,261,10,1]]);
+    </script>
+  </body>
+</html>

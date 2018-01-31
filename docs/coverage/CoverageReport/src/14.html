@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\EmotionalAppraisal\OCCModel\OCCBaseEmotion.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using WellFormedNames;
+
+namespace EmotionalAppraisal.OCCModel
+{
+	public class OCCBaseEmotion : BaseEmotion
+	{
+		public OCCBaseEmotion(OCCEmotionType type, float potential, uint causeId, Name direction, Name eventName)
+			: base(type.Name,type.Valence,type.AppraisalVariables,potential,type.InfluencesMood,causeId,direction, eventName)
+		{
+		}
+
+		public OCCBaseEmotion(OCCEmotionType type, float potential, uint causeId, Name eventName)
+			: base(type.Name, type.Valence, type.AppraisalVariables, potential, type.InfluencesMood, causeId, eventName)
+		{
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[8,6,8,117,1],[9,3,9,4,1],[10,3,10,4,1],[13,6,13,112,1],[14,3,14,4,1],[15,3,15,4,1]]);
+    </script>
+  </body>
+</html>
