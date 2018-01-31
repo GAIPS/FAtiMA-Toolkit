@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/GAIPS-INESC-ID/FAtiMA-Toolkit.svg?branch=master)](https://travis-ci.org/GAIPS-INESC-ID/FAtiMA-Toolkit) [![AppVeyor tests](https://img.shields.io/appveyor/tests/samuelfm/fatima-toolkit.svg)](https://ci.appveyor.com/project/samuelfm/fatima-toolkit/build/tests)
 
-### Code Coverage (64%)
+### Code Coverage (71%)
 Details: http://gaips-inesc-id.github.io/FAtiMA-Toolkit/coverage/
 
 ### Description
