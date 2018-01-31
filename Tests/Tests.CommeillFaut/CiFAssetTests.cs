@@ -265,6 +265,43 @@ namespace Tests.CommeillFaut
 
         }
 
+        [TestCase("Has(Floor) = Matt, [i] = Matt", "Positive")]
+        [TestCase("Has(Floor) = Matt, [i] = Matt, [t] != Sarah", "Positive")]
+        [TestCase("[i] != Matt", "Negative")]
+        [TestCase("Has(Floor) != Matt, [i] != Matt, [t] = Sarah", "Negative")]
+        [TestCase("Has(Floor) != Start, [i] != Matt", "Neutral")]
+        [TestCase("Has(Floor) = Matt, DialogueState(Player) = Start , [i] != Matt, [t] != Sarah", "Neutral")]
+        public void Test_CIF_ConditionValue(string conditions, string finalResult)
+        {
+            var mattKb = new KnowledgeBase.KB((Name)"Matt");
+            mattKb.Tell((Name)"Has(Floor)", (Name)"Matt");
+            mattKb.Tell((Name)"DialogueState(Player)", (Name)"Start");
+            var conds = conditions.Split(',');
+            var seDTO = new SocialExchangeDTO()
+            {
+                Name = Name.BuildName("Flirt"),
+                Description = "When I'm atracted to...",
+                Conditions = new Conditions.DTOs.ConditionSetDTO()
+                {
+                    ConditionSet = conds
+                },
+                Initiator = Name.BuildName("[i]"),
+                Target = Name.BuildName("[t]")
+            };
+
+            var cif1 = new CommeillFautAsset();
+            cif1.AddOrUpdateExchange(seDTO);
+
+            cif1.RegisterKnowledgeBase((mattKb));
+
+            var result = cif1.CalculateSocialMoveVolition((Name) "Flirt", (Name)"Matt", (Name)"Sarah");
+
+            var volResult = cif1.CalculateStyle((result));
+
+            Assert.AreEqual(finalResult, volResult);
+
+        }
+
 
         [TestCase]
         public void Test_CIF_RemoveSocialExchange()
