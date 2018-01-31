@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\GAIPS.Rage\CloneHelper.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using SerializationUtilities;
+
+namespace GAIPS.Rage
+{
+    public class CloneHelper
+    {
+        private static readonly JSONSerializer serializer = new JSONSerializer();
+
+        public static T Clone&lt;T&gt; (T obj)
+        {
+            var json = serializer.SerializeToJson(obj);
+            return serializer.DeserializeFromJson&lt;T&gt;(json);
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[7,9,7,82,0],[10,9,10,10,0],[11,13,11,56,0],[12,13,12,60,0],[13,9,13,10,0]]);
+    </script>
+  </body>
+</html>

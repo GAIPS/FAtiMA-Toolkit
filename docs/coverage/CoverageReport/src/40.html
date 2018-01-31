@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\WellFormedNames\Implementation\PrimitiveSymbol.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.Collections.Generic;
+using WellFormedNames.Exceptions;
+
+namespace WellFormedNames
+{
+	public partial class Name
+	{
+		private class PrimitiveSymbol : Symbol
+		{
+			private PrimitiveValue m_value;
+
+			public PrimitiveSymbol(string str) : base(true, false, true, false, true)
+			{
+				if (str == null)
+				{
+					m_value = null;
+					return;
+				}
+
+				if(!PrimitiveValue.TryParse(str,out m_value))
+					throw new ParsingException($&quot;\&quot;{str}\&quot; is not a primitive value string.&quot;);
+			}
+
+			public PrimitiveSymbol(PrimitiveValue value) : base(true, false, true, false, true)
+			{
+				m_value = value;
+			}
+
+			public override bool Equals(Name name)
+			{
+				if (!name.IsPrimitive)
+					return false;
+
+				var other = (PrimitiveSymbol) name;
+
+				if (m_value == null)
+					return other.m_value == null;
+
+				return other.m_value != null &amp;&amp; m_value.Equals(other.m_value);
+			}
+
+			public override int GetHashCode()
+			{
+				if (m_value == null)
+					return 0;
+				return m_value.GetHashCode();
+			}
+
+			public override IEnumerable&lt;Name&gt; GetVariables()
+			{
+				yield break;
+			}
+
+			public override bool HasGhostVariable()
+			{
+				return false;
+			}
+
+			public override bool HasSelf()
+			{
+				return SELF_SYMBOL.Equals(this);
+			}
+
+			public override Name SwapTerms(Name original, Name newName)
+			{
+				if (original.Equals(this))
+					return newName;
+				return this;
+			}
+
+			public override Name ReplaceUnboundVariables(string id)
+			{
+				return this;
+			}
+
+			public override Name RemoveBoundedVariables(string id)
+			{
+				return this;
+			}
+
+			public override Name MakeGround(SubstitutionSet bindings)
+			{
+				return this;
+			}
+
+			public override bool Match(Name name)
+			{
+				if (name.IsUniversal)
+					return true;
+
+				PrimitiveSymbol s = name as PrimitiveSymbol;
+				if (s == null)
+					return false;
+
+                if (m_value == null)
+                    return false;
+
+				return m_value.Equals(s.m_value);
+			}
+
+			public override string ToString()
+			{
+				return m_value?.ToString() ?? &quot;-&quot;;
+			}
+
+			/// @endcond
+			public override bool TryConvertToValue&lt;T&gt;(out T value)
+			{
+				if (m_value == null)
+				{
+					value = default(T);
+					return false;
+				}
+
+				return PrimitiveValue.TryOpen&lt;T&gt;(m_value, out value);
+			}
+
+			public static bool TryCompare(PrimitiveSymbol s1, PrimitiveSymbol s2, out int delta)
+			{
+				return PrimitiveValue.TryCompare(s1.m_value, s2.m_value, out delta);
+			}
+
+			public override object GetValue()
+			{
+				return m_value != null ? PrimitiveValue.Extract(m_value) : null;
+			}
+		}
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[12,41,12,77,1],[13,4,13,5,1],[14,5,14,21,1],[15,5,15,6,0],[16,6,16,21,0],[17,6,17,13,0],[20,5,20,50,1],[21,6,21,80,0],[22,4,22,5,1],[24,51,24,87,1],[25,4,25,5,1],[26,5,26,21,1],[27,4,27,5,1],[30,4,30,5,1],[31,5,31,27,1],[32,6,32,19,1],[34,5,34,40,1],[36,5,36,25,1],[37,6,37,35,1],[39,5,39,67,1],[40,4,40,5,1],[43,4,43,5,1],[44,5,44,25,1],[45,6,45,15,1],[46,5,46,34,1],[47,4,47,5,1],[50,4,50,5,1],[51,5,51,17,1],[55,4,55,5,0],[56,5,56,18,0],[57,4,57,5,0],[60,4,60,5,1],[61,5,61,37,1],[62,4,62,5,1],[65,4,65,5,1],[66,5,66,31,1],[67,6,67,21,1],[68,5,68,17,1],[69,4,69,5,1],[72,4,72,5,1],[73,5,73,17,1],[74,4,74,5,1],[77,4,77,5,1],[78,5,78,17,1],[79,4,79,5,1],[82,4,82,5,1],[83,5,83,17,1],[84,4,84,5,1],[87,4,87,5,1],[88,5,88,26,1],[89,6,89,18,1],[91,5,91,49,1],[92,5,92,19,1],[93,6,93,19,1],[95,17,95,37,1],[96,21,96,34,1],[98,5,98,38,1],[99,4,99,5,1],[102,4,102,5,1],[103,5,103,39,1],[104,4,104,5,1],[108,4,108,5,1],[109,5,109,25,1],[110,5,110,6,0],[111,6,111,25,0],[112,6,112,19,0],[115,5,115,58,1],[116,4,116,5,1],[119,4,119,5,1],[120,5,120,73,1],[121,4,121,5,1],[124,4,124,5,1],[125,5,125,69,1],[126,4,126,5,1]]);
+    </script>
+  </body>
+</html>

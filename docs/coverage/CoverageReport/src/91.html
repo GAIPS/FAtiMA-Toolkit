@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\RolePlayCharacter\BeliefDTO.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+
+namespace RolePlayCharacter
+{
+    /// &lt;summary&gt;
+    /// Data Type Object Class for the representation of a belief that the asset has about a property of the world
+    /// &lt;/summary&gt;
+    [Serializable]
+    public class BeliefDTO
+    {
+		/// &lt;summary&gt;
+		/// The name of the property that this belief refers.
+		/// &lt;/summary&gt;
+        public string Name { get; set; }
+		/// &lt;summary&gt;
+		/// The value that is believed that this property has.
+		/// &lt;/summary&gt;
+		public string Value { get; set; }
+
+        public float Certainty { get; set; }
+
+        /// &lt;summary&gt;
+        /// From which perspective does this property holds this value. 
+        /// &lt;/summary&gt;
+        /// &lt;example&gt;
+        /// I belief that this sky is blue.
+        /// Name = &lt;b&gt;Color(Sky)&lt;/b&gt;
+        /// Value = &lt;b&gt;Blue&lt;/b&gt;
+        /// Perspective = &lt;b&gt;SELF&lt;/b&gt;
+        /// I belief that John believes that the sky is green.
+        /// Name = &lt;b&gt;Color(Sky)&lt;/b&gt;
+        /// Value = &lt;b&gt;Green&lt;/b&gt;
+        /// Perspective = &lt;b&gt;John&lt;/b&gt;
+        /// &lt;/example&gt;
+        public string Perspective { get; set; }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[14,30,14,34,0],[14,35,14,39,1],[18,25,18,29,0],[18,30,18,34,1],[20,34,20,38,0],[20,39,20,43,1],[35,37,35,41,0],[35,42,35,46,1]]);
+    </script>
+  </body>
+</html>

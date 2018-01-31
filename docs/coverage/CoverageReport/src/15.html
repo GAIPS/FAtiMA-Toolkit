@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\EmotionalAppraisal\OCCModel\OCCEmotionType.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.Collections.Generic;
+
+namespace EmotionalAppraisal.OCCModel
+{
+	public sealed class OCCEmotionType
+	{
+		#region internal constants
+
+		private static readonly string[] Attribution = { OCCAppraisalVariables.PRAISEWORTHINESS };
+
+		private static readonly string[] WellBeing = { OCCAppraisalVariables.DESIRABILITY };
+
+		//private static readonly string[] FortuneOfOthers = { OCCAppraisalVariables.DESIRABILITY,
+		//													   OCCAppraisalVariables.DESIRABILITY_FOR_OTHER};
+
+		//private static readonly string[] Attraction = { OCCAppraisalVariables.LIKE };
+
+		private static readonly string[] Composed = { OCCAppraisalVariables.DESIRABILITY,
+														OCCAppraisalVariables.PRAISEWORTHINESS};
+
+		//private static readonly string[] PositiveProspect = { OCCAppraisalVariables.GOALCONDUCIVENESS,
+		//														OCCAppraisalVariables.GOALSTATUS,
+		//														OCCAppraisalVariables.FAILUREPROBABILITY};
+
+		//private static readonly string[] NegativeProspect = { OCCAppraisalVariables.GOALCONDUCIVENESS,
+		//														OCCAppraisalVariables.GOALSTATUS,
+		//														OCCAppraisalVariables.SUCCESSPROBABILITY};
+
+		#endregion
+
+		public static readonly OCCEmotionType Admiration = new OCCEmotionType(&quot;Admiration&quot;,EmotionValence.Positive, true, Attribution);
+		public static readonly OCCEmotionType Anger = new OCCEmotionType(&quot;Anger&quot;, EmotionValence.Negative, true, Composed);
+		public static readonly OCCEmotionType Gratitude = new OCCEmotionType(&quot;Gratitude&quot;, EmotionValence.Positive, true, Composed);
+		//public static readonly OCCEmotionType Disappointment = new OCCEmotionType(&quot;Disappointment&quot;, EmotionValence.Negative, true, PositiveProspect);
+		public static readonly OCCEmotionType Distress = new OCCEmotionType(&quot;Distress&quot;, EmotionValence.Negative, true, WellBeing);
+		//public static readonly OCCEmotionType Fear = new OCCEmotionType(&quot;Fear&quot;, EmotionValence.Negative, false, NegativeProspect);
+		//public static readonly OCCEmotionType FearsConfirmed = new OCCEmotionType(&quot;Fears-Confirmed&quot;, EmotionValence.Negative, true, NegativeProspect);
+		public static readonly OCCEmotionType Gratification = new OCCEmotionType(&quot;Gratification&quot;, EmotionValence.Positive, true, Composed);
+		//public static readonly OCCEmotionType Gloating = new OCCEmotionType(&quot;Gloating&quot;, EmotionValence.Positive, true, FortuneOfOthers);
+		//public static readonly OCCEmotionType HappyFor = new OCCEmotionType(&quot;Happy-For&quot;, EmotionValence.Positive, true, FortuneOfOthers);
+		//public static readonly OCCEmotionType Hate = new OCCEmotionType(&quot;Hate&quot;, EmotionValence.Negative, true, Attraction);
+		//public static readonly OCCEmotionType Hope = new OCCEmotionType(&quot;Hope&quot;, EmotionValence.Positive, false, PositiveProspect);
+		public static readonly OCCEmotionType Joy = new OCCEmotionType(&quot;Joy&quot;, EmotionValence.Positive, true, WellBeing);
+		//public static readonly OCCEmotionType Love = new OCCEmotionType(&quot;Love&quot;, EmotionValence.Positive, true, Attraction);
+		//public static readonly OCCEmotionType Pitty = new OCCEmotionType(&quot;Pitty&quot;, EmotionValence.Negative, true, FortuneOfOthers);
+		public static readonly OCCEmotionType Pride = new OCCEmotionType(&quot;Pride&quot;, EmotionValence.Positive, true, Attribution);
+		//public static readonly OCCEmotionType Relief = new OCCEmotionType(&quot;Relief&quot;, EmotionValence.Positive, true, NegativeProspect);
+		public static readonly OCCEmotionType Remorse = new OCCEmotionType(&quot;Remorse&quot;, EmotionValence.Negative, true, Composed);
+		public static readonly OCCEmotionType Reproach = new OCCEmotionType(&quot;Reproach&quot;, EmotionValence.Negative, true, Attribution);
+		//public static readonly OCCEmotionType Resentment = new OCCEmotionType(&quot;Resentment&quot;, EmotionValence.Negative, true, FortuneOfOthers);
+		//public static readonly OCCEmotionType Satisfaction = new OCCEmotionType(&quot;Satisfaction&quot;, EmotionValence.Positive, true, PositiveProspect);
+		public static readonly OCCEmotionType Shame = new OCCEmotionType(&quot;Shame&quot;, EmotionValence.Negative, true, Attribution);
+
+
+	    public static OCCEmotionType Parse(string type)
+	    {
+	        switch (type)
+	        {
+                case &quot;Admiration&quot;: return Admiration;
+                case &quot;Anger&quot;: return Anger;
+                case &quot;Gratitude&quot;: return Gratitude;
+                case &quot;Distress&quot;: return Distress;
+                case &quot;Joy&quot;: return Joy;
+                case &quot;Pride&quot;: return Pride;
+                case &quot;Remorse&quot;: return Remorse;
+                case &quot;Reproach&quot;: return Reproach;
+                case &quot;Shame&quot;: return Shame;
+                default: return null;
+	        }
+	    }
+
+	    public static string[] Types =
+	    {
+	        Admiration.Name,
+            Anger.Name,
+            Gratitude.Name,
+            Distress.Name,
+            Gratification.Name,
+            Joy.Name,
+            Pride.Name,
+            Reproach.Name,
+            Shame.Name
+        };
+
+        
+		#region Class Definition
+
+		public readonly string Name;
+		public readonly EmotionValence Valence;
+		public readonly IEnumerable&lt;string&gt; AppraisalVariables;
+		public readonly bool InfluencesMood;
+
+		private OCCEmotionType(string name, EmotionValence valence, bool influencesMood, string[] appraisalVariables)
+		{
+			Name = name;
+			Valence = valence;
+			InfluencesMood = influencesMood;
+			AppraisalVariables = appraisalVariables;
+		}
+
+		#endregion
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[9,3,9,93,1],[11,3,11,87,1],[18,3,19,55,1],[31,3,31,130,1],[32,3,32,118,1],[33,3,33,126,1],[35,3,35,125,1],[38,3,38,134,1],[43,3,43,115,1],[46,3,46,121,1],[48,3,48,122,1],[49,3,49,127,1],[52,3,52,121,1],[56,6,56,7,0],[57,10,57,23,0],[59,36,59,54,0],[60,31,60,44,0],[61,35,61,52,0],[62,34,62,50,0],[63,29,63,40,0],[64,31,64,44,0],[65,33,65,48,0],[66,34,66,50,0],[67,31,67,44,0],[68,26,68,38,0],[70,6,70,7,0],[72,6,83,11,1],[93,3,93,112,1],[94,3,94,4,1],[95,4,95,16,1],[96,4,96,22,1],[97,4,97,36,1],[98,4,98,44,1],[99,3,99,4,1]]);
+    </script>
+  </body>
+</html>

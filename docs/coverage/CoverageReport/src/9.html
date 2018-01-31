@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\EmotionalAppraisal\EmotionalAppraisalAsset.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using AutobiographicMemory;
+using Conditions.DTOs;
+using EmotionalAppraisal.AppraisalRules;
+using EmotionalAppraisal.DTOs;
+using EmotionalAppraisal.OCCModel;
+using GAIPS.Rage;
+using KnowledgeBase;
+using SerializationUtilities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Utilities;
+using WellFormedNames;
+
+namespace EmotionalAppraisal
+{
+    /// &lt;summary&gt;
+    /// Main class of the Emotional Appraisal Asset.
+    /// &lt;/summary&gt;
+    [Serializable]
+    public sealed partial class EmotionalAppraisalAsset : LoadableAsset&lt;EmotionalAppraisalAsset&gt;, ICustomSerialization
+    {
+        private ReactiveAppraisalDerivator m_appraisalDerivator;
+        private Dictionary&lt;string, EmotionDisposition&gt; m_emotionDispositions;
+        private EmotionDisposition m_defaultEmotionalDisposition;
+
+        [NonSerialized]
+        private long _lastFrameAppraisal = 0;
+
+        [NonSerialized]
+        private OCCAffectDerivationComponent m_occAffectDerivator;
+
+
+        public EmotionDispositionDTO DefaultEmotionDisposition
+        {
+            get { return m_defaultEmotionalDisposition.ToDto(); }
+            set { m_defaultEmotionalDisposition = new EmotionDisposition(value); }
+        }
+
+        /// &lt;summary&gt;
+	    /// A short description of the asset&#39;s configuration
+	    /// &lt;/summary&gt;
+	    public string Description { get; set; }
+
+        protected override string OnAssetLoaded()
+        {
+            return null;
+        }
+
+        #region EmotionDispositions
+
+        /// &lt;summary&gt;
+        /// The asset&#39;s currently defined Emotion Dispositions.
+        /// &lt;/summary&gt;
+        public IEnumerable&lt;EmotionDispositionDTO&gt; EmotionDispositions
+        {
+            get { return m_emotionDispositions.Values.Select(disp =&gt; disp.ToDto()); }
+        }
+
+        /// &lt;summary&gt;
+        /// Returns the emotional dispotion associated to a given emotion type.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;emotionType&quot;&gt;The emotion type key of the emotional disposition to retrieve&lt;/param&gt;
+        /// &lt;returns&gt;The dto containing the retrieved emotional disposition information&lt;/returns&gt;
+        public EmotionDispositionDTO GetEmotionDisposition(String emotionName)
+        {
+            EmotionDisposition disp;
+            if (this.m_emotionDispositions.TryGetValue(emotionName, out disp))
+                return disp.ToDto();
+
+            return m_defaultEmotionalDisposition.ToDto();
+        }
+
+        /// &lt;summary&gt;
+        /// Creates and adds an emotional disposition to the asset.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;emotionDispositionDto&quot;&gt;The dto containing the parameters to create a new emotional disposition on the asset&lt;/param&gt;
+        public void AddEmotionDisposition(EmotionDispositionDTO emotionDispositionDto)
+        {
+            var disp = new EmotionDisposition(emotionDispositionDto);
+            this.m_emotionDispositions.Add(disp.Emotion, disp);
+        }
+
+        /// &lt;summary&gt;
+        /// Removes an emotional disposition from the asset.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;emotionType&quot;&gt;The emotion type key of the emotional disposition to remove&lt;/param&gt;
+        public void RemoveEmotionDisposition(string emotionType)
+        {
+            this.m_emotionDispositions.Remove(emotionType);
+        }
+
+        #endregion EmotionDispositions
+
+        /// &lt;summary&gt;
+        /// The currently supported emotional type keys
+        /// &lt;/summary&gt;
+        public static IEnumerable&lt;string&gt; EmotionTypes =&gt; OCCEmotionType.Types;
+
+        /// &lt;summary&gt;
+        /// Adds an emotional reaction to an event
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;emotionalAppraisalRule&quot;&gt;the AppraisalRule to add&lt;/param&gt;
+        public void AddOrUpdateAppraisalRule(AppraisalRuleDTO emotionalAppraisalRule)
+        {
+            m_appraisalDerivator.AddOrUpdateAppraisalRule(emotionalAppraisalRule);
+        }
+
+        /// &lt;summary&gt;
+        /// Returns all the appraisal rules
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;The set of dtos containing the information for all the appraisal rules&lt;/returns&gt;
+        public IEnumerable&lt;AppraisalRuleDTO&gt; GetAllAppraisalRules()
+        {
+            return this.m_appraisalDerivator.GetAppraisalRules().Select(r =&gt; new AppraisalRuleDTO
+            {
+                Id = r.Id,
+                EventMatchingTemplate = r.EventName,
+                Desirability = r.Desirability,
+                Praiseworthiness = r.Praiseworthiness,
+                Conditions = r.Conditions.ToDTO()
+            });
+        }
+
+        /// &lt;summary&gt;
+        /// Returns the condition set used for evaluating a particular appraisal rule set.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;ruleId&quot;&gt;The unique identifier of the appraisal rule.&lt;/param&gt;
+        /// &lt;returns&gt;The dto of the condition set associated to the requested appraisal rule.&lt;/returns&gt;
+        /// &lt;exception cref=&quot;ArgumentException&quot;&gt;Thrown if the requested appraisal rule could not be found.&lt;/exception&gt;
+        public ConditionSetDTO GetAllAppraisalRuleConditions(Guid ruleId)
+        {
+            var rule = m_appraisalDerivator.GetAppraisalRule(ruleId);
+            if (rule == null)
+                throw new ArgumentException($&quot;Could not found requested appraisal rule for the id \&quot;{ruleId}\&quot;&quot;, nameof(ruleId));
+
+            return rule.Conditions.ToDTO();
+        }
+
+        /// &lt;summary&gt;
+        /// Removes appraisal rules from the asset.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;appraisalRules&quot;&gt;A dto set of the appraisal rules to remove&lt;/param&gt;
+        public void RemoveAppraisalRules(IEnumerable&lt;AppraisalRuleDTO&gt; appraisalRules)
+        {
+            foreach (var appraisalRuleDto in appraisalRules)
+            {
+                m_appraisalDerivator.RemoveAppraisalRule(new AppraisalRule(appraisalRuleDto));
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Asset constructor.
+        /// Creates a new empty Emotional Appraisal Asset.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;perspective&quot;&gt;The initial perspective of the asset.&lt;/param&gt;
+        public EmotionalAppraisalAsset()
+        {
+            m_emotionDispositions = new Dictionary&lt;string, EmotionDisposition&gt;();
+            m_defaultEmotionalDisposition = new EmotionDisposition(&quot;*&quot;, 1, 1);
+            m_occAffectDerivator = new OCCAffectDerivationComponent();
+            m_appraisalDerivator = new ReactiveAppraisalDerivator();
+        }
+
+        /// &lt;summary&gt;
+        /// Appraises a set of event strings.
+        ///
+        /// Durring appraisal, the events will be recorded in the asset&#39;s autobiographical memory,
+        /// and Property Change Events will update the asset&#39;s knowledge about the world, allowing
+        /// the asset to use the new information derived from the events to appraise the correspondent
+        /// emotions.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;eventNames&quot;&gt;A set of string representation of the events to appraise&lt;/param&gt;
+        public void AppraiseEvents(IEnumerable&lt;Name&gt; eventNames, Name perspective, IEmotionalState emotionalState, AM am, KB kb)
+        {
+            var appraisalFrame = new InternalAppraisalFrame();
+            appraisalFrame.Perspective = kb.Perspective;
+
+            foreach (var n in eventNames)
+            {
+                var evt = am.RecordEvent(n, am.Tick);
+                var propEvt = evt as IPropertyChangedEvent;
+                if (propEvt != null)
+                {
+                    var fact = propEvt.Property;
+                    var value = propEvt.NewValue;
+                    kb.Tell(fact, value, perspective);
+                }
+
+                appraisalFrame.Reset(evt);
+                var componentFrame = appraisalFrame.RequestComponentFrame(m_appraisalDerivator, m_appraisalDerivator.AppraisalWeight);
+                m_appraisalDerivator.Appraisal(kb, evt, componentFrame);
+                UpdateEmotions(appraisalFrame, emotionalState, am);
+            }
+        }
+
+        public void AppraiseEvents(IEnumerable&lt;Name&gt; eventNames, IEmotionalState emotionalState, AM am, KB kb)
+        {
+            AppraiseEvents(eventNames, Name.SELF_SYMBOL, emotionalState, am, kb);
+        }
+
+        private void UpdateEmotions(IAppraisalFrame frame, IEmotionalState emotionalState, AM am)
+        {
+            if (_lastFrameAppraisal &gt; frame.LastChange)
+            {
+                return;
+            }
+
+            var emotions = m_occAffectDerivator.AffectDerivation(this, frame);
+            foreach (var emotion in emotions)
+            {
+                var activeEmotion = emotionalState.AddEmotion(emotion, am, GetEmotionDisposition(emotion.EmotionType), am.Tick);
+                if (activeEmotion == null)
+                    continue;
+            }
+
+            _lastFrameAppraisal = frame.LastChange;
+        }
+
+        /// @cond DEV
+
+        #region ICustomSerialization
+
+        public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+        {
+            dataHolder.SetValue(&quot;Description&quot;, Description);
+            dataHolder.SetValue(&quot;AppraisalRules&quot;, m_appraisalDerivator);
+            dataHolder.SetValue(&quot;EmotionDispositions&quot;, m_emotionDispositions.Values.Prepend(m_defaultEmotionalDisposition).ToArray());
+        }
+
+        public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+        {
+            Description = dataHolder.GetValue&lt;string&gt;(&quot;Description&quot;);
+
+            m_appraisalDerivator = dataHolder.GetValue&lt;ReactiveAppraisalDerivator&gt;(&quot;AppraisalRules&quot;);
+            m_occAffectDerivator = new OCCAffectDerivationComponent();
+
+            if (m_emotionDispositions == null)
+                m_emotionDispositions = new Dictionary&lt;string, EmotionDisposition&gt;();
+            else
+                m_emotionDispositions.Clear();
+
+            var dispositions = dataHolder.GetValue&lt;EmotionDisposition[]&gt;(&quot;EmotionDispositions&quot;);
+            EmotionDisposition defaultDisposition = null;
+            foreach (var disposition in dispositions)
+            {
+                if (string.Equals(disposition.Emotion, &quot;*&quot;, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (defaultDisposition == null)
+                        defaultDisposition = disposition;
+                }
+                else
+                    m_emotionDispositions.Add(disposition.Emotion, disposition);
+            }
+            if (defaultDisposition == null)
+                defaultDisposition = new EmotionDisposition(&quot;*&quot;, 1, 1);
+            m_defaultEmotionalDisposition = defaultDisposition;
+        }
+
+        #endregion ICustomSerialization
+
+        /// @endcond
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[28,9,28,46,1],[36,17,36,18,1],[36,19,36,64,1],[36,65,36,66,1],[37,17,37,18,1],[37,19,37,81,1],[37,82,37,83,1],[43,34,43,38,1],[43,39,43,43,1],[46,9,46,10,0],[47,13,47,25,0],[48,9,48,10,0],[57,17,57,18,1],[57,19,57,70,1],[57,70,57,82,1],[57,82,57,84,1],[57,19,57,84,1],[57,85,57,86,1],[66,9,66,10,1],[68,13,68,79,1],[69,17,69,37,0],[71,13,71,58,1],[72,9,72,10,1],[79,9,79,10,1],[80,13,80,70,1],[81,13,81,64,1],[82,9,82,10,1],[89,9,89,10,1],[90,13,90,60,1],[91,9,91,10,1],[98,59,98,79,0],[105,9,105,10,1],[106,13,106,83,1],[107,9,107,10,1],[114,9,114,10,1],[115,13,115,78,1],[115,78,122,14,1],[122,14,122,16,1],[115,13,122,16,1],[123,9,123,10,1],[132,9,132,10,1],[133,13,133,70,1],[134,13,134,30,1],[135,17,135,130,0],[137,13,137,44,1],[138,9,138,10,1],[145,9,145,10,1],[146,13,146,20,1],[146,22,146,42,1],[146,43,146,45,1],[146,46,146,60,1],[147,13,147,14,1],[148,17,148,95,1],[149,13,149,14,1],[150,9,150,10,1],[157,9,157,41,1],[158,9,158,10,1],[159,13,159,82,1],[160,13,160,79,1],[161,13,161,71,1],[162,13,162,69,1],[163,9,163,10,1],[175,9,175,10,1],[176,13,176,63,1],[177,13,177,57,1],[179,13,179,20,1],[179,22,179,27,1],[179,28,179,30,1],[179,31,179,41,1],[180,13,180,14,1],[181,17,181,54,1],[182,17,182,60,1],[183,17,183,37,1],[184,17,184,18,1],[185,21,185,49,1],[186,21,186,50,1],[187,21,187,55,1],[188,17,188,18,1],[190,17,190,43,1],[191,17,191,135,1],[192,17,192,73,1],[193,17,193,68,1],[194,13,194,14,1],[195,9,195,10,1],[198,9,198,10,0],[199,13,199,82,0],[200,9,200,10,0],[203,9,203,10,1],[204,13,204,56,1],[205,13,205,14,0],[206,17,206,24,0],[209,13,209,79,1],[210,13,210,20,1],[210,22,210,33,1],[210,34,210,36,1],[210,37,210,45,1],[211,13,211,14,1],[212,17,212,129,1],[213,17,213,43,1],[214,21,214,30,0],[215,13,215,14,1],[217,13,217,52,1],[218,9,218,10,1],[225,9,225,10,1],[226,13,226,61,1],[227,13,227,73,1],[228,13,228,135,1],[229,9,229,10,1],[232,9,232,10,1],[233,13,233,70,1],[235,13,235,102,1],[236,13,236,71,1],[238,13,238,47,1],[239,17,239,86,1],[241,17,241,47,0],[243,13,243,97,1],[244,13,244,58,1],[245,13,245,20,1],[245,22,245,37,1],[245,38,245,40,1],[245,41,245,53,1],[246,13,246,14,1],[247,17,247,106,1],[248,17,248,18,1],[249,21,249,52,1],[250,25,250,58,1],[251,17,251,18,1],[253,21,253,81,1],[254,13,254,14,1],[255,13,255,44,1],[256,17,256,72,0],[257,13,257,64,1],[258,9,258,10,1]]);
+    </script>
+  </body>
+</html>

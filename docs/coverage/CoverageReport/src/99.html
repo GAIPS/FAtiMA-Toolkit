@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\MCTS\MCTSAsset.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using KnowledgeBase;
+using SerializationUtilities;
+using System.Collections.Generic;
+using System.IO;
+using WellFormedNames;
+
+namespace MCTS
+{
+    public class MCTSAsset
+    {
+        private static readonly Name MCTS_DYNAMIC_PROPERTY_NAME = Name.BuildName(&quot;MCTS&quot;);
+
+        private KB m_kb;
+
+        public MCTSAsset()
+        {
+            m_kb = null;
+        }
+
+        /// &lt;summary&gt;
+        /// Binds a KB to this asset.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;kb&quot;&gt;The Knowledge Base to be binded to this asset.&lt;/param&gt;
+        public void RegisterKnowledgeBase(KB kB)
+        {
+            if (m_kb != null)
+            {
+                //Unregist bindings
+                UnbindToRegistry(m_kb);
+                m_kb = null;
+            }
+
+            m_kb = kB;
+            BindToRegistry(kB);
+        }
+
+        private void BindToRegistry(IDynamicPropertiesRegistry registry)
+        {
+            registry.RegistDynamicProperty(MCTS_DYNAMIC_PROPERTY_NAME, MCTSSearch);
+        }
+
+        public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
+        {
+            registry.UnregistDynamicProperty(MCTS_DYNAMIC_PROPERTY_NAME);
+        }
+
+        //This is where the main body of the MCTS Search must be implemented
+        private IEnumerable&lt;DynamicPropertyResult&gt; MCTSSearch(IQueryContext context, Name actionVar, Name targetVar)
+        {
+            //How to clone the KB with our JSON serializer
+            var jsonSerializer = new JSONSerializer();
+            var memStream = new MemoryStream();
+            var json = jsonSerializer.SerializeToJson(this.m_kb);
+            var kbCloned = jsonSerializer.DeserializeFromJson&lt;KB&gt;(json);
+            
+            //This is just an example of how to always return the action &quot;Pick&quot; with target &quot;Wood1&quot;
+            var actionSub = new Substitution(actionVar, new ComplexValue(Name.BuildName(&quot;Pick&quot;)));
+            var targetSub = new Substitution(targetVar, new ComplexValue(Name.BuildName(&quot;Wood1&quot;)));
+
+            foreach (var subSet in context.Constraints)
+            {
+                subSet.AddSubstitution(actionSub);
+                subSet.AddSubstitution(targetSub);
+
+                yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(true),1.0f), subSet);
+            }
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[11,9,11,90,1],[15,9,15,27,1],[16,9,16,10,1],[17,13,17,25,1],[18,9,18,10,1],[25,9,25,10,1],[26,13,26,30,1],[27,13,27,14,0],[29,17,29,40,0],[30,17,30,29,0],[31,13,31,14,0],[33,13,33,23,1],[34,13,34,32,1],[35,9,35,10,1],[38,9,38,10,1],[39,13,39,84,1],[40,9,40,10,1],[43,9,43,10,0],[44,13,44,74,0],[45,9,45,10,0],[49,9,49,10,0],[51,13,51,55,0],[52,13,52,48,0],[53,13,53,66,0],[54,13,54,73,0],[57,13,57,99,0],[58,13,58,100,0],[60,13,60,20,0],[60,22,60,32,0],[60,33,60,35,0],[60,36,60,55,0],[61,13,61,14,0],[62,17,62,51,0],[63,17,63,51,0],[65,17,65,109,0],[66,13,66,14,0],[67,9,67,10,0]]);
+    </script>
+  </body>
+</html>

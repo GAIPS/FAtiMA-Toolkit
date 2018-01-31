@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\AutobiographicMemory\DTOs\ActionEventDTO.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+
+namespace AutobiographicMemory.DTOs
+{
+    /// &lt;summary&gt;
+    /// Data Type Object Class for the representation of an Event referent to an action execution
+    /// &lt;/summary&gt;
+    [Serializable]
+    public class ActionEventDTO : EventDTO
+    {
+		public ActionState ActionState { get; set; }
+
+		/// &lt;summary&gt;
+		/// The action referent to this event.
+		/// &lt;/summary&gt;
+        public string Action { get; set; }
+
+		/// &lt;summary&gt;
+		/// The target of action to which this event refers.
+		/// &lt;/summary&gt;
+		public string Target { get; set; }
+    }
+
+	public enum ActionState : byte
+	{
+		Start,
+		Finished
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[11,36,11,40,0],[11,41,11,45,0],[16,32,16,36,0],[16,37,16,41,1],[21,26,21,30,0],[21,31,21,35,1]]);
+    </script>
+  </body>
+</html>

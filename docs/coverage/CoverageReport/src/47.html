@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\Conditions\Condition.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using WellFormedNames;
+using WellFormedNames.Exceptions;
+using IQueryable = WellFormedNames.IQueryable;
+
+
+namespace Conditions
+{
+	[Serializable]
+	public abstract partial class Condition : IConditionEvaluator
+	{
+		//public Guid Id { get; set; }
+
+        private const string WFN_CHARACTERS = @&quot;\w\s-\+\(\)\.\,\[\]\*&quot;;
+		private const string VALID_OPERATORS = @&quot;=|!=|&lt;|&lt;=|&gt;|&gt;=&quot;;
+		private const string REGEX_PATTERN = @&quot;^\s*(#)?([&quot;+WFN_CHARACTERS+@&quot;]+)\s*(&quot;+VALID_OPERATORS+@&quot;)\s*(#)?([&quot;+WFN_CHARACTERS+@&quot;]+)\s*$&quot;;
+		private static readonly Regex REGEX_PARSER = new Regex(REGEX_PATTERN,RegexOptions.Singleline);
+
+		//private Condition()
+		//{
+		//    this.Id = Guid.NewGuid();
+		//}
+
+        public IEnumerable&lt;SubstitutionSet&gt; Unify(IQueryable kb, Name perspective, IEnumerable&lt;SubstitutionSet&gt; constraints)
+		{
+			if (constraints == null || !constraints.Any())
+				constraints = new[] { new SubstitutionSet()};
+
+			return CheckActivation(kb, perspective, constraints).Distinct();
+		}
+
+		public bool Evaluate(IQueryable db, Name perspective, IEnumerable&lt;SubstitutionSet&gt; constraints)
+		{
+			return Unify(db,perspective, constraints).Any();
+		}
+
+		protected abstract IEnumerable&lt;SubstitutionSet&gt; CheckActivation(IQueryable db, Name perspective, IEnumerable&lt;SubstitutionSet&gt; constraints);
+
+		public abstract override string ToString();
+
+		public abstract override bool Equals(object obj);
+
+		public abstract override int GetHashCode();
+
+		private static bool CompareValues(Name a, Name b, ComparisonOperator op)
+		{
+			switch (op)
+			{
+				case ComparisonOperator.Equal:
+					return a == b;
+				case ComparisonOperator.NotEqual:
+					return a != b;
+				case ComparisonOperator.LessThan:
+					return a &lt; b;
+				case ComparisonOperator.LessOrEqualThan:
+					return a &lt;= b;
+				case ComparisonOperator.GreatherThan:
+					return a &gt; b;
+				case ComparisonOperator.GreatherOrEqualThan:
+					return a &gt;= b;
+				default:
+					throw new ArgumentOutOfRangeException(nameof(op), op, null);
+			}
+		}
+
+		private static string OperatorRepresentation(ComparisonOperator op)
+		{
+			switch (op)
+			{
+				case ComparisonOperator.Equal:
+					return &quot;=&quot;;
+				case ComparisonOperator.NotEqual:
+					return &quot;!=&quot;;
+				case ComparisonOperator.LessThan:
+					return &quot;&lt;&quot;;
+				case ComparisonOperator.LessOrEqualThan:
+					return &quot;&lt;=&quot;;
+				case ComparisonOperator.GreatherThan:
+					return &quot;&gt;&quot;;
+				case ComparisonOperator.GreatherOrEqualThan:
+					return &quot;&gt;=&quot;;
+				default:
+					throw new ArgumentOutOfRangeException();
+			}
+		}
+
+		public static Condition Parse(string str)
+		{
+			var m = REGEX_PARSER.Match(str);
+			if (!m.Success)
+				throw new ParsingException($&quot;Unable to parse \&quot;{str}\&quot; as a condition&quot;);
+
+			string mod1 = m.Groups[1].Value;
+			string str1 = m.Groups[2].Value;
+			string op = m.Groups[3].Value;
+			string mod2 = m.Groups[4].Value;
+			string str2 = m.Groups[5].Value;
+
+			Name v1 = Name.BuildName(str1);
+			Name v2 = Name.BuildName(str2);
+			ComparisonOperator ope = ComparisonOperator.NotEqual;
+			switch (op)
+			{
+				case &quot;=&quot;:
+					ope = ComparisonOperator.Equal;
+					break;
+				case &quot;!=&quot;:
+					ope = ComparisonOperator.NotEqual;
+					break;
+				case &quot;&lt;&quot;:
+					ope = ComparisonOperator.LessThan;
+					break;
+				case &quot;&lt;=&quot;:
+					ope = ComparisonOperator.LessOrEqualThan;
+					break;
+				case &quot;&gt;&quot;:
+					ope = ComparisonOperator.GreatherThan;
+					break;
+				case &quot;&gt;=&quot;:
+					ope = ComparisonOperator.GreatherOrEqualThan;
+					break;
+			}
+
+			return internal_buildCondition(mod1, v1, mod2, v2, ope);
+		}
+
+		public static Condition BuildCondition(Name v1, Name v2, ComparisonOperator op)
+		{
+			return internal_buildCondition(null, v1, null, v2, ComparisonOperator.Equal);
+		}
+
+		private static Condition internal_buildCondition(string modifier1, Name v1, string modifier2, Name v2, ComparisonOperator op)
+		{
+			IValueRetriever value1 = ConvertToValueRetriever(modifier1, v1);
+			IValueRetriever value2 = ConvertToValueRetriever(modifier2, v2);
+
+			if (value1.Equals(value2))
+				throw new InvalidOperationException(&quot;Both given property names are intrinsically equal. Condition would always return a constant result.&quot;);
+
+			if (value1.InnerName.IsPrimitive &amp;&amp; value2.InnerName.IsPrimitive &amp;&amp; !value1.HasModifier &amp;&amp; !value2.HasModifier)
+				throw new InvalidOperationException(&quot;Both given property names are primitive values. Expected at least one non-primitive value.&quot;);
+
+			if (op == ComparisonOperator.Equal)
+			{
+				//May be a definition
+				if (value1.InnerName.IsVariable &amp;&amp; !value1.HasModifier)
+					return new EqualityDefinitionCondition(v1, value2);
+
+				if (value2.InnerName.IsVariable &amp;&amp; !value2.HasModifier)
+					return new EqualityDefinitionCondition(v2, value1);
+			}
+
+			if (value1.InnerName.IsPrimitive != value2.InnerName.IsPrimitive)
+			{
+				IValueRetriever prop = value1.InnerName.IsPrimitive ? value2 : value1;
+				string str = (value1.InnerName.IsPrimitive ? value1.InnerName : value2.InnerName).ToString();
+				op = v1.IsPrimitive ? op.Mirror() : op;
+
+				bool boolValue;
+				if (bool.TryParse(str, out boolValue))
+				{
+					switch (op)
+					{
+						case ComparisonOperator.Equal:
+							return new PredicateCondition(prop, boolValue);
+						case ComparisonOperator.NotEqual:
+							return new PredicateCondition(prop, !boolValue);
+					}
+				}
+
+				return new PrimitiveComparisonCondition(prop, (Name)str, op);
+			}
+
+			return new PropertyComparisonCondition(value1,value2, op);
+		}
+
+		private static IValueRetriever ConvertToValueRetriever(string modifier, Name name)
+		{
+			if(string.IsNullOrEmpty(modifier))
+				return new PropertyValueRetriver(name);
+
+			if (modifier == &quot;#&quot;)
+			{
+				if (name.IsVariable)
+					return new CountValueRetriver(name);
+
+				throw new ParsingException(&quot;Count modifier (#) only accepts variables&quot;);
+			}
+
+			throw new ParsingException(&quot;Unrecognized modifier &quot; + modifier);
+		}
+
+		#region Operators
+
+		public static bool operator ==(Condition c1, Condition c2)
+		{
+			if (object.ReferenceEquals(c1, c2))
+				return true;
+			return c1?.Equals(c2) ?? c2.Equals(null);
+		}
+
+		public static bool operator !=(Condition c1, Condition c2)
+		{
+			return !(c1 == c2);
+		}
+
+		#endregion
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[20,3,20,97,1],[28,3,28,4,1],[29,4,29,50,1],[30,5,30,50,1],[32,4,32,68,1],[33,3,33,4,1],[36,3,36,4,1],[37,4,37,52,1],[38,3,38,4,1],[49,3,49,4,1],[50,4,50,15,1],[53,6,53,20,1],[55,6,55,20,1],[57,6,57,19,1],[59,6,59,20,1],[61,6,61,19,1],[63,6,63,20,1],[65,6,65,66,0],[67,3,67,4,1],[70,3,70,4,1],[71,4,71,15,1],[74,6,74,17,1],[76,6,76,18,1],[78,6,78,17,0],[80,6,80,18,0],[82,6,82,17,0],[84,6,84,18,0],[86,6,86,46,0],[88,3,88,4,1],[91,3,91,4,1],[92,4,92,36,1],[93,4,93,19,1],[94,5,94,77,1],[96,4,96,36,1],[97,4,97,36,1],[98,4,98,34,1],[99,4,99,36,1],[100,4,100,36,1],[102,4,102,35,1],[103,4,103,35,1],[104,4,104,57,1],[105,4,105,15,1],[108,6,108,37,1],[109,6,109,12,1],[111,6,111,40,1],[112,6,112,12,1],[114,6,114,40,1],[115,6,115,12,1],[117,6,117,47,1],[118,6,118,12,1],[120,6,120,44,1],[121,6,121,12,1],[123,6,123,51,1],[124,6,124,12,1],[127,4,127,60,1],[128,3,128,4,1],[131,3,131,4,1],[132,4,132,81,1],[133,3,133,4,1],[136,3,136,4,1],[137,4,137,68,1],[138,4,138,68,1],[140,4,140,30,1],[141,5,141,144,1],[143,4,143,115,1],[144,5,144,135,1],[146,4,146,39,1],[147,4,147,5,1],[149,5,149,60,1],[150,6,150,57,1],[152,5,152,60,1],[153,6,153,57,1],[154,4,154,5,1],[156,4,156,69,1],[157,4,157,5,1],[158,5,158,75,1],[159,5,159,98,1],[160,5,160,44,1],[163,5,163,43,1],[164,5,164,6,1],[165,6,165,17,1],[168,8,168,55,1],[170,8,170,56,1],[172,5,172,6,0],[174,5,174,66,1],[177,4,177,62,1],[178,3,178,4,1],[181,3,181,4,1],[182,4,182,38,1],[183,5,183,44,1],[185,4,185,24,1],[186,4,186,5,1],[187,5,187,25,1],[188,6,188,42,1],[190,5,190,77,1],[193,4,193,68,0],[194,3,194,4,1],[199,3,199,4,1],[200,4,200,39,1],[201,5,201,17,1],[202,4,202,45,1],[203,3,203,4,1],[206,3,206,4,1],[207,4,207,23,1],[208,3,208,4,1]]);
+    </script>
+  </body>
+</html>

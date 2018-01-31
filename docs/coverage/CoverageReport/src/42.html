@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\WellFormedNames\Implementation\UniversalSymbol.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.Collections.Generic;
+
+namespace WellFormedNames
+{
+	public partial class Name
+	{
+		private class UniversalSymbol : Symbol
+		{
+			public UniversalSymbol()
+				: base(true, true, false, false, false)
+			{
+			}
+
+			public override string ToString()
+			{
+				return &quot;*&quot;;
+			}
+
+			public override IEnumerable&lt;Name&gt; GetVariables()
+			{
+				yield break;
+			}
+
+			public override bool HasGhostVariable()
+			{
+				return false;
+			}
+
+			public override bool HasSelf()
+			{
+				return false;
+			}
+
+			public override Name SwapTerms(Name original, Name newName)
+			{
+				return this;
+			}
+
+			public override Name ReplaceUnboundVariables(string id)
+			{
+				return this;
+			}
+
+			public override Name RemoveBoundedVariables(string id)
+			{
+				return this;
+			}
+
+			public override Name MakeGround(SubstitutionSet bindings)
+			{
+				return this;
+			}
+
+			public override bool Match(Name name)
+			{
+				return true;
+			}
+
+			/// &lt;summary&gt;
+			/// Indicates whether the current object is equal to another object of the same type.
+			/// &lt;/summary&gt;
+			/// &lt;returns&gt;
+			/// true if the current object is equal to the &lt;paramref name=&quot;other&quot;/&gt; parameter; otherwise, false.
+			/// &lt;/returns&gt;
+			/// &lt;param name=&quot;other&quot;&gt;An object to compare with this object.&lt;/param&gt;
+			public override bool Equals(Name name)
+			{
+				return name.IsUniversal;
+			}
+
+			public override int GetHashCode()
+			{
+				return &#39;*&#39;.GetHashCode();
+			}
+
+			/// @endcond
+			public override bool TryConvertToValue&lt;T&gt;(out T value)
+			{
+				value = default(T);
+				return false;
+			}
+		}
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[10,7,10,44,1],[11,4,11,5,1],[12,4,12,5,1],[15,4,15,5,1],[16,5,16,16,1],[17,4,17,5,1],[20,4,20,5,1],[21,5,21,17,1],[25,4,25,5,0],[26,5,26,18,0],[27,4,27,5,0],[30,4,30,5,0],[31,5,31,18,0],[32,4,32,5,0],[35,4,35,5,1],[36,5,36,17,1],[37,4,37,5,1],[40,4,40,5,1],[41,5,41,17,1],[42,4,42,5,1],[45,4,45,5,1],[46,5,46,17,1],[47,4,47,5,1],[50,4,50,5,0],[51,5,51,17,0],[52,4,52,5,0],[55,4,55,5,1],[56,5,56,17,1],[57,4,57,5,1],[67,4,67,5,1],[68,5,68,29,1],[69,4,69,5,1],[72,4,72,5,1],[73,5,73,30,1],[74,4,74,5,1],[78,4,78,5,0],[79,5,79,24,0],[80,5,80,18,0],[81,4,81,5,0]]);
+    </script>
+  </body>
+</html>

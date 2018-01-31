@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\SocialImportance\DTOs\AttributionRuleDTO.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using Conditions.DTOs;
+using WellFormedNames;
+
+namespace SocialImportance.DTOs
+{
+	/// &lt;summary&gt;
+	/// Data Type Object Class for defining a Social Importance&#39;s Attribution Rule.
+	/// &lt;/summary&gt;
+	/// &lt;remarks&gt;
+	/// Attribution rules are used to define conditions that when validated
+	/// through the asset&#39;s beliefs will attribute to the target a Social Importance Value.
+	/// The total Social Importance Value of a target is given by the sum of all valid
+	/// Attribution rules in the asset&#39;s definition.
+	/// &lt;/remarks&gt;
+	[Serializable]
+	public class AttributionRuleDTO
+	{
+		public Guid Id { get; set; }
+
+		/// &lt;summary&gt;
+		/// The rule name/description string.
+		/// Optional attribute of an Attribution Rule.
+		/// &lt;/summary&gt;
+		public string Description { get; set; }
+
+        /// &lt;summary&gt;
+        /// The condition variable that represents the target name in the rule condition set.
+        /// &lt;/summary&gt;
+        public Name Target { get; set; }
+
+		/// &lt;summary&gt;
+		/// The value to be attributed to the target, if all conditions are valid.
+		/// &lt;/summary&gt;
+		public Name Value { get; set; }
+
+		/// &lt;summary&gt;
+		/// The condition set used to validate this rule.
+		/// &lt;/summary&gt;
+		public ConditionSetDTO Conditions { get; set; }
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[19,20,19,24,0],[19,25,19,29,0],[25,31,25,35,1],[25,36,25,40,0],[30,30,30,34,1],[30,35,30,39,1],[35,23,35,27,1],[35,28,35,32,1],[40,39,40,43,1],[40,44,40,48,1]]);
+    </script>
+  </body>
+</html>

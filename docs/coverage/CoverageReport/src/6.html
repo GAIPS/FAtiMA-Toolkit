@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\EmotionalAppraisal\ActiveEmotion.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using AutobiographicMemory;
+using EmotionalAppraisal.DTOs;
+using EmotionalAppraisal.OCCModel;
+using SerializationUtilities;
+using WellFormedNames;
+using Utilities;
+
+namespace EmotionalAppraisal
+{
+	/// &lt;summary&gt;
+	///  Represents an Emotion with intensity that is active in the agent&#39;s
+	///  emotional state, i.e, the character is feeling the emotion.
+	/// &lt;/summary&gt;
+	/// @author Jo&#227;o Dias
+	/// @author Pedro Gon&#231;alves
+	[Serializable]
+	internal class ActiveEmotion : IActiveEmotion, ICustomSerialization
+	{
+		private float intensityATt0;
+		private ulong tickATt0;
+        
+        public uint CauseId { get; private set; }
+
+		public Name Direction{ get; private set; }
+
+        public Name EventName
+        {
+            get;
+            private set;
+        }
+
+        public string EmotionType { get; private set; }
+
+		public EmotionValence Valence { get; private set; }
+
+		public IEnumerable&lt;string&gt; AppraisalVariables { get; private set; }
+
+		public bool InfluenceMood { get; private set; }
+                
+        private int m_decay;
+		public int Decay
+		{
+			get { return m_decay; }
+			set { m_decay = value&lt;0?0:(value&gt;10?10:value);}
+		}
+
+		public int Threshold
+		{
+			get;
+			set;
+		}
+
+		public float Intensity
+		{
+			get;
+			private set;
+		}
+
+		public float Potential
+		{
+			get
+			{
+				return this.Intensity + this.Threshold;
+			}
+		}
+
+		private void SetIntensity(float value, ulong tickStamp)
+		{
+			value -= Threshold;
+			value = value &lt; 0 ? 0 : (value &gt; 10 ? 10 : value);
+			this.intensityATt0 = this.Intensity = value;
+			this.tickATt0 = tickStamp;
+		}
+
+		/// &lt;summary&gt;
+		/// Creates a new ActiveEmotion
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;emotion&quot;&gt;the BaseEmotion that is the base for this ActiveEmotion&lt;/param&gt;
+		/// &lt;param name=&quot;potential&quot;&gt;the potential for the intensity of the emotion&lt;/param&gt;
+		/// &lt;param name=&quot;threshold&quot;&gt;the threshold for the specific emotion&lt;/param&gt;
+		/// &lt;param name=&quot;decay&quot;&gt;the decay rate for the specific emotion&lt;/param&gt;
+		public ActiveEmotion(IEmotion emotion, float potential, int threshold, int decay, ulong tickStamp)
+		{
+			this.EmotionType = emotion.EmotionType;
+			this.Valence = emotion.Valence;
+			this.AppraisalVariables = emotion.AppraisalVariables.ToArray();
+			this.InfluenceMood = emotion.InfluenceMood;
+			this.CauseId = emotion.CauseId;
+			this.Direction = emotion.Direction;
+            this.EventName = emotion.EventName;
+            this.Threshold = threshold;
+			this.Decay = decay;
+			SetIntensity(potential,tickStamp);
+		}
+
+
+
+        //TODO: Discuss with Pedro this hierarchy. Problem: ActiveEmotion might be a bit too tied to OCCEmotion
+        public ActiveEmotion(EmotionDTO emotionDTO, AM am, int threshold, int decay)
+	    {
+	        var occType = OCCEmotionType.Parse(emotionDTO.Type);
+            if(occType == null)
+                throw new Exception(&quot;Unknown emotion type&quot;);
+            this.EmotionType = occType.Name;
+	        this.Valence = occType.Valence;
+	        this.AppraisalVariables = occType.AppraisalVariables.ToArray();
+	        this.InfluenceMood = occType.InfluencesMood;
+	        this.CauseId = emotionDTO.CauseEventId;
+            var causeEvent = am.RecallEvent(this.CauseId);
+            this.EventName = causeEvent.EventName;
+            
+	        this.Direction = null; //TODO: handle direction correctly
+	        this.Threshold = threshold;
+	        this.Decay = decay;
+	        this.Intensity = emotionDTO.Intensity;
+        }
+
+		/// &lt;summary&gt;
+		/// Decays the emotion according to the system&#39;s time
+		/// &lt;/summary&gt;
+		/// &lt;returns&gt;the intensity of the emotion after being decayed&lt;/returns&gt;
+		internal void DecayEmotion(EmotionalAppraisalConfiguration configuration, ulong tick)
+		{
+			var delta = tick - tickATt0;
+			double lambda = Math.Log(configuration.HalfLifeDecayConstant) / configuration.EmotionalHalfLifeDecayTime;
+			float decay = (float)Math.Exp(lambda * this.Decay * delta);
+			Intensity = intensityATt0 * decay;
+		}
+
+		/// &lt;summary&gt;
+		/// Reforces the intensity of the emotion by a given potential
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;potential&quot;&gt;the potential for the reinformcement of the emotion&#39;s intensity&lt;/param&gt;
+		public void ReforceEmotion(float potential)
+		{
+			this.Intensity = (float)Math.Log(Math.Exp(this.Potential) + Math.Exp(potential));
+		}
+
+		public bool IsRelevant
+		{
+			get
+			{
+				return this.Intensity &gt; 0.1f;
+			}
+		}
+
+		public override int GetHashCode()
+		{
+			return AppraisalVariables.Aggregate(CauseId.GetHashCode(), (h, s) =&gt; h ^ s.GetHashCode());
+		}
+
+		public override bool Equals(object obj)
+		{
+			var em = obj as IEmotion;
+			if (em == null)
+				return false;
+
+			if (CauseId != em.CauseId)
+				return false;
+
+			return new HashSet&lt;string&gt;(AppraisalVariables).SetEquals(em.AppraisalVariables);
+		}
+
+		public IBaseEvent GetCause(AM am)
+		{
+			return am.RecallEvent(CauseId);
+		}
+
+		public string ToString(AM am)
+		{
+			StringBuilder builder = ObjectPool&lt;StringBuilder&gt;.GetObject();
+			builder.AppendFormat(&quot;{0}: {1}&quot;, EmotionType, am.RecallEvent(CauseId).EventName);
+			if (this.Direction != null)
+				builder.AppendFormat(&quot; {0}&quot;, this.Direction);
+            if (this.EventName != null)
+                builder.AppendFormat(&quot; {0}&quot;, this.EventName);
+
+            var result = builder.ToString();
+			builder.Length = 0;
+			ObjectPool&lt;StringBuilder&gt;.Recycle(builder);
+			return result;
+		}
+
+	    public EmotionDTO ToDto(AM am)
+	    {
+	        return new EmotionDTO
+	        {
+                Type = this.EmotionType,
+                Intensity = this.Intensity,
+                CauseEventId =  this.CauseId, 
+                CauseEventName = am.RecallEvent(this.CauseId).EventName.ToString(),
+	        };
+	    }
+
+	
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		{
+			dataHolder.SetValue(&quot;Intensity&quot;, Intensity);
+			dataHolder.SetValue(&quot;Decay&quot;, Decay);
+			dataHolder.SetValue(&quot;Threshold&quot;, Threshold);
+			dataHolder.SetValue(&quot;CauseId&quot;, CauseId);
+			if (Direction != null)
+				dataHolder.SetValue(&quot;Direction&quot;, Direction.ToString());
+            if (EventName != null)
+                dataHolder.SetValue(&quot;EventName&quot;, EventName.ToString());
+			dataHolder.SetValue(&quot;EmotionType&quot;, EmotionType);
+			dataHolder.SetValue(&quot;Valence&quot;, Valence);
+			dataHolder.SetValue(&quot;AppraisalVariables&quot;, AppraisalVariables.ToArray());
+			dataHolder.SetValue(&quot;InfluenceMood&quot;, InfluenceMood);
+		}
+
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		{
+			Decay = dataHolder.GetValue&lt;int&gt;(&quot;Decay&quot;);
+			Threshold = dataHolder.GetValue&lt;int&gt;(&quot;Threshold&quot;);
+			CauseId = dataHolder.GetValue&lt;uint&gt;(&quot;CauseId&quot;);
+			var dir = dataHolder.GetValue&lt;string&gt;(&quot;Direction&quot;);
+            var evtName = dataHolder.GetValue&lt;string&gt;(&quot;EventName&quot;);
+			Direction = !string.IsNullOrEmpty(dir) ? Name.BuildName(dir) : null;
+            EventName = !string.IsNullOrEmpty(evtName) ? Name.BuildName(evtName) : null;
+            EmotionType = dataHolder.GetValue&lt;string&gt;(&quot;EmotionType&quot;);
+			Valence = dataHolder.GetValue&lt;EmotionValence&gt;(&quot;Valence&quot;);
+			AppraisalVariables = dataHolder.GetValue&lt;string[]&gt;(&quot;AppraisalVariables&quot;);
+			InfluenceMood = dataHolder.GetValue&lt;bool&gt;(&quot;InfluenceMood&quot;);
+            this.intensityATt0 = this.Intensity = dataHolder.GetValue&lt;float&gt;(&quot;Intensity&quot;);
+           
+			if(!(context.Context is ulong))
+				throw new Exception(&quot;Unable to deserialize Active Emotion. Invalid serialization context.&quot;);
+			this.tickATt0 = (ulong)context.Context;
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[26,31,26,35,1],[26,36,26,48,1],[28,26,28,30,0],[28,31,28,43,1],[32,13,32,17,0],[33,13,33,25,1],[36,37,36,41,1],[36,42,36,54,1],[38,35,38,39,1],[38,40,38,52,1],[40,51,40,55,0],[40,56,40,68,1],[42,31,42,35,1],[42,36,42,48,1],[47,8,47,9,1],[47,10,47,25,1],[47,26,47,27,1],[48,8,48,9,1],[48,10,48,50,1],[48,50,48,51,1],[53,4,53,8,1],[54,4,54,8,1],[59,4,59,8,1],[60,4,60,16,1],[66,4,66,5,0],[67,5,67,44,0],[68,4,68,5,0],[72,3,72,4,1],[73,4,73,23,1],[74,4,74,54,1],[75,4,75,48,1],[76,4,76,30,1],[77,3,77,4,1],[86,3,86,101,1],[87,3,87,4,1],[88,4,88,43,1],[89,4,89,35,1],[90,4,90,67,1],[91,4,91,47,1],[92,4,92,35,1],[93,4,93,39,1],[94,13,94,48,1],[95,13,95,40,1],[96,4,96,23,1],[97,4,97,38,1],[98,3,98,4,1],[103,9,103,85,0],[104,6,104,7,0],[105,10,105,62,0],[106,13,106,32,0],[107,17,107,61,0],[108,13,108,45,0],[109,10,109,41,0],[110,10,110,73,0],[111,10,111,54,0],[112,10,112,49,0],[113,13,113,59,0],[114,13,114,51,0],[116,10,116,32,0],[117,10,117,37,0],[118,10,118,29,0],[119,10,119,48,0],[120,9,120,10,0],[127,3,127,4,1],[128,4,128,32,1],[129,4,129,109,1],[130,4,130,63,1],[131,4,131,38,1],[132,3,132,4,1],[139,3,139,4,0],[140,4,140,85,0],[141,3,141,4,0],[146,4,146,5,1],[147,5,147,34,1],[148,4,148,5,1],[152,3,152,4,0],[153,4,153,73,0],[153,73,153,92,0],[153,92,153,94,0],[153,4,153,94,0],[154,3,154,4,0],[157,3,157,4,0],[158,4,158,29,0],[159,4,159,19,0],[160,5,160,18,0],[162,4,162,30,0],[163,5,163,18,0],[165,4,165,84,0],[166,3,166,4,0],[169,3,169,4,1],[170,4,170,35,1],[171,3,171,4,1],[174,3,174,4,0],[175,4,175,66,0],[176,4,176,85,0],[177,4,177,31,0],[178,5,178,50,0],[179,13,179,40,0],[180,17,180,62,0],[182,13,182,45,0],[183,4,183,23,0],[184,4,184,47,0],[185,4,185,18,0],[186,3,186,4,0],[189,6,189,7,1],[190,10,196,12,1],[197,6,197,7,1],[201,3,201,4,0],[202,4,202,48,0],[203,4,203,40,0],[204,4,204,48,0],[205,4,205,44,0],[206,4,206,26,0],[207,5,207,60,0],[208,13,208,35,0],[209,17,209,72,0],[210,4,210,52,0],[211,4,211,44,0],[212,4,212,76,0],[213,4,213,56,0],[214,3,214,4,0],[217,3,217,4,0],[218,4,218,46,0],[219,4,219,54,0],[220,4,220,51,0],[221,4,221,55,0],[222,13,222,68,0],[223,4,223,72,0],[224,13,224,89,0],[225,13,225,70,0],[226,4,226,61,0],[227,4,227,77,0],[228,4,228,63,0],[229,13,229,91,0],[231,4,231,35,0],[232,5,232,97,0],[233,4,233,43,0],[234,3,234,4,0]]);
+    </script>
+  </body>
+</html>

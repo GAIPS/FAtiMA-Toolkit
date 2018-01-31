@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\EmotionalAppraisal\EmotionalAppraisalConfiguration.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace EmotionalAppraisal
+{
+    [Serializable]
+    public class EmotionalAppraisalConfiguration
+    {
+        /// &lt;summary&gt;
+        /// The half-life base decay for the exponential decay lambda calculation.
+        /// To calculate the lambda, divide this constant by the required half-life time.
+        /// &lt;/summary&gt;
+        /// @hideinitializer
+        public double HalfLifeDecayConstant { get; private set; } = 0.5;
+
+        /// &lt;summary&gt;
+        /// Defines how strong is the influence of the emotion&#39;s intensity
+        /// on the character&#39;s mood. Since we don&#39;t want the mood to be very
+        /// volatile, we only take into account 30% of the emotion&#39;s intensity
+        /// &lt;/summary&gt;
+        /// @hideinitializer
+        public float EmotionInfluenceOnMoodFactor { get; private set; } = 0.3f;
+
+        /// &lt;summary&gt;
+        /// Defines how strong is the influence of the current mood 
+        /// in the intensity of the emotion. We don&#39;t want the influence
+        /// of mood to be that great, so we only take into account 30% of 
+        /// the mood&#39;s value
+        /// &lt;/summary&gt;
+        /// @hideinitializer
+        public float MoodInfluenceOnEmotionFactor { get; private set; } = 0.3f;
+
+        /// &lt;summary&gt;
+        /// Defines the minimum absolute value that mood must have,
+        /// in order to be considered for influencing emotions. At the 
+        /// moment, values of mood ranged in ]-0.5;0.5[ are considered
+        /// to be neutral moods that do not infuence emotions
+        /// &lt;/summary&gt;
+        /// @hideinitializer
+        public double MinimumMoodValueForInfluencingEmotions { get; private set; } = 0.5;
+
+        /// &lt;summary&gt;
+        /// Defines how fast a emotion decay over time.
+        /// This value is the actual time it takes for an emotion to reach half of its initial intensity
+        /// &lt;/summary&gt;
+        /// @hideinitializer
+        public float EmotionalHalfLifeDecayTime { get; private set; } = 15;
+
+        /// &lt;summary&gt;
+        /// Defines how fast mood decay over time.
+        /// This value is the actual time it takes the mood to reach half of its initial intensity
+        /// &lt;/summary&gt;
+        /// @hideinitializer
+        public float MoodHalfLifeDecayTime { get; private set; } = 60;
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[16,47,16,51,1],[16,52,16,64,0],[16,69,16,72,1],[24,53,24,57,1],[24,58,24,70,0],[24,75,24,79,1],[33,53,33,57,1],[33,58,33,70,0],[33,75,33,79,1],[42,64,42,68,1],[42,69,42,81,0],[42,86,42,89,1],[49,51,49,55,1],[49,56,49,68,0],[49,73,49,75,1],[56,46,56,50,0],[56,51,56,63,0],[56,68,56,70,1]]);
+    </script>
+  </body>
+</html>

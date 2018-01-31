@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\AutobiographicMemory\AM.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using AutobiographicMemory.DTOs;
+using SerializationUtilities;
+using KnowledgeBase;
+using WellFormedNames;
+using WellFormedNames.Collections;
+
+namespace AutobiographicMemory
+{
+	//TODO improve LastEventId efficiency, by caching the last recorded events (cache should be dumped, if a new event is recorded with a greater timestamp that the ones in cache)
+
+	[Serializable]
+	public sealed partial class AM : ICustomSerialization
+	{
+		//Indexes
+		private uint m_eventGUIDCounter = 0;
+		private Dictionary&lt;uint, BaseEvent&gt; m_registry = new Dictionary&lt;uint, BaseEvent&gt;();
+		private NameSearchTree&lt;List&lt;uint&gt;&gt; m_typeIndexes = new NameSearchTree&lt;List&lt;uint&gt;&gt;();
+
+		public ulong Tick { get; set; }
+
+		public void BindToRegistry(IDynamicPropertiesRegistry registry)
+		{
+			registry.RegistDynamicProperty(EVENT_ID_PROPERTY_NAME, EventIdPropertyCalculator);
+			registry.RegistDynamicProperty(EVENT_ELAPSED_TIME_PROPERTY_NAME, EventAgePropertyCalculator);
+			registry.RegistDynamicProperty(LAST_EVENT_ID_PROPERTY_NAME, LastEventIdPropertyCalculator);
+		}
+
+		public IBaseEvent RecordEvent(EventDTO dto)
+		{
+			return RecordEvent(BuildEventNameFromDTO(dto), dto.Time);
+		}
+
+		public IBaseEvent RecordEvent(Name eventName, ulong timestamp)
+		{
+		    return this.SaveEventHelper(m_eventGUIDCounter++, eventName, timestamp);
+		}
+
+		public IBaseEvent UpdateEvent(EventDTO dto)
+		{
+			var evtName = BuildEventNameFromDTO(dto);
+			return UpdateEvent(dto.Id, evtName, dto.Time);
+		}
+
+		public IBaseEvent UpdateEvent(uint eventId, Name eventName, ulong timestamp)
+        {
+            m_registry.Remove(eventId);
+            return this.SaveEventHelper(eventId, eventName, timestamp);
+        }
+
+	    private BaseEvent SaveEventHelper(uint eventId, Name eventName, ulong timestamp)
+	    {
+            AssertEventNameValidity(eventName);
+			if (eventName.HasSelf())
+				throw new Exception(&quot;Cannot record an event name containing \&quot;Self\&quot; keywords&quot;);
+
+			BaseEvent eventRecord;
+            if (ActionEvent.IsActionEvent(eventName))
+            {
+                eventRecord = new ActionEvent(eventId, eventName, timestamp);
+            }
+			else if (PropertyChangeEvent.IsPropertyChangeEvent(eventName))
+		    {
+			    eventRecord = new PropertyChangeEvent(eventId, eventName, timestamp);
+		    }else
+				throw new Exception(&quot;Unknown Event Type&quot;);
+
+			AddRecord(eventRecord);
+		    return eventRecord;
+	    }
+
+		private Name BuildEventNameFromDTO(EventDTO evt)
+		{
+			var actionEvent = evt as ActionEventDTO;
+			if (actionEvent != null)
+			{
+				var state = (actionEvent.ActionState == ActionState.Start) ? AMConsts.ACTION_START : AMConsts.ACTION_END;
+				return Name.BuildName(
+					(Name)AMConsts.EVENT,
+					(Name)state,
+					(Name)actionEvent.Subject,
+					(Name)actionEvent.Action,
+					(Name)actionEvent.Target);
+			}
+
+			var pcEvent = evt as PropertyChangeEventDTO;
+			if (pcEvent != null)
+			{
+				return Name.BuildName(
+				(Name)AMConsts.EVENT,
+				(Name)AMConsts.PROPERTY_CHANGE,
+				(Name)pcEvent.Subject,
+				(Name)pcEvent.Property,
+				(Name)pcEvent.NewValue);
+			}
+
+			throw new Exception(&quot;Unknown Event DTO&quot;);
+		}
+
+		public IBaseEvent RecallEvent(uint eventId)
+		{
+			BaseEvent r;
+		    if (m_registry.TryGetValue(eventId, out r))
+		    {
+			    return r;
+		    }
+	        return null;
+		}
+
+	    public IEnumerable&lt;IBaseEvent&gt; RecallAllEvents()
+	    {
+	        return m_registry.Keys.Select(key =&gt; m_registry[key]).Cast&lt;IBaseEvent&gt;().ToList();
+	    }
+
+	    public void ForgetEvent(uint eventId)
+	    {
+		    BaseEvent evt;
+			if(!m_registry.TryGetValue(eventId,out evt))
+				return;
+
+			m_registry.Remove(eventId);
+		    var evts = m_typeIndexes[evt.EventName];
+		    evts.Remove(eventId);
+		    if (evts.Count == 0)
+				m_typeIndexes.Remove(evt.EventName);
+	    }
+
+	    private void AddRecord(BaseEvent record)
+		{
+			m_registry.Add(record.Id, record);
+			List&lt;uint&gt; ids;
+			var name = record.EventName;
+			if (!m_typeIndexes.TryGetValue(name, out ids))
+			{
+				ids = new List&lt;uint&gt;();
+				m_typeIndexes[name] = ids;
+			}
+			ids.Add(record.Id);
+		}
+
+		public static void AssertEventNameValidity(Name name)
+		{
+			if (name.NumberOfTerms != 5)
+				throw new Exception(&quot;A event name must contain 5 terms&quot;);
+
+			if(!name.IsGrounded)
+				throw new Exception(&quot;A event name cannot contain variables&quot;);
+
+			if (name.GetNTerm(0) != (Name)AMConsts.EVENT)
+				throw new Exception(&quot;The first term of an event name must be &quot;+ AMConsts.EVENT);
+
+			if (name.GetNTerm(1).IsComposed)
+				throw new Exception(&quot;The second term of an event name cannot be a composed name.&quot;);
+
+			if (name.GetNTerm(2).IsComposed)
+				throw new Exception(&quot;The third term of an event name cannot be a composed name.&quot;);
+
+			if (name.GetNTerm(4).IsComposed)
+				throw new Exception(&quot;The fifth term of an event name cannot be a composed name.&quot;);
+		}
+
+		public void SwapPerspective(Name oldPerspective, Name newPerspective)
+		{
+			var currentKeys = m_registry.Keys.ToArray();
+			foreach (var key in currentKeys)
+			{
+				var evt = m_registry[key];
+				m_registry[key] = evt.SwapPerspective(oldPerspective, newPerspective);
+			}
+
+			var newIndexes = new NameSearchTree&lt;List&lt;uint&gt;&gt;();
+			foreach (var p in m_typeIndexes)
+			{
+				var k = p.Key.SwapTerms(oldPerspective, newPerspective);
+				newIndexes[k] = p.Value;
+			}
+			m_typeIndexes = newIndexes;
+		}
+
+		#region Dynamic Properties
+
+		//Event
+		private static readonly Name EVENT_ID_PROPERTY_NAME = Name.BuildName(&quot;EventId&quot;);
+		private IEnumerable&lt;DynamicPropertyResult&gt; EventIdPropertyCalculator(IQueryContext context, Name type, Name subject, Name def, Name target)
+		{
+            
+			var key = Name.BuildName((Name)AMConsts.EVENT, type, subject, def, target);
+			foreach (var c in context.Constraints)
+			{
+                var unifiedSet = m_typeIndexes.Unify(key, c);
+                foreach (var pair in unifiedSet)
+				{
+					foreach (var id in pair.Item1)
+						yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(id)), new SubstitutionSet(pair.Item2));
+				}
+			}
+		}
+
+		//EventElapseTime
+		private static readonly Name EVENT_ELAPSED_TIME_PROPERTY_NAME = Name.BuildName(&quot;EventElapsedTime&quot;);
+		private IEnumerable&lt;DynamicPropertyResult&gt; EventAgePropertyCalculator(IQueryContext context, Name id)
+		{
+		
+			if (id.IsVariable)
+			{
+				foreach (var record in m_registry.Values)
+				{
+					var idSub = new Substitution(id, new ComplexValue(Name.BuildName(record.Id)));
+					foreach (var c in context.Constraints)
+					{
+						if (c.Conflicts(idSub))
+							continue;
+
+						var newSet = new SubstitutionSet(c);
+						newSet.AddSubstitution(idSub);
+
+						var value = Tick - record.Timestamp;
+						yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(value)), newSet);
+					}
+				}
+				yield break;
+			}
+
+			foreach (var pair in context.AskPossibleProperties(id))
+			{
+				uint idValue;
+				if(!pair.Item1.Value.TryConvertToValue(out idValue))
+					continue;
+
+				var record = m_registry[idValue];
+				var value = (Tick - record.Timestamp);
+				foreach (var c in pair.Item2)
+					yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(value)), c);
+			}
+		}
+
+		//LastEvent
+		private static readonly Name LAST_EVENT_ID_PROPERTY_NAME = Name.BuildName(&quot;LastEventId&quot;);
+        private IEnumerable&lt;DynamicPropertyResult&gt; LastEventIdPropertyCalculator(IQueryContext context, Name type, Name subject, Name def, Name target)
+        {
+
+            ulong min = ulong.MinValue;
+
+
+            var allEvents = m_registry.Values;
+
+           
+            foreach(var eve in allEvents)
+            {
+                if (eve.Timestamp &gt;= min)
+                    min = eve.Timestamp;
+            }
+
+            var lastEvents =  m_registry.Where(x =&gt; x.Value.Timestamp == min);
+
+
+
+    
+            var lastIndexes = new NameSearchTree&lt;List&lt;uint&gt;&gt;();
+
+          //  Now we get a similar object as m_typeIndexes but only with the last events
+            foreach (var ind in m_typeIndexes)
+                foreach (var eve in lastEvents)
+                    if (ind.Key.ToString() == eve.Value.EventName.ToString())
+                        lastIndexes.Add(ind);
+
+
+
+            // Now that we have the events of the last tick we can now ask the context 
+
+            var key = Name.BuildName((Name)AMConsts.EVENT, type, subject, def, target);
+                     foreach (var c in context.Constraints)
+                    {
+                         var unifiedSet = lastIndexes.Unify(key, c);
+                         foreach (var pair in unifiedSet)
+                         {
+                             foreach (var id in pair.Item1)
+                                 yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(id)), new SubstitutionSet(pair.Item2));
+                         }
+                     }
+                     
+           
+        }
+
+        #endregion
+
+        public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		{
+			dataHolder.SetValue(&quot;Tick&quot;,Tick);
+			dataHolder.SetValue(&quot;records&quot;, m_registry.Values.ToArray());
+		}
+
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		{
+			Tick = dataHolder.GetValue&lt;ulong&gt;(&quot;Tick&quot;);
+
+			m_eventGUIDCounter = 0;
+			if (m_registry == null)
+				m_registry = new Dictionary&lt;uint, BaseEvent&gt;();
+			else
+				m_registry.Clear();
+
+			if(m_typeIndexes==null)
+				m_typeIndexes=new NameSearchTree&lt;List&lt;uint&gt;&gt;();
+			else
+				m_typeIndexes.Clear();
+
+			var recs = dataHolder.GetValue&lt;BaseEvent[]&gt;(&quot;records&quot;);
+			if (recs == null)
+				return;
+
+			foreach (var r in recs)
+			{
+				if (m_eventGUIDCounter &lt; r.Id)
+					m_eventGUIDCounter = r.Id;
+
+				AddRecord(r);
+			}
+			m_eventGUIDCounter++;
+		}
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[18,3,18,39,1],[19,3,19,86,1],[20,3,20,87,1],[22,23,22,27,1],[22,28,22,32,1],[25,3,25,4,1],[26,4,26,86,1],[27,4,27,97,1],[28,4,28,95,1],[29,3,29,4,1],[32,3,32,4,0],[33,4,33,61,0],[34,3,34,4,0],[37,3,37,4,1],[38,7,38,79,1],[39,3,39,4,1],[42,3,42,4,0],[43,4,43,45,0],[44,4,44,50,0],[45,3,45,4,0],[48,9,48,10,0],[49,13,49,40,0],[50,13,50,72,0],[51,9,51,10,0],[54,6,54,7,1],[55,13,55,48,1],[56,4,56,28,1],[57,5,57,85,0],[60,13,60,54,1],[61,13,61,14,1],[62,17,62,78,1],[63,13,63,14,1],[64,9,64,66,1],[65,7,65,8,1],[66,8,66,77,1],[67,7,67,8,1],[68,5,68,47,0],[70,4,70,27,1],[71,7,71,26,1],[72,6,72,7,1],[75,3,75,4,0],[76,4,76,44,0],[77,4,77,28,0],[78,4,78,5,0],[79,5,79,110,0],[80,5,85,32,0],[88,4,88,48,0],[89,4,89,24,0],[90,4,90,5,0],[91,5,96,29,0],[99,4,99,45,0],[100,3,100,4,0],[103,3,103,4,1],[105,7,105,50,1],[106,7,106,8,1],[107,8,107,17,1],[109,10,109,22,0],[110,3,110,4,1],[113,6,113,7,1],[114,10,114,47,1],[114,47,114,62,1],[114,62,114,92,1],[114,10,114,92,1],[115,6,115,7,1],[118,6,118,7,1],[120,4,120,48,1],[121,5,121,12,0],[123,4,123,31,1],[124,7,124,47,1],[125,7,125,28,1],[126,7,126,27,1],[127,5,127,41,1],[128,6,128,7,1],[131,3,131,4,1],[132,4,132,38,1],[134,4,134,32,1],[135,4,135,50,1],[136,4,136,5,1],[137,5,137,28,1],[138,5,138,31,1],[139,4,139,5,1],[140,4,140,23,1],[141,3,141,4,1],[144,3,144,4,1],[145,4,145,32,1],[146,5,146,62,0],[148,4,148,24,1],[149,5,149,66,0],[151,4,151,49,1],[152,5,152,85,0],[154,4,154,36,1],[155,5,155,88,0],[157,4,157,36,1],[158,5,158,87,0],[160,4,160,36,1],[161,5,161,87,0],[162,3,162,4,1],[165,3,165,4,0],[166,4,166,48,0],[167,4,167,11,0],[167,13,167,20,0],[167,21,167,23,0],[167,24,167,35,0],[168,4,168,5,0],[169,5,169,31,0],[170,5,170,75,0],[171,4,171,5,0],[173,4,173,54,0],[174,4,174,11,0],[174,13,174,18,0],[174,19,174,21,0],[174,22,174,35,0],[175,4,175,5,0],[176,5,176,61,0],[177,5,177,29,0],[178,4,178,5,0],[179,4,179,31,0],[180,3,180,4,0],[185,3,185,83,1],[187,3,187,4,1],[189,4,189,79,1],[190,4,190,11,1],[190,13,190,18,1],[190,19,190,21,1],[190,22,190,41,1],[191,4,191,5,1],[192,17,192,62,1],[193,17,193,24,1],[193,26,193,34,1],[193,35,193,37,1],[193,38,193,48,1],[194,5,194,6,1],[195,6,195,13,1],[195,15,195,21,1],[195,22,195,24,1],[195,25,195,35,1],[196,7,196,117,1],[197,5,197,6,1],[198,4,198,5,1],[199,3,199,4,1],[202,3,202,102,1],[204,3,204,4,0],[206,4,206,22,0],[207,4,207,5,0],[208,5,208,12,0],[208,14,208,24,0],[208,25,208,27,0],[208,28,208,45,0],[209,5,209,6,0],[210,6,210,84,0],[211,6,211,13,0],[211,15,211,20,0],[211,21,211,23,0],[211,24,211,43,0],[212,6,212,7,0],[213,7,213,30,0],[214,8,214,17,0],[216,7,216,43,0],[217,7,217,37,0],[219,7,219,43,0],[220,7,220,95,0],[221,6,221,7,0],[222,5,222,6,0],[223,5,223,17,0],[226,4,226,11,0],[226,13,226,21,0],[226,22,226,24,0],[226,25,226,58,0],[227,4,227,5,0],[229,5,229,57,0],[230,6,230,15,0],[232,5,232,38,0],[233,5,233,43,0],[234,5,234,12,0],[234,14,234,19,0],[234,20,234,22,0],[234,23,234,33,0],[235,6,235,89,0],[236,4,236,5,0],[237,3,237,4,0],[240,3,240,92,1],[242,9,242,10,1],[244,13,244,40,1],[247,13,247,47,1],[250,13,250,20,1],[250,21,250,28,1],[250,29,250,31,1],[250,32,250,41,1],[251,13,251,14,1],[252,17,252,42,1],[253,21,253,41,1],[254,13,254,14,1],[256,13,256,53,1],[256,53,256,77,1],[256,77,256,79,1],[256,13,256,79,1],[261,13,261,64,1],[264,13,264,20,1],[264,22,264,29,1],[264,30,264,32,1],[264,33,264,46,1],[265,17,265,24,1],[265,26,265,33,1],[265,34,265,36,1],[265,37,265,47,1],[266,21,266,78,1],[267,25,267,46,1],[273,13,273,88,1],[274,22,274,29,1],[274,31,274,36,1],[274,37,274,39,1],[274,40,274,59,1],[275,21,275,22,1],[276,26,276,69,1],[277,26,277,33,1],[277,35,277,43,1],[277,44,277,46,1],[277,47,277,57,1],[278,26,278,27,1],[279,30,279,37,1],[279,39,279,45,1],[279,46,279,48,1],[279,49,279,59,1],[280,34,280,144,1],[281,26,281,27,1],[282,22,282,23,1],[285,9,285,10,1],[290,3,290,4,1],[291,4,291,37,1],[292,4,292,64,1],[293,3,293,4,1],[296,3,296,4,1],[297,4,297,46,1],[299,4,299,27,1],[300,4,300,27,1],[301,5,301,52,1],[303,5,303,24,0],[305,4,305,27,1],[306,5,306,52,1],[308,5,308,27,0],[310,4,310,59,1],[311,4,311,21,1],[312,5,312,12,0],[314,4,314,11,1],[314,13,314,18,0],[314,19,314,21,1],[314,22,314,26,1],[315,4,315,5,0],[316,5,316,35,0],[317,6,317,32,0],[319,5,319,18,0],[320,4,320,5,0],[321,4,321,25,1],[322,3,322,4,1]]);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\EmotionalAppraisal\OCCModel\OCCAffectDerivationComponent.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using AutobiographicMemory;
+using EmotionalAppraisal.Components;
+using EmotionalAppraisal.DTOs;
+using WellFormedNames;
+
+namespace EmotionalAppraisal.OCCModel
+{
+	public class OCCAffectDerivationComponent : IAffectDerivator
+	{
+		public const int GOALCONFIRMED = 1;
+		public const int GOALUNCONFIRMED = 0;
+		public const int GOALDISCONFIRMED = 2;
+
+		private static OCCBaseEmotion OCCAppraiseCompoundEmotions(IBaseEvent evt, float desirability, float praiseworthiness)
+		{
+			if ((desirability == 0) || (praiseworthiness == 0) || ((desirability &gt; 0) != (praiseworthiness &gt; 0)))
+				return null;
+
+			float potential = Math.Abs(desirability + praiseworthiness) * 0.5f;
+
+			Name direction;
+			OCCEmotionType emoType;
+
+			if(evt.Subject == Name.SELF_SYMBOL)
+			{
+				direction = Name.SELF_SYMBOL;
+				emoType = (desirability &gt; 0) ? OCCEmotionType.Gratification : OCCEmotionType.Remorse;
+			}
+			else
+			{
+				direction = evt.Subject ?? Name.UNIVERSAL_SYMBOL;
+				emoType = (desirability &gt; 0) ? OCCEmotionType.Gratitude : OCCEmotionType.Anger;
+			}
+
+			return new OCCBaseEmotion(emoType, potential, evt.Id, direction, evt.EventName);
+		}
+
+		private static OCCBaseEmotion OCCAppraiseWellBeing(uint evtId, Name eventName, float desirability) {
+			if(desirability &gt;= 0)
+				return new OCCBaseEmotion(OCCEmotionType.Joy, desirability, evtId, eventName);
+			return new OCCBaseEmotion(OCCEmotionType.Distress, -desirability, evtId, eventName);
+		}
+
+		//private static OCCBaseEmotion OCCAppraiseFortuneOfOthers(uint evtId, float desirability, float desirabilityForOther, string target)
+		//{
+		//	float potential = (Math.Abs(desirabilityForOther) + Math.Abs(desirability)) * 0.5f;
+
+		//	OCCEmotionType emoType;
+		//	if (desirability &gt;= 0)
+		//		emoType = (desirabilityForOther &gt;= 0) ? OCCEmotionType.HappyFor : OCCEmotionType.Gloating;
+		//	else
+		//		emoType = (desirabilityForOther &gt;= 0) ? OCCEmotionType.Resentment : OCCEmotionType.Pitty;
+
+		//	return new OCCBaseEmotion(emoType, potential, evtId, string.IsNullOrEmpty(target) ? Name.UNIVERSAL_SYMBOL : Name.BuildName(target));
+		//}
+
+		private static OCCBaseEmotion OCCAppraisePraiseworthiness(IBaseEvent evt, float praiseworthiness, Name perspective) {
+			Name direction;
+			OCCEmotionType emoType;
+
+			if (evt.Subject == perspective)
+			{
+				direction = perspective;
+				emoType = (praiseworthiness &gt;= 0) ? OCCEmotionType.Pride : OCCEmotionType.Shame;
+			}
+			else
+			{
+                direction = evt.Subject;
+				emoType = (praiseworthiness &gt;= 0) ? OCCEmotionType.Admiration : OCCEmotionType.Reproach;
+			}
+
+			return new OCCBaseEmotion(emoType, Math.Abs(praiseworthiness), evt.Id, direction, evt.EventName);
+		}
+
+		//private static OCCBaseEmotion OCCAppraiseAttribution(IEventRecord evt, float like)
+		//{
+		//	const float magicFactor = 0.7f;
+		//	OCCEmotionType emoType = (like &gt;= 0)?OCCEmotionType.Love:OCCEmotionType.Hate;
+		//	return new OCCBaseEmotion(emoType,Math.Abs(like)*magicFactor,evt.Id,evt.Subject==null?Name.UNIVERSAL_SYMBOL:Name.BuildName(evt.Subject));
+		//}
+
+		private static OCCBaseEmotion AppraiseGoalEnd(OCCEmotionType hopefullOutcome, OCCEmotionType fearfullOutcome, IActiveEmotion hopeEmotion, IActiveEmotion fearEmotion, float goalImportance, uint evtId, Name eventName) {
+
+			OCCEmotionType finalEmotion;
+			float potential = goalImportance;
+			finalEmotion = hopefullOutcome;
+		
+			if(hopeEmotion != null) {
+				if(fearEmotion != null &amp;&amp; fearEmotion.Intensity &gt; hopeEmotion.Intensity) {
+					potential = fearEmotion.Potential;
+					finalEmotion = fearfullOutcome;
+				}
+				else {
+					potential = hopeEmotion.Potential;
+					finalEmotion = hopefullOutcome;
+				}
+			}
+			else if(fearEmotion != null) {
+				potential = fearEmotion.Potential;
+				finalEmotion = fearfullOutcome;
+			}
+		
+			//The goal importance now affects 66% of the final potential value for the emotion
+			potential = (potential +  2* goalImportance) / 3;
+		
+			return new OCCBaseEmotion(finalEmotion, potential, evtId, eventName);
+		}
+
+		///// &lt;summary&gt;
+		///// Appraises a Goal&#39;s success according to the emotions that the agent is experiencing
+		///// &lt;/summary&gt;
+		///// &lt;param name=&quot;hopeEmotion&quot;&gt;the emotion of Hope for achieving the goal that the character feels&lt;/param&gt;
+		///// &lt;param name=&quot;fearEmotion&quot;&gt;the emotion of Fear for not achieving the goal that the character feels&lt;/param&gt;
+		///// &lt;param name=&quot;goalImportance&quot;&gt;how important is the goal to the agent&lt;/param&gt;
+		///// &lt;param name=&quot;evt&quot;&gt;The event that triggered the emotion&lt;/param&gt;
+		///// &lt;returns&gt;the emotion created&lt;/returns&gt;
+		//private static OCCBaseEmotion AppraiseGoalSuccess(IActiveEmotion hopeEmotion, IActiveEmotion fearEmotion, float goalImportance, uint evt) {
+		//	return AppraiseGoalEnd(OCCEmotionType.Satisfaction,OCCEmotionType.Relief,hopeEmotion,fearEmotion,goalImportance,evt);
+		//}
+
+		///// &lt;summary&gt;
+		///// Appraises a Goal&#39;s Failure according to the emotions that the agent is experiencing
+		///// &lt;/summary&gt;
+		///// &lt;param name=&quot;hopeEmotion&quot;&gt;the emotion of Hope for achieving the goal that the character feels&lt;/param&gt;
+		///// &lt;param name=&quot;fearEmotion&quot;&gt;the emotion of Fear for not achieving the goal that the character feels&lt;/param&gt;
+		///// &lt;param name=&quot;goalImportance&quot;&gt;how important is the goal to the agent&lt;/param&gt;
+		///// &lt;param name=&quot;evt&quot;&gt;The event that triggered the emotion&lt;/param&gt;
+		///// &lt;returns&gt;&lt;/returns&gt;
+		//public static OCCBaseEmotion AppraiseGoalFailure(IActiveEmotion hopeEmotion, IActiveEmotion fearEmotion, float goalImportance, uint evt) {
+		//	return AppraiseGoalEnd(OCCEmotionType.Disappointment,OCCEmotionType.FearsConfirmed,hopeEmotion,fearEmotion,goalImportance,evt);
+		//}
+
+		///// &lt;summary&gt;
+		///// Appraises a Goal&#39;s likelihood of succeeding
+		///// &lt;/summary&gt;
+		///// &lt;param name=&quot;e&quot;&gt;The event that triggered the emotion&lt;/param&gt;
+		///// &lt;param name=&quot;goalConduciveness&quot;&gt;???????&lt;/param&gt;
+		///// &lt;param name=&quot;prob&quot;&gt;probability of sucess&lt;/param&gt;
+		///// &lt;returns&gt;&lt;/returns&gt;
+		//public static OCCBaseEmotion AppraiseGoalSuccessProbability(uint evt, float goalConduciveness, float prob) {
+		//	return new OCCBaseEmotion(OCCEmotionType.Hope, prob * goalConduciveness, evt);
+		//}
+
+		///// &lt;summary&gt;
+		///// Appraises a Goal&#39;s likelihood of failure
+		///// &lt;/summary&gt;
+		///// &lt;param name=&quot;e&quot;&gt;The event that triggered the emotion&lt;/param&gt;
+		///// &lt;param name=&quot;goalConduciveness&quot;&gt;???????&lt;/param&gt;
+		///// &lt;param name=&quot;prob&quot;&gt;probability of failure&lt;/param&gt;
+		///// &lt;returns&gt;&lt;/returns&gt;
+		//public static OCCBaseEmotion AppraiseGoalFailureProbability(uint evt, float goalConduciveness, float prob)
+		//{
+		//	return new OCCBaseEmotion(OCCEmotionType.Fear, prob * goalConduciveness, evt);
+		//}
+
+		public IEnumerable&lt;IEmotion&gt; AffectDerivation(EmotionalAppraisalAsset emotionalModule, IAppraisalFrame frame)
+		{
+			var evt = frame.AppraisedEvent;
+            
+
+			if(frame.ContainsAppraisalVariable(OCCAppraisalVariables.DESIRABILITY) &amp;&amp; frame.ContainsAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS))
+			{
+				float desirability = frame.GetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY);
+				float praiseworthiness = frame.GetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS);
+
+				var composedEmotion = OCCAppraiseCompoundEmotions(evt, desirability, praiseworthiness);
+				if (composedEmotion != null)
+					yield return composedEmotion;
+			}
+			
+			if(frame.ContainsAppraisalVariable(OCCAppraisalVariables.DESIRABILITY))
+			{
+				float desirability = frame.GetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY);
+				if(desirability!=0)
+				{
+					yield return OCCAppraiseWellBeing(evt.Id, evt.EventName, desirability);
+
+					//foreach(string variable in frame.AppraisalVariables.Where(v =&gt; v.StartsWith(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER)))
+					//{
+					//	string other = variable.Substring(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER.Length);
+					//	float desirabilityForOther = frame.GetAppraisalVariable(variable);
+					//	if (desirabilityForOther != 0)
+					//		yield return OCCAppraiseFortuneOfOthers(evt.Id, desirability, desirabilityForOther, other);
+					//}
+				}
+			}
+
+			if(frame.ContainsAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS))
+			{
+				float praiseworthiness = frame.GetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS);
+				if (praiseworthiness != 0)
+					yield return OCCAppraisePraiseworthiness(evt, praiseworthiness, frame.Perspective);
+			}
+
+			//if(frame.ContainsAppraisalVariable(OCCAppraisalVariables.LIKE))
+			//{
+			//	float like = frame.GetAppraisalVariable(OCCAppraisalVariables.LIKE);
+			//	if (like != 0)
+			//		yield return OCCAppraiseAttribution(evt, like);
+			//}
+			
+			//if(frame.ContainsAppraisalVariable(OCCAppraisalVariables.GOALCONDUCIVENESS))
+			//{
+			//	float goalConduciveness = frame.GetAppraisalVariable(OCCAppraisalVariables.GOALCONDUCIVENESS);
+			//	if(goalConduciveness!=0)
+			//	{
+			//		var status = frame.GetAppraisalVariable(OCCAppraisalVariables.GOALSTATUS);
+			//		if(status == GOALUNCONFIRMED)
+			//		{
+			//			float prob = frame.GetAppraisalVariable(OCCAppraisalVariables.SUCCESSPROBABILITY);
+			//			if (prob != 0)
+			//				yield return AppraiseGoalSuccessProbability(evt.Id, goalConduciveness, prob);
+					
+			//			prob = frame.GetAppraisalVariable(OCCAppraisalVariables.FAILUREPROBABILITY);
+			//			if (prob != 0)
+			//				yield return AppraiseGoalFailureProbability(evt.Id, goalConduciveness, prob);
+			//		}
+			//		else 
+			//		{
+			//			//TODO find a better way to retrive the active emotions, without allocating extra KB
+			//			var fear = emotionalModule.EmotionalState.GetEmotion(new OCCBaseEmotion(OCCEmotionType.Fear, 0, evt.Id));
+			//			var hope = emotionalModule.EmotionalState.GetEmotion(new OCCBaseEmotion(OCCEmotionType.Hope, 0, evt.Id));
+
+			//			if (status == GOALCONFIRMED)
+			//				yield return AppraiseGoalSuccess(hope, fear, goalConduciveness, evt.Id);
+			//			else if (status == GOALDISCONFIRMED)
+			//				yield return AppraiseGoalFailure(hope, fear, goalConduciveness, evt.Id);
+			//		}
+			//	}
+			//}
+		}
+
+		public short AffectDerivationWeight
+		{
+			get { return 1; }
+		}
+
+		public void InverseAffectDerivation(EmotionalAppraisalAsset emotionalModule, IEmotion emotion, IWritableAppraisalFrame frame)
+		{
+			//const float MAGIC_VALUE_FOR_LOVE = 1.43f;
+			//TODO improve this code
+
+			//ignoring mood for now
+
+			EmotionDispositionDTO emotionDisposition = emotionalModule.EmotionDispositions.FirstOrDefault(e =&gt; e.Emotion == emotion.EmotionType);
+		    if (emotionDisposition == null)
+		    {
+		        emotionDisposition = emotionalModule.DefaultEmotionDisposition;
+		    }
+
+			int threshold = emotionDisposition.Threshold;
+			float potentialValue = emotion.Potential + threshold;
+
+			//if(emotion.EmotionType == OCCEmotionType.Love.Name)
+			//{
+			//	frame.SetAppraisalVariable(OCCAppraisalVariables.LIKE, potentialValue * MAGIC_VALUE_FOR_LOVE);
+			//}
+			//else if(emotion.EmotionType == OCCEmotionType.Hate.Name)
+			//{
+			//	frame.SetAppraisalVariable(OCCAppraisalVariables.LIKE, potentialValue * -MAGIC_VALUE_FOR_LOVE);
+			//}
+			//else
+			if (emotion.EmotionType == OCCEmotionType.Joy.Name)
+			{
+				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);
+			}
+			else if (emotion.EmotionType == OCCEmotionType.Distress.Name)
+			{
+				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, -potentialValue);
+			}
+			else if (emotion.EmotionType == OCCEmotionType.Pride.Name)
+			{
+				frame.SetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS, potentialValue);
+			}
+			else if (emotion.EmotionType == OCCEmotionType.Shame.Name)
+			{
+				frame.SetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS, -potentialValue);
+			}
+			//else if (emotion.EmotionType == OCCEmotionType.Gloating.Name)
+			//{
+			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);
+			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, -potentialValue);
+			//}
+			//else if (emotion.EmotionType == OCCEmotionType.HappyFor.Name)
+			//{
+			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);
+			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, potentialValue);
+			//}
+			//else if (emotion.EmotionType == OCCEmotionType.Pitty.Name)
+			//{
+			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, -potentialValue);
+			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, -potentialValue);
+			//}
+			//else if (emotion.EmotionType == OCCEmotionType.Resentment.Name)
+			//{
+			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, potentialValue);
+			//}
+			//else if (emotion.EmotionType == OCCEmotionType.Gratification.Name)
+			//{
+			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);
+			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, potentialValue);
+			//}
+			//else if (emotion.EmotionType == OCCEmotionType.Anger.Name)
+			//{
+			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, -potentialValue);
+			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, -potentialValue);
+			//}
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[18,3,18,4,1],[19,4,19,105,1],[20,5,20,17,0],[22,4,22,71,1],[27,4,27,39,1],[28,4,28,5,0],[29,5,29,34,0],[30,5,30,90,0],[31,4,31,5,0],[33,4,33,5,1],[34,5,34,54,1],[35,5,35,84,1],[36,4,36,5,1],[38,4,38,84,1],[39,3,39,4,1],[41,102,41,103,1],[42,4,42,25,1],[43,5,43,83,1],[44,4,44,88,0],[45,3,45,4,1],[60,119,60,120,1],[64,4,64,35,1],[65,4,65,5,1],[66,5,66,29,1],[67,5,67,85,1],[68,4,68,5,1],[70,4,70,5,1],[71,17,71,41,1],[72,5,72,93,1],[73,4,73,5,1],[75,4,75,101,1],[76,3,76,4,1],[85,219,85,220,0],[88,4,88,37,0],[89,4,89,35,0],[91,4,91,27,0],[91,28,91,29,0],[92,5,92,77,0],[92,78,92,79,0],[93,6,93,40,0],[94,6,94,37,0],[95,5,95,6,0],[96,10,96,11,0],[97,6,97,40,0],[98,6,98,37,0],[99,5,99,6,0],[100,4,100,5,0],[101,9,101,32,0],[101,33,101,34,0],[102,5,102,39,0],[103,5,103,36,0],[104,4,104,5,0],[107,4,107,53,0],[109,4,109,73,0],[110,3,110,4,0],[160,3,160,4,1],[161,4,161,35,1],[164,4,164,150,1],[165,4,165,5,1],[166,5,166,89,1],[167,5,167,97,1],[169,5,169,92,1],[170,5,170,33,1],[171,6,171,35,1],[172,4,172,5,1],[174,4,174,75,1],[175,4,175,5,1],[176,5,176,89,1],[177,5,177,24,1],[178,5,178,6,1],[179,6,179,77,1],[188,5,188,6,1],[189,4,189,5,1],[191,4,191,79,1],[192,4,192,5,1],[193,5,193,97,1],[194,5,194,31,1],[195,6,195,89,1],[196,4,196,5,1],[234,3,234,4,1],[238,8,238,9,0],[238,10,238,19,0],[238,20,238,21,0],[242,3,242,4,0],[248,4,248,103,0],[248,103,248,135,0],[248,135,248,137,0],[248,4,248,137,0],[249,7,249,38,0],[250,7,250,8,0],[251,11,251,74,0],[252,7,252,8,0],[254,4,254,49,0],[255,4,255,57,0],[266,4,266,55,0],[267,4,267,5,0],[268,5,268,84,0],[269,4,269,5,0],[270,9,270,65,0],[271,4,271,5,0],[272,5,272,85,0],[273,4,273,5,0],[274,9,274,62,0],[275,4,275,5,0],[276,5,276,88,0],[277,4,277,5,0],[278,9,278,62,0],[279,4,279,5,0],[280,5,280,89,0],[281,4,281,5,0],[311,3,311,4,0]]);
+    </script>
+  </body>
+</html>

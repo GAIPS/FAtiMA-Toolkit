@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\WellFormedNames\Name.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+/** 
+ * Copyright (C) 2006 GAIPS/INESC-ID 
+ *  
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+ * 
+ * Company: GAIPS/INESC-ID
+ * Project: FAtiMA
+ * Created: 12/07/2006
+ * Ported to C#: 17/06/2015
+ **/
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Utilities;
+using WellFormedNames.Exceptions;
+
+
+namespace WellFormedNames
+{
+	/// &lt;summary&gt;
+	/// Well Formed Name Class.
+	/// &lt;/summary&gt;
+	/// &lt;remarks&gt;
+	/// &lt;para&gt;
+	///  A well formed name is used to specify goal/action names, objects, properties,
+	/// constants, and relations.
+	/// 
+	/// Its syntax is based on first order logic symbols, variables and predicates.
+	/// &lt;/para&gt;
+	/// &lt;para&gt;
+	/// Names can be generated from strings, or from composition with other names.
+	/// All names are case-insensitive.
+	/// &lt;/para&gt;
+	/// Even though the Name is class type, its underlying behaviour is similar to a value type structure.
+	/// This means that every modification to its values, returns a new instance of a Name object,
+	/// preserving the state of the original one.
+	/// &lt;/remarks&gt;
+	/// &lt;example&gt;
+	/// By default, Names separated in the following categories:
+	///		- Primitives
+	///			- John
+	///			- Dog
+	///			- Blue
+	///			- 34.5
+	///		- Variables
+	///			- [x]
+	///			- [strength]
+	///		- Composed Names
+	///			- Color(Sky)
+	///			- Likes(John)
+	///			- Size(Ball)
+	///			- Kick(Hard, Low)
+	/// &lt;/example&gt;
+	[Serializable]
+	public abstract partial class Name : IComparable&lt;Name&gt;, IEquatable&lt;Name&gt;
+	{
+		private const string NUMBER_VALIDATION_PATTERN = @&quot;(?:-|\+)?\d+(?:\.\d+)?(?:e(?:-|\+)?[1-9]\d*)?&quot;;
+		private const string VARIABLE_SYMBOL_VALIDATION_PATTERN = @&quot;^\[([A-Za-z_][\w-]*)\]$&quot;;
+		private const string VALUE_SYMBOL_VALIDATION_PATTERN = @&quot;^(?:(?:[A-Za-z1-9_][\w-]*)|(?:&quot; + NUMBER_VALIDATION_PATTERN + @&quot;))$&quot;;
+		private static readonly Regex VARIABLE_VALIDATION_PATTERN = new Regex(VARIABLE_SYMBOL_VALIDATION_PATTERN,RegexOptions.IgnoreCase);
+		private static readonly Regex PRIMITIVE_VALIDATION_PATTERN = new Regex(VALUE_SYMBOL_VALIDATION_PATTERN,RegexOptions.IgnoreCase);
+
+#region Constants
+
+		/// &lt;summary&gt;
+		/// The string representation of a &lt;b&gt;NIL&lt;/b&gt; value Name.
+		/// &lt;/summary&gt;
+		public const string NIL_STRING = &quot;-&quot;;
+		/// &lt;summary&gt;
+		/// The string representation of the &lt;b&gt;&quot;SELF&quot;&lt;/b&gt; primitive Name.
+		/// &lt;/summary&gt;
+		public const string SELF_STRING = &quot;SELF&quot;;
+		/// &lt;summary&gt;
+		/// The string representation of the Universal matching Name.
+		/// &lt;/summary&gt;
+		public const string UNIVERSAL_STRING = &quot;*&quot;;
+		
+		/// &lt;summary&gt;
+		/// A constant containing an instance of a NIL Name
+		/// &lt;/summary&gt;
+		/// @hideinitializer
+		public static readonly Name NIL_SYMBOL = new PrimitiveSymbol((PrimitiveValue)null);
+		/// &lt;summary&gt;
+		/// A constant containing an instance of a SELF Name
+		/// &lt;/summary&gt;
+		/// @hideinitializer
+		public static readonly Name SELF_SYMBOL = new PrimitiveSymbol(SELF_STRING);
+		/// &lt;summary&gt;
+		/// A constant containing an instance of a Universal matching Name
+		/// &lt;/summary&gt;
+		/// @hideinitializer
+		public static readonly Name UNIVERSAL_SYMBOL = new UniversalSymbol();
+
+#endregion
+
+		/// &lt;summary&gt;
+		/// Tells if this name is grounded.
+		/// A grounded Name is one that do not contain variables.
+		/// &lt;/summary&gt;
+		public readonly bool IsGrounded;
+
+		/// &lt;summary&gt;
+		/// Tells if this is name the Universal Matching Symbol
+		/// &lt;/summary&gt;
+		public readonly bool IsUniversal;
+
+		/// &lt;summary&gt;
+		/// Tells if this name does not contain universal or variable Symbols
+		/// &lt;/summary&gt;
+		public readonly bool IsConstant;
+
+		/// &lt;summary&gt;
+		/// Tells if this name is a variable definition
+		/// &lt;/summary&gt;
+		public readonly bool IsVariable;
+
+		/// &lt;summary&gt;
+		/// Tells if this name is a primitive value
+		/// &lt;/summary&gt;
+		public readonly bool IsPrimitive;
+
+		/// &lt;summary&gt;
+		/// Tells if this name is a composition of other names
+		/// &lt;/summary&gt;
+		public readonly bool IsComposed;
+
+		/// &lt;summary&gt;
+		/// The number of terms that compose this name.
+		/// Primitive and Variable Names will always return 1.
+		/// &lt;/summary&gt;
+		public abstract int NumberOfTerms { get; }
+
+		private Name(bool isGrounded, bool isUniversal, bool isConstant, bool isVariable, bool isPrimitive, bool isComposed)
+		{
+			this.IsGrounded = isGrounded;
+			this.IsUniversal = isUniversal;
+			this.IsConstant = isConstant;
+			this.IsVariable = isVariable;
+			this.IsPrimitive = isPrimitive;
+			this.IsComposed = isComposed;
+		}
+
+		/// @cond DOXYGEN_SHOULD_SKIP_THIS
+		public sealed override bool Equals(object obj)
+		{
+			Name n = obj as Name;
+			if (n == null)
+				return false;
+
+			return Equals(n);
+		}
+
+		public abstract override int GetHashCode();
+		public abstract override string ToString();
+
+		public abstract bool Equals(Name name);
+		/// @endcond
+
+		/// &lt;summary&gt;
+		/// Returns the first term of this Name.
+		/// Primitive and Variable Names will always return them selfs.
+		/// &lt;/summary&gt;
+		public abstract Name GetFirstTerm();
+
+		/// &lt;summary&gt;
+		/// Return all terms contained inside this Name.
+		/// &lt;/summary&gt;
+		public abstract IEnumerable&lt;Name&gt; GetTerms();
+
+        /// &lt;summary&gt;
+        /// Return the term at the specified index.
+        /// - For Primitive or Variable Names, any index different from 0, will throw an IndexOutOfRangeException.
+        /// - Using this method with a 0 index is the same as using GetFirstTerm()
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;index&quot;&gt;The zero-based index of the term to get.&lt;/param&gt;
+        /// &lt;exception cref=&quot;IndexOutOfRangeException&quot;&gt;Thrown if the given index is out of bounds.&lt;/exception&gt;
+
+        public abstract Name GetNTerm(int index);
+
+		/// &lt;summary&gt;
+		/// Generates a sequence of all Names contained inside this Name.
+		/// &lt;/summary&gt;
+		public abstract IEnumerable&lt;Name&gt; GetLiterals();
+
+		/// &lt;summary&gt;
+		/// Generates a sequence of all variables contained inside this Name.
+		/// &lt;/summary&gt;
+		public abstract IEnumerable&lt;Name&gt; GetVariables();
+
+		/// &lt;summary&gt;
+		/// Tells if this name contains a Ghost variable
+		/// &lt;/summary&gt;
+		/// &lt;see cref=&quot;GenerateUniqueGhostVariable()&quot;/&gt;
+		public abstract bool HasGhostVariable();
+
+		/// &lt;summary&gt;
+		/// Tells if this name contains a SELF primitive.
+		/// &lt;/summary&gt;
+		public abstract bool HasSelf();
+
+		/// &lt;summary&gt;
+		/// Verifies if a specific variable is contained inside this Name.
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;variable&quot;&gt;The variable Name we want to verify&lt;/param&gt;
+		/// &lt;exception cref=&quot;ArgumentException&quot;&gt;Thrown if the given argument is not a variable definition.&lt;/exception&gt;
+		public bool ContainsVariable(Name variable)
+		{
+			if (!variable.IsVariable)
+				throw new ArgumentException(&quot;The given Name is not a variable&quot;,nameof(variable));
+
+			var v = (VariableSymbol) variable;
+
+			return GetVariables().Cast&lt;VariableSymbol&gt;().Any(s =&gt; s.Equals(v));
+		}
+
+		/// &lt;summary&gt;
+		/// Swaps every instance of the requested Name with another.
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;original&quot;&gt;The Name instance to swap from.&lt;/param&gt;
+		/// &lt;param name=&quot;newName&quot;&gt;The Name instance to swap to.&lt;/param&gt;
+		/// &lt;returns&gt;A new instance, which is a clone of this Name, but with every instance of the original Name swaped with the new one.&lt;/returns&gt;
+		public abstract Name SwapTerms(Name original, Name newName);
+
+		/// &lt;summary&gt;
+		/// Given a SubstitutionSet, tries to ground this Name by substituting every variable with the corresponding value.
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;bindings&quot;&gt;The SubstitutionSet to be used to ground this Name.&lt;/param&gt;
+		/// &lt;returns&gt;A new instance, which is a clone of this Name, but grounded as much as possible.&lt;/returns&gt;
+		/// &lt;remarks&gt;
+		/// - If this instance is already grounded before calling this method, it will just return the same Name.
+		/// - This method does not warrant that this Name will be fully grounded, as the given SubstitutionSet
+		/// may not contain the substitution variables needed to perform the task.
+		/// &lt;/remarks&gt;
+		public abstract Name MakeGround(SubstitutionSet bindings);
+
+		/// &lt;summary&gt;
+		/// Adds a tag to the end of every variable inside this Name,
+		/// effectively modifying their identifier.
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;id&quot;&gt;The tag to add to every variable.&lt;/param&gt;
+		/// &lt;returns&gt;A new instance, which is a clone of this Name, but with every variable identifier changed in order to include the new tag.&lt;/returns&gt;
+		/// /// &lt;remarks&gt;
+		/// - If this instance is already grounded before calling this method, it will just return the same Name.
+		/// &lt;/remarks&gt;
+		public abstract Name ReplaceUnboundVariables(string id);
+
+		/// &lt;summary&gt;
+		/// Removes a tag from the end of every variable inside this Name,
+		/// effectively modifying their identifier.
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;id&quot;&gt;The tag to remove from every variable.&lt;/param&gt;
+		/// &lt;returns&gt;A new instance, which is a clone of this Name, but with every variable identifier changed in order to exclude the requested tag.&lt;/returns&gt;
+		/// /// &lt;remarks&gt;
+		/// - If this instance is already grounded before calling this method, it will just return the same Name.
+		/// - The tag is only removed if, and only if, the variable identifier ends with the requested tag.
+		/// &lt;/remarks&gt;
+		public abstract Name RemoveBoundedVariables(string id);
+
+		/// &lt;summary&gt;
+		/// Determines if this matches the given name template.
+		/// Both Names are matched to each other if all their Symbols are equal to one another or if a Symbol matches a universal Symbol.
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;name&quot;&gt;The Name to match with this instance.&lt;/param&gt;
+		/// &lt;returns&gt;True if both Names match with each other, false otherwise.&lt;/returns&gt;
+		public abstract bool Match(Name name);
+
+		/// &lt;summary&gt;
+		/// Apply a transformation function to this Name.
+		///  The function will receive every term of this name,
+		/// and should return a name to be swapped with the old one.
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;transformFunction&quot;&gt;The function we want to apply to this Name.&lt;/param&gt;
+		/// &lt;returns&gt;A new Name instance, which is the original one with the transformed function applied.&lt;/returns&gt;
+		public abstract Name ApplyToTerms(Func&lt;Name, Name&gt; transformFunction);
+		
+		private static ulong _variableIdCounter = 0;
+		
+		#region Operators
+
+		/// &lt;summary&gt;
+		/// Explicit cast from a string to a Name.
+		/// Similar from calling Name.Build(string)
+		/// &lt;/summary&gt;
+		public static explicit operator Name(string definition)
+		{
+			return BuildName(definition);
+		}
+
+		/// &lt;summary&gt;
+		/// Name comparison operator.
+		/// Tells if two names are equal to one another.
+		/// &lt;/summary&gt;
+		public static bool operator ==(Name n1, Name n2)
+		{
+            if (ReferenceEquals(n1, n2))
+				return true;
+
+		    if ((object) n1 == null || (object) n2 == null)
+		        return false;
+            
+            return n1.Equals(n2);
+		}
+
+		/// &lt;summary&gt;
+		/// Name comparison operator.
+		/// Tells if two names are diferent from one another.
+		/// &lt;/summary&gt;
+		public static bool operator !=(Name n1, Name n2)
+		{
+			return !(n1 == n2);
+		}
+
+		public static bool operator &lt;(Name a, Name b)
+		{
+			PrimitiveSymbol pa = a as PrimitiveSymbol;
+			PrimitiveSymbol pb = b as PrimitiveSymbol;
+
+			if (pa == null || pb == null)
+				return false;
+
+			int delta;
+			if (PrimitiveSymbol.TryCompare(pa, pb, out delta))
+				return delta &lt; 0;
+			return false;
+		}
+
+		public static bool operator &lt;=(Name a, Name b)
+		{
+			PrimitiveSymbol pa = a as PrimitiveSymbol;
+			PrimitiveSymbol pb = b as PrimitiveSymbol;
+
+			if (pa == null || pb == null)
+				return false;
+
+			int delta;
+			if (PrimitiveSymbol.TryCompare(pa, pb, out delta))
+				return delta &lt;= 0;
+			return false;
+		}
+
+		public static bool operator &gt;(Name a, Name b)
+		{
+			return !(a &lt;= b);
+		}
+
+		public static bool operator &gt;=(Name a, Name b)
+		{
+			return !(a &lt; b);
+		}
+
+		#endregion
+
+		#region Builders
+
+		/// &lt;summary&gt;
+		/// Creates a composed Name, using two or more Names
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;rootTerm&quot;&gt;The Name that will be root of the composed Name.&lt;/param&gt;
+		/// &lt;param name=&quot;firstTerm&quot;&gt;The first term of the composed Name.&lt;/param&gt;
+		/// &lt;param name=&quot;otherTerms&quot;&gt;The remaining terms of the composed Name.&lt;/param&gt;
+		/// &lt;exception cref=&quot;ArgumentException&quot;&gt;Thrown if the rootTerm is not a primitive Name.&lt;/exception&gt;
+		public static Name BuildName(Name rootTerm, Name firstTerm, params Name[] otherTerms)
+		{
+			return BuildName(otherTerms.Prepend(firstTerm).Prepend(rootTerm));
+		}
+
+		/// &lt;summary&gt;
+		/// Creates a Name, using a sequence of Names.
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;terms&quot;&gt;The Name set used to generate the new one.&lt;/param&gt;
+		/// &lt;exception cref=&quot;ArgumentException&quot;&gt;Thrown if the first element of the set is not a primitive Name.&lt;/exception&gt;
+		public static Name BuildName(IEnumerable&lt;Name&gt; terms)
+		{
+			var set = ObjectPool&lt;List&lt;Name&gt;&gt;.GetObject();
+			try
+			{
+				set.AddRange(terms);
+				if (set.Count &lt; 2)
+					return set[0];
+
+				Symbol head = set[0] as Symbol;
+				if (head == null)
+					throw new ArgumentException(&quot;The first term needs to be a Symbol object&quot;);
+
+				set.RemoveAt(0);
+				return new ComposedName(head,set.Select(n =&gt; n??NIL_SYMBOL).ToArray());
+			}
+			finally
+			{
+				set.Clear();
+				ObjectPool&lt;List&lt;Name&gt;&gt;.Recycle(set);
+			}
+		}
+
+		public static Name BuildName(object value)
+		{
+			if (value == null)
+				return NIL_SYMBOL;
+
+			var str = value as string;
+			if (str != null)
+			{
+                if (string.IsNullOrEmpty(str))
+                    throw new ArgumentException(&quot;Invalid symbol \&quot;\&quot;&quot;);
+
+				str = str.Trim();
+				return ParseName(str);
+			}
+			return new PrimitiveSymbol(PrimitiveValue.Cast(value));
+		}
+
+		// Internal Name Parser
+		private static readonly char[] NAME_PARSER_LOOK_FORWARD = { &#39;,&#39;, &#39;(&#39; };
+		private static Name ParseName(string str)
+		{
+			int index = str.IndexOfAny(NAME_PARSER_LOOK_FORWARD);
+			if (index &lt; 0)
+				return ParseSymbol(str);
+			return ParseComposedName(str);
+		}
+
+		private static Symbol ParseSymbol(string str)
+		{
+			str = str.Trim();
+			if (str == &quot;*&quot;)
+				return (Symbol)UNIVERSAL_SYMBOL;
+			if (str == &quot;-&quot;)
+				return (Symbol) NIL_SYMBOL;
+
+			var varMatch = VARIABLE_VALIDATION_PATTERN.Match(str);
+			if (varMatch.Success)
+			{
+				string varName = varMatch.Groups[1].Value;
+				return new VariableSymbol(varName);
+			}
+
+			var primitiveMatch = PRIMITIVE_VALIDATION_PATTERN.Match(str);
+			if (primitiveMatch.Success)
+			{
+				PrimitiveValue p;
+				if(PrimitiveValue.TryParse(str,out p))
+					return new PrimitiveSymbol(p);
+			}
+
+			throw new ParsingException(str + &quot; is not a well formed name definition&quot;);
+		}
+
+		private static ComposedName ParseComposedName(string str)
+		{
+			if (str[str.Length - 1] != &#39;)&#39;)
+				throw new ParsingException($&quot;Failed to parse name. Expected &#39;)&#39;, got &#39;{str[str.Length - 1]}&#39;&quot;);
+
+			int index = str.IndexOf(&#39;(&#39;);
+
+			List&lt;Name&gt; names = ObjectPool&lt;List&lt;Name&gt;&gt;.GetObject();
+			try
+			{
+				string listString = str.Substring(index + 1, str.Length - index - 2);
+				ParseNameList(listString, names);
+				Symbol headSymbol = ParseSymbol(str.Substring(0, index));
+				return new ComposedName(headSymbol, names.ToArray());
+			}
+			finally
+			{
+				names.Clear();
+				ObjectPool&lt;List&lt;Name&gt;&gt;.Recycle(names);
+			}
+		}
+
+		private static void ParseNameList(string str, List&lt;Name&gt; result)
+		{
+			int openedBrackets = 0;
+			int index = 0;
+			for (; index &lt; str.Length; index++)
+			{
+				char c = str[index];
+				if ((c == &#39;,&#39;) &amp;&amp; (openedBrackets == 0))
+					break;
+				else if (c == &#39;(&#39;)
+					openedBrackets++;
+				else if (c == &#39;)&#39;)
+					openedBrackets--;
+			}
+
+			if (index == str.Length)
+			{
+				result.Add(ParseName(str));
+				return;
+			}
+
+			string nameStr = str.Substring(0, index);
+			result.Add(ParseName(nameStr));
+			ParseNameList(str.Substring(index + 1), result);
+		}
+
+		#endregion
+
+		/// @cond DOXYGEN_SHOULD_SKIP_THIS
+		
+		public int CompareTo(Name other)
+		{
+			if (other == null)
+				return 1;
+
+			StringComparer c;
+
+			c = StringComparer.InvariantCultureIgnoreCase;
+
+			return c.Compare(ToString(), other.ToString());
+		}
+
+		/// @endcond
+
+		public abstract bool TryConvertToValue&lt;T&gt;(out T value);
+
+		public virtual object GetValue()
+		{
+			return null;
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[74,3,74,133,1],[75,3,75,131,1],[96,3,96,86,1],[101,3,101,78,1],[106,3,106,72,1],[147,3,147,119,1],[148,3,148,4,1],[149,4,149,33,1],[150,4,150,35,1],[151,4,151,33,1],[152,4,152,33,1],[153,4,153,35,1],[154,4,154,33,1],[155,3,155,4,1],[159,3,159,4,1],[160,4,160,25,1],[161,4,161,18,1],[162,5,162,18,1],[164,4,164,21,0],[165,3,165,4,1],[221,3,221,4,1],[222,4,222,29,1],[223,5,223,86,1],[225,4,225,38,1],[227,4,227,58,1],[227,58,227,69,1],[227,69,227,71,1],[227,4,227,71,1],[228,3,228,4,1],[290,3,290,47,1],[299,3,299,4,1],[300,4,300,33,1],[301,3,301,4,1],[308,3,308,4,1],[309,13,309,41,1],[310,5,310,17,1],[312,7,312,54,1],[313,11,313,24,1],[315,13,315,34,1],[316,3,316,4,1],[323,3,323,4,1],[324,4,324,23,1],[325,3,325,4,1],[328,3,328,4,1],[329,4,329,46,1],[330,4,330,46,1],[332,4,332,33,1],[333,5,333,18,0],[336,4,336,54,1],[337,5,337,22,1],[338,4,338,17,1],[339,3,339,4,1],[342,3,342,4,1],[343,4,343,46,1],[344,4,344,46,1],[346,4,346,33,1],[347,5,347,18,0],[350,4,350,54,1],[351,5,351,23,1],[352,4,352,17,0],[353,3,353,4,1],[356,3,356,4,1],[357,4,357,21,1],[358,3,358,4,1],[361,3,361,4,1],[362,4,362,20,1],[363,3,363,4,1],[377,3,377,4,1],[378,4,378,70,1],[379,3,379,4,1],[387,3,387,4,1],[388,4,388,49,1],[390,4,390,5,1],[391,5,391,25,1],[392,5,392,23,1],[393,6,393,20,0],[395,5,395,36,1],[396,5,396,22,1],[397,6,397,80,0],[399,5,399,21,1],[400,5,400,50,1],[400,50,400,63,1],[400,63,400,76,1],[400,5,400,76,1],[403,4,403,5,1],[404,5,404,17,1],[405,5,405,41,1],[406,4,406,5,1],[407,3,407,4,1],[410,3,410,4,1],[411,4,411,22,1],[412,5,412,23,1],[414,4,414,30,1],[415,4,415,20,1],[416,4,416,5,1],[417,17,417,47,1],[418,21,418,72,1],[420,5,420,22,1],[421,5,421,27,1],[423,4,423,59,1],[424,3,424,4,1],[427,3,427,74,1],[429,3,429,4,1],[430,4,430,57,1],[431,4,431,18,1],[432,5,432,29,1],[433,4,433,34,1],[434,3,434,4,1],[437,3,437,4,1],[438,4,438,21,1],[439,4,439,19,1],[440,5,440,37,1],[441,4,441,19,1],[442,5,442,32,1],[444,4,444,58,1],[445,4,445,25,1],[446,4,446,5,1],[447,5,447,47,1],[448,5,448,40,1],[451,4,451,65,1],[452,4,452,31,1],[453,4,453,5,1],[455,5,455,43,1],[456,6,456,36,1],[457,4,457,5,0],[459,4,459,78,1],[460,3,460,4,1],[463,3,463,4,1],[464,4,464,35,1],[465,5,465,100,1],[467,4,467,33,1],[469,4,469,58,1],[471,4,471,5,1],[472,5,472,74,1],[473,5,473,38,1],[474,5,474,62,1],[475,5,475,58,1],[478,4,478,5,1],[479,5,479,19,1],[480,5,480,43,1],[481,4,481,5,1],[482,3,482,4,1],[485,3,485,4,1],[486,4,486,27,1],[487,4,487,18,1],[488,11,488,29,1],[488,31,488,38,1],[489,4,489,5,1],[490,5,490,25,1],[491,5,491,45,1],[492,6,492,12,1],[493,10,493,23,1],[494,6,494,23,1],[495,10,495,23,1],[496,6,496,23,1],[497,4,497,5,1],[499,4,499,28,1],[500,4,500,5,1],[501,5,501,32,1],[502,5,502,12,1],[505,4,505,45,1],[506,4,506,35,1],[507,4,507,52,1],[508,3,508,4,1],[515,3,515,4,1],[516,4,516,22,1],[517,5,517,14,0],[521,4,521,50,1],[523,4,523,51,1],[524,3,524,4,1],[531,3,531,4,0],[532,4,532,16,0],[533,3,533,4,0]]);
+    </script>
+  </body>
+</html>

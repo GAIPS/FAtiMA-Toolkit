@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\SocialImportance\DTOs\ClaimDTO.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+
+namespace SocialImportance.DTOs
+{
+	/// &lt;summary&gt;
+	/// Data Type Object Class for defining a Social Importance&#39;s Claim.
+	/// &lt;/summary&gt;
+	/// &lt;remarks&gt;
+	/// Claims are used to tell if actions are socialy acceptable.
+	/// Socialy aceptable actions are ones that the Claim value don&#39;t exced
+	/// the action&#39;s target Social Importance value.
+	/// 
+	/// This can be used to filter agent&#39;s possible actions remaining only the socially accepted ones,
+	/// or determine if action targeting the agent is socialy accepted or not, acording to the agent&#39;s beliefs.
+	/// &lt;/remarks&gt;
+	[Serializable]
+	public class ClaimDTO
+	{
+		/// &lt;summary&gt;
+		/// The action&#39;s name template used for action matching.
+		/// &lt;/summary&gt;
+		public string ActionTemplate { get; set; }
+		/// &lt;summary&gt;
+		/// The maximum Social Importance value the action&#39;s target can have,
+		/// before the action is considered socially unacceptable.
+		/// &lt;/summary&gt;
+		public uint ClaimSI { get; set; }
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[22,34,22,38,0],[22,39,22,43,0],[27,25,27,29,0],[27,30,27,34,0]]);
+    </script>
+  </body>
+</html>

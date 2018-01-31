@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\WellFormedNames\Collections\TreeNode.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Utilities;
+
+namespace WellFormedNames.Collections
+{
+	public partial class NameSearchTree&lt;T&gt;
+	{
+		private class TreeNode
+		{
+			private SortedDictionary&lt;Name, TreeNode&gt; m_nextSymbol;
+			private SortedDictionary&lt;Name, TreeNode&gt; m_nextVariable;
+			private SortedDictionary&lt;int, TreeNode&gt; m_nextComposed;
+			private TreeNode m_universal;
+			private bool m_hasValue;
+			private T m_value;
+
+			public int Depth(int d)
+			{
+				var nextDepth = m_nextSymbol != null ? m_nextSymbol.Values.Max(n =&gt; n.Depth(d + 1)) : d;
+				var nextVarDepth = m_nextVariable != null ? m_nextVariable.Values.Max(n =&gt; n.Depth(d + 1)) : d;
+				var nextCompDepth = m_nextComposed != null ? m_nextComposed.Values.Max(n =&gt; n.Depth(d + 1)) : d;
+				var unvDepth = m_universal != null ? m_universal.Depth(d + 1) : d;
+				return Math.Max(nextDepth, Math.Max(nextCompDepth, Math.Max(nextVarDepth, unvDepth)));
+			}
+
+			public bool IsEmpty
+			{
+				get
+				{
+					if (m_hasValue)
+						return false;
+
+					return (m_nextSymbol == null) &amp;&amp; (m_nextComposed==null) &amp;&amp; (m_nextVariable==null) &amp;&amp; (m_universal == null);
+				}
+			}
+
+			public TreeNode(TreeNode other)
+			{
+				m_hasValue = other.m_hasValue;
+				m_value = other.m_value;
+				if (other.m_nextSymbol != null)
+				{
+					m_nextSymbol = new SortedDictionary&lt;Name, TreeNode&gt;();
+					foreach (var pair in other.m_nextSymbol)
+						m_nextSymbol[pair.Key] = new TreeNode(pair.Value);
+				}
+
+				if (other.m_nextVariable != null)
+				{
+					m_nextVariable = new SortedDictionary&lt;Name, TreeNode&gt;();
+					foreach (var pair in other.m_nextVariable)
+						m_nextVariable[pair.Key] = new TreeNode(pair.Value);
+				}
+
+				if (other.m_nextComposed != null)
+				{
+					m_nextComposed = new SortedDictionary&lt;int, TreeNode&gt;();
+					foreach (var pair in other.m_nextComposed)
+						m_nextComposed[pair.Key] = new TreeNode(pair.Value);
+				}
+
+				m_universal = other.m_universal != null ? new TreeNode(other.m_universal) : null;
+			}
+
+			public TreeNode()
+			{
+				m_nextSymbol = null;
+				m_nextVariable = null;
+				m_nextComposed = null;
+				m_universal = null;
+				m_hasValue = false;
+				m_value = default(T);
+			}
+
+			public void Clear()
+			{
+				m_nextSymbol = null;
+				m_nextVariable = null;
+				m_nextComposed = null;
+				m_universal = null;
+				m_hasValue = false;
+				m_value = default(T);
+			}
+
+			public int Count()
+			{
+				int count = 0;
+				if (m_hasValue)
+					count++;
+
+				if (m_nextSymbol!=null)
+					count += m_nextSymbol.Values.Sum(n =&gt; n.Count());
+
+				if (m_nextComposed!=null)
+					count += m_nextComposed.Values.Sum(n =&gt; n.Count());
+
+				if (m_nextVariable!=null)
+					count += m_nextVariable.Values.Sum(n =&gt; n.Count());
+
+				if (m_universal != null)
+					count += m_universal.Count();
+
+				return count;
+			}
+
+			/// &lt;returns&gt;0 if value could not be added, 1 if added, and 2 if overide&lt;/returns&gt;
+			public byte AddValue(Stack&lt;Name&gt; stack, T value, bool overwrite)
+			{
+				if (stack.Count == 0) //End stack
+				{
+					if (m_hasValue &amp;&amp; !overwrite)
+						return 0;
+
+					m_value = value;
+					if (m_hasValue)
+						return 2;
+
+					m_hasValue = true;
+					return 1;
+				}
+
+				TreeNode nodeToAdd;
+				Name term = stack.Pop();
+
+				int numOfTerms = term.NumberOfTerms;
+				if (numOfTerms == 1)
+				{
+					Name key = term;
+					if (key.IsUniversal)
+					{
+						if (m_universal == null)
+							m_universal = new TreeNode();
+						nodeToAdd = m_universal;
+					}
+					else
+					{
+						SortedDictionary&lt;Name, TreeNode&gt; set;
+						if (term.IsVariable)
+						{
+							if(m_nextVariable==null)
+								m_nextVariable = new SortedDictionary&lt;Name, TreeNode&gt;();
+							set = m_nextVariable;
+						}
+						else
+						{
+							if(m_nextSymbol==null)
+								m_nextSymbol = new SortedDictionary&lt;Name, TreeNode&gt;();
+							set = m_nextSymbol;
+						}
+
+						if (!set.TryGetValue(key, out nodeToAdd))
+						{
+							nodeToAdd = new TreeNode();
+							set[key] = nodeToAdd;
+						}
+					}
+				}
+				else
+				{
+					using (var it = term.GetTerms().Reverse().GetEnumerator())
+					{
+						while (it.MoveNext())
+						{
+							stack.Push(it.Current);
+						}
+					}
+
+					if(m_nextComposed==null)
+						m_nextComposed = new SortedDictionary&lt;int, TreeNode&gt;();
+
+					if (!m_nextComposed.TryGetValue(numOfTerms, out nodeToAdd))
+					{
+						nodeToAdd = new TreeNode();
+						m_nextComposed[numOfTerms] = nodeToAdd;
+					}
+				}
+
+				return nodeToAdd.AddValue(stack, value,overwrite);
+			}
+
+			public bool RemoveValue(Stack&lt;Name&gt; stack)
+			{
+				if (stack.Count == 0) //End stack
+				{
+					if (m_hasValue)
+					{
+						m_hasValue = false;
+						m_value = default(T);
+						return true;
+					}
+					return false;
+				}
+
+				TreeNode nodeToRemove;
+				Name term = stack.Pop();
+
+				int numOfTerms = term.NumberOfTerms;
+				if (numOfTerms == 1)
+				{
+					Name key = term;
+					if (key.IsUniversal)
+					{
+						if (m_universal == null)
+							return false;
+
+						if (!m_universal.RemoveValue(stack))
+							return false;
+
+						if (m_universal.IsEmpty)
+							m_universal = null;
+					}
+					else
+					{
+						var set = term.IsVariable ? m_nextVariable : m_nextSymbol;
+						if (set == null)
+							return false;
+
+						if (!set.TryGetValue(key, out nodeToRemove))
+						{
+							return false;
+						}
+
+						if (!nodeToRemove.RemoveValue(stack))
+							return false;
+
+						if (nodeToRemove.IsEmpty)
+							set.Remove(key);
+
+						if (set.Count == 0)
+						{
+							if (term.IsVariable)
+								m_nextVariable = null;
+							else
+								m_nextSymbol = null;
+						}
+					}
+				}
+				else
+				{
+					if (m_nextComposed == null)
+						return false;
+
+					using (var it = term.GetTerms().Reverse().GetEnumerator())
+					{
+						while (it.MoveNext())
+						{
+							stack.Push(it.Current);
+						}
+					}
+
+					if (!m_nextComposed.TryGetValue(numOfTerms, out nodeToRemove))
+						return false;
+
+					if (!nodeToRemove.RemoveValue(stack))
+						return false;
+
+					if (nodeToRemove.IsEmpty)
+						m_nextComposed.Remove(numOfTerms);
+
+					if (m_nextComposed.Count == 0)
+						m_nextComposed = null;
+				}
+
+				return true;
+			}
+
+			public bool Contains(Stack&lt;Name&gt; stack)
+			{
+				if (stack.Count == 0) //End stack
+					return m_hasValue;
+
+				TreeNode nodeToEvaluate;
+				Name term = stack.Pop();
+
+				int numOfTerms = term.NumberOfTerms;
+				if (numOfTerms == 1)
+				{
+					Name key = term;
+					if (key.IsUniversal)
+					{
+						if (m_universal != null)
+							return m_universal.Contains(stack);
+					}
+					else
+					{
+						var set = term.IsVariable ? m_nextVariable : m_nextSymbol;
+						if (set != null &amp;&amp; set.TryGetValue(key, out nodeToEvaluate))
+							return nodeToEvaluate.Contains(stack);
+					}
+				}
+				else if(m_nextComposed != null)
+				{
+					using (var it = term.GetTerms().Reverse().GetEnumerator())
+					{
+						while (it.MoveNext())
+						{
+							stack.Push(it.Current);
+						}
+					}
+
+					if (m_nextComposed.TryGetValue(numOfTerms, out nodeToEvaluate))
+						return nodeToEvaluate.Contains(stack);
+				}
+
+				return false;
+			}
+
+			public Pair&lt;bool, T&gt; Retrive(Stack&lt;Name&gt; stack)
+			{
+				if (stack.Count == 0) //End stack
+					return Tuples.Create(m_hasValue, m_value);
+
+				TreeNode nodeToEvaluate;
+				var term = stack.Pop();
+				int numOfTerms = term.NumberOfTerms;
+
+				if (numOfTerms == 1)
+				{
+					Name key = term;
+					if (key.IsUniversal)
+					{
+						if (m_universal != null)
+						{
+							var res = m_universal.Retrive(stack);
+							if (res.Item1)
+								return res;
+						}
+					}
+					else
+					{
+						var set = term.IsVariable ? m_nextVariable : m_nextSymbol;
+						if (set != null &amp;&amp; set.TryGetValue(key, out nodeToEvaluate))
+						{
+							var res = nodeToEvaluate.Retrive(stack);
+							if (res.Item1)
+								return res;
+						}
+					}
+				}
+				else if(m_nextComposed!=null)
+				{
+					if (m_nextComposed.TryGetValue(numOfTerms, out nodeToEvaluate))
+					{
+						using (var it = term.GetTerms().Reverse().GetEnumerator())
+						{
+							while (it.MoveNext())
+							{
+								stack.Push(it.Current);
+							}
+						}
+
+						var res = nodeToEvaluate.Retrive(stack);
+						if (res.Item1)
+							return res;
+
+						////Failed to evaluate, reconstruct stack
+						//for (int i = 0; i &lt; numOfTerms; i++)
+						//	stack.Pop();
+					}
+				}
+				
+				//stack.Push(term);
+				return Tuples.Create(false, default(T));
+			}
+
+			public IEnumerable&lt;T&gt; GetValues()
+			{
+				if (m_hasValue)
+					yield return m_value;
+
+				var set = Enumerable.Empty&lt;TreeNode&gt;();
+				if (m_nextSymbol != null)
+					set = set.Union(m_nextSymbol.Values);
+				if (m_nextVariable != null)
+					set = set.Union(m_nextVariable.Values);
+				if (m_nextComposed != null)
+					set = set.Union(m_nextComposed.Values);
+				if (m_universal != null)
+					set = set.Append(m_universal);
+
+				foreach (var t in set.SelectMany(n =&gt; n.GetValues()))
+					yield return t;
+			}
+
+			public IEnumerable&lt;Stack&lt;Name&gt;&gt; GetKeys()
+			{
+				if (m_hasValue)
+					yield return ObjectPool&lt;Stack&lt;Name&gt;&gt;.GetObject();
+
+				var set = Enumerable.Empty&lt;KeyValuePair&lt;Name, TreeNode&gt;&gt;();
+				if (m_nextSymbol != null)
+					set = set.Union(m_nextSymbol);
+				if (m_nextVariable != null)
+					set = set.Union(m_nextVariable);
+				foreach (var entry in set)
+				{
+					var term = entry.Key;
+					var entryResults = entry.Value.GetKeys();
+					foreach (var r in entryResults)
+					{
+						r.Push(term);
+						yield return r;
+					}
+				}
+
+				if (m_nextComposed != null)
+				{
+					foreach (var entry in m_nextComposed)
+					{
+						int termsToMerge = entry.Key;
+						var entryResults = entry.Value.GetKeys();
+						foreach (var r in entryResults)
+						{
+							List&lt;Name&gt; tmp = ObjectPool&lt;List&lt;Name&gt;&gt;.GetObject();
+							for (int i = 0; i &lt; termsToMerge; i++)
+								tmp.Add(r.Pop());
+							Name term = Name.BuildName(tmp);
+							tmp.Clear();
+							ObjectPool&lt;List&lt;Name&gt;&gt;.Recycle(tmp);
+
+							r.Push(term);
+							yield return r;
+						}
+					}
+				}
+
+				if (m_universal != null)
+				{
+					var entryResults = m_universal.GetKeys();
+					foreach (var r in entryResults)
+					{
+						r.Push(Name.UNIVERSAL_SYMBOL);
+						yield return r;
+					}
+				}
+			}
+
+			public IEnumerable&lt;Pair&lt;Stack&lt;Name&gt;, T&gt;&gt; GetKeyValuePairs()
+			{
+				if (m_hasValue)
+					yield return Tuples.Create(ObjectPool&lt;Stack&lt;Name&gt;&gt;.GetObject(), m_value);
+
+				var set = Enumerable.Empty&lt;KeyValuePair&lt;Name, TreeNode&gt;&gt;();
+				if (m_nextSymbol != null)
+					set = set.Union(m_nextSymbol);
+				if (m_nextVariable != null)
+					set = set.Union(m_nextVariable);
+				foreach (var entry in set)
+				{
+					var entryResults = entry.Value.GetKeyValuePairs();
+					Name term = entry.Key;
+					foreach (var r in entryResults)
+					{
+						r.Item1.Push(term);
+						yield return r;
+					}
+				}
+
+				if (m_nextComposed != null)
+				{
+					foreach (var entry in m_nextComposed)
+					{
+						var entryResults = entry.Value.GetKeyValuePairs();
+						int termsToMerge = entry.Key;
+						foreach (var r in entryResults)
+						{
+							List&lt;Name&gt; tmp = ObjectPool&lt;List&lt;Name&gt;&gt;.GetObject();
+							for (int i = 0; i &lt; termsToMerge; i++)
+								tmp.Add(r.Item1.Pop());
+							Name term = Name.BuildName(tmp);
+							tmp.Clear();
+							ObjectPool&lt;List&lt;Name&gt;&gt;.Recycle(tmp);
+
+							r.Item1.Push(term);
+							yield return r;
+						}
+					}
+				}
+
+				if (m_universal != null)
+				{
+					var entryResults = m_universal.GetKeyValuePairs();
+					foreach (var r in entryResults)
+					{
+						r.Item1.Push(Name.UNIVERSAL_SYMBOL);
+						yield return r;
+					}
+				}
+			}
+
+			public IEnumerable&lt;Pair&lt;T,SubstitutionSet&gt;&gt; Unify(Stack&lt;Name&gt; stack, SubstitutionSet binding)
+			{
+				if (stack.Count == 0) //End stack
+				{
+					if (m_hasValue)
+						yield return Tuples.Create(m_value,binding);
+					yield break;
+				}
+
+				TreeNode nodeToEvaluate;
+				Name term = stack.Pop();
+
+				if (!term.IsVariable)
+				{
+					int numOfTerms = term.NumberOfTerms;
+					if (numOfTerms == 1)
+					{
+						var selectedNodes = Enumerable.Empty&lt;TreeNode&gt;();
+						Name key = term;
+						if (key.IsUniversal)
+						{
+							if (m_universal != null)
+								selectedNodes = selectedNodes.Append(m_universal);
+
+							selectedNodes = selectedNodes.Union(GetNextLevel().SelectMany(p =&gt; p.Item2));
+						}
+						else
+						{
+							if (m_nextSymbol != null &amp;&amp; m_nextSymbol.TryGetValue(key, out nodeToEvaluate))
+								selectedNodes = selectedNodes.Append(nodeToEvaluate);
+
+							if (m_universal != null)
+								selectedNodes = selectedNodes.Append(m_universal);
+						}
+
+						foreach (var pair in selectedNodes.SelectMany(n =&gt; n.Unify(stack,binding)))
+						{
+							yield return pair;
+						}
+					}
+					else
+					{
+						if (m_nextComposed!=null &amp;&amp; m_nextComposed.TryGetValue(numOfTerms, out nodeToEvaluate))
+						{
+							using (var it = term.GetTerms().Reverse().GetEnumerator())
+							{
+								while (it.MoveNext())
+								{
+									stack.Push(it.Current);
+								}
+							}
+
+							foreach (var pair in nodeToEvaluate.Unify(stack, binding))
+								yield return pair;
+
+							for (int i = 0; i &lt; term.NumberOfTerms; i++)
+								stack.Pop();
+						}
+
+						if (m_universal != null)
+						{
+							foreach (var pair in m_universal.Unify(stack, binding))
+								yield return pair;
+						}
+					}
+
+					if (m_nextVariable != null)
+					{
+						//Find bindings with stored variables
+						foreach (var pair in m_nextVariable)
+						{
+							var sub = new Substitution(pair.Key,new ComplexValue(term));
+							if (binding.Conflicts(sub))
+								continue;
+
+							var set = new SubstitutionSet(binding);
+							set.AddSubstitution(sub);
+							foreach (var r in pair.Value.Unify(stack, set))
+							{
+								yield return r;
+							}
+						}
+					}
+				}
+				else
+				{
+					//Find bindings
+					var nextLevel = GetNextLevel();
+					foreach (var pair in nextLevel)
+					{
+						SubstitutionSet set = binding;
+						if (!pair.Item1.IsVariable || pair.Item1 != term)
+						{
+                            //Very odd trick to make certainty work
+                            var sub = new Substitution(term, new ComplexValue(pair.Item1, -1));
+							if (binding.Conflicts(sub))
+								continue;
+
+							set = new SubstitutionSet(set);
+							set.AddSubstitution(sub);
+						}
+
+						foreach (var node in pair.Item2)
+						{
+							foreach (var r in node.Unify(stack, set))
+							{
+								yield return r;
+							}
+						}
+					}
+				}
+
+				stack.Push(term);
+			}
+
+			private IEnumerable&lt;Pair&lt;Stack&lt;Name&gt;, IEnumerable&lt;TreeNode&gt;&gt;&gt; CollectNextLevel(int level)
+			{
+				var set = Enumerable.Empty&lt;KeyValuePair&lt;Name, TreeNode&gt;&gt;();
+				if (m_nextSymbol != null)
+					set = set.Union(m_nextSymbol);
+				if (m_nextVariable != null)
+					set = set.Union(m_nextVariable);
+				foreach (var entry in set)
+				{
+					var key = entry.Key;
+					if (level &gt; 1)
+					{
+						foreach (var pair in entry.Value.GetNextConsecutive(level-1))
+						{
+							pair.Item1.Push(key);
+							yield return pair;
+						}
+					}
+					else
+					{
+						var s = ObjectPool&lt;Stack&lt;Name&gt;&gt;.GetObject();
+						s.Push(key);
+						yield return Tuples.Create(s, (IEnumerable&lt;TreeNode&gt;)new[] { entry.Value });
+					}
+				}
+
+				if (m_nextComposed != null)
+				{
+					foreach (var entry in m_nextComposed)
+					{
+						var nextLevel = entry.Key;
+						Dictionary&lt;Name, IEnumerable&lt;TreeNode&gt;&gt; group = new Dictionary&lt;Name, IEnumerable&lt;TreeNode&gt;&gt;();
+						foreach (var subEntry in entry.Value.CollectNextLevel(nextLevel))
+						{
+							Name newName;
+							var r = subEntry.Item1;
+							List&lt;Name&gt; tmp = ObjectPool&lt;List&lt;Name&gt;&gt;.GetObject();
+							for (int i = 0; i &lt; nextLevel; i++)
+								tmp.Add(r.Pop());
+
+							newName = Name.BuildName(tmp);
+							tmp.Clear();
+							ObjectPool&lt;List&lt;Name&gt;&gt;.Recycle(tmp);
+							subEntry.Item1.Clear();
+							ObjectPool&lt;Stack&lt;Name&gt;&gt;.Recycle(subEntry.Item1);
+
+							IEnumerable&lt;TreeNode&gt; collection;
+							if (group.TryGetValue(newName, out collection))
+								collection = collection.Union(subEntry.Item2);
+							else
+								collection = subEntry.Item2;
+
+							group[newName] = collection;
+						}
+
+						foreach (var pair in group)
+						{
+							var s = ObjectPool&lt;Stack&lt;Name&gt;&gt;.GetObject();
+							s.Push(pair.Key);
+							yield return Tuples.Create(s, pair.Value);
+						}
+					}
+				}
+
+				if (m_universal != null)
+				{
+					if (level &gt; 1)
+					{
+						foreach (var pair in m_universal.CollectNextLevel(level - 1))
+						{
+							pair.Item1.Push(Name.UNIVERSAL_SYMBOL);
+							yield return pair;
+						}
+					}
+					else
+					{
+						var s = ObjectPool&lt;Stack&lt;Name&gt;&gt;.GetObject();
+						s.Push(Name.UNIVERSAL_SYMBOL);
+						yield return Tuples.Create(s, (IEnumerable&lt;TreeNode&gt;)new[] { m_universal });
+					}
+				}
+			}
+
+			private IEnumerable&lt;Pair&lt;Stack&lt;Name&gt;, IEnumerable&lt;TreeNode&gt;&gt;&gt; GetNextConsecutive(int nextCount)
+			{
+				var n = CollectNextLevel(1);
+				while (nextCount&gt;=2)
+				{
+					nextCount--;
+					List&lt; Pair &lt; Stack&lt;Name&gt;, IEnumerable &lt; TreeNode &gt;&gt;&gt; newSet = new List&lt;Pair&lt;Stack&lt;Name&gt;, IEnumerable&lt;TreeNode&gt;&gt;&gt;();
+					foreach (var p in n)
+					{
+						var terms = p.Item1.Reverse().ToArray();
+						p.Item1.Clear();
+						ObjectPool&lt;Stack&lt;Name&gt;&gt;.Recycle(p.Item1);
+						foreach (var t in p.Item2)
+						{
+							foreach (var p2 in t.CollectNextLevel(1))
+							{
+								foreach (var t2 in terms)
+									p2.Item1.Push(t2);
+								newSet.Add(p2);
+							}
+						}
+					}
+					n = newSet;
+				}
+				return n;
+				//if (nextCount &lt; 2)
+				//	return n;
+
+				//foreach (var p in n)
+				//{
+				//	foreach (var t in p.Item2)
+				//	{
+				//		var n2 = t.CollectNextLevel(nextCount - 1).ToArray();
+				//		throw new NotImplementedException();
+				//	}
+				//}
+
+				//throw new NotImplementedException();
+
+
+
+				//if (nextCount &lt; 2)
+				//	return CollectNextLevel(1);
+
+				//return GetNextLevel().SelectMany(pair =&gt; pair.Item2.SelectMany(t =&gt; t.CollectNextLevel(nextCount - 1)).Select(
+				//	t =&gt;
+				//	{
+				//		t.Item1.Push(pair.Item1);
+				//		return t;
+				//	}));
+			}
+
+			private IEnumerable&lt;Pair&lt;Name, IEnumerable&lt;TreeNode&gt;&gt;&gt; GetNextLevel()
+			{
+				foreach (var pair in CollectNextLevel(1))
+				{
+					var stack = pair.Item1;
+					var name = stack.Pop();
+					stack.Clear();
+					ObjectPool&lt;Stack&lt;Name&gt;&gt;.Recycle(stack);
+					yield return Tuples.Create(name, pair.Item2);
+				}
+			}
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[20,4,20,5,1],[21,5,21,73,1],[21,73,21,87,0],[21,87,21,93,1],[21,5,21,93,1],[22,5,22,80,1],[22,80,22,94,0],[22,94,22,100,1],[22,5,22,100,1],[23,5,23,81,1],[23,81,23,95,0],[23,95,23,101,1],[23,5,23,101,1],[24,5,24,71,1],[25,5,25,91,1],[26,4,26,5,1],[31,5,31,6,1],[32,6,32,21,1],[33,7,33,20,0],[35,6,35,113,1],[36,5,36,6,1],[39,4,39,35,0],[40,4,40,5,0],[41,5,41,35,0],[42,5,42,29,0],[43,5,43,36,0],[44,5,44,6,0],[45,6,45,60,0],[46,6,46,13,0],[46,15,46,23,0],[46,24,46,26,0],[46,27,46,45,0],[47,7,47,57,0],[48,5,48,6,0],[50,5,50,38,0],[51,5,51,6,0],[52,6,52,62,0],[53,6,53,13,0],[53,15,53,23,0],[53,24,53,26,0],[53,27,53,47,0],[54,7,54,59,0],[55,5,55,6,0],[57,5,57,38,0],[58,5,58,6,0],[59,6,59,61,0],[60,6,60,13,0],[60,15,60,23,0],[60,24,60,26,0],[60,27,60,47,0],[61,7,61,59,0],[62,5,62,6,0],[64,5,64,86,0],[65,4,65,5,0],[67,4,67,21,1],[68,4,68,5,1],[69,5,69,25,1],[70,5,70,27,1],[71,5,71,27,1],[72,5,72,24,1],[73,5,73,24,1],[74,5,74,26,1],[75,4,75,5,1],[78,4,78,5,1],[79,5,79,25,1],[80,5,80,27,1],[81,5,81,27,1],[82,5,82,24,1],[83,5,83,24,1],[84,5,84,26,1],[85,4,85,5,1],[88,4,88,5,0],[89,5,89,19,0],[90,5,90,20,0],[91,6,91,14,0],[93,5,93,28,0],[94,6,94,44,0],[94,44,94,53,0],[94,53,94,55,0],[94,6,94,55,0],[96,5,96,30,0],[97,6,97,46,0],[97,46,97,55,0],[97,55,97,57,0],[97,6,97,57,0],[99,5,99,30,0],[100,6,100,46,0],[100,46,100,55,0],[100,55,100,57,0],[100,6,100,57,0],[102,5,102,29,0],[103,6,103,35,0],[105,5,105,18,0],[106,4,106,5,0],[110,4,110,5,1],[111,5,111,26,1],[112,5,112,6,1],[113,6,113,35,1],[114,7,114,16,1],[116,6,116,22,1],[117,6,117,21,1],[118,7,118,16,0],[120,6,120,24,1],[121,6,121,15,1],[125,5,125,29,1],[127,5,127,41,1],[128,5,128,25,1],[129,5,129,6,1],[130,6,130,22,1],[131,6,131,26,1],[132,6,132,7,1],[133,7,133,31,1],[134,8,134,37,1],[135,7,135,31,1],[136,6,136,7,1],[138,6,138,7,1],[140,7,140,27,1],[141,7,141,8,1],[142,8,142,32,1],[143,9,143,65,1],[144,8,144,29,1],[145,7,145,8,1],[147,7,147,8,1],[148,8,148,30,1],[149,9,149,63,1],[150,8,150,27,1],[151,7,151,8,1],[153,7,153,48,1],[154,7,154,8,1],[155,8,155,35,1],[156,8,156,29,1],[157,7,157,8,1],[158,6,158,7,1],[159,5,159,6,1],[161,5,161,6,1],[162,13,162,63,1],[163,6,163,7,1],[164,7,164,28,1],[165,7,165,8,1],[166,8,166,31,1],[167,7,167,8,1],[168,6,168,7,1],[170,6,170,30,1],[171,7,171,62,1],[173,6,173,65,1],[174,6,174,7,1],[175,7,175,34,1],[176,7,176,46,1],[177,6,177,7,1],[178,5,178,6,1],[180,5,180,55,1],[181,4,181,5,1],[184,4,184,5,1],[185,5,185,26,1],[186,5,186,6,1],[187,6,187,21,1],[188,6,188,7,1],[189,7,189,26,1],[190,7,190,28,1],[191,7,191,19,1],[193,6,193,19,0],[197,5,197,29,1],[199,5,199,41,1],[200,5,200,25,1],[201,5,201,6,1],[202,6,202,22,1],[203,6,203,26,1],[204,6,204,7,0],[205,7,205,31,0],[206,8,206,21,0],[208,7,208,43,0],[209,8,209,21,0],[211,7,211,31,0],[212,8,212,27,0],[213,6,213,7,0],[215,6,215,7,1],[216,7,216,65,1],[217,7,217,23,1],[218,8,218,21,1],[220,7,220,51,1],[221,7,221,8,0],[222,8,222,21,0],[225,7,225,44,1],[226,8,226,21,0],[228,7,228,32,1],[229,8,229,24,1],[231,7,231,26,1],[232,7,232,8,1],[233,8,233,28,1],[234,9,234,31,0],[236,9,236,29,1],[237,7,237,8,1],[238,6,238,7,1],[239,5,239,6,1],[241,5,241,6,1],[242,6,242,33,1],[243,7,243,20,1],[245,13,245,63,1],[246,6,246,7,1],[247,7,247,28,1],[248,7,248,8,1],[249,8,249,31,1],[250,7,250,8,1],[251,6,251,7,1],[253,6,253,68,1],[254,7,254,20,0],[256,6,256,43,1],[257,7,257,20,0],[259,6,259,31,1],[260,7,260,41,1],[262,6,262,36,1],[263,7,263,29,1],[264,5,264,6,1],[266,5,266,17,1],[267,4,267,5,1],[270,4,270,5,1],[271,5,271,26,1],[272,6,272,24,1],[275,5,275,29,1],[277,5,277,41,1],[278,5,278,25,1],[279,5,279,6,1],[280,6,280,22,1],[281,6,281,26,1],[282,6,282,7,0],[283,7,283,31,0],[284,8,284,43,0],[285,6,285,7,0],[287,6,287,7,1],[288,7,288,65,1],[289,7,289,67,1],[290,8,290,46,1],[291,6,291,7,1],[292,5,292,6,1],[293,10,293,36,1],[294,5,294,6,1],[295,13,295,63,1],[296,6,296,7,1],[297,7,297,28,1],[298,7,298,8,1],[299,8,299,31,1],[300,7,300,8,1],[301,6,301,7,1],[303,6,303,69,1],[304,7,304,45,1],[305,5,305,6,0],[307,5,307,18,1],[308,4,308,5,1],[311,4,311,5,1],[312,5,312,26,1],[313,6,313,48,1],[316,5,316,28,1],[317,5,317,41,1],[319,5,319,25,1],[320,5,320,6,1],[321,6,321,22,1],[322,6,322,26,1],[323,6,323,7,1],[324,7,324,31,1],[325,7,325,8,1],[326,8,326,45,1],[327,8,327,22,1],[328,9,328,20,1],[329,7,329,8,1],[330,6,330,7,1],[332,6,332,7,1],[333,7,333,65,1],[334,7,334,67,1],[335,7,335,8,1],[336,8,336,48,1],[337,8,337,22,1],[338,9,338,20,1],[339,7,339,8,1],[340,6,340,7,1],[341,5,341,6,1],[342,10,342,34,1],[343,5,343,6,1],[344,6,344,69,1],[345,6,345,7,1],[346,14,346,64,1],[347,7,347,8,1],[348,8,348,29,1],[349,8,349,9,1],[350,9,350,32,1],[351,8,351,9,1],[352,7,352,8,1],[354,7,354,47,1],[355,7,355,21,1],[356,8,356,19,1],[361,6,361,7,1],[362,5,362,6,1],[365,5,365,45,1],[366,4,366,5,1],[369,4,369,5,1],[370,5,370,20,1],[371,6,371,27,1],[373,5,373,44,1],[374,5,374,30,1],[375,6,375,43,1],[376,5,376,32,1],[377,6,377,45,0],[378,5,378,32,1],[379,6,379,45,1],[380,5,380,29,1],[381,6,381,36,1],[383,5,383,12,1],[383,14,383,19,1],[383,20,383,22,1],[383,23,383,43,1],[383,43,383,56,1],[383,56,383,57,1],[383,23,383,57,1],[384,6,384,21,1],[385,4,385,5,1],[388,4,388,5,1],[389,5,389,20,1],[390,6,390,55,1],[392,5,392,64,1],[393,5,393,30,1],[394,6,394,36,1],[395,5,395,32,1],[396,6,396,38,1],[397,5,397,12,1],[397,14,397,23,1],[397,24,397,26,1],[397,27,397,30,1],[398,5,398,6,1],[399,6,399,27,1],[400,6,400,47,1],[401,6,401,13,1],[401,15,401,20,1],[401,21,401,23,1],[401,24,401,36,1],[402,6,402,7,1],[403,7,403,20,1],[404,7,404,22,1],[405,6,405,7,1],[406,5,406,6,1],[408,5,408,32,1],[409,5,409,6,1],[410,6,410,13,1],[410,15,410,24,1],[410,25,410,27,1],[410,28,410,42,1],[411,6,411,7,1],[412,7,412,36,1],[413,7,413,48,1],[414,7,414,14,1],[414,16,414,21,1],[414,22,414,24,1],[414,25,414,37,1],[415,7,415,8,1],[416,8,416,60,1],[417,13,417,22,1],[417,24,417,40,1],[417,42,417,45,1],[418,9,418,26,1],[419,8,419,40,1],[420,8,420,20,1],[421,8,421,44,1],[423,8,423,21,1],[424,8,424,23,1],[425,7,425,8,1],[426,6,426,7,1],[427,5,427,6,1],[429,5,429,29,1],[430,5,430,6,0],[431,6,431,47,0],[432,6,432,13,0],[432,15,432,20,0],[432,21,432,23,0],[432,24,432,36,0],[433,6,433,7,0],[434,7,434,37,0],[435,7,435,22,0],[436,6,436,7,0],[437,5,437,6,0],[438,4,438,5,1],[441,4,441,5,1],[442,5,442,20,1],[443,6,443,79,1],[445,5,445,64,1],[446,5,446,30,1],[447,6,447,36,1],[448,5,448,32,1],[449,6,449,38,0],[450,5,450,12,1],[450,14,450,23,1],[450,24,450,26,1],[450,27,450,30,1],[451,5,451,6,1],[452,6,452,56,1],[453,6,453,28,1],[454,6,454,13,1],[454,15,454,20,1],[454,21,454,23,1],[454,24,454,36,1],[455,6,455,7,1],[456,7,456,26,1],[457,7,457,22,1],[458,6,458,7,1],[459,5,459,6,1],[461,5,461,32,1],[462,5,462,6,1],[463,6,463,13,1],[463,15,463,24,1],[463,25,463,27,1],[463,28,463,42,1],[464,6,464,7,1],[465,7,465,57,1],[466,7,466,36,1],[467,7,467,14,1],[467,16,467,21,1],[467,22,467,24,1],[467,25,467,37,1],[468,7,468,8,1],[469,8,469,60,1],[470,13,470,22,1],[470,24,470,40,1],[470,42,470,45,1],[471,9,471,32,1],[472,8,472,40,1],[473,8,473,20,1],[474,8,474,44,1],[476,8,476,27,1],[477,8,477,23,1],[478,7,478,8,1],[479,6,479,7,1],[480,5,480,6,1],[482,5,482,29,1],[483,5,483,6,1],[484,6,484,56,1],[485,6,485,13,1],[485,15,485,20,1],[485,21,485,23,1],[485,24,485,36,1],[486,6,486,7,1],[487,7,487,43,1],[488,7,488,22,1],[489,6,489,7,1],[490,5,490,6,1],[491,4,491,5,1],[494,4,494,5,1],[495,5,495,26,1],[496,5,496,6,1],[497,6,497,21,1],[498,7,498,51,1],[499,6,499,18,1],[503,5,503,29,1],[505,5,505,26,1],[506,5,506,6,1],[507,6,507,42,1],[508,6,508,26,1],[509,6,509,7,1],[510,7,510,56,1],[511,7,511,23,1],[512,7,512,27,1],[513,7,513,8,1],[514,8,514,32,1],[515,9,515,59,0],[517,8,517,75,1],[517,75,517,82,1],[517,82,517,85,1],[517,8,517,85,1],[518,7,518,8,1],[520,7,520,8,1],[521,8,521,86,1],[522,9,522,62,1],[524,8,524,32,1],[525,9,525,59,1],[526,7,526,8,1],[528,7,528,14,1],[528,16,528,24,1],[528,25,528,27,1],[528,28,528,58,1],[528,58,528,80,1],[528,80,528,81,1],[528,28,528,81,1],[529,7,529,8,1],[530,8,530,26,1],[531,7,531,8,1],[532,6,532,7,1],[534,6,534,7,1],[535,7,535,94,1],[536,7,536,8,1],[537,15,537,65,1],[538,8,538,9,1],[539,9,539,30,1],[540,9,540,10,1],[541,10,541,33,1],[542,9,542,10,1],[543,8,543,9,1],[545,8,545,15,1],[545,17,545,25,1],[545,26,545,28,1],[545,29,545,65,1],[546,9,546,27,1],[548,13,548,22,1],[548,24,548,46,1],[548,48,548,51,1],[549,9,549,21,1],[550,7,550,8,1],[552,7,552,31,1],[553,7,553,8,1],[554,8,554,15,1],[554,17,554,25,1],[554,26,554,28,1],[554,29,554,62,1],[555,9,555,27,1],[556,7,556,8,0],[557,6,557,7,1],[559,6,559,33,1],[560,6,560,7,1],[562,7,562,14,1],[562,16,562,24,1],[562,25,562,27,1],[562,28,562,42,1],[563,7,563,8,1],[564,8,564,68,1],[565,8,565,35,1],[566,9,566,18,0],[568,8,568,47,1],[569,8,569,33,1],[570,8,570,15,1],[570,17,570,22,1],[570,23,570,25,1],[570,26,570,54,1],[571,8,571,9,1],[572,9,572,24,1],[573,8,573,9,1],[574,7,574,8,1],[575,6,575,7,1],[576,5,576,6,1],[578,5,578,6,1],[580,6,580,37,1],[581,6,581,13,1],[581,15,581,23,1],[581,24,581,26,1],[581,27,581,36,1],[582,6,582,7,1],[583,7,583,37,1],[584,7,584,56,1],[585,7,585,8,1],[587,29,587,96,1],[588,8,588,35,1],[589,9,589,18,1],[591,8,591,39,1],[592,8,592,33,1],[593,7,593,8,1],[595,7,595,14,1],[595,16,595,24,1],[595,25,595,27,1],[595,28,595,38,1],[596,7,596,8,1],[597,8,597,15,1],[597,17,597,22,1],[597,23,597,25,1],[597,26,597,48,1],[598,8,598,9,1],[599,9,599,24,1],[600,8,600,9,1],[601,7,601,8,1],[602,6,602,7,1],[603,5,603,6,1],[605,5,605,22,1],[606,4,606,5,1],[609,4,609,5,1],[610,5,610,64,1],[611,5,611,30,1],[612,6,612,36,1],[613,5,613,32,1],[614,6,614,38,1],[615,5,615,12,1],[615,14,615,23,1],[615,24,615,26,1],[615,27,615,30,1],[616,5,616,6,1],[617,6,617,26,1],[618,6,618,20,1],[619,6,619,7,1],[620,7,620,14,1],[620,16,620,24,1],[620,25,620,27,1],[620,28,620,67,1],[621,7,621,8,1],[622,8,622,29,1],[623,8,623,26,1],[624,7,624,8,1],[625,6,625,7,1],[627,6,627,7,1],[628,7,628,51,1],[629,7,629,19,1],[630,7,630,83,1],[631,6,631,7,1],[632,5,632,6,1],[634,5,634,32,1],[635,5,635,6,1],[636,6,636,13,1],[636,15,636,24,1],[636,25,636,27,1],[636,28,636,42,1],[637,6,637,7,1],[638,7,638,33,1],[639,7,639,101,1],[640,7,640,14,1],[640,16,640,28,1],[640,29,640,31,1],[640,32,640,71,1],[641,7,641,8,1],[643,8,643,31,1],[644,8,644,60,1],[645,13,645,22,1],[645,24,645,37,1],[645,39,645,42,1],[646,9,646,26,1],[648,8,648,38,1],[649,8,649,20,1],[650,8,650,44,1],[651,8,651,31,1],[652,8,652,56,1],[655,8,655,55,1],[656,9,656,55,0],[658,9,658,37,1],[660,8,660,36,1],[661,7,661,8,1],[663,7,663,14,1],[663,16,663,24,1],[663,25,663,27,1],[663,28,663,33,1],[664,7,664,8,1],[665,8,665,52,1],[666,8,666,25,1],[667,8,667,50,1],[668,7,668,8,1],[669,6,669,7,1],[670,5,670,6,1],[672,5,672,29,1],[673,5,673,6,0],[674,6,674,20,0],[675,6,675,7,0],[676,7,676,14,0],[676,16,676,24,0],[676,25,676,27,0],[676,28,676,67,0],[677,7,677,8,0],[678,8,678,47,0],[679,8,679,26,0],[680,7,680,8,0],[681,6,681,7,0],[683,6,683,7,0],[684,7,684,51,0],[685,7,685,37,0],[686,7,686,83,0],[687,6,687,7,0],[688,5,688,6,0],[689,4,689,5,1],[692,4,692,5,1],[693,5,693,33,1],[694,5,694,25,1],[695,5,695,6,1],[696,6,696,18,1],[697,6,697,121,1],[698,6,698,13,1],[698,15,698,20,1],[698,21,698,23,1],[698,24,698,25,1],[699,6,699,7,1],[700,7,700,47,1],[701,7,701,23,1],[702,7,702,48,1],[703,7,703,14,1],[703,16,703,21,1],[703,22,703,24,1],[703,25,703,32,1],[704,7,704,8,1],[705,8,705,15,1],[705,17,705,23,1],[705,24,705,26,1],[705,27,705,48,1],[706,8,706,9,1],[707,9,707,16,1],[707,18,707,24,1],[707,25,707,27,1],[707,28,707,33,1],[708,10,708,28,1],[709,9,709,24,1],[710,8,710,9,1],[711,7,711,8,1],[712,6,712,7,1],[713,6,713,17,1],[714,5,714,6,1],[715,5,715,14,1],[741,4,741,5,1],[744,4,744,5,1],[745,5,745,12,1],[745,14,745,22,1],[745,23,745,25,1],[745,26,745,45,1],[746,5,746,6,1],[747,6,747,29,1],[748,6,748,29,1],[749,6,749,20,1],[750,6,750,45,1],[751,6,751,51,1],[752,5,752,6,1],[753,4,753,5,1]]);
+    </script>
+  </body>
+</html>

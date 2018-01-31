@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\EmotionalAppraisal\DTOs\AppraisalRuleDTO.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using Conditions.DTOs;
+using WellFormedNames;
+
+namespace EmotionalAppraisal.DTOs
+{
+    /// &lt;summary&gt;
+    /// Data Type Object Class for the representation of an Appraisal Rule.
+    /// Appraisal rules determines how emotions are generated based on perceived events.
+    /// &lt;/summary&gt;
+    [Serializable]
+    public class AppraisalRuleDTO 
+    {
+		/// &lt;summary&gt;
+		/// Unique indentifier of the appraisal rule
+		/// &lt;/summary&gt;
+		public Guid Id { get; set; }
+        /// &lt;summary&gt;
+        /// The matching template for the events we want to appraise with this rule.
+        /// &lt;/summary&gt;
+        public Name EventMatchingTemplate { get; set; }
+        /// &lt;summary&gt;
+        /// The desirability of the event
+        /// &lt;/summary&gt;
+        public Name Desirability { get; set; }
+		/// &lt;summary&gt;
+		/// The praisewothiness of the event.
+		/// &lt;/summary&gt;
+        public Name Praiseworthiness { get; set; }
+		/// &lt;summary&gt;
+		/// The conditions in which this event must be appraised.
+		/// If the conditions are not met, the event appraisal is ignored.
+		/// &lt;/summary&gt;
+	    public ConditionSetDTO Conditions { get; set; }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[17,20,17,24,1],[17,25,17,29,1],[21,45,21,49,1],[21,50,21,54,1],[25,36,25,40,1],[25,41,25,45,1],[29,40,29,44,1],[29,45,29,49,1],[34,42,34,46,1],[34,47,34,51,1]]);
+    </script>
+  </body>
+</html>

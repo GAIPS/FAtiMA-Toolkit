@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\EmotionalDecisionMaking\EmotionalDecisionMakingAsset.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using ActionLibrary;
+using Conditions;
+using Conditions.DTOs;
+using GAIPS.Rage;
+using SerializationUtilities;
+using WellFormedNames;
+using IQueryable = WellFormedNames.IQueryable;
+using ActionLibrary.DTOs;
+
+namespace EmotionalDecisionMaking
+{
+	/// &lt;summary&gt;
+	/// Main class of the Emotional Decision Making Asset
+	/// &lt;/summary&gt;
+	[Serializable]
+    public sealed class EmotionalDecisionMakingAsset : LoadableAsset&lt;EmotionalDecisionMakingAsset&gt;, ICustomSerialization
+    {
+        public static readonly Name DEFAULT_PRIORITY = Name.BuildName(1);
+
+        private IQueryable m_kb = null;
+
+        private List&lt;ActionRule&gt; m_actionRules;
+
+        /// &lt;summary&gt;
+        /// Asset constructor.
+        /// Creates a new empty Emotional Decision Making asset.
+        /// &lt;/summary&gt;
+        public EmotionalDecisionMakingAsset()
+        {
+            m_actionRules = new List&lt;ActionRule&gt;();
+        }
+
+		protected override string OnAssetLoaded()
+		{
+			return null;
+		}
+
+
+		/// &lt;summary&gt;
+		/// Registers an Emotional Appraisal Asset to be used by
+		/// this Emotional Decision Making asset.
+		/// &lt;/summary&gt;
+		/// &lt;remarks&gt;
+		/// To understand Emotional Appaisal Asset functionalities, please refer to its documentation.
+		/// &lt;/remarks&gt;
+		/// &lt;param name=&quot;eaa&quot;&gt;The instance of an Emotional Appaisal Asset to regist in this asset.&lt;/param&gt;
+		public void RegisterKnowledgeBase(IQueryable KB)
+        {
+            m_kb = KB;
+        }
+
+		/// &lt;summary&gt;
+		/// Performs the decision making process,
+		/// returning the actions that the assets deems to be executed.
+		/// Actual action execution is left in the responsibility of the application running this asset.
+		/// &lt;/summary&gt;
+		/// &lt;returns&gt;The set of actions that the assets wants to execute&lt;/returns&gt;
+		/// &lt;exception cref=&quot;Exception&quot;&gt;Thrown if there is no Emotional Appraisal Asset registed in this asset.&lt;/exception&gt;
+        public IEnumerable&lt;IAction&gt; Decide(Name actionType)
+        {
+            if (m_kb == null)
+                throw new Exception(
+                    $&quot;Unlinked to a KB. Use {nameof(RegisterKnowledgeBase)} before calling any method.&quot;);
+
+			if (m_actionRules == null)
+				return Enumerable.Empty&lt;IAction&gt;();
+
+            
+            var result = new List&lt;IAction&gt;();
+
+            foreach (var at in m_actionRules)
+            {
+                if (actionType != Name.UNIVERSAL_SYMBOL &amp;&amp; actionType != at.Layer)
+                    continue;
+
+                if (at.ActivationConditions == null) // empty condition set
+                {
+                    result.Add(at.GenerateAction(new SubstitutionSet()));
+                }
+                else
+                {
+                    foreach (var set in at.ActivationConditions.Unify(m_kb, Name.SELF_SYMBOL, null))
+                    {
+                        var a = at.GenerateAction(set);
+                        if(a!=null) result.Add(a);
+                    }
+                }
+            }
+            return result;
+        }
+
+
+        /// &lt;summary&gt;
+        /// Adds a new reactive action to the asset.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;newRuleDto&quot;&gt;The DTO containing the parameters needed to generate an action rule.&lt;/param&gt;
+        /// &lt;returns&gt;The unique identifier of the newly created action rule.&lt;/returns&gt;
+        public Guid AddActionRule(ActionRuleDTO newRuleDto)
+        {
+            var newActionRule = new ActionRule(newRuleDto);
+            m_actionRules.Add(newActionRule);
+            return newActionRule.Id;
+        }
+
+        /// &lt;summary&gt;
+        /// Updates an action rule definition.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;ruleToEdit&quot;&gt;The DTO of the action rule we want to update&lt;/param&gt;
+        /// &lt;param name=&quot;newRule&quot;&gt;The DTO containing the new action rule data&lt;/param&gt;
+        public void UpdateActionRule(ActionRuleDTO ruleToEdit, ActionRuleDTO newRule)
+        {
+	        newRule.Conditions = ruleToEdit.Conditions;
+            var newAt = new ActionRule(newRule);
+            var oldAt = m_actionRules.Where(a =&gt; a.Id == ruleToEdit.Id).FirstOrDefault();
+            var i = m_actionRules.IndexOf(oldAt);
+            m_actionRules[i] = new ActionRule(newRule);
+        }
+
+		public void UpdateRuleConditions(Guid ruleId, ConditionSetDTO conditionSet)
+		{
+			var rule = m_actionRules.Where(a =&gt; a.Id == ruleId).FirstOrDefault();
+            rule.ActivationConditions = new ConditionSet(conditionSet);
+		}
+
+        /// &lt;summary&gt;
+        /// Retrives the definitions of all the stored action rules.
+        /// &lt;/summary&gt;
+        /// &lt;returns&gt;A set of DTOs containing the data of all action rules.&lt;/returns&gt;
+        public IEnumerable&lt;ActionRuleDTO&gt; GetAllActionRules()
+        {
+	        return m_actionRules.Select(at =&gt; at.ToDTO());
+        }
+
+        /// &lt;summary&gt;
+        /// Retrieves the definitions of a single action rule.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;id&quot;&gt;The unique identifier of the action rule to retrieve.&lt;/param&gt;
+        /// &lt;returns&gt;The DTO containing the data of the requested action, or null if
+        /// no action rule with the given id was found.&lt;/returns&gt;
+        public ActionRuleDTO GetActionRule(Guid id)
+        {
+            return m_actionRules.Where(a =&gt; a.Id == id).FirstOrDefault()?.ToDTO();
+        }
+
+        /// &lt;summary&gt;
+        /// Removes a set of action rules from the asset.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;rulesToRemove&quot;&gt;A set of unique identifiers of the action rules we want to remove.&lt;/param&gt;
+        public void RemoveActionRules(IList&lt;Guid&gt; rulesToRemove)
+        {
+            foreach (var id in rulesToRemove)
+            {
+                var r = m_actionRules.Where(a =&gt; a.Id == id).FirstOrDefault();
+                this.m_actionRules.Remove(r);
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Adds a new activation condition to a action rule.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;selectedRuleId&quot;&gt;The unique identifier of the action rule we want to modify.&lt;/param&gt;
+        /// &lt;param name=&quot;newCondition&quot;&gt;The condition we want to add to the requested action rule.&lt;/param&gt;
+        public void AddRuleCondition(Guid selectedRuleId, string newCondition)
+        {
+            var r = m_actionRules.Where(a =&gt; a.Id == selectedRuleId).FirstOrDefault();
+            var conditions = r.ActivationConditions;
+            var c = Condition.Parse(newCondition);
+            r.ActivationConditions = conditions.Add(c);
+        }
+
+        /// &lt;summary&gt;
+        /// Removes a set of activation conditions from a action rule.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;ruleId&quot;&gt;The unique identifier of the action rule we want to modify.&lt;/param&gt;
+        /// &lt;param name=&quot;conditionsToRemove&quot;&gt;The condition we want to remove from the requested action rule.&lt;/param&gt;
+        public void RemoveRuleConditions(Guid ruleId, IEnumerable&lt;string&gt; conditionsToRemove)
+        {
+            var at = m_actionRules.Where(a =&gt; a.Id == ruleId).FirstOrDefault();
+            var conds = conditionsToRemove.Select(Condition.Parse).Aggregate(at.ActivationConditions, (current, c) =&gt; current.Remove(c));
+			at.ActivationConditions = conds;
+        }
+
+        /// &lt;summary&gt;
+        /// Swaps a condition from a action rule for another.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;ruleId&quot;&gt;The unique identifier of the action rule we want to modify.&lt;/param&gt;
+        /// &lt;param name=&quot;conditionToEdit&quot;&gt;The condition of the action rule we want to be substituted.&lt;/param&gt;
+        /// &lt;param name=&quot;newCondition&quot;&gt;The new condition we want the action rule to have.&lt;/param&gt;
+        public void UpdateRuleCondition(Guid ruleId, string conditionToEdit, string newCondition)
+        {
+            this.RemoveRuleConditions(ruleId, new[] {conditionToEdit});
+            this.AddRuleCondition(ruleId, newCondition);
+        }
+        
+
+#region Serialization
+
+		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		{
+            dataHolder.SetValue(&quot;ActionTendencies&quot;, m_actionRules.ToArray());
+		}
+
+		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+		{
+			if(m_actionRules == null)
+                m_actionRules = new List&lt;ActionRule&gt;();
+			var ats = dataHolder.GetValue&lt;ActionRule[]&gt;(&quot;ActionTendencies&quot;);
+			foreach (var at in ats)
+				m_actionRules.Add(at);
+		}
+
+#endregion
+	}
+
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[21,9,21,74,1],[23,9,23,40,1],[31,9,31,46,1],[32,9,32,10,1],[33,13,33,52,1],[34,9,34,10,1],[37,3,37,4,0],[38,4,38,16,0],[39,3,39,4,0],[51,9,51,10,1],[52,13,52,23,1],[53,9,53,10,1],[63,9,63,10,1],[64,13,64,30,1],[65,17,66,106,0],[68,4,68,30,1],[69,5,69,40,0],[72,13,72,46,1],[74,13,74,20,1],[74,22,74,28,1],[74,29,74,31,1],[74,32,74,45,1],[75,13,75,14,1],[76,17,76,83,1],[77,21,77,30,0],[79,17,79,53,1],[80,17,80,18,0],[81,21,81,74,0],[82,17,82,18,0],[84,17,84,18,1],[85,21,85,28,1],[85,30,85,37,1],[85,38,85,40,1],[85,41,85,100,1],[86,21,86,22,1],[87,25,87,56,1],[88,25,88,36,1],[88,37,88,51,1],[89,21,89,22,1],[90,17,90,18,1],[91,13,91,14,1],[92,13,92,27,1],[93,9,93,10,1],[102,9,102,10,1],[103,13,103,60,1],[104,13,104,46,1],[105,13,105,37,1],[106,9,106,10,1],[114,9,114,10,1],[115,10,115,53,1],[116,13,116,49,1],[117,13,117,50,1],[117,50,117,71,1],[117,71,117,90,1],[117,13,117,90,1],[118,13,118,50,1],[119,13,119,56,1],[120,9,120,10,1],[123,3,123,4,1],[124,4,124,40,1],[124,40,124,54,1],[124,54,124,73,1],[124,4,124,73,1],[125,13,125,72,1],[126,3,126,4,1],[133,9,133,10,1],[134,10,134,44,1],[134,44,134,54,1],[134,54,134,56,1],[134,10,134,56,1],[135,9,135,10,1],[144,9,144,10,1],[145,13,145,45,1],[145,45,145,55,1],[145,55,145,83,1],[145,13,145,83,1],[146,9,146,10,1],[153,9,153,10,1],[154,13,154,20,1],[154,22,154,28,1],[154,29,154,31,1],[154,32,154,45,1],[155,13,155,14,1],[156,17,156,50,1],[156,50,156,60,1],[156,60,156,79,1],[156,17,156,79,1],[157,17,157,46,1],[158,13,158,14,1],[159,9,159,10,1],[167,9,167,10,1],[168,13,168,46,1],[168,46,168,68,1],[168,68,168,87,1],[168,13,168,87,1],[169,13,169,53,1],[170,13,170,51,1],[171,13,171,56,1],[172,9,172,10,1],[180,9,180,10,1],[181,13,181,47,1],[181,47,181,61,1],[181,61,181,80,1],[181,13,181,80,1],[182,13,182,119,1],[182,119,182,136,1],[182,136,182,138,1],[182,13,182,138,1],[183,4,183,36,1],[184,9,184,10,1],[193,9,193,10,1],[194,13,194,72,1],[195,13,195,57,1],[196,9,196,10,1],[202,3,202,4,1],[203,13,203,78,1],[204,3,204,4,1],[207,3,207,4,1],[208,4,208,29,1],[209,17,209,56,1],[210,4,210,68,1],[211,4,211,11,1],[211,13,211,19,1],[211,20,211,22,1],[211,23,211,26,1],[212,5,212,27,1],[213,3,213,4,1]]);
+    </script>
+  </body>
+</html>
