@@ -122,7 +122,7 @@ namespace Tests.Conditions
 			Assert.AreEqual(c1.GetHashCode(),c2.GetHashCode());
 		}
 
-		[TestCase("Strength(John)", "5", ComparisonOperator.Equal)]
+		[TestCase("Strength(John )", "5", ComparisonOperator.Equal)]
 		[TestCase("34.7", "Strength(John)", ComparisonOperator.NotEqual)]
 		[TestCase("Strength(Saitama)", "Strength(SuperMan)", ComparisonOperator.GreatherOrEqualThan)]
 		[TestCase("Strength([x])", "Strength(Goku)", ComparisonOperator.LessThan)]
