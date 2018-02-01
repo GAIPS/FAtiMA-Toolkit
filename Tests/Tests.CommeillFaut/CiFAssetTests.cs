@@ -92,7 +92,6 @@ namespace Tests.CommeillFaut
         }
 
 
-        [TestCase(1, "IsAgent([y]) = True", "Volition(Flirt, [y], Teresa) = Neutral")]
         [TestCase(1, "IsAgent([x]) = True", "Volition([se], Matt, Sarah) = Positive")]
         [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, [x]) = [s]")]
         [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, SELF, [x]) = [s]")]

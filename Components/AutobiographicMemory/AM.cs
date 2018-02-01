@@ -4,6 +4,7 @@ using System.Linq;
 using AutobiographicMemory.DTOs;
 using SerializationUtilities;
 using KnowledgeBase;
+using Utilities;
 using WellFormedNames;
 using WellFormedNames.Collections;
 
@@ -195,6 +196,11 @@ namespace AutobiographicMemory
 					foreach (var id in pair.Item1)
 						yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(id)), new SubstitutionSet(pair.Item2));
 				}
+
+			    if (unifiedSet.IsEmpty())
+			    {
+			        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(-1)), c);
+			    }
 			}
 		}
 
@@ -279,6 +285,12 @@ namespace AutobiographicMemory
                              foreach (var id in pair.Item1)
                                  yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(id)), new SubstitutionSet(pair.Item2));
                          }
+
+
+                        if (unifiedSet.IsEmpty())
+                        {
+                            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(-1)), c);
+                        }
                      }
                      
            

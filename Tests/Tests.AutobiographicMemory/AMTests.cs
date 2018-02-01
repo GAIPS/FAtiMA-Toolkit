@@ -10,6 +10,7 @@ using AutobiographicMemory;
 using Conditions;
 using NUnit.Framework;
 using System.Collections.Generic;
+using Utilities;
 
 namespace Tests.AutobiographicMemory
 {
@@ -92,13 +93,13 @@ namespace Tests.AutobiographicMemory
         }
 
 
-        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, [x], Speak(*, *, SE([se], Initiate), Positive), SELF)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, [x], Speak(*, *, SE([se], Initiate), Positive), SELF)=2")]
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S1, SE(Flirt, Initiate), Positive), Sarah)=2")]
-        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Sarah, *, Matt)=[id]")]
-        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-Start, *, *, *)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Sarah, *, Matt)=4")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-Start, *, *, *)=0")]
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, *, *, *)=4")]
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, *, Speak(*, *, SE([se], Initiate), Positive), *)=4")]
-        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Property-Change, *, *, *)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Property-Change, *, *, *)=0")]
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(*, *, *, *)=1")]
         [Test]
         public void Test_DP_LastEventID_NoMatch(int eventSet, string context, string lastEventMethodCall)
@@ -151,7 +152,10 @@ namespace Tests.AutobiographicMemory
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(*, *, *, *)=[id]")]
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S1, *, Positive), Sarah)=[id]")]
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S1, *, *), *)=[id]")]
-        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S1, *, *), *)=5")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Sarah, Speak(Start, S1, *, *), *)=-1")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-Start, *, *, *)=-1")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, [x], Speak(*, *, SE([se], Initiate), Negative), SELF)=-1")]
+
         [Test]
         public void Test_DP_LastEventID_Match(int eventSet, string context, string lastEventMethodCall) {
             var rpc = BuildRPCAsset();
@@ -194,6 +198,72 @@ namespace Tests.AutobiographicMemory
 
         }
 
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, [x], Speak(*, *, SE([se], Initiate), Negative), SELF)=[id]", "-1")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, *, Speak(*, *, SE([se], Initiate), Negative), SELF)=[id]", "-1")]
+        [TestCase(1, "", "LastEventId(Action-End, *, Speak(*, *, SE([se], Initiate), Negative), SELF)=[id]", "-1")]
+        [Test]
+        public void Test_DP_LastEventID_ValueMatch(int eventSet, string context, string lastEventMethodCall, string expectedValue) {
+            var rpc = BuildRPCAsset();
+            PopulateEventSet(eventSet);
+
+            foreach (var eve in eventSets[eventSet])
+            {
+                rpc.Perceive((Name)eve);
+                rpc.Tick++;
+            }
+
+            // Build the context, parsin the conditions:
+
+            var resultVariable = lastEventMethodCall.Split('=')[1];
+
+            var conditions = context.Split(',');
+            var cond = Condition.Parse("[x] != True");
+            var  condSet = new ConditionSet();
+            IEnumerable<SubstitutionSet> resultingConstraints = new List<SubstitutionSet>();
+
+            if (conditions[0] != "")
+            {
+
+
+               
+
+                condSet = new ConditionSet();
+
+                cond = Condition.Parse(conditions[0]);
+
+
+                // Apply conditions to RPC
+                foreach (var res in conditions)
+                {
+                    cond = Condition.Parse(res);
+                    condSet = condSet.Add(cond);
+
+
+                }
+
+                resultingConstraints = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+            }
+          
+            
+          
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(lastEventMethodCall);
+            condSet = condSet.Add(cond);
+
+
+            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, resultingConstraints);
+
+            var actualResult = "";
+            foreach (var sub in result)
+            {
+                if (sub.Contains((Name) resultVariable))
+                    actualResult = sub[(Name)resultVariable].ToString();
+            }
+            Assert.AreEqual(expectedValue, actualResult);
+
+        }
+
         [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, EntersRoom, Sarah)=0")]
         [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, [x], [y], [z])=0")]
         [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, [x], EntersRoom, [z])=0")]
@@ -205,7 +275,10 @@ namespace Tests.AutobiographicMemory
         [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Flirt, Initiate), *), Sarah)=5")]
         [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Flirt, *), *), Sarah)=5")]
         [TestCase(1, "IsAgent([x]) = True", "EventId([action], [x], [y], [z])=[id]")]
-        [TestCase(1, "IsAgent([x]) = True", "EventId(*, [x], [y], [z])= [id]")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-Start, [x], [y], [z])= -1")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Sarah, Speak(*, *, SE(Flirt, Initiate), *), Matt)=-1")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Compliment, *), *), Sarah)=-1")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Talk(*, *, SE(Compliment, *), *), Sarah)=-1")]
         [Test]
         public void Test_DP_EventID_Match(int eventSet, string context, string MethodCall)
         {
@@ -269,8 +342,8 @@ namespace Tests.AutobiographicMemory
         // No action like this happened
         [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Flirt, Answer), *), Sarah)=5")]
         [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Compliment, *), *), Sarah)=5")]
-        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Flirt, Answer), *), Sarah)=[id]")]
-        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Compliment, *), *), Sarah)=[id]")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Flirt, Answer), *), Sarah)=0")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Compliment, *), *), Sarah)=-2")]
         [TestCase(1, "IsAgent([x]) = True", "EventId(Property-Change, Sarah, Has(Floor), Matt)=4")]
         [TestCase(1, "IsAgent([x]) = True", "EventId(*, Sarah, Has(Floor), Matt)=4")]
         [TestCase(1, "IsAgent([x]) = True", "EventId(*, [x], [y], [z])=-1")]
