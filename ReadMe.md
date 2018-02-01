@@ -1,6 +1,7 @@
 # FAtiMA Toolkit
 
-[![Build Status](https://travis-ci.org/GAIPS-INESC-ID/FAtiMA-Toolkit.svg?branch=master)](https://travis-ci.org/GAIPS-INESC-ID/FAtiMA-Toolkit) [![AppVeyor tests](https://img.shields.io/appveyor/tests/samuelfm/fatima-toolkit.svg)](https://ci.appveyor.com/project/samuelfm/fatima-toolkit/build/tests)
+[![Build Status](https://travis-ci.org/GAIPS-INESC-ID/FAtiMA-Toolkit.svg?branch=master)](https://travis-ci.org/GAIPS-INESC-ID/FAtiMA-Toolkit) [![Build status](https://ci.appveyor.com/api/projects/status/84vfpgaawun3nxqx?svg=true)](https://ci.appveyor.com/project/samuelfm/fatima-toolkit)
+[![AppVeyor tests](https://img.shields.io/appveyor/tests/samuelfm/fatima-toolkit.svg)](https://ci.appveyor.com/project/samuelfm/fatima-toolkit/build/tests)
 
 ### Code Coverage (71%)
 Details: http://gaips-inesc-id.github.io/FAtiMA-Toolkit/coverage/
