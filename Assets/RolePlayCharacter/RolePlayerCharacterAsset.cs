@@ -688,17 +688,8 @@ namespace RolePlayCharacter
             if (context.Perspective != Name.SELF_SYMBOL)
                 yield break;
 
-            if (x.IsVariable)
-            {
-                var sub = new Substitution(x, new ComplexValue(context.Perspective));
-                foreach (var c in context.Constraints)
-                {
-                    if (c.AddSubstitution(sub))
-                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(m_emotionalState.Mood)), c);
-                }
-            }
-            else
-            {
+
+            if(x.IsVariable)
                 foreach (var resultPair in context.AskPossibleProperties(x))
                 {
                     var v = m_emotionalState.Mood;
@@ -707,6 +698,20 @@ namespace RolePlayCharacter
                         yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(v)), c);
                     }
                 }
+            else
+            {
+                if(x!= Name.SELF_SYMBOL && x != (Name)context.Queryable.Perspective)
+                    yield break;
+                
+                var v = m_emotionalState.Mood;
+
+                foreach (var c in context.Constraints)
+                {
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(v)), c);
+                }
+                
+                if(context.Constraints.IsEmpty())
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(v)), new SubstitutionSet());
             }
         }
 
