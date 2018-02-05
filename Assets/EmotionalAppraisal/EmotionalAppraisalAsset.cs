@@ -184,7 +184,12 @@ namespace EmotionalAppraisal
                 {
                     var fact = propEvt.Property;
                     var value = propEvt.NewValue;
-                    kb.Tell(fact, value, perspective);
+                    if (value.ToString() == "-")
+                    {
+                       var remove =  kb.GetAllBeliefs().Where(x => x.Name == fact);
+                        kb.removeBelief(fact);
+                    }
+                    else kb.Tell(fact, value, perspective);
                 }
 
                 appraisalFrame.Reset(evt);

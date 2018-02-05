@@ -61,6 +61,32 @@ namespace Tests.KnowledgeBase
 			Assert.Throws<ArgumentException>(() => kb.Tell((Name) property, Name.BuildName(true),(Name)perspective));
 		}
 
+	    [TestCase("Has(Floor) = Player", "Has(Floor)", 0)]
+	    [TestCase("Has(Floor) = Player", "-", 1)]
+	    [TestCase("Has(Floor) = Player, DialogueState(P) = Start", "Has(Floor)", 1)]
+	    [TestCase("Has(Floor) = Player, DialogueState(P) = Start", "Has(Floor), DialogueState(P)", 0)]
+	    public void Test_KB_RemoveBelief(string toAdd, string toRemove, int total)
+	    {
+	        var kb = new KB((Name)"John");
+
+	        var tell = toAdd.Split(',');
+
+	        foreach (var b in tell)
+	        {
+	            var value = b.Split('=');
+	            kb.Tell((Name)value[0], (Name)value[1]);
+	        }
+
+	        var rem = toRemove.Split(',');
+
+	        foreach (var r in rem)
+	        {
+	            kb.removeBelief((Name)r);
+	        }
+
+	        Assert.AreEqual(kb.GetAllBeliefs().Count(), total);
+	    }
+
 		[TestCase("Count(Tiger)", "Self")]
 		[TestCase("Count(Tiger)", "*")]
 		[TestCase("Count(Tiger)", "Mary")]
