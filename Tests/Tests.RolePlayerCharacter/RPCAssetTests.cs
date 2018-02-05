@@ -833,8 +833,8 @@ namespace Tests.RolePlayCharacter
         }
 
 
-        [TestCase(1, "isAgent([x])=True", "EmotionIntensity([x], Gratification) = [m]")]
-        [TestCase(1, "isAgent([x])=True", "EmotionIntensity(Matt, Gratification) = [m]")]
+        [TestCase(1, "isAgent([x])=True", "EmotionIntensity([x], Gratitude) = [m]")]
+        [TestCase(1, "isAgent([x])=True", "EmotionIntensity(Matt, Gratitude) = [m]")]
         [TestCase(1, "isAgent([x])=True", "EmotionIntensity([x], [y]) = [m]")]
         public void Test_DP_EmotionIntensity_Match(int eventSet, string context, string lastEventMethodCall)
         {
