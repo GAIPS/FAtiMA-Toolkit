@@ -584,7 +584,7 @@ namespace WellFormedNames.Collections
 						if (!pair.Item1.IsVariable || pair.Item1 != term)
 						{
                             //Very odd trick to make certainty work
-                            var sub = new Substitution(term, new ComplexValue(pair.Item1, -1));
+                            var sub = new Substitution(term, new ComplexValue(pair.Item1, 1));
 							if (binding.Conflicts(sub))
 								continue;
 
