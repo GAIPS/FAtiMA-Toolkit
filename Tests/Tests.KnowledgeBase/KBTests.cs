@@ -290,7 +290,7 @@ namespace Tests.KnowledgeBase
 
 		    var result = kb.AskProperty(Name.BuildName("IsPerson(Mark)"));
 
-			Assert.Null(result.Value);
+		    Assert.AreEqual(Name.NIL_STRING, result.Value.ToString());
 
 			var n = kb.AskProperty(Name.BuildName("IsPerson(Mary)"));
 			bool b;
@@ -307,7 +307,7 @@ namespace Tests.KnowledgeBase
 
 			kb.SetPerspective(Name.BuildName("Mary"));
 
-			Assert.Null(kb.AskProperty(Name.BuildName("IsPerson(Mark)"), Name.BuildName("John(Self)")));
+		    Assert.AreEqual(Name.NIL_STRING, kb.AskProperty(Name.BuildName("IsPerson(Mark)"), Name.BuildName("John(Self)")).Value.ToString());
 
 			var n = kb.AskProperty(Name.BuildName("IsPerson(Mary)"), Name.BuildName("John(Self)"));
 			bool b;
@@ -324,6 +324,23 @@ namespace Tests.KnowledgeBase
 
 			Assert.Throws<ArgumentException>(()=> kb.SetPerspective(Name.BuildName("John")));
 		}
+
+	    [Test]
+	    public void Test_Tell_SameBelief_DifferentPerspective()
+	    {
+	        var kb = new KB(Name.BuildName("Mark"));
+
+	        kb.Tell(Name.BuildName("Likes(Bread)"), Name.BuildName(true), Name.BuildName("Self"));
+
+	        kb.Tell(Name.BuildName("Likes(Bread)"), Name.BuildName(false), Name.BuildName("Jose"));
+
+	        var bs = kb.GetAllBeliefs();
+
+	        var count = bs.Count();
+
+            Assert.AreEqual(2, count);
+
+	    }
 
 		[TestCase("*")]
 		[TestCase("-")]
