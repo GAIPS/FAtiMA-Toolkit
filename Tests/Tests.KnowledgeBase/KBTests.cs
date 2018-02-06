@@ -61,6 +61,32 @@ namespace Tests.KnowledgeBase
 			Assert.Throws<ArgumentException>(() => kb.Tell((Name) property, Name.BuildName(true),(Name)perspective));
 		}
 
+	    [TestCase("Has(Floor) = Player", "Has(Floor)", 0)]
+	    [TestCase("Has(Floor) = Player", "-", 1)]
+	    [TestCase("Has(Floor) = Player, DialogueState(P) = Start", "Has(Floor)", 1)]
+	    [TestCase("Has(Floor) = Player, DialogueState(P) = Start", "Has(Floor), DialogueState(P)", 0)]
+	    public void Test_KB_RemoveBelief(string toAdd, string toRemove, int total)
+	    {
+	        var kb = new KB((Name)"John");
+
+	        var tell = toAdd.Split(',');
+
+	        foreach (var b in tell)
+	        {
+	            var value = b.Split('=');
+	            kb.Tell((Name)value[0], (Name)value[1]);
+	        }
+
+	        var rem = toRemove.Split(',');
+
+	        foreach (var r in rem)
+	        {
+	            kb.removeBelief((Name)r);
+	        }
+
+	        Assert.AreEqual(kb.GetAllBeliefs().Count(), total);
+	    }
+
 		[TestCase("Count(Tiger)", "Self")]
 		[TestCase("Count(Tiger)", "*")]
 		[TestCase("Count(Tiger)", "Mary")]
@@ -262,7 +288,9 @@ namespace Tests.KnowledgeBase
 
 			kb.SetPerspective(Name.BuildName("Mary"));
 
-			Assert.Null(kb.AskProperty(Name.BuildName("IsPerson(Mark)")));
+		    var result = kb.AskProperty(Name.BuildName("IsPerson(Mark)"));
+
+		    Assert.AreEqual(Name.NIL_STRING, result.Value.ToString());
 
 			var n = kb.AskProperty(Name.BuildName("IsPerson(Mary)"));
 			bool b;
@@ -279,7 +307,7 @@ namespace Tests.KnowledgeBase
 
 			kb.SetPerspective(Name.BuildName("Mary"));
 
-			Assert.Null(kb.AskProperty(Name.BuildName("IsPerson(Mark)"), Name.BuildName("John(Self)")));
+		    Assert.AreEqual(Name.NIL_STRING, kb.AskProperty(Name.BuildName("IsPerson(Mark)"), Name.BuildName("John(Self)")).Value.ToString());
 
 			var n = kb.AskProperty(Name.BuildName("IsPerson(Mary)"), Name.BuildName("John(Self)"));
 			bool b;
@@ -296,6 +324,23 @@ namespace Tests.KnowledgeBase
 
 			Assert.Throws<ArgumentException>(()=> kb.SetPerspective(Name.BuildName("John")));
 		}
+
+	    [Test]
+	    public void Test_Tell_SameBelief_DifferentPerspective()
+	    {
+	        var kb = new KB(Name.BuildName("Mark"));
+
+	        kb.Tell(Name.BuildName("Likes(Bread)"), Name.BuildName(true), Name.BuildName("Self"));
+
+	        kb.Tell(Name.BuildName("Likes(Bread)"), Name.BuildName(false), Name.BuildName("Jose"));
+
+	        var bs = kb.GetAllBeliefs();
+
+	        var count = bs.Count();
+
+            Assert.AreEqual(2, count);
+
+	    }
 
 		[TestCase("*")]
 		[TestCase("-")]

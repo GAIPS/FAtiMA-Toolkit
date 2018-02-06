@@ -568,28 +568,78 @@ namespace RolePlayCharacter
 
         private IEnumerable<DynamicPropertyResult> EmotionIntensityPropertyCalculator(IQueryContext context, Name x, Name y)
         {
-            List<DynamicPropertyResult> result = new List<DynamicPropertyResult>();
+           
             if (context.Perspective != Name.SELF_SYMBOL)
-                return result;
+              yield break;
 
             Name entity = x;
             Name emotionName = y;
 
             if (entity.IsVariable)
             {
-                var newSub = new Substitution(entity, new ComplexValue(context.Perspective));
-                var newC = context.Constraints.Where(c => c.AddSubstitution(newSub));
-                if (newC.Any())
-                    result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, context.Queryable, context.Perspective, newC));
+
+                foreach (var entit in context.AskPossibleProperties(entity))
+                {
+                    if (emotionName.IsVariable)
+                    {
+                        foreach (var emot in  GetAllActiveEmotions())
+                        {
+                                foreach (var c in context.Constraints)
+                                {
+                                    var sub = new Substitution(entity, entit.Item1);
+                                    var sub2 = new Substitution(emotionName, new ComplexValue(Name.BuildName( emot.Type)));
+                                    if(c.AddSubstitution(sub))
+                                        if(c.AddSubstitution(sub2))
+                                            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(emot.Intensity)), c);
+                                }
+                            }
+                        }
+                    
+
+                    else
+                    {
+                        
+                        var gottem = GetAllActiveEmotions().Where(d => d.Type == emotionName.ToString());
+
+                        if (!gottem.IsEmpty())
+                        {
+                            foreach (var c in context.Constraints)
+                            {
+                                var sub = new Substitution(entity, entit.Item1);
+                                if(c.AddSubstitution(sub))
+                                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(gottem.FirstOrDefault().Intensity)), c);
+                            }
+                        }
+                    }
+
+                }
             }
             else
             {
-                foreach (var resultPair in context.AskPossibleProperties(entity))
+                if (emotionName.IsVariable)
                 {
-                    result.AddRange(GetEmotionsForEntity(m_emotionalState, emotionName, context.Queryable, context.Perspective, resultPair.Item2));
+                    foreach (var emot in  GetAllActiveEmotions())
+                    {
+                        foreach (var c in context.Constraints)
+                        {
+                            var sub2 = new Substitution(emotionName, new ComplexValue(Name.BuildName( emot.Type)));
+                                if(c.AddSubstitution(sub2))
+                                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(emot.Intensity)), c);
+                        }
+                    }
+                }
+
+                else
+                {
+                    var gottem = GetAllActiveEmotions().Where(d => d.Type == emotionName.ToString());
+                    if(!gottem.IsEmpty())
+                        foreach (var c in context.Constraints)
+                        {
+                            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(gottem.FirstOrDefault().Intensity)), c);
+                        }
                 }
             }
-            return result;
+          
         }
 
         //This is a special property that is only used for debug purposes
@@ -688,17 +738,8 @@ namespace RolePlayCharacter
             if (context.Perspective != Name.SELF_SYMBOL)
                 yield break;
 
-            if (x.IsVariable)
-            {
-                var sub = new Substitution(x, new ComplexValue(context.Perspective));
-                foreach (var c in context.Constraints)
-                {
-                    if (c.AddSubstitution(sub))
-                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(m_emotionalState.Mood)), c);
-                }
-            }
-            else
-            {
+
+            if(x.IsVariable)
                 foreach (var resultPair in context.AskPossibleProperties(x))
                 {
                     var v = m_emotionalState.Mood;
@@ -707,6 +748,20 @@ namespace RolePlayCharacter
                         yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(v)), c);
                     }
                 }
+            else
+            {
+                if(x!= Name.SELF_SYMBOL && x != (Name)context.Queryable.Perspective)
+                    yield break;
+                
+                var v = m_emotionalState.Mood;
+
+                foreach (var c in context.Constraints)
+                {
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(v)), c);
+                }
+                
+                if(context.Constraints.IsEmpty())
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(v)), new SubstitutionSet());
             }
         }
 
@@ -825,7 +880,7 @@ namespace RolePlayCharacter
 
             if (x.IsVariable)
             {
-                var sub = new Substitution(x, new ComplexValue(context.Perspective));
+                var sub = new Substitution(x, new ComplexValue(context.Queryable.Perspective));
                 foreach (var c in context.Constraints)
                 {
                     if (c.AddSubstitution(sub))
@@ -834,10 +889,9 @@ namespace RolePlayCharacter
             }
             else
             {
-                foreach (var resultPair in context.AskPossibleProperties(x))
+                foreach (var resultPair in context.Constraints)
                 {
-                    foreach (var c in resultPair.Item2)
-                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), resultPair);
                 }
             }
         }
@@ -870,7 +924,7 @@ namespace RolePlayCharacter
 
             if (x.IsVariable)
             {
-                var sub = new Substitution(x, new ComplexValue(context.Perspective));
+                var sub = new Substitution(x, new ComplexValue(context.Queryable.Perspective));
                 foreach (var c in context.Constraints)
                 {
                     if (c.AddSubstitution(sub))
@@ -879,10 +933,9 @@ namespace RolePlayCharacter
             }
             else
             {
-                foreach (var resultPair in context.AskPossibleProperties(x))
+                foreach (var cont in context.Constraints)
                 {
-                    foreach (var c in resultPair.Item2)
-                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), cont);
                 }
             }
         }
@@ -900,7 +953,8 @@ namespace RolePlayCharacter
 
             if (x.IsVariable)
             {
-                var sub = new Substitution(x, new ComplexValue(context.Perspective));
+
+                var sub = new Substitution(x, new ComplexValue(context.Queryable.Perspective));
                 foreach (var c in context.Constraints)
                 {
                     if (c.AddSubstitution(sub))
@@ -909,10 +963,9 @@ namespace RolePlayCharacter
             }
             else
             {
-                foreach (var resultPair in context.AskPossibleProperties(x))
+                foreach (var c in context.Constraints)
                 {
-                    foreach (var c in resultPair.Item2)
-                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
+                    yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
                 }
             }
         }
@@ -922,29 +975,92 @@ namespace RolePlayCharacter
             if (context.Perspective != Name.SELF_SYMBOL)
                 yield break;
 
-            var emo = m_emotionalState.GetStrongestEmotion(cause, m_am);
+           Dictionary<Name, IActiveEmotion> emoList = new Dictionary<Name, IActiveEmotion>();
+
+            if (cause.IsVariable) // Event is a variable
+            {
+                 foreach (var ev in context.AskPossibleProperties(cause))
+                    {
+                        var emo = m_emotionalState.GetStrongestEmotion(cause, m_am);
+                        if (emo != null)
+                        {
+
+                            var emoValue = emo.EmotionType;
+
+                            var causeSub = new Substitution(cause, ev.Item1);
+
+
+                            if (x.IsVariable)
+                            {
+
+                                var sub = new Substitution(x, new ComplexValue(context.Queryable.Perspective));
+                                foreach (var c in context.Constraints)
+                                {
+                                    if (c.AddSubstitution(causeSub))
+
+                                        if (c.AddSubstitution(sub))
+                                            yield return new DynamicPropertyResult(new ComplexValue((Name) emoValue),
+                                                c);
+                                }
+                            }
+                            else
+                            {
+                                foreach (var resultPair in context.AskPossibleProperties(x))
+                                {
+                                    foreach (var c in resultPair.Item2)
+                                        if (c.AddSubstitution(causeSub))
+                                            yield return new DynamicPropertyResult(new ComplexValue((Name) emoValue),c);
+                                }
+                            }
+                        }
+
+                    }
+
+                         foreach (var eve in this.EventRecords){ // If cause is a variable Im going through all events and emotions associated with them
+                             
+                             var sub = new Substitution(cause, new ComplexValue((Name)eve.Event));
+
+                             var resultingEmotions = this.GetAllActiveEmotions().Where(y => y.CauseEventId == eve.Id);
+
+                             var emoValue = resultingEmotions.MaxValue(e => e.Intensity);
+
+                             foreach (var c in context.Constraints)
+                             {
+                                 if (c.AddSubstitution(sub))
+                                     yield return new DynamicPropertyResult(
+                                    new ComplexValue(Name.BuildName(emoValue.Intensity)), c);
+                        }
+                    }
+                }
+          
+            else
+            {
+                var emo = m_emotionalState.GetStrongestEmotion(cause, m_am);
+               
             if (emo == null)
             {
                 yield break;
             }
 
-            var emoValue = emo.EmotionType;
+                var emoValue = emo.EmotionType;
 
-            if (x.IsVariable)
-            {
-                var sub = new Substitution(x, new ComplexValue(context.Perspective));
-                foreach (var c in context.Constraints)
+                if (x.IsVariable)
                 {
-                    if (c.AddSubstitution(sub))
-                        yield return new DynamicPropertyResult(new ComplexValue ((Name)emoValue), c);
+
+                    var sub = new Substitution(x, new ComplexValue(context.Queryable.Perspective));
+                    foreach (var c in context.Constraints)
+                    {
+                        if (c.AddSubstitution(sub))
+                            yield return new DynamicPropertyResult(new ComplexValue((Name) emoValue), c);
+                    }
                 }
-            }
-            else
-            {
-                foreach (var resultPair in context.AskPossibleProperties(x))
+                else
                 {
-                    foreach (var c in resultPair.Item2)
-                        yield return new DynamicPropertyResult(new ComplexValue ((Name)emoValue), c);
+                    foreach (var resultPair in context.AskPossibleProperties(x))
+                    {
+                        foreach (var c in resultPair.Item2)
+                            yield return new DynamicPropertyResult(new ComplexValue((Name) emoValue), c);
+                    }
                 }
             }
         }
@@ -975,7 +1091,7 @@ namespace RolePlayCharacter
 
             if (x.IsVariable)
             {
-                var sub = new Substitution(x, new ComplexValue(context.Perspective));
+                var sub = new Substitution(x, new ComplexValue(context.Queryable.Perspective));
                 foreach (var c in context.Constraints)
                 {
                     if (c.AddSubstitution(sub))
@@ -984,10 +1100,10 @@ namespace RolePlayCharacter
             }
             else
             {
-                foreach (var resultPair in context.AskPossibleProperties(x))
+                foreach (var resultPair in context.Constraints)
                 {
-                    foreach (var c in resultPair.Item2)
-                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), c);
+                  
+                        yield return new DynamicPropertyResult(new ComplexValue((Name)emoValue), resultPair);
                 }
             }
         }

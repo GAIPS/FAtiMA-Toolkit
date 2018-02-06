@@ -4,6 +4,7 @@ using System.IO;
 using System;
 using KnowledgeBase;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using Conditions;
 using SerializationUtilities;
@@ -432,6 +433,36 @@ namespace Tests.RolePlayCharacter
             }
         }
 
+        [TestCase("Has(Floor) = Player", "Has(Floor)", 0)]
+        [TestCase("Has(Floor) = Player, DialogueState(P) = Start", "Has(Floor)", 1)]
+        [TestCase("Has(Floor) = Player, DialogueState(P) = Start", "Has(Floor), DialogueState(P)", 0)]
+        public void Test_RPC_ForgetBeliefEvent(string toAdd, string toRemove, int total)
+        {
+            var rpc = BuildEmotionalRPCAsset();
+
+            var add = toAdd.Split(',');
+            foreach (var b in add)
+            {
+                var value = b.Split('=');
+
+                var ev = EventHelper.PropertyChange(value[0], value[1], "WTV");
+
+                rpc.Perceive(ev);
+            }
+
+            var rem = toRemove.Split(',');
+            foreach (var b in rem)
+            {
+                var ev = EventHelper.PropertyChange(b, "-" , "WTV");
+
+                rpc.Perceive(ev);
+            }
+
+
+            Assert.AreEqual(total, rpc.GetAllBeliefs().Count());
+
+        }
+
 
 
         #region Test RPC Dynamic Properties
@@ -833,8 +864,8 @@ namespace Tests.RolePlayCharacter
         }
 
 
-        [TestCase(1, "isAgent([x])=True", "EmotionIntensity([x], Gratification) = [m]")]
-        [TestCase(1, "isAgent([x])=True", "EmotionIntensity(Matt, Gratification) = [m]")]
+        [TestCase(1, "isAgent([x])=True", "EmotionIntensity([x], Gratitude) = [m]")]
+        [TestCase(1, "isAgent([x])=True", "EmotionIntensity(Matt, Gratitude) = [m]")]
         [TestCase(1, "isAgent([x])=True", "EmotionIntensity([x], [y]) = [m]")]
         public void Test_DP_EmotionIntensity_Match(int eventSet, string context, string lastEventMethodCall)
         {

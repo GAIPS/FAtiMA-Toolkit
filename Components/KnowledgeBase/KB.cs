@@ -618,6 +618,11 @@ namespace KnowledgeBase
 			AssetToMList(ToMList,pers,argumentName);
 			return ExtractPropertyFromToM(prop, ToMList, argumentName);
 		}
+
+	    public void removeBelief(Name bName)
+	    {
+	        m_knowledgeStorage.Remove(bName);
+	    }
 		
 #endregion
 
