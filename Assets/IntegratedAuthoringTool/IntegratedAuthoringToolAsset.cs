@@ -226,15 +226,22 @@ namespace IntegratedAuthoringTool
 	    private static readonly Name VALID_DIALOGUE_PROPERTY_TEMPLATE = (Name)"ValidDialogue";
 		private IEnumerable<DynamicPropertyResult> ValidDialogPropertyCalculator(IQueryContext context, Name currentState, Name nextState, Name meaning, Name style)
 		{
-			if (!context.Perspective.Match(Name.SELF_SYMBOL))
-				return Enumerable.Empty<DynamicPropertyResult>();
+		    if (!context.Perspective.Match(Name.SELF_SYMBOL))
+		        yield break;
 
 			var key = Name.BuildName(string.Format(IATConsts.DIALOG_ACTION_KEY + "({0},{1},{2},{3})",
-                currentState, nextState, meaning, style)); 
+                currentState, nextState, meaning, style));
 
-     		var results = context.Constraints.SelectMany(c => m_dialogues.GetAllDialogsForKey(key,c)).Select(p =>
-                new DynamicPropertyResult(new ComplexValue(Name.BuildName(true)), p.Item2));
-		    return results;
+		    foreach (var c in context.Constraints)
+		    {
+		        var dialogues = m_dialogues.GetAllDialogsForKey(key, c);
+
+		        foreach (var d in dialogues)
+		        {
+		            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(true)), d.Item2);
+		        }
+		    }
+	
 		}
 
 		#endregion
