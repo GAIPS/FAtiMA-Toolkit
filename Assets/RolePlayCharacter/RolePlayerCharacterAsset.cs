@@ -977,49 +977,62 @@ namespace RolePlayCharacter
 
            Dictionary<Name, IActiveEmotion> emoList = new Dictionary<Name, IActiveEmotion>();
 
-            if (cause.IsVariable)
+            if (cause.IsVariable) // Event is a variable
             {
-
-                foreach (var ev in context.AskPossibleProperties(cause))
-                {
-                    var emo = m_emotionalState.GetStrongestEmotion(cause, m_am);
-                    if (emo != null)
+                 foreach (var ev in context.AskPossibleProperties(cause))
                     {
-                        
-                    var emoValue = emo.EmotionType;
-                    
-                        var causeSub = new Substitution(cause, ev.Item1);
-                        
-
-                        if (x.IsVariable)
+                        var emo = m_emotionalState.GetStrongestEmotion(cause, m_am);
+                        if (emo != null)
                         {
 
-                            var sub = new Substitution(x, new ComplexValue(context.Queryable.Perspective));
-                            foreach (var c in context.Constraints)
+                            var emoValue = emo.EmotionType;
+
+                            var causeSub = new Substitution(cause, ev.Item1);
+
+
+                            if (x.IsVariable)
                             {
-                                if(c.AddSubstitution(causeSub))
-                                    
-                                    if (c.AddSubstitution(sub))
-                                        yield return new DynamicPropertyResult(new ComplexValue((Name) emoValue), c);
+
+                                var sub = new Substitution(x, new ComplexValue(context.Queryable.Perspective));
+                                foreach (var c in context.Constraints)
+                                {
+                                    if (c.AddSubstitution(causeSub))
+
+                                        if (c.AddSubstitution(sub))
+                                            yield return new DynamicPropertyResult(new ComplexValue((Name) emoValue),
+                                                c);
+                                }
+                            }
+                            else
+                            {
+                                foreach (var resultPair in context.AskPossibleProperties(x))
+                                {
+                                    foreach (var c in resultPair.Item2)
+                                        if (c.AddSubstitution(causeSub))
+                                            yield return new DynamicPropertyResult(new ComplexValue((Name) emoValue),c);
+                                }
                             }
                         }
-                        else
-                        {
-                            foreach (var resultPair in context.AskPossibleProperties(x))
-                            {
-                                foreach (var c in resultPair.Item2)
-                                    if(c.AddSubstitution(causeSub))
-                                    yield return new DynamicPropertyResult(new ComplexValue((Name) emoValue), c);
-                            }
+
+                    }
+
+                         foreach (var eve in this.EventRecords){ // If cause is a variable Im going through all events and emotions associated with them
+                             
+                             var sub = new Substitution(cause, new ComplexValue((Name)eve.Event));
+
+                             var resultingEmotions = this.GetAllActiveEmotions().Where(y => y.CauseEventId == eve.Id);
+
+                             var emoValue = resultingEmotions.MaxValue(e => e.Intensity);
+
+                             foreach (var c in context.Constraints)
+                             {
+                                 if (c.AddSubstitution(sub))
+                                     yield return new DynamicPropertyResult(
+                                    new ComplexValue(Name.BuildName(emoValue.Intensity)), c);
                         }
                     }
-                    else yield break;
-                    
-
-
                 }
-
-            }
+          
             else
             {
                 var emo = m_emotionalState.GetStrongestEmotion(cause, m_am);

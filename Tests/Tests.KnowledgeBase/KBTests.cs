@@ -288,7 +288,9 @@ namespace Tests.KnowledgeBase
 
 			kb.SetPerspective(Name.BuildName("Mary"));
 
-			Assert.Null(kb.AskProperty(Name.BuildName("IsPerson(Mark)")));
+		    var result = kb.AskProperty(Name.BuildName("IsPerson(Mark)"));
+
+			Assert.Null(result.Value);
 
 			var n = kb.AskProperty(Name.BuildName("IsPerson(Mary)"));
 			bool b;
