@@ -294,6 +294,7 @@ namespace RolePlayCharacterWF
         {
             var addBeliefForm = new AddOrEditBeliefForm(_knowledgeBaseVM);
             addBeliefForm.ShowDialog(this);
+            _knowledgeBaseVM.UpdateBeliefList();
         }
 
   
@@ -564,6 +565,7 @@ namespace RolePlayCharacterWF
 
                 var addBeliefForm = new AddOrEditBeliefForm(_knowledgeBaseVM, selectedBelief);
                 addBeliefForm.ShowDialog();
+                _knowledgeBaseVM.UpdateBeliefList();
             }
         }
 

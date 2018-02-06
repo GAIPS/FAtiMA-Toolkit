@@ -9,9 +9,9 @@ namespace WellFormedNames.Collections
 	{
 		private class TreeNode
 		{
-			private SortedDictionary<Name, TreeNode> m_nextSymbol;
-			private SortedDictionary<Name, TreeNode> m_nextVariable;
-			private SortedDictionary<int, TreeNode> m_nextComposed;
+			private Dictionary<Name, TreeNode> m_nextSymbol;
+			private Dictionary<Name, TreeNode> m_nextVariable;
+			private Dictionary<int, TreeNode> m_nextComposed;
 			private TreeNode m_universal;
 			private bool m_hasValue;
 			private T m_value;
@@ -42,21 +42,21 @@ namespace WellFormedNames.Collections
 				m_value = other.m_value;
 				if (other.m_nextSymbol != null)
 				{
-					m_nextSymbol = new SortedDictionary<Name, TreeNode>();
+					m_nextSymbol = new Dictionary<Name, TreeNode>();
 					foreach (var pair in other.m_nextSymbol)
 						m_nextSymbol[pair.Key] = new TreeNode(pair.Value);
 				}
 
 				if (other.m_nextVariable != null)
 				{
-					m_nextVariable = new SortedDictionary<Name, TreeNode>();
+					m_nextVariable = new Dictionary<Name, TreeNode>();
 					foreach (var pair in other.m_nextVariable)
 						m_nextVariable[pair.Key] = new TreeNode(pair.Value);
 				}
 
 				if (other.m_nextComposed != null)
 				{
-					m_nextComposed = new SortedDictionary<int, TreeNode>();
+					m_nextComposed = new Dictionary<int, TreeNode>();
 					foreach (var pair in other.m_nextComposed)
 						m_nextComposed[pair.Key] = new TreeNode(pair.Value);
 				}
@@ -136,17 +136,17 @@ namespace WellFormedNames.Collections
 					}
 					else
 					{
-						SortedDictionary<Name, TreeNode> set;
+                        Dictionary<Name, TreeNode> set;
 						if (term.IsVariable)
 						{
 							if(m_nextVariable==null)
-								m_nextVariable = new SortedDictionary<Name, TreeNode>();
+								m_nextVariable = new Dictionary<Name, TreeNode>();
 							set = m_nextVariable;
 						}
 						else
 						{
 							if(m_nextSymbol==null)
-								m_nextSymbol = new SortedDictionary<Name, TreeNode>();
+								m_nextSymbol = new Dictionary<Name, TreeNode>();
 							set = m_nextSymbol;
 						}
 
@@ -168,7 +168,7 @@ namespace WellFormedNames.Collections
 					}
 
 					if(m_nextComposed==null)
-						m_nextComposed = new SortedDictionary<int, TreeNode>();
+						m_nextComposed = new Dictionary<int, TreeNode>();
 
 					if (!m_nextComposed.TryGetValue(numOfTerms, out nodeToAdd))
 					{

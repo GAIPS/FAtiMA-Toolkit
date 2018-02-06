@@ -12,11 +12,16 @@ namespace Tests.WellFormedNames
     [TestFixture]
     public class NameSearchTreeTests {
 
+        public const int rep = 1;
+
         [Test]
         public void Depth_EmptyNameSearchTree_0()
         {
-            var tree = new NameSearchTree<string>();
-            Assert.That(tree.Depth == 0);
+            for(int i= 0; i < rep; i++)
+            {
+                var tree = new NameSearchTree<string>();
+                Assert.That(tree.Depth == 0);
+            }
         }
 
         [TestCase("x","1")]
@@ -24,8 +29,11 @@ namespace Tests.WellFormedNames
         [TestCase("x(a, b)", "3")]
         public void Add_EmptyNameSearchTree_True(string name, string value)
         {
-            var tree = new NameSearchTree<string>();
-			tree.Add(Name.BuildName(name), value);
+            for (int i = 0; i < rep; i++)
+            {
+                var tree = new NameSearchTree<string>();
+                tree.Add(Name.BuildName(name), value);
+            }
         }
 
         [TestCase("x", "1")]
@@ -33,12 +41,15 @@ namespace Tests.WellFormedNames
         [TestCase("x(a, b)", "3")]
         public void Add_FilledNameSearchTree_False(string name, string value)
         {
-            var tree = new NameSearchTree<string>();
-	        Assert.Throws<DuplicatedKeyException>(() =>
-	        {
-				tree.Add(Name.BuildName(name), value);
-				tree.Add(Name.BuildName(name), String.Empty);
-			});
+            for(int i = 0; i< rep; i++)
+            {
+                var tree = new NameSearchTree<string>();
+                Assert.Throws<DuplicatedKeyException>(() =>
+                {
+                    tree.Add(Name.BuildName(name), value);
+                    tree.Add(Name.BuildName(name), String.Empty);
+                });
+            }
         }
 
         [TestCase("x", "1")]
@@ -46,9 +57,12 @@ namespace Tests.WellFormedNames
         [TestCase("x(a, b)", "3")]
         public void Remove_EmptyNameSearchTree_False(string name, string value)
         {
-            var tree = new NameSearchTree<string>();
-            var removeSuccess = tree.Remove(Name.BuildName(name));
-            Assert.That(!removeSuccess);
+            for (int i = 0; i < rep; i++)
+            {
+                var tree = new NameSearchTree<string>();
+                var removeSuccess = tree.Remove(Name.BuildName(name));
+                Assert.That(!removeSuccess);
+            }
         }
 
         [TestCase("x", "1")]
@@ -56,10 +70,14 @@ namespace Tests.WellFormedNames
         [TestCase("x(a, b)", "3")]
         public void Remove_NameSearchTreeThatContainsName_True(string name, string value)
         {
-            var tree = new NameSearchTree<string>();
-            tree.Add(Name.BuildName(name), value);
-            var removeSuccess = tree.Remove(Name.BuildName(name));
-            Assert.That(removeSuccess);
+            for (int i = 0; i < rep; i++)
+            {
+                var tree = new NameSearchTree<string>();
+                tree.Add(Name.BuildName(name), value);
+                var removeSuccess = tree.Remove(Name.BuildName(name));
+                Assert.That(removeSuccess);
+            }
+           
         }
 
         [TestCase("x", "1")]
@@ -67,9 +85,13 @@ namespace Tests.WellFormedNames
         [TestCase("x(a, b)", "3")]
         public void Contains_NameSearchTreeThatContainsName_True(string name, string value)
         {
-            var tree = new NameSearchTree<string>();
-            tree.Add(Name.BuildName(name), value);
-            Assert.That(tree.ContainsKey(Name.BuildName(name)));
+            for (int i = 0; i < rep; i++)
+            {
+                var tree = new NameSearchTree<string>();
+                tree.Add(Name.BuildName(name), value);
+                Assert.That(tree.ContainsKey(Name.BuildName(name)));
+            }
+            
         }
 
         [TestCase("x", "1")]
@@ -77,22 +99,29 @@ namespace Tests.WellFormedNames
         [TestCase("x(a, b)", "3")]
         public void Contains_EmptySearchTree_False(string name, string value)
         {
-            var tree = new NameSearchTree<string>();
-            Assert.That(!tree.ContainsKey(Name.BuildName(name)));
+            for (int i = 0; i < rep; i++)
+            {
+                var tree = new NameSearchTree<string>();
+                Assert.That(!tree.ContainsKey(Name.BuildName(name)));
+            }
+
         }
 
 		[TestCase()]
 	    public void Special_Test_For_Bug_22_11_2017()
 	    {
-			var tree = new NameSearchTree<byte>();
+            for (int i = 0; i < rep; i++)
+            {
+                var tree = new NameSearchTree<byte>();
 
-		    var n1 = (Name) "Speak(-,end,Meanings(a(b),c(d)),t)";
-			var n2 = (Name)"Speak(-,end,Meanings(a(c),e),t)";
-			var test1 = (Name)"Speak(-,end,*,t)";
+                var n1 = (Name)"Speak(-,end,Meanings(a(b),c(d)),t)";
+                var n2 = (Name)"Speak(-,end,Meanings(a(c),e),t)";
+                var test1 = (Name)"Speak(-,end,*,t)";
 
-			tree.Add(n1,0);
-			tree.Add(n2, 0);
-			Assert.IsTrue(tree.Unify(test1).All(r => r.Item1 == 0));
+                tree.Add(n1, 0);
+                tree.Add(n2, 0);
+                Assert.IsTrue(tree.Unify(test1).All(r => r.Item1 == 0));
+            }
 	    }
 		
 		private class TestFactory
@@ -172,31 +201,6 @@ namespace Tests.WellFormedNames
 
 				yield return new TestCaseData(baseInput, (Name) "jump(null,[height])", new[] {16});
 				yield return new TestCaseData(baseInput, (Name) "jump(*,[height])", new[] {16, 17});
-
-				//yield return new TestCaseData(baseInput, (Name)"EVENT(Mary,Kiss,Justin)", null,
-				//	BuildUnifyResult(
-				//		Tup.Create(11, new[] { "[z]/Mary" })
-				//	)
-				//);
-
-				//yield return new TestCaseData(baseInput, (Name)"EVENT(Batman,Punch,Jocker)", null,
-				//	BuildUnifyResult(
-				//		Tup.Create(12, new[] { "[x]/Batman", "[y]/Jocker" })
-				//	)
-				//);
-
-				//yield return new TestCaseData(baseInput, (Name)"EVENT(Batman,Punch,Self)", null,
-				//	BuildUnifyResult(
-				//		Tup.Create(12, new[] { "[x]/Batman", "[y]/Self" }),
-				//		Tup.Create(13, new[] { "[x]/Batman" })
-				//	)
-				//);
-
-				//yield return new TestCaseData(baseInput, (Name)"jump(3,36)", null,
-				//	BuildUnifyResult(
-				//		Tup.Create(17, new[] { "[width]/3", "[height]/36" })
-				//	)
-				//);
 			}
 
 			public static IEnumerable<TestCaseData> TestMatchAllCases_Invalid()
@@ -286,14 +290,6 @@ namespace Tests.WellFormedNames
 					)
 				);
 
-				//TODO not working for now. Need to improve SubstitutionSet
-				//yield return new TestCaseData(baseInput, (Name)"EVENT(Self,Punch,Self)", new SubstitutionSet(new Inequality("[x]!=[y]")),
-				//	BuildUnifyResult(
-				//		Tup.Create(13, new[] { "[x]/Self" })
-				//	)
-				//);
-
-
 				yield return new TestCaseData(baseInput, (Name)"jump(null,[meh])", null, 
 					BuildUnifyResult(
 						Tuples.Create(14,new[] { "[meh]/NULL"}),
@@ -379,59 +375,51 @@ namespace Tests.WellFormedNames
 		[TestCaseSource(typeof(TestFactory), nameof(TestFactory.Test_NameSearchTree_Count_Cases))]
 		public void NameDictionary_Get_Keys(NameSearchTree<int> dict, int count)
 		{
-			var keys = dict.Keys;
-			Assert.AreEqual(keys.Count,count);
+            for (int i = 0; i < rep; i++)
+            {
+                var keys = dict.Keys;
+                Assert.AreEqual(keys.Count, count);
+            }
 		}
 
-		/*
-		[TestCaseSource(typeof(TestFactory), "TestMatchAllCases_Valid")]
-		public void NameDictionary_Valid_MatcheAll(NameSearchTree<int> dict, Name expression, IEnumerable<int> expectedResults)
-	    {
-			var result = dict.MatchAll(expression).ToArray();
-			if (result.Length != result.Distinct().Count())
-			{
-				Assert.Fail("Match All Produced more results that the ones expected");
-			}
-
-			if(!new HashSet<int>(expectedResults).SetEquals(result))
-				Assert.Fail("Matcher didn't returned the expected results.");
-	    }
-
-		[TestCaseSource(typeof(TestFactory), "TestMatchAllCases_Invalid")]
-		public void NameDictionary_Invalid_MatcheAll(NameSearchTree<int> dict, Name expression)
-		{
-			Assert.False(dict.MatchAll(expression).Any(), string.Format("Has able to find matches for {0}",expression));
-		}
-		*/
 		[TestCaseSource(typeof(TestFactory), nameof(TestFactory.TestUnifyCases_Valid))]
 		public void NameDictionary_Valid_Unify(NameSearchTree<int> dict, Name expression, SubstitutionSet bindings,
 			IEnumerable<Pair<int, SubstitutionSet>> expectedResults)
 		{
-			var result = dict.Unify(expression, bindings);
-			var resultDict = result.ToDictionary(p => p.Item1, p => p.Item2);
-			var expectDict = expectedResults.ToDictionary(p => p.Item1, p => p.Item2);
+            for (int i = 0; i < rep; i++)
+            {
+                var result = dict.Unify(expression, bindings);
+                var resultDict = result.ToDictionary(p => p.Item1, p => p.Item2);
+                var expectDict = expectedResults.ToDictionary(p => p.Item1, p => p.Item2);
 
-			Assert.AreEqual(expectDict.Count, resultDict.Count, "Number of results mismatch");
+                Assert.AreEqual(expectDict.Count, resultDict.Count, "Number of results mismatch");
 
-			foreach (var pair in resultDict)
-			{
-				SubstitutionSet t;
-				Assert.That(expectDict.TryGetValue(pair.Key, out t), "Unable to find entry");
-				Assert.That(t.Equals(pair.Value), "Binding list is not equal to the expected");
-			}
+                foreach (var pair in resultDict)
+                {
+                    SubstitutionSet t;
+                    Assert.That(expectDict.TryGetValue(pair.Key, out t), "Unable to find entry");
+                    Assert.That(t.Equals(pair.Value), "Binding list is not equal to the expected");
+                }
+            }
 		}
 
 		[TestCaseSource(typeof(TestFactory), "TestUnifyCases_Invalid")]
 		public void NameDictionary_Invalid_Unify(NameSearchTree<int> dict, Name expression, SubstitutionSet bindings)
 		{
-			var result = dict.Unify(expression, bindings);
-			Assert.That(!result.Any(),"The unification returned valid results.");
+            for (int i = 0; i < rep; i++)
+            {
+                var result = dict.Unify(expression, bindings);
+                Assert.That(!result.Any(), "The unification returned valid results.");
+            }
 		}
 
 		[TestCaseSource(typeof(TestFactory), "Test_NameSearchTree_Count_Cases")]
 	    public void Test_NameSearchTree_Count(NameSearchTree<int> nst, int expectedCount)
 	    {
-			Assert.AreEqual(nst.Count,expectedCount);
+            for (int i = 0; i < rep; i++)
+            {
+                Assert.AreEqual(nst.Count, expectedCount);
+            }
 	    }
     }
 }
