@@ -303,7 +303,7 @@ namespace RolePlayCharacterWF
             IList<RolePlayCharacter.BeliefDTO> beliefsToRemove = new List<RolePlayCharacter.BeliefDTO>();
             for (int i = 0; i < dataGridViewBeliefs.SelectedRows.Count; i++)
             {
-                var belief = ((ObjectView<RolePlayCharacter.BeliefDTO>)dataGridViewBeliefs.SelectedRows[i].DataBoundItem).Object;
+                var belief = ((ObjectView<BeliefDTO>)dataGridViewBeliefs.SelectedRows[i].DataBoundItem).Object;
                 beliefsToRemove.Add(belief);
             }
             _knowledgeBaseVM.RemoveBeliefs(beliefsToRemove);
@@ -561,7 +561,7 @@ namespace RolePlayCharacterWF
         {
             if (dataGridViewBeliefs.SelectedRows.Count == 1)
             {
-                var selectedBelief = ((ObjectView<RolePlayCharacter.BeliefDTO>)dataGridViewBeliefs.SelectedRows[0].DataBoundItem).Object;
+                var selectedBelief = ((ObjectView<BeliefDTO>)dataGridViewBeliefs.SelectedRows[0].DataBoundItem).Object;
 
                 var addBeliefForm = new AddOrEditBeliefForm(_knowledgeBaseVM, selectedBelief);
                 addBeliefForm.ShowDialog();
