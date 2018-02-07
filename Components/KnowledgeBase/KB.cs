@@ -319,7 +319,7 @@ namespace KnowledgeBase
 			if (results.Length == 1)
 				return results[0];
 
-			throw new Exception("More the 1 property found");
+			throw new Exception("More than 1 property found");
 		}
 
 

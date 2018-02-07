@@ -771,6 +771,9 @@ namespace IntegratedAuthoringToolWF
             }
 
             richTextBoxChat.Clear();
+            listBoxPlayerDialogues.DataSource = new List<string>();
+            comboBoxAgChat.DataSource = agentsInChat.Select(a => a.CharacterName.ToString()).ToList();
+
             EditorTools.WriteText(richTextBoxChat, "Characters were loaded with success (" + DateTime.Now + ")", Color.Blue, true);
             var enterEvents = new List<WellFormedNames.Name>();
             foreach (var ag in agentsInChat)
@@ -936,6 +939,42 @@ namespace IntegratedAuthoringToolWF
                     actor
                     ));
             }
+        }
+
+        private void textBoxBelChat_TextChanged(object sender, EventArgs e)
+        {
+            var selectedRPCName = (string)comboBoxAgChat.SelectedItem;
+
+            if (string.IsNullOrWhiteSpace(textBoxBelChat.Text) ||
+                string.IsNullOrWhiteSpace(selectedRPCName))
+            {
+                textBoxValChat.Text = "-";
+                return;
+            }
+
+            var rpc = agentsInChat.Where(c => c.CharacterName.ToString() == selectedRPCName).First();
+            try
+            {
+                var name = WellFormedNames.Name.BuildName(textBoxBelChat.Text);
+                if (name.IsGrounded && name.IsComposed)
+                {
+                    var bel = rpc.GetBeliefValue(name.ToString());
+                    textBoxValChat.Text = bel;
+                }
+                else
+                {
+                    textBoxValChat.Text = "-";
+                }
+            }
+            catch(Exception ex)
+            {
+                textBoxValChat.Text = ex.Message;
+            }
+        }
+
+        private void comboBoxAgChat_SelectedValueChanged(object sender, EventArgs e)
+        {
+            textBoxBelChat_TextChanged(sender, e);
         }
     }
 }
