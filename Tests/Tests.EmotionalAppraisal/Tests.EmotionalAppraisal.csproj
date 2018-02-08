@@ -69,6 +69,10 @@
     <Compile Include="SerializationTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Assets\RolePlayCharacter\RolePlayCharacter.csproj">
+      <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
+      <Name>RolePlayCharacter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Components\AutobiographicMemory\AutobiographicMemory.csproj">
       <Project>{c1cc38c5-72f5-4545-b4f7-c65b2883909c}</Project>
       <Name>AutobiographicMemory</Name>

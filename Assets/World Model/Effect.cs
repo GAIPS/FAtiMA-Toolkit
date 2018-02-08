@@ -10,7 +10,7 @@ using WorldModel.DTOs;
 namespace WorldModel
 {
     [Serializable]
-    class Effect : ICustomSerialization
+   public  class Effect : ICustomSerialization
     {
         public Guid Id { get; private set; }
 

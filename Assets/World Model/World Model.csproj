@@ -75,6 +75,10 @@
       <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
       <Name>WellFormedNames</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RolePlayCharacter\RolePlayCharacter.csproj">
+      <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
+      <Name>RolePlayCharacter</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

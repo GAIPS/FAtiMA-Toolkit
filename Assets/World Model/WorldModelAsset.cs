@@ -9,6 +9,9 @@ using KnowledgeBase;
 using Conditions.DTOs;
 using WorldModel.DTOs;
 using AutobiographicMemory;
+using Utilities;
+using WellFormedNames.Collections;
+using RolePlayCharacter;
 
 namespace WorldModel
 {
@@ -16,12 +19,14 @@ namespace WorldModel
     public sealed partial class WorldModelAsset : LoadableAsset<WorldModelAsset>
     {
 
-        private Dictionary<ActionRule, List<Effect>> m_EffectsByActions;
+        private Dictionary<Name, List<Effect>> m_EffectsByEventNames;
 
+        private NameSearchTree<Name> _EventNames;
 
         public WorldModelAsset()
         {
-            m_EffectsByActions = new Dictionary<ActionRule, List<Effect>>();
+            m_EffectsByEventNames = new Dictionary<Name, List<Effect>>();
+            _EventNames = new NameSearchTree<Name>();
         }
 
         protected override string OnAssetLoaded()
@@ -30,21 +35,65 @@ namespace WorldModel
         }
 
 
-        public IEnumerable<IAction> Simulate(List<IBaseEvent> events)
+        public IEnumerable<Name> Simulate(List<Name> events)
         {
 
-            var result = new List<IAction>();
+            var result = new List<Name>();
 
 
-            foreach (var action in m_EffectsByActions.Keys)
+            foreach (var e in events)
             {
                 
+                foreach (var possibleEvent in this._EventNames.Unify(e))
+                {
 
-            }
 
+                        var substitutions = new[] { possibleEvent.Item2 }; //this adds the subs found in the eventName
+
+                        var effects = m_EffectsByEventNames[possibleEvent.Item1];
+
+                        foreach (var ef in effects)
+                        {
+                            var trueEffect = EventHelper.PropertyChange(ef.PropertyName.ToString(),
+                                ef.NewValue.ToString(), "World");
+
+                            result.Add(trueEffect);
+                            
+                        }
+                       
+                    }
+                    
+                }
 
             return result;
         }
 
+
+        public void AddEventEffect(Name ev, EffectDTO eff)
+        {
+
+            if(m_EffectsByEventNames.ContainsKey(ev))
+                m_EffectsByEventNames[ev].Add(new Effect(eff));
+
+            else
+            {
+                m_EffectsByEventNames.Add(ev, new List<Effect>());
+
+                _EventNames.Add(new KeyValuePair<Name, Name>(ev, ev));
+                if(eff.PropertyName != null)
+                    m_EffectsByEventNames[ev].Add(new Effect(eff));
+            }
+           
+        }
+
+        public Dictionary<Name, List<Effect>> GetAllEventEffects()
+        {
+            return m_EffectsByEventNames;
+        }
+
+        public IEnumerable<Name> GetAllEvents()
+        {
+            return m_EffectsByEventNames.Keys;
+        }
     }
 }
