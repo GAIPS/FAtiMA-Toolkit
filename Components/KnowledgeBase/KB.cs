@@ -7,6 +7,7 @@ using WellFormedNames;
 using WellFormedNames.Collections;
 using Utilities;
 using IQueryable = WellFormedNames.IQueryable;
+using System.Diagnostics;
 
 namespace KnowledgeBase
 {
@@ -112,6 +113,7 @@ namespace KnowledgeBase
 			registry.RegistDynamicProperty(COUNT_TEMPLATE_NEW, CountPropertyCalculator_new);
 			registry.RegistDynamicProperty(HAS_LITERAL_TEMPLATE,HasLiteralPropertyCalculator);
             registry.RegistDynamicProperty(MATH_TEMPLATE, MathPropertyCalculator);
+            registry.RegistDynamicProperty(SQUARE_DISTANCE, SquareDistanceCalculator);
         }
 
 		#region Native Dynamic Properties
@@ -176,6 +178,35 @@ namespace KnowledgeBase
                 }
             }
         }
+
+        //Square Distance
+        private static readonly Name SQUARE_DISTANCE = Name.BuildName("SquareDistance");
+        private static IEnumerable<DynamicPropertyResult> SquareDistanceCalculator(IQueryContext context, Name x1, Name y1, Name x2, Name y2)
+        {
+            foreach (var subSet in context.Constraints)
+            {
+                foreach (var x1Subs in context.AskPossibleProperties(x1).ToList())
+                {
+                    foreach (var y1Subs in context.AskPossibleProperties(y1).ToList())
+                    {
+                        foreach(var x2Subs in context.AskPossibleProperties(x2).ToList())
+                        {
+                            foreach(var y2Subs in context.AskPossibleProperties(y2).ToList())
+                            {
+                                var x1Value = float.Parse(x1Subs.Item1.Value.ToString());
+                                var y1Value = float.Parse(y1Subs.Item1.Value.ToString());
+                                var x2Value = float.Parse(x2Subs.Item1.Value.ToString());
+                                var y2Value = float.Parse(y2Subs.Item1.Value.ToString());
+
+                                var res = Math.Pow((x2Value - x1Value), 2) + Math.Pow((y2Value - y1Value), 2);
+                                yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(res)), subSet);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 
         //HasLiteral
         private static readonly Name HAS_LITERAL_TEMPLATE = (Name) "HasLiteral";
