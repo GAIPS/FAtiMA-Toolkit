@@ -52,13 +52,33 @@ namespace WorldModel
 
                         var effects = m_EffectsByEventNames[possibleEvent.Item1];
 
+
                         foreach (var ef in effects)
                         {
-                            var trueEffect = EventHelper.PropertyChange(ef.PropertyName.ToString(),
-                                ef.NewValue.ToString(), "World");
+                            var truePropertyName = (Name) "default";
+                            var trueNewValueName = (Name) "default";
+
+                            if (!ef.PropertyName.IsGrounded)
+                                foreach (var sub in substitutions)
+                                {
+                                    truePropertyName = ef.PropertyName.MakeGround(sub);
+
+                                }
+
+                            else truePropertyName = ef.PropertyName;
+
+                            if (!ef.NewValue.IsGrounded)
+                                foreach (var sub in substitutions)
+                                {
+                                    trueNewValueName = ef.NewValue.MakeGround(sub);
+                                }
+                            else trueNewValueName = ef.NewValue;
+
+                            var trueEffect = EventHelper.PropertyChange(truePropertyName.ToString(),
+                               trueNewValueName.ToString(), "World");
 
                             result.Add(trueEffect);
-                            
+
                         }
                        
                     }
@@ -84,6 +104,15 @@ namespace WorldModel
                     m_EffectsByEventNames[ev].Add(new Effect(eff));
             }
            
+        }
+
+        public void AddEventEffects(Name ev, IEnumerable<EffectDTO> effs)
+        {
+
+            foreach (var ef in effs)
+            {
+                AddEventEffect(ev, ef);
+            }
         }
 
         public Dictionary<Name, List<Effect>> GetAllEventEffects()
