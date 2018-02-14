@@ -4,12 +4,10 @@ using System.IO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
 using Conditions;
-using SerializationUtilities;
-using ActionLibrary;
 using ActionLibrary.DTOs;
 using KnowledgeBase;
+using NUnit.Framework;
 using WorldModel;
 using WorldModel.DTOs;
 
@@ -29,7 +27,7 @@ namespace WorldModelTests
 
         private void AddEffects(WorldModelAsset wm)
         {
-
+            
             wm.AddEventEffect(EventHelper.ActionEnd("John", "Speak([x],[y],*,*)", "Sarah"), new EffectDTO(){ PropertyName = (Name)"Has(Floor)", NewValue = (Name)"Player"});
             wm.AddEventEffect(EventHelper.ActionEnd("John", "Shoot", "Sarah"), new EffectDTO(){ PropertyName = (Name)"DialogueState(Player)", NewValue = (Name)"Start"});
             wm.AddEventEffect((Name)"Event(Action-End , [s], *, John)", new EffectDTO(){ PropertyName = (Name)"Has(Floor)", NewValue = (Name)"False"});
