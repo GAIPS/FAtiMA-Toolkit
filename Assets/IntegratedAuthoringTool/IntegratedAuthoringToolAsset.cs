@@ -11,6 +11,7 @@ using Utilities;
 using System.Text;
 using System.Security.Cryptography;
 using ActionLibrary;
+using WorldModel;
 
 namespace IntegratedAuthoringTool
 {
@@ -22,6 +23,8 @@ namespace IntegratedAuthoringTool
     {
         private DialogActionDictionary m_dialogues;
         private IList<CharacterSourceDTO> m_characterSources;
+
+        private  WorldModelSourceDTO m_worldModelSource { get; set; }
 
         /// <summary>
         /// The name of the Scenario
@@ -44,6 +47,7 @@ namespace IntegratedAuthoringTool
         {
             m_dialogues = new DialogActionDictionary();
 	        m_characterSources = new List<CharacterSourceDTO>();
+            m_worldModelSource =  new WorldModelSourceDTO();
         }
 
 		/// <summary>
@@ -252,7 +256,8 @@ namespace IntegratedAuthoringTool
         {
             dataHolder.SetValue("ScenarioName", ScenarioName);
 			dataHolder.SetValue("Description",ScenarioDescription);
-
+            if(m_worldModelSource != null)
+            dataHolder.SetValue("WorldModelSource", m_worldModelSource);
             // Save Character Sources
             if (m_characterSources.Count > 0)
             {
@@ -283,6 +288,7 @@ namespace IntegratedAuthoringTool
             ScenarioName = dataHolder.GetValue<string>("ScenarioName");
 
             ScenarioDescription = dataHolder.GetValue<string>("Description");
+            m_worldModelSource = dataHolder.GetValue<WorldModelSourceDTO>("WorldModelSource");
 
             //Load Character Sources
             m_characterSources = new List<CharacterSourceDTO>();

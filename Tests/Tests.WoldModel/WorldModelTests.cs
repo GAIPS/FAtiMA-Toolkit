@@ -69,11 +69,11 @@ namespace WorldModelTests
 
         }
 
-        [TestCase("Event(Action-End, John, Speak(Start, S1, - , -), Sarah)", "Event(Property-Change, World, Has(Floor), Player)")]
-        [TestCase("Event(Action-End, John, Shoot, Sarah)", "Event(Property-Change, World, DialogueState(Player), Start)")]
-        [TestCase("Event(Action-End, Sarah, Walk, John)", "Event(Property-Change, World, Has(Floor), False)")]
-        [TestCase("Event(Action-End, Sarah, Surf, John)", "Event(Property-Change, World, DialogueState(John), Sarah)")]
-        [TestCase("Event(Action-End, John, Surf, Sarah)", "Event(Property-Change, World, DialogueState(Sarah), John)")]
+        [TestCase("Event(Action-End, John, Speak(Start, S1, - , -), Sarah)", "Event(Property-Change, John, Has(Floor), Player)")]
+        [TestCase("Event(Action-End, John, Shoot, Sarah)", "Event(Property-Change, John, DialogueState(Player), Start)")]
+        [TestCase("Event(Action-End, Sarah, Walk, John)", "Event(Property-Change, Sarah, Has(Floor), False)")]
+        [TestCase("Event(Action-End, Sarah, Surf, John)", "Event(Property-Change, Sarah, DialogueState(John), Sarah)")]
+        [TestCase("Event(Action-End, John, Surf, Sarah)", "Event(Property-Change, John, DialogueState(Sarah), John)")]
         public void Test_WM_Evaluate_Content_Match(string pastEvent, string propertyChangeEffect)
         {
 
@@ -86,7 +86,50 @@ namespace WorldModelTests
             
             var effects = wm.Simulate(toSimulate);
 
-            Assert.AreEqual(effects.FirstOrDefault().ToString(), propertyChangeEffect);
+            Assert.AreEqual(effects.FirstOrDefault().ToPropertyChangeEvent().ToString(), propertyChangeEffect);
+
+        }
+
+        [Test]
+        public void Test_WM_Evaluate_MultipleEffects_Match()
+        {
+
+            var wm = BuildWorldModelAsset();
+            
+            var effectList = new List<EffectDTO>();
+
+            effectList.Add(new EffectDTO()
+            {
+                NewValue = (Name)"[t]",
+                PropertyName = (Name)"DialogueState([i])",
+                ResponsibleAgent = (Name)"[t]"
+            });
+
+            effectList.Add(new EffectDTO()
+            {
+                NewValue = (Name)"[i]",
+                PropertyName = (Name)"DialogueState([t])",
+                ResponsibleAgent = (Name)"[i]"
+            });
+
+            var eventTemplate = (Name) "Event(Action-End , [i], *, [t])";
+
+
+            wm.AddEventEffects(eventTemplate, effectList);
+
+            var toSimulate = new List<Name> {(Name) "Event(Action-End, John, Speak(Start, S1, - , -), Sarah)"};
+
+
+            var effects = wm.Simulate(toSimulate);
+
+         
+            Assert.AreEqual(effects.ElementAt(1).ToPropertyChangeEvent().ToString(), 
+               "Event(Property-Change, John, DialogueState(Sarah), John)");
+
+            Assert.AreEqual(effects.ElementAt(0).ToPropertyChangeEvent().ToString(), 
+                "Event(Property-Change, Sarah, DialogueState(John), Sarah)");
+           
+           
 
         }
         

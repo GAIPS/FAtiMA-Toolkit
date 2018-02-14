@@ -35,10 +35,10 @@ namespace WorldModel
         }
 
 
-        public IEnumerable<Name> Simulate(List<Name> events)
+        public IEnumerable<EffectDTO> Simulate(List<Name> events)
         {
 
-            var result = new List<Name>();
+            var result = new List<EffectDTO>();
 
 
             foreach (var e in events)
@@ -52,11 +52,14 @@ namespace WorldModel
 
                         var effects = m_EffectsByEventNames[possibleEvent.Item1];
 
+                    var responsibleAgent = (Name) e.ToString().Split(',')[1];
 
                         foreach (var ef in effects)
                         {
                             var truePropertyName = (Name) "default";
                             var trueNewValueName = (Name) "default";
+                            var trueResponsibleAgentName = (Name) "World";
+
 
                             if (!ef.PropertyName.IsGrounded)
                                 foreach (var sub in substitutions)
@@ -74,9 +77,22 @@ namespace WorldModel
                                 }
                             else trueNewValueName = ef.NewValue;
 
-                            var trueEffect = EventHelper.PropertyChange(truePropertyName.ToString(),
-                               trueNewValueName.ToString(), "World");
 
+                            if (!ef.ResponsibleAgent.IsGrounded)
+                                foreach (var sub in substitutions)
+                                {
+                                    trueResponsibleAgentName = ef.ResponsibleAgent.MakeGround(sub);
+                                }
+                            else trueResponsibleAgentName = responsibleAgent;
+
+                            var trueEffect = new EffectDTO()
+                            {
+                                PropertyName = truePropertyName,
+                                NewValue = trueNewValueName,
+                                ResponsibleAgent = trueResponsibleAgentName
+                            };
+
+                              
                             result.Add(trueEffect);
 
                         }
