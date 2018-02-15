@@ -464,6 +464,9 @@ namespace Tests.KnowledgeBase
         [TestCase("[x] = 4, [y] = 2", "Math([x], Div, [y]) = [re]", 2.0f)]
         [TestCase("[x] = 4, [y] = 2", "Math([x], Times, [y]) = [re]", 8.0f)]
         [TestCase("[x] = 4, [y] = 200", "Math([x], Times, [y]) = [re]", 800.0f)]
+        [TestCase("[x1] = 0, [y1] = 0, [x2] = 10, [y2] = 0", "SquareDistance([x1],[y1],[x2],[y2]) = [re]", 100.0f)]
+        [TestCase("[x1] = 0, [y1] = 1, [x2] = 2, [y2] = 3", "SquareDistance([x1],[y1],[x2],[y2]) = [re]", 8.0f)]
+        [TestCase("[x1] = -3, [y1] = 1, [x2] = 2, [y2] = -3", "SquareDistance([x1],[y1],[x2],[y2]) = [re]", 41.0f)]
         [Test]
         public void Test_DP_Math_Match(string contraints, string methodCall, float result)
         {
