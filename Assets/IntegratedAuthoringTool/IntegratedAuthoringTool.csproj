@@ -34,6 +34,7 @@
   <ItemGroup>
     <Compile Include="DialogActionDictionary.cs" />
     <Compile Include="DialogStateAction.cs" />
+    <Compile Include="DTOs\WorldModelSourceDTO.cs" />
     <Compile Include="DTOs\CharacterSourceDTO.cs" />
     <Compile Include="DTOs\DialogueStateActionDTO.cs" />
     <Compile Include="IATConsts.cs" />
@@ -60,6 +61,10 @@
     <ProjectReference Include="..\RolePlayCharacter\RolePlayCharacter.csproj">
       <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
       <Name>RolePlayCharacter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\World Model\World Model.csproj">
+      <Project>{efbdb6b1-5ba2-42dc-89ea-3ef49391e04c}</Project>
+      <Name>World Model</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

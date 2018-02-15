@@ -1,6 +1,7 @@
 ﻿using System;
 using Conditions.DTOs;
 using WellFormedNames;
+using RolePlayCharacter;
 
 namespace WorldModel.DTOs
 {
@@ -17,6 +18,12 @@ namespace WorldModel.DTOs
         public Name PropertyName { get; set; }
         
         public Name NewValue { get; set; }
-		
+
+        public Name ResponsibleAgent { get; set; } 
+
+        public Name ToPropertyChangeEvent()
+        {
+            return EventHelper.PropertyChange(PropertyName.ToString(), NewValue.ToString(), ResponsibleAgent.ToString());
+        }
     }
 }

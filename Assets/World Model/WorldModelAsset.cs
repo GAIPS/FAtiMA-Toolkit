@@ -35,10 +35,10 @@ namespace WorldModel
         }
 
 
-        public IEnumerable<Name> Simulate(List<Name> events)
+        public IEnumerable<EffectDTO> Simulate(List<Name> events)
         {
 
-            var result = new List<Name>();
+            var result = new List<EffectDTO>();
 
 
             foreach (var e in events)
@@ -52,13 +52,49 @@ namespace WorldModel
 
                         var effects = m_EffectsByEventNames[possibleEvent.Item1];
 
+                    var responsibleAgent = (Name) e.ToString().Split(',')[1];
+
                         foreach (var ef in effects)
                         {
-                            var trueEffect = EventHelper.PropertyChange(ef.PropertyName.ToString(),
-                                ef.NewValue.ToString(), "World");
+                            var truePropertyName = (Name) "default";
+                            var trueNewValueName = (Name) "default";
+                            var trueResponsibleAgentName = (Name) "World";
 
+
+                            if (!ef.PropertyName.IsGrounded)
+                                foreach (var sub in substitutions)
+                                {
+                                    truePropertyName = ef.PropertyName.MakeGround(sub);
+
+                                }
+
+                            else truePropertyName = ef.PropertyName;
+
+                            if (!ef.NewValue.IsGrounded)
+                                foreach (var sub in substitutions)
+                                {
+                                    trueNewValueName = ef.NewValue.MakeGround(sub);
+                                }
+                            else trueNewValueName = ef.NewValue;
+
+
+                            if (!ef.ResponsibleAgent.IsGrounded)
+                                foreach (var sub in substitutions)
+                                {
+                                    trueResponsibleAgentName = ef.ResponsibleAgent.MakeGround(sub);
+                                }
+                            else trueResponsibleAgentName = responsibleAgent;
+
+                            var trueEffect = new EffectDTO()
+                            {
+                                PropertyName = truePropertyName,
+                                NewValue = trueNewValueName,
+                                ResponsibleAgent = trueResponsibleAgentName
+                            };
+
+                              
                             result.Add(trueEffect);
-                            
+
                         }
                        
                     }
@@ -84,6 +120,15 @@ namespace WorldModel
                     m_EffectsByEventNames[ev].Add(new Effect(eff));
             }
            
+        }
+
+        public void AddEventEffects(Name ev, IEnumerable<EffectDTO> effs)
+        {
+
+            foreach (var ef in effs)
+            {
+                AddEventEffect(ev, ef);
+            }
         }
 
         public Dictionary<Name, List<Effect>> GetAllEventEffects()

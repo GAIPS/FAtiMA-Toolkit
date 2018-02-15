@@ -18,17 +18,21 @@ namespace WorldModel
 
         public Name NewValue { get; set; }
 
+        public Name ResponsibleAgent { get; set; }
+
         public Effect(EffectDTO ef)
         {
             Id = ef.Id;
             PropertyName = ef.PropertyName;
             NewValue = ef.NewValue;
-
+            if (ef.ResponsibleAgent != null)
+                ResponsibleAgent = ef.ResponsibleAgent;
+            else ResponsibleAgent = (Name) "World";
         }
 
         public override string ToString()
         {
-            return PropertyName + " | " + NewValue + " | " + this.Id + "\n";
+            return PropertyName + " | " + NewValue + " | "  + ResponsibleAgent + "|" + this.Id + "\n";
         }
 
 
@@ -38,7 +42,8 @@ namespace WorldModel
             {
                 PropertyName = this.PropertyName,
                 NewValue = this.NewValue,
-                Id = this.Id
+                Id = this.Id,
+                ResponsibleAgent = this.ResponsibleAgent
             };
         }
 
@@ -46,13 +51,15 @@ namespace WorldModel
     {
             dataHolder.SetValue("PropertyName", this.PropertyName);
             dataHolder.SetValue("NewValue", this.NewValue);
+            dataHolder.SetValue("ResponsibleAgent", this.ResponsibleAgent);
         }
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             PropertyName = dataHolder.GetValue<Name>("PropertyName");
             NewValue = dataHolder.GetValue<Name>("NewValue");
-        
+            ResponsibleAgent = dataHolder.GetValue<Name>("ResponsibleAgent");
+
         }
     }
 }
