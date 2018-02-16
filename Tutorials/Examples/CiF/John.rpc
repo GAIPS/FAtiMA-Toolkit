@@ -10,10 +10,10 @@
 							"SELF":
 								{
 									"Has(Floor)": "John, 1",
-									"IsAttracted(John, Sarah)": "False, 1",
-									"IsFriend(John, Mary)": "True, 1",
 									"DialogueState(Mary)": "Start, 1",
-									"DialogueState(Sarah)": "Start, 1"
+									"DialogueState(Sarah)": "Start, 1",
+									"IsAttracted(John, Sarah)": "False, 1",
+									"IsFriend(John, Mary)": "True, 1"
 								}
 						}
 				},

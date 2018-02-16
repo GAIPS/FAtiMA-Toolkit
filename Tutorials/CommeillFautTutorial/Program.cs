@@ -108,7 +108,7 @@ namespace CommeillFautTutorial
                     var pos = randomGen.Next(rpcList.Count);
                 int i = 0;
                   
-                    var initiator = rpcList.ElementAt(pos);
+                    var initiator = rpcList[pos];
                 
                
                     action = _actions.ElementAt(pos);
@@ -158,50 +158,6 @@ namespace CommeillFautTutorial
         }
     }
 }
-
-
-                //    actor.PerceptionActionLoop(new[] { _event });
-                /*
-                                foreach (var rpc in rpcList)
-                                {
-
-                                    if (rpc.m_kb.AskProperty(Name.BuildName("HasFloor(" + rpc.CharacterName + ")")) != null)
-                                    {
-
-                                        if (rpc.m_kb.AskProperty(Name.BuildName("HasFloor(" + rpc.CharacterName + ")")).ToString() ==
-                                            "True")
-                                            //aux = "True";
-                                    }
-
-                                    _actions.Add(rpc.Decide().FirstOrDefault());
-
-
-                                    rpc.SaveToFile("../../../Examples/CiF/" + rpc.CharacterName + "-output" + ".rpc");
-                                    }
-
-
-                            /*
-                                if (aux == "False")
-                                {
-                                    var rand = randomGen.Next(3);
-                                    //     Console.WriteLine(rand + "");
-
-                                    var next = rpcList.ElementAt(rand);
-
-                                    Console.WriteLine("next: " + next.CharacterName + " index: " + rand);
-
-                                    var finalEvents = new List<Name>();
-
-                                    finalEvents.Add(EventHelper.PropertyChange("HasFloor(" + next.CharacterName + ")", "true",
-                                        "Random"));
-
-
-                                    next.Perceive(finalEvents);
-                                }
-
-                    */
-
-
 
     
 

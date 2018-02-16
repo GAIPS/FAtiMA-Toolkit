@@ -4,79 +4,35 @@
 			"classId": 0,
 			"SocialExchanges": [
 				{
-					"Action": "Flirt",
-					"Target": "-",
-					"Type": "-",
+					"Name": "Flirt",
+					"Description": "When someone is attracted to another",
+					"Initiator": "[i]",
+					"Target": "[t]",
 					"Conditions":
 						{
-							"Set": []
-						},
-					"Priority": 2,
-					"Description": "When 2 people are attracted to each other...",
-					"InfluenceRule":
-						{
-							"RuleName": "",
-							"Target": "[x]",
-							"RuleConditions":
-								{
-									"Set": ["SI([x]) >= 40", "IsAttracted(SELF, [x]) = True"]
-								}
+							"Set": ["Bel(IsAttracted([i], [t])) = True", "SI([i]) >= 40"]
 						}
 				}, 
 				{
-					"Action": "Compliment",
-					"Target": "-",
-					"Type": "-",
+					"Name": "Compliment",
+					"Description": "When one wants to compliment a friend",
+					"Initiator": "[i]",
+					"Target": "[t]",
 					"Conditions":
 						{
-							"Set": []
-						},
-					"Priority": 1,
-					"Description": "Friends",
-					"InfluenceRule":
-						{
-							"RuleName": "",
-							"Target": "[x]",
-							"RuleConditions":
-								{
-									"Set": ["IsFriend(SELF, [x]) = True"]
-								}
+							"Set": ["Bel(IsFriend([i], [t])) = True"]
 						}
 				}, 
 				{
-					"Action": "Insult",
-					"Target": "-",
-					"Type": "-",
+					"Name": "Insult",
+					"Description": "When one clearly dislikes another",
+					"Initiator": "[i]",
+					"Target": "[t]",
 					"Conditions":
 						{
-							"Set": []
-						},
-					"Priority": 1,
-					"Description": "NotFriends",
-					"InfluenceRule":
-						{
-							"RuleName": "",
-							"Target": "[x]",
-							"RuleConditions":
-								{
-									"Set": ["SI([x]) <= 0", "IsFriend(SELF, [x]) = False"]
-								}
+							"Set": ["Bel(IsFriend([i], [t])) = False", "SI([i]) <= 0"]
 						}
-				}],
-			"_triggerRules":
-				{
-					"_triggerRules":
-						{
-							"dictionary": [
-								{
-									"key":
-										{
-
-										},
-									"value": "newrule"
-								}]
-						}
-				}
+				}]
 		},
 	"types": [
 		{

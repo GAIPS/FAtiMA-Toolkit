@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CommeillFaut.DTOs;
+using Conditions;
 using SerializationUtilities;
 using WellFormedNames;
 using GAIPS.Rage;
@@ -174,17 +175,27 @@ namespace CommeillFaut
 
         public Guid AddOrUpdateExchange(SocialExchangeDTO dto)
         {
-            var se = new SocialExchange(dto);
-            var str = se.ToString();
+          
             var idx = m_SocialExchanges.FindIndex(x => x.Id == dto.Id);
+            System.Guid actualID = new Guid();
             if (idx < 0)
             {
+                var se = new SocialExchange(dto);
                 m_SocialExchanges.Add(se);
+                actualID = se.Id;
             }
             else
-                m_SocialExchanges[idx] = se;
-            
-            return se.Id;
+            {
+                m_SocialExchanges[idx].Conditions = new ConditionSet(dto.Conditions);
+                m_SocialExchanges[idx].Description = dto.Description;
+                m_SocialExchanges[idx].Initiator = dto.Initiator;
+                m_SocialExchanges[idx].Target = dto.Target;
+                m_SocialExchanges[idx].Name = dto.Name;
+                actualID = m_SocialExchanges[idx].Id;
+
+            }
+
+            return actualID;
         }
 
         public void RemoveSocialExchange(Guid id)

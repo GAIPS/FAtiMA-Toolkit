@@ -6,30 +6,30 @@
 			"Description": "Testing the new cif dialogue combination",
 			"CharacterSources": ["John.rpc", "Sarah.rpc", "Mary.rpc"],
 			"Dialogues": [
-			{
-					"CurrentState": "Start",
-					"NextState": "Greeting",
-				    "Meaning": "SE(Flirt, Initiate)",
-					"Style": "Positive",
-					"Utterance": "Hi you look great!",
-					"UtteranceId": "TTS-D70ADC8D58BD14E5126508571D48DB7F"
-				},
 				{
 					"CurrentState": "Start",
 					"NextState": "Greeting",
-				    "Meaning": "SE(Compliment, Initiate)",
+					"Meaning": "SE(Flirt, Initiate)",
+					"Style": "Positive",
+					"Utterance": "Hi you look great!",
+					"UtteranceId": "TTS-ACC65A103522DADCE102E6F1A05DEB95"
+				}, 
+				{
+					"CurrentState": "Start",
+					"NextState": "Greeting",
+					"Meaning": "SE(Compliment, Initiate)",
 					"Style": "Positive",
 					"Utterance": "Hi how are you?",
-					"UtteranceId": "TTS-D70ADC8D58BD14E5126508571D48DB7F"
-				},
+					"UtteranceId": "TTS-51AADAEB0C97ED7BD252B14D88309F6B"
+				}, 
 				{
 					"CurrentState": "Greeting",
 					"NextState": "S1",
 					"Meaning": "SE(Compliment, Initiate)",
 					"Style": "Positive",
 					"Utterance": "I'm okay",
-					"UtteranceId": "TTS-D70ADC8D58BD14E5126508571D48DB7F"
-				},
+					"UtteranceId": "TTS-49191F20E61232DDA3756F175BF4CC45"
+				}, 
 				{
 					"CurrentState": "S1",
 					"NextState": "-",
