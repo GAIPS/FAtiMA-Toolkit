@@ -54,7 +54,7 @@ namespace AutobiographicMemory
 	    private BaseEvent SaveEventHelper(uint eventId, Name eventName, ulong timestamp)
 	    {
             AssertEventNameValidity(eventName);
-			if (eventName.HasSelf())
+			if (eventName.HasSelf() && !eventName.ToString().Contains("Property-Change"))
 				throw new Exception("Cannot record an event name containing \"Self\" keywords");
 
 			BaseEvent eventRecord;
@@ -158,7 +158,7 @@ namespace AutobiographicMemory
 			if (name.GetNTerm(2).IsComposed)
 				throw new Exception("The third term of an event name cannot be a composed name.");
 
-			if (name.GetNTerm(4).IsComposed)
+			if (name.GetNTerm(4).IsComposed && name.GetNTerm(1).ToString() != "Property-Change")
 				throw new Exception("The fifth term of an event name cannot be a composed name.");
 		}
 

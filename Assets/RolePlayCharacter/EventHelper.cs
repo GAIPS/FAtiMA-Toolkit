@@ -35,9 +35,6 @@ namespace RolePlayCharacter
             if (!((Name)propertyName).IsComposed)
                 throw new ArgumentException("Property needs to be a composed name", nameof(value));
 
-            if (!((Name)value).IsPrimitive)
-                throw new ArgumentException("Value needs to be a primitive", nameof(value));
-
             if (!((Name)subject).IsPrimitive)
                 throw new ArgumentException("Subject needs to be a primitive", nameof(value));
 

@@ -183,13 +183,30 @@ namespace EmotionalAppraisal
                 if (propEvt != null)
                 {
                     var fact = propEvt.Property;
-                    var value = propEvt.NewValue;
-                    if (value.ToString() == "-")
+                    var value = Name.BuildName("-");
+                    if (propEvt.NewValue.IsPrimitive)
                     {
-                       var remove =  kb.GetAllBeliefs().Where(x => x.Name == fact);
-                        kb.removeBelief(fact);
+                        value = propEvt.NewValue;
+                        if (value.ToString() == "-")
+                        {
+                            var remove = kb.GetAllBeliefs().Where(x => x.Name == fact);
+                            kb.removeBelief(fact);
+                        }
+                        else
+                        {
+                            kb.Tell(fact, value, perspective);
+                        }
                     }
-                    else kb.Tell(fact, value, perspective);
+                    else // new value is not grounded
+                    {
+                        var values =
+                            kb.AskPossibleProperties(propEvt.NewValue, perspective, new List<SubstitutionSet>());
+                        if (values.Count() == 1)
+                        {
+                            kb.Tell(fact, values.FirstOrDefault().Item1.Value, perspective);
+                        }
+                        else throw new Exception("Multiple possible values for " +  propEvt.NewValue);
+                    }
                 }
 
                 appraisalFrame.Reset(evt);

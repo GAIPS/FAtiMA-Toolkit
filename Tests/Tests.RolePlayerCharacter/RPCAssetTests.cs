@@ -912,6 +912,45 @@ namespace Tests.RolePlayCharacter
             Assert.IsNotEmpty(result);
 
         }
+
+
+    [Test]
+        public void Test_DP_DynamicPropertyChangeEvent_Match()
+        {
+
+            var rpc = BuildEmotionalRPCAsset();
+         
+            rpc.m_kb.Tell((Name)"High(Score)", (Name)"2");
+
+            Assert.AreEqual(rpc.GetBeliefValue("High(Score)"), "2");
+
+            var propertyChange = EventHelper.PropertyChange("High(Score)", "Mood(SELF)", "Test");
+
+            rpc.Perceive(propertyChange);
+            Assert.AreEqual(rpc.GetBeliefValue("High(Score)"), "0");
+
+            PopulateEventSet(1);
+
+            foreach (var eve in eventSets[1])
+            {
+                rpc.Perceive((Name)eve);
+                rpc.Tick++;
+            }
+
+            var propertyChange2 = EventHelper.PropertyChange("High(Score)", "Mood(SELF)", "Test");
+
+            rpc.Perceive(propertyChange2);
+
+            Assert.AreNotEqual(rpc.GetBeliefValue("High(Score)"), "2");
+
+            rpc.m_kb.Tell((Name)"Has(Money)", (Name)"5");
+
+            var propertyChange3 = EventHelper.PropertyChange("Has(Money)", "Math(2, Plus, 5)", "Test");
+
+            rpc.Perceive(propertyChange3);
+
+            Assert.AreEqual(rpc.GetBeliefValue("Has(Money)"), "7");
+        }
         #endregion
 
 

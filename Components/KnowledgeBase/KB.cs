@@ -177,6 +177,36 @@ namespace KnowledgeBase
                     }
                 }
             }
+
+            if (context.Constraints.IsEmpty())
+            {
+                var xValue = float.Parse(x.ToString());
+                var yValue = float.Parse(y.ToString());
+
+                if (op.ToString().EqualsIgnoreCase("Plus"))
+                {
+                    var res = xValue + yValue;
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(res)), new SubstitutionSet());
+                }
+
+                if (op.ToString().EqualsIgnoreCase("Minus"))
+                {
+                    var res = xValue - yValue;
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(res)), new SubstitutionSet());
+                }
+
+                if (op.ToString().EqualsIgnoreCase("Times"))
+                {
+                    var res = xValue * yValue;
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(res)), new SubstitutionSet());
+                }
+
+                if (op.ToString().EqualsIgnoreCase("Div"))
+                {
+                    var res = xValue / yValue;
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(res)), new SubstitutionSet());
+                }
+            }
         }
 
         //Square Distance
