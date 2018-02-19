@@ -103,6 +103,7 @@ namespace CommeillFautTutorial
                 _actions.Clear();
                 foreach (var rpc in rpcList)
                 {
+                    rpc.Tick++;
 
                     Console.WriteLine("Character perceiving: " + rpc.CharacterName + " its mood: " + rpc.Mood);
 
@@ -162,9 +163,7 @@ namespace CommeillFautTutorial
 
 
                     // WORLD MODEL
-
                     var effects = wm.Simulate(_events);
-
                     foreach (var ef in effects)
                     {
 
@@ -187,16 +186,9 @@ namespace CommeillFautTutorial
                             rpcList.Find(x=>x.CharacterName == ef.ObserverAgent).Perceive(proChange);
                         }
 
-                      
-                       
-
-
                     }
                     
-
                   Console.WriteLine("Next State: " + nextState);
-
-
 
                 }
                 Console.WriteLine();

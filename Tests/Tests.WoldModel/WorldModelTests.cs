@@ -102,14 +102,16 @@ namespace WorldModelTests
             {
                 NewValue = (Name)"[t]",
                 PropertyName = (Name)"DialogueState([i])",
-                ResponsibleAgent = (Name)"[t]"
+                ResponsibleAgent = (Name)"[t]",
+                ObserverAgent = (Name)"*"
             });
 
             effectList.Add(new EffectDTO()
             {
                 NewValue = (Name)"[i]",
                 PropertyName = (Name)"DialogueState([t])",
-                ResponsibleAgent = (Name)"[i]"
+                ResponsibleAgent = (Name)"[i]",
+                ObserverAgent = (Name)"*"
             });
 
             var eventTemplate = (Name) "Event(Action-End , [i], *, [t])";
@@ -127,7 +129,7 @@ namespace WorldModelTests
                "Event(Property-Change, John, DialogueState(Sarah), John)");
 
             Assert.AreEqual(effects.ElementAt(0).ToPropertyChangeEvent().ToString(), 
-                "Event(Property-Change, Sarah, DialogueState(John), Sarah)");
+                "Event(Property-Change, John, DialogueState(John), Sarah)");
            
            
 
