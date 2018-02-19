@@ -112,7 +112,6 @@ namespace CommeillFaut
             {
 
                var resultingConstraints = c.Unify(m_Kb, init, new[] { constraints } );  // Whats the sub here [x]/John
-
                 var total = 0.0f;
                 var totalSets = resultingConstraints.Count();
                 float averageCertainty = 0;

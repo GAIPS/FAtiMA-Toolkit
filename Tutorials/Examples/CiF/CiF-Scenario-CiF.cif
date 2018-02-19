@@ -5,32 +5,32 @@
 			"SocialExchanges": [
 				{
 					"Name": "Flirt",
-					"Description": "When someone is attracted to another",
+					"Description": "When someone is attracted to the other",
 					"Initiator": "[i]",
 					"Target": "[t]",
 					"Conditions":
 						{
-							"Set": ["Bel(IsAttracted([i], [t])) = True", "SI([i]) >= 40"]
+							"Set": ["IsAttracted([i], [t]) = True", "SI([t]) >= 40"]
 						}
 				}, 
 				{
 					"Name": "Compliment",
-					"Description": "When one wants to compliment a friend",
+					"Description": "When someone compliments its friend",
 					"Initiator": "[i]",
 					"Target": "[t]",
 					"Conditions":
 						{
-							"Set": ["Bel(IsFriend([i], [t])) = True"]
+							"Set": ["IsFriend([i], [t]) = True"]
 						}
 				}, 
 				{
 					"Name": "Insult",
-					"Description": "When one clearly dislikes another",
+					"Description": "When someone hates the other",
 					"Initiator": "[i]",
 					"Target": "[t]",
 					"Conditions":
 						{
-							"Set": ["Bel(IsFriend([i], [t])) = False", "SI([i]) <= 0"]
+							"Set": ["IsFriend([i], [t]) = False"]
 						}
 				}]
 		},

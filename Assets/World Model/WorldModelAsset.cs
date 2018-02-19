@@ -59,6 +59,7 @@ namespace WorldModel
                             var truePropertyName = (Name) "default";
                             var trueNewValueName = (Name) "default";
                             var trueResponsibleAgentName = (Name) "World";
+                            var trueObserverAgentName = (Name) "*";
 
 
                             if (!ef.PropertyName.IsGrounded)
@@ -85,11 +86,19 @@ namespace WorldModel
                                 }
                             else trueResponsibleAgentName = responsibleAgent;
 
+                            if (!ef.ObserverAgent.IsGrounded)
+                                foreach (var sub in substitutions)
+                                {
+                                    trueObserverAgentName = ef.ObserverAgent.MakeGround(sub);
+                                }
+                            else trueResponsibleAgentName = responsibleAgent;
+
                             var trueEffect = new EffectDTO()
                             {
                                 PropertyName = truePropertyName,
                                 NewValue = trueNewValueName,
-                                ResponsibleAgent = trueResponsibleAgentName
+                                ResponsibleAgent = trueResponsibleAgentName,
+                                ObserverAgent = trueObserverAgentName
                             };
 
                               

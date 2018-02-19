@@ -269,7 +269,7 @@ namespace AutobiographicMemory
           //  Now we get a similar object as m_typeIndexes but only with the last events
             foreach (var ind in m_typeIndexes)
                 foreach (var eve in lastEvents)
-                    if (ind.Key.ToString() == eve.Value.EventName.ToString())
+                    if (ind.Key.ToString() == eve.Value.EventName.ToString() && !lastIndexes.Contains(ind))
                         lastIndexes.Add(ind);
 
 

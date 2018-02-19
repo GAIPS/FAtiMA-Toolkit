@@ -4,12 +4,12 @@
 			"classId": 0,
 			"ActionTendencies": [
 				{
-					"Action": "Speak([cs], [ns], SE([se], Initiate), [s])",
+					"Action": "Speak(-, -, SE([se], Initiate), [s])",
 					"Target": "[x]",
 					"Layer": "-",
 					"Conditions":
 						{
-							"Set": ["IsAgent([x]) = True", "[x] != SELF", "Has(Floor) = SELF", "ValidDialogue([cs], [ns], *, *) = True", "Volition([se], SELF, [x]) = [s]", "Positive = [s]"]
+							"Set": ["IsAgent([x]) = True", "[x] != SELF", "Has(Floor) = SELF", "Volition([se], SELF, [x]) = [s]", "Positive = [s]"]
 						},
 					"Priority": 4
 				}, 

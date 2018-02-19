@@ -205,6 +205,14 @@
 					"Style": "Positive",
 					"Utterance": "You bring everyone a lot of joy, when you leave the room",
 					"UtteranceId": "TTS-B1CCAE5E24A675DEA2DBE213F7080C76"
+				}, 
+				{
+					"CurrentState": "-",
+					"NextState": "-",
+					"Meaning": "SE(Compliment, Initiate)",
+					"Style": "Positive",
+					"Utterance": "Please Initiate compliment",
+					"UtteranceId": "TTS-CBEB6AD52D30FD9CCE6FEC4EA502E35C"
 				}]
 		},
 	"types": [

@@ -20,6 +20,8 @@ using KnowledgeBase;
 using Microsoft.CSharp.RuntimeBinder;
 using RolePlayCharacter;
 using WellFormedNames;
+using WorldModel;
+using WorldModel.DTOs;
 
 namespace CommeillFautTutorial
 {
@@ -32,7 +34,29 @@ namespace CommeillFautTutorial
 
             var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/CiF/CiF-Scenario-IAT.iat");
             rpcList = new List<RolePlayCharacterAsset>();
+            var wm = new WorldModelAsset();
 
+            wm.AddEventEffect((Name)"Event(Action-End, *, Speak(*,*,*,*), [t])", new EffectDTO()
+            {
+                PropertyName = (Name)"Has(Floor)",
+                NewValue = (Name)"[t]",
+                ObserverAgent = (Name)"*"
+            });
+
+            wm.AddEventEffect((Name)"Event(Action-End, [i], Speak([cs],[ns],*,*), SELF)", new EffectDTO()
+            {
+                PropertyName = (Name)"DialogueState([i])",
+                NewValue = (Name)"[ns]",
+                ObserverAgent = (Name)"[t]"
+            });
+
+
+            wm.AddEventEffect((Name)"Event(Action-End, SELF, Speak([cs],[ns],*,*), [t])", new EffectDTO()
+            {
+                PropertyName = (Name)"DialogueState([t])",
+                NewValue = (Name)"[ns]",
+                ObserverAgent = (Name)"[i]"
+            });
 
             foreach (var source in iat.GetAllCharacterSources())
             {
@@ -91,11 +115,6 @@ namespace CommeillFautTutorial
                         Console.WriteLine(rpc.CharacterName + " has this action: " + act.Name);
                         
                     }
-
-
-
-
-
                     rpc.SaveToFile("../../../Examples/CiF/" + rpc.CharacterName + "-output" + ".rpc");
 
 
@@ -131,14 +150,6 @@ namespace CommeillFautTutorial
                     _events.Add(EventHelper.ActionEnd(initiatorName, action.Name.ToString(),
                         action.Target.ToString()));
 
-                    initiator.Perceive(EventHelper.PropertyChange("Has(Floor)", targetName, initiatorName));
-                    if (nextState != "*" && nextState != "-")
-                    {
-                        initiator.Perceive(EventHelper.PropertyChange("DialogueState(" + targetName + ")", nextState, initiatorName));
-                        rpcList.Find(x => x.CharacterName.ToString() == targetName).Perceive(EventHelper.PropertyChange("DialogueState(" + initiatorName + ")", nextState, initiatorName));
-
-                    }
-                    rpcList.Find(x => x.CharacterName.ToString() == targetName).Perceive(EventHelper.PropertyChange("Has(Floor)",targetName, initiatorName));
                  
 
                     Console.WriteLine();
@@ -149,7 +160,43 @@ namespace CommeillFautTutorial
                                          iat.GetDialogueActions(action.Parameters[0], action.Parameters[1], action.Parameters[2], action.Parameters[3]).FirstOrDefault().Utterance + "'' to " + targetName);
                     else Console.WriteLine(initiator.CharacterName + " says: " + "there is no dialogue suited for this action");
 
+
+                    // WORLD MODEL
+
+                    var effects = wm.Simulate(_events);
+
+                    foreach (var ef in effects)
+                    {
+
+                        if (ef.ObserverAgent == (Name) "*")
+                        {
+                            foreach (var rpc in rpcList)
+                            {
+                                var proChange =
+                                    EventHelper.PropertyChange(ef.PropertyName.ToString(), ef.NewValue.ToString(), ef.ResponsibleAgent.ToString());
+
+                                rpc.Perceive(proChange);
+                                
+                            }
+                        }
+
+                        else
+                        {
+                            var proChange =
+                                EventHelper.PropertyChange(ef.PropertyName.ToString(), ef.NewValue.ToString(), ef.ResponsibleAgent.ToString());
+                            rpcList.Find(x=>x.CharacterName == ef.ObserverAgent).Perceive(proChange);
+                        }
+
+                      
+                       
+
+
+                    }
+                    
+
                   Console.WriteLine("Next State: " + nextState);
+
+
 
                 }
                 Console.WriteLine();

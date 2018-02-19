@@ -21,6 +21,8 @@ namespace WorldModel.DTOs
 
         public Name ResponsibleAgent { get; set; } 
 
+        public Name ObserverAgent { get; set; }
+
         public Name ToPropertyChangeEvent()
         {
             return EventHelper.PropertyChange(PropertyName.ToString(), NewValue.ToString(), ResponsibleAgent.ToString());

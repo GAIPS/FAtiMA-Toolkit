@@ -154,9 +154,13 @@ namespace CommeillFaut
                                     if (c.Conflicts(subSet))
                                         continue;
 
-                                    c.AddSubstitutions(subSet);
+                                    var newcontext = new SubstitutionSet();
 
-                                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(stringVolition)), c);
+                                    newcontext.AddSubstitutions(c);
+
+                                    newcontext.AddSubstitutions(subSet);
+
+                                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(stringVolition)), newcontext);
                                 }
 
                             else yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(stringVolition)), subSet);
