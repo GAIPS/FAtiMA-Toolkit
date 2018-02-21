@@ -24,7 +24,7 @@ namespace IntegratedAuthoringTool
         private DialogActionDictionary m_dialogues;
         private IList<CharacterSourceDTO> m_characterSources;
 
-        private  WorldModelSourceDTO m_worldModelSource { get; set; }
+        public  WorldModelSourceDTO m_worldModelSource { get; set; }
 
         /// <summary>
         /// The name of the Scenario

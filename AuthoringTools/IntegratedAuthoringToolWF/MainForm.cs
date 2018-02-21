@@ -14,6 +14,8 @@ using System.Linq;
 using System.Windows.Forms;
 using Utilities;
 using Utilities.DataStructures;
+using WorldModel;
+using WorldModel.DTOs;
 
 namespace IntegratedAuthoringToolWF
 {
@@ -25,6 +27,8 @@ namespace IntegratedAuthoringToolWF
         private readonly string AGENT = IATConsts.AGENT;
         private BindingListView<CharacterSourceDTO> _characterSources;
         private RolePlayCharacterWF.MainForm _rpcForm = new RolePlayCharacterWF.MainForm();
+
+        private WorldModelSourceDTO _wmSource;
 
         private int currentRPCTabIndex;
 
@@ -61,6 +65,8 @@ namespace IntegratedAuthoringToolWF
             dataGridViewCharacters.DataSource = _characterSources;
             _dialogs = new BindingListView<DialogueStateActionDTO>(new List<DialogueStateActionDTO>());
             dataGridViewDialogueActions.DataSource = _dialogs;
+
+            _wmSource = asset.m_worldModelSource;
 
             //ResetSimulator
             richTextBoxChat.Clear();
@@ -975,6 +981,11 @@ namespace IntegratedAuthoringToolWF
         private void comboBoxAgChat_SelectedValueChanged(object sender, EventArgs e)
         {
             textBoxBelChat_TextChanged(sender, e);
+        }
+
+        private void groupBox6_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }
