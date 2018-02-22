@@ -36,17 +36,17 @@
             this.buttonEditAttRule = new System.Windows.Forms.Button();
             this.buttonAddEventTemplate = new System.Windows.Forms.Button();
             this.buttonRemoveAttRule = new System.Windows.Forms.Button();
-            this.dataGridViewActionTemplates = new System.Windows.Forms.DataGridView();
+            this.dataGridViewEventTemplates = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.addEffectDTO = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGridViewEffects = new System.Windows.Forms.DataGridView();
             this.groupBox7.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewActionTemplates)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEventTemplates)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEffects)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox7
@@ -57,7 +57,7 @@
             this.groupBox7.Controls.Add(this.buttonEditAttRule);
             this.groupBox7.Controls.Add(this.buttonAddEventTemplate);
             this.groupBox7.Controls.Add(this.buttonRemoveAttRule);
-            this.groupBox7.Controls.Add(this.dataGridViewActionTemplates);
+            this.groupBox7.Controls.Add(this.dataGridViewEventTemplates);
             this.groupBox7.Location = new System.Drawing.Point(13, 41);
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox7.Name = "groupBox7";
@@ -96,7 +96,7 @@
             this.buttonAddEventTemplate.TabIndex = 7;
             this.buttonAddEventTemplate.Text = "Add";
             this.buttonAddEventTemplate.UseVisualStyleBackColor = true;
-            this.buttonAddEventTemplate.Click += new System.EventHandler(this.buttonAddAttRule_Click);
+            this.buttonAddEventTemplate.Click += new System.EventHandler(this.buttonAddEvent_Click);
             // 
             // buttonRemoveAttRule
             // 
@@ -108,28 +108,29 @@
             this.buttonRemoveAttRule.Text = "Remove";
             this.buttonRemoveAttRule.UseVisualStyleBackColor = true;
             // 
-            // dataGridViewActionTemplates
+            // dataGridViewEventTemplates
             // 
-            this.dataGridViewActionTemplates.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.dataGridViewActionTemplates.AllowUserToAddRows = false;
-            this.dataGridViewActionTemplates.AllowUserToDeleteRows = false;
-            this.dataGridViewActionTemplates.AllowUserToOrderColumns = true;
-            this.dataGridViewActionTemplates.AllowUserToResizeRows = false;
-            this.dataGridViewActionTemplates.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.dataGridViewEventTemplates.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.dataGridViewEventTemplates.AllowUserToAddRows = false;
+            this.dataGridViewEventTemplates.AllowUserToDeleteRows = false;
+            this.dataGridViewEventTemplates.AllowUserToOrderColumns = true;
+            this.dataGridViewEventTemplates.AllowUserToResizeRows = false;
+            this.dataGridViewEventTemplates.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewActionTemplates.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
-            this.dataGridViewActionTemplates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewActionTemplates.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewActionTemplates.Location = new System.Drawing.Point(8, 75);
-            this.dataGridViewActionTemplates.Margin = new System.Windows.Forms.Padding(4);
-            this.dataGridViewActionTemplates.Name = "dataGridViewActionTemplates";
-            this.dataGridViewActionTemplates.ReadOnly = true;
-            this.dataGridViewActionTemplates.RowHeadersVisible = false;
-            this.dataGridViewActionTemplates.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewActionTemplates.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewActionTemplates.Size = new System.Drawing.Size(894, 158);
-            this.dataGridViewActionTemplates.TabIndex = 11;
+            this.dataGridViewEventTemplates.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.dataGridViewEventTemplates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewEventTemplates.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.dataGridViewEventTemplates.Location = new System.Drawing.Point(8, 75);
+            this.dataGridViewEventTemplates.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridViewEventTemplates.Name = "dataGridViewEventTemplates";
+            this.dataGridViewEventTemplates.ReadOnly = true;
+            this.dataGridViewEventTemplates.RowHeadersVisible = false;
+            this.dataGridViewEventTemplates.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewEventTemplates.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewEventTemplates.Size = new System.Drawing.Size(894, 158);
+            this.dataGridViewEventTemplates.TabIndex = 11;
+            this.dataGridViewEventTemplates.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewEventTemplates_CellContentClick);
             // 
             // groupBox1
             // 
@@ -139,7 +140,7 @@
             this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.addEffectDTO);
             this.groupBox1.Controls.Add(this.button4);
-            this.groupBox1.Controls.Add(this.dataGridView1);
+            this.groupBox1.Controls.Add(this.dataGridViewEffects);
             this.groupBox1.Location = new System.Drawing.Point(13, 290);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
@@ -189,28 +190,28 @@
             this.button4.Text = "Remove";
             this.button4.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // dataGridViewEffects
             // 
-            this.dataGridView1.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AllowUserToOrderColumns = true;
-            this.dataGridView1.AllowUserToResizeRows = false;
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.dataGridViewEffects.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.dataGridViewEffects.AllowUserToAddRows = false;
+            this.dataGridViewEffects.AllowUserToDeleteRows = false;
+            this.dataGridViewEffects.AllowUserToOrderColumns = true;
+            this.dataGridViewEffects.AllowUserToResizeRows = false;
+            this.dataGridViewEffects.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridView1.Location = new System.Drawing.Point(8, 75);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(894, 150);
-            this.dataGridView1.TabIndex = 11;
+            this.dataGridViewEffects.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.dataGridViewEffects.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewEffects.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.dataGridViewEffects.Location = new System.Drawing.Point(8, 75);
+            this.dataGridViewEffects.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridViewEffects.Name = "dataGridViewEffects";
+            this.dataGridViewEffects.ReadOnly = true;
+            this.dataGridViewEffects.RowHeadersVisible = false;
+            this.dataGridViewEffects.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewEffects.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewEffects.Size = new System.Drawing.Size(894, 150);
+            this.dataGridViewEffects.TabIndex = 11;
             // 
             // MainForm
             // 
@@ -224,9 +225,9 @@
             this.Controls.SetChildIndex(this.groupBox7, 0);
             this.Controls.SetChildIndex(this.groupBox1, 0);
             this.groupBox7.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewActionTemplates)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEventTemplates)).EndInit();
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEffects)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -239,13 +240,13 @@
         private System.Windows.Forms.Button buttonEditAttRule;
         private System.Windows.Forms.Button buttonAddEventTemplate;
         private System.Windows.Forms.Button buttonRemoveAttRule;
-        private System.Windows.Forms.DataGridView dataGridViewActionTemplates;
+        private System.Windows.Forms.DataGridView dataGridViewEventTemplates;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button addEffectDTO;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataGridViewEffects;
     }
 }
 

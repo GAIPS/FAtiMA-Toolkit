@@ -12,11 +12,12 @@ using AutobiographicMemory;
 using Utilities;
 using WellFormedNames.Collections;
 using RolePlayCharacter;
+using SerializationUtilities;
 
 namespace WorldModel
 {
     [Serializable]
-    public sealed partial class WorldModelAsset : LoadableAsset<WorldModelAsset>
+    public sealed partial class WorldModelAsset : LoadableAsset<WorldModelAsset>, ICustomSerialization
     {
 
         private Dictionary<Name, List<Effect>> m_EffectsByEventNames;
@@ -140,6 +141,15 @@ namespace WorldModel
             }
         }
 
+        public void addEventTemplate(Name ev)
+        {
+
+           m_EffectsByEventNames.Add(ev, new List<Effect>());
+            _EventNames.Add(new KeyValuePair<Name, Name>(ev,ev));
+        }
+
+       
+
         public Dictionary<Name, List<Effect>> GetAllEventEffects()
         {
             return m_EffectsByEventNames;
@@ -148,6 +158,26 @@ namespace WorldModel
         public IEnumerable<Name> GetAllEvents()
         {
             return m_EffectsByEventNames.Keys;
+        }
+
+        public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+        {
+            dataHolder.SetValue("EffectsByEventNames", m_EffectsByEventNames);
+        }
+
+        public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+        {
+            m_EffectsByEventNames = new Dictionary<Name, List<Effect>>();
+
+            m_EffectsByEventNames = dataHolder.GetValue<Dictionary<Name, List<Effect>>>("EffectsByEventNames");
+
+            _EventNames = new NameSearchTree<Name>();
+
+            foreach (var k in m_EffectsByEventNames.Keys)
+            {
+                _EventNames.Add(new KeyValuePair<Name, Name>(k,k));
+            }
+
         }
     }
 }

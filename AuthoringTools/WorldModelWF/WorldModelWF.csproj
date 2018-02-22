@@ -35,6 +35,10 @@
     <StartupObject>WorldModelWF.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GAIPS.Serialization, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Utilities\SerializationUtilities\bin\Debug\GAIPS.Serialization.dll</HintPath>
+    </Reference>
     <Reference Include="RageAssetManager">
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
@@ -117,6 +121,10 @@
       <Project>{f6ad95a5-889c-41a4-b613-b81f09a424ee}</Project>
       <Name>IntegratedAuthoringTool</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Assets\RolePlayCharacter\RolePlayCharacter.csproj">
+      <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
+      <Name>RolePlayCharacter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Assets\World Model\World Model.csproj">
       <Project>{efbdb6b1-5ba2-42dc-89ea-3ef49391e04c}</Project>
       <Name>World Model</Name>
@@ -144,6 +152,10 @@
     <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
       <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
       <Name>WellFormedNames</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EmotionalAppraisalWF\EmotionalAppraisalWF.csproj">
+      <Project>{36ef269c-7ab2-4029-bbf4-18f908af46f6}</Project>
+      <Name>EmotionalAppraisalWF</Name>
     </ProjectReference>
     <ProjectReference Include="..\GAIPS.AssetEditorTools\GAIPS.AssetEditorTools.csproj">
       <Project>{c61fb19d-e715-4eb4-afca-27ff81a14777}</Project>

@@ -58,6 +58,7 @@ namespace CommeillFautTutorial
                 ObserverAgent = (Name)"[i]"
             });
 
+            wm.SaveToFile("../../../Examples/CiF/WorldModel.wm");
             foreach (var source in iat.GetAllCharacterSources())
             {
 
