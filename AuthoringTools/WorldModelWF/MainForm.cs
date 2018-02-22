@@ -51,9 +51,11 @@ namespace WorldModelWF
             dataGridViewEventTemplates.DataSource = DS;
             this.dataGridViewEventTemplates.DataMember = "Table";
 
-            dataGridViewEffects.DataSource = asset.GetAllEventEffects().SelectMany(x=>x.Value).ToList();
-            dataGridViewEffects.Columns[0].Visible = false;
-
+            if (asset.GetAllEvents().FirstOrDefault() != null)
+            {
+                dataGridViewEffects.DataSource = asset.GetAllEventEffects()[asset.GetAllEvents().FirstOrDefault()];
+                dataGridViewEffects.Columns[0].Visible = false;
+            }
 
             _wasModified = false;
         }
@@ -67,7 +69,7 @@ namespace WorldModelWF
         
                 var ev = new AddOrEditEventTemplateForm(LoadedAsset, null);
                 ev.ShowDialog(this);
-            dataGridViewEventTemplates.Refresh();
+            RefreshEventList();
 
 
         }
@@ -79,6 +81,7 @@ namespace WorldModelWF
 
         private void addEffectDTO_Click(object sender, EventArgs e)
         {
+
           var ef = new AddorEditEffect(LoadedAsset, new EffectDTO());
             ef.ShowDialog(this);
 
@@ -89,5 +92,29 @@ namespace WorldModelWF
         {
 
         }
+
+
+        private void RefreshEventList()
+        {
+            var ds = (DataSet)dataGridViewEventTemplates.DataSource;
+
+            ds.Tables[0].Clear();
+
+
+            foreach (var ev in LoadedAsset.GetAllEvents())
+            {
+               
+                ds.Tables[0].Rows.Add(ev.GetNTerm(1),ev.GetNTerm(2), ev.GetNTerm(3), ev.GetNTerm(4));
+            }
+
+        }
+
+        private void dataGridViewEventTemplates_SelectionChanged(object sender, EventArgs e)
+        {
+           var index = dataGridViewEventTemplates.SelectedRows[0].Index;
+
+            dataGridViewEffects.DataSource = LoadedAsset.GetAllEventEffects().ElementAt(index).Value;
+        }
+
     }
 }

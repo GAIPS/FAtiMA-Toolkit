@@ -131,6 +131,7 @@
             this.dataGridViewEventTemplates.Size = new System.Drawing.Size(894, 158);
             this.dataGridViewEventTemplates.TabIndex = 11;
             this.dataGridViewEventTemplates.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewEventTemplates_CellContentClick);
+           this.dataGridViewEventTemplates.SelectionChanged += new System.EventHandler(this.dataGridViewEventTemplates_SelectionChanged);
             // 
             // groupBox1
             // 
