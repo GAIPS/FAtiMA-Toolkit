@@ -37,14 +37,14 @@ namespace WorldModelWF
 
             if (eventTemplate != null)
             {
-                var resultingString = eventTemplate.ToString().Split(',');
+              
 
                 this.Text = "Update";
                 this.addOrEditButton.Text = "Update";
-                comboBoxEventType.Text = resultingString.ElementAt(1);
-                textBoxSubject.Value = (Name)resultingString.ElementAt(2);
-                textBoxObject.Value =(Name)resultingString.ElementAt(3);
-                textBoxTarget.Value =(Name)resultingString.ElementAt(4);
+                comboBoxEventType.Text = eventTemplate.GetNTerm(1).ToString();
+                textBoxSubject.Value = eventTemplate.GetNTerm(2);
+                textBoxObject.Value = eventTemplate.GetNTerm(3);
+                textBoxTarget.Value = eventTemplate.GetNTerm(4);
             }
         }
 

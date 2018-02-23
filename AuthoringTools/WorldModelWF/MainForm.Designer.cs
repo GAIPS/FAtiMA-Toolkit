@@ -32,7 +32,6 @@
         private void InitializeComponent()
         {
             this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.buttonDuplicateAttRule = new System.Windows.Forms.Button();
             this.buttonEditAttRule = new System.Windows.Forms.Button();
             this.buttonAddEventTemplate = new System.Windows.Forms.Button();
             this.buttonRemoveAttRule = new System.Windows.Forms.Button();
@@ -53,7 +52,6 @@
             // 
             this.groupBox7.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.groupBox7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox7.Controls.Add(this.buttonDuplicateAttRule);
             this.groupBox7.Controls.Add(this.buttonEditAttRule);
             this.groupBox7.Controls.Add(this.buttonAddEventTemplate);
             this.groupBox7.Controls.Add(this.buttonRemoveAttRule);
@@ -67,16 +65,6 @@
             this.groupBox7.TabStop = false;
             this.groupBox7.Enter += new System.EventHandler(this.groupBox7_Enter);
             // 
-            // buttonDuplicateAttRule
-            // 
-            this.buttonDuplicateAttRule.Location = new System.Drawing.Point(189, 26);
-            this.buttonDuplicateAttRule.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonDuplicateAttRule.Name = "buttonDuplicateAttRule";
-            this.buttonDuplicateAttRule.Size = new System.Drawing.Size(93, 32);
-            this.buttonDuplicateAttRule.TabIndex = 9;
-            this.buttonDuplicateAttRule.Text = "Duplicate";
-            this.buttonDuplicateAttRule.UseVisualStyleBackColor = true;
-            // 
             // buttonEditAttRule
             // 
             this.buttonEditAttRule.Location = new System.Drawing.Point(88, 26);
@@ -86,6 +74,7 @@
             this.buttonEditAttRule.TabIndex = 8;
             this.buttonEditAttRule.Text = "Edit";
             this.buttonEditAttRule.UseVisualStyleBackColor = true;
+            this.buttonEditAttRule.Click += new System.EventHandler(this.buttonEditAttRule_Click);
             // 
             // buttonAddEventTemplate
             // 
@@ -100,13 +89,14 @@
             // 
             // buttonRemoveAttRule
             // 
-            this.buttonRemoveAttRule.Location = new System.Drawing.Point(291, 26);
+            this.buttonRemoveAttRule.Location = new System.Drawing.Point(189, 24);
             this.buttonRemoveAttRule.Margin = new System.Windows.Forms.Padding(4);
             this.buttonRemoveAttRule.Name = "buttonRemoveAttRule";
             this.buttonRemoveAttRule.Size = new System.Drawing.Size(93, 32);
             this.buttonRemoveAttRule.TabIndex = 10;
             this.buttonRemoveAttRule.Text = "Remove";
             this.buttonRemoveAttRule.UseVisualStyleBackColor = true;
+            this.buttonRemoveAttRule.Click += new System.EventHandler(this.buttonRemoveAttRule_Click);
             // 
             // dataGridViewEventTemplates
             // 
@@ -131,7 +121,7 @@
             this.dataGridViewEventTemplates.Size = new System.Drawing.Size(894, 158);
             this.dataGridViewEventTemplates.TabIndex = 11;
             this.dataGridViewEventTemplates.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewEventTemplates_CellContentClick);
-           this.dataGridViewEventTemplates.SelectionChanged += new System.EventHandler(this.dataGridViewEventTemplates_SelectionChanged);
+            this.dataGridViewEventTemplates.SelectionChanged += new System.EventHandler(this.dataGridViewEventTemplates_SelectionChanged);
             // 
             // groupBox1
             // 
@@ -159,6 +149,7 @@
             this.button1.TabIndex = 9;
             this.button1.Text = "Duplicate";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -169,6 +160,7 @@
             this.button2.TabIndex = 8;
             this.button2.Text = "Edit";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // addEffectDTO
             // 
@@ -190,6 +182,7 @@
             this.button4.TabIndex = 10;
             this.button4.Text = "Remove";
             this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // dataGridViewEffects
             // 
@@ -237,7 +230,6 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox7;
-        private System.Windows.Forms.Button buttonDuplicateAttRule;
         private System.Windows.Forms.Button buttonEditAttRule;
         private System.Windows.Forms.Button buttonAddEventTemplate;
         private System.Windows.Forms.Button buttonRemoveAttRule;

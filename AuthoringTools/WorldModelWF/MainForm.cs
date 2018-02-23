@@ -132,5 +132,78 @@ namespace WorldModelWF
             }
         }
 
+        private void buttonEditAttRule_Click(object sender, EventArgs e)
+        {
+             
+            var index = dataGridViewEventTemplates.SelectedRows[0].Index;
+
+            var eventTemp = LoadedAsset.GetAllEvents().ElementAt(index);
+
+
+            
+            var ev = new AddOrEditEventTemplateForm(LoadedAsset, eventTemp);
+            ev.ShowDialog(this);
+            RefreshEventList();
+        }
+
+        private void button2_Click(object sender, EventArgs e) // Edit Effect
+        {
+            var index = dataGridViewEventTemplates.SelectedRows[0].Index;
+
+            var eventTemp = LoadedAsset.GetAllEvents().ElementAt(index);
+
+            var index2 = dataGridViewEffects.SelectedRows[0].Index;
+
+            var effect = LoadedAsset.GetAllEventEffects()[eventTemp].ElementAt(index2);
+
+            var ef = new AddorEditEffect(LoadedAsset,eventTemp  , effect.ToDTO());
+
+            ef.ShowDialog(this);
+
+            dataGridViewEventTemplates_SelectionChanged(sender, e);
+        }
+
+        private void buttonRemoveAttRule_Click(object sender, EventArgs e)
+        {
+               
+            var index = dataGridViewEventTemplates.SelectedRows[0].Index;
+
+            var eventTemp = LoadedAsset.GetAllEvents().ElementAt(index);
+
+
+           LoadedAsset.RemoveEvent(eventTemp);   
+         
+            RefreshEventList();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            var index = dataGridViewEventTemplates.SelectedRows[0].Index;
+
+            var eventTemp = LoadedAsset.GetAllEvents().ElementAt(index);
+
+            var index2 = dataGridViewEffects.SelectedRows[0].Index;
+
+            var effect = LoadedAsset.GetAllEventEffects()[eventTemp].ElementAt(index2);
+
+           LoadedAsset.RemoveEffect(eventTemp, effect);
+
+            dataGridViewEventTemplates_SelectionChanged(sender, e);
+        }
+
+        private void button1_Click(object sender, EventArgs e) // Duplicate Effect
+        {
+            var index = dataGridViewEventTemplates.SelectedRows[0].Index;
+
+            var eventTemp = LoadedAsset.GetAllEvents().ElementAt(index);
+
+            var index2 = dataGridViewEffects.SelectedRows[0].Index;
+
+            var effect = LoadedAsset.GetAllEventEffects()[eventTemp].ElementAt(index2);
+
+            LoadedAsset.AddEventEffect(eventTemp, effect.ToDTO());
+
+            dataGridViewEventTemplates_SelectionChanged(sender, e);
+        }
     }
 }
