@@ -81,11 +81,14 @@ namespace WorldModelWF
 
         private void addEffectDTO_Click(object sender, EventArgs e)
         {
+        
+         var index = dataGridViewEventTemplates.SelectedRows[0].Index;
 
-          var ef = new AddorEditEffect(LoadedAsset, new EffectDTO());
+            var eventTemp = LoadedAsset.GetAllEvents().ElementAt(index);
+          var ef = new AddorEditEffect(LoadedAsset,eventTemp  ,new EffectDTO());
             ef.ShowDialog(this);
 
-            dataGridViewEffects.Refresh();
+            dataGridViewEventTemplates_SelectionChanged(sender, e);
         }
 
         private void dataGridViewEventTemplates_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -111,9 +114,22 @@ namespace WorldModelWF
 
         private void dataGridViewEventTemplates_SelectionChanged(object sender, EventArgs e)
         {
-           var index = dataGridViewEventTemplates.SelectedRows[0].Index;
 
-            dataGridViewEffects.DataSource = LoadedAsset.GetAllEventEffects().ElementAt(index).Value;
+            var index = 0;
+
+            if (dataGridViewEventTemplates.SelectedRows.Count > 0)
+                index = dataGridViewEventTemplates.SelectedRows[0].Index;
+
+
+            dataGridViewEffects.DataSource = null;
+            if (LoadedAsset != null)
+            {
+                if (LoadedAsset.GetAllEventEffects().Count > 0)
+                {
+                    dataGridViewEffects.DataSource = LoadedAsset.GetAllEventEffects().ElementAt(index).Value;
+                    dataGridViewEffects.Columns[0].Visible = false;
+                }
+            }
         }
 
     }

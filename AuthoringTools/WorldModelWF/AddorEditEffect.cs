@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using IntegratedAuthoringTool;
+using WellFormedNames;
 using WorldModel;
 using WorldModel.DTOs;
 
@@ -18,15 +19,17 @@ namespace WorldModelWF
 
         private WorldModelAsset _wm;
 
+        private WellFormedNames.Name _eventTemplate;
+
         private EffectDTO _effectToEdit;
 
 
-        public AddorEditEffect(WorldModelAsset wm, EffectDTO effectToEdit = null)
+        public AddorEditEffect(WorldModelAsset wm, Name eventTemplate ,EffectDTO effectToEdit = null)
         {
             InitializeComponent();
 
             this._wm = wm;
-
+            _eventTemplate = eventTemplate;
             //DefaultValues
             newValue.Value = WellFormedNames.Name.BuildName("True");
             propertyName.Value = WellFormedNames.Name.BuildName("Bel(A)");
@@ -56,7 +59,8 @@ namespace WorldModelWF
                 propertyName.Value = effectToEdit.PropertyName;
                 responsibleAgent.Value = effectToEdit.ResponsibleAgent;
                 observerName.Value = effectToEdit.ObserverAgent;
-            }
+
+            } else _effectToEdit = new EffectDTO();
         }
 
         public AddorEditEffect()
@@ -89,6 +93,7 @@ namespace WorldModelWF
             _effectToEdit.NewValue = newValue.Value;
             _effectToEdit.PropertyName = propertyName.Value;
 
+            _wm.AddEventEffect(_eventTemplate, _effectToEdit);
 
             Close();
         }
