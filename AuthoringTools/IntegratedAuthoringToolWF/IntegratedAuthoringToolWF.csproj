@@ -169,6 +169,10 @@
       <Project>{63ec96bc-d3e1-491b-8c55-61a0f5fba210}</Project>
       <Name>RolePlayCharacterWF</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WorldModelWF\WorldModelWF.csproj">
+      <Project>{dd109968-3275-499c-b0a2-3eedd32d7be9}</Project>
+      <Name>WorldModelWF</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="EPPlus, Version=4.1.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">

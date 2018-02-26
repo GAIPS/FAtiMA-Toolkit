@@ -27,8 +27,8 @@ namespace IntegratedAuthoringToolWF
         private readonly string AGENT = IATConsts.AGENT;
         private BindingListView<CharacterSourceDTO> _characterSources;
         private RolePlayCharacterWF.MainForm _rpcForm = new RolePlayCharacterWF.MainForm();
-
-        private WorldModelSourceDTO _wmSource;
+        private WorldModelWF.MainForm _wmForm;
+        private WorldModelSourceDTO _wmSource = new WorldModelSourceDTO();
 
         private int currentRPCTabIndex;
 
@@ -66,12 +66,22 @@ namespace IntegratedAuthoringToolWF
             _dialogs = new BindingListView<DialogueStateActionDTO>(new List<DialogueStateActionDTO>());
             dataGridViewDialogueActions.DataSource = _dialogs;
 
-            _wmSource = asset.m_worldModelSource;
-
+          
+            if (asset.m_worldModelSource != null)
+            {
+                if (asset.m_worldModelSource.Source != null)
+                {
+                    pathTextBoxEA.Text = asset.m_worldModelSource.Source;
+                    LoadWorldModelForm();
+                }
+            }
             //ResetSimulator
             richTextBoxChat.Clear();
             buttonContinue.Enabled = false;
             textBoxTick.Text = "";
+
+
+            
 
             RefreshDialogs();
         }
@@ -90,7 +100,7 @@ namespace IntegratedAuthoringToolWF
             this.currentRPCTabIndex = 1;
             _rpcForm.LoadedAsset = rpcAsset;
 
-            LoadedAsset.AddNewCharacterSource(new CharacterSourceDTO() { Source = asset.AssetFilePath });
+            LoadedAsset.AddNewCharacterSource(new CharacterSourceDTO() {Source = asset.AssetFilePath});
             _characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
             _characterSources.Refresh();
             SetModified();
@@ -136,7 +146,8 @@ namespace IntegratedAuthoringToolWF
             IList<int> charactersToRemove = new List<int>();
             for (var i = 0; i < dataGridViewCharacters.SelectedRows.Count; i++)
             {
-                var character = ((ObjectView<CharacterSourceDTO>)dataGridViewCharacters.SelectedRows[i].DataBoundItem).Object;
+                var character = ((ObjectView<CharacterSourceDTO>) dataGridViewCharacters.SelectedRows[i].DataBoundItem)
+                    .Object;
                 Form f;
                 charactersToRemove.Add(character.Id);
             }
@@ -210,6 +221,7 @@ namespace IntegratedAuthoringToolWF
                 EditorTools.HighlightItemInGrid<DialogueStateActionDTO>
                     (dataGridViewDialogueActions, diag.UpdatedGuid);
             }
+
             SetModified();
         }
 
@@ -218,7 +230,8 @@ namespace IntegratedAuthoringToolWF
         {
             if (dataGridViewDialogueActions.SelectedRows.Count == 1)
             {
-                var item = ((ObjectView<DialogueStateActionDTO>)dataGridViewDialogueActions.SelectedRows[0].DataBoundItem).Object;
+                var item = ((ObjectView<DialogueStateActionDTO>) dataGridViewDialogueActions.SelectedRows[0]
+                    .DataBoundItem).Object;
 
                 var newDialogueAction = new DialogueStateActionDTO
                 {
@@ -238,9 +251,11 @@ namespace IntegratedAuthoringToolWF
             IList<Guid> itemsToRemove = new List<Guid>();
             for (int i = 0; i < dataGridViewDialogueActions.SelectedRows.Count; i++)
             {
-                var item = ((ObjectView<DialogueStateActionDTO>)dataGridViewDialogueActions.SelectedRows[i].DataBoundItem).Object;
+                var item = ((ObjectView<DialogueStateActionDTO>) dataGridViewDialogueActions.SelectedRows[i]
+                    .DataBoundItem).Object;
                 itemsToRemove.Add(item.Id);
             }
+
             LoadedAsset.RemoveDialogueActions(itemsToRemove);
             RefreshDialogs();
             this.SetModified();
@@ -310,7 +325,8 @@ namespace IntegratedAuthoringToolWF
             }
         }
 
-        private static void ExportWorkSheet(ExcelPackage package, string workSheetName, IEnumerable<DialogueStateActionDTO> dialogActions)
+        private static void ExportWorkSheet(ExcelPackage package, string workSheetName,
+            IEnumerable<DialogueStateActionDTO> dialogActions)
         {
             var worksheet = package.Workbook.Worksheets.Add(workSheetName);
 
@@ -395,7 +411,7 @@ namespace IntegratedAuthoringToolWF
         private DialogueStateActionDTO GenerateDialogueActionFromLine(string line, int totalSize, ref int stateCounter)
         {
             line = line.Replace("A:", "");
-            char[] delimitedchars = { '\n' };
+            char[] delimitedchars = {'\n'};
             line = line.Trim();
 
             var result = line.Split(delimitedchars);
@@ -414,6 +430,7 @@ namespace IntegratedAuthoringToolWF
                 stateCounter += 1;
                 nextState = "S" + stateCounter;
             }
+
             if (stateCounter == totalSize)
                 nextState = "End";
 
@@ -436,7 +453,8 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonValidate_Click(object sender, EventArgs e)
         {
-            var dfsearch = new DFSearch<string>(state => LoadedAsset.GetDialogueActionsByState(state).Select(dto => dto.NextState));
+            var dfsearch = new DFSearch<string>(state =>
+                LoadedAsset.GetDialogueActionsByState(state).Select(dto => dto.NextState));
             dfsearch.InitializeSearch(IATConsts.INITIAL_DIALOGUE_STATE);
             dfsearch.FullSearch();
 
@@ -444,10 +462,12 @@ namespace IntegratedAuthoringToolWF
             int totalStates = 0;
             string unreachableStatesDescription = "The following Dialogue States are not reachable: \n[";
 
-            foreach (var dAction in LoadedAsset.GetAllDialogueActions().GroupBy(da => da.CurrentState).Select(group => group.First()))
+            foreach (var dAction in LoadedAsset.GetAllDialogueActions().GroupBy(da => da.CurrentState)
+                .Select(group => group.First()))
             {
                 totalStates++;
-                if (dfsearch.Closed.SearchInClosed(new NodeRecord<string>() { node = dAction.CurrentState.ToString() }) == null)
+                if (dfsearch.Closed.SearchInClosed(new NodeRecord<string>() {node = dAction.CurrentState.ToString()}) ==
+                    null)
                 {
                     unreachableStatesCount++;
                     unreachableStatesDescription += dAction.CurrentState + ", ";
@@ -461,7 +481,8 @@ namespace IntegratedAuthoringToolWF
 
             if (unreachableStatesCount > 0)
             {
-                validationMessage = "Reachability: " + (totalStates - unreachableStatesCount) * 100 / totalStates + "%\n" + unreachableStatesDescription;
+                validationMessage = "Reachability: " + (totalStates - unreachableStatesCount) * 100 / totalStates +
+                                    "%\n" + unreachableStatesDescription;
             }
             else
             {
@@ -486,7 +507,8 @@ namespace IntegratedAuthoringToolWF
 
             foreach (var rpc in loadedIAT.GetAllCharacterSources())
             {
-                var actor = RolePlayCharacterAsset.LoadFromFile(rpc.Source); ;
+                var actor = RolePlayCharacterAsset.LoadFromFile(rpc.Source);
+                ;
 
                 actor.LoadAssociatedAssets();
 
@@ -501,7 +523,8 @@ namespace IntegratedAuthoringToolWF
                 {
                     if (actor != anotherActor)
                     {
-                        var changed = new[] { EventHelper.ActionEnd(anotherActor.CharacterName.ToString(), "Enters", "Room") };
+                        var changed = new[]
+                            {EventHelper.ActionEnd(anotherActor.CharacterName.ToString(), "Enters", "Room")};
                         actor.Perceive(changed);
                     }
                 }
@@ -532,7 +555,8 @@ namespace IntegratedAuthoringToolWF
             int timestamp = 0;
 
             while (rpcActions.Keys != null)
-            {  // Stopping condition kinda shaky
+            {
+                // Stopping condition kinda shaky
                 rpcActions = new Dictionary<ActionLibrary.IAction, RolePlayCharacterAsset>();
 
                 foreach (var rpc in rpcList)
@@ -549,13 +573,16 @@ namespace IntegratedAuthoringToolWF
 
                 // COPY the rpc list without linked refereces
 
-                var newList = new List<RolePlayCharacterAsset>();  // mmm is the new list linked to the other? to be tested
+                var newList =
+                    new List<RolePlayCharacterAsset>(); // mmm is the new list linked to the other? to be tested
 
                 foreach (var action in rpcActions)
                 {
                     // COPY the rpc list without linked refereces
 
-                    var newListAux = new List<RolePlayCharacterAsset>(rpcList);  // mmm is the new list linked to the other? to be tested
+                    var newListAux =
+                        new List<RolePlayCharacterAsset>(
+                            rpcList); // mmm is the new list linked to the other? to be tested
 
                     foreach (var rpctoPerceive in newListAux)
                     {
@@ -563,10 +590,15 @@ namespace IntegratedAuthoringToolWF
 
                         if (rpctoPerceive.CharacterName != action.Value.CharacterName)
                         {
-                            if (action.Key.Name.ToString().Contains("Speak") && action.Key.Target == rpctoPerceive.CharacterName)
-                                _eventList.Add(EventHelper.PropertyChange("DialogueState(" + action.Value.CharacterName.ToString() + ")", action.Key.Parameters.ElementAt(1).ToString(), action.Value.CharacterName.ToString()));
+                            if (action.Key.Name.ToString().Contains("Speak") &&
+                                action.Key.Target == rpctoPerceive.CharacterName)
+                                _eventList.Add(EventHelper.PropertyChange(
+                                    "DialogueState(" + action.Value.CharacterName.ToString() + ")",
+                                    action.Key.Parameters.ElementAt(1).ToString(),
+                                    action.Value.CharacterName.ToString()));
 
-                            _eventList.Add(EventHelper.ActionEnd(action.Value.CharacterName.ToString(), action.Key.Name.ToString(), action.Key.Target.ToString()));
+                            _eventList.Add(EventHelper.ActionEnd(action.Value.CharacterName.ToString(),
+                                action.Key.Name.ToString(), action.Key.Target.ToString()));
 
                             rpctoPerceive.Perceive(_eventList);
 
@@ -586,6 +618,7 @@ namespace IntegratedAuthoringToolWF
                             emotionList[rpc.CharacterName.ToString()].Add(emot.Type, (timestamp + 1));
                     }
                 }
+
                 timestamp++;
                 if (timestamp > 1) break;
             }
@@ -601,8 +634,9 @@ namespace IntegratedAuthoringToolWF
                     foreach (var emot in emotionList[rpc])
                     {
                         var lastFor = timestamp - emot.Value;
-                        double timePercentage = ((double)lastFor / (double)timestamp) * 100;
-                        validationMessage += "Emotion: " + emot.Key + " ( " + timePercentage + "% of total scenario time)\n";
+                        double timePercentage = ((double) lastFor / (double) timestamp) * 100;
+                        validationMessage += "Emotion: " + emot.Key + " ( " + timePercentage +
+                                             "% of total scenario time)\n";
                     }
                 }
             }
@@ -614,7 +648,8 @@ namespace IntegratedAuthoringToolWF
             MessageBox.Show(validationMessage);
         }
 
-        private List<EmotionalAppraisal.DTOs.EmotionDTO> updateEmotionList(List<EmotionalAppraisal.DTOs.EmotionDTO> b, List<RolePlayCharacterAsset> rpcList)
+        private List<EmotionalAppraisal.DTOs.EmotionDTO> updateEmotionList(List<EmotionalAppraisal.DTOs.EmotionDTO> b,
+            List<RolePlayCharacterAsset> rpcList)
         {
             foreach (var rpc in rpcList)
             {
@@ -658,6 +693,7 @@ namespace IntegratedAuthoringToolWF
                 _rpcForm.SaveSubAssets();
                 _rpcForm.ClearModified();
             }
+
             SaveAsset();
         }
 
@@ -669,6 +705,7 @@ namespace IntegratedAuthoringToolWF
                 _rpcForm.SaveSubAssets();
                 _rpcForm.ClearModified();
             }
+
             SaveAssetAs();
         }
 
@@ -728,7 +765,7 @@ namespace IntegratedAuthoringToolWF
         {
             _rpcForm.LoadedAsset.Save();
             var rpcSource = EditorTools.GetSelectedDtoFromTable<CharacterSourceDTO>(dataGridViewCharacters);
-            if(rpcSource != null)
+            if (rpcSource != null)
             {
                 new RPCInspectForm(LoadedAsset, rpcSource.Source).Show(this);
             }
@@ -741,22 +778,22 @@ namespace IntegratedAuthoringToolWF
         }
 
         private List<RolePlayCharacterAsset> agentsInChat;
-   
-        
+
+
         private void buttonStart_Click(object sender, EventArgs e)
         {
             try
             {
                 this.saveToolStripMenuItem_Click(sender, e);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 EditorTools.WriteText(richTextBoxChat, "The IAT asset must be saved", Color.Red, true);
                 return;
             }
 
             var sources = LoadedAsset.GetAllCharacterSources();
-            if(sources.Count() <= 1)
+            if (sources.Count() <= 1)
             {
                 EditorTools.WriteText(richTextBoxChat, "At least two characters are needed.", Color.Red, true);
                 return;
@@ -770,7 +807,7 @@ namespace IntegratedAuthoringToolWF
                 LoadedAsset.BindToRegistry(rpc.DynamicPropertiesRegistry);
                 if (rpc.CharacterName.ToString().ToLower().Contains("player"))
                 {
-                    rpc.IsPlayer = true; 
+                    rpc.IsPlayer = true;
                 }
 
                 agentsInChat.Add(rpc);
@@ -780,7 +817,8 @@ namespace IntegratedAuthoringToolWF
             listBoxPlayerDialogues.DataSource = new List<string>();
             comboBoxAgChat.DataSource = agentsInChat.Select(a => a.CharacterName.ToString()).ToList();
 
-            EditorTools.WriteText(richTextBoxChat, "Characters were loaded with success (" + DateTime.Now + ")", Color.Blue, true);
+            EditorTools.WriteText(richTextBoxChat, "Characters were loaded with success (" + DateTime.Now + ")",
+                Color.Blue, true);
             var enterEvents = new List<WellFormedNames.Name>();
             foreach (var ag in agentsInChat)
             {
@@ -792,11 +830,11 @@ namespace IntegratedAuthoringToolWF
                 ag.Perceive(enterEvents);
 
                 EditorTools.WriteText(richTextBoxChat, ag.CharacterName + " enters the chat.", Color.Black, false);
-                EditorTools.WriteText(richTextBoxChat, 
-                    " (" + ag.GetInternalStateString() + " | " + ag.GetSIRelationsString()+ ")", Color.DarkRed, true);
+                EditorTools.WriteText(richTextBoxChat,
+                    " (" + ag.GetInternalStateString() + " | " + ag.GetSIRelationsString() + ")", Color.DarkRed, true);
             }
 
-            EditorTools.WriteText(richTextBoxChat, "", Color.Black, true );
+            EditorTools.WriteText(richTextBoxChat, "", Color.Black, true);
 
 
             buttonContinue.Enabled = true;
@@ -804,7 +842,7 @@ namespace IntegratedAuthoringToolWF
             this.buttonContinue_Click(sender, e);
         }
 
-        
+
 
         private void buttonContinue_Click(object sender, EventArgs e)
         {
@@ -823,21 +861,25 @@ namespace IntegratedAuthoringToolWF
                     }
                     else if (this.ValidateTarget(action, ag.CharacterName.ToString()))
                     {
-                        auxHandlePropertyChangesForDialogAction(ag.CharacterName.ToString(), action, diag.NextState.ToString());
+                        auxHandlePropertyChangesForDialogAction(ag.CharacterName.ToString(), action,
+                            diag.NextState.ToString());
 
                         EditorTools.WriteText(richTextBoxChat,
-                           ag.CharacterName + " To " + action.Target + " : ", Color.ForestGreen, false);
+                            ag.CharacterName + " To " + action.Target + " : ", Color.ForestGreen, false);
 
                         EditorTools.WriteText(richTextBoxChat, diag.Utterance, Color.Black, false);
 
                         EditorTools.WriteText(richTextBoxChat,
-                            " (" + ag.GetInternalStateString() + " | " + ag.GetSIRelationsString() + ")", Color.DarkRed, true);
+                            " (" + ag.GetInternalStateString() + " | " + ag.GetSIRelationsString() + ")", Color.DarkRed,
+                            true);
 
-                        
+
                     }
                 }
+
                 ag.Update();
             }
+
             EditorTools.WriteText(richTextBoxChat, "", Color.Black, true);
 
             var playerRPC = agentsInChat.First(a => a.IsPlayer == true);
@@ -850,6 +892,7 @@ namespace IntegratedAuthoringToolWF
             {
                 listBoxPlayerDialogues.DataSource = new List<string>();
             }
+
             playerRPC.Update();
 
             //Assumption: All agents have the same tick
@@ -867,27 +910,30 @@ namespace IntegratedAuthoringToolWF
                 var diag = LoadedAsset.GetDialogAction(a, out error);
                 if (error != null)
                 {
-                    EditorTools.WriteText(richTextBoxChat, playerCharName + " : " + error,Color.Red, true);
+                    EditorTools.WriteText(richTextBoxChat, playerCharName + " : " + error, Color.Red, true);
                 }
-                else if(this.ValidateTarget(a, playerCharName))
+                else if (this.ValidateTarget(a, playerCharName))
                 {
                     playerActions.Add(a);
                 }
             }
+
             listBoxPlayerDialogues.DataSource = playerActions.Select(x => "To " + x.Target + " : " +
-                    LoadedAsset.GetDialogAction(x, out error).Utterance).ToList();
+                                                                          LoadedAsset.GetDialogAction(x, out error)
+                                                                              .Utterance).ToList();
         }
 
 
         private bool ValidateTarget(IAction action, string actor)
         {
             var targetAgent = agentsInChat.FirstOrDefault(x => x.CharacterName == action.Target);
-            if(targetAgent == null)
+            if (targetAgent == null)
             {
-                EditorTools.WriteText(richTextBoxChat, 
+                EditorTools.WriteText(richTextBoxChat,
                     actor + " : Invalid Target '" + action.Target + "' for " + action, Color.Red, true);
                 return false;
-            }else return true;
+            }
+            else return true;
         }
 
         private void listBoxPlayerDialogues_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -896,7 +942,7 @@ namespace IntegratedAuthoringToolWF
             if (idx == -1) return;
 
             var act = playerActions[idx];
-            
+
             EditorTools.WriteText(richTextBoxChat,
                 "Player " + listBoxPlayerDialogues.SelectedItem.ToString(), Color.Blue, true);
 
@@ -926,30 +972,30 @@ namespace IntegratedAuthoringToolWF
                 agent.Perceive(evt);
             }
 
-          
+
             if (nextState != WellFormedNames.Name.NIL_STRING)
             {
                 var targetAgent = agentsInChat.FirstOrDefault(x => x.CharacterName == action.Target);
                 targetAgent.Perceive(
                     EventHelper.PropertyChange(
-                    string.Format(IATConsts.DIALOGUE_STATE_PROPERTY, actor),
-                    nextState,
-                    actor
+                        string.Format(IATConsts.DIALOGUE_STATE_PROPERTY, actor),
+                        nextState,
+                        actor
                     ));
 
                 var actorAgent = agentsInChat.FirstOrDefault(x => x.CharacterName.ToString() == actor);
                 actorAgent.Perceive(
                     EventHelper.PropertyChange(
-                    string.Format(IATConsts.DIALOGUE_STATE_PROPERTY, targetAgent.CharacterName.ToString()),
-                    nextState,
-                    actor
+                        string.Format(IATConsts.DIALOGUE_STATE_PROPERTY, targetAgent.CharacterName.ToString()),
+                        nextState,
+                        actor
                     ));
             }
         }
 
         private void textBoxBelChat_TextChanged(object sender, EventArgs e)
         {
-            var selectedRPCName = (string)comboBoxAgChat.SelectedItem;
+            var selectedRPCName = (string) comboBoxAgChat.SelectedItem;
 
             if (string.IsNullOrWhiteSpace(textBoxBelChat.Text) ||
                 string.IsNullOrWhiteSpace(selectedRPCName))
@@ -972,7 +1018,7 @@ namespace IntegratedAuthoringToolWF
                     textBoxValChat.Text = "-";
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 textBoxValChat.Text = ex.Message;
             }
@@ -986,6 +1032,52 @@ namespace IntegratedAuthoringToolWF
         private void groupBox6_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void createNewEAButton_Click(object sender, EventArgs e)
+        {
+
+            if (this.LoadedAsset == null)
+            {
+                MessageBox.Show("You must first save the IAT asset");
+                return;
+            }
+
+            _wmForm = new WorldModelWF.MainForm();
+
+            var asset = _wmForm.CreateAndSaveEmptyAsset(false);
+            if (asset == null)
+                return;
+
+            LoadedAsset.m_worldModelSource.Source = asset.AssetFilePath;
+            SetModified();
+            ReloadEditor();
+        }
+
+        private void openEAButton_Click(object sender, EventArgs e)
+        {
+            if (LoadedAsset.AssetFilePath == null)
+            {
+                MessageBox.Show("You must first save the IAT asset");
+                return;
+            }
+            _wmForm = new WorldModelWF.MainForm();
+            var asset = _wmForm.SelectAndOpenAssetFromBrowser();
+            if (asset == null)
+                return;
+
+            LoadedAsset.m_worldModelSource = new WorldModelSourceDTO() {Source = asset.AssetFilePath};
+            SetModified();
+            ReloadEditor();
+        }
+
+
+
+        private void LoadWorldModelForm()
+        {
+            var wm = WorldModelAsset.LoadFromFile(this.LoadedAsset.m_worldModelSource.Source);
+           _wmForm.LoadedAsset = wm;
+            FormHelper.ShowFormInContainerControl(groupBox7, _wmForm);
         }
     }
 }
