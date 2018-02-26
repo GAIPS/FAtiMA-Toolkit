@@ -49,12 +49,36 @@ namespace WorldModelWF
             DS.Tables.Add(table);
 
             dataGridViewEventTemplates.DataSource = DS;
+          
             this.dataGridViewEventTemplates.DataMember = "Table";
+
+            dataGridViewEventTemplates.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             if (asset.GetAllEvents().FirstOrDefault() != null)
             {
                 dataGridViewEffects.DataSource = asset.GetAllEventEffects()[asset.GetAllEvents().FirstOrDefault()];
                 dataGridViewEffects.Columns[0].Visible = false;
+                dataGridViewEffects.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            }
+
+
+            if (asset.GetAllEventEffects().Count == 0)
+            {
+                button1.Enabled = false;
+                button2.Enabled = false;
+                buttonRemoveAttRule.Enabled = false;
+                buttonEditAttRule.Enabled = false;
+                button4.Enabled = false;
+                addEffectDTO.Enabled = false;
+            }
+            else
+            {
+                button1.Enabled = true;
+                button2.Enabled = true;
+                buttonRemoveAttRule.Enabled = true;
+                buttonEditAttRule.Enabled = true;
+                button4.Enabled = true;
+                addEffectDTO.Enabled = true;
             }
 
             _wasModified = false;
@@ -85,7 +109,7 @@ namespace WorldModelWF
          var index = dataGridViewEventTemplates.SelectedRows[0].Index;
 
             var eventTemp = LoadedAsset.GetAllEvents().ElementAt(index);
-          var ef = new AddorEditEffect(LoadedAsset,eventTemp  ,new EffectDTO());
+          var ef = new AddorEditEffect(LoadedAsset,eventTemp  , -1, new EffectDTO());
             ef.ShowDialog(this);
 
             dataGridViewEventTemplates_SelectionChanged(sender, e);
@@ -128,6 +152,7 @@ namespace WorldModelWF
                 {
                     dataGridViewEffects.DataSource = LoadedAsset.GetAllEventEffects().ElementAt(index).Value;
                     dataGridViewEffects.Columns[0].Visible = false;
+                    dataGridViewEffects.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 }
             }
         }
@@ -148,15 +173,17 @@ namespace WorldModelWF
 
         private void button2_Click(object sender, EventArgs e) // Edit Effect
         {
+          var  index2 = -1;
+
             var index = dataGridViewEventTemplates.SelectedRows[0].Index;
 
             var eventTemp = LoadedAsset.GetAllEvents().ElementAt(index);
 
-            var index2 = dataGridViewEffects.SelectedRows[0].Index;
+            index2 = dataGridViewEffects.SelectedRows[0].Index;
 
             var effect = LoadedAsset.GetAllEventEffects()[eventTemp].ElementAt(index2);
 
-            var ef = new AddorEditEffect(LoadedAsset,eventTemp  , effect.ToDTO());
+            var ef = new AddorEditEffect(LoadedAsset, eventTemp  , index2,  effect.ToDTO());
 
             ef.ShowDialog(this);
 
@@ -204,6 +231,11 @@ namespace WorldModelWF
             LoadedAsset.AddEventEffect(eventTemp, effect.ToDTO());
 
             dataGridViewEventTemplates_SelectionChanged(sender, e);
+        }
+
+        private void dataGridViewEffects_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

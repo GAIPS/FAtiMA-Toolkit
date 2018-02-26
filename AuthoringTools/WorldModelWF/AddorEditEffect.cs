@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,8 +24,10 @@ namespace WorldModelWF
 
         private EffectDTO _effectToEdit;
 
+        private int index;
 
-        public AddorEditEffect(WorldModelAsset wm, Name eventTemplate ,EffectDTO effectToEdit = null)
+
+        public AddorEditEffect(WorldModelAsset wm, Name eventTemplate , int _index, EffectDTO effectToEdit = null)
         {
             InitializeComponent();
 
@@ -38,6 +41,7 @@ namespace WorldModelWF
 
             //Restrictions
 
+            index = _index;
         
             newValue.AllowUniversal = false;
           
@@ -90,11 +94,15 @@ namespace WorldModelWF
           
             _effectToEdit.NewValue = newValue.Value;
             _effectToEdit.PropertyName = propertyName.Value;
-            _effectToEdit.NewValue = newValue.Value;
-            _effectToEdit.PropertyName = propertyName.Value;
+            _effectToEdit.ResponsibleAgent = responsibleAgent.Value;
+            _effectToEdit.ObserverAgent = observerName.Value;
 
-            _wm.AddEventEffect(_eventTemplate, _effectToEdit);
-
+            if(index >= 0)
+            _wm.EditEventEffect(_eventTemplate, _effectToEdit, index);
+            else
+            {
+                _wm.AddEventEffect(_eventTemplate, _effectToEdit);
+            }
             Close();
         }
     }

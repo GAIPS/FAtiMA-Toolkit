@@ -34,6 +34,16 @@
 									"ResponsibleAgent": "World",
 									"ObserverAgent": "World"
 								}]
+						}, 
+						{
+							"key": "Event(Action-End, gfhg, gghd, g)",
+							"value": [
+								{
+									"PropertyName": "sdfg",
+									"NewValue": "zxcvzxc",
+									"ResponsibleAgent": "World",
+									"ObserverAgent": "World"
+								}]
 						}]
 				}
 		},

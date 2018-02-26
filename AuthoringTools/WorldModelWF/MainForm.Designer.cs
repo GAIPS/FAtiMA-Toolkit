@@ -56,7 +56,7 @@
             this.groupBox7.Controls.Add(this.buttonAddEventTemplate);
             this.groupBox7.Controls.Add(this.buttonRemoveAttRule);
             this.groupBox7.Controls.Add(this.dataGridViewEventTemplates);
-            this.groupBox7.Location = new System.Drawing.Point(13, 41);
+            this.groupBox7.Location = new System.Drawing.Point(13, 32);
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
@@ -132,7 +132,7 @@
             this.groupBox1.Controls.Add(this.addEffectDTO);
             this.groupBox1.Controls.Add(this.button4);
             this.groupBox1.Controls.Add(this.dataGridViewEffects);
-            this.groupBox1.Location = new System.Drawing.Point(13, 290);
+            this.groupBox1.Location = new System.Drawing.Point(13, 274);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
@@ -206,6 +206,7 @@
             this.dataGridViewEffects.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewEffects.Size = new System.Drawing.Size(894, 150);
             this.dataGridViewEffects.TabIndex = 11;
+            this.dataGridViewEffects.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewEffects_CellContentClick);
             // 
             // MainForm
             // 

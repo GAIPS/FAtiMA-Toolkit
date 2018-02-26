@@ -123,12 +123,26 @@ namespace WorldModel
 
             else
             {
-                m_EffectsByEventNames.Add(ev, new List<Effect>());
 
                 _EventNames.Add(new KeyValuePair<Name, Name>(ev, ev));
                 if(eff.PropertyName != null)
                     m_EffectsByEventNames[ev].Add(new Effect(eff));
+                else m_EffectsByEventNames.Add(ev, new List<Effect>());
+
             }
+           
+        }
+
+
+        public void EditEventEffect(Name ev, EffectDTO eff, int index)
+        {
+
+            if (m_EffectsByEventNames.ContainsKey(ev))
+            {
+                m_EffectsByEventNames[ev].RemoveAt(index);
+                m_EffectsByEventNames[ev].Add(new Effect(eff));
+            }
+             
            
         }
 

@@ -38,10 +38,10 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.label1.Location = new System.Drawing.Point(12, 48);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(121, 20);
+            this.label1.Size = new System.Drawing.Size(108, 18);
             this.label1.TabIndex = 1;
             this.label1.Text = "Property Name";
             this.label1.Click += new System.EventHandler(this.label1_Click);
@@ -49,10 +49,10 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.label2.Location = new System.Drawing.Point(12, 92);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(89, 20);
+            this.label2.Size = new System.Drawing.Size(78, 18);
             this.label2.TabIndex = 3;
             this.label2.Text = "New Value";
             this.label2.Click += new System.EventHandler(this.label2_Click);
@@ -74,10 +74,10 @@
             // Oberver
             // 
             this.Oberver.AutoSize = true;
-            this.Oberver.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Oberver.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.Oberver.Location = new System.Drawing.Point(12, 136);
             this.Oberver.Name = "Oberver";
-            this.Oberver.Size = new System.Drawing.Size(149, 20);
+            this.Oberver.Size = new System.Drawing.Size(131, 18);
             this.Oberver.TabIndex = 5;
             this.Oberver.Text = "Responsible Agent";
             // 
@@ -97,10 +97,10 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.label4.Location = new System.Drawing.Point(12, 179);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(78, 20);
+            this.label4.Size = new System.Drawing.Size(69, 18);
             this.label4.TabIndex = 7;
             this.label4.Text = "Observer";
             // 
@@ -119,11 +119,11 @@
             // 
             // addEffect
             // 
-            this.addEffect.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            this.addEffect.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.addEffect.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.addEffect.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
             this.addEffect.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.addEffect.Location = new System.Drawing.Point(113, 224);
+            this.addEffect.Location = new System.Drawing.Point(110, 223);
             this.addEffect.Name = "addEffect";
             this.addEffect.Size = new System.Drawing.Size(126, 41);
             this.addEffect.TabIndex = 8;
@@ -146,6 +146,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.propertyName);
             this.Name = "AddorEditEffect";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "AddorEditEffect";
             this.ResumeLayout(false);
             this.PerformLayout();

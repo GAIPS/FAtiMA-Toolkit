@@ -13,7 +13,7 @@ namespace WorldModelWF
 
 		protected sealed override string GetAssetFileFilters()
 		{
-			return "World Model Definition File (*.wm)|*.wm";
+			return "World Model Definition File (*.wmo)|*.wmo";
 		}
 	}
 }
