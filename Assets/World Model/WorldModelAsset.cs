@@ -126,7 +126,7 @@ namespace WorldModel
 
                 _EventNames.Add(new KeyValuePair<Name, Name>(ev, ev));
                 if(eff.PropertyName != null)
-                    m_EffectsByEventNames[ev].Add(new Effect(eff));
+                    m_EffectsByEventNames.Add(ev, new List<Effect>(){new Effect(eff)});
                 else m_EffectsByEventNames.Add(ev, new List<Effect>());
 
             }
