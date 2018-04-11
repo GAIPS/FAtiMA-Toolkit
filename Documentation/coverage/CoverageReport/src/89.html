@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\AutobiographicMemory\Event\ActionEvent.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using AutobiographicMemory.DTOs;
+using SerializationUtilities;
+using WellFormedNames;
+
+namespace AutobiographicMemory
+{
+	public sealed partial class AM
+	{
+		[Serializable]
+		private class ActionEvent : BaseEvent
+		{
+			public static bool IsActionEvent(Name eventName)
+            {
+	            var t = eventName.GetNTerm(1);
+				return t == (Name)AMConsts.ACTION_START || t == (Name)AMConsts.ACTION_END;
+            }
+
+			public Name Action { get; private set; }
+            public Name Target { get; private set; }
+			
+			public ActionEvent(uint id, Name eventName, ulong timestamp) : base(id, eventName, timestamp)
+			{
+				Action = eventName.GetNTerm(3);
+                Target = eventName.GetNTerm(4);
+	        }
+
+			public override EventDTO ToDTO()
+			{
+				return new ActionEventDTO
+				{
+					Action = Action.ToString(),
+					Event = EventName.ToString(),
+					Id = Id,
+					Subject = Subject.ToString(),
+					Target = Target.ToString(),
+					Time = Timestamp
+				};
+			}
+
+			protected override Name BuildEventName()
+			{
+				return Name.BuildName((Name)AMConsts.EVENT, Type, Subject, Action, Target);
+			}
+
+			public override BaseEvent SwapPerspective(Name oldPerspective, Name newPerspective)
+			{
+				Action = Action.SwapTerms(oldPerspective, newPerspective);
+				Target = Target.SwapTerms(oldPerspective, newPerspective);
+				base.SwapPerspective(oldPerspective, newPerspective);
+				return this;
+			}
+
+			public override void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+			{
+				base.GetObjectData(dataHolder,context);
+				dataHolder.SetValue(&quot;Action&quot;, Action);
+				dataHolder.SetValue(&quot;Target&quot;, Target);
+			}
+
+			public override void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+			{
+				Action = dataHolder.GetValue&lt;Name&gt;(&quot;Action&quot;);
+				Target = dataHolder.GetValue&lt;Name&gt;(&quot;Target&quot;);
+				base.SetObjectData(dataHolder,context);
+			}
+		}
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[14,13,14,14,1],[15,14,15,44,1],[16,5,16,79,1],[17,13,17,14,1],[19,25,19,29,1],[19,30,19,42,1],[20,34,20,38,1],[20,39,20,51,1],[22,67,22,97,1],[23,4,23,5,1],[24,5,24,36,1],[25,17,25,48,1],[26,10,26,11,1],[29,4,29,5,1],[30,5,38,7,1],[39,4,39,5,1],[42,4,42,5,0],[43,5,43,80,0],[44,4,44,5,0],[47,4,47,5,0],[48,5,48,63,0],[49,5,49,63,0],[50,5,50,58,0],[51,5,51,17,0],[52,4,52,5,0],[55,4,55,5,0],[56,5,56,44,0],[57,5,57,43,0],[58,5,58,43,0],[59,4,59,5,0],[62,4,62,5,0],[63,5,63,50,0],[64,5,64,50,0],[65,5,65,44,0],[66,4,66,5,0]]);
+    </script>
+  </body>
+</html>

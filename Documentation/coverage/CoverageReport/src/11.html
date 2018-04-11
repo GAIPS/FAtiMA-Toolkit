@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\EmotionalAppraisal\EmotionDisposition.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using EmotionalAppraisal.DTOs;
+
+namespace EmotionalAppraisal
+{
+	/// &lt;summary&gt;
+	/// Represents the character&#39;s emotional disposition (Emotional Threshold + Decay Rate) towards an Emotion Type.
+	/// 
+	/// @author: Jo&#227;o Dias
+	/// @author: Pedro Gon&#231;alves (C# version)
+	/// &lt;/summary&gt;
+	[Serializable]
+	public class EmotionDisposition
+	{
+		public string Emotion { get; private set; }
+
+		public int Decay { get; private set; }
+
+		public int Threshold { get; private set; }
+
+        public EmotionDisposition(string emotion, int decay, int threshold)
+        {
+            Emotion = emotion;
+            Decay = decay;
+            Threshold = threshold;
+        }
+
+        public EmotionDisposition(EmotionDispositionDTO dispDto)
+		{
+		    Emotion = dispDto.Emotion;
+			Decay = dispDto.Decay;
+			Threshold = dispDto.Threshold;
+		}
+
+		public override string ToString()
+		{
+			return string.Format(&quot;Emotion: {0}, Threshold: {2}, Decay: {1}&quot;, Emotion,Threshold,Decay);
+		}
+
+	    public EmotionDispositionDTO ToDto()
+	    {
+	        return new EmotionDispositionDTO
+	        {
+	            Decay = this.Decay,
+	            Emotion = this.Emotion,
+	            Threshold = this.Threshold
+	        };
+	    }
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[15,27,15,31,1],[15,32,15,44,1],[17,22,17,26,1],[17,27,17,39,1],[19,26,19,30,1],[19,31,19,43,1],[21,9,21,76,1],[22,9,22,10,1],[23,13,23,31,1],[24,13,24,27,1],[25,13,25,35,1],[26,9,26,10,1],[28,9,28,65,1],[29,3,29,4,1],[30,7,30,33,1],[31,4,31,26,1],[32,4,32,34,1],[33,3,33,4,1],[36,3,36,4,0],[37,4,37,94,0],[38,3,38,4,0],[41,6,41,7,1],[42,10,47,12,1],[48,6,48,7,1]]);
+    </script>
+  </body>
+</html>

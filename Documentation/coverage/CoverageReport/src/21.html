@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\EmotionalAppraisal\InternalAppraisalFrame.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using AutobiographicMemory;
+using EmotionalAppraisal.DTOs;
+using WellFormedNames;
+
+namespace EmotionalAppraisal
+{
+	public partial class EmotionalAppraisalAsset
+	{
+        
+
+        private class InternalAppraisalFrame : IAppraisalFrame
+		{
+			private Dictionary&lt;object, ComponentAppraisalFrame&gt; nestedFrames = new Dictionary&lt;object, ComponentAppraisalFrame&gt;();
+			private Dictionary&lt;string, AppraisalVariable&gt; appraisalVariables = new Dictionary&lt;string, AppraisalVariable&gt;();
+
+			public IBaseEvent AppraisedEvent { get; private set; }
+
+			public IEnumerable&lt;string&gt; AppraisalVariables
+			{
+				get { return this.appraisalVariables.Keys; }
+			}
+
+			public bool IsEmpty
+			{
+				get { return this.appraisalVariables.Count == 0; }
+			}
+
+			public long LastChange
+			{
+				get;
+				private set;
+			}
+
+            public Name Perspective
+            {
+                get;
+                set;
+            }
+
+            public InternalAppraisalFrame()
+			{
+				AppraisedEvent = null;
+				LastChange = 0;
+			}
+
+			public void Reset(IBaseEvent evt)
+			{
+				this.AppraisedEvent = evt;
+				this.LastChange = 0;
+				this.nestedFrames.Clear();
+				this.appraisalVariables.Clear();
+			}
+
+			public IWritableAppraisalFrame RequestComponentFrame(object componentObject, short weight)
+			{
+				ComponentAppraisalFrame frame;
+				if (!this.nestedFrames.TryGetValue(componentObject, out frame))
+				{
+					frame = new ComponentAppraisalFrame(this, componentObject, weight);
+					this.nestedFrames[componentObject] = frame;
+				}
+				return frame;
+			}
+
+			public float GetAppraisalVariable(string appraisalVariable)
+			{
+				AppraisalVariable v;
+				if (this.appraisalVariables.TryGetValue(appraisalVariable, out v))
+					return v.NormalizedValue();
+				return 0f;
+			}
+
+			public bool ContainsAppraisalVariable(string appraisalVariable)
+			{
+				return this.appraisalVariables.ContainsKey(appraisalVariable);
+			}
+
+			public bool TryGetAppraisalVariable(string appraisalVariable, out float value)
+			{
+				AppraisalVariable v;
+				if (this.appraisalVariables.TryGetValue(appraisalVariable, out v))
+				{
+					value = v.NormalizedValue();
+					return true;
+				}
+				value = 0;
+				return false;
+			}
+
+			#region Nested Classes
+
+			private struct Pair
+			{
+				public float value;
+				public short weight;
+
+				public Pair(float value, short weight) : this()
+				{
+					this.value = value;
+					this.weight = weight;
+				}
+			}
+
+			private class AppraisalVariable
+			{
+				private Dictionary&lt;object, Pair&gt; values;
+				public short Weight
+				{
+					get;
+					private set;
+				}
+
+				public AppraisalVariable()
+				{
+					this.values = new Dictionary&lt;object, Pair&gt;();
+					this.Weight = 0;
+				}
+
+				public bool AddValue(object componentType, float value, short weight)
+				{
+					Pair p;
+					if (this.values.TryGetValue(componentType, out p))
+					{
+						if (p.value == value)
+							return false;
+
+						p.value = value;
+					}
+					else
+					{
+						p = new Pair(value, weight);
+						this.values[componentType] = p;
+						this.Weight += weight;
+					}
+
+					return true;
+				}
+
+				public bool ContainsComponent(object component)
+				{
+					return this.values.ContainsKey(component);
+				}
+
+				public float NormalizedValue()
+				{
+					if (this.Weight &lt;= 0)
+						return 0;
+
+					return this.values.Aggregate(0f, (acc, pair) =&gt; acc + (pair.Value.value * pair.Value.weight)) / this.Weight;
+				}
+			}
+
+			private class ComponentAppraisalFrame : IWritableAppraisalFrame
+			{
+				private InternalAppraisalFrame parentFrame;
+				private object component;
+				private short weight;
+
+				public IBaseEvent AppraisedEvent
+				{
+					get {
+						return this.parentFrame.AppraisedEvent;
+					}
+				}
+
+				public IEnumerable&lt;string&gt; AppraisalVariables
+				{
+					get {
+						return this.parentFrame.appraisalVariables.Where(p =&gt; p.Value.ContainsComponent(this.component)).Select(p =&gt; p.Key);
+					}
+				}
+
+				public bool IsEmpty
+				{
+					get {
+						return this.parentFrame.appraisalVariables.Where(p =&gt; p.Value.ContainsComponent(this.component)).Count() == 0;
+					}
+				}
+
+				public long LastChange
+				{
+					get;
+					private set;
+				}
+
+                public Name Perspective
+                {
+                    get;
+                    set;
+                }
+
+                public ComponentAppraisalFrame(InternalAppraisalFrame parentFrame, object component, short weight)
+				{
+					this.parentFrame = parentFrame;
+					this.component = component;
+					this.weight = weight;
+					this.LastChange = 0;
+				}
+
+				public void SetAppraisalVariable(string appraisalVariableName, float value)
+				{
+					AppraisalVariable v;
+					if (!this.parentFrame.appraisalVariables.TryGetValue(appraisalVariableName, out v))
+					{
+						v = new AppraisalVariable();
+						this.parentFrame.appraisalVariables[appraisalVariableName] = v;
+					}
+
+					if (v.AddValue(this.component, value, this.weight))
+						parentFrame.LastChange = LastChange = DateTime.Now.Ticks;
+				}
+
+				public float GetAppraisalVariable(string appraisalVariable)
+				{
+					return parentFrame.GetAppraisalVariable(appraisalVariable);
+				}
+
+				public bool ContainsAppraisalVariable(string appraisalVariable)
+				{
+					return parentFrame.ContainsAppraisalVariable(appraisalVariable);
+				}
+
+				public bool TryGetAppraisalVariable(string appraisalVariable, out float value)
+				{
+					return parentFrame.TryGetAppraisalVariable(appraisalVariable, out value);
+				}
+			}
+
+			#endregion
+		}
+	}
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[16,4,16,121,1],[17,4,17,115,1],[19,39,19,43,1],[19,44,19,56,1],[23,9,23,10,0],[23,11,23,47,0],[23,48,23,49,0],[28,9,28,10,0],[28,11,28,53,0],[28,54,28,55,0],[33,5,33,9,1],[34,5,34,17,1],[39,17,39,21,1],[40,17,40,21,1],[43,13,43,44,1],[44,4,44,5,1],[45,5,45,27,1],[46,5,46,20,1],[47,4,47,5,1],[50,4,50,5,1],[51,5,51,31,1],[52,5,52,25,1],[53,5,53,31,1],[54,5,54,37,1],[55,4,55,5,1],[58,4,58,5,1],[60,5,60,68,1],[61,5,61,6,1],[62,6,62,73,1],[63,6,63,49,1],[64,5,64,6,1],[65,5,65,18,1],[66,4,66,5,1],[69,4,69,5,1],[71,5,71,71,1],[72,6,72,33,1],[73,5,73,15,0],[74,4,74,5,1],[77,4,77,5,1],[78,5,78,67,1],[79,4,79,5,1],[82,4,82,5,0],[84,5,84,71,0],[85,5,85,6,0],[86,6,86,34,0],[87,6,87,18,0],[89,5,89,15,0],[90,5,90,18,0],[91,4,91,5,0],[100,46,100,52,1],[101,5,101,6,1],[102,6,102,25,1],[103,6,103,27,1],[104,5,104,6,1],[112,6,112,10,1],[113,6,113,18,1],[116,5,116,31,1],[117,5,117,6,1],[118,6,118,51,1],[119,6,119,22,1],[120,5,120,6,1],[123,5,123,6,1],[125,6,125,56,1],[126,6,126,7,0],[127,7,127,28,0],[128,8,128,21,0],[130,7,130,23,0],[131,6,131,7,0],[133,6,133,7,1],[134,7,134,35,1],[135,7,135,38,1],[136,7,136,29,1],[137,6,137,7,1],[139,6,139,18,1],[140,5,140,6,1],[143,5,143,6,0],[144,6,144,48,0],[145,5,145,6,0],[148,5,148,6,1],[149,6,149,27,1],[150,7,150,16,0],[152,6,152,54,1],[152,54,152,98,1],[152,98,152,114,1],[152,6,152,114,1],[153,5,153,6,1],[164,10,164,11,0],[165,7,165,46,0],[166,6,166,7,0],[171,10,171,11,0],[172,7,172,61,0],[172,61,172,102,0],[172,102,172,116,0],[172,116,172,121,0],[172,121,172,123,0],[172,7,172,123,0],[173,6,173,7,0],[178,10,178,11,0],[179,7,179,61,0],[179,61,179,102,0],[179,102,179,117,0],[179,7,179,117,0],[180,6,180,7,0],[185,6,185,10,0],[186,6,186,18,1],[191,21,191,25,0],[192,21,192,25,0],[195,17,195,115,1],[196,5,196,6,1],[197,6,197,37,1],[198,6,198,33,1],[199,6,199,27,1],[200,6,200,26,1],[201,5,201,6,1],[204,5,204,6,1],[206,6,206,89,1],[207,6,207,7,1],[208,7,208,35,1],[209,7,209,70,1],[210,6,210,7,1],[212,6,212,57,1],[213,7,213,64,1],[214,5,214,6,1],[217,5,217,6,0],[218,6,218,65,0],[219,5,219,6,0],[222,5,222,6,0],[223,6,223,70,0],[224,5,224,6,0],[227,5,227,6,0],[228,6,228,79,0],[229,5,229,6,0]]);
+    </script>
+  </body>
+</html>

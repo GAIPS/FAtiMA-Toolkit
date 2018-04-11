@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\EmotionalAppraisal\AppraisalRules\AppraisalRule.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using Conditions;
+using EmotionalAppraisal.DTOs;
+using WellFormedNames;
+using AutobiographicMemory;
+
+namespace EmotionalAppraisal.AppraisalRules
+{
+	/// &lt;summary&gt;
+	///     Represents an Emotional AppraisalRule based in Construal Frames that specify values
+	///     for some of OCC&#39;s appraisal variables: Desirability, DesirabilityForOther, Like and
+	///     Praiseworthiness.
+	/// &lt;/summary&gt;
+	/// @author Jo&#227;o Dias
+	/// @author Pedro Gon&#231;alves
+	[Serializable]
+	public class AppraisalRule
+	{
+		[NonSerialized]
+		private Guid m_id;
+
+		public Guid Id { get { return m_id; } set { m_id = value; } }
+        public Name EventName { get; set; }
+        public ConditionSet Conditions { get; set; }
+
+        /// &lt;summary&gt;
+        ///     Desirability of the event
+        /// &lt;/summary&gt;
+        public Name Desirability { get; set; }
+
+        /// &lt;summary&gt;
+        ///     Praiseworthiness of the event
+        /// &lt;/summary&gt;
+        public Name Praiseworthiness { get; set; }
+
+
+	    public AppraisalRule(AppraisalRuleDTO appraisalRuleDTO)
+	    {
+		    m_id = (appraisalRuleDTO.Id == Guid.Empty)?Guid.NewGuid() : appraisalRuleDTO.Id;
+            EventName = (Name)appraisalRuleDTO.EventMatchingTemplate;
+
+            if (appraisalRuleDTO.Desirability == null)
+            {
+                Desirability = (Name)&quot;0&quot;;
+            }
+            else
+            {
+                Desirability = appraisalRuleDTO.Desirability;
+            }
+
+            if (appraisalRuleDTO.Praiseworthiness == null)
+            {
+                Praiseworthiness = (Name)&quot;0&quot;;
+            }
+            else
+            {
+                Praiseworthiness = appraisalRuleDTO.Praiseworthiness;
+            }
+
+			Conditions = appraisalRuleDTO.Conditions==null ? new ConditionSet() : new ConditionSet(appraisalRuleDTO.Conditions);
+	    }
+
+		/// &lt;summary&gt;
+		///     Clone Constructor
+		/// &lt;/summary&gt;
+		/// &lt;param name=&quot;other&quot;&gt;the reaction to clone&lt;/param&gt;
+		public AppraisalRule(AppraisalRule other)
+		{
+			m_id = other.m_id;
+			EventName = other.EventName;
+			Conditions = new ConditionSet(other.Conditions);
+			Desirability = other.Desirability;
+			Praiseworthiness = other.Praiseworthiness;
+		}
+
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[22,24,22,25,1],[22,26,22,38,1],[22,39,22,40,1],[22,45,22,46,1],[22,47,22,60,1],[22,61,22,62,1],[23,33,23,37,1],[23,38,23,42,1],[24,42,24,46,1],[24,47,24,51,1],[29,36,29,40,1],[29,41,29,45,1],[34,40,34,44,1],[34,45,34,49,1],[37,6,37,61,1],[38,6,38,7,1],[39,7,39,87,1],[40,13,40,70,1],[42,13,42,55,1],[43,13,43,14,1],[44,17,44,42,1],[45,13,45,14,1],[47,13,47,14,1],[48,17,48,62,1],[49,13,49,14,1],[51,13,51,59,1],[52,13,52,14,1],[53,17,53,46,1],[54,13,54,14,1],[56,13,56,14,1],[57,17,57,70,1],[58,13,58,14,1],[60,4,60,120,1],[61,6,61,7,1],[67,3,67,44,0],[68,3,68,4,0],[69,4,69,22,0],[70,4,70,32,0],[71,4,71,52,0],[72,4,72,38,0],[73,4,73,46,0],[74,3,74,4,0]]);
+    </script>
+  </body>
+</html>

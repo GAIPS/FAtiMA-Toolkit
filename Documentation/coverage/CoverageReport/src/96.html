@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\CommeillFaut\CommeillFautAsset.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using CommeillFaut.DTOs;
+using SerializationUtilities;
+using WellFormedNames;
+using GAIPS.Rage;
+using KnowledgeBase;
+
+namespace CommeillFaut
+{
+    [Serializable]
+    public sealed class CommeillFautAsset  : LoadableAsset&lt;CommeillFautAsset&gt;, ICustomSerialization
+    {
+        public KB m_kB;
+        private List&lt;SocialExchange&gt; m_SocialExchanges { get; set; }
+
+        public IEnumerable&lt;SocialExchangeDTO&gt; GetSocialExchanges()
+        {
+            return m_SocialExchanges.Select(se =&gt; se.ToDTO());
+        }
+
+        /// &lt;summary&gt;
+        /// The Comme ill Faut constructor
+        /// &lt;/summary&gt;
+        public CommeillFautAsset()
+        {
+            m_kB = null;
+            m_SocialExchanges = new List&lt;SocialExchange&gt;();
+        }
+
+        /// &lt;summary&gt;
+        /// Binds a KB to this Comme ill Faut Asset instance. Without a KB instance binded to this asset, 
+        /// comme ill faut evaluations will not work properly.
+        /// InvalidateCachedCIF() is automatically called by this method.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;kb&quot;&gt;The Knowledge Base to be binded to this asset.&lt;/param&gt;
+        public void RegisterKnowledgeBase(KB kB)
+        {
+            if (m_kB != null)
+            {
+                //Unregist bindings
+                UnbindToRegistry(m_kB);
+                m_kB = null;
+            }
+
+            m_kB = kB;
+            BindToRegistry(kB);
+        }
+
+        #region Dynamic Properties
+
+        public void BindToRegistry(IDynamicPropertiesRegistry registry)
+        {
+            registry.RegistDynamicProperty(VOLITION_PROPERTY_TEMPLATE, VolitionPropertyCalculator);
+        }
+
+        private static readonly Name VOLITION_PROPERTY_TEMPLATE = (Name)&quot;Volition&quot;;
+
+        public IEnumerable&lt;DynamicPropertyResult&gt; VolitionPropertyCalculator(IQueryContext context, Name socialMoveName, Name initiator, Name Target)
+        {
+            Dictionary&lt;SubstitutionSet, Name&gt; ret = new Dictionary&lt;SubstitutionSet, Name&gt;();
+
+            var stringVolition = &quot;&quot;;
+            var possibleSE = new List&lt;SocialExchange&gt;();
+            bool SEConstraint = false;
+
+
+            if (context.Perspective != Name.SELF_SYMBOL)
+                yield break;
+
+            if (initiator == Target)
+                yield break;
+
+            List&lt;Name&gt; possibleSEs = new List&lt;Name&gt;();
+
+            if (socialMoveName.IsVariable)
+            {
+                foreach (var s in context.AskPossibleProperties(socialMoveName))
+                    possibleSEs.Add(s.Item1.Value);
+
+                foreach (var se in this.m_SocialExchanges)
+                    possibleSEs.Add(se.Name);
+            }
+            else possibleSEs.Add(socialMoveName);
+
+            List&lt;Name&gt; possibleInitiators = new List&lt;Name&gt;();
+
+            if (initiator.IsVariable)
+            {
+                foreach (var s in context.AskPossibleProperties(initiator))
+                    possibleInitiators.Add(s.Item1.Value);
+
+                if (!possibleInitiators.Contains(context.Queryable.Perspective))
+                    possibleInitiators.Add(context.Queryable.Perspective);
+            }
+            else possibleInitiators.Add(initiator);
+
+            List&lt;Name&gt; possibleTargets = new List&lt;Name&gt;();
+
+            if (Target.IsVariable)
+            {
+                foreach (var s in context.AskPossibleProperties(Target))
+                    possibleTargets.Add(s.Item1.Value);
+            }
+            else possibleTargets.Add(Target);
+
+            foreach (var seName in possibleSEs)
+            {
+                if (!m_SocialExchanges.Exists(x =&gt; x.Name == seName))
+                    continue;
+
+                foreach (var init in possibleInitiators)
+
+                    foreach (var targ in possibleTargets)
+                    {
+                        if (init == targ) continue;
+
+
+                        var volValue = CalculateSocialMoveVolition(seName, init, targ);
+
+
+                        if (volValue != -1)
+                        {
+
+                            var subSet = new SubstitutionSet();
+
+
+                            stringVolition = CalculateStyle(volValue);
+
+                            if (socialMoveName.IsVariable)
+                            {
+                                var sub = new Substitution(socialMoveName, new ComplexValue(seName, 1));
+                                subSet.AddSubstitution(sub);
+                            }
+
+                            if (initiator.IsVariable)
+                            {
+                                var sub = new Substitution(initiator, new ComplexValue(init, 1));
+                                subSet.AddSubstitution(sub);
+                            }
+
+                            if (Target.IsVariable)
+                            {
+                                var sub = new Substitution(Target, new ComplexValue(targ, 1));
+                                subSet.AddSubstitution(sub);
+                            }
+
+                            if (context.Constraints.Count() &gt; 0)
+
+                                foreach (var c in context.Constraints)
+                                {
+                                    if (c.Conflicts(subSet))
+                                        continue;
+
+                                    c.AddSubstitutions(subSet);
+
+                                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(stringVolition)), c);
+                                }
+
+                            else yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(stringVolition)), subSet);
+
+                        }
+                    }
+            }
+        }
+
+      public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
+        {
+            registry.UnregistDynamicProperty((Name)&quot;Volition&quot;);
+        }
+
+        #endregion
+
+        public Guid AddOrUpdateExchange(SocialExchangeDTO dto)
+        {
+            var se = new SocialExchange(dto);
+            var str = se.ToString();
+            var idx = m_SocialExchanges.FindIndex(x =&gt; x.Id == dto.Id);
+            if (idx &lt; 0)
+            {
+                m_SocialExchanges.Add(se);
+            }
+            else
+                m_SocialExchanges[idx] = se;
+            
+            return se.Id;
+        }
+
+        public void RemoveSocialExchange(Guid id)
+        {
+            var exchange = m_SocialExchanges.Find(se =&gt; se.Id == id);
+            if (exchange != null)
+                m_SocialExchanges.Remove(exchange);
+        }
+
+        public string CalculateStyle(float value)
+        {
+        
+            if(value &gt; 0.6)
+                return value &lt;= 1 ? &quot;Positive&quot; : &quot;VeryPositive&quot;;
+
+            if (value &lt; 0.4)
+                return value &gt;= 0 ? &quot;Negative&quot; : &quot;VeryNegative&quot;;
+           
+            return &quot;Neutral&quot;;
+        }
+
+        public void UpdateSocialExchange(SocialExchangeDTO newReaction)
+        {
+            m_SocialExchanges.Remove(m_SocialExchanges.Find(x =&gt; x.Name == newReaction.Name));
+
+            m_SocialExchanges.Add(new SocialExchange(newReaction));
+        }
+
+    
+        public SocialExchangeDTO GetSocialExchange(Guid id)
+        {
+            return m_SocialExchanges.Find(x =&gt; x.Id == id).ToDTO();
+        }
+
+
+        public float CalculateSocialMoveVolition(Name seName, Name initiator, Name target)
+        {
+         return   m_SocialExchanges.Find(x =&gt; x.Name == seName).VolitionValue(initiator, target, this.m_kB);
+        }
+
+
+        #region Custom Serialization
+
+        public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+        {
+            
+               dataHolder.SetValue(&quot;SocialExchanges&quot;, m_SocialExchanges.ToArray());
+
+        }
+
+        public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+        {
+            
+            m_SocialExchanges = new List&lt;SocialExchange&gt;(dataHolder.GetValue&lt;SocialExchange[]&gt;(&quot;SocialExchanges&quot;));
+        }
+
+
+        #endregion
+
+       
+
+        /// &lt;summary&gt;
+        /// Load a Comme ill Faut Asset definition from a DTO object.
+        /// &lt;/summary&gt;
+        /// &lt;remarks&gt;
+        /// Use this to procedurally configure the asset.
+        /// &lt;/remarks&gt;
+        /// &lt;param name=&quot;dto&quot;&gt;
+        /// The DTO containing the data to load
+        /// &lt;/param&gt;
+        public void LoadFromDTO(CommeillFautDTO dto)
+        {
+            m_SocialExchanges.Clear();
+
+
+            if (dto._SocialExchangesDtos != null)
+            {
+                foreach (var c in dto._SocialExchangesDtos)
+                {
+                 m_SocialExchanges.Add(new SocialExchange(c));
+                }
+            }
+
+        }
+
+        /// &lt;summary&gt;
+        /// Returns a DTO containing all the asset&#39;s configurations.
+        /// &lt;/summary&gt;
+        public CommeillFautDTO GetDTO()
+        {
+            var at = m_SocialExchanges.Select(a =&gt; a.ToDTO()).ToArray();
+          
+            return new CommeillFautDTO() { _SocialExchangesDtos = at};
+        }
+
+   
+
+        /// @cond DOXYGEN_SHOULD_SKIP_THIS
+
+        protected override string OnAssetLoaded()
+        {
+            return null;
+        }
+
+        /// @endcond
+    }
+
+}
+
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[16,58,16,62,1],[16,63,16,67,1],[19,9,19,10,1],[20,13,20,51,1],[20,51,20,61,1],[20,61,20,63,1],[20,13,20,63,1],[21,9,21,10,1],[26,9,26,35,1],[27,9,27,10,1],[28,13,28,25,1],[29,13,29,60,1],[30,9,30,10,1],[39,9,39,10,1],[40,13,40,30,1],[41,13,41,14,0],[43,17,43,40,0],[44,17,44,29,0],[45,13,45,14,0],[47,13,47,23,1],[48,13,48,32,1],[49,9,49,10,1],[54,9,54,10,1],[55,13,55,100,1],[56,9,56,10,1],[58,9,58,84,1],[61,9,61,10,1],[62,13,62,93,1],[64,13,64,37,1],[65,13,65,57,1],[66,13,66,39,1],[69,13,69,57,1],[70,17,70,29,0],[72,13,72,37,1],[73,17,73,29,1],[75,13,75,55,1],[77,13,77,43,1],[78,13,78,14,1],[79,17,79,24,1],[79,26,79,31,1],[79,32,79,34,1],[79,35,79,80,1],[80,21,80,52,1],[82,17,82,24,1],[82,26,82,32,1],[82,33,82,35,1],[82,36,82,58,1],[83,21,83,46,1],[84,13,84,14,1],[85,18,85,50,1],[87,13,87,62,1],[89,13,89,38,1],[90,13,90,14,1],[91,17,91,24,1],[91,26,91,31,1],[91,32,91,34,1],[91,35,91,75,1],[92,21,92,59,1],[94,17,94,81,1],[95,21,95,75,1],[96,13,96,14,1],[97,18,97,52,1],[99,13,99,59,1],[101,13,101,35,1],[102,13,102,14,1],[103,17,103,24,1],[103,26,103,31,1],[103,32,103,34,1],[103,35,103,72,1],[104,21,104,56,1],[105,13,105,14,1],[106,18,106,46,1],[108,13,108,20,1],[108,22,108,32,1],[108,33,108,35,1],[108,36,108,47,1],[109,13,109,14,1],[110,17,110,52,1],[110,52,110,68,1],[110,68,110,70,1],[110,17,110,70,1],[111,21,111,30,1],[113,17,113,24,1],[113,26,113,34,1],[113,35,113,37,1],[113,38,113,56,1],[115,21,115,28,1],[115,30,115,38,1],[115,39,115,41,1],[115,42,115,57,1],[116,21,116,22,1],[117,25,117,42,1],[117,43,117,52,1],[120,25,120,88,1],[123,25,123,44,1],[124,25,124,26,1],[126,29,126,64,1],[129,29,129,71,1],[131,29,131,59,1],[132,29,132,30,1],[133,33,133,105,1],[134,33,134,61,1],[135,29,135,30,1],[137,29,137,54,1],[138,29,138,30,1],[139,33,139,98,1],[140,33,140,61,1],[141,29,141,30,1],[143,29,143,51,1],[144,29,144,30,1],[145,33,145,95,1],[146,33,146,61,1],[147,29,147,30,1],[149,29,149,65,1],[151,33,151,40,1],[151,42,151,47,1],[151,48,151,50,1],[151,51,151,70,1],[152,33,152,34,1],[153,37,153,61,1],[154,41,154,50,1],[156,37,156,64,1],[158,37,158,129,1],[159,33,159,34,1],[161,34,161,131,0],[163,25,163,26,1],[164,21,164,22,1],[165,13,165,14,1],[166,9,166,10,1],[169,9,169,10,0],[170,13,170,64,0],[171,9,171,10,0],[176,9,176,10,1],[177,13,177,46,1],[178,13,178,37,1],[179,13,179,56,1],[179,56,179,70,1],[179,70,179,72,1],[179,13,179,72,1],[180,13,180,25,1],[181,13,181,14,1],[182,17,182,43,1],[183,13,183,14,1],[185,17,185,45,0],[187,13,187,26,1],[188,9,188,10,1],[191,9,191,10,1],[192,13,192,57,1],[192,57,192,68,1],[192,68,192,70,1],[192,13,192,70,1],[193,13,193,34,1],[194,17,194,52,1],[195,9,195,10,1],[198,9,198,10,1],[200,13,200,28,1],[201,17,201,65,1],[203,13,203,29,1],[204,17,204,65,1],[206,13,206,30,1],[207,9,207,10,1],[210,9,210,10,1],[211,13,211,66,1],[211,66,211,92,1],[211,92,211,95,1],[211,13,211,95,1],[213,13,213,68,1],[214,9,214,10,1],[218,9,218,10,0],[219,13,219,48,0],[219,48,219,58,0],[219,58,219,68,0],[219,13,219,68,0],[220,9,220,10,0],[224,9,224,10,1],[225,10,225,47,1],[225,47,225,63,1],[225,63,225,109,1],[225,10,225,109,1],[226,9,226,10,1],[232,9,232,10,1],[234,16,234,84,1],[236,9,236,10,1],[239,9,239,10,1],[241,13,241,116,1],[242,9,242,10,1],[259,9,259,10,1],[260,13,260,39,1],[263,13,263,50,1],[264,13,264,14,1],[265,17,265,24,1],[265,26,265,31,1],[265,32,265,34,1],[265,35,265,59,1],[266,17,266,18,1],[267,18,267,63,1],[268,17,268,18,1],[269,13,269,14,1],[271,9,271,10,1],[277,9,277,10,1],[278,13,278,52,1],[278,52,278,61,1],[278,61,278,73,1],[278,13,278,73,1],[280,13,280,71,1],[281,9,281,10,1],[288,9,288,10,0],[289,13,289,25,0],[290,9,290,10,0]]);
+    </script>
+  </body>
+</html>

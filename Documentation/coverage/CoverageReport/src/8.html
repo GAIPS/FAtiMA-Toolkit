@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\EmotionalAppraisal\ConcreteEmotionalState.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using AutobiographicMemory;
+using EmotionalAppraisal.DTOs;
+using SerializationUtilities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Utilities;
+using WellFormedNames;
+
+namespace EmotionalAppraisal
+{
+    [Serializable]
+    public class ConcreteEmotionalState : IEmotionalState, ICustomSerialization
+    {
+        //private EmotionalAppraisalAsset m_parent = null;
+        private Dictionary&lt;string, ActiveEmotion&gt; emotionPool;
+
+        private Mood mood;
+        private EmotionalAppraisalConfiguration appraisalConfiguration;
+        private ulong tick;
+
+        public ConcreteEmotionalState()
+        {
+            this.emotionPool = new Dictionary&lt;string, ActiveEmotion&gt;();
+
+            this.mood = new Mood();
+            this.appraisalConfiguration = new EmotionalAppraisalConfiguration();
+        }
+
+        private float DeterminePotential(IEmotion emotion)
+        {
+            float potetial = emotion.Potential;
+            float scale = (float)emotion.Valence;
+
+            potetial += scale * (this.mood.MoodValue * this.appraisalConfiguration.MoodInfluenceOnEmotionFactor);
+            return potetial &lt; 0 ? 0 : potetial;
+        }
+
+        public EmotionDTO AddActiveEmotion(EmotionDTO emotion, AM am)
+        {
+            var activeEmotion = new ActiveEmotion(emotion, am, 1, 1);
+
+            if (emotionPool.ContainsKey(calculateHashString(activeEmotion)))
+            {
+                throw new ArgumentException(&quot;This given emotion is already related to given cause&quot;, nameof(emotion));
+            }
+
+            emotionPool.Add(calculateHashString(activeEmotion), activeEmotion);
+            activeEmotion.GetCause(am).LinkEmotion(activeEmotion.EmotionType);
+            return activeEmotion.ToDto(am);
+        }
+
+        public void RemoveEmotion(EmotionDTO emotion, AM am)
+        {
+            var activeEmotion = new ActiveEmotion(emotion, am, 1, 1);
+            emotionPool.Remove(calculateHashString(activeEmotion));
+        }
+
+        /// &lt;summary&gt;
+        /// unique hash string calculation function
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;emotion&quot;&gt;&lt;/param&gt;
+        private static string calculateHashString(IEmotion emotion)
+        {
+            StringBuilder builder = ObjectPool&lt;StringBuilder&gt;.GetObject();
+            try
+            {
+                var eventType = emotion.EventName.GetNTerm(1);
+                //for property change events the cause of the emotion is just the property names
+                //this means that if a new change to a property occcurs the previous emotion associated with it will be reappraised
+                if (eventType.ToString().EqualsIgnoreCase(AMConsts.PROPERTY_CHANGE))
+                {
+                    builder.Append(emotion.EventName.GetNTerm(3));
+                }
+                else
+                {
+                    builder.Append(emotion.CauseId);
+                }
+
+                using (var it = emotion.AppraisalVariables.GetEnumerator())
+                {
+                    while (it.MoveNext())
+                    {
+                        builder.Append(&quot;-&quot;);
+                        builder.Append(it.Current);
+                    }
+                }
+
+                return builder.ToString();
+            }
+            finally
+            {
+                builder.Length = 0;
+                ObjectPool&lt;StringBuilder&gt;.Recycle(builder);
+            }
+        }
+
+        /// &lt;summary&gt;
+        /// Creates and Adds to the emotional state a new ActiveEmotion based on
+        /// a received BaseEmotion. However, the ActiveEmotion will be created
+        /// and added to the emotional state only if the final intensity for
+        /// the emotion surpasses the threshold for the emotion type.
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;emotion&quot;&gt;the BaseEmotion that creates the ActiveEmotion&lt;/param&gt;
+        /// &lt;returns&gt;the ActiveEmotion created if it was added to the EmotionalState.
+        /// Otherwise, if the intensity of the emotion was not enough to be added to the EmotionalState, the method returns null&lt;/returns&gt;
+        public IActiveEmotion AddEmotion(IEmotion emotion, AM am, EmotionDispositionDTO disposition, ulong _tick)
+        {
+            if (emotion == null)
+                return null;
+            tick = _tick;
+            ActiveEmotion auxEmotion = null;
+            bool reappraisal = false;
+
+            var decay = disposition.Decay;
+
+            ActiveEmotion previousEmotion;
+            if (emotionPool.TryGetValue(calculateHashString(emotion), out previousEmotion))
+            {
+                //if this test is true, it means that this is 100% a reappraisal of the same event
+                //if not true, it is not a reappraisal, but the appraisal of a new event of the same
+                //type
+                if (previousEmotion.CauseId == emotion.CauseId)
+                    reappraisal = true;
+
+                //in both cases we need to remove the old emotion. In the case of reappraisal it is obvious.
+                //In the case of the appraisal of a similar event, we want to aggregate all the similar resulting
+                //emotions into only one
+                emotionPool.Remove(calculateHashString(emotion));
+            }
+
+            float potential = DeterminePotential(emotion);
+            if (potential &gt; disposition.Threshold)
+            {
+                auxEmotion = new ActiveEmotion(emotion, potential, disposition.Threshold, decay, tick);
+                emotionPool.Add(calculateHashString(emotion), auxEmotion);
+                if (!reappraisal)
+                    this.mood.UpdateMood(auxEmotion, this.appraisalConfiguration, tick);
+
+                auxEmotion.GetCause(am).LinkEmotion(auxEmotion.EmotionType);
+            }
+
+            return auxEmotion;
+        }
+
+        /// &lt;summary&gt;
+        /// Clears all the emotions in the EmotionalState and reset the mood to 0
+        /// &lt;/summary&gt;
+        public void Clear()
+        {
+            this.emotionPool.Clear();
+            this.mood = new Mood();
+        }
+
+        /// &lt;summary&gt;
+        /// Decays all emotions, mood and arousal
+        /// &lt;/summary&gt;
+        public void Decay(ulong tick)
+        {
+            this.mood.DecayMood(this.appraisalConfiguration, tick);
+            HashSet&lt;string&gt; toRemove = ObjectPool&lt;HashSet&lt;string&gt;&gt;.GetObject();
+            using (var it = this.emotionPool.GetEnumerator())
+            {
+                while (it.MoveNext())
+                {
+                    it.Current.Value.DecayEmotion(this.appraisalConfiguration, tick);
+                    if (!it.Current.Value.IsRelevant)
+                    {
+                        toRemove.Add(it.Current.Key);
+                    }
+                }
+            }
+            foreach (var key in toRemove)
+                this.emotionPool.Remove(key);
+
+            toRemove.Clear();
+            ObjectPool&lt;HashSet&lt;string&gt;&gt;.Recycle(toRemove);
+        }
+
+        public IEnumerable&lt;IActiveEmotion&gt; GetEmotionsByType(string emotionType)
+        {
+            return emotionPool.Values.Where(emotion =&gt; string.Equals(emotion.EmotionType, emotionType, StringComparison.CurrentCultureIgnoreCase)).Cast&lt;IActiveEmotion&gt;();
+        }
+
+        /// &lt;summary&gt;
+        /// Searches for a given emotion in the EmotionalState
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;emotionKey&quot;&gt;a string that corresponds to a hashkey that represents the emotion in the EmotionalState&lt;/param&gt;
+        /// &lt;returns&gt;the found ActiveEmotion if it exists in the EmotionalState, null if the emotion doesn&#39;t exist anymore&lt;/returns&gt;
+        public IActiveEmotion GetEmotion(string emotionKey)
+        {
+            ActiveEmotion emo;
+            if (this.emotionPool.TryGetValue(emotionKey, out emo))
+                return emo;
+            return null;
+        }
+
+        /// &lt;summary&gt;
+        /// Searches for a given emotion in the EmotionalState
+        /// &lt;/summary&gt;
+        /// &lt;param name=&quot;emotionKey&quot;&gt;a BaseEmotion that serves as a template to find the active emotion in the EmotionalState&lt;/param&gt;
+        /// &lt;returns&gt;the found ActiveEmotion if it exists in the EmotionalState, null if the emotion doesn&#39;t exist anymore&lt;/returns&gt;
+        public IActiveEmotion GetEmotion(IEmotion emotion)
+        {
+            return GetEmotion(calculateHashString(emotion));
+        }
+
+        public void RemoveEmotion(IActiveEmotion em, AM am)
+        {
+            if (em != null)
+                this.emotionPool.Remove(calculateHashString(em));
+        }
+
+        public IEnumerable&lt;string&gt; GetEmotionsKeys()
+        {
+            return this.emotionPool.Keys;
+        }
+
+        public IEnumerable&lt;IActiveEmotion&gt; GetAllEmotions()
+        {
+            return this.emotionPool.Values.Cast&lt;IActiveEmotion&gt;();
+        }
+
+        public float Mood
+        {
+            get
+            {
+                return this.mood.MoodValue;
+            }
+            set
+            {
+                this.mood.SetMoodValue(value, this.appraisalConfiguration);
+            }
+        }
+
+        public IActiveEmotion GetStrongestEmotion()
+        {
+            return this.emotionPool.Values.MaxValue(emo =&gt; emo.Intensity);
+        }
+
+        public IActiveEmotion GetStrongestEmotion(Name cause, AM am)
+        {
+            var set = this.emotionPool.Values.Where(emo =&gt; emo.GetCause(am).EventName.Match(cause));
+            return set.MaxValue(emo =&gt; emo.Intensity);
+        }
+
+        public override string ToString()
+        {
+            return $&quot;Mood: {this.mood} Emotions: {this.emotionPool}&quot;;
+        }
+
+        public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+        {
+            dataHolder.SetValue(&quot;Mood&quot;, mood.MoodValue);
+            dataHolder.SetValue(&quot;initialTick&quot;, mood.InitialTick);
+            dataHolder.SetValue(&quot;EmotionalPool&quot;, emotionPool.Values.ToArray());
+            dataHolder.SetValue(&quot;AppraisalConfiguration&quot;, this.appraisalConfiguration);
+        }
+
+        public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
+        {
+            if (emotionPool == null)
+                emotionPool = new Dictionary&lt;string, ActiveEmotion&gt;();
+            else
+                emotionPool.Clear();
+
+            if (mood == null)
+                mood = new Mood();
+
+            this.appraisalConfiguration = dataHolder.GetValue&lt;EmotionalAppraisalConfiguration&gt;(&quot;AppraisalConfiguration&quot;);
+            if (this.appraisalConfiguration == null)
+                this.appraisalConfiguration = new EmotionalAppraisalConfiguration();
+
+            mood.SetMoodValue(dataHolder.GetValue&lt;float&gt;(&quot;Mood&quot;), this.appraisalConfiguration);
+            mood.SetTick0Value(dataHolder.GetValue&lt;ulong&gt;(&quot;initialTick&quot;));
+            context.PushContext();
+            {
+                context.Context = (ulong)0; //Tick
+
+                var emotions = dataHolder.GetValue&lt;ActiveEmotion[]&gt;(&quot;EmotionalPool&quot;);
+                foreach (var emotion in emotions)
+                {
+                    emotionPool.Add(calculateHashString(emotion), emotion);
+                }
+            }
+            context.PopContext();
+        }
+    }
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[23,9,23,40,1],[24,9,24,10,1],[25,13,25,72,1],[27,13,27,36,1],[28,13,28,81,1],[29,9,29,10,1],[32,9,32,10,1],[33,13,33,48,1],[34,13,34,50,1],[36,13,36,114,1],[37,13,37,48,1],[38,9,38,10,1],[41,9,41,10,0],[42,13,42,70,0],[44,13,44,77,0],[45,13,45,14,0],[46,17,46,118,0],[49,13,49,80,0],[50,13,50,79,0],[51,13,51,44,0],[52,9,52,10,0],[55,9,55,10,0],[56,13,56,70,0],[57,13,57,68,0],[58,9,58,10,0],[65,9,65,10,1],[66,13,66,75,1],[68,13,68,14,1],[69,17,69,63,1],[72,17,72,85,1],[73,17,73,18,1],[74,21,74,67,1],[75,17,75,18,1],[77,17,77,18,1],[78,21,78,53,1],[79,17,79,18,1],[81,24,81,75,1],[82,17,82,18,1],[83,21,83,42,1],[84,21,84,22,1],[85,25,85,45,1],[86,25,86,52,1],[87,21,87,22,1],[88,17,88,18,1],[90,17,90,43,1],[93,13,93,14,1],[94,17,94,36,1],[95,17,95,60,1],[96,13,96,14,1],[97,9,97,10,1],[109,9,109,10,1],[110,13,110,33,1],[111,17,111,29,0],[112,13,112,26,1],[113,13,113,45,1],[114,13,114,38,1],[116,13,116,43,1],[119,13,119,92,1],[120,13,120,14,0],[124,17,124,64,0],[125,21,125,40,0],[130,17,130,66,0],[131,13,131,14,0],[133,13,133,59,1],[134,13,134,51,1],[135,13,135,14,1],[136,17,136,104,1],[137,17,137,75,1],[138,17,138,34,1],[139,21,139,89,1],[141,17,141,77,1],[142,13,142,14,1],[144,13,144,31,1],[145,9,145,10,1],[151,9,151,10,0],[152,13,152,38,0],[153,13,153,36,0],[154,9,154,10,0],[160,9,160,10,1],[161,13,161,68,1],[162,13,162,80,1],[163,20,163,61,1],[164,13,164,14,1],[165,17,165,38,1],[166,17,166,18,1],[167,21,167,86,1],[168,21,168,54,1],[169,21,169,22,0],[170,25,170,54,0],[171,21,171,22,0],[172,17,172,18,1],[173,13,173,14,1],[174,13,174,20,1],[174,22,174,29,0],[174,30,174,32,1],[174,33,174,41,1],[175,17,175,46,0],[177,13,177,30,1],[178,13,178,59,1],[179,9,179,10,1],[182,9,182,10,1],[183,13,183,56,1],[183,56,183,146,1],[183,146,183,171,1],[183,13,183,171,1],[184,9,184,10,1],[192,9,192,10,0],[194,13,194,67,0],[195,17,195,28,0],[196,13,196,25,0],[197,9,197,10,0],[205,9,205,10,0],[206,13,206,61,0],[207,9,207,10,0],[210,9,210,10,0],[211,13,211,28,0],[212,17,212,66,0],[213,9,213,10,0],[216,9,216,10,0],[217,13,217,42,0],[218,9,218,10,0],[221,9,221,10,1],[222,13,222,67,1],[223,9,223,10,1],[228,13,228,14,1],[229,17,229,44,1],[230,13,230,14,1],[232,13,232,14,1],[233,17,233,76,1],[234,13,234,14,1],[238,9,238,10,1],[239,13,239,60,1],[239,60,239,73,1],[239,73,239,75,1],[239,13,239,75,1],[240,9,240,10,1],[243,9,243,10,1],[244,13,244,60,1],[244,60,244,99,1],[244,99,244,101,1],[244,13,244,101,1],[245,13,245,40,1],[245,40,245,53,1],[245,53,245,55,1],[245,13,245,55,1],[246,9,246,10,1],[249,9,249,10,0],[250,13,250,70,0],[251,9,251,10,0],[254,9,254,10,1],[255,13,255,57,1],[256,13,256,66,1],[257,13,257,80,1],[258,13,258,88,1],[259,9,259,10,1],[262,9,262,10,1],[263,13,263,37,1],[264,17,264,71,1],[266,17,266,37,0],[268,13,268,30,1],[269,17,269,35,1],[271,13,271,122,1],[272,13,272,53,1],[273,17,273,85,0],[275,13,275,96,1],[276,13,276,75,1],[277,13,277,35,1],[278,13,278,14,1],[279,17,279,44,1],[281,17,281,86,1],[282,17,282,24,1],[282,26,282,37,0],[282,38,282,40,1],[282,41,282,49,1],[283,17,283,18,0],[284,21,284,76,0],[285,17,285,18,0],[286,13,286,14,1],[287,13,287,34,1],[288,9,288,10,1]]);
+    </script>
+  </body>
+</html>

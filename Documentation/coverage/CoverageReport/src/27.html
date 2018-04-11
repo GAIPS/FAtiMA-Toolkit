@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\WellFormedNames\ComplexValue.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System.Globalization;
+using Utilities;
+using WellFormedNames;
+
+namespace WellFormedNames
+{
+    public class ComplexValue
+    {
+        public static ComplexValue Deserialize(string value)
+        {
+            var aux = value.RemoveWhiteSpace();
+            if (aux.Contains(&quot;,&quot;))
+            {
+                var split = aux.Split(&#39;,&#39;);
+                return new ComplexValue((Name)split[0], float.Parse(split[1], CultureInfo.InvariantCulture));
+            }
+            else
+            {
+                return new ComplexValue((Name)aux);
+            }
+        }
+
+        public Name Value { get; private set; }
+        public float Certainty { get; set; }
+
+        public ComplexValue(Name value)
+        {
+            this.Value = value;
+            this.Certainty = 1.0f;
+        }
+
+        public ComplexValue(Name value, float certainty)
+        {
+            this.Value = value;
+            this.Certainty = certainty;
+        }
+
+        public string Serialize()
+        {
+            return this.Value + &quot;, &quot; + this.Certainty.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public override bool Equals(object obj)
+        {
+            ComplexValue v = obj as ComplexValue;
+            if (v == null)
+                return false;
+
+            var result = this.Value == v.Value &amp;&amp; this.Certainty == v.Certainty;
+            return result;
+        }
+
+        public override string ToString()
+        {
+            return this.Serialize();
+        }
+
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[10,9,10,10,0],[11,13,11,48,0],[12,13,12,35,0],[13,13,13,14,0],[14,17,14,44,0],[15,17,15,110,0],[18,13,18,14,0],[19,17,19,52,0],[21,9,21,10,0],[23,29,23,33,1],[23,34,23,46,1],[24,34,24,38,1],[24,39,24,43,1],[26,9,26,40,1],[27,9,27,10,1],[28,13,28,32,1],[29,13,29,35,1],[30,9,30,10,1],[32,9,32,57,1],[33,9,33,10,1],[34,13,34,32,1],[35,13,35,40,1],[36,9,36,10,1],[39,9,39,10,1],[40,13,40,94,1],[41,9,41,10,1],[44,9,44,10,1],[45,13,45,50,1],[46,13,46,27,1],[47,17,47,30,0],[49,13,49,81,1],[50,13,50,27,1],[51,9,51,10,1],[54,9,54,10,1],[55,13,55,37,1],[56,9,56,10,1]]);
+    </script>
+  </body>
+</html>

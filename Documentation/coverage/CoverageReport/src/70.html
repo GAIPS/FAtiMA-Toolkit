@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\SocialImportance\AttributionRule.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using Conditions;
+using SocialImportance.DTOs;
+using WellFormedNames;
+
+namespace SocialImportance
+{
+	[Serializable]
+	internal class AttributionRule
+	{
+		[NonSerialized]
+		public Guid GUID;
+		public string RuleName { get; private set; }
+        public Name Target { get; private set; }
+		public Name Value { get; private set; }
+		public ConditionSet Conditions { get; private set; }
+
+		protected AttributionRule()
+		{
+			GUID = Guid.NewGuid();
+		}
+
+		public AttributionRule(AttributionRuleDTO dto) : this()
+		{
+			SetData(dto);
+		}
+
+		public void SetData(AttributionRuleDTO dto)
+		{
+			RuleName = dto.Description;
+			Target = dto.Target;
+			Value = dto.Value;
+			Conditions = new ConditionSet(dto.Conditions);
+		}
+
+		public AttributionRuleDTO ToDTO()
+		{
+			return new AttributionRuleDTO() {
+                Id = GUID,
+                Description = RuleName,
+                Target = Target,
+                Value = Value,
+                Conditions = Conditions.ToDTO()};
+		}
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[13,28,13,32,0],[13,33,13,45,1],[14,30,14,34,1],[14,35,14,47,1],[15,23,15,27,1],[15,28,15,40,1],[16,36,16,40,1],[16,41,16,53,1],[18,3,18,30,1],[19,3,19,4,1],[20,4,20,26,1],[21,3,21,4,1],[23,52,23,58,1],[24,3,24,4,1],[25,4,25,17,1],[26,3,26,4,1],[29,3,29,4,1],[30,4,30,31,1],[31,4,31,24,1],[32,4,32,22,1],[33,4,33,50,1],[34,3,34,4,1],[37,3,37,4,0],[38,4,43,50,0],[44,3,44,4,0]]);
+    </script>
+  </body>
+</html>

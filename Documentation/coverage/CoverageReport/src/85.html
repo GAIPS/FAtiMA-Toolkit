@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\AutobiographicMemory\DTOs\EventDTO.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+
+namespace AutobiographicMemory.DTOs
+{
+    /// &lt;summary&gt;
+    /// Base Data Type Object Class for the representation of an Event
+    /// &lt;/summary&gt;
+    [Serializable]
+    public class EventDTO
+    {
+		/// &lt;summary&gt;
+		/// The unique identifier of the event
+		/// &lt;/summary&gt;
+        public uint Id { get; set; }
+		/// &lt;summary&gt;
+		/// The full string representation of this event
+		/// &lt;/summary&gt;
+        public string Event { get; set; }
+		/// &lt;summary&gt;
+		/// The subject of the event (ie. Who is responsible responsible for this event)
+		/// &lt;/summary&gt;
+		public string Subject { get; set; }
+		/// &lt;summary&gt;
+		/// The timestamp/tick in which this event was stored
+		/// &lt;/summary&gt;
+		public ulong Time { get; set; }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[14,26,14,30,0],[14,31,14,35,1],[18,31,18,35,1],[18,36,18,40,1],[22,27,22,31,0],[22,32,22,36,1],[26,23,26,27,0],[26,28,26,32,1]]);
+    </script>
+  </body>
+</html>

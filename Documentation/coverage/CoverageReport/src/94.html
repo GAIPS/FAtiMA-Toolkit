@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Assets\RolePlayCharacter\EventHelper.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+using WellFormedNames;
+using AutobiographicMemory;
+
+namespace RolePlayCharacter
+{
+    public class EventHelper
+    {
+        public static Name ActionStart(string subject, string actionName, string target)
+        {
+            if (!((Name)subject).IsPrimitive)
+                throw new ArgumentException(&quot;Subject needs to be a primitive&quot;, nameof(target));
+
+            if (!((Name)target).IsPrimitive)
+                throw new ArgumentException(&quot;Target needs to be a primitive&quot;, nameof(target));
+
+            return Name.BuildName((Name)AMConsts.EVENT, (Name)AMConsts.ACTION_START,
+                (Name)subject, (Name)actionName, (Name)target);
+        }
+
+        public static Name ActionEnd(string subject, string actionName, string target)
+        {
+            if (!((Name)subject).IsPrimitive)
+                throw new ArgumentException(&quot;Subject needs to be a primitive&quot;, nameof(target));
+
+            if (!((Name)target).IsPrimitive)
+                throw new ArgumentException(&quot;Target needs to be a primitive&quot;, nameof(target));
+
+            return Name.BuildName((Name)AMConsts.EVENT, (Name)AMConsts.ACTION_END,
+                (Name)subject, (Name)actionName, (Name)target);
+        }
+
+        public static Name PropertyChange(string propertyName, string value, string subject)
+        {
+            if (!((Name)propertyName).IsComposed)
+                throw new ArgumentException(&quot;Property needs to be a composed name&quot;, nameof(value));
+
+            if (!((Name)value).IsPrimitive)
+                throw new ArgumentException(&quot;Value needs to be a primitive&quot;, nameof(value));
+
+            if (!((Name)subject).IsPrimitive)
+                throw new ArgumentException(&quot;Subject needs to be a primitive&quot;, nameof(value));
+
+            return Name.BuildName(
+                (Name)AMConsts.EVENT,
+                (Name)AMConsts.PROPERTY_CHANGE,
+                (Name)subject,
+                (Name)propertyName,
+                (Name)value);
+        }
+    }
+}
+
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[10,9,10,10,0],[11,13,11,46,0],[12,17,12,96,0],[14,13,14,45,0],[15,17,15,95,0],[17,13,18,64,0],[19,9,19,10,0],[22,9,22,10,1],[23,13,23,46,1],[24,17,24,96,0],[26,13,26,45,1],[27,17,27,95,0],[29,13,30,64,1],[31,9,31,10,1],[34,9,34,10,1],[35,13,35,50,1],[36,17,36,100,0],[38,13,38,44,1],[39,17,39,93,0],[41,13,41,46,1],[42,17,42,95,0],[44,13,49,30,1],[50,9,50,10,1]]);
+    </script>
+  </body>
+</html>

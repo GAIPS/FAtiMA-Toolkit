@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>C:\Users\Manue\Documents\Work\FAtiMA\Components\Conditions\DTOs\ConditionSetDTO.cs</title>
+    <script type="text/javascript" src="../js/dotcover.sourceview.js"></script>
+    <link rel="stylesheet" type="text/css" href="../css/dotcover.report.css" />
+  </head>
+  <body>
+    <pre id="content" class="source-code">
+using System;
+
+namespace Conditions.DTOs
+{
+	/// &lt;summary&gt;
+	/// Data Type Object Class for the representation of a condition set
+	/// &lt;/summary&gt;
+    [Serializable]
+	public class ConditionSetDTO
+	{
+		/// &lt;summary&gt;
+		/// The logical quantifier of this condition set.
+		/// Used to change how the entier condition set is evaluated.
+		/// &lt;/summary&gt;
+		public LogicalQuantifier Quantifier { get; set; }
+		/// &lt;summary&gt;
+		/// The conditions to be evaluated as a single set.
+		/// &lt;/summary&gt;
+		public string[] ConditionSet;
+	}
+}
+    </pre>
+    <script type="text/javascript">
+      highlightRanges([[15,41,15,45,1],[15,46,15,50,1]]);
+    </script>
+  </body>
+</html>
