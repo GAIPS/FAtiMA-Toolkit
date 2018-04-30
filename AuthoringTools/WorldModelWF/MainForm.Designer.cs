@@ -58,21 +58,18 @@
             this.groupBox7.Controls.Add(this.buttonAddEventTemplate);
             this.groupBox7.Controls.Add(this.buttonRemoveAttRule);
             this.groupBox7.Controls.Add(this.dataGridViewEventTemplates);
-            this.groupBox7.Location = new System.Drawing.Point(13, 32);
-            this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox7.Location = new System.Drawing.Point(10, 24);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox7.Size = new System.Drawing.Size(910, 241);
+            this.groupBox7.Size = new System.Drawing.Size(721, 181);
             this.groupBox7.TabIndex = 5;
             this.groupBox7.TabStop = false;
             this.groupBox7.Enter += new System.EventHandler(this.groupBox7_Enter);
             // 
             // buttonEditAttRule
             // 
-            this.buttonEditAttRule.Location = new System.Drawing.Point(88, 26);
-            this.buttonEditAttRule.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonEditAttRule.Location = new System.Drawing.Point(66, 20);
             this.buttonEditAttRule.Name = "buttonEditAttRule";
-            this.buttonEditAttRule.Size = new System.Drawing.Size(93, 32);
+            this.buttonEditAttRule.Size = new System.Drawing.Size(70, 24);
             this.buttonEditAttRule.TabIndex = 8;
             this.buttonEditAttRule.Text = "Edit";
             this.buttonEditAttRule.UseVisualStyleBackColor = true;
@@ -80,10 +77,9 @@
             // 
             // buttonAddEventTemplate
             // 
-            this.buttonAddEventTemplate.Location = new System.Drawing.Point(8, 26);
-            this.buttonAddEventTemplate.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonAddEventTemplate.Location = new System.Drawing.Point(6, 20);
             this.buttonAddEventTemplate.Name = "buttonAddEventTemplate";
-            this.buttonAddEventTemplate.Size = new System.Drawing.Size(72, 32);
+            this.buttonAddEventTemplate.Size = new System.Drawing.Size(54, 24);
             this.buttonAddEventTemplate.TabIndex = 7;
             this.buttonAddEventTemplate.Text = "Add";
             this.buttonAddEventTemplate.UseVisualStyleBackColor = true;
@@ -91,10 +87,9 @@
             // 
             // buttonRemoveAttRule
             // 
-            this.buttonRemoveAttRule.Location = new System.Drawing.Point(189, 24);
-            this.buttonRemoveAttRule.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonRemoveAttRule.Location = new System.Drawing.Point(142, 18);
             this.buttonRemoveAttRule.Name = "buttonRemoveAttRule";
-            this.buttonRemoveAttRule.Size = new System.Drawing.Size(93, 32);
+            this.buttonRemoveAttRule.Size = new System.Drawing.Size(70, 24);
             this.buttonRemoveAttRule.TabIndex = 10;
             this.buttonRemoveAttRule.Text = "Remove";
             this.buttonRemoveAttRule.UseVisualStyleBackColor = true;
@@ -113,14 +108,13 @@
             this.dataGridViewEventTemplates.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.dataGridViewEventTemplates.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewEventTemplates.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewEventTemplates.Location = new System.Drawing.Point(8, 75);
-            this.dataGridViewEventTemplates.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridViewEventTemplates.Location = new System.Drawing.Point(6, 57);
             this.dataGridViewEventTemplates.Name = "dataGridViewEventTemplates";
             this.dataGridViewEventTemplates.ReadOnly = true;
             this.dataGridViewEventTemplates.RowHeadersVisible = false;
             this.dataGridViewEventTemplates.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewEventTemplates.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewEventTemplates.Size = new System.Drawing.Size(894, 158);
+            this.dataGridViewEventTemplates.Size = new System.Drawing.Size(709, 118);
             this.dataGridViewEventTemplates.TabIndex = 11;
             this.dataGridViewEventTemplates.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewEventTemplates_CellContentClick);
             this.dataGridViewEventTemplates.SelectionChanged += new System.EventHandler(this.dataGridViewEventTemplates_SelectionChanged);
@@ -136,20 +130,17 @@
             this.groupBox1.Controls.Add(this.addEffectDTO);
             this.groupBox1.Controls.Add(this.button4);
             this.groupBox1.Controls.Add(this.dataGridViewEffects);
-            this.groupBox1.Location = new System.Drawing.Point(13, 274);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox1.Location = new System.Drawing.Point(10, 210);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(910, 241);
+            this.groupBox1.Size = new System.Drawing.Size(721, 181);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(189, 26);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Location = new System.Drawing.Point(142, 20);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(93, 32);
+            this.button1.Size = new System.Drawing.Size(70, 24);
             this.button1.TabIndex = 9;
             this.button1.Text = "Duplicate";
             this.button1.UseVisualStyleBackColor = true;
@@ -157,10 +148,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(88, 26);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
+            this.button2.Location = new System.Drawing.Point(66, 20);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(93, 32);
+            this.button2.Size = new System.Drawing.Size(70, 24);
             this.button2.TabIndex = 8;
             this.button2.Text = "Edit";
             this.button2.UseVisualStyleBackColor = true;
@@ -168,10 +158,9 @@
             // 
             // addEffectDTO
             // 
-            this.addEffectDTO.Location = new System.Drawing.Point(8, 26);
-            this.addEffectDTO.Margin = new System.Windows.Forms.Padding(4);
+            this.addEffectDTO.Location = new System.Drawing.Point(6, 20);
             this.addEffectDTO.Name = "addEffectDTO";
-            this.addEffectDTO.Size = new System.Drawing.Size(72, 32);
+            this.addEffectDTO.Size = new System.Drawing.Size(54, 24);
             this.addEffectDTO.TabIndex = 7;
             this.addEffectDTO.Text = "Add";
             this.addEffectDTO.UseVisualStyleBackColor = true;
@@ -179,10 +168,9 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(291, 26);
-            this.button4.Margin = new System.Windows.Forms.Padding(4);
+            this.button4.Location = new System.Drawing.Point(218, 20);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(93, 32);
+            this.button4.Size = new System.Drawing.Size(70, 24);
             this.button4.TabIndex = 10;
             this.button4.Text = "Remove";
             this.button4.UseVisualStyleBackColor = true;
@@ -201,24 +189,24 @@
             this.dataGridViewEffects.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.dataGridViewEffects.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewEffects.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewEffects.Location = new System.Drawing.Point(8, 75);
-            this.dataGridViewEffects.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridViewEffects.Location = new System.Drawing.Point(6, 57);
             this.dataGridViewEffects.Name = "dataGridViewEffects";
             this.dataGridViewEffects.ReadOnly = true;
             this.dataGridViewEffects.RowHeadersVisible = false;
             this.dataGridViewEffects.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewEffects.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewEffects.Size = new System.Drawing.Size(894, 150);
+            this.dataGridViewEffects.Size = new System.Drawing.Size(709, 112);
             this.dataGridViewEffects.TabIndex = 11;
             this.dataGridViewEffects.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewEffects_CellContentClick);
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(923, 528);
+            this.ClientSize = new System.Drawing.Size(737, 401);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox7);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "MainForm";
             this.Text = "Form1";
             this.Controls.SetChildIndex(this.groupBox7, 0);
