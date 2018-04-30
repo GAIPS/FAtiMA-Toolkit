@@ -12,6 +12,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using GAIPS.Rage;
 using Utilities;
 using Utilities.DataStructures;
 using WorldModel;
@@ -1057,6 +1058,8 @@ namespace IntegratedAuthoringToolWF
             LoadedAsset.m_worldModelSource.Source = asset.AssetFilePath;
             SetModified();
             ReloadEditor();
+
+           
         }
 
         private void openEAButton_Click(object sender, EventArgs e)
@@ -1083,8 +1086,16 @@ namespace IntegratedAuthoringToolWF
             var wm = WorldModelAsset.LoadFromFile(this.LoadedAsset.m_worldModelSource.Source);
             _wmForm = new WorldModelWF.MainForm();
            _wmForm.LoadedAsset = wm;
+
+            this.pathTextBoxEA.Text = LoadableAsset<WorldModelAsset>.ToRelativePath(LoadedAsset.AssetFilePath, this.LoadedAsset.m_worldModelSource.Source);
+
             _wmForm.Refresh();
             FormHelper.ShowFormInContainerControl(groupBox7, _wmForm);
+        }
+
+        private void pathTextBoxEA_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -41,6 +41,10 @@ namespace IntegratedAuthoringTool
                 var absPath = ToAbsolutePath(oldpath, m_characterSources[i].Source);
                 m_characterSources[i].Source = absPath;
             }
+
+	        if (m_worldModelSource != null)
+	            m_worldModelSource.Source = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, m_worldModelSource.Source));
+
 	    }
 
 	    public IntegratedAuthoringToolAsset()

@@ -140,7 +140,7 @@ namespace RolePlayCharacterWF
             this.tabPage7.Location = new System.Drawing.Point(4, 29);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(821, 473);
+            this.tabPage7.Size = new System.Drawing.Size(821, 469);
             this.tabPage7.TabIndex = 6;
             this.tabPage7.Text = "CIF";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -220,7 +220,7 @@ namespace RolePlayCharacterWF
             this.tabPage6.Location = new System.Drawing.Point(4, 29);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(821, 473);
+            this.tabPage6.Size = new System.Drawing.Size(821, 469);
             this.tabPage6.TabIndex = 5;
             this.tabPage6.Text = "Social Importance";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -297,9 +297,9 @@ namespace RolePlayCharacterWF
             // 
             this.tabPage4.Controls.Add(this.panelEDM);
             this.tabPage4.Controls.Add(this.groupBox3);
-            this.tabPage4.Location = new System.Drawing.Point(4, 29);
+            this.tabPage4.Location = new System.Drawing.Point(4, 32);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(821, 473);
+            this.tabPage4.Size = new System.Drawing.Size(821, 466);
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Decision Making";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -311,7 +311,7 @@ namespace RolePlayCharacterWF
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelEDM.Location = new System.Drawing.Point(5, 65);
             this.panelEDM.Name = "panelEDM";
-            this.panelEDM.Size = new System.Drawing.Size(813, 400);
+            this.panelEDM.Size = new System.Drawing.Size(813, 397);
             this.panelEDM.TabIndex = 17;
             // 
             // groupBox3
@@ -391,7 +391,7 @@ namespace RolePlayCharacterWF
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panelEA.Location = new System.Drawing.Point(5, 65);
             this.panelEA.Name = "panelEA";
-            this.panelEA.Size = new System.Drawing.Size(813, 399);
+            this.panelEA.Size = new System.Drawing.Size(813, 396);
             this.panelEA.TabIndex = 15;
             // 
             // groupBox2
@@ -618,10 +618,10 @@ namespace RolePlayCharacterWF
             // tabPage5
             // 
             this.tabPage5.Controls.Add(this.groupBox1);
-            this.tabPage5.Location = new System.Drawing.Point(4, 29);
+            this.tabPage5.Location = new System.Drawing.Point(4, 32);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(821, 473);
+            this.tabPage5.Size = new System.Drawing.Size(821, 466);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Knowledge Base";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -632,7 +632,7 @@ namespace RolePlayCharacterWF
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(815, 467);
+            this.groupBox1.Size = new System.Drawing.Size(815, 460);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Beliefs";
@@ -649,7 +649,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel8.RowCount = 2;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(809, 442);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(809, 435);
             this.tableLayoutPanel8.TabIndex = 7;
             // 
             // tableLayoutPanel9
