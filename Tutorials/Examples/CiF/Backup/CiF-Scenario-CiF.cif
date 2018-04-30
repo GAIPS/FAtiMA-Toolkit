@@ -1,0 +1,42 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"SocialExchanges": [
+				{
+					"Name": "Flirt",
+					"Description": "When a someone finds the other attractive...",
+					"Initiator": "[i]",
+					"Target": "[t]",
+					"Conditions":
+						{
+							"Set": ["Bel(IsAttracted([i], [t])) = True", "SI([i]) >= 40"]
+						}
+				}, 
+				{
+					"Name": "Compliment",
+					"Description": "When someone is a friend of the other",
+					"Initiator": "[i]",
+					"Target": "[t]",
+					"Conditions":
+						{
+							"Set": ["Bel(IsFriend([i], [t])) = True"]
+						}
+				}, 
+				{
+					"Name": "Insult",
+					"Description": "NotFriends",
+					"Initiator": "[i]",
+					"Target": "[t]",
+					"Conditions":
+						{
+							"Set": ["Bel(IsFriend([i], [t])) = False", "SI([i]) <= 0"]
+						}
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "CommeillFaut.CommeillFautAsset, CommeillFaut, Version=1.7.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}
