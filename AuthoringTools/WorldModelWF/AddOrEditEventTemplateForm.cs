@@ -51,16 +51,40 @@ namespace WorldModelWF
         private void addOrEditButton_Click_1(object sender, EventArgs e)
         {
 
-            _eventTemplate = WellFormedNames.Name.BuildName(
-                (Name) AMConsts.EVENT,
-                (Name) comboBoxEventType.Text,
-                textBoxSubject.Value,
-                textBoxObject.Value,
-                textBoxTarget.Value);
 
-            _asset.addEventTemplate(_eventTemplate);
+            if (this.Text != "Update")
+            {
+
+                _eventTemplate = WellFormedNames.Name.BuildName(
+                    (Name) AMConsts.EVENT,
+                    (Name) comboBoxEventType.Text,
+                    textBoxSubject.Value,
+                    textBoxObject.Value,
+                    textBoxTarget.Value);
+
+        
+
+                _asset.addEventTemplate(_eventTemplate);
              
-                Close();
+            }
+
+            else
+            {
+                _asset.RemoveEvent(_eventTemplate);
+
+                _eventTemplate = WellFormedNames.Name.BuildName(
+                    (Name) AMConsts.EVENT,
+                    (Name) comboBoxEventType.Text,
+                    textBoxSubject.Value,
+                    textBoxObject.Value,
+                    textBoxTarget.Value);
+
+
+                _asset.addEventTemplate(_eventTemplate);
+               
+            }
+
+            Close();
             
         }
 

@@ -197,12 +197,12 @@ namespace WorldModel
 
         public void RemoveEffect(Name EventName, Effect eff)
         {
-            m_EffectsByEventNames[EventName].Remove(eff);
+            m_EffectsByEventNames?[EventName].Remove(eff);
         }
 
         public void RemoveEvent(Name EventName)
         {
-            m_EffectsByEventNames.Remove(EventName);
+            m_EffectsByEventNames?.Remove(EventName);
         }
     }
 }

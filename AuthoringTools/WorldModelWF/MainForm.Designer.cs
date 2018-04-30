@@ -58,6 +58,7 @@
             this.groupBox7.Controls.Add(this.buttonAddEventTemplate);
             this.groupBox7.Controls.Add(this.buttonRemoveAttRule);
             this.groupBox7.Controls.Add(this.dataGridViewEventTemplates);
+            this.groupBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox7.Location = new System.Drawing.Point(13, 32);
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox7.Name = "groupBox7";
@@ -65,6 +66,7 @@
             this.groupBox7.Size = new System.Drawing.Size(910, 241);
             this.groupBox7.TabIndex = 5;
             this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Event Template";
             this.groupBox7.Enter += new System.EventHandler(this.groupBox7_Enter);
             // 
             // buttonEditAttRule
@@ -136,13 +138,15 @@
             this.groupBox1.Controls.Add(this.addEffectDTO);
             this.groupBox1.Controls.Add(this.button4);
             this.groupBox1.Controls.Add(this.dataGridViewEffects);
-            this.groupBox1.Location = new System.Drawing.Point(13, 274);
+            this.groupBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox1.Location = new System.Drawing.Point(13, 281);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(910, 241);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "New Property Value";
             // 
             // button1
             // 
@@ -220,7 +224,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.groupBox7);
             this.Name = "MainForm";
-            this.Text = "Form1";
+            this.Text = "Wolrd Model Asset";
             this.Controls.SetChildIndex(this.groupBox7, 0);
             this.Controls.SetChildIndex(this.groupBox1, 0);
             this.groupBox7.ResumeLayout(false);

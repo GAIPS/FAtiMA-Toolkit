@@ -134,6 +134,8 @@ namespace WorldModelWF
                 ds.Tables[0].Rows.Add(ev.GetNTerm(1),ev.GetNTerm(2), ev.GetNTerm(3), ev.GetNTerm(4));
             }
 
+          
+
         }
 
         private void dataGridViewEventTemplates_SelectionChanged(object sender, EventArgs e)
@@ -148,13 +150,31 @@ namespace WorldModelWF
             dataGridViewEffects.DataSource = null;
             if (LoadedAsset != null)
             {
-                if (LoadedAsset.GetAllEventEffects().Count > 0)
+
+                var evt = LoadedAsset.GetAllEventEffects().Keys.ElementAt(index);
+
+                if (LoadedAsset.GetAllEventEffects()[evt].Count > 0)
                 {
                     dataGridViewEffects.DataSource = LoadedAsset.GetAllEventEffects().ElementAt(index).Value;
                     dataGridViewEffects.Columns[0].Visible = false;
                     dataGridViewEffects.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+                    button1.Enabled = true;
+                    button2.Enabled = true;
+                    button4.Enabled = true;
                 }
-            }
+
+                else{
+                        
+                            button1.Enabled = false;
+                            button2.Enabled = false;
+                            button4.Enabled = false;
+                    }
+                   
+
+                addEffectDTO.Enabled = true;
+                }
+            
         }
 
         private void buttonEditAttRule_Click(object sender, EventArgs e)
