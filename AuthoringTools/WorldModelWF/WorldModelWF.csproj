@@ -36,8 +36,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GAIPS.Serialization, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Utilities\SerializationUtilities\bin\Debug\GAIPS.Serialization.dll</HintPath>
+      <HintPath>..\packages\GAIPS.Serialization.1.5.0\lib\net35\GAIPS.Serialization.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="RageAssetManager">
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
@@ -53,8 +53,9 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="Utilities">
-      <HintPath>..\..\Utilities\Utilities\bin\Debug\Utilities.dll</HintPath>
+    <Reference Include="Utilities, Version=1.0.0.19854, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Utilities.1.0.0.19854\lib\net35\Utilities.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +100,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

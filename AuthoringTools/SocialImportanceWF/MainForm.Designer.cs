@@ -186,8 +186,9 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox4.Controls.Add(this._attRuleConditionSetEditor);
-            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox4.Name = "groupBox4";
@@ -199,7 +200,8 @@
             // 
             // _attRuleConditionSetEditor
             // 
-            this._attRuleConditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._attRuleConditionSetEditor.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this._attRuleConditionSetEditor.Location = new System.Drawing.Point(4, 19);
             this._attRuleConditionSetEditor.Margin = new System.Windows.Forms.Padding(5);
             this._attRuleConditionSetEditor.Name = "_attRuleConditionSetEditor";
