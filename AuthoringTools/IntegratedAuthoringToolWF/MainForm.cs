@@ -692,7 +692,10 @@ namespace IntegratedAuthoringToolWF
                 _rpcForm.SaveAssetToFile(_rpcForm.LoadedAsset, _rpcForm.LoadedAsset.AssetFilePath);
                 _rpcForm.SaveSubAssets();
                 _rpcForm.ClearModified();
+               
             }
+            if(_wmForm.LoadedAsset != null)
+                _wmForm.SaveAssetToFile(_wmForm.LoadedAsset, _wmForm.LoadedAsset.AssetFilePath );
 
             SaveAsset();
         }
@@ -705,6 +708,8 @@ namespace IntegratedAuthoringToolWF
                 _rpcForm.SaveSubAssets();
                 _rpcForm.ClearModified();
             }
+            if(_wmForm.LoadedAsset != null)
+                _wmForm.SaveAssetToFile(_wmForm.LoadedAsset, _wmForm.LoadedAsset.AssetFilePath );
 
             SaveAssetAs();
         }
@@ -1076,7 +1081,9 @@ namespace IntegratedAuthoringToolWF
         private void LoadWorldModelForm()
         {
             var wm = WorldModelAsset.LoadFromFile(this.LoadedAsset.m_worldModelSource.Source);
+            _wmForm = new WorldModelWF.MainForm();
            _wmForm.LoadedAsset = wm;
+            _wmForm.Refresh();
             FormHelper.ShowFormInContainerControl(groupBox7, _wmForm);
         }
     }
