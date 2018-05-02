@@ -28,7 +28,7 @@ namespace IntegratedAuthoringToolWF
         private readonly string AGENT = IATConsts.AGENT;
         private BindingListView<CharacterSourceDTO> _characterSources;
         private RolePlayCharacterWF.MainForm _rpcForm = new RolePlayCharacterWF.MainForm();
-        private WorldModelWF.MainForm _wmForm;
+        private WorldModelWF.MainForm _wmForm = new WorldModelWF.MainForm();
         private WorldModelSourceDTO _wmSource = new WorldModelSourceDTO();
 
         private int currentRPCTabIndex;
@@ -63,20 +63,22 @@ namespace IntegratedAuthoringToolWF
             textBoxScenarioName.Text = asset.ScenarioName;
             textBoxScenarioDescription.Text = asset.ScenarioDescription;
             _characterSources = new BindingListView<CharacterSourceDTO>(asset.GetAllCharacterSources().ToList());
+            _wmSource = asset.GetWorldModelSource();
             dataGridViewCharacters.DataSource = _characterSources;
             _dialogs = new BindingListView<DialogueStateActionDTO>(new List<DialogueStateActionDTO>());
             dataGridViewDialogueActions.DataSource = _dialogs;
 
-          
-            if (asset.m_worldModelSource != null)
+
+            if (_wmSource != null)
             {
-                if (asset.m_worldModelSource.Source != null)
-                {
-                    pathTextBoxEA.Text = asset.m_worldModelSource.Source;
-                    LoadWorldModelForm();
-                }
+                if (_wmSource.Source != ""){
+                    pathTextBoxEA.Text = _wmSource.Source;
+                LoadWorldModelForm();
+
             }
-            //ResetSimulator
+        }
+
+        //ResetSimulator
             richTextBoxChat.Clear();
             buttonContinue.Enabled = false;
             textBoxTick.Text = "";
@@ -675,7 +677,11 @@ namespace IntegratedAuthoringToolWF
         {
             _rpcForm.Close();
             _rpcForm = new RolePlayCharacterWF.MainForm();
-
+           
+            pathTextBoxEA.Text = null; 
+            _wmForm.Close();
+            _wmForm = new WorldModelWF.MainForm();
+            
             CreateNewAsset();
         }
 
@@ -683,6 +689,7 @@ namespace IntegratedAuthoringToolWF
         {
             dataGridViewCharacters.ClearSelection();
             _rpcForm.Close();
+            _wmForm.Close();
             Close();
         }
 
@@ -1054,7 +1061,7 @@ namespace IntegratedAuthoringToolWF
             var asset = _wmForm.CreateAndSaveEmptyAsset(false);
             if (asset == null)
                 return;
-
+            LoadedAsset.m_worldModelSource = new WorldModelSourceDTO();
             LoadedAsset.m_worldModelSource.Source = asset.AssetFilePath;
             SetModified();
             ReloadEditor();
@@ -1074,7 +1081,13 @@ namespace IntegratedAuthoringToolWF
             if (asset == null)
                 return;
 
-            LoadedAsset.m_worldModelSource = new WorldModelSourceDTO() {Source = asset.AssetFilePath};
+            LoadedAsset.m_worldModelSource = new WorldModelSourceDTO();
+
+            LoadedAsset.m_worldModelSource.RelativePath =
+                LoadableAsset<WorldModelAsset>.ToRelativePath(LoadedAsset.AssetFilePath,
+                    asset.AssetFilePath);
+            LoadedAsset.m_worldModelSource.Source = asset.AssetFilePath;
+
             SetModified();
             ReloadEditor();
         }
@@ -1083,9 +1096,12 @@ namespace IntegratedAuthoringToolWF
 
         private void LoadWorldModelForm()
         {
-            var wm = WorldModelAsset.LoadFromFile(this.LoadedAsset.m_worldModelSource.Source);
+
+
+            var wm = WorldModelAsset.LoadFromFile(LoadedAsset.m_worldModelSource.Source);
+         
             _wmForm = new WorldModelWF.MainForm();
-           _wmForm.LoadedAsset = wm;
+          _wmForm.LoadedAsset = wm;
 
             this.pathTextBoxEA.Text = LoadableAsset<WorldModelAsset>.ToRelativePath(LoadedAsset.AssetFilePath, this.LoadedAsset.m_worldModelSource.Source);
 
@@ -1103,7 +1119,10 @@ namespace IntegratedAuthoringToolWF
             LoadedAsset.m_worldModelSource = null;
             pathTextBoxEA.Text = null; 
             SetModified();
+            _wmForm.Refresh();
             _wmForm.Hide();
+
+
         }
     }
 }

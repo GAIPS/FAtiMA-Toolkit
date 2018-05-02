@@ -63,6 +63,24 @@ namespace IntegratedAuthoringTool
 
         }
 
+        public WorldModelSourceDTO GetWorldModelSource()
+        {
+            if (m_worldModelSource?.Source != null)
+            {
+                if (m_worldModelSource.RelativePath == null)
+                {
+                    m_worldModelSource.RelativePath = m_worldModelSource.Source;
+
+                    m_worldModelSource.Source = ToAbsolutePath(m_worldModelSource.Source);
+                }
+
+                return m_worldModelSource;
+            }
+            return null;
+
+
+        }
+
         
         public static string GenerateUtteranceId(string utterance)
         {
@@ -261,7 +279,7 @@ namespace IntegratedAuthoringTool
             dataHolder.SetValue("ScenarioName", ScenarioName);
 			dataHolder.SetValue("Description",ScenarioDescription);
             if(m_worldModelSource != null)
-            dataHolder.SetValue("WorldModelSource", m_worldModelSource);
+            dataHolder.SetValue("WorldModelSource", ToRelativePath(m_worldModelSource.Source));
             // Save Character Sources
             if (m_characterSources.Count > 0)
             {
@@ -292,7 +310,9 @@ namespace IntegratedAuthoringTool
             ScenarioName = dataHolder.GetValue<string>("ScenarioName");
 
             ScenarioDescription = dataHolder.GetValue<string>("Description");
-            m_worldModelSource = dataHolder.GetValue<WorldModelSourceDTO>("WorldModelSource");
+            var relativePath = dataHolder.GetValue<string>("WorldModelSource");
+            if(relativePath != null)
+            m_worldModelSource = new WorldModelSourceDTO() {Source = ToAbsolutePath(relativePath), RelativePath = null};
 
             //Load Character Sources
             m_characterSources = new List<CharacterSourceDTO>();

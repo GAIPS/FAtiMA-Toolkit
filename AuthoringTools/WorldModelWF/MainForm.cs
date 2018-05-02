@@ -28,6 +28,10 @@ namespace WorldModelWF
 
         protected override void OnAssetDataLoaded(WorldModelAsset asset)
         {
+
+            if (asset == null)
+                return;
+       
             _wm = asset;
 
 
@@ -151,7 +155,8 @@ namespace WorldModelWF
             dataGridViewEffects.DataSource = null;
             if (LoadedAsset != null)
             {
-
+                if (LoadedAsset.GetAllEventEffects().Count == 0)
+                    return;
                 var evt = LoadedAsset.GetAllEventEffects().Keys.ElementAt(index);
 
                 if (LoadedAsset.GetAllEventEffects()[evt].Count > 0)
