@@ -1010,7 +1010,7 @@ namespace IntegratedAuthoringToolWF
                 return;
             }
 
-            var rpc = agentsInChat.Where(c => c.CharacterName.ToString() == selectedRPCName).First();
+            var rpc = agentsInChat.Where(c => c.CharacterName.ToString() == selectedRPCName).FirstOrDefault();
             try
             {
                 var name = WellFormedNames.Name.BuildName(textBoxBelChat.Text);
@@ -1096,6 +1096,14 @@ namespace IntegratedAuthoringToolWF
         private void pathTextBoxEA_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void clearEAButton_Click(object sender, EventArgs e)
+        {
+            LoadedAsset.m_worldModelSource = null;
+            pathTextBoxEA.Text = null; 
+            SetModified();
+            _wmForm.Hide();
         }
     }
 }
