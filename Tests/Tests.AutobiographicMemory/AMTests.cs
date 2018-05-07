@@ -51,7 +51,8 @@ namespace Tests.AutobiographicMemory
                 EventHelper.ActionEnd("Matt", "Speak(Start, S1, Silly, Polite)", "Sarah").ToString(),
                 EventHelper.PropertyChange("Has(Floor)", "Sarah", "Matt").ToString(),
                 //THIS SHOULD BE THE LAST EVENT
-                EventHelper.ActionEnd("Matt", "Speak(Start, S1, SE(Flirt, Initiate), Positive)", "Sarah").ToString()
+                EventHelper.ActionEnd("Matt", "Speak(Start, S1, SE(Flirt, Initiate), Positive)", "Sarah").ToString(),
+                    EventHelper.ActionEnd("Matt", "Speak(Start, S3, -, -)", "Sarah").ToString()
     
             };
             
@@ -145,7 +146,7 @@ namespace Tests.AutobiographicMemory
 
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S1, SE(Flirt, Initiate), Positive), Sarah)=[id]")]
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S1, SE(*, Initiate), Positive), Sarah)=[id]")]
-        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S1, SE(Flirt, Initiate), Positive), Sarah)=5")]
+        [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, Speak(Start, S3, -, -), Sarah)=6")]
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, *, Sarah)=[id]")]
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, *, *, *)=[id]")]
         [TestCase(1, "IsAgent([x]) = True", "LastEventId(Action-End, Matt, *, *)=[id]")]
@@ -279,6 +280,11 @@ namespace Tests.AutobiographicMemory
         [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Sarah, Speak(*, *, SE(Flirt, Initiate), *), Matt)=-1")]
         [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Compliment, *), *), Sarah)=-1")]
         [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Talk(*, *, SE(Compliment, *), *), Sarah)=-1")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(S1, Start, -, -), Sarah)=-1")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(Start, S2, -, -), Sarah)=-1")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, S2, -, -), Sarah)=-1")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak([cs], S2, *, *), Sarah)=-1")]
+       
         [Test]
         public void Test_DP_EventID_Match(int eventSet, string context, string MethodCall)
         {
