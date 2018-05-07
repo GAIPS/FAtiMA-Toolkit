@@ -166,6 +166,19 @@ namespace WorldModel
             }
         }
 
+        public void UpdateEventTemplate(Name old, Name ev)
+        {
+            var pastEffects = m_EffectsByEventNames[old];
+
+            m_EffectsByEventNames.Remove(old);
+
+            m_EffectsByEventNames.Add(ev, pastEffects);
+
+            if(_EventNames.ContainsKey(old))
+                _EventNames.Remove(old);
+            _EventNames.Add(new KeyValuePair<Name, Name>(ev, ev));
+        }
+
        
 
         public Dictionary<Name, List<Effect>> GetAllEventEffects()
@@ -202,11 +215,14 @@ namespace WorldModel
         public void RemoveEffect(Name EventName, Effect eff)
         {
             m_EffectsByEventNames?[EventName].Remove(eff);
+        
         }
 
         public void RemoveEvent(Name EventName)
         {
             m_EffectsByEventNames?.Remove(EventName);
+            if(_EventNames.ContainsKey(EventName))
+            _EventNames.Remove(EventName);
         }
     }
 }

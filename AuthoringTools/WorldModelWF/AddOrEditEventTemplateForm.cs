@@ -54,6 +54,7 @@ namespace WorldModelWF
 
             if (this.Text != "Update")
             {
+             
 
                 _eventTemplate = WellFormedNames.Name.BuildName(
                     (Name) AMConsts.EVENT,
@@ -70,7 +71,10 @@ namespace WorldModelWF
 
             else
             {
-                _asset.RemoveEvent(_eventTemplate);
+
+                var _pastTemplate = _eventTemplate;
+
+               
 
                 _eventTemplate = WellFormedNames.Name.BuildName(
                     (Name) AMConsts.EVENT,
@@ -80,7 +84,7 @@ namespace WorldModelWF
                     textBoxTarget.Value);
 
 
-                _asset.addEventTemplate(_eventTemplate);
+                _asset.UpdateEventTemplate(_pastTemplate, _eventTemplate);
                
             }
 
