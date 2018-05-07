@@ -344,7 +344,7 @@ namespace Tests.AutobiographicMemory
         [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(Start, S1, SE(Flirt, Initiate), Positive), Sarah)=1")]
         [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Flirt, Initiate), *), Sarah)=4")]
         [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Flirt, *), *), Sarah)=1")]
-        [TestCase(1, "IsAgent([x]) = True", "EventId(*, *,*, *)=6")]
+        [TestCase(1, "IsAgent([x]) = True", "EventId(*, *,*, *)=7")]
         // No action like this happened
         [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Flirt, Answer), *), Sarah)=5")]
         [TestCase(1, "IsAgent([x]) = True", "EventId(Action-End, Matt, Speak(*, *, SE(Compliment, *), *), Sarah)=5")]
