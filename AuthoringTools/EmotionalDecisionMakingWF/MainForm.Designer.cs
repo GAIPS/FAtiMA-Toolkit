@@ -48,13 +48,12 @@
             // 
             // groupBox7
             // 
-            this.groupBox7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox7.Controls.Add(this.buttonDuplicateReaction);
             this.groupBox7.Controls.Add(this.buttonEditReaction);
             this.groupBox7.Controls.Add(this.buttonAddReaction);
             this.groupBox7.Controls.Add(this.buttonRemoveReaction);
             this.groupBox7.Controls.Add(this.dataGridViewReactiveActions);
+            this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox7.Location = new System.Drawing.Point(0, 0);
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox7.Name = "groupBox7";
