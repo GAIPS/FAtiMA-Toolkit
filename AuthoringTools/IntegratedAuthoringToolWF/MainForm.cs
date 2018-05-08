@@ -1050,7 +1050,7 @@ namespace IntegratedAuthoringToolWF
         private void createNewEAButton_Click(object sender, EventArgs e)
         {
 
-            if (this.LoadedAsset == null)
+            if (LoadedAsset.AssetFilePath == null)
             {
                 MessageBox.Show("You must first save the IAT asset");
                 return;
@@ -1063,6 +1063,9 @@ namespace IntegratedAuthoringToolWF
                 return;
             LoadedAsset.m_worldModelSource = new WorldModelSourceDTO();
             LoadedAsset.m_worldModelSource.Source = asset.AssetFilePath;
+            LoadedAsset.m_worldModelSource.RelativePath =
+                LoadableAsset<WorldModelAsset>.ToRelativePath(LoadedAsset.AssetFilePath,
+                    asset.AssetFilePath);
             SetModified();
             ReloadEditor();
 
