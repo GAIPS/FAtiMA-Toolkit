@@ -60,7 +60,7 @@ namespace WorldModel
             dataHolder.SetValue("PropertyName", this.PropertyName);
             dataHolder.SetValue("NewValue", this.NewValue);
             dataHolder.SetValue("ResponsibleAgent", this.ResponsibleAgent);
-            dataHolder.SetValue("ObserverAgent", this.ResponsibleAgent);
+            dataHolder.SetValue("ObserverAgent", this.ObserverAgent);
         }
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)

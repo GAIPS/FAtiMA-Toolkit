@@ -157,13 +157,12 @@ namespace WorldModel
 
         public void addEventTemplate(Name ev)
         {
-            if(  m_EffectsByEventNames.ContainsKey(ev))
-                throw new Exception("Event already exists in World Mode Asset");
-            else
+            if (!m_EffectsByEventNames.ContainsKey(ev))
             {
                 m_EffectsByEventNames.Add(ev, new List<Effect>());
                 _EventNames.Add(new KeyValuePair<Name, Name>(ev, ev));
             }
+
         }
 
         public void UpdateEventTemplate(Name old, Name ev)

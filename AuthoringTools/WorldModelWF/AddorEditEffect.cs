@@ -59,12 +59,20 @@ namespace WorldModelWF
                 this.Text = "Edit Belief";
                 this.addEffect.Text = "Update";
 
-                newValue.Value =effectToEdit.NewValue;
+                newValue.Value = effectToEdit.NewValue;
                 propertyName.Value = effectToEdit.PropertyName;
                 responsibleAgent.Value = effectToEdit.ResponsibleAgent;
                 observerName.Value = effectToEdit.ObserverAgent;
 
-            } else _effectToEdit = new EffectDTO();
+            }
+            else
+                _effectToEdit = new EffectDTO()
+                {
+                    NewValue = newValue.Value,
+                    PropertyName = propertyName.Value,
+                    ResponsibleAgent = responsibleAgent.Value,
+                    ObserverAgent = observerName.Value
+                };
         }
 
         public AddorEditEffect()

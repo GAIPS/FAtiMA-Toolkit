@@ -116,7 +116,7 @@ namespace WorldModelWF
             var eventTemp = LoadedAsset.GetAllEvents().ElementAt(index);
           var ef = new AddorEditEffect(LoadedAsset,eventTemp  , -1, new EffectDTO());
             ef.ShowDialog(this);
-
+            SetModified();
             dataGridViewEventTemplates_SelectionChanged(sender, e);
         }
 
@@ -235,6 +235,7 @@ namespace WorldModelWF
             
             var ev = new AddOrEditEventTemplateForm(LoadedAsset, eventTemp);
             ev.ShowDialog(this);
+            SetModified();
             RefreshEventList();
         }
 
@@ -254,6 +255,8 @@ namespace WorldModelWF
 
             ef.ShowDialog(this);
 
+            SetModified();
+
             dataGridViewEventTemplates_SelectionChanged(sender, e);
         }
 
@@ -266,8 +269,11 @@ namespace WorldModelWF
 
 
            LoadedAsset.RemoveEvent(eventTemp);   
-         
+
+            SetModified();
+
             RefreshEventList();
+
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -281,7 +287,7 @@ namespace WorldModelWF
             var effect = LoadedAsset.GetAllEventEffects()[eventTemp].ElementAt(index2);
 
            LoadedAsset.RemoveEffect(eventTemp, effect);
-
+            SetModified();
             dataGridViewEventTemplates_SelectionChanged(sender, e);
         }
 
@@ -296,7 +302,7 @@ namespace WorldModelWF
             var effect = LoadedAsset.GetAllEventEffects()[eventTemp].ElementAt(index2);
 
             LoadedAsset.AddEventEffect(eventTemp, effect.ToDTO());
-
+            SetModified();
             dataGridViewEventTemplates_SelectionChanged(sender, e);
         }
 
