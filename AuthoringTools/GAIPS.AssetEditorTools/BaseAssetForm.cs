@@ -100,7 +100,7 @@ namespace GAIPS.AssetEditorTools
 				if (!File.Exists(sfd.FileName))
 					break;
 
-				MessageBox.Show("Cannot overwrite an existing rpc definition file.", "The file alredy exists", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				MessageBox.Show("Cannot overwrite an existing file.", "The file alredy exists", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				sfd.FileName = string.Empty;
 			} while (true);
 

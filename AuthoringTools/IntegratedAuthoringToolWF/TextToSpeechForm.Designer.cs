@@ -65,12 +65,12 @@
             // 
             this.textBox1.AcceptsReturn = true;
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox1.Location = new System.Drawing.Point(4, 41);
+            this.textBox1.Location = new System.Drawing.Point(4, 44);
             this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(623, 239);
+            this.textBox1.Size = new System.Drawing.Size(623, 236);
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = "Hello, World!";
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
@@ -176,7 +176,7 @@
             this.label1.Location = new System.Drawing.Point(4, 0);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(118, 29);
+            this.label1.Size = new System.Drawing.Size(118, 32);
             this.label1.TabIndex = 10;
             this.label1.Text = "Available Dialogs:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -196,7 +196,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(623, 29);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(623, 32);
             this.tableLayoutPanel1.TabIndex = 11;
             // 
             // tableLayoutPanel2

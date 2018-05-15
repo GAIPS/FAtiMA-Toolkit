@@ -72,7 +72,7 @@ namespace IntegratedAuthoringToolWF
             if (_wmSource != null)
             {
                 if (_wmSource.Source != ""){
-                    pathTextBoxEA.Text = _wmSource.Source;
+                    pathTextBoxWorldModel.Text = _wmSource.Source;
                 LoadWorldModelForm();
 
             }
@@ -678,7 +678,7 @@ namespace IntegratedAuthoringToolWF
             _rpcForm.Close();
             _rpcForm = new RolePlayCharacterWF.MainForm();
            
-            pathTextBoxEA.Text = null; 
+            pathTextBoxWorldModel.Text = null; 
             _wmForm.Close();
             _wmForm = new WorldModelWF.MainForm();
             
@@ -1047,7 +1047,7 @@ namespace IntegratedAuthoringToolWF
 
         }
 
-        private void createNewEAButton_Click(object sender, EventArgs e)
+        private void createNewWorldModelButton_Click(object sender, EventArgs e)
         {
 
             if (LoadedAsset.AssetFilePath == null)
@@ -1072,7 +1072,7 @@ namespace IntegratedAuthoringToolWF
            
         }
 
-        private void openEAButton_Click(object sender, EventArgs e)
+        private void openWorldModelButton_Click(object sender, EventArgs e)
         {
             if (LoadedAsset.AssetFilePath == null)
             {
@@ -1106,7 +1106,7 @@ namespace IntegratedAuthoringToolWF
             _wmForm = new WorldModelWF.MainForm();
           _wmForm.LoadedAsset = wm;
 
-            this.pathTextBoxEA.Text = LoadableAsset<WorldModelAsset>.ToRelativePath(LoadedAsset.AssetFilePath, this.LoadedAsset.m_worldModelSource.Source);
+            this.pathTextBoxWorldModel.Text = LoadableAsset<WorldModelAsset>.ToRelativePath(LoadedAsset.AssetFilePath, this.LoadedAsset.m_worldModelSource.Source);
 
             _wmForm.Refresh();
             FormHelper.ShowFormInContainerControl(groupBox7, _wmForm);
@@ -1117,15 +1117,13 @@ namespace IntegratedAuthoringToolWF
 
         }
 
-        private void clearEAButton_Click(object sender, EventArgs e)
+        private void clearWorldModelButton_Click(object sender, EventArgs e)
         {
             LoadedAsset.m_worldModelSource = null;
-            pathTextBoxEA.Text = null; 
+            pathTextBoxWorldModel.Text = null; 
             SetModified();
             _wmForm.Refresh();
             _wmForm.Hide();
-
-
         }
     }
 }

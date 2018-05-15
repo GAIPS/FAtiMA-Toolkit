@@ -56,7 +56,7 @@ namespace WorldModelWF
 
             if (effectToEdit != null)
             {
-                this.Text = "Edit Belief";
+                this.Text = "Edit Effect";
                 this.addEffect.Text = "Update";
 
                 newValue.Value = effectToEdit.NewValue;
@@ -112,6 +112,11 @@ namespace WorldModelWF
                 _wm.AddEventEffect(_eventTemplate, _effectToEdit);
             }
             Close();
+        }
+
+        private void AddorEditEffect_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
