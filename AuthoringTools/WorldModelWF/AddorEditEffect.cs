@@ -26,6 +26,8 @@ namespace WorldModelWF
 
         private int index;
 
+        private Name _subject;
+
 
         public AddorEditEffect(WorldModelAsset wm, Name eventTemplate , int _index, EffectDTO effectToEdit = null)
         {
@@ -36,7 +38,6 @@ namespace WorldModelWF
             //DefaultValues
             newValue.Value = WellFormedNames.Name.BuildName("True");
             propertyName.Value = WellFormedNames.Name.BuildName("Bel(A)");
-            responsibleAgent.Value = WellFormedNames.Name.BuildName("SELF");
             observerName.Value =WellFormedNames.Name.BuildName("*");
 
             //Restrictions
@@ -44,8 +45,8 @@ namespace WorldModelWF
             index = _index;
         
             newValue.AllowUniversal = false;
-          
 
+            _subject = eventTemplate.GetNTerm(2);
             
             propertyName.AllowNil = false;
             propertyName.AllowUniversal = false;
@@ -61,7 +62,6 @@ namespace WorldModelWF
 
                 newValue.Value = effectToEdit.NewValue;
                 propertyName.Value = effectToEdit.PropertyName;
-                responsibleAgent.Value = effectToEdit.ResponsibleAgent;
                 observerName.Value = effectToEdit.ObserverAgent;
 
             }
@@ -70,7 +70,6 @@ namespace WorldModelWF
                 {
                     NewValue = newValue.Value,
                     PropertyName = propertyName.Value,
-                    ResponsibleAgent = responsibleAgent.Value,
                     ObserverAgent = observerName.Value
                 };
         }
@@ -102,7 +101,7 @@ namespace WorldModelWF
           
             _effectToEdit.NewValue = newValue.Value;
             _effectToEdit.PropertyName = propertyName.Value;
-            _effectToEdit.ResponsibleAgent = responsibleAgent.Value;
+            _effectToEdit.ResponsibleAgent = _subject;
             _effectToEdit.ObserverAgent = observerName.Value;
 
             if(index >= 0)
@@ -115,6 +114,16 @@ namespace WorldModelWF
         }
 
         private void AddorEditEffect_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void observerName_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
         {
 
         }

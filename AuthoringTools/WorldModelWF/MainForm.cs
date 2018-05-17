@@ -41,14 +41,16 @@ namespace WorldModelWF
             
             DataTable table = new DataTable();
             table.TableName = "Table";
-            table.Columns.Add("Type");
-            table.Columns.Add("Subject");
+          //  table.Columns.Add("Type");
+
             table.Columns.Add("Action");
+      
+            table.Columns.Add("Subject");
             table.Columns.Add("Target");
 
             foreach (var ev in asset.GetAllEvents())
             {
-                table.Rows.Add(ev.GetNTerm(1),ev.GetNTerm(2), ev.GetNTerm(3), ev.GetNTerm(4));
+                table.Rows.Add(ev.GetNTerm(3), ev.GetNTerm(2), ev.GetNTerm(4));
             }
 
             DS.Tables.Add(table);
@@ -136,7 +138,7 @@ namespace WorldModelWF
             foreach (var ev in LoadedAsset.GetAllEvents())
             {
                
-                ds.Tables[0].Rows.Add(ev.GetNTerm(1),ev.GetNTerm(2), ev.GetNTerm(3), ev.GetNTerm(4));
+                ds.Tables[0].Rows.Add(ev.GetNTerm(3), ev.GetNTerm(2), ev.GetNTerm(4));
             }
 
             RefreshEffects();

@@ -32,7 +32,7 @@ namespace WorldModelWF
             textBoxSubject.Value = WellFormedNames.Name.UNIVERSAL_SYMBOL;
             textBoxObject.Value = WellFormedNames.Name.UNIVERSAL_SYMBOL;
             textBoxTarget.Value = WellFormedNames.Name.UNIVERSAL_SYMBOL;
-            comboBoxEventType.DataSource = EmotionalAppraisalWF.ViewModels.AppraisalRulesVM.EventTypes;
+          //  comboBoxEventType.DataSource = EmotionalAppraisalWF.ViewModels.AppraisalRulesVM.EventTypes;
 
 
             if (eventTemplate != null)
@@ -41,7 +41,6 @@ namespace WorldModelWF
 
                 this.Text = "Update";
                 this.addOrEditButton.Text = "Update";
-                comboBoxEventType.Text = eventTemplate.GetNTerm(1).ToString();
                 textBoxSubject.Value = eventTemplate.GetNTerm(2);
                 textBoxObject.Value = eventTemplate.GetNTerm(3);
                 textBoxTarget.Value = eventTemplate.GetNTerm(4);
@@ -58,7 +57,7 @@ namespace WorldModelWF
 
                 _eventTemplate = WellFormedNames.Name.BuildName(
                     (Name) AMConsts.EVENT,
-                    (Name) comboBoxEventType.Text,
+                    (Name) "Action-End",
                     textBoxSubject.Value,
                     textBoxObject.Value,
                     textBoxTarget.Value);
@@ -78,7 +77,7 @@ namespace WorldModelWF
 
                 _eventTemplate = WellFormedNames.Name.BuildName(
                     (Name) AMConsts.EVENT,
-                    (Name) comboBoxEventType.Text,
+                    (Name) "Action-End",
                     textBoxSubject.Value,
                     textBoxObject.Value,
                     textBoxTarget.Value);

@@ -171,7 +171,18 @@ namespace WorldModel
 
             m_EffectsByEventNames.Remove(old);
 
-            m_EffectsByEventNames.Add(ev, pastEffects);
+
+           List<Effect> newEffects = new List<Effect>();
+
+            foreach (var effs in pastEffects)
+            {
+
+                var eff = effs;
+                eff.ResponsibleAgent = ev.GetNTerm(2);
+                newEffects.Add(eff);
+
+            }
+            m_EffectsByEventNames.Add(ev, newEffects);
 
             if(_EventNames.ContainsKey(old))
                 _EventNames.Remove(old);
