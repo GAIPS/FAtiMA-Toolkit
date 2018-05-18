@@ -1125,5 +1125,60 @@ namespace IntegratedAuthoringToolWF
             _wmForm.Refresh();
             _wmForm.Hide();
         }
+
+        private void displayGraph_Click(object sender, EventArgs e)
+        {
+
+            Dictionary<string, List<string>> states = new Dictionary<string, List<string>>();
+            int x = 0;
+            foreach (var d in LoadedAsset.GetAllDialogueActions())
+            {
+                if (states.ContainsKey(d.CurrentState))
+                {
+                 states[d.CurrentState].Add(d.NextState);   
+                }
+                else 
+                states.Add(d.CurrentState, new List<string>(){d.NextState});
+            }
+
+            using (StreamWriter writer =
+                new StreamWriter("dialogGraph.graphiz"))
+            {
+
+
+                writer.WriteLine("strict graph { ");
+
+                foreach (var s in states.Keys)
+                {
+                        foreach (var ns in states[s])
+                        {
+                            writer.WriteLine(s + " -- " + ns);
+                        }
+                    
+                }
+
+                writer.WriteLine("}");
+              //  writer.Write("Ayyy ");
+              //  writer.WriteLine("word 2");
+              //  writer.WriteLine("Line");
+            }
+
+          /*  strict graph { 
+                a -- b
+                    a -- b
+                b -- a [color=blue]
+            } 
+            */
+
+
+        }
+
+        private void makeGraph(StreamWriter writer, string cs, string ns)
+        {
+            writer.WriteLine("strict graph { ");
+
+        //    writer.Write();
+            writer.WriteLine("}");
+        }
     }
 }
