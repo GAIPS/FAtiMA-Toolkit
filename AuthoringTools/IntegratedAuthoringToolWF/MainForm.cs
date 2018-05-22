@@ -18,6 +18,7 @@ using Utilities.DataStructures;
 using WorldModel;
 using WorldModel.DTOs;
 
+
 namespace IntegratedAuthoringToolWF
 {
     public partial class MainForm : BaseIATForm
@@ -1130,7 +1131,7 @@ namespace IntegratedAuthoringToolWF
         {
 
             Dictionary<string, List<string>> states = new Dictionary<string, List<string>>();
-            int x = 0;
+          
             foreach (var d in LoadedAsset.GetAllDialogueActions())
             {
                 if (states.ContainsKey(d.CurrentState))
@@ -1141,44 +1142,70 @@ namespace IntegratedAuthoringToolWF
                 states.Add(d.CurrentState, new List<string>(){d.NextState});
             }
 
-            using (StreamWriter writer =
-                new StreamWriter("dialogGraph.graphiz"))
-            {
+      
 
+            string writer = "";
+       
 
-                writer.WriteLine("strict graph { ");
-
+            writer += "digraph { \n";
+            writer += "node[fontsize=10, labelloc = \"t\", labeljust = \"l\"]; \n";
+         
                 foreach (var s in states.Keys)
                 {
                         foreach (var ns in states[s])
                         {
-                            writer.WriteLine(s + " -- " + ns);
+                    if (s != "-")
+                        writer += s + "->" + ns + "\n";
+                    else if (ns != "-")
+                        writer += "Any" + "->" + ns + "\n";
+                    else  writer += "Any" + "->" + "Any" + "\n";
                         }
-                    
+
                 }
 
-                writer.WriteLine("}");
-              //  writer.Write("Ayyy ");
-              //  writer.WriteLine("word 2");
-              //  writer.WriteLine("Line");
-            }
+                writer+= "}";
+      
 
-          /*  strict graph { 
-                a -- b
-                    a -- b
-                b -- a [color=blue]
-            } 
-            */
+           Bitmap bit =  Run(writer);
+          var image =  new ImageForm(bit);
+          image.Show();
 
+            //      Graphics.DrawImage(bit, 60, 10);
 
         }
 
-        private void makeGraph(StreamWriter writer, string cs, string ns)
+        public static Bitmap Run(string dot)
         {
-            writer.WriteLine("strict graph { ");
+            string executable = @".\external\dot.exe";
+            string output = @".\external\tempgraph";
+            File.WriteAllText(output, dot);
 
-        //    writer.Write();
-            writer.WriteLine("}");
+            System.Diagnostics.Process process = new System.Diagnostics.Process();
+
+            // Stop the process from opening a new window
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
+
+            // Setup executable and parameters
+            process.StartInfo.FileName = executable;
+            process.StartInfo.Arguments = string.Format(@"{0} -Tjpg -O", output);
+
+            // Go
+            process.Start();
+            // and wait dot.exe to complete and exit
+            process.WaitForExit();
+            Bitmap bitmap = null; ;
+            using (Stream bmpStream = System.IO.File.Open(output + ".jpg", System.IO.FileMode.Open))
+            {
+                Image image = Image.FromStream(bmpStream);
+                bitmap = new Bitmap(image);
+            }
+            File.Delete(output);
+            File.Delete(output + ".jpg");
+            return bitmap;
         }
+
+
     }
 }
