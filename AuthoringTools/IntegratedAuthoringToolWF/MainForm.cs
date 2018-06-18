@@ -1196,13 +1196,19 @@ namespace IntegratedAuthoringToolWF
             // and wait dot.exe to complete and exit
             process.WaitForExit();
             Bitmap bitmap = null; ;
+
+            try{
             using (Stream bmpStream = System.IO.File.Open(output + ".jpg", System.IO.FileMode.Open))
             {
                 Image image = Image.FromStream(bmpStream);
                 bitmap = new Bitmap(image);
+            } }
+            catch (Exception e)
+            {
+              MessageBox.Show("Error: " + e.Message);
             }
             File.Delete(output);
-            File.Delete(output + ".jpg");
+           File.Delete(output + ".jpg");
             return bitmap;
         }
 

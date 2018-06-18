@@ -12,7 +12,7 @@
 									"PropertyName": "Has(Floor)",
 									"NewValue": "[t]",
 									"ResponsibleAgent": "World",
-									"ObserverAgent": "World"
+									"ObserverAgent": "*"
 								}]
 						}, 
 						{
@@ -22,7 +22,7 @@
 									"PropertyName": "DialogueState([i])",
 									"NewValue": "[ns]",
 									"ResponsibleAgent": "World",
-									"ObserverAgent": "World"
+									"ObserverAgent": "[t]"
 								}]
 						}, 
 						{
@@ -32,7 +32,7 @@
 									"PropertyName": "DialogueState([t])",
 									"NewValue": "[ns]",
 									"ResponsibleAgent": "World",
-									"ObserverAgent": "World"
+									"ObserverAgent": "[i]"
 								}]
 						}]
 				}

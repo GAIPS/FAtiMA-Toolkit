@@ -14,6 +14,10 @@ namespace IntegratedAuthoringToolWF
 {
     public partial class ImageForm : Form
     {
+
+
+        bool saved = false;
+
         public ImageForm( Bitmap b)
         {
             InitializeComponent();
@@ -29,7 +33,9 @@ namespace IntegratedAuthoringToolWF
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-         
+         if(saved == false) 
+                saveAsToolStripMenuItem_Click(sender, e);
+          else      
             pictureBox1.Image.Save(@"FilePath", ImageFormat.Png);
         }
 
@@ -41,6 +47,7 @@ namespace IntegratedAuthoringToolWF
                 return;
             var fileName = new FileInfo(sfd.FileName);
             pictureBox1.Image.Save(fileName.ToString());
+            saved = true;
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
