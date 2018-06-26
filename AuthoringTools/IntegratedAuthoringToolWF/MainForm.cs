@@ -963,10 +963,67 @@ namespace IntegratedAuthoringToolWF
             var playerRPC = agentsInChat.First(x => x.IsPlayer);
             string error;
             var dialog = LoadedAsset.GetDialogAction(act, out error);
-            this.auxHandlePropertyChangesForDialogAction(playerRPC.CharacterName.ToString(), act, dialog.NextState);
+           // this.auxHandlePropertyChangesForDialogAction(playerRPC.CharacterName.ToString(), act, dialog.NextState);
+
+            this.HandleEffects(act, playerRPC);
+
             this.buttonContinue_Click(sender, e);
         }
 
+
+        private void HandleEffects(IAction action, RolePlayCharacterAsset actor)
+        {
+            if(LoadedAsset.m_worldModelSource.Source == null)
+                return;
+
+            var wm = WorldModelAsset.LoadFromFile(LoadedAsset.m_worldModelSource.Source);
+
+               var events = new List<WellFormedNames.Name>();
+
+            var target = action.Target;
+             events.Add(EventHelper.ActionEnd(actor.CharacterName.ToString(), action.ToString(),target.ToString() ));
+
+               var effects = wm.Simulate(events);
+
+            string toWrite ="";
+            toWrite += "Effects: \n";
+
+            Dictionary<string,string> observerAgents = new Dictionary<string, string>();
+
+             foreach (var eff in effects )
+        {
+
+            var ef = eff.ToPropertyChangeEvent();
+           
+            foreach(var a in agentsInChat){
+
+            if(eff.ObserverAgent == a.CharacterName){
+
+                 
+               if(!observerAgents.ContainsKey(a.CharacterName.ToString())){
+                            
+                            observerAgents.Add(a.CharacterName.ToString(), ef.GetNTerm(3).ToString() + " = " + ef.GetNTerm(4).ToString());
+
+                        }   else observerAgents[a.CharacterName.ToString()] += ", " + ef.GetNTerm(3).ToString() + " = " + ef.GetNTerm(4).ToString();
+               
+                a.Perceive(ef);
+                        
+                        
+                        }
+            }
+            
+            }
+                 foreach(var o in observerAgents)
+            {
+                toWrite += o.Key + ": " + o.Value + "\n";
+            }
+
+
+              EditorTools.WriteText(richTextBoxChat,
+              toWrite, Color.Black, true);
+         
+
+        }
         private void auxHandlePropertyChangesForDialogAction(string actor, IAction action, string nextState)
         {
             foreach (var agent in agentsInChat)
