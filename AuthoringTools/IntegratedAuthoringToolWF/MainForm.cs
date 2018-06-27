@@ -991,7 +991,7 @@ namespace IntegratedAuthoringToolWF
             string toWrite ="";
             toWrite += "Effects: \n";
 
-            Dictionary<string,string> observerAgents = new Dictionary<string, string>();
+            Dictionary<string, List<string>> observerAgents = new Dictionary<string, List<string>>();
 
              foreach (var eff in effects )
         {
@@ -1005,9 +1005,9 @@ namespace IntegratedAuthoringToolWF
                  
                if(!observerAgents.ContainsKey(a.CharacterName.ToString())){
                             
-                            observerAgents.Add(a.CharacterName.ToString(), ef.GetNTerm(3).ToString() + " = " + ef.GetNTerm(4).ToString());
+                            observerAgents.Add(a.CharacterName.ToString(), new List<string>() {ef.GetNTerm(3).ToString() });
 
-                        }   else observerAgents[a.CharacterName.ToString()] += ", " + ef.GetNTerm(3).ToString() + " = " + ef.GetNTerm(4).ToString();
+                        }   else observerAgents[a.CharacterName.ToString()].Add(ef.GetNTerm(3).ToString());
                
                 a.Perceive(ef);
                         
@@ -1018,7 +1018,17 @@ namespace IntegratedAuthoringToolWF
             }
                  foreach(var o in observerAgents)
             {
-                toWrite += o.Key + ": " + o.Value + "\n";
+
+                 toWrite += o.Key + ": ";
+
+                foreach(var e in o.Value){
+                
+                var value = agentsInChat.Find(x=>x.CharacterName.ToString() == o.Key).GetBeliefValue(e);
+
+                toWrite += e + " = "+ value + ", ";
+            }
+                toWrite = toWrite.Substring(0, toWrite.Length -2);
+                toWrite += "\n";
             }
 
 if(effectTickBox.Checked)
