@@ -1021,7 +1021,7 @@ namespace IntegratedAuthoringToolWF
                 toWrite += o.Key + ": " + o.Value + "\n";
             }
 
-
+if(effectTickBox.Checked)
               EditorTools.WriteText(richTextBoxChat,
               toWrite, Color.Black, true);
          
