@@ -864,6 +864,7 @@ namespace IntegratedAuthoringToolWF
             {
                 if (ag.IsPlayer) continue;
                 var decisions = ag.Decide().Where(a => a.Key.ToString() == IATConsts.DIALOG_ACTION_KEY);
+
                 if (decisions.Any())
                 {
                     var action = decisions.First();
@@ -875,8 +876,8 @@ namespace IntegratedAuthoringToolWF
                     }
                     else if (this.ValidateTarget(action, ag.CharacterName.ToString()))
                     {
-                        auxHandlePropertyChangesForDialogAction(ag.CharacterName.ToString(), action,
-                            diag.NextState.ToString());
+
+                    
 
                         EditorTools.WriteText(richTextBoxChat,
                             ag.CharacterName + " To " + action.Target + " : ", Color.ForestGreen, false);
@@ -884,9 +885,10 @@ namespace IntegratedAuthoringToolWF
                         EditorTools.WriteText(richTextBoxChat, diag.Utterance, Color.Black, false);
 
                         EditorTools.WriteText(richTextBoxChat,
-                            " (" + ag.GetInternalStateString() + " | " + ag.GetSIRelationsString() + ")", Color.DarkRed,
+                            " (" + ag.GetInternalStateString() + " | " + ag.GetSIRelationsString() + ")" + "\n", Color.DarkRed,
                             true);
 
+                            HandleEffects(action, ag);
 
                     }
                 }
@@ -898,6 +900,7 @@ namespace IntegratedAuthoringToolWF
 
             var playerRPC = agentsInChat.First(a => a.IsPlayer == true);
             var playerDecisions = playerRPC.Decide().Where(a => a.Key.ToString() == IATConsts.DIALOG_ACTION_KEY);
+
             if (playerDecisions.Any())
             {
                 this.determinePlayerDialogueOptions(playerDecisions, playerRPC.CharacterName.ToString());
@@ -958,7 +961,7 @@ namespace IntegratedAuthoringToolWF
             var act = playerActions[idx];
 
             EditorTools.WriteText(richTextBoxChat,
-                "Player " + listBoxPlayerDialogues.SelectedItem.ToString(), Color.Blue, true);
+                "Player " + listBoxPlayerDialogues.SelectedItem.ToString() + "\n", Color.Blue, true);
 
             var playerRPC = agentsInChat.First(x => x.IsPlayer);
             string error;
@@ -997,7 +1000,7 @@ namespace IntegratedAuthoringToolWF
            
             foreach(var a in agentsInChat){
 
-            if(eff.ObserverAgent == a.CharacterName){
+            if(eff.ObserverAgent == a.CharacterName || eff.ObserverAgent.ToString() == "*"){
 
                  
                if(!observerAgents.ContainsKey(a.CharacterName.ToString())){
@@ -1024,45 +1027,7 @@ namespace IntegratedAuthoringToolWF
          
 
         }
-        private void auxHandlePropertyChangesForDialogAction(string actor, IAction action, string nextState)
-        {
-            foreach (var agent in agentsInChat)
-            {
-                var evt = EventHelper.ActionEnd(
-                    actor,
-                    action.Name.ToString(),
-                    action.Target.ToString());
-
-                agent.Perceive(evt);
-
-                evt = EventHelper.PropertyChange(
-                    IATConsts.HAS_FLOOR_PROPERTY,
-                    action.Target.ToString(),
-                    actor);
-
-                agent.Perceive(evt);
-            }
-
-
-            if (nextState != WellFormedNames.Name.NIL_STRING)
-            {
-                var targetAgent = agentsInChat.FirstOrDefault(x => x.CharacterName == action.Target);
-                targetAgent.Perceive(
-                    EventHelper.PropertyChange(
-                        string.Format(IATConsts.DIALOGUE_STATE_PROPERTY, actor),
-                        nextState,
-                        actor
-                    ));
-
-                var actorAgent = agentsInChat.FirstOrDefault(x => x.CharacterName.ToString() == actor);
-                actorAgent.Perceive(
-                    EventHelper.PropertyChange(
-                        string.Format(IATConsts.DIALOGUE_STATE_PROPERTY, targetAgent.CharacterName.ToString()),
-                        nextState,
-                        actor
-                    ));
-            }
-        }
+     
 
         private void textBoxBelChat_TextChanged(object sender, EventArgs e)
         {
