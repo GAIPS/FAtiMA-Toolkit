@@ -1,6 +1,7 @@
 ﻿using ActionLibrary;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
+using GAIPS.Rage;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
 using OfficeOpenXml;
@@ -12,12 +13,9 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using GAIPS.Rage;
 using Utilities;
 using Utilities.DataStructures;
 using WorldModel;
-using WorldModel.DTOs;
-
 
 namespace IntegratedAuthoringToolWF
 {
@@ -56,7 +54,6 @@ namespace IntegratedAuthoringToolWF
                     PropertyUtil.GetPropertyName<CharacterSourceDTO>(s => s.Source),
                 }
             );
-
         }
 
         protected override void OnAssetDataLoaded(IntegratedAuthoringToolAsset asset)
@@ -69,23 +66,19 @@ namespace IntegratedAuthoringToolWF
             _dialogs = new BindingListView<DialogueStateActionDTO>(new List<DialogueStateActionDTO>());
             dataGridViewDialogueActions.DataSource = _dialogs;
 
-
             if (_wmSource != null)
             {
-                if (_wmSource.Source != ""){
+                if (_wmSource.Source != "")
+                {
                     pathTextBoxWorldModel.Text = _wmSource.Source;
-                LoadWorldModelForm();
-
+                    LoadWorldModelForm();
+                }
             }
-        }
 
-        //ResetSimulator
+            //ResetSimulator
             richTextBoxChat.Clear();
             buttonContinue.Enabled = false;
             textBoxTick.Text = "";
-
-
-            
 
             RefreshDialogs();
         }
@@ -104,7 +97,7 @@ namespace IntegratedAuthoringToolWF
             this.currentRPCTabIndex = 1;
             _rpcForm.LoadedAsset = rpcAsset;
 
-            LoadedAsset.AddNewCharacterSource(new CharacterSourceDTO() {Source = asset.AssetFilePath});
+            LoadedAsset.AddNewCharacterSource(new CharacterSourceDTO() { Source = asset.AssetFilePath });
             _characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
             _characterSources.Refresh();
             SetModified();
@@ -150,7 +143,7 @@ namespace IntegratedAuthoringToolWF
             IList<int> charactersToRemove = new List<int>();
             for (var i = 0; i < dataGridViewCharacters.SelectedRows.Count; i++)
             {
-                var character = ((ObjectView<CharacterSourceDTO>) dataGridViewCharacters.SelectedRows[i].DataBoundItem)
+                var character = ((ObjectView<CharacterSourceDTO>)dataGridViewCharacters.SelectedRows[i].DataBoundItem)
                     .Object;
                 Form f;
                 charactersToRemove.Add(character.Id);
@@ -229,12 +222,11 @@ namespace IntegratedAuthoringToolWF
             SetModified();
         }
 
-
         private void buttonDuplicateDialogueAction_Click(object sender, EventArgs e)
         {
             if (dataGridViewDialogueActions.SelectedRows.Count == 1)
             {
-                var item = ((ObjectView<DialogueStateActionDTO>) dataGridViewDialogueActions.SelectedRows[0]
+                var item = ((ObjectView<DialogueStateActionDTO>)dataGridViewDialogueActions.SelectedRows[0]
                     .DataBoundItem).Object;
 
                 var newDialogueAction = new DialogueStateActionDTO
@@ -255,7 +247,7 @@ namespace IntegratedAuthoringToolWF
             IList<Guid> itemsToRemove = new List<Guid>();
             for (int i = 0; i < dataGridViewDialogueActions.SelectedRows.Count; i++)
             {
-                var item = ((ObjectView<DialogueStateActionDTO>) dataGridViewDialogueActions.SelectedRows[i]
+                var item = ((ObjectView<DialogueStateActionDTO>)dataGridViewDialogueActions.SelectedRows[i]
                     .DataBoundItem).Object;
                 itemsToRemove.Add(item.Id);
             }
@@ -415,7 +407,7 @@ namespace IntegratedAuthoringToolWF
         private DialogueStateActionDTO GenerateDialogueActionFromLine(string line, int totalSize, ref int stateCounter)
         {
             line = line.Replace("A:", "");
-            char[] delimitedchars = {'\n'};
+            char[] delimitedchars = { '\n' };
             line = line.Trim();
 
             var result = line.Split(delimitedchars);
@@ -470,7 +462,7 @@ namespace IntegratedAuthoringToolWF
                 .Select(group => group.First()))
             {
                 totalStates++;
-                if (dfsearch.Closed.SearchInClosed(new NodeRecord<string>() {node = dAction.CurrentState.ToString()}) ==
+                if (dfsearch.Closed.SearchInClosed(new NodeRecord<string>() { node = dAction.CurrentState.ToString() }) ==
                     null)
                 {
                     unreachableStatesCount++;
@@ -638,7 +630,7 @@ namespace IntegratedAuthoringToolWF
                     foreach (var emot in emotionList[rpc])
                     {
                         var lastFor = timestamp - emot.Value;
-                        double timePercentage = ((double) lastFor / (double) timestamp) * 100;
+                        double timePercentage = ((double)lastFor / (double)timestamp) * 100;
                         validationMessage += "Emotion: " + emot.Key + " ( " + timePercentage +
                                              "% of total scenario time)\n";
                     }
@@ -678,11 +670,11 @@ namespace IntegratedAuthoringToolWF
         {
             _rpcForm.Close();
             _rpcForm = new RolePlayCharacterWF.MainForm();
-           
-            pathTextBoxWorldModel.Text = null; 
+
+            pathTextBoxWorldModel.Text = null;
             _wmForm.Close();
             _wmForm = new WorldModelWF.MainForm();
-            
+
             CreateNewAsset();
         }
 
@@ -701,10 +693,9 @@ namespace IntegratedAuthoringToolWF
                 _rpcForm.SaveAssetToFile(_rpcForm.LoadedAsset, _rpcForm.LoadedAsset.AssetFilePath);
                 _rpcForm.SaveSubAssets();
                 _rpcForm.ClearModified();
-               
             }
-            if(_wmForm.LoadedAsset != null)
-                _wmForm.SaveAssetToFile(_wmForm.LoadedAsset, _wmForm.LoadedAsset.AssetFilePath );
+            if (_wmForm.LoadedAsset != null)
+                _wmForm.SaveAssetToFile(_wmForm.LoadedAsset, _wmForm.LoadedAsset.AssetFilePath);
 
             SaveAsset();
         }
@@ -717,8 +708,8 @@ namespace IntegratedAuthoringToolWF
                 _rpcForm.SaveSubAssets();
                 _rpcForm.ClearModified();
             }
-            if(_wmForm.LoadedAsset != null)
-                _wmForm.SaveAssetToFile(_wmForm.LoadedAsset, _wmForm.LoadedAsset.AssetFilePath );
+            if (_wmForm.LoadedAsset != null)
+                _wmForm.SaveAssetToFile(_wmForm.LoadedAsset, _wmForm.LoadedAsset.AssetFilePath);
 
             SaveAssetAs();
         }
@@ -785,14 +776,11 @@ namespace IntegratedAuthoringToolWF
             }
         }
 
-
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         private List<RolePlayCharacterAsset> agentsInChat;
-
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
@@ -850,13 +838,10 @@ namespace IntegratedAuthoringToolWF
 
             EditorTools.WriteText(richTextBoxChat, "", Color.Black, true);
 
-
             buttonContinue.Enabled = true;
             textBoxTick.Text = agentsInChat[0].Tick.ToString();
             this.buttonContinue_Click(sender, e);
         }
-
-
 
         private void buttonContinue_Click(object sender, EventArgs e)
         {
@@ -876,9 +861,6 @@ namespace IntegratedAuthoringToolWF
                     }
                     else if (this.ValidateTarget(action, ag.CharacterName.ToString()))
                     {
-
-                    
-
                         EditorTools.WriteText(richTextBoxChat,
                             ag.CharacterName + " To " + action.Target + " : ", Color.ForestGreen, false);
 
@@ -888,8 +870,7 @@ namespace IntegratedAuthoringToolWF
                             " (" + ag.GetInternalStateString() + " | " + ag.GetSIRelationsString() + ")" + "\n", Color.DarkRed,
                             true);
 
-                            HandleEffects(action, ag);
-
+                        HandleEffects(action, ag);
                     }
                 }
 
@@ -940,7 +921,6 @@ namespace IntegratedAuthoringToolWF
                                                                               .Utterance).ToList();
         }
 
-
         private bool ValidateTarget(IAction action, string actor)
         {
             var targetAgent = agentsInChat.FirstOrDefault(x => x.CharacterName == action.Target);
@@ -966,82 +946,71 @@ namespace IntegratedAuthoringToolWF
             var playerRPC = agentsInChat.First(x => x.IsPlayer);
             string error;
             var dialog = LoadedAsset.GetDialogAction(act, out error);
-           // this.auxHandlePropertyChangesForDialogAction(playerRPC.CharacterName.ToString(), act, dialog.NextState);
 
             this.HandleEffects(act, playerRPC);
 
             this.buttonContinue_Click(sender, e);
         }
 
-
         private void HandleEffects(IAction action, RolePlayCharacterAsset actor)
         {
-            if(LoadedAsset.m_worldModelSource.Source == null)
+            if (LoadedAsset.m_worldModelSource.Source == null)
                 return;
 
             var wm = WorldModelAsset.LoadFromFile(LoadedAsset.m_worldModelSource.Source);
 
-               var events = new List<WellFormedNames.Name>();
-
             var target = action.Target;
-             events.Add(EventHelper.ActionEnd(actor.CharacterName.ToString(), action.ToString(),target.ToString() ));
-
-               var effects = wm.Simulate(events);
-
-            string toWrite ="";
+            var ev = EventHelper.ActionEnd(actor.CharacterName.ToString(), action.ToString(), target.ToString());
+            foreach (var a in agentsInChat)
+            {
+                a.Perceive(ev);
+            }
+            var effects = wm.Simulate(new[]{ev});
+            string toWrite = "";
             toWrite += "Effects: \n";
 
             Dictionary<string, List<string>> observerAgents = new Dictionary<string, List<string>>();
 
-             foreach (var eff in effects )
-        {
-
-            var ef = eff.ToPropertyChangeEvent();
-           
-            foreach(var a in agentsInChat){
-
-            if(eff.ObserverAgent == a.CharacterName || eff.ObserverAgent.ToString() == "*"){
-
-                 
-               if(!observerAgents.ContainsKey(a.CharacterName.ToString())){
-                            
-                            observerAgents.Add(a.CharacterName.ToString(), new List<string>() {ef.GetNTerm(3).ToString() });
-
-                        }   else observerAgents[a.CharacterName.ToString()].Add(ef.GetNTerm(3).ToString());
-               
-                a.Perceive(ef);
-                        
-                        
-                        }
-            }
-            
-            }
-                 foreach(var o in observerAgents)
+            foreach (var eff in effects)
             {
+                var ef = eff.ToPropertyChangeEvent();
 
-                 toWrite += o.Key + ": ";
+                foreach (var a in agentsInChat)
+                {
+                    if (eff.ObserverAgent == a.CharacterName || eff.ObserverAgent.ToString() == "*")
+                    {
+                        if (!observerAgents.ContainsKey(a.CharacterName.ToString()))
+                        {
+                            observerAgents.Add(a.CharacterName.ToString(), new List<string>() { ef.GetNTerm(3).ToString() });
+                        }
+                        else observerAgents[a.CharacterName.ToString()].Add(ef.GetNTerm(3).ToString());
 
-                foreach(var e in o.Value){
-                
-                var value = agentsInChat.Find(x=>x.CharacterName.ToString() == o.Key).GetBeliefValue(e);
-
-                toWrite += e + " = "+ value + ", ";
+                        a.Perceive(ef);
+                    }
+                }
             }
-                toWrite = toWrite.Substring(0, toWrite.Length -2);
+            foreach (var o in observerAgents)
+            {
+                toWrite += o.Key + ": ";
+
+                foreach (var e in o.Value)
+                {
+                    var value = agentsInChat.Find(x => x.CharacterName.ToString() == o.Key).GetBeliefValue(e);
+
+                    toWrite += e + " = " + value + ", ";
+                }
+                toWrite = toWrite.Substring(0, toWrite.Length - 2);
                 toWrite += "\n";
             }
 
-if(effectTickBox.Checked)
-              EditorTools.WriteText(richTextBoxChat,
-              toWrite, Color.Black, true);
-         
-
+            if (effectTickBox.Checked)
+                EditorTools.WriteText(richTextBoxChat,
+                toWrite, Color.Black, true);
         }
-     
 
         private void textBoxBelChat_TextChanged(object sender, EventArgs e)
         {
-            var selectedRPCName = (string) comboBoxAgChat.SelectedItem;
+            var selectedRPCName = (string)comboBoxAgChat.SelectedItem;
 
             if (string.IsNullOrWhiteSpace(textBoxBelChat.Text) ||
                 string.IsNullOrWhiteSpace(selectedRPCName))
@@ -1077,12 +1046,10 @@ if(effectTickBox.Checked)
 
         private void groupBox6_Enter(object sender, EventArgs e)
         {
-
         }
 
         private void createNewWorldModelButton_Click(object sender, EventArgs e)
         {
-
             if (LoadedAsset.AssetFilePath == null)
             {
                 MessageBox.Show("You must first save the IAT asset");
@@ -1101,8 +1068,6 @@ if(effectTickBox.Checked)
                     asset.AssetFilePath);
             SetModified();
             ReloadEditor();
-
-           
         }
 
         private void openWorldModelButton_Click(object sender, EventArgs e)
@@ -1128,16 +1093,12 @@ if(effectTickBox.Checked)
             ReloadEditor();
         }
 
-
-
         private void LoadWorldModelForm()
         {
-
-
             var wm = WorldModelAsset.LoadFromFile(LoadedAsset.m_worldModelSource.Source);
-         
+
             _wmForm = new WorldModelWF.MainForm();
-          _wmForm.LoadedAsset = wm;
+            _wmForm.LoadedAsset = wm;
 
             this.pathTextBoxWorldModel.Text = LoadableAsset<WorldModelAsset>.ToRelativePath(LoadedAsset.AssetFilePath, this.LoadedAsset.m_worldModelSource.Source);
 
@@ -1147,13 +1108,12 @@ if(effectTickBox.Checked)
 
         private void pathTextBoxEA_TextChanged(object sender, EventArgs e)
         {
-
         }
 
         private void clearWorldModelButton_Click(object sender, EventArgs e)
         {
             LoadedAsset.m_worldModelSource = null;
-            pathTextBoxWorldModel.Text = null; 
+            pathTextBoxWorldModel.Text = null;
             SetModified();
             _wmForm.Refresh();
             _wmForm.Hide();
@@ -1161,49 +1121,42 @@ if(effectTickBox.Checked)
 
         private void displayGraph_Click(object sender, EventArgs e)
         {
-
             Dictionary<string, List<string>> states = new Dictionary<string, List<string>>();
-          
+
             foreach (var d in LoadedAsset.GetAllDialogueActions())
             {
                 if (states.ContainsKey(d.CurrentState))
                 {
-                 states[d.CurrentState].Add(d.NextState);   
+                    states[d.CurrentState].Add(d.NextState);
                 }
-                else 
-                states.Add(d.CurrentState, new List<string>(){d.NextState});
+                else
+                    states.Add(d.CurrentState, new List<string>() { d.NextState });
             }
 
-      
-
             string writer = "";
-       
 
             writer += "digraph { \n";
             writer += "node[fontsize=10, labelloc = \"t\", labeljust = \"l\"]; \n";
-         
-                foreach (var s in states.Keys)
+
+            foreach (var s in states.Keys)
+            {
+                foreach (var ns in states[s])
                 {
-                        foreach (var ns in states[s])
-                        {
                     if (s != "-")
                         writer += s + "->" + ns + "\n";
                     else if (ns != "-")
                         writer += "Any" + "->" + ns + "\n";
-                    else  writer += "Any" + "->" + "Any" + "\n";
-                        }
-
+                    else writer += "Any" + "->" + "Any" + "\n";
                 }
+            }
 
-                writer+= "}";
-      
+            writer += "}";
 
-           Bitmap bit =  Run(writer);
-          var image =  new ImageForm(bit);
-          image.Show();
+            Bitmap bit = Run(writer);
+            var image = new ImageForm(bit);
+            image.Show();
 
             //      Graphics.DrawImage(bit, 60, 10);
-
         }
 
         public static Bitmap Run(string dot)
@@ -1229,21 +1182,25 @@ if(effectTickBox.Checked)
             process.WaitForExit();
             Bitmap bitmap = null; ;
 
-            try{
-            using (Stream bmpStream = System.IO.File.Open(output + ".jpg", System.IO.FileMode.Open))
+            try
             {
-                Image image = Image.FromStream(bmpStream);
-                bitmap = new Bitmap(image);
-            } }
+                using (Stream bmpStream = System.IO.File.Open(output + ".jpg", System.IO.FileMode.Open))
+                {
+                    Image image = Image.FromStream(bmpStream);
+                    bitmap = new Bitmap(image);
+                }
+            }
             catch (Exception e)
             {
-              MessageBox.Show("Error: " + e.Message);
+                MessageBox.Show("Error: " + e.Message);
             }
             File.Delete(output);
-           File.Delete(output + ".jpg");
+            File.Delete(output + ".jpg");
             return bitmap;
         }
 
-
+        private void listBoxPlayerDialogues_SelectedIndexChanged(object sender, EventArgs e)
+        {
+        }
     }
 }

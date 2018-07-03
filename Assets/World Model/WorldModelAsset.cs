@@ -1,25 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using ActionLibrary;
-using GAIPS.Rage;
-using WellFormedNames;
-using KnowledgeBase;
-using Conditions.DTOs;
-using WorldModel.DTOs;
-using AutobiographicMemory;
-using Utilities;
-using WellFormedNames.Collections;
-using RolePlayCharacter;
+﻿using GAIPS.Rage;
 using SerializationUtilities;
+using System;
+using System.Collections.Generic;
+using WellFormedNames;
+using WellFormedNames.Collections;
+using WorldModel.DTOs;
 
 namespace WorldModel
 {
     [Serializable]
     public sealed partial class WorldModelAsset : LoadableAsset<WorldModelAsset>, ICustomSerialization
     {
-
         private Dictionary<Name, List<Effect>> m_EffectsByEventNames;
 
         private NameSearchTree<Name> _EventNames;
@@ -35,120 +26,95 @@ namespace WorldModel
             return null;
         }
 
-
-        public IEnumerable<EffectDTO> Simulate(List<Name> events)
+        public IEnumerable<EffectDTO> Simulate(Name[] events)
         {
-
             var result = new List<EffectDTO>();
-
 
             foreach (var e in events)
             {
-                
                 foreach (var possibleEvent in this._EventNames.Unify(e))
                 {
+                    var substitutions = new[] { possibleEvent.Item2 }; //this adds the subs found in the eventName
 
+                    var effects = m_EffectsByEventNames[possibleEvent.Item1];
 
-                        var substitutions = new[] { possibleEvent.Item2 }; //this adds the subs found in the eventName
+                    var responsibleAgent = (Name)e.ToString().Split(',')[1];
 
-                        var effects = m_EffectsByEventNames[possibleEvent.Item1];
+                    foreach (var ef in effects)
+                    {
+                        var truePropertyName = (Name)"default";
+                        var trueNewValueName = (Name)"default";
+                        var trueResponsibleAgentName = (Name)"World";
+                        var trueObserverAgentName = (Name)"*";
 
-                    var responsibleAgent = (Name) e.ToString().Split(',')[1];
-
-                        foreach (var ef in effects)
-                        {
-                            var truePropertyName = (Name) "default";
-                            var trueNewValueName = (Name) "default";
-                            var trueResponsibleAgentName = (Name) "World";
-                            var trueObserverAgentName = (Name) "*";
-
-
-                            if (!ef.PropertyName.IsGrounded)
-                                foreach (var sub in substitutions)
-                                {
-                                    truePropertyName = ef.PropertyName.MakeGround(sub);
-
-                                }
-
-                            else truePropertyName = ef.PropertyName;
-
-                            if (!ef.NewValue.IsGrounded)
-                                foreach (var sub in substitutions)
-                                {
-                                    trueNewValueName = ef.NewValue.MakeGround(sub);
-                                }
-                            else trueNewValueName = ef.NewValue;
-
-
-                            if (!ef.ResponsibleAgent.IsGrounded)
-                                foreach (var sub in substitutions)
-                                {
-                                    trueResponsibleAgentName = ef.ResponsibleAgent.MakeGround(sub);
-                                }
-                            else trueResponsibleAgentName = responsibleAgent;
-
-                            if (!ef.ObserverAgent.IsGrounded)
-                                foreach (var sub in substitutions)
-                                {
-                                    trueObserverAgentName = ef.ObserverAgent.MakeGround(sub);
-                                }
-                            else trueResponsibleAgentName = responsibleAgent;
-
-                            var trueEffect = new EffectDTO()
+                        if (!ef.PropertyName.IsGrounded)
+                            foreach (var sub in substitutions)
                             {
-                                PropertyName = truePropertyName,
-                                NewValue = trueNewValueName,
-                                ResponsibleAgent = trueResponsibleAgentName,
-                                ObserverAgent = trueObserverAgentName
-                            };
+                                truePropertyName = ef.PropertyName.MakeGround(sub);
+                            }
+                        else truePropertyName = ef.PropertyName;
 
-                              
-                            result.Add(trueEffect);
+                        if (!ef.NewValue.IsGrounded)
+                            foreach (var sub in substitutions)
+                            {
+                                trueNewValueName = ef.NewValue.MakeGround(sub);
+                            }
+                        else trueNewValueName = ef.NewValue;
 
-                        }
-                       
+                        if (!ef.ResponsibleAgent.IsGrounded)
+                            foreach (var sub in substitutions)
+                            {
+                                trueResponsibleAgentName = ef.ResponsibleAgent.MakeGround(sub);
+                            }
+                        else trueResponsibleAgentName = responsibleAgent;
+
+                        if (!ef.ObserverAgent.IsGrounded)
+                            foreach (var sub in substitutions)
+                            {
+                                trueObserverAgentName = ef.ObserverAgent.MakeGround(sub);
+                            }
+                        else trueResponsibleAgentName = responsibleAgent;
+
+                        var trueEffect = new EffectDTO()
+                        {
+                            PropertyName = truePropertyName,
+                            NewValue = trueNewValueName,
+                            ResponsibleAgent = trueResponsibleAgentName,
+                            ObserverAgent = trueObserverAgentName
+                        };
+
+                        result.Add(trueEffect);
                     }
-                    
                 }
+            }
 
             return result;
         }
 
-
         public void AddEventEffect(Name ev, EffectDTO eff)
         {
-
-            if(m_EffectsByEventNames.ContainsKey(ev))
+            if (m_EffectsByEventNames.ContainsKey(ev))
                 m_EffectsByEventNames[ev].Add(new Effect(eff));
-
             else
             {
-
                 _EventNames.Add(new KeyValuePair<Name, Name>(ev, ev));
-                if(eff.PropertyName != null)
-                    m_EffectsByEventNames.Add(ev, new List<Effect>(){new Effect(eff)});
+                if (eff.PropertyName != null)
+                    m_EffectsByEventNames.Add(ev, new List<Effect>() { new Effect(eff) });
                 else m_EffectsByEventNames.Add(ev, new List<Effect>());
-
             }
-           
         }
-
 
         public void EditEventEffect(Name ev, EffectDTO eff, int index)
         {
-
             if (m_EffectsByEventNames.ContainsKey(ev))
             {
                 m_EffectsByEventNames[ev].RemoveAt(index);
                 m_EffectsByEventNames[ev].Add(new Effect(eff));
             }
-             
-           
         }
 
         public void AddEventEffects(Name ev, IEnumerable<EffectDTO> effs)
         {
-
             foreach (var ef in effs)
             {
                 AddEventEffect(ev, ef);
@@ -162,7 +128,6 @@ namespace WorldModel
                 m_EffectsByEventNames.Add(ev, new List<Effect>());
                 _EventNames.Add(new KeyValuePair<Name, Name>(ev, ev));
             }
-
         }
 
         public void UpdateEventTemplate(Name old, Name ev)
@@ -171,25 +136,20 @@ namespace WorldModel
 
             m_EffectsByEventNames.Remove(old);
 
-
-           List<Effect> newEffects = new List<Effect>();
+            List<Effect> newEffects = new List<Effect>();
 
             foreach (var effs in pastEffects)
             {
-
                 var eff = effs;
                 eff.ResponsibleAgent = ev.GetNTerm(2);
                 newEffects.Add(eff);
-
             }
             m_EffectsByEventNames.Add(ev, newEffects);
 
-            if(_EventNames.ContainsKey(old))
+            if (_EventNames.ContainsKey(old))
                 _EventNames.Remove(old);
             _EventNames.Add(new KeyValuePair<Name, Name>(ev, ev));
         }
-
-       
 
         public Dictionary<Name, List<Effect>> GetAllEventEffects()
         {
@@ -216,23 +176,20 @@ namespace WorldModel
 
             foreach (var k in m_EffectsByEventNames.Keys)
             {
-                _EventNames.Add(new KeyValuePair<Name, Name>(k,k));
+                _EventNames.Add(new KeyValuePair<Name, Name>(k, k));
             }
-
         }
-
 
         public void RemoveEffect(Name EventName, Effect eff)
         {
             m_EffectsByEventNames?[EventName].Remove(eff);
-        
         }
 
         public void RemoveEvent(Name EventName)
         {
             m_EffectsByEventNames?.Remove(EventName);
-            if(_EventNames.ContainsKey(EventName))
-            _EventNames.Remove(EventName);
+            if (_EventNames.ContainsKey(EventName))
+                _EventNames.Remove(EventName);
         }
     }
 }
