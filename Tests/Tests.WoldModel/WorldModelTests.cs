@@ -63,7 +63,7 @@ namespace WorldModelTests
                 toSimulate.Add((Name)evt);
             }
 
-           var effects = wm.Simulate(toSimulate);
+           var effects = wm.Simulate(toSimulate.ToArray());
 
             Assert.AreEqual(effects.Count(), effectsNumber);
 
@@ -84,7 +84,7 @@ namespace WorldModelTests
             List<Name> toSimulate = new List<Name>(); 
             toSimulate.Add((Name)pastEvent);
             
-            var effects = wm.Simulate(toSimulate);
+            var effects = wm.Simulate(toSimulate.ToArray());
 
             Assert.AreEqual(effects.FirstOrDefault().ToPropertyChangeEvent().ToString(), propertyChangeEffect);
 
@@ -122,7 +122,7 @@ namespace WorldModelTests
             var toSimulate = new List<Name> {(Name) "Event(Action-End, John, Speak(Start, S1, - , -), Sarah)"};
 
 
-            var effects = wm.Simulate(toSimulate);
+            var effects = wm.Simulate(toSimulate.ToArray());
 
          
             Assert.AreEqual(effects.ElementAt(1).ToPropertyChangeEvent().ToString(), 

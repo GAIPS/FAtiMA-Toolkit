@@ -164,7 +164,7 @@ namespace CommeillFautTutorial
 
 
                     // WORLD MODEL
-                    var effects = wm.Simulate(_events);
+                    var effects = wm.Simulate(_events.ToArray());
                     foreach (var ef in effects)
                     {
 
