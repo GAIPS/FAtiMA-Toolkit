@@ -96,12 +96,8 @@ namespace WorldModelWF
 
         private void addEffect_Click(object sender, EventArgs e)
         {
-
-
-          
             _effectToEdit.NewValue = newValue.Value;
             _effectToEdit.PropertyName = propertyName.Value;
-            _effectToEdit.ResponsibleAgent = _subject;
             _effectToEdit.ObserverAgent = observerName.Value;
 
             if(index >= 0)

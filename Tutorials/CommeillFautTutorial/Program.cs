@@ -168,22 +168,20 @@ namespace CommeillFautTutorial
                     foreach (var ef in effects)
                     {
 
-                        if (ef.ObserverAgent == (Name) "*")
+                        if (ef.ObserverAgent == (Name)"*")
                         {
                             foreach (var rpc in rpcList)
                             {
                                 var proChange =
-                                    EventHelper.PropertyChange(ef.PropertyName.ToString(), ef.NewValue.ToString(), ef.ResponsibleAgent.ToString());
-
+                                    EventHelper.PropertyChange(ef.PropertyName, ef.NewValue, initiator.CharacterName);
                                 rpc.Perceive(proChange);
-                                
                             }
                         }
 
                         else
                         {
                             var proChange =
-                                EventHelper.PropertyChange(ef.PropertyName.ToString(), ef.NewValue.ToString(), ef.ResponsibleAgent.ToString());
+                                EventHelper.PropertyChange(ef.PropertyName, ef.NewValue, initiator.CharacterName);
                             rpcList.Find(x=>x.CharacterName == ef.ObserverAgent).Perceive(proChange);
                         }
 

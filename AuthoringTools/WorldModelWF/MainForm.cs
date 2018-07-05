@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using EmotionalAppraisal.DTOs;
-using GAIPS.AssetEditorTools;
 using WorldModel;
 using WorldModel.DTOs;
 
@@ -17,34 +10,26 @@ namespace WorldModelWF
     public partial class MainForm : BaseWorldModelForm
     {
         private WorldModelAsset _wm;
-        
+
         public MainForm()
         {
             InitializeComponent();
         }
 
-
         #region Overrides of BaseAssetForm<WorldModelAsset>
 
         protected override void OnAssetDataLoaded(WorldModelAsset asset)
         {
-
             if (asset == null)
                 return;
-       
+
             _wm = asset;
-
-
 
             DataSet DS = new DataSet();
 
-            
             DataTable table = new DataTable();
             table.TableName = "Table";
-          //  table.Columns.Add("Type");
-
             table.Columns.Add("Action");
-      
             table.Columns.Add("Subject");
             table.Columns.Add("Target");
 
@@ -56,7 +41,7 @@ namespace WorldModelWF
             DS.Tables.Add(table);
 
             dataGridViewEventTemplates.DataSource = DS;
-          
+
             this.dataGridViewEventTemplates.DataMember = "Table";
 
             dataGridViewEventTemplates.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -67,7 +52,6 @@ namespace WorldModelWF
                 dataGridViewEffects.Columns[0].Visible = false;
                 dataGridViewEffects.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             }
-
 
             if (asset.GetAllEventEffects().Count == 0)
             {
@@ -90,33 +74,26 @@ namespace WorldModelWF
 
             _wasModified = false;
         }
-        #endregion
 
+        #endregion Overrides of BaseAssetForm<WorldModelAsset>
 
         private void buttonAddEvent_Click(object sender, EventArgs e)
         {
-
-
-        
-                var ev = new AddOrEditEventTemplateForm(LoadedAsset, null);
-                ev.ShowDialog(this);
+            var ev = new AddOrEditEventTemplateForm(LoadedAsset, null);
+            ev.ShowDialog(this);
             RefreshEventList();
-
-
         }
 
         private void groupBox7_Enter(object sender, EventArgs e)
         {
-
         }
 
         private void addEffectDTO_Click(object sender, EventArgs e)
         {
-        
-         var index = dataGridViewEventTemplates.SelectedRows[0].Index;
+            var index = dataGridViewEventTemplates.SelectedRows[0].Index;
 
             var eventTemp = LoadedAsset.GetAllEvents().ElementAt(index);
-          var ef = new AddorEditEffect(LoadedAsset,eventTemp  , -1, new EffectDTO());
+            var ef = new AddorEditEffect(LoadedAsset, eventTemp, -1, new EffectDTO());
             ef.ShowDialog(this);
             SetModified();
             dataGridViewEventTemplates_SelectionChanged(sender, e);
@@ -124,9 +101,7 @@ namespace WorldModelWF
 
         private void dataGridViewEventTemplates_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
         }
-
 
         private void RefreshEventList()
         {
@@ -134,25 +109,20 @@ namespace WorldModelWF
 
             ds.Tables[0].Clear();
 
-
             foreach (var ev in LoadedAsset.GetAllEvents())
             {
-               
                 ds.Tables[0].Rows.Add(ev.GetNTerm(3), ev.GetNTerm(2), ev.GetNTerm(4));
             }
 
             RefreshEffects();
-
         }
 
         private void dataGridViewEventTemplates_SelectionChanged(object sender, EventArgs e)
         {
-
             var index = 0;
 
             if (dataGridViewEventTemplates.SelectedRows.Count > 0)
                 index = dataGridViewEventTemplates.SelectedRows[0].Index;
-
 
             dataGridViewEffects.DataSource = null;
             if (LoadedAsset != null)
@@ -171,21 +141,15 @@ namespace WorldModelWF
                     button2.Enabled = true;
                     button4.Enabled = true;
                 }
-
-                else{
-                        
-                            button1.Enabled = false;
-                            button2.Enabled = false;
-                            button4.Enabled = false;
-                    }
-                   
-
-                addEffectDTO.Enabled = true;
+                else
+                {
+                    button1.Enabled = false;
+                    button2.Enabled = false;
+                    button4.Enabled = false;
                 }
 
-
-            
-            
+                addEffectDTO.Enabled = true;
+            }
         }
 
         public void RefreshEffects()
@@ -195,7 +159,6 @@ namespace WorldModelWF
             if (dataGridViewEventTemplates.SelectedRows.Count > 0)
                 index = dataGridViewEventTemplates.SelectedRows[0].Index;
 
-
             dataGridViewEffects.DataSource = null;
             if (LoadedAsset != null)
             {
@@ -213,14 +176,12 @@ namespace WorldModelWF
                     button2.Enabled = true;
                     button4.Enabled = true;
                 }
-
-                else{
-                        
+                else
+                {
                     button1.Enabled = false;
                     button2.Enabled = false;
                     button4.Enabled = false;
                 }
-                   
 
                 addEffectDTO.Enabled = true;
             }
@@ -228,13 +189,10 @@ namespace WorldModelWF
 
         private void buttonEditAttRule_Click(object sender, EventArgs e)
         {
-             
             var index = dataGridViewEventTemplates.SelectedRows[0].Index;
 
             var eventTemp = LoadedAsset.GetAllEvents().ElementAt(index);
 
-
-            
             var ev = new AddOrEditEventTemplateForm(LoadedAsset, eventTemp);
             ev.ShowDialog(this);
             SetModified();
@@ -243,7 +201,7 @@ namespace WorldModelWF
 
         private void button2_Click(object sender, EventArgs e) // Edit Effect
         {
-          var  index2 = -1;
+            var index2 = -1;
 
             var index = dataGridViewEventTemplates.SelectedRows[0].Index;
 
@@ -253,7 +211,7 @@ namespace WorldModelWF
 
             var effect = LoadedAsset.GetAllEventEffects()[eventTemp].ElementAt(index2);
 
-            var ef = new AddorEditEffect(LoadedAsset, eventTemp  , index2,  effect.ToDTO());
+            var ef = new AddorEditEffect(LoadedAsset, eventTemp, index2, effect.ToDTO());
 
             ef.ShowDialog(this);
 
@@ -264,18 +222,15 @@ namespace WorldModelWF
 
         private void buttonRemoveAttRule_Click(object sender, EventArgs e)
         {
-               
             var index = dataGridViewEventTemplates.SelectedRows[0].Index;
 
             var eventTemp = LoadedAsset.GetAllEvents().ElementAt(index);
 
-
-           LoadedAsset.RemoveEvent(eventTemp);   
+            LoadedAsset.RemoveEvent(eventTemp);
 
             SetModified();
 
             RefreshEventList();
-
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -288,7 +243,7 @@ namespace WorldModelWF
 
             var effect = LoadedAsset.GetAllEventEffects()[eventTemp].ElementAt(index2);
 
-           LoadedAsset.RemoveEffect(eventTemp, effect);
+            LoadedAsset.RemoveEffect(eventTemp, effect);
             SetModified();
             dataGridViewEventTemplates_SelectionChanged(sender, e);
         }
@@ -310,12 +265,10 @@ namespace WorldModelWF
 
         private void dataGridViewEffects_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
         }
     }
 }

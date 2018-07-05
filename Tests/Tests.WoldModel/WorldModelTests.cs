@@ -76,18 +76,15 @@ namespace WorldModelTests
         [TestCase("Event(Action-End, John, Surf, Sarah)", "Event(Property-Change, John, DialogueState(Sarah), John)")]
         public void Test_WM_Evaluate_Content_Match(string pastEvent, string propertyChangeEffect)
         {
-
             var wm = BuildWorldModelAsset();
             AddEffects(wm);
 
-           
             List<Name> toSimulate = new List<Name>(); 
             toSimulate.Add((Name)pastEvent);
             
-            var effects = wm.Simulate(toSimulate.ToArray());
-
-            Assert.AreEqual(effects.FirstOrDefault().ToPropertyChangeEvent().ToString(), propertyChangeEffect);
-
+            var effect = wm.Simulate(toSimulate.ToArray()).FirstOrDefault();
+            var pcEvent = EventHelper.PropertyChange(effect.PropertyName, effect.NewValue, ((Name)pastEvent).GetNTerm(2));
+            Assert.AreEqual(pcEvent.ToString(), propertyChangeEffect);
         }
 
         [Test]
@@ -102,7 +99,6 @@ namespace WorldModelTests
             {
                 NewValue = (Name)"[t]",
                 PropertyName = (Name)"DialogueState([i])",
-                ResponsibleAgent = (Name)"[t]",
                 ObserverAgent = (Name)"*"
             });
 
@@ -110,7 +106,6 @@ namespace WorldModelTests
             {
                 NewValue = (Name)"[i]",
                 PropertyName = (Name)"DialogueState([t])",
-                ResponsibleAgent = (Name)"[i]",
                 ObserverAgent = (Name)"*"
             });
 
@@ -122,13 +117,14 @@ namespace WorldModelTests
             var toSimulate = new List<Name> {(Name) "Event(Action-End, John, Speak(Start, S1, - , -), Sarah)"};
 
 
-            var effects = wm.Simulate(toSimulate.ToArray());
+            var effectOne = wm.Simulate(toSimulate.ToArray()).ElementAt(1);
+            var effectZero = wm.Simulate(toSimulate.ToArray()).ElementAt(0);
 
-         
-            Assert.AreEqual(effects.ElementAt(1).ToPropertyChangeEvent().ToString(), 
+
+            Assert.AreEqual(EventHelper.PropertyChange(effectOne.PropertyName, effectOne.NewValue, (Name)"John"), 
                "Event(Property-Change, John, DialogueState(Sarah), John)");
 
-            Assert.AreEqual(effects.ElementAt(0).ToPropertyChangeEvent().ToString(), 
+            Assert.AreEqual(EventHelper.PropertyChange(effectZero.PropertyName, effectZero.NewValue, (Name)"John"),
                 "Event(Property-Change, John, DialogueState(John), Sarah)");
            
            

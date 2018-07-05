@@ -61,13 +61,6 @@ namespace WorldModel
                             }
                         else trueNewValueName = ef.NewValue;
 
-                        if (!ef.ResponsibleAgent.IsGrounded)
-                            foreach (var sub in substitutions)
-                            {
-                                trueResponsibleAgentName = ef.ResponsibleAgent.MakeGround(sub);
-                            }
-                        else trueResponsibleAgentName = responsibleAgent;
-
                         if (!ef.ObserverAgent.IsGrounded)
                             foreach (var sub in substitutions)
                             {
@@ -79,7 +72,6 @@ namespace WorldModel
                         {
                             PropertyName = truePropertyName,
                             NewValue = trueNewValueName,
-                            ResponsibleAgent = trueResponsibleAgentName,
                             ObserverAgent = trueObserverAgentName
                         };
 
@@ -141,7 +133,6 @@ namespace WorldModel
             foreach (var effs in pastEffects)
             {
                 var eff = effs;
-                eff.ResponsibleAgent = ev.GetNTerm(2);
                 newEffects.Add(eff);
             }
             m_EffectsByEventNames.Add(ev, newEffects);

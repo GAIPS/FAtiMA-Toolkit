@@ -973,19 +973,18 @@ namespace IntegratedAuthoringToolWF
 
             foreach (var eff in effects)
             {
-                var ef = eff.ToPropertyChangeEvent();
-
+                var evt = EventHelper.PropertyChange(eff.PropertyName.ToString(), eff.NewValue.ToString(), actor.CharacterName.ToString());
                 foreach (var a in agentsInChat)
                 {
                     if (eff.ObserverAgent == a.CharacterName || eff.ObserverAgent.ToString() == "*")
                     {
                         if (!observerAgents.ContainsKey(a.CharacterName.ToString()))
                         {
-                            observerAgents.Add(a.CharacterName.ToString(), new List<string>() { ef.GetNTerm(3).ToString() });
+                            observerAgents.Add(a.CharacterName.ToString(), new List<string>() { evt.GetNTerm(3).ToString() });
                         }
-                        else observerAgents[a.CharacterName.ToString()].Add(ef.GetNTerm(3).ToString());
+                        else observerAgents[a.CharacterName.ToString()].Add(evt.GetNTerm(3).ToString());
 
-                        a.Perceive(ef);
+                        a.Perceive(evt);
                     }
                 }
 
