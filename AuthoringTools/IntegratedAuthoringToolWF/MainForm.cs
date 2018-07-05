@@ -988,6 +988,7 @@ namespace IntegratedAuthoringToolWF
                         a.Perceive(ef);
                     }
                 }
+
             }
             foreach (var o in observerAgents)
             {
@@ -1001,6 +1002,11 @@ namespace IntegratedAuthoringToolWF
                 }
                 toWrite = toWrite.Substring(0, toWrite.Length - 2);
                 toWrite += "\n";
+            }
+
+            if(effects.Any())
+            {
+                textBoxBelChat_TextChanged(null, null);
             }
 
             if (effectTickBox.Checked)
