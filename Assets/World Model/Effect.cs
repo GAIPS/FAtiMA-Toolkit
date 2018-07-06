@@ -16,6 +16,8 @@ namespace WorldModel
 
         public Name ObserverAgent { get; set; }
 
+        public int Priority { get; set; }
+
         public Effect(EffectDTO ef)
         {
             Id = ef.Id;
@@ -26,11 +28,13 @@ namespace WorldModel
                 ObserverAgent = ef.ObserverAgent;
             else ObserverAgent = (Name)"*";
 
+            Priority = ef.Priority;
+
         }
 
         public override string ToString()
         {
-            return PropertyName + " | " + NewValue + " | " + ObserverAgent + "|" + this.Id + "\n";
+            return PropertyName + " | " + NewValue + " | " + ObserverAgent + "|" + "|" + Priority + "|"+ this.Id + "\n";
         }
 
 
@@ -41,7 +45,8 @@ namespace WorldModel
                 PropertyName = this.PropertyName,
                 NewValue = this.NewValue,
                 Id = this.Id,
-                ObserverAgent = this.ObserverAgent
+                ObserverAgent = this.ObserverAgent,
+                Priority = this.Priority,
             };
         }
 
@@ -50,6 +55,7 @@ namespace WorldModel
             dataHolder.SetValue("PropertyName", this.PropertyName);
             dataHolder.SetValue("NewValue", this.NewValue);
             dataHolder.SetValue("ObserverAgent", this.ObserverAgent);
+            dataHolder.SetValue("Priority", this.Priority);
         }
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
@@ -57,6 +63,7 @@ namespace WorldModel
             PropertyName = dataHolder.GetValue<Name>("PropertyName");
             NewValue = dataHolder.GetValue<Name>("NewValue");
             ObserverAgent = dataHolder.GetValue<Name>("ObserverAgent");
+            Priority = dataHolder.GetValue<int>("Priority");
         }
     }
 }

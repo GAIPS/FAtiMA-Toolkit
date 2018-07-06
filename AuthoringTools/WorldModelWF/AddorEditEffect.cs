@@ -35,15 +35,14 @@ namespace WorldModelWF
 
             this._wm = wm;
             _eventTemplate = eventTemplate;
+
             //DefaultValues
             newValue.Value = WellFormedNames.Name.BuildName("True");
             propertyName.Value = WellFormedNames.Name.BuildName("Bel(A)");
             observerName.Value =WellFormedNames.Name.BuildName("*");
 
             //Restrictions
-
             index = _index;
-        
             newValue.AllowUniversal = false;
 
             _subject = eventTemplate.GetNTerm(2);
@@ -51,8 +50,6 @@ namespace WorldModelWF
             propertyName.AllowNil = false;
             propertyName.AllowUniversal = false;
            
-
-
             _effectToEdit = effectToEdit;
 
             if (effectToEdit != null)
@@ -63,14 +60,15 @@ namespace WorldModelWF
                 newValue.Value = effectToEdit.NewValue;
                 propertyName.Value = effectToEdit.PropertyName;
                 observerName.Value = effectToEdit.ObserverAgent;
-
+                priorityFieldBox.Value = effectToEdit.Priority;
             }
             else
                 _effectToEdit = new EffectDTO()
                 {
                     NewValue = newValue.Value,
                     PropertyName = propertyName.Value,
-                    ObserverAgent = observerName.Value
+                    ObserverAgent = observerName.Value,
+                    Priority = priorityFieldBox.Value
                 };
         }
 
@@ -99,6 +97,7 @@ namespace WorldModelWF
             _effectToEdit.NewValue = newValue.Value;
             _effectToEdit.PropertyName = propertyName.Value;
             _effectToEdit.ObserverAgent = observerName.Value;
+            _effectToEdit.Priority = priorityFieldBox.Value;
 
             if(index >= 0)
             _wm.EditEventEffect(_eventTemplate, _effectToEdit, index);

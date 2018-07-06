@@ -6,13 +6,11 @@ using RolePlayCharacter;
 namespace WorldModel.DTOs
 {
     /// <summary>
-    /// Data Type Object Class for the representation of an Appraisal Rule.
-    /// Appraisal rules determines how emotions are generated based on perceived events.
+    /// Data Type Object Class for the representation of an action effect.
     /// </summary>
     [Serializable]
     public class EffectDTO 
     {
-	
 		public Guid Id { get; set; }
       
         public Name PropertyName { get; set; }
@@ -21,5 +19,6 @@ namespace WorldModel.DTOs
 
         public Name ObserverAgent { get; set; }
 
+        public int Priority { get; set; }
     }
 }

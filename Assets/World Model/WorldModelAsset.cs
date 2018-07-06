@@ -2,6 +2,7 @@
 using SerializationUtilities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using WellFormedNames;
 using WellFormedNames.Collections;
 using WorldModel.DTOs;
@@ -72,7 +73,8 @@ namespace WorldModel
                         {
                             PropertyName = truePropertyName,
                             NewValue = trueNewValueName,
-                            ObserverAgent = trueObserverAgentName
+                            ObserverAgent = trueObserverAgentName,
+                            Priority = ef.Priority
                         };
 
                         result.Add(trueEffect);
@@ -80,7 +82,7 @@ namespace WorldModel
                 }
             }
 
-            return result;
+            return result.OrderByDescending(e => e.Priority);
         }
 
         public void AddEventEffect(Name ev, EffectDTO eff)
