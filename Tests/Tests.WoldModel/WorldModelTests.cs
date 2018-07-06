@@ -121,10 +121,10 @@ namespace WorldModelTests
             var effectZero = wm.Simulate(toSimulate.ToArray()).ElementAt(0);
 
 
-            Assert.AreEqual(EventHelper.PropertyChange(effectOne.PropertyName, effectOne.NewValue, (Name)"John"), 
+            Assert.AreEqual(EventHelper.PropertyChange(effectOne.PropertyName, effectOne.NewValue, (Name)"John").ToString(), 
                "Event(Property-Change, John, DialogueState(Sarah), John)");
 
-            Assert.AreEqual(EventHelper.PropertyChange(effectZero.PropertyName, effectZero.NewValue, (Name)"John"),
+            Assert.AreEqual(EventHelper.PropertyChange(effectZero.PropertyName, effectZero.NewValue, (Name)"John").ToString(),
                 "Event(Property-Change, John, DialogueState(John), Sarah)");
            
            
