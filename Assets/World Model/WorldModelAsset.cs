@@ -16,7 +16,6 @@ namespace WorldModel
         private Dictionary<Name, List<Effect>> actions;
         private Dictionary<Name, int> priorityRules;
 
-
         private NameSearchTree<Name> actionNames;
 
         public WorldModelAsset()
@@ -37,53 +36,62 @@ namespace WorldModel
 
             foreach (var e in events)
             {
-                foreach (var possibleEvent in this.actionNames.Unify(e))
+                var matchingActionRules = this.actionNames.Unify(e);
+                Pair<Name, SubstitutionSet> actionRule = null;
+
+                var maxPriority = int.MinValue;
+                foreach (var match in matchingActionRules)
                 {
-                    var substitutions = new[] { possibleEvent.Item2 }; //this adds the subs found in the eventName
-
-                    var effects = actions[possibleEvent.Item1];
-
-                    var responsibleAgent = (Name)e.ToString().Split(',')[1];
-
-                    foreach (var ef in effects)
+                    if (priorityRules[match.Item1] > maxPriority)
                     {
-                        var truePropertyName = (Name)"default";
-                        var trueNewValueName = (Name)"default";
-                        var trueResponsibleAgentName = (Name)"World";
-                        var trueObserverAgentName = (Name)"*";
-
-                        if (!ef.PropertyName.IsGrounded)
-                            foreach (var sub in substitutions)
-                            {
-                                truePropertyName = ef.PropertyName.MakeGround(sub);
-                            }
-                        else truePropertyName = ef.PropertyName;
-
-                        if (!ef.NewValue.IsGrounded)
-                            foreach (var sub in substitutions)
-                            {
-                                trueNewValueName = ef.NewValue.MakeGround(sub);
-                            }
-                        else trueNewValueName = ef.NewValue;
-
-                        if (!ef.ObserverAgent.IsGrounded)
-                            foreach (var sub in substitutions)
-                            {
-                                trueObserverAgentName = ef.ObserverAgent.MakeGround(sub);
-                            }
-                        else trueResponsibleAgentName = responsibleAgent;
-
-                        var trueEffect = new EffectDTO()
-                        {
-                            PropertyName = truePropertyName,
-                            NewValue = trueNewValueName,
-                            ObserverAgent = trueObserverAgentName,
-                        };
-                        result.Add(trueEffect);
+                        maxPriority = priorityRules[match.Item1];
+                        actionRule = match;
                     }
                 }
-            }
 
+                var substitutions = new[] { actionRule.Item2 }; //this adds the subs found in the eventName
+
+                var effects = actions[actionRule.Item1];
+
+                var responsibleAgent = e.GetNTerm(2);
+
+                foreach (var ef in effects)
+                {
+                    var truePropertyName = (Name)"default";
+                    var trueNewValueName = (Name)"default";
+                    var trueResponsibleAgentName = (Name)"World";
+                    var trueObserverAgentName = (Name)"*";
+
+                    if (!ef.PropertyName.IsGrounded)
+                        foreach (var sub in substitutions)
+                        {
+                            truePropertyName = ef.PropertyName.MakeGround(sub);
+                        }
+                    else truePropertyName = ef.PropertyName;
+
+                    if (!ef.NewValue.IsGrounded)
+                        foreach (var sub in substitutions)
+                        {
+                            trueNewValueName = ef.NewValue.MakeGround(sub);
+                        }
+                    else trueNewValueName = ef.NewValue;
+
+                    if (!ef.ObserverAgent.IsGrounded)
+                        foreach (var sub in substitutions)
+                        {
+                            trueObserverAgentName = ef.ObserverAgent.MakeGround(sub);
+                        }
+                    else trueResponsibleAgentName = responsibleAgent;
+
+                    var trueEffect = new EffectDTO()
+                    {
+                        PropertyName = truePropertyName,
+                        NewValue = trueNewValueName,
+                        ObserverAgent = trueObserverAgentName,
+                    };
+                    result.Add(trueEffect);
+                }
+            }
             return result;
         }
 
@@ -149,7 +157,6 @@ namespace WorldModel
             }
             actions.Add(action, newEffects);
 
-
             if (actionNames.ContainsKey(old))
                 actionNames.Remove(old);
             actionNames.Add(new KeyValuePair<Name, Name>(action, action));
@@ -161,9 +168,9 @@ namespace WorldModel
             return actions;
         }
 
-        public IEnumerable<Pair<Name,int>> GetAllActions()
+        public IEnumerable<Pair<Name, int>> GetAllActions()
         {
-            return actions.Keys.Select(x=> new Pair<Name, int>(x,priorityRules[x]));
+            return actions.Keys.Select(x => new Pair<Name, int>(x, priorityRules[x]));
         }
 
         public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
