@@ -1,6 +1,6 @@
 ﻿namespace WorldModelWF
 {
-    partial class AddOrEditEventTemplateForm
+    partial class AddOrEditActionTemplateForm
     {
         /// <summary>
         /// Required designer variable.
@@ -38,13 +38,15 @@
             this.textBoxSubject = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             this.textBoxObject = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             this.textBoxTarget = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.priorityFieldBox = new GAIPS.AssetEditorTools.TypedTextBoxes.Int32FieldBox();
             ((System.ComponentModel.ISupportInitialize)(this.addBeliefErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emotionalAppraisalAssetBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // addOrEditButton
             // 
-            this.addOrEditButton.Location = new System.Drawing.Point(132, 235);
+            this.addOrEditButton.Location = new System.Drawing.Point(143, 282);
             this.addOrEditButton.Margin = new System.Windows.Forms.Padding(4);
             this.addOrEditButton.Name = "addOrEditButton";
             this.addOrEditButton.Size = new System.Drawing.Size(100, 28);
@@ -133,12 +135,31 @@
             this.textBoxTarget.Size = new System.Drawing.Size(344, 22);
             this.textBoxTarget.TabIndex = 48;
             // 
-            // AddOrEditEventTemplateForm
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(24, 215);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(52, 16);
+            this.label1.TabIndex = 51;
+            this.label1.Text = "Priority:";
+            // 
+            // priorityFieldBox
+            // 
+            this.priorityFieldBox.Location = new System.Drawing.Point(21, 244);
+            this.priorityFieldBox.Name = "priorityFieldBox";
+            this.priorityFieldBox.Size = new System.Drawing.Size(344, 22);
+            this.priorityFieldBox.TabIndex = 45;
+            // 
+            // AddOrEditActionTemplateForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(397, 295);
+            this.ClientSize = new System.Drawing.Size(397, 333);
+            this.Controls.Add(this.priorityFieldBox);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxTarget);
             this.Controls.Add(this.textBoxObject);
             this.Controls.Add(this.textBoxSubject);
@@ -151,7 +172,7 @@
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
-            this.Name = "AddOrEditEventTemplateForm";
+            this.Name = "AddOrEditActionTemplateForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Action Rule";
             this.Load += new System.EventHandler(this.AddOrEditAppraisalRuleForm_Load);
@@ -173,5 +194,7 @@
         private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxSubject;
         private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxObject;
         private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxTarget;
+        private GAIPS.AssetEditorTools.TypedTextBoxes.Int32FieldBox priorityFieldBox;
+        private System.Windows.Forms.Label label1;
     }
 }

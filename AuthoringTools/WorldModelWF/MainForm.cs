@@ -32,10 +32,12 @@ namespace WorldModelWF
             table.Columns.Add("Action");
             table.Columns.Add("Subject");
             table.Columns.Add("Target");
+            table.Columns.Add("Priority");
 
-            foreach (var ev in asset.GetAllEvents())
+            foreach (var a in asset.GetAllActions())
             {
-                table.Rows.Add(ev.GetNTerm(3), ev.GetNTerm(2), ev.GetNTerm(4));
+                var aName = a.Item1;
+                table.Rows.Add(aName.GetNTerm(3), aName.GetNTerm(2), aName.GetNTerm(4), a.Item2);
             }
 
             DS.Tables.Add(table);
@@ -46,9 +48,9 @@ namespace WorldModelWF
 
             dataGridViewEventTemplates.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            if (asset.GetAllEvents().FirstOrDefault() != null)
+            if (asset.GetAllActions().FirstOrDefault() != null)
             {
-                dataGridViewEffects.DataSource = asset.GetAllEventEffects()[asset.GetAllEvents().FirstOrDefault()];
+                dataGridViewEffects.DataSource = asset.GetAllEventEffects()[asset.GetAllActions().FirstOrDefault().Item1];
                 dataGridViewEffects.Columns[0].Visible = false;
                 dataGridViewEffects.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             }
@@ -79,7 +81,7 @@ namespace WorldModelWF
 
         private void buttonAddEvent_Click(object sender, EventArgs e)
         {
-            var ev = new AddOrEditEventTemplateForm(LoadedAsset, null);
+            var ev = new AddOrEditActionTemplateForm(LoadedAsset, null);
             ev.ShowDialog(this);
             RefreshEventList();
         }
@@ -92,8 +94,8 @@ namespace WorldModelWF
         {
             var index = dataGridViewEventTemplates.SelectedRows[0].Index;
 
-            var eventTemp = LoadedAsset.GetAllEvents().ElementAt(index);
-            var ef = new AddorEditEffect(LoadedAsset, eventTemp, -1, new EffectDTO());
+            var eventTemp = LoadedAsset.GetAllActions().ElementAt(index);
+            var ef = new AddorEditEffect(LoadedAsset, eventTemp.Item1, -1, new EffectDTO());
             ef.ShowDialog(this);
             SetModified();
             dataGridViewEventTemplates_SelectionChanged(sender, e);
@@ -109,9 +111,11 @@ namespace WorldModelWF
 
             ds.Tables[0].Clear();
 
-            foreach (var ev in LoadedAsset.GetAllEvents())
+            foreach (var a in LoadedAsset.GetAllActions())
             {
-                ds.Tables[0].Rows.Add(ev.GetNTerm(3), ev.GetNTerm(2), ev.GetNTerm(4));
+                var aName = a.Item1;
+                var aPriority = a.Item2;
+                ds.Tables[0].Rows.Add(aName.GetNTerm(3), aName.GetNTerm(2), aName.GetNTerm(4),aPriority);
             }
 
             RefreshEffects();
@@ -191,9 +195,10 @@ namespace WorldModelWF
         {
             var index = dataGridViewEventTemplates.SelectedRows[0].Index;
 
-            var eventTemp = LoadedAsset.GetAllEvents().ElementAt(index);
+            var actionTemp = LoadedAsset.GetAllActions().ElementAt(index).Item1;
+            var priority = LoadedAsset.GetAllActions().ElementAt(index).Item2;
 
-            var ev = new AddOrEditEventTemplateForm(LoadedAsset, eventTemp);
+            var ev = new AddOrEditActionTemplateForm(LoadedAsset, actionTemp, priority);
             ev.ShowDialog(this);
             SetModified();
             RefreshEventList();
@@ -205,13 +210,13 @@ namespace WorldModelWF
 
             var index = dataGridViewEventTemplates.SelectedRows[0].Index;
 
-            var eventTemp = LoadedAsset.GetAllEvents().ElementAt(index);
+            var actionTemp = LoadedAsset.GetAllActions().ElementAt(index).Item1;
 
             index2 = dataGridViewEffects.SelectedRows[0].Index;
 
-            var effect = LoadedAsset.GetAllEventEffects()[eventTemp].ElementAt(index2);
+            var effect = LoadedAsset.GetAllEventEffects()[actionTemp].ElementAt(index2);
 
-            var ef = new AddorEditEffect(LoadedAsset, eventTemp, index2, effect.ToDTO());
+            var ef = new AddorEditEffect(LoadedAsset, actionTemp, index2, effect.ToDTO());
 
             ef.ShowDialog(this);
 
@@ -224,10 +229,9 @@ namespace WorldModelWF
         {
             var index = dataGridViewEventTemplates.SelectedRows[0].Index;
 
-            var eventTemp = LoadedAsset.GetAllEvents().ElementAt(index);
+            var actionTemp = LoadedAsset.GetAllActions().ElementAt(index).Item1;
 
-            LoadedAsset.RemoveEvent(eventTemp);
-
+            LoadedAsset.RemoveAction(actionTemp);
             SetModified();
 
             RefreshEventList();
@@ -237,7 +241,7 @@ namespace WorldModelWF
         {
             var index = dataGridViewEventTemplates.SelectedRows[0].Index;
 
-            var eventTemp = LoadedAsset.GetAllEvents().ElementAt(index);
+            var eventTemp = LoadedAsset.GetAllActions().ElementAt(index).Item1;
 
             var index2 = dataGridViewEffects.SelectedRows[0].Index;
 
@@ -252,13 +256,13 @@ namespace WorldModelWF
         {
             var index = dataGridViewEventTemplates.SelectedRows[0].Index;
 
-            var eventTemp = LoadedAsset.GetAllEvents().ElementAt(index);
+            var eventTemp = LoadedAsset.GetAllActions().ElementAt(index).Item1;
 
             var index2 = dataGridViewEffects.SelectedRows[0].Index;
 
             var effect = LoadedAsset.GetAllEventEffects()[eventTemp].ElementAt(index2);
 
-            LoadedAsset.AddEventEffect(eventTemp, effect.ToDTO());
+            LoadedAsset.AddActionEffect(eventTemp, effect.ToDTO());
             SetModified();
             dataGridViewEventTemplates_SelectionChanged(sender, e);
         }

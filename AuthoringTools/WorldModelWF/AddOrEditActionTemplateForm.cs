@@ -12,12 +12,12 @@ using WorldModel;
 
 namespace WorldModelWF
 {
-    public partial class AddOrEditEventTemplateForm : Form
+    public partial class AddOrEditActionTemplateForm : Form
     {
         private WorldModelAsset _asset;
         private Name _eventTemplate;
 
-        public AddOrEditEventTemplateForm(WorldModelAsset asset, Name eventTemplate = null)
+        public AddOrEditActionTemplateForm(WorldModelAsset asset, Name eventTemplate = null, int priority = 0)
         {
             InitializeComponent();
 
@@ -32,13 +32,10 @@ namespace WorldModelWF
             textBoxSubject.Value = WellFormedNames.Name.UNIVERSAL_SYMBOL;
             textBoxObject.Value = WellFormedNames.Name.UNIVERSAL_SYMBOL;
             textBoxTarget.Value = WellFormedNames.Name.UNIVERSAL_SYMBOL;
-          //  comboBoxEventType.DataSource = EmotionalAppraisalWF.ViewModels.AppraisalRulesVM.EventTypes;
-
-
+            priorityFieldBox.Value = priority;
+        
             if (eventTemplate != null)
             {
-              
-
                 this.Text = "Update";
                 this.addOrEditButton.Text = "Update";
                 textBoxSubject.Value = eventTemplate.GetNTerm(2);
@@ -53,7 +50,6 @@ namespace WorldModelWF
 
             if (this.Text != "Update")
             {
-             
 
                 _eventTemplate = WellFormedNames.Name.BuildName(
                     (Name) AMConsts.EVENT,
@@ -62,9 +58,7 @@ namespace WorldModelWF
                     textBoxObject.Value,
                     textBoxTarget.Value);
 
-        
-
-                _asset.addEventTemplate(_eventTemplate);
+                _asset.addActionTemplate(_eventTemplate, priorityFieldBox.Value);
              
             }
 
@@ -83,7 +77,7 @@ namespace WorldModelWF
                     textBoxTarget.Value);
 
 
-                _asset.UpdateEventTemplate(_pastTemplate, _eventTemplate);
+                _asset.UpdateActionTemplate(_pastTemplate, _eventTemplate, priorityFieldBox.Value);
                
             }
 

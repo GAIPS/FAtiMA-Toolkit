@@ -51,9 +51,7 @@ namespace GAIPS.Rage
 		/// <returns>Error message if any. Null if the asset was loaded without errors</returns>
 		protected abstract string OnAssetLoaded();
 
-		protected virtual void OnAssetPathChanged(string oldpath)
-		{
-		}
+		protected virtual void OnAssetPathChanged(string oldpath){}
 
 		public void Save()
 		{

@@ -15,8 +15,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.addEffect = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.priorityFieldBox = new GAIPS.AssetEditorTools.TypedTextBoxes.Int32FieldBox();
             this.observerName = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             this.newValue = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             this.propertyName = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
@@ -62,32 +60,14 @@
             // 
             this.addEffect.Font = new System.Drawing.Font("Arial", 9.75F);
             this.addEffect.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.addEffect.Location = new System.Drawing.Point(166, 190);
-            this.addEffect.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.addEffect.Location = new System.Drawing.Point(168, 151);
+            this.addEffect.Margin = new System.Windows.Forms.Padding(2);
             this.addEffect.Name = "addEffect";
             this.addEffect.Size = new System.Drawing.Size(94, 27);
             this.addEffect.TabIndex = 80;
             this.addEffect.Text = "Add";
             this.addEffect.UseVisualStyleBackColor = true;
             this.addEffect.Click += new System.EventHandler(this.addEffect_Click);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Arial", 9.75F);
-            this.label3.Location = new System.Drawing.Point(9, 148);
-            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(49, 16);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "Priority";
-            // 
-            // priorityFieldBox
-            // 
-            this.priorityFieldBox.Location = new System.Drawing.Point(137, 148);
-            this.priorityFieldBox.Name = "priorityFieldBox";
-            this.priorityFieldBox.Size = new System.Drawing.Size(284, 20);
-            this.priorityFieldBox.TabIndex = 11;
             // 
             // observerName
             // 
@@ -146,9 +126,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(433, 233);
-            this.Controls.Add(this.priorityFieldBox);
-            this.Controls.Add(this.label3);
+            this.ClientSize = new System.Drawing.Size(433, 189);
             this.Controls.Add(this.addEffect);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.observerName);
@@ -156,7 +134,7 @@
             this.Controls.Add(this.newValue);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.propertyName);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "AddorEditEffect";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "AddorEditEffect";
@@ -195,7 +173,5 @@
         private System.Windows.Forms.Label label4;
         private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox observerName;
         private System.Windows.Forms.Button addEffect;
-        private System.Windows.Forms.Label label3;
-        private GAIPS.AssetEditorTools.TypedTextBoxes.Int32FieldBox priorityFieldBox;
     }
 }

@@ -18,7 +18,5 @@ namespace WorldModel.DTOs
         public Name NewValue { get; set; }
 
         public Name ObserverAgent { get; set; }
-
-        public int Priority { get; set; }
     }
 }

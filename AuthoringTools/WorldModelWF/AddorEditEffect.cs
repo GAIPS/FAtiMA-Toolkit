@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using IntegratedAuthoringTool;
 using WellFormedNames;
 using WorldModel;
 using WorldModel.DTOs;
@@ -20,7 +11,7 @@ namespace WorldModelWF
 
         private WorldModelAsset _wm;
 
-        private WellFormedNames.Name _eventTemplate;
+        private Name _eventTemplate;
 
         private EffectDTO _effectToEdit;
 
@@ -60,7 +51,7 @@ namespace WorldModelWF
                 newValue.Value = effectToEdit.NewValue;
                 propertyName.Value = effectToEdit.PropertyName;
                 observerName.Value = effectToEdit.ObserverAgent;
-                priorityFieldBox.Value = effectToEdit.Priority;
+                
             }
             else
                 _effectToEdit = new EffectDTO()
@@ -68,7 +59,7 @@ namespace WorldModelWF
                     NewValue = newValue.Value,
                     PropertyName = propertyName.Value,
                     ObserverAgent = observerName.Value,
-                    Priority = priorityFieldBox.Value
+                
                 };
         }
 
@@ -97,13 +88,12 @@ namespace WorldModelWF
             _effectToEdit.NewValue = newValue.Value;
             _effectToEdit.PropertyName = propertyName.Value;
             _effectToEdit.ObserverAgent = observerName.Value;
-            _effectToEdit.Priority = priorityFieldBox.Value;
 
             if(index >= 0)
             _wm.EditEventEffect(_eventTemplate, _effectToEdit, index);
             else
             {
-                _wm.AddEventEffect(_eventTemplate, _effectToEdit);
+                _wm.AddActionEffect(_eventTemplate, _effectToEdit);
             }
             Close();
         }
