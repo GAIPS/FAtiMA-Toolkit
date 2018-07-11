@@ -103,15 +103,7 @@ namespace WorldModel
             }
             else
             {
-                actionNames.Add(new KeyValuePair<Name, Name>(action, action));
-                if (eff.PropertyName != null)
-                {
-                    actions.Add(action, new List<Effect>() { new Effect(eff) });
-                }
-                else
-                {
-                    actions.Add(action, new List<Effect>());
-                }
+                throw new Exception("Action name not found");
             }
         }
 

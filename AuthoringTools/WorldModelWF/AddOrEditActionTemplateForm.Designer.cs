@@ -150,7 +150,7 @@
             this.priorityFieldBox.Location = new System.Drawing.Point(21, 244);
             this.priorityFieldBox.Name = "priorityFieldBox";
             this.priorityFieldBox.Size = new System.Drawing.Size(344, 22);
-            this.priorityFieldBox.TabIndex = 45;
+            this.priorityFieldBox.TabIndex = 49;
             // 
             // AddOrEditActionTemplateForm
             // 
