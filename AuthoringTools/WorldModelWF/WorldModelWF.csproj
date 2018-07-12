@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet />
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>WorldModelWF.Program</StartupObject>
@@ -58,11 +60,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddOrEditEventTemplateForm.cs">
+    <Compile Include="AddOrEditActionTemplateForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AddOrEditEventTemplateForm.Designer.cs">
-      <DependentUpon>AddOrEditEventTemplateForm.cs</DependentUpon>
+    <Compile Include="AddOrEditActionTemplateForm.Designer.cs">
+      <DependentUpon>AddOrEditActionTemplateForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AddorEditEffect.cs">
       <SubType>Form</SubType>
@@ -81,8 +83,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="AddOrEditEventTemplateForm.resx">
-      <DependentUpon>AddOrEditEventTemplateForm.cs</DependentUpon>
+    <EmbeddedResource Include="AddOrEditActionTemplateForm.resx">
+      <DependentUpon>AddOrEditActionTemplateForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AddorEditEffect.resx">
       <DependentUpon>AddorEditEffect.cs</DependentUpon>

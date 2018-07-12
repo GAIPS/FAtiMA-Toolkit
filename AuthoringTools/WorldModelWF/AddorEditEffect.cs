@@ -1,14 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using IntegratedAuthoringTool;
 using WellFormedNames;
 using WorldModel;
 using WorldModel.DTOs;
@@ -20,7 +11,7 @@ namespace WorldModelWF
 
         private WorldModelAsset _wm;
 
-        private WellFormedNames.Name _eventTemplate;
+        private Name _eventTemplate;
 
         private EffectDTO _effectToEdit;
 
@@ -35,15 +26,14 @@ namespace WorldModelWF
 
             this._wm = wm;
             _eventTemplate = eventTemplate;
+
             //DefaultValues
             newValue.Value = WellFormedNames.Name.BuildName("True");
             propertyName.Value = WellFormedNames.Name.BuildName("Bel(A)");
             observerName.Value =WellFormedNames.Name.BuildName("*");
 
             //Restrictions
-
             index = _index;
-        
             newValue.AllowUniversal = false;
 
             _subject = eventTemplate.GetNTerm(2);
@@ -51,8 +41,6 @@ namespace WorldModelWF
             propertyName.AllowNil = false;
             propertyName.AllowUniversal = false;
            
-
-
             _effectToEdit = effectToEdit;
 
             if (effectToEdit != null)
@@ -63,14 +51,15 @@ namespace WorldModelWF
                 newValue.Value = effectToEdit.NewValue;
                 propertyName.Value = effectToEdit.PropertyName;
                 observerName.Value = effectToEdit.ObserverAgent;
-
+                
             }
             else
                 _effectToEdit = new EffectDTO()
                 {
                     NewValue = newValue.Value,
                     PropertyName = propertyName.Value,
-                    ObserverAgent = observerName.Value
+                    ObserverAgent = observerName.Value,
+                
                 };
         }
 
@@ -96,19 +85,15 @@ namespace WorldModelWF
 
         private void addEffect_Click(object sender, EventArgs e)
         {
-
-
-          
             _effectToEdit.NewValue = newValue.Value;
             _effectToEdit.PropertyName = propertyName.Value;
-            _effectToEdit.ResponsibleAgent = _subject;
             _effectToEdit.ObserverAgent = observerName.Value;
 
             if(index >= 0)
             _wm.EditEventEffect(_eventTemplate, _effectToEdit, index);
             else
             {
-                _wm.AddEventEffect(_eventTemplate, _effectToEdit);
+                _wm.AddActionEffect(_eventTemplate, _effectToEdit);
             }
             Close();
         }

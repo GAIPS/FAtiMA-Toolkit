@@ -1,6 +1,6 @@
 ﻿namespace WorldModelWF
 {
-    partial class AddOrEditEventTemplateForm
+    partial class AddOrEditActionTemplateForm
     {
         /// <summary>
         /// Required designer variable.
@@ -38,17 +38,19 @@
             this.textBoxSubject = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             this.textBoxObject = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             this.textBoxTarget = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.priorityFieldBox = new GAIPS.AssetEditorTools.TypedTextBoxes.Int32FieldBox();
             ((System.ComponentModel.ISupportInitialize)(this.addBeliefErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emotionalAppraisalAssetBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // addOrEditButton
             // 
-            this.addOrEditButton.Location = new System.Drawing.Point(132, 235);
+            this.addOrEditButton.Location = new System.Drawing.Point(143, 282);
             this.addOrEditButton.Margin = new System.Windows.Forms.Padding(4);
             this.addOrEditButton.Name = "addOrEditButton";
             this.addOrEditButton.Size = new System.Drawing.Size(100, 28);
-            this.addOrEditButton.TabIndex = 20;
+            this.addOrEditButton.TabIndex = 50;
             this.addOrEditButton.Text = "Add";
             this.addOrEditButton.UseVisualStyleBackColor = true;
             this.addOrEditButton.Click += new System.EventHandler(this.addOrEditButton_Click_1);
@@ -67,7 +69,7 @@
             this.labelTarget.Location = new System.Drawing.Point(23, 150);
             this.labelTarget.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelTarget.Name = "labelTarget";
-            this.labelTarget.Size = new System.Drawing.Size(62, 20);
+            this.labelTarget.Size = new System.Drawing.Size(51, 16);
             this.labelTarget.TabIndex = 38;
             this.labelTarget.Text = "Target:";
             // 
@@ -78,7 +80,7 @@
             this.labelObject.Location = new System.Drawing.Point(24, 23);
             this.labelObject.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelObject.Name = "labelObject";
-            this.labelObject.Size = new System.Drawing.Size(61, 20);
+            this.labelObject.Size = new System.Drawing.Size(48, 16);
             this.labelObject.TabIndex = 36;
             this.labelObject.Text = "Action:";
             this.labelObject.Click += new System.EventHandler(this.labelObject_Click);
@@ -89,7 +91,7 @@
             this.label4.Location = new System.Drawing.Point(23, 89);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(70, 20);
+            this.label4.Size = new System.Drawing.Size(56, 16);
             this.label4.TabIndex = 34;
             this.label4.Text = "Subject:";
             this.label4.Click += new System.EventHandler(this.label4_Click);
@@ -104,8 +106,8 @@
             this.textBoxSubject.Location = new System.Drawing.Point(22, 112);
             this.textBoxSubject.Name = "textBoxSubject";
             this.textBoxSubject.OnlyIntOrVariable = false;
-            this.textBoxSubject.Size = new System.Drawing.Size(343, 26);
-            this.textBoxSubject.TabIndex = 44;
+            this.textBoxSubject.Size = new System.Drawing.Size(343, 22);
+            this.textBoxSubject.TabIndex = 47;
             // 
             // textBoxObject
             // 
@@ -117,7 +119,7 @@
             this.textBoxObject.Location = new System.Drawing.Point(21, 46);
             this.textBoxObject.Name = "textBoxObject";
             this.textBoxObject.OnlyIntOrVariable = false;
-            this.textBoxObject.Size = new System.Drawing.Size(344, 26);
+            this.textBoxObject.Size = new System.Drawing.Size(344, 22);
             this.textBoxObject.TabIndex = 45;
             // 
             // textBoxTarget
@@ -130,15 +132,34 @@
             this.textBoxTarget.Location = new System.Drawing.Point(22, 173);
             this.textBoxTarget.Name = "textBoxTarget";
             this.textBoxTarget.OnlyIntOrVariable = false;
-            this.textBoxTarget.Size = new System.Drawing.Size(344, 26);
-            this.textBoxTarget.TabIndex = 46;
+            this.textBoxTarget.Size = new System.Drawing.Size(344, 22);
+            this.textBoxTarget.TabIndex = 48;
             // 
-            // AddOrEditEventTemplateForm
+            // label1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(24, 215);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(52, 16);
+            this.label1.TabIndex = 51;
+            this.label1.Text = "Priority:";
+            // 
+            // priorityFieldBox
+            // 
+            this.priorityFieldBox.Location = new System.Drawing.Point(21, 244);
+            this.priorityFieldBox.Name = "priorityFieldBox";
+            this.priorityFieldBox.Size = new System.Drawing.Size(344, 22);
+            this.priorityFieldBox.TabIndex = 49;
+            // 
+            // AddOrEditActionTemplateForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(397, 295);
+            this.ClientSize = new System.Drawing.Size(397, 333);
+            this.Controls.Add(this.priorityFieldBox);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.textBoxTarget);
             this.Controls.Add(this.textBoxObject);
             this.Controls.Add(this.textBoxSubject);
@@ -151,7 +172,7 @@
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
-            this.Name = "AddOrEditEventTemplateForm";
+            this.Name = "AddOrEditActionTemplateForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Action Rule";
             this.Load += new System.EventHandler(this.AddOrEditAppraisalRuleForm_Load);
@@ -173,5 +194,7 @@
         private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxSubject;
         private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxObject;
         private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxTarget;
+        private GAIPS.AssetEditorTools.TypedTextBoxes.Int32FieldBox priorityFieldBox;
+        private System.Windows.Forms.Label label1;
     }
 }

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using WellFormedNames;
-using Conditions;
-using System.Text;
 using SerializationUtilities;
 using WorldModel.DTOs;
 
@@ -18,8 +14,6 @@ namespace WorldModel
 
         public Name NewValue { get; set; }
 
-        public Name ResponsibleAgent { get; set; }
-
         public Name ObserverAgent { get; set; }
 
         public Effect(EffectDTO ef)
@@ -31,15 +25,11 @@ namespace WorldModel
             if (ef.ObserverAgent != null)
                 ObserverAgent = ef.ObserverAgent;
             else ObserverAgent = (Name)"*";
-
-            if (ef.ResponsibleAgent != null)
-                ResponsibleAgent = ef.ResponsibleAgent;
-            else ResponsibleAgent = (Name) "World";
         }
 
         public override string ToString()
         {
-            return PropertyName + " | " + NewValue + " | "  + ResponsibleAgent + "|" + ObserverAgent + "|" + this.Id + "\n";
+            return PropertyName + " | " + NewValue + " | " + ObserverAgent + "|"+ this.Id + "\n";
         }
 
 
@@ -50,8 +40,7 @@ namespace WorldModel
                 PropertyName = this.PropertyName,
                 NewValue = this.NewValue,
                 Id = this.Id,
-                ResponsibleAgent = this.ResponsibleAgent,
-                ObserverAgent = this.ObserverAgent
+                ObserverAgent = this.ObserverAgent,
             };
         }
 
@@ -59,7 +48,6 @@ namespace WorldModel
     {
             dataHolder.SetValue("PropertyName", this.PropertyName);
             dataHolder.SetValue("NewValue", this.NewValue);
-            dataHolder.SetValue("ResponsibleAgent", this.ResponsibleAgent);
             dataHolder.SetValue("ObserverAgent", this.ObserverAgent);
         }
 
@@ -67,9 +55,7 @@ namespace WorldModel
         {
             PropertyName = dataHolder.GetValue<Name>("PropertyName");
             NewValue = dataHolder.GetValue<Name>("NewValue");
-            ResponsibleAgent = dataHolder.GetValue<Name>("ResponsibleAgent");
             ObserverAgent = dataHolder.GetValue<Name>("ObserverAgent");
-
         }
     }
 }
