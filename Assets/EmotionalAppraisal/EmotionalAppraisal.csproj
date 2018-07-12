@@ -48,6 +48,7 @@
     <Compile Include="ActiveEmotion.cs" />
     <Compile Include="AppraisalRules\AppraisalRule.cs" />
     <Compile Include="AppraisalRules\ReactiveAppraisalDerivator.cs" />
+    <Compile Include="AppraisalVariable.cs" />
     <Compile Include="BaseEmotion.cs" />
     <Compile Include="Components\IAffectDerivator.cs" />
     <Compile Include="Components\IAppraisalDerivator.cs" />
@@ -56,10 +57,12 @@
     <Compile Include="DTOs\AppraisalRuleDTO.cs" />
     <Compile Include="DTOs\EmotionDTO.cs" />
     <Compile Include="DTOs\EmotionDispositionDTO.cs" />
+    <Compile Include="DTOs\GoalDTO.cs" />
     <Compile Include="EmotionalAppraisalAsset.cs" />
     <Compile Include="EmotionalAppraisalConfiguration.cs" />
     <Compile Include="EmotionDisposition.cs" />
     <Compile Include="EmotionValence.cs" />
+    <Compile Include="Goal.cs" />
     <Compile Include="IActiveEmotion.cs" />
     <Compile Include="IAppraisalFrame.cs" />
     <Compile Include="IEmotion.cs" />

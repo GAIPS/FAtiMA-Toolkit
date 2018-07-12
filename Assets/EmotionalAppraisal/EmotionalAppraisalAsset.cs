@@ -20,16 +20,30 @@ namespace EmotionalAppraisal
     [Serializable]
     public sealed partial class EmotionalAppraisalAsset : LoadableAsset<EmotionalAppraisalAsset>, ICustomSerialization
     {
-        private ReactiveAppraisalDerivator m_appraisalDerivator;
-        private Dictionary<string, EmotionDisposition> m_emotionDispositions;
-        private EmotionDisposition m_defaultEmotionalDisposition;
-
         [NonSerialized]
         private long _lastFrameAppraisal = 0;
 
+        private ReactiveAppraisalDerivator m_appraisalDerivator;
+        private EmotionDisposition m_defaultEmotionalDisposition;
+        private Dictionary<string, EmotionDisposition> m_emotionDispositions;
+        private Dictionary<string, Goal> m_goals;
         [NonSerialized]
         private OCCAffectDerivationComponent m_occAffectDerivator;
 
+        /// <summary>
+        /// Asset constructor.
+        /// Creates a new empty Emotional Appraisal Asset.
+        /// </summary>
+        /// <param name="perspective">The initial perspective of the asset.</param>
+        public EmotionalAppraisalAsset()
+        {
+            m_emotionDispositions = new Dictionary<string, EmotionDisposition>();
+            m_goals = new Dictionary<string, Goal>();
+            m_defaultEmotionalDisposition = new EmotionDisposition("*", 1, 1);
+            m_occAffectDerivator = new OCCAffectDerivationComponent();
+            m_appraisalDerivator = new ReactiveAppraisalDerivator();
+
+        }
 
         public EmotionDispositionDTO DefaultEmotionDisposition
         {
@@ -42,13 +56,6 @@ namespace EmotionalAppraisal
 	    /// </summary>
 	    public string Description { get; set; }
 
-        protected override string OnAssetLoaded()
-        {
-            return null;
-        }
-
-        #region EmotionDispositions
-
         /// <summary>
         /// The asset's currently defined Emotion Dispositions.
         /// </summary>
@@ -58,18 +65,9 @@ namespace EmotionalAppraisal
         }
 
         /// <summary>
-        /// Returns the emotional dispotion associated to a given emotion type.
+        /// The currently supported emotional type keys
         /// </summary>
-        /// <param name="emotionType">The emotion type key of the emotional disposition to retrieve</param>
-        /// <returns>The dto containing the retrieved emotional disposition information</returns>
-        public EmotionDispositionDTO GetEmotionDisposition(String emotionName)
-        {
-            EmotionDisposition disp;
-            if (this.m_emotionDispositions.TryGetValue(emotionName, out disp))
-                return disp.ToDto();
-
-            return m_defaultEmotionalDisposition.ToDto();
-        }
+        public static IEnumerable<string> EmotionTypes => OCCEmotionType.Types;
 
         /// <summary>
         /// Creates and adds an emotional disposition to the asset.
@@ -82,22 +80,6 @@ namespace EmotionalAppraisal
         }
 
         /// <summary>
-        /// Removes an emotional disposition from the asset.
-        /// </summary>
-        /// <param name="emotionType">The emotion type key of the emotional disposition to remove</param>
-        public void RemoveEmotionDisposition(string emotionType)
-        {
-            this.m_emotionDispositions.Remove(emotionType);
-        }
-
-        #endregion EmotionDispositions
-
-        /// <summary>
-        /// The currently supported emotional type keys
-        /// </summary>
-        public static IEnumerable<string> EmotionTypes => OCCEmotionType.Types;
-
-        /// <summary>
         /// Adds an emotional reaction to an event
         /// </summary>
         /// <param name="emotionalAppraisalRule">the AppraisalRule to add</param>
@@ -106,60 +88,10 @@ namespace EmotionalAppraisal
             m_appraisalDerivator.AddOrUpdateAppraisalRule(emotionalAppraisalRule);
         }
 
-        /// <summary>
-        /// Returns all the appraisal rules
-        /// </summary>
-        /// <returns>The set of dtos containing the information for all the appraisal rules</returns>
-        public IEnumerable<AppraisalRuleDTO> GetAllAppraisalRules()
-        {
-            return this.m_appraisalDerivator.GetAppraisalRules().Select(r => new AppraisalRuleDTO
-            {
-                Id = r.Id,
-                EventMatchingTemplate = r.EventName,
-                Desirability = r.Desirability,
-                Praiseworthiness = r.Praiseworthiness,
-                Conditions = r.Conditions.ToDTO()
-            });
-        }
 
-        /// <summary>
-        /// Returns the condition set used for evaluating a particular appraisal rule set.
-        /// </summary>
-        /// <param name="ruleId">The unique identifier of the appraisal rule.</param>
-        /// <returns>The dto of the condition set associated to the requested appraisal rule.</returns>
-        /// <exception cref="ArgumentException">Thrown if the requested appraisal rule could not be found.</exception>
-        public ConditionSetDTO GetAllAppraisalRuleConditions(Guid ruleId)
+        public void AddOrUpdateGoal(GoalDTO goal)
         {
-            var rule = m_appraisalDerivator.GetAppraisalRule(ruleId);
-            if (rule == null)
-                throw new ArgumentException($"Could not found requested appraisal rule for the id \"{ruleId}\"", nameof(ruleId));
-
-            return rule.Conditions.ToDTO();
-        }
-
-        /// <summary>
-        /// Removes appraisal rules from the asset.
-        /// </summary>
-        /// <param name="appraisalRules">A dto set of the appraisal rules to remove</param>
-        public void RemoveAppraisalRules(IEnumerable<AppraisalRuleDTO> appraisalRules)
-        {
-            foreach (var appraisalRuleDto in appraisalRules)
-            {
-                m_appraisalDerivator.RemoveAppraisalRule(new AppraisalRule(appraisalRuleDto));
-            }
-        }
-
-        /// <summary>
-        /// Asset constructor.
-        /// Creates a new empty Emotional Appraisal Asset.
-        /// </summary>
-        /// <param name="perspective">The initial perspective of the asset.</param>
-        public EmotionalAppraisalAsset()
-        {
-            m_emotionDispositions = new Dictionary<string, EmotionDisposition>();
-            m_defaultEmotionalDisposition = new EmotionDisposition("*", 1, 1);
-            m_occAffectDerivator = new OCCAffectDerivationComponent();
-            m_appraisalDerivator = new ReactiveAppraisalDerivator();
+            m_goals[goal.Name] = new Goal(goal);
         }
 
         /// <summary>
@@ -205,7 +137,7 @@ namespace EmotionalAppraisal
                         {
                             kb.Tell(fact, values.FirstOrDefault().Item1.Value, perspective);
                         }
-                        else throw new Exception("Multiple possible values for " +  propEvt.NewValue);
+                        else throw new Exception("Multiple possible values for " + propEvt.NewValue);
                     }
                 }
 
@@ -221,27 +153,50 @@ namespace EmotionalAppraisal
             AppraiseEvents(eventNames, Name.SELF_SYMBOL, emotionalState, am, kb);
         }
 
-        private void UpdateEmotions(IAppraisalFrame frame, IEmotionalState emotionalState, AM am)
+        /// <summary>
+        /// Returns the condition set used for evaluating a particular appraisal rule set.
+        /// </summary>
+        /// <param name="ruleId">The unique identifier of the appraisal rule.</param>
+        /// <returns>The dto of the condition set associated to the requested appraisal rule.</returns>
+        /// <exception cref="ArgumentException">Thrown if the requested appraisal rule could not be found.</exception>
+        public ConditionSetDTO GetAllAppraisalRuleConditions(Guid ruleId)
         {
-            if (_lastFrameAppraisal > frame.LastChange)
-            {
-                return;
-            }
+            var rule = m_appraisalDerivator.GetAppraisalRule(ruleId);
+            if (rule == null)
+                throw new ArgumentException($"Could not found requested appraisal rule for the id \"{ruleId}\"", nameof(ruleId));
 
-            var emotions = m_occAffectDerivator.AffectDerivation(this, frame);
-            foreach (var emotion in emotions)
-            {
-                var activeEmotion = emotionalState.AddEmotion(emotion, am, GetEmotionDisposition(emotion.EmotionType), am.Tick);
-                if (activeEmotion == null)
-                    continue;
-            }
-
-            _lastFrameAppraisal = frame.LastChange;
+            return rule.Conditions.ToDTO();
         }
 
-        /// @cond DEV
+        /// <summary>
+        /// Returns all the appraisal rules
+        /// </summary>
+        /// <returns>The set of dtos containing the information for all the appraisal rules</returns>
+        public IEnumerable<AppraisalRuleDTO> GetAllAppraisalRules()
+        {
+            return this.m_appraisalDerivator.GetAppraisalRules().Select(r => new AppraisalRuleDTO
+            {
+                Id = r.Id,
+                EventMatchingTemplate = r.EventName,
+                Desirability = r.Desirability,
+                Praiseworthiness = r.Praiseworthiness,
+                Conditions = r.Conditions.ToDTO()
+            });
+        }
 
-        #region ICustomSerialization
+        /// <summary>
+        /// Returns the emotional dispotion associated to a given emotion type.
+        /// </summary>
+        /// <param name="emotionType">The emotion type key of the emotional disposition to retrieve</param>
+        /// <returns>The dto containing the retrieved emotional disposition information</returns>
+        public EmotionDispositionDTO GetEmotionDisposition(String emotionName)
+        {
+            EmotionDisposition disp;
+            if (this.m_emotionDispositions.TryGetValue(emotionName, out disp))
+                return disp.ToDto();
+
+            return m_defaultEmotionalDisposition.ToDto();
+        }
 
         public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
@@ -250,6 +205,28 @@ namespace EmotionalAppraisal
             dataHolder.SetValue("EmotionDispositions", m_emotionDispositions.Values.Prepend(m_defaultEmotionalDisposition).ToArray());
         }
 
+        /// <summary>
+        /// Removes appraisal rules from the asset.
+        /// </summary>
+        /// <param name="appraisalRules">A dto set of the appraisal rules to remove</param>
+        public void RemoveAppraisalRules(IEnumerable<AppraisalRuleDTO> appraisalRules)
+        {
+            foreach (var appraisalRuleDto in appraisalRules)
+            {
+                m_appraisalDerivator.RemoveAppraisalRule(new AppraisalRule(appraisalRuleDto));
+            }
+        }
+
+        /// <summary>
+        /// Removes an emotional disposition from the asset.
+        /// </summary>
+        /// <param name="emotionType">The emotion type key of the emotional disposition to remove</param>
+        public void RemoveEmotionDisposition(string emotionType)
+        {
+            this.m_emotionDispositions.Remove(emotionType);
+        }
+
+        /// @cond DEV
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             Description = dataHolder.GetValue<string>("Description");
@@ -279,8 +256,27 @@ namespace EmotionalAppraisal
             m_defaultEmotionalDisposition = defaultDisposition;
         }
 
-        #endregion ICustomSerialization
+        protected override string OnAssetLoaded()
+        {
+            return null;
+        }
+        private void UpdateEmotions(IAppraisalFrame frame, IEmotionalState emotionalState, AM am)
+        {
+            if (_lastFrameAppraisal > frame.LastChange)
+            {
+                return;
+            }
 
+            var emotions = m_occAffectDerivator.AffectDerivation(this, frame);
+            foreach (var emotion in emotions)
+            {
+                var activeEmotion = emotionalState.AddEmotion(emotion, am, GetEmotionDisposition(emotion.EmotionType), am.Tick);
+                if (activeEmotion == null)
+                    continue;
+            }
+
+            _lastFrameAppraisal = frame.LastChange;
+        }
         /// @endcond
     }
 }

@@ -186,5 +186,15 @@ namespace EmotionalAppraisalWF
                     break;
             }
         }
+
+        private void buttonAppVariables_Click(object sender, EventArgs e)
+        {
+            new AddOrEditAppraisalVariablesForm(_appraisalRulesVM).ShowDialog(this);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            new AddOrEditGoalForm(_appraisalRulesVM).ShowDialog(this);
+        }
     }
 }

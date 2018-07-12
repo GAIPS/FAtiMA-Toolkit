@@ -149,6 +149,7 @@
             this.textBoxSubject.AllowVariable = true;
             this.textBoxSubject.Location = new System.Drawing.Point(43, 145);
             this.textBoxSubject.Name = "textBoxSubject";
+            this.textBoxSubject.OnlyIntOrVariable = false;
             this.textBoxSubject.Size = new System.Drawing.Size(343, 22);
             this.textBoxSubject.TabIndex = 44;
             // 
@@ -161,6 +162,7 @@
             this.textBoxObject.AllowVariable = true;
             this.textBoxObject.Location = new System.Drawing.Point(43, 230);
             this.textBoxObject.Name = "textBoxObject";
+            this.textBoxObject.OnlyIntOrVariable = false;
             this.textBoxObject.Size = new System.Drawing.Size(344, 22);
             this.textBoxObject.TabIndex = 45;
             // 
@@ -173,6 +175,7 @@
             this.textBoxTarget.AllowVariable = true;
             this.textBoxTarget.Location = new System.Drawing.Point(43, 312);
             this.textBoxTarget.Name = "textBoxTarget";
+            this.textBoxTarget.OnlyIntOrVariable = false;
             this.textBoxTarget.Size = new System.Drawing.Size(344, 22);
             this.textBoxTarget.TabIndex = 46;
             // 
@@ -185,6 +188,7 @@
             this.textBoxDesirability.AllowVariable = true;
             this.textBoxDesirability.Location = new System.Drawing.Point(43, 401);
             this.textBoxDesirability.Name = "textBoxDesirability";
+            this.textBoxDesirability.OnlyIntOrVariable = false;
             this.textBoxDesirability.Size = new System.Drawing.Size(343, 22);
             this.textBoxDesirability.TabIndex = 47;
             // 
@@ -197,6 +201,7 @@
             this.textBoxPraiseworthiness.AllowVariable = true;
             this.textBoxPraiseworthiness.Location = new System.Drawing.Point(43, 489);
             this.textBoxPraiseworthiness.Name = "textBoxPraiseworthiness";
+            this.textBoxPraiseworthiness.OnlyIntOrVariable = false;
             this.textBoxPraiseworthiness.Size = new System.Drawing.Size(344, 22);
             this.textBoxPraiseworthiness.TabIndex = 48;
             // 

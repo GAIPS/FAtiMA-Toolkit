@@ -44,11 +44,23 @@
     <Compile Include="AddOrEditAppraisalRuleForm.Designer.cs">
       <DependentUpon>AddOrEditAppraisalRuleForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AddOrEditAppraisalVariablesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddOrEditAppraisalVariablesForm.Designer.cs">
+      <DependentUpon>AddOrEditAppraisalVariablesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AddOrEditEmotionDispositionForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AddOrEditEmotionDispositionForm.Designer.cs">
       <DependentUpon>AddOrEditEmotionDispositionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddOrEditGoalForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddOrEditGoalForm.Designer.cs">
+      <DependentUpon>AddOrEditGoalForm.cs</DependentUpon>
     </Compile>
     <Compile Include="BaseEAForm.cs">
       <SubType>Form</SubType>
@@ -67,8 +79,14 @@
     <EmbeddedResource Include="AddOrEditAppraisalRuleForm.resx">
       <DependentUpon>AddOrEditAppraisalRuleForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AddOrEditAppraisalVariablesForm.resx">
+      <DependentUpon>AddOrEditAppraisalVariablesForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="AddOrEditEmotionDispositionForm.resx">
       <DependentUpon>AddOrEditEmotionDispositionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddOrEditGoalForm.resx">
+      <DependentUpon>AddOrEditGoalForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -122,8 +140,10 @@
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
     <Reference Include="Utilities, Version=1.0.0.19854, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Utilities.1.0.0.19854\lib\net35\Utilities.dll</HintPath>
       <Private>True</Private>
