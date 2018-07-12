@@ -4,6 +4,7 @@ using CommeillFaut.DTOs;
 using Conditions;
 using KnowledgeBase;
 using WellFormedNames;
+using System.Collections.Generic;
 using SerializationUtilities;
 
 namespace CommeillFaut
@@ -19,7 +20,11 @@ namespace CommeillFaut
 
         public Name Name { get; set; }
 
-        public ConditionSet Conditions { get; set; }
+        public List<Name> Steps { get; set; }
+
+        public ConditionSet StartingConditions { get; set; }
+
+        public List<InfluenceRule> InfluenceRules { get; set; }
 
         /// The Social Exchange Name
         /// </summary>
@@ -35,36 +40,41 @@ namespace CommeillFaut
             Id = Guid.NewGuid();
             Name = s.Name;
             Description = s.Description;
+            Steps = s.Steps;
             Initiator = s.Initiator;
-            Target = s.Target;
-            Conditions = new ConditionSet(s.Conditions);
+             Target = s.Target;
+            StartingConditions =  new ConditionSet(s.StartingConditions);
+            InfluenceRules = s.InfluenceRules.Select(x=>new InfluenceRule(x)).ToList();
         }
       
         public override string ToString()
         {
-            return Name + " | " + Description + " | " + this.Id + " | " + Conditions + "\n";
+            return Name + " | " + Description + " | " + this.Id + " | STEPS:" + Steps.Count + "\n";
         }
-        
-        public SocialExchangeDTO ToDTO()
+
+        public SocialExchangeDTO ToDTO => new SocialExchangeDTO()
         {
-            return new SocialExchangeDTO()
-            {
-                Name = this.Name,
-                Description = this.Description,
-                Initiator = this.Initiator,
-                Target = this.Target,
-                Conditions = this.Conditions.ToDTO(),
-                Id = this.Id
-            };
-        }
-        
-       public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
+            Name = this.Name,
+            Description = this.Description,
+            Steps = this.Steps,
+            Initiator = this.Initiator,
+            Target = this.Target,
+            StartingConditions = this.StartingConditions.ToDTO(),
+            InfluenceRules = this.InfluenceRules.Select(x=>x.ToDTO()).ToList(),
+            Id = this.Id
+        };
+
+        public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             dataHolder.SetValue("Name", this.Name);
             dataHolder.SetValue("Description", this.Description);
-            dataHolder.SetValue("Initiator",this.Initiator);
+            dataHolder.SetValue("Steps", this.Steps);
+            dataHolder.SetValue("Initiator", this.Initiator);
             dataHolder.SetValue("Target", this.Target);
-            dataHolder.SetValue("Conditions", this.Conditions);
+            dataHolder.SetValue("StartingConditions", this.StartingConditions);
+            dataHolder.SetValue("InfluenceRules", this.InfluenceRules);
+          
+          
 
 
         }
@@ -73,31 +83,83 @@ namespace CommeillFaut
         {
             Name = dataHolder.GetValue<Name>("Name");
             Description = dataHolder.GetValue<string>("Description");
-            Initiator = dataHolder.GetValue<Name>("Initiator");
+            Steps = dataHolder.GetValue<List<Name>>("Steps");
+             Initiator = dataHolder.GetValue<Name>("Initiator");
             Target = dataHolder.GetValue<Name>("Target");
-            Conditions = dataHolder.GetValue<ConditionSet>("Conditions");
+            StartingConditions = dataHolder.GetValue<ConditionSet>("StartingConditions");
+            InfluenceRules = dataHolder.GetValue<List<InfluenceRule>>("InfluenceRules");
+          
+        }
+
+        public void AddStep(Name step)
+        {
+            Steps.Add(step);
+        }
+   
+          public void RemoveStep(Name step)
+        {
+            Steps.Remove(step);
+        }
+   
+
+         public void AddStartingCondition(Condition cond)
+        {
+            StartingConditions = StartingConditions.Add(cond);
+        }
+
+        public void RemoveStartingCondition(Condition cond)
+        {
+            StartingConditions  = StartingConditions.Remove(cond);
         }
 
         
-        public void AddCondition(Condition cond)
+         public void AddInfluenceRule(InfluenceRule cond)
         {
-            Conditions = Conditions.Add(cond);
+           InfluenceRules.Add(cond);
         }
 
-        public void RemoveCondition(Condition cond)
+        public void RemoveInflluenceRule(InfluenceRule cond)
         {
-            Conditions  = Conditions.Remove(cond);
+           InfluenceRules.Remove(cond);
+        }
+
+         public Guid AddInfluenceRule(InfluenceRuleDTO dto)
+        {
+          
+            var idx = InfluenceRules.FindIndex(x => x.Id == dto.Id);
+            System.Guid actualID = new Guid();
+            if (idx < 0)
+            {
+               
+                InfluenceRules.Add(new InfluenceRule(dto));
+                actualID = dto.Id;
+            }
+            else
+            {
+
+                InfluenceRules[idx].Rule = new ConditionSet(dto.Rule);
+                InfluenceRules[idx].Value = dto.Value;;
+                InfluenceRules[idx].Id = dto.Id;
+                actualID = InfluenceRules[idx].Id;
+
+            }
+
+            return actualID;
         }
 
 
-
-
-        public float VolitionValue(Name init, Name targ, KB m_Kb)
+         public void RemoveInfluenceRule(Guid id)
         {
-            float toRet = 0.0f;
-            var totalCertainty = 0.0f;
-            int totalConds = Conditions.Count();
+            var exchange = InfluenceRules.Find(se => se.Id == id);
+            if (exchange != null)
+                InfluenceRules.Remove(exchange);
+        }
 
+
+        public float VolitionValue(Name step, Name init, Name targ, Name mode, KB m_Kb)
+        {
+          
+            
             if (init == targ) return -1;
 
             var targetSub = new Substitution(Target, new ComplexValue(targ));
@@ -106,43 +168,98 @@ namespace CommeillFaut
             var constraints = new SubstitutionSet();
             constraints.AddSubstitution(targetSub);
             constraints.AddSubstitution(initiatorSub);
+             float total = Single.NegativeInfinity;
 
+           // List<SubstitutionSet> resultingConstraints = new List<SubstitutionSet>();
+            
+            if(step == this.Steps.FirstOrDefault()){
+           var resultingConstraints = StartingConditions.FirstOrDefault().Unify(m_Kb, init, new[] { constraints } ).ToList();
 
-            foreach (var c in Conditions) // For instance SI([x]) >= 40
+            if(StartingConditions.Count() > 1){
+                int counter = 0;
+            foreach (var c in StartingConditions) // For instance SI([x]) >= 40
             {
+                    if(counter == 0) continue;
+               resultingConstraints = c.Unify(m_Kb, init, resultingConstraints ).ToList();  // Whats the sub here [x]/John
+                }
+            }
 
-               var resultingConstraints = c.Unify(m_Kb, init, new[] { constraints } );  // Whats the sub here [x]/John
-                var total = 0.0f;
-                var totalSets = resultingConstraints.Count();
-                float averageCertainty = 0;
-                foreach (var res in resultingConstraints)
+            
+            
+            if(resultingConstraints.Count() == 0)
+                return total;
+
+
+                foreach (var res in resultingConstraints) 
                 {
-                    if (resultingConstraints.Count() > 0)
+                    if (resultingConstraints.Count() > 0) // Assuming all Starting COnditions match lets go into the Influence Rules
                     {
-                        var condition = c.ToString();
+                   foreach(var constraint in resultingConstraints){  //  var condition = c.ToString();
 
-                        var certainty = res.FindMinimumCertainty();  // How do I ask SI(John) >= 40 and get its certainty
+                            var contraintVolitionValue = .0f;
 
-                        total += certainty;
+                       // var certainty = res.FindMinimumCertainty();  // How do I ask SI(John) >= 40 and get its certainty
+
+                        //total += certainty;
+
+                            
+                       var influenceRuleList = new List<InfluenceRule>();
+
+                             if(mode.IsUniversal)
+                           influenceRuleList = this.InfluenceRules;
+                             else
+                                influenceRuleList = this.InfluenceRules.FindAll(x=>x.Mode == mode);
+                        
+                        foreach(var inf in influenceRuleList)
+                                {
+                                
+                                var toSum = inf.EvaluateInfluenceRule(init, targ, m_Kb, constraint);
+
+                                contraintVolitionValue +=toSum;
+                                
+                                }
+
+                        if(contraintVolitionValue > total)
+                            {
+                                total = contraintVolitionValue;
+                            }
+                        
+                        }
+                    
+                    
+                    
                     }
 
                 }
+            
+                //What if the step is beyond the first one, we should not consider Starting Conditions, or any conditions at all
+                } else
+                
+                {           
+                 
+                
 
-                if (total != 0)
-                    averageCertainty = total / totalSets;
-                else averageCertainty =  0;
-                totalCertainty += averageCertainty;
+                foreach(var inf in InfluenceRules)
+                    
+                    {
+                    
+                    if(inf.Mode == mode || mode.ToString().Contains("*")){
+                        
+                        
+                        var toSum = inf.EvaluateInfluenceRule(init, targ, m_Kb, constraints);
+                    
+                        total +=toSum;
+                                
+                                }
+                
+                }
             }
+             
 
-            if (totalCertainty != 0)
-                toRet = totalCertainty / totalConds;
-            else toRet = 0;
-
-                return toRet;
-
-            }
-
+               return total;
         }
 
     }
+
+}
 

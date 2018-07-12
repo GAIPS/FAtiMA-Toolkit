@@ -33,24 +33,26 @@
             this.button1 = new System.Windows.Forms.Button();
             this.influenceRuleBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label2 = new System.Windows.Forms.Label();
-            this.nameTextBox = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             this.textBoxDescription = new System.Windows.Forms.TextBox();
             this.buttonAdd = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.wfNameInitiator = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
+            this.stepsTextBox = new System.Windows.Forms.TextBox();
+            this.stepsLabel = new System.Windows.Forms.Label();
             this.wfNameTarget = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
+            this.wfNameInitiator = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
+            this.nameTextBox = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             ((System.ComponentModel.ISupportInitialize)(this.influenceRuleBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 18);
+            this.label1.Location = new System.Drawing.Point(28, 39);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(48, 16);
+            this.label1.Size = new System.Drawing.Size(187, 20);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Name:";
+            this.label1.Text = "Social Exchange Name:";
             // 
             // button1
             // 
@@ -63,43 +65,28 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(23, 86);
+            this.label2.Location = new System.Drawing.Point(28, 107);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(79, 16);
+            this.label2.Size = new System.Drawing.Size(100, 20);
             this.label2.TabIndex = 11;
             this.label2.Text = "Description:";
             // 
-            // nameTextBox
-            // 
-            this.nameTextBox.AllowComposedName = true;
-            this.nameTextBox.AllowLiteral = true;
-            this.nameTextBox.AllowNil = true;
-            this.nameTextBox.AllowUniversal = true;
-            this.nameTextBox.AllowVariable = true;
-            this.nameTextBox.Location = new System.Drawing.Point(26, 50);
-            this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.OnlyIntOrVariable = false;
-            this.nameTextBox.Size = new System.Drawing.Size(395, 22);
-            this.nameTextBox.TabIndex = 13;
-            // 
             // textBoxDescription
             // 
-            this.textBoxDescription.Location = new System.Drawing.Point(26, 113);
+            this.textBoxDescription.Location = new System.Drawing.Point(31, 134);
             this.textBoxDescription.Name = "textBoxDescription";
-            this.textBoxDescription.Size = new System.Drawing.Size(395, 22);
-            this.textBoxDescription.TabIndex = 14;
+            this.textBoxDescription.Size = new System.Drawing.Size(395, 26);
+            this.textBoxDescription.TabIndex = 2;
             // 
             // buttonAdd
             // 
-            this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonAdd.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.buttonAdd.Location = new System.Drawing.Point(176, 205);
+            this.buttonAdd.Location = new System.Drawing.Point(185, 295);
             this.buttonAdd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buttonAdd.MinimumSize = new System.Drawing.Size(80, 39);
             this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(80, 39);
+            this.buttonAdd.Size = new System.Drawing.Size(116, 39);
             this.buttonAdd.TabIndex = 3;
             this.buttonAdd.Text = "Add";
             this.buttonAdd.UseVisualStyleBackColor = true;
@@ -108,33 +95,36 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(23, 162);
+            this.label3.Location = new System.Drawing.Point(27, 247);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(107, 16);
+            this.label3.Size = new System.Drawing.Size(135, 20);
             this.label3.TabIndex = 15;
             this.label3.Text = "Initiator Variable:";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(242, 162);
+            this.label4.Location = new System.Drawing.Point(246, 247);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(105, 16);
+            this.label4.Size = new System.Drawing.Size(128, 20);
             this.label4.TabIndex = 17;
             this.label4.Text = "Target Variable:";
             // 
-            // wfNameInitiator
+            // stepsTextBox
             // 
-            this.wfNameInitiator.AllowComposedName = true;
-            this.wfNameInitiator.AllowLiteral = true;
-            this.wfNameInitiator.AllowNil = true;
-            this.wfNameInitiator.AllowUniversal = true;
-            this.wfNameInitiator.AllowVariable = true;
-            this.wfNameInitiator.Location = new System.Drawing.Point(131, 159);
-            this.wfNameInitiator.Name = "wfNameInitiator";
-            this.wfNameInitiator.OnlyIntOrVariable = false;
-            this.wfNameInitiator.Size = new System.Drawing.Size(71, 22);
-            this.wfNameInitiator.TabIndex = 19;
+            this.stepsTextBox.Location = new System.Drawing.Point(31, 199);
+            this.stepsTextBox.Name = "stepsTextBox";
+            this.stepsTextBox.Size = new System.Drawing.Size(395, 26);
+            this.stepsTextBox.TabIndex = 3;
+            // 
+            // stepsLabel
+            // 
+            this.stepsLabel.AutoSize = true;
+            this.stepsLabel.Location = new System.Drawing.Point(28, 172);
+            this.stepsLabel.Name = "stepsLabel";
+            this.stepsLabel.Size = new System.Drawing.Size(57, 20);
+            this.stepsLabel.TabIndex = 21;
+            this.stepsLabel.Text = "Steps:";
             // 
             // wfNameTarget
             // 
@@ -143,17 +133,45 @@
             this.wfNameTarget.AllowNil = true;
             this.wfNameTarget.AllowUniversal = true;
             this.wfNameTarget.AllowVariable = true;
-            this.wfNameTarget.Location = new System.Drawing.Point(350, 159);
+            this.wfNameTarget.Location = new System.Drawing.Point(380, 244);
             this.wfNameTarget.Name = "wfNameTarget";
             this.wfNameTarget.OnlyIntOrVariable = false;
-            this.wfNameTarget.Size = new System.Drawing.Size(71, 22);
-            this.wfNameTarget.TabIndex = 20;
+            this.wfNameTarget.Size = new System.Drawing.Size(71, 26);
+            this.wfNameTarget.TabIndex = 5;
+            // 
+            // wfNameInitiator
+            // 
+            this.wfNameInitiator.AllowComposedName = true;
+            this.wfNameInitiator.AllowLiteral = true;
+            this.wfNameInitiator.AllowNil = true;
+            this.wfNameInitiator.AllowUniversal = true;
+            this.wfNameInitiator.AllowVariable = true;
+            this.wfNameInitiator.Location = new System.Drawing.Point(168, 244);
+            this.wfNameInitiator.Name = "wfNameInitiator";
+            this.wfNameInitiator.OnlyIntOrVariable = false;
+            this.wfNameInitiator.Size = new System.Drawing.Size(62, 26);
+            this.wfNameInitiator.TabIndex = 4;
+            // 
+            // nameTextBox
+            // 
+            this.nameTextBox.AllowComposedName = true;
+            this.nameTextBox.AllowLiteral = true;
+            this.nameTextBox.AllowNil = true;
+            this.nameTextBox.AllowUniversal = true;
+            this.nameTextBox.AllowVariable = true;
+            this.nameTextBox.Location = new System.Drawing.Point(31, 62);
+            this.nameTextBox.Name = "nameTextBox";
+            this.nameTextBox.OnlyIntOrVariable = false;
+            this.nameTextBox.Size = new System.Drawing.Size(395, 26);
+            this.nameTextBox.TabIndex = 1;
             // 
             // AddSocialExchange
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(446, 261);
+            this.ClientSize = new System.Drawing.Size(475, 345);
+            this.Controls.Add(this.stepsTextBox);
+            this.Controls.Add(this.stepsLabel);
             this.Controls.Add(this.wfNameTarget);
             this.Controls.Add(this.wfNameInitiator);
             this.Controls.Add(this.label4);
@@ -168,6 +186,7 @@
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "AddSocialExchange";
             this.Text = "Add Social Exchange";
+            this.Load += new System.EventHandler(this.AddSocialExchange_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddSocialExchange_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.influenceRuleBindingSource)).EndInit();
             this.ResumeLayout(false);
@@ -189,5 +208,7 @@
         private System.Windows.Forms.Label label4;
         private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox wfNameInitiator;
         private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox wfNameTarget;
+        private System.Windows.Forms.TextBox stepsTextBox;
+        private System.Windows.Forms.Label stepsLabel;
     }
 }

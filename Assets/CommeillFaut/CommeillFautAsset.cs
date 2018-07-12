@@ -16,10 +16,7 @@ namespace CommeillFaut
         public KB m_kB;
         private List<SocialExchange> m_SocialExchanges { get; set; }
 
-        public IEnumerable<SocialExchangeDTO> GetSocialExchanges()
-        {
-            return m_SocialExchanges.Select(se => se.ToDTO());
-        }
+      
 
         /// <summary>
         /// The Comme ill Faut constructor
@@ -29,6 +26,11 @@ namespace CommeillFaut
             m_kB = null;
             m_SocialExchanges = new List<SocialExchange>();
         }
+
+        	protected override string OnAssetLoaded()
+		{
+			return null;
+		}
 
         /// <summary>
         /// Binds a KB to this Comme ill Faut Asset instance. Without a KB instance binded to this asset, 
@@ -58,7 +60,7 @@ namespace CommeillFaut
 
         private static readonly Name VOLITION_PROPERTY_TEMPLATE = (Name)"Volition";
 
-        public IEnumerable<DynamicPropertyResult> VolitionPropertyCalculator(IQueryContext context, Name socialMoveName, Name initiator, Name Target)
+        public IEnumerable<DynamicPropertyResult> VolitionPropertyCalculator(IQueryContext context, Name socialMoveName,  Name Step, Name initiator, Name Target, Name Mode)
         {
             Dictionary<SubstitutionSet, Name> ret = new Dictionary<SubstitutionSet, Name>();
 
@@ -83,6 +85,10 @@ namespace CommeillFaut
                 foreach (var se in this.m_SocialExchanges)
                     possibleSEs.Add(se.Name);
             }
+            else if(socialMoveName.IsUniversal)
+                foreach (var se in this.m_SocialExchanges)
+                    possibleSEs.Add(se.Name);
+            
             else possibleSEs.Add(socialMoveName);
 
             List<Name> possibleInitiators = new List<Name>();
@@ -106,6 +112,30 @@ namespace CommeillFaut
             }
             else possibleTargets.Add(Target);
 
+            List<Name> possibleSteps = new List<Name>();
+            if(Step.IsVariable){
+                 foreach (var s in context.AskPossibleProperties(Step))
+                    possibleSteps.Add(s.Item1.Value);
+                 foreach(var s in this.m_SocialExchanges.Select(x=>x.Steps))
+                  possibleSteps =  possibleSteps.Concat(s).ToList();
+            } else if(Step.IsUniversal){
+                foreach(var s in this.m_SocialExchanges.Select(x=>x.Steps))
+                   possibleSteps = possibleSteps.Concat(s).ToList();
+
+            }
+
+            else possibleSteps.Add(Step);
+
+
+            List<Name> possibleModes = new List<Name>();
+
+            if(Mode.IsVariable){
+                 foreach (var s in context.AskPossibleProperties(Mode))
+                    possibleModes.Add(s.Item1.Value);
+                 }
+
+            else possibleModes.Add(Mode);
+
             foreach (var seName in possibleSEs)
             {
                 if (!m_SocialExchanges.Exists(x => x.Name == seName))
@@ -115,25 +145,37 @@ namespace CommeillFaut
 
                     foreach (var targ in possibleTargets)
                     {
+
+
                         if (init == targ) continue;
 
 
-                        var volValue = CalculateSocialMoveVolition(seName, init, targ);
+
+                        foreach(var seStep in possibleSteps){
+
+                             foreach(var seMode in possibleModes){
+
+                        var volValue = CalculateSocialMoveVolition(seName, seStep, init, targ, seMode);
 
 
-                        if (volValue != -1)
+                        if (volValue != Single.NegativeInfinity)
                         {
 
                             var subSet = new SubstitutionSet();
-
-
-                            stringVolition = CalculateStyle(volValue);
 
                             if (socialMoveName.IsVariable)
                             {
                                 var sub = new Substitution(socialMoveName, new ComplexValue(seName, 1));
                                 subSet.AddSubstitution(sub);
                             }
+
+                            
+                            if (Step.IsVariable)
+                            {
+                                var sub = new Substitution(Step, new ComplexValue(seStep, 1));
+                                subSet.AddSubstitution(sub);
+                            }
+
 
                             if (initiator.IsVariable)
                             {
@@ -144,6 +186,12 @@ namespace CommeillFaut
                             if (Target.IsVariable)
                             {
                                 var sub = new Substitution(Target, new ComplexValue(targ, 1));
+                                subSet.AddSubstitution(sub);
+                            }
+
+                              if (Mode.IsVariable)
+                            {
+                                var sub = new Substitution(Mode, new ComplexValue(seMode, 1));
                                 subSet.AddSubstitution(sub);
                             }
 
@@ -160,10 +208,13 @@ namespace CommeillFaut
 
                                     newcontext.AddSubstitutions(subSet);
 
-                                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(stringVolition)), newcontext);
+                                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(volValue)), newcontext);
                                 }
 
-                            else yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(stringVolition)), subSet);
+                            else yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(volValue)), subSet);
+
+                        }
+                    }
 
                         }
                     }
@@ -190,11 +241,14 @@ namespace CommeillFaut
             }
             else
             {
-                m_SocialExchanges[idx].Conditions = new ConditionSet(dto.Conditions);
+                m_SocialExchanges[idx].StartingConditions = new ConditionSet(dto.StartingConditions);
+           
                 m_SocialExchanges[idx].Description = dto.Description;
                 m_SocialExchanges[idx].Initiator = dto.Initiator;
                 m_SocialExchanges[idx].Target = dto.Target;
                 m_SocialExchanges[idx].Name = dto.Name;
+                 m_SocialExchanges[idx].Steps = dto.Steps;
+                 m_SocialExchanges[idx].InfluenceRules = dto.InfluenceRules.Select(x=>new InfluenceRule(x)).ToList();
                 actualID = m_SocialExchanges[idx].Id;
 
             }
@@ -209,17 +263,6 @@ namespace CommeillFaut
                 m_SocialExchanges.Remove(exchange);
         }
 
-        public string CalculateStyle(float value)
-        {
-        
-            if(value > 0.6)
-                return value <= 1 ? "Positive" : "VeryPositive";
-
-            if (value < 0.4)
-                return value >= 0 ? "Negative" : "VeryNegative";
-           
-            return "Neutral";
-        }
 
         public void UpdateSocialExchange(SocialExchangeDTO newReaction)
         {
@@ -231,13 +274,24 @@ namespace CommeillFaut
     
         public SocialExchangeDTO GetSocialExchange(Guid id)
         {
-            return m_SocialExchanges.Find(x => x.Id == id).ToDTO();
+            return m_SocialExchanges.Find(x => x.Id == id).ToDTO;
         }
 
 
-        public float CalculateSocialMoveVolition(Name seName, Name initiator, Name target)
+        public float CalculateSocialMoveVolition(Name seName, Name seStep,  Name initiator, Name target, Name seMode)
         {
-         return   m_SocialExchanges.Find(x => x.Name == seName).VolitionValue(initiator, target, this.m_kB);
+         return   m_SocialExchanges.Find(x => x.Name == seName).VolitionValue(seStep, initiator, target, seMode, this.m_kB);
+        }
+
+
+        
+        /// <summary>
+        /// Retrives the definitions of all the stored action rules.
+        /// </summary>
+        /// <returns>A set of DTOs containing the data of all action rules.</returns>
+        public IEnumerable<SocialExchangeDTO> GetAllSocialExchanges()
+        {
+	        return m_SocialExchanges.Select(at => at.ToDTO);
         }
 
 
@@ -290,21 +344,14 @@ namespace CommeillFaut
         /// </summary>
         public CommeillFautDTO GetDTO()
         {
-            var at = m_SocialExchanges.Select(a => a.ToDTO()).ToArray();
+            var at = m_SocialExchanges.Select(a => a.ToDTO).ToArray();
           
             return new CommeillFautDTO() { _SocialExchangesDtos = at};
         }
 
    
 
-        /// @cond DOXYGEN_SHOULD_SKIP_THIS
-
-        protected override string OnAssetLoaded()
-        {
-            return null;
-        }
-
-        /// @endcond
+     
     }
 
 }

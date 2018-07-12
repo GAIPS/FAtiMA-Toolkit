@@ -29,6 +29,11 @@ namespace KnowledgeBase
 			_registry.RegistDynamicProperty(propertyName,surrogate);
 		}
 
+        public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T5 surrogate)
+		{
+			_registry.RegistDynamicProperty(propertyName,surrogate);
+		}
+
 		public void UnregistDynamicProperty(Name propertyTemplate)
 		{
 			_registry.UnregistDynamicProperty(propertyTemplate);

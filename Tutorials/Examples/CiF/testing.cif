@@ -1,0 +1,60 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"SocialExchanges": [
+				{
+					"Name": "Flirt",
+					"Description": "Love",
+					"Steps": ["Initiate", "Answer", "Finalize"],
+					"Initiator": "[i]",
+					"Target": "[t]",
+					"StartingConditions":
+						{
+							"Set": ["Has(Floor) = Self"]
+						},
+					"InfluenceRules": [
+						{
+							"Rules":
+								{
+									"Set": ["Likes([t]) = True"]
+								},
+							"Value": 5,
+							"Mode": "-"
+						}]
+				}, 
+				{
+					"Name": "Insult",
+					"Description": "Say bad things to other",
+					"Steps": ["Initiate", "Answer"],
+					"Initiator": "[i]",
+					"Target": "[t]",
+					"StartingConditions":
+						{
+							"Set": ["Has(Floor) = Self"]
+						},
+					"InfluenceRules": [
+						{
+							"Rules":
+								{
+									"Set": ["Likes([t]) = False"]
+								},
+							"Value": 2,
+							"Mode": "-"
+						}, 
+						{
+							"Rules":
+								{
+									"Set": ["Likes([t]) = True"]
+								},
+							"Value": -2,
+							"Mode": "-"
+						}]
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "CommeillFaut.CommeillFautAsset, CommeillFaut, Version=1.7.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

@@ -26,23 +26,98 @@ namespace Tests.CommeillFaut
             {
                Name = Name.BuildName("Flirt"),
                Description = "When I'm atracted to...",
-               Conditions = new Conditions.DTOs.ConditionSetDTO()
-               {
-                    ConditionSet = new string[] { "Has(Floor) != Start", "[x] = Sarah", " [i] = Matt" }
-               },
+             
+
                Initiator = Name.BuildName("[i]"),
-               Target = Name.BuildName("[x]")
+               Target = Name.BuildName("[t]"),
+               StartingConditions = new Conditions.DTOs.ConditionSetDTO()
+               {
+                    ConditionSet = new string[] { "Has(Floor) = SELF"}
+               },
+               Steps = new List<Name>() {(Name)"Start"},
+               InfluenceRules = new List<InfluenceRuleDTO>()
+               {
+
+                  new InfluenceRuleDTO()
+                   {
+                       Value = 5,
+                       Mode = (Name)"General",
+                       Rule= new Conditions.DTOs.ConditionSetDTO()
+                       
+                       {
+                           
+                         ConditionSet = new string[] { "Likes([t]) = True"}                   
+                           
+                           }
+                 
+               },
+
+                   new InfluenceRuleDTO()
+                   {
+                       Value = 10,
+                       Mode = (Name)"Love",
+                       Rule= new Conditions.DTOs.ConditionSetDTO()
+                     
+                       {
+                           
+                         ConditionSet = new string[] { "Likes([t]) = True", "EventId(Action-End, [i], Speak(*, *, *, *), [t])>0"}                   
+                           
+                           }
+                 
+               }
+
+               }
+
             };
 
             var cif1 = new CommeillFautAsset();
             cif1.AddOrUpdateExchange(seDTO);
   
+
+
+             var seDTO2 = new SocialExchangeDTO()
+            {
+               Name = Name.BuildName("Insult"),
+               Description = "I hate you ",
+             
+
+               Initiator = Name.BuildName("[i]"),
+               Target = Name.BuildName("[t]"),
+               StartingConditions = new Conditions.DTOs.ConditionSetDTO()
+               {
+                    ConditionSet = new string[] { "Has(Floor) = SELF"}
+               },
+               Steps = new List<Name>() {(Name)"Start"},
+               InfluenceRules = new List<InfluenceRuleDTO>()
+               {
+
+               new InfluenceRuleDTO()
+                   {
+                       Value = 4,
+                       Rule= new Conditions.DTOs.ConditionSetDTO()
+                       
+                       {
+                           
+                         ConditionSet = new string[] { "Likes([t]) = False"}                   
+                           
+                           }
+                 
+               }
+
+               }
+
+            };
+
+             cif1.AddOrUpdateExchange(seDTO2);
+
             return cif1;
 
         }
 
 
-        private static RolePlayCharacterAsset RPC = BuildRPCAsset();
+        private static RolePlayCharacterAsset Matt = BuildRPCAsset();
+
+         private static RolePlayCharacterAsset Sarah = BuildRPCAsset2();
 
         private static RolePlayCharacterAsset BuildRPCAsset()
         {
@@ -63,6 +138,25 @@ namespace Tests.CommeillFaut
 
         }
 
+        private static RolePlayCharacterAsset BuildRPCAsset2()
+        {
+            var kb = new KB((Name)"Sarah");
+
+
+            var rpc = new RolePlayCharacterAsset
+            {
+                BodyName = "Female",
+                VoiceName = "Female",
+                CharacterName = (Name)"Sarah",
+                m_kb = kb,
+
+            };
+
+            return rpc;
+
+        }
+
+
         private Dictionary<int, List<string>> eventSets;
 
 
@@ -77,12 +171,10 @@ namespace Tests.CommeillFaut
                 {
                 EventHelper.ActionEnd("Matt", "EntersRoom", "Sarah").ToString(),
                 EventHelper.ActionEnd("Sarah", "EntersRoom", "Matt").ToString(),
-                EventHelper.ActionEnd("Matt", "Speak(Start, S1, -, -)", "Sarah").ToString(),
-                EventHelper.ActionEnd("Matt", "Speak(Start, S1, -, Polite)", "Sarah").ToString(),
-                EventHelper.ActionEnd("Matt", "Speak(Start, S1, Silly, Polite)", "Sarah").ToString(),
-                EventHelper.PropertyChange("Has(Floor)", "Sarah", "Matt").ToString(),
+                EventHelper.PropertyChange("Has(Floor)", "Matt", "Matt").ToString(),
+                EventHelper.PropertyChange("Likes(Sarah)", "True", "Matt").ToString(),
                 //THIS SHOULD BE THE LAST EVENT
-                EventHelper.ActionEnd("Matt", "Speak(Start, S1, SE(Flirt, Initiate), Positive)", "Sarah").ToString()
+               EventHelper.ActionEnd("Matt", "Speak(Start, S1, Hello, Positive)", "Sarah").ToString()
 
             };
 
@@ -92,17 +184,12 @@ namespace Tests.CommeillFaut
         }
 
 
-        [TestCase(1, "IsAgent([x]) = True", "Volition([se], Matt, Sarah) = Positive")]
-        [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, [x]) = [s]")]
-        [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, SELF, [x]) = [s]")]
-        [TestCase(1, "IsAgent([x]) = True", "Volition([se], [y], [x]) = [s]")]
-        [TestCase(1, "IsAgent([x]) = True", "Volition([se], [y], Sarah) = [s]")]
-        [TestCase(1, "IsAgent([x]) = True", "Volition([se], Sarah, [x]) = [s]")]
-        [TestCase(1, "IsAgent([x]) = True", "Volition([se], SELF, Sarah) = [s]")]
-        [TestCase(1, "IsAgent([x]) = True", "Volition([se], Matt, Sarah) = [s]")]
-        [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, [x]) = [s]")]
-        [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, Sarah) = [s]")]
-     
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah, *) = [value]")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah, *) = 15")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah, Love) = 10")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah, General) = 5")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, [x], Love) = 10")]
+
         public void Test_DP_Volition_Match(int eventSet, string context, string MethodCall)
         {
             var rpc = BuildRPCAsset();
@@ -154,11 +241,74 @@ namespace Tests.CommeillFaut
 
         }
 
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah, *) = [value]","[value]", "15")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah, *) = [value]","[value]", "15")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah, Love) = [value]","[value]", "10")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah, General) = [value]","[value]", "5")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, [x], Love) = [value]","[value]", "10")]
+        public void Test_DP_Volition_Match_Value(int eventSet, string context, string MethodCall, string variable, string value)
+        {
+            var rpc = BuildRPCAsset();
+            var cif = BuildCIFAsset();
+            cif.RegisterKnowledgeBase(rpc.m_kb);
+             rpc.LoadAssociatedAssets();
 
-        [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, Matt) = [s]")]
-        [TestCase(1, "IsAgent([x]) = True", "Volition(Compliment, Matt, Sarah) = [s]")]
-        [TestCase(1, "IsAgent([x]) = True", "Volition(Compliment, [x], [y]) = [s]")]
-        [TestCase(1, "IsAgent([x]) = True", "Volition(Flirt, Matt, Sarah) = Negative")]
+
+
+            PopulateEventSet(eventSet);
+
+            foreach (var eve in eventSets[eventSet])
+            {
+                rpc.Perceive((Name)eve);
+                rpc.Tick++;
+            }
+
+           
+
+            // conditions
+            var conditions = context.Split(',');
+
+            IEnumerable<SubstitutionSet> resultingConstraints;
+
+            var condSet = new ConditionSet();
+
+            var cond = Condition.Parse(conditions[0]);
+
+          
+            // Apply conditions to RPC
+            foreach (var res in conditions)
+            {
+                cond = Condition.Parse(res);
+                condSet = condSet.Add(cond);
+
+
+            }
+
+            resultingConstraints = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(MethodCall);
+            condSet = condSet.Add(cond);
+
+
+            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, resultingConstraints);
+
+            Assert.IsNotEmpty(result);
+
+
+           var sub = result.FirstOrDefault().Where(x=>x.Variable == (Name)variable);
+
+          var ret = sub.FirstOrDefault().SubValue;
+
+                Assert.AreEqual(ret.Value.ToString(), value);
+
+        }
+
+
+       [TestCase(1, "IsAgent([x]) = True", "Volition([x], *, Matt, Sarah) = [value]")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Sarah, Matt) = 5")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, [x]) = 0")]
+          [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah) = [x]")]
         public void Test_DP_Volition_NoMatch(int eventSet, string context, string MethodCall)
         {
             var rpc = BuildRPCAsset();
@@ -248,56 +398,19 @@ namespace Tests.CommeillFaut
         {
             var cif = BuildCIFAsset();
 
-            var se = new SocialExchange(cif.GetSocialExchanges().FirstOrDefault(x => x.Name == (Name)"Flirt"));
+            var se = new SocialExchange(cif.GetAllSocialExchanges().FirstOrDefault(x => x.Name == (Name)"Flirt"));
 
-            var initialValue = se.Conditions.Count();
+            var initialValue = se.StartingConditions.Count();
 
             var c = Condition.Parse("[x] != False");
 
-            se. AddCondition(c);
+            se. AddStartingCondition(c);
 
-            cif.UpdateSocialExchange(se.ToDTO());
+            cif.UpdateSocialExchange(se.ToDTO);
 
-            var aux = cif.GetSocialExchanges().First(x => x.Name == (Name)"Flirt").Conditions.ConditionSet.Count();
+            var aux = cif.GetAllSocialExchanges().First(x => x.Name == (Name)"Flirt").StartingConditions.ConditionSet.Count();
 
             Assert.AreEqual(aux, (initialValue + 1) );
-
-        }
-
-        [TestCase("Has(Floor) = Matt, [i] = Matt", "Positive")]
-        [TestCase("Has(Floor) = Matt, [i] = Matt, [t] != Sarah", "Positive")]
-        [TestCase("[i] != Matt", "Negative")]
-        [TestCase("Has(Floor) != Matt, [i] != Matt, [t] = Sarah", "Negative")]
-        [TestCase("Has(Floor) != Start, [i] != Matt", "Neutral")]
-        [TestCase("Has(Floor) = Matt, DialogueState(Player) = Start , [i] != Matt, [t] != Sarah", "Neutral")]
-        public void Test_CIF_ConditionValue(string conditions, string finalResult)
-        {
-            var mattKb = new KnowledgeBase.KB((Name)"Matt");
-            mattKb.Tell((Name)"Has(Floor)", (Name)"Matt");
-            mattKb.Tell((Name)"DialogueState(Player)", (Name)"Start");
-            var conds = conditions.Split(',');
-            var seDTO = new SocialExchangeDTO()
-            {
-                Name = Name.BuildName("Flirt"),
-                Description = "When I'm atracted to...",
-                Conditions = new Conditions.DTOs.ConditionSetDTO()
-                {
-                    ConditionSet = conds
-                },
-                Initiator = Name.BuildName("[i]"),
-                Target = Name.BuildName("[t]")
-            };
-
-            var cif1 = new CommeillFautAsset();
-            cif1.AddOrUpdateExchange(seDTO);
-
-            cif1.RegisterKnowledgeBase((mattKb));
-
-            var result = cif1.CalculateSocialMoveVolition((Name) "Flirt", (Name)"Matt", (Name)"Sarah");
-
-            var volResult = cif1.CalculateStyle((result));
-
-            Assert.AreEqual(finalResult, volResult);
 
         }
 
@@ -307,11 +420,15 @@ namespace Tests.CommeillFaut
         {
             var cif = BuildCIFAsset();
 
-            var se = cif.GetSocialExchanges().First(x => x.Name == (Name)"Flirt");
+            var se = cif.GetAllSocialExchanges().First(x => x.Name == (Name)"Flirt");
 
             cif.RemoveSocialExchange(se.Id);
 
-            Assert.IsEmpty(cif.GetSocialExchanges());
+               var se2 = cif.GetAllSocialExchanges().First(x => x.Name == (Name)"Insult");
+
+              cif.RemoveSocialExchange(se2.Id);
+
+            Assert.IsEmpty(cif.GetAllSocialExchanges());
         }
 
 
@@ -320,22 +437,20 @@ namespace Tests.CommeillFaut
         {
             var cif = BuildCIFAsset();
 
-            var originalCount = cif.GetSocialExchanges().Count();
+            var originalCount = cif.GetAllSocialExchanges().Count();
 
             var seDTO = new SocialExchangeDTO()
             {
                 Name = Name.BuildName("Compliment"),
                 Description = "When I'm atracted to...",
-                Conditions = new Conditions.DTOs.ConditionSetDTO()
-                {
-                    ConditionSet = new string[] { "[x] != Start" }
-                },
+                StartingConditions = new Conditions.DTOs.ConditionSetDTO(),
+                InfluenceRules = new List<InfluenceRuleDTO>(),
                 Initiator = Name.BuildName("[i]"),
                 Target = Name.BuildName("[x]")
             };
 
             cif.AddOrUpdateExchange(seDTO);
-            Assert.AreEqual(cif.GetSocialExchanges().Count(), (originalCount + 1));
+            Assert.AreEqual(cif.GetAllSocialExchanges().Count(), (originalCount + 1));
 
         }
 
@@ -346,23 +461,10 @@ namespace Tests.CommeillFaut
 
             var dto = cif.GetDTO();
        
-            Assert.AreEqual(dto._SocialExchangesDtos.Length, cif.GetSocialExchanges().Count());
+            Assert.AreEqual(dto._SocialExchangesDtos.Length, cif.GetAllSocialExchanges().Count());
 
         }
 
-
-        [TestCase(0.5f, "Neutral")]
-        [TestCase(0.75f, "Positive")]
-        [TestCase(0.3f, "Negative")]
-        public void Test_CIF_StyleCalculator(float value, string output)
-        {
-            var cif = BuildCIFAsset();
-
-            var result = cif.CalculateStyle(value);
-
-            Assert.AreEqual(output, result);
-
-        }
 
         [TestCase]
         public void Test_CIF_LoadFromDTO()
@@ -373,10 +475,13 @@ namespace Tests.CommeillFaut
             {
                 Name = Name.BuildName("Compliment"),
                 Description = "When we are friends..",
-                Conditions = new Conditions.DTOs.ConditionSetDTO()
+                StartingConditions = new Conditions.DTOs.ConditionSetDTO(),
+                Steps = new List<Name>(),
+                InfluenceRules = new List<InfluenceRuleDTO>(),
+              /*  Conditions = new Conditions.DTOs.ConditionSetDTO()
                 {
                     ConditionSet = new string[] { "[x] != Start" }
-                },
+                },*/
                 Initiator = Name.BuildName("[i]"),
                 Target = Name.BuildName("[x]")
             };
@@ -388,38 +493,89 @@ namespace Tests.CommeillFaut
 
 
             cif.LoadFromDTO(cifDTO);
-            Assert.AreEqual(cif.GetSocialExchanges().First().Name.ToString(), "Compliment");
+            Assert.AreEqual(cif.GetAllSocialExchanges().FirstOrDefault().Name.ToString(), "Compliment");
         }
 
 
         [TestCase]
-        public void Test_CIF_SE_AddCondition()
+        public void Test_CIF_SE_AddStartingCondition()
         {
             var cif = BuildCIFAsset();
 
-            var seDTO = cif.GetSocialExchanges().First(x=>x.Name == (Name)"Flirt");
+            var seDTO = cif.GetAllSocialExchanges().First(x=>x.Name == (Name)"Flirt");
             var se = new SocialExchange(seDTO);
-            var totalCondsBefore = se.Conditions.Count;
-            se.AddCondition(Condition.Parse("[x] != Start"));
+            var totalCondsBefore = se.StartingConditions.Count;
+            se.AddStartingCondition(Condition.Parse("[x] != Start"));
 
-            Assert.AreEqual((totalCondsBefore + 1), se.Conditions.Count);
+            Assert.AreEqual((totalCondsBefore + 1), se.StartingConditions.Count);
 
         }
 
+
         [TestCase]
-        public void Test_CIF_SE_RemoveCondition()
+        public void Test_CIF_SE_RemoveStartingCondition()
         {
             var cif = BuildCIFAsset();
 
         
-            var seDTO = cif.GetSocialExchanges().First(x => x.Name == (Name)"Flirt");
+            var seDTO = cif.GetAllSocialExchanges().First(x => x.Name == (Name)"Flirt");
             var se = new SocialExchange(seDTO);
 
-            var originalCount = se.Conditions.Count();
+            var originalCount = se.StartingConditions.Count();
 
-            se.RemoveCondition(Condition.Parse("Has(Floor) != Start"));
+            se.RemoveStartingCondition(Condition.Parse("Has(Floor) = SELF"));
 
-            Assert.AreEqual(se.Conditions.Count, originalCount - 1);
+            Assert.AreEqual(se.StartingConditions.Count, originalCount - 1);
+
+        }
+
+     
+        
+
+            [TestCase]
+        public void Test_CIF_SE_AddInfluenceRule()
+        {
+            var cif = BuildCIFAsset();
+
+            var seDTO = cif.GetAllSocialExchanges().First(x=>x.Name == (Name)"Flirt");
+            var se = new SocialExchange(seDTO);
+            var totalCondsBefore = se.InfluenceRules.Count;
+
+            se.InfluenceRules.Add(new InfluenceRule( new InfluenceRuleDTO(){
+            Value = 2,
+            Rule = new Conditions.DTOs.ConditionSetDTO()
+                
+                })
+                );
+
+            Assert.AreEqual((totalCondsBefore + 1), se.InfluenceRules.Count);
+
+        }
+
+           [TestCase]
+        public void Test_CIF_SE_RemoveInfluenceRule()
+        {
+            var cif = BuildCIFAsset();
+
+        
+            var seDTO = cif.GetAllSocialExchanges().First(x => x.Name == (Name)"Flirt");
+
+              var se = new SocialExchange(seDTO);
+            var totalCondsBefore = se.InfluenceRules.Count;
+
+            var inf = new InfluenceRule( new InfluenceRuleDTO(){
+            Value = 2,
+            Rule = new Conditions.DTOs.ConditionSetDTO()
+                
+                });
+
+            se.InfluenceRules.Add(inf);
+
+            Assert.AreEqual((totalCondsBefore + 1), se.InfluenceRules.Count);
+
+            se.InfluenceRules.Remove(inf);
+
+            Assert.AreEqual(se.InfluenceRules.Count, totalCondsBefore);
 
         }
 
@@ -427,7 +583,7 @@ namespace Tests.CommeillFaut
         public void Test_CIF_SE_ToString()
         {
             var cif = BuildCIFAsset();
-            var se = cif.GetSocialExchanges().First(x => x.Name == (Name)"Flirt");
+            var se = cif.GetAllSocialExchanges().First(x => x.Name == (Name)"Flirt");
             var toString = new SocialExchange(se).ToString();
             Assert.IsTrue(toString.Contains("Flirt"));
         }

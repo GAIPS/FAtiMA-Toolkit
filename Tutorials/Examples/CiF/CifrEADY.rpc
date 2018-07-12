@@ -4,25 +4,18 @@
 			"classId": 0,
 			"KnowledgeBase":
 				{
-					"Perspective": "John",
+					"Perspective": "Nameless",
 					"Knowledge":
 						{
-							"SELF":
-								{
-									"Has(Floor)": "John, 1",
-									"DialogueState(Mary)": "Start, 1",
-									"DialogueState(Sarah)": "Start, 1",
-									"IsAttracted(John, Sarah)": "False, 1",
-									"IsFriend(John, Mary)": "True, 1"
-								}
+
 						}
 				},
-			"BodyName": "Male",
-			"VoiceName": "Male",
+			"BodyName": null,
+			"VoiceName": null,
 			"EmotionalAppraisalAssetSource": "CiF-Scenario-EA.ea",
-			"EmotionalDecisionMakingSource": "CiF-Scenario-EDM.edm",
-			"SocialImportanceAssetSource": "CiF-Scenario-SI.si",
-			"CommeillFautAssetSource": "CiF-Scenario-CiF.cif",
+			"EmotionalDecisionMakingSource": null,
+			"SocialImportanceAssetSource": null,
+			"CommeillFautAssetSource": "testing.cif",
 			"EmotionalState":
 				{
 					"Mood": 0,

@@ -19,19 +19,27 @@ namespace CommeillFaut.DTOs
         /// </summary>
         public string Description { get; set; }
 
-        /// The Social Exchange Name
+        /// The Social Exchange different steps
+        /// </summary>
+        public List<Name> Steps { get; set; }
+
+           /// The Social Exchange Initiator
         /// </summary>
         public Name Initiator { get; set; }
 
-        /// The Social Exchange Name
+        /// The Social Exchange Target
         /// </summary>
         public Name Target { get; set; }
 
-        /// <summary>
-        /// The condition set used to validate this rule.
+            /// <summary>
+        /// The conditions that need to be true in order to start the social exchange.
         /// </summary>
-        public ConditionSetDTO Conditions { get; set; }
+        public ConditionSetDTO StartingConditions { get; set; }
 
+            /// <summary>
+        /// The condition set used to calculate the will of this action
+        /// </summary>
+        public List<InfluenceRuleDTO> InfluenceRules { get; set; }
 
 
     }

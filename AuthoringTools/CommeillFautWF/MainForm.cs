@@ -12,28 +12,35 @@ namespace CommeillFautWF
     public partial class MainForm : BaseCIFForm
     {
         private ConditionSetView conditions;
-        private BindingListView<SocialExchangeDTO> socialExchanges; 
+        private BindingListView<SocialExchangeDTO> _socialExchangeList; 
 
         public MainForm()
         {
             InitializeComponent();
+          
         }
 
         protected override void OnAssetDataLoaded(CommeillFautAsset asset)
         {
-            socialExchanges = new BindingListView<SocialExchangeDTO>((IList)null);
-            gridSocialExchanges.DataSource = this.socialExchanges;
-            conditionSetEditorControl.View = conditions;
+           this._socialExchangeList = new BindingListView<SocialExchangeDTO>((IList)null);
+			gridSocialExchanges.DataSource = this._socialExchangeList;
+
             conditions = new ConditionSetView();
             conditionSetEditorControl.View = conditions;
             conditions.OnDataChanged += ConditionSetView_OnDataChanged;
-            socialExchanges.DataSource = LoadedAsset.GetSocialExchanges().ToList();
+
+
+            this._socialExchangeList.DataSource = LoadedAsset.GetAllSocialExchanges().ToList();
             
             EditorTools.HideColumns(gridSocialExchanges, new[] {
-                PropertyUtil.GetPropertyName<SocialExchangeDTO>(dto => dto.Id),
-                PropertyUtil.GetPropertyName<SocialExchangeDTO>(dto => dto.Conditions)});
+            PropertyUtil.GetPropertyName<SocialExchangeDTO>(dto => dto.Id),
+            PropertyUtil.GetPropertyName<SocialExchangeDTO>(dto => dto.StartingConditions)});
 
-            _wasModified = false;
+            if (this._socialExchangeList.Any())
+			{
+				var ra = LoadedAsset.GetSocialExchange(this._socialExchangeList.First().Id);
+				UpdateConditions(ra);
+			}
         }
 
         private void ConditionSetView_OnDataChanged()
@@ -41,7 +48,7 @@ namespace CommeillFautWF
             var selectedRule = EditorTools.GetSelectedDtoFromTable<SocialExchangeDTO>(gridSocialExchanges);
             if (selectedRule == null)
                 return;
-            selectedRule.Conditions = conditions.GetData();
+            selectedRule.StartingConditions = conditions.GetData();
             LoadedAsset.AddOrUpdateExchange(selectedRule);
 
             SetModified();
@@ -55,8 +62,14 @@ namespace CommeillFautWF
                 Name = WellFormedNames.Name.BuildName("SE1"),
                 Initiator = WellFormedNames.Name.BuildName("[i]"),
                 Target = WellFormedNames.Name.BuildName("[t]"),
+                Id = new Guid(),
+                StartingConditions = new Conditions.DTOs.ConditionSetDTO(),
+                Steps = new System.Collections.Generic.List<WellFormedNames.Name>(),
+                InfluenceRules = new System.Collections.Generic.List<InfluenceRuleDTO>()
+            
             };
-            auxAddOrUpdateItem(dto);
+
+           this.auxAddOrUpdateItem(dto);
         }
 
         private void buttonEditSE_Click(object sender, EventArgs e)
@@ -73,10 +86,16 @@ namespace CommeillFautWF
             diag.ShowDialog(this);
             if (diag.UpdatedGuid != Guid.Empty)
             {
-                socialExchanges.DataSource = LoadedAsset.GetSocialExchanges().ToList();
+              //  _socialExchangeList.DataSource = LoadedAsset.GetAllSocialExchanges().ToList();
+
+                    this._socialExchangeList.DataSource = LoadedAsset.GetAllSocialExchanges().ToList();
+            
+
+
                 EditorTools.HighlightItemInGrid<SocialExchangeDTO>
                     (gridSocialExchanges, diag.UpdatedGuid);
             }
+
             SetModified();
         }
 
@@ -84,7 +103,7 @@ namespace CommeillFautWF
         private void gridSocialExchanges_SelectionChanged(object sender, EventArgs e)
         {
             var se = EditorTools.GetSelectedDtoFromTable<SocialExchangeDTO>(this.gridSocialExchanges);
-            if (se != null) conditions.SetData(se.Conditions);
+            if (se != null) conditions.SetData(se.StartingConditions);
             else conditions.SetData(null);
         }
 
@@ -97,7 +116,7 @@ namespace CommeillFautWF
             {
                 r.Id = Guid.Empty;
                 var newRuleId = LoadedAsset.AddOrUpdateExchange(r);
-                socialExchanges.DataSource = LoadedAsset.GetSocialExchanges().ToList();
+                _socialExchangeList.DataSource = LoadedAsset.GetAllSocialExchanges().ToList();
                 EditorTools.HighlightItemInGrid<SocialExchangeDTO>(gridSocialExchanges, newRuleId);
             }
         }
@@ -111,7 +130,7 @@ namespace CommeillFautWF
                 var dto = ((ObjectView<SocialExchangeDTO>)r.DataBoundItem).Object;
                 LoadedAsset.RemoveSocialExchange(dto.Id);
             }
-            socialExchanges.DataSource = LoadedAsset.GetSocialExchanges().ToList();
+            _socialExchangeList.DataSource = LoadedAsset.GetAllSocialExchanges().ToList();
             EditorTools.HighlightItemInGrid<SocialExchangeDTO>(gridSocialExchanges, Guid.Empty);
             SetModified();
         }
@@ -139,6 +158,32 @@ namespace CommeillFautWF
                     this.buttonRemoveSE_Click(sender, e);
                     break;
             }
+        }
+
+        	private void UpdateConditions(SocialExchangeDTO reaction)
+		{
+			conditions.SetData(reaction?.StartingConditions);
+		}
+
+        private void influenceRules_Click(object sender, EventArgs e)
+        {
+             var selectedRule = EditorTools.GetSelectedDtoFromTable<SocialExchangeDTO>(gridSocialExchanges);
+            var newSE = new SocialExchange(selectedRule);
+            var diag = new InfluenceRuleInspector(LoadedAsset, newSE);
+            diag.ShowDialog(this);
+            LoadedAsset.UpdateSocialExchange(newSE.ToDTO);
+             _socialExchangeList.DataSource = LoadedAsset.GetAllSocialExchanges().ToList();
+            SetModified();
+        }
+
+        private void gridSocialExchanges_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void groupBox7_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

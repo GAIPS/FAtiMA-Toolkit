@@ -34,6 +34,7 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.influenceRules = new System.Windows.Forms.Button();
             this.buttonDuplicateSE = new System.Windows.Forms.Button();
             this.buttonEditSE = new System.Windows.Forms.Button();
             this.buttonAddSE = new System.Windows.Forms.Button();
@@ -65,24 +66,24 @@
             this.TabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.TabControl.Appearance = System.Windows.Forms.TabAppearance.Buttons;
+            this.TabControl.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
             this.TabControl.Controls.Add(this.tabPage1);
-            this.TabControl.Location = new System.Drawing.Point(12, 38);
+            this.TabControl.Location = new System.Drawing.Point(12, 30);
             this.TabControl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
-            this.TabControl.Size = new System.Drawing.Size(786, 669);
+            this.TabControl.Size = new System.Drawing.Size(786, 709);
             this.TabControl.TabIndex = 15;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.splitContainer1);
             this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 28);
+            this.tabPage1.Location = new System.Drawing.Point(4, 32);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Size = new System.Drawing.Size(778, 637);
+            this.tabPage1.Size = new System.Drawing.Size(778, 673);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Social Exchange";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -101,12 +102,13 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer1.Size = new System.Drawing.Size(772, 633);
-            this.splitContainer1.SplitterDistance = 316;
+            this.splitContainer1.Size = new System.Drawing.Size(772, 669);
+            this.splitContainer1.SplitterDistance = 332;
             this.splitContainer1.TabIndex = 16;
             // 
             // groupBox7
             // 
+            this.groupBox7.Controls.Add(this.influenceRules);
             this.groupBox7.Controls.Add(this.buttonDuplicateSE);
             this.groupBox7.Controls.Add(this.buttonEditSE);
             this.groupBox7.Controls.Add(this.buttonAddSE);
@@ -114,19 +116,33 @@
             this.groupBox7.Controls.Add(this.gridSocialExchanges);
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox7.Location = new System.Drawing.Point(0, 0);
-            this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox7.Size = new System.Drawing.Size(772, 316);
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.groupBox7.Size = new System.Drawing.Size(772, 332);
             this.groupBox7.TabIndex = 5;
             this.groupBox7.TabStop = false;
+            this.groupBox7.Enter += new System.EventHandler(this.groupBox7_Enter);
+            // 
+            // influenceRules
+            // 
+            this.influenceRules.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.influenceRules.Location = new System.Drawing.Point(429, 16);
+            this.influenceRules.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.influenceRules.Name = "influenceRules";
+            this.influenceRules.Size = new System.Drawing.Size(308, 33);
+            this.influenceRules.TabIndex = 11;
+            this.influenceRules.Text = "Influence Rules Inspector";
+            this.influenceRules.UseVisualStyleBackColor = true;
+            this.influenceRules.Click += new System.EventHandler(this.influenceRules_Click);
             // 
             // buttonDuplicateSE
             // 
-            this.buttonDuplicateSE.Location = new System.Drawing.Point(189, 23);
-            this.buttonDuplicateSE.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonDuplicateSE.Location = new System.Drawing.Point(198, 16);
+            this.buttonDuplicateSE.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonDuplicateSE.Name = "buttonDuplicateSE";
-            this.buttonDuplicateSE.Size = new System.Drawing.Size(93, 28);
+            this.buttonDuplicateSE.Size = new System.Drawing.Size(89, 33);
             this.buttonDuplicateSE.TabIndex = 10;
             this.buttonDuplicateSE.Text = "Duplicate";
             this.buttonDuplicateSE.UseVisualStyleBackColor = true;
@@ -134,10 +150,10 @@
             // 
             // buttonEditSE
             // 
-            this.buttonEditSE.Location = new System.Drawing.Point(88, 23);
-            this.buttonEditSE.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonEditSE.Location = new System.Drawing.Point(101, 16);
+            this.buttonEditSE.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonEditSE.Name = "buttonEditSE";
-            this.buttonEditSE.Size = new System.Drawing.Size(93, 28);
+            this.buttonEditSE.Size = new System.Drawing.Size(89, 33);
             this.buttonEditSE.TabIndex = 9;
             this.buttonEditSE.Text = "Edit";
             this.buttonEditSE.UseVisualStyleBackColor = true;
@@ -145,10 +161,10 @@
             // 
             // buttonAddSE
             // 
-            this.buttonAddSE.Location = new System.Drawing.Point(8, 23);
-            this.buttonAddSE.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonAddSE.Location = new System.Drawing.Point(19, 16);
+            this.buttonAddSE.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonAddSE.Name = "buttonAddSE";
-            this.buttonAddSE.Size = new System.Drawing.Size(72, 28);
+            this.buttonAddSE.Size = new System.Drawing.Size(74, 33);
             this.buttonAddSE.TabIndex = 7;
             this.buttonAddSE.Text = "Add";
             this.buttonAddSE.UseVisualStyleBackColor = true;
@@ -156,10 +172,10 @@
             // 
             // buttonRemoveSE
             // 
-            this.buttonRemoveSE.Location = new System.Drawing.Point(291, 23);
-            this.buttonRemoveSE.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonRemoveSE.Location = new System.Drawing.Point(295, 16);
+            this.buttonRemoveSE.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonRemoveSE.Name = "buttonRemoveSE";
-            this.buttonRemoveSE.Size = new System.Drawing.Size(93, 28);
+            this.buttonRemoveSE.Size = new System.Drawing.Size(89, 33);
             this.buttonRemoveSE.TabIndex = 8;
             this.buttonRemoveSE.Text = "Remove";
             this.buttonRemoveSE.UseVisualStyleBackColor = true;
@@ -179,15 +195,16 @@
             this.gridSocialExchanges.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.gridSocialExchanges.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridSocialExchanges.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.gridSocialExchanges.Location = new System.Drawing.Point(8, 66);
-            this.gridSocialExchanges.Margin = new System.Windows.Forms.Padding(4);
+            this.gridSocialExchanges.Location = new System.Drawing.Point(5, 69);
+            this.gridSocialExchanges.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.gridSocialExchanges.Name = "gridSocialExchanges";
             this.gridSocialExchanges.ReadOnly = true;
             this.gridSocialExchanges.RowHeadersVisible = false;
             this.gridSocialExchanges.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.gridSocialExchanges.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridSocialExchanges.Size = new System.Drawing.Size(756, 242);
+            this.gridSocialExchanges.Size = new System.Drawing.Size(762, 258);
             this.gridSocialExchanges.TabIndex = 2;
+            this.gridSocialExchanges.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridSocialExchanges_CellContentClick);
             this.gridSocialExchanges.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gridSocialExchanges_CellMouseDoubleClick);
             this.gridSocialExchanges.SelectionChanged += new System.EventHandler(this.gridSocialExchanges_SelectionChanged);
             this.gridSocialExchanges.KeyDown += new System.Windows.Forms.KeyEventHandler(this.gridSocialExchanges_KeyDown);
@@ -200,20 +217,20 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Size = new System.Drawing.Size(772, 313);
+            this.groupBox2.Size = new System.Drawing.Size(772, 333);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Conditions:";
+            this.groupBox2.Text = "Starting Conditions:";
             // 
             // conditionSetEditorControl
             // 
             this.conditionSetEditorControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.conditionSetEditorControl.Location = new System.Drawing.Point(7, 26);
-            this.conditionSetEditorControl.Margin = new System.Windows.Forms.Padding(4);
+            this.conditionSetEditorControl.Location = new System.Drawing.Point(4, 19);
+            this.conditionSetEditorControl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.conditionSetEditorControl.Name = "conditionSetEditorControl";
-            this.conditionSetEditorControl.Size = new System.Drawing.Size(757, 281);
+            this.conditionSetEditorControl.Size = new System.Drawing.Size(763, 312);
             this.conditionSetEditorControl.TabIndex = 3;
             this.conditionSetEditorControl.View = null;
             // 
@@ -221,7 +238,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Location = new System.Drawing.Point(3, 365);
+            this.groupBox1.Location = new System.Drawing.Point(3, 405);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -233,11 +250,11 @@
             // MainForm
             // 
             this.AllowDrop = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(798, 718);
+            this.ClientSize = new System.Drawing.Size(798, 758);
             this.Controls.Add(this.TabControl);
             this.EditorName = "Comme Ill Faut";
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -276,6 +293,7 @@
         private System.Windows.Forms.Button buttonAddSE;
         private System.Windows.Forms.Button buttonRemoveSE;
         private System.Windows.Forms.DataGridView gridSocialExchanges;
+        private System.Windows.Forms.Button influenceRules;
     }
 }
 

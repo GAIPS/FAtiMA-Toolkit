@@ -23,7 +23,7 @@ using WellFormedNames;
 using WorldModel;
 using WorldModel.DTOs;
 
-namespace CommeillFautTutorial
+namespace WorldModelTutorial
 {
     class Program
     {
@@ -34,7 +34,31 @@ namespace CommeillFautTutorial
 
             var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/CiF/CiF-Scenario-IAT.iat");
             rpcList = new List<RolePlayCharacterAsset>();
-        
+            var wm = new WorldModelAsset();
+
+            wm.AddEventEffect((Name)"Event(Action-End, *, Speak(*,*,*,*), [t])", new EffectDTO()
+            {
+                PropertyName = (Name)"Has(Floor)",
+                NewValue = (Name)"[t]",
+                ObserverAgent = (Name)"*"
+            });
+
+            wm.AddEventEffect((Name)"Event(Action-End, [i], Speak([cs],[ns],*,*), SELF)", new EffectDTO()
+            {
+                PropertyName = (Name)"DialogueState([i])",
+                NewValue = (Name)"[ns]",
+                ObserverAgent = (Name)"[t]"
+            });
+
+
+            wm.AddEventEffect((Name)"Event(Action-End, SELF, Speak([cs],[ns],*,*), [t])", new EffectDTO()
+            {
+                PropertyName = (Name)"DialogueState([t])",
+                NewValue = (Name)"[ns]",
+                ObserverAgent = (Name)"[i]"
+            });
+
+            wm.SaveToFile("../../../Examples/CiF/WorldModel.wm");
             foreach (var source in iat.GetAllCharacterSources())
             {
 
@@ -70,34 +94,10 @@ namespace CommeillFautTutorial
             }
 
 
-            var influenceRule = new InfluenceRule(new InfluenceRuleDTO()
-            {
-                Value = 2,
-                Rule = new ConditionSetDTO()
-                
-            });
-
-            var se = new SocialExchange(new SocialExchangeDTO(){
-
-                Name = (Name)"Flirt",
-                Initiator = (Name)"[i]",
-                Target = (Name)"[t]",
-                StartingConditions = new ConditionSetDTO(),
-                InfluenceRules = new List<InfluenceRuleDTO>(){influenceRule.ToDTO()},
-                Steps = new List<Name>(){(Name)"Initiate", (Name)"Answer", (Name)"End"}
-
-            });
-
-            var cif = new CommeillFautAsset();
-
-            cif.AddOrUpdateExchange(se.ToDTO);
-
-            cif.SaveToFile("../../../Examples/" + "cifTutorial.cif");
-
 
             List<Name> _events = new List<Name>();
             List<IAction> _actions = new List<IAction>();
-/*
+
             IAction action = null;
             while (true)
             {
@@ -163,10 +163,38 @@ namespace CommeillFautTutorial
                     else Console.WriteLine(initiator.CharacterName + " says: " + "there is no dialogue suited for this action");
 
 
-               
+                    // WORLD MODEL
+                    var effects = wm.Simulate(_events);
+                    foreach (var ef in effects)
+                    {
+
+                        if (ef.ObserverAgent == (Name) "*")
+                        {
+                            foreach (var rpc in rpcList)
+                            {
+                                var proChange =
+                                    EventHelper.PropertyChange(ef.PropertyName.ToString(), ef.NewValue.ToString(), ef.ResponsibleAgent.ToString());
+
+                                rpc.Perceive(proChange);
+                                
+                            }
+                        }
+
+                        else
+                        {
+                            var proChange =
+                                EventHelper.PropertyChange(ef.PropertyName.ToString(), ef.NewValue.ToString(), ef.ResponsibleAgent.ToString());
+                            rpcList.Find(x=>x.CharacterName == ef.ObserverAgent).Perceive(proChange);
+                        }
+
+                    }
+                    
+                  Console.WriteLine("Next State: " + nextState);
+
+                }
                 Console.WriteLine();
                 Console.ReadKey();
-            }*/
+            }
         }
     }
 }

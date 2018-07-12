@@ -17,5 +17,16 @@ namespace Conditions.DTOs
 		/// The conditions to be evaluated as a single set.
 		/// </summary>
 		public string[] ConditionSet;
+
+
+        public override string ToString()
+        {
+            string ret = "";
+            
+            foreach(var c in ConditionSet)
+                ret += c.ToString() + "|";
+                
+            return ret;
+        }
 	}
 }

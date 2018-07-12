@@ -131,6 +131,16 @@ namespace KnowledgeBase
 				(context, args) => surrogate(context, args[0], args[1], args[2], args[3]));
 		}
 
+        	public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T5 surrogate)
+		{
+			if (surrogate == null)
+				throw new ArgumentNullException(nameof(surrogate));
+
+			internal_RegistDynamicProperty(propertyName, surrogate.Method,
+				(context, args) => surrogate(context, args[0], args[1], args[2], args[3], args[4]));
+		}
+
+
 		public void UnregistDynamicProperty(Name propertyTemplate)
 		{
 			if (!m_dynamicProperties.Remove(propertyTemplate))
