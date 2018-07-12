@@ -36,14 +36,14 @@ namespace WorldModelTutorial
             rpcList = new List<RolePlayCharacterAsset>();
             var wm = new WorldModelAsset();
 
-            wm.AddEventEffect((Name)"Event(Action-End, *, Speak(*,*,*,*), [t])", new EffectDTO()
+            wm.AddActionEffect((Name)"Event(Action-End, *, Speak(*,*,*,*), [t])", new EffectDTO()
             {
                 PropertyName = (Name)"Has(Floor)",
                 NewValue = (Name)"[t]",
                 ObserverAgent = (Name)"*"
             });
 
-            wm.AddEventEffect((Name)"Event(Action-End, [i], Speak([cs],[ns],*,*), SELF)", new EffectDTO()
+            wm.AddActionEffect((Name)"Event(Action-End, [i], Speak([cs],[ns],*,*), SELF)", new EffectDTO()
             {
                 PropertyName = (Name)"DialogueState([i])",
                 NewValue = (Name)"[ns]",
@@ -51,7 +51,7 @@ namespace WorldModelTutorial
             });
 
 
-            wm.AddEventEffect((Name)"Event(Action-End, SELF, Speak([cs],[ns],*,*), [t])", new EffectDTO()
+            wm.AddActionEffect((Name)"Event(Action-End, SELF, Speak([cs],[ns],*,*), [t])", new EffectDTO()
             {
                 PropertyName = (Name)"DialogueState([t])",
                 NewValue = (Name)"[ns]",
@@ -164,7 +164,7 @@ namespace WorldModelTutorial
 
 
                     // WORLD MODEL
-                    var effects = wm.Simulate(_events);
+                    var effects = wm.Simulate(_events.ToArray());
                     foreach (var ef in effects)
                     {
 
@@ -173,8 +173,7 @@ namespace WorldModelTutorial
                             foreach (var rpc in rpcList)
                             {
                                 var proChange =
-                                    EventHelper.PropertyChange(ef.PropertyName.ToString(), ef.NewValue.ToString(), ef.ResponsibleAgent.ToString());
-
+                                    EventHelper.PropertyChange(ef.PropertyName.ToString(), ef.NewValue.ToString(), "World");
                                 rpc.Perceive(proChange);
                                 
                             }
@@ -183,7 +182,7 @@ namespace WorldModelTutorial
                         else
                         {
                             var proChange =
-                                EventHelper.PropertyChange(ef.PropertyName.ToString(), ef.NewValue.ToString(), ef.ResponsibleAgent.ToString());
+                                EventHelper.PropertyChange(ef.PropertyName.ToString(), ef.NewValue.ToString(), "World");
                             rpcList.Find(x=>x.CharacterName == ef.ObserverAgent).Perceive(proChange);
                         }
 
