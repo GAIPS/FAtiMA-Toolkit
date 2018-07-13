@@ -43,9 +43,9 @@
             this.conditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.buttonEditGoal = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.buttonRemove = new System.Windows.Forms.Button();
             this.dataGridViewGoals = new System.Windows.Forms.DataGridView();
             this.emotionDispositionTabPage = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
@@ -281,9 +281,9 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.buttonEditGoal);
             this.groupBox1.Controls.Add(this.button2);
-            this.groupBox1.Controls.Add(this.button3);
+            this.groupBox1.Controls.Add(this.buttonRemove);
             this.groupBox1.Controls.Add(this.dataGridViewGoals);
             this.groupBox1.Location = new System.Drawing.Point(7, 7);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
@@ -293,16 +293,17 @@
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             // 
-            // button1
+            // buttonEditGoal
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(88, 23);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(93, 28);
-            this.button1.TabIndex = 9;
-            this.button1.Text = "Edit";
-            this.button1.UseVisualStyleBackColor = true;
+            this.buttonEditGoal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonEditGoal.Location = new System.Drawing.Point(88, 23);
+            this.buttonEditGoal.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonEditGoal.Name = "buttonEditGoal";
+            this.buttonEditGoal.Size = new System.Drawing.Size(93, 28);
+            this.buttonEditGoal.TabIndex = 9;
+            this.buttonEditGoal.Text = "Edit";
+            this.buttonEditGoal.UseVisualStyleBackColor = true;
+            this.buttonEditGoal.Click += new System.EventHandler(this.buttonEditGoal_Click);
             // 
             // button2
             // 
@@ -314,18 +315,19 @@
             this.button2.TabIndex = 7;
             this.button2.Text = "Add";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button2.Click += new System.EventHandler(this.buttonAddGoal_Click);
             // 
-            // button3
+            // buttonRemove
             // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(189, 23);
-            this.button3.Margin = new System.Windows.Forms.Padding(4);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(93, 28);
-            this.button3.TabIndex = 8;
-            this.button3.Text = "Remove";
-            this.button3.UseVisualStyleBackColor = true;
+            this.buttonRemove.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonRemove.Location = new System.Drawing.Point(189, 23);
+            this.buttonRemove.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonRemove.Name = "buttonRemove";
+            this.buttonRemove.Size = new System.Drawing.Size(93, 28);
+            this.buttonRemove.TabIndex = 8;
+            this.buttonRemove.Text = "Remove";
+            this.buttonRemove.UseVisualStyleBackColor = true;
+            this.buttonRemove.Click += new System.EventHandler(this.buttonRemove_Click);
             // 
             // dataGridViewGoals
             // 
@@ -649,9 +651,9 @@
         private System.Windows.Forms.Button buttonAppVariables;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button buttonEditGoal;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button buttonRemove;
         private System.Windows.Forms.DataGridView dataGridViewGoals;
     }
 }

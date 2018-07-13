@@ -27,6 +27,7 @@ namespace EmotionalAppraisal
         private EmotionDisposition m_defaultEmotionalDisposition;
         private Dictionary<string, EmotionDisposition> m_emotionDispositions;
         private Dictionary<string, Goal> m_goals;
+
         [NonSerialized]
         private OCCAffectDerivationComponent m_occAffectDerivator;
 
@@ -42,7 +43,6 @@ namespace EmotionalAppraisal
             m_defaultEmotionalDisposition = new EmotionDisposition("*", 1, 1);
             m_occAffectDerivator = new OCCAffectDerivationComponent();
             m_appraisalDerivator = new ReactiveAppraisalDerivator();
-
         }
 
         public EmotionDispositionDTO DefaultEmotionDisposition
@@ -87,7 +87,6 @@ namespace EmotionalAppraisal
         {
             m_appraisalDerivator.AddOrUpdateAppraisalRule(emotionalAppraisalRule);
         }
-
 
         public void AddOrUpdateGoal(GoalDTO goal)
         {
@@ -184,6 +183,14 @@ namespace EmotionalAppraisal
             });
         }
 
+        public IEnumerable<GoalDTO> GetAllGoals()
+        {
+            return this.m_goals.Values.Select(g => new GoalDTO {
+                Name = g.Name.ToString(),
+                Likelihood = g.Likelihood,
+                Significance = g.Significance });
+        }
+
         /// <summary>
         /// Returns the emotional dispotion associated to a given emotion type.
         /// </summary>
@@ -203,6 +210,7 @@ namespace EmotionalAppraisal
             dataHolder.SetValue("Description", Description);
             dataHolder.SetValue("AppraisalRules", m_appraisalDerivator);
             dataHolder.SetValue("EmotionDispositions", m_emotionDispositions.Values.Prepend(m_defaultEmotionalDisposition).ToArray());
+            dataHolder.SetValue("Goals", m_goals.Values.ToArray());
         }
 
         /// <summary>
@@ -226,6 +234,13 @@ namespace EmotionalAppraisal
             this.m_emotionDispositions.Remove(emotionType);
         }
 
+        public void RemoveGoals(IEnumerable<GoalDTO> goals)
+        {
+            foreach (var goal in goals)
+            {
+                this.m_goals.Remove(goal.Name);
+            }
+        }
         /// @cond DEV
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
@@ -254,12 +269,21 @@ namespace EmotionalAppraisal
             if (defaultDisposition == null)
                 defaultDisposition = new EmotionDisposition("*", 1, 1);
             m_defaultEmotionalDisposition = defaultDisposition;
+
+
+            m_goals = new Dictionary<string, Goal>();
+            var goals = dataHolder.GetValue<Goal[]>("Goals");
+            foreach (var g in goals)
+            {
+                m_goals.Add(g.Name.ToString(), g);
+            }
         }
 
         protected override string OnAssetLoaded()
         {
             return null;
         }
+
         private void UpdateEmotions(IAppraisalFrame frame, IEmotionalState emotionalState, AM am)
         {
             if (_lastFrameAppraisal > frame.LastChange)
@@ -277,6 +301,7 @@ namespace EmotionalAppraisal
 
             _lastFrameAppraisal = frame.LastChange;
         }
+
         /// @endcond
     }
 }

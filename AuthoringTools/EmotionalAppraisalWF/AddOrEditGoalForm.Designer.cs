@@ -48,7 +48,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.textBoxGoalName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxGoalName.Location = new System.Drawing.Point(36, 68);
-            this.textBoxGoalName.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxGoalName.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxGoalName.Name = "textBoxGoalName";
             this.textBoxGoalName.OnlyIntOrVariable = false;
             this.textBoxGoalName.Size = new System.Drawing.Size(327, 22);
@@ -82,7 +82,7 @@
             this.floatFieldBoxSignificance.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.floatFieldBoxSignificance.HasBounds = false;
             this.floatFieldBoxSignificance.Location = new System.Drawing.Point(36, 148);
-            this.floatFieldBoxSignificance.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.floatFieldBoxSignificance.Margin = new System.Windows.Forms.Padding(4);
             this.floatFieldBoxSignificance.MaxValue = 0F;
             this.floatFieldBoxSignificance.MinValue = 0F;
             this.floatFieldBoxSignificance.Name = "floatFieldBoxSignificance";
@@ -121,6 +121,7 @@
             this.buttonAddOrEditGoal.TabIndex = 51;
             this.buttonAddOrEditGoal.Text = "Add";
             this.buttonAddOrEditGoal.UseVisualStyleBackColor = true;
+            this.buttonAddOrEditGoal.Click += new System.EventHandler(this.buttonAddOrEditGoal_Click);
             // 
             // AddOrEditGoalForm
             // 
@@ -135,9 +136,11 @@
             this.Controls.Add(this.textBoxGoalName);
             this.Controls.Add(this.label4);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.KeyPreview = true;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "AddOrEditGoalForm";
             this.Text = "Add Goal";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddOrEditGoalForm_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
