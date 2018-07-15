@@ -60,7 +60,7 @@ namespace CommeillFaut
 
         private static readonly Name VOLITION_PROPERTY_TEMPLATE = (Name)"Volition";
 
-        public IEnumerable<DynamicPropertyResult> VolitionPropertyCalculator(IQueryContext context, Name socialMoveName,  Name Step, Name initiator, Name Target, Name Mode)
+        public IEnumerable<DynamicPropertyResult> VolitionPropertyCalculator(IQueryContext context, Name socialMoveName,  Name Step, Name Target, Name Mode)
         {
             Dictionary<SubstitutionSet, Name> ret = new Dictionary<SubstitutionSet, Name>();
 
@@ -72,7 +72,7 @@ namespace CommeillFaut
             if (context.Perspective != Name.SELF_SYMBOL)
                 yield break;
 
-            if (initiator == Target)
+            if (this.m_kB.Perspective == Target)
                 yield break;
 
             List<Name> possibleSEs = new List<Name>();
@@ -90,18 +90,6 @@ namespace CommeillFaut
                     possibleSEs.Add(se.Name);
             
             else possibleSEs.Add(socialMoveName);
-
-            List<Name> possibleInitiators = new List<Name>();
-
-            if (initiator.IsVariable)
-            {
-                foreach (var s in context.AskPossibleProperties(initiator))
-                    possibleInitiators.Add(s.Item1.Value);
-
-                if (!possibleInitiators.Contains(context.Queryable.Perspective))
-                    possibleInitiators.Add(context.Queryable.Perspective);
-            }
-            else possibleInitiators.Add(initiator);
 
             List<Name> possibleTargets = new List<Name>();
 
@@ -141,21 +129,16 @@ namespace CommeillFaut
                 if (!m_SocialExchanges.Exists(x => x.Name == seName))
                     continue;
 
-                foreach (var init in possibleInitiators)
 
                     foreach (var targ in possibleTargets)
                     {
-
-
-                        if (init == targ) continue;
-
 
 
                         foreach(var seStep in possibleSteps){
 
                              foreach(var seMode in possibleModes){
 
-                        var volValue = CalculateSocialMoveVolition(seName, seStep, init, targ, seMode);
+                        var volValue = CalculateSocialMoveVolition(seName, seStep, targ, seMode);
 
 
                         if (volValue != Single.NegativeInfinity)
@@ -176,12 +159,6 @@ namespace CommeillFaut
                                 subSet.AddSubstitution(sub);
                             }
 
-
-                            if (initiator.IsVariable)
-                            {
-                                var sub = new Substitution(initiator, new ComplexValue(init, 1));
-                                subSet.AddSubstitution(sub);
-                            }
 
                             if (Target.IsVariable)
                             {
@@ -244,7 +221,6 @@ namespace CommeillFaut
                 m_SocialExchanges[idx].StartingConditions = new ConditionSet(dto.StartingConditions);
            
                 m_SocialExchanges[idx].Description = dto.Description;
-                m_SocialExchanges[idx].Initiator = dto.Initiator;
                 m_SocialExchanges[idx].Target = dto.Target;
                 m_SocialExchanges[idx].Name = dto.Name;
                  m_SocialExchanges[idx].Steps = dto.Steps;
@@ -278,9 +254,9 @@ namespace CommeillFaut
         }
 
 
-        public float CalculateSocialMoveVolition(Name seName, Name seStep,  Name initiator, Name target, Name seMode)
+        public float CalculateSocialMoveVolition(Name seName, Name seStep, Name target, Name seMode)
         {
-         return   m_SocialExchanges.Find(x => x.Name == seName).VolitionValue(seStep, initiator, target, seMode, this.m_kB);
+         return   m_SocialExchanges.Find(x => x.Name == seName).VolitionValue(seStep, target, seMode, this.m_kB);
         }
 
 

@@ -80,7 +80,6 @@ namespace CommeillFautTutorial
             var se = new SocialExchange(new SocialExchangeDTO(){
 
                 Name = (Name)"Flirt",
-                Initiator = (Name)"[i]",
                 Target = (Name)"[t]",
                 StartingConditions = new ConditionSetDTO(),
                 InfluenceRules = new List<InfluenceRuleDTO>(){influenceRule.ToDTO()},

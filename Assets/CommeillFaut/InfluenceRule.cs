@@ -56,13 +56,13 @@ namespace CommeillFaut
 
 
 
-        public float EvaluateInfluenceRule(Name init, Name targ, KB m_Kb, SubstitutionSet constraints)
+        public float EvaluateInfluenceRule(KB m_Kb, SubstitutionSet constraints)
         {
             float ret = 0.0f;
 
             foreach(var c in Rule)
             {
-                  var resultingConstraints = c.Unify(m_Kb, init, new[] { constraints } ); 
+                  var resultingConstraints = c.Unify(m_Kb, (Name)"Self", new[] { constraints } ); 
 
                 if(resultingConstraints.Count() > 0)
                     ret = Value;

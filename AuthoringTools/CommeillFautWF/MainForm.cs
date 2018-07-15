@@ -60,7 +60,6 @@ namespace CommeillFautWF
             {
                 Description = "-",
                 Name = WellFormedNames.Name.BuildName("SE1"),
-                Initiator = WellFormedNames.Name.BuildName("[i]"),
                 Target = WellFormedNames.Name.BuildName("[t]"),
                 Id = new Guid(),
                 StartingConditions = new Conditions.DTOs.ConditionSetDTO(),

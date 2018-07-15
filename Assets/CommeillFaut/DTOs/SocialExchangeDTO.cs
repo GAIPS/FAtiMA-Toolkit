@@ -23,10 +23,7 @@ namespace CommeillFaut.DTOs
         /// </summary>
         public List<Name> Steps { get; set; }
 
-           /// The Social Exchange Initiator
-        /// </summary>
-        public Name Initiator { get; set; }
-
+        
         /// The Social Exchange Target
         /// </summary>
         public Name Target { get; set; }

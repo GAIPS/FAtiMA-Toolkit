@@ -26,9 +26,6 @@ namespace CommeillFaut
 
         public List<InfluenceRule> InfluenceRules { get; set; }
 
-        /// The Social Exchange Name
-        /// </summary>
-        public Name Initiator { get; set; }
 
         /// The Social Exchange Name
         /// </summary>
@@ -41,7 +38,6 @@ namespace CommeillFaut
             Name = s.Name;
             Description = s.Description;
             Steps = s.Steps;
-            Initiator = s.Initiator;
              Target = s.Target;
             StartingConditions =  new ConditionSet(s.StartingConditions);
             InfluenceRules = s.InfluenceRules.Select(x=>new InfluenceRule(x)).ToList();
@@ -49,7 +45,7 @@ namespace CommeillFaut
       
         public override string ToString()
         {
-            return Name + " | " + Description + " | " + this.Id + " | STEPS:" + Steps.Count + "\n";
+            return Name + " | " + Description + " | " + this.Id + " | Steps:" + Steps.Select(x=>x.ToString() + " ") + "\n";
         }
 
         public SocialExchangeDTO ToDTO => new SocialExchangeDTO()
@@ -57,7 +53,6 @@ namespace CommeillFaut
             Name = this.Name,
             Description = this.Description,
             Steps = this.Steps,
-            Initiator = this.Initiator,
             Target = this.Target,
             StartingConditions = this.StartingConditions.ToDTO(),
             InfluenceRules = this.InfluenceRules.Select(x=>x.ToDTO()).ToList(),
@@ -69,7 +64,6 @@ namespace CommeillFaut
             dataHolder.SetValue("Name", this.Name);
             dataHolder.SetValue("Description", this.Description);
             dataHolder.SetValue("Steps", this.Steps);
-            dataHolder.SetValue("Initiator", this.Initiator);
             dataHolder.SetValue("Target", this.Target);
             dataHolder.SetValue("StartingConditions", this.StartingConditions);
             dataHolder.SetValue("InfluenceRules", this.InfluenceRules);
@@ -84,7 +78,6 @@ namespace CommeillFaut
             Name = dataHolder.GetValue<Name>("Name");
             Description = dataHolder.GetValue<string>("Description");
             Steps = dataHolder.GetValue<List<Name>>("Steps");
-             Initiator = dataHolder.GetValue<Name>("Initiator");
             Target = dataHolder.GetValue<Name>("Target");
             StartingConditions = dataHolder.GetValue<ConditionSet>("StartingConditions");
             InfluenceRules = dataHolder.GetValue<List<InfluenceRule>>("InfluenceRules");
@@ -156,31 +149,29 @@ namespace CommeillFaut
         }
 
 
-        public float VolitionValue(Name step, Name init, Name targ, Name mode, KB m_Kb)
+        public float VolitionValue(Name step, Name targ, Name mode, KB m_Kb)
         {
           
             
-            if (init == targ) return -1;
+            if (m_Kb.Perspective == targ) return -1;
 
             var targetSub = new Substitution(Target, new ComplexValue(targ));
-            var initiatorSub = new Substitution(Initiator, new ComplexValue(init));
 
             var constraints = new SubstitutionSet();
             constraints.AddSubstitution(targetSub);
-            constraints.AddSubstitution(initiatorSub);
              float total = Single.NegativeInfinity;
 
            // List<SubstitutionSet> resultingConstraints = new List<SubstitutionSet>();
             
             if(step == this.Steps.FirstOrDefault()){
-           var resultingConstraints = StartingConditions.FirstOrDefault().Unify(m_Kb, init, new[] { constraints } ).ToList();
+           var resultingConstraints = StartingConditions.FirstOrDefault().Unify(m_Kb, m_Kb.Perspective, new[] { constraints } ).ToList();
 
             if(StartingConditions.Count() > 1){
                 int counter = 0;
             foreach (var c in StartingConditions) // For instance SI([x]) >= 40
             {
                     if(counter == 0) continue;
-               resultingConstraints = c.Unify(m_Kb, init, resultingConstraints ).ToList();  // Whats the sub here [x]/John
+               resultingConstraints = c.Unify(m_Kb, m_Kb.Perspective, resultingConstraints ).ToList();  // Whats the sub here [x]/John
                 }
             }
 
@@ -213,7 +204,7 @@ namespace CommeillFaut
                         foreach(var inf in influenceRuleList)
                                 {
                                 
-                                var toSum = inf.EvaluateInfluenceRule(init, targ, m_Kb, constraint);
+                                var toSum = inf.EvaluateInfluenceRule(m_Kb, constraint);
 
                                 contraintVolitionValue +=toSum;
                                 
@@ -246,7 +237,7 @@ namespace CommeillFaut
                     if(inf.Mode == mode || mode.ToString().Contains("*")){
                         
                         
-                        var toSum = inf.EvaluateInfluenceRule(init, targ, m_Kb, constraints);
+                        var toSum = inf.EvaluateInfluenceRule(m_Kb, constraints);
                     
                         total +=toSum;
                                 

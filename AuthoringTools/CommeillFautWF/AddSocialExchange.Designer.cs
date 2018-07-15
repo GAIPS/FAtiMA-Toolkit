@@ -35,12 +35,10 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxDescription = new System.Windows.Forms.TextBox();
             this.buttonAdd = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.stepsTextBox = new System.Windows.Forms.TextBox();
             this.stepsLabel = new System.Windows.Forms.Label();
             this.wfNameTarget = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
-            this.wfNameInitiator = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             this.nameTextBox = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             ((System.ComponentModel.ISupportInitialize)(this.influenceRuleBindingSource)).BeginInit();
             this.SuspendLayout();
@@ -82,7 +80,7 @@
             // 
             this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonAdd.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.buttonAdd.Location = new System.Drawing.Point(185, 295);
+            this.buttonAdd.Location = new System.Drawing.Point(185, 310);
             this.buttonAdd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buttonAdd.MinimumSize = new System.Drawing.Size(80, 39);
             this.buttonAdd.Name = "buttonAdd";
@@ -92,19 +90,10 @@
             this.buttonAdd.UseVisualStyleBackColor = true;
             this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
             // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(27, 247);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(135, 20);
-            this.label3.TabIndex = 15;
-            this.label3.Text = "Initiator Variable:";
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(246, 247);
+            this.label4.Location = new System.Drawing.Point(72, 257);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(128, 20);
             this.label4.TabIndex = 17;
@@ -133,24 +122,11 @@
             this.wfNameTarget.AllowNil = true;
             this.wfNameTarget.AllowUniversal = true;
             this.wfNameTarget.AllowVariable = true;
-            this.wfNameTarget.Location = new System.Drawing.Point(380, 244);
+            this.wfNameTarget.Location = new System.Drawing.Point(206, 254);
             this.wfNameTarget.Name = "wfNameTarget";
             this.wfNameTarget.OnlyIntOrVariable = false;
             this.wfNameTarget.Size = new System.Drawing.Size(71, 26);
             this.wfNameTarget.TabIndex = 5;
-            // 
-            // wfNameInitiator
-            // 
-            this.wfNameInitiator.AllowComposedName = true;
-            this.wfNameInitiator.AllowLiteral = true;
-            this.wfNameInitiator.AllowNil = true;
-            this.wfNameInitiator.AllowUniversal = true;
-            this.wfNameInitiator.AllowVariable = true;
-            this.wfNameInitiator.Location = new System.Drawing.Point(168, 244);
-            this.wfNameInitiator.Name = "wfNameInitiator";
-            this.wfNameInitiator.OnlyIntOrVariable = false;
-            this.wfNameInitiator.Size = new System.Drawing.Size(62, 26);
-            this.wfNameInitiator.TabIndex = 4;
             // 
             // nameTextBox
             // 
@@ -169,13 +145,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(475, 345);
+            this.ClientSize = new System.Drawing.Size(475, 360);
             this.Controls.Add(this.stepsTextBox);
             this.Controls.Add(this.stepsLabel);
             this.Controls.Add(this.wfNameTarget);
-            this.Controls.Add(this.wfNameInitiator);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.textBoxDescription);
             this.Controls.Add(this.nameTextBox);
             this.Controls.Add(this.label2);
@@ -204,9 +178,7 @@
         private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox nameTextBox;
         private System.Windows.Forms.TextBox textBoxDescription;
         private System.Windows.Forms.Button buttonAdd;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
-        private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox wfNameInitiator;
         private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox wfNameTarget;
         private System.Windows.Forms.TextBox stepsTextBox;
         private System.Windows.Forms.Label stepsLabel;

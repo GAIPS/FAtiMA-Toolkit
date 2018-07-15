@@ -28,7 +28,6 @@ namespace Tests.CommeillFaut
                Description = "When I'm atracted to...",
              
 
-               Initiator = Name.BuildName("[i]"),
                Target = Name.BuildName("[t]"),
                StartingConditions = new Conditions.DTOs.ConditionSetDTO()
                {
@@ -81,11 +80,10 @@ namespace Tests.CommeillFaut
                Description = "I hate you ",
              
 
-               Initiator = Name.BuildName("[i]"),
                Target = Name.BuildName("[t]"),
                StartingConditions = new Conditions.DTOs.ConditionSetDTO()
                {
-                    ConditionSet = new string[] { "Has(Floor) = SELF"}
+                    ConditionSet = new string[] { "IsAgent(SELF) = True"}
                },
                Steps = new List<Name>() {(Name)"Start"},
                InfluenceRules = new List<InfluenceRuleDTO>()
@@ -117,7 +115,7 @@ namespace Tests.CommeillFaut
 
         private static RolePlayCharacterAsset Matt = BuildRPCAsset();
 
-         private static RolePlayCharacterAsset Sarah = BuildRPCAsset2();
+        private static RolePlayCharacterAsset Sarah = BuildRPCAsset2();
 
         private static RolePlayCharacterAsset BuildRPCAsset()
         {
@@ -178,17 +176,29 @@ namespace Tests.CommeillFaut
 
             };
 
+            } else if(set == 2)
+            {
+
+                 eventList = new List<string>()
+                {
+                EventHelper.ActionEnd("Matt", "EntersRoom", "Sarah").ToString(),
+                EventHelper.ActionEnd("Sarah", "EntersRoom", "Matt").ToString(),
+                EventHelper.PropertyChange("Likes(Matt)", "False", "Sarah").ToString()
+                //THIS SHOULD BE THE LAST EVENT
+
+            };
             }
 
             eventSets.Add(set, eventList);
+        
         }
 
 
-       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah, *) = [value]")]
-       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah, *) = 15")]
-       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah, Love) = 10")]
-       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah, General) = 5")]
-       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, [x], Love) = 10")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Sarah, *) = [value]")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Sarah, *) = 15")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Sarah, Love) = 10")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Sarah, General) = 5")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, [x], Love) = 10")]
 
         public void Test_DP_Volition_Match(int eventSet, string context, string MethodCall)
         {
@@ -241,12 +251,12 @@ namespace Tests.CommeillFaut
 
         }
 
-       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah, *) = [value]","[value]", "15")]
-       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah, *) = [value]","[value]", "15")]
-       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah, Love) = [value]","[value]", "10")]
-       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah, General) = [value]","[value]", "5")]
-       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, [x], Love) = [value]","[value]", "10")]
-        public void Test_DP_Volition_Match_Value(int eventSet, string context, string MethodCall, string variable, string value)
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Sarah, *) = [value]","[value]", "15")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Sarah, *) = [value]","[value]", "15")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Sarah, Love) = [value]","[value]", "10")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Sarah, General) = [value]","[value]", "5")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, [x], Love) = [value]","[value]", "10")]
+        public void Test_DP_Volition_Match_Value_Matt(int eventSet, string context, string MethodCall, string variable, string value)
         {
             var rpc = BuildRPCAsset();
             var cif = BuildCIFAsset();
@@ -304,11 +314,73 @@ namespace Tests.CommeillFaut
 
         }
 
+          [TestCase(2, "IsAgent([x]) = True", "Volition([se], *, Matt, *) = [value]","[se]", "Insult")]
+          [TestCase(2, "IsAgent([y]) = True", "Volition(Insult, *, [y], *) = [value]","[y]", "Matt")]
+        public void Test_DP_Volition_Match_Value_Sarah(int eventSet, string context, string MethodCall, string variable, string value)
+        {
+            var rpc = BuildRPCAsset2();
+            var cif = BuildCIFAsset();
+            cif.RegisterKnowledgeBase(rpc.m_kb);
+             rpc.LoadAssociatedAssets();
+
+
+
+            PopulateEventSet(eventSet);
+
+            foreach (var eve in eventSets[eventSet])
+            {
+                rpc.Perceive((Name)eve);
+                rpc.Tick++;
+            }
+
+           
+
+            // conditions
+            var conditions = context.Split(',');
+
+            IEnumerable<SubstitutionSet> resultingConstraints;
+
+            var condSet = new ConditionSet();
+
+            var cond = Condition.Parse(conditions[0]);
+
+          
+            // Apply conditions to RPC
+            foreach (var res in conditions)
+            {
+                cond = Condition.Parse(res);
+                condSet = condSet.Add(cond);
+
+
+            }
+
+            resultingConstraints = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(MethodCall);
+            condSet = condSet.Add(cond);
+
+
+            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, resultingConstraints);
+
+            Assert.IsNotEmpty(result);
+
+
+           var sub = result.FirstOrDefault().Where(x=>x.Variable == (Name)variable);
+
+          var ret = sub.FirstOrDefault().SubValue;
+
+                Assert.AreEqual(ret.Value.ToString(), value);
+
+        }
+
+
+
 
        [TestCase(1, "IsAgent([x]) = True", "Volition([x], *, Matt, Sarah) = [value]")]
        [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Sarah, Matt) = 5")]
        [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, [x]) = 0")]
-          [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah) = [x]")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Matt, Sarah) = [x]")]
         public void Test_DP_Volition_NoMatch(int eventSet, string context, string MethodCall)
         {
             var rpc = BuildRPCAsset();
@@ -445,7 +517,6 @@ namespace Tests.CommeillFaut
                 Description = "When I'm atracted to...",
                 StartingConditions = new Conditions.DTOs.ConditionSetDTO(),
                 InfluenceRules = new List<InfluenceRuleDTO>(),
-                Initiator = Name.BuildName("[i]"),
                 Target = Name.BuildName("[x]")
             };
 
@@ -478,11 +549,6 @@ namespace Tests.CommeillFaut
                 StartingConditions = new Conditions.DTOs.ConditionSetDTO(),
                 Steps = new List<Name>(),
                 InfluenceRules = new List<InfluenceRuleDTO>(),
-              /*  Conditions = new Conditions.DTOs.ConditionSetDTO()
-                {
-                    ConditionSet = new string[] { "[x] != Start" }
-                },*/
-                Initiator = Name.BuildName("[i]"),
                 Target = Name.BuildName("[x]")
             };
 

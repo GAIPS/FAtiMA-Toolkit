@@ -23,12 +23,10 @@ namespace CommeillFautWF
 
             //Validators 
             EditorTools.AllowOnlyGroundedLiteral(nameTextBox);
-            EditorTools.AllowOnlyVariable(wfNameInitiator);
             EditorTools.AllowOnlyVariable(wfNameTarget);
 
             nameTextBox.Value = dto.Name;
             textBoxDescription.Text = dto.Description;
-            wfNameInitiator.Value = dto.Initiator;
             wfNameTarget.Value = dto.Target;
 
             if(dto.Steps.Count>0){
@@ -69,7 +67,6 @@ namespace CommeillFautWF
                 dto.Description = textBoxDescription.Text;
                 dto.Steps = _steps;
                 dto.Target = wfNameTarget.Value;
-                dto.Initiator = wfNameInitiator.Value;
                 UpdatedGuid = asset.AddOrUpdateExchange(dto);
                 Close();
             }
