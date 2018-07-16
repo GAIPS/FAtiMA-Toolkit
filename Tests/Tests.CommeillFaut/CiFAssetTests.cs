@@ -33,7 +33,7 @@ namespace Tests.CommeillFaut
                {
                     ConditionSet = new string[] { "Has(Floor) = SELF"}
                },
-               Steps = new List<Name>() {(Name)"Start"},
+               Steps = new List<Name>() {(Name)"Start", (Name)"Answer", (Name)"Finish"},
                InfluenceRules = new List<InfluenceRuleDTO>()
                {
 
@@ -154,6 +154,24 @@ namespace Tests.CommeillFaut
 
         }
 
+          private static RolePlayCharacterAsset BuildRPCAsset3()
+        {
+            var kb = new KB((Name)"Tom");
+
+            var rpc = new RolePlayCharacterAsset
+            {
+                BodyName = "Male",
+                VoiceName = "Male",
+                CharacterName = (Name)"Tom",
+                m_kb = kb,
+
+            };
+
+       //     rpc.LoadAssociatedAssets();
+            return rpc;
+
+        }
+
 
         private Dictionary<int, List<string>> eventSets;
 
@@ -171,7 +189,6 @@ namespace Tests.CommeillFaut
                 EventHelper.ActionEnd("Sarah", "EntersRoom", "Matt").ToString(),
                 EventHelper.PropertyChange("Has(Floor)", "Matt", "Matt").ToString(),
                 EventHelper.PropertyChange("Likes(Sarah)", "True", "Matt").ToString(),
-                //THIS SHOULD BE THE LAST EVENT
                EventHelper.ActionEnd("Matt", "Speak(Start, S1, Hello, Positive)", "Sarah").ToString()
 
             };
@@ -184,9 +201,34 @@ namespace Tests.CommeillFaut
                 EventHelper.ActionEnd("Matt", "EntersRoom", "Sarah").ToString(),
                 EventHelper.ActionEnd("Sarah", "EntersRoom", "Matt").ToString(),
                 EventHelper.PropertyChange("Likes(Matt)", "False", "Sarah").ToString()
-                //THIS SHOULD BE THE LAST EVENT
 
             };
+            } else if(set ==3)
+            {
+                  eventList = new List<string>()
+                {
+                EventHelper.ActionEnd("Matt", "EntersRoom", "Tom").ToString(),
+                EventHelper.ActionEnd("Sarah", "EntersRoom", "Tom").ToString(),
+                  EventHelper.ActionEnd("Tom", "EntersRoom", "Sarah").ToString(),
+                 EventHelper.ActionEnd("Tom", "EntersRoom", "Matt").ToString(),
+                EventHelper.PropertyChange("Likes(Sarah)", "True", "Tom").ToString(),
+                EventHelper.PropertyChange("Likes(Matt)", "True", "Tom").ToString(),
+                EventHelper.ActionEnd("Sarah", "Speak(*, *, SE(Flirt, Start), Positive)", "Tom").ToString()
+                  };
+            }
+
+               else if(set ==4)
+            {
+                  eventList = new List<string>()
+                {
+                EventHelper.ActionEnd("Matt", "EntersRoom", "Tom").ToString(),
+                EventHelper.ActionEnd("Sarah", "EntersRoom", "Tom").ToString(),
+                  EventHelper.ActionEnd("Tom", "EntersRoom", "Sarah").ToString(),
+                 EventHelper.ActionEnd("Tom", "EntersRoom", "Matt").ToString(),
+                EventHelper.PropertyChange("Likes(Sarah)", "True", "Tom").ToString(),
+                EventHelper.PropertyChange("Likes(Matt)", "True", "Tom").ToString(),
+                EventHelper.ActionEnd("Sarah", "Speak(*, *, SE(Flirt, Answer), Positive)", "Tom").ToString()
+                  };
             }
 
             eventSets.Add(set, eventList);
@@ -199,6 +241,7 @@ namespace Tests.CommeillFaut
        [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Sarah, Love) = 10")]
        [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, Sarah, General) = 5")]
        [TestCase(1, "IsAgent([x]) = True", "Volition([se], *, [x], Love) = 10")]
+       [TestCase(1, "IsAgent([x]) = True", "Volition([se], Start, [x], Love) = [value]")]
 
         public void Test_DP_Volition_Match(int eventSet, string context, string MethodCall)
         {
@@ -316,6 +359,7 @@ namespace Tests.CommeillFaut
 
           [TestCase(2, "IsAgent([x]) = True", "Volition([se], *, Matt, *) = [value]","[se]", "Insult")]
           [TestCase(2, "IsAgent([y]) = True", "Volition(Insult, *, [y], *) = [value]","[y]", "Matt")]
+          [TestCase(2, "IsAgent([y]) = True", "Volition(Insult, [step], [y], *) = [value]","[step]", "Start")]
         public void Test_DP_Volition_Match_Value_Sarah(int eventSet, string context, string MethodCall, string variable, string value)
         {
             var rpc = BuildRPCAsset2();
@@ -374,6 +418,71 @@ namespace Tests.CommeillFaut
 
         }
 
+         [TestCase(3, "IsAgent([x]) = True", "Volition(Flirt, *, Sarah, *) = [value]","[value]", "15")]
+         [TestCase(3, "IsAgent([x]) = True", "Volition(Flirt, [step], Sarah, *) = [value]","[step]", "Answer")]
+         [TestCase(3, "IsAgent([x]) = True", "Volition(Flirt, [step], Sarah, *) = 15","[step]", "Answer")]
+         [TestCase(3, "IsAgent([x]) = True", "Volition(Flirt, Answer, Sarah, *) = [value]","[value]", "15")]
+         [TestCase(3, "IsAgent([x]) = True", "Volition(Flirt, Answer, [x], *) = 15","[x]", "Sarah")]
+
+         [TestCase(4, "IsAgent([x]) = True", "Volition(Flirt, [step], Sarah, *) = [value]","[step]", "Finish")]
+         [TestCase(4, "IsAgent([x]) = True", "Volition(Flirt, [step], Sarah, *) = 15","[step]", "Finish")]
+        public void Test_DP_Volition_Step_Match(int eventSet, string context, string MethodCall, string variable, string value)
+        {
+            var rpc = BuildRPCAsset3();
+            var cif = BuildCIFAsset();
+            cif.RegisterKnowledgeBase(rpc.m_kb);
+             rpc.LoadAssociatedAssets();
+
+
+
+            PopulateEventSet(eventSet);
+
+            foreach (var eve in eventSets[eventSet])
+            {
+                rpc.Perceive((Name)eve);
+                rpc.Tick++;
+            }
+
+           
+
+            // conditions
+            var conditions = context.Split(',');
+
+            IEnumerable<SubstitutionSet> resultingConstraints;
+
+            var condSet = new ConditionSet();
+
+            var cond = Condition.Parse(conditions[0]);
+
+          
+            // Apply conditions to RPC
+            foreach (var res in conditions)
+            {
+                cond = Condition.Parse(res);
+                condSet = condSet.Add(cond);
+
+
+            }
+
+            resultingConstraints = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+
+            condSet = new ConditionSet();
+            cond = Condition.Parse(MethodCall);
+            condSet = condSet.Add(cond);
+
+
+            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, resultingConstraints);
+
+            Assert.IsNotEmpty(result);
+
+
+           var sub = result.FirstOrDefault().Where(x=>x.Variable == (Name)variable);
+
+          var ret = sub.FirstOrDefault().SubValue;
+
+                Assert.AreEqual(ret.Value.ToString(), value);
+
+        }
 
 
 

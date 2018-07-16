@@ -97,23 +97,15 @@ namespace CommeillFaut
             {
                 foreach (var s in context.AskPossibleProperties(Target))
                     possibleTargets.Add(s.Item1.Value);
+
+
+
             }
             else possibleTargets.Add(Target);
 
-            List<Name> possibleSteps = new List<Name>();
-            if(Step.IsVariable){
-                 foreach (var s in context.AskPossibleProperties(Step))
-                    possibleSteps.Add(s.Item1.Value);
-                 foreach(var s in this.m_SocialExchanges.Select(x=>x.Steps))
-                  possibleSteps =  possibleSteps.Concat(s).ToList();
-            } else if(Step.IsUniversal){
-                foreach(var s in this.m_SocialExchanges.Select(x=>x.Steps))
-                   possibleSteps = possibleSteps.Concat(s).ToList();
+     
 
-            }
-
-            else possibleSteps.Add(Step);
-
+     
 
             List<Name> possibleModes = new List<Name>();
 
@@ -134,11 +126,14 @@ namespace CommeillFaut
                     {
 
 
-                        foreach(var seStep in possibleSteps){
 
-                             foreach(var seMode in possibleModes){
+                        var actualStep = FilterStep(seName);
 
-                        var volValue = CalculateSocialMoveVolition(seName, seStep, targ, seMode);
+                        if(actualStep.ToString() == "-") continue;
+
+                        foreach(var seMode in possibleModes){
+
+                        var volValue = CalculateSocialMoveVolition(seName, actualStep, targ, seMode);
 
 
                         if (volValue != Single.NegativeInfinity)
@@ -155,7 +150,7 @@ namespace CommeillFaut
                             
                             if (Step.IsVariable)
                             {
-                                var sub = new Substitution(Step, new ComplexValue(seStep, 1));
+                                var sub = new Substitution(Step, new ComplexValue(actualStep, 1));
                                 subSet.AddSubstitution(sub);
                             }
 
@@ -193,7 +188,6 @@ namespace CommeillFaut
                         }
                     }
 
-                        }
                     }
             }
         }
@@ -312,6 +306,64 @@ namespace CommeillFaut
                  m_SocialExchanges.Add(new SocialExchange(c));
                 }
             }
+
+        }
+
+
+        private Name FilterStep(Name SE) // Missing the target
+        {
+
+
+            Name properStep = (Name)"-";
+
+            // 1) Determine the Social Exchange
+            var socialExchange = this.m_SocialExchanges.Find(x=> x.Name == SE);
+            if(socialExchange == null)
+                return properStep;
+
+            // 2) Determine the steps of the Social Exchange
+            var _Steps = new List<Name>();
+
+             if(socialExchange.Steps.Count > 0)
+               _Steps = socialExchange.Steps;
+             else return properStep;
+
+
+             if(_Steps.Count == 1)
+                return _Steps.FirstOrDefault();
+               
+           // Now we need to see if the Agent has just performed the social exchange
+
+            
+            var MethodCall = "LastEventId(Action-End, *, Speak(*, *, SE(" + SE.ToString() + "," + "[step]" + "), *), *) >= 0";
+       
+
+            var lastStep = "";
+            var condSet = new ConditionSet();
+            condSet = new ConditionSet();
+            var  cond = Condition.Parse(MethodCall);
+            condSet = condSet.Add(cond);    
+           var result = condSet.Unify(this.m_kB, Name.SELF_SYMBOL, null);
+
+          
+            if(result != null)
+                if(result.FirstOrDefault() !=null)
+                    if(result.FirstOrDefault().Where(x=>x.Variable == (Name)"[step]") != null)
+                         lastStep = result.FirstOrDefault().Where(x=>x.Variable == (Name)"[step]").FirstOrDefault().SubValue.Value.ToString();
+                    else return  _Steps.FirstOrDefault();
+                else return  _Steps.FirstOrDefault();
+            else return  _Steps.FirstOrDefault();
+           
+
+
+         var ind = _Steps.IndexOf((Name)lastStep);
+
+            if(ind == _Steps.Count)
+                return _Steps.FirstOrDefault();
+            else return _Steps[ind + 1];
+            
+
+
 
         }
 

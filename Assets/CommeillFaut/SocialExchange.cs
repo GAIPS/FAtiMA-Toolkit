@@ -161,6 +161,8 @@ namespace CommeillFaut
             constraints.AddSubstitution(targetSub);
              float total = Single.NegativeInfinity;
 
+
+
            // List<SubstitutionSet> resultingConstraints = new List<SubstitutionSet>();
             
             if(step == this.Steps.FirstOrDefault()){
@@ -223,28 +225,35 @@ namespace CommeillFaut
 
                 }
             
-                //What if the step is beyond the first one, we should not consider Starting Conditions, or any conditions at all
+                //What if the step is beyond the first one, we should not consider Starting Conditions, or any conditions at all, only the influence rules
                 } else
                 
                 {           
                  
-                
+                 var VolVal = .0f;
 
-                foreach(var inf in InfluenceRules)
-                    
-                    {
-                    
-                    if(inf.Mode == mode || mode.ToString().Contains("*")){
-                        
-                        
-                        var toSum = inf.EvaluateInfluenceRule(m_Kb, constraints);
-                    
-                        total +=toSum;
+                      var influenceRuleList = new List<InfluenceRule>();
+
+                      if(mode.IsUniversal)
+                         influenceRuleList = this.InfluenceRules;
+                      else
+                          influenceRuleList = this.InfluenceRules.FindAll(x=>x.Mode == mode);
+
+                 
+                foreach(var inf in influenceRuleList)
+                     {
                                 
-                                }
-                
+                     var toSum = inf.EvaluateInfluenceRule(m_Kb, constraints);
+
+                    VolVal +=toSum;
+                                
+                 }
+                               
+
+                    if(VolVal > total)
+                        total = VolVal;
                 }
-            }
+            
              
 
                return total;
