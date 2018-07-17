@@ -212,7 +212,7 @@ namespace Tests.CommeillFaut
                   EventHelper.ActionEnd("Tom", "EntersRoom", "Sarah").ToString(),
                  EventHelper.ActionEnd("Tom", "EntersRoom", "Matt").ToString(),
                 EventHelper.PropertyChange("Likes(Sarah)", "True", "Tom").ToString(),
-                EventHelper.PropertyChange("Likes(Matt)", "True", "Tom").ToString(),
+                EventHelper.PropertyChange("Likes(Matt)", "False", "Tom").ToString(),
                 EventHelper.ActionEnd("Sarah", "Speak(*, *, SE(Flirt, Start), Positive)", "Tom").ToString()
                   };
             }
@@ -226,11 +226,27 @@ namespace Tests.CommeillFaut
                   EventHelper.ActionEnd("Tom", "EntersRoom", "Sarah").ToString(),
                  EventHelper.ActionEnd("Tom", "EntersRoom", "Matt").ToString(),
                 EventHelper.PropertyChange("Likes(Sarah)", "True", "Tom").ToString(),
-                EventHelper.PropertyChange("Likes(Matt)", "True", "Tom").ToString(),
+                EventHelper.PropertyChange("Likes(Matt)", "False", "Tom").ToString(),
                 EventHelper.ActionEnd("Sarah", "Speak(*, *, SE(Flirt, Answer), Positive)", "Tom").ToString()
                   };
             }
 
+            else if(set == 5)
+            {
+
+                 eventList = new List<string>()
+                {
+                EventHelper.ActionEnd("Matt", "EntersRoom", "Tom").ToString(),
+                EventHelper.ActionEnd("Sarah", "EntersRoom", "Tom").ToString(),
+                  EventHelper.ActionEnd("Tom", "EntersRoom", "Sarah").ToString(),
+                 EventHelper.ActionEnd("Tom", "EntersRoom", "Matt").ToString(),
+                EventHelper.PropertyChange("Likes(Sarah)", "True", "Tom").ToString(),
+                EventHelper.PropertyChange("Likes(Matt)", "False", "Tom").ToString(),
+                EventHelper.ActionEnd("Sarah", "Speak(*, *, SE(Flirt, Finish), Positive)", "Tom").ToString(),
+                 EventHelper.PropertyChange("Has(Floor)", "Tom", "Tom").ToString()
+                  };
+
+            }
             eventSets.Add(set, eventList);
         
         }
@@ -426,6 +442,12 @@ namespace Tests.CommeillFaut
 
          [TestCase(4, "IsAgent([x]) = True", "Volition(Flirt, [step], Sarah, *) = [value]","[step]", "Finish")]
          [TestCase(4, "IsAgent([x]) = True", "Volition(Flirt, [step], Sarah, *) = 15","[step]", "Finish")]
+
+         [TestCase(5, "IsAgent([x]) = True", "Volition(Flirt, [step], Sarah, *) = 15","[step]", "Start")]
+         [TestCase(5, "IsAgent([x]) = True", "Volition(Flirt, Start, [x], *) = 15","[x]", "Sarah")]
+
+         [TestCase(5, "IsAgent([x]) = True", "Volition(Insult, [step], [x], *) = 4","[x]", "Matt")]
+         [TestCase(5, "IsAgent([x]) = True", "Volition(Insult, Start, [x], *) = 4","[x]", "Matt")]
         public void Test_DP_Volition_Step_Match(int eventSet, string context, string MethodCall, string variable, string value)
         {
             var rpc = BuildRPCAsset3();

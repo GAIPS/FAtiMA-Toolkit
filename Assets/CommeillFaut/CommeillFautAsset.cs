@@ -127,7 +127,7 @@ namespace CommeillFaut
 
 
 
-                        var actualStep = FilterStep(seName);
+                        var actualStep = FilterStep(seName, targ);
 
                         if(actualStep.ToString() == "-") continue;
 
@@ -310,7 +310,7 @@ namespace CommeillFaut
         }
 
 
-        private Name FilterStep(Name SE) // Missing the target
+        private Name FilterStep(Name SE , Name target) // Missing the target
         {
 
 
@@ -335,7 +335,7 @@ namespace CommeillFaut
            // Now we need to see if the Agent has just performed the social exchange
 
             
-            var MethodCall = "LastEventId(Action-End, *, Speak(*, *, SE(" + SE.ToString() + "," + "[step]" + "), *), *) >= 0";
+            var MethodCall = "LastEventId(Action-End," + target.ToString() + ", Speak(*, *, SE(" + SE.ToString() + "," + "[step]" + "), *), SELF) >= 0";
        
 
             var lastStep = "";
