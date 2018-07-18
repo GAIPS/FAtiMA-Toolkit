@@ -103,6 +103,15 @@ namespace WorldModelWF
 
         private void dataGridViewEventTemplates_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (_wm.GetAllEventEffects().Count > 0)
+            {
+               button1.Enabled = true;
+                button2.Enabled = true;
+                buttonRemoveAttRule.Enabled = true;
+                buttonEditAttRule.Enabled = true;
+                button4.Enabled = true;
+                addEffectDTO.Enabled = true;
+            }
         }
 
         private void RefreshEventList()
