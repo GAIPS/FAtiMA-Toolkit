@@ -99,6 +99,7 @@ namespace WorldModelWF
             ef.ShowDialog(this);
             SetModified();
             dataGridViewEventTemplates_SelectionChanged(sender, e);
+            RefreshEventList();
         }
 
         private void dataGridViewEventTemplates_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -125,6 +126,16 @@ namespace WorldModelWF
                 var aName = a.Item1;
                 var aPriority = a.Item2;
                 ds.Tables[0].Rows.Add(aName.GetNTerm(3), aName.GetNTerm(2), aName.GetNTerm(4),aPriority);
+            }
+
+               if (_wm.GetAllEventEffects().Count > 0)
+            {
+               button1.Enabled = true;
+                button2.Enabled = true;
+                buttonRemoveAttRule.Enabled = true;
+                buttonEditAttRule.Enabled = true;
+                button4.Enabled = true;
+                addEffectDTO.Enabled = true;
             }
 
             RefreshEffects();
