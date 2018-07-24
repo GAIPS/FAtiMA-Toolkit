@@ -49,6 +49,9 @@ namespace WorldModel
                     }
                 }
 
+                if(actionRule == null)
+                    return result;
+
                 var substitutions = new[] { actionRule.Item2 }; //this adds the subs found in the eventName
 
                 var effects = actions[actionRule.Item1];
