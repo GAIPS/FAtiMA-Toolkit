@@ -358,7 +358,7 @@ namespace CommeillFaut
 
          var ind = _Steps.IndexOf((Name)lastStep);
 
-            if(ind == _Steps.Count)
+            if(ind + 1 == _Steps.Count)
                 return _Steps.FirstOrDefault();
             else return _Steps[ind + 1];
             

@@ -880,10 +880,15 @@ namespace IntegratedAuthoringToolWF
             EditorTools.WriteText(richTextBoxChat, "", Color.Black, true);
 
             var playerRPC = agentsInChat.First(a => a.IsPlayer == true);
-            var playerDecisions = playerRPC.Decide().Where(a => a.Key.ToString() == IATConsts.DIALOG_ACTION_KEY);
+            var decisionsList = playerRPC.Decide().Where(a => a.Key.ToString() == IATConsts.DIALOG_ACTION_KEY);
+           
 
-            if (playerDecisions.Any())
+        
+            if (decisionsList.Any())
             {
+
+                 var maxUtility = decisionsList.Max(x=>x.Utility);
+            var playerDecisions = decisionsList.Where(x=>x.Utility == maxUtility);
                 this.determinePlayerDialogueOptions(playerDecisions, playerRPC.CharacterName.ToString());
             }
             else
