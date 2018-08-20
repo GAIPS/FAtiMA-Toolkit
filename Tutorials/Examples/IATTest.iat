@@ -4,9 +4,8 @@
 			"classId": 0,
 			"ScenarioName": "IATTest",
 			"Description": "Testing Scenario",
-			"CharacterSources": ["RPCTest.rpc"],
 			"Dialogues": [
-			{
+				{
 					"CurrentState": "Start",
 					"NextState": "S3",
 					"Meaning": "M1",
@@ -28,7 +27,7 @@
 					"Meaning": "M1(2)",
 					"Style": "S3",
 					"Utterance": "Hello",
-					"UtteranceId": "TTS-BBE5A7C2E2E2A745E1AB68D9EF7B390D"
+					"UtteranceId": "TTS-5D41402ABC4B2A76B9719D911017C592"
 				}]
 		},
 	"types": [
