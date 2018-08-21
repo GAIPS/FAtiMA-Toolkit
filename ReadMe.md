@@ -41,11 +41,11 @@ With these goals in mind, the toolkit is composed of several assets. Each has a 
 ### Tutorials
 To get started, we recommed that you check the code examples of each asset in the project folder named *Tutorials*
 
-Additionally users car check the oficial website's "Get Started" section to learn more: https://fatima-toolkit.eu/?page_id=348
+Additionally users car check the oficial website's "Get Started" section to learn more: https://fatima-toolkit.eu/home/get-started/
 
 ### Training Materials
 
-- FAtiMA Website: https://fatima-toolkit.eu/?page_id=348
+- FAtiMA Website: https://fatima-toolkit.eu/home/get-started/
 - GALA 2017 Tutorial Presentation: https://www.dropbox.com/s/k7ymaqwr6wftytr/FAtiMA-GALA-Tutorial.pdf?dl=0
 - IAJ Lecture 1: https://www.dropbox.com/s/w6fhgtjh3jlnhwn/IAJ-FAtiMA-Part1.pdf?dl=0
 - IAJ Lecture 2: https://www.dropbox.com/s/y6ldivwlqunpl3g/IAJ-FAtiMA-Part2.pdf?dl=0
@@ -102,6 +102,7 @@ Apache 2.0
 
 ### Contact
 For any questions, suggestions and feedback please contact Samuel Mascarenhas (samuel.mascarenhas@gaips.inesc-id.pt). 
+
 
 [rage-link]: <http://rageproject.eu//>
 [fatima-link]: <http://link.springer.com/chapter/10.1007%2F978-3-319-12973-0_3>
