@@ -5,6 +5,8 @@
 
 ### Code Coverage (76%)
 
+### Oficial Website: https://fatima-toolkit.eu/
+
 ### Description
 
 FAtiMA Toolkit is a collection of tools/assets designed for the creation of characters with social and emotional intelligence. Currently, the project is actively being developed in the context of the EU-funded project named [RAGE][rage-link]. As implied by its name, the toolkit is a continuation of the work done in developing the [FAtiMA][fatima-link] agent architecture. This architecture was initially released in 2005 and, since then, it has been used to control the behaviour of virtual characters and social robots in several research applications such as:  
@@ -34,10 +36,16 @@ With these goals in mind, the toolkit is composed of several assets. Each has a 
 
 - Real Time Emotion Recognition - Able to infer the player's emotional state by combining multiple sources of affective inputs.
 
+### Latest Release: https://github.com/GAIPS-INESC-ID/FAtiMA-Toolkit/releases/tag/v2.5
+
 ### Tutorials
 To get started, we recommed that you check the code examples of each asset in the project folder named *Tutorials*
 
+Additionally users car check the oficial website's "Get Started" section to learn more: https://fatima-toolkit.eu/?page_id=348
+
 ### Training Materials
+
+- FAtiMA Website: https://fatima-toolkit.eu/?page_id=348
 - GALA 2017 Tutorial Presentation: https://www.dropbox.com/s/k7ymaqwr6wftytr/FAtiMA-GALA-Tutorial.pdf?dl=0
 - IAJ Lecture 1: https://www.dropbox.com/s/w6fhgtjh3jlnhwn/IAJ-FAtiMA-Part1.pdf?dl=0
 - IAJ Lecture 2: https://www.dropbox.com/s/y6ldivwlqunpl3g/IAJ-FAtiMA-Part2.pdf?dl=0
