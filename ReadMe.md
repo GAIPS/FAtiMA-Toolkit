@@ -3,7 +3,7 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/84vfpgaawun3nxqx?svg=true)](https://ci.appveyor.com/project/samuelfm/fatima-toolkit)
 [![AppVeyor tests](https://img.shields.io/appveyor/tests/samuelfm/fatima-toolkit.svg)](https://ci.appveyor.com/project/samuelfm/fatima-toolkit/build/tests)
 
-### Code Coverage (71%)
+### Code Coverage (76%)
 Details: http://gaips-inesc-id.github.io/FAtiMA-Toolkit/coverage/
 
 ### Description
