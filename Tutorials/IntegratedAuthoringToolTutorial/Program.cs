@@ -14,7 +14,7 @@ namespace IntegratedAuthoringToolTutorial
             var playerStr = IATConsts.PLAYER;
 
             //Loading the asset
-            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/IATTest.iat");
+            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/IAT-Tutorial/IATTest.iat");
             var currentState = IATConsts.INITIAL_DIALOGUE_STATE;
             var rpc = RolePlayCharacterAsset.LoadFromFile(iat.GetAllCharacterSources().FirstOrDefault().Source);
             rpc.LoadAssociatedAssets();
@@ -70,6 +70,10 @@ namespace IntegratedAuthoringToolTutorial
                     Console.WriteLine("\n" + rpc.CharacterName + ": " + characterAction.Name + "\n");
                 }
             }
+
+
+            // The next step in this tutorrial is to start using the World Model to cause effects in the belief state of the characters
+
             Console.WriteLine("Dialogue Reached a Terminal State");
             Console.ReadKey();
         }

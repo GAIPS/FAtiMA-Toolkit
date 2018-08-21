@@ -1,0 +1,38 @@
+{
+  "root": {
+    "classId": 0,
+    "DefaultActionPriority": "3",
+    "ActionTendencies": [
+      {
+        "Action": "TestAction",
+        "Target": "A",
+        "Conditions": {
+          "Set": [ "IsSalient(Portuguese) = true", "[p] = 20" ]
+        },
+        "Priority": "[p]"
+      },
+      {
+        "Action": "Jump",
+        "Target": "B",
+        "Conditions": {
+          "Set": [ ]
+        },
+        "Priority": "2"
+      },
+      {
+        "Action": "Jump",
+        "Target": "C",
+        "Conditions": {
+          "Set": [ ]
+        },
+        "Priority" :  "1"
+      }
+
+    ]
+  },
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "EmotionalDecisionMaking.EmotionalDecisionMakingAsset, EmotionalDecisionMaking, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

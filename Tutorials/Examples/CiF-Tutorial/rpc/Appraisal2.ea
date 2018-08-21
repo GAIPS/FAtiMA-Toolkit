@@ -1,0 +1,78 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"Description": null,
+			"AppraisalRules":
+				{
+					"AppraisalWeight": 1,
+					"Rules": [
+						{
+							"EventName": "Event(Action-End, Player, Speak([cs], [ns], [m], Negative), SELF)",
+							"Conditions":
+								{
+									"Set": ["ValidDialogue([cs], [ns], [m], Negative) = True"]
+								},
+							"Desirability": -10,
+							"Praiseworthiness": -5
+						}, 
+						{
+							"EventName": "Event(Action-End, Player, Speak([cs], [ns], [m], Neutral), SELF)",
+							"Conditions":
+								{
+									"Set": ["ValidDialogue([cs], [ns], [m], Neutral) = True"]
+								},
+							"Desirability": 0,
+							"Praiseworthiness": 0
+						}, 
+						{
+							"EventName": "Event(Action-End, Player, Speak([cs], [ns], [m], Positive), [y])",
+							"Conditions":
+								{
+									"Set": ["ValidDialogue([cs], [ns], [m], Positive) = True"]
+								},
+							"Desirability": 10,
+							"Praiseworthiness": 5
+						}, 
+						{
+							"EventName": "Event(Action-End, [x], Speak([cs], [ns], [m], Negative), SELF)",
+							"Conditions":
+								{
+									"Set": ["ValidDialogue([cs], [ns], [m], Negative) = True", "[x] != Player", "[x] != SELF"]
+								},
+							"Desirability": -5,
+							"Praiseworthiness": 0
+						}, 
+						{
+							"EventName": "Event(Action-End, [x], Speak([cs], [ns], [m], Neutral), SELF)",
+							"Conditions":
+								{
+									"Set": ["ValidDialogue([cs], [ns], [m], Neutral) = True", "[x] != Player", "[x] != SELF"]
+								},
+							"Desirability": -1,
+							"Praiseworthiness": 0
+						}, 
+						{
+							"EventName": "Event(Action-End, [x], Speak([cs], [ns], [m], Positive), SELF)",
+							"Conditions":
+								{
+									"Set": ["ValidDialogue([cs], [ns], [m], Positive) = True", "[x] != Player", "[x] != SELF"]
+								},
+							"Desirability": 5,
+							"Praiseworthiness": 0
+						}]
+				},
+			"EmotionDispositions": [
+				{
+					"Emotion": "*",
+					"Decay": 1,
+					"Threshold": 1
+				}],
+			"Goals": []
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "EmotionalAppraisal.EmotionalAppraisalAsset, EmotionalAppraisal, Version=1.4.1.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

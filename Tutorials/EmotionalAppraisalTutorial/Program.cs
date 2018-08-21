@@ -15,7 +15,7 @@ namespace EmotionalAppraisalTutorial
         {
 			var kickEvent = Name.BuildName("Event(Action-End, John, *, *)");
 
-            EmotionalAppraisalAsset ea = EmotionalAppraisalAsset.LoadFromFile("../../../Examples/EATest.ea");
+            EmotionalAppraisalAsset ea = EmotionalAppraisalAsset.LoadFromFile("../../../Examples/EA-Tutorial/EATest.ea");
 
            
 
@@ -51,7 +51,7 @@ namespace EmotionalAppraisalTutorial
             }
 
             //The asset can also be loaded from an existing file using the following method:
-            ea = EmotionalAppraisalAsset.LoadFromFile("../../../Examples/EATest.ea");
+            ea = EmotionalAppraisalAsset.LoadFromFile("../../../Examples/EA-Tutorial/EATest.ea");
             
             Console.ReadKey();
         }

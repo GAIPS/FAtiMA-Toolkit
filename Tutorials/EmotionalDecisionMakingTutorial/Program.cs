@@ -42,7 +42,7 @@ namespace EmotionalDecisionMakingTutorial
 
             //this is how you can load the asset from a file
             Console.WriteLine("Loading From File: ");
-            edm = EmotionalDecisionMakingAsset.LoadFromFile("../../../Examples/EDMTest.edm");
+            edm = EmotionalDecisionMakingAsset.LoadFromFile("../../../Examples/EDM-Tutorial/EDMTest.edm");
             edm.RegisterKnowledgeBase(kb);
             actions = edm.Decide(Name.UNIVERSAL_SYMBOL);
 

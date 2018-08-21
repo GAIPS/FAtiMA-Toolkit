@@ -17,7 +17,7 @@ namespace SocialImportanceTutorial
 			var siTarget = "Player";
             
             //First, we load the asset from an existing profile
-            var siAsset = SocialImportanceAsset.LoadFromFile("../../../Examples/SITest.si");
+            var siAsset = SocialImportanceAsset.LoadFromFile("../../../Examples/SI-Tutorial/SITest.si");
 
             var rules = siAsset.GetAttributionRules();
             //We then register a knowledge base

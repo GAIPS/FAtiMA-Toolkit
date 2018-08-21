@@ -32,7 +32,7 @@ namespace WorldModelTutorial
         static void Main(string[] args)
         {
 
-            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/CiF/CiF-Scenario-IAT.iat");
+            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/CiF-Tutorial/JobInterview.iat");
             rpcList = new List<RolePlayCharacterAsset>();
             var wm = new WorldModelAsset();
 
@@ -58,7 +58,7 @@ namespace WorldModelTutorial
                 ObserverAgent = (Name)"[i]"
             });
 
-            wm.SaveToFile("../../../Examples/CiF/WorldModel.wm");
+            wm.SaveToFile("../../../Examples/WM-Tutorial/WorldModel.wm");
             foreach (var source in iat.GetAllCharacterSources())
             {
 
@@ -117,7 +117,7 @@ namespace WorldModelTutorial
                         Console.WriteLine(rpc.CharacterName + " has this action: " + act.Name);
                         
                     }
-                    rpc.SaveToFile("../../../Examples/CiF/" + rpc.CharacterName + "-output" + ".rpc");
+                    rpc.SaveToFile("../../../Examples/WM-Tutorial/" + rpc.CharacterName + "-output" + ".rpc");
 
 
                 }

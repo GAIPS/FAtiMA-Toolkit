@@ -74,7 +74,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45.76659F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20.59496F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 49F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(715, 563);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(715, 609);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // pictureBox1
@@ -84,7 +84,7 @@
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(715, 147);
+            this.pictureBox1.Size = new System.Drawing.Size(715, 163);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
@@ -99,7 +99,7 @@
             this.tableLayoutPanel2.Controls.Add(this.button1, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.button2, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 512);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 558);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
@@ -136,7 +136,7 @@
             this._titleLabel.AutoSize = true;
             this._titleLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._titleLabel.Location = new System.Drawing.Point(4, 159);
+            this._titleLabel.Location = new System.Drawing.Point(4, 175);
             this._titleLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this._titleLabel.Name = "_titleLabel";
             this._titleLabel.Size = new System.Drawing.Size(707, 25);
@@ -148,7 +148,7 @@
             // 
             this._versionLabel.AutoSize = true;
             this._versionLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._versionLabel.Location = new System.Drawing.Point(4, 190);
+            this._versionLabel.Location = new System.Drawing.Point(4, 206);
             this._versionLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this._versionLabel.Name = "_versionLabel";
             this._versionLabel.Size = new System.Drawing.Size(707, 20);
@@ -161,10 +161,11 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(4, 222);
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(4, 238);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(707, 200);
+            this.label1.Size = new System.Drawing.Size(707, 221);
             this.label1.TabIndex = 4;
             this.label1.Text = resources.GetString("label1.Text");
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -183,12 +184,12 @@
             this.tableLayoutPanel3.Controls.Add(this.pictureBox4, 1, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.AddColumns;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 422);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 459);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(715, 90);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(715, 99);
             this.tableLayoutPanel3.TabIndex = 5;
             // 
             // pictureBox2
@@ -198,7 +199,7 @@
             this.pictureBox2.Location = new System.Drawing.Point(436, 6);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(129, 78);
+            this.pictureBox2.Size = new System.Drawing.Size(129, 87);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox2.TabIndex = 0;
             this.pictureBox2.TabStop = false;
@@ -210,7 +211,7 @@
             this.pictureBox3.Location = new System.Drawing.Point(293, 6);
             this.pictureBox3.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(129, 78);
+            this.pictureBox3.Size = new System.Drawing.Size(129, 87);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox3.TabIndex = 1;
             this.pictureBox3.TabStop = false;
@@ -222,7 +223,7 @@
             this.pictureBox4.Location = new System.Drawing.Point(150, 6);
             this.pictureBox4.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(129, 78);
+            this.pictureBox4.Size = new System.Drawing.Size(129, 87);
             this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox4.TabIndex = 2;
             this.pictureBox4.TabStop = false;
@@ -231,7 +232,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(729, 575);
+            this.ClientSize = new System.Drawing.Size(729, 621);
             this.ControlBox = false;
             this.Controls.Add(this.tableLayoutPanel1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

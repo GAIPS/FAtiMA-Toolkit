@@ -1,0 +1,824 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"ScenarioName": "Job Interview",
+			"Description": "This scenario is a Job Interview. The NPC will make 10 questions to the player. The player will always have 3 choices for each question. Depending on the answers the player gives, the NPC will react accordingly. At the end of the 10 question, depending on the mood of the NPC, he can accept the player, refuse or tell him that they will contact him later. It can happen that sometimes the NPC will make a different question that is not part of the initial 10. This is to illustrate social exchanges. There is a second NPC that will be listening to the dialogues of the Player and the first NPC. In certain situations, the first NPC will ask something to the second NPC that could change the moods of both, affecting the final design of accepting the Player.",
+			"WorldModelSource": "JobInterviewWorldModel.wmo",
+			"CharacterSources": ["rpc\\player.rpc", "rpc\\NPCApp1EDM2.rpc", "rpc\\NPCApp2EDM1.rpc"],
+			"Dialogues": [
+				{
+					"CurrentState": "S2",
+					"NextState": "S3",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "Good afternoon to you too. So you want to work with us. What is your motivation?",
+					"UtteranceId": "TTS-20272A7DA144D358C7095E09D0A89113"
+				}, 
+				{
+					"CurrentState": "StartSport",
+					"NextState": "AnswerSport",
+					"Meaning": "SE(Sport, Initiate)",
+					"Style": "Positive",
+					"Utterance": "So you like basketball? I used to play too when I was younger.",
+					"UtteranceId": "TTS-9D2A62745B5028173AF27B4CE1E68AA8"
+				}, 
+				{
+					"CurrentState": "S3",
+					"NextState": "S4",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "I just need some money to be honest.",
+					"UtteranceId": "TTS-6F3215566E781B4855D6668A1D8A4FAE"
+				}, 
+				{
+					"CurrentState": "S1",
+					"NextState": "S2",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "Good afternoon. My name is João.",
+					"UtteranceId": "TTS-928E967D5A1CC0E59B627981F8CC7F99"
+				}, 
+				{
+					"CurrentState": "S3",
+					"NextState": "S4",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "I heard about your company and got very excited to work with you.",
+					"UtteranceId": "TTS-671CD5E06C6BE7BAF82D66EEBED82DE9"
+				}, 
+				{
+					"CurrentState": "S2",
+					"NextState": "S3",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "What is your motivation to be here?",
+					"UtteranceId": "TTS-6DE997A5039EA03977D67037BFF6ECF4"
+				}, 
+				{
+					"CurrentState": "S4",
+					"NextState": "S5",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "Fair enough. So how much do you want to earn?",
+					"UtteranceId": "TTS-FCCC288B20C979DE121CC280695A1606"
+				}, 
+				{
+					"CurrentState": "S4",
+					"NextState": "S5",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "Glad to know. What is your salary expectation?",
+					"UtteranceId": "TTS-EABD3AD4EEC8A35D6E138FA517093CE0"
+				}, 
+				{
+					"CurrentState": "S5",
+					"NextState": "S6",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "Maybe 1500€.",
+					"UtteranceId": "TTS-049552799A44C8813D369DA6830A30FD"
+				}, 
+				{
+					"CurrentState": "S20",
+					"NextState": "End",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "Well...we can not accept you. We were expecting a diferent kind of person. Bye.",
+					"UtteranceId": "TTS-60D115660634824214A78D67FF5C3009"
+				}, 
+				{
+					"CurrentState": "S5",
+					"NextState": "S6",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "Whatever you want. ",
+					"UtteranceId": "TTS-45B48E3158F5CE2146C01BD1782800B5"
+				}, 
+				{
+					"CurrentState": "S4",
+					"NextState": "S5",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "Hm...So you are thinking of getting how much exactly?",
+					"UtteranceId": "TTS-DFFE01EEA72224F4494ABE150F0B0B0F"
+				}, 
+				{
+					"CurrentState": "S20",
+					"NextState": "End",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "Thanks for coming. We will contact you soon with the answer.",
+					"UtteranceId": "TTS-B295AF6910607AC13251B0E084549F7C"
+				}, 
+				{
+					"CurrentState": "S6",
+					"NextState": "S7",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "Very nice! Do you have any hobbies? Interests in your life?",
+					"UtteranceId": "TTS-58053B3A2C8EBEB4BE3C7E030BF6E3FF"
+				}, 
+				{
+					"CurrentState": "Start",
+					"NextState": "S1",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "Hello! What is your name?",
+					"UtteranceId": "TTS-22B4B32EB53C5D3BEC5E255710296DCC"
+				}, 
+				{
+					"CurrentState": "S5",
+					"NextState": "S6",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "You would like 2000€. I am ambitious.",
+					"UtteranceId": "TTS-FD1D9413F78F90F9528C8B2ADC112D99"
+				}, 
+				{
+					"CurrentState": "S11",
+					"NextState": "S12",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "I had 15.",
+					"UtteranceId": "TTS-6086B4D3B6CA470934427582B84E902D"
+				}, 
+				{
+					"CurrentState": "S6",
+					"NextState": "S7",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "Ok. Next we wanna know if you have hobbies.",
+					"UtteranceId": "TTS-DDE0C5CEE456C40BD2978F2FDC540D0D"
+				}, 
+				{
+					"CurrentState": "S6",
+					"NextState": "S7",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "Great...So...any hobbies?",
+					"UtteranceId": "TTS-E081B7F5C713A02A554693FAF99E8ED4"
+				}, 
+				{
+					"CurrentState": "S11",
+					"NextState": "S12",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "I had 11.",
+					"UtteranceId": "TTS-3C9A73BF6380E0862C03EFD3B4835CA6"
+				}, 
+				{
+					"CurrentState": "PreGame",
+					"NextState": "StartGame",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "Do we have any PC for him to play in the free time?",
+					"UtteranceId": "TTS-7DF71A3EC8C17D3258C2EDFC8F3E1EAF"
+				}, 
+				{
+					"CurrentState": "S7",
+					"NextState": "S8",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "A few. I can not say for sure what I like the most. I just do thing as I live.",
+					"UtteranceId": "TTS-632ECDFBE374246549864FA1892BD7D2"
+				}, 
+				{
+					"CurrentState": "S7",
+					"NextState": "S8",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "Not really no.",
+					"UtteranceId": "TTS-83F8324AF334CF784CE0E29CC6FAFB0E"
+				}, 
+				{
+					"CurrentState": "S8",
+					"NextState": "S9",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "Pressure gets you?",
+					"UtteranceId": "TTS-193CDC26D0F4D5A4F63FED838B115607"
+				}, 
+				{
+					"CurrentState": "S8",
+					"NextState": "S9",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "How do you deal with pressure?",
+					"UtteranceId": "TTS-8D91F3BE68B794F5BDBAFF0086FC49C9"
+				}, 
+				{
+					"CurrentState": "S8",
+					"NextState": "S9",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "Next one is...Do you fail with pressure?",
+					"UtteranceId": "TTS-46B89A3811BADC442DCDBA337DEC0F51"
+				}, 
+				{
+					"CurrentState": "S9",
+					"NextState": "S10",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "I deal with it as I deal with everything. I try to be professional. ",
+					"UtteranceId": "TTS-22D418D65B8672A5F9FA07D7A2A868EC"
+				}, 
+				{
+					"CurrentState": "S20",
+					"NextState": "End",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "Then it is decided. You will stay with us. Thanks for applying!",
+					"UtteranceId": "TTS-0F79AC5569D52147047D3E87C083E8F6"
+				}, 
+				{
+					"CurrentState": "S9",
+					"NextState": "S10",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "Normal I guess. I really dont get affected.",
+					"UtteranceId": "TTS-9FAD3C9FF5261D7E91FE94666DDDDDFA"
+				}, 
+				{
+					"CurrentState": "S9",
+					"NextState": "S10",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "Pressure? I dont know that. Never had.",
+					"UtteranceId": "TTS-DC8F8DF7848C59425F7558533567CE12"
+				}, 
+				{
+					"CurrentState": "S10",
+					"NextState": "S11",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "That is good for us! We need that attitude. So what was your final grade?",
+					"UtteranceId": "TTS-630F8EDA35B753263568CE9FE29C5C84"
+				}, 
+				{
+					"CurrentState": "S10",
+					"NextState": "S11",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "A normal attitude I supose. So what was your final grade?",
+					"UtteranceId": "TTS-AA47ABDD2D46FD9CBD6E44286C0B3723"
+				}, 
+				{
+					"CurrentState": "S10",
+					"NextState": "S11",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "A simple answer. Final grade?",
+					"UtteranceId": "TTS-B9850846C38084F34661EC1F35689623"
+				}, 
+				{
+					"CurrentState": "S12",
+					"NextState": "S13",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "Congrats! Any sports?",
+					"UtteranceId": "TTS-4D5E5A08576393B549DF2B1DC5825427"
+				}, 
+				{
+					"CurrentState": "S11",
+					"NextState": "S12",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "I had 19.",
+					"UtteranceId": "TTS-8ACAD5A686E66F2D2FEA27DE85BBE539"
+				}, 
+				{
+					"CurrentState": "S12",
+					"NextState": "S13",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "That is ok. Any sports?",
+					"UtteranceId": "TTS-465627004A82D9680BA1A5376A23C4F4"
+				}, 
+				{
+					"CurrentState": "S12",
+					"NextState": "S13",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "Not the worst I guess. Any sports?",
+					"UtteranceId": "TTS-B906DC94ACF42333247CAA8E43B435BB"
+				}, 
+				{
+					"CurrentState": "S13",
+					"NextState": "S14",
+					"Meaning": "DoesSport",
+					"Style": "Positive",
+					"Utterance": "I practice Basketball. I love it and it makes me feel great.",
+					"UtteranceId": "TTS-F47EBE9C2195C59965B0DB276AE91868"
+				}, 
+				{
+					"CurrentState": "S13",
+					"NextState": "S14",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "I do not like sports. Even if it is bad for my health. I prefear being at home. ",
+					"UtteranceId": "TTS-A8729E87685BDD1CFF05A3CEC391108F"
+				}, 
+				{
+					"CurrentState": "S14",
+					"NextState": "S15",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "I like you. Do you like team work?",
+					"UtteranceId": "TTS-7A6256DA4E60424E9D699BAB2561529E"
+				}, 
+				{
+					"CurrentState": "OkSport",
+					"NextState": "SC14",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "Ok",
+					"UtteranceId": "TTS-444BCB3A3FCF8389296C49467F27E1D6"
+				}, 
+				{
+					"CurrentState": "S14",
+					"NextState": "S15",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "Ok. It is really your decision in the end. How do you deal with working in a team?",
+					"UtteranceId": "TTS-0E2811BF4B19E680E02629CEEADE9981"
+				}, 
+				{
+					"CurrentState": "S15",
+					"NextState": "S16",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "I like working with others.",
+					"UtteranceId": "TTS-19E02396C26B7A9E270265E8E566FF1D"
+				}, 
+				{
+					"CurrentState": "S15",
+					"NextState": "S16",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "I dont like working with others. They always get in my way.",
+					"UtteranceId": "TTS-D0BC704189770281907389EFA77A0006"
+				}, 
+				{
+					"CurrentState": "S16",
+					"NextState": "S17",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "That is ok for me. Do you have any skills that we should know?",
+					"UtteranceId": "TTS-831615ABACE85C0EE380D47B2437EA4D"
+				}, 
+				{
+					"CurrentState": "S16",
+					"NextState": "S17",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "Sure. Any skills you have in particular?",
+					"UtteranceId": "TTS-81C04685A6439693F433E06DA048EF9A"
+				}, 
+				{
+					"CurrentState": "S17",
+					"NextState": "S18",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "I am a very persistent guy. I dont give up easily.",
+					"UtteranceId": "TTS-5F31E88213DA02DDF559AB7EE5701C09"
+				}, 
+				{
+					"CurrentState": "S17",
+					"NextState": "S18",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "I like working.",
+					"UtteranceId": "TTS-DEF94C8A3ED46474BDEB88E93D6B7AF4"
+				}, 
+				{
+					"CurrentState": "S17",
+					"NextState": "S18",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "Not really no.",
+					"UtteranceId": "TTS-83F8324AF334CF784CE0E29CC6FAFB0E"
+				}, 
+				{
+					"CurrentState": "S18",
+					"NextState": "S19",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "We reached the final question. You are almost free. When could you start working with us?",
+					"UtteranceId": "TTS-C03F0CF1FB0E0A0A5FB6EDEAEAADB12C"
+				}, 
+				{
+					"CurrentState": "S18",
+					"NextState": "S19",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "Ok. Final question. When could you start?",
+					"UtteranceId": "TTS-2325958BE564CDF6E6116ADF948A4EEA"
+				}, 
+				{
+					"CurrentState": "S18",
+					"NextState": "S19",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "We reached the end. Finally...When could you start working?",
+					"UtteranceId": "TTS-9B009B7355A8341E2207D9F329F068DE"
+				}, 
+				{
+					"CurrentState": "S19",
+					"NextState": "S20",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "As soon as you want.",
+					"UtteranceId": "TTS-A7C961034006DAAD152374F6B0D19995"
+				}, 
+				{
+					"CurrentState": "S19",
+					"NextState": "S20",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "I think next month.",
+					"UtteranceId": "TTS-42C3B6D6228539F4A5B6610C7C847283"
+				}, 
+				{
+					"CurrentState": "S19",
+					"NextState": "S20",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "I do not know yet.",
+					"UtteranceId": "TTS-434E6A345444780061F0E56F748CEE19"
+				}, 
+				{
+					"CurrentState": "S1",
+					"NextState": "S2",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "My name is João.",
+					"UtteranceId": "TTS-AE6C2A5BAEBDBBE3E14EA8AFEB94E1FF"
+				}, 
+				{
+					"CurrentState": "S13",
+					"NextState": "S14",
+					"Meaning": "DoesSport",
+					"Style": "Neutral",
+					"Utterance": "I practice Basketball. Allthough i think I will leave if I start working. ",
+					"UtteranceId": "TTS-9D0199CFBD0A3037A9DED5E102E8F7CB"
+				}, 
+				{
+					"CurrentState": "StartUniv",
+					"NextState": "AnswerUniv",
+					"Meaning": "SE(Univ, Initiate)",
+					"Style": "Positive",
+					"Utterance": "So what was your university?",
+					"UtteranceId": "TTS-4D0702AC704A046E761F71B629B7D7A8"
+				}, 
+				{
+					"CurrentState": "EndSport",
+					"NextState": "-",
+					"Meaning": "SE(Sport, Finalize)",
+					"Style": "Neutral",
+					"Utterance": "I liked it, but not much.",
+					"UtteranceId": "TTS-C5EBFD2EE07B7E6533771E859776E472"
+				}, 
+				{
+					"CurrentState": "EndSport",
+					"NextState": "-",
+					"Meaning": "SE(Sport, Finalize)",
+					"Style": "Positive",
+					"Utterance": "Good good!",
+					"UtteranceId": "TTS-64058AECD64A56F4E0EC3580D75B0BBC"
+				}, 
+				{
+					"CurrentState": "AnswerSport",
+					"NextState": "EndSport",
+					"Meaning": "SE(Sport, Answer)",
+					"Style": "Negative",
+					"Utterance": "I dont like it anymore really. Dont talk about it.",
+					"UtteranceId": "TTS-1438E98723FA7E25D88DB4428BC1E352"
+				}, 
+				{
+					"CurrentState": "S14",
+					"NextState": "S15",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "That is ok. Do you like working with others?",
+					"UtteranceId": "TTS-CC295E8FFFEBC3E92151E66EF13CD232"
+				}, 
+				{
+					"CurrentState": "SC14",
+					"NextState": "S15",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "Do you like working with others?",
+					"UtteranceId": "TTS-FB73FAFBC26F4F2095049F1918799016"
+				}, 
+				{
+					"CurrentState": "S3",
+					"NextState": "S4",
+					"Meaning": "UnivTalk",
+					"Style": "Neutral",
+					"Utterance": "I just finished university and I want to start working.",
+					"UtteranceId": "TTS-5C6E338AAC0ADBD2245103397789247A"
+				}, 
+				{
+					"CurrentState": "AnswerUniv",
+					"NextState": "EndUniv",
+					"Meaning": "SE(Univ, Answer)",
+					"Style": "Negative",
+					"Utterance": "IST but it does not matter.",
+					"UtteranceId": "TTS-9E33C4CF18A51BCAC5C24CBFDF7495EA"
+				}, 
+				{
+					"CurrentState": "AnswerSport",
+					"NextState": "EndSport",
+					"Meaning": "SE(Sport, Answer)",
+					"Style": "Neutral",
+					"Utterance": "Yeah I like it a lot.",
+					"UtteranceId": "TTS-842379866FC9A6C715B3CAAA90E675D4"
+				}, 
+				{
+					"CurrentState": "AnswerUniv",
+					"NextState": "EndUniv",
+					"Meaning": "SE(Univ, Answer)",
+					"Style": "Neutral",
+					"Utterance": "IST. Not a big deal really.",
+					"UtteranceId": "TTS-56B4CA37720AE54857F53A2FD61E8823"
+				}, 
+				{
+					"CurrentState": "EndSport",
+					"NextState": "-",
+					"Meaning": "SE(Sport, Finalize)",
+					"Style": "Negative",
+					"Utterance": "We should get back to the interview.",
+					"UtteranceId": "TTS-92B42DB3FE57C4114FBBC2E206F3371D"
+				}, 
+				{
+					"CurrentState": "EndUniv",
+					"NextState": "-",
+					"Meaning": "SE(Univ, Finalize)",
+					"Style": "Positive",
+					"Utterance": "Heard a lot of great things about IST. Glad you were there. ",
+					"UtteranceId": "TTS-9763E1E5D0D723598AD5B818D1316911"
+				}, 
+				{
+					"CurrentState": "SC4",
+					"NextState": "S5",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "What is your salary expectation?",
+					"UtteranceId": "TTS-B055A786C942063D3D1F07F31AD453A0"
+				}, 
+				{
+					"CurrentState": "OkUniv",
+					"NextState": "SC4",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "Ok.",
+					"UtteranceId": "TTS-0260A8F661F73E2CF7FDBA1080B888D1"
+				}, 
+				{
+					"CurrentState": "SC4",
+					"NextState": "S5",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "What is your salary expectation?",
+					"UtteranceId": "TTS-B055A786C942063D3D1F07F31AD453A0"
+				}, 
+				{
+					"CurrentState": "SC4",
+					"NextState": "S5",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "What is your salary expectation?",
+					"UtteranceId": "TTS-B055A786C942063D3D1F07F31AD453A0"
+				}, 
+				{
+					"CurrentState": "SC14",
+					"NextState": "S15",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "Do you like working with others?",
+					"UtteranceId": "TTS-FB73FAFBC26F4F2095049F1918799016"
+				}, 
+				{
+					"CurrentState": "SC14",
+					"NextState": "S15",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "Do you like working with others?",
+					"UtteranceId": "TTS-FB73FAFBC26F4F2095049F1918799016"
+				}, 
+				{
+					"CurrentState": "S15",
+					"NextState": "S16",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "It does not matter really.",
+					"UtteranceId": "TTS-AB7A5330C36475C705AE0FECBB0562D7"
+				}, 
+				{
+					"CurrentState": "StartFCT",
+					"NextState": "AnswerFCT",
+					"Meaning": "SE(FCT, Initiate)",
+					"Style": "Negative",
+					"Utterance": "Don't you think that FCT is much better?",
+					"UtteranceId": "TTS-BC5134C3E2B7CAC1DC240D92991B1678"
+				}, 
+				{
+					"CurrentState": "AnswerFCT",
+					"NextState": "EndFCT",
+					"Meaning": "SE(FCT, Answer)",
+					"Style": "Positive",
+					"Utterance": "No, IST is the best one.",
+					"UtteranceId": "TTS-F986B6D32D3FA320A791A6565DF92F17"
+				}, 
+				{
+					"CurrentState": "AnswerFCT",
+					"NextState": "EndFCT",
+					"Meaning": "SE(FCT, Answer)",
+					"Style": "Neutral",
+					"Utterance": "No, it may be just not bad.",
+					"UtteranceId": "TTS-AD64B80F3306A7945B2A4755C6E5DC1B"
+				}, 
+				{
+					"CurrentState": "AnswerFCT",
+					"NextState": "EndFCT",
+					"Meaning": "SE(FCT, Answer)",
+					"Style": "Negative",
+					"Utterance": "Yes, I like FCT students.",
+					"UtteranceId": "TTS-EE0FE0B4908A3D67BEF8BEEE8E7DA48F"
+				}, 
+				{
+					"CurrentState": "EndFCT",
+					"NextState": "EndUniv",
+					"Meaning": "SE(FCT, Finalize)",
+					"Style": "Neutral",
+					"Utterance": "We will talk about it latter.",
+					"UtteranceId": "TTS-D21D7A947EF049788F666F0E82F6B806"
+				}, 
+				{
+					"CurrentState": "EndFCT",
+					"NextState": "EndUniv",
+					"Meaning": "SE(FCT, Finalize)",
+					"Style": "Positive",
+					"Utterance": "You may be right.",
+					"UtteranceId": "TTS-2492D5E5751811C561134A891429B34B"
+				}, 
+				{
+					"CurrentState": "EndFCT",
+					"NextState": "EndUniv",
+					"Meaning": "SE(FCT, Finalize)",
+					"Style": "Negative",
+					"Utterance": "I don't agree with you but we will talk about it latter.",
+					"UtteranceId": "TTS-252BFE20123CC7BBC034E7DDBA4945CC"
+				}, 
+				{
+					"CurrentState": "PreFCT",
+					"NextState": "StartFCT",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "What do you think Sarah?",
+					"UtteranceId": "TTS-A0927167661C9AE582B9BDF190C11D05"
+				}, 
+				{
+					"CurrentState": "StartFCT",
+					"NextState": "AnswerFCT",
+					"Meaning": "SE(FCT, Initiate)",
+					"Style": "Positive",
+					"Utterance": "Don't you think that FCT is probabily better?",
+					"UtteranceId": "TTS-1E0CBC1EA726270E72F68063152BA266"
+				}, 
+				{
+					"CurrentState": "StartFCT",
+					"NextState": "AnswerFCT",
+					"Meaning": "SE(FCT, Initiate)",
+					"Style": "Neutral",
+					"Utterance": "Don't you think that FCT is better?",
+					"UtteranceId": "TTS-97B89BF2C6963B18878B3B4644AEC238"
+				}, 
+				{
+					"CurrentState": "AnswerGame",
+					"NextState": "EndGame",
+					"Meaning": "SE(Game, Answer)",
+					"Style": "Positive",
+					"Utterance": "Nice! Lets continue then.",
+					"UtteranceId": "TTS-F9BB9A0B5AF62F1B4D67C8484961BA31"
+				}, 
+				{
+					"CurrentState": "StartGame",
+					"NextState": "AnswerGame",
+					"Meaning": "SE(Game, Initiate)",
+					"Style": "Negative",
+					"Utterance": "No. We do not allow games here.",
+					"UtteranceId": "TTS-A875585D2F9CB5B7F63C50ED45E71C15"
+				}, 
+				{
+					"CurrentState": "StartGame",
+					"NextState": "AnswerGame",
+					"Meaning": "SE(Game, Initiate)",
+					"Style": "Positive",
+					"Utterance": "Actually we have! He can go there anytime.",
+					"UtteranceId": "TTS-8471110886FCB2E2E884E60E2A719BBC"
+				}, 
+				{
+					"CurrentState": "StartGame",
+					"NextState": "AnswerGame",
+					"Meaning": "SE(Game, Initiate)",
+					"Style": "Neutral",
+					"Utterance": "I am not sure...",
+					"UtteranceId": "TTS-462FBABF5F4AE4B5119A1A0D15E5CD0C"
+				}, 
+				{
+					"CurrentState": "AnswerGame",
+					"NextState": "EndGame",
+					"Meaning": "SE(Game, Answer)",
+					"Style": "Neutral",
+					"Utterance": "Oh well. We check later.",
+					"UtteranceId": "TTS-2DC1C20C05C1CDD8B59FA039E3196242"
+				}, 
+				{
+					"CurrentState": "AnswerGame",
+					"NextState": "EndGame",
+					"Meaning": "SE(Game, Answer)",
+					"Style": "Negative",
+					"Utterance": "I did not know that...",
+					"UtteranceId": "TTS-C07395F2E094CCBB0395583AB2D0F29A"
+				}, 
+				{
+					"CurrentState": "EndGame",
+					"NextState": "S8",
+					"Meaning": "SE(Game, Finalize)",
+					"Style": "Positive",
+					"Utterance": "Yeah!",
+					"UtteranceId": "TTS-FA55D94816D5CCF89794A705913A361B"
+				}, 
+				{
+					"CurrentState": "EndGame",
+					"NextState": "S8",
+					"Meaning": "SE(Game, Finalize)",
+					"Style": "Neutral",
+					"Utterance": "Yeah...",
+					"UtteranceId": "TTS-6314C7EE7C84F307C398FBE33C53C1B6"
+				}, 
+				{
+					"CurrentState": "EndGame",
+					"NextState": "S8",
+					"Meaning": "SE(Game, Finalize)",
+					"Style": "Negative",
+					"Utterance": "...",
+					"UtteranceId": "TTS-2F43B42FD833D1E77420A8DAE7419000"
+				}, 
+				{
+					"CurrentState": "S16",
+					"NextState": "S17",
+					"Meaning": "-",
+					"Style": "Negative",
+					"Utterance": "Oh well...Do you have any skills?",
+					"UtteranceId": "TTS-920F0750A0FE938F040F4BA333238239"
+				}, 
+				{
+					"CurrentState": "AnwserSport",
+					"NextState": "EndSport",
+					"Meaning": "SE(Sport, Answer)",
+					"Style": "Positive",
+					"Utterance": "Liked it? I loved it. Glad to know you like it too.",
+					"UtteranceId": "TTS-15CEA9158E3F907ECE37CFC134EFD175"
+				}, 
+				{
+					"CurrentState": "AnswerUniv",
+					"NextState": "EndUniv",
+					"Meaning": "SE(Univ, Answer)",
+					"Style": "Positive",
+					"Utterance": "I went to IST. It is really great. ",
+					"UtteranceId": "TTS-533801BCB4618DD14E2E0CE627B2504E"
+				}, 
+				{
+					"CurrentState": "S7",
+					"NextState": "S8",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "I like a lot of things! The ones I enjoy the more are gaming, reading and watch movies.",
+					"UtteranceId": "TTS-4641911CB78F56C813026E004880BEC6"
+				}, 
+				{
+					"CurrentState": "EndUniv",
+					"NextState": "-",
+					"Meaning": "SE(Univ, Finalize)",
+					"Style": "Negative",
+					"Utterance": "It was just curiosity...",
+					"UtteranceId": "TTS-CD8DBE467573144DBB8E6D4ED6D0D8ED"
+				}, 
+				{
+					"CurrentState": "EndUniv",
+					"NextState": "-",
+					"Meaning": "SE(Univ, Finalize)",
+					"Style": "Neutral",
+					"Utterance": "It is good for what I heard.",
+					"UtteranceId": "TTS-FBCBB932F34D6BB3946A78FFA37A3D58"
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "IntegratedAuthoringTool.IntegratedAuthoringToolAsset, IntegratedAuthoringTool, Version=1.7.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

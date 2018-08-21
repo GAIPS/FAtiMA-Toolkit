@@ -9,7 +9,7 @@ namespace MCTSTutorial
         static void Main(string[] args)
         {
             //Loading the asset
-            var rpc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/RPC-MCTS.rpc");
+            var rpc = RolePlayCharacterAsset.LoadFromFile("../../../Examples/MCTS-Tutorial/RPC-MCTS.rpc");
             rpc.LoadAssociatedAssets();
             Console.WriteLine("Starting Mood: " + rpc.Mood);
             var actions = rpc.Decide();

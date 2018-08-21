@@ -1,0 +1,58 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"SocialExchanges": [
+				{
+					"Name": "Sport",
+					"Description": "talk about sports",
+					"Steps": ["Initiate", "Answer", "Finalize"],
+					"Target": "[t]",
+					"StartingConditions":
+						{
+							"Set": ["Has(Floor) = SELF"]
+						},
+					"InfluenceRules": [
+						{
+							"Rules":
+								{
+									"Set": ["DoesSport([t]) = True"]
+								},
+							"Value": 4,
+							"Mode": "-"
+						}]
+				}, 
+				{
+					"Name": "Univ",
+					"Description": "talk about university",
+					"Steps": ["Initiate", "Answer", "Finalize"],
+					"Target": "[t]",
+					"StartingConditions":
+						{
+							"Set": ["GoesToUniversity([t]) = True", "Has(Floor) = SELF"]
+						},
+					"InfluenceRules": [
+						{
+							"Rules":
+								{
+									"Set": ["Presentable([t]) = True"]
+								},
+							"Value": 5,
+							"Mode": "-"
+						}, 
+						{
+							"Rules":
+								{
+									"Set": ["WantsTheJob(SELF) = True"]
+								},
+							"Value": 4,
+							"Mode": "-"
+						}]
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "CommeillFaut.CommeillFautAsset, CommeillFaut, Version=1.7.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

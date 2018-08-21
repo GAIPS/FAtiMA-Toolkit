@@ -1,0 +1,52 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"SocialExchanges": [
+				{
+					"Name": null,
+					"Description": "Someone plays sports",
+					"Initiator": null,
+					"Target": "-",
+					"Conditions":
+						{
+							"Set": []
+						}
+				}, 
+				{
+					"Name": null,
+					"Description": "University Talk",
+					"Initiator": null,
+					"Target": "-",
+					"Conditions":
+						{
+							"Set": []
+						}
+				}, 
+				{
+					"Name": null,
+					"Description": "FCT Talk",
+					"Initiator": null,
+					"Target": "-",
+					"Conditions":
+						{
+							"Set": []
+						}
+				}, 
+				{
+					"Name": null,
+					"Description": "Game Talk",
+					"Initiator": null,
+					"Target": "-",
+					"Conditions":
+						{
+							"Set": []
+						}
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "CommeillFaut.CommeillFautAsset, CommeillFaut, Version=1.7.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

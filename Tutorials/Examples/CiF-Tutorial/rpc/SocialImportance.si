@@ -1,0 +1,103 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"AttributionRules": [
+				{
+					"RuleName": "Player is presentable?",
+					"Target": "[x]",
+					"Value": 20,
+					"Conditions":
+						{
+							"Set": ["Presentable([x]) = True", "Player = [x]"]
+						}
+				}, 
+				{
+					"RuleName": "Player is not presentable?",
+					"Target": "[x]",
+					"Value": -20,
+					"Conditions":
+						{
+							"Set": ["Presentable([x]) = False"]
+						}
+				}, 
+				{
+					"RuleName": "Talk Sport",
+					"Target": "[x]",
+					"Value": 10,
+					"Conditions":
+						{
+							"Set": ["EventId([type], [x], Speak([cs], [ns], DoesSport, [s]), SELF) = True"]
+						}
+				}, 
+				{
+					"RuleName": "Anwser Sport",
+					"Target": "[x]",
+					"Value": -10,
+					"Conditions":
+						{
+							"Set": ["EventId([type], SELF, Speak([cs], [ns], SE(Sport, Initiate), [sty]), [x]) = [y]", "Count([y]) = 1"]
+						}
+				}, 
+				{
+					"RuleName": "Talk University",
+					"Target": "[x]",
+					"Value": 30,
+					"Conditions":
+						{
+							"Set": ["EventId([type], [x], Speak([cs], [ns], UnivTalk, [s]), SELF) = True"]
+						}
+				}, 
+				{
+					"RuleName": "Anwser Univ",
+					"Target": "[x]",
+					"Value": -30,
+					"Conditions":
+						{
+							"Set": ["EventId([type], SELF, Speak([cs], [ns], SE(Univ, Initiate), [sty]), [x]) = [y]", "Count([y]) = 1"]
+						}
+				}, 
+				{
+					"RuleName": "Talk FCT Sarah",
+					"Target": "[x]",
+					"Value": 40,
+					"Conditions":
+						{
+							"Set": ["EventId([type], [x], Speak([cs], [ns], SE(Univ, Answer), Neutral), SELF) = True", "IsAgent([a]) = True", "Sarah = [a]"]
+						}
+				}, 
+				{
+					"RuleName": "Anwser FCT Sarah",
+					"Target": "[x]",
+					"Value": -40,
+					"Conditions":
+						{
+							"Set": ["Player = [x]", "EventId([type], SELF, Speak([cs], EndFCT, [m], [sty]), [z]) = [y]", "Count([y]) = 1"]
+						}
+				}, 
+				{
+					"RuleName": "Talk Game Sarah",
+					"Target": "[x]",
+					"Value": 50,
+					"Conditions":
+						{
+							"Set": ["EventId([type], [x], Speak([cs], [ns], GameTalk, Positive), SELF) = True", "IsAgent([a]) = True", "Sarah = [a]"]
+						}
+				}, 
+				{
+					"RuleName": "Anwser Game Sarah",
+					"Target": "[x]",
+					"Value": -50,
+					"Conditions":
+						{
+							"Set": ["Player = [x]", "EventId([type], SELF, Speak([cs], EndGame, [m], [sty]), [z]) = [y]", "Count([y]) = 1"]
+						}
+				}],
+			"Claims": []
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "SocialImportance.SocialImportanceAsset, SocialImportanceAsset, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

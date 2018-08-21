@@ -1,0 +1,22 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"ActionTendencies": [
+				{
+					"Action": "Speak([cs], [ns], SE([se], [step]), *)",
+					"Target": "[x]",
+					"Layer": "-",
+					"Conditions":
+						{
+							"Set": ["Has(Floor) = SELF", "IsAgent([x]) = True", "Volition([se], [step], [x], *) > 0", "ValidDialogue([cs], [ns], SE([se], [step]), *) = True", "EventId(Action-End, *, Speak([cs], [ns], [m], *), [x]) = -1"]
+						},
+					"Priority": 2
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "EmotionalDecisionMaking.EmotionalDecisionMakingAsset, EmotionalDecisionMaking, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}
