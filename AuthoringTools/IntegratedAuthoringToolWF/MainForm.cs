@@ -959,7 +959,13 @@ namespace IntegratedAuthoringToolWF
 
         private void HandleEffects(IAction action, RolePlayCharacterAsset actor)
         {
+            if (LoadedAsset.m_worldModelSource == null)
+                return;
+
             if (LoadedAsset.m_worldModelSource.Source == null)
+                return;
+
+            if (LoadedAsset.m_worldModelSource.Source == "")
                 return;
 
             var wm = WorldModelAsset.LoadFromFile(LoadedAsset.m_worldModelSource.Source);
