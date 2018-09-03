@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddOrEditDialogueActionForm));
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -47,7 +48,7 @@
             this.label2.Location = new System.Drawing.Point(39, 49);
             this.label2.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(87, 16);
+            this.label2.Size = new System.Drawing.Size(114, 20);
             this.label2.TabIndex = 1;
             this.label2.Text = "Current State:";
             // 
@@ -59,7 +60,7 @@
             this.label3.Location = new System.Drawing.Point(415, 49);
             this.label3.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(72, 16);
+            this.label3.Size = new System.Drawing.Size(92, 20);
             this.label3.TabIndex = 2;
             this.label3.Text = "Next State:";
             // 
@@ -69,7 +70,7 @@
             this.label4.Location = new System.Drawing.Point(40, 97);
             this.label4.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(63, 16);
+            this.label4.Size = new System.Drawing.Size(77, 20);
             this.label4.TabIndex = 3;
             this.label4.Text = "Meaning:";
             // 
@@ -79,7 +80,7 @@
             this.label5.Location = new System.Drawing.Point(415, 97);
             this.label5.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(41, 16);
+            this.label5.Size = new System.Drawing.Size(51, 20);
             this.label5.TabIndex = 4;
             this.label5.Text = "Style:";
             // 
@@ -89,7 +90,7 @@
             this.label6.Location = new System.Drawing.Point(39, 148);
             this.label6.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(69, 16);
+            this.label6.Size = new System.Drawing.Size(87, 20);
             this.label6.TabIndex = 5;
             this.label6.Text = "Utterance:";
             // 
@@ -100,7 +101,7 @@
             this.textBoxUtterance.Location = new System.Drawing.Point(144, 144);
             this.textBoxUtterance.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBoxUtterance.Name = "textBoxUtterance";
-            this.textBoxUtterance.Size = new System.Drawing.Size(607, 22);
+            this.textBoxUtterance.Size = new System.Drawing.Size(607, 26);
             this.textBoxUtterance.TabIndex = 17;
             // 
             // buttonAddOrUpdate
@@ -125,7 +126,8 @@
             this.textBoxStyle.AllowVariable = true;
             this.textBoxStyle.Location = new System.Drawing.Point(503, 95);
             this.textBoxStyle.Name = "textBoxStyle";
-            this.textBoxStyle.Size = new System.Drawing.Size(248, 22);
+            this.textBoxStyle.OnlyIntOrVariable = false;
+            this.textBoxStyle.Size = new System.Drawing.Size(248, 26);
             this.textBoxStyle.TabIndex = 16;
             // 
             // textBoxMeaning
@@ -137,7 +139,8 @@
             this.textBoxMeaning.AllowVariable = true;
             this.textBoxMeaning.Location = new System.Drawing.Point(144, 95);
             this.textBoxMeaning.Name = "textBoxMeaning";
-            this.textBoxMeaning.Size = new System.Drawing.Size(229, 22);
+            this.textBoxMeaning.OnlyIntOrVariable = false;
+            this.textBoxMeaning.Size = new System.Drawing.Size(229, 26);
             this.textBoxMeaning.TabIndex = 15;
             // 
             // textBoxNextState
@@ -149,7 +152,8 @@
             this.textBoxNextState.AllowVariable = true;
             this.textBoxNextState.Location = new System.Drawing.Point(503, 47);
             this.textBoxNextState.Name = "textBoxNextState";
-            this.textBoxNextState.Size = new System.Drawing.Size(248, 22);
+            this.textBoxNextState.OnlyIntOrVariable = false;
+            this.textBoxNextState.Size = new System.Drawing.Size(248, 26);
             this.textBoxNextState.TabIndex = 14;
             // 
             // textBoxCurrentState
@@ -161,14 +165,15 @@
             this.textBoxCurrentState.AllowVariable = true;
             this.textBoxCurrentState.Location = new System.Drawing.Point(144, 47);
             this.textBoxCurrentState.Name = "textBoxCurrentState";
-            this.textBoxCurrentState.Size = new System.Drawing.Size(229, 22);
+            this.textBoxCurrentState.OnlyIntOrVariable = false;
+            this.textBoxCurrentState.Size = new System.Drawing.Size(229, 26);
             this.textBoxCurrentState.TabIndex = 13;
             // 
             // AddOrEditDialogueActionForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(789, 263);
+            this.ClientSize = new System.Drawing.Size(789, 255);
             this.Controls.Add(this.textBoxStyle);
             this.Controls.Add(this.textBoxMeaning);
             this.Controls.Add(this.textBoxNextState);
@@ -181,10 +186,11 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.MaximumSize = new System.Drawing.Size(1061, 302);
-            this.MinimumSize = new System.Drawing.Size(16, 302);
+            this.MinimumSize = new System.Drawing.Size(18, 302);
             this.Name = "AddOrEditDialogueActionForm";
             this.Text = "Add Dialogue Action";
             this.Load += new System.EventHandler(this.AddOrEditDialogueActionForm_Load);

@@ -870,7 +870,7 @@ namespace IntegratedAuthoringToolWF
                             " (" + ag.GetInternalStateString() + " | " + ag.GetSIRelationsString() + ")" + "\n", Color.DarkRed,
                             true);
 
-                        HandleEffects(action, ag);
+                        HandleEffects(action, ag, diag);
                     }
                 }
 
@@ -952,12 +952,12 @@ namespace IntegratedAuthoringToolWF
             string error;
             var dialog = LoadedAsset.GetDialogAction(act, out error);
 
-            this.HandleEffects(act, playerRPC);
+            this.HandleEffects(act, playerRPC, dialog);
 
             this.buttonContinue_Click(sender, e);
         }
 
-        private void HandleEffects(IAction action, RolePlayCharacterAsset actor)
+        private void HandleEffects(IAction action, RolePlayCharacterAsset actor, DialogueStateActionDTO dialog)
         {
             if (LoadedAsset.m_worldModelSource == null)
                 return;
@@ -971,7 +971,9 @@ namespace IntegratedAuthoringToolWF
             var wm = WorldModelAsset.LoadFromFile(LoadedAsset.m_worldModelSource.Source);
 
             var target = action.Target;
-            var ev = EventHelper.ActionEnd(actor.CharacterName.ToString(), action.ToString(), target.ToString());
+
+            var toString ="Speak(" + dialog.CurrentState + "," + dialog.NextState + "," + dialog.Meaning + "," + dialog.Style + ")" ;
+            var ev = EventHelper.ActionEnd(actor.CharacterName.ToString(), toString, target.ToString());
             foreach (var a in agentsInChat)
             {
                 a.Perceive(ev);
