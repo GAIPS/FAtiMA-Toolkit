@@ -1,0 +1,42 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"ActionTendencies": [
+				{
+					"Action": "DrinkCoffee",
+					"Target": "-",
+					"Layer": "-",
+					"Conditions":
+						{
+							"Set": ["Mood(SELF) < -1", "isAnxious(SELF) = True"]
+						},
+					"Priority": 1
+				}, 
+				{
+					"Action": "Insult",
+					"Target": "[x]",
+					"Layer": "-",
+					"Conditions":
+						{
+							"Set": ["Likes([x]) = False", "StrongestEmotion(SELF) = Anger", "isAgent([x]) = True"]
+						},
+					"Priority": 2
+				}, 
+				{
+					"Action": "Speak([cs], *, *, *)",
+					"Target": "Player",
+					"Layer": "-",
+					"Conditions":
+						{
+							"Set": ["DialogueState(Player) = [cs]"]
+						},
+					"Priority": 5
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "EmotionalDecisionMaking.EmotionalDecisionMakingAsset, EmotionalDecisionMaking, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

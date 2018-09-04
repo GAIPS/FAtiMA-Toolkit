@@ -15,6 +15,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Utilities;
 using Utilities.DataStructures;
+using WellFormedNames;
 using WorldModel;
 
 namespace IntegratedAuthoringToolWF
@@ -870,7 +871,7 @@ namespace IntegratedAuthoringToolWF
                             " (" + ag.GetInternalStateString() + " | " + ag.GetSIRelationsString() + ")" + "\n", Color.DarkRed,
                             true);
 
-                        HandleEffects(action, ag, diag);
+                        HandleEffects(action.Target, ag, diag);
                     }
                 }
 
@@ -903,27 +904,43 @@ namespace IntegratedAuthoringToolWF
         }
 
         private List<IAction> playerActions;
+        private Dictionary<WellFormedNames.Name, List<DialogueStateActionDTO>> playerOptions;
 
         private void determinePlayerDialogueOptions(IEnumerable<IAction> actions, string playerCharName)
         {
             playerActions = new List<IAction>();
-            string error;
+
+            playerOptions = new Dictionary<WellFormedNames.Name, List<DialogueStateActionDTO>>();
+
             foreach (var a in actions)
             {
-                var diag = LoadedAsset.GetDialogAction(a, out error);
-                if (error != null)
+                //       var diag = LoadedAsset.GetDialogAction(a, out error);
+
+                var diags = LoadedAsset.GetDialogueActions(a.Parameters[0], a.Parameters[1], a.Parameters[2],
+                    a.Parameters[3]);
+
+                if (diags.IsEmpty())
                 {
-                    EditorTools.WriteText(richTextBoxChat, playerCharName + " : " + error, Color.Red, true);
+                    EditorTools.WriteText(richTextBoxChat, playerCharName + " : " + " could not find any matching dialogue for action " + a.Key, Color.Red, true);
                 }
                 else if (this.ValidateTarget(a, playerCharName))
                 {
-                    playerActions.Add(a);
+                    playerOptions.Add(a.Target, diags);
                 }
             }
 
-            listBoxPlayerDialogues.DataSource = playerActions.Select(x => "To " + x.Target + " : " +
-                                                                          LoadedAsset.GetDialogAction(x, out error)
-                                                                              .Utterance).ToList();
+            List<string> result = new List<string>();
+
+            foreach (var targ in playerOptions.Keys)
+            {
+                foreach (var speakAction in playerOptions[targ])
+                {
+                    result.Add("To " + targ + " " + speakAction.Utterance);
+                }
+
+            }
+
+            listBoxPlayerDialogues.DataSource = result;
         }
 
         private bool ValidateTarget(IAction action, string actor)
@@ -943,21 +960,44 @@ namespace IntegratedAuthoringToolWF
             var idx = listBoxPlayerDialogues.SelectedIndex;
             if (idx == -1) return;
 
-            var act = playerActions[idx];
+            int counter = 0;
+            DialogueStateActionDTO dialogueState = new DialogueStateActionDTO();
+            Name target = (Name) "default";
 
+
+
+            foreach (var targ in playerOptions.Keys)
+            {
+                foreach (var stateAction in playerOptions[targ])
+                {
+                    if (counter == idx)
+                    {
+                        dialogueState = stateAction;
+                        target = targ;
+
+                        break;
+                    }
+
+                    counter++;
+
+                }
+            }
+
+
+           
             EditorTools.WriteText(richTextBoxChat,
                 "Player " + listBoxPlayerDialogues.SelectedItem.ToString() + "\n", Color.Blue, true);
 
             var playerRPC = agentsInChat.First(x => x.IsPlayer);
-            string error;
-            var dialog = LoadedAsset.GetDialogAction(act, out error);
+            
+            var dialog = dialogueState;
 
-            this.HandleEffects(act, playerRPC, dialog);
+            this.HandleEffects(target, playerRPC, dialog);
 
             this.buttonContinue_Click(sender, e);
         }
 
-        private void HandleEffects(IAction action, RolePlayCharacterAsset actor, DialogueStateActionDTO dialog)
+        private void HandleEffects(Name target, RolePlayCharacterAsset actor, DialogueStateActionDTO dialog)
         {
             if (LoadedAsset.m_worldModelSource == null)
                 return;
@@ -970,7 +1010,7 @@ namespace IntegratedAuthoringToolWF
 
             var wm = WorldModelAsset.LoadFromFile(LoadedAsset.m_worldModelSource.Source);
 
-            var target = action.Target;
+            
 
             var toString ="Speak(" + dialog.CurrentState + "," + dialog.NextState + "," + dialog.Meaning + "," + dialog.Style + ")" ;
             var ev = EventHelper.ActionEnd(actor.CharacterName.ToString(), toString, target.ToString());

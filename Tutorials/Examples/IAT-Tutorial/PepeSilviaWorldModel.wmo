@@ -1,0 +1,68 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"Effects":
+				{
+					"dictionary": [
+						{
+							"key": "Event(Action-End, [s], Speak(*, [ns], *, *), [t])",
+							"value": [
+								{
+									"PropertyName": "DialogueState([s])",
+									"NewValue": "[ns]",
+									"ObserverAgent": "[t]"
+								}]
+						}]
+				},
+			"Priorities":
+				{
+					"dictionary": [
+						{
+							"key": "Event(Action-End, [x], Speak(*, [ns], *, *), SELF)",
+							"value": 1
+						}, 
+						{
+							"key": "Event(Action-End, [x], Speak(*, *, *, *), SELF)",
+							"value": 1
+						}, 
+						{
+							"key": "Event(Action-End, [x], *, SELF)",
+							"value": 1
+						}, 
+						{
+							"key": "Event(Action-End, *, Speak([cs], *, *, *), *)",
+							"value": 1
+						}, 
+						{
+							"key": "Event(Action-End, *, Speak([cs], *, *, *), SELF)",
+							"value": 1
+						}, 
+						{
+							"key": "Event(Action-End, [x], Speak([cs], *, *, *), *)",
+							"value": 1
+						}, 
+						{
+							"key": "Event(Action-End, [x], Speak(*, [ns], *, *), *)",
+							"value": 1
+						}, 
+						{
+							"key": "Event(Action-End, Player, Speak(*, [ns], *, *), SELF)",
+							"value": 1
+						}, 
+						{
+							"key": "Event(Action-End, Player, Speak(*, [ns], *, *), Charlie)",
+							"value": 1
+						}, 
+						{
+							"key": "Event(Action-End, [s], Speak(*, [ns], *, *), [t])",
+							"value": 1
+						}]
+				}
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "WorldModel.WorldModelAsset, World_Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}
