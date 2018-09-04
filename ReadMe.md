@@ -81,7 +81,7 @@ https://www.youtube.com/watch?v=2WgKs3-iI7g
 The Integrated Authoring tool is a Windows application that is used to create and edit game scenarios with the toolkit. 
 The latest version (2.5) now includes a world model that allows the author to define the effects of actions. These effects will then be used by the chat simulator so the author can fully test a conversational scenario between a player and one or more characters. Additionally, there is now a graph tool in the dialogue editor that automatically creates a graph structure of the existing dialogues.
 
-- Version 2.5: https://www.dropbox.com/s/2sxb2edenf32t45/AuthoringTools-Jul-2018.zip?dl=0
+- Version 2.5: https://drive.google.com/open?id=1sfjzTDyUPM99CW6WWkXsWRNEXEllJziI
 
 - Version 2.1: https://www.dropbox.com/s/2h5jsok824jpzow/AuthoringTools-2018-Feb-2.1.zip?dl=0
 
