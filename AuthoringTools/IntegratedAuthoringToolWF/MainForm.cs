@@ -921,11 +921,14 @@ namespace IntegratedAuthoringToolWF
 
                 if (diags.IsEmpty())
                 {
-                    EditorTools.WriteText(richTextBoxChat, playerCharName + " : " + " could not find any matching dialogue for action " + a.Key, Color.Red, true);
+                    EditorTools.WriteText(richTextBoxChat, playerCharName + " : " + " could not find any matching dialogue for action " + a.Name, Color.Red, true);
                 }
                 else if (this.ValidateTarget(a, playerCharName))
                 {
-                    playerOptions.Add(a.Target, diags);
+                    if(playerOptions.ContainsKey(a.Target))
+                        playerOptions[a.Target].AddRange(diags);
+
+                   else playerOptions.Add(a.Target, diags);
                 }
             }
 
