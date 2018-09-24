@@ -65,7 +65,6 @@ namespace CommeillFaut
             Dictionary<SubstitutionSet, Name> ret = new Dictionary<SubstitutionSet, Name>();
 
             var stringVolition = "";
-            var possibleSE = new List<SocialExchange>();
             bool SEConstraint = false;
 
 
