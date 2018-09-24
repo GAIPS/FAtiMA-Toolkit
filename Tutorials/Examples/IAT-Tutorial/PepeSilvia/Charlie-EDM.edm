@@ -1,0 +1,52 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"ActionTendencies": [
+				{
+					"Action": "Speak([cs], *, *, Depressed)",
+					"Target": "[x]",
+					"Layer": "-",
+					"Conditions":
+						{
+							"Set": ["DialogueState([x]) = [cs]", "Mood(SELF) < -1", "S2 = [cs]"]
+						},
+					"Priority": 6
+				}, 
+				{
+					"Action": "Speak([cs], *, *, Neutral)",
+					"Target": "[x]",
+					"Layer": "-",
+					"Conditions":
+						{
+							"Set": ["DialogueState([x]) = [cs]", "Mood(SELF) > -1", "Mood(SELF) < 1", "S2 = [cs]"]
+						},
+					"Priority": 6
+				}, 
+				{
+					"Action": "Speak([cs], *, *, Positive)",
+					"Target": "[x]",
+					"Layer": "-",
+					"Conditions":
+						{
+							"Set": ["DialogueState([x]) = [cs]", "StrongestEmotion(SELF) = Joy", "Mood(SELF) > 1", "S2 = [cs]"]
+						},
+					"Priority": 6
+				}, 
+				{
+					"Action": "Speak([cs], *, *, *)",
+					"Target": "[x]",
+					"Layer": "-",
+					"Conditions":
+						{
+							"Set": ["DialogueState([x]) = [cs]"]
+						},
+					"Priority": 4
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "EmotionalDecisionMaking.EmotionalDecisionMakingAsset, EmotionalDecisionMaking, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

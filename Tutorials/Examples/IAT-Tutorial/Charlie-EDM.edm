@@ -4,34 +4,44 @@
 			"classId": 0,
 			"ActionTendencies": [
 				{
-					"Action": "DrinkCoffee",
-					"Target": "-",
-					"Layer": "-",
-					"Conditions":
-						{
-							"Set": ["Mood(SELF) < -1", "isAnxious(SELF) = True"]
-						},
-					"Priority": 1
-				}, 
-				{
-					"Action": "Insult",
+					"Action": "Speak([cs], *, *, Depressed)",
 					"Target": "[x]",
 					"Layer": "-",
 					"Conditions":
 						{
-							"Set": ["Likes([x]) = False", "StrongestEmotion(SELF) = Anger", "isAgent([x]) = True"]
+							"Set": ["DialogueState([x]) = [cs]", "Mood(SELF) < -1", "S2 = [cs]"]
 						},
-					"Priority": 2
+					"Priority": 6
 				}, 
 				{
-					"Action": "Speak([cs], *, *, *)",
-					"Target": "Player",
+					"Action": "Speak([cs], *, *, Neutral)",
+					"Target": "[x]",
 					"Layer": "-",
 					"Conditions":
 						{
-							"Set": ["DialogueState(Player) = [cs]"]
+							"Set": ["DialogueState([x]) = [cs]", "Mood(SELF) > -1", "Mood(SELF) < 1", "S2 = [cs]"]
 						},
-					"Priority": 5
+					"Priority": 6
+				}, 
+				{
+					"Action": "Speak([cs], *, *, Positive)",
+					"Target": "[x]",
+					"Layer": "-",
+					"Conditions":
+						{
+							"Set": ["DialogueState([x]) = [cs]", "StrongestEmotion(SELF) = Joy", "Mood(SELF) > 1", "S2 = [cs]"]
+						},
+					"Priority": 6
+				}, 
+				{
+					"Action": "Speak([cs], *, *, *)",
+					"Target": "[x]",
+					"Layer": "-",
+					"Conditions":
+						{
+							"Set": ["DialogueState([x]) = [cs]"]
+						},
+					"Priority": 4
 				}]
 		},
 	"types": [

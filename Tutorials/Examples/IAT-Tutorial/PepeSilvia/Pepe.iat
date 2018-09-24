@@ -1,0 +1,104 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"ScenarioName": "Pepe Silvia",
+			"Description": "A short conversation between the Player and a Character named Charlie. Charlie discovers that there is a major conspiracy within the company he works in. ",
+			"WorldModelSource": "PepeSilviaWorldModel.wmo",
+			"CharacterSources": ["Charlie.rpc", "Player.rpc"],
+			"Dialogues": [
+				{
+					"CurrentState": "Start",
+					"NextState": "S1",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "Hi how are you?",
+					"UtteranceId": "TTS-51AADAEB0C97ED7BD252B14D88309F6B"
+				}, 
+				{
+					"CurrentState": "S2",
+					"NextState": "S3",
+					"Meaning": "-",
+					"Style": "Neutral",
+					"Utterance": "I'm feeling okay-ish, I've got something to tell you",
+					"UtteranceId": "TTS-58C7E04BE265D8CC2D9A51D169C0C41B"
+				}, 
+				{
+					"CurrentState": "S3",
+					"NextState": "S4",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "What happened?",
+					"UtteranceId": "TTS-9CBB8AB9BF567189876DC3F84F766DFD"
+				}, 
+				{
+					"CurrentState": "S4",
+					"NextState": "S5",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "I've just stumbled unto a major conspiracy !",
+					"UtteranceId": "TTS-2C10E0C6CD86488733DC9FB56095A896"
+				}, 
+				{
+					"CurrentState": "FeelingGreat",
+					"NextState": "S6",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "Oh thank god!",
+					"UtteranceId": "TTS-A112F1A6A1C6F499EB83AC65CFBC61F2"
+				}, 
+				{
+					"CurrentState": "S2",
+					"NextState": "S3",
+					"Meaning": "-",
+					"Style": "Depressed",
+					"Utterance": "Not that great actually",
+					"UtteranceId": "TTS-4A616F5A524EE7AAA5F8A495F2A2548F"
+				}, 
+				{
+					"CurrentState": "S1",
+					"NextState": "S2",
+					"Meaning": "Neutral",
+					"Style": "-",
+					"Utterance": "I'm okay, how about you",
+					"UtteranceId": "TTS-D45D0CAB5CB3A9C4EC782678AACC3846"
+				}, 
+				{
+					"CurrentState": "S1",
+					"NextState": "S2",
+					"Meaning": "Sad",
+					"Style": "-",
+					"Utterance": "I'm really sad, how about you?",
+					"UtteranceId": "TTS-9B384E09650832C1BF05F35C0D11D1AF"
+				}, 
+				{
+					"CurrentState": "S1",
+					"NextState": "S2",
+					"Meaning": "Happy",
+					"Style": "-",
+					"Utterance": "I'm doing amazingly, how about you?",
+					"UtteranceId": "TTS-D5D435EF2A8FE2F34D3DECD7BA9C7048"
+				}, 
+				{
+					"CurrentState": "Sad",
+					"NextState": "S2",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "I'm feeling pretty bad aswell",
+					"UtteranceId": "TTS-1AE6C0BC6D52FA7B7918E32948E30326"
+				}, 
+				{
+					"CurrentState": "S2",
+					"NextState": "S3",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "I'm feeling great ! I've got something to tell you!",
+					"UtteranceId": "TTS-37E04E7AA23C7104DF9C248324A8DA01"
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "IntegratedAuthoringTool.IntegratedAuthoringToolAsset, IntegratedAuthoringTool, Version=1.7.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

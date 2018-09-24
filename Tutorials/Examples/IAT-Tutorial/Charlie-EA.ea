@@ -8,12 +8,30 @@
 					"AppraisalWeight": 1,
 					"Rules": [
 						{
-							"EventName": "Event(Action-End, *, GiveMoney([x]), SELF)",
+							"EventName": "Event(Action-End, *, Speak(*, *, Sad, *), SELF)",
 							"Conditions":
 								{
-									"Set": ["[x] > 0"]
+									"Set": []
 								},
-							"Desirability": 5,
+							"Desirability": -5,
+							"Praiseworthiness": 0
+						}, 
+						{
+							"EventName": "Event(Action-End, *, Speak(*, *, Neutral, *), SELF)",
+							"Conditions":
+								{
+									"Set": []
+								},
+							"Desirability": 2,
+							"Praiseworthiness": 0
+						}, 
+						{
+							"EventName": "Event(Action-End, *, Speak(*, *, Happy, *), SELF)",
+							"Conditions":
+								{
+									"Set": []
+								},
+							"Desirability": 7,
 							"Praiseworthiness": 0
 						}]
 				},

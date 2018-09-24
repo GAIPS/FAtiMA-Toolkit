@@ -881,6 +881,10 @@ namespace IntegratedAuthoringToolWF
             EditorTools.WriteText(richTextBoxChat, "", Color.Black, true);
 
             var playerRPC = agentsInChat.First(a => a.IsPlayer == true);
+            if (playerRPC == null)
+                EditorTools.WriteText(richTextBoxChat, " There is no Player RPC, please use the keyword Player in the Character Name field of an RPC", Color.Red, true);
+
+
             var decisionsList = playerRPC.Decide().Where(a => a.Key.ToString() == IATConsts.DIALOG_ACTION_KEY);
            
 

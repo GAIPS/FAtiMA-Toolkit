@@ -9,7 +9,7 @@
 					"Layer": "-",
 					"Conditions":
 						{
-							"Set": ["Has(Floor) = SELF", "IsAgent([x]) = True", "Volition([se], [step], [x], *) > 0", "ValidDialogue([cs], [ns], SE([se], [step]), *) = True", "EventId(Action-End, *, Speak([cs], [ns], [m], *), [x]) = -1"]
+							"Set": ["Has(Floor) = SELF", "IsAgent([x]) = True", "ValidDialogue([cs], [ns], SE([se], [step]), *) = True", "EventId(Action-End, *, Speak([cs], [ns], [m], *), [x]) = -1", "Volition([se], [step], [x], *) > 0"]
 						},
 					"Priority": 2
 				}]

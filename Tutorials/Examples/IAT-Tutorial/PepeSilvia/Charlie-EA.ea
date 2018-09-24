@@ -1,0 +1,51 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"Description": null,
+			"AppraisalRules":
+				{
+					"AppraisalWeight": 1,
+					"Rules": [
+						{
+							"EventName": "Event(Action-End, *, Speak(*, *, Sad, *), SELF)",
+							"Conditions":
+								{
+									"Set": []
+								},
+							"Desirability": -5,
+							"Praiseworthiness": 0
+						}, 
+						{
+							"EventName": "Event(Action-End, *, Speak(*, *, Neutral, *), SELF)",
+							"Conditions":
+								{
+									"Set": []
+								},
+							"Desirability": 2,
+							"Praiseworthiness": 0
+						}, 
+						{
+							"EventName": "Event(Action-End, *, Speak(*, *, Happy, *), SELF)",
+							"Conditions":
+								{
+									"Set": []
+								},
+							"Desirability": 7,
+							"Praiseworthiness": 0
+						}]
+				},
+			"EmotionDispositions": [
+				{
+					"Emotion": "*",
+					"Decay": 1,
+					"Threshold": 1
+				}],
+			"Goals": []
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "EmotionalAppraisal.EmotionalAppraisalAsset, EmotionalAppraisal, Version=1.4.1.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

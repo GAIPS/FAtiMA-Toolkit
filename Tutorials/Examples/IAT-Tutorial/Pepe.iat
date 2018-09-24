@@ -19,17 +19,9 @@
 					"CurrentState": "S2",
 					"NextState": "S3",
 					"Meaning": "-",
-					"Style": "-",
-					"Utterance": "Not that great actually",
-					"UtteranceId": "TTS-4A616F5A524EE7AAA5F8A495F2A2548F"
-				}, 
-				{
-					"CurrentState": "S1",
-					"NextState": "S2",
-					"Meaning": "-",
-					"Style": "-",
-					"Utterance": "I'm okay, how about you",
-					"UtteranceId": "TTS-D45D0CAB5CB3A9C4EC782678AACC3846"
+					"Style": "Neutral",
+					"Utterance": "I'm feeling okay-ish, I've got something to tell you",
+					"UtteranceId": "TTS-58C7E04BE265D8CC2D9A51D169C0C41B"
 				}, 
 				{
 					"CurrentState": "S3",
@@ -57,16 +49,24 @@
 				}, 
 				{
 					"CurrentState": "S2",
-					"NextState": "FeelingGreat",
+					"NextState": "S3",
 					"Meaning": "-",
-					"Style": "-",
-					"Utterance": "I'm feeling great !",
-					"UtteranceId": "TTS-69CF98DF5303D42617FB8836697BB4DE"
+					"Style": "Depressed",
+					"Utterance": "Not that great actually",
+					"UtteranceId": "TTS-4A616F5A524EE7AAA5F8A495F2A2548F"
 				}, 
 				{
 					"CurrentState": "S1",
 					"NextState": "S2",
-					"Meaning": "-",
+					"Meaning": "Neutral",
+					"Style": "-",
+					"Utterance": "I'm okay, how about you",
+					"UtteranceId": "TTS-D45D0CAB5CB3A9C4EC782678AACC3846"
+				}, 
+				{
+					"CurrentState": "S1",
+					"NextState": "S2",
+					"Meaning": "Sad",
 					"Style": "-",
 					"Utterance": "I'm really sad, how about you?",
 					"UtteranceId": "TTS-9B384E09650832C1BF05F35C0D11D1AF"
@@ -74,10 +74,26 @@
 				{
 					"CurrentState": "S1",
 					"NextState": "S2",
-					"Meaning": "-",
+					"Meaning": "Happy",
 					"Style": "-",
 					"Utterance": "I'm doing amazingly, how about you?",
 					"UtteranceId": "TTS-D5D435EF2A8FE2F34D3DECD7BA9C7048"
+				}, 
+				{
+					"CurrentState": "Sad",
+					"NextState": "S2",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "I'm feeling pretty bad aswell",
+					"UtteranceId": "TTS-1AE6C0BC6D52FA7B7918E32948E30326"
+				}, 
+				{
+					"CurrentState": "S2",
+					"NextState": "S3",
+					"Meaning": "-",
+					"Style": "Positive",
+					"Utterance": "I'm feeling great ! I've got something to tell you!",
+					"UtteranceId": "TTS-37E04E7AA23C7104DF9C248324A8DA01"
 				}]
 		},
 	"types": [
