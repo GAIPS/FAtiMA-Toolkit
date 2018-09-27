@@ -6,10 +6,10 @@
 				{
 					"dictionary": [
 						{
-							"key": "Event(Action-End, [s], Speak(*, [ns], *, *), [t])",
+							"key": "Event(Action-End, [x], Speak(*, [ns], *, *), [t])",
 							"value": [
 								{
-									"PropertyName": "DialogueState([s])",
+									"PropertyName": "DialogueState([x])",
 									"NewValue": "[ns]",
 									"ObserverAgent": "[t]"
 								}]
@@ -56,6 +56,10 @@
 						}, 
 						{
 							"key": "Event(Action-End, [s], Speak(*, [ns], *, *), [t])",
+							"value": 1
+						}, 
+						{
+							"key": "Event(Action-End, [x], Speak(*, [ns], *, *), [t])",
 							"value": 1
 						}]
 				}
