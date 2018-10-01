@@ -62,12 +62,6 @@ namespace GAIPS.Rage
 
 	    public static T LoadFromString(string _text, out string errorOnLoad)
 	    {
-	        var storage = GetInterface<IDataStorage>();
-	        if (storage == null)
-	            throw new Exception($"No {nameof(IDataStorage)} defined in the AssetManager bridge.");
-
-
-
 	        var data = _text;
 	        T asset;
 	        try
