@@ -23,13 +23,24 @@ namespace GAIPS.Rage
 			return asset;
 		}
 
+
+	    public static T LoadFromString(string text)
+	    {
+	        string error;
+	        T asset = LoadFromString(text, out error);
+	        if (error != null)
+	            throw new Exception(error); //TODO better exception
+	        return asset;
+	    }
+
+
 		public static T LoadFromFile(string filePath, out string errorOnLoad)
 		{
 			var storage = GetInterface<IDataStorage>();
 			if (storage == null)
 				throw new Exception($"No {nameof(IDataStorage)} defined in the AssetManager bridge.");
 
-			if (!storage.Exists(filePath))
+		    if (!storage.Exists(filePath))
 				throw new FileNotFoundException();
 
 			var data = storage.Load(filePath);
@@ -47,6 +58,32 @@ namespace GAIPS.Rage
 			errorOnLoad = asset.OnAssetLoaded();
 			return asset;
 		}
+
+
+	    public static T LoadFromString(string _text, out string errorOnLoad)
+	    {
+	        var storage = GetInterface<IDataStorage>();
+	        if (storage == null)
+	            throw new Exception($"No {nameof(IDataStorage)} defined in the AssetManager bridge.");
+
+
+
+	        var data = _text;
+	        T asset;
+	        try
+	        {
+	            asset = SERIALIZER.DeserializeFromJson<T>((JsonObject)JsonParser.Parse(data));
+	        }
+	        catch (Exception e)
+	        {
+	            errorOnLoad = e.Message + "\n" + e.StackTrace;
+	            return null;
+	        }
+	       
+	        errorOnLoad = asset.OnAssetLoaded();
+	        return asset;
+	    }
+
 
 		/// <returns>Error message if any. Null if the asset was loaded without errors</returns>
 		protected abstract string OnAssetLoaded();

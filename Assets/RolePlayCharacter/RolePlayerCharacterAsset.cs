@@ -297,11 +297,52 @@ namespace RolePlayCharacter
 
             //Dynamic properties
             BindToRegistry(m_kb);
+
             edm.RegisterKnowledgeBase(m_kb);
             si.RegisterKnowledgeBase(m_kb);
             cfa.RegisterKnowledgeBase(m_kb);
             mcts.RegisterKnowledgeBase(m_kb);
             m_allowAuthoring = false;
+        }
+
+
+        public void LoadAssociatedAssetsFromString(string _ea, string _edm, string _si, string _cif)
+        {
+            var charName = CharacterName.ToString();
+
+            EmotionalAppraisalAsset ea = new EmotionalAppraisalAsset();
+            if(!_ea.IsEmpty())
+             ea = EmotionalAppraisalAsset.LoadFromString(_ea);
+
+
+            EmotionalDecisionMakingAsset edm = new EmotionalDecisionMakingAsset();
+            if(!_edm.IsEmpty())
+                edm = EmotionalDecisionMakingAsset.LoadFromString(_edm);
+
+            SocialImportanceAsset si = new SocialImportanceAsset();
+            if(!_si.IsEmpty())
+            si = SocialImportanceAsset.LoadFromString(_si);
+
+            CommeillFautAsset cif = new CommeillFautAsset();
+            if(!_cif.IsEmpty())
+            cif = CommeillFautAsset.LoadFromString(_cif);
+           
+
+            MCTSAsset mcts = new MCTSAsset();
+
+            //Dynamic properties
+            BindToRegistry(m_kb);
+           
+            edm.RegisterKnowledgeBase(m_kb);
+            si.RegisterKnowledgeBase(m_kb);
+            cif.RegisterKnowledgeBase(m_kb);
+            mcts.RegisterKnowledgeBase(m_kb);
+            m_allowAuthoring = false;
+
+            m_emotionalAppraisalAsset = ea;
+            m_emotionalDecisionMakingAsset = edm;
+            m_socialImportanceAsset = si;
+            m_commeillFautAsset = cif;
         }
 
         public void Perceive(Name evt)
