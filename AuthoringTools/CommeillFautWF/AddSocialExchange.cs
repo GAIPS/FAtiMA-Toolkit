@@ -54,7 +54,8 @@ namespace CommeillFautWF
                 dto.Description = textBoxDescription.Text;
                 dto.Steps = stepsTextBox.Text;
                 dto.Target = wfNameTarget.Value;
-                UpdatedGuid = asset.AddOrUpdateExchange(dto);
+                dto.Id = asset.AddOrUpdateExchange(dto);
+                UpdatedGuid = dto.Id;
                 Close();
             }
             catch (Exception ex)

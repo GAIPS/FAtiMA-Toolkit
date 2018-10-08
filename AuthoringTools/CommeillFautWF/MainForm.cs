@@ -85,6 +85,8 @@ namespace CommeillFautWF
         {
             var diag = new AddSocialExchange(LoadedAsset, item);
             diag.ShowDialog(this);
+
+           
             if (diag.UpdatedGuid != Guid.Empty)
             {
               //  _socialExchangeList.DataSource = LoadedAsset.GetAllSocialExchanges().ToList();
@@ -96,6 +98,7 @@ namespace CommeillFautWF
                 EditorTools.HighlightItemInGrid<SocialExchangeDTO>
                     (gridSocialExchanges, diag.UpdatedGuid);
             }
+            _socialExchangeList.Refresh();
 
             SetModified();
         }
@@ -120,6 +123,8 @@ namespace CommeillFautWF
                 _socialExchangeList.DataSource = LoadedAsset.GetAllSocialExchanges().ToList();
                 EditorTools.HighlightItemInGrid<SocialExchangeDTO>(gridSocialExchanges, newRuleId);
             }
+
+            SetModified();
         }
 
         private void buttonRemoveSE_Click(object sender, EventArgs e)

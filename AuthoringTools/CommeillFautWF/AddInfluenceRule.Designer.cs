@@ -53,7 +53,7 @@
             // 
             this.buttonAdd.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.buttonAdd.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.buttonAdd.Location = new System.Drawing.Point(206, 337);
+            this.buttonAdd.Location = new System.Drawing.Point(230, 307);
             this.buttonAdd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buttonAdd.MinimumSize = new System.Drawing.Size(80, 39);
             this.buttonAdd.Name = "buttonAdd";
@@ -71,7 +71,7 @@
             this.valueFieldBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.valueFieldBox.Location = new System.Drawing.Point(84, 33);
             this.valueFieldBox.Name = "valueFieldBox";
-            this.valueFieldBox.Size = new System.Drawing.Size(66, 24);
+            this.valueFieldBox.Size = new System.Drawing.Size(113, 24);
             this.valueFieldBox.TabIndex = 25;
             // 
             // conditionSetEditorControl
@@ -82,7 +82,7 @@
             this.conditionSetEditorControl.Location = new System.Drawing.Point(33, 123);
             this.conditionSetEditorControl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.conditionSetEditorControl.Name = "conditionSetEditorControl";
-            this.conditionSetEditorControl.Size = new System.Drawing.Size(535, 199);
+            this.conditionSetEditorControl.Size = new System.Drawing.Size(582, 169);
             this.conditionSetEditorControl.TabIndex = 26;
             this.conditionSetEditorControl.View = null;
             this.conditionSetEditorControl.Load += new System.EventHandler(this.conditionSetEditorControl1_Load);
@@ -100,7 +100,7 @@
             this.modeNameField.Location = new System.Drawing.Point(83, 82);
             this.modeNameField.Name = "modeNameField";
             this.modeNameField.OnlyIntOrVariable = false;
-            this.modeNameField.Size = new System.Drawing.Size(218, 22);
+            this.modeNameField.Size = new System.Drawing.Size(265, 22);
             this.modeNameField.TabIndex = 27;
             // 
             // Mode
@@ -120,7 +120,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(613, 387);
+            this.ClientSize = new System.Drawing.Size(660, 357);
             this.Controls.Add(this.Mode);
             this.Controls.Add(this.modeNameField);
             this.Controls.Add(this.conditionSetEditorControl);

@@ -131,18 +131,16 @@
             this.gridInfluenceRules.RowHeadersVisible = false;
             this.gridInfluenceRules.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.gridInfluenceRules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridInfluenceRules.Size = new System.Drawing.Size(479, 122);
+            this.gridInfluenceRules.Size = new System.Drawing.Size(544, 166);
             this.gridInfluenceRules.TabIndex = 11;
             this.gridInfluenceRules.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gridInfluenceRules_CellMouseDoubleClick);
             // 
             // Close
             // 
-            this.Close.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.Close.Location = new System.Drawing.Point(197, 252);
+            this.Close.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.Close.Location = new System.Drawing.Point(167, 284);
             this.Close.Name = "Close";
-            this.Close.Size = new System.Drawing.Size(131, 31);
+            this.Close.Size = new System.Drawing.Size(226, 43);
             this.Close.TabIndex = 16;
             this.Close.Text = "Close";
             this.Close.UseVisualStyleBackColor = true;
@@ -152,7 +150,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(539, 295);
+            this.ClientSize = new System.Drawing.Size(604, 339);
             this.Controls.Add(this.Close);
             this.Controls.Add(this.buttonDuplicateInfluenceRule);
             this.Controls.Add(this.buttonEditInfluenceRule);

@@ -14,7 +14,7 @@ namespace CommeillFaut
     public class SocialExchange : ICustomSerialization
     {
              
-        public Guid Id { get; private set; }
+        public Guid Id { get; set; }
 
         public string Description { get; set; }
 

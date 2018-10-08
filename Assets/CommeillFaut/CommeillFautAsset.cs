@@ -202,12 +202,12 @@ namespace CommeillFaut
         {
           
             var idx = m_SocialExchanges.FindIndex(x => x.Id == dto.Id);
-            System.Guid actualID = new Guid();
+            System.Guid actualId;
             if (idx < 0)
             {
                 var se = new SocialExchange(dto);
                 m_SocialExchanges.Add(se);
-                actualID = se.Id;
+                actualId = se.Id;
             }
             else
             {
@@ -218,11 +218,11 @@ namespace CommeillFaut
                 m_SocialExchanges[idx].Name = dto.Name;
                  m_SocialExchanges[idx].Steps = m_SocialExchanges[idx].StringToSteps(dto.Steps);
                  m_SocialExchanges[idx].InfluenceRules = dto.InfluenceRules.Select(x=>new InfluenceRule(x)).ToList();
-                actualID = m_SocialExchanges[idx].Id;
+                actualId = m_SocialExchanges[idx].Id;
 
             }
 
-            return actualID;
+            return actualId;
         }
 
         public void RemoveSocialExchange(Guid id)
@@ -277,6 +277,11 @@ namespace CommeillFaut
         {
             
             m_SocialExchanges = new List<SocialExchange>(dataHolder.GetValue<SocialExchange[]>("SocialExchanges"));
+
+            foreach (var se in m_SocialExchanges)
+            {
+                se.Id =  Guid.NewGuid();
+            }
         }
 
 

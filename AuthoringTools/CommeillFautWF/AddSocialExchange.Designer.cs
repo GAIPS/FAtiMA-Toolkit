@@ -80,7 +80,7 @@
             // 
             this.buttonAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonAdd.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.buttonAdd.Location = new System.Drawing.Point(185, 310);
+            this.buttonAdd.Location = new System.Drawing.Point(183, 320);
             this.buttonAdd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buttonAdd.MinimumSize = new System.Drawing.Size(80, 39);
             this.buttonAdd.Name = "buttonAdd";
@@ -145,7 +145,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(475, 360);
+            this.ClientSize = new System.Drawing.Size(473, 370);
             this.Controls.Add(this.stepsTextBox);
             this.Controls.Add(this.stepsLabel);
             this.Controls.Add(this.wfNameTarget);
