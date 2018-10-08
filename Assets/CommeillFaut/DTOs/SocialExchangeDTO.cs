@@ -21,8 +21,12 @@ namespace CommeillFaut.DTOs
 
         /// The Social Exchange different steps
         /// </summary>
-        public List<Name> Steps { get; set; }
+       
+        //public List<Name> Steps { get; set; }
 
+
+
+        public string Steps { get; set; }
         
         /// The Social Exchange Target
         /// </summary>

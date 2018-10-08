@@ -36,6 +36,8 @@ namespace CommeillFautWF
             PropertyUtil.GetPropertyName<SocialExchangeDTO>(dto => dto.Id),
             PropertyUtil.GetPropertyName<SocialExchangeDTO>(dto => dto.StartingConditions)});
 
+
+
             if (this._socialExchangeList.Any())
 			{
 				var ra = LoadedAsset.GetSocialExchange(this._socialExchangeList.First().Id);
@@ -63,7 +65,7 @@ namespace CommeillFautWF
                 Target = WellFormedNames.Name.BuildName("[t]"),
                 Id = new Guid(),
                 StartingConditions = new Conditions.DTOs.ConditionSetDTO(),
-                Steps = new System.Collections.Generic.List<WellFormedNames.Name>(),
+                Steps = "-",
                 InfluenceRules = new System.Collections.Generic.List<InfluenceRuleDTO>()
             
             };

@@ -5,7 +5,7 @@
 			"ScenarioName": "Job Interview",
 			"Description": "This scenario is a Job Interview. The NPC will make 10 questions to the player. The player will always have 3 choices for each question. Depending on the answers the player gives, the NPC will react accordingly. At the end of the 10 question, depending on the mood of the NPC, he can accept the player, refuse or tell him that they will contact him later. It can happen that sometimes the NPC will make a different question that is not part of the initial 10. This is to illustrate social exchanges. There is a second NPC that will be listening to the dialogues of the Player and the first NPC. In certain situations, the first NPC will ask something to the second NPC that could change the moods of both, affecting the final design of accepting the Player.",
 			"WorldModelSource": "JobInterviewWorldModel.wmo",
-			"CharacterSources": ["rpc\player.rpc", "rpc\NPCApp1EDM2.rpc", "rpc\NPCApp2EDM1.rpc"],
+			"CharacterSources": ["rpc/player.rpc", "rpc/NPCApp1EDM2.rpc", "rpc/NPCApp2EDM1.rpc"],
 			"Dialogues": [
 				{
 					"CurrentState": "S2",

@@ -29,13 +29,10 @@ namespace CommeillFautWF
             textBoxDescription.Text = dto.Description;
             wfNameTarget.Value = dto.Target;
 
-            if(dto.Steps.Count>0){
-            foreach(var s in dto.Steps)
-            stepsTextBox.Text += s.ToString() + ", ";
 
-            stepsTextBox.Text = stepsTextBox.Text.ToString().Remove(stepsTextBox.Text.Length - 2);
+            stepsTextBox.Text = dto.Steps;
 
-            }
+            
             buttonAdd.Text = (dto.Id == Guid.Empty) ? "Add" : "Update";
         }
 
@@ -50,22 +47,12 @@ namespace CommeillFautWF
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            var steps = stepsTextBox.Text.ToString().Split(',');
-            
-            List<WellFormedNames.Name> _steps = new List<WellFormedNames.Name>();
-
-            foreach(var s in steps)
-            {
-                var text = s.ToString().Trim();
-                if(text != "" && text != null && text != " ")
-                _steps.Add((WellFormedNames.Name)text);
-            }
-
+          
             try
             {
                 dto.Name = nameTextBox.Value;
                 dto.Description = textBoxDescription.Text;
-                dto.Steps = _steps;
+                dto.Steps = stepsTextBox.Text;
                 dto.Target = wfNameTarget.Value;
                 UpdatedGuid = asset.AddOrUpdateExchange(dto);
                 Close();

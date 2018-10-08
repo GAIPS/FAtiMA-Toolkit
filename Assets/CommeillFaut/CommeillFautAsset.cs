@@ -216,7 +216,7 @@ namespace CommeillFaut
                 m_SocialExchanges[idx].Description = dto.Description;
                 m_SocialExchanges[idx].Target = dto.Target;
                 m_SocialExchanges[idx].Name = dto.Name;
-                 m_SocialExchanges[idx].Steps = dto.Steps;
+                 m_SocialExchanges[idx].Steps = m_SocialExchanges[idx].StringToSteps(dto.Steps);
                  m_SocialExchanges[idx].InfluenceRules = dto.InfluenceRules.Select(x=>new InfluenceRule(x)).ToList();
                 actualID = m_SocialExchanges[idx].Id;
 

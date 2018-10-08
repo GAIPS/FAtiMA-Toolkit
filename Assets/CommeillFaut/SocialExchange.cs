@@ -37,7 +37,7 @@ namespace CommeillFaut
             Id = Guid.NewGuid();
             Name = s.Name;
             Description = s.Description;
-            Steps = s.Steps;
+            Steps = StringToSteps(s.Steps);
              Target = s.Target;
             StartingConditions =  new ConditionSet(s.StartingConditions);
             InfluenceRules = s.InfluenceRules.Select(x=>new InfluenceRule(x)).ToList();
@@ -52,11 +52,12 @@ namespace CommeillFaut
         {
             Name = this.Name,
             Description = this.Description,
-            Steps = this.Steps,
+            Steps = this.StepsToString(),
             Target = this.Target,
             StartingConditions = this.StartingConditions.ToDTO(),
             InfluenceRules = this.InfluenceRules.Select(x=>x.ToDTO()).ToList(),
             Id = this.Id
+            
         };
 
         public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
@@ -93,7 +94,35 @@ namespace CommeillFaut
         {
             Steps.Remove(step);
         }
-   
+
+
+        public string StepsToString()
+        {
+            var ret = "";
+
+            foreach (var s in Steps)
+            {
+                ret += s + ", ";
+            }
+
+            ret = ret.Remove(ret.Length - 2, 2);
+
+            return ret;
+        }
+
+        public List<Name> StringToSteps(string str)
+        {
+           var ret = str.Split(',');
+
+            List<Name> steps = new List<Name>();
+            foreach (var ste in ret)
+            {
+                steps.Add((Name)ste);
+            }
+
+            return steps;
+        }
+
 
          public void AddStartingCondition(Condition cond)
         {
@@ -166,7 +195,7 @@ namespace CommeillFaut
            // List<SubstitutionSet> resultingConstraints = new List<SubstitutionSet>();
             
             if(step == this.Steps.FirstOrDefault()){
-           var resultingConstraints = StartingConditions.FirstOrDefault().Unify(m_Kb, m_Kb.Perspective, new[] { constraints } ).ToList();
+           var resultingConstraints = StartingConditions.FirstOrDefault()?.Unify(m_Kb, m_Kb.Perspective, new[] { constraints } ).ToList();
 
             if(StartingConditions.Count() > 1){
                 int counter = 0;
@@ -179,13 +208,13 @@ namespace CommeillFaut
 
             
             
-            if(resultingConstraints.Count() == 0)
+            if(!resultingConstraints.Any())
                 return total;
 
 
                 foreach (var res in resultingConstraints) 
                 {
-                    if (resultingConstraints.Count() > 0) // Assuming all Starting COnditions match lets go into the Influence Rules
+                    if (resultingConstraints.Any()) // Assuming all Starting COnditions match lets go into the Influence Rules
                     {
                    foreach(var constraint in resultingConstraints){  //  var condition = c.ToString();
 
@@ -196,7 +225,7 @@ namespace CommeillFaut
                         //total += certainty;
 
                             
-                       var influenceRuleList = new List<InfluenceRule>();
+                       List<InfluenceRule> influenceRuleList;
 
                              if(mode.IsUniversal)
                            influenceRuleList = this.InfluenceRules;
@@ -230,9 +259,9 @@ namespace CommeillFaut
                 
                 {           
                  
-                 var VolVal = .0f;
+                 var volVal = .0f;
 
-                      var influenceRuleList = new List<InfluenceRule>();
+                      List<InfluenceRule> influenceRuleList;
 
                       if(mode.IsUniversal)
                          influenceRuleList = this.InfluenceRules;
@@ -245,13 +274,13 @@ namespace CommeillFaut
                                 
                      var toSum = inf.EvaluateInfluenceRule(m_Kb, constraints);
 
-                    VolVal +=toSum;
+                    volVal +=toSum;
                                 
                  }
                                
 
-                    if(VolVal > total)
-                        total = VolVal;
+                    if(volVal > total)
+                        total = volVal;
                 }
             
              
