@@ -39,6 +39,7 @@ namespace EmotionalAppraisalWF
             conditionSetEditor.View = _appraisalRulesVM.CurrentRuleConditions;
             dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(LoadedAsset.GetAllGoals().ToList());
 
+            dynamicPropertyListing.TabPages.RemoveAt(1);
             _wasModified = false;
         }
 
@@ -204,6 +205,11 @@ namespace EmotionalAppraisalWF
             }
             LoadedAsset.RemoveGoals(goalsToRemove);
             dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(LoadedAsset.GetAllGoals().ToList());
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

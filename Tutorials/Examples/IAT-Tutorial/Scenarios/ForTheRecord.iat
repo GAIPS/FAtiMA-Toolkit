@@ -1,0 +1,432 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"ScenarioName": "ForTheRecord",
+			"Description": "bleeeh",
+			"WorldModelSource": "",
+			"CharacterSources": ["NormalPlayer.rpc", "player.rpc"],
+			"Dialogues": [
+				{
+					"CurrentState": "GameEnd",
+					"NextState": "-",
+					"Meaning": "Victory",
+					"Style": "-",
+					"Utterance": "gaze(Player) Esta animate(joy4) banda é um sucesso",
+					"UtteranceId": "TTS-5A6DCEC64EE02C84F35CBEF98CC89C9E"
+				}, 
+				{
+					"CurrentState": "LevelUp",
+					"NextState": "-",
+					"Meaning": "Me",
+					"Style": "Emys",
+					"Utterance": "gaze(screen) Vou pôr um ponto no marqting ",
+					"UtteranceId": "TTS-01BE6E3B310431DA1FBCAB3969B5931D"
+				}, 
+				{
+					"CurrentState": "LastDecisionsPhase",
+					"NextState": "-",
+					"Meaning": "Fail",
+					"Style": "Emys",
+					"Utterance": "gaze(screen) Assim não vamos lá. ",
+					"UtteranceId": "TTS-83EF49C14A232EE276E83FB541D38F3D"
+				}, 
+				{
+					"CurrentState": "RollMarketDice",
+					"NextState": "-",
+					"Meaning": "Fail",
+					"Style": "Glin",
+					"Utterance": "gaze(Player) O animate(sadness3) nosso álbum foi um fracasso!",
+					"UtteranceId": "TTS-3A6608D8F88C466FBB56295A6D96891F"
+				}, 
+				{
+					"CurrentState": "LastDecisionsPhase",
+					"NextState": "-",
+					"Meaning": "Success",
+					"Style": "Emys",
+					"Utterance": "gaze(screen) Vou usar os meus |numDices| pontos de márqting para ver o que consigo ",
+					"UtteranceId": "TTS-46DB73F86BDBE88225659E99D6794305"
+				}, 
+				{
+					"CurrentState": "RollMarketDice",
+					"NextState": "-",
+					"Meaning": "Fail",
+					"Style": "Emys",
+					"Utterance": "gaze(screen) Que animate(sadness3) desgraça de álbum ",
+					"UtteranceId": "TTS-93C69911F8110BC3DF0D6CC2907E54CA"
+				}, 
+				{
+					"CurrentState": "OtherRollInstrumentDice",
+					"NextState": "-",
+					"Meaning": "Luck",
+					"Style": "-",
+					"Utterance": "Que sorte! glance(Player) ",
+					"UtteranceId": "TTS-3539E78514FB4B498C246F4F1766E404"
+				}, 
+				{
+					"CurrentState": "NewAlbum",
+					"NextState": "-",
+					"Meaning": "Middle",
+					"Style": "-",
+					"Utterance": "gaze(Player) Bora gravar um álbum novo",
+					"UtteranceId": "TTS-ED5E3C9EBA5D27CC2BCB2BDA8720D516"
+				}, 
+				{
+					"CurrentState": "ChoosePreferredInstrument",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "Glin",
+					"Utterance": "gaze(screen) Eu vou escolher o baixo. ",
+					"UtteranceId": "TTS-6308E51CFF361BDD1A80F98A6F992F07"
+				}, 
+				{
+					"CurrentState": "OtherRollInstrumentDice",
+					"NextState": "-",
+					"Meaning": "BadLuck",
+					"Style": "-",
+					"Utterance": "Credo!  glance(Player) ",
+					"UtteranceId": "TTS-D74F00D2EDBCB5220E8D3625CC22260A"
+				}, 
+				{
+					"CurrentState": "SelfRollInstrumentDice",
+					"NextState": "-",
+					"Meaning": "Luck",
+					"Style": "Glin",
+					"Utterance": "gaze(screen) Ena, somei |dicesValue| pontos! ",
+					"UtteranceId": "TTS-6EE96FE42611DD86FAB36E9609F3309C"
+				}, 
+				{
+					"CurrentState": "LastDecisionsPhase",
+					"NextState": "-",
+					"Meaning": "Fail",
+					"Style": "Glin",
+					"Utterance": "gaze(screen) Isto correu mal. ",
+					"UtteranceId": "TTS-2BB2F4A82998273CD84DE10EA5BA1DE0"
+				}, 
+				{
+					"CurrentState": "LastDecisionsPhase",
+					"NextState": "-",
+					"Meaning": "Fail",
+					"Style": "Emys",
+					"Utterance": "gaze(screen) Assim não vamos lá. ",
+					"UtteranceId": "TTS-83EF49C14A232EE276E83FB541D38F3D"
+				}, 
+				{
+					"CurrentState": "LastDecisionsPhase",
+					"NextState": "-",
+					"Meaning": "Success",
+					"Style": "Glin",
+					"Utterance": "gaze(screen) Aqui está a recompensa.gaze(Player) ",
+					"UtteranceId": "TTS-335FC3EEAECBE2CCC1FB34624396B3AB"
+				}, 
+				{
+					"CurrentState": "LastDecisionsPhase",
+					"NextState": "EndGame",
+					"Meaning": "Fail",
+					"Style": "Glin",
+					"Utterance": "gaze(screen) Que desgraça ",
+					"UtteranceId": "TTS-F46A2B055ACBB075B4704BBFCC1CE785"
+				}, 
+				{
+					"CurrentState": "LevelUp",
+					"NextState": "-",
+					"Meaning": "Me",
+					"Style": "Glin",
+					"Utterance": "gaze(screen) Vou pôr outro ponto no instrumento.",
+					"UtteranceId": "TTS-0AF047D0FD4D3616C47B9FF543C9FEDC"
+				}, 
+				{
+					"CurrentState": "LevelUp",
+					"NextState": "-",
+					"Meaning": "Me",
+					"Style": "Glin",
+					"Utterance": "gaze(screen) Prefiro melhorar o meu instrumento. ",
+					"UtteranceId": "TTS-A8A09E6B54A2857ED1690717623645C4"
+				}, 
+				{
+					"CurrentState": "LastDecisionsPhase",
+					"NextState": "EndGame",
+					"Meaning": "Success",
+					"Style": "Emys",
+					"Utterance": "gaze(screen) Aqui vou eu com |numDices| dados. break/ Ena, tanto dinheiro!",
+					"UtteranceId": "TTS-32DA063C4A47388E2F7FA3A1F936B2FB"
+				}, 
+				{
+					"CurrentState": "RollMarketDice",
+					"NextState": "-",
+					"Meaning": "Success",
+					"Style": "Glin",
+					"Utterance": "gaze(Player) Este animate(joy3) álbum correu muito bem.",
+					"UtteranceId": "TTS-BA598F703027215CCDEFEB99D281DDBF"
+				}, 
+				{
+					"CurrentState": "PlayForInstrument",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "Emys",
+					"Utterance": "gaze(screen) Deixa ver quanto calha com o meu único dado.",
+					"UtteranceId": "TTS-23150BDBFB99296C72F2398275E7B422"
+				}, 
+				{
+					"CurrentState": "RollMarketDice",
+					"NextState": "-",
+					"Meaning": "Fail",
+					"Style": "Emys",
+					"Utterance": "gaze(Player) Este animate(sadness3) álbum não correu nada bem.",
+					"UtteranceId": "TTS-2C773D9EEA932F274031A8AE3FE14F96"
+				}, 
+				{
+					"CurrentState": "SelfRollInstrumentDice",
+					"NextState": "-",
+					"Meaning": "BadLuck",
+					"Style": "Glin",
+					"Utterance": "gaze(screen) Eish, só consegui |dicesValue| pontos! ",
+					"UtteranceId": "TTS-3BFF22C3389A2640170AE1D64E61E574"
+				}, 
+				{
+					"CurrentState": "LevelUp",
+					"NextState": "-",
+					"Meaning": "Other",
+					"Style": "-",
+					"Utterance": "gaze(Player) És tu a jogar",
+					"UtteranceId": "TTS-36DF8A2DFD07CCC5C47B5E62DB9574BB"
+				}, 
+				{
+					"CurrentState": "RollMarketDice",
+					"NextState": "-",
+					"Meaning": "Fail",
+					"Style": "Glin",
+					"Utterance": "gaze(screen) O animate(sadness3) nosso álbum não teve sucesso ",
+					"UtteranceId": "TTS-FB191DF67E71038C76CE073C09A45387"
+				}, 
+				{
+					"CurrentState": "LastDecisionsPhase",
+					"NextState": "EndGame",
+					"Meaning": "Success",
+					"Style": "Glin",
+					"Utterance": "gaze(screen) Foi puxado mas conseguimos! ",
+					"UtteranceId": "TTS-690ECF19C4354808E553E63FF0695A59"
+				}, 
+				{
+					"CurrentState": "ChoosePreferredInstrument",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "Emys",
+					"Utterance": "gaze(screen) Eu quero ser o vocalista. ",
+					"UtteranceId": "TTS-38332E5C1B411A9B977EBC702F5A9F6D"
+				}, 
+				{
+					"CurrentState": "LevelUp",
+					"NextState": "-",
+					"Meaning": "Other",
+					"Style": "-",
+					"Utterance": "gaze(Player) És tu!",
+					"UtteranceId": "TTS-789D0E7E4C2E0A5E269E369E24720484"
+				}, 
+				{
+					"CurrentState": "RollMarketDice",
+					"NextState": "-",
+					"Meaning": "Success",
+					"Style": "Emys",
+					"Utterance": "gaze(Player) O animate(joy3) nosso álbum triunfou.",
+					"UtteranceId": "TTS-7FF9BDAC242D7F64F6AC53AE3683DE38"
+				}, 
+				{
+					"CurrentState": "SelfRollInstrumentDice",
+					"NextState": "-",
+					"Meaning": "BadLuck",
+					"Style": "Emys",
+					"Utterance": "gaze(screen) Mais |dicesValue| pontos para o nosso álbum! ",
+					"UtteranceId": "TTS-C801B38CFCBC7915D1ACA01F8CD375C2"
+				}, 
+				{
+					"CurrentState": "LastDecisionsPhase",
+					"NextState": "-",
+					"Meaning": "Fail",
+					"Style": "Glin",
+					"Utterance": "gaze(screen) A ver se isto melhora... ",
+					"UtteranceId": "TTS-B11671AA2EF0B90A49EA11DE0E865023"
+				}, 
+				{
+					"CurrentState": "LevelUp",
+					"NextState": "-",
+					"Meaning": "Me",
+					"Style": "Emys",
+					"Utterance": "gaze(screen) Vou melhorar o marqting ",
+					"UtteranceId": "TTS-53EE81207432F8C2B26AE24A332FA096"
+				}, 
+				{
+					"CurrentState": "SelfRollInstrumentDice",
+					"NextState": "-",
+					"Meaning": "Luck",
+					"Style": "Emys",
+					"Utterance": "gaze(screen) Mais |dicesValue| pontos do vocalista ",
+					"UtteranceId": "TTS-9765191627FC41713BF5CCB964EE5665"
+				}, 
+				{
+					"CurrentState": "NewAlbum",
+					"NextState": "-",
+					"Meaning": "End",
+					"Style": "-",
+					"Utterance": "gaze(Player) Último álbum, este vai ser decisivo...",
+					"UtteranceId": "TTS-003A661A023264122EBA1E1837697BF0"
+				}, 
+				{
+					"CurrentState": "NewAlbum",
+					"NextState": "-",
+					"Meaning": "Middle",
+					"Style": "-",
+					"Utterance": "gaze(Player) Vamos lá, mais um álbum?",
+					"UtteranceId": "TTS-BDF6A7619F782B4D22674B96693816A1"
+				}, 
+				{
+					"CurrentState": "GameEnd",
+					"NextState": "-",
+					"Meaning": "Loss",
+					"Style": "-",
+					"Utterance": "gaze(Player) A animate(sadness3) nossa banda fracassou",
+					"UtteranceId": "TTS-6CF2C6BDB5A1E763E04745F9F001E104"
+				}, 
+				{
+					"CurrentState": "LastDecisionsPhase",
+					"NextState": "-",
+					"Meaning": "Fail",
+					"Style": "Glin",
+					"Utterance": "gaze(screen) Assim, esta banda não vai longe. ",
+					"UtteranceId": "TTS-51E679AB655355DB7240A11071B0DE0E"
+				}, 
+				{
+					"CurrentState": "LevelUp",
+					"NextState": "-",
+					"Meaning": "Other",
+					"Style": "-",
+					"Utterance": "gaze(Player) És tu!",
+					"UtteranceId": "TTS-789D0E7E4C2E0A5E269E369E24720484"
+				}, 
+				{
+					"CurrentState": "PlayForInstrument",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "Glin",
+					"Utterance": "gaze(screen) Aqui vou eu gravar o baixo",
+					"UtteranceId": "TTS-295BEAD3A2949CFAECB5E8897BDC77E2"
+				}, 
+				{
+					"CurrentState": "PlayForInstrument",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "Emys",
+					"Utterance": "gaze(screen) Agora sou eu a lançar o meu dado do instrumento.",
+					"UtteranceId": "TTS-43BC1E561B7DFD5A4AF26CE293BA0E90"
+				}, 
+				{
+					"CurrentState": "RollMarketDice",
+					"NextState": "-",
+					"Meaning": "Success",
+					"Style": "Emys",
+					"Utterance": "gaze(Player) O animate(joy3) nosso álbum foi um êxito.",
+					"UtteranceId": "TTS-D7E5850CEC8EB04FA916611B76584318"
+				}, 
+				{
+					"CurrentState": "RollMarketDice",
+					"NextState": "-",
+					"Meaning": "Success",
+					"Style": "Emys",
+					"Utterance": "gaze(Player) O animate(joy3) nosso álbum foi um sucesso!",
+					"UtteranceId": "TTS-5747780DD99C99737D77EA30BF9E6292"
+				}, 
+				{
+					"CurrentState": "PlayForInstrument",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "Glin",
+					"Utterance": "gaze(screen) Sou eu. Vou lançar os meus |numDices| dados.",
+					"UtteranceId": "TTS-29AC8FA088A3777E3F73AACC7E57ABB5"
+				}, 
+				{
+					"CurrentState": "PlayForInstrument",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "Emys",
+					"Utterance": "gaze(screen) O vocalista vai cantar.",
+					"UtteranceId": "TTS-3DAF2EF523B02D28AAE13CC1EDBFB94F"
+				}, 
+				{
+					"CurrentState": "LastDecisionsPhase",
+					"NextState": "-",
+					"Meaning": "Success",
+					"Style": "Emys",
+					"Utterance": "gaze(screen)  Está na altura de ser pago, aqui vou eu com os meus |numDices| dados. ",
+					"UtteranceId": "TTS-E19E46ED85C610B5C0B9CB465BA466AF"
+				}, 
+				{
+					"CurrentState": "OtherRollInstrumentDice",
+					"NextState": "-",
+					"Meaning": "Luck",
+					"Style": "-",
+					"Utterance": "Nada mau... glance(Player) ",
+					"UtteranceId": "TTS-CDCA0BAC648DDE34E29BCAF264D4B33D"
+				}, 
+				{
+					"CurrentState": "LastDecisionsPhase",
+					"NextState": "EndGame",
+					"Meaning": "Fail",
+					"Style": "Emys",
+					"Utterance": "gaze(screen) De facto isto não correu bem ",
+					"UtteranceId": "TTS-5F703E537FE6CEB5216433C2F12F2F69"
+				}, 
+				{
+					"CurrentState": "LastDecisionsPhase",
+					"NextState": "-",
+					"Meaning": "Success",
+					"Style": "Emys",
+					"Utterance": "gaze(screen) Deixa lá ver o que consigo com os meus |numDices| pontos de márqting ",
+					"UtteranceId": "TTS-E4889DAB48430AB54DFB90B7F9377042"
+				}, 
+				{
+					"CurrentState": "LastDecisionsPhase",
+					"NextState": "-",
+					"Meaning": "Success",
+					"Style": "Glin",
+					"Utterance": "gaze(screen) Está na hora de fazer lucro. ",
+					"UtteranceId": "TTS-E94A5AEAEC768D24DA2C52548B4DC7A9"
+				}, 
+				{
+					"CurrentState": "OtherRollInstrumentDice",
+					"NextState": "-",
+					"Meaning": "BadLuck",
+					"Style": "-",
+					"Utterance": "Eish  glance(Player) ",
+					"UtteranceId": "TTS-C9D09E069BCDCF23A773C71629FBFF6A"
+				}, 
+				{
+					"CurrentState": "LastDecisionsPhase",
+					"NextState": "-",
+					"Meaning": "Fail",
+					"Style": "Emys",
+					"Utterance": "gaze(screen) Tivemos azar. ",
+					"UtteranceId": "TTS-48FB459310C9DD00EC6559A1C8AA31E1"
+				}, 
+				{
+					"CurrentState": "PlayForInstrument",
+					"NextState": "-",
+					"Meaning": "-",
+					"Style": "Glin",
+					"Utterance": "gaze(screen) Deixa ver o que me sai com estes |numDices| dados.",
+					"UtteranceId": "TTS-20B5F9CC029DF6118258120E13345B38"
+				}, 
+				{
+					"CurrentState": "NewAlbum",
+					"NextState": "-",
+					"Meaning": "Beginning",
+					"Style": "-",
+					"Utterance": "gaze(Player) Espero que ésta banda animate(joy3) tenha sucesso... não se esqueçam que com 3 álbuns falhados perdemos tudo",
+					"UtteranceId": "TTS-32C15069AA4F2073DEB37B637B9B77A4"
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "IntegratedAuthoringTool.IntegratedAuthoringToolAsset, IntegratedAuthoringTool, Version=1.7.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}
