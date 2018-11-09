@@ -65,6 +65,8 @@
             this.clearWorldModelButton = new System.Windows.Forms.Button();
             this.pathTextBoxWorldModel = new System.Windows.Forms.TextBox();
             this.createNewWorldModelButton = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.selectedChar = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCharacters)).BeginInit();
@@ -301,7 +303,7 @@
             // displayGraph
             // 
             this.displayGraph.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.displayGraph.Location = new System.Drawing.Point(665, 604);
+            this.displayGraph.Location = new System.Drawing.Point(665, 603);
             this.displayGraph.Margin = new System.Windows.Forms.Padding(4);
             this.displayGraph.Name = "displayGraph";
             this.displayGraph.Size = new System.Drawing.Size(143, 30);
@@ -324,7 +326,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(808, 588);
+            this.groupBox2.Size = new System.Drawing.Size(808, 587);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dialogue Actions";
@@ -352,7 +354,7 @@
             this.dataGridViewDialogueActions.RowHeadersVisible = false;
             this.dataGridViewDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(800, 504);
+            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(800, 503);
             this.dataGridViewDialogueActions.TabIndex = 14;
             this.dataGridViewDialogueActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellContentClick);
             this.dataGridViewDialogueActions.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellContentDoubleClick);
@@ -407,7 +409,7 @@
             // buttonValidate
             // 
             this.buttonValidate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonValidate.Location = new System.Drawing.Point(514, 604);
+            this.buttonValidate.Location = new System.Drawing.Point(514, 603);
             this.buttonValidate.Margin = new System.Windows.Forms.Padding(4);
             this.buttonValidate.Name = "buttonValidate";
             this.buttonValidate.Size = new System.Drawing.Size(143, 30);
@@ -419,7 +421,7 @@
             // buttonTTS
             // 
             this.buttonTTS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonTTS.Location = new System.Drawing.Point(355, 604);
+            this.buttonTTS.Location = new System.Drawing.Point(355, 603);
             this.buttonTTS.Margin = new System.Windows.Forms.Padding(4);
             this.buttonTTS.Name = "buttonTTS";
             this.buttonTTS.Size = new System.Drawing.Size(151, 30);
@@ -431,7 +433,7 @@
             // buttonImportTxt
             // 
             this.buttonImportTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonImportTxt.Location = new System.Drawing.Point(232, 604);
+            this.buttonImportTxt.Location = new System.Drawing.Point(232, 603);
             this.buttonImportTxt.Margin = new System.Windows.Forms.Padding(4);
             this.buttonImportTxt.Name = "buttonImportTxt";
             this.buttonImportTxt.Size = new System.Drawing.Size(115, 30);
@@ -443,7 +445,7 @@
             // buttonImportExcel
             // 
             this.buttonImportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonImportExcel.Location = new System.Drawing.Point(8, 604);
+            this.buttonImportExcel.Location = new System.Drawing.Point(8, 603);
             this.buttonImportExcel.Margin = new System.Windows.Forms.Padding(4);
             this.buttonImportExcel.Name = "buttonImportExcel";
             this.buttonImportExcel.Size = new System.Drawing.Size(101, 30);
@@ -455,7 +457,7 @@
             // buttonExportExcel
             // 
             this.buttonExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonExportExcel.Location = new System.Drawing.Point(117, 604);
+            this.buttonExportExcel.Location = new System.Drawing.Point(117, 603);
             this.buttonExportExcel.Margin = new System.Windows.Forms.Padding(4);
             this.buttonExportExcel.Name = "buttonExportExcel";
             this.buttonExportExcel.Size = new System.Drawing.Size(107, 30);
@@ -489,7 +491,9 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.effectTickBox);
+            this.groupBox3.Controls.Add(this.selectedChar);
             this.groupBox3.Controls.Add(this.groupBox5);
             this.groupBox3.Controls.Add(this.buttonContinue);
             this.groupBox3.Controls.Add(this.textBoxTick);
@@ -670,7 +674,6 @@
             this.richTextBoxChat.Size = new System.Drawing.Size(801, 356);
             this.richTextBoxChat.TabIndex = 0;
             this.richTextBoxChat.Text = "";
-            this.richTextBoxChat.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // tabPage3
             // 
@@ -757,6 +760,25 @@
             this.createNewWorldModelButton.Text = "New";
             this.createNewWorldModelButton.UseVisualStyleBackColor = true;
             this.createNewWorldModelButton.Click += new System.EventHandler(this.createNewWorldModelButton_Click);
+            // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(568, 609);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(90, 19);
+            this.label7.TabIndex = 7;
+            this.label7.Text = "Playing as:";
+            // 
+            // selectedChar
+            // 
+            this.selectedChar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.selectedChar.Location = new System.Drawing.Point(664, 606);
+            this.selectedChar.Name = "selectedChar";
+            this.selectedChar.ReadOnly = true;
+            this.selectedChar.Size = new System.Drawing.Size(143, 26);
+            this.selectedChar.TabIndex = 6;
             // 
             // MainForm
             // 
@@ -873,6 +895,8 @@
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.Button displayGraph;
         private System.Windows.Forms.CheckBox effectTickBox;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox selectedChar;
     }
 }
 

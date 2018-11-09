@@ -777,14 +777,13 @@ namespace IntegratedAuthoringToolWF
             }
         }
 
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        {
-        }
 
         private List<RolePlayCharacterAsset> agentsInChat;
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
+
+            selectedChar.Text = _rpcForm.LoadedAsset.CharacterName.ToString();
             try
             {
                 this.saveToolStripMenuItem_Click(sender, e);
@@ -808,10 +807,9 @@ namespace IntegratedAuthoringToolWF
                 var rpc = RolePlayCharacterAsset.LoadFromFile(s.Source);
                 rpc.LoadAssociatedAssets();
                 LoadedAsset.BindToRegistry(rpc.DynamicPropertiesRegistry);
-                if (rpc.CharacterName.ToString().ToLower().Contains("player"))
-                {
+                if (_rpcForm.LoadedAsset.CharacterName == rpc.CharacterName)
                     rpc.IsPlayer = true;
-                }
+                else rpc.IsPlayer = false;
 
                 agentsInChat.Add(rpc);
             }
@@ -1267,5 +1265,6 @@ namespace IntegratedAuthoringToolWF
         private void listBoxPlayerDialogues_SelectedIndexChanged(object sender, EventArgs e)
         {
         }
+
     }
 }
