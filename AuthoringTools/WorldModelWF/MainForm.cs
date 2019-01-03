@@ -2,6 +2,8 @@
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using AutobiographicMemory;
+using WellFormedNames;
 using WorldModel;
 using WorldModel.DTOs;
 
@@ -293,6 +295,39 @@ namespace WorldModelWF
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+        }
+
+        private void button3_Click(object sender, EventArgs e) // Duplicate Action
+        {
+            var index = dataGridViewEventTemplates.SelectedRows[0].Index;
+
+            var eventTemp = LoadedAsset.GetAllActions().ElementAt(index).Item1;
+
+            //Cant add events with the same name so I have to rework their variables
+
+
+
+
+            string newActionName = "Duplicate" + eventTemp.GetNTerm(3).ToString();
+
+            
+            var newEventTemp = WellFormedNames.Name.BuildName(
+                (Name) AMConsts.EVENT,
+                (Name) "Action-End",
+                eventTemp.GetNTerm(2),
+                (Name)newActionName,
+                eventTemp.GetNTerm(4));
+
+            var priority = LoadedAsset.GetAllActions().ElementAt(index).Item2;
+
+            LoadedAsset.addActionTemplate((Name)newEventTemp, priority);
+
+            LoadedAsset.AddActionEffects((Name)newEventTemp, LoadedAsset.GetAllEventEffects()[eventTemp].ToList());
+
+            SetModified();
+
+            RefreshEventList();
+
         }
     }
 }

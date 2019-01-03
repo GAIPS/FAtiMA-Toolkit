@@ -119,7 +119,7 @@ namespace WorldModelTests
             var aTemplate = (Name) "Event(Action-End , [i], *, [t])";
 
             wm.addActionTemplate(aTemplate,1);
-            wm.AddActionEffects(aTemplate, effectList);
+            wm.AddActionEffectsDTOs(aTemplate, effectList);
 
             var toSimulate = new List<Name> {(Name) "Event(Action-End, John, Speak(Start, S1, - , -), Sarah)"};
 

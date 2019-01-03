@@ -705,6 +705,7 @@ namespace Tests.CommeillFaut
             var totalCondsBefore = se.StartingConditions.Count;
             se.AddStartingCondition(Condition.Parse("[x] != Start"));
 
+
             Assert.AreEqual((totalCondsBefore + 1), se.StartingConditions.Count);
 
         }

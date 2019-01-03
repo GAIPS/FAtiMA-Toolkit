@@ -1219,7 +1219,7 @@ namespace IntegratedAuthoringToolWF
             var image = new ImageForm(bit);
             image.Show();
 
-            //      Graphics.DrawImage(bit, 60, 10);
+            //     Graphics.DrawImage(bit, 60, 10);
         }
 
         public static Bitmap Run(string dot)

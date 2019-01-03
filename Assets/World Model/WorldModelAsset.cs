@@ -119,11 +119,19 @@ namespace WorldModel
             }
         }
 
-        public void AddActionEffects(Name a, IEnumerable<EffectDTO> effs)
+        public void AddActionEffectsDTOs(Name a, IEnumerable<EffectDTO> effs)
         {
             foreach (var ef in effs)
             {
                 AddActionEffect(a, ef);
+            }
+        }
+
+        public void AddActionEffects(Name a, List<Effect> effs)
+        {
+            foreach (var ef in effs)
+            {
+                AddActionEffect(a, ef.ToDTO());
             }
         }
 
