@@ -24,6 +24,8 @@ namespace IntegratedAuthoringTool
         private DialogActionDictionary m_dialogues;
         private IList<CharacterSourceDTO> m_characterSources;
 
+        public  EventTriggers eventTriggers;
+
         public  WorldModelSourceDTO m_worldModelSource { get; set; }
 
         /// <summary>
@@ -52,6 +54,8 @@ namespace IntegratedAuthoringTool
             m_dialogues = new DialogActionDictionary();
 	        m_characterSources = new List<CharacterSourceDTO>();
             m_worldModelSource =  new WorldModelSourceDTO();
+
+            eventTriggers = new EventTriggers();
         }
 
 		/// <summary>

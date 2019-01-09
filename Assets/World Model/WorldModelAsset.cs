@@ -151,18 +151,10 @@ namespace WorldModel
 
             actions.Remove(old);
 
-            List<Effect> newEffects = new List<Effect>();
+            actions.Add(action, pastEffects);
 
-            foreach (var effs in pastEffects)
-            {
-                var eff = effs;
-                newEffects.Add(eff);
-            }
-            actions.Add(action, newEffects);
-
-            if (actionNames.ContainsKey(old))
-                actionNames.Remove(old);
             actionNames.Add(new KeyValuePair<Name, Name>(action, action));
+
             priorityRules[action] = p;
         }
 

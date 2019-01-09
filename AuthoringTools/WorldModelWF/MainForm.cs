@@ -305,9 +305,6 @@ namespace WorldModelWF
 
             //Cant add events with the same name so I have to rework their variables
 
-
-
-
             string newActionName = "Duplicate" + eventTemp.GetNTerm(3).ToString();
 
             

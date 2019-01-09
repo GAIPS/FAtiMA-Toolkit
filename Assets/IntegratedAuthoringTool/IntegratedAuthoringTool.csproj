@@ -37,6 +37,7 @@
     <Compile Include="DTOs\WorldModelSourceDTO.cs" />
     <Compile Include="DTOs\CharacterSourceDTO.cs" />
     <Compile Include="DTOs\DialogueStateActionDTO.cs" />
+    <Compile Include="EventTriggers.cs" />
     <Compile Include="IATConsts.cs" />
     <Compile Include="IntegratedAuthoringToolAsset.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

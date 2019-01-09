@@ -146,7 +146,7 @@ namespace IntegratedAuthoringToolWF
             {
                 var character = ((ObjectView<CharacterSourceDTO>)dataGridViewCharacters.SelectedRows[i].DataBoundItem)
                     .Object;
-                Form f;
+              
                 charactersToRemove.Add(character.Id);
             }
 
@@ -869,7 +869,13 @@ namespace IntegratedAuthoringToolWF
                             " (" + ag.GetInternalStateString() + " | " + ag.GetSIRelationsString() + ")" + "\n", Color.DarkRed,
                             true);
 
-                        HandleEffects(action.Target, ag, diag);
+
+                        var toString ="Speak(" + diag.CurrentState + "," + diag.NextState + "," + diag.Meaning + "," + diag.Style + ")" ;
+                        var ev = EventHelper.ActionEnd(ag.CharacterName.ToString(), toString, action.Target.ToString());
+                        List<Name> eventList = new List<Name>();
+                        eventList.Add(ev);
+
+                        HandleEffects(eventList);
                     }
                 }
 
@@ -898,6 +904,10 @@ namespace IntegratedAuthoringToolWF
             {
                 listBoxPlayerDialogues.DataSource = new List<string>();
             }
+
+            
+            //Event triggers
+            HandleEventTriggers();
 
             playerRPC.Update();
 
@@ -963,31 +973,39 @@ namespace IntegratedAuthoringToolWF
         private void listBoxPlayerDialogues_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             var idx = listBoxPlayerDialogues.SelectedIndex;
+            var item = listBoxPlayerDialogues.SelectedItem;
             if (idx == -1) return;
 
             int counter = 0;
             DialogueStateActionDTO dialogueState = new DialogueStateActionDTO();
-            Name target = (Name) "default";
+            Name target = (Name)"default";
 
 
 
-            foreach (var targ in playerOptions.Keys)
+            foreach (var options in playerOptions.Values)
             {
-                foreach (var stateAction in playerOptions[targ])
+                foreach (var dialogue in options)
                 {
+
                     if (counter == idx)
                     {
-                        dialogueState = stateAction;
-                        target = targ;
-
+                        dialogueState = dialogue;
+                        target = playerOptions.Keys.FirstOrDefault(x => playerOptions[x] == options);
                         break;
                     }
 
+                    if (target != (Name) "default" && target != null)
+                    
+                        break;
+
                     counter++;
+                }
+                
 
                 }
-            }
+            
 
+        
 
            
             EditorTools.WriteText(richTextBoxChat,
@@ -997,13 +1015,20 @@ namespace IntegratedAuthoringToolWF
             
             var dialog = dialogueState;
 
-            this.HandleEffects(target, playerRPC, dialog);
+
+            var toString ="Speak(" + dialog.CurrentState + "," + dialog.NextState + "," + dialog.Meaning + "," + dialog.Style + ")" ;
+            var ev = EventHelper.ActionEnd(playerRPC.CharacterName.ToString(), toString, target.ToString());
+            List<Name> eventList = new List<Name>();
+            eventList.Add(ev);
+
+            this.HandleEffects(eventList);
 
             this.buttonContinue_Click(sender, e);
         }
 
-        private void HandleEffects(Name target, RolePlayCharacterAsset actor, DialogueStateActionDTO dialog)
+        private void HandleEffects(List<Name> eventList)
         {
+                    
             if (LoadedAsset.m_worldModelSource == null)
                 return;
 
@@ -1015,11 +1040,13 @@ namespace IntegratedAuthoringToolWF
 
             var wm = WorldModelAsset.LoadFromFile(LoadedAsset.m_worldModelSource.Source);
 
-            
 
-            var toString ="Speak(" + dialog.CurrentState + "," + dialog.NextState + "," + dialog.Meaning + "," + dialog.Style + ")" ;
-            var ev = EventHelper.ActionEnd(actor.CharacterName.ToString(), toString, target.ToString());
-            foreach (var a in agentsInChat)
+            foreach (var ev in eventList)
+            {
+
+                var actor = ev.GetNTerm(1);
+          
+           foreach (var a in agentsInChat)
             {
                 a.Perceive(ev);
             }
@@ -1031,7 +1058,7 @@ namespace IntegratedAuthoringToolWF
 
             foreach (var eff in effects)
             {
-                var evt = EventHelper.PropertyChange(eff.PropertyName.ToString(), eff.NewValue.ToString(), actor.CharacterName.ToString());
+                var evt = EventHelper.PropertyChange(eff.PropertyName.ToString(), eff.NewValue.ToString(), actor.ToString());
                 foreach (var a in agentsInChat)
                 {
                     if (eff.ObserverAgent == a.CharacterName || eff.ObserverAgent.ToString() == "*")
@@ -1047,6 +1074,7 @@ namespace IntegratedAuthoringToolWF
                 }
 
             }
+
             foreach (var o in observerAgents)
             {
                 toWrite += o.Key + ": ";
@@ -1061,6 +1089,8 @@ namespace IntegratedAuthoringToolWF
                 toWrite += "\n";
             }
 
+
+
             if(effects.Any())
             {
                 textBoxBelChat_TextChanged(null, null);
@@ -1069,6 +1099,8 @@ namespace IntegratedAuthoringToolWF
             if (effectTickBox.Checked)
                 EditorTools.WriteText(richTextBoxChat,
                 toWrite, Color.Black, true);
+        }
+
         }
 
         private void textBoxBelChat_TextChanged(object sender, EventArgs e)
@@ -1109,6 +1141,32 @@ namespace IntegratedAuthoringToolWF
 
         private void groupBox6_Enter(object sender, EventArgs e)
         {
+        }
+
+        private void HandleEventTriggers()
+        {
+           if(LoadedAsset.eventTriggers == null)
+               LoadedAsset.eventTriggers = new EventTriggers();
+
+            var events = LoadedAsset.eventTriggers.ComputeTriggersList(agentsInChat);
+
+            if (events.IsEmpty())
+                return;
+
+            var toWrite = "";
+
+                toWrite += "Events Triggered: \n";
+                foreach (var ev in events)
+                {
+                    toWrite += ev.ToString() + "\n";
+                }
+            
+
+            if (checkBox1.Checked)
+                EditorTools.WriteText(richTextBoxChat,
+                    toWrite, Color.CornflowerBlue, true);
+
+            HandleEffects(events);
         }
 
         private void createNewWorldModelButton_Click(object sender, EventArgs e)
