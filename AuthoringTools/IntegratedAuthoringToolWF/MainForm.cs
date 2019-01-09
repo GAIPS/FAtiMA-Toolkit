@@ -975,13 +975,21 @@ namespace IntegratedAuthoringToolWF
             var idx = listBoxPlayerDialogues.SelectedIndex;
             var item = listBoxPlayerDialogues.SelectedItem;
 
-            var target = item.ToString().Split(' ')[1];
+            var splitedSelectedItem = item.ToString().Split(' ');
+            var target = splitedSelectedItem[1];
+           // var usedDialogue = splitedSelectedItem[2];
+
+            var usedDialogue = item.ToString().Replace(splitedSelectedItem[0] + " " + splitedSelectedItem[1]+ " ", "");
 
             if (idx == -1) return;
 
-            int counter = 0;
+            
             DialogueStateActionDTO dialogueState = new DialogueStateActionDTO();
-         //   Name target = (Name)"default";
+
+
+            dialogueState = playerOptions[(Name)target].Find(x => x.Utterance == usedDialogue);
+
+         /*   Name target = (Name)"default";
 
             bool foundMatch = false;
 
@@ -1008,7 +1016,7 @@ namespace IntegratedAuthoringToolWF
             
 
         
-
+    */
            
             EditorTools.WriteText(richTextBoxChat,
                 "Player " + listBoxPlayerDialogues.SelectedItem.ToString() + "\n", Color.Blue, true);
@@ -1021,8 +1029,8 @@ namespace IntegratedAuthoringToolWF
             var toString ="Speak(" + dialog.CurrentState + "," + dialog.NextState + "," + dialog.Meaning + "," + dialog.Style + ")" ;
             var ev = EventHelper.ActionEnd(playerRPC.CharacterName.ToString(), toString, target.ToString());
 
-            EditorTools.WriteText(richTextBoxChat,
-                "Event Registered " + ev + "\n", Color.Brown, true);
+         //   EditorTools.WriteText(richTextBoxChat,
+          //      "Event Registered " + ev + "\n", Color.Brown, true);
             List<Name> eventList = new List<Name>();
             eventList.Add(ev);
 
@@ -1051,7 +1059,12 @@ namespace IntegratedAuthoringToolWF
             foreach (var ev in eventList)
             {
                 var actor = ev.GetNTerm(1);
-          
+
+
+                if (effectTickBox.Checked)
+                    EditorTools.WriteText(richTextBoxChat,
+                          "Event Registered " + ev + "\n", Color.Brown, true);
+
            foreach (var a in agentsInChat)
             {
                 a.Perceive(ev);
