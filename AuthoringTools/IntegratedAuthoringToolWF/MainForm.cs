@@ -974,13 +974,16 @@ namespace IntegratedAuthoringToolWF
         {
             var idx = listBoxPlayerDialogues.SelectedIndex;
             var item = listBoxPlayerDialogues.SelectedItem;
+
+            var target = item.ToString().Split(' ')[1];
+
             if (idx == -1) return;
 
             int counter = 0;
             DialogueStateActionDTO dialogueState = new DialogueStateActionDTO();
-            Name target = (Name)"default";
+         //   Name target = (Name)"default";
 
-
+            bool foundMatch = false;
 
             foreach (var options in playerOptions.Values)
             {
@@ -990,12 +993,11 @@ namespace IntegratedAuthoringToolWF
                     if (counter == idx)
                     {
                         dialogueState = dialogue;
-                        target = playerOptions.Keys.FirstOrDefault(x => playerOptions[x] == options);
+                        foundMatch = true;
                         break;
                     }
 
-                    if (target != (Name) "default" && target != null)
-                    
+                    if (foundMatch)
                         break;
 
                     counter++;
@@ -1018,6 +1020,9 @@ namespace IntegratedAuthoringToolWF
 
             var toString ="Speak(" + dialog.CurrentState + "," + dialog.NextState + "," + dialog.Meaning + "," + dialog.Style + ")" ;
             var ev = EventHelper.ActionEnd(playerRPC.CharacterName.ToString(), toString, target.ToString());
+
+            EditorTools.WriteText(richTextBoxChat,
+                "Event Registered " + ev + "\n", Color.Brown, true);
             List<Name> eventList = new List<Name>();
             eventList.Add(ev);
 
@@ -1040,10 +1045,11 @@ namespace IntegratedAuthoringToolWF
 
             var wm = WorldModelAsset.LoadFromFile(LoadedAsset.m_worldModelSource.Source);
 
+        
+
 
             foreach (var ev in eventList)
             {
-
                 var actor = ev.GetNTerm(1);
           
            foreach (var a in agentsInChat)
@@ -1059,6 +1065,8 @@ namespace IntegratedAuthoringToolWF
             foreach (var eff in effects)
             {
                 var evt = EventHelper.PropertyChange(eff.PropertyName.ToString(), eff.NewValue.ToString(), actor.ToString());
+
+               
                 foreach (var a in agentsInChat)
                 {
                     if (eff.ObserverAgent == a.CharacterName || eff.ObserverAgent.ToString() == "*")
