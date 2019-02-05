@@ -1,0 +1,58 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"KnowledgeBase":
+				{
+					"Perspective": "Sam",
+					"Knowledge":
+						{
+							"SELF":
+								{
+									"IsFriend(Player)": "True, 1",
+									"Likes(A)": "4, 1",
+									"Likes(B)": "4, 1",
+									"IsUgly(A)": "6, 1",
+									"IsUgly(B)": "9, 1",
+									"IsCheap(A)": "False, 1"
+								}
+						}
+				},
+			"BodyName": "Female",
+			"VoiceName": "",
+			"EmotionalAppraisalAssetSource": "../../../Examples/RPC-Tutorial/Jonas.ea",
+			"EmotionalDecisionMakingSource": "../../../Examples/RPC-Tutorial/EDMTest.edm",
+			"SocialImportanceAssetSource": null,
+			"CommeillFautAssetSource": null,
+			"EmotionalState":
+				{
+					"Mood": 5,
+					"initialTick": 0,
+					"EmotionalPool": [],
+					"AppraisalConfiguration":
+						{
+							"HalfLifeDecayConstant": 0.5,
+							"EmotionInfluenceOnMoodFactor": 0.3,
+							"MoodInfluenceOnEmotionFactor": 0.3,
+							"MinimumMoodValueForInfluencingEmotions": 0.5,
+							"EmotionalHalfLifeDecayTime": 25,
+							"MoodHalfLifeDecayTime": 25
+						}
+				},
+			"WorkingMemory": null,
+			"AutobiographicMemory":
+				{
+					"Tick": 0,
+					"records": []
+				},
+			"OtherAgents":
+				{
+					"dictionary": []
+				}
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

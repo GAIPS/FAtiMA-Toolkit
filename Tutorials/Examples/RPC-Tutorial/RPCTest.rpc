@@ -38,11 +38,21 @@
 							"MoodHalfLifeDecayTime": 25
 						}
 				},
+				"WorkingMemory":
+				{
+					"Values":
+						{
+							"Target": "Teste1",
+							"Target2": "Teste2",
+							"Target1": "Teste3"
+						}
+				},
 			"AutobiographicMemory":
 				{
 					"Tick": 0,
 					"records": []
 				},
+				
 			"OtherAgents":
 				{
 					"dictionary": []

@@ -20,13 +20,13 @@
 				},
 			"BodyName": "Female",
 			"VoiceName": "",
-			"EmotionalAppraisalAssetSource": "../../../Examples/RPC-Tutorial/Jonas.ea",
-			"EmotionalDecisionMakingSource": "../../../Examples/RPC-Tutorial/EDMTest.edm",
+			"EmotionalAppraisalAssetSource": "/Examples/RPC-Tutorial/Jonas.ea",
+			"EmotionalDecisionMakingSource": "/Examples/RPC-Tutorial/EDMTest.edm",
 			"SocialImportanceAssetSource": null,
 			"CommeillFautAssetSource": null,
 			"EmotionalState":
 				{
-					"Mood": 4.475125,
+					"Mood": 4.863275,
 					"initialTick": 0,
 					"EmotionalPool": [],
 					"AppraisalConfiguration":
@@ -39,9 +39,18 @@
 							"MoodHalfLifeDecayTime": 25
 						}
 				},
+			"WorkingMemory":
+				{
+					"Values":
+						{
+							"Target": "Teste1",
+							"Target2": "Teste2",
+							"Target1": "Teste3"
+						}
+				},
 			"AutobiographicMemory":
 				{
-					"Tick": 4,
+					"Tick": 1,
 					"records": [
 						{
 							"classId": 0,

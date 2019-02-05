@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities;
+using WorkingMemory;
 using Utilities.Json;
 using WellFormedNames;
 using IQueryable = WellFormedNames.IQueryable;
@@ -48,6 +49,7 @@ namespace RolePlayCharacter
             m_activeIdentities = new Dictionary<Name, Identity>();
             m_kb = new KB(RPCConsts.DEFAULT_CHARACTER_NAME);
             m_am = new AM();
+            m_wm = new WM();
             m_emotionalState = new ConcreteEmotionalState();
             m_allowAuthoring = true;
             m_otherAgents = new Dictionary<Name, AgentEntry>();
@@ -218,6 +220,18 @@ namespace RolePlayCharacter
         {
             this.m_am.ForgetEvent(eventId);
         }
+
+
+        public Name AskWorkingMemory(Name name)
+        {
+            return this.m_wm.GetValue(name);
+        }
+
+        public void TellWorkingMemory(Name name, Name value)
+        {
+            this.m_wm.SetValue(name, value);
+        }
+
 
         public IEnumerable<EmotionDTO> GetAllActiveEmotions()
         {
@@ -584,6 +598,7 @@ namespace RolePlayCharacter
 
         public KB m_kb;
         private AM m_am;
+        private WM m_wm;
         public CommeillFautAsset m_commeillFautAsset;
         public EmotionalAppraisalAsset m_emotionalAppraisalAsset;
         public EmotionalDecisionMakingAsset m_emotionalDecisionMakingAsset;
@@ -1164,6 +1179,7 @@ namespace RolePlayCharacter
             dataHolder.SetValue("SocialImportanceAssetSource", this.m_socialImportanceAssetSource);
             dataHolder.SetValue("CommeillFautAssetSource", this.m_commeillFautAssetSource);
             dataHolder.SetValue("EmotionalState", m_emotionalState);
+            dataHolder.SetValue("WorkingMemory", m_wm);
             dataHolder.SetValue("AutobiographicMemory", m_am);
             dataHolder.SetValue("OtherAgents", m_otherAgents);
             if (m_log.Any())
@@ -1185,6 +1201,8 @@ namespace RolePlayCharacter
             this.m_socialImportanceAssetSource = dataHolder.GetValue<string>("SocialImportanceAssetSource");
             this.m_commeillFautAssetSource = dataHolder.GetValue<string>("CommeillFautAssetSource");
             m_emotionalState = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
+            m_wm = dataHolder.GetValue<WM>("WorkingMemory");
+            if (m_wm == null) { m_wm = new WM();}
             m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
             m_otherAgents = dataHolder.GetValue<Dictionary<Name, AgentEntry>>("OtherAgents");
             if (m_otherAgents == null) { m_otherAgents = new Dictionary<Name, AgentEntry>(); }
