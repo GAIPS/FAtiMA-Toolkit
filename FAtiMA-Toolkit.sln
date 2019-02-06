@@ -79,8 +79,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{3FF8BC01-314A-4450-BB84-DC12CE0C54EE}"
 	ProjectSection(SolutionItems) = preProject
 		Tutorials\Examples\Data\anger.wav = Tutorials\Examples\Data\anger.wav
+		Tutorials\Examples\RPC-Tutorial\EDMTest.edm = Tutorials\Examples\RPC-Tutorial\EDMTest.edm
 		Tutorials\Examples\Data\FURIA Fuzzy Logic Rules.txt = Tutorials\Examples\Data\FURIA Fuzzy Logic Rules.txt
+		Tutorials\Examples\RPC-Tutorial\Jonas.ea = Tutorials\Examples\RPC-Tutorial\Jonas.ea
 		Tutorials\Examples\Data\Kiavash1.jpg = Tutorials\Examples\Data\Kiavash1.jpg
+		Tutorials\Examples\RPC-Tutorial\RPCTest-Output.rpc = Tutorials\Examples\RPC-Tutorial\RPCTest-Output.rpc
+		Tutorials\Examples\RPC-Tutorial\RPCTest.rpc = Tutorials\Examples\RPC-Tutorial\RPCTest.rpc
+		Tutorials\Examples\RPC-Tutorial\RPCTest2.rpc = Tutorials\Examples\RPC-Tutorial\RPCTest2.rpc
 		Tutorials\Examples\Data\shape_predictor_68_face_landmarks.dat = Tutorials\Examples\Data\shape_predictor_68_face_landmarks.dat
 	EndProjectSection
 EndProject

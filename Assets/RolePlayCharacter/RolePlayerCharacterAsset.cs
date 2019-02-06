@@ -19,6 +19,7 @@ using WorkingMemory;
 using Utilities.Json;
 using WellFormedNames;
 using IQueryable = WellFormedNames.IQueryable;
+using System.Text.RegularExpressions;
 
 namespace RolePlayCharacter
 {
@@ -230,6 +231,39 @@ namespace RolePlayCharacter
         public void TellWorkingMemory(Name name, Name value)
         {
             this.m_wm.SetValue(name, value);
+        }
+
+        public void ResetWorkingMemory()
+        {
+            this.m_wm = new WM();
+        }
+
+        //This method will replace every working memory symbol within [[ ]] by its value
+        public string ProcessWithWorkingMemory(string utterance)
+        {
+            var tokens = Regex.Split(utterance, @"\[|\]\]");
+
+            var result = string.Empty;
+            bool process = false;
+            foreach (var t in tokens)
+            {
+                if (process)
+                {
+                    var beliefValue = this.AskWorkingMemory((Name)t);
+                    result += beliefValue;
+                    process = false;
+                }
+                else if (t == string.Empty)
+                {
+                    process = true;
+                    continue;
+                }
+                else
+                {
+                    result += t;
+                }
+            }
+            return result;
         }
 
 
@@ -584,6 +618,7 @@ namespace RolePlayCharacter
             registry.RegistDynamicProperty(LOG_TEMPLATE, LogDynamicProperty);
             registry.RegistDynamicProperty(IS_SALIENT_TEMPLATE, IsSalientPropertyCalculator);
             m_am.BindToRegistry(registry);
+            m_wm.BindToRegistry(registry);
         }
 
         private T Loader<T>(string path, Func<T> generateDefault) where T : LoadableAsset<T>
@@ -1206,8 +1241,6 @@ namespace RolePlayCharacter
             m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
             m_otherAgents = dataHolder.GetValue<Dictionary<Name, AgentEntry>>("OtherAgents");
             if (m_otherAgents == null) { m_otherAgents = new Dictionary<Name, AgentEntry>(); }
-
-
             BindToRegistry(m_kb);
         }
 

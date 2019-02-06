@@ -20,25 +20,27 @@ namespace WorkingMemory
 
 
         //Event
-        private static readonly Name WORKING_MEMORY_ID_PROPERTY_NAME = Name.BuildName("WMemory");
+        private static readonly Name WORKING_MEMORY_ID_PROPERTY_NAME = Name.BuildName("TellWM");
         private IEnumerable<DynamicPropertyResult> WorkingMemoryProperty(IQueryContext context, Name name, Name value)
         {
-            /*  var key = Name.BuildName((Name)AMConsts.EVENT, type, subject, def, target);
-              foreach (var c in context.Constraints)
-              {
-                  var unifiedSet = m_typeIndexes.Unify(key, c);
-                  foreach (var pair in unifiedSet)
-                  {
-                      foreach (var id in pair.Item1)
-                          yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(id)), new SubstitutionSet(pair.Item2));
-                  }
+            foreach (var c in context.Constraints)
+            {
+                var n = context.AskPossibleProperties(name).ToList().FirstOrDefault()?.Item1.Value;
+                var v = context.AskPossibleProperties(value).ToList().FirstOrDefault()?.Item1.Value;
 
-                  if (unifiedSet.IsEmpty())
-                  {
-                      yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(-1)), c);
-                  }
-              }*/
-            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(-1)), null);
+                if (n == null || v == null)
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName("Fail")), c);
+                else if (!n.IsGrounded || !v.IsGrounded)
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName("Fail")), c);
+                else if (n.IsComposed|| v.IsComposed)
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName("Fail")), c);
+                else
+                {
+                    values[n.ToString()] = v;
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName("OK")), c);
+                }
+                
+            }
         }
 
 
