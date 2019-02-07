@@ -16,6 +16,10 @@ namespace RolePlayCharacterTutorial
             Console.WriteLine("Starting Mood: " + rpc.Mood);
             var actions = rpc.Decide();
             var action = actions.FirstOrDefault();
+
+            var teste = "My favorite color is [[FavoriteCoslor]]";
+            Console.WriteLine(rpc.ProcessWithWorkingMemory(teste));
+
             rpc.SaveToFile("../../../Examples/RPC-Tutorial/RPCTest-Output.rpc");
             rpc.Update();
 

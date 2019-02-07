@@ -1,7 +1,7 @@
 {
 	"root":
 		{
-			"classId": 0,
+			"classId": 1,
 			"KnowledgeBase":
 				{
 					"Perspective": "Sam",
@@ -43,16 +43,25 @@
 				{
 					"Values":
 						{
-							"Target": "Teste1",
-							"Target2": "Teste2",
-							"Target1": "Teste3",
-							"A": 5
+							"target": "Teste1",
+							"target2": "Teste2",
+							"target1": "Teste3",
+							"favoritecolor": "Red"
 						}
 				},
 			"AutobiographicMemory":
 				{
 					"Tick": 1,
-					"records": []
+					"records": [
+						{
+							"classId": 0,
+							"Id": 1,
+							"Type": "Action-End",
+							"Subject": "Sam",
+							"Timestamp": 1,
+							"Action": "TestAction",
+							"Target": "Player"
+						}]
 				},
 			"OtherAgents":
 				{
@@ -62,6 +71,10 @@
 	"types": [
 		{
 			"TypeId": 0,
+			"ClassName": "AutobiographicMemory.AM+ActionEvent, AutobiographicMemory, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+		}, 
+		{
+			"TypeId": 1,
 			"ClassName": "RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null"
 		}]
 }

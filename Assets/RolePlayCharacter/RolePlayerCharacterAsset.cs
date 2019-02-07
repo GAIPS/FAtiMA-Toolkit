@@ -16,7 +16,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Utilities;
 using WorkingMemory;
-using Utilities.Json;
 using WellFormedNames;
 using IQueryable = WellFormedNames.IQueryable;
 using System.Text.RegularExpressions;
@@ -250,7 +249,12 @@ namespace RolePlayCharacter
                 if (process)
                 {
                     var beliefValue = this.AskWorkingMemory((Name)t);
-                    result += beliefValue;
+                    if (beliefValue == null)
+                        result += "[[" + t + "]]";
+                    else
+                    {
+                        result +=  beliefValue;
+                    }
                     process = false;
                 }
                 else if (t == string.Empty)

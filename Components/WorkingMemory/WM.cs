@@ -18,7 +18,6 @@ namespace WorkingMemory
             registry.RegistDynamicProperty(WORKING_MEMORY_ID_PROPERTY_NAME, WorkingMemoryProperty);
         }
 
-
         //Event
         private static readonly Name WORKING_MEMORY_ID_PROPERTY_NAME = Name.BuildName("TellWM");
         private IEnumerable<DynamicPropertyResult> WorkingMemoryProperty(IQueryContext context, Name name, Name value)
@@ -32,26 +31,28 @@ namespace WorkingMemory
                     yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName("Fail")), c);
                 else if (!n.IsGrounded || !v.IsGrounded)
                     yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName("Fail")), c);
-                else if (n.IsComposed|| v.IsComposed)
+                else if (n.IsComposed || v.IsComposed)
                     yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName("Fail")), c);
                 else
                 {
-                    values[n.ToString()] = v;
+                    this.SetValue(n,v);
                     yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName("OK")), c);
                 }
                 
             }
         }
 
-
         public void SetValue(Name valueName, Name value)
         {
-            this.values[valueName.ToString()] = value;
+            this.values[valueName.ToString().ToLower()] = value;
         }
 
         public Name GetValue(Name valueName)
         {
-            return this.values[valueName.ToString()];
+            var key = valueName.ToString().ToLower();
+            if (this.values.ContainsKey(key))
+                return this.values[key];
+            else return null;
         }
 
 
@@ -79,7 +80,7 @@ namespace WorkingMemory
             {
                 var key = it.Current.FieldName;
                 var value = it.Current.FieldNode.RebuildObject<Name>();
-                values[key] = value;
+                this.SetValue((Name)key,value);
             }
         }
     }

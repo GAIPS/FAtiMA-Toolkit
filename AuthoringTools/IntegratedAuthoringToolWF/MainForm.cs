@@ -783,7 +783,9 @@ namespace IntegratedAuthoringToolWF
         private void buttonStart_Click(object sender, EventArgs e)
         {
 
-            selectedChar.Text = _rpcForm.LoadedAsset.CharacterName.ToString();
+            selectedChar.Text = _rpcForm.LoadedAsset.CharacterName.ToString(); //ASK MANUEL ABOUT THIS
+            
+
             try
             {
                 this.saveToolStripMenuItem_Click(sender, e);
@@ -813,6 +815,8 @@ namespace IntegratedAuthoringToolWF
 
                 agentsInChat.Add(rpc);
             }
+
+            this.playerRPC = agentsInChat.First(x => x.IsPlayer);
 
             richTextBoxChat.Clear();
             listBoxPlayerDialogues.DataSource = new List<string>();
@@ -863,7 +867,8 @@ namespace IntegratedAuthoringToolWF
                         EditorTools.WriteText(richTextBoxChat,
                             ag.CharacterName + " To " + action.Target + " : ", Color.ForestGreen, false);
 
-                        EditorTools.WriteText(richTextBoxChat, diag.Utterance, Color.Black, false);
+                        
+                        EditorTools.WriteText(richTextBoxChat, ag.ProcessWithWorkingMemory(diag.Utterance), Color.Black, false);
 
                         EditorTools.WriteText(richTextBoxChat,
                             " (" + ag.GetInternalStateString() + " | " + ag.GetSIRelationsString() + ")" + "\n", Color.DarkRed,
@@ -898,7 +903,7 @@ namespace IntegratedAuthoringToolWF
 
                  var maxUtility = decisionsList.Max(x=>x.Utility);
             var playerDecisions = decisionsList.Where(x=>x.Utility == maxUtility);
-                this.determinePlayerDialogueOptions(playerDecisions, playerRPC.CharacterName.ToString());
+                this.determinePlayerDialogueOptions(playerDecisions);
             }
             else
             {
@@ -917,25 +922,26 @@ namespace IntegratedAuthoringToolWF
 
         private List<IAction> playerActions;
         private Dictionary<WellFormedNames.Name, List<DialogueStateActionDTO>> playerOptions;
+        private RolePlayCharacterAsset playerRPC;
 
-        private void determinePlayerDialogueOptions(IEnumerable<IAction> actions, string playerCharName)
+        private void determinePlayerDialogueOptions(IEnumerable<IAction> actions)
         {
             playerActions = new List<IAction>();
+            
 
             playerOptions = new Dictionary<WellFormedNames.Name, List<DialogueStateActionDTO>>();
 
             foreach (var a in actions)
             {
-                //       var diag = LoadedAsset.GetDialogAction(a, out error);
-
                 var diags = LoadedAsset.GetDialogueActions(a.Parameters[0], a.Parameters[1], a.Parameters[2],
                     a.Parameters[3]);
 
                 if (diags.IsEmpty())
                 {
-                    EditorTools.WriteText(richTextBoxChat, playerCharName + " : " + " could not find any matching dialogue for action " + a.Name, Color.Red, true);
+                    EditorTools.WriteText(richTextBoxChat, playerRPC.CharacterName.ToString() +
+                        " : " + " could not find any matching dialogue for action " + a.Name, Color.Red, true);
                 }
-                else if (this.ValidateTarget(a, playerCharName))
+                else if (this.ValidateTarget(a, playerRPC.CharacterName.ToString()))
                 {
                     if(playerOptions.ContainsKey(a.Target))
                         playerOptions[a.Target].AddRange(diags);
@@ -950,7 +956,7 @@ namespace IntegratedAuthoringToolWF
             {
                 foreach (var speakAction in playerOptions[targ])
                 {
-                    result.Add("To " + targ + " " + speakAction.Utterance);
+                    result.Add("To " + targ + " " + playerRPC.ProcessWithWorkingMemory(speakAction.Utterance));
                 }
 
             }
@@ -977,7 +983,6 @@ namespace IntegratedAuthoringToolWF
 
             var splitedSelectedItem = item.ToString().Split(' ');
             var target = splitedSelectedItem[1];
-           // var usedDialogue = splitedSelectedItem[2];
 
             var usedDialogue = item.ToString().Replace(splitedSelectedItem[0] + " " + splitedSelectedItem[1]+ " ", "");
 
@@ -986,38 +991,14 @@ namespace IntegratedAuthoringToolWF
             
             DialogueStateActionDTO dialogueState = new DialogueStateActionDTO();
 
-
-            dialogueState = playerOptions[(Name)target].Find(x => x.Utterance == usedDialogue);
-
-         /*   Name target = (Name)"default";
-
-            bool foundMatch = false;
-
-            foreach (var options in playerOptions.Values)
+            foreach(var o in playerOptions[(Name)target])
             {
-                foreach (var dialogue in options)
-                {
+                var aux = this.playerRPC.ProcessWithWorkingMemory(o.Utterance);
+                if (usedDialogue == aux)
+                    dialogueState = o;
+            }
 
-                    if (counter == idx)
-                    {
-                        dialogueState = dialogue;
-                        foundMatch = true;
-                        break;
-                    }
 
-                    if (foundMatch)
-                        break;
-
-                    counter++;
-                }
-                
-
-                }
-            
-
-        
-    */
-           
             EditorTools.WriteText(richTextBoxChat,
                 "Player " + listBoxPlayerDialogues.SelectedItem.ToString() + "\n", Color.Blue, true);
 
@@ -1029,8 +1010,6 @@ namespace IntegratedAuthoringToolWF
             var toString ="Speak(" + dialog.CurrentState + "," + dialog.NextState + "," + dialog.Meaning + "," + dialog.Style + ")" ;
             var ev = EventHelper.ActionEnd(playerRPC.CharacterName.ToString(), toString, target.ToString());
 
-         //   EditorTools.WriteText(richTextBoxChat,
-          //      "Event Registered " + ev + "\n", Color.Brown, true);
             List<Name> eventList = new List<Name>();
             eventList.Add(ev);
 
@@ -1052,9 +1031,6 @@ namespace IntegratedAuthoringToolWF
                 return;
 
             var wm = WorldModelAsset.LoadFromFile(LoadedAsset.m_worldModelSource.Source);
-
-        
-
 
             foreach (var ev in eventList)
             {
@@ -1345,5 +1321,14 @@ namespace IntegratedAuthoringToolWF
         {
         }
 
+        private void richTextBoxChat_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void selectedChar_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
