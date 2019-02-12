@@ -102,7 +102,7 @@
             this.dynamicPropertyListing.Margin = new System.Windows.Forms.Padding(4);
             this.dynamicPropertyListing.Name = "dynamicPropertyListing";
             this.dynamicPropertyListing.SelectedIndex = 0;
-            this.dynamicPropertyListing.Size = new System.Drawing.Size(732, 633);
+            this.dynamicPropertyListing.Size = new System.Drawing.Size(1238, 633);
             this.dynamicPropertyListing.TabIndex = 1;
             // 
             // appraisalRulesTagePage
@@ -112,7 +112,7 @@
             this.appraisalRulesTagePage.Margin = new System.Windows.Forms.Padding(4);
             this.appraisalRulesTagePage.Name = "appraisalRulesTagePage";
             this.appraisalRulesTagePage.Padding = new System.Windows.Forms.Padding(4);
-            this.appraisalRulesTagePage.Size = new System.Drawing.Size(724, 600);
+            this.appraisalRulesTagePage.Size = new System.Drawing.Size(1230, 600);
             this.appraisalRulesTagePage.TabIndex = 3;
             this.appraisalRulesTagePage.Text = "Appraisal Rules";
             this.appraisalRulesTagePage.UseVisualStyleBackColor = true;
@@ -132,7 +132,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox8);
-            this.splitContainer1.Size = new System.Drawing.Size(716, 592);
+            this.splitContainer1.Size = new System.Drawing.Size(1222, 592);
             this.splitContainer1.SplitterDistance = 295;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 11;
@@ -150,7 +150,7 @@
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox7.Size = new System.Drawing.Size(716, 295);
+            this.groupBox7.Size = new System.Drawing.Size(1222, 295);
             this.groupBox7.TabIndex = 1;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Rules";
@@ -158,10 +158,10 @@
             // buttonAppVariables
             // 
             this.buttonAppVariables.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAppVariables.Location = new System.Drawing.Point(293, 18);
+            this.buttonAppVariables.Location = new System.Drawing.Point(455, 21);
             this.buttonAppVariables.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonAppVariables.Name = "buttonAppVariables";
-            this.buttonAppVariables.Size = new System.Drawing.Size(154, 24);
+            this.buttonAppVariables.Size = new System.Drawing.Size(191, 29);
             this.buttonAppVariables.TabIndex = 11;
             this.buttonAppVariables.Text = "Appraisal Variables";
             this.buttonAppVariables.UseVisualStyleBackColor = true;
@@ -169,10 +169,10 @@
             // 
             // buttonDuplicateAppraisalRule
             // 
-            this.buttonDuplicateAppraisalRule.Location = new System.Drawing.Point(140, 18);
+            this.buttonDuplicateAppraisalRule.Location = new System.Drawing.Point(208, 21);
             this.buttonDuplicateAppraisalRule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonDuplicateAppraisalRule.Name = "buttonDuplicateAppraisalRule";
-            this.buttonDuplicateAppraisalRule.Size = new System.Drawing.Size(70, 24);
+            this.buttonDuplicateAppraisalRule.Size = new System.Drawing.Size(108, 29);
             this.buttonDuplicateAppraisalRule.TabIndex = 10;
             this.buttonDuplicateAppraisalRule.Text = "Duplicate";
             this.buttonDuplicateAppraisalRule.UseVisualStyleBackColor = true;
@@ -180,10 +180,10 @@
             // 
             // buttonEditAppraisalRule
             // 
-            this.buttonEditAppraisalRule.Location = new System.Drawing.Point(75, 18);
+            this.buttonEditAppraisalRule.Location = new System.Drawing.Point(110, 21);
             this.buttonEditAppraisalRule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonEditAppraisalRule.Name = "buttonEditAppraisalRule";
-            this.buttonEditAppraisalRule.Size = new System.Drawing.Size(60, 24);
+            this.buttonEditAppraisalRule.Size = new System.Drawing.Size(91, 29);
             this.buttonEditAppraisalRule.TabIndex = 9;
             this.buttonEditAppraisalRule.Text = "Edit";
             this.buttonEditAppraisalRule.UseVisualStyleBackColor = true;
@@ -191,10 +191,10 @@
             // 
             // buttonAddAppraisalRule
             // 
-            this.buttonAddAppraisalRule.Location = new System.Drawing.Point(7, 18);
+            this.buttonAddAppraisalRule.Location = new System.Drawing.Point(7, 21);
             this.buttonAddAppraisalRule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonAddAppraisalRule.Name = "buttonAddAppraisalRule";
-            this.buttonAddAppraisalRule.Size = new System.Drawing.Size(60, 24);
+            this.buttonAddAppraisalRule.Size = new System.Drawing.Size(96, 29);
             this.buttonAddAppraisalRule.TabIndex = 7;
             this.buttonAddAppraisalRule.Text = "Add";
             this.buttonAddAppraisalRule.UseVisualStyleBackColor = true;
@@ -203,10 +203,10 @@
             // buttonRemoveAppraisalRule
             // 
             this.buttonRemoveAppraisalRule.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonRemoveAppraisalRule.Location = new System.Drawing.Point(217, 18);
+            this.buttonRemoveAppraisalRule.Location = new System.Drawing.Point(324, 21);
             this.buttonRemoveAppraisalRule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonRemoveAppraisalRule.Name = "buttonRemoveAppraisalRule";
-            this.buttonRemoveAppraisalRule.Size = new System.Drawing.Size(70, 24);
+            this.buttonRemoveAppraisalRule.Size = new System.Drawing.Size(124, 29);
             this.buttonRemoveAppraisalRule.TabIndex = 8;
             this.buttonRemoveAppraisalRule.Text = "Remove";
             this.buttonRemoveAppraisalRule.UseVisualStyleBackColor = true;
@@ -226,14 +226,14 @@
             this.dataGridViewAppraisalRules.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.dataGridViewAppraisalRules.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewAppraisalRules.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewAppraisalRules.Location = new System.Drawing.Point(3, 46);
+            this.dataGridViewAppraisalRules.Location = new System.Drawing.Point(3, 55);
             this.dataGridViewAppraisalRules.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.dataGridViewAppraisalRules.Name = "dataGridViewAppraisalRules";
             this.dataGridViewAppraisalRules.ReadOnly = true;
             this.dataGridViewAppraisalRules.RowHeadersVisible = false;
             this.dataGridViewAppraisalRules.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAppraisalRules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAppraisalRules.Size = new System.Drawing.Size(711, 236);
+            this.dataGridViewAppraisalRules.Size = new System.Drawing.Size(1219, 230);
             this.dataGridViewAppraisalRules.TabIndex = 2;
             this.dataGridViewAppraisalRules.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAppraisalRules_CellContentClick);
             this.dataGridViewAppraisalRules.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewAppraisalRules_CellMouseDoubleClick);
@@ -248,7 +248,7 @@
             this.groupBox8.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox8.Size = new System.Drawing.Size(716, 292);
+            this.groupBox8.Size = new System.Drawing.Size(1222, 292);
             this.groupBox8.TabIndex = 10;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Rule Conditions";
@@ -259,7 +259,7 @@
             this.conditionSetEditor.Location = new System.Drawing.Point(4, 22);
             this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.conditionSetEditor.Name = "conditionSetEditor";
-            this.conditionSetEditor.Size = new System.Drawing.Size(708, 267);
+            this.conditionSetEditor.Size = new System.Drawing.Size(1214, 267);
             this.conditionSetEditor.TabIndex = 0;
             this.conditionSetEditor.View = null;
             this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);
@@ -270,7 +270,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(724, 600);
+            this.tabPage1.Size = new System.Drawing.Size(1230, 600);
             this.tabPage1.TabIndex = 5;
             this.tabPage1.Text = "Goals";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -359,7 +359,7 @@
             this.emotionDispositionTabPage.Margin = new System.Windows.Forms.Padding(0);
             this.emotionDispositionTabPage.Name = "emotionDispositionTabPage";
             this.emotionDispositionTabPage.Padding = new System.Windows.Forms.Padding(4);
-            this.emotionDispositionTabPage.Size = new System.Drawing.Size(724, 600);
+            this.emotionDispositionTabPage.Size = new System.Drawing.Size(1230, 600);
             this.emotionDispositionTabPage.TabIndex = 4;
             this.emotionDispositionTabPage.Text = "Emotion Dispositions";
             this.emotionDispositionTabPage.UseVisualStyleBackColor = true;
@@ -377,7 +377,7 @@
             this.tableLayoutPanel8.RowCount = 2;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(716, 592);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(1222, 592);
             this.tableLayoutPanel8.TabIndex = 2;
             // 
             // tableLayoutPanel9
@@ -392,7 +392,7 @@
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 1;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(716, 62);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(1222, 62);
             this.tableLayoutPanel9.TabIndex = 4;
             // 
             // groupBox6
@@ -506,7 +506,7 @@
             this.groupBox5.Margin = new System.Windows.Forms.Padding(0);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox5.Size = new System.Drawing.Size(716, 530);
+            this.groupBox5.Size = new System.Drawing.Size(1222, 530);
             this.groupBox5.TabIndex = 0;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Emotion Dispositions";
@@ -532,7 +532,7 @@
             this.dataGridViewEmotionDispositions.RowHeadersVisible = false;
             this.dataGridViewEmotionDispositions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewEmotionDispositions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewEmotionDispositions.Size = new System.Drawing.Size(700, 463);
+            this.dataGridViewEmotionDispositions.Size = new System.Drawing.Size(1206, 463);
             this.dataGridViewEmotionDispositions.TabIndex = 14;
             this.dataGridViewEmotionDispositions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewEmotionDispositions_CellMouseDoubleClick);
             // 
@@ -577,7 +577,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(764, 681);
+            this.ClientSize = new System.Drawing.Size(1270, 681);
             this.Controls.Add(this.dynamicPropertyListing);
             this.EditorName = "Emotional Appraisal Editor";
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

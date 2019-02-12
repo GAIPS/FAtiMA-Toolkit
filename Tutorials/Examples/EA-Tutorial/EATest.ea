@@ -11,7 +11,11 @@
 							"EventName": "Event(Action-End, John, *, *)",
 							"Conditions":
 								{
-									"Set": [" [x] = True "]
+									"Set": ["True = [x]"]
+								},
+							"AppraisalVariables":
+								{
+									"AppraisalVariables": []
 								},
 							"Desirability": -10,
 							"Praiseworthiness": -10
@@ -23,7 +27,7 @@
 					"Decay": 1,
 					"Threshold": 1
 				}],
-				"Goals": []
+			"Goals": []
 		},
 	"types": [
 		{

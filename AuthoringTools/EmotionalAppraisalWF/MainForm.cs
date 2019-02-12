@@ -32,14 +32,19 @@ namespace EmotionalAppraisalWF
             //Appraisal Rule
             _appraisalRulesVM = new AppraisalRulesVM(this);
             dataGridViewAppraisalRules.DataSource = _appraisalRulesVM.AppraisalRules;
-            EditorTools.HideColumns(dataGridViewAppraisalRules, new[] {
+            EditorTools.HideColumns(dataGridViewAppraisalRules, new[]
+            {
                 PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Id),
-                PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Conditions)});
-
+                PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Conditions)
+            
+            });
+               
             conditionSetEditor.View = _appraisalRulesVM.CurrentRuleConditions;
             dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(LoadedAsset.GetAllGoals().ToList());
 
+            if(dynamicPropertyListing.TabPages.Count > 1)
             dynamicPropertyListing.TabPages.RemoveAt(1);
+
             _wasModified = false;
         }
 
@@ -62,7 +67,9 @@ namespace EmotionalAppraisalWF
 
         private void buttonAppVariables_Click(object sender, EventArgs e)
         {
-            new AddOrEditAppraisalVariablesForm(_appraisalRulesVM).ShowDialog(this);
+              var selectedAppraisalRule = EditorTools.GetSelectedDtoFromTable<AppraisalRuleDTO>(dataGridViewAppraisalRules);
+
+            new AddOrEditAppraisalVariablesForm(_appraisalRulesVM, selectedAppraisalRule ).ShowDialog(this);
         }
 
         private void buttonDuplicateAppraisalRule_Click(object sender, EventArgs e)

@@ -177,8 +177,9 @@ namespace EmotionalAppraisal
             {
                 Id = r.Id,
                 EventMatchingTemplate = r.EventName,
-                Desirability = r.Desirability,
-                Praiseworthiness = r.Praiseworthiness,
+               // Desirability = r.Desirability,
+               // Praiseworthiness = r.Praiseworthiness,
+                AppraisalVariables = r.AppraisalVariables,
                 Conditions = r.Conditions.ToDTO()
             });
         }

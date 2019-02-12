@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Conditions.DTOs;
 using WellFormedNames;
 
@@ -22,15 +23,17 @@ namespace EmotionalAppraisal.DTOs
         /// <summary>
         /// The desirability of the event
         /// </summary>
-        public Name Desirability { get; set; }
+        //public Name Desirability { get; set; }
 		/// <summary>
 		/// The praisewothiness of the event.
 		/// </summary>
-        public Name Praiseworthiness { get; set; }
+        //public Name Praiseworthiness { get; set; }
 		/// <summary>
 		/// The conditions in which this event must be appraised.
 		/// If the conditions are not met, the event appraisal is ignored.
 		/// </summary>
 	    public ConditionSetDTO Conditions { get; set; }
+
+        public AppraisalVariables AppraisalVariables  { get; set; }
     }
 }

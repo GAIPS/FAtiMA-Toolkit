@@ -77,5 +77,9 @@ namespace EmotionalAppraisalWF.ViewModels
             RefreshData();
 			_mainForm.SetModified();
 		}
+
+
+
+     
     }
 }

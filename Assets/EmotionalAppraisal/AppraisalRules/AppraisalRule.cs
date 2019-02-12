@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Conditions;
 using EmotionalAppraisal.DTOs;
 using WellFormedNames;
@@ -23,15 +25,18 @@ namespace EmotionalAppraisal.AppraisalRules
         public Name EventName { get; set; }
         public ConditionSet Conditions { get; set; }
 
+        
+        public AppraisalVariables AppraisalVariables{ get; set; }
+        
         /// <summary>
         ///     Desirability of the event
         /// </summary>
-        public Name Desirability { get; set; }
+       // public Name Desirability { get; set; }
 
         /// <summary>
         ///     Praiseworthiness of the event
         /// </summary>
-        public Name Praiseworthiness { get; set; }
+        //public Name Praiseworthiness { get; set; }
 
 
 	    public AppraisalRule(AppraisalRuleDTO appraisalRuleDTO)
@@ -39,7 +44,7 @@ namespace EmotionalAppraisal.AppraisalRules
 		    m_id = (appraisalRuleDTO.Id == Guid.Empty)?Guid.NewGuid() : appraisalRuleDTO.Id;
             EventName = (Name)appraisalRuleDTO.EventMatchingTemplate;
 
-            if (appraisalRuleDTO.Desirability == null)
+           /* if (appraisalRuleDTO.Desirability == null)
             {
                 Desirability = (Name)"0";
             }
@@ -55,7 +60,12 @@ namespace EmotionalAppraisal.AppraisalRules
             else
             {
                 Praiseworthiness = appraisalRuleDTO.Praiseworthiness;
-            }
+            }*/
+
+            if(appraisalRuleDTO.AppraisalVariables != null)
+	        AppraisalVariables = appraisalRuleDTO.AppraisalVariables;
+            else 	        AppraisalVariables = new AppraisalVariables();
+
 
 			Conditions = appraisalRuleDTO.Conditions==null ? new ConditionSet() : new ConditionSet(appraisalRuleDTO.Conditions);
 	    }
@@ -69,9 +79,41 @@ namespace EmotionalAppraisal.AppraisalRules
 			m_id = other.m_id;
 			EventName = other.EventName;
 			Conditions = new ConditionSet(other.Conditions);
-			Desirability = other.Desirability;
-			Praiseworthiness = other.Praiseworthiness;
+			//Desirability = other.Desirability;
+			//Praiseworthiness = other.Praiseworthiness;
+		    AppraisalVariables = other.AppraisalVariables;
 		}
+
+
+          public void AddOrUpdateAppraisalVariables(AppraisalVariableDTO newVar)
+        {
+
+            if(this.AppraisalVariables.appraisalVariables.Contains(newVar))
+                  this.AppraisalVariables.appraisalVariables.Remove(newVar);
+            this.AppraisalVariables.appraisalVariables.Add(newVar);
+
+
+
+		}
+
+        public void RemoveAppraisalVariables(AppraisalVariableDTO newVars)
+        {
+           this.AppraisalVariables.appraisalVariables.Remove(newVars);
+		}
+        
+           public AppraisalVariableDTO getAppraisalVar(Name app)
+        {
+                if(AppraisalVariables != null)
+            return this.AppraisalVariables.appraisalVariables.Find(x=>x.Name == app.ToString());
+                   else return null;
+                }
+
+        public List<AppraisalVariableDTO> getAppraisalVariables()
+        {
+            if(AppraisalVariables != null)
+            return this.AppraisalVariables.appraisalVariables;
+            else return  null;
+        }
 
 	}
 }

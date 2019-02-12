@@ -37,20 +37,16 @@
             this.labelObject = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.textBoxSubject = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             this.textBoxObject = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             this.textBoxTarget = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
-            this.textBoxDesirability = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
-            this.textBoxPraiseworthiness = new GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox();
             ((System.ComponentModel.ISupportInitialize)(this.addBeliefErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emotionalAppraisalAssetBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // addOrEditButton
             // 
-            this.addOrEditButton.Location = new System.Drawing.Point(155, 540);
+            this.addOrEditButton.Location = new System.Drawing.Point(161, 369);
             this.addOrEditButton.Margin = new System.Windows.Forms.Padding(4);
             this.addOrEditButton.Name = "addOrEditButton";
             this.addOrEditButton.Size = new System.Drawing.Size(100, 28);
@@ -74,7 +70,7 @@
             this.comboBoxEventType.Location = new System.Drawing.Point(43, 60);
             this.comboBoxEventType.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxEventType.Name = "comboBoxEventType";
-            this.comboBoxEventType.Size = new System.Drawing.Size(343, 24);
+            this.comboBoxEventType.Size = new System.Drawing.Size(343, 28);
             this.comboBoxEventType.TabIndex = 32;
             this.comboBoxEventType.SelectedIndexChanged += new System.EventHandler(this.comboBoxEventType_SelectedIndexChanged);
             // 
@@ -84,7 +80,7 @@
             this.labelTarget.Location = new System.Drawing.Point(43, 276);
             this.labelTarget.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelTarget.Name = "labelTarget";
-            this.labelTarget.Size = new System.Drawing.Size(125, 16);
+            this.labelTarget.Size = new System.Drawing.Size(156, 20);
             this.labelTarget.TabIndex = 38;
             this.labelTarget.Text = "Target | New Value:";
             // 
@@ -94,7 +90,7 @@
             this.labelObject.Location = new System.Drawing.Point(43, 194);
             this.labelObject.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelObject.Name = "labelObject";
-            this.labelObject.Size = new System.Drawing.Size(108, 16);
+            this.labelObject.Size = new System.Drawing.Size(138, 20);
             this.labelObject.TabIndex = 36;
             this.labelObject.Text = "Action | Property:";
             this.labelObject.Click += new System.EventHandler(this.labelObject_Click);
@@ -105,7 +101,7 @@
             this.label4.Location = new System.Drawing.Point(43, 114);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(56, 16);
+            this.label4.Size = new System.Drawing.Size(70, 20);
             this.label4.TabIndex = 34;
             this.label4.Text = "Subject:";
             this.label4.Click += new System.EventHandler(this.label4_Click);
@@ -116,29 +112,9 @@
             this.label6.Location = new System.Drawing.Point(43, 28);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(43, 16);
+            this.label6.Size = new System.Drawing.Size(50, 20);
             this.label6.TabIndex = 31;
             this.label6.Text = "Type:";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(43, 364);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(78, 16);
-            this.label1.TabIndex = 40;
-            this.label1.Text = "Desirability:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(43, 453);
-            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(113, 16);
-            this.label2.TabIndex = 42;
-            this.label2.Text = "Praiseworthiness:";
             // 
             // textBoxSubject
             // 
@@ -150,7 +126,7 @@
             this.textBoxSubject.Location = new System.Drawing.Point(43, 145);
             this.textBoxSubject.Name = "textBoxSubject";
             this.textBoxSubject.OnlyIntOrVariable = false;
-            this.textBoxSubject.Size = new System.Drawing.Size(343, 22);
+            this.textBoxSubject.Size = new System.Drawing.Size(343, 26);
             this.textBoxSubject.TabIndex = 44;
             // 
             // textBoxObject
@@ -163,7 +139,7 @@
             this.textBoxObject.Location = new System.Drawing.Point(43, 230);
             this.textBoxObject.Name = "textBoxObject";
             this.textBoxObject.OnlyIntOrVariable = false;
-            this.textBoxObject.Size = new System.Drawing.Size(344, 22);
+            this.textBoxObject.Size = new System.Drawing.Size(344, 26);
             this.textBoxObject.TabIndex = 45;
             // 
             // textBoxTarget
@@ -176,48 +152,18 @@
             this.textBoxTarget.Location = new System.Drawing.Point(43, 312);
             this.textBoxTarget.Name = "textBoxTarget";
             this.textBoxTarget.OnlyIntOrVariable = false;
-            this.textBoxTarget.Size = new System.Drawing.Size(344, 22);
+            this.textBoxTarget.Size = new System.Drawing.Size(344, 26);
             this.textBoxTarget.TabIndex = 46;
-            // 
-            // textBoxDesirability
-            // 
-            this.textBoxDesirability.AllowComposedName = true;
-            this.textBoxDesirability.AllowLiteral = true;
-            this.textBoxDesirability.AllowNil = true;
-            this.textBoxDesirability.AllowUniversal = true;
-            this.textBoxDesirability.AllowVariable = true;
-            this.textBoxDesirability.Location = new System.Drawing.Point(43, 401);
-            this.textBoxDesirability.Name = "textBoxDesirability";
-            this.textBoxDesirability.OnlyIntOrVariable = false;
-            this.textBoxDesirability.Size = new System.Drawing.Size(343, 22);
-            this.textBoxDesirability.TabIndex = 47;
-            // 
-            // textBoxPraiseworthiness
-            // 
-            this.textBoxPraiseworthiness.AllowComposedName = true;
-            this.textBoxPraiseworthiness.AllowLiteral = true;
-            this.textBoxPraiseworthiness.AllowNil = true;
-            this.textBoxPraiseworthiness.AllowUniversal = true;
-            this.textBoxPraiseworthiness.AllowVariable = true;
-            this.textBoxPraiseworthiness.Location = new System.Drawing.Point(43, 489);
-            this.textBoxPraiseworthiness.Name = "textBoxPraiseworthiness";
-            this.textBoxPraiseworthiness.OnlyIntOrVariable = false;
-            this.textBoxPraiseworthiness.Size = new System.Drawing.Size(344, 22);
-            this.textBoxPraiseworthiness.TabIndex = 48;
             // 
             // AddOrEditAppraisalRuleForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(427, 583);
-            this.Controls.Add(this.textBoxPraiseworthiness);
-            this.Controls.Add(this.textBoxDesirability);
+            this.ClientSize = new System.Drawing.Size(427, 429);
             this.Controls.Add(this.textBoxTarget);
             this.Controls.Add(this.textBoxObject);
             this.Controls.Add(this.textBoxSubject);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBoxEventType);
             this.Controls.Add(this.labelTarget);
             this.Controls.Add(this.labelObject);
@@ -250,12 +196,8 @@
         private System.Windows.Forms.Label labelObject;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
         private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxSubject;
         private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxObject;
         private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxTarget;
-        private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxPraiseworthiness;
-        private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxDesirability;
     }
 }

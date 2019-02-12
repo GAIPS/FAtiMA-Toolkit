@@ -59,7 +59,26 @@ namespace EmotionalAppraisal.AppraisalRules
                     var mostCertainSubSet = this.DetermineSubstitutionSetWithMostCertainty(finalSubsList);
                     if (mostCertainSubSet != null)
                     {
-                        appRule.Desirability = appRule.Desirability.MakeGround(mostCertainSubSet);
+
+                        foreach(var appVariable in appRule.getAppraisalVariables())
+                        {
+                            appVariable.Value =  appVariable.Value.MakeGround(mostCertainSubSet);
+
+                             var minCertainty = mostCertainSubSet.FindMinimumCertainty();
+
+                            float f;
+                        if(float.TryParse(appVariable.Value.ToString(), out f)){
+                                
+                             var aux = float.Parse(appVariable.Value.ToString()) * minCertainty;
+                            appVariable.Value = Name.BuildName(aux);
+
+                        } else continue;
+
+                        }
+                     
+                        return appRule;
+
+                        /*appRule.Desirability = appRule.Desirability.MakeGround(mostCertainSubSet);
                         appRule.Praiseworthiness = appRule.Praiseworthiness.MakeGround(mostCertainSubSet);
                         if (!appRule.Desirability.IsGrounded || !appRule.Praiseworthiness.IsGrounded)
                         {
@@ -74,8 +93,8 @@ namespace EmotionalAppraisal.AppraisalRules
 
                         aux = float.Parse(appRule.Praiseworthiness.ToString()) * minCertainty;
                         appRule.Praiseworthiness = Name.BuildName(aux);
-
-                        return appRule;
+                        
+                        return appRule;*/
                     }
 						
 				}
@@ -111,10 +130,9 @@ namespace EmotionalAppraisal.AppraisalRules
 		    if (existingRule != null)
 		    {
 				RemoveAppraisalRule(existingRule);
-				existingRule.Desirability = emotionalAppraisalRuleDTO.Desirability;
-				existingRule.Praiseworthiness = emotionalAppraisalRuleDTO.Praiseworthiness;
                 existingRule.EventName = emotionalAppraisalRuleDTO.EventMatchingTemplate;
 				existingRule.Conditions = new ConditionSet(emotionalAppraisalRuleDTO.Conditions);
+                existingRule.AppraisalVariables = emotionalAppraisalRuleDTO.AppraisalVariables;
 		    }
 		    else
 		    {
@@ -166,6 +184,8 @@ namespace EmotionalAppraisal.AppraisalRules
 	        return Rules.Values.SelectMany(set => set);
 	    }
         
+     
+
 		#region IAppraisalDerivator Implementation
 
 		public short AppraisalWeight
@@ -179,7 +199,20 @@ namespace EmotionalAppraisal.AppraisalRules
 			AppraisalRule activeRule = Evaluate(evt, kb, kb.Perspective);
 			if (activeRule != null)
 			{
-				if (activeRule.Desirability != null)
+			    
+                foreach(var appVar in activeRule.getAppraisalVariables())
+                {
+                     float des;
+                    if (!float.TryParse(appVar.Value.ToString(), out des))
+                    {
+                        throw new ArgumentException(appVar.Name + " can only be a float value");
+                    }
+                    frame.SetAppraisalVariable(appVar.Name, des);
+                }
+                
+                /*
+                
+                if (activeRule.Desirability != null)
                 {
                     float des;
                     if (!float.TryParse(activeRule.Desirability.ToString(), out des))
@@ -197,7 +230,7 @@ namespace EmotionalAppraisal.AppraisalRules
                         throw new ArgumentException("Desirability can only be a float value");
                     }
                     frame.SetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS, p);
-                }
+                }*/
 			}
 		}
 
@@ -224,14 +257,14 @@ namespace EmotionalAppraisal.AppraisalRules
 		    foreach (var r in rules)
 		    {
 				r.Id = Guid.NewGuid();
-                if (r.Desirability == null)
+               /* if (r.Desirability == null)
                 {
                     r.Desirability = (Name)"0";
                 }
                 if (r.Praiseworthiness == null)
                 {
                     r.Praiseworthiness = (Name)"0";
-                }
+                }*/
                 AddEmotionalReaction(r);
             }
 		}

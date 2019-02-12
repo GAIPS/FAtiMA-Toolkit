@@ -2,13 +2,13 @@
 {
 	public static class OCCAppraisalVariables
 	{
-		public const string DESIRABILITY = "DESIRABILITY";
-		public const string PRAISEWORTHINESS = "PRAISEWORTHINESS";
-		//public const string DESIRABILITY_FOR_OTHER = "DESFOROTHER_";
-		//public const string LIKE = "LIKE";
-		//public const string GOALCONDUCIVENESS = "GOALCONDUCIVENESS";
-		//public const string SUCCESSPROBABILITY = "SUCCESSPROBABILITY";
-		//public const string FAILUREPROBABILITY = "FAILUREPROBABILITY";
-		//public const string GOALSTATUS = "GOALSTATUS";		
+		public const string DESIRABILITY = "Desirability";
+		public const string PRAISEWORTHINESS = "Praiseworthiness";
+		public const string DESIRABILITY_FOR_OTHER = "Desirability for others";
+		public const string LIKE = "Like";
+		public const string GOALCONDUCIVENESS = "GOALCONDUCTIVENESS";
+		public const string SUCCESSPROBABILITY = "SUCCESSPROBABILITY";
+		public const string FAILUREPROBABILITY = "FAILUREPROBABILITY";
+		public const string GOALSTATUS = "GOALSTATUS";		
 	}
 }

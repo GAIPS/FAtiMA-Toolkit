@@ -46,46 +46,50 @@
             this.groupBox7.Controls.Add(this.buttonAddAppraisalRule);
             this.groupBox7.Controls.Add(this.buttonRemoveAppraisalRule);
             this.groupBox7.Controls.Add(this.dataGridViewAppraisalVariables);
-            this.groupBox7.Location = new System.Drawing.Point(6, 6);
-            this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox7.Location = new System.Drawing.Point(8, 7);
+            this.groupBox7.Margin = new System.Windows.Forms.Padding(5);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox7.Size = new System.Drawing.Size(640, 330);
+            this.groupBox7.Padding = new System.Windows.Forms.Padding(5);
+            this.groupBox7.Size = new System.Drawing.Size(777, 264);
             this.groupBox7.TabIndex = 2;
             this.groupBox7.TabStop = false;
+            this.groupBox7.Enter += new System.EventHandler(this.groupBox7_Enter);
             // 
             // buttonEditAppraisalRule
             // 
             this.buttonEditAppraisalRule.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonEditAppraisalRule.Location = new System.Drawing.Point(88, 23);
-            this.buttonEditAppraisalRule.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonEditAppraisalRule.Location = new System.Drawing.Point(117, 28);
+            this.buttonEditAppraisalRule.Margin = new System.Windows.Forms.Padding(5);
             this.buttonEditAppraisalRule.Name = "buttonEditAppraisalRule";
-            this.buttonEditAppraisalRule.Size = new System.Drawing.Size(93, 28);
+            this.buttonEditAppraisalRule.Size = new System.Drawing.Size(124, 34);
             this.buttonEditAppraisalRule.TabIndex = 9;
             this.buttonEditAppraisalRule.Text = "Edit";
             this.buttonEditAppraisalRule.UseVisualStyleBackColor = true;
+            this.buttonEditAppraisalRule.Click += new System.EventHandler(this.buttonEditAppraisalRule_Click);
             // 
             // buttonAddAppraisalRule
             // 
             this.buttonAddAppraisalRule.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAddAppraisalRule.Location = new System.Drawing.Point(8, 23);
-            this.buttonAddAppraisalRule.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonAddAppraisalRule.Location = new System.Drawing.Point(11, 28);
+            this.buttonAddAppraisalRule.Margin = new System.Windows.Forms.Padding(5);
             this.buttonAddAppraisalRule.Name = "buttonAddAppraisalRule";
-            this.buttonAddAppraisalRule.Size = new System.Drawing.Size(72, 28);
+            this.buttonAddAppraisalRule.Size = new System.Drawing.Size(96, 34);
             this.buttonAddAppraisalRule.TabIndex = 7;
             this.buttonAddAppraisalRule.Text = "Add";
             this.buttonAddAppraisalRule.UseVisualStyleBackColor = true;
+            this.buttonAddAppraisalRule.Click += new System.EventHandler(this.buttonAddAppraisalRule_Click);
             // 
             // buttonRemoveAppraisalRule
             // 
             this.buttonRemoveAppraisalRule.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonRemoveAppraisalRule.Location = new System.Drawing.Point(189, 23);
-            this.buttonRemoveAppraisalRule.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonRemoveAppraisalRule.Location = new System.Drawing.Point(251, 28);
+            this.buttonRemoveAppraisalRule.Margin = new System.Windows.Forms.Padding(5);
             this.buttonRemoveAppraisalRule.Name = "buttonRemoveAppraisalRule";
-            this.buttonRemoveAppraisalRule.Size = new System.Drawing.Size(93, 28);
+            this.buttonRemoveAppraisalRule.Size = new System.Drawing.Size(124, 34);
             this.buttonRemoveAppraisalRule.TabIndex = 8;
             this.buttonRemoveAppraisalRule.Text = "Remove";
             this.buttonRemoveAppraisalRule.UseVisualStyleBackColor = true;
+            this.buttonRemoveAppraisalRule.Click += new System.EventHandler(this.buttonRemoveAppraisalRule_Click);
             // 
             // dataGridViewAppraisalVariables
             // 
@@ -93,7 +97,6 @@
             this.dataGridViewAppraisalVariables.AllowUserToAddRows = false;
             this.dataGridViewAppraisalVariables.AllowUserToDeleteRows = false;
             this.dataGridViewAppraisalVariables.AllowUserToOrderColumns = true;
-            this.dataGridViewAppraisalVariables.AllowUserToResizeRows = false;
             this.dataGridViewAppraisalVariables.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -101,22 +104,25 @@
             this.dataGridViewAppraisalVariables.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.dataGridViewAppraisalVariables.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewAppraisalVariables.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewAppraisalVariables.Location = new System.Drawing.Point(8, 66);
-            this.dataGridViewAppraisalVariables.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridViewAppraisalVariables.Location = new System.Drawing.Point(11, 81);
+            this.dataGridViewAppraisalVariables.Margin = new System.Windows.Forms.Padding(5);
             this.dataGridViewAppraisalVariables.Name = "dataGridViewAppraisalVariables";
             this.dataGridViewAppraisalVariables.ReadOnly = true;
             this.dataGridViewAppraisalVariables.RowHeadersVisible = false;
-            this.dataGridViewAppraisalVariables.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewAppraisalVariables.RowTemplate.DividerHeight = 1;
+            this.dataGridViewAppraisalVariables.RowTemplate.ReadOnly = true;
             this.dataGridViewAppraisalVariables.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAppraisalVariables.Size = new System.Drawing.Size(624, 256);
+            this.dataGridViewAppraisalVariables.Size = new System.Drawing.Size(729, 161);
             this.dataGridViewAppraisalVariables.TabIndex = 2;
+            this.dataGridViewAppraisalVariables.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAppraisalVariables_CellContentClick);
             // 
             // AddOrEditAppraisalVariablesForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(652, 349);
+            this.ClientSize = new System.Drawing.Size(793, 288);
             this.Controls.Add(this.groupBox7);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "AddOrEditAppraisalVariablesForm";
             this.Text = "Appraisal Variables";
             this.groupBox7.ResumeLayout(false);

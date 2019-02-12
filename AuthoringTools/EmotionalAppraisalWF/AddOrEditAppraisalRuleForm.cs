@@ -24,15 +24,13 @@ namespace EmotionalAppraisalWF
             //validationRules
             textBoxSubject.AllowNil = false;
             textBoxSubject.AllowComposedName = false;
-            textBoxDesirability.OnlyIntOrVariable = true;
-            textBoxPraiseworthiness.OnlyIntOrVariable = true;
+           
 
             //defaultValues
             textBoxSubject.Value = WellFormedNames.Name.UNIVERSAL_SYMBOL;
             textBoxObject.Value = WellFormedNames.Name.UNIVERSAL_SYMBOL;
             textBoxTarget.Value = WellFormedNames.Name.UNIVERSAL_SYMBOL;
-            textBoxDesirability.Value = WellFormedNames.Name.BuildName("0");
-            textBoxPraiseworthiness.Value = WellFormedNames.Name.BuildName("0");
+        
             comboBoxEventType.DataSource = AppraisalRulesVM.EventTypes;
 
             if (ruleToEdit != null)
@@ -43,8 +41,6 @@ namespace EmotionalAppraisalWF
                 textBoxSubject.Value = ruleToEdit.EventMatchingTemplate.GetNTerm(2);
                 textBoxObject.Value = ruleToEdit.EventMatchingTemplate.GetNTerm(3);
                 textBoxTarget.Value = ruleToEdit.EventMatchingTemplate.GetNTerm(4);
-                textBoxDesirability.Value = ruleToEdit.Desirability;
-                textBoxPraiseworthiness.Value = ruleToEdit.Praiseworthiness;
             }
         }
 
@@ -61,8 +57,6 @@ namespace EmotionalAppraisalWF
                     textBoxSubject.Value,
                     textBoxObject.Value,
                     textBoxTarget.Value),
-                    Desirability = textBoxDesirability.Value,
-                    Praiseworthiness = textBoxPraiseworthiness.Value,
                     Conditions = new ConditionSetDTO()
                 };
            
@@ -70,6 +64,7 @@ namespace EmotionalAppraisalWF
                 {
                     newRule.Id = _appraisalRuleToEdit.Id;
                     newRule.Conditions = _appraisalRuleToEdit.Conditions;
+                    newRule.AppraisalVariables = _appraisalRuleToEdit.AppraisalVariables;
                 }
                 _appraisalRulesVM.AddOrUpdateAppraisalRule(newRule);
                 Close();

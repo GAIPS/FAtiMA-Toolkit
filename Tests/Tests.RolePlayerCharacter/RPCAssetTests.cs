@@ -13,6 +13,8 @@ using EmotionalDecisionMaking;
 using CommeillFaut;
 using SocialImportance;
 using ActionLibrary;
+using EmotionalAppraisal.DTOs;
+using EmotionalAppraisal.OCCModel;
 
 namespace Tests.RolePlayCharacter
 {
@@ -63,8 +65,19 @@ namespace Tests.RolePlayCharacter
             {
                 Conditions = new Conditions.DTOs.ConditionSetDTO(),
                 EventMatchingTemplate = (Name)"Event(*, *,*, *)",
-                Desirability = Name.BuildName(2),
-                Praiseworthiness = Name.BuildName(2)
+              AppraisalVariables = new AppraisalVariables(new List<AppraisalVariableDTO>()
+               {
+                   new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.DESIRABILITY,
+                       Value = (Name)"2"
+                   },
+                    new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.PRAISEWORTHINESS,
+                       Value = (Name)"2"
+                   }
+               })
             };
 
             ea.AddOrUpdateAppraisalRule(appraisalRule);

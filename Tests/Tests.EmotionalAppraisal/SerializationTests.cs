@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System.IO;
 using EmotionalAppraisal.DTOs;
 using WellFormedNames;
+using System.Collections.Generic;
 
 namespace Tests.EmotionalAppraisal
 {
@@ -89,34 +90,76 @@ namespace Tests.EmotionalAppraisal
             m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
             {
                 EventMatchingTemplate = (Name)"Event(Action-End,*,Pet,self)",
-                Desirability = (Name)"10"
+                 AppraisalVariables = new AppraisalVariables(new List<AppraisalVariableDTO>()
+               {
+                   new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.DESIRABILITY,
+                       Value = (Name)"10"
+                   }
+               })
 			});
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
                 EventMatchingTemplate = (Name)"Event(Action-End,*,Slap,self)",
-                Desirability = (Name)"10"
+                 AppraisalVariables = new AppraisalVariables(new List<AppraisalVariableDTO>()
+               {
+                   new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.DESIRABILITY,
+                       Value = (Name)"10"
+                   }
+               })
             });
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
                 EventMatchingTemplate = (Name)"Event(Action-End,*,Feed,self)",
-				Desirability = (Name)"5",
-
-                Praiseworthiness = (Name)"10"
+				AppraisalVariables = new AppraisalVariables(new List<AppraisalVariableDTO>()
+               {
+                   new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.DESIRABILITY,
+                       Value = (Name)"5"
+                   },
+                    new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.PRAISEWORTHINESS,
+                       Value = (Name)"10"
+                   }
+               })
             });
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
                 EventMatchingTemplate = (Name)"Event(Action-End,*,Talk(High,Mad),self)",
-                Desirability = (Name)"-7",
-                Praiseworthiness = (Name)"-15"
+               AppraisalVariables = new AppraisalVariables(new List<AppraisalVariableDTO>()
+               {
+                   new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.DESIRABILITY,
+                       Value = (Name)"-7"
+                   },
+                    new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.PRAISEWORTHINESS,
+                       Value = (Name)"-15"
+                   }
+               })
             });
 
 			m_emotionalAppraisalAsset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
 			{
                 EventMatchingTemplate = (Name)"Event(Action-End,*,Talk(Low,Happy),self)",
-                Praiseworthiness = (Name)"5"
+               AppraisalVariables = new AppraisalVariables(new List<AppraisalVariableDTO>()
+               {
+                    new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.PRAISEWORTHINESS,
+                       Value = (Name)"5"
+                   }
+               })
 			});
 			
 			//Generate emotion
