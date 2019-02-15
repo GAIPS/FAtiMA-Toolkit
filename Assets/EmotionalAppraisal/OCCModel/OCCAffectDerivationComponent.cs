@@ -44,18 +44,18 @@ namespace EmotionalAppraisal.OCCModel
 			return new OCCBaseEmotion(OCCEmotionType.Distress, -desirability, evtId, eventName);
 		}
 
-		//private static OCCBaseEmotion OCCAppraiseFortuneOfOthers(uint evtId, float desirability, float desirabilityForOther, string target)
-		//{
-		//	float potential = (Math.Abs(desirabilityForOther) + Math.Abs(desirability)) * 0.5f;
+		private static OCCBaseEmotion OCCAppraiseFortuneOfOthers(IBaseEvent evt, float desirability, float desirabilityForOther, string target)
+		{
+			float potential = (Math.Abs(desirabilityForOther) + Math.Abs(desirability)) * 0.5f;
 
-		//	OCCEmotionType emoType;
-		//	if (desirability >= 0)
-		//		emoType = (desirabilityForOther >= 0) ? OCCEmotionType.HappyFor : OCCEmotionType.Gloating;
-		//	else
-		//		emoType = (desirabilityForOther >= 0) ? OCCEmotionType.Resentment : OCCEmotionType.Pitty;
+			OCCEmotionType emoType;
+			if (desirability >= 0)
+				emoType = (desirabilityForOther >= 0) ? OCCEmotionType.HappyFor : OCCEmotionType.Gloating;
+			else
+				emoType = (desirabilityForOther >= 0) ? OCCEmotionType.Resentment : OCCEmotionType.Pitty;
 
-		//	return new OCCBaseEmotion(emoType, potential, evtId, string.IsNullOrEmpty(target) ? Name.UNIVERSAL_SYMBOL : Name.BuildName(target));
-		//}
+			return new OCCBaseEmotion(emoType, potential, evt.Id, (Name)target, evt.EventName);
+		}
 
 		private static OCCBaseEmotion OCCAppraisePraiseworthiness(IBaseEvent evt, float praiseworthiness, Name perspective) {
 			Name direction;
@@ -75,12 +75,12 @@ namespace EmotionalAppraisal.OCCModel
 			return new OCCBaseEmotion(emoType, Math.Abs(praiseworthiness), evt.Id, direction, evt.EventName);
 		}
 
-		//private static OCCBaseEmotion OCCAppraiseAttribution(IEventRecord evt, float like)
-		//{
-		//	const float magicFactor = 0.7f;
-		//	OCCEmotionType emoType = (like >= 0)?OCCEmotionType.Love:OCCEmotionType.Hate;
-		//	return new OCCBaseEmotion(emoType,Math.Abs(like)*magicFactor,evt.Id,evt.Subject==null?Name.UNIVERSAL_SYMBOL:Name.BuildName(evt.Subject));
-		//}
+		private static OCCBaseEmotion OCCAppraiseAttribution(IBaseEvent evt, float like)
+		{
+			const float magicFactor = 0.7f;
+			OCCEmotionType emoType = (like >= 0)?OCCEmotionType.Love:OCCEmotionType.Hate;
+			return new OCCBaseEmotion(emoType, Math.Abs(like)*magicFactor ,evt.Id, evt.Subject==null?Name.UNIVERSAL_SYMBOL:evt.Subject, evt.EventName);
+		}
 
 		private static OCCBaseEmotion AppraiseGoalEnd(OCCEmotionType hopefullOutcome, OCCEmotionType fearfullOutcome, IActiveEmotion hopeEmotion, IActiveEmotion fearEmotion, float goalImportance, uint evtId, Name eventName) {
 
@@ -178,13 +178,13 @@ namespace EmotionalAppraisal.OCCModel
 				{
 					yield return OCCAppraiseWellBeing(evt.Id, evt.EventName, desirability);
 
-					//foreach(string variable in frame.AppraisalVariables.Where(v => v.StartsWith(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER)))
-					//{
-					//	string other = variable.Substring(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER.Length);
-					//	float desirabilityForOther = frame.GetAppraisalVariable(variable);
-					//	if (desirabilityForOther != 0)
-					//		yield return OCCAppraiseFortuneOfOthers(evt.Id, desirability, desirabilityForOther, other);
-					//}
+					foreach(string variable in frame.AppraisalVariables.Where(v => v.StartsWith(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER)))
+					{
+						string other = variable.Substring(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER.Length);
+						float desirabilityForOther = frame.GetAppraisalVariable(variable);
+						if (desirabilityForOther != 0)
+							yield return OCCAppraiseFortuneOfOthers(evt, desirability, desirabilityForOther, other);
+					}
 				}
 			}
 
@@ -195,12 +195,12 @@ namespace EmotionalAppraisal.OCCModel
 					yield return OCCAppraisePraiseworthiness(evt, praiseworthiness, frame.Perspective);
 			}
 
-			//if(frame.ContainsAppraisalVariable(OCCAppraisalVariables.LIKE))
-			//{
-			//	float like = frame.GetAppraisalVariable(OCCAppraisalVariables.LIKE);
-			//	if (like != 0)
-			//		yield return OCCAppraiseAttribution(evt, like);
-			//}
+			if(frame.ContainsAppraisalVariable(OCCAppraisalVariables.LIKE))
+			{
+				float like = frame.GetAppraisalVariable(OCCAppraisalVariables.LIKE);
+				if (like != 0)
+					yield return OCCAppraiseAttribution(evt, like);
+			}
 			
 			//if(frame.ContainsAppraisalVariable(OCCAppraisalVariables.GOALCONDUCIVENESS))
 			//{
@@ -279,35 +279,35 @@ namespace EmotionalAppraisal.OCCModel
 			{
 				frame.SetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS, -potentialValue);
 			}
-			//else if (emotion.EmotionType == OCCEmotionType.Gloating.Name)
-			//{
-			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);
-			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, -potentialValue);
-			//}
-			//else if (emotion.EmotionType == OCCEmotionType.HappyFor.Name)
-			//{
-			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);
-			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, potentialValue);
-			//}
-			//else if (emotion.EmotionType == OCCEmotionType.Pitty.Name)
-			//{
-			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, -potentialValue);
-			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, -potentialValue);
-			//}
-			//else if (emotion.EmotionType == OCCEmotionType.Resentment.Name)
-			//{
-			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, potentialValue);
-			//}
-			//else if (emotion.EmotionType == OCCEmotionType.Gratification.Name)
-			//{
-			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);
-			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, potentialValue);
-			//}
-			//else if (emotion.EmotionType == OCCEmotionType.Anger.Name)
-			//{
-			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, -potentialValue);
-			//	frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, -potentialValue);
-			//}
+			else if (emotion.EmotionType == OCCEmotionType.Gloating.Name)
+			{
+				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);
+				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, -potentialValue);
+			}
+			else if (emotion.EmotionType == OCCEmotionType.HappyFor.Name)
+			{
+				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);
+				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, potentialValue);
+			}
+			else if (emotion.EmotionType == OCCEmotionType.Pitty.Name)
+			{
+				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, -potentialValue);
+				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, -potentialValue);
+			}
+			else if (emotion.EmotionType == OCCEmotionType.Resentment.Name)
+			{
+				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, potentialValue);
+			}
+			else if (emotion.EmotionType == OCCEmotionType.Gratification.Name)
+			{
+				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);
+				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, potentialValue);
+			}
+			else if (emotion.EmotionType == OCCEmotionType.Anger.Name)
+			{
+				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, -potentialValue);
+				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, -potentialValue);
+			}
 		}
 	}
 }

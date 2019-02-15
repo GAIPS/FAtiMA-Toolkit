@@ -66,8 +66,14 @@ namespace EmotionalAppraisal.AppraisalRules
 
                              var minCertainty = mostCertainSubSet.FindMinimumCertainty();
 
+                            if(appVariable.Target != null && appVariable.Target != (Name)"-")
+                            {
+                                appVariable.Target = appVariable.Target.MakeGround(mostCertainSubSet);
+                            }
+
                             float f;
-                        if(float.TryParse(appVariable.Value.ToString(), out f)){
+                       
+                            if(float.TryParse(appVariable.Value.ToString(), out f)){
                                 
                              var aux = float.Parse(appVariable.Value.ToString()) * minCertainty;
                             appVariable.Value = Name.BuildName(aux);
@@ -78,23 +84,6 @@ namespace EmotionalAppraisal.AppraisalRules
                      
                         return appRule;
 
-                        /*appRule.Desirability = appRule.Desirability.MakeGround(mostCertainSubSet);
-                        appRule.Praiseworthiness = appRule.Praiseworthiness.MakeGround(mostCertainSubSet);
-                        if (!appRule.Desirability.IsGrounded || !appRule.Praiseworthiness.IsGrounded)
-                        {
-                           return null;
-                        }
-
-                        //Modify the appraisal variables based on the certainty of the substitutions
-                        var minCertainty = mostCertainSubSet.FindMinimumCertainty();
-
-                        var aux = float.Parse(appRule.Desirability.ToString()) * minCertainty;
-                        appRule.Desirability = Name.BuildName(aux);
-
-                        aux = float.Parse(appRule.Praiseworthiness.ToString()) * minCertainty;
-                        appRule.Praiseworthiness = Name.BuildName(aux);
-                        
-                        return appRule;*/
                     }
 						
 				}
@@ -207,30 +196,15 @@ namespace EmotionalAppraisal.AppraisalRules
                     {
                         throw new ArgumentException(appVar.Name + " can only be a float value");
                     }
+                   
+                    
                     frame.SetAppraisalVariable(appVar.Name, des);
-                }
-                
-                /*
-                
-                if (activeRule.Desirability != null)
-                {
-                    float des;
-                    if (!float.TryParse(activeRule.Desirability.ToString(), out des))
-                    {
-                        throw new ArgumentException("Desirability can only be a float value");
-                    }
-                    frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, des);
-                }
 
-                if (activeRule.Praiseworthiness != null)
-                {
-                    float p;
-                    if (!float.TryParse(activeRule.Praiseworthiness.ToString(), out p))
-                    {
-                        throw new ArgumentException("Desirability can only be a float value");
-                    }
-                    frame.SetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS, p);
-                }*/
+                     if(appVar.Target != null && appVar.Target != (Name)"-")
+                          frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER + "" + appVar.Target, des);
+                }
+                
+               
 			}
 		}
 

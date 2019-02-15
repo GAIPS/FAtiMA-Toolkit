@@ -20,20 +20,15 @@ namespace EmotionalAppraisal.DTOs
         /// The matching template for the events we want to appraise with this rule.
         /// </summary>
         public Name EventMatchingTemplate { get; set; }
-        /// <summary>
-        /// The desirability of the event
-        /// </summary>
-        //public Name Desirability { get; set; }
-		/// <summary>
-		/// The praisewothiness of the event.
-		/// </summary>
-        //public Name Praiseworthiness { get; set; }
-		/// <summary>
+      
 		/// The conditions in which this event must be appraised.
 		/// If the conditions are not met, the event appraisal is ignored.
 		/// </summary>
 	    public ConditionSetDTO Conditions { get; set; }
 
+         /// <summary>
+        /// The list of appraisal variables used for this rule
+        /// </summary>
         public AppraisalVariables AppraisalVariables  { get; set; }
     }
 }

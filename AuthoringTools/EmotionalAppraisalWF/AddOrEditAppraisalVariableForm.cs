@@ -33,7 +33,7 @@ namespace EmotionalAppraisalWF
             appraisalVariableName.Items.Add(OCCAppraisalVariables.DESIRABILITY);
              appraisalVariableName.Items.Add(OCCAppraisalVariables.PRAISEWORTHINESS);
          //    appraisalVariableName.Items.Add(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER);
-         //    appraisalVariableName.Items.Add(OCCAppraisalVariables.LIKE);
+             appraisalVariableName.Items.Add(OCCAppraisalVariables.LIKE);
             appraisalVariableName.SelectedItem = OCCAppraisalVariables.DESIRABILITY;
             appraisalVariableValueTextBox.Value = (Name)"0";
            
@@ -91,14 +91,14 @@ namespace EmotionalAppraisalWF
 
         private void comboBoxEventType_SelectedIndexChanged(object sender, EventArgs e)
         {
-/*
-              if (appraisalVariableName.SelectedItem.ToString() == OCCAppraisalVariables.DESIRABILITY_FOR_OTHER)
+
+              if (appraisalVariableName.SelectedItem.ToString() == OCCAppraisalVariables.DESIRABILITY)
             {
                  appraisalVariableTarget.Enabled = true;
             }
 
             else    appraisalVariableTarget.Enabled = false;
-  */      }
+       }
 
         private void textBoxSubject_TextChanged(object sender, EventArgs e)
         {
