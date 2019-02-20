@@ -783,7 +783,7 @@ namespace IntegratedAuthoringToolWF
         private void buttonStart_Click(object sender, EventArgs e)
         {
 
-            selectedChar.Text = _rpcForm.LoadedAsset.CharacterName.ToString(); //ASK MANUEL ABOUT THIS
+         
             
 
             try
@@ -809,14 +809,17 @@ namespace IntegratedAuthoringToolWF
                 var rpc = RolePlayCharacterAsset.LoadFromFile(s.Source);
                 rpc.LoadAssociatedAssets();
                 LoadedAsset.BindToRegistry(rpc.DynamicPropertiesRegistry);
-                if (_rpcForm.LoadedAsset.CharacterName == rpc.CharacterName)
-                    rpc.IsPlayer = true;
-                else rpc.IsPlayer = false;
-
                 agentsInChat.Add(rpc);
+
             }
 
-            this.playerRPC = agentsInChat.First(x => x.IsPlayer);
+           rpcBox.Items.Clear();
+           rpcBox.Items.AddRange(agentsInChat.Select(x=>x.CharacterName.ToString()).ToArray());
+
+            if(this.playerRPC == null)
+                rpcBox.SelectedItem = agentsInChat.FirstOrDefault().CharacterName.ToString();
+           else rpcBox.SelectedItem = playerRPC.ToString();
+               this.playerRPC =  agentsInChat.Find(x => x.CharacterName.ToString() == rpcBox.SelectedItem.ToString());
 
             richTextBoxChat.Clear();
             listBoxPlayerDialogues.DataSource = new List<string>();
@@ -850,7 +853,7 @@ namespace IntegratedAuthoringToolWF
         {
             foreach (var ag in agentsInChat)
             {
-                if (ag.IsPlayer) continue;
+                if (ag.CharacterName == (WellFormedNames.Name.BuildName(rpcBox.SelectedItem))) continue;
                 var decisions = ag.Decide().Where(a => a.Key.ToString() == IATConsts.DIALOG_ACTION_KEY);
 
                 if (decisions.Any())
@@ -889,7 +892,8 @@ namespace IntegratedAuthoringToolWF
 
             EditorTools.WriteText(richTextBoxChat, "", Color.Black, true);
 
-            var playerRPC = agentsInChat.First(a => a.IsPlayer == true);
+           this.playerRPC =  agentsInChat.Find(x => x.CharacterName.ToString() == rpcBox.SelectedItem.ToString());
+
             if (playerRPC == null)
                 EditorTools.WriteText(richTextBoxChat, " There is no Player RPC, please use the keyword Player in the Character Name field of an RPC", Color.Red, true);
 
@@ -976,6 +980,14 @@ namespace IntegratedAuthoringToolWF
             else return true;
         }
 
+           private void comboBoxEventType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+             this.playerRPC =  agentsInChat.Find(x => x.CharacterName.ToString() == rpcBox.SelectedItem.ToString());
+
+
+       }
+
         private void listBoxPlayerDialogues_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             var idx = listBoxPlayerDialogues.SelectedIndex;
@@ -1002,7 +1014,7 @@ namespace IntegratedAuthoringToolWF
             EditorTools.WriteText(richTextBoxChat,
                 "Player " + listBoxPlayerDialogues.SelectedItem.ToString() + "\n", Color.Blue, true);
 
-            var playerRPC = agentsInChat.First(x => x.IsPlayer);
+          
             
             var dialog = dialogueState;
 

@@ -18,37 +18,33 @@ namespace EmotionalAppraisal.OCCModel
 		private static readonly string[] Composed = { OCCAppraisalVariables.DESIRABILITY,
 														OCCAppraisalVariables.PRAISEWORTHINESS};
 
-		//private static readonly string[] PositiveProspect = { OCCAppraisalVariables.GOALCONDUCIVENESS,
-		//														OCCAppraisalVariables.GOALSTATUS,
-		//														OCCAppraisalVariables.FAILUREPROBABILITY};
+		private static readonly string[] PositiveProspect = {  OCCAppraisalVariables.SUCCESSPROBABILITY};
 
-		//private static readonly string[] NegativeProspect = { OCCAppraisalVariables.GOALCONDUCIVENESS,
-		//														OCCAppraisalVariables.GOALSTATUS,
-		//														OCCAppraisalVariables.SUCCESSPROBABILITY};
+		private static readonly string[] NegativeProspect = { OCCAppraisalVariables.SUCCESSPROBABILITY};
 
 		#endregion
 
 		public static readonly OCCEmotionType Admiration = new OCCEmotionType("Admiration",EmotionValence.Positive, true, Attribution);
 		public static readonly OCCEmotionType Anger = new OCCEmotionType("Anger", EmotionValence.Negative, true, Composed);
 		public static readonly OCCEmotionType Gratitude = new OCCEmotionType("Gratitude", EmotionValence.Positive, true, Composed);
-		//public static readonly OCCEmotionType Disappointment = new OCCEmotionType("Disappointment", EmotionValence.Negative, true, PositiveProspect);
+		public static readonly OCCEmotionType Disappointment = new OCCEmotionType("Disappointment", EmotionValence.Negative, true, PositiveProspect);
 		public static readonly OCCEmotionType Distress = new OCCEmotionType("Distress", EmotionValence.Negative, true, WellBeing);
-		//public static readonly OCCEmotionType Fear = new OCCEmotionType("Fear", EmotionValence.Negative, false, NegativeProspect);
-		//public static readonly OCCEmotionType FearsConfirmed = new OCCEmotionType("Fears-Confirmed", EmotionValence.Negative, true, NegativeProspect);
+		public static readonly OCCEmotionType Fear = new OCCEmotionType("Fear", EmotionValence.Negative, false, NegativeProspect);
+		public static readonly OCCEmotionType FearsConfirmed = new OCCEmotionType("Fears-Confirmed", EmotionValence.Negative, true, NegativeProspect);
 		public static readonly OCCEmotionType Gratification = new OCCEmotionType("Gratification", EmotionValence.Positive, true, Composed);
 		public static readonly OCCEmotionType Gloating = new OCCEmotionType("Gloating", EmotionValence.Positive, true, FortuneOfOthers);
 		public static readonly OCCEmotionType HappyFor = new OCCEmotionType("Happy-For", EmotionValence.Positive, true, FortuneOfOthers);
 		public static readonly OCCEmotionType Hate = new OCCEmotionType("Hate", EmotionValence.Negative, true, Attraction);
-		//public static readonly OCCEmotionType Hope = new OCCEmotionType("Hope", EmotionValence.Positive, false, PositiveProspect);
+		public static readonly OCCEmotionType Hope = new OCCEmotionType("Hope", EmotionValence.Positive, false, PositiveProspect);
 		public static readonly OCCEmotionType Joy = new OCCEmotionType("Joy", EmotionValence.Positive, true, WellBeing);
 		public static readonly OCCEmotionType Love = new OCCEmotionType("Love", EmotionValence.Positive, true, Attraction);
 		public static readonly OCCEmotionType Pitty = new OCCEmotionType("Pitty", EmotionValence.Negative, true, FortuneOfOthers);
 		public static readonly OCCEmotionType Pride = new OCCEmotionType("Pride", EmotionValence.Positive, true, Attribution);
-		//public static readonly OCCEmotionType Relief = new OCCEmotionType("Relief", EmotionValence.Positive, true, NegativeProspect);
+		public static readonly OCCEmotionType Relief = new OCCEmotionType("Relief", EmotionValence.Positive, true, NegativeProspect);
 		public static readonly OCCEmotionType Remorse = new OCCEmotionType("Remorse", EmotionValence.Negative, true, Composed);
 		public static readonly OCCEmotionType Reproach = new OCCEmotionType("Reproach", EmotionValence.Negative, true, Attribution);
 		public static readonly OCCEmotionType Resentment = new OCCEmotionType("Resentment", EmotionValence.Negative, true, FortuneOfOthers);
-		//public static readonly OCCEmotionType Satisfaction = new OCCEmotionType("Satisfaction", EmotionValence.Positive, true, PositiveProspect);
+		public static readonly OCCEmotionType Satisfaction = new OCCEmotionType("Satisfaction", EmotionValence.Positive, true, PositiveProspect);
 		public static readonly OCCEmotionType Shame = new OCCEmotionType("Shame", EmotionValence.Negative, true, Attribution);
 
 

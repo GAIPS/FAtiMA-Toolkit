@@ -10,10 +10,10 @@ namespace EmotionalAppraisal.OCCModel
 {
 	public class OCCAffectDerivationComponent : IAffectDerivator
 	{
-		public const int GOALCONFIRMED = 1;
+		/*public const int GOALCONFIRMED = 1;
 		public const int GOALUNCONFIRMED = 0;
 		public const int GOALDISCONFIRMED = 2;
-
+        */
 		private static OCCBaseEmotion OCCAppraiseCompoundEmotions(IBaseEvent evt, float desirability, float praiseworthiness)
 		{
 			if ((desirability == 0) || (praiseworthiness == 0) || ((desirability > 0) != (praiseworthiness > 0)))
@@ -82,7 +82,59 @@ namespace EmotionalAppraisal.OCCModel
 			return new OCCBaseEmotion(emoType, Math.Abs(like)*magicFactor ,evt.Id, evt.Subject==null?Name.UNIVERSAL_SYMBOL:evt.Subject, evt.EventName);
 		}
 
-		private static OCCBaseEmotion AppraiseGoalEnd(OCCEmotionType hopefullOutcome, OCCEmotionType fearfullOutcome, IActiveEmotion hopeEmotion, IActiveEmotion fearEmotion, float goalImportance, uint evtId, Name eventName) {
+	
+
+
+        private static OCCBaseEmotion AppraiseGoalSuccessProbability(IBaseEvent evt, float goalProbability, float previousProbabilityValue, float significance) {
+
+            
+			//Significante is too low
+			var potential = significance;
+		
+            if(previousProbabilityValue == goalProbability)
+                return new OCCBaseEmotion(OCCEmotionType.Hope,0, evt.Id, evt.EventName);
+
+
+            if(goalProbability > previousProbabilityValue)
+            {
+
+                if(goalProbability == 1)
+                    return new OCCBaseEmotion(OCCEmotionType.Satisfaction, Math.Abs(goalProbability) * potential, evt.Id, evt.EventName);
+                    else return new OCCBaseEmotion(OCCEmotionType.Hope, Math.Abs(goalProbability) * potential, evt.Id, evt.EventName);
+            }
+
+            else  //if(goalProbability < goal.Likelihood)
+            {
+                 if(goalProbability == 0)
+                    return new OCCBaseEmotion(OCCEmotionType.Disappointment, (1 - goalProbability) * potential, evt.Id, evt.EventName);
+                    else return new OCCBaseEmotion(OCCEmotionType.Fear, (1 - goalProbability) * potential , evt.Id, evt.EventName);
+            }
+        }
+    
+		/*	if(hopeEmotion != null) {
+				if(fearEmotion != null && fearEmotion.Intensity > hopeEmotion.Intensity) {
+					potential = fearEmotion.Potential;
+					finalEmotion = fearfullOutcome;
+				}
+				else {
+					potential = hopeEmotion.Potential;
+					finalEmotion = hopefullOutcome;
+				}
+			}
+			else if(fearEmotion != null) {
+				potential = fearEmotion.Potential;
+				finalEmotion = fearfullOutcome;
+			}
+		
+			//The goal importance now affects 66% of the final potential value for the emotion
+			potential = (potential +  2* goalImportance) / 3;
+		
+			return new OCCBaseEmotion(finalEmotion, potential, evtId, eventName);
+		}*/
+
+
+        /*
+         * 	private static OCCBaseEmotion AppraiseGoalEnd(OCCEmotionType hopefullOutcome, OCCEmotionType fearfullOutcome, IActiveEmotion hopeEmotion, IActiveEmotion fearEmotion, float goalImportance, uint evtId, Name eventName) {
 
 			OCCEmotionType finalEmotion;
 			float potential = goalImportance;
@@ -108,7 +160,8 @@ namespace EmotionalAppraisal.OCCModel
 		
 			return new OCCBaseEmotion(finalEmotion, potential, evtId, eventName);
 		}
-
+         * 
+         * */
 		///// <summary>
 		///// Appraises a Goal's success according to the emotions that the agent is experiencing
 		///// </summary>
@@ -140,9 +193,9 @@ namespace EmotionalAppraisal.OCCModel
 		///// <param name="goalConduciveness">???????</param>
 		///// <param name="prob">probability of sucess</param>
 		///// <returns></returns>
-		//public static OCCBaseEmotion AppraiseGoalSuccessProbability(uint evt, float goalConduciveness, float prob) {
-		//	return new OCCBaseEmotion(OCCEmotionType.Hope, prob * goalConduciveness, evt);
-		//}
+	//	public static OCCBaseEmotion AppraiseGoalSuccessProbability(uint evt, float goalConduciveness, float prob) {
+	//		return new OCCBaseEmotion(OCCEmotionType.Hope, prob * goalConduciveness, evt);
+	//	}
 
 		///// <summary>
 		///// Appraises a Goal's likelihood of failure
@@ -202,22 +255,40 @@ namespace EmotionalAppraisal.OCCModel
 					yield return OCCAppraiseAttribution(evt, like);
 			}
 			
-			//if(frame.ContainsAppraisalVariable(OCCAppraisalVariables.GOALCONDUCIVENESS))
-			//{
-			//	float goalConduciveness = frame.GetAppraisalVariable(OCCAppraisalVariables.GOALCONDUCIVENESS);
-			//	if(goalConduciveness!=0)
-			//	{
-			//		var status = frame.GetAppraisalVariable(OCCAppraisalVariables.GOALSTATUS);
-			//		if(status == GOALUNCONFIRMED)
-			//		{
-			//			float prob = frame.GetAppraisalVariable(OCCAppraisalVariables.SUCCESSPROBABILITY);
-			//			if (prob != 0)
-			//				yield return AppraiseGoalSuccessProbability(evt.Id, goalConduciveness, prob);
+		   foreach(string variable in frame.AppraisalVariables.Where(v => v.StartsWith(OCCAppraisalVariables.GOALSUCCESSPROBABILITY)))
+			{
+				float goalSuccessProbability = frame.GetAppraisalVariable(variable);
+			    
+                string goalName = variable.Substring(OCCAppraisalVariables.GOALSUCCESSPROBABILITY.Length);
+                    
+                 var goals = emotionalModule.GetAllGoals().ToList();
+
+
+                GoalDTO g =goals.Find(x=> goalName.Contains(x.Name));
+                
+                var previousValue = g.Likelihood;
+               
+                g.Likelihood = goalSuccessProbability;
+				
+             
+                yield return AppraiseGoalSuccessProbability(evt, goalSuccessProbability, previousValue, g.Significance);
+					}
+            }
+        
+    
+
+                /*
+					var status = frame.GetAppraisalVariable(OCCAppraisalVariables.GOALSTATUS);
+					if(status == GOALUNCONFIRMED)
+					{
+						float prob = frame.GetAppraisalVariable(OCCAppraisalVariables.SUCCESSPROBABILITY);
+						if (prob != 0)
+							yield return AppraiseGoalSuccessProbability(evt.Id, prob);
 					
-			//			prob = frame.GetAppraisalVariable(OCCAppraisalVariables.FAILUREPROBABILITY);
-			//			if (prob != 0)
-			//				yield return AppraiseGoalFailureProbability(evt.Id, goalConduciveness, prob);
-			//		}
+						prob = frame.GetAppraisalVariable(OCCAppraisalVariables.FAILUREPROBABILITY);
+						if (prob != 0)
+							yield return AppraiseGoalFailureProbability(evt.Id, goalConduciveness, prob);
+					}
 			//		else 
 			//		{
 			//			//TODO find a better way to retrive the active emotions, without allocating extra KB
@@ -231,7 +302,7 @@ namespace EmotionalAppraisal.OCCModel
 			//		}
 			//	}
 			//}
-		}
+		}*/
 
 		public short AffectDerivationWeight
 		{
@@ -240,7 +311,7 @@ namespace EmotionalAppraisal.OCCModel
 
 		public void InverseAffectDerivation(EmotionalAppraisalAsset emotionalModule, IEmotion emotion, IWritableAppraisalFrame frame)
 		{
-			//const float MAGIC_VALUE_FOR_LOVE = 1.43f;
+		 const float MAGIC_VALUE_FOR_LOVE = 1.43f;
 			//TODO improve this code
 
 			//ignoring mood for now
@@ -254,15 +325,15 @@ namespace EmotionalAppraisal.OCCModel
 			int threshold = emotionDisposition.Threshold;
 			float potentialValue = emotion.Potential + threshold;
 
-			//if(emotion.EmotionType == OCCEmotionType.Love.Name)
-			//{
-			//	frame.SetAppraisalVariable(OCCAppraisalVariables.LIKE, potentialValue * MAGIC_VALUE_FOR_LOVE);
-			//}
-			//else if(emotion.EmotionType == OCCEmotionType.Hate.Name)
-			//{
-			//	frame.SetAppraisalVariable(OCCAppraisalVariables.LIKE, potentialValue * -MAGIC_VALUE_FOR_LOVE);
-			//}
-			//else
+			if(emotion.EmotionType == OCCEmotionType.Love.Name)
+			{
+				frame.SetAppraisalVariable(OCCAppraisalVariables.LIKE, potentialValue * MAGIC_VALUE_FOR_LOVE);
+			}
+			else if(emotion.EmotionType == OCCEmotionType.Hate.Name)
+			{
+				frame.SetAppraisalVariable(OCCAppraisalVariables.LIKE, potentialValue * -MAGIC_VALUE_FOR_LOVE);
+			}
+			else
 			if (emotion.EmotionType == OCCEmotionType.Joy.Name)
 			{
 				frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);

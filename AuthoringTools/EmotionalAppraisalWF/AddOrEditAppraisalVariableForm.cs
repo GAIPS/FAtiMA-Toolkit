@@ -32,7 +32,7 @@ namespace EmotionalAppraisalWF
             //defaultValues
             appraisalVariableName.Items.Add(OCCAppraisalVariables.DESIRABILITY);
              appraisalVariableName.Items.Add(OCCAppraisalVariables.PRAISEWORTHINESS);
-         //    appraisalVariableName.Items.Add(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER);
+             appraisalVariableName.Items.Add(OCCAppraisalVariables.GOALSUCCESSPROBABILITY);
              appraisalVariableName.Items.Add(OCCAppraisalVariables.LIKE);
             appraisalVariableName.SelectedItem = OCCAppraisalVariables.DESIRABILITY;
             appraisalVariableValueTextBox.Value = (Name)"0";
@@ -54,6 +54,20 @@ namespace EmotionalAppraisalWF
 
         private void addOrEditButton_Click_1(object sender, EventArgs e)
         {
+
+              if (appraisalVariableName.SelectedItem.ToString() == OCCAppraisalVariables.GOALSUCCESSPROBABILITY)
+            {
+
+                var value = float.Parse(appraisalVariableValueTextBox.Value.ToString());
+                if(value < 0 || value > 1){
+               MessageBox.Show("Goal Value must be bewteen 0 and 1", Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+
+            }
+
+            }
+
+
             AppraisalVariableDTO newVar = new AppraisalVariableDTO();
             try
             {
@@ -95,9 +109,18 @@ namespace EmotionalAppraisalWF
               if (appraisalVariableName.SelectedItem.ToString() == OCCAppraisalVariables.DESIRABILITY)
             {
                  appraisalVariableTarget.Enabled = true;
+                 labelTarget.Text = "Target";
+            }
+               else  if (appraisalVariableName.SelectedItem.ToString() == OCCAppraisalVariables.GOALSUCCESSPROBABILITY)
+            {
+                 appraisalVariableTarget.Enabled = true;
+                labelTarget.Text = "Goal Name";
             }
 
             else    appraisalVariableTarget.Enabled = false;
+
+
+
        }
 
         private void textBoxSubject_TextChanged(object sender, EventArgs e)

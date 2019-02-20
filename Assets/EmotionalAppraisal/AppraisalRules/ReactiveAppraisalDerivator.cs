@@ -198,9 +198,12 @@ namespace EmotionalAppraisal.AppraisalRules
                     }
                    
                     
-                    frame.SetAppraisalVariable(appVar.Name, des);
+                     if(appVar.Name == OCCAppraisalVariables.GOALSUCCESSPROBABILITY)
+                          frame.SetAppraisalVariable(OCCAppraisalVariables.GOALSUCCESSPROBABILITY + " " + appVar.Target, des);
+                   else  frame.SetAppraisalVariable(appVar.Name, des);
 
                      if(appVar.Target != null && appVar.Target != (Name)"-")
+                        if(appVar.Name == OCCAppraisalVariables.DESIRABILITY_FOR_OTHER)
                           frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER + "" + appVar.Target, des);
                 }
                 
