@@ -7,10 +7,6 @@
 
 ### Oficial Website: https://fatima-toolkit.eu/
 
-
-### Win 500€ in our Online Game Jam! : https://itch.io/jam/fatima-jam
-
-
 ### Description
 
 FAtiMA Toolkit is a collection of tools/assets designed for the creation of characters with social and emotional intelligence. Currently, the project is actively being developed in the context of the EU-funded project named [RAGE][rage-link]. As implied by its name, the toolkit is a continuation of the work done in developing the [FAtiMA][fatima-link] agent architecture. This architecture was initially released in 2005 and, since then, it has been used to control the behaviour of virtual characters and social robots in several research applications such as:  
