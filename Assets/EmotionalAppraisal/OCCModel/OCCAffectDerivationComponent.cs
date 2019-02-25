@@ -57,18 +57,18 @@ namespace EmotionalAppraisal.OCCModel
 			return new OCCBaseEmotion(emoType, potential, evt.Id, (Name)target, evt.EventName);
 		}
 
-		private static OCCBaseEmotion OCCAppraisePraiseworthiness(IBaseEvent evt, float praiseworthiness, Name perspective) {
+		private static OCCBaseEmotion OCCAppraisePraiseworthiness(IBaseEvent evt, float praiseworthiness, string target) {
 			Name direction;
 			OCCEmotionType emoType;
 
-			if (evt.Subject == perspective)
+			if (target == "SELF" || target == evt.Subject.ToString())
 			{
-				direction = perspective;
+				direction = (Name)target;
 				emoType = (praiseworthiness >= 0) ? OCCEmotionType.Pride : OCCEmotionType.Shame;
 			}
 			else
 			{
-                direction = evt.Subject;
+               direction = (Name)target;
 				emoType = (praiseworthiness >= 0) ? OCCEmotionType.Admiration : OCCEmotionType.Reproach;
 			}
 
@@ -244,13 +244,31 @@ namespace EmotionalAppraisal.OCCModel
                          yield return OCCAppraiseWellBeing(evt.Id, evt.EventName, desirability);
 				}
 			}
+            
 
-			if(frame.ContainsAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS))
+
+            foreach(string variable in frame.AppraisalVariables.Where(v => v.StartsWith(OCCAppraisalVariables.PRAISEWORTHINESS)))
+					{
+				        float praiseworthiness = frame.GetAppraisalVariable(variable);
+						string other = variable.Substring(OCCAppraisalVariables.PRAISEWORTHINESS.Length);
+						if (other == null || other == " ")
+							yield return OCCAppraisePraiseworthiness(evt, praiseworthiness, "SELF");
+
+                        else yield return OCCAppraisePraiseworthiness(evt, praiseworthiness, other);
+                       
+					}
+
+
+			/*if(frame.ContainsAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS))
 			{
 				float praiseworthiness = frame.GetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS);
 				if (praiseworthiness != 0)
 					yield return OCCAppraisePraiseworthiness(evt, praiseworthiness, frame.Perspective);
-			}
+			}*/
+
+
+
+
 
 			if(frame.ContainsAppraisalVariable(OCCAppraisalVariables.LIKE))
 			{

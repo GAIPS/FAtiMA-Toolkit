@@ -255,6 +255,41 @@ namespace Tests.RolePlayCharacter
             
                });
 
+             appraisalRuleSet.Add(15, new EmotionalAppraisal.DTOs.AppraisalRuleDTO()
+            {
+                Conditions = new Conditions.DTOs.ConditionSetDTO(),
+                EventMatchingTemplate = (Name)"Event(*, *,*, *)",
+                AppraisalVariables = new AppraisalVariables(new List<AppraisalVariableDTO>()
+               
+                {
+                   new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.PRAISEWORTHINESS,
+                       Value = (Name)"5",
+                       Target = (Name)"Sarah"
+                   }                   
+               })
+            
+               });
+
+
+             appraisalRuleSet.Add(16, new EmotionalAppraisal.DTOs.AppraisalRuleDTO()
+            {
+                Conditions = new Conditions.DTOs.ConditionSetDTO(),
+                EventMatchingTemplate = (Name)"Event(*, *,*, *)",
+                AppraisalVariables = new AppraisalVariables(new List<AppraisalVariableDTO>()
+               
+                {
+                   new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.PRAISEWORTHINESS,
+                       Value = (Name)"-5",
+                       Target = (Name)"Sarah"
+                   }                   
+               })
+            
+               });
+
         }
 
 
@@ -1237,6 +1272,8 @@ namespace Tests.RolePlayCharacter
         [TestCase(12, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Fear")]
         [TestCase(13, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Satisfaction")]
         [TestCase(14, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Disappointment")]
+        [TestCase(15, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Admiration")]
+        [TestCase(16, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Reproach")]
         public void Test_EA_EmotionForEvent(int appraisalRule, string ev, string emotionFelt)
         {
 
