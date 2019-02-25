@@ -106,7 +106,7 @@ namespace EmotionalAppraisalWF
         private void comboBoxEventType_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-              if (appraisalVariableName.SelectedItem.ToString() == OCCAppraisalVariables.DESIRABILITY)
+              if (appraisalVariableName.SelectedItem.ToString() == OCCAppraisalVariables.DESIRABILITY || appraisalVariableName.SelectedItem.ToString() == OCCAppraisalVariables.PRAISEWORTHINESS)
             {
                  appraisalVariableTarget.Enabled = true;
                  labelTarget.Text = "Target";

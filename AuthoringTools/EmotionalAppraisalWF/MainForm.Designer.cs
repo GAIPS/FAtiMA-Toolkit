@@ -40,13 +40,7 @@
             this.buttonRemoveAppraisalRule = new System.Windows.Forms.Button();
             this.dataGridViewAppraisalRules = new System.Windows.Forms.DataGridView();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.conditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.buttonEditGoal = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.buttonRemove = new System.Windows.Forms.Button();
-            this.dataGridViewGoals = new System.Windows.Forms.DataGridView();
             this.emotionDispositionTabPage = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
@@ -66,6 +60,12 @@
             this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.conditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
+            this.dataGridViewGoals = new System.Windows.Forms.DataGridView();
+            this.buttonRemove = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.buttonEditGoal = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dynamicPropertyListing.SuspendLayout();
             this.appraisalRulesTagePage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -76,8 +76,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAppraisalRules)).BeginInit();
             this.groupBox8.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGoals)).BeginInit();
             this.emotionDispositionTabPage.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel9.SuspendLayout();
@@ -88,6 +86,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.decayErrorProvider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.emotionListItemBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.mainFormBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGoals)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // dynamicPropertyListing
@@ -158,10 +158,10 @@
             // buttonAppVariables
             // 
             this.buttonAppVariables.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAppVariables.Location = new System.Drawing.Point(455, 21);
+            this.buttonAppVariables.Location = new System.Drawing.Point(404, 18);
             this.buttonAppVariables.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonAppVariables.Name = "buttonAppVariables";
-            this.buttonAppVariables.Size = new System.Drawing.Size(191, 29);
+            this.buttonAppVariables.Size = new System.Drawing.Size(170, 25);
             this.buttonAppVariables.TabIndex = 11;
             this.buttonAppVariables.Text = "Appraisal Variables";
             this.buttonAppVariables.UseVisualStyleBackColor = true;
@@ -169,10 +169,10 @@
             // 
             // buttonDuplicateAppraisalRule
             // 
-            this.buttonDuplicateAppraisalRule.Location = new System.Drawing.Point(208, 21);
+            this.buttonDuplicateAppraisalRule.Location = new System.Drawing.Point(185, 18);
             this.buttonDuplicateAppraisalRule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonDuplicateAppraisalRule.Name = "buttonDuplicateAppraisalRule";
-            this.buttonDuplicateAppraisalRule.Size = new System.Drawing.Size(108, 29);
+            this.buttonDuplicateAppraisalRule.Size = new System.Drawing.Size(96, 25);
             this.buttonDuplicateAppraisalRule.TabIndex = 10;
             this.buttonDuplicateAppraisalRule.Text = "Duplicate";
             this.buttonDuplicateAppraisalRule.UseVisualStyleBackColor = true;
@@ -180,10 +180,10 @@
             // 
             // buttonEditAppraisalRule
             // 
-            this.buttonEditAppraisalRule.Location = new System.Drawing.Point(110, 21);
+            this.buttonEditAppraisalRule.Location = new System.Drawing.Point(98, 18);
             this.buttonEditAppraisalRule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonEditAppraisalRule.Name = "buttonEditAppraisalRule";
-            this.buttonEditAppraisalRule.Size = new System.Drawing.Size(91, 29);
+            this.buttonEditAppraisalRule.Size = new System.Drawing.Size(81, 25);
             this.buttonEditAppraisalRule.TabIndex = 9;
             this.buttonEditAppraisalRule.Text = "Edit";
             this.buttonEditAppraisalRule.UseVisualStyleBackColor = true;
@@ -191,10 +191,10 @@
             // 
             // buttonAddAppraisalRule
             // 
-            this.buttonAddAppraisalRule.Location = new System.Drawing.Point(7, 21);
+            this.buttonAddAppraisalRule.Location = new System.Drawing.Point(6, 18);
             this.buttonAddAppraisalRule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonAddAppraisalRule.Name = "buttonAddAppraisalRule";
-            this.buttonAddAppraisalRule.Size = new System.Drawing.Size(96, 29);
+            this.buttonAddAppraisalRule.Size = new System.Drawing.Size(85, 25);
             this.buttonAddAppraisalRule.TabIndex = 7;
             this.buttonAddAppraisalRule.Text = "Add";
             this.buttonAddAppraisalRule.UseVisualStyleBackColor = true;
@@ -203,10 +203,10 @@
             // buttonRemoveAppraisalRule
             // 
             this.buttonRemoveAppraisalRule.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonRemoveAppraisalRule.Location = new System.Drawing.Point(324, 21);
+            this.buttonRemoveAppraisalRule.Location = new System.Drawing.Point(288, 18);
             this.buttonRemoveAppraisalRule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonRemoveAppraisalRule.Name = "buttonRemoveAppraisalRule";
-            this.buttonRemoveAppraisalRule.Size = new System.Drawing.Size(124, 29);
+            this.buttonRemoveAppraisalRule.Size = new System.Drawing.Size(110, 25);
             this.buttonRemoveAppraisalRule.TabIndex = 8;
             this.buttonRemoveAppraisalRule.Text = "Remove";
             this.buttonRemoveAppraisalRule.UseVisualStyleBackColor = true;
@@ -226,14 +226,14 @@
             this.dataGridViewAppraisalRules.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.dataGridViewAppraisalRules.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewAppraisalRules.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewAppraisalRules.Location = new System.Drawing.Point(3, 55);
+            this.dataGridViewAppraisalRules.Location = new System.Drawing.Point(3, 47);
             this.dataGridViewAppraisalRules.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.dataGridViewAppraisalRules.Name = "dataGridViewAppraisalRules";
             this.dataGridViewAppraisalRules.ReadOnly = true;
             this.dataGridViewAppraisalRules.RowHeadersVisible = false;
             this.dataGridViewAppraisalRules.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAppraisalRules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAppraisalRules.Size = new System.Drawing.Size(1219, 230);
+            this.dataGridViewAppraisalRules.Size = new System.Drawing.Size(1220, 240);
             this.dataGridViewAppraisalRules.TabIndex = 2;
             this.dataGridViewAppraisalRules.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAppraisalRules_CellContentClick);
             this.dataGridViewAppraisalRules.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewAppraisalRules_CellMouseDoubleClick);
@@ -253,19 +253,9 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Rule Conditions";
             // 
-            // conditionSetEditor
-            // 
-            this.conditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.conditionSetEditor.Location = new System.Drawing.Point(4, 22);
-            this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.conditionSetEditor.Name = "conditionSetEditor";
-            this.conditionSetEditor.Size = new System.Drawing.Size(1214, 267);
-            this.conditionSetEditor.TabIndex = 0;
-            this.conditionSetEditor.View = null;
-            this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);
-            // 
             // tabPage1
             // 
+            this.tabPage1.BackColor = System.Drawing.Color.WhiteSmoke;
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 29);
             this.tabPage1.Name = "tabPage1";
@@ -273,84 +263,6 @@
             this.tabPage1.Size = new System.Drawing.Size(1230, 600);
             this.tabPage1.TabIndex = 5;
             this.tabPage1.Text = "Goals";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.buttonEditGoal);
-            this.groupBox1.Controls.Add(this.button2);
-            this.groupBox1.Controls.Add(this.buttonRemove);
-            this.groupBox1.Controls.Add(this.dataGridViewGoals);
-            this.groupBox1.Location = new System.Drawing.Point(7, 7);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(710, 459);
-            this.groupBox1.TabIndex = 3;
-            this.groupBox1.TabStop = false;
-            // 
-            // buttonEditGoal
-            // 
-            this.buttonEditGoal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonEditGoal.Location = new System.Drawing.Point(88, 23);
-            this.buttonEditGoal.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonEditGoal.Name = "buttonEditGoal";
-            this.buttonEditGoal.Size = new System.Drawing.Size(93, 28);
-            this.buttonEditGoal.TabIndex = 9;
-            this.buttonEditGoal.Text = "Edit";
-            this.buttonEditGoal.UseVisualStyleBackColor = true;
-            this.buttonEditGoal.Click += new System.EventHandler(this.buttonEditGoal_Click);
-            // 
-            // button2
-            // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(8, 23);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(72, 28);
-            this.button2.TabIndex = 7;
-            this.button2.Text = "Add";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.buttonAddGoal_Click);
-            // 
-            // buttonRemove
-            // 
-            this.buttonRemove.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonRemove.Location = new System.Drawing.Point(189, 23);
-            this.buttonRemove.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonRemove.Name = "buttonRemove";
-            this.buttonRemove.Size = new System.Drawing.Size(93, 28);
-            this.buttonRemove.TabIndex = 8;
-            this.buttonRemove.Text = "Remove";
-            this.buttonRemove.UseVisualStyleBackColor = true;
-            this.buttonRemove.Click += new System.EventHandler(this.buttonRemove_Click);
-            // 
-            // dataGridViewGoals
-            // 
-            this.dataGridViewGoals.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.dataGridViewGoals.AllowUserToAddRows = false;
-            this.dataGridViewGoals.AllowUserToDeleteRows = false;
-            this.dataGridViewGoals.AllowUserToOrderColumns = true;
-            this.dataGridViewGoals.AllowUserToResizeRows = false;
-            this.dataGridViewGoals.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridViewGoals.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridViewGoals.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
-            this.dataGridViewGoals.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewGoals.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewGoals.Location = new System.Drawing.Point(8, 59);
-            this.dataGridViewGoals.Margin = new System.Windows.Forms.Padding(4);
-            this.dataGridViewGoals.Name = "dataGridViewGoals";
-            this.dataGridViewGoals.ReadOnly = true;
-            this.dataGridViewGoals.RowHeadersVisible = false;
-            this.dataGridViewGoals.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewGoals.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewGoals.Size = new System.Drawing.Size(694, 385);
-            this.dataGridViewGoals.TabIndex = 2;
             // 
             // emotionDispositionTabPage
             // 
@@ -466,7 +378,7 @@
             "7",
             "8",
             "9"});
-            this.comboBoxDefaultDecay.Location = new System.Drawing.Point(95, 5);
+            this.comboBoxDefaultDecay.Location = new System.Drawing.Point(95, 4);
             this.comboBoxDefaultDecay.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxDefaultDecay.Name = "comboBoxDefaultDecay";
             this.comboBoxDefaultDecay.Size = new System.Drawing.Size(83, 28);
@@ -488,7 +400,7 @@
             "7",
             "8",
             "9"});
-            this.comboBoxDefaultThreshold.Location = new System.Drawing.Point(304, 5);
+            this.comboBoxDefaultThreshold.Location = new System.Drawing.Point(304, 4);
             this.comboBoxDefaultThreshold.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxDefaultThreshold.Name = "comboBoxDefaultThreshold";
             this.comboBoxDefaultThreshold.Size = new System.Drawing.Size(84, 28);
@@ -532,7 +444,7 @@
             this.dataGridViewEmotionDispositions.RowHeadersVisible = false;
             this.dataGridViewEmotionDispositions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewEmotionDispositions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewEmotionDispositions.Size = new System.Drawing.Size(1206, 463);
+            this.dataGridViewEmotionDispositions.Size = new System.Drawing.Size(1206, 467);
             this.dataGridViewEmotionDispositions.TabIndex = 14;
             this.dataGridViewEmotionDispositions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewEmotionDispositions_CellMouseDoubleClick);
             // 
@@ -573,6 +485,88 @@
             // 
             this.decayErrorProvider.ContainerControl = this;
             // 
+            // conditionSetEditor
+            // 
+            this.conditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.conditionSetEditor.Location = new System.Drawing.Point(4, 22);
+            this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.conditionSetEditor.Name = "conditionSetEditor";
+            this.conditionSetEditor.Size = new System.Drawing.Size(1214, 267);
+            this.conditionSetEditor.TabIndex = 0;
+            this.conditionSetEditor.View = null;
+            this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);
+            // 
+            // dataGridViewGoals
+            // 
+            this.dataGridViewGoals.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.dataGridViewGoals.AllowUserToAddRows = false;
+            this.dataGridViewGoals.AllowUserToDeleteRows = false;
+            this.dataGridViewGoals.AllowUserToOrderColumns = true;
+            this.dataGridViewGoals.AllowUserToResizeRows = false;
+            this.dataGridViewGoals.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewGoals.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.dataGridViewGoals.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewGoals.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.dataGridViewGoals.Location = new System.Drawing.Point(8, 59);
+            this.dataGridViewGoals.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridViewGoals.Name = "dataGridViewGoals";
+            this.dataGridViewGoals.ReadOnly = true;
+            this.dataGridViewGoals.RowHeadersVisible = false;
+            this.dataGridViewGoals.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewGoals.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewGoals.Size = new System.Drawing.Size(766, 392);
+            this.dataGridViewGoals.TabIndex = 2;
+            // 
+            // buttonRemove
+            // 
+            this.buttonRemove.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonRemove.Location = new System.Drawing.Point(189, 23);
+            this.buttonRemove.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonRemove.Name = "buttonRemove";
+            this.buttonRemove.Size = new System.Drawing.Size(93, 28);
+            this.buttonRemove.TabIndex = 8;
+            this.buttonRemove.Text = "Remove";
+            this.buttonRemove.UseVisualStyleBackColor = true;
+            this.buttonRemove.Click += new System.EventHandler(this.buttonRemove_Click);
+            // 
+            // button2
+            // 
+            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(8, 23);
+            this.button2.Margin = new System.Windows.Forms.Padding(4);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(72, 28);
+            this.button2.TabIndex = 7;
+            this.button2.Text = "Add";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.buttonAddGoal_Click);
+            // 
+            // buttonEditGoal
+            // 
+            this.buttonEditGoal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonEditGoal.Location = new System.Drawing.Point(88, 23);
+            this.buttonEditGoal.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonEditGoal.Name = "buttonEditGoal";
+            this.buttonEditGoal.Size = new System.Drawing.Size(93, 28);
+            this.buttonEditGoal.TabIndex = 9;
+            this.buttonEditGoal.Text = "Edit";
+            this.buttonEditGoal.UseVisualStyleBackColor = true;
+            this.buttonEditGoal.Click += new System.EventHandler(this.buttonEditGoal_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.buttonEditGoal);
+            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Controls.Add(this.buttonRemove);
+            this.groupBox1.Controls.Add(this.dataGridViewGoals);
+            this.groupBox1.Location = new System.Drawing.Point(7, 7);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox1.Size = new System.Drawing.Size(798, 515);
+            this.groupBox1.TabIndex = 3;
+            this.groupBox1.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -599,8 +593,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAppraisalRules)).EndInit();
             this.groupBox8.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGoals)).EndInit();
             this.emotionDispositionTabPage.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel9.ResumeLayout(false);
@@ -612,6 +604,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.decayErrorProvider)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.emotionListItemBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mainFormBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGoals)).EndInit();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
