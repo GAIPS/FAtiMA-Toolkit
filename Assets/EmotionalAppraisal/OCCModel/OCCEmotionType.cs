@@ -18,9 +18,9 @@ namespace EmotionalAppraisal.OCCModel
 		private static readonly string[] Composed = { OCCAppraisalVariables.DESIRABILITY,
 														OCCAppraisalVariables.PRAISEWORTHINESS};
 
-		private static readonly string[] PositiveProspect = {  OCCAppraisalVariables.SUCCESSPROBABILITY};
+		private static readonly string[] PositiveProspect = {  OCCAppraisalVariables.GOALSUCCESSPROBABILITY};
 
-		private static readonly string[] NegativeProspect = { OCCAppraisalVariables.SUCCESSPROBABILITY};
+		private static readonly string[] NegativeProspect = { OCCAppraisalVariables.GOALSUCCESSPROBABILITY};
 
 		#endregion
 

@@ -7,9 +7,9 @@
 		public const string DESIRABILITY_FOR_OTHER = "Desirability for others";
 		public const string LIKE = "Like";
         public const string GOALSUCCESSPROBABILITY = "Goal Success Probablity";
-		public const string GOALCONDUCIVENESS = "GOALCONDUCTIVENESS";
-		public const string SUCCESSPROBABILITY = "SUCCESSPROBABILITY";
-		public const string FAILUREPROBABILITY = "FAILUREPROBABILITY";
-		public const string GOALSTATUS = "GOALSTATUS";		
+	//	public const string GOALCONDUCIVENESS = "GOALCONDUCTIVENESS";
+	//	public const string SUCCESSPROBABILITY = "SUCCESSPROBABILITY";
+	//	public const string FAILUREPROBABILITY = "FAILUREPROBABILITY";
+	//	public const string GOALSTATUS = "GOALSTATUS";		
 	}
 }

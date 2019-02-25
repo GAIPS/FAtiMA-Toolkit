@@ -287,7 +287,7 @@ namespace Tests.EmotionalAppraisal
                 new AM(), m_kb);
 
 
-
+            Assert.IsNotNull(asset.DefaultEmotionDisposition);
             
         }
     }

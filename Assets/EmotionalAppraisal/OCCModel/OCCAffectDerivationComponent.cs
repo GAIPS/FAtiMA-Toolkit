@@ -229,15 +229,19 @@ namespace EmotionalAppraisal.OCCModel
 				float desirability = frame.GetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY);
 				if(desirability!=0)
 				{
-					yield return OCCAppraiseWellBeing(evt.Id, evt.EventName, desirability);
-
+					// yield return OCCAppraiseWellBeing(evt.Id, evt.EventName, desirability * 0.5f);
+                    int counter = 0;
 					foreach(string variable in frame.AppraisalVariables.Where(v => v.StartsWith(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER)))
 					{
+                        counter++;
 						string other = variable.Substring(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER.Length);
 						float desirabilityForOther = frame.GetAppraisalVariable(variable);
 						if (desirabilityForOther != 0)
 							yield return OCCAppraiseFortuneOfOthers(evt, desirability, desirabilityForOther, other);
+                       
 					}
+                    if(counter == 0)
+                         yield return OCCAppraiseWellBeing(evt.Id, evt.EventName, desirability);
 				}
 			}
 
