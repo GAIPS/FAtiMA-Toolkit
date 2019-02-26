@@ -1115,8 +1115,8 @@ namespace Tests.RolePlayCharacter
         }
 
 
-        [TestCase(1, "isAgent([x])=True", "StrongestCompoundEmotion([x]) = [m]")]
-        [TestCase(1, "isAgent([x])=True", "StrongestCompoundEmotion(Matt) = [m]")]
+      //  [TestCase(1, "isAgent([x])=True", "StrongestCompoundEmotion([x]) = [m]")]
+      //  [TestCase(1, "isAgent([x])=True", "StrongestCompoundEmotion(Matt) = [m]")]
         public void Test_DP_StrongestCompoundEmotion_Match(int eventSet, string context, string lastEventMethodCall)
         {
 
@@ -1164,8 +1164,8 @@ namespace Tests.RolePlayCharacter
         }
 
 
-        [TestCase(1, "isAgent([x])=True", "EmotionIntensity([x], Gratitude) = [m]")]
-        [TestCase(1, "isAgent([x])=True", "EmotionIntensity(Matt, Gratitude) = [m]")]
+        [TestCase(1, "isAgent([x])=True", "EmotionIntensity([x], Joy) = [m]")]
+        [TestCase(1, "isAgent([x])=True", "EmotionIntensity(Matt, Joy) = [m]")]
         [TestCase(1, "isAgent([x])=True", "EmotionIntensity([x], [y]) = [m]")]
         public void Test_DP_EmotionIntensity_Match(int eventSet, string context, string lastEventMethodCall)
         {

@@ -63,7 +63,7 @@ namespace EmotionalAppraisal.OCCModel
 
 			if (target == "SELF" || target == evt.Subject.ToString())
 			{
-				direction = (Name)target;
+				direction = Name.SELF_SYMBOL;
 				emoType = (praiseworthiness >= 0) ? OCCEmotionType.Pride : OCCEmotionType.Shame;
 			}
 			else
