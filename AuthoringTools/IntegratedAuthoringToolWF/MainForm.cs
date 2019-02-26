@@ -81,6 +81,14 @@ namespace IntegratedAuthoringToolWF
             buttonContinue.Enabled = false;
             textBoxTick.Text = "";
 
+            searchCheckList.Items.Clear();
+            searchCheckList.Items.Add("CurrenState", true);
+            searchCheckList.Items.Add("NextState", false);
+            searchCheckList.Items.Add("Meaning", false);
+            searchCheckList.Items.Add("Style", false);
+            searchCheckList.Items.Add("Utterance", false);
+
+
             RefreshDialogs();
         }
 
@@ -1342,5 +1350,78 @@ namespace IntegratedAuthoringToolWF
         {
 
         }
-    }
+
+        private void DialogueSearchBox_TextChanged(object sender, EventArgs e)
+        {
+
+            var text = searchDialogueBox.Text.ToString();
+            
+             var dialogs = LoadedAsset.GetAllDialogueActions().ToList();
+
+
+            bool cs = false;
+            bool ns = false;
+            bool mn = false;
+            bool sty = false;
+            bool utterance = false;
+        
+
+
+          if(searchCheckList.GetItemCheckState(0) == CheckState.Checked)
+            {
+                cs = true;
+            }
+           if(searchCheckList.GetItemCheckState(1) == CheckState.Checked)
+            {
+                ns = true;
+            }
+            if(searchCheckList.GetItemCheckState(2) == CheckState.Checked)
+            {
+                mn = true;
+            }
+             if(searchCheckList.GetItemCheckState(3) == CheckState.Checked)
+            {
+                sty = true;
+            }
+
+              if(searchCheckList.GetItemCheckState(4) == CheckState.Checked)
+            {
+                utterance = true;
+            }
+           
+
+            if(text != "" && text != "-" && text != "*") {
+           
+                dialogs =  new List<DialogueStateActionDTO>(); 
+                if(cs)                
+                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x=> x.CurrentState.ToLower().ToString().Contains(text.ToLower())));
+                if(ns)                
+                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x=> x.NextState.ToLower().ToString().Contains(text.ToLower())));
+                if(mn)                
+                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x=> x.Meaning.ToLower().ToString().Contains(text.ToLower())));
+                 if(sty)                
+                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x=> x.Style.ToLower().ToString().Contains(text.ToLower())));
+                 if(utterance)                
+                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x=> x.Utterance.ToLower().ToString().Contains(text.ToLower())));
+            }
+
+             _dialogs.DataSource = dialogs;
+
+            EditorTools.HideColumns(dataGridViewDialogueActions, new[]
+                {
+                    PropertyUtil.GetPropertyName<DialogueStateActionDTO>(d => d.Id),
+                    PropertyUtil.GetPropertyName<DialogueStateActionDTO>(d => d.UtteranceId),
+                }
+            );
+
+            EditorTools.HideColumns(dataGridViewCharacters, new[]
+                {
+                    PropertyUtil.GetPropertyName<CharacterSourceDTO>(s => s.Source),
+                }
+            );
+
+            _dialogs.Refresh();
+        }
+
+}
 }

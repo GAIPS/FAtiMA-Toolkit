@@ -117,10 +117,36 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAS
+        dAAAEnQB3mYfeAAAAYRJREFUSEvtk7uKwlAQQPe/xQfio/CBkN7ORlBErbWwUQS/QkghomIjKMxyLiOb
+        xbnJdQlbLHsgkDsJOZnXh/wS/6If85bofr/r3ftkiuI4lsFgIJVKRUqlkrva7bYsFgt9I4xU0Xw+l2Kx
+        KLVaTWazmazXa1mtVtLv952wXq/L4XDQt9PxipDwsclkopHvHI9HabVaLtPr9apRP6aIcpGJT5KErKIo
+        0pMfU0RPKFcIu93OZb7f7zViY4ooBz0JpVwuZw7Hi4gR5g9pfCjNZlNGo5GebMyMEDFdoVSrVZlOp3qy
+        MUXsCSMcwvl8dqXbbrcasTFF1JusGOEshsOhEz0eD43YmCJgbNmTNDabjSvbcrnUiB+viI1n+hAywklO
+        p5PLBEmv15NOpyO3202f2nhFwMazjJSR8jBdfJx7LjJB0u123bM0WaroCctI38bjsZsuGv/sCR9HkiUL
+        EmURIstFBElZo9F4mcLcRIAMSaFQcPuVJFcRkMnlctHTF7mLfPw1kcgnmwMZbpnvORgAAAAASUVORK5C
+        YII=
+</value>
+  </data>
+  <data name="pictureBox1.InitialImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABoAAAAaCAYAAACpSkzOAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAS
+        dAAAEnQB3mYfeAAAAYRJREFUSEvtk7uKwlAQQPe/xQfio/CBkN7ORlBErbWwUQS/QkghomIjKMxyLiOb
+        xbnJdQlbLHsgkDsJOZnXh/wS/6If85bofr/r3ftkiuI4lsFgIJVKRUqlkrva7bYsFgt9I4xU0Xw+l2Kx
+        KLVaTWazmazXa1mtVtLv952wXq/L4XDQt9PxipDwsclkopHvHI9HabVaLtPr9apRP6aIcpGJT5KErKIo
+        0pMfU0RPKFcIu93OZb7f7zViY4ooBz0JpVwuZw7Hi4gR5g9pfCjNZlNGo5GebMyMEDFdoVSrVZlOp3qy
+        MUXsCSMcwvl8dqXbbrcasTFF1JusGOEshsOhEz0eD43YmCJgbNmTNDabjSvbcrnUiB+viI1n+hAywklO
+        p5PLBEmv15NOpyO3202f2nhFwMazjJSR8jBdfJx7LjJB0u123bM0WaroCctI38bjsZsuGv/sCR9HkiUL
+        EmURIstFBElZo9F4mcLcRIAMSaFQcPuVJFcRkMnlctHTF7mLfPw1kcgnmwMZbpnvORgAAAAASUVORK5C
+        YII=
+</value>
+  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>25</value>
   </metadata>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAEA8QAAAAEAIAAo5AMAFgAAACgAAADxAAAAAAIAAAEAIAAAAAAAAMQDACMuAAAjLgAAAAAAAAAA
