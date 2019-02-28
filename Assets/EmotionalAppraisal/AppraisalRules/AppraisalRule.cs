@@ -80,7 +80,7 @@ namespace EmotionalAppraisal.AppraisalRules
         public List<AppraisalVariableDTO> getAppraisalVariables()
         {
             if(AppraisalVariables != null)
-            return this.AppraisalVariables.appraisalVariables;
+                return this.AppraisalVariables.appraisalVariables;
             else return  null;
         }
 

@@ -290,6 +290,40 @@ namespace Tests.RolePlayCharacter
             
                });
 
+             appraisalRuleSet.Add(17, new EmotionalAppraisal.DTOs.AppraisalRuleDTO()
+            {
+                Conditions = new Conditions.DTOs.ConditionSetDTO(),
+                EventMatchingTemplate = (Name)"Event(*, *,*, *)",
+                AppraisalVariables = new AppraisalVariables(new List<AppraisalVariableDTO>()
+               
+                {
+                   new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.GOALSUCCESSPROBABILITY,
+                       Value = (Name)"1",
+                       Target = (Name)"GoalPositive"
+                   }                   
+               })
+            
+               });
+
+             appraisalRuleSet.Add(18, new EmotionalAppraisal.DTOs.AppraisalRuleDTO()
+            {
+                Conditions = new Conditions.DTOs.ConditionSetDTO(),
+                EventMatchingTemplate = (Name)"Event(*, *,*, *)",
+                AppraisalVariables = new AppraisalVariables(new List<AppraisalVariableDTO>()
+               
+                {
+                   new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.GOALSUCCESSPROBABILITY,
+                       Value = (Name)"0",
+                       Target = (Name)"GoalNegative"
+                   }                   
+               })
+            
+               });
+
         }
 
 
@@ -368,6 +402,20 @@ namespace Tests.RolePlayCharacter
                 Name = "Goal",
                 Significance = 5,
                 Likelihood = 0.5f
+            });
+
+             ea.AddOrUpdateGoal(new GoalDTO()
+            {
+                Name = "GoalNegative",
+                Significance = 5,
+                Likelihood = 0.2f
+            });
+
+              ea.AddOrUpdateGoal(new GoalDTO()
+            {
+                Name = "GoalPositive",
+                Significance = 5,
+                Likelihood = 0.8f
             });
 
             var rpc = new RolePlayCharacterAsset
@@ -1270,10 +1318,12 @@ namespace Tests.RolePlayCharacter
         [TestCase(10, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Distress")]
         [TestCase(11, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Hope")]
         [TestCase(12, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Fear")]
-        [TestCase(13, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Satisfaction")]
+        [TestCase(13, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Relief")]
         [TestCase(14, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Disappointment")]
         [TestCase(15, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Admiration")]
         [TestCase(16, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Reproach")]
+        [TestCase(17, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Satisfaction")]
+        [TestCase(18, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Fears-Confirmed")]
         public void Test_EA_EmotionForEvent(int appraisalRule, string ev, string emotionFelt)
         {
 

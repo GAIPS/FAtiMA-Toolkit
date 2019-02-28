@@ -98,15 +98,23 @@ namespace EmotionalAppraisal.OCCModel
             if(goalProbability > previousProbabilityValue)
             {
 
-                if(goalProbability == 1)
-                    return new OCCBaseEmotion(OCCEmotionType.Satisfaction, Math.Abs(goalProbability) * potential, evt.Id, evt.EventName);
+                if(goalProbability == 1){
+                    if(previousProbabilityValue <= 0.5)
+                      return new OCCBaseEmotion(OCCEmotionType.Relief, Math.Abs(goalProbability) * potential, evt.Id, evt.EventName);
+                    
+                    else return new OCCBaseEmotion(OCCEmotionType.Satisfaction, Math.Abs(goalProbability) * potential, evt.Id, evt.EventName); 
+                    }
                     else return new OCCBaseEmotion(OCCEmotionType.Hope, Math.Abs(goalProbability) * potential, evt.Id, evt.EventName);
             }
 
             else  //if(goalProbability < goal.Likelihood)
             {
                  if(goalProbability == 0)
-                    return new OCCBaseEmotion(OCCEmotionType.Disappointment, (1 - goalProbability) * potential, evt.Id, evt.EventName);
+                    if(previousProbabilityValue >= 0.5)
+                        return new OCCBaseEmotion(OCCEmotionType.Disappointment, (1 - goalProbability) * potential, evt.Id, evt.EventName);
+                 
+                 else   return new OCCBaseEmotion(OCCEmotionType.FearsConfirmed, (1 - goalProbability) * potential, evt.Id, evt.EventName);
+
                     else return new OCCBaseEmotion(OCCEmotionType.Fear, (1 - goalProbability) * potential , evt.Id, evt.EventName);
             }
         }
@@ -281,13 +289,15 @@ namespace EmotionalAppraisal.OCCModel
 			{
 				float goalSuccessProbability = frame.GetAppraisalVariable(variable);
 			    
-                string goalName = variable.Substring(OCCAppraisalVariables.GOALSUCCESSPROBABILITY.Length);
+                string goalName = variable.Substring(OCCAppraisalVariables.GOALSUCCESSPROBABILITY.Length + 1);
                     
                  var goals = emotionalModule.GetAllGoals().ToList();
 
 
-                GoalDTO g =goals.Find(x=> goalName.Contains(x.Name));
-                
+                GoalDTO g =goals.Find(x=> goalName.ToString() == x.Name.ToString());
+               
+                if(g == null) continue;
+
                 var previousValue = g.Likelihood;
                
                 g.Likelihood = goalSuccessProbability;
