@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommeillFautWF", "CommeillFautWF\CommeillFautWF.csproj", "{FD251A80-D5D3-4776-B323-37496FD9C550}"
 EndProject
@@ -24,6 +24,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{BD644704-5C1E-4E94-9B4D-80F5A3555ED0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Components", "Components", "{4A1D326C-3AC4-4BAB-A979-7DD46699BC1B}"
+	ProjectSection(SolutionItems) = preProject
+		..\Components\WorkingMemory\WorkingMemory.csproj = ..\Components\WorkingMemory\WorkingMemory.csproj
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutobiographicMemory", "..\Components\AutobiographicMemory\AutobiographicMemory.csproj", "{C1CC38C5-72F5-4545-B4F7-C65B2883909C}"
 EndProject
