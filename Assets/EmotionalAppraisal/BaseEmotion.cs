@@ -161,6 +161,7 @@ namespace EmotionalAppraisal
             {
                 Type = this.EmotionType,
                 Intensity = this.Potential,
+                Target = this.Direction?.ToString(),
                 CauseEventId = this.CauseId,
                 CauseEventName = am.RecallEvent(this.CauseId).EventName.ToString()
             };

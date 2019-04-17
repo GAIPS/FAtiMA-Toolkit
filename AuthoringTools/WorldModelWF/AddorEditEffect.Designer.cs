@@ -24,10 +24,9 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Arial", 9.75F);
-            this.label1.Location = new System.Drawing.Point(9, 39);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Location = new System.Drawing.Point(12, 48);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(95, 16);
+            this.label1.Size = new System.Drawing.Size(119, 19);
             this.label1.TabIndex = 1;
             this.label1.Text = "Property Name";
             this.label1.Click += new System.EventHandler(this.label1_Click);
@@ -36,10 +35,9 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Arial", 9.75F);
-            this.label2.Location = new System.Drawing.Point(9, 77);
-            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Location = new System.Drawing.Point(12, 95);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(69, 16);
+            this.label2.Size = new System.Drawing.Size(85, 19);
             this.label2.TabIndex = 3;
             this.label2.Text = "New Value";
             this.label2.Click += new System.EventHandler(this.label2_Click);
@@ -48,10 +46,9 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Arial", 9.75F);
-            this.label4.Location = new System.Drawing.Point(9, 113);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Location = new System.Drawing.Point(12, 139);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(96, 16);
+            this.label4.Size = new System.Drawing.Size(121, 19);
             this.label4.TabIndex = 7;
             this.label4.Text = "Observer Agent";
             this.label4.Click += new System.EventHandler(this.label4_Click);
@@ -60,10 +57,10 @@
             // 
             this.addEffect.Font = new System.Drawing.Font("Arial", 9.75F);
             this.addEffect.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.addEffect.Location = new System.Drawing.Point(168, 151);
-            this.addEffect.Margin = new System.Windows.Forms.Padding(2);
+            this.addEffect.Location = new System.Drawing.Point(224, 186);
+            this.addEffect.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.addEffect.Name = "addEffect";
-            this.addEffect.Size = new System.Drawing.Size(94, 27);
+            this.addEffect.Size = new System.Drawing.Size(125, 33);
             this.addEffect.TabIndex = 80;
             this.addEffect.Text = "Add";
             this.addEffect.UseVisualStyleBackColor = true;
@@ -79,11 +76,11 @@
             this.observerName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.observerName.Font = new System.Drawing.Font("Arial", 9.75F);
-            this.observerName.Location = new System.Drawing.Point(137, 109);
-            this.observerName.Margin = new System.Windows.Forms.Padding(2);
+            this.observerName.Location = new System.Drawing.Point(183, 134);
+            this.observerName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.observerName.Name = "observerName";
             this.observerName.OnlyIntOrVariable = false;
-            this.observerName.Size = new System.Drawing.Size(285, 22);
+            this.observerName.Size = new System.Drawing.Size(379, 26);
             this.observerName.TabIndex = 6;
             this.observerName.TextChanged += new System.EventHandler(this.observerName_TextChanged);
             // 
@@ -97,11 +94,11 @@
             this.newValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.newValue.Font = new System.Drawing.Font("Arial", 9.75F);
-            this.newValue.Location = new System.Drawing.Point(137, 75);
-            this.newValue.Margin = new System.Windows.Forms.Padding(2);
+            this.newValue.Location = new System.Drawing.Point(183, 92);
+            this.newValue.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.newValue.Name = "newValue";
             this.newValue.OnlyIntOrVariable = false;
-            this.newValue.Size = new System.Drawing.Size(285, 22);
+            this.newValue.Size = new System.Drawing.Size(379, 26);
             this.newValue.TabIndex = 2;
             this.newValue.TextChanged += new System.EventHandler(this.wfNameFieldBox2_TextChanged);
             // 
@@ -115,18 +112,19 @@
             this.propertyName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.propertyName.Font = new System.Drawing.Font("Arial", 9.75F);
-            this.propertyName.Location = new System.Drawing.Point(137, 39);
-            this.propertyName.Margin = new System.Windows.Forms.Padding(2);
+            this.propertyName.Location = new System.Drawing.Point(183, 48);
+            this.propertyName.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.propertyName.Name = "propertyName";
             this.propertyName.OnlyIntOrVariable = false;
-            this.propertyName.Size = new System.Drawing.Size(285, 22);
+            this.propertyName.Size = new System.Drawing.Size(379, 26);
             this.propertyName.TabIndex = 0;
+            this.propertyName.TextChanged += new System.EventHandler(this.propertyName_TextChanged);
             // 
             // AddorEditEffect
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(433, 189);
+            this.ClientSize = new System.Drawing.Size(577, 233);
             this.Controls.Add(this.addEffect);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.observerName);
@@ -134,7 +132,7 @@
             this.Controls.Add(this.newValue);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.propertyName);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "AddorEditEffect";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "AddorEditEffect";

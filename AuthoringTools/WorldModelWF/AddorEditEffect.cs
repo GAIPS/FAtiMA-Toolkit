@@ -40,6 +40,7 @@ namespace WorldModelWF
             
             propertyName.AllowNil = false;
             propertyName.AllowUniversal = false;
+            propertyName.AllowLiteral = false;
            
             _effectToEdit = effectToEdit;
 
@@ -109,6 +110,11 @@ namespace WorldModelWF
         }
 
         private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void propertyName_TextChanged(object sender, EventArgs e)
         {
 
         }
