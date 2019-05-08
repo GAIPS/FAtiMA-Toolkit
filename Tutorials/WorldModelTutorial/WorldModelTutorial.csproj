@@ -78,9 +78,9 @@
       <Project>{823e8a41-5231-4b06-bbab-e62651e15bc7}</Project>
       <Name>SocialImportance</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Assets\World Model\World Model.csproj">
-      <Project>{efbdb6b1-5ba2-42dc-89ea-3ef49391e04c}</Project>
-      <Name>World Model</Name>
+    <ProjectReference Include="..\..\Assets\WorldModel\WorldModel.csproj">
+      <Project>{c751a38c-44d9-4918-b1f1-55a80147471d}</Project>
+      <Name>WorldModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj">
       <Project>{e011d502-5c0f-4a3f-9f1a-337ff025eb48}</Project>

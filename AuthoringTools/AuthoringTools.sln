@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommeillFautWF", "CommeillFautWF\CommeillFautWF.csproj", "{FD251A80-D5D3-4776-B323-37496FD9C550}"
 EndProject
@@ -52,7 +52,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RolePlayCharacter", "..\Ass
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialImportance", "..\Assets\SocialImportance\SocialImportance.csproj", "{823E8A41-5231-4B06-BBAB-E62651E15BC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "World Model", "..\Assets\World Model\World Model.csproj", "{EFBDB6B1-5BA2-42DC-89EA-3EF49391E04C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldModel", "..\Assets\World Model\WorldModel.csproj", "{EFBDB6B1-5BA2-42DC-89EA-3EF49391E04C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldModelWF", "WorldModelWF\WorldModelWF.csproj", "{DD109968-3275-499C-B0A2-3EEDD32D7BE9}"
 EndProject
@@ -171,5 +171,8 @@ Global
 		{986EA00A-7AA4-4D9E-B986-E6F290E7AA3F} = {BD644704-5C1E-4E94-9B4D-80F5A3555ED0}
 		{823E8A41-5231-4B06-BBAB-E62651E15BC7} = {BD644704-5C1E-4E94-9B4D-80F5A3555ED0}
 		{EFBDB6B1-5BA2-42DC-89EA-3EF49391E04C} = {BD644704-5C1E-4E94-9B4D-80F5A3555ED0}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0418F733-4812-4D38-8F17-F9BAEC830277}
 	EndGlobalSection
 EndGlobal

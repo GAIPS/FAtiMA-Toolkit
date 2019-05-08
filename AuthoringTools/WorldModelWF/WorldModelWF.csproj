@@ -130,9 +130,9 @@
       <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
       <Name>RolePlayCharacter</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Assets\World Model\World Model.csproj">
+    <ProjectReference Include="..\..\Assets\World Model\WorldModel.csproj">
       <Project>{efbdb6b1-5ba2-42dc-89ea-3ef49391e04c}</Project>
-      <Name>World Model</Name>
+      <Name>WorldModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj">
       <Project>{e011d502-5c0f-4a3f-9f1a-337ff025eb48}</Project>
