@@ -10,6 +10,7 @@ using KnowledgeBase;
 using NUnit.Framework;
 using WorldModel;
 using WorldModel.DTOs;
+using SerializationUtilities;
 
 namespace WorldModelTests
 {
@@ -137,5 +138,49 @@ namespace WorldModelTests
 
 
         
+        [TestCase]
+        public void WM_Serialization_Test()
+        {
+            var asset = BuildWorldModelAsset();
+
+            using (var stream = new MemoryStream())
+            {
+                var formater = new JSONSerializer();
+                formater.Serialize(stream, asset);
+                stream.Seek(0, SeekOrigin.Begin);
+                Console.WriteLine(new StreamReader(stream).ReadToEnd());
+            }
+        }
+
+        [TestCase]
+        public void WM_Deserialization_Test()
+        {
+            var asset = BuildWorldModelAsset();
+
+            using (var stream = new MemoryStream())
+            {
+                var formater = new JSONSerializer();
+                formater.Serialize(stream, asset);
+                stream.Seek(0, SeekOrigin.Begin);
+                Console.WriteLine(new StreamReader(stream).ReadToEnd());
+                stream.Seek(0, SeekOrigin.Begin);
+                var obj = formater.Deserialize(stream);
+            }
+        }
+
+          [TestCase]
+        public void WM_SaveToFile_Test()
+        {
+            var asset = BuildWorldModelAsset();
+             
+            this.AddEffects(asset);
+
+            var dir = Directory.GetCurrentDirectory();
+            asset.SaveToFile("C:/Users/Manue/Desktop/Test.wmo");
+
+            var newwm = WorldModelAsset.LoadFromFile("C:/Users/Manue/Desktop/Test.wmo");
+
+           Assert.IsNotNull(newwm);
+        }
     }
 }

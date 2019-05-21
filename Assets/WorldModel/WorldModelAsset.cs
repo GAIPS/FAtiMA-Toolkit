@@ -179,7 +179,15 @@ namespace WorldModel
             actions = new Dictionary<Name, List<Effect>>();
             priorityRules = new Dictionary<Name, int>();
 
-            actions = dataHolder.GetValue<Dictionary<Name, List<Effect>>>("Effects");
+            var actionsJson = dataHolder.GetValue<Dictionary<Name, List<Effect>>>("Effects");
+           
+            foreach (var k in actionsJson.Keys)
+            {
+                if( actionsJson[k] != null)
+                    actions.Add(k, actionsJson[k]);
+            }
+            
+            
             priorityRules = dataHolder.GetValue<Dictionary<Name, int>>("Priorities");
 
             actionNames = new NameSearchTree<Name>();

@@ -48,6 +48,9 @@ namespace EmotionalAppraisal.OCCModel
 		{
 			float potential = (Math.Abs(desirabilityForOther) + Math.Abs(desirability)) * 0.5f;
 
+            if(target == "SELF" || target == evt.Subject.ToString())
+                return OCCAppraiseWellBeing(evt.Id, evt.EventName, potential);
+
 			OCCEmotionType emoType;
 			if (desirability >= 0)
 				emoType = (desirabilityForOther >= 0) ? OCCEmotionType.HappyFor : OCCEmotionType.Gloating;
