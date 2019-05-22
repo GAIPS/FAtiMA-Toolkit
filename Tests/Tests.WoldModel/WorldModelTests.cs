@@ -168,7 +168,7 @@ namespace WorldModelTests
             }
         }
 
-          [TestCase]
+/*          [TestCase]
         public void WM_SaveToFile_Test()
         {
             var asset = BuildWorldModelAsset();
@@ -181,6 +181,6 @@ namespace WorldModelTests
             var newwm = WorldModelAsset.LoadFromFile("C:/Users/Manue/Desktop/Test.wmo");
 
            Assert.IsNotNull(newwm);
-        }
+        }*/
     }
 }
