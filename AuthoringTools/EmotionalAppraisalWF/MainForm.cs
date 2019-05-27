@@ -218,5 +218,10 @@ namespace EmotionalAppraisalWF
         {
 
         }
+
+        private void dataGridViewGoals_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

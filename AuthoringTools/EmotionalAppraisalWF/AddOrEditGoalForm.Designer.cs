@@ -51,7 +51,7 @@
             this.textBoxGoalName.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxGoalName.Name = "textBoxGoalName";
             this.textBoxGoalName.OnlyIntOrVariable = false;
-            this.textBoxGoalName.Size = new System.Drawing.Size(327, 22);
+            this.textBoxGoalName.Size = new System.Drawing.Size(338, 22);
             this.textBoxGoalName.TabIndex = 46;
             // 
             // label4
@@ -86,7 +86,7 @@
             this.floatFieldBoxSignificance.MaxValue = 0F;
             this.floatFieldBoxSignificance.MinValue = 0F;
             this.floatFieldBoxSignificance.Name = "floatFieldBoxSignificance";
-            this.floatFieldBoxSignificance.Size = new System.Drawing.Size(327, 22);
+            this.floatFieldBoxSignificance.Size = new System.Drawing.Size(338, 22);
             this.floatFieldBoxSignificance.TabIndex = 48;
             // 
             // label2
@@ -105,12 +105,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.floatFieldBoxLikelihood.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.floatFieldBoxLikelihood.HasBounds = false;
-            this.floatFieldBoxLikelihood.Location = new System.Drawing.Point(36, 239);
+            this.floatFieldBoxLikelihood.Location = new System.Drawing.Point(36, 235);
             this.floatFieldBoxLikelihood.Margin = new System.Windows.Forms.Padding(4);
             this.floatFieldBoxLikelihood.MaxValue = 0F;
             this.floatFieldBoxLikelihood.MinValue = 0F;
             this.floatFieldBoxLikelihood.Name = "floatFieldBoxLikelihood";
-            this.floatFieldBoxLikelihood.Size = new System.Drawing.Size(327, 22);
+            this.floatFieldBoxLikelihood.Size = new System.Drawing.Size(338, 22);
             this.floatFieldBoxLikelihood.TabIndex = 50;
             // 
             // buttonAddOrEditGoal
@@ -138,6 +138,8 @@
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximumSize = new System.Drawing.Size(421, 381);
+            this.MinimumSize = new System.Drawing.Size(421, 381);
             this.Name = "AddOrEditGoalForm";
             this.Text = "Add Goal";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddOrEditGoalForm_KeyDown);
