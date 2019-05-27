@@ -906,15 +906,12 @@ namespace IntegratedAuthoringToolWF
                 EditorTools.WriteText(richTextBoxChat, " There is no Player RPC, please use the keyword Player in the Character Name field of an RPC", Color.Red, true);
 
 
-            var decisionsList = playerRPC.Decide().Where(a => a.Key.ToString() == IATConsts.DIALOG_ACTION_KEY);
-           
-
-        
-            if (decisionsList.Any())
+            var dialogueList = playerRPC.Decide().Where(a => a.Key.ToString() == IATConsts.DIALOG_ACTION_KEY);
+            
+            if (dialogueList.Any())
             {
-
-                 var maxUtility = decisionsList.Max(x=>x.Utility);
-            var playerDecisions = decisionsList.Where(x=>x.Utility == maxUtility);
+                var maxUtility = dialogueList.Max(x=>x.Utility);
+                var playerDecisions = dialogueList.Where(x=>x.Utility == maxUtility);
                 this.determinePlayerDialogueOptions(playerDecisions);
             }
             else
@@ -922,7 +919,20 @@ namespace IntegratedAuthoringToolWF
                 listBoxPlayerDialogues.DataSource = new List<string>();
             }
 
-            
+            var actionList = playerRPC.Decide().Where(a => a.Key.ToString() != IATConsts.DIALOG_ACTION_KEY);
+
+            if (actionList.Any())
+            {
+                var maxUtility = actionList.Max(x => x.Utility);
+                var playerDecisions = actionList.Where(x => x.Utility == maxUtility);
+                
+            }
+            else
+            {
+                listBoxPlayerActions.DataSource = new List<string>();
+            }
+
+
             //Event triggers
             HandleEventTriggers();
 
@@ -933,7 +943,7 @@ namespace IntegratedAuthoringToolWF
         }
 
         private List<IAction> playerActions;
-        private Dictionary<WellFormedNames.Name, List<DialogueStateActionDTO>> playerOptions;
+        private Dictionary<Name, List<DialogueStateActionDTO>> playerOptions;
         private RolePlayCharacterAsset playerRPC;
 
         private void determinePlayerDialogueOptions(IEnumerable<IAction> actions)
