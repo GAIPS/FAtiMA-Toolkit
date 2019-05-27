@@ -633,6 +633,11 @@ namespace RolePlayCharacterWF
         {
             this.SelectedTab = tabControl1.SelectedIndex;
         }
+
+        private void emotionsDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
 

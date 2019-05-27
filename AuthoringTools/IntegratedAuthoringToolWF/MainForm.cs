@@ -1001,6 +1001,8 @@ namespace IntegratedAuthoringToolWF
             var idx = listBoxPlayerDialogues.SelectedIndex;
             var item = listBoxPlayerDialogues.SelectedItem;
 
+            if (item == null) return;
+
             var splitedSelectedItem = item.ToString().Split(' ');
             var target = splitedSelectedItem[1];
 
