@@ -468,7 +468,7 @@
             "7",
             "8",
             "9"});
-            this.comboBoxDefaultDecay.Location = new System.Drawing.Point(95, 9);
+            this.comboBoxDefaultDecay.Location = new System.Drawing.Point(95, 7);
             this.comboBoxDefaultDecay.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxDefaultDecay.Name = "comboBoxDefaultDecay";
             this.comboBoxDefaultDecay.Size = new System.Drawing.Size(83, 24);
@@ -481,6 +481,7 @@
             this.comboBoxDefaultThreshold.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxDefaultThreshold.FormattingEnabled = true;
             this.comboBoxDefaultThreshold.Items.AddRange(new object[] {
+            "0",
             "1",
             "2",
             "3",
@@ -490,7 +491,7 @@
             "7",
             "8",
             "9"});
-            this.comboBoxDefaultThreshold.Location = new System.Drawing.Point(304, 9);
+            this.comboBoxDefaultThreshold.Location = new System.Drawing.Point(304, 7);
             this.comboBoxDefaultThreshold.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxDefaultThreshold.Name = "comboBoxDefaultThreshold";
             this.comboBoxDefaultThreshold.Size = new System.Drawing.Size(84, 24);

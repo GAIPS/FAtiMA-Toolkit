@@ -1,4 +1,6 @@
-﻿namespace GAIPS.AssetEditorTools.TypedTextBoxes
+﻿using System.Globalization;
+
+namespace GAIPS.AssetEditorTools.TypedTextBoxes
 {
 	public sealed class FloatFieldBox : TypedFieldBox<float>
 	{
@@ -27,7 +29,7 @@
 		{
 			public bool TryToParseType(string str, out float value)
 			{
-				return float.TryParse(str, out value);
+				return float.TryParse(str, NumberStyles.Any, CultureInfo.InvariantCulture, out value);
 			}
 
 			public string ToString(float value)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Windows.Forms;
 using AssetManagerPackage;
 using GAIPS.AssetEditorTools;
@@ -17,8 +18,9 @@ namespace IntegratedAuthoringToolWF
 
 			Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
-	        var form = new MainForm();
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+            var form = new MainForm();
 			form.CreateNewAsset();
             Application.Run(form);
         }

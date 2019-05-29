@@ -40,7 +40,7 @@ namespace EmotionalAppraisal
         {
             m_emotionDispositions = new Dictionary<string, EmotionDisposition>();
             m_goals = new Dictionary<string, Goal>();
-            m_defaultEmotionalDisposition = new EmotionDisposition("*", 1, 1);
+            m_defaultEmotionalDisposition = new EmotionDisposition("*", 1, 0);
             m_occAffectDerivator = new OCCAffectDerivationComponent();
             m_appraisalDerivator = new ReactiveAppraisalDerivator();
         }
@@ -266,7 +266,7 @@ namespace EmotionalAppraisal
                     m_emotionDispositions.Add(disposition.Emotion, disposition);
             }
             if (defaultDisposition == null)
-                defaultDisposition = new EmotionDisposition("*", 1, 1);
+                defaultDisposition = new EmotionDisposition("*", 1, 0);
             m_defaultEmotionalDisposition = defaultDisposition;
 
 

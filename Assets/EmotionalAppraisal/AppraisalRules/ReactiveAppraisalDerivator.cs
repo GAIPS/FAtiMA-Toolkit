@@ -73,13 +73,14 @@ namespace EmotionalAppraisal.AppraisalRules
                             }
 
                             float f;
-                       
-                            if(float.TryParse(appVariable.Value.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out f)){
-                                
-                             var aux = float.Parse(appVariable.Value.ToString()) * minCertainty;
-                            appVariable.Value = Name.BuildName(aux);
 
-                        } else continue;
+                            if (float.TryParse(appVariable.Value.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out f))
+                            {
+
+                                var aux = f * minCertainty;
+                                appVariable.Value = Name.BuildName(aux);
+                            }
+                            else continue;
 
                         }
                      

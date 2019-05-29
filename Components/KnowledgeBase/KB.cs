@@ -8,6 +8,7 @@ using WellFormedNames.Collections;
 using Utilities;
 using IQueryable = WellFormedNames.IQueryable;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace KnowledgeBase
 {
@@ -147,8 +148,9 @@ namespace KnowledgeBase
                 {
                     foreach(var ySubs in context.AskPossibleProperties(y).ToList())
                     {
-                        var xValue = float.Parse(xSubs.Item1.Value.ToString());
-                        var yValue = float.Parse(ySubs.Item1.Value.ToString());
+
+                        var xValue = float.Parse(xSubs.Item1.Value.ToString(), CultureInfo.InvariantCulture);
+                        var yValue = float.Parse(ySubs.Item1.Value.ToString(), CultureInfo.InvariantCulture);
 
                         if (op.ToString().EqualsIgnoreCase("Plus"))
                         {
@@ -180,8 +182,8 @@ namespace KnowledgeBase
 
             if (context.Constraints.IsEmpty())
             {
-                var xValue = float.Parse(x.ToString());
-                var yValue = float.Parse(y.ToString());
+                var xValue = float.Parse(x.ToString(), CultureInfo.InvariantCulture);
+                var yValue = float.Parse(y.ToString(), CultureInfo.InvariantCulture);
 
                 if (op.ToString().EqualsIgnoreCase("Plus"))
                 {
@@ -223,10 +225,10 @@ namespace KnowledgeBase
                         {
                             foreach(var y2Subs in context.AskPossibleProperties(y2).ToList())
                             {
-                                var x1Value = float.Parse(x1Subs.Item1.Value.ToString());
-                                var y1Value = float.Parse(y1Subs.Item1.Value.ToString());
-                                var x2Value = float.Parse(x2Subs.Item1.Value.ToString());
-                                var y2Value = float.Parse(y2Subs.Item1.Value.ToString());
+                                var x1Value = float.Parse(x1Subs.Item1.Value.ToString(), CultureInfo.InvariantCulture);
+                                var y1Value = float.Parse(y1Subs.Item1.Value.ToString(), CultureInfo.InvariantCulture);
+                                var x2Value = float.Parse(x2Subs.Item1.Value.ToString(), CultureInfo.InvariantCulture);
+                                var y2Value = float.Parse(y2Subs.Item1.Value.ToString(), CultureInfo.InvariantCulture);
 
                                 var res = Math.Pow((x2Value - x1Value), 2) + Math.Pow((y2Value - y1Value), 2);
                                 yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(res)), subSet);

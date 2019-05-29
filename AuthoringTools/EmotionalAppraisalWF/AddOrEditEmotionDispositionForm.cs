@@ -17,7 +17,8 @@ namespace EmotionalAppraisalWF
         
         public AddOrEditEmotionDispositionForm(EmotionDispositionsVM emotionDispositionsVM, EmotionDispositionDTO emotionDispositionToEdit = null)
         {
-            IEnumerable<int> seq = Enumerable.Range(1, 10);
+            IEnumerable<int> seq = Enumerable.Range(0, 10);
+            IEnumerable<int> seq2 = Enumerable.Range(1, 10);
             InitializeComponent();
 
             _emotionDispositionsVM = emotionDispositionsVM;
@@ -27,7 +28,7 @@ namespace EmotionalAppraisalWF
             comboBoxThreshold.Items.AddRange(seq.Cast<object>().ToArray());
             comboBoxThreshold.SelectedIndex = 0;
 
-            comboBoxDecay.Items.AddRange(seq.Cast<object>().ToArray());
+            comboBoxDecay.Items.AddRange(seq2.Cast<object>().ToArray());
             comboBoxDecay.SelectedIndex = 0;
 
 	        comboBoxEmotionType.DataSource = EmotionalAppraisalAsset.EmotionTypes;
