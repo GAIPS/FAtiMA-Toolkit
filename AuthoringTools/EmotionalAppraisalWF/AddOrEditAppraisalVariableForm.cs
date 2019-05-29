@@ -5,6 +5,7 @@ using EmotionalAppraisal.OCCModel;
 using EmotionalAppraisalWF.Properties;
 using EmotionalAppraisalWF.ViewModels;
 using System;
+using System.Globalization;
 using System.Windows.Forms;
 using WellFormedNames;
 
@@ -55,15 +56,27 @@ namespace EmotionalAppraisalWF
         private void addOrEditButton_Click_1(object sender, EventArgs e)
         {
 
-              if (appraisalVariableName.SelectedItem.ToString() == OCCAppraisalVariables.GOALSUCCESSPROBABILITY)
+            if (appraisalVariableName.SelectedItem.ToString() == OCCAppraisalVariables.GOALSUCCESSPROBABILITY)
             {
-
-                var value = float.Parse(appraisalVariableValueTextBox.Value.ToString());
-                if(value < 0 || value > 1){
-               MessageBox.Show("Goal Value must be bewteen 0 and 1", Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                return;
-
-            }
+                float value = 0.0f;
+                if (float.TryParse(appraisalVariableValueTextBox.Value.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out value))
+                {
+                    if (value < 0 || value > 1)
+                    {
+                        MessageBox.Show("Goal Value must be bewteen 0 and 1", Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+                else
+                {
+                    var name = WellFormedNames.Name.BuildName(appraisalVariableValueTextBox.Value.ToString());
+                    if (!name.IsVariable)
+                    {
+                        MessageBox.Show("Goal Value must either be a variable or a float number", Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                        
+                }
 
             }
 
@@ -149,7 +162,9 @@ namespace EmotionalAppraisalWF
             }
         }
 
-   
+        private void appraisalVariableValueTextBox_TextChanged(object sender, EventArgs e)
+        {
 
+        }
     }
 }

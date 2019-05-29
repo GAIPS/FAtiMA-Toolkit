@@ -112,6 +112,7 @@
             this.floatFieldBoxLikelihood.Name = "floatFieldBoxLikelihood";
             this.floatFieldBoxLikelihood.Size = new System.Drawing.Size(338, 22);
             this.floatFieldBoxLikelihood.TabIndex = 50;
+            this.floatFieldBoxLikelihood.TextChanged += new System.EventHandler(this.floatFieldBoxLikelihood_TextChanged);
             // 
             // buttonAddOrEditGoal
             // 

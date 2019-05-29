@@ -68,14 +68,10 @@
             this.appraisalVariableName.Location = new System.Drawing.Point(43, 60);
             this.appraisalVariableName.Margin = new System.Windows.Forms.Padding(4);
             this.appraisalVariableName.Name = "appraisalVariableName";
-            this.appraisalVariableName.Size = new System.Drawing.Size(343, 28);
+            this.appraisalVariableName.Size = new System.Drawing.Size(343, 24);
             this.appraisalVariableName.TabIndex = 32;
             this.appraisalVariableName.SelectionChangeCommitted += new System.EventHandler(this.comboBoxEventType_SelectedIndexChanged);
             this.appraisalVariableName.DropDownClosed += new System.EventHandler(this.comboBoxEventType_SelectedIndexChanged);
-           
-            
-            //this.appraisalVariableName.SelectionChangeCommitted
-            
             // 
             // labelTarget
             // 
@@ -83,7 +79,7 @@
             this.labelTarget.Location = new System.Drawing.Point(39, 178);
             this.labelTarget.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelTarget.Name = "labelTarget";
-            this.labelTarget.Size = new System.Drawing.Size(62, 20);
+            this.labelTarget.Size = new System.Drawing.Size(51, 16);
             this.labelTarget.TabIndex = 38;
             this.labelTarget.Text = "Target:";
             // 
@@ -93,7 +89,7 @@
             this.valueLabel.Location = new System.Drawing.Point(39, 107);
             this.valueLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.valueLabel.Name = "valueLabel";
-            this.valueLabel.Size = new System.Drawing.Size(56, 20);
+            this.valueLabel.Size = new System.Drawing.Size(46, 16);
             this.valueLabel.TabIndex = 34;
             this.valueLabel.Text = "Value:";
             this.valueLabel.Click += new System.EventHandler(this.label4_Click);
@@ -104,7 +100,7 @@
             this.label6.Location = new System.Drawing.Point(43, 28);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(58, 20);
+            this.label6.Size = new System.Drawing.Size(48, 16);
             this.label6.TabIndex = 31;
             this.label6.Text = "Name:";
             // 
@@ -118,8 +114,9 @@
             this.appraisalVariableValueTextBox.Location = new System.Drawing.Point(43, 130);
             this.appraisalVariableValueTextBox.Name = "appraisalVariableValueTextBox";
             this.appraisalVariableValueTextBox.OnlyIntOrVariable = false;
-            this.appraisalVariableValueTextBox.Size = new System.Drawing.Size(343, 26);
+            this.appraisalVariableValueTextBox.Size = new System.Drawing.Size(343, 22);
             this.appraisalVariableValueTextBox.TabIndex = 44;
+            this.appraisalVariableValueTextBox.TextChanged += new System.EventHandler(this.appraisalVariableValueTextBox_TextChanged);
             // 
             // appraisalVariableTarget
             // 
@@ -131,12 +128,12 @@
             this.appraisalVariableTarget.Location = new System.Drawing.Point(42, 201);
             this.appraisalVariableTarget.Name = "appraisalVariableTarget";
             this.appraisalVariableTarget.OnlyIntOrVariable = false;
-            this.appraisalVariableTarget.Size = new System.Drawing.Size(344, 26);
+            this.appraisalVariableTarget.Size = new System.Drawing.Size(344, 22);
             this.appraisalVariableTarget.TabIndex = 46;
             // 
             // AddOrEditAppraisalVariableForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(427, 315);

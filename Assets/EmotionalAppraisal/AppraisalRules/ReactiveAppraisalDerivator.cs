@@ -11,6 +11,7 @@ using KnowledgeBase;
 using WellFormedNames;
 using WellFormedNames.Collections;
 using IQueryable = WellFormedNames.IQueryable;
+using System.Globalization;
 
 namespace EmotionalAppraisal.AppraisalRules
 {
@@ -73,7 +74,7 @@ namespace EmotionalAppraisal.AppraisalRules
 
                             float f;
                        
-                            if(float.TryParse(appVariable.Value.ToString(), out f)){
+                            if(float.TryParse(appVariable.Value.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out f)){
                                 
                              var aux = float.Parse(appVariable.Value.ToString()) * minCertainty;
                             appVariable.Value = Name.BuildName(aux);
@@ -192,7 +193,7 @@ namespace EmotionalAppraisal.AppraisalRules
                 foreach(var appVar in activeRule.getAppraisalVariables())
                 {
                      float des;
-                    if (!float.TryParse(appVar.Value.ToString(), out des))
+                    if (!float.TryParse(appVar.Value.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out des))
                     {
                         throw new ArgumentException(appVar.Name + " can only be a float value");
                     }

@@ -68,6 +68,11 @@ namespace EmotionalAppraisalWF
                 this.Close();
             }
         }
+
+        private void floatFieldBoxLikelihood_TextChanged(object sender, System.EventArgs e)
+        {
+
+        }
     }
 
 }

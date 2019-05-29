@@ -1435,5 +1435,21 @@ namespace IntegratedAuthoringToolWF
             _dialogs.Refresh();
         }
 
-}
+        private void dataGridViewDialogueActions_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int currentRowIndex = dataGridViewDialogueActions.CurrentCell.RowIndex;
+            int currentColumnIndex = dataGridViewDialogueActions.CurrentCell.ColumnIndex;
+
+        }
+
+        private void dataGridViewDialogueActions_Leave(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridViewDialogueActions_CellLeave(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+    }
 }
