@@ -97,7 +97,7 @@ namespace ActionLibrary
             }
             else
             {
-                a.Utility = p;
+                a.Utility = p + 1; // minCertainty is 1 if there are no conditions to be uncertain about
             }
 
 

@@ -98,7 +98,8 @@ namespace GAIPS.AssetEditorTools
 			if (!hasData)
 				return;
 
-			_view.RemoveConditionAt(CurrentSelectedRowIndex);
+            if(CurrentSelectedRowIndex != -1)
+			    _view.RemoveConditionAt(CurrentSelectedRowIndex);
 		}
 
 		private int _currentEditIndex = -1;

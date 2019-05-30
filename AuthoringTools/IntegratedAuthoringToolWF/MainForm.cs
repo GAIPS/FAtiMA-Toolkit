@@ -38,6 +38,7 @@ namespace IntegratedAuthoringToolWF
             InitializeComponent();
             buttonRemoveCharacter.Enabled = false;
             buttonInspect.Enabled = false;
+
         }
 
         private void RefreshDialogs()
@@ -154,7 +155,7 @@ namespace IntegratedAuthoringToolWF
             {
                 var character = ((ObjectView<CharacterSourceDTO>)dataGridViewCharacters.SelectedRows[i].DataBoundItem)
                     .Object;
-              
+
                 charactersToRemove.Add(character.Id);
             }
 
@@ -791,8 +792,8 @@ namespace IntegratedAuthoringToolWF
         private void buttonStart_Click(object sender, EventArgs e)
         {
 
-         
-            
+
+
 
             try
             {
@@ -821,13 +822,13 @@ namespace IntegratedAuthoringToolWF
 
             }
 
-           rpcBox.Items.Clear();
-           rpcBox.Items.AddRange(agentsInChat.Select(x=>x.CharacterName.ToString()).ToArray());
+            rpcBox.Items.Clear();
+            rpcBox.Items.AddRange(agentsInChat.Select(x => x.CharacterName.ToString()).ToArray());
 
-            if(this.playerRPC == null)
+            if (this.playerRPC == null)
                 rpcBox.SelectedItem = agentsInChat.FirstOrDefault().CharacterName.ToString();
-           else rpcBox.SelectedItem = playerRPC.ToString();
-               this.playerRPC =  agentsInChat.Find(x => x.CharacterName.ToString() == rpcBox.SelectedItem.ToString());
+            else rpcBox.SelectedItem = playerRPC.ToString();
+            this.playerRPC = agentsInChat.Find(x => x.CharacterName.ToString() == rpcBox.SelectedItem.ToString());
 
             richTextBoxChat.Clear();
             listBoxPlayerDialogues.DataSource = new List<string>();
@@ -878,7 +879,7 @@ namespace IntegratedAuthoringToolWF
                         EditorTools.WriteText(richTextBoxChat,
                             ag.CharacterName + " To " + action.Target + " : ", Color.ForestGreen, false);
 
-                        
+
                         EditorTools.WriteText(richTextBoxChat, ag.ProcessWithWorkingMemory(diag.Utterance), Color.Black, false);
 
                         EditorTools.WriteText(richTextBoxChat,
@@ -886,12 +887,9 @@ namespace IntegratedAuthoringToolWF
                             true);
 
 
-                        var toString ="Speak(" + diag.CurrentState + "," + diag.NextState + "," + diag.Meaning + "," + diag.Style + ")" ;
+                        var toString = "Speak(" + diag.CurrentState + "," + diag.NextState + "," + diag.Meaning + "," + diag.Style + ")";
                         var ev = EventHelper.ActionEnd(ag.CharacterName.ToString(), toString, action.Target.ToString());
-                        List<Name> eventList = new List<Name>();
-                        eventList.Add(ev);
-
-                        HandleEffects(eventList);
+                        HandleEffects(new[] { ev });
                     }
                 }
 
@@ -900,38 +898,13 @@ namespace IntegratedAuthoringToolWF
 
             EditorTools.WriteText(richTextBoxChat, "", Color.Black, true);
 
-           this.playerRPC =  agentsInChat.Find(x => x.CharacterName.ToString() == rpcBox.SelectedItem.ToString());
+            this.playerRPC = agentsInChat.Find(x => x.CharacterName.ToString() == rpcBox.SelectedItem.ToString());
 
             if (playerRPC == null)
                 EditorTools.WriteText(richTextBoxChat, " There is no Player RPC, please use the keyword Player in the Character Name field of an RPC", Color.Red, true);
 
-
-            var dialogueList = playerRPC.Decide().Where(a => a.Key.ToString() == IATConsts.DIALOG_ACTION_KEY);
-            
-            if (dialogueList.Any())
-            {
-                var maxUtility = dialogueList.Max(x=>x.Utility);
-                var playerDecisions = dialogueList.Where(x=>x.Utility == maxUtility);
-                this.determinePlayerDialogueOptions(playerDecisions);
-            }
-            else
-            {
-                listBoxPlayerDialogues.DataSource = new List<string>();
-            }
-
-            var actionList = playerRPC.Decide().Where(a => a.Key.ToString() != IATConsts.DIALOG_ACTION_KEY);
-
-            if (actionList.Any())
-            {
-                var maxUtility = actionList.Max(x => x.Utility);
-                var playerDecisions = actionList.Where(x => x.Utility == maxUtility);
-                
-            }
-            else
-            {
-                listBoxPlayerActions.DataSource = new List<string>();
-            }
-
+            //Update the ListBoxes with the new player options
+            UpdatePlayerActionOptions();
 
             //Event triggers
             HandleEventTriggers();
@@ -942,48 +915,98 @@ namespace IntegratedAuthoringToolWF
             textBoxTick.Text = agentsInChat[0].Tick.ToString();
         }
 
-        private List<IAction> playerActions;
         private Dictionary<Name, List<DialogueStateActionDTO>> playerOptions;
+        private IEnumerable<IAction> playerDialogueOptions;
+        private IEnumerable<IAction> playerNotDialogueOptions;
+
         private RolePlayCharacterAsset playerRPC;
 
-        private void determinePlayerDialogueOptions(IEnumerable<IAction> actions)
+
+        private void UpdatePlayerActionOptions()
         {
-            playerActions = new List<IAction>();
-            
+            var allPlayerActionOptions = playerRPC.Decide();
 
-            playerOptions = new Dictionary<WellFormedNames.Name, List<DialogueStateActionDTO>>();
+            this.playerDialogueOptions = allPlayerActionOptions.Where(a => a.Key.ToString() == IATConsts.DIALOG_ACTION_KEY);
+            this.playerNotDialogueOptions = allPlayerActionOptions.Where(a => a.Key.ToString() != IATConsts.DIALOG_ACTION_KEY);
 
-            foreach (var a in actions)
+            float maxDialoguePriority = -1;
+            float maxNonDialoguePriority = -1;
+
+            if (playerDialogueOptions.Any())
             {
-                var diags = LoadedAsset.GetDialogueActions(a.Parameters[0], a.Parameters[1], a.Parameters[2],
-                    a.Parameters[3]);
+                maxDialoguePriority = playerDialogueOptions.Max(x => x.Utility);
+                playerDialogueOptions = playerDialogueOptions.Where(x => x.Utility == maxDialoguePriority);
+            }
+            else
+            {
+                listBoxPlayerDialogues.DataSource = new List<string>();
+            }
+
+            if (playerNotDialogueOptions.Any())
+            {
+                maxNonDialoguePriority = playerNotDialogueOptions.Max(x => x.Utility);
+                playerNotDialogueOptions = playerNotDialogueOptions.Where(x => x.Utility == maxNonDialoguePriority);
+            }
+            else
+            {
+                listBoxPlayerActions.DataSource = new List<string>();
+            }
+
+            if (maxDialoguePriority == maxNonDialoguePriority)
+            {
+                DeterminePlayerActionOptions();
+                DeterminePlayerDialogueOptions();
+            }
+            else if (maxDialoguePriority > maxNonDialoguePriority)
+            {
+                DeterminePlayerDialogueOptions();
+                listBoxPlayerActions.DataSource = new List<string>();
+            }
+            else
+            {
+                DeterminePlayerActionOptions();
+                listBoxPlayerDialogues.DataSource = new List<string>();
+            }
+        }
+
+
+        private void DeterminePlayerActionOptions()
+        {
+            List<string> result = new List<string>();
+            foreach (var a in this.playerNotDialogueOptions)
+            {
+                result.Add(a.ToString().ToString() + ", T: " + a.Target);
+            }
+            listBoxPlayerActions.DataSource = result;
+            listBoxPlayerActions.ClearSelected();
+        }
+
+        private void DeterminePlayerDialogueOptions()
+        {
+            List<string> result = new List<string>();
+            List<IAction> extendedList = new List<IAction>();
+
+            foreach (var a in playerDialogueOptions)
+            {
+                var diags = LoadedAsset.GetDialogueActions(a.Parameters[0], a.Parameters[1], a.Parameters[2], a.Parameters[3]);
 
                 if (diags.IsEmpty())
                 {
                     EditorTools.WriteText(richTextBoxChat, playerRPC.CharacterName.ToString() +
                         " : " + " could not find any matching dialogue for action " + a.Name, Color.Red, true);
                 }
-                else if (this.ValidateTarget(a, playerRPC.CharacterName.ToString()))
+                else if(this.ValidateTarget(a, playerRPC.CharacterName.ToString()))
                 {
-                    if(playerOptions.ContainsKey(a.Target))
-                        playerOptions[a.Target].AddRange(diags);
-
-                   else playerOptions.Add(a.Target, diags);
+                    foreach(var d in diags)
+                    {
+                        extendedList.Add(a);
+                        result.Add("To " + a.Target + " " + playerRPC.ProcessWithWorkingMemory(d.Utterance));
+                    }
                 }
             }
-
-            List<string> result = new List<string>();
-
-            foreach (var targ in playerOptions.Keys)
-            {
-                foreach (var speakAction in playerOptions[targ])
-                {
-                    result.Add("To " + targ + " " + playerRPC.ProcessWithWorkingMemory(speakAction.Utterance));
-                }
-
-            }
-
+            playerDialogueOptions = extendedList;
             listBoxPlayerDialogues.DataSource = result;
+            listBoxPlayerDialogues.ClearSelected();
         }
 
         private bool ValidateTarget(IAction action, string actor)
@@ -998,13 +1021,13 @@ namespace IntegratedAuthoringToolWF
             else return true;
         }
 
-           private void comboBoxEventType_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxEventType_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-             this.playerRPC =  agentsInChat.Find(x => x.CharacterName.ToString() == rpcBox.SelectedItem.ToString());
+            this.playerRPC = agentsInChat.Find(x => x.CharacterName.ToString() == rpcBox.SelectedItem.ToString());
 
 
-       }
+        }
 
         private void listBoxPlayerDialogues_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -1013,46 +1036,20 @@ namespace IntegratedAuthoringToolWF
 
             if (item == null) return;
 
-            var splitedSelectedItem = item.ToString().Split(' ');
-            var target = splitedSelectedItem[1];
-
-            var usedDialogue = item.ToString().Replace(splitedSelectedItem[0] + " " + splitedSelectedItem[1]+ " ", "");
-
-            if (idx == -1) return;
-
-            
-            DialogueStateActionDTO dialogueState = new DialogueStateActionDTO();
-
-            foreach(var o in playerOptions[(Name)target])
-            {
-                var aux = this.playerRPC.ProcessWithWorkingMemory(o.Utterance);
-                if (usedDialogue == aux)
-                    dialogueState = o;
-            }
-
-
+            var action = playerDialogueOptions.ElementAt(idx);
             EditorTools.WriteText(richTextBoxChat,
-                "Player " + listBoxPlayerDialogues.SelectedItem.ToString() + "\n", Color.Blue, true);
-
-          
+               playerRPC.CharacterName + " says to " + action.Target.ToString() + "\""+ listBoxPlayerDialogues.SelectedItem.ToString() + "\"\n", Color.Blue, true);
             
-            var dialog = dialogueState;
+            var ev = EventHelper.ActionEnd(playerRPC.CharacterName.ToString(), action.Name.ToString(), action.Target.ToString());
 
-
-            var toString ="Speak(" + dialog.CurrentState + "," + dialog.NextState + "," + dialog.Meaning + "," + dialog.Style + ")" ;
-            var ev = EventHelper.ActionEnd(playerRPC.CharacterName.ToString(), toString, target.ToString());
-
-            List<Name> eventList = new List<Name>();
-            eventList.Add(ev);
-
-            this.HandleEffects(eventList);
+            this.HandleEffects(new[] { ev });
 
             this.buttonContinue_Click(sender, e);
         }
 
-        private void HandleEffects(List<Name> eventList)
+        private void HandleEffects(Name[] eventList)
         {
-                    
+
             if (LoadedAsset.m_worldModelSource == null)
                 return;
 
@@ -1073,62 +1070,62 @@ namespace IntegratedAuthoringToolWF
                     EditorTools.WriteText(richTextBoxChat,
                           "Event Registered " + ev + "\n", Color.Brown, true);
 
-           foreach (var a in agentsInChat)
-            {
-                a.Perceive(ev);
-            }
-            var effects = wm.Simulate(new[]{ev});
-            string toWrite = "";
-            toWrite += "Effects: \n";
-
-            Dictionary<string, List<string>> observerAgents = new Dictionary<string, List<string>>();
-
-            foreach (var eff in effects)
-            {
-                var evt = EventHelper.PropertyChange(eff.PropertyName.ToString(), eff.NewValue.ToString(), actor.ToString());
-
-               
                 foreach (var a in agentsInChat)
                 {
-                    if (eff.ObserverAgent == a.CharacterName || eff.ObserverAgent.ToString() == "*")
-                    {
-                        if (!observerAgents.ContainsKey(a.CharacterName.ToString()))
-                        {
-                            observerAgents.Add(a.CharacterName.ToString(), new List<string>() { evt.GetNTerm(3).ToString() });
-                        }
-                        else observerAgents[a.CharacterName.ToString()].Add(evt.GetNTerm(3).ToString());
-
-                        a.Perceive(evt);
-                    }
+                    a.Perceive(ev);
                 }
+                var effects = wm.Simulate(new[] { ev });
+                string toWrite = "";
+                toWrite += "Effects: \n";
 
-            }
+                Dictionary<string, List<string>> observerAgents = new Dictionary<string, List<string>>();
 
-            foreach (var o in observerAgents)
-            {
-                toWrite += o.Key + ": ";
-
-                foreach (var e in o.Value)
+                foreach (var eff in effects)
                 {
-                    var value = agentsInChat.Find(x => x.CharacterName.ToString() == o.Key).GetBeliefValue(e);
+                    var evt = EventHelper.PropertyChange(eff.PropertyName.ToString(), eff.NewValue.ToString(), actor.ToString());
 
-                    toWrite += e + " = " + value + ", ";
+
+                    foreach (var a in agentsInChat)
+                    {
+                        if (eff.ObserverAgent == a.CharacterName || eff.ObserverAgent.ToString() == "*")
+                        {
+                            if (!observerAgents.ContainsKey(a.CharacterName.ToString()))
+                            {
+                                observerAgents.Add(a.CharacterName.ToString(), new List<string>() { evt.GetNTerm(3).ToString() });
+                            }
+                            else observerAgents[a.CharacterName.ToString()].Add(evt.GetNTerm(3).ToString());
+
+                            a.Perceive(evt);
+                        }
+                    }
+
                 }
-                toWrite = toWrite.Substring(0, toWrite.Length - 2);
-                toWrite += "\n";
+
+                foreach (var o in observerAgents)
+                {
+                    toWrite += o.Key + ": ";
+
+                    foreach (var e in o.Value)
+                    {
+                        var value = agentsInChat.Find(x => x.CharacterName.ToString() == o.Key).GetBeliefValue(e);
+
+                        toWrite += e + " = " + value + ", ";
+                    }
+                    toWrite = toWrite.Substring(0, toWrite.Length - 2);
+                    toWrite += "\n";
+                }
+
+
+
+                if (effects.Any())
+                {
+                    textBoxBelChat_TextChanged(null, null);
+                }
+
+                if (effectTickBox.Checked)
+                    EditorTools.WriteText(richTextBoxChat,
+                    toWrite, Color.Black, true);
             }
-
-
-
-            if(effects.Any())
-            {
-                textBoxBelChat_TextChanged(null, null);
-            }
-
-            if (effectTickBox.Checked)
-                EditorTools.WriteText(richTextBoxChat,
-                toWrite, Color.Black, true);
-        }
 
         }
 
@@ -1174,8 +1171,8 @@ namespace IntegratedAuthoringToolWF
 
         private void HandleEventTriggers()
         {
-           if(LoadedAsset.eventTriggers == null)
-               LoadedAsset.eventTriggers = new EventTriggers();
+            if (LoadedAsset.eventTriggers == null)
+                LoadedAsset.eventTriggers = new EventTriggers();
 
             var events = LoadedAsset.eventTriggers.ComputeTriggersList(agentsInChat);
 
@@ -1184,18 +1181,18 @@ namespace IntegratedAuthoringToolWF
 
             var toWrite = "";
 
-                toWrite += "Events Triggered: \n";
-                foreach (var ev in events)
-                {
-                    toWrite += ev.ToString() + "\n";
-                }
-            
+            toWrite += "Events Triggered: \n";
+            foreach (var ev in events)
+            {
+                toWrite += ev.ToString() + "\n";
+            }
+
 
             if (checkBox1.Checked)
                 EditorTools.WriteText(richTextBoxChat,
                     toWrite, Color.CornflowerBlue, true);
 
-            HandleEffects(events);
+            HandleEffects(events.ToArray());
         }
 
         private void createNewWorldModelButton_Click(object sender, EventArgs e)
@@ -1367,8 +1364,8 @@ namespace IntegratedAuthoringToolWF
         {
 
             var text = searchDialogueBox.Text.ToString();
-            
-             var dialogs = LoadedAsset.GetAllDialogueActions().ToList();
+
+            var dialogs = LoadedAsset.GetAllDialogueActions().ToList();
 
 
             bool cs = false;
@@ -1376,48 +1373,49 @@ namespace IntegratedAuthoringToolWF
             bool mn = false;
             bool sty = false;
             bool utterance = false;
-        
 
 
-          if(searchCheckList.GetItemCheckState(0) == CheckState.Checked)
+
+            if (searchCheckList.GetItemCheckState(0) == CheckState.Checked)
             {
                 cs = true;
             }
-           if(searchCheckList.GetItemCheckState(1) == CheckState.Checked)
+            if (searchCheckList.GetItemCheckState(1) == CheckState.Checked)
             {
                 ns = true;
             }
-            if(searchCheckList.GetItemCheckState(2) == CheckState.Checked)
+            if (searchCheckList.GetItemCheckState(2) == CheckState.Checked)
             {
                 mn = true;
             }
-             if(searchCheckList.GetItemCheckState(3) == CheckState.Checked)
+            if (searchCheckList.GetItemCheckState(3) == CheckState.Checked)
             {
                 sty = true;
             }
 
-              if(searchCheckList.GetItemCheckState(4) == CheckState.Checked)
+            if (searchCheckList.GetItemCheckState(4) == CheckState.Checked)
             {
                 utterance = true;
             }
-           
 
-            if(text != "" && text != "-" && text != "*") {
-           
-                dialogs =  new List<DialogueStateActionDTO>(); 
-                if(cs)                
-                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x=> x.CurrentState.ToLower().ToString().Contains(text.ToLower())));
-                if(ns)                
-                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x=> x.NextState.ToLower().ToString().Contains(text.ToLower())));
-                if(mn)                
-                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x=> x.Meaning.ToLower().ToString().Contains(text.ToLower())));
-                 if(sty)                
-                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x=> x.Style.ToLower().ToString().Contains(text.ToLower())));
-                 if(utterance)                
-                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x=> x.Utterance.ToLower().ToString().Contains(text.ToLower())));
+
+            if (text != "" && text != "-" && text != "*")
+            {
+
+                dialogs = new List<DialogueStateActionDTO>();
+                if (cs)
+                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x => x.CurrentState.ToLower().ToString().Contains(text.ToLower())));
+                if (ns)
+                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x => x.NextState.ToLower().ToString().Contains(text.ToLower())));
+                if (mn)
+                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x => x.Meaning.ToLower().ToString().Contains(text.ToLower())));
+                if (sty)
+                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x => x.Style.ToLower().ToString().Contains(text.ToLower())));
+                if (utterance)
+                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x => x.Utterance.ToLower().ToString().Contains(text.ToLower())));
             }
 
-             _dialogs.DataSource = dialogs;
+            _dialogs.DataSource = dialogs;
 
             EditorTools.HideColumns(dataGridViewDialogueActions, new[]
                 {
@@ -1450,6 +1448,32 @@ namespace IntegratedAuthoringToolWF
         private void dataGridViewDialogueActions_CellLeave(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void listBoxPlayerActions_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox4_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBoxPlayerActions_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var idx = listBoxPlayerActions.SelectedIndex;
+            var item = listBoxPlayerActions.SelectedItem;
+            if (item == null) return;
+
+            EditorTools.WriteText(richTextBoxChat,
+                playerRPC.CharacterName.ToString() + " performs : " + listBoxPlayerActions.SelectedItem.ToString() + "\n", Color.Blue, true);
+
+            var chosenAction = playerNotDialogueOptions.ElementAt(idx);
+            var ev = EventHelper.ActionEnd(playerRPC.CharacterName.ToString(), chosenAction.Name.ToString(), chosenAction.Target.ToString());
+            this.HandleEffects(new[] { ev });
+
+            this.buttonContinue_Click(sender, e);
         }
     }
 }
