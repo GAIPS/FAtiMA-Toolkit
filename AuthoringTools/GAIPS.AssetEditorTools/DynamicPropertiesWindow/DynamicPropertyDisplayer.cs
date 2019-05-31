@@ -156,5 +156,10 @@ namespace GAIPS.AssetEditorTools.DynamicPropertiesWindow
         {
 
         }
+
+        private void _dynamicPropertiesListView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }

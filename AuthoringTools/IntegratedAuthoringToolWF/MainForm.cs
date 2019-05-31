@@ -1,4 +1,5 @@
 ﻿using ActionLibrary;
+using AutobiographicMemory.DTOs;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 using GAIPS.Rage;
@@ -16,6 +17,7 @@ using System.Windows.Forms;
 using Utilities;
 using Utilities.DataStructures;
 using WellFormedNames;
+using WorkingMemory;
 using WorldModel;
 
 namespace IntegratedAuthoringToolWF
@@ -792,9 +794,6 @@ namespace IntegratedAuthoringToolWF
         private void buttonStart_Click(object sender, EventArgs e)
         {
 
-
-
-
             try
             {
                 this.saveToolStripMenuItem_Click(sender, e);
@@ -833,6 +832,10 @@ namespace IntegratedAuthoringToolWF
             richTextBoxChat.Clear();
             listBoxPlayerDialogues.DataSource = new List<string>();
             comboBoxAgChat.DataSource = agentsInChat.Select(a => a.CharacterName.ToString()).ToList();
+
+            comboBoxAgentView.SelectedIndex = 0;
+
+      
 
             EditorTools.WriteText(richTextBoxChat, "Characters were loaded with success (" + DateTime.Now + ")",
                 Color.Blue, true);
@@ -913,6 +916,8 @@ namespace IntegratedAuthoringToolWF
 
             //Assumption: All agents have the same tick
             textBoxTick.Text = agentsInChat[0].Tick.ToString();
+
+            comboBoxAgentView_SelectedIndexChanged(sender, e); // update the agent inspector views;
         }
 
         private Dictionary<Name, List<DialogueStateActionDTO>> playerOptions;
@@ -973,12 +978,23 @@ namespace IntegratedAuthoringToolWF
         private void DeterminePlayerActionOptions()
         {
             List<string> result = new List<string>();
+            List<IAction> aux = new List<IAction>();
             foreach (var a in this.playerNotDialogueOptions)
             {
-                result.Add(a.ToString().ToString() + ", T: " + a.Target);
+                aux.Add(a);
+                if(a.Target != WellFormedNames.Name.NIL_SYMBOL)
+                {
+                    result.Add("To " + a.Target +" : " + a.Name );
+                }
+                else
+                {
+                    result.Add(""+a.Name);
+                }
+                
             }
             listBoxPlayerActions.DataSource = result;
             listBoxPlayerActions.ClearSelected();
+            playerNotDialogueOptions = aux;
         }
 
         private void DeterminePlayerDialogueOptions()
@@ -995,12 +1011,22 @@ namespace IntegratedAuthoringToolWF
                     EditorTools.WriteText(richTextBoxChat, playerRPC.CharacterName.ToString() +
                         " : " + " could not find any matching dialogue for action " + a.Name, Color.Red, true);
                 }
-                else if(this.ValidateTarget(a, playerRPC.CharacterName.ToString()))
+                else if(a.Target != WellFormedNames.Name.NIL_SYMBOL)
                 {
-                    foreach(var d in diags)
+                    if(this.ValidateTarget(a, playerRPC.CharacterName.ToString())){
+                        foreach (var d in diags)
+                        {
+                            extendedList.Add(a);
+                            result.Add("To " + a.Target + " : \"" + playerRPC.ProcessWithWorkingMemory(d.Utterance) + "\"");
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (var d in diags)
                     {
                         extendedList.Add(a);
-                        result.Add("To " + a.Target + " " + playerRPC.ProcessWithWorkingMemory(d.Utterance));
+                        result.Add(playerRPC.ProcessWithWorkingMemory(d.Utterance));
                     }
                 }
             }
@@ -1023,10 +1049,7 @@ namespace IntegratedAuthoringToolWF
 
         private void comboBoxEventType_SelectedIndexChanged(object sender, EventArgs e)
         {
-
             this.playerRPC = agentsInChat.Find(x => x.CharacterName.ToString() == rpcBox.SelectedItem.ToString());
-
-
         }
 
         private void listBoxPlayerDialogues_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -1037,8 +1060,7 @@ namespace IntegratedAuthoringToolWF
             if (item == null) return;
 
             var action = playerDialogueOptions.ElementAt(idx);
-            EditorTools.WriteText(richTextBoxChat,
-               playerRPC.CharacterName + " says to " + action.Target.ToString() + "\""+ listBoxPlayerDialogues.SelectedItem.ToString() + "\"\n", Color.Blue, true);
+            EditorTools.WriteText(richTextBoxChat, playerRPC.CharacterName + " Says "+ listBoxPlayerDialogues.SelectedItem.ToString() + "\n", Color.Blue, true);
             
             var ev = EventHelper.ActionEnd(playerRPC.CharacterName.ToString(), action.Name.ToString(), action.Target.ToString());
 
@@ -1466,14 +1488,64 @@ namespace IntegratedAuthoringToolWF
             var item = listBoxPlayerActions.SelectedItem;
             if (item == null) return;
 
-            EditorTools.WriteText(richTextBoxChat,
-                playerRPC.CharacterName.ToString() + " performs : " + listBoxPlayerActions.SelectedItem.ToString() + "\n", Color.Blue, true);
-
             var chosenAction = playerNotDialogueOptions.ElementAt(idx);
+
+            if(chosenAction.Target != WellFormedNames.Name.NIL_SYMBOL)
+            {
+                EditorTools.WriteText(richTextBoxChat,
+                playerRPC.CharacterName.ToString() + " Performs " + listBoxPlayerActions.SelectedItem.ToString() + "\n", Color.Blue, true);
+            }
+            else
+            {
+                EditorTools.WriteText(richTextBoxChat,
+                playerRPC.CharacterName.ToString() + " Performs : " + listBoxPlayerActions.SelectedItem.ToString() + "\n", Color.Blue, true);
+            }
+            
             var ev = EventHelper.ActionEnd(playerRPC.CharacterName.ToString(), chosenAction.Name.ToString(), chosenAction.Target.ToString());
             this.HandleEffects(new[] { ev });
 
             this.buttonContinue_Click(sender, e);
+        }
+
+        private void groupBox5_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBoxAgChat_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.comboBoxAgentView_SelectedIndexChanged(sender, e);
+        }
+
+        private void comboBoxAgentView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var selectedRPCName = (string)comboBoxAgChat.SelectedItem;
+
+            var rpc = agentsInChat.Where(c => c.CharacterName.ToString() == selectedRPCName).FirstOrDefault();
+
+            var selectedView = (string)comboBoxAgentView.SelectedItem;
+            if(selectedView.EqualsIgnoreCase("Knowledge Base"))
+            {
+                dataGridViewAgentInspector.DataSource = new BindingListView<BeliefDTO>(rpc.GetAllBeliefs().ToList());
+                
+            }else if (selectedView.EqualsIgnoreCase("Autobiographical Memory"))
+            {
+                dataGridViewAgentInspector.DataSource = new BindingListView<EventDTO>(rpc.EventRecords.ToList());
+            }
+            else if(selectedView.EqualsIgnoreCase("Emotional State"))
+            {
+                dataGridViewAgentInspector.DataSource = new BindingListView<EmotionalAppraisal.DTOs.EmotionDTO>(rpc.GetAllActiveEmotions().ToList());
+            }
+            else if (selectedView.EqualsIgnoreCase("Goals"))
+            {
+                dataGridViewAgentInspector.DataSource = new BindingListView<EmotionalAppraisal.DTOs.GoalDTO>(rpc.GetAllGoals().ToList());
+            }
+            else if (selectedView.EqualsIgnoreCase("Working Memory"))
+            {
+                dataGridViewAgentInspector.DataSource = new BindingListView<WMEntryDTO>(rpc.GetAllWMemoryEntries().ToList());
+            }
+
+            dataGridViewAgentInspector.Refresh();
         }
     }
 }

@@ -618,10 +618,10 @@ namespace RolePlayCharacterWF
             // tabPage5
             // 
             this.tabPage5.Controls.Add(this.groupBox1);
-            this.tabPage5.Location = new System.Drawing.Point(4, 25);
+            this.tabPage5.Location = new System.Drawing.Point(4, 28);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(821, 477);
+            this.tabPage5.Size = new System.Drawing.Size(821, 474);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Knowledge Base";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -632,7 +632,7 @@ namespace RolePlayCharacterWF
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(815, 471);
+            this.groupBox1.Size = new System.Drawing.Size(815, 468);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Beliefs";
@@ -649,7 +649,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel8.RowCount = 2;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(809, 450);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(809, 447);
             this.tableLayoutPanel8.TabIndex = 7;
             // 
             // tableLayoutPanel9

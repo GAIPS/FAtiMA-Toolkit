@@ -46,27 +46,35 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.buttonContinue = new System.Windows.Forms.Button();
+            this.rpcBox = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.buttonStart = new System.Windows.Forms.Button();
+            this.textBoxTick = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.effectTickBox = new System.Windows.Forms.CheckBox();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.splitContainer5 = new System.Windows.Forms.SplitContainer();
+            this.richTextBoxChat = new System.Windows.Forms.RichTextBox();
+            this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.listBoxPlayerDialogues = new System.Windows.Forms.ListBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.listBoxPlayerActions = new System.Windows.Forms.ListBox();
-            this.rpcBox = new System.Windows.Forms.ComboBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.effectTickBox = new System.Windows.Forms.CheckBox();
+            this.groupBox10 = new System.Windows.Forms.GroupBox();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.comboBoxAgentView = new System.Windows.Forms.ComboBox();
+            this.groupBox11 = new System.Windows.Forms.GroupBox();
+            this.dataGridViewAgentInspector = new System.Windows.Forms.DataGridView();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.textBoxValChat = new System.Windows.Forms.TextBox();
             this.textBoxBelChat = new System.Windows.Forms.TextBox();
             this.comboBoxAgChat = new System.Windows.Forms.ComboBox();
-            this.buttonContinue = new System.Windows.Forms.Button();
-            this.textBoxTick = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.buttonStart = new System.Windows.Forms.Button();
-            this.richTextBoxChat = new System.Windows.Forms.RichTextBox();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
@@ -89,13 +97,25 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDialogueActions)).BeginInit();
             this.tabPage1.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
-            this.splitContainer2.Panel1.SuspendLayout();
-            this.splitContainer2.Panel2.SuspendLayout();
-            this.splitContainer2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
+            this.splitContainer3.Panel1.SuspendLayout();
+            this.splitContainer3.Panel2.SuspendLayout();
+            this.splitContainer3.SuspendLayout();
+            this.groupBox9.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
+            this.splitContainer5.Panel1.SuspendLayout();
+            this.splitContainer5.Panel2.SuspendLayout();
+            this.splitContainer5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).BeginInit();
+            this.splitContainer6.Panel1.SuspendLayout();
+            this.splitContainer6.Panel2.SuspendLayout();
+            this.splitContainer6.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.groupBox8.SuspendLayout();
+            this.groupBox10.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            this.groupBox11.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAgentInspector)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.SuspendLayout();
@@ -316,7 +336,7 @@
             // displayGraph
             // 
             this.displayGraph.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.displayGraph.Location = new System.Drawing.Point(668, 603);
+            this.displayGraph.Location = new System.Drawing.Point(666, 609);
             this.displayGraph.Margin = new System.Windows.Forms.Padding(4);
             this.displayGraph.Name = "displayGraph";
             this.displayGraph.Size = new System.Drawing.Size(143, 30);
@@ -342,7 +362,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(803, 587);
+            this.groupBox2.Size = new System.Drawing.Size(803, 593);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dialogue Actions";
@@ -405,7 +425,7 @@
             this.dataGridViewDialogueActions.RowHeadersVisible = false;
             this.dataGridViewDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(795, 503);
+            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(795, 509);
             this.dataGridViewDialogueActions.TabIndex = 14;
             this.dataGridViewDialogueActions.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellClick);
             this.dataGridViewDialogueActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellContentClick);
@@ -463,7 +483,7 @@
             // buttonValidate
             // 
             this.buttonValidate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonValidate.Location = new System.Drawing.Point(517, 603);
+            this.buttonValidate.Location = new System.Drawing.Point(515, 609);
             this.buttonValidate.Margin = new System.Windows.Forms.Padding(4);
             this.buttonValidate.Name = "buttonValidate";
             this.buttonValidate.Size = new System.Drawing.Size(143, 30);
@@ -475,7 +495,7 @@
             // buttonTTS
             // 
             this.buttonTTS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonTTS.Location = new System.Drawing.Point(358, 603);
+            this.buttonTTS.Location = new System.Drawing.Point(356, 609);
             this.buttonTTS.Margin = new System.Windows.Forms.Padding(4);
             this.buttonTTS.Name = "buttonTTS";
             this.buttonTTS.Size = new System.Drawing.Size(151, 30);
@@ -487,7 +507,7 @@
             // buttonImportTxt
             // 
             this.buttonImportTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonImportTxt.Location = new System.Drawing.Point(235, 603);
+            this.buttonImportTxt.Location = new System.Drawing.Point(233, 609);
             this.buttonImportTxt.Margin = new System.Windows.Forms.Padding(4);
             this.buttonImportTxt.Name = "buttonImportTxt";
             this.buttonImportTxt.Size = new System.Drawing.Size(115, 30);
@@ -499,7 +519,7 @@
             // buttonImportExcel
             // 
             this.buttonImportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonImportExcel.Location = new System.Drawing.Point(11, 603);
+            this.buttonImportExcel.Location = new System.Drawing.Point(9, 609);
             this.buttonImportExcel.Margin = new System.Windows.Forms.Padding(4);
             this.buttonImportExcel.Name = "buttonImportExcel";
             this.buttonImportExcel.Size = new System.Drawing.Size(101, 30);
@@ -511,7 +531,7 @@
             // buttonExportExcel
             // 
             this.buttonExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonExportExcel.Location = new System.Drawing.Point(120, 603);
+            this.buttonExportExcel.Location = new System.Drawing.Point(118, 609);
             this.buttonExportExcel.Margin = new System.Windows.Forms.Padding(4);
             this.buttonExportExcel.Name = "buttonExportExcel";
             this.buttonExportExcel.Size = new System.Drawing.Size(107, 30);
@@ -535,6 +555,7 @@
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.groupBox3);
+            this.tabPage1.Controls.Add(this.splitContainer3);
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -545,42 +566,189 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.splitContainer2);
-            this.groupBox3.Controls.Add(this.rpcBox);
-            this.groupBox3.Controls.Add(this.checkBox1);
-            this.groupBox3.Controls.Add(this.label7);
-            this.groupBox3.Controls.Add(this.effectTickBox);
-            this.groupBox3.Controls.Add(this.groupBox5);
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.buttonContinue);
-            this.groupBox3.Controls.Add(this.textBoxTick);
+            this.groupBox3.Controls.Add(this.rpcBox);
             this.groupBox3.Controls.Add(this.label3);
             this.groupBox3.Controls.Add(this.buttonStart);
-            this.groupBox3.Controls.Add(this.richTextBoxChat);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox3.Location = new System.Drawing.Point(3, 3);
+            this.groupBox3.Controls.Add(this.textBoxTick);
+            this.groupBox3.Controls.Add(this.label7);
+            this.groupBox3.Controls.Add(this.checkBox1);
+            this.groupBox3.Controls.Add(this.effectTickBox);
+            this.groupBox3.Location = new System.Drawing.Point(6, 564);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(814, 654);
-            this.groupBox3.TabIndex = 0;
+            this.groupBox3.Size = new System.Drawing.Size(811, 76);
+            this.groupBox3.TabIndex = 10;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Chat Simulator";
+            this.groupBox3.Text = "Controls";
             // 
-            // splitContainer2
+            // buttonContinue
             // 
-            this.splitContainer2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.buttonContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonContinue.Enabled = false;
+            this.buttonContinue.Location = new System.Drawing.Point(259, 30);
+            this.buttonContinue.Name = "buttonContinue";
+            this.buttonContinue.Size = new System.Drawing.Size(93, 30);
+            this.buttonContinue.TabIndex = 3;
+            this.buttonContinue.Text = "Continue";
+            this.buttonContinue.UseVisualStyleBackColor = true;
+            this.buttonContinue.Click += new System.EventHandler(this.buttonContinue_Click);
+            // 
+            // rpcBox
+            // 
+            this.rpcBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer2.Location = new System.Drawing.Point(9, 453);
-            this.splitContainer2.Name = "splitContainer2";
+            this.rpcBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.rpcBox.FormattingEnabled = true;
+            this.rpcBox.Location = new System.Drawing.Point(437, 33);
+            this.rpcBox.Name = "rpcBox";
+            this.rpcBox.Size = new System.Drawing.Size(185, 24);
+            this.rpcBox.TabIndex = 9;
+            this.rpcBox.SelectedIndexChanged += new System.EventHandler(this.comboBoxEventType_SelectedIndexChanged);
             // 
-            // splitContainer2.Panel1
+            // label3
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.groupBox4);
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(117, 37);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(36, 16);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Tick:";
             // 
-            // splitContainer2.Panel2
+            // buttonStart
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.groupBox8);
-            this.splitContainer2.Size = new System.Drawing.Size(796, 139);
-            this.splitContainer2.SplitterDistance = 399;
-            this.splitContainer2.TabIndex = 10;
+            this.buttonStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonStart.Location = new System.Drawing.Point(6, 30);
+            this.buttonStart.Name = "buttonStart";
+            this.buttonStart.Size = new System.Drawing.Size(93, 30);
+            this.buttonStart.TabIndex = 1;
+            this.buttonStart.Text = "Start";
+            this.buttonStart.UseVisualStyleBackColor = true;
+            this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
+            // 
+            // textBoxTick
+            // 
+            this.textBoxTick.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.textBoxTick.Location = new System.Drawing.Point(159, 34);
+            this.textBoxTick.Name = "textBoxTick";
+            this.textBoxTick.ReadOnly = true;
+            this.textBoxTick.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.textBoxTick.Size = new System.Drawing.Size(78, 22);
+            this.textBoxTick.TabIndex = 2;
+            // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(370, 37);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(49, 16);
+            this.label7.TabIndex = 7;
+            this.label7.Text = "Player:";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.checkBox1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox1.Location = new System.Drawing.Point(655, 21);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(110, 23);
+            this.checkBox1.TabIndex = 8;
+            this.checkBox1.Text = "Show Triggers";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // effectTickBox
+            // 
+            this.effectTickBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.effectTickBox.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.effectTickBox.Location = new System.Drawing.Point(655, 50);
+            this.effectTickBox.Name = "effectTickBox";
+            this.effectTickBox.Size = new System.Drawing.Size(127, 23);
+            this.effectTickBox.TabIndex = 4;
+            this.effectTickBox.Text = "Show Effects";
+            this.effectTickBox.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer3
+            // 
+            this.splitContainer3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer3.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer3.Name = "splitContainer3";
+            // 
+            // splitContainer3.Panel1
+            // 
+            this.splitContainer3.Panel1.Controls.Add(this.groupBox9);
+            // 
+            // splitContainer3.Panel2
+            // 
+            this.splitContainer3.Panel2.Controls.Add(this.groupBox10);
+            this.splitContainer3.Size = new System.Drawing.Size(814, 555);
+            this.splitContainer3.SplitterDistance = 525;
+            this.splitContainer3.TabIndex = 11;
+            // 
+            // groupBox9
+            // 
+            this.groupBox9.Controls.Add(this.splitContainer5);
+            this.groupBox9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox9.Location = new System.Drawing.Point(0, 0);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(525, 555);
+            this.groupBox9.TabIndex = 0;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "Chat";
+            // 
+            // splitContainer5
+            // 
+            this.splitContainer5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer5.Location = new System.Drawing.Point(3, 18);
+            this.splitContainer5.Name = "splitContainer5";
+            this.splitContainer5.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer5.Panel1
+            // 
+            this.splitContainer5.Panel1.Controls.Add(this.richTextBoxChat);
+            // 
+            // splitContainer5.Panel2
+            // 
+            this.splitContainer5.Panel2.Controls.Add(this.splitContainer6);
+            this.splitContainer5.Size = new System.Drawing.Size(519, 534);
+            this.splitContainer5.SplitterDistance = 261;
+            this.splitContainer5.TabIndex = 1;
+            // 
+            // richTextBoxChat
+            // 
+            this.richTextBoxChat.BackColor = System.Drawing.Color.White;
+            this.richTextBoxChat.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBoxChat.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBoxChat.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBoxChat.Location = new System.Drawing.Point(0, 0);
+            this.richTextBoxChat.Name = "richTextBoxChat";
+            this.richTextBoxChat.ReadOnly = true;
+            this.richTextBoxChat.Size = new System.Drawing.Size(519, 261);
+            this.richTextBoxChat.TabIndex = 0;
+            this.richTextBoxChat.Text = "";
+            this.richTextBoxChat.TextChanged += new System.EventHandler(this.richTextBoxChat_TextChanged);
+            // 
+            // splitContainer6
+            // 
+            this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer6.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer6.Name = "splitContainer6";
+            this.splitContainer6.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer6.Panel1
+            // 
+            this.splitContainer6.Panel1.Controls.Add(this.groupBox4);
+            // 
+            // splitContainer6.Panel2
+            // 
+            this.splitContainer6.Panel2.Controls.Add(this.groupBox8);
+            this.splitContainer6.Size = new System.Drawing.Size(519, 269);
+            this.splitContainer6.SplitterDistance = 133;
+            this.splitContainer6.TabIndex = 0;
             // 
             // groupBox4
             // 
@@ -588,7 +756,7 @@
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(399, 139);
+            this.groupBox4.Size = new System.Drawing.Size(519, 133);
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Select Dialogue:";
@@ -596,14 +764,13 @@
             // 
             // listBoxPlayerDialogues
             // 
-            this.listBoxPlayerDialogues.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBoxPlayerDialogues.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBoxPlayerDialogues.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxPlayerDialogues.FormattingEnabled = true;
             this.listBoxPlayerDialogues.ItemHeight = 17;
-            this.listBoxPlayerDialogues.Location = new System.Drawing.Point(6, 21);
+            this.listBoxPlayerDialogues.Location = new System.Drawing.Point(3, 18);
             this.listBoxPlayerDialogues.Name = "listBoxPlayerDialogues";
-            this.listBoxPlayerDialogues.Size = new System.Drawing.Size(387, 106);
+            this.listBoxPlayerDialogues.Size = new System.Drawing.Size(513, 112);
             this.listBoxPlayerDialogues.TabIndex = 2;
             this.listBoxPlayerDialogues.SelectedIndexChanged += new System.EventHandler(this.listBoxPlayerDialogues_SelectedIndexChanged);
             this.listBoxPlayerDialogues.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxPlayerDialogues_MouseDoubleClick);
@@ -614,89 +781,121 @@
             this.groupBox8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox8.Location = new System.Drawing.Point(0, 0);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(393, 139);
+            this.groupBox8.Size = new System.Drawing.Size(519, 132);
             this.groupBox8.TabIndex = 4;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Select Action:";
             // 
             // listBoxPlayerActions
             // 
-            this.listBoxPlayerActions.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBoxPlayerActions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listBoxPlayerActions.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.listBoxPlayerActions.FormattingEnabled = true;
             this.listBoxPlayerActions.ItemHeight = 17;
-            this.listBoxPlayerActions.Location = new System.Drawing.Point(9, 21);
+            this.listBoxPlayerActions.Location = new System.Drawing.Point(3, 18);
             this.listBoxPlayerActions.Name = "listBoxPlayerActions";
-            this.listBoxPlayerActions.Size = new System.Drawing.Size(378, 106);
+            this.listBoxPlayerActions.Size = new System.Drawing.Size(513, 111);
             this.listBoxPlayerActions.TabIndex = 2;
             this.listBoxPlayerActions.SelectedIndexChanged += new System.EventHandler(this.listBoxPlayerActions_SelectedIndexChanged);
             this.listBoxPlayerActions.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxPlayerActions_MouseDoubleClick);
             // 
-            // rpcBox
+            // groupBox10
             // 
-            this.rpcBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.rpcBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.rpcBox.FormattingEnabled = true;
-            this.rpcBox.Location = new System.Drawing.Point(648, 613);
-            this.rpcBox.Name = "rpcBox";
-            this.rpcBox.Size = new System.Drawing.Size(139, 24);
-            this.rpcBox.TabIndex = 9;
-            this.rpcBox.SelectedIndexChanged += new System.EventHandler(this.comboBoxEventType_SelectedIndexChanged);
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBox1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox1.Location = new System.Drawing.Point(366, 598);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(180, 23);
-            this.checkBox1.TabIndex = 8;
-            this.checkBox1.Text = "Show Event Triggers";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // label7
-            // 
-            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(577, 616);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(56, 16);
-            this.label7.TabIndex = 7;
-            this.label7.Text = "Play as:";
-            // 
-            // effectTickBox
-            // 
-            this.effectTickBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.effectTickBox.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.effectTickBox.Location = new System.Drawing.Point(366, 628);
-            this.effectTickBox.Name = "effectTickBox";
-            this.effectTickBox.Size = new System.Drawing.Size(127, 23);
-            this.effectTickBox.TabIndex = 4;
-            this.effectTickBox.Text = "Show Effects";
-            this.effectTickBox.UseVisualStyleBackColor = true;
+            this.groupBox10.Controls.Add(this.groupBox5);
+            this.groupBox10.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox10.Location = new System.Drawing.Point(0, 0);
+            this.groupBox10.Name = "groupBox10";
+            this.groupBox10.Size = new System.Drawing.Size(285, 555);
+            this.groupBox10.TabIndex = 8;
+            this.groupBox10.TabStop = false;
             // 
             // groupBox5
             // 
-            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.label8);
+            this.groupBox5.Controls.Add(this.comboBoxAgentView);
+            this.groupBox5.Controls.Add(this.groupBox11);
             this.groupBox5.Controls.Add(this.label6);
             this.groupBox5.Controls.Add(this.label5);
             this.groupBox5.Controls.Add(this.label4);
             this.groupBox5.Controls.Add(this.textBoxValChat);
             this.groupBox5.Controls.Add(this.textBoxBelChat);
             this.groupBox5.Controls.Add(this.comboBoxAgChat);
-            this.groupBox5.Location = new System.Drawing.Point(6, 389);
+            this.groupBox5.Location = new System.Drawing.Point(6, 18);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(799, 58);
+            this.groupBox5.Size = new System.Drawing.Size(273, 531);
             this.groupBox5.TabIndex = 7;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Belief Inspector";
+            this.groupBox5.Text = "Agent Inspector";
+            this.groupBox5.Enter += new System.EventHandler(this.groupBox5_Enter);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(3, 68);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(40, 16);
+            this.label8.TabIndex = 12;
+            this.label8.Text = "View:";
+            // 
+            // comboBoxAgentView
+            // 
+            this.comboBoxAgentView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBoxAgentView.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxAgentView.FormattingEnabled = true;
+            this.comboBoxAgentView.Items.AddRange(new object[] {
+            "Knowledge Base",
+            "Emotional State",
+            "Goals",
+            "Autobiographical Memory",
+            "Working Memory"});
+            this.comboBoxAgentView.Location = new System.Drawing.Point(49, 64);
+            this.comboBoxAgentView.Name = "comboBoxAgentView";
+            this.comboBoxAgentView.Size = new System.Drawing.Size(218, 24);
+            this.comboBoxAgentView.TabIndex = 11;
+            this.comboBoxAgentView.SelectedIndexChanged += new System.EventHandler(this.comboBoxAgentView_SelectedIndexChanged);
+            // 
+            // groupBox11
+            // 
+            this.groupBox11.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox11.Controls.Add(this.dataGridViewAgentInspector);
+            this.groupBox11.Location = new System.Drawing.Point(9, 94);
+            this.groupBox11.Name = "groupBox11";
+            this.groupBox11.Size = new System.Drawing.Size(258, 370);
+            this.groupBox11.TabIndex = 10;
+            this.groupBox11.TabStop = false;
+            // 
+            // dataGridViewAgentInspector
+            // 
+            this.dataGridViewAgentInspector.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.dataGridViewAgentInspector.AllowUserToAddRows = false;
+            this.dataGridViewAgentInspector.AllowUserToDeleteRows = false;
+            this.dataGridViewAgentInspector.AllowUserToOrderColumns = true;
+            this.dataGridViewAgentInspector.AllowUserToResizeRows = false;
+            this.dataGridViewAgentInspector.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewAgentInspector.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.dataGridViewAgentInspector.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewAgentInspector.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewAgentInspector.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.dataGridViewAgentInspector.Location = new System.Drawing.Point(3, 18);
+            this.dataGridViewAgentInspector.Name = "dataGridViewAgentInspector";
+            this.dataGridViewAgentInspector.ReadOnly = true;
+            this.dataGridViewAgentInspector.RowHeadersVisible = false;
+            this.dataGridViewAgentInspector.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewAgentInspector.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewAgentInspector.Size = new System.Drawing.Size(252, 349);
+            this.dataGridViewAgentInspector.TabIndex = 9;
             // 
             // label6
             // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(588, 28);
+            this.label6.Location = new System.Drawing.Point(6, 504);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(30, 16);
             this.label6.TabIndex = 5;
@@ -704,8 +903,9 @@
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(225, 28);
+            this.label5.Location = new System.Drawing.Point(6, 475);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(31, 16);
             this.label5.TabIndex = 4;
@@ -714,98 +914,44 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 28);
+            this.label4.Location = new System.Drawing.Point(3, 28);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(28, 16);
+            this.label4.Size = new System.Drawing.Size(46, 16);
             this.label4.TabIndex = 3;
-            this.label4.Text = "Ag:";
+            this.label4.Text = "Agent:";
             // 
             // textBoxValChat
             // 
-            this.textBoxValChat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.textBoxValChat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxValChat.Location = new System.Drawing.Point(624, 25);
+            this.textBoxValChat.Location = new System.Drawing.Point(45, 500);
             this.textBoxValChat.Name = "textBoxValChat";
             this.textBoxValChat.ReadOnly = true;
-            this.textBoxValChat.Size = new System.Drawing.Size(169, 22);
+            this.textBoxValChat.Size = new System.Drawing.Size(219, 22);
             this.textBoxValChat.TabIndex = 2;
             // 
             // textBoxBelChat
             // 
-            this.textBoxBelChat.Location = new System.Drawing.Point(265, 25);
+            this.textBoxBelChat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxBelChat.Location = new System.Drawing.Point(46, 472);
             this.textBoxBelChat.Name = "textBoxBelChat";
-            this.textBoxBelChat.Size = new System.Drawing.Size(317, 22);
+            this.textBoxBelChat.Size = new System.Drawing.Size(218, 22);
             this.textBoxBelChat.TabIndex = 1;
             this.textBoxBelChat.TextChanged += new System.EventHandler(this.textBoxBelChat_TextChanged);
             // 
             // comboBoxAgChat
             // 
+            this.comboBoxAgChat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBoxAgChat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBoxAgChat.FormattingEnabled = true;
-            this.comboBoxAgChat.Location = new System.Drawing.Point(43, 24);
+            this.comboBoxAgChat.Location = new System.Drawing.Point(49, 24);
             this.comboBoxAgChat.Name = "comboBoxAgChat";
-            this.comboBoxAgChat.Size = new System.Drawing.Size(173, 24);
+            this.comboBoxAgChat.Size = new System.Drawing.Size(218, 24);
             this.comboBoxAgChat.TabIndex = 0;
+            this.comboBoxAgChat.SelectedIndexChanged += new System.EventHandler(this.comboBoxAgChat_SelectedIndexChanged);
             this.comboBoxAgChat.SelectedValueChanged += new System.EventHandler(this.comboBoxAgChat_SelectedValueChanged);
-            // 
-            // buttonContinue
-            // 
-            this.buttonContinue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonContinue.Enabled = false;
-            this.buttonContinue.Location = new System.Drawing.Point(242, 612);
-            this.buttonContinue.Name = "buttonContinue";
-            this.buttonContinue.Size = new System.Drawing.Size(93, 30);
-            this.buttonContinue.TabIndex = 3;
-            this.buttonContinue.Text = "Continue";
-            this.buttonContinue.UseVisualStyleBackColor = true;
-            this.buttonContinue.Click += new System.EventHandler(this.buttonContinue_Click);
-            // 
-            // textBoxTick
-            // 
-            this.textBoxTick.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBoxTick.Location = new System.Drawing.Point(155, 616);
-            this.textBoxTick.Name = "textBoxTick";
-            this.textBoxTick.ReadOnly = true;
-            this.textBoxTick.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.textBoxTick.Size = new System.Drawing.Size(61, 22);
-            this.textBoxTick.TabIndex = 2;
-            // 
-            // label3
-            // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(114, 619);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(36, 16);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "Tick:";
-            // 
-            // buttonStart
-            // 
-            this.buttonStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonStart.Location = new System.Drawing.Point(7, 612);
-            this.buttonStart.Name = "buttonStart";
-            this.buttonStart.Size = new System.Drawing.Size(93, 30);
-            this.buttonStart.TabIndex = 1;
-            this.buttonStart.Text = "Start";
-            this.buttonStart.UseVisualStyleBackColor = true;
-            this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
-            // 
-            // richTextBoxChat
-            // 
-            this.richTextBoxChat.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.richTextBoxChat.BackColor = System.Drawing.Color.White;
-            this.richTextBoxChat.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBoxChat.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBoxChat.Location = new System.Drawing.Point(9, 21);
-            this.richTextBoxChat.Name = "richTextBoxChat";
-            this.richTextBoxChat.ReadOnly = true;
-            this.richTextBoxChat.Size = new System.Drawing.Size(796, 362);
-            this.richTextBoxChat.TabIndex = 0;
-            this.richTextBoxChat.Text = "";
-            this.richTextBoxChat.TextChanged += new System.EventHandler(this.richTextBoxChat_TextChanged);
             // 
             // tabPage3
             // 
@@ -927,14 +1073,26 @@
             this.tabPage1.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.splitContainer2.Panel1.ResumeLayout(false);
-            this.splitContainer2.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
-            this.splitContainer2.ResumeLayout(false);
+            this.splitContainer3.Panel1.ResumeLayout(false);
+            this.splitContainer3.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).EndInit();
+            this.splitContainer3.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
+            this.splitContainer5.Panel1.ResumeLayout(false);
+            this.splitContainer5.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
+            this.splitContainer5.ResumeLayout(false);
+            this.splitContainer6.Panel1.ResumeLayout(false);
+            this.splitContainer6.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
+            this.splitContainer6.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox8.ResumeLayout(false);
+            this.groupBox10.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
+            this.groupBox11.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAgentInspector)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
@@ -991,7 +1149,6 @@
         private System.Windows.Forms.Button buttonPlayerRemoveDialogueAction;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Button buttonInspect;
-        private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.RichTextBox richTextBoxChat;
         private System.Windows.Forms.ListBox listBoxPlayerDialogues;
         private System.Windows.Forms.Button buttonStart;
@@ -1023,7 +1180,16 @@
         private System.Windows.Forms.TextBox searchDialogueBox;
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.ListBox listBoxPlayerActions;
-        private System.Windows.Forms.SplitContainer splitContainer2;
+        private System.Windows.Forms.SplitContainer splitContainer3;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.GroupBox groupBox10;
+        private System.Windows.Forms.SplitContainer splitContainer5;
+        private System.Windows.Forms.SplitContainer splitContainer6;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.DataGridView dataGridViewAgentInspector;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox comboBoxAgentView;
+        private System.Windows.Forms.GroupBox groupBox11;
     }
 }
 

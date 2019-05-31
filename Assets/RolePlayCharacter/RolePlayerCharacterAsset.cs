@@ -276,6 +276,16 @@ namespace RolePlayCharacter
             return m_emotionalState.GetAllEmotions().Select(e => e.ToDto(m_am));
         }
 
+        public IEnumerable<GoalDTO> GetAllGoals()
+        {
+            return m_emotionalAppraisalAsset.GetAllGoals();
+        }
+
+        public IEnumerable<WMEntryDTO> GetAllWMemoryEntries()
+        {
+            return this.m_wm.GetAllWorkingMemoryEntries();
+        }
+
         public IEnumerable<BeliefDTO> GetAllBeliefs()
         {
             return m_kb.GetAllBeliefs().Select(b => new BeliefDTO

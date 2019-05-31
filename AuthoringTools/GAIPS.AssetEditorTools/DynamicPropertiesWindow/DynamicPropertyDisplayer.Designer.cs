@@ -53,6 +53,7 @@
             this._dynamicPropertiesListView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this._dynamicPropertiesListView.Size = new System.Drawing.Size(803, 404);
             this._dynamicPropertiesListView.TabIndex = 12;
+            this._dynamicPropertiesListView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this._dynamicPropertiesListView_CellContentClick);
             // 
             // DynamicPropertyDisplayer
             // 

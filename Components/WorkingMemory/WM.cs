@@ -56,6 +56,11 @@ namespace WorkingMemory
         }
 
 
+        public IEnumerable<WMEntryDTO> GetAllWorkingMemoryEntries()
+        {
+            return this.values.Select(v => new WMEntryDTO { Name = v.Key, Value = v.Value.ToString()});
+        }
+
         public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             var valList = dataHolder.ParentGraph.CreateObjectData();
