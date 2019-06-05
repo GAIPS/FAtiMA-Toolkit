@@ -825,16 +825,14 @@ namespace IntegratedAuthoringToolWF
             rpcBox.Items.AddRange(agentsInChat.Select(x => x.CharacterName.ToString()).ToArray());
 
             if (this.playerRPC == null)
-                rpcBox.SelectedItem = agentsInChat.FirstOrDefault().CharacterName.ToString();
-            else if (agentsInChat.Find(x => x.CharacterName.ToString() == rpcBox.SelectedItem.ToString()) != null)
-            {
-
-                rpcBox.SelectedItem = playerRPC.ToString();
-                this.playerRPC = agentsInChat.Find(x => x.CharacterName.ToString() == rpcBox.SelectedItem.ToString());
-            } else
             {
                 rpcBox.SelectedItem = agentsInChat.FirstOrDefault().CharacterName.ToString();
                 this.playerRPC = agentsInChat.FirstOrDefault();
+            }
+            else
+            {
+                rpcBox.SelectedItem = agentsInChat.Find(x => x.CharacterName.ToString() == this.playerRPC.ToString()).ToString(); ;
+
 
             }
             richTextBoxChat.Clear();
