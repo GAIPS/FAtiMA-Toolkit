@@ -826,9 +826,17 @@ namespace IntegratedAuthoringToolWF
 
             if (this.playerRPC == null)
                 rpcBox.SelectedItem = agentsInChat.FirstOrDefault().CharacterName.ToString();
-            else rpcBox.SelectedItem = playerRPC.ToString();
-            this.playerRPC = agentsInChat.Find(x => x.CharacterName.ToString() == rpcBox.SelectedItem.ToString());
+            else if (agentsInChat.Find(x => x.CharacterName.ToString() == rpcBox.SelectedItem.ToString()) != null)
+            {
 
+                rpcBox.SelectedItem = playerRPC.ToString();
+                this.playerRPC = agentsInChat.Find(x => x.CharacterName.ToString() == rpcBox.SelectedItem.ToString());
+            } else
+            {
+                rpcBox.SelectedItem = agentsInChat.FirstOrDefault().CharacterName.ToString();
+                this.playerRPC = agentsInChat.FirstOrDefault();
+
+            }
             richTextBoxChat.Clear();
             listBoxPlayerDialogues.DataSource = new List<string>();
             comboBoxAgChat.DataSource = agentsInChat.Select(a => a.CharacterName.ToString()).ToList();
