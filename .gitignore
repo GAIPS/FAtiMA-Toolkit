@@ -9,3 +9,5 @@ TestResults
 /Components/KnowledgeBase/java-files/*.java
 
 \.axoCover/
+
+AuthoringTools/\.vs/
