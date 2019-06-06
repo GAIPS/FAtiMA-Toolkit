@@ -193,10 +193,6 @@
       <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
       <Name>WellFormedNames</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Components\WorkingMemory\WorkingMemory.csproj">
-      <Project>{ABBB795E-5A0D-4547-BEA0-99EB9689B559}</Project>
-      <Name>WorkingMemory</Name>
-    </ProjectReference>
     <ProjectReference Include="..\GAIPS.AssetEditorTools\GAIPS.AssetEditorTools.csproj">
       <Project>{c61fb19d-e715-4eb4-afca-27ff81a14777}</Project>
       <Name>GAIPS.AssetEditorTools</Name>

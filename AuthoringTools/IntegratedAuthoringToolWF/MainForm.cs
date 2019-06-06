@@ -17,7 +17,6 @@ using System.Windows.Forms;
 using Utilities;
 using Utilities.DataStructures;
 using WellFormedNames;
-using WorkingMemory;
 using WorldModel;
 
 namespace IntegratedAuthoringToolWF
@@ -889,7 +888,7 @@ namespace IntegratedAuthoringToolWF
                             ag.CharacterName + " To " + action.Target + " : ", Color.ForestGreen, false);
 
 
-                        EditorTools.WriteText(richTextBoxChat, ag.ProcessWithWorkingMemory(diag.Utterance), Color.Black, false);
+                        EditorTools.WriteText(richTextBoxChat, ag.ProcessWithBeliefs(diag.Utterance), Color.Black, false);
 
                         EditorTools.WriteText(richTextBoxChat,
                             " (" + ag.GetInternalStateString() + " | " + ag.GetSIRelationsString() + ")" + "\n", Color.DarkRed,
@@ -1023,7 +1022,7 @@ namespace IntegratedAuthoringToolWF
                         foreach (var d in diags)
                         {
                             extendedList.Add(a);
-                            result.Add("To " + a.Target + " : \"" + playerRPC.ProcessWithWorkingMemory(d.Utterance) + "\"");
+                            result.Add("To " + a.Target + " : \"" + playerRPC.ProcessWithBeliefs(d.Utterance) + "\"");
                         }
                     }
                 }
@@ -1032,7 +1031,7 @@ namespace IntegratedAuthoringToolWF
                     foreach (var d in diags)
                     {
                         extendedList.Add(a);
-                        result.Add(playerRPC.ProcessWithWorkingMemory(d.Utterance));
+                        result.Add(playerRPC.ProcessWithBeliefs(d.Utterance));
                     }
                 }
             }
@@ -1091,7 +1090,7 @@ namespace IntegratedAuthoringToolWF
 
             foreach (var ev in eventList)
             {
-                var actor = ev.GetNTerm(1);
+                var actor = ev.GetNTerm(2);
 
 
                 if (effectTickBox.Checked)
@@ -1110,19 +1109,30 @@ namespace IntegratedAuthoringToolWF
 
                 foreach (var eff in effects)
                 {
-                    var evt = EventHelper.PropertyChange(eff.PropertyName.ToString(), eff.NewValue.ToString(), actor.ToString());
-
-
                     foreach (var a in agentsInChat)
                     {
+                        string newValue = "";
+                       
+                        
                         if (eff.ObserverAgent == a.CharacterName || eff.ObserverAgent.ToString() == "*")
                         {
+                            if (eff.NewValue.IsComposed) //New Value is a Dynamic Property
+                            {
+                                newValue = a.GetBeliefValue(eff.NewValue.ToString());
+                            }
+                            else
+                            {
+                                newValue = eff.NewValue.ToString();
+                            }
+
+                            var evt = EventHelper.PropertyChange(eff.PropertyName.ToString(), newValue, actor.ToString());
+
                             if (!observerAgents.ContainsKey(a.CharacterName.ToString()))
                             {
                                 observerAgents.Add(a.CharacterName.ToString(), new List<string>() { evt.GetNTerm(3).ToString() });
                             }
                             else observerAgents[a.CharacterName.ToString()].Add(evt.GetNTerm(3).ToString());
-
+                            
                             a.Perceive(evt);
                         }
                     }
@@ -1159,32 +1169,13 @@ namespace IntegratedAuthoringToolWF
 
         private void textBoxBelChat_TextChanged(object sender, EventArgs e)
         {
-            var selectedRPCName = (string)comboBoxAgChat.SelectedItem;
-
-            if (string.IsNullOrWhiteSpace(textBoxBelChat.Text) ||
-                string.IsNullOrWhiteSpace(selectedRPCName))
+            if(textBoxBelChat.Text != string.Empty)
             {
-                textBoxValChat.Text = "-";
-                return;
+                buttonEvalBelief.Enabled = true;
             }
-
-            var rpc = agentsInChat.Where(c => c.CharacterName.ToString() == selectedRPCName).FirstOrDefault();
-            try
+            else
             {
-                var name = WellFormedNames.Name.BuildName(textBoxBelChat.Text);
-                if (name.IsGrounded && name.IsComposed)
-                {
-                    var bel = rpc.GetBeliefValue(name.ToString());
-                    textBoxValChat.Text = bel;
-                }
-                else
-                {
-                    textBoxValChat.Text = "-";
-                }
-            }
-            catch (Exception ex)
-            {
-                textBoxValChat.Text = ex.Message;
+                buttonEvalBelief.Enabled = false;
             }
         }
 
@@ -1508,7 +1499,14 @@ namespace IntegratedAuthoringToolWF
             }
             
             var ev = EventHelper.ActionEnd(playerRPC.CharacterName.ToString(), chosenAction.Name.ToString(), chosenAction.Target.ToString());
-            this.HandleEffects(new[] { ev });
+
+            try
+            {
+                this.HandleEffects(new[] { ev });
+            }catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
             this.buttonContinue_Click(sender, e);
         }
@@ -1546,12 +1544,43 @@ namespace IntegratedAuthoringToolWF
             {
                 dataGridViewAgentInspector.DataSource = new BindingListView<EmotionalAppraisal.DTOs.GoalDTO>(rpc.GetAllGoals().ToList());
             }
-            else if (selectedView.EqualsIgnoreCase("Working Memory"))
-            {
-                dataGridViewAgentInspector.DataSource = new BindingListView<WMEntryDTO>(rpc.GetAllWMemoryEntries().ToList());
-            }
 
             dataGridViewAgentInspector.Refresh();
+        }
+
+        private void buttonEvalBelief_Click(object sender, EventArgs e)
+        {
+            var selectedRPCName = (string)comboBoxAgChat.SelectedItem;
+
+            if (string.IsNullOrWhiteSpace(textBoxBelChat.Text) ||
+                string.IsNullOrWhiteSpace(selectedRPCName))
+            {
+                textBoxValChat.Text = "-";
+                return;
+            }
+
+            var rpc = agentsInChat.Where(c => c.CharacterName.ToString() == selectedRPCName).FirstOrDefault();
+            try
+            {
+                var name = WellFormedNames.Name.BuildName(textBoxBelChat.Text);
+                if (name.IsGrounded && name.IsComposed)
+                {
+                    var bel = rpc.GetBeliefValue(name.ToString());
+                    textBoxValChat.Text = bel;
+                }
+                else
+                {
+                    textBoxValChat.Text = "-";
+                }
+
+                //Special case for the Tell Dynamic Property
+                if (textBoxBelChat.Text.StartsWith("Tell("))
+                    comboBoxAgentView_SelectedIndexChanged(sender, e);
+            }
+            catch (Exception ex)
+            {
+                textBoxValChat.Text = ex.Message;
+            }
         }
     }
 }

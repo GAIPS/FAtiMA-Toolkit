@@ -35,6 +35,7 @@ namespace WorldModelWF
             //Restrictions
             index = _index;
             newValue.AllowUniversal = false;
+            
 
             _subject = eventTemplate.GetNTerm(2);
             

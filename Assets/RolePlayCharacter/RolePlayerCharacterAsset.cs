@@ -15,7 +15,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities;
-using WorkingMemory;
 using WellFormedNames;
 using IQueryable = WellFormedNames.IQueryable;
 using System.Text.RegularExpressions;
@@ -49,7 +48,6 @@ namespace RolePlayCharacter
             m_activeIdentities = new Dictionary<Name, Identity>();
             m_kb = new KB(RPCConsts.DEFAULT_CHARACTER_NAME);
             m_am = new AM();
-            m_wm = new WM();
             m_emotionalState = new ConcreteEmotionalState();
             m_allowAuthoring = true;
             m_otherAgents = new Dictionary<Name, AgentEntry>();
@@ -221,39 +219,33 @@ namespace RolePlayCharacter
             this.m_am.ForgetEvent(eventId);
         }
 
-
-        public Name AskWorkingMemory(Name name)
+        //This method will replace every belief within [[ ]] by its value
+        public string ProcessWithBeliefs(string utterance)
         {
-            return this.m_wm.GetValue(name);
-        }
+            
+            
 
-        public void TellWorkingMemory(Name name, Name value)
-        {
-            this.m_wm.SetValue(name, value);
-        }
-
-        public void ResetWorkingMemory()
-        {
-            this.m_wm = new WM();
-        }
-
-        //This method will replace every working memory symbol within [[ ]] by its value
-        public string ProcessWithWorkingMemory(string utterance)
-        {
             var tokens = Regex.Split(utterance, @"\[|\]\]");
-
             var result = string.Empty;
             bool process = false;
             foreach (var t in tokens)
             {
                 if (process)
                 {
-                    var beliefValue = this.AskWorkingMemory((Name)t);
-                    if (beliefValue == null)
+                    var aux = t.Trim();
+                    if (aux.Contains(" "))
+                    {
                         result += "[[" + t + "]]";
+                    }
                     else
                     {
-                        result +=  beliefValue;
+                        var beliefValue = this.m_kb.AskProperty((Name)t);
+                        if (beliefValue == null)
+                            result += "[[" + t + "]]";
+                        else
+                        {
+                            result += beliefValue.Value;
+                        }
                     }
                     process = false;
                 }
@@ -280,12 +272,7 @@ namespace RolePlayCharacter
         {
             return m_emotionalAppraisalAsset.GetAllGoals();
         }
-
-        public IEnumerable<WMEntryDTO> GetAllWMemoryEntries()
-        {
-            return this.m_wm.GetAllWorkingMemoryEntries();
-        }
-
+        
         public IEnumerable<BeliefDTO> GetAllBeliefs()
         {
             return m_kb.GetAllBeliefs().Select(b => new BeliefDTO
@@ -634,7 +621,6 @@ namespace RolePlayCharacter
             registry.RegistDynamicProperty(LOG_TEMPLATE, LogDynamicProperty);
             registry.RegistDynamicProperty(IS_SALIENT_TEMPLATE, IsSalientPropertyCalculator);
             m_am.BindToRegistry(registry);
-            m_wm.BindToRegistry(registry);
         }
 
         private T Loader<T>(string path, Func<T> generateDefault) where T : LoadableAsset<T>
@@ -649,7 +635,7 @@ namespace RolePlayCharacter
 
         public KB m_kb;
         private AM m_am;
-        private WM m_wm;
+        
         public CommeillFautAsset m_commeillFautAsset;
         public EmotionalAppraisalAsset m_emotionalAppraisalAsset;
         public EmotionalDecisionMakingAsset m_emotionalDecisionMakingAsset;
@@ -823,18 +809,27 @@ namespace RolePlayCharacter
                 yield break;
             }
 
-            if(m_otherAgents.ContainsKey(x) || x == context.Queryable.Perspective)
-                foreach (var set in context.Constraints)
+            if (m_otherAgents.ContainsKey(x) || x == context.Queryable.Perspective)
+            {
+                if(context.Constraints.Count() == 0)
                 {
-                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(true)), set);
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(true)), new SubstitutionSet());
                 }
+                else
+                {
+                    foreach (var set in context.Constraints)
+                    {
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(true)), set);
+                    }
+                }
+            }
             else
             {
 
                 foreach (var set in context.Constraints)
                 {
                     yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(false)), set);
-                } 
+                }
             }
         }
 
@@ -1230,7 +1225,6 @@ namespace RolePlayCharacter
             dataHolder.SetValue("SocialImportanceAssetSource", this.m_socialImportanceAssetSource);
             dataHolder.SetValue("CommeillFautAssetSource", this.m_commeillFautAssetSource);
             dataHolder.SetValue("EmotionalState", m_emotionalState);
-            dataHolder.SetValue("WorkingMemory", m_wm);
             dataHolder.SetValue("AutobiographicMemory", m_am);
             dataHolder.SetValue("OtherAgents", m_otherAgents);
             if (m_log.Any())
@@ -1252,8 +1246,6 @@ namespace RolePlayCharacter
             this.m_socialImportanceAssetSource = dataHolder.GetValue<string>("SocialImportanceAssetSource");
             this.m_commeillFautAssetSource = dataHolder.GetValue<string>("CommeillFautAssetSource");
             m_emotionalState = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
-            m_wm = dataHolder.GetValue<WM>("WorkingMemory");
-            if (m_wm == null) { m_wm = new WM();}
             m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
             m_otherAgents = dataHolder.GetValue<Dictionary<Name, AgentEntry>>("OtherAgents");
             if (m_otherAgents == null) { m_otherAgents = new Dictionary<Name, AgentEntry>(); }

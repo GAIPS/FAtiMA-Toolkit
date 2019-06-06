@@ -115,6 +115,9 @@ namespace KnowledgeBase
 			registry.RegistDynamicProperty(HAS_LITERAL_TEMPLATE,HasLiteralPropertyCalculator);
             registry.RegistDynamicProperty(MATH_TEMPLATE, MathPropertyCalculator);
             registry.RegistDynamicProperty(SQUARE_DISTANCE, SquareDistanceCalculator);
+            registry.RegistDynamicProperty(ASK_TEMPLATE, AskDynamicProperty);
+            registry.RegistDynamicProperty(TELL_TEMPLATE, TellDynamicProperty);
+            registry.RegistDynamicProperty(EXISTS_DYNAMIC_PROPERTY, ExistsDynamicProperty);
         }
 
 		#region Native Dynamic Properties
@@ -142,12 +145,17 @@ namespace KnowledgeBase
             if (op.IsVariable || op.IsComposed)
                 yield break;
 
-            foreach (var subSet in context.Constraints)
+            //TODO: Make sure that every dynamic property checks for empty constraints set
+            var constraintsSets = context.Constraints.Any() ? context.Constraints : new[] { new SubstitutionSet() }; 
+
+            foreach (var subSet in constraintsSets)
             {
                 foreach (var xSubs in context.AskPossibleProperties(x).ToList())
                 {
                     foreach(var ySubs in context.AskPossibleProperties(y).ToList())
                     {
+                        if(xSubs.Item1.Value == Name.NIL_SYMBOL || ySubs.Item1.Value == Name.NIL_SYMBOL)
+                            throw new Exception("Trying to perform a MATH operation on a Nil value");
 
                         var xValue = float.Parse(xSubs.Item1.Value.ToString(), CultureInfo.InvariantCulture);
                         var yValue = float.Parse(ySubs.Item1.Value.ToString(), CultureInfo.InvariantCulture);
@@ -177,36 +185,6 @@ namespace KnowledgeBase
                         }
 
                     }
-                }
-            }
-
-            if (context.Constraints.IsEmpty())
-            {
-                var xValue = float.Parse(x.ToString(), CultureInfo.InvariantCulture);
-                var yValue = float.Parse(y.ToString(), CultureInfo.InvariantCulture);
-
-                if (op.ToString().EqualsIgnoreCase("Plus"))
-                {
-                    var res = xValue + yValue;
-                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(res)), new SubstitutionSet());
-                }
-
-                if (op.ToString().EqualsIgnoreCase("Minus"))
-                {
-                    var res = xValue - yValue;
-                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(res)), new SubstitutionSet());
-                }
-
-                if (op.ToString().EqualsIgnoreCase("Times"))
-                {
-                    var res = xValue * yValue;
-                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(res)), new SubstitutionSet());
-                }
-
-                if (op.ToString().EqualsIgnoreCase("Div"))
-                {
-                    var res = xValue / yValue;
-                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(res)), new SubstitutionSet());
                 }
             }
         }
@@ -307,9 +285,99 @@ namespace KnowledgeBase
 			}
 		}
 
-		#endregion
 
-		public void SetPerspective(Name newPerspective)
+        private static readonly Name ASK_TEMPLATE = (Name)"Ask";
+        private static IEnumerable<DynamicPropertyResult> AskDynamicProperty(IQueryContext context, Name property)
+        {
+            var constraintsSets = context.Constraints.Any() ? context.Constraints : new[] { new SubstitutionSet() };
+            
+            foreach (var c in constraintsSets)
+            {
+                Name propValue = null;
+
+                if (!property.IsComposed)
+                {
+                    propValue = property;
+                }
+                else
+                {
+                    propValue = context.AskPossibleProperties(property).FirstOrDefault()?.Item1.Value;
+                }
+
+                if(propValue == null)
+                {
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.NIL_SYMBOL), c);
+                }
+                else
+                {
+                    yield return new DynamicPropertyResult(new ComplexValue(propValue), c);
+                }
+            }
+        }
+
+
+        private static readonly Name TELL_TEMPLATE = (Name)"Tell";
+        private IEnumerable<DynamicPropertyResult> TellDynamicProperty(IQueryContext context, Name property, Name value)
+        {
+            var constraintsSets = context.Constraints.Any() ? context.Constraints : new[] { new SubstitutionSet() };
+
+            foreach (var c in constraintsSets)
+            {
+                if (property.IsPrimitive)
+                {
+                    yield return new DynamicPropertyResult(new ComplexValue(value), c);
+                }
+                else
+                {
+                    Name val;
+                    if(!value.IsPrimitive)
+                    {
+                        val = context.AskPossibleProperties(value).FirstOrDefault()?.Item1.Value;
+                        if(val == null)
+                        {
+                            val = Name.NIL_SYMBOL;
+                        }
+                        this.Tell(property, val);
+                        yield return new DynamicPropertyResult(new ComplexValue(val), c);
+                    }
+                    else
+                    {
+                        this.Tell(property, value);
+                        yield return new DynamicPropertyResult(new ComplexValue(value), c);
+                    }
+                }
+            }
+        }
+
+        private static readonly Name EXISTS_DYNAMIC_PROPERTY = (Name)"Exists";
+        private IEnumerable<DynamicPropertyResult> ExistsDynamicProperty(IQueryContext context, Name property)
+        {
+            var constraintsSets = context.Constraints.Any() ? context.Constraints : new[] { new SubstitutionSet() };
+
+            foreach (var c in constraintsSets)
+            {
+                if (property.IsPrimitive)
+                {
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(false)), c);
+                }
+                else
+                {
+                    if (this.BeliefExists(property))
+                    {
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(true)), c);
+                    }
+                    else
+                    {
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(false)), c);
+                    }
+                }
+            }
+        }
+
+
+        #endregion
+
+        public void SetPerspective(Name newPerspective)
 		{
 			if(!newPerspective.IsPrimitive)
 				throw new ArgumentException("Only primitive symbols are allowed to be perspectives.");

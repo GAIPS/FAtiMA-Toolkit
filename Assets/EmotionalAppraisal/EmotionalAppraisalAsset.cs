@@ -130,13 +130,13 @@ namespace EmotionalAppraisal
                     }
                     else // new value is not grounded
                     {
-                        var values =
-                            kb.AskPossibleProperties(propEvt.NewValue, perspective, new List<SubstitutionSet>());
+                        var values = kb.AskPossibleProperties(propEvt.NewValue, perspective, new List<SubstitutionSet>());
                         if (values.Count() == 1)
                         {
                             kb.Tell(fact, values.FirstOrDefault().Item1.Value, perspective);
                         }
-                        else throw new Exception("Multiple possible values for " + propEvt.NewValue);
+                        else if (values.Count() == 0) throw new Exception("No value was found for the property:" + propEvt.Property); 
+                        else throw new Exception("Multiple possible values for:" + propEvt.NewValue); ;
                     }
                 }
 

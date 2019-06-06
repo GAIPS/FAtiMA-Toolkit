@@ -78,10 +78,6 @@
       <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
       <Name>WellFormedNames</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Components\WorkingMemory\WorkingMemory.csproj">
-      <Project>{abbb795e-5a0d-4547-bea0-99eb9689b559}</Project>
-      <Name>WorkingMemory</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CommeillFaut\CommeillFaut.csproj">
       <Project>{ba21951c-1799-4d0f-aa99-62df857f3b71}</Project>
       <Name>CommeillFaut</Name>

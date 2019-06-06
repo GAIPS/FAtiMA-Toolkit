@@ -213,6 +213,9 @@ namespace GAIPS.AssetEditorTools
 		[MenuItem("Help/Show Available Dynamic Properties")]
 		private void ShowDynamicPropertiesWindow()
 		{
+            var iat = this.LoadedAsset;
+
+            
 			DynamicPropertyDisplayer.Instance.ShowOrBringToFront();
 		}
 
