@@ -1399,7 +1399,40 @@ namespace Tests.RolePlayCharacter
         }
 
 
-    [Test]
+
+
+        
+        [TestCase(1, "isAgent([x])=True")]
+        [TestCase(1, "Mood([x]) = [reseult]")]
+        [TestCase(1, "EmotionIntensity([x], Joy) = [m]")]
+        // [TestCase(1, "isAgent(Sarah)=True")]
+        public void Test_DP_NoConstraintSet_Match(int eventSet, string lastEventMethodCall)
+        {
+
+            var rpc = BuildEmotionalRPCAsset();
+            PopulateEventSet(eventSet);
+
+            foreach (var eve in eventSets[eventSet])
+            {
+                rpc.Perceive((Name)eve);
+                rpc.Tick++;
+            }
+
+        
+
+            var condSet = new ConditionSet();
+            var cond = Condition.Parse(lastEventMethodCall);
+            condSet = condSet.Add(cond);
+
+
+            var result = condSet.Unify(rpc.m_kb, Name.SELF_SYMBOL, null);
+
+            Assert.IsNotEmpty(result);
+
+        }
+
+
+        [Test]
         public void Test_DP_DynamicPropertyChangeEvent_Match()
         {
 
@@ -1480,6 +1513,10 @@ namespace Tests.RolePlayCharacter
             Assert.AreEqual(strongestEmotion.EmotionType, emotionFelt);
 
         }
+
+
+
+
 
         #endregion
 
