@@ -39,10 +39,15 @@ namespace EmotionalAppraisal.OCCModel
 		}
 
 		private static OCCBaseEmotion OCCAppraiseWellBeing(uint evtId, Name eventName, float desirability) {
-			if(desirability >= 0)
+
+          
+            if (desirability >= 0)
 				return new OCCBaseEmotion(OCCEmotionType.Joy, desirability, evtId, eventName);
 			return new OCCBaseEmotion(OCCEmotionType.Distress, -desirability, evtId, eventName);
 		}
+
+
+
 
 		private static OCCBaseEmotion OCCAppraiseFortuneOfOthers(IBaseEvent evt, float desirability, float desirabilityForOther, string target)
 		{
@@ -59,6 +64,9 @@ namespace EmotionalAppraisal.OCCModel
 
 			return new OCCBaseEmotion(emoType, potential, evt.Id, (Name)target, evt.EventName);
 		}
+
+
+
 
 		private static OCCBaseEmotion OCCAppraisePraiseworthiness(IBaseEvent evt, float praiseworthiness, string target) {
 			Name direction;
@@ -223,41 +231,43 @@ namespace EmotionalAppraisal.OCCModel
 		public IEnumerable<IEmotion> AffectDerivation(EmotionalAppraisalAsset emotionalModule, IAppraisalFrame frame)
 		{
 			var evt = frame.AppraisedEvent;
-            
+            bool returnedEmotion = false;
 
-			if(frame.ContainsAppraisalVariable(OCCAppraisalVariables.DESIRABILITY) && frame.ContainsAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS))
-			{
-				float desirability = frame.GetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY);
-				float praiseworthiness = frame.GetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS);
+            if (frame.ContainsAppraisalVariable(OCCAppraisalVariables.DESIRABILITY)) { 
+                float desirability = frame.GetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY);
+                
 
-				var composedEmotion = OCCAppraiseCompoundEmotions(evt, desirability, praiseworthiness);
-				if (composedEmotion != null)
-					yield return composedEmotion;
-			}
-			
-			if(frame.ContainsAppraisalVariable(OCCAppraisalVariables.DESIRABILITY))
-			{
-				float desirability = frame.GetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY);
-				if(desirability!=0)
-				{
-					// yield return OCCAppraiseWellBeing(evt.Id, evt.EventName, desirability * 0.5f);
-                    int counter = 0;
-					foreach(string variable in frame.AppraisalVariables.Where(v => v.StartsWith(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER)))
-					{
-                        counter++;
-						string other = variable.Substring(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER.Length);
-						float desirabilityForOther = frame.GetAppraisalVariable(variable);
-						if (desirabilityForOther != 0)
-							yield return OCCAppraiseFortuneOfOthers(evt, desirability, desirabilityForOther, other);
-                       
-					}
-                    if(counter == 0)
-                         yield return OCCAppraiseWellBeing(evt.Id, evt.EventName, desirability);
-				}
-			}
-            
+                foreach (string variable in frame.AppraisalVariables.Where(v => v.StartsWith(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER)))
+                {
+                   
+                    string other = variable.Substring(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER.Length);
+                    float desirabilityForOther = frame.GetAppraisalVariable(variable);
+                    if (desirabilityForOther != 0)
+                    {
+                        returnedEmotion = true;
+                        yield return OCCAppraiseFortuneOfOthers(evt, desirability, desirabilityForOther, other);
+                    }
+                }
 
 
+                if(frame.ContainsAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS) && !returnedEmotion)
+                {
+                  
+                    float praiseworthiness = frame.GetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS);
+
+                    var composedEmotion = OCCAppraiseCompoundEmotions(evt, desirability, praiseworthiness);
+                    if (composedEmotion != null)
+                    {
+                        returnedEmotion = true;
+                        yield return composedEmotion;
+                    }
+                }
+              
+            }
+
+
+
+            if(!returnedEmotion)
             foreach(string variable in frame.AppraisalVariables.Where(v => v.StartsWith(OCCAppraisalVariables.PRAISEWORTHINESS)))
 					{
 				        float praiseworthiness = frame.GetAppraisalVariable(variable);
@@ -287,8 +297,15 @@ namespace EmotionalAppraisal.OCCModel
 				if (like != 0)
 					yield return OCCAppraiseAttribution(evt, like);
 			}
-			
-		   foreach(string variable in frame.AppraisalVariables.Where(v => v.StartsWith(OCCAppraisalVariables.GOALSUCCESSPROBABILITY)))
+
+            if (frame.ContainsAppraisalVariable(OCCAppraisalVariables.DESIRABILITY) && !returnedEmotion)
+            {
+                float desirability = frame.GetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY);
+                yield return OCCAppraiseWellBeing(evt.Id, evt.EventName, desirability);
+            }
+
+
+            foreach (string variable in frame.AppraisalVariables.Where(v => v.StartsWith(OCCAppraisalVariables.GOALSUCCESSPROBABILITY)))
 			{
 				float goalSuccessProbability = frame.GetAppraisalVariable(variable);
 			    

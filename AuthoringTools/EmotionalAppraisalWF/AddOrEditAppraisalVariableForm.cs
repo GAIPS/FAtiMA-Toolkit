@@ -32,15 +32,17 @@ namespace EmotionalAppraisalWF
 
             //defaultValues
             appraisalVariableName.Items.Add(OCCAppraisalVariables.DESIRABILITY);
-             appraisalVariableName.Items.Add(OCCAppraisalVariables.PRAISEWORTHINESS);
-             appraisalVariableName.Items.Add(OCCAppraisalVariables.GOALSUCCESSPROBABILITY);
-             appraisalVariableName.Items.Add(OCCAppraisalVariables.LIKE);
+            appraisalVariableName.Items.Add(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER);
+            appraisalVariableName.Items.Add(OCCAppraisalVariables.PRAISEWORTHINESS);
+            appraisalVariableName.Items.Add(OCCAppraisalVariables.GOALSUCCESSPROBABILITY);
+            appraisalVariableName.Items.Add(OCCAppraisalVariables.LIKE);
             appraisalVariableName.SelectedItem = OCCAppraisalVariables.DESIRABILITY;
+            appraisalVariableTarget.Enabled = false;
             appraisalVariableValueTextBox.Value = (Name)"0";
            
-            //appraisalVariableName.DataSource = AppraisalRulesVM.EventTypes;
+         
 
-             appraisalVariableTarget.Enabled = true;
+            
 
             if (_toEdit.Name != null)
             {
@@ -55,6 +57,7 @@ namespace EmotionalAppraisalWF
 
         private void addOrEditButton_Click_1(object sender, EventArgs e)
         {
+            bool noDesirability = false;
 
             if (appraisalVariableName.SelectedItem.ToString() == OCCAppraisalVariables.GOALSUCCESSPROBABILITY)
             {
@@ -92,6 +95,23 @@ namespace EmotionalAppraisalWF
                 };
 
 
+                if(newVar.Name == OCCAppraisalVariables.DESIRABILITY_FOR_OTHER && 
+                    _appraisalRule.AppraisalVariables.appraisalVariables.Find(x => x.Name == OCCAppraisalVariables.DESIRABILITY) == null){
+
+                    noDesirability = true;
+                    var desirability = new AppraisalVariableDTO()
+                    {
+                        Name = OCCAppraisalVariables.DESIRABILITY,
+                        Target = (Name)"-",
+                        Value = (Name)"2"
+                    };
+
+                   
+                    _appraisalRule.AppraisalVariables.appraisalVariables.Add(desirability);
+
+
+                }
+
                
               if(_appraisalRule.AppraisalVariables.appraisalVariables.Find(x=>x.Name == newVar.Name) != null)  {
                   
@@ -104,10 +124,15 @@ namespace EmotionalAppraisalWF
                     else {
                  
                     _appraisalRule.AppraisalVariables.appraisalVariables.Add(newVar); 
+
                     }
               
+
+              
               _appraisalRulesVM.AddOrUpdateAppraisalRule(_appraisalRule);
-             
+
+                if (noDesirability)
+                MessageBox.Show("According to the OCC Model, the \"Desirability For Others \" appraisal variable requires another Desirability concerning the consequences of the event for agent to also be present in the same rule. \n We have automatically added it, change its values at your will");
                 Close();
             }
             catch (Exception ex)
@@ -119,7 +144,7 @@ namespace EmotionalAppraisalWF
         private void comboBoxEventType_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-              if (appraisalVariableName.SelectedItem.ToString() == OCCAppraisalVariables.DESIRABILITY || appraisalVariableName.SelectedItem.ToString() == OCCAppraisalVariables.PRAISEWORTHINESS)
+              if (appraisalVariableName.SelectedItem.ToString() == OCCAppraisalVariables.DESIRABILITY_FOR_OTHER || appraisalVariableName.SelectedItem.ToString() == OCCAppraisalVariables.PRAISEWORTHINESS)
             {
                  appraisalVariableTarget.Enabled = true;
                  labelTarget.Text = "Target";

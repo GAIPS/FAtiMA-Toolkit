@@ -132,8 +132,8 @@ namespace Tests.RolePlayCharacter
                    new AppraisalVariableDTO()
                    {
                        Name = OCCAppraisalVariables.DESIRABILITY,
-                       Value = (Name)"5",
-                       Target = (Name)"Sarah"
+                       Value = (Name)"5"
+                      
                    }                   
                })
             });
@@ -148,8 +148,7 @@ namespace Tests.RolePlayCharacter
                    new AppraisalVariableDTO()
                    {
                        Name = OCCAppraisalVariables.DESIRABILITY,
-                       Value = (Name)"-5",
-                       Target = (Name)"Sarah"
+                       Value = (Name)"-5"
                    }                   
                })
             });
@@ -317,12 +316,150 @@ namespace Tests.RolePlayCharacter
                    new AppraisalVariableDTO()
                    {
                        Name = OCCAppraisalVariables.GOALSUCCESSPROBABILITY,
-                       Value = (Name)"0",
+                       Value = (Name)"1",
                        Target = (Name)"GoalNegative"
                    }                   
                })
             
                });
+
+            appraisalRuleSet.Add(19, new EmotionalAppraisal.DTOs.AppraisalRuleDTO()
+            {
+                Conditions = new Conditions.DTOs.ConditionSetDTO(),
+                EventMatchingTemplate = (Name)"Event(*, *,*, *)",
+                AppraisalVariables = new AppraisalVariables(new List<AppraisalVariableDTO>()
+
+                {
+                   new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.DESIRABILITY,
+                       Value = (Name)"-5"
+                   },
+
+                    new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.DESIRABILITY_FOR_OTHER,
+                       Value = (Name)"5",
+                       Target = (Name)"Other"
+
+                   }
+
+                    
+               })
+
+            });
+
+            appraisalRuleSet.Add(20, new EmotionalAppraisal.DTOs.AppraisalRuleDTO()
+            {
+                Conditions = new Conditions.DTOs.ConditionSetDTO(),
+                EventMatchingTemplate = (Name)"Event(*, *,*, *)",
+                AppraisalVariables = new AppraisalVariables(new List<AppraisalVariableDTO>()
+
+                {
+                   new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.DESIRABILITY,
+                       Value = (Name)"5"
+                   },
+
+                    new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.DESIRABILITY_FOR_OTHER,
+                       Value = (Name)"5",
+                       Target = (Name)"Other"
+
+                   }
+
+
+               })
+
+            });
+
+            appraisalRuleSet.Add(21, new EmotionalAppraisal.DTOs.AppraisalRuleDTO()
+            {
+                Conditions = new Conditions.DTOs.ConditionSetDTO(),
+                EventMatchingTemplate = (Name)"Event(*, *,*, *)",
+                AppraisalVariables = new AppraisalVariables(new List<AppraisalVariableDTO>()
+
+                {
+                   new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.DESIRABILITY,
+                       Value = (Name)"5"
+                   },
+
+                    new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.DESIRABILITY_FOR_OTHER,
+                       Value = (Name)"-5",
+                       Target = (Name)"Other"
+
+                   }
+                
+
+               })
+
+            });
+
+            appraisalRuleSet.Add(22, new EmotionalAppraisal.DTOs.AppraisalRuleDTO()
+            {
+                Conditions = new Conditions.DTOs.ConditionSetDTO(),
+                EventMatchingTemplate = (Name)"Event(*, *,*, *)",
+                AppraisalVariables = new AppraisalVariables(new List<AppraisalVariableDTO>()
+
+                {
+                   new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.DESIRABILITY,
+                       Value = (Name)"-5"
+                   },
+
+                    new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.DESIRABILITY_FOR_OTHER,
+                       Value = (Name)"-5",
+                       Target = (Name)"Other"
+
+                   }
+
+
+               })
+
+            });
+
+            appraisalRuleSet.Add(23, new EmotionalAppraisal.DTOs.AppraisalRuleDTO()
+            {
+                Conditions = new Conditions.DTOs.ConditionSetDTO(),
+                EventMatchingTemplate = (Name)"Event(*, *,*, *)",
+                AppraisalVariables = new AppraisalVariables(new List<AppraisalVariableDTO>()
+
+                {
+                   new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.DESIRABILITY,
+                       Value = (Name)"-5"
+                   },
+
+                    new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.DESIRABILITY_FOR_OTHER,
+                       Value = (Name)"-5",
+                       Target = (Name)"Other"
+
+                   },
+
+                     new AppraisalVariableDTO()
+                   {
+                       Name = OCCAppraisalVariables.PRAISEWORTHINESS,
+                       Value = (Name)"5",
+                       Target = (Name)"Other"
+
+                   }
+
+
+               })
+
+            });
 
         }
 
@@ -1312,8 +1449,8 @@ namespace Tests.RolePlayCharacter
         [TestCase(4, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Shame")]
         [TestCase(5, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Love")]
         [TestCase(6, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Hate")]
-        [TestCase(7, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Happy-For")]
-        [TestCase(8, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Pitty")]
+        [TestCase(7, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Joy")]
+        [TestCase(8, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Distress")]
         [TestCase(9, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Joy")]
         [TestCase(10, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Distress")]
         [TestCase(11, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Hope")]
@@ -1323,7 +1460,12 @@ namespace Tests.RolePlayCharacter
         [TestCase(15, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Admiration")]
         [TestCase(16, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Reproach")]
         [TestCase(17, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Satisfaction")]
-        [TestCase(18, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Fears-Confirmed")]
+        [TestCase(18, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)","Relief")]
+        [TestCase(19, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)", "Resentment")]
+        [TestCase(20, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)", "Happy-For")]
+        [TestCase(21, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)", "Gloating")]
+        [TestCase(22, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)", "Pitty")]
+        [TestCase(23, "Event(Action-End , Matt, Speak(Start, S1, -, -), Sarah)", "Pitty")]
         public void Test_EA_EmotionForEvent(int appraisalRule, string ev, string emotionFelt)
         {
 

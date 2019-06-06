@@ -198,18 +198,20 @@ namespace EmotionalAppraisal.AppraisalRules
                     {
                         throw new ArgumentException(appVar.Name + " can only be a float value");
                     }
-                   
-                    
-                     if(appVar.Name == OCCAppraisalVariables.GOALSUCCESSPROBABILITY)
+
+                    else if (appVar.Name == OCCAppraisalVariables.DESIRABILITY_FOR_OTHER)
+                        frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER + " " + appVar.Target, des);
+
+                    else if (appVar.Name == OCCAppraisalVariables.GOALSUCCESSPROBABILITY)
                           frame.SetAppraisalVariable(OCCAppraisalVariables.GOALSUCCESSPROBABILITY + " " + appVar.Target, des);
                      
-                     else if(appVar.Name == OCCAppraisalVariables.PRAISEWORTHINESS)
+                    else if(appVar.Name == OCCAppraisalVariables.PRAISEWORTHINESS)
                           frame.SetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS + " " + appVar.Target, des);
                    
-                     else  frame.SetAppraisalVariable(appVar.Name, des);
+                    else  frame.SetAppraisalVariable(appVar.Name, des);
 
-                     if(appVar.Target != null && appVar.Target != (Name)"-" && appVar.Target != (Name)"SELF")
-                          frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER + "" + appVar.Target, des);
+                //     if(appVar.Target != null && appVar.Target != (Name)"-" && appVar.Target != (Name)"SELF")
+                //          frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER + "" + appVar.Target, des);
                 }
                 
                
