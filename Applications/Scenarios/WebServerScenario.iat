@@ -1,0 +1,24 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"ScenarioName": "Test",
+			"Description": "",
+			"WorldModelSource": "",
+			"CharacterSources": ["John.rpc"],
+			"Dialogues": [
+				{
+					"CurrentState": "Start",
+					"NextState": "S1",
+					"Meaning": "Greeting",
+					"Style": "Polite",
+					"Utterance": "Hello World!",
+					"UtteranceId": "TTS-420E57B017066B44E05EA1577F6E2E12"
+				}]
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "IntegratedAuthoringTool.IntegratedAuthoringToolAsset, IntegratedAuthoringTool, Version=1.7.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}
