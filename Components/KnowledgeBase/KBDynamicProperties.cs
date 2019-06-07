@@ -9,29 +9,29 @@ namespace KnowledgeBase
 	{
 		private DynamicPropertyRegistry _registry;
 
-		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T1 surrogate)
+		public void RegistDynamicProperty(Name propertyName, string description, DynamicPropertyCalculator_T1 surrogate)
 		{
-			_registry.RegistDynamicProperty(propertyName, surrogate);
+			_registry.RegistDynamicProperty(propertyName, description, surrogate);
 		}
 
-		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T2 surrogate)
+		public void RegistDynamicProperty(Name propertyName, string description, DynamicPropertyCalculator_T2 surrogate)
 		{
-			_registry.RegistDynamicProperty(propertyName, surrogate);
+			_registry.RegistDynamicProperty(propertyName, description, surrogate);
 		}
 
-		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T3 surrogate)
+		public void RegistDynamicProperty(Name propertyName, string description, DynamicPropertyCalculator_T3 surrogate)
 		{
-			_registry.RegistDynamicProperty(propertyName, surrogate);
+			_registry.RegistDynamicProperty(propertyName, description, surrogate);
 		}
 
-		public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T4 surrogate)
+		public void RegistDynamicProperty(Name propertyName, string description, DynamicPropertyCalculator_T4 surrogate)
 		{
-			_registry.RegistDynamicProperty(propertyName,surrogate);
+			_registry.RegistDynamicProperty(propertyName, description, surrogate);
 		}
 
-        public void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T5 surrogate)
+        public void RegistDynamicProperty(Name propertyName, string description, DynamicPropertyCalculator_T5 surrogate)
 		{
-			_registry.RegistDynamicProperty(propertyName,surrogate);
+			_registry.RegistDynamicProperty(propertyName, description, surrogate);
 		}
 
 		public void UnregistDynamicProperty(Name propertyTemplate)

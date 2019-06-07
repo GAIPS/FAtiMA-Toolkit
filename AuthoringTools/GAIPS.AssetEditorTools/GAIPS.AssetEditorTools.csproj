@@ -41,13 +41,6 @@
     </Compile>
     <Compile Include="ConditionHolder.cs" />
     <Compile Include="ConditionSetView.cs" />
-    <Compile Include="DynamicPropertiesWindow\DynamicPropertyDisplayer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DynamicPropertiesWindow\DynamicPropertyDisplayer.Designer.cs">
-      <DependentUpon>DynamicPropertyDisplayer.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DynamicPropertiesWindow\DynamicPropertyEntry.cs" />
     <Compile Include="EditorTools.cs" />
     <Compile Include="EditorUtilities.cs" />
     <Compile Include="FormHelper.cs" />
@@ -116,9 +109,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ConditionSetEditorControl.resx">
       <DependentUpon>ConditionSetEditorControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DynamicPropertiesWindow\DynamicPropertyDisplayer.resx">
-      <DependentUpon>DynamicPropertyDisplayer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressForm.resx">
       <DependentUpon>ProgressForm.cs</DependentUpon>

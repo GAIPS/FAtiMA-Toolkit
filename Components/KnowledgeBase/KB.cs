@@ -111,20 +111,21 @@ namespace KnowledgeBase
 
 		private void BindToRegistry(IDynamicPropertiesRegistry registry)
 		{
-			registry.RegistDynamicProperty(COUNT_TEMPLATE_NEW, CountPropertyCalculator_new);
-			registry.RegistDynamicProperty(HAS_LITERAL_TEMPLATE,HasLiteralPropertyCalculator);
-            registry.RegistDynamicProperty(MATH_TEMPLATE, MathPropertyCalculator);
-            registry.RegistDynamicProperty(SQUARE_DISTANCE, SquareDistanceCalculator);
-            registry.RegistDynamicProperty(ASK_TEMPLATE, AskDynamicProperty);
-            registry.RegistDynamicProperty(TELL_TEMPLATE, TellDynamicProperty);
-            registry.RegistDynamicProperty(EXISTS_DYNAMIC_PROPERTY, ExistsDynamicProperty);
+			registry.RegistDynamicProperty(COUNT_DP_NAME, COUNT_DP_DESC, CountPropertyCalculator_new);
+            registry.RegistDynamicProperty(HAS_LITERAL_DP_NAME, HAS_LITERAL_DP_DESC, HasLiteralPropertyCalculator);
+            registry.RegistDynamicProperty(MATH_DP_NAME, MATH_DP_DESC, MathPropertyCalculator);
+            registry.RegistDynamicProperty(SQUARE_DISTANCE, "", SquareDistanceCalculator);
+            registry.RegistDynamicProperty(ASK_DP_NAME, ASK_DP_DESC, AskDynamicProperty);
+            registry.RegistDynamicProperty(TELL_DP_NAME, TELL_DP_DESC, TellDynamicProperty);
+            registry.RegistDynamicProperty(EXISTS_DYNAMIC_PROPERTY, "", ExistsDynamicProperty);
         }
 
 		#region Native Dynamic Properties
 
 		//Count
-		private static readonly Name COUNT_TEMPLATE_NEW = Name.BuildName("Count");
-		private static IEnumerable<DynamicPropertyResult> CountPropertyCalculator_new(IQueryContext context, Name x)
+		private static readonly Name COUNT_DP_NAME = Name.BuildName("CountSubs");
+        private static readonly string COUNT_DP_DESC = "The number of substitutions found for [x].";
+        private static IEnumerable<DynamicPropertyResult> CountPropertyCalculator_new(IQueryContext context, Name x)
 		{
 			var set = context.AskPossibleProperties(x).ToList();
 			Name count = Name.BuildName(set.Count);
@@ -139,7 +140,9 @@ namespace KnowledgeBase
 		}
 
         //Math
-        private static readonly Name MATH_TEMPLATE = Name.BuildName("Math");
+        private static readonly Name MATH_DP_NAME = Name.BuildName("Math");
+        private static readonly string MATH_DP_DESC = "Applies the mathematical [operation] to [x] and "+
+            "[y] and return the result. The [operation] can be either 'Plus', 'Minus', 'Times', 'Div'.";
         private static IEnumerable<DynamicPropertyResult> MathPropertyCalculator(IQueryContext context, Name x, Name op, Name y)
         {
             if (op.IsVariable || op.IsComposed)
@@ -219,36 +222,37 @@ namespace KnowledgeBase
 
 
         //HasLiteral
-        private static readonly Name HAS_LITERAL_TEMPLATE = (Name) "HasLiteral";
-		private static IEnumerable<DynamicPropertyResult> HasLiteralPropertyCalculator(IQueryContext context, Name x, Name y)
+        private static readonly Name HAS_LITERAL_DP_NAME = (Name) "HasLiteral";
+        private static readonly string HAS_LITERAL_DP_DESC = "Returns true if [lit] is present in [name] and false otherwise.";
+		private static IEnumerable<DynamicPropertyResult> HasLiteralPropertyCalculator(IQueryContext context, Name lit, Name name)
 		{
-			if (!(y.IsVariable || y.IsComposed))
+			if (!(name.IsVariable || name.IsComposed))
 				return Enumerable.Empty<DynamicPropertyResult>();
 
 			List<DynamicPropertyResult> results = ObjectPool<List<DynamicPropertyResult>>.GetObject();
 			try
 			{
 				IEnumerable<Name> candidates;
-				if (y.IsVariable)
+				if (name.IsVariable)
 				{
-					candidates = context.Constraints.Select(s => s[y]).Where(n => n != null);
+					candidates = context.Constraints.Select(s => s[name]).Where(n => n != null);
 				}
-				else if (!y.IsGrounded)
+				else if (!name.IsGrounded)
 				{
-					candidates = context.Constraints.Select(y.MakeGround).Where(c => c.IsConstant);
+					candidates = context.Constraints.Select(name.MakeGround).Where(c => c.IsConstant);
 				}
 				else
 				{
-					candidates = new[] { y };
+					candidates = new[] { name };
 				}
 
 				foreach (var c in candidates)
 				{
 					foreach (var t in c.GetTerms())
 					{
-						if (x.IsVariable)
+						if (lit.IsVariable)
 						{
-							var sub = new Substitution(x,new ComplexValue(t));
+							var sub = new Substitution(lit,new ComplexValue(t));
 							foreach (var g in context.Constraints)
 							{
 								if(g.Conflicts(sub))
@@ -261,7 +265,7 @@ namespace KnowledgeBase
 						}
 						else
 						{
-							foreach (var x2 in context.AskPossibleProperties(x))
+							foreach (var x2 in context.AskPossibleProperties(lit))
 							{
                                 if (x2.Item1.Value == t)
 								{
@@ -286,7 +290,8 @@ namespace KnowledgeBase
 		}
 
 
-        private static readonly Name ASK_TEMPLATE = (Name)"Ask";
+        private static readonly Name ASK_DP_NAME = (Name)"Ask";
+        private static readonly string ASK_DP_DESC = "";
         private static IEnumerable<DynamicPropertyResult> AskDynamicProperty(IQueryContext context, Name property)
         {
             var constraintsSets = context.Constraints.Any() ? context.Constraints : new[] { new SubstitutionSet() };
@@ -316,7 +321,8 @@ namespace KnowledgeBase
         }
 
 
-        private static readonly Name TELL_TEMPLATE = (Name)"Tell";
+        private static readonly Name TELL_DP_NAME = (Name)"Tell";
+        private static readonly string TELL_DP_DESC = "";
         private IEnumerable<DynamicPropertyResult> TellDynamicProperty(IQueryContext context, Name property, Name value)
         {
             var constraintsSets = context.Constraints.Any() ? context.Constraints : new[] { new SubstitutionSet() };
@@ -348,6 +354,7 @@ namespace KnowledgeBase
                 }
             }
         }
+
 
         private static readonly Name EXISTS_DYNAMIC_PROPERTY = (Name)"Exists";
         private IEnumerable<DynamicPropertyResult> ExistsDynamicProperty(IQueryContext context, Name property)

@@ -55,7 +55,7 @@ namespace CommeillFaut
 
         public void BindToRegistry(IDynamicPropertiesRegistry registry)
         {
-            registry.RegistDynamicProperty(VOLITION_PROPERTY_TEMPLATE, VolitionPropertyCalculator);
+            registry.RegistDynamicProperty(VOLITION_PROPERTY_TEMPLATE, "", VolitionPropertyCalculator);
         }
 
         private static readonly Name VOLITION_PROPERTY_TEMPLATE = (Name)"Volition";

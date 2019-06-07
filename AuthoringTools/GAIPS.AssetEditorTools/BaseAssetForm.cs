@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using GAIPS.AssetEditorTools.DynamicPropertiesWindow;
 using GAIPS.Rage;
 using Utilities;  
 
@@ -208,18 +207,8 @@ namespace GAIPS.AssetEditorTools
 			       (_wasModified ? "*" : string.Empty);
 		}
 
-		#region Toolbar Options
+		
 
-		[MenuItem("Help/Show Available Dynamic Properties")]
-		private void ShowDynamicPropertiesWindow()
-		{
-            var iat = this.LoadedAsset;
-
-            
-			DynamicPropertyDisplayer.Instance.ShowOrBringToFront();
-		}
-
-		#endregion
 
 		#region Build Other ToolStrip Options
 

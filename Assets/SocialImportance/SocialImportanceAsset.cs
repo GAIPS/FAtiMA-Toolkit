@@ -68,7 +68,7 @@ namespace SocialImportance
 
 		private void BindToRegistry(IDynamicPropertiesRegistry registry)
 		{
-			registry.RegistDynamicProperty(SI_DYNAMIC_PROPERTY_NAME, SIPropertyCalculator);
+			registry.RegistDynamicProperty(SI_DYNAMIC_PROPERTY_NAME, "", SIPropertyCalculator);
 		}
 
 		public void UnbindToRegistry(IDynamicPropertiesRegistry registry)

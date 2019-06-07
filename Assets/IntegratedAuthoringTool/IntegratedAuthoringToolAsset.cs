@@ -250,7 +250,7 @@ namespace IntegratedAuthoringTool
 
 	    public void BindToRegistry(IDynamicPropertiesRegistry registry)
 	    {
-			registry.RegistDynamicProperty(VALID_DIALOGUE_PROPERTY_TEMPLATE, ValidDialogPropertyCalculator);
+			registry.RegistDynamicProperty(VALID_DIALOGUE_PROPERTY_TEMPLATE, "", ValidDialogPropertyCalculator);
 		}
 
 	    private static readonly Name VALID_DIALOGUE_PROPERTY_TEMPLATE = (Name)"ValidDialogue";

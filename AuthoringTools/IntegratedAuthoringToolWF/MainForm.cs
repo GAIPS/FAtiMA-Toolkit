@@ -5,6 +5,7 @@ using GAIPS.AssetEditorTools;
 using GAIPS.Rage;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
+using KnowledgeBase.DTOs;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using RolePlayCharacter;
@@ -1543,6 +1544,10 @@ namespace IntegratedAuthoringToolWF
             else if (selectedView.EqualsIgnoreCase("Goals"))
             {
                 dataGridViewAgentInspector.DataSource = new BindingListView<EmotionalAppraisal.DTOs.GoalDTO>(rpc.GetAllGoals().ToList());
+            }
+            else if (selectedView.EqualsIgnoreCase("Dynamic Properties"))
+            {
+                dataGridViewAgentInspector.DataSource = new BindingListView<DynamicPropertyDTO>(rpc.GetAllDynamicProperties().ToList());
             }
 
             dataGridViewAgentInspector.Refresh();

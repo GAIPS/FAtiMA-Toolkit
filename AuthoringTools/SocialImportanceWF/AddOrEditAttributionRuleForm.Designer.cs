@@ -68,7 +68,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tableLayoutPanel1);
             this.splitContainer1.Size = new System.Drawing.Size(608, 180);
-            this.splitContainer1.SplitterDistance = 120;
+            this.splitContainer1.SplitterDistance = 119;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 0;
             this.splitContainer1.TabStop = false;
@@ -153,7 +153,7 @@
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 43F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(608, 55);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(608, 56);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // button1
@@ -162,7 +162,7 @@
             this.button1.Location = new System.Drawing.Point(237, 4);
             this.button1.Margin = new System.Windows.Forms.Padding(4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(132, 47);
+            this.button1.Size = new System.Drawing.Size(132, 48);
             this.button1.TabIndex = 4;
             this.button1.Text = "Add";
             this.button1.UseVisualStyleBackColor = true;

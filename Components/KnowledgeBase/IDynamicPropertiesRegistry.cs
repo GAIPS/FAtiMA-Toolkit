@@ -12,11 +12,11 @@ namespace KnowledgeBase
     public delegate IEnumerable<DynamicPropertyResult> DynamicPropertyCalculator_T5(IQueryContext context, Name arg1, Name arg2, Name arg3, Name arg4, Name arg5);
 	public interface IDynamicPropertiesRegistry
 	{
-		void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T1 surrogate);
-		void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T2 surrogate);
-		void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T3 surrogate);
-		void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T4 surrogate);
-        void RegistDynamicProperty(Name propertyName, DynamicPropertyCalculator_T5 surrogate);
+		void RegistDynamicProperty(Name propertyName, string description, DynamicPropertyCalculator_T1 surrogate);
+		void RegistDynamicProperty(Name propertyName, string description, DynamicPropertyCalculator_T2 surrogate);
+		void RegistDynamicProperty(Name propertyName, string description, DynamicPropertyCalculator_T3 surrogate);
+		void RegistDynamicProperty(Name propertyName, string description, DynamicPropertyCalculator_T4 surrogate);
+        void RegistDynamicProperty(Name propertyName, string description, DynamicPropertyCalculator_T5 surrogate);
 
 		void UnregistDynamicProperty(Name propertyTemplate);
 

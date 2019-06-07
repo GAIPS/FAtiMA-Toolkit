@@ -18,6 +18,7 @@ using Utilities;
 using WellFormedNames;
 using IQueryable = WellFormedNames.IQueryable;
 using System.Text.RegularExpressions;
+using KnowledgeBase.DTOs;
 
 namespace RolePlayCharacter
 {
@@ -266,6 +267,11 @@ namespace RolePlayCharacter
         public IEnumerable<EmotionDTO> GetAllActiveEmotions()
         {
             return m_emotionalState.GetAllEmotions().Select(e => e.ToDto(m_am));
+        }
+
+        public IEnumerable<DynamicPropertyDTO> GetAllDynamicProperties()
+        {
+            return m_kb.GetDynamicProperties();
         }
 
         public IEnumerable<GoalDTO> GetAllGoals()
@@ -604,22 +610,22 @@ namespace RolePlayCharacter
 
         public void BindToRegistry(IDynamicPropertiesRegistry registry)
         {
-            registry.RegistDynamicProperty(RPCConsts.MOOD_PROPERTY_NAME, MoodPropertyCalculator);
-            registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_PROPERTY_NAME, StrongestEmotionCalculator);
-            registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_FOR_EVENT_PROPERTY_NAME, StrongestEmotionForEventCalculator);
-            registry.RegistDynamicProperty(RPCConsts.STRONGEST_WELL_BEING_EMOTION_PROPERTY_NAME,
+            registry.RegistDynamicProperty(RPCConsts.MOOD_PROPERTY_NAME, "", MoodPropertyCalculator);
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_PROPERTY_NAME, "", StrongestEmotionCalculator);
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_FOR_EVENT_PROPERTY_NAME, "", StrongestEmotionForEventCalculator);
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_WELL_BEING_EMOTION_PROPERTY_NAME, "",
                 StrongestWellBeingEmotionCalculator);
-            registry.RegistDynamicProperty(RPCConsts.STRONGEST_ATTRIBUTION_PROPERTY_NAME,
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_ATTRIBUTION_PROPERTY_NAME, "",
                 StrongestAttributionEmotionCalculator);
-            registry.RegistDynamicProperty(RPCConsts.STRONGEST_COMPOUND_PROPERTY_NAME,
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_COMPOUND_PROPERTY_NAME, "",
                 StrongestCompoundEmotionCalculator);
-            registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, EmotionIntensityPropertyCalculator);
-            registry.RegistDynamicProperty(IS_AGENT_TEMPLATE, IsAgentPropertyCalculator);
-            registry.RegistDynamicProperty(ROUND_TO_TENS_METHOD_TEMPLATE, RoundtoTensMethodCalculator);
-            registry.RegistDynamicProperty(ROUND_METHOD_TEMPLATE, RoundMethodCalculator);
-            registry.RegistDynamicProperty(RANDOM_METHOD_TEMPLATE, RandomCalculator);
-            registry.RegistDynamicProperty(LOG_TEMPLATE, LogDynamicProperty);
-            registry.RegistDynamicProperty(IS_SALIENT_TEMPLATE, IsSalientPropertyCalculator);
+            registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, "", EmotionIntensityPropertyCalculator);
+            registry.RegistDynamicProperty(IS_AGENT_TEMPLATE, "", IsAgentPropertyCalculator);
+            registry.RegistDynamicProperty(ROUND_TO_TENS_METHOD_TEMPLATE, "", RoundtoTensMethodCalculator);
+            registry.RegistDynamicProperty(ROUND_METHOD_TEMPLATE, "", RoundMethodCalculator);
+            registry.RegistDynamicProperty(RANDOM_METHOD_TEMPLATE, "", RandomCalculator);
+            registry.RegistDynamicProperty(LOG_TEMPLATE, "", LogDynamicProperty);
+            registry.RegistDynamicProperty(IS_SALIENT_TEMPLATE, "", IsSalientPropertyCalculator);
             m_am.BindToRegistry(registry);
         }
 
