@@ -87,13 +87,13 @@ namespace Tests.KnowledgeBase
 	        Assert.AreEqual(kb.GetAllBeliefs().Count(), total);
 	    }
 
-		[TestCase("Count(Tiger)", "Self")]
-		[TestCase("Count(Tiger)", "*")]
-		[TestCase("Count(Tiger)", "Mary")]
-		[TestCase("Count(Tiger)", "Mary(Self)")]
-		[TestCase("ToM(Mary,Count(Tiger))", "Self")]
-		[TestCase("ToM(Mary,ToM(Self,Count(Tiger)))", "Self")]
-		[TestCase("ToM(John,Count(Tiger))", "Mary")]
+		[TestCase("CountSubs(Tiger)", "Self")]
+		[TestCase("CountSubs(Tiger)", "*")]
+		[TestCase("CountSubs(Tiger)", "Mary")]
+		[TestCase("CountSubs(Tiger)", "Mary(Self)")]
+		[TestCase("ToM(Mary,CountSubs(Tiger))", "Self")]
+		[TestCase("ToM(Mary,ToM(Self,CountSubs(Tiger)))", "Self")]
+		[TestCase("ToM(John,CountSubs(Tiger))", "Mary")]
 		public void Test_Tell_Fail_DynamicProperty(string property, string perspective)
 		{
 			var kb = new KB((Name)"John");
@@ -373,21 +373,21 @@ namespace Tests.KnowledgeBase
 		{
 			var kb = new KB((Name)"Me");
 			Assert.Throws<ArgumentException>(
-				() => kb.RegistDynamicProperty((Name)"Count", DummyCount));
+				() => kb.RegistDynamicProperty((Name)"CountSubs", "", DummyCount));
 		}
 
 		[Test]
 		public void Test_DynamicProperty_Regist_Fail_InvalidTemplate()
 		{
 			var kb = new KB((Name)"Me");
-			Assert.Throws<ArgumentException>(() => kb.RegistDynamicProperty((Name)"Count(John)", DummyCount));
+			Assert.Throws<ArgumentException>(() => kb.RegistDynamicProperty((Name)"CountSubs(John)", "", DummyCount));
 		}
 
 		[Test]
 		public void Test_DynamicProperty_Regist_Fail_Null_Surogate()
 		{
 			var kb = new KB((Name)"Me");
-			Assert.Throws<ArgumentNullException>(() => kb.RegistDynamicProperty((Name)"Count", (DynamicPropertyCalculator_T1)null));
+			Assert.Throws<ArgumentNullException>(() => kb.RegistDynamicProperty((Name)"CountSubs", "", (DynamicPropertyCalculator_T1)null));
 		}
 
 		[Test]
@@ -396,8 +396,8 @@ namespace Tests.KnowledgeBase
 			var kb = new KB((Name)"Me");
 			Assert.Throws<ArgumentException>(() =>
 			{
-				kb.Tell((Name)"Count(John)", Name.BuildName(3));
-				kb.RegistDynamicProperty((Name)"Count", DummyCount);
+				kb.Tell((Name)"CountSubs(John)", Name.BuildName(3));
+				kb.RegistDynamicProperty((Name)"CountSubs", "", DummyCount);
 			});
 		}
 
@@ -407,8 +407,8 @@ namespace Tests.KnowledgeBase
 			var kb = new KB((Name)"Me");
 			Assert.Throws<ArgumentException>(() =>
 			{
-				kb.RegistDynamicProperty((Name)"Count", DummyCount);
-				kb.Tell((Name)"Count(John)", Name.BuildName(3));
+				kb.RegistDynamicProperty((Name)"CountSubs", "",DummyCount);
+				kb.Tell((Name)"CountSubs(John)", Name.BuildName(3));
 			});
 		}
 
@@ -432,7 +432,7 @@ namespace Tests.KnowledgeBase
 		public void Test_DynamicProperty_NewDP_Pass(string expression, string[] expectedResult)
 		{
 			var kb = TestFactory.PopulatedTestMemory();
-			kb.RegistDynamicProperty((Name)"Concat", Test_Concat_Dynamic_Property);
+			kb.RegistDynamicProperty((Name)"Concat", "",Test_Concat_Dynamic_Property);
 
 			var results = new HashSet<Name>(kb.AskPossibleProperties((Name)expression, Name.SELF_SYMBOL, null).Select(r => r.Item1.Value));
 			var expected = new HashSet<Name>(expectedResult.Select(s => (Name) s));
