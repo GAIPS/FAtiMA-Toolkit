@@ -41,11 +41,8 @@ namespace RolePlayCharacter
             public ulong Tick { get; set; }
         }
 
-        private List<LogEntry> m_log;
-
         public RolePlayCharacterAsset()
         {
-            m_log = new List<LogEntry>();
             m_activeIdentities = new Dictionary<Name, Identity>();
             m_kb = new KB(RPCConsts.DEFAULT_CHARACTER_NAME);
             m_am = new AM();
@@ -223,9 +220,6 @@ namespace RolePlayCharacter
         //This method will replace every belief within [[ ]] by its value
         public string ProcessWithBeliefs(string utterance)
         {
-            
-            
-
             var tokens = Regex.Split(utterance, @"\[|\]\]");
             var result = string.Empty;
             bool process = false;
@@ -619,13 +613,12 @@ namespace RolePlayCharacter
                 StrongestAttributionEmotionCalculator);
             registry.RegistDynamicProperty(RPCConsts.STRONGEST_COMPOUND_PROPERTY_NAME, "",
                 StrongestCompoundEmotionCalculator);
-            registry.RegistDynamicProperty(EMOTION_INTENSITY_TEMPLATE, "", EmotionIntensityPropertyCalculator);
-            registry.RegistDynamicProperty(IS_AGENT_TEMPLATE, "", IsAgentPropertyCalculator);
-            registry.RegistDynamicProperty(ROUND_TO_TENS_METHOD_TEMPLATE, "", RoundtoTensMethodCalculator);
-            registry.RegistDynamicProperty(ROUND_METHOD_TEMPLATE, "", RoundMethodCalculator);
-            registry.RegistDynamicProperty(RANDOM_METHOD_TEMPLATE, "", RandomCalculator);
-            registry.RegistDynamicProperty(LOG_TEMPLATE, "", LogDynamicProperty);
-            registry.RegistDynamicProperty(IS_SALIENT_TEMPLATE, "", IsSalientPropertyCalculator);
+            registry.RegistDynamicProperty(EMOTION_INTENSITY_DP_NAME, "", EmotionIntensityPropertyCalculator);
+            registry.RegistDynamicProperty(IS_AGENT_DP_NAME, "", IsAgentPropertyCalculator);
+            registry.RegistDynamicProperty(ROUND_TO_TENS_DP_NAME, "", RoundtoTensMethodCalculator);
+            registry.RegistDynamicProperty(ROUND_DP_NAME, "", RoundMethodCalculator);
+            registry.RegistDynamicProperty(RANDOM_DP_NAME, "", RandomCalculator);
+            registry.RegistDynamicProperty(ID_SALIENT_DP_NAME, "", IsSalientPropertyCalculator);
             m_am.BindToRegistry(registry);
         }
 
@@ -651,19 +644,27 @@ namespace RolePlayCharacter
         #endregion RolePlayCharater Fields
         #region Dynamic Properties
 
-        private static readonly Name EMOTION_INTENSITY_TEMPLATE = (Name)"EmotionIntensity";
+        private static readonly Name EMOTION_INTENSITY_DP_NAME = (Name)"EmotionIntensity";
+        private static readonly string EMOTION_INTENSITY_DP_DESC = "";
 
-        private static readonly Name IS_AGENT_TEMPLATE = (Name)"IsAgent";
+        private static readonly Name IS_AGENT_DP_NAME = (Name)"IsAgent";
+        private static readonly string IS_AGENT_DP_NAME_DESC = "";
 
-        private static readonly Name RANDOM_METHOD_TEMPLATE = (Name)"Random";
+        private static readonly Name RANDOM_DP_NAME = (Name)"Random";
+        private static readonly string RANDOM_DP_DESC = "";
 
-        private static readonly Name ROUND_METHOD_TEMPLATE = (Name)"RoundMethod";
+        private static readonly Name ROUND_DP_NAME = (Name)"RoundMethod";
+        private static readonly string ROUND_DP_DESC = "";
 
-        private static readonly Name ROUND_TO_TENS_METHOD_TEMPLATE = (Name)"RoundtoTensMethod";
+        private static readonly Name ROUND_TO_TENS_DP_NAME = (Name)"RoundtoTensMethod";
+        private static readonly string ROUND_TO_TENS_DP_DESC = "";
 
-        private static readonly Name IS_SALIENT_TEMPLATE = (Name)"IsSalient";
+        private static readonly Name ID_SALIENT_DP_NAME = (Name)"IdentitySalient";
+        private static readonly string ID_SALIENT_DP_DESC = "";
 
-        private static readonly Name LOG_TEMPLATE = Name.BuildName("Log");
+        private static readonly Name LOG_DP_NAME = Name.BuildName("Log");
+        
+
 
         private IEnumerable<DynamicPropertyResult> EmotionIntensityPropertyCalculator(IQueryContext context, Name x, Name y)
         {
@@ -741,25 +742,8 @@ namespace RolePlayCharacter
           
         }
 
-        //This is a special property that is only used for debug purposes
-        private IEnumerable<DynamicPropertyResult> LogDynamicProperty(IQueryContext context, Name varName)
-        {
-            foreach (var subSet in context.Constraints)
-            {
-                foreach (var sub in subSet.Where(s => s.Variable == varName))
-                {
-                    this.m_log.Add(new LogEntry
-                    {
-                        Message = "Sub Found: " + sub,
-                        Tick = m_am.Tick
-                    });
-                }
-                yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(true)), subSet);
-            }
-        }
-
         private IEnumerable<DynamicPropertyResult> GetEmotionsForEntity(IEmotionalState state,
-            Name emotionName, WellFormedNames.IQueryable kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
+            Name emotionName, IQueryable kb, Name perspective, IEnumerable<SubstitutionSet> constraints)
         {
             if (emotionName.IsVariable)
             {
@@ -905,6 +889,7 @@ namespace RolePlayCharacter
             Random rand = new Random();
 
             var toRet = rand.Next(minValue, maxValue);
+            
             var subSet = new SubstitutionSet();
             
             yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(toRet)), subSet);
@@ -1233,16 +1218,11 @@ namespace RolePlayCharacter
             dataHolder.SetValue("EmotionalState", m_emotionalState);
             dataHolder.SetValue("AutobiographicMemory", m_am);
             dataHolder.SetValue("OtherAgents", m_otherAgents);
-            if (m_log.Any())
-            {
-                dataHolder.SetValue("UnifierLog", m_log);
-            }
         }
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             m_allowAuthoring = true;
-            m_log = new List<LogEntry>();
             m_activeIdentities = new Dictionary<Name, Identity>();
             m_kb = dataHolder.GetValue<KB>("KnowledgeBase");
             this.BodyName = dataHolder.GetValue<string>("BodyName");

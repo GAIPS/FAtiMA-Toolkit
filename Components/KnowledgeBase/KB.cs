@@ -114,10 +114,10 @@ namespace KnowledgeBase
 			registry.RegistDynamicProperty(COUNT_DP_NAME, COUNT_DP_DESC, CountPropertyCalculator_new);
             registry.RegistDynamicProperty(HAS_LITERAL_DP_NAME, HAS_LITERAL_DP_DESC, HasLiteralPropertyCalculator);
             registry.RegistDynamicProperty(MATH_DP_NAME, MATH_DP_DESC, MathPropertyCalculator);
-            registry.RegistDynamicProperty(SQUARE_DISTANCE, "", SquareDistanceCalculator);
+            registry.RegistDynamicProperty(SQUARE_DISTANCE_NAME, SQUARE_DISTANCE_DESC, SquareDistanceCalculator);
             registry.RegistDynamicProperty(ASK_DP_NAME, ASK_DP_DESC, AskDynamicProperty);
             registry.RegistDynamicProperty(TELL_DP_NAME, TELL_DP_DESC, TellDynamicProperty);
-            registry.RegistDynamicProperty(EXISTS_DYNAMIC_PROPERTY, "", ExistsDynamicProperty);
+            registry.RegistDynamicProperty(EXISTS_DP_NAME, EXISTS_DP_DESC, ExistsDynamicProperty);
         }
 
 		#region Native Dynamic Properties
@@ -141,8 +141,8 @@ namespace KnowledgeBase
 
         //Math
         private static readonly Name MATH_DP_NAME = Name.BuildName("Math");
-        private static readonly string MATH_DP_DESC = "Applies the mathematical [operation] to [x] and "+
-            "[y] and return the result. The [operation] can be either 'Plus', 'Minus', 'Times', 'Div'.";
+        private static readonly string MATH_DP_DESC = "Applies the mathematical [op] to [x] and "+
+            "[y] and return the result. The [op] can be either 'Plus', 'Minus', 'Times', 'Div'.";
         private static IEnumerable<DynamicPropertyResult> MathPropertyCalculator(IQueryContext context, Name x, Name op, Name y)
         {
             if (op.IsVariable || op.IsComposed)
@@ -186,14 +186,14 @@ namespace KnowledgeBase
                             var res = xValue / yValue;
                             yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(res)), subSet);
                         }
-
                     }
                 }
             }
         }
 
         //Square Distance
-        private static readonly Name SQUARE_DISTANCE = Name.BuildName("SquareDistance");
+        private static readonly Name SQUARE_DISTANCE_NAME = Name.BuildName("SquareDistance");
+        private static readonly string SQUARE_DISTANCE_DESC = "Returns the square distance between point (x1, y1) and (x1, y2)";
         private static IEnumerable<DynamicPropertyResult> SquareDistanceCalculator(IQueryContext context, Name x1, Name y1, Name x2, Name y2)
         {
             foreach (var subSet in context.Constraints)
@@ -212,6 +212,7 @@ namespace KnowledgeBase
                                 var y2Value = float.Parse(y2Subs.Item1.Value.ToString(), CultureInfo.InvariantCulture);
 
                                 var res = Math.Pow((x2Value - x1Value), 2) + Math.Pow((y2Value - y1Value), 2);
+
                                 yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(res)), subSet);
                             }
                         }
@@ -291,7 +292,7 @@ namespace KnowledgeBase
 
 
         private static readonly Name ASK_DP_NAME = (Name)"Ask";
-        private static readonly string ASK_DP_DESC = "";
+        private static readonly string ASK_DP_DESC = "Returns the value of the belief identified by [property]";
         private static IEnumerable<DynamicPropertyResult> AskDynamicProperty(IQueryContext context, Name property)
         {
             var constraintsSets = context.Constraints.Any() ? context.Constraints : new[] { new SubstitutionSet() };
@@ -322,7 +323,7 @@ namespace KnowledgeBase
 
 
         private static readonly Name TELL_DP_NAME = (Name)"Tell";
-        private static readonly string TELL_DP_DESC = "";
+        private static readonly string TELL_DP_DESC = "Adds or updates the KB with a new belief named [property] with a given [value]";
         private IEnumerable<DynamicPropertyResult> TellDynamicProperty(IQueryContext context, Name property, Name value)
         {
             var constraintsSets = context.Constraints.Any() ? context.Constraints : new[] { new SubstitutionSet() };
@@ -356,7 +357,8 @@ namespace KnowledgeBase
         }
 
 
-        private static readonly Name EXISTS_DYNAMIC_PROPERTY = (Name)"Exists";
+        private static readonly Name EXISTS_DP_NAME = (Name)"Exists";
+        private static readonly string EXISTS_DP_DESC = "Checks if [property] exists in the KB and returns true or false accordingly";
         private IEnumerable<DynamicPropertyResult> ExistsDynamicProperty(IQueryContext context, Name property)
         {
             var constraintsSets = context.Constraints.Any() ? context.Constraints : new[] { new SubstitutionSet() };

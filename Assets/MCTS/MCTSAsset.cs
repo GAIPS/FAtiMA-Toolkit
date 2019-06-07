@@ -36,12 +36,12 @@ namespace MCTS
 
         private void BindToRegistry(IDynamicPropertiesRegistry registry)
         {
-            registry.RegistDynamicProperty(MCTS_DYNAMIC_PROPERTY_NAME, "", MCTSSearch);
+            //registry.RegistDynamicProperty(MCTS_DYNAMIC_PROPERTY_NAME, "", MCTSSearch);
         }
 
         public void UnbindToRegistry(IDynamicPropertiesRegistry registry)
         {
-            registry.UnregistDynamicProperty(MCTS_DYNAMIC_PROPERTY_NAME);
+            //registry.UnregistDynamicProperty(MCTS_DYNAMIC_PROPERTY_NAME);
         }
 
         //This is where the main body of the MCTS Search must be implemented
