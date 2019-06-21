@@ -10,8 +10,7 @@ using Utilities;
 
 namespace GAIPS.AssetEditorTools
 {
-	public abstract partial class BaseAssetForm<T> : Form
-		where T : LoadableAsset<T>
+	public abstract partial class BaseAssetForm<T> : Form	where T : LoadableAsset<T>
 	{
 		protected bool _wasModified;
 

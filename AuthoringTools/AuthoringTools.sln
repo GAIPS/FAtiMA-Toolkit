@@ -53,6 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldModelWF", "WorldModelW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorldModel", "..\Assets\WorldModel\WorldModel.csproj", "{C751A38C-44D9-4918-B1F1-55A80147471D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPIWF", "..\Web\WebAPIWF\WebAPIWF.csproj", "{F1B163C5-2FA5-49F7-A3CF-0B649B2E90EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +149,10 @@ Global
 		{C751A38C-44D9-4918-B1F1-55A80147471D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C751A38C-44D9-4918-B1F1-55A80147471D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C751A38C-44D9-4918-B1F1-55A80147471D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1B163C5-2FA5-49F7-A3CF-0B649B2E90EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1B163C5-2FA5-49F7-A3CF-0B649B2E90EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1B163C5-2FA5-49F7-A3CF-0B649B2E90EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1B163C5-2FA5-49F7-A3CF-0B649B2E90EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
