@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBoxServer = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBoxPort = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonStart = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -50,9 +50,9 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.textBox2);
+            this.groupBox1.Controls.Add(this.textBoxServer);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.textBoxPort);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.buttonStart);
             this.groupBox1.Location = new System.Drawing.Point(16, 465);
@@ -61,34 +61,34 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             // 
-            // textBox2
+            // textBoxServer
             // 
-            this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox2.Location = new System.Drawing.Point(402, 31);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(329, 22);
-            this.textBox2.TabIndex = 4;
-            this.textBox2.Text = "Server not running.";
+            this.textBoxServer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxServer.Location = new System.Drawing.Point(402, 31);
+            this.textBoxServer.Name = "textBoxServer";
+            this.textBoxServer.ReadOnly = true;
+            this.textBoxServer.Size = new System.Drawing.Size(329, 22);
+            this.textBoxServer.TabIndex = 4;
+            this.textBoxServer.TextChanged += new System.EventHandler(this.TextBox2_TextChanged);
             // 
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(348, 34);
+            this.label2.Location = new System.Drawing.Point(339, 34);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(48, 16);
             this.label2.TabIndex = 3;
             this.label2.Text = "Status:";
             // 
-            // textBox1
+            // textBoxPort
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.textBox1.Location = new System.Drawing.Point(66, 31);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(88, 22);
-            this.textBox1.TabIndex = 2;
-            this.textBox1.Text = "8080";
+            this.textBoxPort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.textBoxPort.Location = new System.Drawing.Point(66, 31);
+            this.textBoxPort.Name = "textBoxPort";
+            this.textBoxPort.Size = new System.Drawing.Size(88, 22);
+            this.textBoxPort.TabIndex = 2;
+            this.textBoxPort.Text = "8080";
             // 
             // label1
             // 
@@ -156,10 +156,12 @@
             this.dataGridApiMethods.Name = "dataGridApiMethods";
             this.dataGridApiMethods.ReadOnly = true;
             this.dataGridApiMethods.RowHeadersVisible = false;
+            this.dataGridApiMethods.RowHeadersWidth = 51;
             this.dataGridApiMethods.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridApiMethods.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridApiMethods.Size = new System.Drawing.Size(723, 394);
             this.dataGridApiMethods.TabIndex = 16;
+            this.dataGridApiMethods.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridApiMethods_CellContentClick);
             // 
             // tabPage2
             // 
@@ -217,8 +219,8 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Button buttonStart;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBoxPort;
+        private System.Windows.Forms.TextBox textBoxServer;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView dataGridApiMethods;
         private System.Windows.Forms.RichTextBox richTextBoxOutuputConsole;

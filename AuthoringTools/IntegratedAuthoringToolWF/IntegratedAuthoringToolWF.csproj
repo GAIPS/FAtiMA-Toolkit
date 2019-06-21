@@ -193,6 +193,10 @@
       <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
       <Name>WellFormedNames</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Web\WebAPIWF\WebAPIWF.csproj">
+      <Project>{f1b163c5-2fa5-49f7-a3cf-0b649b2e90ee}</Project>
+      <Name>WebAPIWF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GAIPS.AssetEditorTools\GAIPS.AssetEditorTools.csproj">
       <Project>{c61fb19d-e715-4eb4-afca-27ff81a14777}</Project>
       <Name>GAIPS.AssetEditorTools</Name>

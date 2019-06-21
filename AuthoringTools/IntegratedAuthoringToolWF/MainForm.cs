@@ -31,6 +31,7 @@ namespace IntegratedAuthoringToolWF
         private BindingListView<CharacterSourceDTO> _characterSources;
         private RolePlayCharacterWF.MainForm _rpcForm = new RolePlayCharacterWF.MainForm();
         private WorldModelWF.MainForm _wmForm = new WorldModelWF.MainForm();
+        private WebAPIWF.MainForm _webForm = new WebAPIWF.MainForm();
         private WorldModelSourceDTO _wmSource = new WorldModelSourceDTO();
 
         private int currentRPCTabIndex;
@@ -90,6 +91,9 @@ namespace IntegratedAuthoringToolWF
             searchCheckList.Items.Add("Meaning", false);
             searchCheckList.Items.Add("Style", false);
             searchCheckList.Items.Add("Utterance", false);
+
+            _webForm.LoadedAsset = this.LoadedAsset;
+            FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[4], _webForm);
 
 
             RefreshDialogs();
@@ -723,6 +727,7 @@ namespace IntegratedAuthoringToolWF
             if (_wmForm.LoadedAsset != null)
                 _wmForm.SaveAssetToFile(_wmForm.LoadedAsset, _wmForm.LoadedAsset.AssetFilePath);
 
+            _webForm.LoadedAsset = this.LoadedAsset;
             SaveAssetAs();
         }
 
