@@ -92,7 +92,7 @@ namespace EmotionalAppraisalWF
             {
                 Emotion = comboBoxEmotionType.Text,
                 Decay = int.Parse(comboBoxDecay.Text),
-                Threshold = int.Parse(comboBoxThreshold.Text)
+                Threshold = int.Parse(comboBoxThreshold.Text),
             };
 
             if (_emotionDispositionToEdit == null)

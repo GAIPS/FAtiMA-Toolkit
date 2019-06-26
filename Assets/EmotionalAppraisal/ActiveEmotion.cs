@@ -27,6 +27,8 @@ namespace EmotionalAppraisal
 
 		public Name Direction{ get; private set; }
 
+        public string Target { get; private set; }
+
         public Name EventName
         {
             get;
@@ -112,7 +114,7 @@ namespace EmotionalAppraisal
 	        this.CauseId = emotionDTO.CauseEventId;
             var causeEvent = am.RecallEvent(this.CauseId);
             this.EventName = causeEvent.EventName;
-            
+            this.Target = emotionDTO.Target;
 	        this.Direction = null; //TODO: handle direction correctly
 	        this.Threshold = threshold;
 	        this.Decay = decay;
@@ -178,6 +180,8 @@ namespace EmotionalAppraisal
 				builder.AppendFormat(" {0}", this.Direction);
             if (this.EventName != null)
                 builder.AppendFormat(" {0}", this.EventName);
+            if (this.Target != null)
+                builder.AppendFormat(" {0}", this.Target);
 
             var result = builder.ToString();
 			builder.Length = 0;
@@ -191,7 +195,7 @@ namespace EmotionalAppraisal
 	        {
                 Type = this.EmotionType,
                 Intensity = this.Intensity,
-                Target = this.Direction?.ToString(),
+                Target = this.Target,
                 CauseEventId =  this.CauseId, 
                 CauseEventName = am.RecallEvent(this.CauseId).EventName.ToString(),
 	        };
@@ -208,7 +212,10 @@ namespace EmotionalAppraisal
 				dataHolder.SetValue("Direction", Direction.ToString());
             if (EventName != null)
                 dataHolder.SetValue("EventName", EventName.ToString());
-			dataHolder.SetValue("EmotionType", EmotionType);
+            if (Target != null)
+                dataHolder.SetValue("Target", Target);
+
+            dataHolder.SetValue("EmotionType", EmotionType);
 			dataHolder.SetValue("Valence", Valence);
 			dataHolder.SetValue("AppraisalVariables", AppraisalVariables.ToArray());
 			dataHolder.SetValue("InfluenceMood", InfluenceMood);
@@ -219,10 +226,14 @@ namespace EmotionalAppraisal
 			Decay = dataHolder.GetValue<int>("Decay");
 			Threshold = dataHolder.GetValue<int>("Threshold");
 			CauseId = dataHolder.GetValue<uint>("CauseId");
+
 			var dir = dataHolder.GetValue<string>("Direction");
             var evtName = dataHolder.GetValue<string>("EventName");
-			Direction = !string.IsNullOrEmpty(dir) ? Name.BuildName(dir) : null;
+            Target = dataHolder.GetValue<string>("Target");
+
+            Direction = !string.IsNullOrEmpty(dir) ? Name.BuildName(dir) : null;
             EventName = !string.IsNullOrEmpty(evtName) ? Name.BuildName(evtName) : null;
+           
             EmotionType = dataHolder.GetValue<string>("EmotionType");
 			Valence = dataHolder.GetValue<EmotionValence>("Valence");
 			AppraisalVariables = dataHolder.GetValue<string[]>("AppraisalVariables");

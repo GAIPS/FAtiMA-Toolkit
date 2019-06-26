@@ -927,7 +927,7 @@ namespace IntegratedAuthoringToolWF
 
             //Assumption: All agents have the same tick
             textBoxTick.Text = agentsInChat[0].Tick.ToString();
-
+            if(agentsInChat.Count > 0)
             comboBoxAgentView_SelectedIndexChanged(sender, e); // update the agent inspector views;
         }
 
@@ -1524,38 +1524,43 @@ namespace IntegratedAuthoringToolWF
 
         private void comboBoxAgChat_SelectedIndexChanged(object sender, EventArgs e)
         {
+
             this.comboBoxAgentView_SelectedIndexChanged(sender, e);
         }
 
         private void comboBoxAgentView_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var selectedRPCName = (string)comboBoxAgChat.SelectedItem;
+            if (agentsInChat != null && agentsInChat.Count > 0)
+            {
+                var selectedRPCName = (string)comboBoxAgChat.SelectedItem;
 
-            var rpc = agentsInChat.Where(c => c.CharacterName.ToString() == selectedRPCName).FirstOrDefault();
+                var rpc = agentsInChat.Where(c => c.CharacterName.ToString() == selectedRPCName).FirstOrDefault();
 
-            var selectedView = (string)comboBoxAgentView.SelectedItem;
-            if(selectedView.EqualsIgnoreCase("Knowledge Base"))
-            {
-                dataGridViewAgentInspector.DataSource = new BindingListView<BeliefDTO>(rpc.GetAllBeliefs().ToList());
-                
-            }else if (selectedView.EqualsIgnoreCase("Autobiographical Memory"))
-            {
-                dataGridViewAgentInspector.DataSource = new BindingListView<EventDTO>(rpc.EventRecords.ToList());
-            }
-            else if(selectedView.EqualsIgnoreCase("Emotional State"))
-            {
-                dataGridViewAgentInspector.DataSource = new BindingListView<EmotionalAppraisal.DTOs.EmotionDTO>(rpc.GetAllActiveEmotions().ToList());
-            }
-            else if (selectedView.EqualsIgnoreCase("Goals"))
-            {
-                dataGridViewAgentInspector.DataSource = new BindingListView<EmotionalAppraisal.DTOs.GoalDTO>(rpc.GetAllGoals().ToList());
-            }
-            else if (selectedView.EqualsIgnoreCase("Dynamic Properties"))
-            {
-                dataGridViewAgentInspector.DataSource = new BindingListView<DynamicPropertyDTO>(rpc.GetAllDynamicProperties().ToList());
-            }
+                var selectedView = (string)comboBoxAgentView.SelectedItem;
+                if (selectedView.EqualsIgnoreCase("Knowledge Base"))
+                {
+                    dataGridViewAgentInspector.DataSource = new BindingListView<BeliefDTO>(rpc.GetAllBeliefs().ToList());
 
-            dataGridViewAgentInspector.Refresh();
+                }
+                else if (selectedView.EqualsIgnoreCase("Autobiographical Memory"))
+                {
+                    dataGridViewAgentInspector.DataSource = new BindingListView<EventDTO>(rpc.EventRecords.ToList());
+                }
+                else if (selectedView.EqualsIgnoreCase("Emotional State"))
+                {
+                    dataGridViewAgentInspector.DataSource = new BindingListView<EmotionalAppraisal.DTOs.EmotionDTO>(rpc.GetAllActiveEmotions().ToList());
+                }
+                else if (selectedView.EqualsIgnoreCase("Goals"))
+                {
+                    dataGridViewAgentInspector.DataSource = new BindingListView<EmotionalAppraisal.DTOs.GoalDTO>(rpc.GetAllGoals().ToList());
+                }
+                else if (selectedView.EqualsIgnoreCase("Dynamic Properties"))
+                {
+                    dataGridViewAgentInspector.DataSource = new BindingListView<DynamicPropertyDTO>(rpc.GetAllDynamicProperties().ToList());
+                }
+
+                dataGridViewAgentInspector.Refresh();
+            }
         }
 
         private void buttonEvalBelief_Click(object sender, EventArgs e)

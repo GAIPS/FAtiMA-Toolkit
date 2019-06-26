@@ -30,6 +30,9 @@ namespace RolePlayCharacterWF
                 comboBoxIntensity.Text = Math.Round(emotionToEdit.Intensity).ToString();
                 comboBoxEmotionType.Text = emotionToEdit.Type;
                 textBoxCauseId.Text = emotionToEdit.CauseEventId.ToString();
+                if(emotionToEdit.Target != null)
+                targetBox.Text = emotionToEdit.Target.ToString();
+                
             }
         }
 
@@ -83,7 +86,8 @@ namespace RolePlayCharacterWF
                 {
                     Type = comboBoxEmotionType.Text,
                     Intensity = int.Parse(comboBoxIntensity.Text),
-                    CauseEventId = uint.Parse(textBoxCauseId.Text)
+                    CauseEventId = uint.Parse(textBoxCauseId.Text),
+                    Target = targetBox.Text
                 };
 
                 if (_emotionToEdit == null)
