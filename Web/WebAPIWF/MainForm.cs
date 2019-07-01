@@ -89,8 +89,6 @@ namespace WebAPIWF
             }else if(uiElement == UIELEMENT_OUTPUTCONSOLE)
             {
                 this.richTextBoxOutuputConsole.AppendText("\n" + message + "\n");
-                tabControl1.SelectedTab = tabControl1.TabPages[1];
-                this.richTextBoxOutuputConsole.Focus();
             }
         }
 
@@ -174,6 +172,27 @@ namespace WebAPIWF
                             }
                             responseJson = JsonConvert.SerializeObject(resultDTO);
                             this.Invoke(this.updateUIDelegate, new string[] { "Result:\n" + responseJson, UIELEMENT_OUTPUTCONSOLE });
+                        }
+                    }
+                    if (request.RawUrl.StartsWith("/" + APIMethod.ASK))
+                    {
+                        try
+                        {
+                            var reqParamsURL = new String(request.RawUrl.SkipWhile(c => c != '=').Skip(1).ToArray()).ToLowerInvariant();
+                            string[] reqParams = reqParamsURL.Split('&');
+                            var characterName = reqParams[0];
+                            var beliefHead = new String(reqParams[1].SkipWhile(c => c != '=').Skip(1).ToArray());
+                            var beliefBody = new String(reqParams[2].SkipWhile(c => c != '=').Skip(1).ToArray());
+                            var belief = WellFormedNames.Name.BuildName(beliefHead + "(" + beliefBody + ")");
+                            this.Invoke(this.updateUIDelegate, new string[] { "New GET /" + APIMethod.ASK + " request for character: " + characterName + " with belief: " + belief + "!", UIELEMENT_OUTPUTCONSOLE });
+                            var rpc = rpcs.Where(r => r.CharacterName.ToString().ToLowerInvariant() == characterName).FirstOrDefault();
+                            var beliefResult = rpc.GetBeliefValue(belief.ToString());
+                            responseJson = JsonConvert.SerializeObject(beliefResult);
+                            this.Invoke(this.updateUIDelegate, new string[] { "Result:\n" + responseJson, UIELEMENT_OUTPUTCONSOLE });
+                        }catch(Exception ex)
+                        {
+                            this.Invoke(this.updateUIDelegate, new string[] { APIErrors.ERROR_EXCEPTION_ASK + ": " + request.RawUrl, UIELEMENT_OUTPUTCONSOLE });
+                            responseJson = JsonConvert.SerializeObject(APIErrors.ERROR_EXCEPTION_ASK);
                         }
                     }
                     else if (request.RawUrl.StartsWith("/" + APIMethod.CHARACTERS))
@@ -289,7 +308,7 @@ namespace WebAPIWF
                     }
                     else if (request.RawUrl.StartsWith("/" + APIMethod.UPDATE))
                     {
-                        Console.WriteLine("New POST /" + APIMethod.UPDATE + " request!");
+                        this.Invoke(this.updateUIDelegate, new string[] { "New POST /" + APIMethod.UPDATE + " request!" });
                         if (string.IsNullOrEmpty(requestBody))
                         {
                             foreach (var rpc in rpcs)
@@ -299,13 +318,19 @@ namespace WebAPIWF
                         }
                         else
                         {
-                            var ticks = JsonConvert.DeserializeObject<int>(requestBody);
-                            foreach (var rpc in rpcs)
+                            try
                             {
-                                for (int i = 0; i < ticks; i++)
+                                var ticks = JsonConvert.DeserializeObject<int>(requestBody);
+                                foreach (var rpc in rpcs)
                                 {
-                                    rpc.Update();
+                                    for (int i = 0; i < ticks; i++)
+                                    {
+                                        rpc.Update();
+                                    }
                                 }
+                            }catch(Exception ex)
+                            {
+                                this.Invoke(this.updateUIDelegate, new string[] { APIErrors.ERROR_EXCEPTION_UPDATE, UIELEMENT_OUTPUTCONSOLE });
                             }
                         }
                     }
@@ -317,6 +342,7 @@ namespace WebAPIWF
                         {
                             wm = WorldModelAsset.LoadFromFile(iat.GetWorldModelSource().Source);
                         }
+                        rpcs = new List<RolePlayCharacterAsset>();
                         LoadCharacters(iat, rpcs);
                         responseJson = JsonConvert.SerializeObject("RPC Reset");
                         this.Invoke(this.updateUIDelegate, new string[] { "Result:\n" + responseJson, UIELEMENT_OUTPUTCONSOLE });

@@ -34,16 +34,19 @@
             this.textBoxPort = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.buttonStart = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.dataGridApiMethods = new System.Windows.Forms.DataGridView();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.richTextBoxOutuputConsole = new System.Windows.Forms.RichTextBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridApiMethods)).BeginInit();
-            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -113,32 +116,6 @@
             this.buttonStart.UseVisualStyleBackColor = true;
             this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
             // 
-            // tabControl1
-            // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Appearance = System.Windows.Forms.TabAppearance.Buttons;
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(16, 27);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(737, 432);
-            this.tabControl1.TabIndex = 1;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.dataGridApiMethods);
-            this.tabPage1.Location = new System.Drawing.Point(4, 28);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(729, 400);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "API Methods";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
-            // 
             // dataGridApiMethods
             // 
             this.dataGridApiMethods.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
@@ -151,7 +128,7 @@
             this.dataGridApiMethods.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridApiMethods.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridApiMethods.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridApiMethods.Location = new System.Drawing.Point(3, 3);
+            this.dataGridApiMethods.Location = new System.Drawing.Point(3, 18);
             this.dataGridApiMethods.Margin = new System.Windows.Forms.Padding(5);
             this.dataGridApiMethods.Name = "dataGridApiMethods";
             this.dataGridApiMethods.ReadOnly = true;
@@ -159,20 +136,9 @@
             this.dataGridApiMethods.RowHeadersWidth = 51;
             this.dataGridApiMethods.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridApiMethods.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridApiMethods.Size = new System.Drawing.Size(723, 394);
+            this.dataGridApiMethods.Size = new System.Drawing.Size(731, 195);
             this.dataGridApiMethods.TabIndex = 16;
             this.dataGridApiMethods.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DataGridApiMethods_CellContentClick);
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Controls.Add(this.richTextBoxOutuputConsole);
-            this.tabPage2.Location = new System.Drawing.Point(4, 28);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(729, 400);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Output Console";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // richTextBoxOutuputConsole
             // 
@@ -180,32 +146,79 @@
             this.richTextBoxOutuputConsole.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBoxOutuputConsole.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBoxOutuputConsole.Font = new System.Drawing.Font("Arial", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBoxOutuputConsole.Location = new System.Drawing.Point(3, 3);
+            this.richTextBoxOutuputConsole.Location = new System.Drawing.Point(3, 18);
             this.richTextBoxOutuputConsole.Name = "richTextBoxOutuputConsole";
             this.richTextBoxOutuputConsole.ReadOnly = true;
-            this.richTextBoxOutuputConsole.Size = new System.Drawing.Size(723, 394);
+            this.richTextBoxOutuputConsole.Size = new System.Drawing.Size(731, 191);
             this.richTextBoxOutuputConsole.TabIndex = 1;
             this.richTextBoxOutuputConsole.Text = "";
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Location = new System.Drawing.Point(16, 27);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.groupBox2);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.groupBox3);
+            this.splitContainer1.Size = new System.Drawing.Size(737, 432);
+            this.splitContainer1.SplitterDistance = 216;
+            this.splitContainer1.TabIndex = 2;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox2.Controls.Add(this.dataGridApiMethods);
+            this.groupBox2.Location = new System.Drawing.Point(0, 0);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(737, 216);
+            this.groupBox2.TabIndex = 0;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "API Methods";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.richTextBoxOutuputConsole);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox3.Location = new System.Drawing.Point(0, 0);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(737, 212);
+            this.groupBox3.TabIndex = 0;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Output";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(765, 554);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.groupBox1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
             this.Name = "MainForm";
             this.Text = "Web API";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Controls.SetChildIndex(this.groupBox1, 0);
-            this.Controls.SetChildIndex(this.tabControl1, 0);
+            this.Controls.SetChildIndex(this.splitContainer1, 0);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridApiMethods)).EndInit();
-            this.tabPage2.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -214,9 +227,6 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.Button buttonStart;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBoxPort;
@@ -224,6 +234,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridView dataGridApiMethods;
         private System.Windows.Forms.RichTextBox richTextBoxOutuputConsole;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBox3;
     }
 }
 
