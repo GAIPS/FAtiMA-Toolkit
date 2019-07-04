@@ -12,7 +12,7 @@
         //GET METHODS (NO BODY)
         public static APIMethod DECIDE = new APIMethod() { Name = "decide", Params = "?c='char'", Type = "GET", Description = "Returns the actions decided by the character to execute." };
         public static APIMethod CHARACTERS = new APIMethod() { Name = "characters", Type = "GET", Description = "Returns all loaded characters and their emotional state." };
-        public static APIMethod ASK = new APIMethod() { Name = "ask", Params = "?c='character'&h='belHead'&b='belBody'",Type = "GET", Description = "Returns the value of a belief for a given character" };
+        public static APIMethod ASK = new APIMethod() { Name = "ask", Params = "?c='character'&bh='belHead'&bb='belBody'",Type = "GET", Description = "Returns the value of a belief for a given character" };
 
         //POST METHODS (BODY REQUIRED)
         public static APIMethod RESET = new APIMethod() { Name = "reset", Type = "POST" , Description = "Reloads the scenario and all the characters."};
