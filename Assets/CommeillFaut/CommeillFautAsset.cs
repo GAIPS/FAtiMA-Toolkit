@@ -64,9 +64,6 @@ namespace CommeillFaut
         {
             Dictionary<SubstitutionSet, Name> ret = new Dictionary<SubstitutionSet, Name>();
 
-            var stringVolition = "";
-            bool SEConstraint = false;
-
 
             if (context.Perspective != Name.SELF_SYMBOL)
                 yield break;
