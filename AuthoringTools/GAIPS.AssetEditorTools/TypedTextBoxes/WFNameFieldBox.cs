@@ -10,6 +10,7 @@ namespace GAIPS.AssetEditorTools.TypedTextBoxes
 		public bool AllowLiteral { get; set; } = true;
         public bool AllowComposedName { get; set; } = true;
         public bool AllowUniversal { get; set; } = true;
+        public bool AllowUniversalLiteral { get; set; } = true;
         public bool AllowNil { get; set; } = true;
 
         public WFNameFieldBox() : base(WellFormedNames.Name.NIL_SYMBOL, FORMATTER){}
@@ -32,6 +33,17 @@ namespace GAIPS.AssetEditorTools.TypedTextBoxes
 
 			if (!AllowUniversal && value.IsUniversal)
 				return false;
+
+            if (!AllowUniversalLiteral)
+            {
+                foreach(var lit in value.GetLiterals())
+                {
+                    if (lit.IsUniversal)
+                    {
+                        return false;
+                    }
+                }
+            }
 
 			if (!AllowLiteral && value.IsPrimitive)
 				return false;

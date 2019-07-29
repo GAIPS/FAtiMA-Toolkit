@@ -21,11 +21,16 @@ namespace Conditions.DTOs
 
         public override string ToString()
         {
+            if (this.ConditionSet == null) return "-";
+
             string ret = "";
             
             foreach(var c in ConditionSet)
-                ret += c.ToString() + "|";
-                
+                ret += c.ToString() + ", ";
+
+
+            ret = ret.TrimEnd();
+            ret = ret.TrimEnd(',');
             return ret;
         }
 	}

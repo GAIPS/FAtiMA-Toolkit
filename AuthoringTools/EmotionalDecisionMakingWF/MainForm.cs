@@ -35,8 +35,7 @@ namespace EmotionalDecisionMakingWF
 
             EditorTools.HideColumns(dataGridViewReactiveActions, new[]
             {
-                PropertyUtil.GetPropertyName<ActionRuleDTO>( d => d.Id),
-                PropertyUtil.GetPropertyName<ActionRuleDTO>(d => d.Conditions)
+                PropertyUtil.GetPropertyName<ActionRuleDTO>( d => d.Id)
             });
                 
            

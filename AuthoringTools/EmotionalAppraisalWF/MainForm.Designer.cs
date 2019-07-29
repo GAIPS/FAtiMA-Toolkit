@@ -154,6 +154,7 @@
             this.groupBox7.TabIndex = 1;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Rules";
+            this.groupBox7.Enter += new System.EventHandler(this.GroupBox7_Enter);
             // 
             // buttonAppVariables
             // 
@@ -468,7 +469,7 @@
             "7",
             "8",
             "9"});
-            this.comboBoxDefaultDecay.Location = new System.Drawing.Point(95, 7);
+            this.comboBoxDefaultDecay.Location = new System.Drawing.Point(95, 9);
             this.comboBoxDefaultDecay.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxDefaultDecay.Name = "comboBoxDefaultDecay";
             this.comboBoxDefaultDecay.Size = new System.Drawing.Size(83, 24);
@@ -491,7 +492,7 @@
             "7",
             "8",
             "9"});
-            this.comboBoxDefaultThreshold.Location = new System.Drawing.Point(304, 7);
+            this.comboBoxDefaultThreshold.Location = new System.Drawing.Point(304, 9);
             this.comboBoxDefaultThreshold.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxDefaultThreshold.Name = "comboBoxDefaultThreshold";
             this.comboBoxDefaultThreshold.Size = new System.Drawing.Size(84, 24);

@@ -206,6 +206,7 @@
             this._attRuleConditionSetEditor.Size = new System.Drawing.Size(933, 335);
             this._attRuleConditionSetEditor.TabIndex = 0;
             this._attRuleConditionSetEditor.View = null;
+            this._attRuleConditionSetEditor.Load += new System.EventHandler(this._attRuleConditionSetEditor_Load);
             // 
             // panel1
             // 

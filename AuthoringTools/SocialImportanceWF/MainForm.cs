@@ -34,11 +34,11 @@ namespace SocialImportanceWF
             conditions.OnDataChanged += ConditionSetView_OnDataChanged;
             attributionRules.DataSource = LoadedAsset.GetAttributionRules().ToList();
             EditorTools.HideColumns(dataGridViewAttributionRules, new[] {
-                PropertyUtil.GetPropertyName<AttributionRuleDTO>(o => o.Id),
-                PropertyUtil.GetPropertyName<AttributionRuleDTO>(o => o.Conditions) });
+                PropertyUtil.GetPropertyName<AttributionRuleDTO>(o => o.Id) });
+
 
             _wasModified = false;
-		}
+        }
         #endregion
 
 
@@ -49,7 +49,8 @@ namespace SocialImportanceWF
                 return;
             selectedRule.Conditions = conditions.GetData();
             LoadedAsset.UpdateAttributionRule(selectedRule);
-            
+            attributionRules.DataSource = LoadedAsset.GetAttributionRules().ToList();
+            attributionRules.Refresh();
             SetModified();
         }
 
@@ -141,6 +142,11 @@ namespace SocialImportanceWF
         }
 
         private void dataGridViewAttributionRules_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void _attRuleConditionSetEditor_Load(object sender, EventArgs e)
         {
 
         }

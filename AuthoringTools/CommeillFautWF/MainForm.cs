@@ -33,8 +33,7 @@ namespace CommeillFautWF
             this._socialExchangeList.DataSource = LoadedAsset.GetAllSocialExchanges().ToList();
             
             EditorTools.HideColumns(gridSocialExchanges, new[] {
-            PropertyUtil.GetPropertyName<SocialExchangeDTO>(dto => dto.Id),
-            PropertyUtil.GetPropertyName<SocialExchangeDTO>(dto => dto.StartingConditions)});
+            PropertyUtil.GetPropertyName<SocialExchangeDTO>(dto => dto.Id)});
 
 
 
@@ -52,7 +51,8 @@ namespace CommeillFautWF
                 return;
             selectedRule.StartingConditions = conditions.GetData();
             LoadedAsset.AddOrUpdateExchange(selectedRule);
-
+            this._socialExchangeList.DataSource = LoadedAsset.GetAllSocialExchanges().ToList();
+            this._socialExchangeList.Refresh();
             SetModified();
         }
 

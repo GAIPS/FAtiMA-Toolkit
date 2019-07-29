@@ -42,10 +42,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(30, 36);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.label2.Location = new System.Drawing.Point(26, 33);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(48, 18);
+            this.label2.Size = new System.Drawing.Size(46, 16);
             this.label2.TabIndex = 23;
             this.label2.Text = "Value:";
             // 
@@ -53,11 +54,12 @@
             // 
             this.buttonAdd.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.buttonAdd.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.buttonAdd.Location = new System.Drawing.Point(230, 307);
-            this.buttonAdd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.buttonAdd.MinimumSize = new System.Drawing.Size(80, 39);
+            this.buttonAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.buttonAdd.Location = new System.Drawing.Point(211, 316);
+            this.buttonAdd.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonAdd.MinimumSize = new System.Drawing.Size(70, 37);
             this.buttonAdd.Name = "buttonAdd";
-            this.buttonAdd.Size = new System.Drawing.Size(195, 39);
+            this.buttonAdd.Size = new System.Drawing.Size(170, 37);
             this.buttonAdd.TabIndex = 22;
             this.buttonAdd.Text = "Add";
             this.buttonAdd.UseVisualStyleBackColor = true;
@@ -68,10 +70,11 @@
             this.valueFieldBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.valueFieldBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.valueFieldBox.Location = new System.Drawing.Point(84, 33);
+            this.valueFieldBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.valueFieldBox.Location = new System.Drawing.Point(73, 31);
+            this.valueFieldBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.valueFieldBox.Name = "valueFieldBox";
-            this.valueFieldBox.Size = new System.Drawing.Size(113, 24);
+            this.valueFieldBox.Size = new System.Drawing.Size(119, 22);
             this.valueFieldBox.TabIndex = 25;
             // 
             // conditionSetEditorControl
@@ -79,10 +82,10 @@
             this.conditionSetEditorControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.conditionSetEditorControl.Location = new System.Drawing.Point(33, 123);
-            this.conditionSetEditorControl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.conditionSetEditorControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.conditionSetEditorControl.Location = new System.Drawing.Point(26, 115);
             this.conditionSetEditorControl.Name = "conditionSetEditorControl";
-            this.conditionSetEditorControl.Size = new System.Drawing.Size(582, 169);
+            this.conditionSetEditorControl.Size = new System.Drawing.Size(558, 187);
             this.conditionSetEditorControl.TabIndex = 26;
             this.conditionSetEditorControl.View = null;
             this.conditionSetEditorControl.Load += new System.EventHandler(this.conditionSetEditorControl1_Load);
@@ -93,14 +96,17 @@
             this.modeNameField.AllowLiteral = true;
             this.modeNameField.AllowNil = true;
             this.modeNameField.AllowUniversal = true;
+            this.modeNameField.AllowUniversalLiteral = true;
             this.modeNameField.AllowVariable = true;
             this.modeNameField.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.modeNameField.Location = new System.Drawing.Point(83, 82);
+            this.modeNameField.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.modeNameField.Location = new System.Drawing.Point(72, 77);
+            this.modeNameField.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.modeNameField.Name = "modeNameField";
             this.modeNameField.OnlyIntOrVariable = false;
-            this.modeNameField.Size = new System.Drawing.Size(265, 22);
+            this.modeNameField.Size = new System.Drawing.Size(252, 22);
             this.modeNameField.TabIndex = 27;
             // 
             // Mode
@@ -109,24 +115,27 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Mode.AutoSize = true;
-            this.Mode.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Mode.Location = new System.Drawing.Point(27, 82);
+            this.Mode.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.Mode.Location = new System.Drawing.Point(23, 77);
+            this.Mode.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.Mode.Name = "Mode";
-            this.Mode.Size = new System.Drawing.Size(50, 18);
+            this.Mode.Size = new System.Drawing.Size(46, 16);
             this.Mode.TabIndex = 28;
             this.Mode.Text = "Mode:";
             // 
             // AddInfluenceRule
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(660, 357);
+            this.ClientSize = new System.Drawing.Size(596, 364);
             this.Controls.Add(this.Mode);
             this.Controls.Add(this.modeNameField);
             this.Controls.Add(this.conditionSetEditorControl);
             this.Controls.Add(this.valueFieldBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.buttonAdd);
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "AddInfluenceRule";
             this.Text = "AddInfluenceRule";
             this.Load += new System.EventHandler(this.AddInfluenceRule_Load);

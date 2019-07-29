@@ -24,6 +24,7 @@ namespace EmotionalDecisionMakingWF
             //validators
             textBoxAction.AllowNil = false;
             textBoxAction.AllowUniversal = false;
+            textBoxAction.AllowUniversalLiteral = false;
             textBoxTarget.AllowUniversal = false;
             textBoxTarget.AllowComposedName = false;
             textBoxPriority.OnlyIntOrVariable = true;

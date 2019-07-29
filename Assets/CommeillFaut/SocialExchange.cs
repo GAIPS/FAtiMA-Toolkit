@@ -34,6 +34,8 @@ namespace CommeillFaut
 
         public SocialExchange(SocialExchangeDTO s) 
         {
+            if (s == null) return;
+
             Id = Guid.NewGuid();
             Name = s.Name;
             Description = s.Description;

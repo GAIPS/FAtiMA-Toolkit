@@ -34,16 +34,12 @@ namespace EmotionalAppraisalWF
             dataGridViewAppraisalRules.DataSource = _appraisalRulesVM.AppraisalRules;
             EditorTools.HideColumns(dataGridViewAppraisalRules, new[]
             {
-                PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Id),
-                PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Conditions)
-            
+                PropertyUtil.GetPropertyName<AppraisalRuleDTO>(dto => dto.Id)           
             });
                
             conditionSetEditor.View = _appraisalRulesVM.CurrentRuleConditions;
             dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(LoadedAsset.GetAllGoals().ToList());
 
-         //   if(dynamicPropertyListing.TabPages.Count > 1)
-        //    dynamicPropertyListing.TabPages.RemoveAt(1);
 
             _wasModified = false;
         }
@@ -220,6 +216,11 @@ namespace EmotionalAppraisalWF
         }
 
         private void dataGridViewGoals_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void GroupBox7_Enter(object sender, EventArgs e)
         {
 
         }
