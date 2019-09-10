@@ -150,6 +150,7 @@ namespace WorldModel
             var pastEffects = actions[old];
 
             actions.Remove(old);
+            actionNames.Remove(old);
 
             actions.Add(action, pastEffects);
 

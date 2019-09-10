@@ -1,13 +1,7 @@
 ﻿using AutobiographicMemory;
-using Conditions.DTOs;
-using EmotionalAppraisal.DTOs;
 using System;
-using System.Linq;
 using System.Windows.Forms;
 using WellFormedNames;
-using WorldModelWF.Properties;
-using EmotionalAppraisal;
-using RolePlayCharacter;
 using WorldModel;
 
 namespace WorldModelWF
