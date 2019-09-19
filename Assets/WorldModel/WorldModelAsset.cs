@@ -209,6 +209,8 @@ namespace WorldModel
             actions?.Remove(ActionName);
             if (actionNames.ContainsKey(ActionName))
                 actionNames.Remove(ActionName);
+            if (priorityRules.ContainsKey(ActionName))
+                priorityRules.Remove(ActionName);
         }
     }
 }
