@@ -18,8 +18,8 @@ namespace IntegratedAuthoringToolWF
 
 			Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
-            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.GetCultureInfo("en"); 
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.GetCultureInfo("en");
             var form = new MainForm();
 			form.CreateNewAsset();
             Application.Run(form);
