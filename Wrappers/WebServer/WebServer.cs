@@ -20,11 +20,13 @@ namespace WebServer
 
         private HttpListener server;
 
+        public event EventHandler OnServerStart;
 
         private void LoadCharacters(IntegratedAuthoringToolAsset iat, List<RolePlayCharacterAsset> rpcs)
         {
             foreach (var source in iat.GetAllCharacterSources())
             {
+                var j = iat.AssetFilePath;
                 var rpc = RolePlayCharacterAsset.LoadFromFile(source.Source);
                 rpc.LoadAssociatedAssets();
                 iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
@@ -34,7 +36,7 @@ namespace WebServer
 
         public void Close()
         {
-            server.Close();
+            server?.Close();
         }
 
         public void Run()
@@ -55,6 +57,7 @@ namespace WebServer
                 server = new HttpListener();
                 server.Prefixes.Add("http://localhost:" + this.Port + "/");
                 server.Start();
+                OnServerStart(this, EventArgs.Empty);
             }
             catch (Exception ex)
             {

@@ -27,9 +27,23 @@ namespace FAtiMAHTTPServer
         {
             string port = args[0];
             string file = args[1];
+            HTTPFAtiMAServer server = null;
 
-            HTTPFAtiMAServer server = new HTTPFAtiMAServer() { IatFilePath = file, Port = int.Parse(port) };
-            server.Run();
+            try
+            {
+                server = new HTTPFAtiMAServer() { IatFilePath = file, Port = int.Parse(port) };
+                server.OnServerStart += ServerStartNotification;
+                server.Run();
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+                server?.Close(); 
+            }
+        }
+
+        static void ServerStartNotification(object sender, EventArgs e)
+        {
+            Console.WriteLine("Server Started");
         }
     }
 }

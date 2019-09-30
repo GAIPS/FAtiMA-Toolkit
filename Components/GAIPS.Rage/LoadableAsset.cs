@@ -143,8 +143,13 @@ namespace GAIPS.Rage
 
 		protected static string ToAbsolutePath(string basePath, string relativePath)
 		{
+            //todo: special case
+            if (!basePath.Contains("/") && !relativePath.Contains("/"))
+                return relativePath;
+
 			if (Path.HasExtension(basePath))
 				basePath = PathUtilities.GetDirectoryName(basePath);
+                       
 			return PathUtilities.CleanCombine(basePath, relativePath);
 		}
 
