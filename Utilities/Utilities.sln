@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilities", "Utilities\Utilities.csproj", "{2021E828-2F7F-4775-9F02-58C68FD72EDD}"
 EndProject
@@ -42,5 +42,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{58C05E0C-707A-4D8C-B886-549581CB6EBC} = {91516D9B-AE9F-458D-A0DF-A3D30261468D}
 		{C971A59A-2DD0-4396-AB70-7CBAC20D6CC9} = {91516D9B-AE9F-458D-A0DF-A3D30261468D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {61ABEAA3-955F-4478-89BD-98774B7304CA}
 	EndGlobalSection
 EndGlobal

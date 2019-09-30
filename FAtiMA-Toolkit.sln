@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KnowledgeBase", "Components\KnowledgeBase\KnowledgeBase.csproj", "{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}"
 EndProject
@@ -110,6 +110,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{47BA8952-DD65-4BC6-BC93-5C73A9C37F13}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FAtiMAHTTPServer", "Applications\FAtiMAHTTPServer\FAtiMAHTTPServer.csproj", "{9E5F2F9F-1800-46F0-8AB8-D628955D03AD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wrapper", "Wrapper", "{42EE9433-C7A4-4216-918E-3097DE8157A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebServer", "Wrappers\WebServer\WebServer.csproj", "{8D2E220B-2764-4798-AC75-E75F4847CCC6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -667,6 +671,22 @@ Global
 		{9E5F2F9F-1800-46F0-8AB8-D628955D03AD}.Release|x64.Build.0 = Release|Any CPU
 		{9E5F2F9F-1800-46F0-8AB8-D628955D03AD}.Release|x86.ActiveCfg = Release|Any CPU
 		{9E5F2F9F-1800-46F0-8AB8-D628955D03AD}.Release|x86.Build.0 = Release|Any CPU
+		{8D2E220B-2764-4798-AC75-E75F4847CCC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D2E220B-2764-4798-AC75-E75F4847CCC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D2E220B-2764-4798-AC75-E75F4847CCC6}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{8D2E220B-2764-4798-AC75-E75F4847CCC6}.Debug|ARM.Build.0 = Debug|Any CPU
+		{8D2E220B-2764-4798-AC75-E75F4847CCC6}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8D2E220B-2764-4798-AC75-E75F4847CCC6}.Debug|x64.Build.0 = Debug|Any CPU
+		{8D2E220B-2764-4798-AC75-E75F4847CCC6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8D2E220B-2764-4798-AC75-E75F4847CCC6}.Debug|x86.Build.0 = Debug|Any CPU
+		{8D2E220B-2764-4798-AC75-E75F4847CCC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D2E220B-2764-4798-AC75-E75F4847CCC6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D2E220B-2764-4798-AC75-E75F4847CCC6}.Release|ARM.ActiveCfg = Release|Any CPU
+		{8D2E220B-2764-4798-AC75-E75F4847CCC6}.Release|ARM.Build.0 = Release|Any CPU
+		{8D2E220B-2764-4798-AC75-E75F4847CCC6}.Release|x64.ActiveCfg = Release|Any CPU
+		{8D2E220B-2764-4798-AC75-E75F4847CCC6}.Release|x64.Build.0 = Release|Any CPU
+		{8D2E220B-2764-4798-AC75-E75F4847CCC6}.Release|x86.ActiveCfg = Release|Any CPU
+		{8D2E220B-2764-4798-AC75-E75F4847CCC6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -708,6 +728,7 @@ Global
 		{71C37EAC-993D-425F-BB0B-84459A091CE5} = {2C13F768-C122-4B7F-A08A-9E8AB520F6D2}
 		{C751A38C-44D9-4918-B1F1-55A80147471D} = {C929932E-8ED8-4B6E-960E-4C4695E39CC1}
 		{9E5F2F9F-1800-46F0-8AB8-D628955D03AD} = {47BA8952-DD65-4BC6-BC93-5C73A9C37F13}
+		{8D2E220B-2764-4798-AC75-E75F4847CCC6} = {42EE9433-C7A4-4216-918E-3097DE8157A7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1E271D37-CF67-4C38-A712-8F2304D4FE38}

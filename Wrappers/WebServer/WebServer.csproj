@@ -4,18 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9E5F2F9F-1800-46F0-8AB8-D628955D03AD}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>FAtiMAHTTPServer</RootNamespace>
-    <AssemblyName>FAtiMAHTTPServer</AssemblyName>
+    <ProjectGuid>{8D2E220B-2764-4798-AC75-E75F4847CCC6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WebServer</RootNamespace>
+    <AssemblyName>WebServer</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -25,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -36,7 +33,6 @@
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="RageAssetManager">
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
@@ -51,12 +47,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="APIDTOs.cs" />
+    <Compile Include="APIErrors.cs" />
+    <Compile Include="APIMethods.cs" />
+    <Compile Include="WebServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Assets\EmotionalAppraisal\EmotionalAppraisal.csproj">
@@ -71,8 +66,12 @@
       <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
       <Name>RolePlayCharacter</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Assets\WorldModel\WorldModel.csproj">
+      <Project>{c751a38c-44d9-4918-b1f1-55a80147471d}</Project>
+      <Name>WorldModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj">
-      <Project>{e011d502-5c0f-4a3f-9f1a-337ff025eb48}</Project>
+      <Project>{E011D502-5C0F-4A3F-9F1A-337FF025EB48}</Project>
       <Name>ActionLibrary</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
@@ -87,10 +86,9 @@
       <Project>{BC47528F-FBF6-465E-BB0E-F68F50F31C13}</Project>
       <Name>WellFormedNames</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Wrappers\WebServer\WebServer.csproj">
-      <Project>{8d2e220b-2764-4798-ac75-e75f4847ccc6}</Project>
-      <Name>WebServer</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

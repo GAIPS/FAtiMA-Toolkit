@@ -627,7 +627,17 @@ namespace RolePlayCharacter
             if (string.IsNullOrEmpty(path))
                 return generateDefault();
 
-            return LoadableAsset<T>.LoadFromFile(ToAbsolutePath(path));
+            //TODO:CHECK THIS PROBLEM
+            var p = ToAbsolutePath(path);
+
+            if (p.StartsWith("/"))
+            {
+                return LoadableAsset<T>.LoadFromFile("." + ToAbsolutePath(path));
+            }
+            else
+            {
+                return LoadableAsset<T>.LoadFromFile(ToAbsolutePath(path));
+            }
         }
 
         #region RolePlayCharater Fields
