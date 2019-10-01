@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APIDTOs.cs" />
+    <Compile Include="MessageTypes.cs" />
     <Compile Include="APIErrors.cs" />
     <Compile Include="APIMethods.cs" />
     <Compile Include="WebServer.cs" />

@@ -13,6 +13,7 @@ using WorldModel.DTOs;
 
 namespace WebServer
 {
+
     public class HTTPFAtiMAServer
     {
         public string IatFilePath { get; set; }
@@ -20,7 +21,7 @@ namespace WebServer
 
         private HttpListener server;
 
-        public event EventHandler OnServerStart;
+        public event EventHandler<ServerEventArgs> OnServerEvent;
 
         private void LoadCharacters(IntegratedAuthoringToolAsset iat, List<RolePlayCharacterAsset> rpcs)
         {
@@ -57,11 +58,20 @@ namespace WebServer
                 server = new HttpListener();
                 server.Prefixes.Add("http://localhost:" + this.Port + "/");
                 server.Start();
-                OnServerStart(this, EventArgs.Empty);
+                OnServerEvent(this, new ServerEventArgs
+                {
+                    Message = "Server started on port '" + this.Port + "' on scenario '" + iat.ScenarioName + "'",
+                    Type = MessageTypes.Status
+                });
             }
             catch (Exception ex)
             {
                 server.Close();
+                OnServerEvent(this, new ServerEventArgs
+                {
+                    Message = ex.Message,
+                    Type = MessageTypes.Error
+                });
                 return;
             }
 
@@ -74,8 +84,16 @@ namespace WebServer
                 if (request.RawUrl.StartsWith("/favicon.ico"))
                     continue; //ignore this request
 
+                OnServerEvent(this, new ServerEventArgs
+                {
+                    Message = request.HttpMethod + " request: " + request.RawUrl + " [" + DateTime.Now + "]",
+                    Type = MessageTypes.Request
+                });
+
                 if (request.HttpMethod == "GET")
                 {
+                   
+
                     if (request.RawUrl.StartsWith("/" + APIMethods.DECIDE + "?c="))
                     {
                         responseJson = this.HandleDecideRequest(request.RawUrl, iat, rpcs);
@@ -92,6 +110,7 @@ namespace WebServer
                     {
                         responseJson = JsonConvert.SerializeObject(APIErrors.ERROR_UNKNOWN_GET_REQUEST);
                     }
+               
                 }
                 else if (request.HttpMethod == "POST")
                 {
@@ -127,6 +146,13 @@ namespace WebServer
                         responseJson = JsonConvert.SerializeObject(APIErrors.ERROR_UNKNOWN_POST_REQUEST);
                     }
                 }
+
+                OnServerEvent(this, new ServerEventArgs
+                {
+                    Message = "Result: " + responseJson,
+                    Type = MessageTypes.Output
+                });
+
 
                 HttpListenerResponse response = context.Response;
                 response.ContentType = "application/json";
@@ -341,5 +367,13 @@ namespace WebServer
             LoadCharacters(iat, rpcs);
             return JsonConvert.SerializeObject("Scenario Loaded.");
         }
+
     }
+
+    public class ServerEventArgs : EventArgs
+    {
+        public string Message { get; set; }
+        public MessageTypes Type { get; set; }
+    }
+
 }

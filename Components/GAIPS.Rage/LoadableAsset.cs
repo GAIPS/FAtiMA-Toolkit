@@ -41,7 +41,7 @@ namespace GAIPS.Rage
 				throw new Exception($"No {nameof(IDataStorage)} defined in the AssetManager bridge.");
 
 		    if (!storage.Exists(filePath))
-				throw new FileNotFoundException();
+				throw new FileNotFoundException(filePath);
 
 			var data = storage.Load(filePath);
 			T asset;
@@ -144,9 +144,6 @@ namespace GAIPS.Rage
 		protected static string ToAbsolutePath(string basePath, string relativePath)
 		{
             //todo: special case
-            if (!basePath.Contains("/") && !relativePath.Contains("/"))
-                return relativePath;
-
 			if (Path.HasExtension(basePath))
 				basePath = PathUtilities.GetDirectoryName(basePath);
                        
