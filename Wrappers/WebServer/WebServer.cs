@@ -19,19 +19,31 @@ namespace WebServer
         public string IatFilePath { get; set; }
         public int Port { get; set; }
 
+        private const string DEFAULT_SESSION_ID = "Default";
         private HttpListener server;
 
         public event EventHandler<ServerEventArgs> OnServerEvent;
 
-        private void LoadCharacters(IntegratedAuthoringToolAsset iat, List<RolePlayCharacterAsset> rpcs)
+        private void LoadCharacters(IntegratedAuthoringToolAsset iat, string sessionName, Dictionary<string,List<RolePlayCharacterAsset>> rpcs)
         {
+            if (rpcs.ContainsKey(sessionName))
+            {
+                rpcs[sessionName] = new List<RolePlayCharacterAsset>(); 
+            }
+            else
+            {
+                rpcs.Add(sessionName, new List<RolePlayCharacterAsset>());
+            }
+                
+
             foreach (var source in iat.GetAllCharacterSources())
             {
                 var j = iat.AssetFilePath;
                 var rpc = RolePlayCharacterAsset.LoadFromFile(source.Source);
                 rpc.LoadAssociatedAssets();
                 iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
-                rpcs.Add(rpc);
+                
+                rpcs[sessionName].Add(rpc);
             }
         }
 
@@ -42,16 +54,17 @@ namespace WebServer
 
         public void Run()
         {
-            IntegratedAuthoringToolAsset iat = null;
+
+            IntegratedAuthoringToolAsset iat;
+            Dictionary<string, List<RolePlayCharacterAsset>> rpcs = new Dictionary<string, List<RolePlayCharacterAsset>>();
             WorldModelAsset wm = null;
-            List<RolePlayCharacterAsset> rpcs = new List<RolePlayCharacterAsset>();
 
             iat = IntegratedAuthoringToolAsset.LoadFromFile(IatFilePath);
             if (iat.m_worldModelSource != null && !string.IsNullOrWhiteSpace(iat.m_worldModelSource.RelativePath))
             {
                 wm = WorldModelAsset.LoadFromFile(iat.GetWorldModelSource().Source);
             }
-            LoadCharacters(iat, rpcs);
+            LoadCharacters(iat, DEFAULT_SESSION_ID, rpcs);
 
             try
             {
@@ -90,21 +103,25 @@ namespace WebServer
                     Type = MessageTypes.Request
                 });
 
+
+                //todo:obtain sessionId
+
+                var currentSession = DEFAULT_SESSION_ID;
                 if (request.HttpMethod == "GET")
                 {
                    
 
                     if (request.RawUrl.StartsWith("/" + APIMethods.DECIDE + "?c="))
                     {
-                        responseJson = this.HandleDecideRequest(request.RawUrl, iat, rpcs);
+                        responseJson = this.HandleDecideRequest(request.RawUrl, iat, rpcs[currentSession]);
                     }
                     else if (request.RawUrl.StartsWith("/" + APIMethods.ASK))
                     {
-                        responseJson = this.HandleAskRequest(request.RawUrl, rpcs);
+                        responseJson = this.HandleAskRequest(request.RawUrl, rpcs[currentSession]);
                     }
                     else if (request.RawUrl.StartsWith("/" + APIMethods.CHARACTERS))
                     {
-                        responseJson = this.HandleCharactersRequest(request.RawUrl, rpcs);
+                        responseJson = this.HandleCharactersRequest(request.RawUrl, rpcs[currentSession]);
                     }
                     else
                     {
@@ -127,19 +144,19 @@ namespace WebServer
                     }
                     if (request.RawUrl.StartsWith("/" + APIMethods.PERCEIVE))
                     {
-                        responseJson = this.HandlePerceiveRequest(request.RawUrl, requestBody, rpcs);
+                        responseJson = this.HandlePerceiveRequest(request.RawUrl, requestBody, rpcs[currentSession]);
                     }
                     else if (request.RawUrl.StartsWith("/" + APIMethods.EXECUTE))
                     {
-                        responseJson = this.HandleExecuteRequest(requestBody, wm, rpcs);
+                        responseJson = this.HandleExecuteRequest(requestBody, wm, rpcs[currentSession]);
                     }
                     else if (request.RawUrl.StartsWith("/" + APIMethods.UPDATE))
                     {
-                        responseJson = this.HandleUpdateRequest(requestBody, rpcs);
+                        responseJson = this.HandleUpdateRequest(requestBody, rpcs[currentSession]);
                     }
                     else if (request.RawUrl.StartsWith("/" + APIMethods.RESET))
                     {
-                        responseJson = this.HandleResetRequest(request.RawUrl, rpcs, out iat, out wm);
+                        responseJson = this.HandleResetRequest(request.RawUrl, currentSession, rpcs[currentSession], out iat, out wm);
                     }
                     else
                     {
@@ -355,7 +372,7 @@ namespace WebServer
             return JsonConvert.SerializeObject(string.Format("Updated {0} ticks!", ticks));
         }
 
-        private string HandleResetRequest(string request, List<RolePlayCharacterAsset> rpcs, out IntegratedAuthoringToolAsset iat, out WorldModelAsset wm)
+        private string HandleResetRequest(string request, string session, List<RolePlayCharacterAsset> rpcs, out IntegratedAuthoringToolAsset iat, out WorldModelAsset wm)
         {
             wm = null;
             iat = IntegratedAuthoringToolAsset.LoadFromFile(this.IatFilePath);
@@ -363,8 +380,8 @@ namespace WebServer
             {
                 wm = WorldModelAsset.LoadFromFile(iat.GetWorldModelSource().Source);
             }
-            rpcs = new List<RolePlayCharacterAsset>();
-            LoadCharacters(iat, rpcs);
+           // rpcs = new Dictionary<string, List<RolePlayCharacterAsset>>();
+            ///LoadCharacters(iat, session, rpcs);
             return JsonConvert.SerializeObject("Scenario Loaded.");
         }
 
