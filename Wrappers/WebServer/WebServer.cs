@@ -162,10 +162,7 @@ namespace WebServer
                     {
                         responseJson = this.HandleUpdateRequest(requestBody, rpcs[instance]);
                     }
-                    else if (apiMethod == APIMethods.RESET.ToString())
-                    {
-                        responseJson = this.HandleResetRequest(rpcs, out iat, out wm);
-                    }
+                   
                     else if (apiMethod == APIMethods.CREATE.ToString())
                     {
                         if(instance != DEFAULT_INSTANCE_ID)
