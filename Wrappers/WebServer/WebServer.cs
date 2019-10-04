@@ -19,7 +19,7 @@ namespace WebServer
         public string IatFilePath { get; set; }
         public int Port { get; set; }
 
-        private const string DEFAULT_SESSION_ID = "Default";
+        private const string DEFAULT_INSTANCE_ID = "Default";
         private HttpListener server;
 
         public event EventHandler<ServerEventArgs> OnServerEvent;
@@ -64,7 +64,7 @@ namespace WebServer
             {
                 wm = WorldModelAsset.LoadFromFile(iat.GetWorldModelSource().Source);
             }
-            LoadCharacters(iat, DEFAULT_SESSION_ID, rpcs);
+            LoadCharacters(iat, DEFAULT_INSTANCE_ID, rpcs);
 
             try
             {
@@ -103,25 +103,32 @@ namespace WebServer
                     Type = MessageTypes.Request
                 });
 
+                string apiMethod = request.Url.Segments[request.Url.Segments.Length - 1].ToLower();
+                string instance = request.Url.Segments.Length == 3 ?  request.Url.Segments[1].ToLower() : DEFAULT_INSTANCE_ID;
+                
+                if(instance != DEFAULT_INSTANCE_ID) instance = instance.Remove(instance.Length - 1);
 
-                //todo:obtain sessionId
-
-                var currentSession = DEFAULT_SESSION_ID;
-                if (request.HttpMethod == "GET")
+                if(instance != DEFAULT_INSTANCE_ID && !rpcs.ContainsKey(instance) && apiMethod != APIMethods.CREATE.ToString())
+                    responseJson = JsonConvert.SerializeObject(APIErrors.ERROR_UNKNOWN_INSTANCE);
+                else if (request.HttpMethod == "GET")
                 {
-                   
 
-                    if (request.RawUrl.StartsWith("/" + APIMethods.DECIDE + "?c="))
+                    if (apiMethod == APIMethods.DECIDE.ToString())
                     {
-                        responseJson = this.HandleDecideRequest(request.RawUrl, iat, rpcs[currentSession]);
+                        var charName = request.QueryString["c"].ToLower();
+                        responseJson = this.HandleDecideRequest(charName, iat, rpcs[instance]);
                     }
-                    else if (request.RawUrl.StartsWith("/" + APIMethods.ASK))
+                    else if (apiMethod == APIMethods.ASK.ToString())
                     {
-                        responseJson = this.HandleAskRequest(request.RawUrl, rpcs[currentSession]);
+                        var charName = request.QueryString["c"].ToLower();
+                        var beliefHead = request.QueryString["bh"].ToLower();
+                        var beliefBody = request.QueryString["bb"].ToLower();
+                        var belief = Name.BuildName(beliefHead + "(" + beliefBody + ")");
+                        responseJson = this.HandleAskRequest(charName, belief, rpcs[instance]);
                     }
-                    else if (request.RawUrl.StartsWith("/" + APIMethods.CHARACTERS))
+                    else if (apiMethod == APIMethods.CHARACTERS.ToString())
                     {
-                        responseJson = this.HandleCharactersRequest(request.RawUrl, rpcs[currentSession]);
+                        responseJson = this.HandleCharactersRequest(rpcs[instance]);
                     }
                     else
                     {
@@ -142,21 +149,30 @@ namespace WebServer
                             }
                         }
                     }
-                    if (request.RawUrl.StartsWith("/" + APIMethods.PERCEIVE))
+                    if (apiMethod == APIMethods.PERCEIVE.ToString())
                     {
-                        responseJson = this.HandlePerceiveRequest(request.RawUrl, requestBody, rpcs[currentSession]);
+                        var charName = request.QueryString["c"].ToLower();
+                        responseJson = this.HandlePerceiveRequest(charName, requestBody, rpcs[instance]);
                     }
-                    else if (request.RawUrl.StartsWith("/" + APIMethods.EXECUTE))
+                    else if (apiMethod == APIMethods.EXECUTE.ToString())
                     {
-                        responseJson = this.HandleExecuteRequest(requestBody, wm, rpcs[currentSession]);
+                        responseJson = this.HandleExecuteRequest(requestBody, wm, rpcs[instance]);
                     }
-                    else if (request.RawUrl.StartsWith("/" + APIMethods.UPDATE))
+                    else if (apiMethod == APIMethods.UPDATE.ToString())
                     {
-                        responseJson = this.HandleUpdateRequest(requestBody, rpcs[currentSession]);
+                        responseJson = this.HandleUpdateRequest(requestBody, rpcs[instance]);
                     }
-                    else if (request.RawUrl.StartsWith("/" + APIMethods.RESET))
+                    else if (apiMethod == APIMethods.RESET.ToString())
                     {
-                        responseJson = this.HandleResetRequest(request.RawUrl, currentSession, rpcs[currentSession], out iat, out wm);
+                        responseJson = this.HandleResetRequest(rpcs, out iat, out wm);
+                    }
+                    else if (apiMethod == APIMethods.CREATE.ToString())
+                    {
+                        if(instance != DEFAULT_INSTANCE_ID)
+                        {
+                            LoadCharacters(iat, instance, rpcs);
+                        }
+                        responseJson = JsonConvert.SerializeObject("Instance '"+ instance + "'created."); ;
                     }
                     else
                     {
@@ -182,11 +198,10 @@ namespace WebServer
             }
         }
 
-        private string HandleDecideRequest(string request, IntegratedAuthoringToolAsset iat, List<RolePlayCharacterAsset> rpcs)
+        private string HandleDecideRequest(string characterName, IntegratedAuthoringToolAsset iat, List<RolePlayCharacterAsset> rpcs)
         {
             List<DecisionDTO> resultDTO = new List<DecisionDTO>();
 
-            var characterName = new String(request.SkipWhile(c => c != '=').Skip(1).ToArray()).ToLowerInvariant();
             var rpc = rpcs.Where(r => r.CharacterName.ToString().ToLowerInvariant() == characterName).FirstOrDefault();
             var decisions = rpc?.Decide();
 
@@ -201,7 +216,7 @@ namespace WebServer
                         {
                             utterance = iat.GetDialogAction(d, out utterance).Utterance;
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             return JsonConvert.SerializeObject(string.Format(APIErrors.ERROR_UNKOWN_SPEAK_ACTION, d));
                         }
@@ -213,27 +228,21 @@ namespace WebServer
             return JsonConvert.SerializeObject(resultDTO);
         }
 
-        private string HandleAskRequest(string request, List<RolePlayCharacterAsset> rpcs)
+        private string HandleAskRequest(string characterName, Name belief, List<RolePlayCharacterAsset> rpcs)
         {
             try
             {
-                var reqParamsURL = new String(request.SkipWhile(c => c != '=').Skip(1).ToArray()).ToLowerInvariant();
-                string[] reqParams = reqParamsURL.Split('&');
-                var characterName = reqParams[0];
-                var beliefHead = new String(reqParams[1].SkipWhile(c => c != '=').Skip(1).ToArray());
-                var beliefBody = new String(reqParams[2].SkipWhile(c => c != '=').Skip(1).ToArray());
-                var belief = WellFormedNames.Name.BuildName(beliefHead + "(" + beliefBody + ")");
                 var rpc = rpcs.Where(r => r.CharacterName.ToString().ToLowerInvariant() == characterName).FirstOrDefault();
                 var beliefResult = rpc.GetBeliefValue(belief.ToString());
                 return JsonConvert.SerializeObject(beliefResult);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return JsonConvert.SerializeObject(APIErrors.ERROR_EXCEPTION_ASK);
             }
         }
 
-        private string HandleCharactersRequest(string request, List<RolePlayCharacterAsset> rpcs)
+        private string HandleCharactersRequest(List<RolePlayCharacterAsset> rpcs)
         {
             var result = new List<CharacterDTO>();
             foreach (var rpc in rpcs)
@@ -244,16 +253,10 @@ namespace WebServer
         }
 
 
-        private string HandlePerceiveRequest(string request, string requestBody, List<RolePlayCharacterAsset> rpcs)
+        private string HandlePerceiveRequest(string character, string requestBody, List<RolePlayCharacterAsset> rpcs)
         {
-            string[] events = { };
-            string character = WellFormedNames.Name.UNIVERSAL_STRING;
-
-            if (request.StartsWith("/" + APIMethods.PERCEIVE + "?c="))
-            {
-                character = new String(request.SkipWhile(c => c != '=').Skip(1).ToArray()).ToLowerInvariant();
-            }
-
+            string[] events = Array.Empty<string>();
+           
             if (!string.IsNullOrEmpty(requestBody))
             {
                 events = JsonConvert.DeserializeObject<string[]>(requestBody);
@@ -372,7 +375,7 @@ namespace WebServer
             return JsonConvert.SerializeObject(string.Format("Updated {0} ticks!", ticks));
         }
 
-        private string HandleResetRequest(string request, string session, List<RolePlayCharacterAsset> rpcs, out IntegratedAuthoringToolAsset iat, out WorldModelAsset wm)
+        private string HandleResetRequest(Dictionary<string, List<RolePlayCharacterAsset>> rpcs, out IntegratedAuthoringToolAsset iat, out WorldModelAsset wm)
         {
             wm = null;
             iat = IntegratedAuthoringToolAsset.LoadFromFile(this.IatFilePath);
@@ -380,8 +383,8 @@ namespace WebServer
             {
                 wm = WorldModelAsset.LoadFromFile(iat.GetWorldModelSource().Source);
             }
-           // rpcs = new Dictionary<string, List<RolePlayCharacterAsset>>();
-            ///LoadCharacters(iat, session, rpcs);
+            rpcs = new Dictionary<string, List<RolePlayCharacterAsset>>();
+            LoadCharacters(iat, DEFAULT_INSTANCE_ID, rpcs);
             return JsonConvert.SerializeObject("Scenario Loaded.");
         }
 

@@ -17,5 +17,7 @@ namespace WebServer
         public static string ERROR_EXCEPTION_TRANSLATE = "ERROR: When translating action '{0}' the following exception occured: {1}!";
         public static string ERROR_UNKOWN_SPEAK_ACTION = "ERROR: Could not find a dialogue for the following speak action: '{0}'!";
         public static string ERROR_EXCEPTION_ASK = "ERROR: Incorrect URL format!";
+        public static string ERROR_UNKNOWN_INSTANCE = "ERROR: Unknown Instance!";
+
     }
 }

@@ -21,12 +21,12 @@ namespace WebServer
         public static APIMethods ASK = new APIMethods() { Name = "ask", Params = "?c='character'&bh='belHead'&bb='belBody'", Type = "GET", Description = "Returns the value of a belief for a given character" };
 
         //POST METHODS (BODY REQUIRED)
-        public static APIMethods RESET = new APIMethods() { Name = "reset", Type = "POST", Description = "Reloads the scenario and all the characters." };
         public static APIMethods PERCEIVE = new APIMethods() { Name = "perceive", Type = "POST", Description = "Makes the characters perceive all the event strings passed in the body." };
         public static APIMethods UPDATE = new APIMethods() { Name = "update", Type = "POST", Description = "Updates the characters' internal state for 'x' amount of ticks." };
         public static APIMethods EXECUTE = new APIMethods() { Name = "execute", Type = "POST", Description = "Executes a given action and trigger all the effects defined in the World Model." };
+        public static APIMethods CREATE = new APIMethods() { Name = "create", Type = "POST", Description = "Creates or resets a new instance of RPCs in the scenario." };
 
-        public static APIMethods[] Methods = { DECIDE, CHARACTERS, ASK, PERCEIVE, UPDATE, EXECUTE, RESET };
+        public static APIMethods[] Methods = { DECIDE, CHARACTERS, ASK, PERCEIVE, UPDATE, EXECUTE, CREATE };
 
         public override string ToString()
         {
