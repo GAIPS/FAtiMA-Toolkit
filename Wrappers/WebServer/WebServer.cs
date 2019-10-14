@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using RolePlayCharacter;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace WebServer
 
         public event EventHandler<ServerEventArgs> OnServerEvent;
 
-        private void LoadCharacters(IntegratedAuthoringToolAsset iat, string sessionName, Dictionary<string,List<RolePlayCharacterAsset>> rpcs)
+        private void LoadCharacters(IntegratedAuthoringToolAsset iat, string sessionName, ConcurrentDictionary<string,List<RolePlayCharacterAsset>> rpcs)
         {
             if (rpcs.ContainsKey(sessionName))
             {
@@ -32,7 +33,7 @@ namespace WebServer
             }
             else
             {
-                rpcs.Add(sessionName, new List<RolePlayCharacterAsset>());
+                rpcs.GetOrAdd(sessionName, new List<RolePlayCharacterAsset>());
             }
                 
 
@@ -56,7 +57,7 @@ namespace WebServer
         {
 
             IntegratedAuthoringToolAsset iat;
-            Dictionary<string, List<RolePlayCharacterAsset>> rpcs = new Dictionary<string, List<RolePlayCharacterAsset>>();
+            ConcurrentDictionary<string, List<RolePlayCharacterAsset>> rpcs = new ConcurrentDictionary<string, List<RolePlayCharacterAsset>>();
             WorldModelAsset wm = null;
 
             iat = IntegratedAuthoringToolAsset.LoadFromFile(IatFilePath);
@@ -69,7 +70,7 @@ namespace WebServer
             try
             {
                 server = new HttpListener();
-                server.Prefixes.Add("http://localhost:" + this.Port + "/");
+                server.Prefixes.Add("http://*:" + this.Port + "/");
                 server.Start();
                 OnServerEvent(this, new ServerEventArgs
                 {
@@ -372,7 +373,7 @@ namespace WebServer
             return JsonConvert.SerializeObject(string.Format("Updated {0} ticks!", ticks));
         }
 
-        private string HandleResetRequest(Dictionary<string, List<RolePlayCharacterAsset>> rpcs, out IntegratedAuthoringToolAsset iat, out WorldModelAsset wm)
+        private string HandleResetRequest(ConcurrentDictionary<string, List<RolePlayCharacterAsset>> rpcs, out IntegratedAuthoringToolAsset iat, out WorldModelAsset wm)
         {
             wm = null;
             iat = IntegratedAuthoringToolAsset.LoadFromFile(this.IatFilePath);
@@ -380,7 +381,7 @@ namespace WebServer
             {
                 wm = WorldModelAsset.LoadFromFile(iat.GetWorldModelSource().Source);
             }
-            rpcs = new Dictionary<string, List<RolePlayCharacterAsset>>();
+            rpcs = new ConcurrentDictionary<string, List<RolePlayCharacterAsset>>();
             LoadCharacters(iat, DEFAULT_INSTANCE_ID, rpcs);
             return JsonConvert.SerializeObject("Scenario Loaded.");
         }
