@@ -61,7 +61,7 @@ namespace WebServer
             WorldModelAsset wm = null;
 
             iat = IntegratedAuthoringToolAsset.LoadFromFile(IatFilePath);
-            if (iat.m_worldModelSource != null && !string.IsNullOrWhiteSpace(iat.m_worldModelSource.RelativePath))
+            if (iat.m_worldModelSource != null)
             {
                 wm = WorldModelAsset.LoadFromFile(iat.GetWorldModelSource().Source);
             }
@@ -329,7 +329,7 @@ namespace WebServer
                             }
                         }
                     }
-                    return JsonConvert.SerializeObject((string.Format("{0} actions(s) executed and {1} effects triggered", requests.Count(), eventEffects.Count())));
+                    return JsonConvert.SerializeObject((string.Format("{0} actions(s) executed and {1} effects triggered", requests.Count(), eventEffects?.Count())));
                 }
                 catch (Exception ex)
                 {
