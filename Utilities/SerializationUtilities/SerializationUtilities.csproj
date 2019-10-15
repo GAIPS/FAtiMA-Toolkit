@@ -1,94 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7DD831A6-ADCA-455B-B02F-53C3A639E79B}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GAIPS.Serialization</RootNamespace>
-    <AssemblyName>GAIPS.Serialization</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="System" />
+    <ProjectReference Include="..\Utilities\Utilities.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Attributes\DefaultSerializationSystemAttribute.cs" />
-    <Compile Include="Attributes\NonSerializedAttribute.cs" />
-    <Compile Include="Attributes\SerializableAttribute.cs" />
-    <Compile Include="BaseSerializer.cs" />
-    <Compile Include="Bridges\DefaultAssemblyLoader.cs" />
-    <Compile Include="Bridges\DefaultInstanceFactory.cs" />
-    <Compile Include="GraphFormatterSelector.cs" />
-    <Compile Include="IAssemblyLoader.cs" />
-    <Compile Include="ICustomSerialization.cs" />
-    <Compile Include="IGraphFormatter.cs" />
-    <Compile Include="IInstanceFactory.cs" />
-    <Compile Include="ISerializationContext.cs" />
-    <Compile Include="ISerializationData.cs" />
-    <Compile Include="ISerializer.cs" />
-    <Compile Include="OneToOneDictionary.cs" />
-    <Compile Include="SerializationContext.cs" />
-    <Compile Include="SerializationGraph\BaseGraphNode.cs" />
-    <Compile Include="SerializationGraph\SerializedDataType.cs" />
-    <Compile Include="SerializationGraph\ObjectGraphNode.cs" />
-    <Compile Include="SerializationGraph\PrimitiveGraphNode.cs" />
-    <Compile Include="SerializationGraph\SequenceGraphNode.cs" />
-    <Compile Include="SerializationGraph\Graph.cs" />
-    <Compile Include="SerializationGraph\IGraphNode.cs" />
-    <Compile Include="SerializationGraph\StringGraphNode.cs" />
-    <Compile Include="ISerializationSurrogate.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SerializationGraph\TypeGraphNode.cs" />
-    <Compile Include="SerializationServices.cs" />
-    <Compile Include="Serializers\BinarySerializer.cs" />
-    <Compile Include="Serializers\JSONSerializer.cs" />
-    <Compile Include="Surrogates\CustomSerializationSurrogate.cs" />
-    <Compile Include="Surrogates\DefaultSerializationSurrogate.cs" />
-    <Compile Include="Surrogates\DictionarySerializationSurrogate.cs" />
-    <Compile Include="Surrogates\HashSetSerializationSurrogate.cs" />
-    <Compile Include="Surrogates\ListSerializationSurrogate.cs" />
-    <Compile Include="TypeSelector.cs" />
-    <Compile Include="TypeTools.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Utilities\Utilities.csproj">
-      <Project>{2021e828-2f7f-4775-9f02-58c68fd72edd}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
