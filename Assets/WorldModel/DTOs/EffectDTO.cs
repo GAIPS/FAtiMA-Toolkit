@@ -1,7 +1,6 @@
 ﻿using System;
 using Conditions.DTOs;
 using WellFormedNames;
-using RolePlayCharacter;
 
 namespace WorldModel.DTOs
 {

@@ -4,5 +4,17 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Components\Conditions\Conditions.csproj" />
+    <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj" />
+    <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="RageAssetManager">
+      <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 
 </Project>
