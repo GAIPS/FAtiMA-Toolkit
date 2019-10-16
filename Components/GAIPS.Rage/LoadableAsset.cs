@@ -7,7 +7,7 @@ using Utilities.Json;
 
 namespace GAIPS.Rage
 {
-	public abstract class LoadableAsset<T> : BaseAsset where T : LoadableAsset<T>
+	public abstract class LoadableAsset<T> where T : LoadableAsset<T>
 	{
 		protected static readonly JSONSerializer SERIALIZER = new JSONSerializer();
 

@@ -13,11 +13,5 @@
     <ProjectReference Include="..\..\Utilities\SerializationUtilities\SerializationUtilities.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="RageAssetManager">
-      <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 
 </Project>

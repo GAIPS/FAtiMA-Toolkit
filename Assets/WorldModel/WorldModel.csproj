@@ -10,11 +10,5 @@
     <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="RageAssetManager">
-      <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 
 </Project>

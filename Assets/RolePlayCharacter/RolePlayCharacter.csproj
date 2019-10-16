@@ -18,11 +18,5 @@
     <ProjectReference Include="..\SocialImportance\SocialImportance.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="RageAssetManager">
-      <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 
 </Project>

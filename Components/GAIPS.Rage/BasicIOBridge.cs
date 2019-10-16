@@ -4,7 +4,7 @@ using AssetPackage;
 
 namespace GAIPS.Rage
 {
-    public class BasicIOBridge : IBridge, IDataStorage
+    public class BasicIOBridge : IBridge, AssetPackage.IDataStorage
     {
         public bool Delete(string fileId)
         {
