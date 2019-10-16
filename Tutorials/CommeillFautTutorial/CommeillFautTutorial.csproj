@@ -1,122 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BB9973F4-6832-424C-A596-941AFCD7FC80}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ConsoleApplication1</RootNamespace>
-    <AssemblyName>ConsoleApplication1</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <TargetFrameworkProfile />
+    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="RageAssetManager">
-      <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\..\Assets\IntegratedAuthoringTool\IntegratedAuthoringTool.csproj" />
+    <ProjectReference Include="..\..\Assets\RolePlayCharacter\RolePlayCharacter.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Assets\CommeillFaut\CommeillFaut.csproj">
-      <Project>{ba21951c-1799-4d0f-aa99-62df857f3b71}</Project>
-      <Name>CommeillFaut</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Assets\EmotionalAppraisal\EmotionalAppraisal.csproj">
-      <Project>{0a2a1ee9-bd5d-44aa-a22d-291612488f06}</Project>
-      <Name>EmotionalAppraisal</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Assets\EmotionalDecisionMaking\EmotionalDecisionMaking.csproj">
-      <Project>{a1e56f5c-eaac-43e5-a922-5b244168ea5c}</Project>
-      <Name>EmotionalDecisionMaking</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Assets\IntegratedAuthoringTool\IntegratedAuthoringTool.csproj">
-      <Project>{f6ad95a5-889c-41a4-b613-b81f09a424ee}</Project>
-      <Name>IntegratedAuthoringTool</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Assets\RolePlayCharacter\RolePlayCharacter.csproj">
-      <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
-      <Name>RolePlayCharacter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Assets\SocialImportance\SocialImportance.csproj">
-      <Project>{823e8a41-5231-4b06-bbab-e62651e15bc7}</Project>
-      <Name>SocialImportance</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Assets\WorldModel\WorldModel.csproj">
-      <Project>{c751a38c-44d9-4918-b1f1-55a80147471d}</Project>
-      <Name>WorldModel</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj">
-      <Project>{e011d502-5c0f-4a3f-9f1a-337ff025eb48}</Project>
-      <Name>ActionLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\AutobiographicMemory\AutobiographicMemory.csproj">
-      <Project>{c1cc38c5-72f5-4545-b4f7-c65b2883909c}</Project>
-      <Name>AutobiographicMemory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\Conditions\Conditions.csproj">
-      <Project>{59041269-e52e-4cdd-84e0-92fdcfbf270d}</Project>
-      <Name>Conditions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
-      <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
-      <Name>GAIPS.Rage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\KnowledgeBase\KnowledgeBase.csproj">
-      <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
-      <Name>KnowledgeBase</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
-      <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
-      <Name>WellFormedNames</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Tests\Tests.Conditions\Tests.Conditions.csproj">
-      <Project>{19b1fa8e-d302-4af8-a53d-2a9aa469bcc7}</Project>
-      <Name>Tests.Conditions</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

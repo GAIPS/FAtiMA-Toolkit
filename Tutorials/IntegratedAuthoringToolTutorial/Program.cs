@@ -1,9 +1,7 @@
-﻿using AssetManagerPackage;
-using RolePlayCharacter;
+﻿using RolePlayCharacter;
 using IntegratedAuthoringTool;
 using System;
 using System.Linq;
-using WellFormedNames;
 
 namespace IntegratedAuthoringToolTutorial
 {

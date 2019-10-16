@@ -39,7 +39,7 @@ namespace GAIPS.Rage
 			var storage = GetInterface<IDataStorage>();
 			if (storage == null)
 				throw new Exception($"No {nameof(IDataStorage)} defined in the AssetManager bridge.");
-
+            var jonas = Directory.GetCurrentDirectory();
 		    if (!storage.Exists(filePath))
 				throw new FileNotFoundException(filePath);
 

@@ -14,9 +14,6 @@ namespace CommeillFautTutorial
         static void Main(string[] args)
         {
 
-
-
-
              // This tutorial has become a testing ground for the method "LoadFromString"
 
 
