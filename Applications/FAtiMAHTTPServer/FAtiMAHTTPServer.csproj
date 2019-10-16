@@ -1,96 +1,15 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{9E5F2F9F-1800-46F0-8AB8-D628955D03AD}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>FAtiMAHTTPServer</RootNamespace>
-    <AssemblyName>FAtiMAHTTPServer</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+    <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="RageAssetManager">
-      <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <ProjectReference Include="..\..\Assets\IntegratedAuthoringTool\IntegratedAuthoringTool.csproj" />
+    <ProjectReference Include="..\..\Assets\RolePlayCharacter\RolePlayCharacter.csproj" />
+    <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj" />
+    <ProjectReference Include="..\..\Wrappers\WebServer\WebServer.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Assets\EmotionalAppraisal\EmotionalAppraisal.csproj">
-      <Project>{0a2a1ee9-bd5d-44aa-a22d-291612488f06}</Project>
-      <Name>EmotionalAppraisal</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Assets\IntegratedAuthoringTool\IntegratedAuthoringTool.csproj">
-      <Project>{f6ad95a5-889c-41a4-b613-b81f09a424ee}</Project>
-      <Name>IntegratedAuthoringTool</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Assets\RolePlayCharacter\RolePlayCharacter.csproj">
-      <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
-      <Name>RolePlayCharacter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj">
-      <Project>{e011d502-5c0f-4a3f-9f1a-337ff025eb48}</Project>
-      <Name>ActionLibrary</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
-      <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
-      <Name>GAIPS.Rage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\KnowledgeBase\KnowledgeBase.csproj">
-      <Project>{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}</Project>
-      <Name>KnowledgeBase</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
-      <Project>{BC47528F-FBF6-465E-BB0E-F68F50F31C13}</Project>
-      <Name>WellFormedNames</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Wrappers\WebServer\WebServer.csproj">
-      <Project>{8d2e220b-2764-4798-ac75-e75f4847ccc6}</Project>
-      <Name>WebServer</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

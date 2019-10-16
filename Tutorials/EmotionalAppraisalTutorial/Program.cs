@@ -15,9 +15,8 @@ namespace EmotionalAppraisalTutorial
         {
 			var kickEvent = Name.BuildName("Event(Action-End, John, *, *)");
 
-            EmotionalAppraisalAsset ea = EmotionalAppraisalAsset.LoadFromFile("../../../Examples/EA-Tutorial/EATest.ea");
+             EmotionalAppraisalAsset ea = EmotionalAppraisalAsset.LoadFromFile("../../../../Examples/EA-Tutorial/EATest.ea");
 
-           
 
             //The following lines add an appraisal rule that will make the kickEvent be perceived as undesirable
             //Normally, these rules should be authored using the AuthoringTool provided with the asset but they can also be added dynamically
@@ -50,8 +49,7 @@ namespace EmotionalAppraisalTutorial
                 Console.WriteLine("Active Emotions: " + string.Concat(emotionalState.GetAllEmotions().Select(e => e.EmotionType + "-" + e.Intensity + " ")));
             }
 
-            //The asset can also be loaded from an existing file using the following method:
-            ea = EmotionalAppraisalAsset.LoadFromFile("../../../Examples/EA-Tutorial/EATest.ea");
+            ea.SaveToFile("../../../../Examples/EA-Tutorial/EATest.ea");
             
             Console.ReadKey();
         }

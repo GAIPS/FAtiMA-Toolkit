@@ -36,6 +36,6 @@
 	"types": [
 		{
 			"TypeId": 0,
-			"ClassName": "SocialImportance.SocialImportanceAsset, SocialImportanceAsset, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+			"ClassName": "SocialImportance.SocialImportanceAsset, SocialImportance, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 		}]
 }

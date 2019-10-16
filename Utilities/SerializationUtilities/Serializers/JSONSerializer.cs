@@ -185,6 +185,7 @@ namespace SerializationUtilities
 						throw new Exception("Unable to deserialize"); //TODO get a better exception
 
 					byte typeId = (byte)(typeEntry["TypeId"] as JsonNumber);
+                    
 					Type loadedType = Type.GetType((typeEntry["ClassName"] as JsonString).String);
 					serGraph.RegistTypeEntry(loadedType, typeId);
 				}

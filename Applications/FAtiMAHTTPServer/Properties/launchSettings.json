@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FAtiMAHTTPServer": {
+      "commandName": "Project",
+      "commandLineArgs": "80 \"D:\\Session2\\Scenario2.iat\""
+    }
+  }
+}
