@@ -1,84 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C1CC38C5-72F5-4545-B4F7-C65B2883909C}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AutobiographicMemory</RootNamespace>
-    <AssemblyName>AutobiographicMemory</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="DTOs\ActionEventDTO.cs" />
-    <Compile Include="DTOs\EventDTO.cs" />
-    <Compile Include="DTOs\PropertyChangeEventDTO.cs" />
-    <Compile Include="Event\BaseEvent.cs" />
-    <Compile Include="AMConsts.cs" />
-    <Compile Include="Event\PropertyChangeEvent.cs" />
-    <Compile Include="AM.cs" />
-    <Compile Include="Event\ActionEvent.cs" />
-    <Compile Include="IBaseEvent.cs" />
-    <Compile Include="IPropertyChangedEvent.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <ProjectReference Include="..\..\Utilities\SerializationUtilities\SerializationUtilities.csproj" />
+    <ProjectReference Include="..\..\Utilities\Utilities\Utilities.csproj" />
+    <ProjectReference Include="..\KnowledgeBase\KnowledgeBase.csproj" />
+    <ProjectReference Include="..\WellFormedNames\WellFormedNames.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Utilities\SerializationUtilities\SerializationUtilities.csproj">
-      <Project>{5668aa40-1c40-4888-b4ac-052e608383f4}</Project>
-      <Name>SerializationUtilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Utilities\Utilities\Utilities.csproj">
-      <Project>{64474679-ed12-4f6a-aeab-53d7dec319b4}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Conditions\Conditions.csproj">
-      <Project>{59041269-e52e-4cdd-84e0-92fdcfbf270d}</Project>
-      <Name>Conditions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\KnowledgeBase\KnowledgeBase.csproj">
-      <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
-      <Name>KnowledgeBase</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WellFormedNames\WellFormedNames.csproj">
-      <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
-      <Name>WellFormedNames</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>

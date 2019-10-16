@@ -1,117 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0A2A1EE9-BD5D-44AA-A22D-291612488F06}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EmotionalAppraisal</RootNamespace>
-    <AssemblyName>EmotionalAppraisal</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Components\AutobiographicMemory\AutobiographicMemory.csproj" />
+    <ProjectReference Include="..\..\Components\Conditions\Conditions.csproj" />
+    <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj" />
+    <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj" />
+    <ProjectReference Include="..\..\Utilities\SerializationUtilities\SerializationUtilities.csproj" />
+  </ItemGroup>
+
   <ItemGroup>
     <Reference Include="RageAssetManager">
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ActiveEmotion.cs" />
-    <Compile Include="AppraisalRules\AppraisalRule.cs" />
-    <Compile Include="AppraisalRules\ReactiveAppraisalDerivator.cs" />
-    <Compile Include="AppraisalVariables.cs" />
-    <Compile Include="BaseEmotion.cs" />
-    <Compile Include="Components\IAffectDerivator.cs" />
-    <Compile Include="Components\IAppraisalDerivator.cs" />
-    <Compile Include="Components\IEmotionProcessor.cs" />
-    <Compile Include="ConcreteEmotionalState.cs" />
-    <Compile Include="DTOs\AppraisalRuleDTO.cs" />
-    <Compile Include="DTOs\EmotionDTO.cs" />
-    <Compile Include="DTOs\EmotionDispositionDTO.cs" />
-    <Compile Include="DTOs\AppraisalVariableDTO.cs" />
-    <Compile Include="DTOs\GoalDTO.cs" />
-    <Compile Include="EmotionalAppraisalAsset.cs" />
-    <Compile Include="EmotionalAppraisalConfiguration.cs" />
-    <Compile Include="EmotionDisposition.cs" />
-    <Compile Include="EmotionValence.cs" />
-    <Compile Include="Goal.cs" />
-    <Compile Include="IActiveEmotion.cs" />
-    <Compile Include="IAppraisalFrame.cs" />
-    <Compile Include="IEmotion.cs" />
-    <Compile Include="IEmotionalState.cs" />
-    <Compile Include="InternalAppraisalFrame.cs" />
-    <Compile Include="IWritableAppraisalFrame.cs" />
-    <Compile Include="Mood.cs" />
-    <Compile Include="NameUtilities.cs" />
-    <Compile Include="OCCModel\OCCAffectDerivationComponent.cs" />
-    <Compile Include="OCCModel\OCCAppraisalVariables.cs" />
-    <Compile Include="OCCModel\OCCBaseEmotion.cs" />
-    <Compile Include="OCCModel\OCCEmotionType.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Components\AutobiographicMemory\AutobiographicMemory.csproj">
-      <Project>{c1cc38c5-72f5-4545-b4f7-c65b2883909c}</Project>
-      <Name>AutobiographicMemory</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\Conditions\Conditions.csproj">
-      <Project>{59041269-e52e-4cdd-84e0-92fdcfbf270d}</Project>
-      <Name>Conditions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
-      <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
-      <Name>GAIPS.Rage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\KnowledgeBase\KnowledgeBase.csproj">
-      <Project>{a632a90a-0ee6-430f-acf2-25bb7ced21e7}</Project>
-      <Name>KnowledgeBase</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj">
-      <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
-      <Name>WellFormedNames</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Utilities\SerializationUtilities\SerializationUtilities.csproj">
-      <Project>{5668aa40-1c40-4888-b4ac-052e608383f4}</Project>
-      <Name>SerializationUtilities</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Utilities\Utilities\Utilities.csproj">
-      <Project>{64474679-ed12-4f6a-aeab-53d7dec319b4}</Project>
-      <Name>Utilities</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+
 </Project>
