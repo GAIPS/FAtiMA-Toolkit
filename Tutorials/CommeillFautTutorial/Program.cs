@@ -1,28 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using ActionLibrary;
-using ActionLibrary.DTOs;
-using AssetManagerPackage;
-using CommeillFaut.DTOs;
-using CommeillFaut;
-using Conditions.DTOs;
-using EmotionalAppraisal;
-using EmotionalAppraisal.DTOs;
 using IntegratedAuthoringTool;
-using KnowledgeBase;
-using Microsoft.CSharp.RuntimeBinder;
 using RolePlayCharacter;
-using WellFormedNames;
-using WorldModel;
-using WorldModel.DTOs;
 
 namespace CommeillFautTutorial
 {
@@ -55,10 +36,7 @@ namespace CommeillFautTutorial
             
           //  var playerString = File.OpenRead(path);
             
-            
-            var jnas = "{\t\"root\":\t\t{\t\t\t\"classId\": 0,\t\t\t\"KnowledgeBase\":\t\t\t\t{\t\t\t\t\t\"Perspective\": \"Player\",\t\t\t\t\t\"Knowledge\":\t\t\t\t\t\t{\t\t\t\t\t\t\t\"SELF\":\t\t\t\t\t\t\t\t{\t\t\t\t\t\t\t\t\t\"Has(Floor)\": \"John, 1\",\t\t\t\t\t\t\t\t\t\"WantsTheJob(Player)\": \"True, 1\"\t\t\t\t\t\t\t\t}\t\t\t\t\t\t}\t\t\t\t},\t\t\t\"BodyName\": \"Male\",\t\t\t\"VoiceName\": \"Female\",\t\t\t\"EmotionalAppraisalAssetSource\": null,\t\t\t\"EmotionalDecisionMakingSource\": \"DecisionMakingPlayer.edm\",\t\t\t\"SocialImportanceAssetSource\": \"\",\t\t\t\"CommeillFautAssetSource\": \"..\\\\JobInterviewCIF.cif\",\t\t\t\"EmotionalState\":\t\t\t\t{\t\t\t\t\t\"Mood\": 0,\t\t\t\t\t\"initialTick\": 0,\t\t\t\t\t\"EmotionalPool\": [],\t\t\t\t\t\"AppraisalConfiguration\":\t\t\t\t\t\t{\t\t\t\t\t\t\t\"HalfLifeDecayConstant\": 0.5,\t\t\t\t\t\t\t\"EmotionInfluenceOnMoodFactor\": 0.3,\t\t\t\t\t\t\t\"MoodInfluenceOnEmotionFactor\": 0.3,\t\t\t\t\t\t\t\"MinimumMoodValueForInfluencingEmotions\": 0.5,\t\t\t\t\t\t\t\"EmotionalHalfLifeDecayTime\": 15,\t\t\t\t\t\t\t\"MoodHalfLifeDecayTime\": 60\t\t\t\t\t\t}\t\t\t\t},\t\t\t\"AutobiographicMemory\":\t\t\t\t{\t\t\t\t\t\"Tick\": 0,\t\t\t\t\t\"records\": []\t\t\t\t},\t\t\t\"OtherAgents\":\t\t\t\t{\t\t\t\t\t\"dictionary\": []\t\t\t\t}\t\t},\t\"types\": [\t\t{\t\t\t\"TypeId\": 0,\t\t\t\"ClassName\": \"RolePlayCharacter.RolePlayCharacterAsset, RolePlayCharacter, Version=1.5.0.0, Culture=neutral, PublicKeyToken=null\"\t\t}]}";
-           
-            string fileContents;
+              string fileContents;
             using (StreamReader reader = new StreamReader(fs))
             {
                 fileContents = reader.ReadToEnd();
@@ -114,45 +92,8 @@ namespace CommeillFautTutorial
             johnRPC.LoadAssociatedAssetsFromString(johnAppraisal, johnEDM, johnSI, "");
             
             iat.BindToRegistry(johnRPC.DynamicPropertiesRegistry);
-            
-
-
-
-
-
-
-
 
             Console.WriteLine("Asset loaded from text correctly");
-
-
-          /*  foreach (var actor in rpcList)
-            {
-
-
-                foreach (var anotherActor in rpcList)
-                {
-                    if (actor != anotherActor)
-                    {
-
-
-                        var changed = new[] { EventHelper.ActionEnd(anotherActor.CharacterName.ToString(), "Enters", "Room") };
-                        actor.Perceive(changed);
-                    }
-                    
-                }
-              
-            }
-
-
-            foreach(var actor in rpcList)
-            {
-                if(actor.Decide().FirstOrDefault() != null)
-                Console.WriteLine(actor.CharacterName.ToString() + " decided to perform  " + actor.Decide().FirstOrDefault().Name);
-            }
-
-    */
-
 
             // Letting each other know they are here
             var hi = new[] { EventHelper.ActionEnd(player.CharacterName.ToString(), "Enters", "Room") };

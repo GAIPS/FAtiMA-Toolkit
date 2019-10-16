@@ -92,8 +92,6 @@ namespace RolePlayCharacterTutorial
             
 
             }
-            Console.WriteLine("Mood after tick: " + rpc.Mood);
-            Console.ReadKey();
 
         }
     }

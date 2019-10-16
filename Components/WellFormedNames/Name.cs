@@ -287,7 +287,6 @@ namespace WellFormedNames
 		/// <returns>A new Name instance, which is the original one with the transformed function applied.</returns>
 		public abstract Name ApplyToTerms(Func<Name, Name> transformFunction);
 		
-		private static ulong _variableIdCounter = 0;
 		
 		#region Operators
 

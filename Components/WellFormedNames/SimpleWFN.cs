@@ -48,7 +48,6 @@ namespace WellFormedNames
                 for (int i = 0; i < description.Length; i++)
                 {
                     //add literal
-                    Literal lit = null;
                     switch (description[i])
                     {
                         case '(':

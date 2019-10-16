@@ -127,7 +127,7 @@ namespace WorldModelTutorial
                     var randomGen = new Random(Guid.NewGuid().GetHashCode());
 
                     var pos = randomGen.Next(rpcList.Count);
-                int i = 0;
+                
                   
                     var initiator = rpcList[pos];
                 

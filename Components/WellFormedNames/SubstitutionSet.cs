@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Utilities;
 
@@ -266,7 +267,7 @@ namespace WellFormedNames
 
         public float FindMinimumCertainty()
         {
-            if (this.IsEmpty())
+            if (!this.Any())
                 return 1;
             var result = float.MaxValue;
 

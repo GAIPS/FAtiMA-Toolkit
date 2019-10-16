@@ -365,7 +365,7 @@ namespace WebServer
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return JsonConvert.SerializeObject(APIErrors.ERROR_EXCEPTION_UPDATE);
                 }

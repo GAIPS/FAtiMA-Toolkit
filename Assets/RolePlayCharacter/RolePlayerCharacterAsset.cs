@@ -8,7 +8,6 @@ using EmotionalAppraisal.OCCModel;
 using EmotionalDecisionMaking;
 using GAIPS.Rage;
 using KnowledgeBase;
-using MCTS;
 using SerializationUtilities;
 using SocialImportance;
 using System;
@@ -342,7 +341,6 @@ namespace RolePlayCharacter
             m_socialImportanceAsset = si;
             m_commeillFautAsset = cfa;
 
-            MCTSAsset mcts = new MCTSAsset();
 
             //Dynamic properties
             BindToRegistry(m_kb);
@@ -350,7 +348,6 @@ namespace RolePlayCharacter
             edm.RegisterKnowledgeBase(m_kb);
             si.RegisterKnowledgeBase(m_kb);
             cfa.RegisterKnowledgeBase(m_kb);
-            mcts.RegisterKnowledgeBase(m_kb);
             m_allowAuthoring = false;
         }
 
@@ -360,32 +357,28 @@ namespace RolePlayCharacter
             var charName = CharacterName.ToString();
 
             EmotionalAppraisalAsset ea = new EmotionalAppraisalAsset();
-            if(!_ea.IsEmpty())
+            if(_ea.Any())
              ea = EmotionalAppraisalAsset.LoadFromString(_ea);
 
 
             EmotionalDecisionMakingAsset edm = new EmotionalDecisionMakingAsset();
-            if(!_edm.IsEmpty())
+            if(_edm.Any())
                 edm = EmotionalDecisionMakingAsset.LoadFromString(_edm);
 
             SocialImportanceAsset si = new SocialImportanceAsset();
-            if(!_si.IsEmpty())
+            if(_si.Any())
             si = SocialImportanceAsset.LoadFromString(_si);
 
             CommeillFautAsset cif = new CommeillFautAsset();
-            if(!_cif.IsEmpty())
+            if(_cif.Any())
             cif = CommeillFautAsset.LoadFromString(_cif);
            
-
-            MCTSAsset mcts = new MCTSAsset();
-
             //Dynamic properties
             BindToRegistry(m_kb);
            
             edm.RegisterKnowledgeBase(m_kb);
             si.RegisterKnowledgeBase(m_kb);
             cif.RegisterKnowledgeBase(m_kb);
-            mcts.RegisterKnowledgeBase(m_kb);
             m_allowAuthoring = false;
 
             m_emotionalAppraisalAsset = ea;
@@ -613,12 +606,12 @@ namespace RolePlayCharacter
                 StrongestAttributionEmotionCalculator);
             registry.RegistDynamicProperty(RPCConsts.STRONGEST_COMPOUND_PROPERTY_NAME, "",
                 StrongestCompoundEmotionCalculator);
-            registry.RegistDynamicProperty(EMOTION_INTENSITY_DP_NAME, "", EmotionIntensityPropertyCalculator);
-            registry.RegistDynamicProperty(IS_AGENT_DP_NAME, "", IsAgentPropertyCalculator);
-            registry.RegistDynamicProperty(ROUND_TO_TENS_DP_NAME, "", RoundtoTensMethodCalculator);
-            registry.RegistDynamicProperty(ROUND_DP_NAME, "", RoundMethodCalculator);
-            registry.RegistDynamicProperty(RANDOM_DP_NAME, "", RandomCalculator);
-            registry.RegistDynamicProperty(ID_SALIENT_DP_NAME, "", IsSalientPropertyCalculator);
+            registry.RegistDynamicProperty(EMOTION_INTENSITY_DP_NAME, EMOTION_INTENSITY_DP_DESC, EmotionIntensityPropertyCalculator);
+            registry.RegistDynamicProperty(IS_AGENT_DP_NAME, IS_AGENT_DP_NAME_DESC, IsAgentPropertyCalculator);
+            registry.RegistDynamicProperty(ROUND_TO_TENS_DP_NAME, ROUND_TO_TENS_DP_DESC, RoundtoTensMethodCalculator);
+            registry.RegistDynamicProperty(ROUND_DP_NAME, ROUND_DP_DESC, RoundMethodCalculator);
+            registry.RegistDynamicProperty(RANDOM_DP_NAME, RANDOM_DP_DESC, RandomCalculator);
+            registry.RegistDynamicProperty(ID_SALIENT_DP_NAME, ID_SALIENT_DP_DESC, IsSalientPropertyCalculator);
             m_am.BindToRegistry(registry);
         }
 
@@ -671,8 +664,6 @@ namespace RolePlayCharacter
 
         private static readonly Name ID_SALIENT_DP_NAME = (Name)"IdentitySalient";
         private static readonly string ID_SALIENT_DP_DESC = "";
-
-        private static readonly Name LOG_DP_NAME = Name.BuildName("Log");
         
 
 
@@ -711,7 +702,7 @@ namespace RolePlayCharacter
                         
                         var gottem = GetAllActiveEmotions().Where(d => d.Type == emotionName.ToString());
 
-                        if (!gottem.IsEmpty())
+                        if (gottem.Any())
                         {
                             foreach (var c in context.Constraints)
                             {
@@ -742,7 +733,7 @@ namespace RolePlayCharacter
                 else
                 {
                     var gottem = GetAllActiveEmotions().Where(d => d.Type == emotionName.ToString());
-                    if(!gottem.IsEmpty())
+                    if(gottem.Any())
                         foreach (var c in context.Constraints)
                         {
                             yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(gottem.FirstOrDefault().Intensity)), c);
@@ -862,7 +853,7 @@ namespace RolePlayCharacter
                     yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(v)), c);
                 }
                 
-                if(context.Constraints.IsEmpty())
+                if(!context.Constraints.Any())
                     yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(v)), new SubstitutionSet());
             }
         }

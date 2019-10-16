@@ -197,7 +197,7 @@ namespace AutobiographicMemory
 						yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(id)), new SubstitutionSet(pair.Item2));
 				}
 
-			    if (unifiedSet.IsEmpty())
+			    if (!unifiedSet.Any())
 			    {
 			        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(-1)), c);
 			    }
@@ -287,7 +287,7 @@ namespace AutobiographicMemory
                          }
 
 
-                        if (unifiedSet.IsEmpty())
+                        if (!unifiedSet.Any())
                         {
                             yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(-1)), c);
                         }

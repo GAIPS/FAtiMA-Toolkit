@@ -97,7 +97,6 @@ namespace IATTests
 
             var trueID = iat.GetAllDialogueActions().FirstOrDefault().Id;
 
-            var err = "";
 
 
             Assert.AreEqual(iat.GetDialogActionById(trueID).CurrentState, d.CurrentState);
@@ -122,9 +121,6 @@ namespace IATTests
             };
 
             iat.AddDialogAction(d);
-
-
-            var err = "";
 
 
             Assert.AreEqual(iat.GetDialogueActionsByState("Start").FirstOrDefault().Utterance, d.Utterance);

@@ -66,7 +66,7 @@ namespace IntegratedAuthoringTool
             if (rpc.GetBeliefValue(hasFloor) != rpc.CharacterName.ToString())
                 return null;
 
-            if (decisions.IsEmpty())
+            if (!decisions.Any())
             {
 
                 int i = 0;
