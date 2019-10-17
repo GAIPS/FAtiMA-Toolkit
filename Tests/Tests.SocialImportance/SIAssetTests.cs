@@ -1,5 +1,4 @@
 ﻿using Conditions.DTOs;
-using EmotionalAppraisal.DTOs;
 using KnowledgeBase;
 using NUnit.Framework;
 using SocialImportance;
