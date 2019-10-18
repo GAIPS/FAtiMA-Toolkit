@@ -7,6 +7,8 @@ using GAIPS.Rage;
 using WellFormedNames;
 using KnowledgeBase;
 using ActionLibrary.DTOs;
+using RuleLibraryComponent;
+using SerializationUtilities;
 
 namespace EmotionalDecisionMakingTutorial
 {
@@ -24,14 +26,23 @@ namespace EmotionalDecisionMakingTutorial
             kb.Tell((Name)"LikesToFight(SELF)", (Name)"True");
             edm.RegisterKnowledgeBase(kb);
 
+            
             //create an action rule
             var actionRule = new ActionRuleDTO {Action = Name.BuildName("Kick"), Priority = Name.BuildName("4"), Target = (Name)"Player" };
 
+
             //add the reaction rule
             var id = edm.AddActionRule(actionRule);
-            
+            var rule = edm.GetActionRule(id);
             edm.AddRuleCondition(id, "LikesToFight(SELF) = True");
             var actions = edm.Decide(Name.UNIVERSAL_SYMBOL);
+
+            var library = new RuleLibrary();
+            rule = edm.GetActionRule(id);
+            library.AddComponentRule(typeof(EmotionalDecisionMakingAsset).Name, new ComponentRule { Name = rule.Action, Conditions = rule.Conditions }) ;
+
+
+            library.SaveToFile("D:\\test.json");
 
             Console.WriteLine("Decisions: ");
             foreach (var a in actions)
@@ -41,7 +52,7 @@ namespace EmotionalDecisionMakingTutorial
 
             //this is how you can load the asset from a file
             Console.WriteLine("Loading From File: ");
-            edm = EmotionalDecisionMakingAsset.LoadFromFile("../../../Examples/EDM-Tutorial/EDMTest.edm");
+            edm = EmotionalDecisionMakingAsset.LoadFromFile("../../../../Examples/EDM-Tutorial/EDMTest.edm");
             edm.RegisterKnowledgeBase(kb);
             actions = edm.Decide(Name.UNIVERSAL_SYMBOL);
 

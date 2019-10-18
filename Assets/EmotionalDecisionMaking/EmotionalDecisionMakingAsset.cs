@@ -9,6 +9,7 @@ using SerializationUtilities;
 using WellFormedNames;
 using IQueryable = WellFormedNames.IQueryable;
 using ActionLibrary.DTOs;
+using RuleLibraryComponent;
 
 namespace EmotionalDecisionMaking
 {
@@ -33,12 +34,14 @@ namespace EmotionalDecisionMaking
             m_actionRules = new List<ActionRule>();
         }
 
+
 		protected override string OnAssetLoaded()
 		{
 			return null;
 		}
 
-
+        
+        
 		/// <summary>
 		/// Registers an Emotional Appraisal Asset to be used by
 		/// this Emotional Decision Making asset.
@@ -195,7 +198,6 @@ namespace EmotionalDecisionMaking
             this.AddRuleCondition(ruleId, newCondition);
         }
         
-
 #region Serialization
 
 		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)

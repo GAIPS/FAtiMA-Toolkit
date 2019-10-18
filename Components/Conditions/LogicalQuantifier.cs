@@ -1,9 +1,12 @@
-﻿namespace Conditions
+﻿using SerializationUtilities.Attributes;
+
+namespace Conditions
 {
 	/// <summary>
 	/// Represents logical quantification modes
 	/// </summary>
-	public enum LogicalQuantifier : byte
+    [Serializable]
+	public enum LogicalQuantifier 
 	{
 		/// <summary>
 		/// Sets of conditions evaluated in this mode, return true if at least on possible case is considered valid.

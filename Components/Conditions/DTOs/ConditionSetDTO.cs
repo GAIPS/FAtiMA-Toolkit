@@ -13,6 +13,7 @@ namespace Conditions.DTOs
 		/// Used to change how the entier condition set is evaluated.
 		/// </summary>
 		public LogicalQuantifier Quantifier { get; set; }
+
 		/// <summary>
 		/// The conditions to be evaluated as a single set.
 		/// </summary>
