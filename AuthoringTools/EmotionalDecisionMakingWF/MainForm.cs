@@ -106,8 +106,6 @@ namespace EmotionalDecisionMakingWF
 		private void UpdateConditions(ActionRuleDTO reaction)
 		{
 			conditionSetView.SetData(reaction?.Conditions);
-            conditionSetEditor.
-
         }
 
 		private void dataGridViewReactiveActions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)

@@ -7,8 +7,12 @@ using GAIPS.Rage;
 using WellFormedNames;
 using KnowledgeBase;
 using ActionLibrary.DTOs;
-using RuleLibraryComponent;
 using SerializationUtilities;
+using FAtiMA.AssetStorage;
+using System.IO;
+using System.Text.RegularExpressions;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace EmotionalDecisionMakingTutorial
 {
@@ -37,12 +41,15 @@ namespace EmotionalDecisionMakingTutorial
             edm.AddRuleCondition(id, "LikesToFight(SELF) = True");
             var actions = edm.Decide(Name.UNIVERSAL_SYMBOL);
 
-            var library = new RuleLibrary();
-            rule = edm.GetActionRule(id);
-            library.AddComponentRule(typeof(EmotionalDecisionMakingAsset).Name, new ComponentRule { Name = rule.Action, Conditions = rule.Conditions }) ;
+            var json = new JSONSerializer();
+            var storage = new AssetStorage();
+            var aux = json.SerializeToJson(edm).ToString(true);
+            var aux2 = Regex.Unescape(aux);
+
+            storage.StoreComponent(typeof(EmotionalDecisionMakingAsset).Name, aux2);
 
 
-            library.SaveToFile("D:\\test.json");
+            storage.SaveToFile("D:\\test.json");
 
             Console.WriteLine("Decisions: ");
             foreach (var a in actions)
