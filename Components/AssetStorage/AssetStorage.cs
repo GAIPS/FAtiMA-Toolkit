@@ -1,12 +1,9 @@
 ﻿using SerializationUtilities;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using Utilities.Json;
 
 namespace FAtiMA.AssetStorage
 {
-    [Serializable]
     public class AssetStorage
     {
         private Dictionary<string, string> componentConfigurations;
@@ -16,11 +13,33 @@ namespace FAtiMA.AssetStorage
             this.componentConfigurations = new Dictionary<string, string>();
         }
 
+        public static AssetStorage FromJson(string json)
+        {
+            var res = new AssetStorage();
+            var serializer = new JSONSerializer();
+            string assetName = string.Empty;
+            foreach (var el in (JsonArray)JsonParser.Parse(json))
+            {
+                if (el.GetType() == typeof(JsonString)) 
+                    assetName = el.ToString().Trim(new char[]{'\"'});
+                else
+                {
+                    res.componentConfigurations[assetName] = el.ToString(true);
+                }
+
+            }
+            return res;
+        }
+
         public void StoreComponent(string componentName, string configuration)
         {
             if (!componentConfigurations.ContainsKey(componentName))
             {
                 componentConfigurations.Add(componentName, configuration);
+            }
+            else
+            {
+                componentConfigurations[componentName] = configuration;
             }
         }
 
@@ -36,18 +55,26 @@ namespace FAtiMA.AssetStorage
             }
         }
 
-        public void SaveToFile(string path)
+
+        public string ToJson()
         {
-
-
-            using (var writer = File.CreateText(path))
+            string result = "[\n";
+            var i = 0;
+            foreach (var c in componentConfigurations.Keys)
             {
-                foreach(var c in componentConfigurations.Keys)
+                result += "\"" + c + "\", \n";
+
+                if (i < componentConfigurations.Keys.Count - 1)
                 {
-                    writer.WriteLine("--"+ c + "--");
-                    writer.WriteLine(componentConfigurations[c]);
+                    result += componentConfigurations[c] + ",\n";
                 }
+                else
+                {
+                    result += componentConfigurations[c] + "\n]\n";
+                }
+                i++;
             }
+            return result;
         }
     }
 }

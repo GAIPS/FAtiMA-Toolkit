@@ -21,8 +21,9 @@ namespace EmotionalDecisionMakingTutorial
         //This is a small console program to exemplify the main functionality of the Emotional Decision Making Asset
         static void Main(string[] args)
         {
-			//First we construct a new instance of the EmotionalDecisionMakingAsset class
-			var edm = new EmotionalDecisionMakingAsset();
+            //First we construct a new instance of the EmotionalDecisionMakingAsset class
+            var storage = new AssetStorage();
+            var edm = EmotionalDecisionMakingAsset.CreateInstance(storage);
 
             //Then, we have to register an existing knowledge base to the asset so it can check for 
             //beliefs are true
@@ -40,16 +41,24 @@ namespace EmotionalDecisionMakingTutorial
             var rule = edm.GetActionRule(id);
             edm.AddRuleCondition(id, "LikesToFight(SELF) = True");
             var actions = edm.Decide(Name.UNIVERSAL_SYMBOL);
-
-            var json = new JSONSerializer();
-            var storage = new AssetStorage();
-                       
             var ea = EmotionalAppraisalAsset.CreateInstance(storage);
-            var edm2 = EmotionalDecisionMakingAsset.CreateInstance(storage);
-            ea.SaveToStorage();
-            edm2.SaveToStorage();
-            storage.SaveToFile("D:\\test.json");
 
+            edm = EmotionalDecisionMakingAsset.CreateInstance(storage);
+            edm.SaveToStorage();
+
+            using (var writer = File.CreateText("D:\\test2.json"))
+            {
+                writer.Write(storage.ToJson());
+            }
+
+            string aux2 = File.ReadAllText("D:\\Test2.json");
+
+            var storage2 = AssetStorage.FromJson(aux2);
+
+            using (var writer = File.CreateText("D:\\test3.json"))
+            {
+                writer.Write(storage2.ToJson());
+            }
             Console.WriteLine("Decisions: ");
             foreach (var a in actions)
             {

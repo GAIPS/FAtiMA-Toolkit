@@ -33,6 +33,7 @@ namespace GAIPS.Rage
             {
                 var res = new T();
                 res.storage = storage;
+                res.SaveToStorage();
                 return res;
             }
             else
@@ -122,7 +123,7 @@ namespace GAIPS.Rage
             this.storage.StoreComponent(typeof(T).Name, aux);
         }
 
-		public void SaveToFile(string filepath)
+        public void SaveToFile(string filepath)
 		{
 			var storage = GetInterface<IDataStorage>();
 			if(storage == null)
