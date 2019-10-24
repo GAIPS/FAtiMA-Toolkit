@@ -43,12 +43,11 @@ namespace EmotionalDecisionMakingTutorial
 
             var json = new JSONSerializer();
             var storage = new AssetStorage();
-            var aux = json.SerializeToJson(edm).ToString(true);
-            var aux2 = Regex.Unescape(aux);
-
-            storage.StoreComponent(typeof(EmotionalDecisionMakingAsset).Name, aux2);
-
-
+                       
+            var ea = EmotionalAppraisalAsset.CreateInstance(storage);
+            var edm2 = EmotionalDecisionMakingAsset.CreateInstance(storage);
+            ea.SaveToStorage();
+            edm2.SaveToStorage();
             storage.SaveToFile("D:\\test.json");
 
             Console.WriteLine("Decisions: ");
@@ -57,7 +56,7 @@ namespace EmotionalDecisionMakingTutorial
                 Console.WriteLine(a.Name.ToString() + " p: " + a.Utility);
             }
 
-            //this is how you can load the asset from a file
+            //this is how you can load the asset from a file 
             Console.WriteLine("Loading From File: ");
             edm = EmotionalDecisionMakingAsset.LoadFromFile("../../../../Examples/EDM-Tutorial/EDMTest.edm");
             edm.RegisterKnowledgeBase(kb);

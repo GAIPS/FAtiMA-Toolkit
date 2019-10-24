@@ -9,6 +9,8 @@ using SerializationUtilities;
 using WellFormedNames;
 using IQueryable = WellFormedNames.IQueryable;
 using ActionLibrary.DTOs;
+using FAtiMA.AssetStorage;
+using Utilities.Json;
 
 namespace EmotionalDecisionMaking
 {
@@ -32,14 +34,11 @@ namespace EmotionalDecisionMaking
         {
             m_actionRules = new List<ActionRule>();
         }
-
-
+     
 		protected override string OnAssetLoaded()
 		{
 			return null;
 		}
-
-        
         
 		/// <summary>
 		/// Registers an Emotional Appraisal Asset to be used by

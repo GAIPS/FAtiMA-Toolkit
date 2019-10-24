@@ -24,14 +24,29 @@ namespace FAtiMA.AssetStorage
             }
         }
 
+        public string GetComponentConfiguration(string componentName)
+        {
+            if (componentConfigurations.ContainsKey(componentName))
+            {
+                return componentConfigurations[componentName];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         public void SaveToFile(string path)
         {
-            var json = new JSONSerializer();
-            var res = json.SerializeToJson(this);
-            
+
+
             using (var writer = File.CreateText(path))
             {
-                writer.Write(res.ToString(true));
+                foreach(var c in componentConfigurations.Keys)
+                {
+                    writer.WriteLine("--"+ c + "--");
+                    writer.WriteLine(componentConfigurations[c]);
+                }
             }
         }
     }

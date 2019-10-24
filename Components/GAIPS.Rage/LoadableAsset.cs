@@ -2,14 +2,17 @@
 using System.IO;
 using AssetManagerPackage;
 using AssetPackage;
+using FAtiMA.AssetStorage;
 using SerializationUtilities;
 using Utilities.Json;
 
 namespace GAIPS.Rage
 {
-	public abstract class LoadableAsset<T> where T : LoadableAsset<T>
+	public abstract class LoadableAsset<T> where T : LoadableAsset<T>, new ()
 	{
 		protected static readonly JSONSerializer SERIALIZER = new JSONSerializer();
+
+        private AssetStorage storage;
 
 		[NonSerialized] private string m_assetFilepath = null;
 		public string AssetFilePath => m_assetFilepath;
@@ -23,8 +26,26 @@ namespace GAIPS.Rage
 			return asset;
 		}
 
+        public static T CreateInstance(AssetStorage storage)
+        {
+            var config = storage.GetComponentConfiguration(typeof(T).Name);
+            if (config == null)
+            {
+                var res = new T();
+                res.storage = storage;
+                return res;
+            }
+            else
+            {
+                var json = new JSONSerializer();
+                var aux = (JsonObject)JsonParser.Parse(config);
+                var res = json.DeserializeFromJson<T>(aux);
+                res.storage = storage;
+                return res;
+            }
+        }
 
-	    public static T LoadFromString(string text)
+        public static T LoadFromString(string text)
 	    {
 	        string error;
 	        T asset = LoadFromString(text, out error);
@@ -33,6 +54,8 @@ namespace GAIPS.Rage
 	        return asset;
 	    }
 
+
+        
 
 		public static T LoadFromFile(string filePath, out string errorOnLoad)
 		{
@@ -91,6 +114,13 @@ namespace GAIPS.Rage
             
 			SaveToFile(m_assetFilepath);
 		}
+
+        public void SaveToStorage()
+        {
+            var json = new JSONSerializer();
+            var aux = json.SerializeToJson(this).ToString(true);
+            this.storage.StoreComponent(typeof(T).Name, aux);
+        }
 
 		public void SaveToFile(string filepath)
 		{

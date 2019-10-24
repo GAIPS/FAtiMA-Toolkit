@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj" />
+    <ProjectReference Include="..\..\Components\AssetStorage\AssetStorage.csproj" />
     <ProjectReference Include="..\..\Components\Conditions\Conditions.csproj" />
     <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj" />
     <ProjectReference Include="..\..\Components\WellFormedNames\WellFormedNames.csproj" />

@@ -330,13 +330,13 @@ namespace RolePlayCharacter
         {
             var charName = CharacterName.ToString();
 
-            EmotionalAppraisalAsset ea = Loader(m_emotionalAppraisalAssetSource, () => new EmotionalAppraisalAsset());
+           /* EmotionalAppraisalAsset ea = Loader(m_emotionalAppraisalAssetSource, () => new EmotionalAppraisalAsset());
      
             EmotionalDecisionMakingAsset edm = Loader(m_emotionalDecisionMakingAssetSource, () => new EmotionalDecisionMakingAsset());
             SocialImportanceAsset si = Loader(m_socialImportanceAssetSource, () => new SocialImportanceAsset());
-            CommeillFautAsset cfa = Loader(m_commeillFautAssetSource, () => new CommeillFautAsset());
+            CommeillFautAsset cfa = Loader(m_commeillFautAssetSource, () => new CommeillFautAsset());*/
 
-            m_emotionalAppraisalAsset = ea;
+            /*m_emotionalAppraisalAsset = ea;
             m_emotionalDecisionMakingAsset = edm;
             m_socialImportanceAsset = si;
             m_commeillFautAsset = cfa;
@@ -348,7 +348,7 @@ namespace RolePlayCharacter
             edm.RegisterKnowledgeBase(m_kb);
             si.RegisterKnowledgeBase(m_kb);
             cfa.RegisterKnowledgeBase(m_kb);
-            m_allowAuthoring = false;
+            m_allowAuthoring = false;*/
         }
 
 
@@ -615,7 +615,7 @@ namespace RolePlayCharacter
             m_am.BindToRegistry(registry);
         }
 
-        private T Loader<T>(string path, Func<T> generateDefault) where T : LoadableAsset<T>
+        /*private T Loader<T>(string path, Func<T> generateDefault) where T : LoadableAsset<T>
         {
             if (string.IsNullOrEmpty(path))
                 return generateDefault();
@@ -631,7 +631,7 @@ namespace RolePlayCharacter
             {
                 return LoadableAsset<T>.LoadFromFile(ToAbsolutePath(path));
             }
-        }
+        }*/
 
         #region RolePlayCharater Fields
 
