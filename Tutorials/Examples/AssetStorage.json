@@ -1,0 +1,60 @@
+[
+  "EmotionalDecisionMakingAsset",
+  {
+    "root": {
+      "classId": 0,
+      "ActionTendencies": [
+        {
+          "Action": "TestAction",
+          "Target": "A",
+          "Layer": null,
+          "Conditions": {
+            "Set": [
+              "[m] = A",
+              "[p] = 20"
+            ]
+          },
+          "Priority": "[p]"
+        }
+      ]
+    },
+    "types": [
+      {
+        "TypeId": 0,
+        "ClassName": "EmotionalDecisionMaking.EmotionalDecisionMakingAsset, EmotionalDecisionMaking, Version=1.2.0.0, Culture=neutral, PublicKeyToken=null"
+      }
+    ]
+  },
+ "EmotionalAppraisalAsset", 
+{
+	"root":
+		{
+			"classId": 1,
+			"Description": null,
+			"AppraisalRules":
+				{
+					"AppraisalWeight": 1,
+					"Rules": []
+				},
+			"EmotionDispositions":
+				{
+					"classId": 0,
+					"boxedValue": [
+						{
+							"Emotion": "*",
+							"Decay": 1
+						}]
+				},
+			"Goals": []
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "EmotionalAppraisal.EmotionDisposition[], EmotionalAppraisal, Version=1.4.1.0, Culture=neutral, PublicKeyToken=null"
+		}, 
+		{
+			"TypeId": 1,
+			"ClassName": "EmotionalAppraisal.EmotionalAppraisalAsset, EmotionalAppraisal, Version=1.4.1.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}
+]

@@ -2,6 +2,8 @@
 using RolePlayCharacter;
 using System.Linq;
 using WellFormedNames;
+using System.IO;
+using GAIPS.Rage;
 
 namespace RolePlayCharacterTutorial
 {
@@ -9,9 +11,11 @@ namespace RolePlayCharacterTutorial
     {
         static void Main(string[] args)
         {
+            //AssetStorage
+            var storage = AssetStorage.FromJson(File.ReadAllText("../../../../Examples/AssetStorage.json"));
 		    //Loading the asset
 	        var rpc = new RolePlayCharacterAsset();
-            rpc.LoadAssociatedAssets(new GAIPS.Rage.AssetStorage());
+            rpc.LoadAssociatedAssets(storage);
             rpc.ActivateIdentity(new Identity((Name)"Portuguese",(Name)"Culture", 1));
             Console.WriteLine("Starting Mood: " + rpc.Mood);
             var actions = rpc.Decide();
