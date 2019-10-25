@@ -131,7 +131,7 @@ namespace Tests.CommeillFaut
 
             };
 
-       //     rpc.LoadAssociatedAssets();
+    
             return rpc;
 
         }
@@ -264,9 +264,7 @@ namespace Tests.CommeillFaut
             var rpc = BuildRPCAsset();
             var cif = BuildCIFAsset();
             cif.RegisterKnowledgeBase(rpc.m_kb);
-             rpc.LoadAssociatedAssets();
-
-
+            rpc.LoadAssociatedAssets(new GAIPS.Rage.AssetStorage());
 
             PopulateEventSet(eventSet);
 
@@ -320,9 +318,7 @@ namespace Tests.CommeillFaut
             var rpc = BuildRPCAsset();
             var cif = BuildCIFAsset();
             cif.RegisterKnowledgeBase(rpc.m_kb);
-             rpc.LoadAssociatedAssets();
-
-
+             rpc.LoadAssociatedAssets(new GAIPS.Rage.AssetStorage());
 
             PopulateEventSet(eventSet);
 
@@ -381,9 +377,7 @@ namespace Tests.CommeillFaut
             var rpc = BuildRPCAsset2();
             var cif = BuildCIFAsset();
             cif.RegisterKnowledgeBase(rpc.m_kb);
-             rpc.LoadAssociatedAssets();
-
-
+             rpc.LoadAssociatedAssets(new GAIPS.Rage.AssetStorage());
 
             PopulateEventSet(eventSet);
 
@@ -453,9 +447,7 @@ namespace Tests.CommeillFaut
             var rpc = BuildRPCAsset3();
             var cif = BuildCIFAsset();
             cif.RegisterKnowledgeBase(rpc.m_kb);
-             rpc.LoadAssociatedAssets();
-
-
+            rpc.LoadAssociatedAssets(new GAIPS.Rage.AssetStorage());
 
             PopulateEventSet(eventSet);
 
@@ -517,7 +509,7 @@ namespace Tests.CommeillFaut
             var rpc = BuildRPCAsset();
             var cif = BuildCIFAsset();
             cif.RegisterKnowledgeBase(rpc.m_kb);
-            rpc.LoadAssociatedAssets();
+            rpc.LoadAssociatedAssets(new GAIPS.Rage.AssetStorage());
 
 
 

@@ -21,7 +21,7 @@ namespace SocialImportance
 	///			- Gives the Social Importance value attributed to the given target
 	/// </remarks>
 	[Serializable]
-	public sealed class SocialImportanceAsset: LoadableAsset<SocialImportanceAsset>, ICustomSerialization
+	public sealed class SocialImportanceAsset: Asset<SocialImportanceAsset>, ICustomSerialization
 	{
 		private KB m_kB;
 		private HashSet<AttributionRule> m_attributionRules;
@@ -149,14 +149,6 @@ namespace SocialImportance
 			return result<1?1:(uint)result;
 		}
 
-		/// @cond DOXYGEN_SHOULD_SKIP_THIS
-
-		protected override string OnAssetLoaded()
-		{
-			return null;
-		}
-
-		/// @endcond
 
 		#region DTO operations
 

@@ -6,7 +6,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Utilities\SerializationUtilities\SerializationUtilities.csproj" />
-    <ProjectReference Include="..\AssetStorage\AssetStorage.csproj" />
   </ItemGroup>
 
   <ItemGroup>

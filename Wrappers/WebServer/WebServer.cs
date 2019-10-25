@@ -1,4 +1,5 @@
-﻿using IntegratedAuthoringTool;
+﻿using GAIPS.Rage;
+using IntegratedAuthoringTool;
 using Newtonsoft.Json;
 using RolePlayCharacter;
 using System;
@@ -9,7 +10,6 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using WellFormedNames;
-using WorldModel;
 using WorldModel.DTOs;
 
 namespace WebServer
@@ -18,35 +18,13 @@ namespace WebServer
     public class HTTPFAtiMAServer
     {
         public string IatFilePath { get; set; }
+        public string AssetFilePath { get; set; }
         public int Port { get; set; }
 
         private const string DEFAULT_INSTANCE_ID = "Default";
         private HttpListener server;
 
         public event EventHandler<ServerEventArgs> OnServerEvent;
-
-        private void LoadCharacters(IntegratedAuthoringToolAsset iat, string sessionName, ConcurrentDictionary<string,List<RolePlayCharacterAsset>> rpcs)
-        {
-            if (rpcs.ContainsKey(sessionName))
-            {
-                rpcs[sessionName] = new List<RolePlayCharacterAsset>(); 
-            }
-            else
-            {
-                rpcs.GetOrAdd(sessionName, new List<RolePlayCharacterAsset>());
-            }
-                
-
-            foreach (var source in iat.GetAllCharacterSources())
-            {
-                var j = iat.AssetFilePath;
-                var rpc = RolePlayCharacterAsset.LoadFromFile(source.Source);
-                rpc.LoadAssociatedAssets();
-                iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
-                
-                rpcs[sessionName].Add(rpc);
-            }
-        }
 
         public void Close()
         {
@@ -55,17 +33,11 @@ namespace WebServer
 
         public void Run()
         {
-
             IntegratedAuthoringToolAsset iat;
-            ConcurrentDictionary<string, List<RolePlayCharacterAsset>> rpcs = new ConcurrentDictionary<string, List<RolePlayCharacterAsset>>();
-            WorldModelAsset wm = null;
-
-            iat = IntegratedAuthoringToolAsset.LoadFromFile(IatFilePath);
-            if (iat.m_worldModelSource != null)
-            {
-                wm = WorldModelAsset.LoadFromFile(iat.GetWorldModelSource().Source);
-            }
-            LoadCharacters(iat, DEFAULT_INSTANCE_ID, rpcs);
+            var scenarios = new ConcurrentDictionary<string, IntegratedAuthoringToolAsset>();
+            var assetStorage = AssetStorage.FromJson(File.ReadAllText(AssetFilePath));
+            iat = IntegratedAuthoringToolAsset.FromJson(File.ReadAllText(IatFilePath),assetStorage);
+            scenarios[DEFAULT_INSTANCE_ID] = iat;
 
             try
             {
@@ -109,15 +81,16 @@ namespace WebServer
                 
                 if(instance != DEFAULT_INSTANCE_ID) instance = instance.Remove(instance.Length - 1);
 
-                if(instance != DEFAULT_INSTANCE_ID && !rpcs.ContainsKey(instance) && apiMethod != APIMethods.CREATE.ToString())
+                if(instance != DEFAULT_INSTANCE_ID && !scenarios.ContainsKey(instance) && apiMethod != APIMethods.CREATE.ToString())
                     responseJson = JsonConvert.SerializeObject(APIErrors.ERROR_UNKNOWN_INSTANCE);
+
                 else if (request.HttpMethod == "GET")
                 {
 
                     if (apiMethod == APIMethods.DECIDE.ToString())
                     {
                         var charName = request.QueryString["c"].ToLower();
-                        responseJson = this.HandleDecideRequest(charName, iat, rpcs[instance]);
+                        responseJson = this.HandleDecideRequest(charName, scenarios[instance]);
                     }
                     else if (apiMethod == APIMethods.ASK.ToString())
                     {
@@ -125,11 +98,11 @@ namespace WebServer
                         var beliefHead = request.QueryString["bh"].ToLower();
                         var beliefBody = request.QueryString["bb"].ToLower();
                         var belief = Name.BuildName(beliefHead + "(" + beliefBody + ")");
-                        responseJson = this.HandleAskRequest(charName, belief, rpcs[instance]);
+                        responseJson = this.HandleAskRequest(charName, belief, scenarios[instance]);
                     }
                     else if (apiMethod == APIMethods.CHARACTERS.ToString())
                     {
-                        responseJson = this.HandleCharactersRequest(rpcs[instance]);
+                        responseJson = this.HandleCharactersRequest(scenarios[instance]);
                     }
                     else
                     {
@@ -153,22 +126,22 @@ namespace WebServer
                     if (apiMethod == APIMethods.PERCEIVE.ToString())
                     {
                         var charName = request.QueryString["c"].ToLower();
-                        responseJson = this.HandlePerceiveRequest(charName, requestBody, rpcs[instance]);
+                        responseJson = this.HandlePerceiveRequest(charName, requestBody, scenarios[instance]);
                     }
                     else if (apiMethod == APIMethods.EXECUTE.ToString())
                     {
-                        responseJson = this.HandleExecuteRequest(requestBody, wm, rpcs[instance]);
+                        responseJson = this.HandleExecuteRequest(requestBody, scenarios[instance]);
                     }
                     else if (apiMethod == APIMethods.UPDATE.ToString())
                     {
-                        responseJson = this.HandleUpdateRequest(requestBody, rpcs[instance]);
+                        responseJson = this.HandleUpdateRequest(requestBody, scenarios[instance]);
                     }
                    
                     else if (apiMethod == APIMethods.CREATE.ToString())
                     {
                         if(instance != DEFAULT_INSTANCE_ID)
                         {
-                            LoadCharacters(iat, instance, rpcs);
+                            scenarios[instance] = IntegratedAuthoringToolAsset.FromJson(File.ReadAllText(IatFilePath), assetStorage);
                         }
                         responseJson = JsonConvert.SerializeObject("Instance '"+ instance + "'created."); ;
                     }
@@ -196,11 +169,11 @@ namespace WebServer
             }
         }
 
-        private string HandleDecideRequest(string characterName, IntegratedAuthoringToolAsset iat, List<RolePlayCharacterAsset> rpcs)
+        private string HandleDecideRequest(string characterName, IntegratedAuthoringToolAsset iat)
         {
             List<DecisionDTO> resultDTO = new List<DecisionDTO>();
 
-            var rpc = rpcs.Where(r => r.CharacterName.ToString().ToLowerInvariant() == characterName).FirstOrDefault();
+            var rpc = iat.Characters.Where(r => r.CharacterName.ToString().ToLowerInvariant() == characterName).FirstOrDefault();
             var decisions = rpc?.Decide();
 
             if (decisions != null)
@@ -226,11 +199,11 @@ namespace WebServer
             return JsonConvert.SerializeObject(resultDTO);
         }
 
-        private string HandleAskRequest(string characterName, Name belief, List<RolePlayCharacterAsset> rpcs)
+        private string HandleAskRequest(string characterName, Name belief, IntegratedAuthoringToolAsset scenario)
         {
             try
             {
-                var rpc = rpcs.Where(r => r.CharacterName.ToString().ToLowerInvariant() == characterName).FirstOrDefault();
+                var rpc = scenario.Characters.Where(r => r.CharacterName.ToString().ToLowerInvariant() == characterName).FirstOrDefault();
                 var beliefResult = rpc.GetBeliefValue(belief.ToString());
                 return JsonConvert.SerializeObject(beliefResult);
             }
@@ -240,10 +213,10 @@ namespace WebServer
             }
         }
 
-        private string HandleCharactersRequest(List<RolePlayCharacterAsset> rpcs)
+        private string HandleCharactersRequest(IntegratedAuthoringToolAsset scenario)
         {
             var result = new List<CharacterDTO>();
-            foreach (var rpc in rpcs)
+            foreach (var rpc in scenario.Characters)
             {
                 result.Add(new CharacterDTO { Name = rpc.CharacterName.ToString(), Emotions = rpc.GetAllActiveEmotions(), Mood = rpc.Mood, Tick = rpc.Tick });
             }
@@ -251,7 +224,7 @@ namespace WebServer
         }
 
 
-        private string HandlePerceiveRequest(string character, string requestBody, List<RolePlayCharacterAsset> rpcs)
+        private string HandlePerceiveRequest(string character, string requestBody, IntegratedAuthoringToolAsset iat)
         {
             string[] events = Array.Empty<string>();
            
@@ -266,14 +239,14 @@ namespace WebServer
                         evName = Name.BuildName(ev);
                         if (character == Name.UNIVERSAL_STRING)
                         {
-                            foreach (var rpc in rpcs)
+                            foreach (var rpc in iat.Characters)
                             {
                                 rpc.Perceive(evName);
                             }
                         }
                         else
                         {
-                            var rpc = rpcs.Where(r => r.CharacterName.ToString().ToLowerInvariant() == character).FirstOrDefault();
+                            var rpc = iat.Characters.Where(r => r.CharacterName.ToString().ToLowerInvariant() == character).FirstOrDefault();
                             rpc.Perceive(evName);
                         }
                     }
@@ -290,7 +263,7 @@ namespace WebServer
             return JsonConvert.SerializeObject(string.Format("{0} event(s) perceived by {1}", events.Count(), character));
         }
 
-        private string HandleExecuteRequest(string requestBody, WorldModelAsset wm, List<RolePlayCharacterAsset> rpcs)
+        private string HandleExecuteRequest(string requestBody, IntegratedAuthoringToolAsset scenario)
         {
             IEnumerable<EffectDTO> eventEffects = null;
 
@@ -303,25 +276,25 @@ namespace WebServer
                     foreach (var a in requests)
                     {
                         ev = EventHelper.ActionEnd(a.Subject, a.Action, a.Target);
-                        foreach (var rpc in rpcs)
+                        foreach (var rpc in scenario.Characters)
                         {
                             rpc.Perceive(ev);
                         }
-                        if (wm != null)
+                        if (scenario.WorldModel != null)
                         {
-                            eventEffects = wm.Simulate(new[] { ev });
+                            eventEffects = scenario.WorldModel.Simulate(new[] { ev });
                             foreach (var eff in eventEffects)
                             {
                                 if (eff.ObserverAgent == WellFormedNames.Name.UNIVERSAL_SYMBOL)
                                 {
-                                    foreach (var rpc in rpcs)
+                                    foreach (var rpc in scenario.Characters)
                                     {
                                         rpc.Perceive(EventHelper.PropertyChange(eff.PropertyName, eff.NewValue, (Name)a.Subject));
                                     }
                                 }
                                 else
                                 {
-                                    var obs = rpcs.Where(r => r.CharacterName == eff.ObserverAgent).FirstOrDefault();
+                                    var obs = scenario.Characters.Where(r => r.CharacterName == eff.ObserverAgent).FirstOrDefault();
                                     {
                                         obs?.Perceive(EventHelper.PropertyChange(eff.PropertyName, eff.NewValue, (Name)a.Subject));
                                     }
@@ -342,12 +315,12 @@ namespace WebServer
             }
         }
 
-        private string HandleUpdateRequest(string requestBody, List<RolePlayCharacterAsset> rpcs)
+        private string HandleUpdateRequest(string requestBody, IntegratedAuthoringToolAsset scenario)
         {
             int ticks = 0;
             if (string.IsNullOrEmpty(requestBody))
             {
-                foreach (var rpc in rpcs)
+                foreach (var rpc in scenario.Characters)
                 {
                     rpc.Update();
                 }
@@ -357,7 +330,7 @@ namespace WebServer
                 try
                 {
                     ticks = JsonConvert.DeserializeObject<int>(requestBody);
-                    foreach (var rpc in rpcs)
+                    foreach (var rpc in scenario.Characters)
                     {
                         for (int i = 0; i < ticks; i++)
                         {
@@ -372,20 +345,6 @@ namespace WebServer
             }
             return JsonConvert.SerializeObject(string.Format("Updated {0} ticks!", ticks));
         }
-
-        private string HandleResetRequest(ConcurrentDictionary<string, List<RolePlayCharacterAsset>> rpcs, out IntegratedAuthoringToolAsset iat, out WorldModelAsset wm)
-        {
-            wm = null;
-            iat = IntegratedAuthoringToolAsset.LoadFromFile(this.IatFilePath);
-            if (iat.m_worldModelSource != null)
-            {
-                wm = WorldModelAsset.LoadFromFile(iat.GetWorldModelSource().Source);
-            }
-            rpcs = new ConcurrentDictionary<string, List<RolePlayCharacterAsset>>();
-            LoadCharacters(iat, DEFAULT_INSTANCE_ID, rpcs);
-            return JsonConvert.SerializeObject("Scenario Loaded.");
-        }
-
     }
 
     public class ServerEventArgs : EventArgs

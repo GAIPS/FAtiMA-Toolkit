@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Utilities.Json;
 
-namespace FAtiMA.AssetStorage
+namespace GAIPS.Rage
 {
     public class AssetStorage
     {

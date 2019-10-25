@@ -18,7 +18,7 @@ namespace EmotionalAppraisal
     /// Main class of the Emotional Appraisal Asset.
     /// </summary>
     [Serializable]
-    public sealed partial class EmotionalAppraisalAsset : LoadableAsset<EmotionalAppraisalAsset>, ICustomSerialization
+    public sealed partial class EmotionalAppraisalAsset : Asset<EmotionalAppraisalAsset>, ICustomSerialization
     {
         [NonSerialized]
         private long _lastFrameAppraisal = 0;
@@ -276,11 +276,6 @@ namespace EmotionalAppraisal
             {
                 m_goals.Add(g.Name.ToString(), g);
             }
-        }
-
-        protected override string OnAssetLoaded()
-        {
-            return null;
         }
 
         private void UpdateEmotions(IAppraisalFrame frame, IEmotionalState emotionalState, AM am)

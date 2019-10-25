@@ -9,16 +9,13 @@ using SerializationUtilities;
 using WellFormedNames;
 using IQueryable = WellFormedNames.IQueryable;
 using ActionLibrary.DTOs;
-using FAtiMA.AssetStorage;
-using Utilities.Json;
-
 namespace EmotionalDecisionMaking
 {
 	/// <summary>
 	/// Main class of the Emotional Decision Making Asset
 	/// </summary>
 	[Serializable]
-    public sealed class EmotionalDecisionMakingAsset : LoadableAsset<EmotionalDecisionMakingAsset>, ICustomSerialization
+    public sealed class EmotionalDecisionMakingAsset : Asset<EmotionalDecisionMakingAsset>, ICustomSerialization
     {
         public static readonly Name DEFAULT_PRIORITY = Name.BuildName(1);
 
@@ -34,11 +31,6 @@ namespace EmotionalDecisionMaking
         {
             m_actionRules = new List<ActionRule>();
         }
-     
-		protected override string OnAssetLoaded()
-		{
-			return null;
-		}
         
 		/// <summary>
 		/// Registers an Emotional Appraisal Asset to be used by

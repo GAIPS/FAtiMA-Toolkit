@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using ActionLibrary;
 using IntegratedAuthoringTool;
@@ -17,7 +18,7 @@ namespace WorldModelTutorial
         static void Main(string[] args)
         {
 
-            var iat = IntegratedAuthoringToolAsset.LoadFromFile("../../../Examples/CiF-Tutorial/JobInterview.iat");
+            var iat = IntegratedAuthoringToolAsset.FromJson(File.ReadAllText("../../../Examples/CiF-Tutorial/JobInterview.iat"), new GAIPS.Rage.AssetStorage());
             rpcList = new List<RolePlayCharacterAsset>();
             var wm = new WorldModelAsset();
 
@@ -43,23 +44,6 @@ namespace WorldModelTutorial
                 ObserverAgent = (Name)"[i]"
             });
 
-            wm.SaveToFile("../../../Examples/WM-Tutorial/WorldModel.wm");
-            foreach (var source in iat.GetAllCharacterSources())
-            {
-
-                var rpc = RolePlayCharacterAsset.LoadFromFile(source.Source);
-
-
-                //rpc.DynamicPropertiesRegistry.RegistDynamicProperty(Name.BuildName("Volition"),cif.VolitionPropertyCalculator);
-                rpc.LoadAssociatedAssets();
-
-                iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
-
-                rpcList.Add(rpc);
-
-            }
-          
-
             foreach (var actor in rpcList)
             {
 
@@ -75,7 +59,6 @@ namespace WorldModelTutorial
                     }
                     
                 }
-                //         actor.SaveToFile("../../../Examples/" + actor.CharacterName + "-output1" + ".rpc");
             }
 
 
@@ -102,9 +85,6 @@ namespace WorldModelTutorial
                         Console.WriteLine(rpc.CharacterName + " has this action: " + act.Name);
                         
                     }
-                    rpc.SaveToFile("../../../Examples/WM-Tutorial/" + rpc.CharacterName + "-output" + ".rpc");
-
-
                 }
 
                 _events.Clear();

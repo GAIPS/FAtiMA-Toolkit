@@ -8,7 +8,6 @@ using WellFormedNames;
 using KnowledgeBase;
 using ActionLibrary.DTOs;
 using SerializationUtilities;
-using FAtiMA.AssetStorage;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Text.Json.Serialization;
@@ -30,8 +29,6 @@ namespace EmotionalDecisionMakingTutorial
             var kb = new KB((Name)"John");
             kb.Tell((Name)"LikesToFight(SELF)", (Name)"True");
             edm.RegisterKnowledgeBase(kb);
-
-            
             //create an action rule
             var actionRule = new ActionRuleDTO {Action = Name.BuildName("Kick"), Priority = Name.BuildName("4"), Target = (Name)"Player" };
 
@@ -43,8 +40,7 @@ namespace EmotionalDecisionMakingTutorial
             var actions = edm.Decide(Name.UNIVERSAL_SYMBOL);
             var ea = EmotionalAppraisalAsset.CreateInstance(storage);
 
-            edm = EmotionalDecisionMakingAsset.CreateInstance(storage);
-            edm.SaveToStorage();
+            edm.Save();
 
             using (var writer = File.CreateText("D:\\test2.json"))
             {
@@ -67,7 +63,6 @@ namespace EmotionalDecisionMakingTutorial
 
             //this is how you can load the asset from a file 
             Console.WriteLine("Loading From File: ");
-            edm = EmotionalDecisionMakingAsset.LoadFromFile("../../../../Examples/EDM-Tutorial/EDMTest.edm");
             edm.RegisterKnowledgeBase(kb);
             actions = edm.Decide(Name.UNIVERSAL_SYMBOL);
 

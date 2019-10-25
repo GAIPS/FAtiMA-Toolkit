@@ -13,8 +13,7 @@ namespace SocialImportanceTutorial
 			var siTarget = "Player";
 
             //First, we load the asset from an existing profile
-            var siAsset = SocialImportanceAsset.LoadFromFile("../../../../Examples/SI-Tutorial/SITest.si");
-
+            var siAsset = SocialImportanceAsset.CreateInstance(new GAIPS.Rage.AssetStorage());
             var rules = siAsset.GetAttributionRules();
             //We then register a knowledge base
             var kb = new KB((Name)"John");

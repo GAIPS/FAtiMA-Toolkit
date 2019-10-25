@@ -597,7 +597,7 @@ namespace Tests.RolePlayCharacter
             };
 
 
-            rpc.LoadAssociatedAssets();
+            rpc.LoadAssociatedAssets(new GAIPS.Rage.AssetStorage());
             return rpc;
 
         }
@@ -643,42 +643,6 @@ namespace Tests.RolePlayCharacter
             return ret;
 
 
-        }
-
-
-        [TestCase]
-        public void Test_RPC_AssetSources()
-        {
-
-            var kb = new KB((Name)"Matt");
-
-            var rpc = new RolePlayCharacterAsset
-            {
-                BodyName = "Male",
-                VoiceName = "Male",
-                CharacterName = (Name)"Matt",
-                m_kb = kb,
-
-            };
-
-            var edmPath = "Tests/EmptyEDM";
-
-            var cifPath = "Tests/EmptyCIF";
-
-            var siPath = "Tests/EmtpySI";
-
-            var eaPath = "Tests/EmptyEA";
-
-            rpc.CommeillFautAssetSource = cifPath;
-            rpc.EmotionalDecisionMakingSource = edmPath;
-            rpc.SocialImportanceAssetSource = siPath;
-            rpc.EmotionalAppraisalAssetSource = eaPath;
-
-            Assert.IsNotNull(rpc.DynamicPropertiesRegistry);
-            Assert.IsNotEmpty(rpc.CommeillFautAssetSource);
-            Assert.IsNotEmpty(rpc.EmotionalDecisionMakingSource);
-            Assert.IsNotEmpty(rpc.SocialImportanceAssetSource);
-            Assert.IsNotEmpty(rpc.EmotionalAppraisalAssetSource);
         }
 
         [TestCase]

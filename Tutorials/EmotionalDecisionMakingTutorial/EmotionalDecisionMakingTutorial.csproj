@@ -9,7 +9,6 @@
     <ProjectReference Include="..\..\Assets\EmotionalAppraisal\EmotionalAppraisal.csproj" />
     <ProjectReference Include="..\..\Assets\EmotionalDecisionMaking\EmotionalDecisionMaking.csproj" />
     <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj" />
-    <ProjectReference Include="..\..\Components\AssetStorage\AssetStorage.csproj" />
     <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj" />
     <ProjectReference Include="..\..\Components\KnowledgeBase\KnowledgeBase.csproj" />
   </ItemGroup>

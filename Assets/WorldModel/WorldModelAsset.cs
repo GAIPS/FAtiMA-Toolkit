@@ -11,7 +11,7 @@ using WorldModel.DTOs;
 namespace WorldModel
 {
     [Serializable]
-    public sealed partial class WorldModelAsset : LoadableAsset<WorldModelAsset>, ICustomSerialization
+    public sealed partial class WorldModelAsset : Asset<WorldModelAsset>, ICustomSerialization
     {
         private Dictionary<Name, List<Effect>> actions;
         private Dictionary<Name, int> priorityRules;
@@ -23,11 +23,6 @@ namespace WorldModel
             actions = new Dictionary<Name, List<Effect>>();
             priorityRules = new Dictionary<Name, int>();
             actionNames = new NameSearchTree<Name>();
-        }
-
-        protected override string OnAssetLoaded()
-        {
-            return null;
         }
 
         public IEnumerable<EffectDTO> Simulate(Name[] events)

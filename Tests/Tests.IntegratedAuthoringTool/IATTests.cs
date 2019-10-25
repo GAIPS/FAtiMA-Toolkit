@@ -48,7 +48,7 @@ namespace IATTests
                 m_kb = kb,
             };
 
-            rpc.LoadAssociatedAssets();
+            rpc.LoadAssociatedAssets(new GAIPS.Rage.AssetStorage());
             return rpc;
 
         }

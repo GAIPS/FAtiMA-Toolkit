@@ -12,6 +12,7 @@ using System.Text;
 using System.Security.Cryptography;
 using ActionLibrary;
 using WorldModel;
+using Utilities.Json;
 
 namespace IntegratedAuthoringTool
 {
@@ -19,14 +20,15 @@ namespace IntegratedAuthoringTool
     /// This asset is responsible for managing the scenario, including its characters and respective dialogues
     /// </summary>
     [Serializable]
-    public class IntegratedAuthoringToolAsset : LoadableAsset<IntegratedAuthoringToolAsset>, ICustomSerialization
+    public class IntegratedAuthoringToolAsset : ICustomSerialization
     {
         private DialogActionDictionary m_dialogues;
-        private IList<CharacterSourceDTO> m_characterSources;
+
 
         public  EventTriggers eventTriggers;
 
-        public  WorldModelSourceDTO m_worldModelSource { get; set; }
+        public  WorldModelAsset WorldModel { get; private set; }
+        public IEnumerable<RolePlayCharacterAsset> Characters { get; private set; }
 
         /// <summary>
         /// The name of the Scenario
@@ -35,57 +37,27 @@ namespace IntegratedAuthoringTool
 
 		public string ScenarioDescription { get; set; }
 
-        
-        protected override void OnAssetPathChanged(string oldpath)
-	    {
-            for(int i = 0; i < m_characterSources.Count; i++)
-            {
-                var absPath = ToAbsolutePath(oldpath, m_characterSources[i].Source);
-                m_characterSources[i].Source = absPath;
-            }
-
-	        if (m_worldModelSource != null)
-	            m_worldModelSource.Source = ToRelativePath(AssetFilePath, ToAbsolutePath(oldpath, m_worldModelSource.Source));
-
-	    }
-
 	    public IntegratedAuthoringToolAsset()
         {
             m_dialogues = new DialogActionDictionary();
-	        m_characterSources = new List<CharacterSourceDTO>();
-            m_worldModelSource =  new WorldModelSourceDTO();
-
+            Characters = new List<RolePlayCharacterAsset>();
+            WorldModel =  new WorldModelAsset();
             eventTriggers = new EventTriggers();
         }
 
-		/// <summary>
-        /// Retreives all the sources for the characters in the scenario.
-        /// </summary>
-        public IEnumerable<CharacterSourceDTO> GetAllCharacterSources()
+        public static IntegratedAuthoringToolAsset FromJson(string json, AssetStorage storage)
         {
-	        return m_characterSources.Select(p => new CharacterSourceDTO() {Id = p.Id, Source = ToAbsolutePath(p.Source), RelativePath = p.Source});
-
-        }
-
-        public WorldModelSourceDTO GetWorldModelSource()
-        {
-            if (m_worldModelSource?.Source != null)
+            var serializer = new JSONSerializer();
+            var aux = (JsonObject)JsonParser.Parse(json);
+            var iat = serializer.DeserializeFromJson<IntegratedAuthoringToolAsset>(aux);
+            foreach(var c in iat.Characters)
             {
-                if (m_worldModelSource.RelativePath == null)
-                {
-                    m_worldModelSource.RelativePath = m_worldModelSource.Source;
-
-                    m_worldModelSource.Source = ToAbsolutePath(m_worldModelSource.Source);
-                }
-
-                return m_worldModelSource;
+                c.LoadAssociatedAssets(storage);
+                iat.BindToRegistry(c.DynamicPropertiesRegistry);
             }
-            return null;
-
-
+            return iat;
         }
 
-        
         public static string GenerateUtteranceId(string utterance)
         {
             utterance = utterance.RemoveWhiteSpace();
@@ -95,36 +67,22 @@ namespace IntegratedAuthoringTool
             utteranceId = utteranceId.Replace("-", string.Empty);
             return IATConsts.TTS_PREFIX + utteranceId;
         }
-
-        /// <summary>
-        /// Adds a new role-play character asset to the scenario.
-        /// </summary>
-        /// <param name="character">The instance of the Role Play Character asset</param>
-        public void AddNewCharacterSource(CharacterSourceDTO dto)
-        {
-	     	string errorsOnLoad;
-			var asset = RolePlayCharacterAsset.LoadFromFile(dto.Source, out errorsOnLoad);
-	        if (errorsOnLoad != null)
-		        throw new Exception(errorsOnLoad);
-            dto.Id = m_characterSources.Count;
-            dto.Source = ToRelativePath(dto.Source);
-			m_characterSources.Add(dto);
-        }
         
         /// <summary>
         /// Removes a list of characters from the scenario
         /// </summary>
         /// <param name="character">A list of character names</param>
-        public void RemoveCharacters(IList<int> charactersToRemove)
+        public void RemoveCharacters(IEnumerable<string> characterNames)
         {
-            foreach (var characterId in charactersToRemove)
+            var newList = new List<RolePlayCharacterAsset>();
+            foreach (var c in Characters)
             {
-	            m_characterSources.RemoveAt(characterId);
-            }   
-            for(int i = 0; i < m_characterSources.Count; i++)
-            {
-                m_characterSources[i].Id = i;
+                if (!characterNames.Contains(c.CharacterName.ToString())) 
+                {
+                    newList.Add(c);
+                }
             }
+            Characters = newList;
         }
 
 		#region Dialog System
@@ -281,14 +239,7 @@ namespace IntegratedAuthoringTool
 		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             dataHolder.SetValue("ScenarioName", ScenarioName);
-			dataHolder.SetValue("Description",ScenarioDescription);
-            if(m_worldModelSource != null)
-            dataHolder.SetValue("WorldModelSource", ToRelativePath(m_worldModelSource.Source));
-            // Save Character Sources
-            if (m_characterSources.Count > 0)
-            {
-                dataHolder.SetValue("CharacterSources", m_characterSources.Select(d => ToRelativePath(d.Source)).ToArray());
-            }
+			dataHolder.SetValue("Description", ScenarioDescription);
 
             // Save Dialogues
             if (m_dialogues.Count>0)
@@ -306,6 +257,9 @@ namespace IntegratedAuthoringTool
                 }
                 dataHolder.SetValue("Dialogues", dialogues);
             }
+
+            dataHolder.SetValue("Characters", Characters);
+            dataHolder.SetValue("WorldModel", WorldModel);
         }
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
@@ -314,21 +268,6 @@ namespace IntegratedAuthoringTool
             ScenarioName = dataHolder.GetValue<string>("ScenarioName");
 
             ScenarioDescription = dataHolder.GetValue<string>("Description");
-            var relativePath = dataHolder.GetValue<string>("WorldModelSource");
-            if(relativePath != null)
-            m_worldModelSource = new WorldModelSourceDTO() {Source = ToAbsolutePath(relativePath), RelativePath = null};
-
-            //Load Character Sources
-            m_characterSources = new List<CharacterSourceDTO>();
-            var charArray = dataHolder.GetValue<string[]>("CharacterSources");
-            if(charArray != null)
-            { 
-                for(int i=0; i < charArray.Length; i++)
-                {
-                    m_characterSources.Add(new CharacterSourceDTO { Id = i, Source = charArray[i] });
-                }
-            }
-
 
             //Load Agent Dialogues
             m_dialogues = new DialogActionDictionary();
@@ -340,9 +279,9 @@ namespace IntegratedAuthoringTool
                     m_dialogues.AddDialog(d);
 	            }
             }
-		}
-
-        protected override string OnAssetLoaded() { return null; }
+            Characters = dataHolder.GetValue<List<RolePlayCharacterAsset>>("Characters");
+            WorldModel = dataHolder.GetValue<WorldModelAsset>("WorldModel");
+        }
 
         #endregion
     }

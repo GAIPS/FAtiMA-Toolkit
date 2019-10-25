@@ -22,23 +22,10 @@ using KnowledgeBase.DTOs;
 namespace RolePlayCharacter
 {
     [Serializable]
-    public sealed class RolePlayCharacterAsset : LoadableAsset<RolePlayCharacterAsset>, ICustomSerialization
+    public sealed class RolePlayCharacterAsset :  ICustomSerialization
     {
         [NonSerialized]
         private Dictionary<Name, Identity> m_activeIdentities;
-
-        private bool m_allowAuthoring;
-        private string m_commeillFautAssetSource = null;
-        private string m_emotionalAppraisalAssetSource = null;
-        private string m_emotionalDecisionMakingAssetSource = null;
-        private string m_socialImportanceAssetSource = null;
-
-        [Serializable]
-        private class LogEntry
-        {
-            public string Message { get; set; }
-            public ulong Tick { get; set; }
-        }
 
         public RolePlayCharacterAsset()
         {
@@ -46,7 +33,6 @@ namespace RolePlayCharacter
             m_kb = new KB(RPCConsts.DEFAULT_CHARACTER_NAME);
             m_am = new AM();
             m_emotionalState = new ConcreteEmotionalState();
-            m_allowAuthoring = true;
             m_otherAgents = new Dictionary<Name, AgentEntry>();
             BindToRegistry(m_kb);
         }
@@ -64,12 +50,6 @@ namespace RolePlayCharacter
             get { return m_kb.Perspective; }
             set { m_kb.SetPerspective(value); }
         }
-        public string CommeillFautAssetSource
-        {
-            get { return ToAbsolutePath(m_commeillFautAssetSource); }
-            set { m_commeillFautAssetSource = ToRelativePath(value); }
-        }
-
 
         public bool IsPlayer { get; set; }
 
@@ -84,24 +64,6 @@ namespace RolePlayCharacter
         public Name CurrentActionTarget { get; set; }
 
         public IDynamicPropertiesRegistry DynamicPropertiesRegistry => m_kb;
-
-        /// <summary>
-        /// The source being used for the Emotional Appraisal Asset
-        /// </summary>
-        public string EmotionalAppraisalAssetSource
-        {
-            get { return ToAbsolutePath(m_emotionalAppraisalAssetSource); }
-            set { m_emotionalAppraisalAssetSource = ToRelativePath(value); }
-        }
-
-        /// <summary>
-        /// The source being used for the Emotional Decision Making Asset
-        /// </summary>
-        public string EmotionalDecisionMakingSource
-        {
-            get { return ToAbsolutePath(m_emotionalDecisionMakingAssetSource); }
-            set { m_emotionalDecisionMakingAssetSource = ToRelativePath(value); }
-        }
 
         /// <summary>
         /// Gets all the recorded events experienced by the asset.
@@ -123,15 +85,6 @@ namespace RolePlayCharacter
         public IQueryable Queryable
         {
             get { return m_kb; }
-        }
-
-        /// <summary>
-        /// The source being used for the Social Importance Asset
-        /// </summary>
-        public string SocialImportanceAssetSource
-        {
-            get { return ToAbsolutePath(m_socialImportanceAssetSource); }
-            set { m_socialImportanceAssetSource = ToRelativePath(value); }
         }
 
         /// <summary>
@@ -169,9 +122,6 @@ namespace RolePlayCharacter
         /// <returns>The unique identifier associated to the event</returns>
         public uint AddEventRecord(EventDTO eventDTO)
         {
-            if (!m_allowAuthoring)
-                throw new Exception("This function is only available during authoring");
-
             return this.m_am.RecordEvent(eventDTO).Id;
         }
 
@@ -323,68 +273,19 @@ namespace RolePlayCharacter
             return currentActiveEmotions.MaxValue(a => a.Intensity);
         }
 
-        /// <summary>
-        /// Loads the associated assets from the defined sources and prevents further authoring of the asset
-        /// </summary>
-        public void LoadAssociatedAssets()
+        public void LoadAssociatedAssets(AssetStorage storage)
         {
             var charName = CharacterName.ToString();
-
-           /* EmotionalAppraisalAsset ea = Loader(m_emotionalAppraisalAssetSource, () => new EmotionalAppraisalAsset());
-     
-            EmotionalDecisionMakingAsset edm = Loader(m_emotionalDecisionMakingAssetSource, () => new EmotionalDecisionMakingAsset());
-            SocialImportanceAsset si = Loader(m_socialImportanceAssetSource, () => new SocialImportanceAsset());
-            CommeillFautAsset cfa = Loader(m_commeillFautAssetSource, () => new CommeillFautAsset());*/
-
-            /*m_emotionalAppraisalAsset = ea;
-            m_emotionalDecisionMakingAsset = edm;
-            m_socialImportanceAsset = si;
-            m_commeillFautAsset = cfa;
-
+            m_emotionalAppraisalAsset = EmotionalAppraisalAsset.CreateInstance(storage);
+            m_emotionalDecisionMakingAsset = EmotionalDecisionMakingAsset.CreateInstance(storage);
+            m_socialImportanceAsset = SocialImportanceAsset.CreateInstance(storage);
+            m_commeillFautAsset = CommeillFautAsset.CreateInstance(storage);
 
             //Dynamic properties
             BindToRegistry(m_kb);
-
-            edm.RegisterKnowledgeBase(m_kb);
-            si.RegisterKnowledgeBase(m_kb);
-            cfa.RegisterKnowledgeBase(m_kb);
-            m_allowAuthoring = false;*/
-        }
-
-
-        public void LoadAssociatedAssetsFromString(string _ea, string _edm, string _si, string _cif)
-        {
-            var charName = CharacterName.ToString();
-
-            EmotionalAppraisalAsset ea = new EmotionalAppraisalAsset();
-            if(_ea.Any())
-             ea = EmotionalAppraisalAsset.LoadFromString(_ea);
-
-
-            EmotionalDecisionMakingAsset edm = new EmotionalDecisionMakingAsset();
-            if(_edm.Any())
-                edm = EmotionalDecisionMakingAsset.LoadFromString(_edm);
-
-            SocialImportanceAsset si = new SocialImportanceAsset();
-            if(_si.Any())
-            si = SocialImportanceAsset.LoadFromString(_si);
-
-            CommeillFautAsset cif = new CommeillFautAsset();
-            if(_cif.Any())
-            cif = CommeillFautAsset.LoadFromString(_cif);
-           
-            //Dynamic properties
-            BindToRegistry(m_kb);
-           
-            edm.RegisterKnowledgeBase(m_kb);
-            si.RegisterKnowledgeBase(m_kb);
-            cif.RegisterKnowledgeBase(m_kb);
-            m_allowAuthoring = false;
-
-            m_emotionalAppraisalAsset = ea;
-            m_emotionalDecisionMakingAsset = edm;
-            m_socialImportanceAsset = si;
-            m_commeillFautAsset = cif;
+            m_emotionalDecisionMakingAsset.RegisterKnowledgeBase(m_kb);
+            m_commeillFautAsset.RegisterKnowledgeBase(m_kb);
+            m_socialImportanceAsset.RegisterKnowledgeBase(m_kb);           
         }
 
         public void Perceive(Name evt)
@@ -505,9 +406,6 @@ namespace RolePlayCharacter
         /// <param name="eventDTO">The dto containing the information regarding the event to update. The Id field of the dto must match the id of the event we want to update.</param>
         public void UpdateEventRecord(EventDTO eventDTO)
         {
-            if (!m_allowAuthoring)
-                throw new Exception("This function is only available during authoring");
-
             this.m_am.UpdateEvent(eventDTO);
         }
 
@@ -547,31 +445,6 @@ namespace RolePlayCharacter
             if (result != string.Empty) return result.Remove(result.Length - 2);
             else return result;
         }
-
-        protected override string OnAssetLoaded()
-        {
-            return null;
-        }
-
-        protected override void OnAssetPathChanged(string oldpath)
-        {
-            if (!string.IsNullOrEmpty(m_emotionalAppraisalAssetSource))
-                m_emotionalAppraisalAssetSource = ToRelativePath(AssetFilePath,
-                    ToAbsolutePath(oldpath, m_emotionalAppraisalAssetSource));
-
-            if (!string.IsNullOrEmpty(m_emotionalDecisionMakingAssetSource))
-                m_emotionalDecisionMakingAssetSource = ToRelativePath(AssetFilePath,
-                    ToAbsolutePath(oldpath, m_emotionalDecisionMakingAssetSource));
-
-            if (!string.IsNullOrEmpty(m_socialImportanceAssetSource))
-                m_socialImportanceAssetSource = ToRelativePath(AssetFilePath,
-                    ToAbsolutePath(oldpath, m_socialImportanceAssetSource));
-
-            if (!string.IsNullOrEmpty(m_commeillFautAssetSource))
-                m_commeillFautAssetSource = ToRelativePath(AssetFilePath,
-                    ToAbsolutePath(oldpath, m_commeillFautAssetSource));
-        }
-
 
         private static IEnumerable<IAction> TakeBestActions(IEnumerable<IAction> enumerable)
         {
@@ -1212,10 +1085,6 @@ namespace RolePlayCharacter
             dataHolder.SetValue("KnowledgeBase", m_kb);
             dataHolder.SetValue("BodyName", this.BodyName);
             dataHolder.SetValue("VoiceName", this.VoiceName);
-            dataHolder.SetValue("EmotionalAppraisalAssetSource", this.m_emotionalAppraisalAssetSource);
-            dataHolder.SetValue("EmotionalDecisionMakingSource", this.m_emotionalDecisionMakingAssetSource);
-            dataHolder.SetValue("SocialImportanceAssetSource", this.m_socialImportanceAssetSource);
-            dataHolder.SetValue("CommeillFautAssetSource", this.m_commeillFautAssetSource);
             dataHolder.SetValue("EmotionalState", m_emotionalState);
             dataHolder.SetValue("AutobiographicMemory", m_am);
             dataHolder.SetValue("OtherAgents", m_otherAgents);
@@ -1223,15 +1092,10 @@ namespace RolePlayCharacter
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
-            m_allowAuthoring = true;
             m_activeIdentities = new Dictionary<Name, Identity>();
             m_kb = dataHolder.GetValue<KB>("KnowledgeBase");
             this.BodyName = dataHolder.GetValue<string>("BodyName");
             this.VoiceName = dataHolder.GetValue<string>("VoiceName");
-            this.m_emotionalAppraisalAssetSource = dataHolder.GetValue<string>("EmotionalAppraisalAssetSource");
-            this.m_emotionalDecisionMakingAssetSource = dataHolder.GetValue<string>("EmotionalDecisionMakingSource");
-            this.m_socialImportanceAssetSource = dataHolder.GetValue<string>("SocialImportanceAssetSource");
-            this.m_commeillFautAssetSource = dataHolder.GetValue<string>("CommeillFautAssetSource");
             m_emotionalState = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
             m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
             m_otherAgents = dataHolder.GetValue<Dictionary<Name, AgentEntry>>("OtherAgents");

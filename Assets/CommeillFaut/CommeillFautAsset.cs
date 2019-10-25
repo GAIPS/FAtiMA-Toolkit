@@ -11,7 +11,7 @@ using KnowledgeBase;
 namespace CommeillFaut
 {
     [Serializable]
-    public sealed class CommeillFautAsset  : LoadableAsset<CommeillFautAsset>, ICustomSerialization
+    public sealed class CommeillFautAsset  : Asset<CommeillFautAsset>, ICustomSerialization
     {
         public KB m_kB;
         private List<SocialExchange> m_SocialExchanges { get; set; }
@@ -26,11 +26,6 @@ namespace CommeillFaut
             m_kB = null;
             m_SocialExchanges = new List<SocialExchange>();
         }
-
-        	protected override string OnAssetLoaded()
-		{
-			return null;
-		}
 
         /// <summary>
         /// Binds a KB to this Comme ill Faut Asset instance. Without a KB instance binded to this asset, 
