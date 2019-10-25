@@ -6,31 +6,38 @@ using GAIPS.AssetEditorTools;
 using GAIPS.Rage;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
 namespace EmotionalAppraisalWF
 {
-    public partial class MainForm : BaseEAForm
+    public partial class MainForm : Form
     {
+        private AssetStorage _storage;
+        private EmotionalAppraisalAsset _loadedAsset;
         private AppraisalRulesVM _appraisalRulesVM;
         private EmotionDispositionsVM _emotionDispositionsVM;
+        private string _currentFilePath;
 
         public MainForm()
         {
             InitializeComponent();
+            _storage = new AssetStorage();
+            _loadedAsset = EmotionalAppraisalAsset.CreateInstance(_storage);
+            OnAssetDataLoaded(_loadedAsset);
         }
 
-        protected override void OnAssetDataLoaded(EmotionalAppraisalAsset asset)
+        private void OnAssetDataLoaded(EmotionalAppraisalAsset asset)
         {
             //Emotion Dispositions
-            _emotionDispositionsVM = new EmotionDispositionsVM(this);
+            _emotionDispositionsVM = new EmotionDispositionsVM(asset);
             comboBoxDefaultDecay.SelectedIndex = comboBoxDefaultDecay.FindString(_emotionDispositionsVM.DefaultDecay.ToString());
             comboBoxDefaultThreshold.SelectedIndex = comboBoxDefaultThreshold.FindString(_emotionDispositionsVM.DefaultThreshold.ToString());
             dataGridViewEmotionDispositions.DataSource = _emotionDispositionsVM.EmotionDispositions;
 
             //Appraisal Rule
-            _appraisalRulesVM = new AppraisalRulesVM(this);
+            _appraisalRulesVM = new AppraisalRulesVM(asset);
             dataGridViewAppraisalRules.DataSource = _appraisalRulesVM.AppraisalRules;
             EditorTools.HideColumns(dataGridViewAppraisalRules, new[]
             {
@@ -38,16 +45,13 @@ namespace EmotionalAppraisalWF
             });
                
             conditionSetEditor.View = _appraisalRulesVM.CurrentRuleConditions;
-            dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(LoadedAsset.GetAllGoals().ToList());
-
-
-            _wasModified = false;
+            dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(asset.GetAllGoals().ToList());
         }
 
         private void buttonAddGoal_Click(object sender, EventArgs e)
         {
-            new AddOrEditGoalForm(LoadedAsset, null).ShowDialog(this);
-            dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(LoadedAsset.GetAllGoals().ToList());
+            new AddOrEditGoalForm(_loadedAsset, null).ShowDialog(this);
+            dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(_loadedAsset.GetAllGoals().ToList());
         }
             
 
@@ -121,15 +125,11 @@ namespace EmotionalAppraisalWF
 
         private void comboBoxDefaultDecay_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (IsLoading)
-                return;
             _emotionDispositionsVM.DefaultDecay = int.Parse(comboBoxDefaultDecay.Text);
         }
 
         private void comboBoxDefaultThreshold_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (IsLoading)
-                return;
             _emotionDispositionsVM.DefaultThreshold = int.Parse(comboBoxDefaultThreshold.Text);
         }
 
@@ -193,8 +193,8 @@ namespace EmotionalAppraisalWF
             var selectedGoal = EditorTools.GetSelectedDtoFromTable<GoalDTO>(dataGridViewGoals);
             if (selectedGoal != null)
             {
-                new AddOrEditGoalForm(LoadedAsset, selectedGoal).ShowDialog();
-                dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(LoadedAsset.GetAllGoals().ToList());
+                new AddOrEditGoalForm(_loadedAsset, selectedGoal).ShowDialog();
+                dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(_loadedAsset.GetAllGoals().ToList());
             }
         }
 
@@ -206,23 +206,45 @@ namespace EmotionalAppraisalWF
                 var goal = ((ObjectView<GoalDTO>)dataGridViewGoals.SelectedRows[i].DataBoundItem).Object;
                 goalsToRemove.Add(goal);
             }
-            LoadedAsset.RemoveGoals(goalsToRemove);
-            dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(LoadedAsset.GetAllGoals().ToList());
+            _loadedAsset.RemoveGoals(goalsToRemove);
+            dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(_loadedAsset.GetAllGoals().ToList());
         }
 
-        private void MainForm_Load(object sender, EventArgs e)
+        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void dataGridViewGoals_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void GroupBox7_Enter(object sender, EventArgs e)
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var ofd = new OpenFileDialog();
+            ofd.Filter = "Asset Storage File (*.json)|*.json|All Files|*.*";
+            if(ofd.ShowDialog() == DialogResult.OK)
+            {
+                _currentFilePath = ofd.FileName;
+                _storage = AssetStorage.FromJson(File.ReadAllText(_currentFilePath));
+                _loadedAsset = EmotionalAppraisalAsset.CreateInstance(_storage);
+                OnAssetDataLoaded(_loadedAsset);
+            }
+        }
 
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var sfd = new SaveFileDialog();
+            sfd.Filter = "Asset Storage File (*.json)|*.json|All Files|*.*";
+            if(_currentFilePath != null)
+            {
+                using (var writer = File.CreateText(_currentFilePath))
+                {
+                    _loadedAsset.Save();
+                    writer.Write(_storage.ToJson());
+                }
+            }
         }
     }
 }

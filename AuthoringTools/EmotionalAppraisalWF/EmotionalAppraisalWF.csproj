@@ -69,9 +69,6 @@
     <Compile Include="AddOrEditGoalForm.Designer.cs">
       <DependentUpon>AddOrEditGoalForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="BaseEAForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Emotion.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

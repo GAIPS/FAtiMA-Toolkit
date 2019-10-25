@@ -8,9 +8,7 @@ namespace EmotionalAppraisalWF.ViewModels
 {
     public class EmotionDispositionsVM
     {
-	    private BaseEAForm _mainForm;
-	    private EmotionalAppraisalAsset _emotionalAppraisalAsset => _mainForm.LoadedAsset;
-
+	    private EmotionalAppraisalAsset _ea;
         public BindingListView<EmotionDispositionDTO> EmotionDispositions {get;}
 	    private EmotionDispositionDTO _defaultEmotionalDisposition;
 
@@ -34,45 +32,41 @@ namespace EmotionalAppraisalWF.ViewModels
 	        }
         }
 
-        public EmotionDispositionsVM(BaseEAForm form)
+        public EmotionDispositionsVM(EmotionalAppraisalAsset ea)
         {
-	        _mainForm = form;
-            this.EmotionDispositions = new BindingListView<EmotionDispositionDTO>(_emotionalAppraisalAsset.EmotionDispositions.ToList());
-	        _defaultEmotionalDisposition = _emotionalAppraisalAsset.DefaultEmotionDisposition;
+            _ea = ea;
+            this.EmotionDispositions = new BindingListView<EmotionDispositionDTO>(ea.EmotionDispositions.ToList());
+	        _defaultEmotionalDisposition = ea.DefaultEmotionDisposition;
         }
 		
         public void AddEmotionDisposition(EmotionDispositionDTO disp)
         {
-            _emotionalAppraisalAsset.AddEmotionDisposition(disp);
-            EmotionDispositions.DataSource = _emotionalAppraisalAsset.EmotionDispositions.ToList();
+            _ea.AddEmotionDisposition(disp);
+            EmotionDispositions.DataSource = _ea.EmotionDispositions.ToList();
             EmotionDispositions.Refresh();
-			_mainForm.SetModified();
 		}
 
         public void UpdateEmotionDisposition(EmotionDispositionDTO oldDisp, EmotionDispositionDTO newDisp)
         {
-            _emotionalAppraisalAsset.RemoveEmotionDisposition(oldDisp.Emotion);
-            _emotionalAppraisalAsset.AddEmotionDisposition(newDisp);
-            EmotionDispositions.DataSource = _emotionalAppraisalAsset.EmotionDispositions.ToList();
+            _ea.RemoveEmotionDisposition(oldDisp.Emotion);
+            _ea.AddEmotionDisposition(newDisp);
+            EmotionDispositions.DataSource = _ea.EmotionDispositions.ToList();
             EmotionDispositions.Refresh();
-			_mainForm.SetModified();
 		}
 
         private void UpdateDefaultEmotionDisposition()
         {
-	        _emotionalAppraisalAsset.DefaultEmotionDisposition = _defaultEmotionalDisposition;
-			_mainForm.SetModified();
+            _ea.DefaultEmotionDisposition = _defaultEmotionalDisposition;
         }
 
         public void RemoveDispositions(IList<EmotionDispositionDTO> dispositionsToRemove)
         {
             foreach (var emotionDispositionDto in dispositionsToRemove)
             {
-                _emotionalAppraisalAsset.RemoveEmotionDisposition(emotionDispositionDto.Emotion);
+                _ea.RemoveEmotionDisposition(emotionDispositionDto.Emotion);
             }
-            EmotionDispositions.DataSource = _emotionalAppraisalAsset.EmotionDispositions.ToList();
+            EmotionDispositions.DataSource = _ea.EmotionDispositions.ToList();
             EmotionDispositions.Refresh();
-			_mainForm.SetModified();
 		}
     }
 }

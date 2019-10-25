@@ -11,18 +11,16 @@ namespace EmotionalAppraisalWF.ViewModels
 {
     public class AppraisalRulesVM
     {
-	    private readonly BaseEAForm _mainForm;
-	    private EmotionalAppraisalAsset _emotionalAppraisalAsset => _mainForm.LoadedAsset;
-
+        private EmotionalAppraisalAsset _ea;
         public BindingListView<AppraisalRuleDTO> AppraisalRules {get; private set; }
 	    public ConditionSetView CurrentRuleConditions { get; }
         public Guid SelectedRuleId { get; set;}
 
         public static readonly string[] EventTypes = { AMConsts.ACTION_END, AMConsts.ACTION_START, AMConsts.PROPERTY_CHANGE, "*" };
 
-        public AppraisalRulesVM(BaseEAForm form)
+        public AppraisalRulesVM(EmotionalAppraisalAsset ea)
 		{
-			_mainForm = form;
+			_ea = ea;
             this.AppraisalRules = new BindingListView<AppraisalRuleDTO>(new List<AppraisalRuleDTO>());
 			this.CurrentRuleConditions = new ConditionSetView();
 			this.CurrentRuleConditions.OnDataChanged += CurrentRuleConditions_OnDataChanged;
@@ -42,11 +40,11 @@ namespace EmotionalAppraisalWF.ViewModels
 
 		private void RefreshData()
         {
-			this.AppraisalRules.DataSource = _emotionalAppraisalAsset.GetAllAppraisalRules().ToList();
+			this.AppraisalRules.DataSource = _ea.GetAllAppraisalRules().ToList();
 			this.AppraisalRules.Refresh();
 			if (SelectedRuleId != Guid.Empty)
 			{
-				CurrentRuleConditions.SetData(_emotionalAppraisalAsset.GetAllAppraisalRuleConditions(SelectedRuleId));
+				CurrentRuleConditions.SetData(_ea.GetAllAppraisalRuleConditions(SelectedRuleId));
 			}
 			else if (this.AppraisalRules.Count == 0)
 			{
@@ -59,23 +57,21 @@ namespace EmotionalAppraisalWF.ViewModels
             if (rule != null)
             {
                 this.SelectedRuleId = rule.Id;
-				CurrentRuleConditions.SetData(_emotionalAppraisalAsset.GetAllAppraisalRuleConditions(SelectedRuleId));
+				CurrentRuleConditions.SetData(_ea.GetAllAppraisalRuleConditions(SelectedRuleId));
             }
         }
 
         public void AddOrUpdateAppraisalRule(AppraisalRuleDTO newRule)
         {
-            _emotionalAppraisalAsset.AddOrUpdateAppraisalRule(newRule);
+            _ea.AddOrUpdateAppraisalRule(newRule);
             RefreshData();
-			_mainForm.SetModified();
 		}
 
         public void RemoveAppraisalRules(IEnumerable<AppraisalRuleDTO> appraisalRules)
         {
-            _emotionalAppraisalAsset.RemoveAppraisalRules(appraisalRules);
+            _ea.RemoveAppraisalRules(appraisalRules);
             SelectedRuleId = Guid.Empty;
             RefreshData();
-			_mainForm.SetModified();
 		}
 
 

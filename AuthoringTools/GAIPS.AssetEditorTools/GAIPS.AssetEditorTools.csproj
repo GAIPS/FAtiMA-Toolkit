@@ -34,12 +34,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="ApplicationBridge.cs" />
-    <Compile Include="BaseAssetForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BaseAssetForm.Designer.cs">
-      <DependentUpon>BaseAssetForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="ConditionHolder.cs" />
     <Compile Include="ConditionSetView.cs" />
     <Compile Include="EditorTools.cs" />
@@ -105,9 +99,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="BaseAssetForm.resx">
-      <DependentUpon>BaseAssetForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="ConditionSetEditorControl.resx">
       <DependentUpon>ConditionSetEditorControl.cs</DependentUpon>
     </EmbeddedResource>
