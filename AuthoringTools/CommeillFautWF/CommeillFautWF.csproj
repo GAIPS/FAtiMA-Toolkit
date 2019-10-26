@@ -44,9 +44,7 @@
       <HintPath>..\packages\GAIPS.Serialization.1.5.0\lib\net35\GAIPS.Serialization.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RageAssetManager">
-      <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
-    </Reference>
+    <Reference Include="SerializationUtilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -75,9 +73,6 @@
     </Compile>
     <Compile Include="AddSocialExchange.Designer.cs">
       <DependentUpon>AddSocialExchange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BaseCIFForm.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="InfluenceRuleInspector.cs">
       <SubType>Form</SubType>

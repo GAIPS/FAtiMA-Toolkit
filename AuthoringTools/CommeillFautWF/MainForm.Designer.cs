@@ -44,6 +44,12 @@
             this.conditionSetEditorControl = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.triggerRulesBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.filieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.socialExchangeBindingSource)).BeginInit();
             this.TabControl.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -55,6 +61,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridSocialExchanges)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.triggerRulesBindingSource)).BeginInit();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // socialExchangeBindingSource
@@ -79,11 +86,11 @@
             // 
             this.tabPage1.Controls.Add(this.splitContainer1);
             this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 32);
+            this.tabPage1.Location = new System.Drawing.Point(4, 28);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Size = new System.Drawing.Size(778, 673);
+            this.tabPage1.Size = new System.Drawing.Size(778, 677);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Social Exchange";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -102,8 +109,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer1.Size = new System.Drawing.Size(772, 669);
-            this.splitContainer1.SplitterDistance = 332;
+            this.splitContainer1.Size = new System.Drawing.Size(772, 673);
+            this.splitContainer1.SplitterDistance = 333;
             this.splitContainer1.TabIndex = 16;
             // 
             // groupBox7
@@ -119,7 +126,7 @@
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox7.Size = new System.Drawing.Size(772, 332);
+            this.groupBox7.Size = new System.Drawing.Size(772, 333);
             this.groupBox7.TabIndex = 5;
             this.groupBox7.TabStop = false;
             this.groupBox7.Enter += new System.EventHandler(this.groupBox7_Enter);
@@ -202,7 +209,7 @@
             this.gridSocialExchanges.RowHeadersVisible = false;
             this.gridSocialExchanges.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.gridSocialExchanges.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridSocialExchanges.Size = new System.Drawing.Size(762, 258);
+            this.gridSocialExchanges.Size = new System.Drawing.Size(762, 259);
             this.gridSocialExchanges.TabIndex = 2;
             this.gridSocialExchanges.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridSocialExchanges_CellContentClick);
             this.gridSocialExchanges.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gridSocialExchanges_CellMouseDoubleClick);
@@ -217,7 +224,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Size = new System.Drawing.Size(772, 333);
+            this.groupBox2.Size = new System.Drawing.Size(772, 336);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Starting Conditions:";
@@ -230,7 +237,7 @@
             this.conditionSetEditorControl.Location = new System.Drawing.Point(4, 19);
             this.conditionSetEditorControl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.conditionSetEditorControl.Name = "conditionSetEditorControl";
-            this.conditionSetEditorControl.Size = new System.Drawing.Size(763, 312);
+            this.conditionSetEditorControl.Size = new System.Drawing.Size(763, 315);
             this.conditionSetEditorControl.TabIndex = 3;
             this.conditionSetEditorControl.View = null;
             // 
@@ -247,21 +254,70 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Starting Conditions:";
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.filieToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(798, 24);
+            this.menuStrip1.TabIndex = 16;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // filieToolStripMenuItem
+            // 
+            this.filieToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newToolStripMenuItem,
+            this.openToolStripMenuItem,
+            this.saveToolStripMenuItem,
+            this.saveAsToolStripMenuItem});
+            this.filieToolStripMenuItem.Name = "filieToolStripMenuItem";
+            this.filieToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.filieToolStripMenuItem.Text = "File";
+            this.filieToolStripMenuItem.Click += new System.EventHandler(this.filieToolStripMenuItem_Click);
+            // 
+            // newToolStripMenuItem
+            // 
+            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newToolStripMenuItem.Text = "New";
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveAsToolStripMenuItem.Text = "Save As ...";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(798, 758);
             this.Controls.Add(this.TabControl);
-            this.EditorName = "Comme Ill Faut";
+            this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MainForm";
-            this.Text = "";
-            this.Controls.SetChildIndex(this.TabControl, 0);
             ((System.ComponentModel.ISupportInitialize)(this.socialExchangeBindingSource)).EndInit();
             this.TabControl.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
@@ -273,6 +329,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridSocialExchanges)).EndInit();
             this.groupBox2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.triggerRulesBindingSource)).EndInit();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -294,6 +352,12 @@
         private System.Windows.Forms.Button buttonRemoveSE;
         private System.Windows.Forms.DataGridView gridSocialExchanges;
         private System.Windows.Forms.Button influenceRules;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem filieToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
     }
 }
 

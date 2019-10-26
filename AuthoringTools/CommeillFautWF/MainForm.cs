@@ -6,21 +6,28 @@ using Equin.ApplicationFramework;
 using System.Collections;
 using GAIPS.AssetEditorTools;
 using System.Windows.Forms;
+using GAIPS.Rage;
+using System.IO;
 
 namespace CommeillFautWF
 {
-    public partial class MainForm : BaseCIFForm
+    public partial class MainForm : Form
     {
         private ConditionSetView conditions;
-        private BindingListView<SocialExchangeDTO> _socialExchangeList; 
+        private BindingListView<SocialExchangeDTO> _socialExchangeList;
+        private CommeillFautAsset _loadedAsset;
+        private AssetStorage _storage;
+        private string _currentFilePath;
 
         public MainForm()
         {
             InitializeComponent();
-          
+            _storage = new AssetStorage();
+            _loadedAsset = CommeillFautAsset.CreateInstance(_storage);
+            OnAssetDataLoaded(_loadedAsset);
         }
 
-        protected override void OnAssetDataLoaded(CommeillFautAsset asset)
+        protected void OnAssetDataLoaded(CommeillFautAsset asset)
         {
            this._socialExchangeList = new BindingListView<SocialExchangeDTO>((IList)null);
 			gridSocialExchanges.DataSource = this._socialExchangeList;
@@ -29,19 +36,17 @@ namespace CommeillFautWF
             conditionSetEditorControl.View = conditions;
             conditions.OnDataChanged += ConditionSetView_OnDataChanged;
 
-
-            this._socialExchangeList.DataSource = LoadedAsset.GetAllSocialExchanges().ToList();
+            this._socialExchangeList.DataSource = _loadedAsset.GetAllSocialExchanges().ToList();
             
             EditorTools.HideColumns(gridSocialExchanges, new[] {
             PropertyUtil.GetPropertyName<SocialExchangeDTO>(dto => dto.Id)});
 
-
-
             if (this._socialExchangeList.Any())
 			{
-				var ra = LoadedAsset.GetSocialExchange(this._socialExchangeList.First().Id);
+				var ra = _loadedAsset.GetSocialExchange(this._socialExchangeList.First().Id);
 				UpdateConditions(ra);
 			}
+            EditorTools.UpdateFormTitle("CiF-CK", _currentFilePath, this);
         }
 
         private void ConditionSetView_OnDataChanged()
@@ -50,10 +55,9 @@ namespace CommeillFautWF
             if (selectedRule == null)
                 return;
             selectedRule.StartingConditions = conditions.GetData();
-            LoadedAsset.AddOrUpdateExchange(selectedRule);
-            this._socialExchangeList.DataSource = LoadedAsset.GetAllSocialExchanges().ToList();
+            _loadedAsset.AddOrUpdateExchange(selectedRule);
+            this._socialExchangeList.DataSource = _loadedAsset.GetAllSocialExchanges().ToList();
             this._socialExchangeList.Refresh();
-            SetModified();
         }
 
         private void buttonAddSE_Click(object sender, EventArgs e)
@@ -83,7 +87,7 @@ namespace CommeillFautWF
         }
         private void auxAddOrUpdateItem(SocialExchangeDTO item)
         {
-            var diag = new AddSocialExchange(LoadedAsset, item);
+            var diag = new AddSocialExchange(_loadedAsset, item);
             diag.ShowDialog(this);
 
            
@@ -91,7 +95,7 @@ namespace CommeillFautWF
             {
               //  _socialExchangeList.DataSource = LoadedAsset.GetAllSocialExchanges().ToList();
 
-                    this._socialExchangeList.DataSource = LoadedAsset.GetAllSocialExchanges().ToList();
+                    this._socialExchangeList.DataSource = _loadedAsset.GetAllSocialExchanges().ToList();
             
 
 
@@ -99,8 +103,6 @@ namespace CommeillFautWF
                     (gridSocialExchanges, diag.UpdatedGuid);
             }
             _socialExchangeList.Refresh();
-
-            SetModified();
         }
 
 
@@ -119,12 +121,10 @@ namespace CommeillFautWF
             if (r != null)
             {
                 r.Id = Guid.Empty;
-                var newRuleId = LoadedAsset.AddOrUpdateExchange(r);
-                _socialExchangeList.DataSource = LoadedAsset.GetAllSocialExchanges().ToList();
+                var newRuleId = _loadedAsset.AddOrUpdateExchange(r);
+                _socialExchangeList.DataSource = _loadedAsset.GetAllSocialExchanges().ToList();
                 EditorTools.HighlightItemInGrid<SocialExchangeDTO>(gridSocialExchanges, newRuleId);
             }
-
-            SetModified();
         }
 
         private void buttonRemoveSE_Click(object sender, EventArgs e)
@@ -134,11 +134,10 @@ namespace CommeillFautWF
             foreach (var r in selRows.Cast<DataGridViewRow>())
             {
                 var dto = ((ObjectView<SocialExchangeDTO>)r.DataBoundItem).Object;
-                LoadedAsset.RemoveSocialExchange(dto.Id);
+                _loadedAsset.RemoveSocialExchange(dto.Id);
             }
-            _socialExchangeList.DataSource = LoadedAsset.GetAllSocialExchanges().ToList();
+            _socialExchangeList.DataSource = _loadedAsset.GetAllSocialExchanges().ToList();
             EditorTools.HighlightItemInGrid<SocialExchangeDTO>(gridSocialExchanges, Guid.Empty);
-            SetModified();
         }
 
         private void gridSocialExchanges_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -175,11 +174,10 @@ namespace CommeillFautWF
         {
              var selectedRule = EditorTools.GetSelectedDtoFromTable<SocialExchangeDTO>(gridSocialExchanges);
             var newSE = new SocialExchange(selectedRule);
-            var diag = new InfluenceRuleInspector(LoadedAsset, newSE);
+            var diag = new InfluenceRuleInspector(_loadedAsset, newSE);
             diag.ShowDialog(this);
-            LoadedAsset.UpdateSocialExchange(newSE.ToDTO);
-             _socialExchangeList.DataSource = LoadedAsset.GetAllSocialExchanges().ToList();
-            SetModified();
+            _loadedAsset.UpdateSocialExchange(newSE.ToDTO);
+             _socialExchangeList.DataSource = _loadedAsset.GetAllSocialExchanges().ToList();
         }
 
         private void gridSocialExchanges_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -189,6 +187,54 @@ namespace CommeillFautWF
 
         private void groupBox7_Enter(object sender, EventArgs e)
         {
+
+        }
+
+        private void filieToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _currentFilePath = null;
+            _storage = new AssetStorage();
+            _loadedAsset = CommeillFautAsset.CreateInstance(_storage);
+            OnAssetDataLoaded(_loadedAsset);
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var aux = EditorTools.OpenFileDialog();
+            if (aux != null)
+            {
+                try
+                {
+                    _currentFilePath = aux;
+                    _storage = AssetStorage.FromJson(File.ReadAllText(_currentFilePath));
+                    _loadedAsset = CommeillFautAsset.CreateInstance(_storage);
+                    OnAssetDataLoaded(_loadedAsset);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Exception: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _currentFilePath = EditorTools.SaveFileDialog(_currentFilePath, _storage, _loadedAsset);
+            EditorTools.UpdateFormTitle("CiF-CK", _currentFilePath, this);
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var old = _currentFilePath;
+            _currentFilePath = null;
+            _currentFilePath = EditorTools.SaveFileDialog(_currentFilePath, _storage, _loadedAsset);
+            if (_currentFilePath == null) _currentFilePath = old;
+            EditorTools.UpdateFormTitle("CiF-CK", _currentFilePath, this);
 
         }
     }

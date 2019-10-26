@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using AssetManagerPackage;
 using GAIPS.AssetEditorTools;
 
 namespace CommeillFautWF
@@ -16,12 +15,10 @@ namespace CommeillFautWF
         [STAThread]
         static void Main()
         {
-            AssetManager.Instance.Bridge = new ApplicationBridge();
-
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var f = new MainForm();
-            f.CreateNewAsset();
+        
             Application.Run(f);
         }
     }
