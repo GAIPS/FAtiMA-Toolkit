@@ -34,6 +34,8 @@ namespace IntegratedAuthoringToolWF
         private IntegratedAuthoringToolAsset _iat;
         private int currentRPCTabIndex;
 
+        private string _currentFilePath;
+
         public MainForm()
         {
             InitializeComponent();
@@ -1398,6 +1400,25 @@ namespace IntegratedAuthoringToolWF
         private void buttonSaveAsAssetStorage_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var sfd = new SaveFileDialog();
+            sfd.Filter = "Scenario File (*.json)|*.json|All Files|*.*";
+            if (_currentFilePath != null)
+            {
+                File.WriteAllText(_currentFilePath, _iat.ToJson());
+            }
+            else
+            {
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    File.WriteAllText(sfd.FileName, _iat.ToJson());
+                    _currentFilePath = sfd.FileName;
+                }
+            }
+            EditorTools.UpdateFormTitle("FAtiMA Authoring Tool", _currentFilePath, this);
         }
     }
 }

@@ -58,6 +58,12 @@ namespace IntegratedAuthoringTool
             return iat;
         }
 
+        public string ToJson()
+        {
+            var serializer = new JSONSerializer();
+            return serializer.SerializeToJson(this).ToString(true);
+        }
+
         public static string GenerateUtteranceId(string utterance)
         {
             utterance = utterance.RemoveWhiteSpace();
