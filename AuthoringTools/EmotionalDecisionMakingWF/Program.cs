@@ -14,11 +14,9 @@ namespace EmotionalDecisionMakingWF
 		static void Main()
 		{
 			AssetManager.Instance.Bridge = new ApplicationBridge();
-
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			var m = new MainForm();
-			m.CreateNewAsset();
 			Application.Run(m);
 		}
 	}

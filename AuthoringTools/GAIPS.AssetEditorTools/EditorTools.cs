@@ -1,8 +1,9 @@
 ﻿using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools.TypedTextBoxes;
+using GAIPS.Rage;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -43,6 +44,49 @@ namespace GAIPS.AssetEditorTools
                 table.Columns[s].Visible = false;
             }
         }
+
+        public static void UpdateFormTitle(string asset, string path, Form form)
+        {
+            form.Text = (path == null) ?
+              form.Text = asset :
+              form.Text = asset + " - " + path;
+        }
+
+        public static string SaveFileDialog(string currentFilePath, AssetStorage storage, IAsset asset)
+        {
+            var sfd = new SaveFileDialog();
+            sfd.Filter = "Asset Storage File (*.json)|*.json|All Files|*.*";
+            if (currentFilePath != null)
+            {
+                asset.Save();
+                File.WriteAllText(currentFilePath, storage.ToJson());
+            }
+            else
+            {
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    asset.Save();
+                    File.WriteAllText(sfd.FileName, storage.ToJson());
+                    return sfd.FileName;
+                }
+            }
+            return currentFilePath;
+        }
+
+        public static string OpenFileDialog()
+        {
+            var ofd = new OpenFileDialog();
+            ofd.Filter = "Asset Storage File (*.json)|*.json|All Files|*.*";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                return ofd.FileName;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
 
         public static void AllowOnlyGroundedLiteral(WFNameFieldBox box)
         {

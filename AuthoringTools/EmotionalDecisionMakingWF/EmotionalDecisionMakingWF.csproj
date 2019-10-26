@@ -50,6 +50,7 @@
       <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="SerializationUtilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -64,9 +65,6 @@
     </Compile>
     <Compile Include="AddOrEditReactionForm.Designer.cs">
       <DependentUpon>AddOrEditReactionForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BaseEDMForm.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

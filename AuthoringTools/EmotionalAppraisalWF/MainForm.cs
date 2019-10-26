@@ -222,11 +222,10 @@ namespace EmotionalAppraisalWF
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var ofd = new OpenFileDialog();
-            ofd.Filter = "Asset Storage File (*.json)|*.json|All Files|*.*";
-            if(ofd.ShowDialog() == DialogResult.OK)
+            var aux = EditorTools.OpenFileDialog();
+            if (aux != null)
             {
-                _currentFilePath = ofd.FileName;
+                _currentFilePath = aux;
                 _storage = AssetStorage.FromJson(File.ReadAllText(_currentFilePath));
                 _loadedAsset = EmotionalAppraisalAsset.CreateInstance(_storage);
                 OnAssetDataLoaded(_loadedAsset);
@@ -235,16 +234,8 @@ namespace EmotionalAppraisalWF
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var sfd = new SaveFileDialog();
-            sfd.Filter = "Asset Storage File (*.json)|*.json|All Files|*.*";
-            if(_currentFilePath != null)
-            {
-                using (var writer = File.CreateText(_currentFilePath))
-                {
-                    _loadedAsset.Save();
-                    writer.Write(_storage.ToJson());
-                }
-            }
+            _loadedAsset.Save();
+            _currentFilePath = EditorTools.SaveFileDialog(_currentFilePath, _storage);
         }
     }
 }

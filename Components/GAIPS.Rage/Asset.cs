@@ -4,7 +4,7 @@ using Utilities.Json;
 
 namespace GAIPS.Rage
 {
-	public abstract class Asset<T> where T : Asset<T>, new ()
+	public abstract class Asset<T> : IAsset where T : Asset<T>, new ()
 	{
 		protected static readonly JSONSerializer SERIALIZER = new JSONSerializer();
 
@@ -34,8 +34,7 @@ namespace GAIPS.Rage
 
         public void Save()
         {
-            var json = new JSONSerializer();
-            var aux = json.SerializeToJson(this).ToString(true);
+            var aux = SERIALIZER.SerializeToJson(this).ToString(true);
             this.storage.StoreComponent(typeof(T).Name, aux);
         }
 	}
