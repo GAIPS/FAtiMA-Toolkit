@@ -29,10 +29,13 @@ namespace IntegratedAuthoringToolWF
         private readonly string PLAYER = IATConsts.PLAYER;
         private readonly string AGENT = IATConsts.AGENT;
         private BindingListView<CharacterSourceDTO> _characterSources;
-        private RolePlayCharacterWF.MainForm _rpcForm = new RolePlayCharacterWF.MainForm();
+        private RolePlayCharacterWF.MainForm _rpcForm = new RolePlayCharacterWF.MainForm(new AssetStorage());
+        
         private WorldModelWF.MainForm _wmForm = new WorldModelWF.MainForm();
         private WebAPIWF.MainForm _webForm = new WebAPIWF.MainForm();
         private WorldModelSourceDTO _wmSource = new WorldModelSourceDTO();
+
+        private IntegratedAuthoringToolAsset _iat;
 
         private int currentRPCTabIndex;
 
@@ -46,7 +49,7 @@ namespace IntegratedAuthoringToolWF
 
         private void RefreshDialogs()
         {
-            _dialogs.DataSource = LoadedAsset.GetAllDialogueActions().ToList();
+            _dialogs.DataSource = _iat.GetAllDialogueActions().ToList();
             EditorTools.HideColumns(dataGridViewDialogueActions, new[]
                 {
                     PropertyUtil.GetPropertyName<DialogueStateActionDTO>(d => d.Id),
@@ -61,12 +64,10 @@ namespace IntegratedAuthoringToolWF
             );
         }
 
-        protected override void OnAssetDataLoaded(IntegratedAuthoringToolAsset asset)
+        protected void OnAssetDataLoaded(IntegratedAuthoringToolAsset asset)
         {
             textBoxScenarioName.Text = asset.ScenarioName;
             textBoxScenarioDescription.Text = asset.ScenarioDescription;
-            _characterSources = new BindingListView<CharacterSourceDTO>(asset.GetAllCharacterSources().ToList());
-            _wmSource = asset.GetWorldModelSource();
             dataGridViewCharacters.DataSource = _characterSources;
             _dialogs = new BindingListView<DialogueStateActionDTO>(new List<DialogueStateActionDTO>());
             dataGridViewDialogueActions.DataSource = _dialogs;
@@ -91,10 +92,8 @@ namespace IntegratedAuthoringToolWF
             searchCheckList.Items.Add("Meaning", false);
             searchCheckList.Items.Add("Style", false);
             searchCheckList.Items.Add("Utterance", false);
-
-            _webForm.LoadedAsset = this.LoadedAsset;
+            
             FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[4], _webForm);
-
 
             RefreshDialogs();
         }
@@ -102,10 +101,7 @@ namespace IntegratedAuthoringToolWF
         private void buttonCreateCharacter_Click(object sender, EventArgs e)
         {
             _rpcForm = new RolePlayCharacterWF.MainForm();
-            var asset = _rpcForm.CreateAndSaveEmptyAsset(false);
-            if (asset == null)
-                return;
-
+           
             var rpcAsset = RolePlayCharacterAsset.LoadFromFile(asset.AssetFilePath);
 
             FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[1], _rpcForm);

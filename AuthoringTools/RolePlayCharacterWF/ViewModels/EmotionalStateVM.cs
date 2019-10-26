@@ -8,8 +8,7 @@ namespace RolePlayCharacterWF.ViewModels
 {
     public class EmotionalStateVM
     {
-	    private BaseRPCForm _mainForm;
-	    private RolePlayCharacterAsset _rpcAsset => _mainForm.LoadedAsset;
+        private RolePlayCharacterAsset _rpcAsset; 
 
         public BindingListView<EmotionDTO> Emotions {get;}
         
@@ -25,13 +24,12 @@ namespace RolePlayCharacterWF.ViewModels
 	        set
 	        {
                 _rpcAsset.Tick = value;
-		        _mainForm.SetModified();
 	        }
         }
 
-        public EmotionalStateVM(BaseRPCForm form)
+        public EmotionalStateVM(RolePlayCharacterAsset asset)
         {
-	        _mainForm = form;
+            _rpcAsset = asset;
             Emotions = new BindingListView<EmotionDTO>(_rpcAsset.GetAllActiveEmotions().ToList());
         }
 
@@ -40,7 +38,6 @@ namespace RolePlayCharacterWF.ViewModels
             var resultingEmotion = _rpcAsset.AddActiveEmotion(newEmotion);
             Emotions.DataSource.Add(resultingEmotion);
             Emotions.Refresh();
-			_mainForm.SetModified();
         }
 
         public void UpdateEmotion(EmotionDTO oldEmotion, EmotionDTO newEmotion)
@@ -49,7 +46,6 @@ namespace RolePlayCharacterWF.ViewModels
             _rpcAsset.AddActiveEmotion(newEmotion);
             Emotions.DataSource = _rpcAsset.GetAllActiveEmotions().ToList();
             Emotions.Refresh();
-			_mainForm.SetModified();
 		}
 
         public void RemoveEmotions(IList<EmotionDTO> emotionsToRemove)
@@ -60,7 +56,6 @@ namespace RolePlayCharacterWF.ViewModels
             }
             Emotions.DataSource = _rpcAsset.GetAllActiveEmotions().ToList();
             Emotions.Refresh();
-			_mainForm.SetModified();
 		}
     }
 }

@@ -179,7 +179,6 @@ namespace RolePlayCharacterWF
             this.buttonOpenCif.TabIndex = 15;
             this.buttonOpenCif.Text = "Open";
             this.buttonOpenCif.UseVisualStyleBackColor = true;
-            this.buttonOpenCif.Click += new System.EventHandler(this.buttonOpenCif_Click);
             // 
             // buttonClearCIF
             // 
@@ -190,7 +189,6 @@ namespace RolePlayCharacterWF
             this.buttonClearCIF.TabIndex = 16;
             this.buttonClearCIF.Text = "Clear";
             this.buttonClearCIF.UseVisualStyleBackColor = true;
-            this.buttonClearCIF.Click += new System.EventHandler(this.buttonClearCIF_Click);
             // 
             // textBoxPathCIF
             // 
@@ -211,7 +209,6 @@ namespace RolePlayCharacterWF
             this.buttonNewCIF.TabIndex = 18;
             this.buttonNewCIF.Text = "New";
             this.buttonNewCIF.UseVisualStyleBackColor = true;
-            this.buttonNewCIF.Click += new System.EventHandler(this.buttonNewCIF_Click);
             // 
             // tabPage6
             // 
@@ -259,7 +256,6 @@ namespace RolePlayCharacterWF
             this.buttonOpenSI.TabIndex = 15;
             this.buttonOpenSI.Text = "Open";
             this.buttonOpenSI.UseVisualStyleBackColor = true;
-            this.buttonOpenSI.Click += new System.EventHandler(this.buttonOpenSI_Click);
             // 
             // buttonClearSI
             // 
@@ -270,7 +266,6 @@ namespace RolePlayCharacterWF
             this.buttonClearSI.TabIndex = 16;
             this.buttonClearSI.Text = "Clear";
             this.buttonClearSI.UseVisualStyleBackColor = true;
-            this.buttonClearSI.Click += new System.EventHandler(this.buttonClearSI_Click);
             // 
             // textBoxPathSI
             // 
@@ -291,7 +286,6 @@ namespace RolePlayCharacterWF
             this.buttonNewSI.TabIndex = 18;
             this.buttonNewSI.Text = "New";
             this.buttonNewSI.UseVisualStyleBackColor = true;
-            this.buttonNewSI.Click += new System.EventHandler(this.buttonNewSI_Click);
             // 
             // tabPage4
             // 
@@ -338,7 +332,6 @@ namespace RolePlayCharacterWF
             this.buttonOpenEDM.TabIndex = 15;
             this.buttonOpenEDM.Text = "Open";
             this.buttonOpenEDM.UseVisualStyleBackColor = true;
-            this.buttonOpenEDM.Click += new System.EventHandler(this.buttonOpenEDM_Click);
             // 
             // buttonClearEDM
             // 
@@ -349,7 +342,6 @@ namespace RolePlayCharacterWF
             this.buttonClearEDM.TabIndex = 16;
             this.buttonClearEDM.Text = "Clear";
             this.buttonClearEDM.UseVisualStyleBackColor = true;
-            this.buttonClearEDM.Click += new System.EventHandler(this.buttonClearEDM_Click);
             // 
             // textBoxPathEDM
             // 
@@ -371,7 +363,6 @@ namespace RolePlayCharacterWF
             this.buttonNewEDM.TabIndex = 18;
             this.buttonNewEDM.Text = "New";
             this.buttonNewEDM.UseVisualStyleBackColor = true;
-            this.buttonNewEDM.Click += new System.EventHandler(this.buttonNewEDM_Click);
             // 
             // tabPage3
             // 
@@ -418,7 +409,6 @@ namespace RolePlayCharacterWF
             this.openEAButton.TabIndex = 15;
             this.openEAButton.Text = "Open";
             this.openEAButton.UseVisualStyleBackColor = true;
-            this.openEAButton.Click += new System.EventHandler(this.openEAButton_Click);
             // 
             // clearEAButton
             // 
@@ -429,7 +419,6 @@ namespace RolePlayCharacterWF
             this.clearEAButton.TabIndex = 16;
             this.clearEAButton.Text = "Clear";
             this.clearEAButton.UseVisualStyleBackColor = true;
-            this.clearEAButton.Click += new System.EventHandler(this._clearButton_Click);
             // 
             // pathTextBoxEA
             // 
@@ -440,7 +429,6 @@ namespace RolePlayCharacterWF
             this.pathTextBoxEA.ReadOnly = true;
             this.pathTextBoxEA.Size = new System.Drawing.Size(508, 22);
             this.pathTextBoxEA.TabIndex = 13;
-            this.pathTextBoxEA.TextChanged += new System.EventHandler(this.pathTextBoxEA_TextChanged);
             // 
             // createNewEAButton
             // 
@@ -451,7 +439,6 @@ namespace RolePlayCharacterWF
             this.createNewEAButton.TabIndex = 18;
             this.createNewEAButton.Text = "New";
             this.createNewEAButton.UseVisualStyleBackColor = true;
-            this.createNewEAButton.Click += new System.EventHandler(this.createNewEAButton_Click);
             // 
             // tabPage2
             // 
@@ -973,7 +960,6 @@ namespace RolePlayCharacterWF
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.groupBox7);
-            this.splitContainer1.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
             // 
             // splitContainer1.Panel2
             // 
@@ -1000,7 +986,6 @@ namespace RolePlayCharacterWF
             this.groupBox7.Size = new System.Drawing.Size(825, 72);
             this.groupBox7.TabIndex = 12;
             this.groupBox7.TabStop = false;
-            this.groupBox7.Enter += new System.EventHandler(this.groupBox7_Enter);
             // 
             // MainForm
             // 

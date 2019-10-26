@@ -80,19 +80,6 @@ namespace WebAPIWF
             }
         }
 
-
-        private void LoadCharacters(IntegratedAuthoringToolAsset iat, List<RolePlayCharacterAsset> rpcs)
-        {
-            foreach (var source in iat.GetAllCharacterSources())
-            {
-                var rpc = RolePlayCharacterAsset.LoadFromFile(source.Source);
-                rpc.LoadAssociatedAssets();
-                iat.BindToRegistry(rpc.DynamicPropertiesRegistry);
-                rpcs.Add(rpc);
-            }
-        }
-
-
         private void ServerNotificationHandler(object sender, ServerEventArgs e)
         {
             switch (e.Type)
@@ -119,7 +106,7 @@ namespace WebAPIWF
             try
             {
                 fatimaServer?.Close();
-                fatimaServer = new HTTPFAtiMAServer() { IatFilePath = LoadedAsset.AssetFilePath, Port = int.Parse(this.textBoxPort.Text) };
+             //   fatimaServer = new HTTPFAtiMAServer() { IatFilePath = LoadedAsset.AssetFilePath, Port = int.Parse(this.textBoxPort.Text) };
                 fatimaServer.OnServerEvent += ServerNotificationHandler;
                 fatimaServer.Run();
             }

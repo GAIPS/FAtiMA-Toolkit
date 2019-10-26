@@ -9,15 +9,13 @@ namespace RolePlayCharacterWF.ViewModels
 {
     public class KnowledgeBaseVM
     {
-	    private BaseRPCForm _mainForm;
-
-	    private RolePlayCharacterAsset _rpcAsset => _mainForm.LoadedAsset;
+	    private RolePlayCharacterAsset _rpcAsset;
 
 	    public BindingListView<BeliefDTO> Beliefs {get;}
 
-		public KnowledgeBaseVM(BaseRPCForm form)
+		public KnowledgeBaseVM(RolePlayCharacterAsset asset)
 		{
-			_mainForm = form;
+            _rpcAsset = asset;
 			Beliefs = new BindingListView<BeliefDTO>(new List<BeliefDTO>());
 			UpdateBeliefList();
         }
@@ -41,7 +39,6 @@ namespace RolePlayCharacterWF.ViewModels
             _rpcAsset.UpdateBelief(belief.Name, belief.Value, belief.Certainty, belief.Perspective);
             Beliefs.DataSource.Add(belief);
             Beliefs.Refresh();
-			_mainForm.SetModified();
 		}
 
         public void RemoveBeliefs(IEnumerable<BeliefDTO> beliefs)
@@ -52,7 +49,6 @@ namespace RolePlayCharacterWF.ViewModels
                 Beliefs.DataSource.Remove(beliefDto);
             }
             Beliefs.Refresh();
-			_mainForm.SetModified();
 		}
     }
 }

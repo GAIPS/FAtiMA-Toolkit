@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-using AssetManagerPackage;
-using GAIPS.AssetEditorTools;
+using GAIPS.Rage;
 
 namespace RolePlayCharacterWF
 {
@@ -13,12 +12,9 @@ namespace RolePlayCharacterWF
 		[STAThread]
 		static void Main()
 		{
-			AssetManager.Instance.Bridge = new ApplicationBridge();
-
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			var f = new MainForm();
-			f.CreateNewAsset();
+			var f = new MainForm(new AssetStorage());
 			Application.Run(f);
 		}
 	}

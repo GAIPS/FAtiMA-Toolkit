@@ -9,17 +9,16 @@ namespace RolePlayCharacterWF.ViewModels
 {
     public class AutobiographicalMemoryVM
     {
-	    private readonly BaseRPCForm _mainForm;
-	    private RolePlayCharacterAsset _rpcAsset => _mainForm.LoadedAsset;
+        private RolePlayCharacterAsset _rpcAsset;
 
         public BindingListView<EventDTO> Events {get;}
         public WellFormedNames.Name CharName { get; }
 
 		public static readonly string[] EventTypes = { AMConsts.ACTION_END, AMConsts.ACTION_START, AMConsts.PROPERTY_CHANGE };
 
-		public AutobiographicalMemoryVM(BaseRPCForm form)
+		public AutobiographicalMemoryVM(RolePlayCharacterAsset asset)
 		{
-			_mainForm = form;
+            _rpcAsset = asset;
             this.Events = new BindingListView<EventDTO>(_rpcAsset.EventRecords.ToList());
             this.CharName = _rpcAsset.CharacterName;
         }
@@ -29,7 +28,6 @@ namespace RolePlayCharacterWF.ViewModels
             _rpcAsset.AddEventRecord(newEvent);
             Events.DataSource = _rpcAsset.EventRecords.ToList();
             Events.Refresh();
-			_mainForm.SetModified();
         }
 
         public void UpdateEventRecord(EventDTO existingEvent)
@@ -37,7 +35,6 @@ namespace RolePlayCharacterWF.ViewModels
             _rpcAsset.UpdateEventRecord(existingEvent);
             Events.DataSource = _rpcAsset.EventRecords.ToList();
             Events.Refresh();
-			_mainForm.SetModified();
 		}
 
         public EventDTO RetrieveEventRecord(uint id)
@@ -54,7 +51,6 @@ namespace RolePlayCharacterWF.ViewModels
 
             Events.DataSource = _rpcAsset.EventRecords.ToList();
             Events.Refresh();
-			_mainForm.SetModified();
 		}
     }
 }

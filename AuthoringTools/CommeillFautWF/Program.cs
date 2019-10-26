@@ -18,7 +18,6 @@ namespace CommeillFautWF
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             var f = new MainForm();
-        
             Application.Run(f);
         }
     }
