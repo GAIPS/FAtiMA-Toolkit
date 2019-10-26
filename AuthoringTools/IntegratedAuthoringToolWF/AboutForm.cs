@@ -19,12 +19,6 @@ namespace IntegratedAuthoringToolWF
 			InitializeComponent();
 		}
 
-        public static void Display(string format, params object[] param)
-
-        {
-            var jonas = String.Format(format, param);
-        }
-
         private void AboutForm_Load(object sender, EventArgs e)
 		{
             var a = Assembly.GetEntryAssembly();

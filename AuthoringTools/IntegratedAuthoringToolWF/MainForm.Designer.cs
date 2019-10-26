@@ -42,7 +42,15 @@
             this.buttonImportTxt = new System.Windows.Forms.Button();
             this.buttonImportExcel = new System.Windows.Forms.Button();
             this.buttonExportExcel = new System.Windows.Forms.Button();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.buttonOpenAssetStorage = new System.Windows.Forms.Button();
+            this.saveAssetStorageButton = new System.Windows.Forms.Button();
+            this.pathTextBoxWorldModel = new System.Windows.Forms.TextBox();
+            this.buttonNewAssetStorage = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.buttonContinue = new System.Windows.Forms.Button();
@@ -75,15 +83,15 @@
             this.textBoxValChat = new System.Windows.Forms.TextBox();
             this.textBoxBelChat = new System.Windows.Forms.TextBox();
             this.comboBoxAgChat = new System.Windows.Forms.ComboBox();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.tabPageWeb = new System.Windows.Forms.TabPage();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.openWolrdModelButton = new System.Windows.Forms.Button();
-            this.clearWorldModelButton = new System.Windows.Forms.Button();
-            this.pathTextBoxWorldModel = new System.Windows.Forms.TextBox();
-            this.createNewWorldModelButton = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.buttonSaveAsAssetStorage = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCharacters)).BeginInit();
@@ -97,6 +105,8 @@
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDialogueActions)).BeginInit();
+            this.groupBox6.SuspendLayout();
+            this.tabPage3.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer3)).BeginInit();
@@ -118,9 +128,7 @@
             this.groupBox5.SuspendLayout();
             this.groupBox11.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAgentInspector)).BeginInit();
-            this.tabPage3.SuspendLayout();
-            this.tabPage4.SuspendLayout();
-            this.groupBox6.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // textBoxScenarioName
@@ -130,7 +138,7 @@
             this.textBoxScenarioName.Location = new System.Drawing.Point(93, 20);
             this.textBoxScenarioName.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxScenarioName.Name = "textBoxScenarioName";
-            this.textBoxScenarioName.Size = new System.Drawing.Size(351, 22);
+            this.textBoxScenarioName.Size = new System.Drawing.Size(305, 22);
             this.textBoxScenarioName.TabIndex = 0;
             this.textBoxScenarioName.TextChanged += new System.EventHandler(this.textBoxScenarioName_TextChanged);
             // 
@@ -150,14 +158,15 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.tableLayoutPanel1);
-            this.groupBox1.Location = new System.Drawing.Point(19, 272);
+            this.groupBox1.Location = new System.Drawing.Point(19, 320);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(425, 441);
+            this.groupBox1.Size = new System.Drawing.Size(379, 369);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Characters";
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // tableLayoutPanel1
             // 
@@ -172,7 +181,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(417, 418);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(371, 346);
             this.tableLayoutPanel1.TabIndex = 15;
             // 
             // dataGridViewCharacters
@@ -194,7 +203,7 @@
             this.dataGridViewCharacters.RowHeadersVisible = false;
             this.dataGridViewCharacters.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewCharacters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewCharacters.Size = new System.Drawing.Size(409, 364);
+            this.dataGridViewCharacters.Size = new System.Drawing.Size(363, 292);
             this.dataGridViewCharacters.TabIndex = 13;
             this.dataGridViewCharacters.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCharacters_CellContentClick);
             this.dataGridViewCharacters.SelectionChanged += new System.EventHandler(this.dataGridViewCharacters_SelectionChanged);
@@ -208,7 +217,7 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(4, 4);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(409, 38);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(363, 38);
             this.flowLayoutPanel1.TabIndex = 14;
             // 
             // buttonAddCharacter
@@ -263,31 +272,32 @@
             this.textBoxScenarioDescription.Multiline = true;
             this.textBoxScenarioDescription.Name = "textBoxScenarioDescription";
             this.textBoxScenarioDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxScenarioDescription.Size = new System.Drawing.Size(424, 163);
+            this.textBoxScenarioDescription.Size = new System.Drawing.Size(378, 99);
             this.textBoxScenarioDescription.TabIndex = 1;
             this.textBoxScenarioDescription.TextChanged += new System.EventHandler(this.textBoxScenarioDescription_TextChanged);
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 24);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.groupBox6);
             this.splitContainer1.Panel1.Controls.Add(this.textBoxScenarioName);
             this.splitContainer1.Panel1.Controls.Add(this.groupBox1);
             this.splitContainer1.Panel1.Controls.Add(this.textBoxScenarioDescription);
             this.splitContainer1.Panel1.Controls.Add(this.label2);
             this.splitContainer1.Panel1.Controls.Add(this.label1);
-            this.splitContainer1.Panel1MinSize = 466;
+            this.splitContainer1.Panel1MinSize = 420;
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControlIAT);
-            this.splitContainer1.Size = new System.Drawing.Size(1299, 713);
-            this.splitContainer1.SplitterDistance = 466;
+            this.splitContainer1.Size = new System.Drawing.Size(1299, 689);
+            this.splitContainer1.SplitterDistance = 420;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 5;
             // 
@@ -304,7 +314,7 @@
             this.tabControlIAT.Margin = new System.Windows.Forms.Padding(4);
             this.tabControlIAT.Name = "tabControlIAT";
             this.tabControlIAT.SelectedIndex = 0;
-            this.tabControlIAT.Size = new System.Drawing.Size(828, 713);
+            this.tabControlIAT.Size = new System.Drawing.Size(874, 689);
             this.tabControlIAT.TabIndex = 20;
             this.tabControlIAT.TabStop = false;
             // 
@@ -321,7 +331,7 @@
             this.tabPageDialogue.Margin = new System.Windows.Forms.Padding(5);
             this.tabPageDialogue.Name = "tabPageDialogue";
             this.tabPageDialogue.Padding = new System.Windows.Forms.Padding(5);
-            this.tabPageDialogue.Size = new System.Drawing.Size(820, 684);
+            this.tabPageDialogue.Size = new System.Drawing.Size(866, 660);
             this.tabPageDialogue.TabIndex = 0;
             this.tabPageDialogue.Text = "Dialogue Editor";
             this.tabPageDialogue.UseVisualStyleBackColor = true;
@@ -329,7 +339,7 @@
             // displayGraph
             // 
             this.displayGraph.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.displayGraph.Location = new System.Drawing.Point(666, 616);
+            this.displayGraph.Location = new System.Drawing.Point(667, 621);
             this.displayGraph.Margin = new System.Windows.Forms.Padding(4);
             this.displayGraph.Name = "displayGraph";
             this.displayGraph.Size = new System.Drawing.Size(138, 30);
@@ -355,7 +365,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(803, 600);
+            this.groupBox2.Size = new System.Drawing.Size(849, 605);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dialogue Actions";
@@ -367,7 +377,7 @@
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
-            this.pictureBox1.Location = new System.Drawing.Point(524, 27);
+            this.pictureBox1.Location = new System.Drawing.Point(570, 27);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(27, 22);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -381,7 +391,7 @@
             this.searchCheckList.FormattingEnabled = true;
             this.searchCheckList.HorizontalExtent = 1;
             this.searchCheckList.HorizontalScrollbar = true;
-            this.searchCheckList.Location = new System.Drawing.Point(579, 14);
+            this.searchCheckList.Location = new System.Drawing.Point(625, 14);
             this.searchCheckList.Name = "searchCheckList";
             this.searchCheckList.Size = new System.Drawing.Size(217, 32);
             this.searchCheckList.TabIndex = 16;
@@ -392,7 +402,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.searchDialogueBox.Location = new System.Drawing.Point(406, 27);
             this.searchDialogueBox.Name = "searchDialogueBox";
-            this.searchDialogueBox.Size = new System.Drawing.Size(119, 22);
+            this.searchDialogueBox.Size = new System.Drawing.Size(165, 22);
             this.searchDialogueBox.TabIndex = 15;
             this.searchDialogueBox.TextChanged += new System.EventHandler(this.DialogueSearchBox_TextChanged);
             // 
@@ -418,7 +428,7 @@
             this.dataGridViewDialogueActions.RowHeadersVisible = false;
             this.dataGridViewDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(795, 516);
+            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(841, 521);
             this.dataGridViewDialogueActions.TabIndex = 14;
             this.dataGridViewDialogueActions.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellClick);
             this.dataGridViewDialogueActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellContentClick);
@@ -476,7 +486,7 @@
             // buttonValidate
             // 
             this.buttonValidate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonValidate.Location = new System.Drawing.Point(515, 616);
+            this.buttonValidate.Location = new System.Drawing.Point(516, 621);
             this.buttonValidate.Margin = new System.Windows.Forms.Padding(4);
             this.buttonValidate.Name = "buttonValidate";
             this.buttonValidate.Size = new System.Drawing.Size(143, 30);
@@ -488,7 +498,7 @@
             // buttonTTS
             // 
             this.buttonTTS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonTTS.Location = new System.Drawing.Point(356, 616);
+            this.buttonTTS.Location = new System.Drawing.Point(357, 621);
             this.buttonTTS.Margin = new System.Windows.Forms.Padding(4);
             this.buttonTTS.Name = "buttonTTS";
             this.buttonTTS.Size = new System.Drawing.Size(151, 30);
@@ -500,7 +510,7 @@
             // buttonImportTxt
             // 
             this.buttonImportTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonImportTxt.Location = new System.Drawing.Point(233, 616);
+            this.buttonImportTxt.Location = new System.Drawing.Point(234, 621);
             this.buttonImportTxt.Margin = new System.Windows.Forms.Padding(4);
             this.buttonImportTxt.Name = "buttonImportTxt";
             this.buttonImportTxt.Size = new System.Drawing.Size(115, 30);
@@ -512,7 +522,7 @@
             // buttonImportExcel
             // 
             this.buttonImportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonImportExcel.Location = new System.Drawing.Point(9, 616);
+            this.buttonImportExcel.Location = new System.Drawing.Point(10, 621);
             this.buttonImportExcel.Margin = new System.Windows.Forms.Padding(4);
             this.buttonImportExcel.Name = "buttonImportExcel";
             this.buttonImportExcel.Size = new System.Drawing.Size(101, 30);
@@ -524,7 +534,7 @@
             // buttonExportExcel
             // 
             this.buttonExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonExportExcel.Location = new System.Drawing.Point(118, 616);
+            this.buttonExportExcel.Location = new System.Drawing.Point(119, 621);
             this.buttonExportExcel.Margin = new System.Windows.Forms.Padding(4);
             this.buttonExportExcel.Name = "buttonExportExcel";
             this.buttonExportExcel.Size = new System.Drawing.Size(107, 30);
@@ -533,17 +543,109 @@
             this.buttonExportExcel.UseVisualStyleBackColor = true;
             this.buttonExportExcel.Click += new System.EventHandler(this.buttonExportExcel_Click);
             // 
+            // tabPage4
+            // 
+            this.tabPage4.Location = new System.Drawing.Point(4, 25);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(866, 660);
+            this.tabPage4.TabIndex = 5;
+            this.tabPage4.Text = "Asset Editor";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox6.Controls.Add(this.buttonSaveAsAssetStorage);
+            this.groupBox6.Controls.Add(this.buttonOpenAssetStorage);
+            this.groupBox6.Controls.Add(this.saveAssetStorageButton);
+            this.groupBox6.Controls.Add(this.pathTextBoxWorldModel);
+            this.groupBox6.Controls.Add(this.buttonNewAssetStorage);
+            this.groupBox6.Location = new System.Drawing.Point(19, 214);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(379, 94);
+            this.groupBox6.TabIndex = 16;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Asset Storage";
+            // 
+            // buttonOpenAssetStorage
+            // 
+            this.buttonOpenAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonOpenAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonOpenAssetStorage.Location = new System.Drawing.Point(97, 25);
+            this.buttonOpenAssetStorage.Name = "buttonOpenAssetStorage";
+            this.buttonOpenAssetStorage.Size = new System.Drawing.Size(85, 30);
+            this.buttonOpenAssetStorage.TabIndex = 15;
+            this.buttonOpenAssetStorage.Text = "Open";
+            this.buttonOpenAssetStorage.UseVisualStyleBackColor = true;
+            this.buttonOpenAssetStorage.Click += new System.EventHandler(this.buttonOpenAssetStorage_Click);
+            // 
+            // saveAssetStorageButton
+            // 
+            this.saveAssetStorageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.saveAssetStorageButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.saveAssetStorageButton.Location = new System.Drawing.Point(188, 25);
+            this.saveAssetStorageButton.Name = "saveAssetStorageButton";
+            this.saveAssetStorageButton.Size = new System.Drawing.Size(85, 30);
+            this.saveAssetStorageButton.TabIndex = 16;
+            this.saveAssetStorageButton.Text = "Save";
+            this.saveAssetStorageButton.UseVisualStyleBackColor = true;
+            this.saveAssetStorageButton.Click += new System.EventHandler(this.saveAssetStorageButton_Click);
+            // 
+            // pathTextBoxWorldModel
+            // 
+            this.pathTextBoxWorldModel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pathTextBoxWorldModel.Location = new System.Drawing.Point(6, 61);
+            this.pathTextBoxWorldModel.Name = "pathTextBoxWorldModel";
+            this.pathTextBoxWorldModel.ReadOnly = true;
+            this.pathTextBoxWorldModel.Size = new System.Drawing.Size(365, 22);
+            this.pathTextBoxWorldModel.TabIndex = 13;
+            // 
+            // buttonNewAssetStorage
+            // 
+            this.buttonNewAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonNewAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.buttonNewAssetStorage.Location = new System.Drawing.Point(6, 25);
+            this.buttonNewAssetStorage.Name = "buttonNewAssetStorage";
+            this.buttonNewAssetStorage.Size = new System.Drawing.Size(85, 30);
+            this.buttonNewAssetStorage.TabIndex = 18;
+            this.buttonNewAssetStorage.Text = "New";
+            this.buttonNewAssetStorage.UseVisualStyleBackColor = true;
+            this.buttonNewAssetStorage.Click += new System.EventHandler(this.buttonNewAssetStorage_Click);
+            // 
             // tabPage2
             // 
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(5);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(5);
-            this.tabPage2.Size = new System.Drawing.Size(820, 684);
+            this.tabPage2.Size = new System.Drawing.Size(866, 660);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Role Play Character Editor";
             this.tabPage2.UseVisualStyleBackColor = true;
             this.tabPage2.Click += new System.EventHandler(this.tabPage2_Click);
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.groupBox7);
+            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(820, 660);
+            this.tabPage3.TabIndex = 3;
+            this.tabPage3.Text = "World Model";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox7.Location = new System.Drawing.Point(3, 3);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(814, 654);
+            this.groupBox7.TabIndex = 16;
+            this.groupBox7.TabStop = false;
             // 
             // tabPage1
             // 
@@ -552,7 +654,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(820, 684);
+            this.tabPage1.Size = new System.Drawing.Size(820, 660);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "Simulator";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -569,7 +671,7 @@
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.checkBox1);
             this.groupBox3.Controls.Add(this.effectTickBox);
-            this.groupBox3.Location = new System.Drawing.Point(6, 579);
+            this.groupBox3.Location = new System.Drawing.Point(6, 552);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(811, 73);
             this.groupBox3.TabIndex = 10;
@@ -677,7 +779,7 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.groupBox10);
-            this.splitContainer3.Size = new System.Drawing.Size(814, 570);
+            this.splitContainer3.Size = new System.Drawing.Size(814, 543);
             this.splitContainer3.SplitterDistance = 525;
             this.splitContainer3.TabIndex = 11;
             // 
@@ -687,7 +789,7 @@
             this.groupBox9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox9.Location = new System.Drawing.Point(0, 0);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(525, 570);
+            this.groupBox9.Size = new System.Drawing.Size(525, 543);
             this.groupBox9.TabIndex = 0;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Chat";
@@ -706,8 +808,8 @@
             // splitContainer5.Panel2
             // 
             this.splitContainer5.Panel2.Controls.Add(this.splitContainer6);
-            this.splitContainer5.Size = new System.Drawing.Size(519, 549);
-            this.splitContainer5.SplitterDistance = 262;
+            this.splitContainer5.Size = new System.Drawing.Size(519, 522);
+            this.splitContainer5.SplitterDistance = 249;
             this.splitContainer5.TabIndex = 1;
             // 
             // richTextBoxChat
@@ -719,7 +821,7 @@
             this.richTextBoxChat.Location = new System.Drawing.Point(0, 0);
             this.richTextBoxChat.Name = "richTextBoxChat";
             this.richTextBoxChat.ReadOnly = true;
-            this.richTextBoxChat.Size = new System.Drawing.Size(519, 262);
+            this.richTextBoxChat.Size = new System.Drawing.Size(519, 249);
             this.richTextBoxChat.TabIndex = 0;
             this.richTextBoxChat.Text = "";
             // 
@@ -737,8 +839,8 @@
             // splitContainer6.Panel2
             // 
             this.splitContainer6.Panel2.Controls.Add(this.groupBox8);
-            this.splitContainer6.Size = new System.Drawing.Size(519, 283);
-            this.splitContainer6.SplitterDistance = 190;
+            this.splitContainer6.Size = new System.Drawing.Size(519, 269);
+            this.splitContainer6.SplitterDistance = 180;
             this.splitContainer6.TabIndex = 0;
             // 
             // groupBox4
@@ -747,7 +849,7 @@
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(519, 190);
+            this.groupBox4.Size = new System.Drawing.Size(519, 180);
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Select Dialogue:";
@@ -762,7 +864,7 @@
             this.listBoxPlayerDialogues.ItemHeight = 17;
             this.listBoxPlayerDialogues.Location = new System.Drawing.Point(3, 18);
             this.listBoxPlayerDialogues.Name = "listBoxPlayerDialogues";
-            this.listBoxPlayerDialogues.Size = new System.Drawing.Size(513, 169);
+            this.listBoxPlayerDialogues.Size = new System.Drawing.Size(513, 159);
             this.listBoxPlayerDialogues.TabIndex = 2;
             this.listBoxPlayerDialogues.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxPlayerDialogues_MouseDoubleClick);
             // 
@@ -772,7 +874,7 @@
             this.groupBox8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox8.Location = new System.Drawing.Point(0, 0);
             this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(519, 89);
+            this.groupBox8.Size = new System.Drawing.Size(519, 85);
             this.groupBox8.TabIndex = 4;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Select Action:";
@@ -786,7 +888,7 @@
             this.listBoxPlayerActions.ItemHeight = 17;
             this.listBoxPlayerActions.Location = new System.Drawing.Point(3, 18);
             this.listBoxPlayerActions.Name = "listBoxPlayerActions";
-            this.listBoxPlayerActions.Size = new System.Drawing.Size(513, 68);
+            this.listBoxPlayerActions.Size = new System.Drawing.Size(513, 64);
             this.listBoxPlayerActions.TabIndex = 2;
             this.listBoxPlayerActions.SelectedIndexChanged += new System.EventHandler(this.listBoxPlayerActions_SelectedIndexChanged);
             this.listBoxPlayerActions.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxPlayerActions_MouseDoubleClick);
@@ -797,7 +899,7 @@
             this.groupBox10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox10.Location = new System.Drawing.Point(0, 0);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(285, 570);
+            this.groupBox10.Size = new System.Drawing.Size(285, 543);
             this.groupBox10.TabIndex = 8;
             this.groupBox10.TabStop = false;
             // 
@@ -818,7 +920,7 @@
             this.groupBox5.Controls.Add(this.comboBoxAgChat);
             this.groupBox5.Location = new System.Drawing.Point(6, 18);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(273, 546);
+            this.groupBox5.Size = new System.Drawing.Size(273, 519);
             this.groupBox5.TabIndex = 7;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Agent Inspector";
@@ -828,7 +930,7 @@
             // 
             this.buttonEvalBelief.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonEvalBelief.Enabled = false;
-            this.buttonEvalBelief.Location = new System.Drawing.Point(211, 515);
+            this.buttonEvalBelief.Location = new System.Drawing.Point(211, 488);
             this.buttonEvalBelief.Name = "buttonEvalBelief";
             this.buttonEvalBelief.Size = new System.Drawing.Size(53, 22);
             this.buttonEvalBelief.TabIndex = 10;
@@ -871,7 +973,7 @@
             this.groupBox11.Controls.Add(this.dataGridViewAgentInspector);
             this.groupBox11.Location = new System.Drawing.Point(9, 94);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(258, 385);
+            this.groupBox11.Size = new System.Drawing.Size(258, 358);
             this.groupBox11.TabIndex = 10;
             this.groupBox11.TabStop = false;
             // 
@@ -893,14 +995,14 @@
             this.dataGridViewAgentInspector.RowHeadersVisible = false;
             this.dataGridViewAgentInspector.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAgentInspector.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAgentInspector.Size = new System.Drawing.Size(252, 364);
+            this.dataGridViewAgentInspector.Size = new System.Drawing.Size(252, 337);
             this.dataGridViewAgentInspector.TabIndex = 9;
             // 
             // label6
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 519);
+            this.label6.Location = new System.Drawing.Point(6, 492);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(30, 16);
             this.label6.TabIndex = 5;
@@ -910,7 +1012,7 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 490);
+            this.label5.Location = new System.Drawing.Point(6, 463);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(31, 16);
             this.label5.TabIndex = 4;
@@ -929,7 +1031,7 @@
             // 
             this.textBoxValChat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxValChat.Location = new System.Drawing.Point(45, 515);
+            this.textBoxValChat.Location = new System.Drawing.Point(45, 488);
             this.textBoxValChat.Name = "textBoxValChat";
             this.textBoxValChat.ReadOnly = true;
             this.textBoxValChat.Size = new System.Drawing.Size(160, 22);
@@ -939,7 +1041,7 @@
             // 
             this.textBoxBelChat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxBelChat.Location = new System.Drawing.Point(46, 487);
+            this.textBoxBelChat.Location = new System.Drawing.Point(46, 460);
             this.textBoxBelChat.Name = "textBoxBelChat";
             this.textBoxBelChat.Size = new System.Drawing.Size(218, 22);
             this.textBoxBelChat.TabIndex = 1;
@@ -958,111 +1060,89 @@
             this.comboBoxAgChat.SelectedIndexChanged += new System.EventHandler(this.comboBoxAgChat_SelectedIndexChanged);
             this.comboBoxAgChat.SelectedValueChanged += new System.EventHandler(this.comboBoxAgChat_SelectedValueChanged);
             // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.groupBox7);
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(820, 684);
-            this.tabPage3.TabIndex = 3;
-            this.tabPage3.Text = "World Model";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // groupBox7
-            // 
-            this.groupBox7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox7.Location = new System.Drawing.Point(3, 3);
-            this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(814, 678);
-            this.groupBox7.TabIndex = 16;
-            this.groupBox7.TabStop = false;
-            // 
             // tabPageWeb
             // 
             this.tabPageWeb.Location = new System.Drawing.Point(4, 25);
             this.tabPageWeb.Name = "tabPageWeb";
             this.tabPageWeb.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageWeb.Size = new System.Drawing.Size(820, 684);
+            this.tabPageWeb.Size = new System.Drawing.Size(820, 660);
             this.tabPageWeb.TabIndex = 4;
             this.tabPageWeb.Text = "Web API";
             this.tabPageWeb.UseVisualStyleBackColor = true;
             // 
-            // tabPage4
+            // menuStrip1
             // 
-            this.tabPage4.Controls.Add(this.groupBox6);
-            this.tabPage4.Location = new System.Drawing.Point(4, 25);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(820, 684);
-            this.tabPage4.TabIndex = 5;
-            this.tabPage4.Text = "Asset Editor";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.aboutToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1299, 24);
+            this.menuStrip1.TabIndex = 6;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // groupBox6
+            // fileToolStripMenuItem
             // 
-            this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox6.Controls.Add(this.openWolrdModelButton);
-            this.groupBox6.Controls.Add(this.clearWorldModelButton);
-            this.groupBox6.Controls.Add(this.pathTextBoxWorldModel);
-            this.groupBox6.Controls.Add(this.createNewWorldModelButton);
-            this.groupBox6.Location = new System.Drawing.Point(16, 3);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(796, 64);
-            this.groupBox6.TabIndex = 16;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Source";
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newToolStripMenuItem,
+            this.openToolStripMenuItem,
+            this.saveToolStripMenuItem,
+            this.saveAsToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
             // 
-            // openWolrdModelButton
+            // newToolStripMenuItem
             // 
-            this.openWolrdModelButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.openWolrdModelButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.openWolrdModelButton.Location = new System.Drawing.Point(103, 27);
-            this.openWolrdModelButton.Name = "openWolrdModelButton";
-            this.openWolrdModelButton.Size = new System.Drawing.Size(85, 23);
-            this.openWolrdModelButton.TabIndex = 15;
-            this.openWolrdModelButton.Text = "Open";
-            this.openWolrdModelButton.UseVisualStyleBackColor = true;
+            this.newToolStripMenuItem.Name = "newToolStripMenuItem";
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newToolStripMenuItem.Text = "New";
             // 
-            // clearWorldModelButton
+            // aboutToolStripMenuItem
             // 
-            this.clearWorldModelButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.clearWorldModelButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.clearWorldModelButton.Location = new System.Drawing.Point(202, 27);
-            this.clearWorldModelButton.Name = "clearWorldModelButton";
-            this.clearWorldModelButton.Size = new System.Drawing.Size(85, 23);
-            this.clearWorldModelButton.TabIndex = 16;
-            this.clearWorldModelButton.Text = "Clear";
-            this.clearWorldModelButton.UseVisualStyleBackColor = true;
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // pathTextBoxWorldModel
+            // openToolStripMenuItem
             // 
-            this.pathTextBoxWorldModel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pathTextBoxWorldModel.Location = new System.Drawing.Point(293, 24);
-            this.pathTextBoxWorldModel.Name = "pathTextBoxWorldModel";
-            this.pathTextBoxWorldModel.ReadOnly = true;
-            this.pathTextBoxWorldModel.Size = new System.Drawing.Size(491, 22);
-            this.pathTextBoxWorldModel.TabIndex = 13;
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Text = "Open";
             // 
-            // createNewWorldModelButton
+            // saveToolStripMenuItem
             // 
-            this.createNewWorldModelButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.createNewWorldModelButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.createNewWorldModelButton.Location = new System.Drawing.Point(6, 27);
-            this.createNewWorldModelButton.Name = "createNewWorldModelButton";
-            this.createNewWorldModelButton.Size = new System.Drawing.Size(85, 23);
-            this.createNewWorldModelButton.TabIndex = 18;
-            this.createNewWorldModelButton.Text = "New";
-            this.createNewWorldModelButton.UseVisualStyleBackColor = true;
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Text = "Save";
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveAsToolStripMenuItem.Text = "Save As ...";
+            // 
+            // buttonSaveAsAssetStorage
+            // 
+            this.buttonSaveAsAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonSaveAsAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.buttonSaveAsAssetStorage.Location = new System.Drawing.Point(279, 25);
+            this.buttonSaveAsAssetStorage.Name = "buttonSaveAsAssetStorage";
+            this.buttonSaveAsAssetStorage.Size = new System.Drawing.Size(85, 30);
+            this.buttonSaveAsAssetStorage.TabIndex = 19;
+            this.buttonSaveAsAssetStorage.Text = "Save As";
+            this.buttonSaveAsAssetStorage.UseVisualStyleBackColor = true;
+            this.buttonSaveAsAssetStorage.Click += new System.EventHandler(this.buttonSaveAsAssetStorage_Click);
             // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(1299, 713);
             this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.HelpButton = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -1086,6 +1166,9 @@
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDialogueActions)).EndInit();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
@@ -1109,11 +1192,10 @@
             this.groupBox5.PerformLayout();
             this.groupBox11.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAgentInspector)).EndInit();
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage4.ResumeLayout(false);
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -1204,10 +1286,18 @@
         private System.Windows.Forms.TabPage tabPageWeb;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.Button openWolrdModelButton;
-        private System.Windows.Forms.Button clearWorldModelButton;
+        private System.Windows.Forms.Button buttonOpenAssetStorage;
+        private System.Windows.Forms.Button saveAssetStorageButton;
         private System.Windows.Forms.TextBox pathTextBoxWorldModel;
-        private System.Windows.Forms.Button createNewWorldModelButton;
+        private System.Windows.Forms.Button buttonNewAssetStorage;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.Button buttonSaveAsAssetStorage;
     }
 }
 

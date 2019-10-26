@@ -28,8 +28,8 @@ namespace IntegratedAuthoringToolWF
 
         private BindingListView<CharacterSourceDTO> _characterSources;
         //private RolePlayCharacterWF.MainForm _rpcForm = new RolePlayCharacterWF.MainForm(new AssetStorage());
-        
-        private WorldModelWF.MainForm _wmForm = new WorldModelWF.MainForm();
+
+        private WorldModelWF.MainForm _wmForm;
         private WebAPIWF.MainForm _webForm = new WebAPIWF.MainForm();
         private IntegratedAuthoringToolAsset _iat;
         private int currentRPCTabIndex;
@@ -39,6 +39,8 @@ namespace IntegratedAuthoringToolWF
             InitializeComponent();
             buttonRemoveCharacter.Enabled = false;
             buttonInspect.Enabled = false;
+            _iat = new IntegratedAuthoringToolAsset();
+            OnAssetDataLoaded(_iat);
         }
 
         private void RefreshDialogs()
@@ -51,11 +53,11 @@ namespace IntegratedAuthoringToolWF
                 }
             );
 
-            EditorTools.HideColumns(dataGridViewCharacters, new[]
+            /*EditorTools.HideColumns(dataGridViewCharacters, new[]
                 {
                     PropertyUtil.GetPropertyName<CharacterSourceDTO>(s => s.Source),
                 }
-            );
+            );*/
         }
 
         protected void OnAssetDataLoaded(IntegratedAuthoringToolAsset asset)
@@ -73,14 +75,16 @@ namespace IntegratedAuthoringToolWF
             textBoxTick.Text = "";
 
             searchCheckList.Items.Clear();
-            searchCheckList.Items.Add("CurrenState", true);
+            searchCheckList.Items.Add("CurrentState", true);
             searchCheckList.Items.Add("NextState", false);
             searchCheckList.Items.Add("Meaning", false);
             searchCheckList.Items.Add("Style", false);
             searchCheckList.Items.Add("Utterance", false);
-            
-            FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[4], _webForm);
 
+            _wmForm = new WorldModelWF.MainForm(_iat.WorldModel);
+            FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[3], _wmForm);
+
+            FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[5], _webForm);
             RefreshDialogs();
         }
      
@@ -1364,6 +1368,36 @@ namespace IntegratedAuthoringToolWF
             {
                 textBoxValChat.Text = ex.Message;
             }
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new AboutForm().ShowDialog(this);
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonNewAssetStorage_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonOpenAssetStorage_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void saveAssetStorageButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonSaveAsAssetStorage_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -13,10 +13,10 @@ namespace WorldModelWF
     {
         private WorldModelAsset _wmAsset;
 
-        public MainForm()
+        public MainForm(WorldModelAsset asset)
         {
             InitializeComponent();
-
+            OnAssetDataLoaded(asset);
         }
 
 

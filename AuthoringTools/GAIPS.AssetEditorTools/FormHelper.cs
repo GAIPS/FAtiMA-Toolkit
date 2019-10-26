@@ -6,7 +6,8 @@ namespace GAIPS.AssetEditorTools
     {
         public static void ShowFormInContainerControl(Control ctl, Form frm)
         {
-            frm.MainMenuStrip.Visible = false;
+            if(frm.MainMenuStrip != null)
+                frm.MainMenuStrip.Visible = false;
             frm.TopLevel = false;
             frm.FormBorderStyle = FormBorderStyle.None;
             frm.Dock = DockStyle.Fill;
