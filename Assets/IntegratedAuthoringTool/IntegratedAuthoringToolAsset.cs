@@ -73,7 +73,18 @@ namespace IntegratedAuthoringTool
             utteranceId = utteranceId.Replace("-", string.Empty);
             return IATConsts.TTS_PREFIX + utteranceId;
         }
-        
+
+
+        public void AddNewCharacter(Name characterName)
+        {
+            if (this.Characters.Any(c => c.CharacterName == characterName))
+                throw new Exception("A character with the given name already exists");
+
+            var rpc = new RolePlayCharacterAsset();
+            rpc.CharacterName = characterName;
+            this.Characters = this.Characters.Concat(new[]{rpc});
+        }
+
         /// <summary>
         /// Removes a list of characters from the scenario
         /// </summary>
@@ -248,7 +259,7 @@ namespace IntegratedAuthoringTool
 			dataHolder.SetValue("Description", ScenarioDescription);
 
             // Save Dialogues
-            if (m_dialogues.Count>0)
+            if (m_dialogues.Count > 0)
             {
                 var dialogues = m_dialogues.Select(d => d.ToDTO()).ToArray();
 
@@ -264,7 +275,7 @@ namespace IntegratedAuthoringTool
                 dataHolder.SetValue("Dialogues", dialogues);
             }
 
-            dataHolder.SetValue("Characters", Characters);
+            dataHolder.SetValue("Characters", Characters.ToArray());
             dataHolder.SetValue("WorldModel", WorldModel);
         }
 
@@ -285,7 +296,7 @@ namespace IntegratedAuthoringTool
                     m_dialogues.AddDialog(d);
 	            }
             }
-            Characters = dataHolder.GetValue<List<RolePlayCharacterAsset>>("Characters");
+            Characters = dataHolder.GetValue<RolePlayCharacterAsset[]>("Characters");
             WorldModel = dataHolder.GetValue<WorldModelAsset>("WorldModel");
         }
 

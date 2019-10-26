@@ -17,14 +17,20 @@
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.dataGridViewCharacters = new System.Windows.Forms.DataGridView();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.buttonAddCharacter = new System.Windows.Forms.Button();
             this.buttonRemoveCharacter = new System.Windows.Forms.Button();
             this.buttonInspect = new System.Windows.Forms.Button();
+            this.listBoxCharacters = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxScenarioDescription = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.buttonSaveAsAssetStorage = new System.Windows.Forms.Button();
+            this.buttonOpenAssetStorage = new System.Windows.Forms.Button();
+            this.saveAssetStorageButton = new System.Windows.Forms.Button();
+            this.pathTextBoxWorldModel = new System.Windows.Forms.TextBox();
+            this.buttonNewAssetStorage = new System.Windows.Forms.Button();
             this.tabControlIAT = new System.Windows.Forms.TabControl();
             this.tabPageDialogue = new System.Windows.Forms.TabPage();
             this.displayGraph = new System.Windows.Forms.Button();
@@ -43,11 +49,6 @@
             this.buttonImportExcel = new System.Windows.Forms.Button();
             this.buttonExportExcel = new System.Windows.Forms.Button();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.buttonOpenAssetStorage = new System.Windows.Forms.Button();
-            this.saveAssetStorageButton = new System.Windows.Forms.Button();
-            this.pathTextBoxWorldModel = new System.Windows.Forms.TextBox();
-            this.buttonNewAssetStorage = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -87,25 +88,23 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.buttonSaveAsAssetStorage = new System.Windows.Forms.Button();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCharacters)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.tabControlIAT.SuspendLayout();
             this.tabPageDialogue.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDialogueActions)).BeginInit();
-            this.groupBox6.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -172,8 +171,8 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.dataGridViewCharacters, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.flowLayoutPanel1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.listBoxCharacters, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(4, 19);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(4);
@@ -183,30 +182,6 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(371, 346);
             this.tableLayoutPanel1.TabIndex = 15;
-            // 
-            // dataGridViewCharacters
-            // 
-            this.dataGridViewCharacters.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
-            this.dataGridViewCharacters.AllowUserToAddRows = false;
-            this.dataGridViewCharacters.AllowUserToDeleteRows = false;
-            this.dataGridViewCharacters.AllowUserToOrderColumns = true;
-            this.dataGridViewCharacters.AllowUserToResizeRows = false;
-            this.dataGridViewCharacters.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridViewCharacters.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
-            this.dataGridViewCharacters.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewCharacters.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridViewCharacters.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewCharacters.Location = new System.Drawing.Point(4, 50);
-            this.dataGridViewCharacters.Margin = new System.Windows.Forms.Padding(4);
-            this.dataGridViewCharacters.Name = "dataGridViewCharacters";
-            this.dataGridViewCharacters.ReadOnly = true;
-            this.dataGridViewCharacters.RowHeadersVisible = false;
-            this.dataGridViewCharacters.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridViewCharacters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewCharacters.Size = new System.Drawing.Size(363, 292);
-            this.dataGridViewCharacters.TabIndex = 13;
-            this.dataGridViewCharacters.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCharacters_CellContentClick);
-            this.dataGridViewCharacters.SelectionChanged += new System.EventHandler(this.dataGridViewCharacters_SelectionChanged);
             // 
             // flowLayoutPanel1
             // 
@@ -252,6 +227,18 @@
             this.buttonInspect.Text = "Inspect";
             this.buttonInspect.UseVisualStyleBackColor = true;
             this.buttonInspect.Click += new System.EventHandler(this.buttonInspect_Click);
+            // 
+            // listBoxCharacters
+            // 
+            this.listBoxCharacters.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.listBoxCharacters.FormattingEnabled = true;
+            this.listBoxCharacters.ItemHeight = 16;
+            this.listBoxCharacters.Location = new System.Drawing.Point(3, 49);
+            this.listBoxCharacters.Name = "listBoxCharacters";
+            this.listBoxCharacters.Size = new System.Drawing.Size(365, 292);
+            this.listBoxCharacters.TabIndex = 15;
             // 
             // label2
             // 
@@ -301,6 +288,80 @@
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 5;
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox6.Controls.Add(this.buttonSaveAsAssetStorage);
+            this.groupBox6.Controls.Add(this.buttonOpenAssetStorage);
+            this.groupBox6.Controls.Add(this.saveAssetStorageButton);
+            this.groupBox6.Controls.Add(this.pathTextBoxWorldModel);
+            this.groupBox6.Controls.Add(this.buttonNewAssetStorage);
+            this.groupBox6.Location = new System.Drawing.Point(19, 214);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(379, 94);
+            this.groupBox6.TabIndex = 16;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Asset Storage";
+            // 
+            // buttonSaveAsAssetStorage
+            // 
+            this.buttonSaveAsAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonSaveAsAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.buttonSaveAsAssetStorage.Location = new System.Drawing.Point(279, 25);
+            this.buttonSaveAsAssetStorage.Name = "buttonSaveAsAssetStorage";
+            this.buttonSaveAsAssetStorage.Size = new System.Drawing.Size(85, 30);
+            this.buttonSaveAsAssetStorage.TabIndex = 19;
+            this.buttonSaveAsAssetStorage.Text = "Save As";
+            this.buttonSaveAsAssetStorage.UseVisualStyleBackColor = true;
+            this.buttonSaveAsAssetStorage.Click += new System.EventHandler(this.buttonSaveAsAssetStorage_Click);
+            // 
+            // buttonOpenAssetStorage
+            // 
+            this.buttonOpenAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonOpenAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonOpenAssetStorage.Location = new System.Drawing.Point(97, 25);
+            this.buttonOpenAssetStorage.Name = "buttonOpenAssetStorage";
+            this.buttonOpenAssetStorage.Size = new System.Drawing.Size(85, 30);
+            this.buttonOpenAssetStorage.TabIndex = 15;
+            this.buttonOpenAssetStorage.Text = "Open";
+            this.buttonOpenAssetStorage.UseVisualStyleBackColor = true;
+            this.buttonOpenAssetStorage.Click += new System.EventHandler(this.buttonOpenAssetStorage_Click);
+            // 
+            // saveAssetStorageButton
+            // 
+            this.saveAssetStorageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.saveAssetStorageButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.saveAssetStorageButton.Location = new System.Drawing.Point(188, 25);
+            this.saveAssetStorageButton.Name = "saveAssetStorageButton";
+            this.saveAssetStorageButton.Size = new System.Drawing.Size(85, 30);
+            this.saveAssetStorageButton.TabIndex = 16;
+            this.saveAssetStorageButton.Text = "Save";
+            this.saveAssetStorageButton.UseVisualStyleBackColor = true;
+            this.saveAssetStorageButton.Click += new System.EventHandler(this.saveAssetStorageButton_Click);
+            // 
+            // pathTextBoxWorldModel
+            // 
+            this.pathTextBoxWorldModel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pathTextBoxWorldModel.Location = new System.Drawing.Point(6, 61);
+            this.pathTextBoxWorldModel.Name = "pathTextBoxWorldModel";
+            this.pathTextBoxWorldModel.ReadOnly = true;
+            this.pathTextBoxWorldModel.Size = new System.Drawing.Size(365, 22);
+            this.pathTextBoxWorldModel.TabIndex = 13;
+            // 
+            // buttonNewAssetStorage
+            // 
+            this.buttonNewAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonNewAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.buttonNewAssetStorage.Location = new System.Drawing.Point(6, 25);
+            this.buttonNewAssetStorage.Name = "buttonNewAssetStorage";
+            this.buttonNewAssetStorage.Size = new System.Drawing.Size(85, 30);
+            this.buttonNewAssetStorage.TabIndex = 18;
+            this.buttonNewAssetStorage.Text = "New";
+            this.buttonNewAssetStorage.UseVisualStyleBackColor = true;
+            this.buttonNewAssetStorage.Click += new System.EventHandler(this.buttonNewAssetStorage_Click);
+            // 
             // tabControlIAT
             // 
             this.tabControlIAT.Controls.Add(this.tabPageDialogue);
@@ -339,7 +400,7 @@
             // displayGraph
             // 
             this.displayGraph.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.displayGraph.Location = new System.Drawing.Point(667, 621);
+            this.displayGraph.Location = new System.Drawing.Point(667, 615);
             this.displayGraph.Margin = new System.Windows.Forms.Padding(4);
             this.displayGraph.Name = "displayGraph";
             this.displayGraph.Size = new System.Drawing.Size(138, 30);
@@ -365,7 +426,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(849, 605);
+            this.groupBox2.Size = new System.Drawing.Size(849, 599);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dialogue Actions";
@@ -428,7 +489,7 @@
             this.dataGridViewDialogueActions.RowHeadersVisible = false;
             this.dataGridViewDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(841, 521);
+            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(841, 515);
             this.dataGridViewDialogueActions.TabIndex = 14;
             this.dataGridViewDialogueActions.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellClick);
             this.dataGridViewDialogueActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellContentClick);
@@ -486,7 +547,7 @@
             // buttonValidate
             // 
             this.buttonValidate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonValidate.Location = new System.Drawing.Point(516, 621);
+            this.buttonValidate.Location = new System.Drawing.Point(516, 615);
             this.buttonValidate.Margin = new System.Windows.Forms.Padding(4);
             this.buttonValidate.Name = "buttonValidate";
             this.buttonValidate.Size = new System.Drawing.Size(143, 30);
@@ -498,7 +559,7 @@
             // buttonTTS
             // 
             this.buttonTTS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonTTS.Location = new System.Drawing.Point(357, 621);
+            this.buttonTTS.Location = new System.Drawing.Point(357, 615);
             this.buttonTTS.Margin = new System.Windows.Forms.Padding(4);
             this.buttonTTS.Name = "buttonTTS";
             this.buttonTTS.Size = new System.Drawing.Size(151, 30);
@@ -510,7 +571,7 @@
             // buttonImportTxt
             // 
             this.buttonImportTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonImportTxt.Location = new System.Drawing.Point(234, 621);
+            this.buttonImportTxt.Location = new System.Drawing.Point(234, 615);
             this.buttonImportTxt.Margin = new System.Windows.Forms.Padding(4);
             this.buttonImportTxt.Name = "buttonImportTxt";
             this.buttonImportTxt.Size = new System.Drawing.Size(115, 30);
@@ -522,7 +583,7 @@
             // buttonImportExcel
             // 
             this.buttonImportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonImportExcel.Location = new System.Drawing.Point(10, 621);
+            this.buttonImportExcel.Location = new System.Drawing.Point(10, 615);
             this.buttonImportExcel.Margin = new System.Windows.Forms.Padding(4);
             this.buttonImportExcel.Name = "buttonImportExcel";
             this.buttonImportExcel.Size = new System.Drawing.Size(101, 30);
@@ -534,7 +595,7 @@
             // buttonExportExcel
             // 
             this.buttonExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonExportExcel.Location = new System.Drawing.Point(119, 621);
+            this.buttonExportExcel.Location = new System.Drawing.Point(119, 615);
             this.buttonExportExcel.Margin = new System.Windows.Forms.Padding(4);
             this.buttonExportExcel.Name = "buttonExportExcel";
             this.buttonExportExcel.Size = new System.Drawing.Size(107, 30);
@@ -545,82 +606,20 @@
             // 
             // tabPage4
             // 
-            this.tabPage4.Location = new System.Drawing.Point(4, 25);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(866, 660);
+            this.tabPage4.Size = new System.Drawing.Size(866, 663);
             this.tabPage4.TabIndex = 5;
             this.tabPage4.Text = "Asset Editor";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // groupBox6
-            // 
-            this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox6.Controls.Add(this.buttonSaveAsAssetStorage);
-            this.groupBox6.Controls.Add(this.buttonOpenAssetStorage);
-            this.groupBox6.Controls.Add(this.saveAssetStorageButton);
-            this.groupBox6.Controls.Add(this.pathTextBoxWorldModel);
-            this.groupBox6.Controls.Add(this.buttonNewAssetStorage);
-            this.groupBox6.Location = new System.Drawing.Point(19, 214);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(379, 94);
-            this.groupBox6.TabIndex = 16;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Asset Storage";
-            // 
-            // buttonOpenAssetStorage
-            // 
-            this.buttonOpenAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonOpenAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonOpenAssetStorage.Location = new System.Drawing.Point(97, 25);
-            this.buttonOpenAssetStorage.Name = "buttonOpenAssetStorage";
-            this.buttonOpenAssetStorage.Size = new System.Drawing.Size(85, 30);
-            this.buttonOpenAssetStorage.TabIndex = 15;
-            this.buttonOpenAssetStorage.Text = "Open";
-            this.buttonOpenAssetStorage.UseVisualStyleBackColor = true;
-            this.buttonOpenAssetStorage.Click += new System.EventHandler(this.buttonOpenAssetStorage_Click);
-            // 
-            // saveAssetStorageButton
-            // 
-            this.saveAssetStorageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.saveAssetStorageButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.saveAssetStorageButton.Location = new System.Drawing.Point(188, 25);
-            this.saveAssetStorageButton.Name = "saveAssetStorageButton";
-            this.saveAssetStorageButton.Size = new System.Drawing.Size(85, 30);
-            this.saveAssetStorageButton.TabIndex = 16;
-            this.saveAssetStorageButton.Text = "Save";
-            this.saveAssetStorageButton.UseVisualStyleBackColor = true;
-            this.saveAssetStorageButton.Click += new System.EventHandler(this.saveAssetStorageButton_Click);
-            // 
-            // pathTextBoxWorldModel
-            // 
-            this.pathTextBoxWorldModel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pathTextBoxWorldModel.Location = new System.Drawing.Point(6, 61);
-            this.pathTextBoxWorldModel.Name = "pathTextBoxWorldModel";
-            this.pathTextBoxWorldModel.ReadOnly = true;
-            this.pathTextBoxWorldModel.Size = new System.Drawing.Size(365, 22);
-            this.pathTextBoxWorldModel.TabIndex = 13;
-            // 
-            // buttonNewAssetStorage
-            // 
-            this.buttonNewAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonNewAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.buttonNewAssetStorage.Location = new System.Drawing.Point(6, 25);
-            this.buttonNewAssetStorage.Name = "buttonNewAssetStorage";
-            this.buttonNewAssetStorage.Size = new System.Drawing.Size(85, 30);
-            this.buttonNewAssetStorage.TabIndex = 18;
-            this.buttonNewAssetStorage.Text = "New";
-            this.buttonNewAssetStorage.UseVisualStyleBackColor = true;
-            this.buttonNewAssetStorage.Click += new System.EventHandler(this.buttonNewAssetStorage_Click);
-            // 
             // tabPage2
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(5);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(5);
-            this.tabPage2.Size = new System.Drawing.Size(866, 660);
+            this.tabPage2.Size = new System.Drawing.Size(866, 663);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Role Play Character Editor";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -629,10 +628,10 @@
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.groupBox7);
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(866, 660);
+            this.tabPage3.Size = new System.Drawing.Size(866, 663);
             this.tabPage3.TabIndex = 3;
             this.tabPage3.Text = "World Model";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -643,7 +642,7 @@
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox7.Location = new System.Drawing.Point(3, 3);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(860, 654);
+            this.groupBox7.Size = new System.Drawing.Size(860, 657);
             this.groupBox7.TabIndex = 16;
             this.groupBox7.TabStop = false;
             // 
@@ -651,10 +650,10 @@
             // 
             this.tabPage1.Controls.Add(this.groupBox3);
             this.tabPage1.Controls.Add(this.splitContainer3);
-            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(820, 660);
+            this.tabPage1.Size = new System.Drawing.Size(866, 663);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "Simulator";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -1062,10 +1061,10 @@
             // 
             // tabPageWeb
             // 
-            this.tabPageWeb.Location = new System.Drawing.Point(4, 25);
+            this.tabPageWeb.Location = new System.Drawing.Point(4, 22);
             this.tabPageWeb.Name = "tabPageWeb";
             this.tabPageWeb.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageWeb.Size = new System.Drawing.Size(820, 660);
+            this.tabPageWeb.Size = new System.Drawing.Size(866, 663);
             this.tabPageWeb.TabIndex = 4;
             this.tabPageWeb.Text = "Web API";
             this.tabPageWeb.UseVisualStyleBackColor = true;
@@ -1095,8 +1094,27 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.newToolStripMenuItem.Text = "New";
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.saveAsToolStripMenuItem.Text = "Save As ...";
             // 
             // aboutToolStripMenuItem
             // 
@@ -1104,37 +1122,6 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(52, 20);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.openToolStripMenuItem.Text = "Open";
-            // 
-            // saveToolStripMenuItem
-            // 
-            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.saveToolStripMenuItem.Text = "Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
-            // 
-            // saveAsToolStripMenuItem
-            // 
-            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.saveAsToolStripMenuItem.Text = "Save As ...";
-            // 
-            // buttonSaveAsAssetStorage
-            // 
-            this.buttonSaveAsAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonSaveAsAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.buttonSaveAsAssetStorage.Location = new System.Drawing.Point(279, 25);
-            this.buttonSaveAsAssetStorage.Name = "buttonSaveAsAssetStorage";
-            this.buttonSaveAsAssetStorage.Size = new System.Drawing.Size(85, 30);
-            this.buttonSaveAsAssetStorage.TabIndex = 19;
-            this.buttonSaveAsAssetStorage.Text = "Save As";
-            this.buttonSaveAsAssetStorage.UseVisualStyleBackColor = true;
-            this.buttonSaveAsAssetStorage.Click += new System.EventHandler(this.buttonSaveAsAssetStorage_Click);
             // 
             // MainForm
             // 
@@ -1154,21 +1141,20 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.groupBox1.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCharacters)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.tabControlIAT.ResumeLayout(false);
             this.tabPageDialogue.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDialogueActions)).EndInit();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
@@ -1225,7 +1211,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button buttonAddCharacter;
         private System.Windows.Forms.Button buttonRemoveCharacter;
-        private System.Windows.Forms.DataGridView dataGridViewCharacters;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
 		private System.Windows.Forms.Label label2;
@@ -1299,6 +1284,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.Button buttonSaveAsAssetStorage;
+        private System.Windows.Forms.ListBox listBoxCharacters;
     }
 }
 

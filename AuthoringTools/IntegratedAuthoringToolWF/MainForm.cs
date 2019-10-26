@@ -25,8 +25,8 @@ namespace IntegratedAuthoringToolWF
     public partial class MainForm : Form
     {
         private BindingListView<DialogueStateActionDTO> _dialogs;
+        private BindingListView<Name> _characterNames;
 
-        private BindingListView<CharacterSourceDTO> _characterSources;
         //private RolePlayCharacterWF.MainForm _rpcForm = new RolePlayCharacterWF.MainForm(new AssetStorage());
 
         private WorldModelWF.MainForm _wmForm;
@@ -54,23 +54,17 @@ namespace IntegratedAuthoringToolWF
                     PropertyUtil.GetPropertyName<DialogueStateActionDTO>(d => d.UtteranceId),
                 }
             );
-
-            /*EditorTools.HideColumns(dataGridViewCharacters, new[]
-                {
-                    PropertyUtil.GetPropertyName<CharacterSourceDTO>(s => s.Source),
-                }
-            );*/
         }
 
         protected void OnAssetDataLoaded(IntegratedAuthoringToolAsset asset)
         {
             textBoxScenarioName.Text = asset.ScenarioName;
             textBoxScenarioDescription.Text = asset.ScenarioDescription;
-            dataGridViewCharacters.DataSource = _characterSources;
             _dialogs = new BindingListView<DialogueStateActionDTO>(new List<DialogueStateActionDTO>());
             dataGridViewDialogueActions.DataSource = _dialogs;
 
-            
+            listBoxCharacters.DataSource = _iat.Characters.Select(c => c.CharacterName.ToString()).ToList();
+
             //ResetSimulator
             richTextBoxChat.Clear();
             buttonContinue.Enabled = false;
@@ -94,6 +88,7 @@ namespace IntegratedAuthoringToolWF
         private void buttonAddCharacter_Click(object sender, EventArgs e)
         {
             new AddCharacterForm(_iat).ShowDialog(this);
+            listBoxCharacters.DataSource = _iat.Characters.Select(c => c.CharacterName.ToString()).ToList();
         }
 
         private void textBoxScenarioName_TextChanged(object sender, EventArgs e)
@@ -674,11 +669,11 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonInspect_Click(object sender, EventArgs e)
         {
-            var rpcSource = EditorTools.GetSelectedDtoFromTable<CharacterSourceDTO>(dataGridViewCharacters);
-            if (rpcSource != null)
+            //var rpcSource = EditorTools.GetSelectedDtoFromTable<CharacterSourceDTO>(dataGridViewCharacters);
+         /*   if (rpcSource != null)
             {
                 new RPCInspectForm(_iat, rpcSource.Source).Show(this);
-            }
+            }*/
         }
 
 
@@ -1208,12 +1203,6 @@ namespace IntegratedAuthoringToolWF
                 {
                     PropertyUtil.GetPropertyName<DialogueStateActionDTO>(d => d.Id),
                     PropertyUtil.GetPropertyName<DialogueStateActionDTO>(d => d.UtteranceId),
-                }
-            );
-
-            EditorTools.HideColumns(dataGridViewCharacters, new[]
-                {
-                    PropertyUtil.GetPropertyName<CharacterSourceDTO>(s => s.Source),
                 }
             );
 
