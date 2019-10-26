@@ -93,19 +93,7 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonAddCharacter_Click(object sender, EventArgs e)
         {
-/*            _rpcForm = new RolePlayCharacterWF.MainForm();
-            var rpc = _rpcForm.SelectAndOpenAssetFromBrowser();
-            if (rpc == null)
-                return;
-
-            LoadedAsset.AddNewCharacterSource(new CharacterSourceDTO()
-            {
-                Source = rpc.AssetFilePath
-            });
-
-            _characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
-            _characterSources.Refresh();
-            SetModified();*/
+            new AddCharacterForm(_iat).ShowDialog(this);
         }
 
         private void textBoxScenarioName_TextChanged(object sender, EventArgs e)

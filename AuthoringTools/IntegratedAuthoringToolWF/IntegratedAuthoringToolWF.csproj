@@ -74,6 +74,12 @@
     </Compile>
     <Compile Include="Audio\AudioStreamModifier.cs" />
     <Compile Include="Audio\SampleJoiner.cs" />
+    <Compile Include="AddCharacterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddCharacterForm.Designer.cs">
+      <DependentUpon>AddCharacterForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ImageForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -144,6 +150,9 @@
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AddCharacterForm.resx">
+      <DependentUpon>AddCharacterForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AddOrEditDialogueActionForm.resx">
       <DependentUpon>AddOrEditDialogueActionForm.cs</DependentUpon>
