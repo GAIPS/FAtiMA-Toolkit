@@ -113,6 +113,34 @@
     <Compile Include="TTSEngines\L2F\LanguageResources.cs" />
     <Compile Include="TTSEngines\System\SystemTextToSpeechEngine.cs" />
     <Compile Include="TTSEngines\Viseme.cs" />
+    <Compile Include="WepAPI\APIDTOs.cs" />
+    <Compile Include="WepAPI\APIErrors.cs" />
+    <Compile Include="WepAPI\APIMethods.cs" />
+    <Compile Include="WepAPI\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WepAPI\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WepAPI\Program.cs" />
+    <Compile Include="WordModel\AddOrEditActionTemplateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WordModel\AddOrEditActionTemplateForm.Designer.cs">
+      <DependentUpon>AddOrEditActionTemplateForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WordModel\AddorEditEffect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WordModel\AddorEditEffect.Designer.cs">
+      <DependentUpon>AddorEditEffect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WordModel\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WordModel\MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -136,6 +164,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TextToSpeechForm.resx">
       <DependentUpon>TextToSpeechForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WepAPI\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WordModel\AddOrEditActionTemplateForm.resx">
+      <DependentUpon>AddOrEditActionTemplateForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WordModel\AddorEditEffect.resx">
+      <DependentUpon>AddorEditEffect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WordModel\MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="External\config6">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -191,9 +231,9 @@
       <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
       <Name>WellFormedNames</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Web\WebAPIWF\WebAPIWF.csproj">
-      <Project>{f1b163c5-2fa5-49f7-a3cf-0b649b2e90ee}</Project>
-      <Name>WebAPIWF</Name>
+    <ProjectReference Include="..\..\Wrappers\WebServer\WebServer.csproj">
+      <Project>{8d2e220b-2764-4798-ac75-e75f4847ccc6}</Project>
+      <Name>WebServer</Name>
     </ProjectReference>
     <ProjectReference Include="..\GAIPS.AssetEditorTools\GAIPS.AssetEditorTools.csproj">
       <Project>{c61fb19d-e715-4eb4-afca-27ff81a14777}</Project>
@@ -202,10 +242,6 @@
     <ProjectReference Include="..\RolePlayCharacterWF\RolePlayCharacterWF.csproj">
       <Project>{63ec96bc-d3e1-491b-8c55-61a0f5fba210}</Project>
       <Name>RolePlayCharacterWF</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WorldModelWF\WorldModelWF.csproj">
-      <Project>{dd109968-3275-499c-b0a2-3eedd32d7be9}</Project>
-      <Name>WorldModelWF</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
