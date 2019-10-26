@@ -46,8 +46,8 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonTest_Click(object sender, System.EventArgs e)
         {
-            var rpcAsset = RolePlayCharacterAsset.LoadFromFile(rpcSource);
-            rpcAsset.LoadAssociatedAssets();
+            var rpcAsset = new RolePlayCharacterAsset(); //TODO:FIX THS;
+            rpcAsset.LoadAssociatedAssets(new GAIPS.Rage.AssetStorage());
             iat.BindToRegistry(rpcAsset.DynamicPropertiesRegistry);
 
             string[] eventStrings = this.textBoxEvents.Text.Split(

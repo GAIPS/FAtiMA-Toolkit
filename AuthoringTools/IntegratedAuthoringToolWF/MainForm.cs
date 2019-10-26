@@ -26,17 +26,12 @@ namespace IntegratedAuthoringToolWF
     {
         private BindingListView<DialogueStateActionDTO> _dialogs;
 
-        private readonly string PLAYER = IATConsts.PLAYER;
-        private readonly string AGENT = IATConsts.AGENT;
         private BindingListView<CharacterSourceDTO> _characterSources;
-        private RolePlayCharacterWF.MainForm _rpcForm = new RolePlayCharacterWF.MainForm(new AssetStorage());
+        //private RolePlayCharacterWF.MainForm _rpcForm = new RolePlayCharacterWF.MainForm(new AssetStorage());
         
         private WorldModelWF.MainForm _wmForm = new WorldModelWF.MainForm();
         private WebAPIWF.MainForm _webForm = new WebAPIWF.MainForm();
-        private WorldModelSourceDTO _wmSource = new WorldModelSourceDTO();
-
         private IntegratedAuthoringToolAsset _iat;
-
         private int currentRPCTabIndex;
 
         public MainForm()
@@ -44,7 +39,6 @@ namespace IntegratedAuthoringToolWF
             InitializeComponent();
             buttonRemoveCharacter.Enabled = false;
             buttonInspect.Enabled = false;
-
         }
 
         private void RefreshDialogs()
@@ -72,15 +66,7 @@ namespace IntegratedAuthoringToolWF
             _dialogs = new BindingListView<DialogueStateActionDTO>(new List<DialogueStateActionDTO>());
             dataGridViewDialogueActions.DataSource = _dialogs;
 
-            if (_wmSource != null)
-            {
-                if (_wmSource.Source != "")
-                {
-                    pathTextBoxWorldModel.Text = _wmSource.Source;
-                    LoadWorldModelForm();
-                }
-            }
-
+            
             //ResetSimulator
             richTextBoxChat.Clear();
             buttonContinue.Enabled = false;
@@ -97,27 +83,11 @@ namespace IntegratedAuthoringToolWF
 
             RefreshDialogs();
         }
-
-        private void buttonCreateCharacter_Click(object sender, EventArgs e)
-        {
-            _rpcForm = new RolePlayCharacterWF.MainForm();
-           
-            var rpcAsset = RolePlayCharacterAsset.LoadFromFile(asset.AssetFilePath);
-
-            FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[1], _rpcForm);
-            this.tabControlIAT.SelectTab(1);
-            this.currentRPCTabIndex = 1;
-            _rpcForm.LoadedAsset = rpcAsset;
-
-            LoadedAsset.AddNewCharacterSource(new CharacterSourceDTO() { Source = asset.AssetFilePath });
-            _characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
-            _characterSources.Refresh();
-            SetModified();
-        }
+     
 
         private void buttonAddCharacter_Click(object sender, EventArgs e)
         {
-            _rpcForm = new RolePlayCharacterWF.MainForm();
+/*            _rpcForm = new RolePlayCharacterWF.MainForm();
             var rpc = _rpcForm.SelectAndOpenAssetFromBrowser();
             if (rpc == null)
                 return;
@@ -129,30 +99,22 @@ namespace IntegratedAuthoringToolWF
 
             _characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
             _characterSources.Refresh();
-            SetModified();
+            SetModified();*/
         }
 
         private void textBoxScenarioName_TextChanged(object sender, EventArgs e)
         {
-            if (IsLoading)
-                return;
-
-            LoadedAsset.ScenarioName = textBoxScenarioName.Text;
-            SetModified();
+            _iat.ScenarioName = textBoxScenarioName.Text;
         }
 
         private void textBoxScenarioDescription_TextChanged(object sender, EventArgs e)
         {
-            if (IsLoading)
-                return;
-
-            LoadedAsset.ScenarioDescription = textBoxScenarioDescription.Text;
-            SetModified();
+            _iat.ScenarioDescription = textBoxScenarioDescription.Text;
         }
 
         private void buttonRemoveCharacter_Click(object sender, EventArgs e)
         {
-            IList<int> charactersToRemove = new List<int>();
+            /*IList<int> charactersToRemove = new List<string>();
             for (var i = 0; i < dataGridViewCharacters.SelectedRows.Count; i++)
             {
                 var character = ((ObjectView<CharacterSourceDTO>)dataGridViewCharacters.SelectedRows[i].DataBoundItem)
@@ -161,12 +123,12 @@ namespace IntegratedAuthoringToolWF
                 charactersToRemove.Add(character.Id);
             }
 
-            LoadedAsset.RemoveCharacters(charactersToRemove);
+            _iat.RemoveCharacters(charactersToRemove);
             _characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
             _characterSources.Refresh();
             _rpcForm.Close();
             SetModified();
-            dataGridViewCharacters.ClearSelection();
+            dataGridViewCharacters.ClearSelection();*/
         }
 
         #region About
@@ -182,7 +144,7 @@ namespace IntegratedAuthoringToolWF
 
         private void dataGridViewCharacters_SelectionChanged(object sender, EventArgs e)
         {
-            var rpcSource = EditorTools.GetSelectedDtoFromTable<CharacterSourceDTO>(dataGridViewCharacters);
+            /*var rpcSource = EditorTools.GetSelectedDtoFromTable<CharacterSourceDTO>(dataGridViewCharacters);
             if (rpcSource != null)
             {
                 var rpc = RolePlayCharacterAsset.LoadFromFile(rpcSource.Source);
@@ -195,7 +157,7 @@ namespace IntegratedAuthoringToolWF
                 _rpcForm.SelectedTab = selectedRPCTab;
                 buttonRemoveCharacter.Enabled = true;
                 buttonInspect.Enabled = true;
-            }
+            }*/
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -222,16 +184,14 @@ namespace IntegratedAuthoringToolWF
 
         private void auxAddOrUpdateItem(DialogueStateActionDTO item)
         {
-            var diag = new AddOrEditDialogueActionForm(LoadedAsset, item);
+            var diag = new AddOrEditDialogueActionForm(_iat, item);
             diag.ShowDialog(this);
             if (diag.UpdatedGuid != Guid.Empty)
             {
-                _dialogs.DataSource = LoadedAsset.GetAllDialogueActions().ToList();
+                _dialogs.DataSource = _iat.GetAllDialogueActions().ToList();
                 EditorTools.HighlightItemInGrid<DialogueStateActionDTO>
                     (dataGridViewDialogueActions, diag.UpdatedGuid);
             }
-
-            SetModified();
         }
 
         private void buttonDuplicateDialogueAction_Click(object sender, EventArgs e)
@@ -249,7 +209,7 @@ namespace IntegratedAuthoringToolWF
                     Style = item.Style,
                     Utterance = item.Utterance
                 };
-                LoadedAsset.AddDialogAction(newDialogueAction);
+                _iat.AddDialogAction(newDialogueAction);
                 RefreshDialogs();
             }
         }
@@ -264,9 +224,8 @@ namespace IntegratedAuthoringToolWF
                 itemsToRemove.Add(item.Id);
             }
 
-            LoadedAsset.RemoveDialogueActions(itemsToRemove);
+            _iat.RemoveDialogueActions(itemsToRemove);
             RefreshDialogs();
-            this.SetModified();
         }
 
         private void buttonImportExcel_Click(object sender, EventArgs e)
@@ -282,10 +241,10 @@ namespace IntegratedAuthoringToolWF
                 var dialogs = ImportWorkSheet(excelDoc, "Dialogs").ToArray();
 
                 //Clear all actions from the asset
-                LoadedAsset.RemoveDialogueActions(LoadedAsset.GetAllDialogueActions());
+                _iat.RemoveDialogueActions(_iat.GetAllDialogueActions());
 
                 foreach (var d in dialogs)
-                    LoadedAsset.AddDialogAction(d);
+                    _iat.AddDialogAction(d);
             }
 
             RefreshDialogs();
@@ -328,7 +287,7 @@ namespace IntegratedAuthoringToolWF
             var fileName = new FileInfo(sfd.FileName);
             using (var excelDoc = new ExcelPackage())
             {
-                ExportWorkSheet(excelDoc, "Dialogs", LoadedAsset.GetAllDialogueActions());
+                ExportWorkSheet(excelDoc, "Dialogs", _iat.GetAllDialogueActions());
                 excelDoc.SaveAs(fileName);
             }
         }
@@ -401,7 +360,7 @@ namespace IntegratedAuthoringToolWF
             var fileName = new FileInfo(ofd.FileName);
             File.SetAttributes(fileName.DirectoryName, FileAttributes.Normal);
 
-            LoadedAsset.RemoveDialogueActions(LoadedAsset.GetAllDialogueActions());
+            _iat.RemoveDialogueActions(_iat.GetAllDialogueActions());
 
             int stateCounter = 0;
             var lines = File.ReadAllLines(fileName.FullName);
@@ -410,7 +369,7 @@ namespace IntegratedAuthoringToolWF
             foreach (var line in lines)
             {
                 var add = GenerateDialogueActionFromLine(line, totalSize, ref stateCounter);
-                LoadedAsset.AddDialogAction(add);
+                _iat.AddDialogAction(add);
             }
 
             RefreshDialogs();
@@ -454,7 +413,7 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonTTS_Click(object sender, EventArgs e)
         {
-            var dialogs = LoadedAsset.GetAllDialogueActions().ToArray();
+            var dialogs = _iat.GetAllDialogueActions().ToArray();
             var t = new TextToSpeechForm(dialogs);
             t.Show(this);
         }
@@ -462,7 +421,7 @@ namespace IntegratedAuthoringToolWF
         private void buttonValidate_Click(object sender, EventArgs e)
         {
             var dfsearch = new DFSearch<string>(state =>
-                LoadedAsset.GetDialogueActionsByState(state).Select(dto => dto.NextState));
+                _iat.GetDialogueActionsByState(state).Select(dto => dto.NextState));
             dfsearch.InitializeSearch(IATConsts.INITIAL_DIALOGUE_STATE);
             dfsearch.FullSearch();
 
@@ -470,7 +429,7 @@ namespace IntegratedAuthoringToolWF
             int totalStates = 0;
             string unreachableStatesDescription = "The following Dialogue States are not reachable: \n[";
 
-            foreach (var dAction in LoadedAsset.GetAllDialogueActions().GroupBy(da => da.CurrentState)
+            foreach (var dAction in _iat.GetAllDialogueActions().GroupBy(da => da.CurrentState)
                 .Select(group => group.First()))
             {
                 totalStates++;
@@ -507,23 +466,11 @@ namespace IntegratedAuthoringToolWF
         {
             Dictionary<string, Dictionary<string, int>> emotionList = new Dictionary<string, Dictionary<string, int>>();
 
-            IntegratedAuthoringToolAsset loadedIAT = this.LoadedAsset;
+            IntegratedAuthoringToolAsset loadedIAT = _iat;
 
-            List<RolePlayCharacterAsset> rpcList = new List<RolePlayCharacterAsset>();
+            List<RolePlayCharacterAsset> rpcList = _iat.Characters.ToList();
 
             List<WellFormedNames.Name> _eventList = new List<WellFormedNames.Name>();
-
-            foreach (var rpc in loadedIAT.GetAllCharacterSources())
-            {
-                var actor = RolePlayCharacterAsset.LoadFromFile(rpc.Source);
-                ;
-
-                actor.LoadAssociatedAssets();
-
-                loadedIAT.BindToRegistry(actor.DynamicPropertiesRegistry);
-
-                rpcList.Add(actor);
-            }
 
             foreach (var actor in rpcList)
             {
@@ -678,54 +625,6 @@ namespace IntegratedAuthoringToolWF
         {
         }
 
-        protected override void newToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _rpcForm.Close();
-            _rpcForm = new RolePlayCharacterWF.MainForm();
-
-            pathTextBoxWorldModel.Text = null;
-            _wmForm.Close();
-            _wmForm = new WorldModelWF.MainForm();
-
-            CreateNewAsset();
-        }
-
-        protected override void exitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            dataGridViewCharacters.ClearSelection();
-            _rpcForm.Close();
-            _wmForm.Close();
-            Close();
-        }
-
-        protected override void saveToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_rpcForm.LoadedAsset != null)
-            {
-                _rpcForm.SaveAssetToFile(_rpcForm.LoadedAsset, _rpcForm.LoadedAsset.AssetFilePath);
-                _rpcForm.SaveSubAssets();
-                _rpcForm.ClearModified();
-            }
-            if (_wmForm.LoadedAsset != null)
-                _wmForm.SaveAssetToFile(_wmForm.LoadedAsset, _wmForm.LoadedAsset.AssetFilePath);
-
-            SaveAsset();
-        }
-
-        protected override void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (_rpcForm.LoadedAsset != null)
-            {
-                _rpcForm.SaveAssetToFile(_rpcForm.LoadedAsset, _rpcForm.LoadedAsset.AssetFilePath);
-                _rpcForm.SaveSubAssets();
-                _rpcForm.ClearModified();
-            }
-            if (_wmForm.LoadedAsset != null)
-                _wmForm.SaveAssetToFile(_wmForm.LoadedAsset, _wmForm.LoadedAsset.AssetFilePath);
-
-            _webForm.LoadedAsset = this.LoadedAsset;
-            SaveAssetAs();
-        }
 
         private void groupBox2_Enter(object sender, EventArgs e)
         {
@@ -781,11 +680,10 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonInspect_Click(object sender, EventArgs e)
         {
-            _rpcForm.LoadedAsset.Save();
             var rpcSource = EditorTools.GetSelectedDtoFromTable<CharacterSourceDTO>(dataGridViewCharacters);
             if (rpcSource != null)
             {
-                new RPCInspectForm(LoadedAsset, rpcSource.Source).Show(this);
+                new RPCInspectForm(_iat, rpcSource.Source).Show(this);
             }
         }
 
@@ -794,34 +692,8 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-
-            try
-            {
-                this.saveToolStripMenuItem_Click(sender, e);
-            }
-            catch (Exception ex)
-            {
-                EditorTools.WriteText(richTextBoxChat, "The IAT asset must be saved", Color.Red, true);
-                return;
-            }
-
-            var sources = LoadedAsset.GetAllCharacterSources();
-            if (sources.Count() <= 1)
-            {
-                EditorTools.WriteText(richTextBoxChat, "At least two characters are needed.", Color.Red, true);
-                return;
-            }
-
-            agentsInChat = new List<RolePlayCharacterAsset>();
-            foreach (var s in sources)
-            {
-                var rpc = RolePlayCharacterAsset.LoadFromFile(s.Source);
-                rpc.LoadAssociatedAssets();
-                LoadedAsset.BindToRegistry(rpc.DynamicPropertiesRegistry);
-                agentsInChat.Add(rpc);
-
-            }
-
+          
+            agentsInChat = _iat.Characters.ToList();
             rpcBox.Items.Clear();
             rpcBox.Items.AddRange(agentsInChat.Select(x => x.CharacterName.ToString()).ToArray());
 
@@ -879,7 +751,7 @@ namespace IntegratedAuthoringToolWF
                 {
                     var action = decisions.First();
                     string error;
-                    var diag = LoadedAsset.GetDialogAction(action, out error);
+                    var diag = _iat.GetDialogAction(action, out error);
                     if (error != null)
                     {
                         EditorTools.WriteText(richTextBoxChat, ag.CharacterName + " : " + error, Color.Red, true);
@@ -1011,7 +883,7 @@ namespace IntegratedAuthoringToolWF
 
             foreach (var a in playerDialogueOptions)
             {
-                var diags = LoadedAsset.GetDialogueActions(a.Parameters[0], a.Parameters[1], a.Parameters[2], a.Parameters[3]);
+                var diags = _iat.GetDialogueActions(a.Parameters[0], a.Parameters[1], a.Parameters[2], a.Parameters[3]);
 
                 if (diags.IsEmpty())
                 {
@@ -1079,17 +951,6 @@ namespace IntegratedAuthoringToolWF
         private void HandleEffects(Name[] eventList)
         {
 
-            if (LoadedAsset.m_worldModelSource == null)
-                return;
-
-            if (LoadedAsset.m_worldModelSource.Source == null)
-                return;
-
-            if (LoadedAsset.m_worldModelSource.Source == "")
-                return;
-
-            var wm = WorldModelAsset.LoadFromFile(LoadedAsset.m_worldModelSource.Source);
-
             foreach (var ev in eventList)
             {
                 var actor = ev.GetNTerm(2);
@@ -1103,7 +964,7 @@ namespace IntegratedAuthoringToolWF
                 {
                     a.Perceive(ev);
                 }
-                var effects = wm.Simulate(new[] { ev });
+                var effects = _iat.WorldModel.Simulate(new[] { ev });
                 string toWrite = "";
                 toWrite += "Effects: \n";
 
@@ -1192,10 +1053,10 @@ namespace IntegratedAuthoringToolWF
 
         private void HandleEventTriggers()
         {
-            if (LoadedAsset.eventTriggers == null)
-                LoadedAsset.eventTriggers = new EventTriggers();
+            if (_iat.eventTriggers == null)
+                _iat.eventTriggers = new EventTriggers();
 
-            var events = LoadedAsset.eventTriggers.ComputeTriggersList(agentsInChat);
+            var events = _iat.eventTriggers.ComputeTriggersList(agentsInChat);
 
             if (events.IsEmpty())
                 return;
@@ -1216,82 +1077,11 @@ namespace IntegratedAuthoringToolWF
             HandleEffects(events.ToArray());
         }
 
-        private void createNewWorldModelButton_Click(object sender, EventArgs e)
-        {
-            if (LoadedAsset.AssetFilePath == null)
-            {
-                MessageBox.Show("You must first save the IAT asset");
-                return;
-            }
-
-            _wmForm = new WorldModelWF.MainForm();
-
-            var asset = _wmForm.CreateAndSaveEmptyAsset(false);
-            if (asset == null)
-                return;
-            LoadedAsset.m_worldModelSource = new WorldModelSourceDTO();
-            LoadedAsset.m_worldModelSource.Source = asset.AssetFilePath;
-            LoadedAsset.m_worldModelSource.RelativePath =
-                LoadableAsset<WorldModelAsset>.ToRelativePath(LoadedAsset.AssetFilePath,
-                    asset.AssetFilePath);
-            SetModified();
-            ReloadEditor();
-        }
-
-        private void openWorldModelButton_Click(object sender, EventArgs e)
-        {
-            if (LoadedAsset.AssetFilePath == null)
-            {
-                MessageBox.Show("You must first save the IAT asset");
-                return;
-            }
-            _wmForm = new WorldModelWF.MainForm();
-            var asset = _wmForm.SelectAndOpenAssetFromBrowser();
-            if (asset == null)
-                return;
-
-            LoadedAsset.m_worldModelSource = new WorldModelSourceDTO();
-
-            LoadedAsset.m_worldModelSource.RelativePath =
-                LoadableAsset<WorldModelAsset>.ToRelativePath(LoadedAsset.AssetFilePath,
-                    asset.AssetFilePath);
-            LoadedAsset.m_worldModelSource.Source = asset.AssetFilePath;
-
-            SetModified();
-            ReloadEditor();
-        }
-
-        private void LoadWorldModelForm()
-        {
-            var wm = WorldModelAsset.LoadFromFile(LoadedAsset.m_worldModelSource.Source);
-
-            _wmForm = new WorldModelWF.MainForm();
-            _wmForm.LoadedAsset = wm;
-
-            this.pathTextBoxWorldModel.Text = LoadableAsset<WorldModelAsset>.ToRelativePath(LoadedAsset.AssetFilePath, this.LoadedAsset.m_worldModelSource.Source);
-
-            _wmForm.Refresh();
-            FormHelper.ShowFormInContainerControl(groupBox7, _wmForm);
-        }
-
-        private void pathTextBoxEA_TextChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void clearWorldModelButton_Click(object sender, EventArgs e)
-        {
-            LoadedAsset.m_worldModelSource = null;
-            pathTextBoxWorldModel.Text = null;
-            SetModified();
-            _wmForm.Refresh();
-            _wmForm.Hide();
-        }
-
         private void displayGraph_Click(object sender, EventArgs e)
         {
             Dictionary<string, List<string>> states = new Dictionary<string, List<string>>();
 
-            foreach (var d in LoadedAsset.GetAllDialogueActions())
+            foreach (var d in _iat.GetAllDialogueActions())
             {
                 if (states.ContainsKey(d.CurrentState))
                 {
@@ -1367,35 +1157,17 @@ namespace IntegratedAuthoringToolWF
             return bitmap;
         }
 
-        private void listBoxPlayerDialogues_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void richTextBoxChat_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void selectedChar_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void DialogueSearchBox_TextChanged(object sender, EventArgs e)
         {
 
             var text = searchDialogueBox.Text.ToString();
 
-            var dialogs = LoadedAsset.GetAllDialogueActions().ToList();
-
-
+            var dialogs = _iat.GetAllDialogueActions().ToList();
             bool cs = false;
             bool ns = false;
             bool mn = false;
             bool sty = false;
             bool utterance = false;
-
-
 
             if (searchCheckList.GetItemCheckState(0) == CheckState.Checked)
             {
@@ -1425,15 +1197,15 @@ namespace IntegratedAuthoringToolWF
 
                 dialogs = new List<DialogueStateActionDTO>();
                 if (cs)
-                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x => x.CurrentState.ToLower().ToString().Contains(text.ToLower())));
+                    dialogs.AddRange(_iat.GetAllDialogueActions().ToList().FindAll(x => x.CurrentState.ToLower().ToString().Contains(text.ToLower())));
                 if (ns)
-                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x => x.NextState.ToLower().ToString().Contains(text.ToLower())));
+                    dialogs.AddRange(_iat.GetAllDialogueActions().ToList().FindAll(x => x.NextState.ToLower().ToString().Contains(text.ToLower())));
                 if (mn)
-                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x => x.Meaning.ToLower().ToString().Contains(text.ToLower())));
+                    dialogs.AddRange(_iat.GetAllDialogueActions().ToList().FindAll(x => x.Meaning.ToLower().ToString().Contains(text.ToLower())));
                 if (sty)
-                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x => x.Style.ToLower().ToString().Contains(text.ToLower())));
+                    dialogs.AddRange(_iat.GetAllDialogueActions().ToList().FindAll(x => x.Style.ToLower().ToString().Contains(text.ToLower())));
                 if (utterance)
-                    dialogs.AddRange(LoadedAsset.GetAllDialogueActions().ToList().FindAll(x => x.Utterance.ToLower().ToString().Contains(text.ToLower())));
+                    dialogs.AddRange(_iat.GetAllDialogueActions().ToList().FindAll(x => x.Utterance.ToLower().ToString().Contains(text.ToLower())));
             }
 
             _dialogs.DataSource = dialogs;
