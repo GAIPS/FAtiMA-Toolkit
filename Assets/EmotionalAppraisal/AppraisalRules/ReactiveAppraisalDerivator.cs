@@ -225,7 +225,7 @@ namespace EmotionalAppraisal.AppraisalRules
 		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			dataHolder.SetValue("AppraisalWeight",AppraisalWeight);
-			dataHolder.SetValue("Rules",Rules.Values.SelectMany(set => set).ToArray());
+			dataHolder.SetValue("Rules", GetAppraisalRules());
 		}
 
 		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
@@ -241,14 +241,6 @@ namespace EmotionalAppraisal.AppraisalRules
 		    foreach (var r in rules)
 		    {
 				r.Id = Guid.NewGuid();
-               /* if (r.Desirability == null)
-                {
-                    r.Desirability = (Name)"0";
-                }
-                if (r.Praiseworthiness == null)
-                {
-                    r.Praiseworthiness = (Name)"0";
-                }*/
                 AddEmotionalReaction(r);
             }
 		}

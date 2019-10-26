@@ -46,6 +46,8 @@ namespace EmotionalAppraisalWF
                
             conditionSetEditor.View = _appraisalRulesVM.CurrentRuleConditions;
             dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(asset.GetAllGoals().ToList());
+
+            EditorTools.UpdateFormTitle("Emotional Appraisal", _currentFilePath, this);
         }
 
         private void buttonAddGoal_Click(object sender, EventArgs e)
@@ -217,7 +219,10 @@ namespace EmotionalAppraisalWF
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            _currentFilePath = null;
+            _storage = new AssetStorage();
+            _loadedAsset = EmotionalAppraisalAsset.CreateInstance(_storage);
+            OnAssetDataLoaded(_loadedAsset);
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -234,8 +239,17 @@ namespace EmotionalAppraisalWF
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _loadedAsset.Save();
-            _currentFilePath = EditorTools.SaveFileDialog(_currentFilePath, _storage);
+            _currentFilePath = EditorTools.SaveFileDialog(_currentFilePath, _storage, _loadedAsset);
+            EditorTools.UpdateFormTitle("Emotional Decision Making", _currentFilePath, this);
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var old = _currentFilePath;
+            _currentFilePath = null;
+            _currentFilePath = EditorTools.SaveFileDialog(_currentFilePath, _storage, _loadedAsset);
+            if (_currentFilePath == null) _currentFilePath = old;
+            EditorTools.UpdateFormTitle("Emotional Appraisal", _currentFilePath, this);
         }
     }
 }

@@ -18,7 +18,6 @@ namespace SocialImportanceWF
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 			var m = new MainForm();
-			m.CreateNewAsset();
 			Application.Run(m);
 		}
 	}

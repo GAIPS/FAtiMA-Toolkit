@@ -49,11 +49,8 @@ namespace EmotionalDecisionMakingWF
 				var ra = _loadedAsset.GetActionRule(actionRules.First().Id);
 				UpdateConditions(ra);
 			}
-            
-            this.Text = (_currentFilePath == null) ?
-                this.Text = "Emotional Decision Making" :
-                this.Text = "Emotional Decision Making - " + _currentFilePath;
-		}
+            EditorTools.UpdateFormTitle("Emotional Decision Making", _currentFilePath, this);
+        }
 		
 		private void conditionSetView_OnDataChanged()
 		{
@@ -211,6 +208,11 @@ namespace EmotionalDecisionMakingWF
             _currentFilePath = EditorTools.SaveFileDialog(_currentFilePath,_storage,_loadedAsset);
             if (_currentFilePath == null) _currentFilePath = old;
             EditorTools.UpdateFormTitle("Emotional Decision Making", _currentFilePath, this);
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
     }
 }

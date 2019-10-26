@@ -25,7 +25,6 @@ namespace SocialImportance
 	{
 		private KB m_kB;
 		private HashSet<AttributionRule> m_attributionRules;
-		private NameSearchTree<uint> m_claimTree;
 
 		//Volatile Statements
 		private NameSearchTree<NameSearchTree<float>> m_cachedSI = new NameSearchTree<NameSearchTree<float>>();
@@ -41,8 +40,6 @@ namespace SocialImportance
 		{
 			m_kB = null;
 			m_attributionRules = new HashSet<AttributionRule>();
-			m_claimTree = new NameSearchTree<uint>();
-
 			m_cachedSI = new NameSearchTree<NameSearchTree<float>>();
 		}
 
@@ -150,10 +147,6 @@ namespace SocialImportance
 		}
 
 
-		#region DTO operations
-
-		#region Attribution Rules
-
 		public IEnumerable<AttributionRuleDTO> GetAttributionRules()
 		{
 			return m_attributionRules.Select(r => r.ToDTO());
@@ -186,63 +179,6 @@ namespace SocialImportance
 			m_attributionRules.Remove(rule);
 		}
 
-		#endregion
-
-		#region Claims
-
-		public IEnumerable<ClaimDTO> GetClaims()
-		{
-			return m_claimTree.Select(pair => new ClaimDTO() {ActionTemplate = pair.Key.ToString(), ClaimSI = pair.Value});
-		}
-
-		public void AddClaim(ClaimDTO claim)
-		{
-			Name n = null;
-			try
-			{
-				n = (Name)claim.ActionTemplate;
-				m_claimTree.Add(n, claim.ClaimSI);
-			}
-			catch (DuplicatedKeyException)
-			{
-				throw new Exception($"There is already a claim associated to the action template \"{n}\"");
-			}
-		}
-
-		#endregion
-
-		/// <summary>
-		/// Load a Social Importance Asset definition from a DTO object.
-		/// </summary>
-		/// <remarks>
-		/// Use this to procedurally configure the asset.
-		/// </remarks>
-		/// <param name="dto">
-		/// The DTO containing the data to load
-		/// </param>
-		public void LoadFromDTO(SocialImportanceDTO dto)
-		{
-			m_attributionRules.Clear();
-			m_attributionRules.UnionWith(dto.AttributionRules.Select(adto => new AttributionRule(adto)));
-
-			m_claimTree.Clear();
-		}
-
-		/// <summary>
-		/// Returns a DTO containing all the asset's configurations.
-		/// </summary>
-		public SocialImportanceDTO GetDTO()
-		{
-			var at = m_attributionRules.Select(a => a.ToDTO()).ToArray();
-			var claims = m_claimTree.Select(p => new ClaimDTO() { ActionTemplate = p.Key.ToString(), ClaimSI = p.Value }).ToArray();
-			
-			return new SocialImportanceDTO() { AttributionRules = at};
-		}
-
-		#endregion
-
-		#region Dynamic Properties
-
 		private static readonly Name SI_DYNAMIC_PROPERTY_NAME = Name.BuildName("SI");
 		private IEnumerable<DynamicPropertyResult> SIPropertyCalculator(IQueryContext context, Name target)
 		{
@@ -254,37 +190,23 @@ namespace SocialImportance
 			}
 		}
 
-		#endregion
-
-		#region Serialization
-
 		/// @cond DOXYGEN_SHOULD_SKIP_THIS
 
 		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			dataHolder.SetValue("AttributionRules",m_attributionRules.ToArray());
-			dataHolder.SetValue("Claims",m_claimTree.Select(p=>new ClaimDTO() {ActionTemplate = p.Key.ToString(),ClaimSI = p.Value}).ToArray());
 		}
 
 		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			m_attributionRules = new HashSet<AttributionRule>(dataHolder.GetValue<AttributionRule[]>("AttributionRules"));
-			
             foreach(var rule in m_attributionRules)
             {
                 rule.GUID = Guid.NewGuid();
             }
-
-			var claims = dataHolder.GetValue<ClaimDTO[]>("Claims");
-			m_claimTree = new NameSearchTree<uint>();
-			foreach (var c in claims)
-				m_claimTree.Add(Name.BuildName(c.ActionTemplate), c.ClaimSI);
-
 			m_cachedSI = new NameSearchTree<NameSearchTree<float>>();
 		}
 
 		/// @endcond
-
-		#endregion
 	}
 }

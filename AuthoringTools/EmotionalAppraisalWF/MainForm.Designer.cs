@@ -40,7 +40,6 @@
             this.buttonRemoveAppraisalRule = new System.Windows.Forms.Button();
             this.dataGridViewAppraisalRules = new System.Windows.Forms.DataGridView();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.conditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.buttonRemove = new System.Windows.Forms.Button();
@@ -72,6 +71,7 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.conditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
             this.dynamicPropertyListing.SuspendLayout();
             this.appraisalRulesTagePage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -260,17 +260,6 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Rule Conditions";
             // 
-            // conditionSetEditor
-            // 
-            this.conditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.conditionSetEditor.Location = new System.Drawing.Point(4, 18);
-            this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.conditionSetEditor.Name = "conditionSetEditor";
-            this.conditionSetEditor.Size = new System.Drawing.Size(861, 204);
-            this.conditionSetEditor.TabIndex = 0;
-            this.conditionSetEditor.View = null;
-            this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);
-            // 
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -385,7 +374,7 @@
             this.tableLayoutPanel8.RowCount = 2;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 62F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(869, 455);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(869, 458);
             this.tableLayoutPanel8.TabIndex = 2;
             // 
             // tableLayoutPanel9
@@ -515,7 +504,7 @@
             this.groupBox5.Margin = new System.Windows.Forms.Padding(0);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox5.Size = new System.Drawing.Size(869, 393);
+            this.groupBox5.Size = new System.Drawing.Size(869, 396);
             this.groupBox5.TabIndex = 0;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Emotion Dispositions";
@@ -541,7 +530,7 @@
             this.dataGridViewEmotionDispositions.RowHeadersVisible = false;
             this.dataGridViewEmotionDispositions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewEmotionDispositions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewEmotionDispositions.Size = new System.Drawing.Size(853, 330);
+            this.dataGridViewEmotionDispositions.Size = new System.Drawing.Size(853, 333);
             this.dataGridViewEmotionDispositions.TabIndex = 14;
             this.dataGridViewEmotionDispositions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewEmotionDispositions_CellMouseDoubleClick);
             // 
@@ -630,6 +619,18 @@
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
             this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveAsToolStripMenuItem.Text = "Save As...";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            // 
+            // conditionSetEditor
+            // 
+            this.conditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.conditionSetEditor.Location = new System.Drawing.Point(4, 18);
+            this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.conditionSetEditor.Name = "conditionSetEditor";
+            this.conditionSetEditor.Size = new System.Drawing.Size(861, 204);
+            this.conditionSetEditor.TabIndex = 0;
+            this.conditionSetEditor.View = null;
+            this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);
             // 
             // MainForm
             // 
