@@ -79,7 +79,7 @@
             this.TabControl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.TabControl.Name = "TabControl";
             this.TabControl.SelectedIndex = 0;
-            this.TabControl.Size = new System.Drawing.Size(786, 709);
+            this.TabControl.Size = new System.Drawing.Size(821, 385);
             this.TabControl.TabIndex = 15;
             // 
             // tabPage1
@@ -90,7 +90,7 @@
             this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Size = new System.Drawing.Size(778, 677);
+            this.tabPage1.Size = new System.Drawing.Size(813, 353);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Social Exchange";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -109,8 +109,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer1.Size = new System.Drawing.Size(772, 673);
-            this.splitContainer1.SplitterDistance = 333;
+            this.splitContainer1.Size = new System.Drawing.Size(807, 349);
+            this.splitContainer1.SplitterDistance = 172;
             this.splitContainer1.TabIndex = 16;
             // 
             // groupBox7
@@ -126,7 +126,7 @@
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox7.Size = new System.Drawing.Size(772, 333);
+            this.groupBox7.Size = new System.Drawing.Size(807, 172);
             this.groupBox7.TabIndex = 5;
             this.groupBox7.TabStop = false;
             this.groupBox7.Enter += new System.EventHandler(this.groupBox7_Enter);
@@ -138,7 +138,7 @@
             this.influenceRules.Location = new System.Drawing.Point(429, 16);
             this.influenceRules.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.influenceRules.Name = "influenceRules";
-            this.influenceRules.Size = new System.Drawing.Size(308, 33);
+            this.influenceRules.Size = new System.Drawing.Size(343, 33);
             this.influenceRules.TabIndex = 11;
             this.influenceRules.Text = "Influence Rules Inspector";
             this.influenceRules.UseVisualStyleBackColor = true;
@@ -209,7 +209,7 @@
             this.gridSocialExchanges.RowHeadersVisible = false;
             this.gridSocialExchanges.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.gridSocialExchanges.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridSocialExchanges.Size = new System.Drawing.Size(762, 259);
+            this.gridSocialExchanges.Size = new System.Drawing.Size(797, 98);
             this.gridSocialExchanges.TabIndex = 2;
             this.gridSocialExchanges.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridSocialExchanges_CellContentClick);
             this.gridSocialExchanges.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gridSocialExchanges_CellMouseDoubleClick);
@@ -224,7 +224,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Size = new System.Drawing.Size(772, 336);
+            this.groupBox2.Size = new System.Drawing.Size(807, 173);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Starting Conditions:";
@@ -237,7 +237,7 @@
             this.conditionSetEditorControl.Location = new System.Drawing.Point(4, 19);
             this.conditionSetEditorControl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.conditionSetEditorControl.Name = "conditionSetEditorControl";
-            this.conditionSetEditorControl.Size = new System.Drawing.Size(763, 315);
+            this.conditionSetEditorControl.Size = new System.Drawing.Size(798, 152);
             this.conditionSetEditorControl.TabIndex = 3;
             this.conditionSetEditorControl.View = null;
             // 
@@ -245,11 +245,11 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Location = new System.Drawing.Point(3, 405);
+            this.groupBox1.Location = new System.Drawing.Point(3, 81);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(764, 268);
+            this.groupBox1.Size = new System.Drawing.Size(799, 268);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Starting Conditions:";
@@ -260,7 +260,7 @@
             this.filieToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(798, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(833, 24);
             this.menuStrip1.TabIndex = 16;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -279,28 +279,28 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.saveAsToolStripMenuItem.Text = "Save As ...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
@@ -311,7 +311,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(798, 758);
+            this.ClientSize = new System.Drawing.Size(833, 434);
             this.Controls.Add(this.TabControl);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

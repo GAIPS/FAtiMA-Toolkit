@@ -9,7 +9,7 @@ using WorldModel.DTOs;
 
 namespace WorldModelWF
 {
-    public partial class MainForm : BaseWorldModelForm
+    public partial class MainForm : Form
     {
         private WorldModelAsset _wm;
 

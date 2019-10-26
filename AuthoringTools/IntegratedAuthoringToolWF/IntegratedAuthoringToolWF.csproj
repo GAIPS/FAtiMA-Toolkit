@@ -74,9 +74,6 @@
     </Compile>
     <Compile Include="Audio\AudioStreamModifier.cs" />
     <Compile Include="Audio\SampleJoiner.cs" />
-    <Compile Include="BaseIATForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="ImageForm.cs">
       <SubType>Form</SubType>
     </Compile>

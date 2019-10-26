@@ -17,7 +17,7 @@ using GAIPS.Rage;
 
 namespace RolePlayCharacterWF
 {
-    public sealed partial class MainForm : BaseRPCForm
+    public sealed partial class MainForm : Form
     {
         private const string MOOD_FORMAT = "0.00";
         private EmotionalStateVM _emotionalStateVM;

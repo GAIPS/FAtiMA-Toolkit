@@ -1007,7 +1007,6 @@ namespace RolePlayCharacterWF
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.ClientSize = new System.Drawing.Size(854, 636);
             this.Controls.Add(this.splitContainer1);
-            this.EditorName = "Role Play Character Editor";
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MinimumSize = new System.Drawing.Size(450, 450);
             this.Name = "MainForm";

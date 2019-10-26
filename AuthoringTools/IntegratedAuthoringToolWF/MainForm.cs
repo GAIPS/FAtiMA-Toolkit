@@ -22,7 +22,7 @@ using WorldModel;
 
 namespace IntegratedAuthoringToolWF
 {
-    public partial class MainForm : BaseIATForm
+    public partial class MainForm : Form
     {
         private BindingListView<DialogueStateActionDTO> _dialogs;
 

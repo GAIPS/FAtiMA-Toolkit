@@ -83,9 +83,6 @@
     <Compile Include="AddOrEditEmotionForm.Designer.cs">
       <DependentUpon>AddOrEditEmotionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="BaseRPCForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

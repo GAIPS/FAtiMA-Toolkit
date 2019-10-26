@@ -5,11 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading;
+using System.Windows.Forms;
 using WebServer;
 
 namespace WebAPIWF
 {
-    public partial class MainForm : BaseIATForm
+    public partial class MainForm : Form
     {
     
         private delegate void UpdateUIDelegate(string message, string uiElement, string uiColor);
