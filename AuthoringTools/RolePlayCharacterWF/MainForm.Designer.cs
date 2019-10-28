@@ -30,34 +30,6 @@ namespace RolePlayCharacterWF
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.panelCIF = new System.Windows.Forms.Panel();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.buttonOpenCif = new System.Windows.Forms.Button();
-            this.buttonClearCIF = new System.Windows.Forms.Button();
-            this.textBoxPathCIF = new System.Windows.Forms.TextBox();
-            this.buttonNewCIF = new System.Windows.Forms.Button();
-            this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.panelSI = new System.Windows.Forms.Panel();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.buttonOpenSI = new System.Windows.Forms.Button();
-            this.buttonClearSI = new System.Windows.Forms.Button();
-            this.textBoxPathSI = new System.Windows.Forms.TextBox();
-            this.buttonNewSI = new System.Windows.Forms.Button();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.panelEDM = new System.Windows.Forms.Panel();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.buttonOpenEDM = new System.Windows.Forms.Button();
-            this.buttonClearEDM = new System.Windows.Forms.Button();
-            this.textBoxPathEDM = new System.Windows.Forms.TextBox();
-            this.buttonNewEDM = new System.Windows.Forms.Button();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.panelEA = new System.Windows.Forms.Panel();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.openEAButton = new System.Windows.Forms.Button();
-            this.clearEAButton = new System.Windows.Forms.Button();
-            this.pathTextBoxEA = new System.Windows.Forms.TextBox();
-            this.createNewEAButton = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -90,6 +62,12 @@ namespace RolePlayCharacterWF
             this.moodValueLabel = new System.Windows.Forms.Label();
             this.moodTrackBar = new System.Windows.Forms.TrackBar();
             this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPageGoals = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.buttonRemoveGoal = new System.Windows.Forms.Button();
+            this.dataGridViewGoals = new System.Windows.Forms.DataGridView();
+            this.buttonAddGoal = new System.Windows.Forms.Button();
+            this.buttonEditGoal = new System.Windows.Forms.Button();
             this.textBoxCharacterName = new System.Windows.Forms.TextBox();
             this.textBoxCharacterBody = new System.Windows.Forms.TextBox();
             this.textBoxCharacterVoice = new System.Windows.Forms.TextBox();
@@ -98,14 +76,6 @@ namespace RolePlayCharacterWF
             this.label3 = new System.Windows.Forms.Label();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.tabPage7.SuspendLayout();
-            this.groupBox6.SuspendLayout();
-            this.tabPage6.SuspendLayout();
-            this.groupBox5.SuspendLayout();
-            this.tabPage4.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -126,6 +96,9 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.moodTrackBar)).BeginInit();
             this.tabControl1.SuspendLayout();
+            this.tabPageGoals.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGoals)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -133,320 +106,13 @@ namespace RolePlayCharacterWF
             this.groupBox7.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabPage7
-            // 
-            this.tabPage7.Controls.Add(this.panelCIF);
-            this.tabPage7.Controls.Add(this.groupBox6);
-            this.tabPage7.Location = new System.Drawing.Point(4, 25);
-            this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage7.Size = new System.Drawing.Size(821, 477);
-            this.tabPage7.TabIndex = 6;
-            this.tabPage7.Text = "CIF";
-            this.tabPage7.UseVisualStyleBackColor = true;
-            // 
-            // panelCIF
-            // 
-            this.panelCIF.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelCIF.Location = new System.Drawing.Point(5, 65);
-            this.panelCIF.Name = "panelCIF";
-            this.panelCIF.Size = new System.Drawing.Size(810, 403);
-            this.panelCIF.TabIndex = 17;
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox6.Controls.Add(this.buttonOpenCif);
-            this.groupBox6.Controls.Add(this.buttonClearCIF);
-            this.groupBox6.Controls.Add(this.textBoxPathCIF);
-            this.groupBox6.Controls.Add(this.buttonNewCIF);
-            this.groupBox6.Location = new System.Drawing.Point(5, 3);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(810, 56);
-            this.groupBox6.TabIndex = 16;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Source";
-            // 
-            // buttonOpenCif
-            // 
-            this.buttonOpenCif.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonOpenCif.Location = new System.Drawing.Point(103, 18);
-            this.buttonOpenCif.Name = "buttonOpenCif";
-            this.buttonOpenCif.Size = new System.Drawing.Size(85, 23);
-            this.buttonOpenCif.TabIndex = 15;
-            this.buttonOpenCif.Text = "Open";
-            this.buttonOpenCif.UseVisualStyleBackColor = true;
-            // 
-            // buttonClearCIF
-            // 
-            this.buttonClearCIF.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonClearCIF.Location = new System.Drawing.Point(202, 18);
-            this.buttonClearCIF.Name = "buttonClearCIF";
-            this.buttonClearCIF.Size = new System.Drawing.Size(85, 23);
-            this.buttonClearCIF.TabIndex = 16;
-            this.buttonClearCIF.Text = "Clear";
-            this.buttonClearCIF.UseVisualStyleBackColor = true;
-            // 
-            // textBoxPathCIF
-            // 
-            this.textBoxPathCIF.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxPathCIF.Location = new System.Drawing.Point(299, 19);
-            this.textBoxPathCIF.Name = "textBoxPathCIF";
-            this.textBoxPathCIF.ReadOnly = true;
-            this.textBoxPathCIF.Size = new System.Drawing.Size(505, 22);
-            this.textBoxPathCIF.TabIndex = 13;
-            // 
-            // buttonNewCIF
-            // 
-            this.buttonNewCIF.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonNewCIF.Location = new System.Drawing.Point(6, 18);
-            this.buttonNewCIF.Name = "buttonNewCIF";
-            this.buttonNewCIF.Size = new System.Drawing.Size(85, 23);
-            this.buttonNewCIF.TabIndex = 18;
-            this.buttonNewCIF.Text = "New";
-            this.buttonNewCIF.UseVisualStyleBackColor = true;
-            // 
-            // tabPage6
-            // 
-            this.tabPage6.Controls.Add(this.panelSI);
-            this.tabPage6.Controls.Add(this.groupBox5);
-            this.tabPage6.Location = new System.Drawing.Point(4, 25);
-            this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(821, 477);
-            this.tabPage6.TabIndex = 5;
-            this.tabPage6.Text = "Social Importance";
-            this.tabPage6.UseVisualStyleBackColor = true;
-            // 
-            // panelSI
-            // 
-            this.panelSI.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelSI.Location = new System.Drawing.Point(5, 65);
-            this.panelSI.Name = "panelSI";
-            this.panelSI.Size = new System.Drawing.Size(810, 406);
-            this.panelSI.TabIndex = 17;
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox5.Controls.Add(this.buttonOpenSI);
-            this.groupBox5.Controls.Add(this.buttonClearSI);
-            this.groupBox5.Controls.Add(this.textBoxPathSI);
-            this.groupBox5.Controls.Add(this.buttonNewSI);
-            this.groupBox5.Location = new System.Drawing.Point(5, 3);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(810, 56);
-            this.groupBox5.TabIndex = 16;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Source";
-            // 
-            // buttonOpenSI
-            // 
-            this.buttonOpenSI.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonOpenSI.Location = new System.Drawing.Point(103, 18);
-            this.buttonOpenSI.Name = "buttonOpenSI";
-            this.buttonOpenSI.Size = new System.Drawing.Size(85, 23);
-            this.buttonOpenSI.TabIndex = 15;
-            this.buttonOpenSI.Text = "Open";
-            this.buttonOpenSI.UseVisualStyleBackColor = true;
-            // 
-            // buttonClearSI
-            // 
-            this.buttonClearSI.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonClearSI.Location = new System.Drawing.Point(202, 18);
-            this.buttonClearSI.Name = "buttonClearSI";
-            this.buttonClearSI.Size = new System.Drawing.Size(85, 23);
-            this.buttonClearSI.TabIndex = 16;
-            this.buttonClearSI.Text = "Clear";
-            this.buttonClearSI.UseVisualStyleBackColor = true;
-            // 
-            // textBoxPathSI
-            // 
-            this.textBoxPathSI.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxPathSI.Location = new System.Drawing.Point(299, 19);
-            this.textBoxPathSI.Name = "textBoxPathSI";
-            this.textBoxPathSI.ReadOnly = true;
-            this.textBoxPathSI.Size = new System.Drawing.Size(505, 22);
-            this.textBoxPathSI.TabIndex = 13;
-            // 
-            // buttonNewSI
-            // 
-            this.buttonNewSI.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonNewSI.Location = new System.Drawing.Point(6, 18);
-            this.buttonNewSI.Name = "buttonNewSI";
-            this.buttonNewSI.Size = new System.Drawing.Size(85, 23);
-            this.buttonNewSI.TabIndex = 18;
-            this.buttonNewSI.Text = "New";
-            this.buttonNewSI.UseVisualStyleBackColor = true;
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.panelEDM);
-            this.tabPage4.Controls.Add(this.groupBox3);
-            this.tabPage4.Location = new System.Drawing.Point(4, 25);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(821, 477);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Decision Making";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // panelEDM
-            // 
-            this.panelEDM.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelEDM.Location = new System.Drawing.Point(5, 65);
-            this.panelEDM.Name = "panelEDM";
-            this.panelEDM.Size = new System.Drawing.Size(813, 395);
-            this.panelEDM.TabIndex = 17;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox3.Controls.Add(this.buttonOpenEDM);
-            this.groupBox3.Controls.Add(this.buttonClearEDM);
-            this.groupBox3.Controls.Add(this.textBoxPathEDM);
-            this.groupBox3.Controls.Add(this.buttonNewEDM);
-            this.groupBox3.Location = new System.Drawing.Point(5, 3);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(813, 56);
-            this.groupBox3.TabIndex = 16;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Source";
-            // 
-            // buttonOpenEDM
-            // 
-            this.buttonOpenEDM.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonOpenEDM.Location = new System.Drawing.Point(103, 18);
-            this.buttonOpenEDM.Name = "buttonOpenEDM";
-            this.buttonOpenEDM.Size = new System.Drawing.Size(85, 23);
-            this.buttonOpenEDM.TabIndex = 15;
-            this.buttonOpenEDM.Text = "Open";
-            this.buttonOpenEDM.UseVisualStyleBackColor = true;
-            // 
-            // buttonClearEDM
-            // 
-            this.buttonClearEDM.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonClearEDM.Location = new System.Drawing.Point(202, 18);
-            this.buttonClearEDM.Name = "buttonClearEDM";
-            this.buttonClearEDM.Size = new System.Drawing.Size(85, 23);
-            this.buttonClearEDM.TabIndex = 16;
-            this.buttonClearEDM.Text = "Clear";
-            this.buttonClearEDM.UseVisualStyleBackColor = true;
-            // 
-            // textBoxPathEDM
-            // 
-            this.textBoxPathEDM.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxPathEDM.Location = new System.Drawing.Point(299, 19);
-            this.textBoxPathEDM.Name = "textBoxPathEDM";
-            this.textBoxPathEDM.ReadOnly = true;
-            this.textBoxPathEDM.Size = new System.Drawing.Size(508, 22);
-            this.textBoxPathEDM.TabIndex = 13;
-            this.textBoxPathEDM.TextChanged += new System.EventHandler(this.textBoxPathEDM_TextChanged);
-            // 
-            // buttonNewEDM
-            // 
-            this.buttonNewEDM.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonNewEDM.Location = new System.Drawing.Point(6, 18);
-            this.buttonNewEDM.Name = "buttonNewEDM";
-            this.buttonNewEDM.Size = new System.Drawing.Size(85, 23);
-            this.buttonNewEDM.TabIndex = 18;
-            this.buttonNewEDM.Text = "New";
-            this.buttonNewEDM.UseVisualStyleBackColor = true;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.panelEA);
-            this.tabPage3.Controls.Add(this.groupBox2);
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(821, 477);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Emotional Appraisal";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // panelEA
-            // 
-            this.panelEA.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panelEA.Location = new System.Drawing.Point(5, 65);
-            this.panelEA.Name = "panelEA";
-            this.panelEA.Size = new System.Drawing.Size(813, 394);
-            this.panelEA.TabIndex = 15;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox2.Controls.Add(this.openEAButton);
-            this.groupBox2.Controls.Add(this.clearEAButton);
-            this.groupBox2.Controls.Add(this.pathTextBoxEA);
-            this.groupBox2.Controls.Add(this.createNewEAButton);
-            this.groupBox2.Location = new System.Drawing.Point(5, 3);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(813, 56);
-            this.groupBox2.TabIndex = 14;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Source";
-            // 
-            // openEAButton
-            // 
-            this.openEAButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.openEAButton.Location = new System.Drawing.Point(103, 18);
-            this.openEAButton.Name = "openEAButton";
-            this.openEAButton.Size = new System.Drawing.Size(85, 23);
-            this.openEAButton.TabIndex = 15;
-            this.openEAButton.Text = "Open";
-            this.openEAButton.UseVisualStyleBackColor = true;
-            // 
-            // clearEAButton
-            // 
-            this.clearEAButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.clearEAButton.Location = new System.Drawing.Point(202, 18);
-            this.clearEAButton.Name = "clearEAButton";
-            this.clearEAButton.Size = new System.Drawing.Size(85, 23);
-            this.clearEAButton.TabIndex = 16;
-            this.clearEAButton.Text = "Clear";
-            this.clearEAButton.UseVisualStyleBackColor = true;
-            // 
-            // pathTextBoxEA
-            // 
-            this.pathTextBoxEA.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pathTextBoxEA.Location = new System.Drawing.Point(299, 19);
-            this.pathTextBoxEA.Name = "pathTextBoxEA";
-            this.pathTextBoxEA.ReadOnly = true;
-            this.pathTextBoxEA.Size = new System.Drawing.Size(508, 22);
-            this.pathTextBoxEA.TabIndex = 13;
-            // 
-            // createNewEAButton
-            // 
-            this.createNewEAButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.createNewEAButton.Location = new System.Drawing.Point(6, 18);
-            this.createNewEAButton.Name = "createNewEAButton";
-            this.createNewEAButton.Size = new System.Drawing.Size(85, 23);
-            this.createNewEAButton.TabIndex = 18;
-            this.createNewEAButton.Text = "New";
-            this.createNewEAButton.UseVisualStyleBackColor = true;
-            // 
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.tableLayoutPanel4);
             this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(821, 477);
+            this.tabPage2.Size = new System.Drawing.Size(821, 501);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Autobiographical Memory";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -463,7 +129,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 206F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(815, 471);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(815, 495);
             this.tableLayoutPanel4.TabIndex = 0;
             this.tableLayoutPanel4.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel4_Paint);
             // 
@@ -477,7 +143,7 @@ namespace RolePlayCharacterWF
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(3, 63);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(809, 405);
+            this.groupBox4.Size = new System.Drawing.Size(809, 429);
             this.groupBox4.TabIndex = 16;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Event Records";
@@ -513,7 +179,7 @@ namespace RolePlayCharacterWF
             this.dataGridViewAM.RowHeadersVisible = false;
             this.dataGridViewAM.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAM.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAM.Size = new System.Drawing.Size(800, 350);
+            this.dataGridViewAM.Size = new System.Drawing.Size(800, 374);
             this.dataGridViewAM.TabIndex = 10;
             this.dataGridViewAM.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAM_CellContentClick);
             this.dataGridViewAM.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridViewAM_KeyDown);
@@ -605,10 +271,10 @@ namespace RolePlayCharacterWF
             // tabPage5
             // 
             this.tabPage5.Controls.Add(this.groupBox1);
-            this.tabPage5.Location = new System.Drawing.Point(4, 28);
+            this.tabPage5.Location = new System.Drawing.Point(4, 25);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(821, 474);
+            this.tabPage5.Size = new System.Drawing.Size(821, 501);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Knowledge Base";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -619,7 +285,7 @@ namespace RolePlayCharacterWF
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(815, 468);
+            this.groupBox1.Size = new System.Drawing.Size(815, 495);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Beliefs";
@@ -636,7 +302,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel8.RowCount = 2;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(809, 447);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(809, 474);
             this.tableLayoutPanel8.TabIndex = 7;
             // 
             // tableLayoutPanel9
@@ -710,7 +376,7 @@ namespace RolePlayCharacterWF
             this.dataGridViewBeliefs.RowHeadersVisible = false;
             this.dataGridViewBeliefs.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewBeliefs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewBeliefs.Size = new System.Drawing.Size(803, 409);
+            this.dataGridViewBeliefs.Size = new System.Drawing.Size(803, 433);
             this.dataGridViewBeliefs.TabIndex = 8;
             this.dataGridViewBeliefs.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewBeliefs_CellContentClick);
             this.dataGridViewBeliefs.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewBeliefs_CellMouseDoubleClick);
@@ -722,7 +388,7 @@ namespace RolePlayCharacterWF
             this.tabPage1.Location = new System.Drawing.Point(4, 28);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(821, 474);
+            this.tabPage1.Size = new System.Drawing.Size(821, 498);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Emotional State";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -739,7 +405,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(815, 468);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(815, 492);
             this.tableLayoutPanel3.TabIndex = 2;
             this.tableLayoutPanel3.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel3_Paint);
             // 
@@ -754,7 +420,7 @@ namespace RolePlayCharacterWF
             this.emotionGroupBox.Controls.Add(this.emotionsDataGridView);
             this.emotionGroupBox.Location = new System.Drawing.Point(3, 67);
             this.emotionGroupBox.Name = "emotionGroupBox";
-            this.emotionGroupBox.Size = new System.Drawing.Size(809, 398);
+            this.emotionGroupBox.Size = new System.Drawing.Size(809, 422);
             this.emotionGroupBox.TabIndex = 1;
             this.emotionGroupBox.TabStop = false;
             this.emotionGroupBox.Text = "Emotions";
@@ -809,7 +475,7 @@ namespace RolePlayCharacterWF
             this.emotionsDataGridView.RowHeadersVisible = false;
             this.emotionsDataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.emotionsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.emotionsDataGridView.Size = new System.Drawing.Size(797, 344);
+            this.emotionsDataGridView.Size = new System.Drawing.Size(797, 368);
             this.emotionsDataGridView.TabIndex = 2;
             this.emotionsDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.emotionsDataGridView_CellContentClick);
             // 
@@ -869,16 +535,99 @@ namespace RolePlayCharacterWF
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage5);
             this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Controls.Add(this.tabPage6);
-            this.tabControl1.Controls.Add(this.tabPage7);
+            this.tabControl1.Controls.Add(this.tabPageGoals);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(829, 506);
+            this.tabControl1.Size = new System.Drawing.Size(829, 530);
             this.tabControl1.TabIndex = 13;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            // 
+            // tabPageGoals
+            // 
+            this.tabPageGoals.Controls.Add(this.groupBox2);
+            this.tabPageGoals.Location = new System.Drawing.Point(4, 28);
+            this.tabPageGoals.Name = "tabPageGoals";
+            this.tabPageGoals.Size = new System.Drawing.Size(821, 498);
+            this.tabPageGoals.TabIndex = 5;
+            this.tabPageGoals.Text = "Goals";
+            this.tabPageGoals.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.buttonRemoveGoal);
+            this.groupBox2.Controls.Add(this.dataGridViewGoals);
+            this.groupBox2.Controls.Add(this.buttonAddGoal);
+            this.groupBox2.Controls.Add(this.buttonEditGoal);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox2.Location = new System.Drawing.Point(0, 0);
+            this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
+            this.groupBox2.Size = new System.Drawing.Size(821, 498);
+            this.groupBox2.TabIndex = 4;
+            this.groupBox2.TabStop = false;
+            // 
+            // buttonRemoveGoal
+            // 
+            this.buttonRemoveGoal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonRemoveGoal.Location = new System.Drawing.Point(164, 14);
+            this.buttonRemoveGoal.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonRemoveGoal.MinimumSize = new System.Drawing.Size(90, 27);
+            this.buttonRemoveGoal.Name = "buttonRemoveGoal";
+            this.buttonRemoveGoal.Size = new System.Drawing.Size(90, 27);
+            this.buttonRemoveGoal.TabIndex = 8;
+            this.buttonRemoveGoal.Text = "Remove";
+            this.buttonRemoveGoal.UseVisualStyleBackColor = true;
+            this.buttonRemoveGoal.Click += new System.EventHandler(this.buttonRemoveGoal_Click);
+            // 
+            // dataGridViewGoals
+            // 
+            this.dataGridViewGoals.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.dataGridViewGoals.AllowUserToAddRows = false;
+            this.dataGridViewGoals.AllowUserToDeleteRows = false;
+            this.dataGridViewGoals.AllowUserToOrderColumns = true;
+            this.dataGridViewGoals.AllowUserToResizeRows = false;
+            this.dataGridViewGoals.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridViewGoals.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewGoals.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.dataGridViewGoals.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewGoals.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.dataGridViewGoals.Location = new System.Drawing.Point(7, 49);
+            this.dataGridViewGoals.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridViewGoals.Name = "dataGridViewGoals";
+            this.dataGridViewGoals.ReadOnly = true;
+            this.dataGridViewGoals.RowHeadersVisible = false;
+            this.dataGridViewGoals.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewGoals.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewGoals.Size = new System.Drawing.Size(806, 441);
+            this.dataGridViewGoals.TabIndex = 2;
+            // 
+            // buttonAddGoal
+            // 
+            this.buttonAddGoal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonAddGoal.Location = new System.Drawing.Point(7, 14);
+            this.buttonAddGoal.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonAddGoal.Name = "buttonAddGoal";
+            this.buttonAddGoal.Size = new System.Drawing.Size(66, 27);
+            this.buttonAddGoal.TabIndex = 7;
+            this.buttonAddGoal.Text = "Add";
+            this.buttonAddGoal.UseVisualStyleBackColor = true;
+            this.buttonAddGoal.Click += new System.EventHandler(this.buttonAddGoal_Click);
+            // 
+            // buttonEditGoal
+            // 
+            this.buttonEditGoal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonEditGoal.Location = new System.Drawing.Point(81, 14);
+            this.buttonEditGoal.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonEditGoal.Name = "buttonEditGoal";
+            this.buttonEditGoal.Size = new System.Drawing.Size(75, 27);
+            this.buttonEditGoal.TabIndex = 9;
+            this.buttonEditGoal.Text = "Edit";
+            this.buttonEditGoal.UseVisualStyleBackColor = true;
+            this.buttonEditGoal.Click += new System.EventHandler(this.buttonEditGoal_Click);
             // 
             // textBoxCharacterName
             // 
@@ -953,7 +702,7 @@ namespace RolePlayCharacterWF
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.IsSplitterFixed = true;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 24);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -964,7 +713,7 @@ namespace RolePlayCharacterWF
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl1);
-            this.splitContainer1.Size = new System.Drawing.Size(854, 612);
+            this.splitContainer1.Size = new System.Drawing.Size(854, 636);
             this.splitContainer1.SplitterDistance = 78;
             this.splitContainer1.TabIndex = 12;
             this.splitContainer1.TabStop = false;
@@ -995,20 +744,6 @@ namespace RolePlayCharacterWF
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MinimumSize = new System.Drawing.Size(450, 450);
             this.Name = "MainForm";
-            this.Text = "";
-            this.Controls.SetChildIndex(this.splitContainer1, 0);
-            this.tabPage7.ResumeLayout(false);
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
-            this.tabPage6.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
-            this.tabPage4.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
@@ -1031,6 +766,9 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel7.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.moodTrackBar)).EndInit();
             this.tabControl1.ResumeLayout(false);
+            this.tabPageGoals.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewGoals)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -1038,7 +776,6 @@ namespace RolePlayCharacterWF
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -1074,34 +811,6 @@ namespace RolePlayCharacterWF
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown StartTickField;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.Panel panelEA;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Button openEAButton;
-        private System.Windows.Forms.Button clearEAButton;
-        private System.Windows.Forms.TextBox pathTextBoxEA;
-        private System.Windows.Forms.Button createNewEAButton;
-        private System.Windows.Forms.TabPage tabPage4;
-        private System.Windows.Forms.Panel panelEDM;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Button buttonOpenEDM;
-        private System.Windows.Forms.Button buttonClearEDM;
-        private System.Windows.Forms.TextBox textBoxPathEDM;
-        private System.Windows.Forms.Button buttonNewEDM;
-        private System.Windows.Forms.TabPage tabPage6;
-        private System.Windows.Forms.Panel panelSI;
-        private System.Windows.Forms.GroupBox groupBox5;
-        private System.Windows.Forms.Button buttonOpenSI;
-        private System.Windows.Forms.Button buttonClearSI;
-        private System.Windows.Forms.TextBox textBoxPathSI;
-        private System.Windows.Forms.Button buttonNewSI;
-        private System.Windows.Forms.TabPage tabPage7;
-        private System.Windows.Forms.Panel panelCIF;
-        private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.Button buttonOpenCif;
-        private System.Windows.Forms.Button buttonClearCIF;
-        private System.Windows.Forms.TextBox textBoxPathCIF;
-        private System.Windows.Forms.Button buttonNewCIF;
         private System.Windows.Forms.TextBox textBoxCharacterName;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxCharacterBody;
@@ -1111,6 +820,12 @@ namespace RolePlayCharacterWF
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.Button buttonEdit;
+        private System.Windows.Forms.TabPage tabPageGoals;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button buttonRemoveGoal;
+        private System.Windows.Forms.DataGridView dataGridViewGoals;
+        private System.Windows.Forms.Button buttonAddGoal;
+        private System.Windows.Forms.Button buttonEditGoal;
     }
 }
 

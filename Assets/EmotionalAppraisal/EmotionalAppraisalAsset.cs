@@ -9,7 +9,6 @@ using SerializationUtilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Utilities;
 using WellFormedNames;
 
 namespace EmotionalAppraisal
@@ -88,11 +87,6 @@ namespace EmotionalAppraisal
             m_appraisalDerivator.AddOrUpdateAppraisalRule(emotionalAppraisalRule);
         }
 
-        public void AddOrUpdateGoal(GoalDTO goal)
-        {
-            m_goals[goal.Name] = new Goal(goal);
-        }
-
         /// <summary>
         /// Appraises a set of event strings.
         ///
@@ -102,7 +96,7 @@ namespace EmotionalAppraisal
         /// emotions.
         /// </summary>
         /// <param name="eventNames">A set of string representation of the events to appraise</param>
-        public void AppraiseEvents(IEnumerable<Name> eventNames, Name perspective, IEmotionalState emotionalState, AM am, KB kb)
+        public void AppraiseEvents(IEnumerable<Name> eventNames, Name perspective, IEmotionalState emotionalState, AM am, KB kb, Dictionary<string, Goal> goals)
         {
             var appraisalFrame = new InternalAppraisalFrame();
             appraisalFrame.Perspective = kb.Perspective;
@@ -143,13 +137,13 @@ namespace EmotionalAppraisal
                 appraisalFrame.Reset(evt);
                 var componentFrame = appraisalFrame.RequestComponentFrame(m_appraisalDerivator, m_appraisalDerivator.AppraisalWeight);
                 m_appraisalDerivator.Appraisal(kb, evt, componentFrame);
-                UpdateEmotions(appraisalFrame, emotionalState, am);
+                UpdateEmotions(appraisalFrame, goals, emotionalState, am);
             }
         }
 
-        public void AppraiseEvents(IEnumerable<Name> eventNames, IEmotionalState emotionalState, AM am, KB kb)
+        public void AppraiseEvents(IEnumerable<Name> eventNames, IEmotionalState emotionalState, AM am, KB kb, Dictionary<string, Goal> goals)
         {
-            AppraiseEvents(eventNames, Name.SELF_SYMBOL, emotionalState, am, kb);
+            AppraiseEvents(eventNames, Name.SELF_SYMBOL, emotionalState, am, kb, goals);
         }
 
         /// <summary>
@@ -181,14 +175,7 @@ namespace EmotionalAppraisal
                 Conditions = r.Conditions.ToDTO()
             });
         }
-
-        public IEnumerable<GoalDTO> GetAllGoals()
-        {
-            return this.m_goals.Values.Select(g => new GoalDTO {
-                Name = g.Name.ToString(),
-                Likelihood = g.Likelihood,
-                Significance = g.Significance });
-        }
+           
 
         /// <summary>
         /// Returns the emotional dispotion associated to a given emotion type.
@@ -233,13 +220,6 @@ namespace EmotionalAppraisal
             this.m_emotionDispositions.Remove(emotionType);
         }
 
-        public void RemoveGoals(IEnumerable<GoalDTO> goals)
-        {
-            foreach (var goal in goals)
-            {
-                this.m_goals.Remove(goal.Name);
-            }
-        }
         /// @cond DEV
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
@@ -270,22 +250,16 @@ namespace EmotionalAppraisal
             m_defaultEmotionalDisposition = defaultDisposition;
 
 
-            m_goals = new Dictionary<string, Goal>();
-            var goals = dataHolder.GetValue<Goal[]>("Goals");
-            foreach (var g in goals)
-            {
-                m_goals.Add(g.Name.ToString(), g);
-            }
         }
 
-        private void UpdateEmotions(IAppraisalFrame frame, IEmotionalState emotionalState, AM am)
+        private void UpdateEmotions(IAppraisalFrame frame, Dictionary<string, Goal> goals, IEmotionalState emotionalState, AM am)
         {
             if (_lastFrameAppraisal > frame.LastChange)
             {
                 return;
             }
 
-            var emotions = m_occAffectDerivator.AffectDerivation(this, frame);
+            var emotions = m_occAffectDerivator.AffectDerivation(this, goals, frame);
             foreach (var emotion in emotions)
             {
                 var activeEmotion = emotionalState.AddEmotion(emotion, am, GetEmotionDisposition(emotion.EmotionType), am.Tick);

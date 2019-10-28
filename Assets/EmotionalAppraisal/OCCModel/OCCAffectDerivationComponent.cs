@@ -10,10 +10,6 @@ namespace EmotionalAppraisal.OCCModel
 {
 	public class OCCAffectDerivationComponent : IAffectDerivator
 	{
-		/*public const int GOALCONFIRMED = 1;
-		public const int GOALUNCONFIRMED = 0;
-		public const int GOALDISCONFIRMED = 2;
-        */
 		private static OCCBaseEmotion OCCAppraiseCompoundEmotions(IBaseEvent evt, float desirability, float praiseworthiness)
 		{
 			if ((desirability == 0) || (praiseworthiness == 0) || ((desirability > 0) != (praiseworthiness > 0)))
@@ -228,7 +224,7 @@ namespace EmotionalAppraisal.OCCModel
 		//	return new OCCBaseEmotion(OCCEmotionType.Fear, prob * goalConduciveness, evt);
 		//}
 
-		public IEnumerable<IEmotion> AffectDerivation(EmotionalAppraisalAsset emotionalModule, IAppraisalFrame frame)
+		public IEnumerable<IEmotion> AffectDerivation(EmotionalAppraisalAsset emotionalModule, Dictionary<string, Goal> goals, IAppraisalFrame frame)
 		{
 			var evt = frame.AppraisedEvent;
             bool returnedEmotion = false;
@@ -310,11 +306,8 @@ namespace EmotionalAppraisal.OCCModel
 				float goalSuccessProbability = frame.GetAppraisalVariable(variable);
 			    
                 string goalName = variable.Substring(OCCAppraisalVariables.GOALSUCCESSPROBABILITY.Length + 1);
-                    
-                 var goals = emotionalModule.GetAllGoals().ToList();
 
-
-                GoalDTO g =goals.Find(x=> goalName.ToString() == x.Name.ToString());
+                Goal g = goals[goalName];
                
                 if(g == null) continue;
 

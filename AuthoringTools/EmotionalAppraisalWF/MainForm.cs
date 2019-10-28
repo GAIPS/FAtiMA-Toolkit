@@ -17,7 +17,6 @@ namespace EmotionalAppraisalWF
         private AssetStorage _storage;
         private EmotionalAppraisalAsset _loadedAsset;
         private AppraisalRulesVM _appraisalRulesVM;
-        private EmotionDispositionsVM _emotionDispositionsVM;
         private string _currentFilePath;
 
         public MainForm()
@@ -30,12 +29,6 @@ namespace EmotionalAppraisalWF
 
         private void OnAssetDataLoaded(EmotionalAppraisalAsset asset)
         {
-            //Emotion Dispositions
-            _emotionDispositionsVM = new EmotionDispositionsVM(asset);
-            comboBoxDefaultDecay.SelectedIndex = comboBoxDefaultDecay.FindString(_emotionDispositionsVM.DefaultDecay.ToString());
-            comboBoxDefaultThreshold.SelectedIndex = comboBoxDefaultThreshold.FindString(_emotionDispositionsVM.DefaultThreshold.ToString());
-            dataGridViewEmotionDispositions.DataSource = _emotionDispositionsVM.EmotionDispositions;
-
             //Appraisal Rule
             _appraisalRulesVM = new AppraisalRulesVM(asset);
             dataGridViewAppraisalRules.DataSource = _appraisalRulesVM.AppraisalRules;
@@ -45,27 +38,20 @@ namespace EmotionalAppraisalWF
             });
                
             conditionSetEditor.View = _appraisalRulesVM.CurrentRuleConditions;
-            dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(asset.GetAllGoals().ToList());
 
             EditorTools.UpdateFormTitle("Emotional Appraisal", _currentFilePath, this);
         }
 
         private void buttonAddGoal_Click(object sender, EventArgs e)
         {
-            new AddOrEditGoalForm(_loadedAsset, null).ShowDialog(this);
-            dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(_loadedAsset.GetAllGoals().ToList());
-        }
+            }
             
 
         private void buttonAddAppraisalRule_Click(object sender, EventArgs e)
         {
             new AddOrEditAppraisalRuleForm(_appraisalRulesVM).ShowDialog();
         }
-
-        private void buttonAddEmotionDisposition_Click(object sender, EventArgs e)
-        {
-            new AddOrEditEmotionDispositionForm(_emotionDispositionsVM).ShowDialog();
-        }
+         
 
         private void buttonAppVariables_Click(object sender, EventArgs e)
         {
@@ -93,16 +79,6 @@ namespace EmotionalAppraisalWF
                 new AddOrEditAppraisalRuleForm(_appraisalRulesVM, selectedAppraisalRule).ShowDialog();
         }
 
-        private void buttonEditEmotionDisposition_Click(object sender, EventArgs e)
-        {
-            if (dataGridViewEmotionDispositions.SelectedRows.Count == 1)
-            {
-                var selectedEmotionDisposition = ((ObjectView<EmotionDispositionDTO>)dataGridViewEmotionDispositions.
-                    SelectedRows[0].DataBoundItem).Object;
-                new AddOrEditEmotionDispositionForm(_emotionDispositionsVM, selectedEmotionDisposition).ShowDialog();
-            }
-        }
-
         private void buttonRemoveAppraisalRule_Click(object sender, EventArgs e)
         {
             IList<AppraisalRuleDTO> rulesToRemove = new List<AppraisalRuleDTO>();
@@ -112,27 +88,6 @@ namespace EmotionalAppraisalWF
                 rulesToRemove.Add(rule);
             }
             _appraisalRulesVM.RemoveAppraisalRules(rulesToRemove);
-        }
-
-        private void buttonRemoveEmotionDisposition_Click(object sender, EventArgs e)
-        {
-            IList<EmotionDispositionDTO> dispositionsToRemove = new List<EmotionDispositionDTO>();
-            for (int i = 0; i < dataGridViewEmotionDispositions.SelectedRows.Count; i++)
-            {
-                var disposition = ((ObjectView<EmotionDispositionDTO>)dataGridViewEmotionDispositions.SelectedRows[i].DataBoundItem).Object;
-                dispositionsToRemove.Add(disposition);
-            }
-            _emotionDispositionsVM.RemoveDispositions(dispositionsToRemove);
-        }
-
-        private void comboBoxDefaultDecay_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            _emotionDispositionsVM.DefaultDecay = int.Parse(comboBoxDefaultDecay.Text);
-        }
-
-        private void comboBoxDefaultThreshold_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            _emotionDispositionsVM.DefaultThreshold = int.Parse(comboBoxDefaultThreshold.Text);
         }
 
         private void conditionSetEditor_Load(object sender, EventArgs e)
@@ -175,42 +130,7 @@ namespace EmotionalAppraisalWF
             var rule = ((ObjectView<AppraisalRuleDTO>)dataGridViewAppraisalRules.Rows[e.RowIndex].DataBoundItem).Object;
             _appraisalRulesVM.ChangeCurrentRule(rule);
         }
-        private void dataGridViewBeliefs_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-        }
 
-        private void dataGridViewEmotionDispositions_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if (e.RowIndex != -1) //exclude header cells
-            {
-                this.buttonEditEmotionDisposition_Click(sender, e);
-            }
-        }
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-        }
-
-        private void buttonEditGoal_Click(object sender, EventArgs e)
-        {
-            var selectedGoal = EditorTools.GetSelectedDtoFromTable<GoalDTO>(dataGridViewGoals);
-            if (selectedGoal != null)
-            {
-                new AddOrEditGoalForm(_loadedAsset, selectedGoal).ShowDialog();
-                dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(_loadedAsset.GetAllGoals().ToList());
-            }
-        }
-
-        private void buttonRemove_Click(object sender, EventArgs e)
-        {
-            IList<GoalDTO> goalsToRemove = new List<GoalDTO>();
-            for (int i = 0; i < dataGridViewGoals.SelectedRows.Count; i++)
-            {
-                var goal = ((ObjectView<GoalDTO>)dataGridViewGoals.SelectedRows[i].DataBoundItem).Object;
-                goalsToRemove.Add(goal);
-            }
-            _loadedAsset.RemoveGoals(goalsToRemove);
-            dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(_loadedAsset.GetAllGoals().ToList());
-        }
 
         private void fileToolStripMenuItem_Click(object sender, EventArgs e)
         {

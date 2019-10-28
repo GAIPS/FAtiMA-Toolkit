@@ -16,6 +16,7 @@ namespace GAIPS.Rage
         public static AssetStorage FromJson(string json)
         {
             var res = new AssetStorage();
+            if (json == string.Empty) return res;
             var serializer = new JSONSerializer();
             string assetName = string.Empty;
             foreach (var el in (JsonArray)JsonParser.Parse(json))
@@ -58,6 +59,8 @@ namespace GAIPS.Rage
 
         public string ToJson()
         {
+            if (componentConfigurations.Count == 0) return null;
+
             string result = "[\n";
             var i = 0;
             foreach (var c in componentConfigurations.Keys)

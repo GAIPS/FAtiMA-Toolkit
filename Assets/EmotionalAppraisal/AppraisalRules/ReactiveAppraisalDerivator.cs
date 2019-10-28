@@ -231,18 +231,18 @@ namespace EmotionalAppraisal.AppraisalRules
 		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			AppraisalWeight = dataHolder.GetValue<short>("AppraisalWeight");
-			var rules = dataHolder.GetValue<AppraisalRule[]>("Rules");
+            //AppraisalRule[] rules = null; //TODO:FIX THIS dataHolder.GetValue<AppraisalRule[]>("Rules");
 
 			if(Rules==null)
 				Rules = new NameSearchTree<HashSet<AppraisalRule>>();
 			else
 				Rules.Clear();
 
-		    foreach (var r in rules)
+		    /*foreach (var r in rules)
 		    {
 				r.Id = Guid.NewGuid();
                 AddEmotionalReaction(r);
-            }
+            }*/
 		}
 
 		#endregion

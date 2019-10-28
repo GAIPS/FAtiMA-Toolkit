@@ -3,18 +3,19 @@ using EmotionalAppraisalWF.ViewModels;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisal;
 using WellFormedNames;
+using RolePlayCharacter;
 
-namespace EmotionalAppraisalWF
+namespace RolePlayCharacterWF
 {
     public partial class AddOrEditGoalForm : Form
     {
-        private EmotionalAppraisalAsset ea;
+        private RolePlayCharacterAsset rpc;
         private GoalDTO goal;
 
-        public AddOrEditGoalForm(EmotionalAppraisalAsset asset, GoalDTO goalDto)
+        public AddOrEditGoalForm(RolePlayCharacterAsset asset, GoalDTO goalDto)
         {
             InitializeComponent();
-            ea = asset;
+            rpc = asset;
             
             //Validators
             textBoxGoalName.AllowNil = false;
@@ -42,7 +43,7 @@ namespace EmotionalAppraisalWF
                 goal.Name = textBoxGoalName.Value.ToString();
                 goal.Significance = floatFieldBoxSignificance.Value;
                 goal.Likelihood = floatFieldBoxLikelihood.Value;
-                ea.AddOrUpdateGoal(goal);
+                rpc.AddOrUpdateGoal(goal);
             }
             catch (System.Exception ex)
             {
@@ -70,6 +71,11 @@ namespace EmotionalAppraisalWF
         }
 
         private void floatFieldBoxLikelihood_TextChanged(object sender, System.EventArgs e)
+        {
+
+        }
+
+        private void AddOrEditGoalForm_Load(object sender, System.EventArgs e)
         {
 
         }

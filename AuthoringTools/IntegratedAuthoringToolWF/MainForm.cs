@@ -1,5 +1,7 @@
 ﻿using ActionLibrary;
 using AutobiographicMemory.DTOs;
+using EmotionalAppraisal;
+using EmotionalDecisionMaking;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 using GAIPS.Rage;
@@ -25,24 +27,52 @@ namespace IntegratedAuthoringToolWF
     public partial class MainForm : Form
     {
         private BindingListView<DialogueStateActionDTO> _dialogs;
-        private BindingListView<Name> _characterNames;
-
-        //private RolePlayCharacterWF.MainForm _rpcForm = new RolePlayCharacterWF.MainForm(new AssetStorage());
+        private BindingListView<CharacterNameAndMoodDTO> _characters;
 
         private WorldModelWF.MainForm _wmForm;
-        private WebAPIWF.MainForm _webForm = new WebAPIWF.MainForm();
+        private WebAPIWF.MainForm _webForm;
+        private EmotionalAppraisalWF.MainForm _eaForm;
+        private EmotionalDecisionMakingWF.MainForm _edmForm;
+        private SocialImportanceWF.MainForm _siForm;
+        private CommeillFautWF.MainForm _cifForm;
+        private RolePlayCharacterWF.MainForm _rpcForm;
+
+        
         private IntegratedAuthoringToolAsset _iat;
+        private AssetStorage _storage;
+
+        private EmotionalAppraisalAsset _eaAsset;
+        private EmotionalDecisionMakingAsset _edmAsset;
+
         private int currentRPCTabIndex;
 
-        private string _currentFilePath;
+        private string _currentScenarioFilePath;
+
 
         public MainForm()
         {
             InitializeComponent();
             buttonRemoveCharacter.Enabled = false;
             buttonInspect.Enabled = false;
+
             _iat = new IntegratedAuthoringToolAsset();
+            InitializeAssetStorage();
+            _webForm = new WebAPIWF.MainForm();
+            _eaForm = new EmotionalAppraisalWF.MainForm();
+            _edmForm = new EmotionalDecisionMakingWF.MainForm();
+            _siForm = new SocialImportanceWF.MainForm();
+            _cifForm = new CommeillFautWF.MainForm();
+            _rpcForm = new RolePlayCharacterWF.MainForm(_storage);
             OnAssetDataLoaded(_iat);
+        }
+
+
+        private void InitializeAssetStorage()
+        {
+            _storage = new AssetStorage();
+            _eaAsset = EmotionalAppraisalAsset.CreateInstance(_storage);
+            _edmAsset = EmotionalDecisionMakingAsset.CreateInstance(_storage);
+            
         }
 
         private void RefreshDialogs()
@@ -56,14 +86,24 @@ namespace IntegratedAuthoringToolWF
             );
         }
 
+        public void RefreshCharacters()
+        {
+            _characters.DataSource = _iat.Characters.Select(c =>
+                        new CharacterNameAndMoodDTO
+                        {
+                            Name = c.CharacterName.ToString(),
+                            Mood = c.Mood
+                        }).ToList();
+        }
+
         protected void OnAssetDataLoaded(IntegratedAuthoringToolAsset asset)
         {
             textBoxScenarioName.Text = asset.ScenarioName;
             textBoxScenarioDescription.Text = asset.ScenarioDescription;
             _dialogs = new BindingListView<DialogueStateActionDTO>(new List<DialogueStateActionDTO>());
+            _characters = new BindingListView<CharacterNameAndMoodDTO>(new List<CharacterNameAndMoodDTO>());
+            dataGridViewCharacters.DataSource = _characters;
             dataGridViewDialogueActions.DataSource = _dialogs;
-
-            listBoxCharacters.DataSource = _iat.Characters.Select(c => c.CharacterName.ToString()).ToList();
 
             //ResetSimulator
             richTextBoxChat.Clear();
@@ -79,16 +119,26 @@ namespace IntegratedAuthoringToolWF
 
             _wmForm = new WorldModelWF.MainForm(_iat.WorldModel);
             FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[3], _wmForm);
-
             FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[5], _webForm);
+            FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[2], _rpcForm);
+
+            FormHelper.ShowFormInContainerControl(this.tabControlAssetEditor.TabPages[0], _eaForm);
+            FormHelper.ShowFormInContainerControl(this.tabControlAssetEditor.TabPages[1], _edmForm);
+            FormHelper.ShowFormInContainerControl(this.tabControlAssetEditor.TabPages[2], _siForm);
+            FormHelper.ShowFormInContainerControl(this.tabControlAssetEditor.TabPages[3], _cifForm);
+
             RefreshDialogs();
+            RefreshCharacters();
         }
      
 
         private void buttonAddCharacter_Click(object sender, EventArgs e)
         {
             new AddCharacterForm(_iat).ShowDialog(this);
-            listBoxCharacters.DataSource = _iat.Characters.Select(c => c.CharacterName.ToString()).ToList();
+            RefreshCharacters();
+            buttonRemoveCharacter.Enabled = true;
+            buttonInspect.Enabled = true;
+            dataGridViewCharacters.ClearSelection();
         }
 
         private void textBoxScenarioName_TextChanged(object sender, EventArgs e)
@@ -103,21 +153,22 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonRemoveCharacter_Click(object sender, EventArgs e)
         {
-            /*IList<int> charactersToRemove = new List<string>();
+            var charactersToRemove = new List<string>();
             for (var i = 0; i < dataGridViewCharacters.SelectedRows.Count; i++)
             {
-                var character = ((ObjectView<CharacterSourceDTO>)dataGridViewCharacters.SelectedRows[i].DataBoundItem)
+                var character = ((ObjectView<CharacterNameAndMoodDTO>)dataGridViewCharacters.SelectedRows[i].DataBoundItem)
                     .Object;
-
-                charactersToRemove.Add(character.Id);
+                charactersToRemove.Add(character.Name);
             }
 
             _iat.RemoveCharacters(charactersToRemove);
-            _characterSources.DataSource = LoadedAsset.GetAllCharacterSources().ToList();
-            _characterSources.Refresh();
-            _rpcForm.Close();
-            SetModified();
-            dataGridViewCharacters.ClearSelection();*/
+            if (!_iat.Characters.Any())
+            {
+                buttonRemoveCharacter.Enabled = false;
+                buttonInspect.Enabled = false;
+            }
+            RefreshCharacters();
+            dataGridViewCharacters.ClearSelection();
         }
 
         #region About
@@ -681,7 +732,6 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-          
             agentsInChat = _iat.Characters.ToList();
             rpcBox.Items.Clear();
             rpcBox.Items.AddRange(agentsInChat.Select(x => x.CharacterName.ToString()).ToArray());
@@ -1361,41 +1411,72 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonNewAssetStorage_Click(object sender, EventArgs e)
         {
-
+            var sfd = new SaveFileDialog();
+            sfd.Filter = "Asset Storage File (*.json)|*.json|All Files|*.*";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                InitializeAssetStorage();
+                File.WriteAllText(sfd.FileName, _storage.ToJson());
+                textBoxPathAssetStorage.Text = sfd.FileName;
+            }
         }
 
         private void buttonOpenAssetStorage_Click(object sender, EventArgs e)
         {
-
+            var aux = EditorTools.OpenFileDialog();
+            if (aux != null)
+            {
+                _storage = AssetStorage.FromJson(File.ReadAllText(aux));
+                textBoxPathAssetStorage.Text = aux;
+            }
         }
 
         private void saveAssetStorageButton_Click(object sender, EventArgs e)
         {
-
+            if (string.IsNullOrEmpty(textBoxPathAssetStorage.Text))
+            {
+                var sfd = new SaveFileDialog();
+                sfd.Filter = "Asset Storage File (*.json)|*.json|All Files|*.*";
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    File.WriteAllText(sfd.FileName, _storage.ToJson());
+                    textBoxPathAssetStorage.Text = sfd.FileName;
+                }
+            }
+            else
+            {
+                File.WriteAllText(textBoxPathAssetStorage.Text, _storage.ToJson());
+            }
         }
 
         private void buttonSaveAsAssetStorage_Click(object sender, EventArgs e)
         {
-
+            var sfd = new SaveFileDialog();
+            sfd.Filter = "Asset Storage File (*.json)|*.json|All Files|*.*";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                File.WriteAllText(sfd.FileName, _storage.ToJson());
+                textBoxPathAssetStorage.Text = sfd.FileName;
+            }
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var sfd = new SaveFileDialog();
             sfd.Filter = "Scenario File (*.json)|*.json|All Files|*.*";
-            if (_currentFilePath != null)
+            if (_currentScenarioFilePath != null)
             {
-                File.WriteAllText(_currentFilePath, _iat.ToJson());
+                File.WriteAllText(_currentScenarioFilePath, _iat.ToJson());
             }
             else
             {
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
                     File.WriteAllText(sfd.FileName, _iat.ToJson());
-                    _currentFilePath = sfd.FileName;
+                    _currentScenarioFilePath = sfd.FileName;
                 }
             }
-            EditorTools.UpdateFormTitle("FAtiMA Authoring Tool", _currentFilePath, this);
+            EditorTools.UpdateFormTitle("FAtiMA Authoring Tool", _currentScenarioFilePath, this);
         }
     }
 }

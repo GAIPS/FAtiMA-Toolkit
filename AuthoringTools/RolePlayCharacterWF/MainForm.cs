@@ -8,12 +8,9 @@ using System.Collections.Generic;
 using Equin.ApplicationFramework;
 using AutobiographicMemory.DTOs;
 using EmotionalAppraisal.DTOs;
-using GAIPS.AssetEditorTools;
-using EmotionalAppraisal;
-using EmotionalDecisionMaking;
-using SocialImportance;
-using CommeillFaut;
 using GAIPS.Rage;
+using System.Linq;
+using GAIPS.AssetEditorTools;
 
 namespace RolePlayCharacterWF
 {
@@ -23,10 +20,6 @@ namespace RolePlayCharacterWF
         private EmotionalStateVM _emotionalStateVM;
         private AutobiographicalMemoryVM _autobiographicalMemoryVM;
         private KnowledgeBaseVM _knowledgeBaseVM;
-        private EmotionalAppraisalWF.MainForm _eaForm = new EmotionalAppraisalWF.MainForm();
-        private EmotionalDecisionMakingWF.MainForm _edmForm = new EmotionalDecisionMakingWF.MainForm();
-        private SocialImportanceWF.MainForm _siForm = new SocialImportanceWF.MainForm();
-        private CommeillFautWF.MainForm _cifForm = new CommeillFautWF.MainForm();
         private RolePlayCharacterAsset _loadedAsset;
         private AssetStorage _storage;
             
@@ -49,13 +42,14 @@ namespace RolePlayCharacterWF
 
         private void OnAssetDataLoaded(RolePlayCharacterAsset asset)
         {
-            textBoxCharacterName.Text = asset.CharacterName == null ? string.Empty : asset.CharacterName.ToString();
-            textBoxCharacterBody.Text = asset.BodyName;
-            textBoxCharacterVoice.Text = asset.VoiceName;
-
             _emotionalStateVM = new EmotionalStateVM(asset);
             _autobiographicalMemoryVM = new AutobiographicalMemoryVM(asset);
             _knowledgeBaseVM = new KnowledgeBaseVM(asset);
+
+            
+            textBoxCharacterName.Text = asset.CharacterName == null ? string.Empty : asset.CharacterName.ToString();
+            textBoxCharacterBody.Text = asset.BodyName;
+            textBoxCharacterVoice.Text = asset.VoiceName;
 
             this.moodValueLabel.Text = Math.Round(_emotionalStateVM.Mood).ToString(MOOD_FORMAT);
             this.moodTrackBar.Value = (int)float.Parse(this.moodValueLabel.Text);
@@ -63,58 +57,7 @@ namespace RolePlayCharacterWF
             this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
             this.dataGridViewAM.DataSource = _autobiographicalMemoryVM.Events;
             this.dataGridViewBeliefs.DataSource = _knowledgeBaseVM.Beliefs;
-            //EA ASSET
-            /*  if (string.IsNullOrEmpty(asset.EmotionalAppraisalAssetSource))
-              {
-                  _eaForm.Hide();
-              }else
-              {
-                  this.pathTextBoxEA.Text = LoadableAsset<EmotionalDecisionMakingAsset>.ToRelativePath(LoadedAsset.AssetFilePath, asset.EmotionalAppraisalAssetSource);
-                  var ea = EmotionalAppraisalAsset.LoadFromFile(asset.EmotionalAppraisalAssetSource);
-                  _eaForm.LoadedAsset = ea;
-                  FormHelper.ShowFormInContainerControl(this.panelEA, _eaForm);
-              }
-
-              //EDM ASSET
-              if (string.IsNullOrEmpty(asset.EmotionalDecisionMakingSource))
-              {
-                  _edmForm.Hide();
-              }
-              else
-              {
-                  this.textBoxPathEDM.Text = LoadableAsset<EmotionalDecisionMakingAsset>.ToRelativePath(LoadedAsset.AssetFilePath, asset.EmotionalDecisionMakingSource);
-                  var edm = EmotionalDecisionMakingAsset.LoadFromFile(asset.EmotionalDecisionMakingSource);
-                  _edmForm.LoadedAsset = edm;
-                  FormHelper.ShowFormInContainerControl(this.panelEDM, _edmForm);
-              }
-
-              //SI ASSET
-              if (string.IsNullOrEmpty(asset.SocialImportanceAssetSource))
-              {
-                  _siForm.Hide();
-              }
-              else
-              {
-                  this.textBoxPathSI.Text = LoadableAsset<EmotionalDecisionMakingAsset>.ToRelativePath(LoadedAsset.AssetFilePath, asset.SocialImportanceAssetSource);
-                  var si = SocialImportanceAsset.LoadFromFile(asset.SocialImportanceAssetSource);
-                  _siForm.LoadedAsset = si;
-                  FormHelper.ShowFormInContainerControl(this.panelSI, _siForm);
-              }
-
-              //CIF ASSET
-              if (string.IsNullOrEmpty(asset.CommeillFautAssetSource))
-              {
-                  _cifForm.Hide();
-              }
-              else
-              {
-                  this.textBoxPathCIF.Text = LoadableAsset<EmotionalDecisionMakingAsset>.ToRelativePath(LoadedAsset.AssetFilePath, asset.CommeillFautAssetSource);
-                  var cif = CommeillFautAsset.LoadFromFile(asset.CommeillFautAssetSource);
-                  _cifForm.LoadedAsset = cif;
-                  FormHelper.ShowFormInContainerControl(this.panelCIF, _cifForm);
-              }*/
-
-
+            dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(asset.GetAllGoals().ToList());
         }
 
         private void OnScreenChanged(object sender, EventArgs e)
@@ -390,9 +333,32 @@ namespace RolePlayCharacterWF
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonAddGoal_Click(object sender, EventArgs e)
         {
+            new AddOrEditGoalForm(_loadedAsset, null).ShowDialog(this);
+            dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(_loadedAsset.GetAllGoals().ToList());
+        }
 
+        private void buttonEditGoal_Click(object sender, EventArgs e)
+        {
+            var selectedGoal = EditorTools.GetSelectedDtoFromTable<GoalDTO>(dataGridViewGoals);
+            if (selectedGoal != null)
+            {
+                new AddOrEditGoalForm(_loadedAsset, selectedGoal).ShowDialog();
+                dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(_loadedAsset.GetAllGoals().ToList());
+            }
+        }
+
+        private void buttonRemoveGoal_Click(object sender, EventArgs e)
+        {
+            IList<GoalDTO> goalsToRemove = new List<GoalDTO>();
+            for (int i = 0; i < dataGridViewGoals.SelectedRows.Count; i++)
+            {
+                var goal = ((ObjectView<GoalDTO>)dataGridViewGoals.SelectedRows[i].DataBoundItem).Object;
+                goalsToRemove.Add(goal);
+            }
+            _loadedAsset.RemoveGoals(goalsToRemove);
+            dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(_loadedAsset.GetAllGoals().ToList());
         }
     }
 }

@@ -33,6 +33,7 @@ namespace RolePlayCharacter
             m_kb = new KB(RPCConsts.DEFAULT_CHARACTER_NAME);
             m_am = new AM();
             m_emotionalState = new ConcreteEmotionalState();
+            m_goals = new Dictionary<string, Goal>();
             m_otherAgents = new Dictionary<Name, AgentEntry>();
             BindToRegistry(m_kb);
         }
@@ -50,6 +51,30 @@ namespace RolePlayCharacter
             get { return m_kb.Perspective; }
             set { m_kb.SetPerspective(value); }
         }
+
+        public void AddOrUpdateGoal(GoalDTO goal)
+        {
+            m_goals[goal.Name] = new Goal(goal);
+        }
+
+        public IEnumerable<GoalDTO> GetAllGoals()
+        {
+            return this.m_goals.Values.Select(g => new GoalDTO
+            {
+                Name = g.Name.ToString(),
+                Likelihood = g.Likelihood,
+                Significance = g.Significance
+            });
+        }
+
+        public void RemoveGoals(IEnumerable<GoalDTO> goals)
+        {
+            foreach (var goal in goals)
+            {
+                this.m_goals.Remove(goal.Name);
+            }
+        }
+
 
         public bool IsPlayer { get; set; }
 
@@ -217,11 +242,7 @@ namespace RolePlayCharacter
             return m_kb.GetDynamicProperties();
         }
 
-        public IEnumerable<GoalDTO> GetAllGoals()
-        {
-            return m_emotionalAppraisalAsset.GetAllGoals();
-        }
-        
+   
         public IEnumerable<BeliefDTO> GetAllBeliefs()
         {
             return m_kb.GetAllBeliefs().Select(b => new BeliefDTO
@@ -337,7 +358,8 @@ namespace RolePlayCharacter
                       
                     }
                 }
-                m_emotionalAppraisalAsset.AppraiseEvents(new[] { e }, observer, m_emotionalState, m_am, m_kb);
+                
+                m_emotionalAppraisalAsset.AppraiseEvents(new[] { e }, observer, m_emotionalState, m_am, m_kb, m_goals);
                 idx++;
             }
         }
@@ -488,24 +510,6 @@ namespace RolePlayCharacter
             m_am.BindToRegistry(registry);
         }
 
-        /*private T Loader<T>(string path, Func<T> generateDefault) where T : LoadableAsset<T>
-        {
-            if (string.IsNullOrEmpty(path))
-                return generateDefault();
-
-            //TODO:CHECK THIS PROBLEM
-            var p = ToAbsolutePath(path);
-
-            if (p.StartsWith("/"))
-            {
-                return LoadableAsset<T>.LoadFromFile("." + ToAbsolutePath(path));
-            }
-            else
-            {
-                return LoadableAsset<T>.LoadFromFile(ToAbsolutePath(path));
-            }
-        }*/
-
         #region RolePlayCharater Fields
 
         public KB m_kb;
@@ -517,6 +521,8 @@ namespace RolePlayCharacter
         private ConcreteEmotionalState m_emotionalState;
         private Dictionary<Name, AgentEntry> m_otherAgents;
         public SocialImportanceAsset m_socialImportanceAsset;
+        public Dictionary<string, Goal> m_goals;
+
         #endregion RolePlayCharater Fields
         #region Dynamic Properties
 
@@ -1088,6 +1094,7 @@ namespace RolePlayCharacter
             dataHolder.SetValue("EmotionalState", m_emotionalState);
             dataHolder.SetValue("AutobiographicMemory", m_am);
             dataHolder.SetValue("OtherAgents", m_otherAgents);
+            dataHolder.SetValue("Goals", m_goals.Values.ToArray());
         }
 
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
@@ -1097,6 +1104,12 @@ namespace RolePlayCharacter
             this.BodyName = dataHolder.GetValue<string>("BodyName");
             this.VoiceName = dataHolder.GetValue<string>("VoiceName");
             m_emotionalState = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
+            m_goals = new Dictionary<string, Goal>();
+            var goals = dataHolder.GetValue<Goal[]>("Goals");
+            foreach (var g in goals)
+            {
+                m_goals.Add(g.Name.ToString(), g);
+            }
             m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
             m_otherAgents = dataHolder.GetValue<Dictionary<Name, AgentEntry>>("OtherAgents");
             if (m_otherAgents == null) { m_otherAgents = new Dictionary<Name, AgentEntry>(); }
