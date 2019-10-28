@@ -30,8 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.socialExchangeBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.TabControl = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.influenceRules = new System.Windows.Forms.Button();
@@ -42,7 +40,6 @@
             this.gridSocialExchanges = new System.Windows.Forms.DataGridView();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.conditionSetEditorControl = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.triggerRulesBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.filieToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -51,8 +48,6 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.socialExchangeBindingSource)).BeginInit();
-            this.TabControl.SuspendLayout();
-            this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -68,37 +63,10 @@
             // 
             this.socialExchangeBindingSource.DataSource = typeof(CommeillFaut.SocialExchange);
             // 
-            // TabControl
-            // 
-            this.TabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.TabControl.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
-            this.TabControl.Controls.Add(this.tabPage1);
-            this.TabControl.Location = new System.Drawing.Point(12, 30);
-            this.TabControl.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.TabControl.Name = "TabControl";
-            this.TabControl.SelectedIndex = 0;
-            this.TabControl.Size = new System.Drawing.Size(821, 385);
-            this.TabControl.TabIndex = 15;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.splitContainer1);
-            this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 28);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Size = new System.Drawing.Size(813, 353);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Social Exchange";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(3, 2);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 24);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -109,8 +77,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer1.Size = new System.Drawing.Size(807, 349);
-            this.splitContainer1.SplitterDistance = 172;
+            this.splitContainer1.Size = new System.Drawing.Size(833, 410);
+            this.splitContainer1.SplitterDistance = 202;
             this.splitContainer1.TabIndex = 16;
             // 
             // groupBox7
@@ -126,7 +94,7 @@
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox7.Size = new System.Drawing.Size(807, 172);
+            this.groupBox7.Size = new System.Drawing.Size(833, 202);
             this.groupBox7.TabIndex = 5;
             this.groupBox7.TabStop = false;
             this.groupBox7.Enter += new System.EventHandler(this.groupBox7_Enter);
@@ -138,7 +106,7 @@
             this.influenceRules.Location = new System.Drawing.Point(429, 16);
             this.influenceRules.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.influenceRules.Name = "influenceRules";
-            this.influenceRules.Size = new System.Drawing.Size(343, 33);
+            this.influenceRules.Size = new System.Drawing.Size(369, 33);
             this.influenceRules.TabIndex = 11;
             this.influenceRules.Text = "Influence Rules Inspector";
             this.influenceRules.UseVisualStyleBackColor = true;
@@ -209,7 +177,7 @@
             this.gridSocialExchanges.RowHeadersVisible = false;
             this.gridSocialExchanges.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.gridSocialExchanges.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridSocialExchanges.Size = new System.Drawing.Size(797, 98);
+            this.gridSocialExchanges.Size = new System.Drawing.Size(823, 128);
             this.gridSocialExchanges.TabIndex = 2;
             this.gridSocialExchanges.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridSocialExchanges_CellContentClick);
             this.gridSocialExchanges.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gridSocialExchanges_CellMouseDoubleClick);
@@ -224,7 +192,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox2.Size = new System.Drawing.Size(807, 173);
+            this.groupBox2.Size = new System.Drawing.Size(833, 204);
             this.groupBox2.TabIndex = 15;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Starting Conditions:";
@@ -237,22 +205,9 @@
             this.conditionSetEditorControl.Location = new System.Drawing.Point(4, 19);
             this.conditionSetEditorControl.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.conditionSetEditorControl.Name = "conditionSetEditorControl";
-            this.conditionSetEditorControl.Size = new System.Drawing.Size(798, 152);
+            this.conditionSetEditorControl.Size = new System.Drawing.Size(824, 183);
             this.conditionSetEditorControl.TabIndex = 3;
             this.conditionSetEditorControl.View = null;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Location = new System.Drawing.Point(3, 81);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(799, 268);
-            this.groupBox1.TabIndex = 15;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Starting Conditions:";
             // 
             // menuStrip1
             // 
@@ -312,15 +267,13 @@
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(833, 434);
-            this.Controls.Add(this.TabControl);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MainForm";
             ((System.ComponentModel.ISupportInitialize)(this.socialExchangeBindingSource)).EndInit();
-            this.TabControl.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -338,10 +291,7 @@
 
         #endregion
         private System.Windows.Forms.BindingSource socialExchangeBindingSource;
-        private System.Windows.Forms.TabControl TabControl;
         private System.Windows.Forms.BindingSource triggerRulesBindingSource;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.GroupBox groupBox2;
         private GAIPS.AssetEditorTools.ConditionSetEditorControl conditionSetEditorControl;

@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.dynamicPropertyListing = new System.Windows.Forms.TabControl();
-            this.appraisalRulesTagePage = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.buttonAppVariables = new System.Windows.Forms.Button();
@@ -52,8 +50,6 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dynamicPropertyListing.SuspendLayout();
-            this.appraisalRulesTagePage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -67,35 +63,10 @@
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // dynamicPropertyListing
-            // 
-            this.dynamicPropertyListing.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dynamicPropertyListing.Controls.Add(this.appraisalRulesTagePage);
-            this.dynamicPropertyListing.Location = new System.Drawing.Point(16, 32);
-            this.dynamicPropertyListing.Margin = new System.Windows.Forms.Padding(4);
-            this.dynamicPropertyListing.Name = "dynamicPropertyListing";
-            this.dynamicPropertyListing.SelectedIndex = 0;
-            this.dynamicPropertyListing.Size = new System.Drawing.Size(885, 492);
-            this.dynamicPropertyListing.TabIndex = 1;
-            // 
-            // appraisalRulesTagePage
-            // 
-            this.appraisalRulesTagePage.Controls.Add(this.splitContainer1);
-            this.appraisalRulesTagePage.Location = new System.Drawing.Point(4, 25);
-            this.appraisalRulesTagePage.Margin = new System.Windows.Forms.Padding(4);
-            this.appraisalRulesTagePage.Name = "appraisalRulesTagePage";
-            this.appraisalRulesTagePage.Padding = new System.Windows.Forms.Padding(4);
-            this.appraisalRulesTagePage.Size = new System.Drawing.Size(877, 463);
-            this.appraisalRulesTagePage.TabIndex = 3;
-            this.appraisalRulesTagePage.Text = "Appraisal Rules";
-            this.appraisalRulesTagePage.UseVisualStyleBackColor = true;
-            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(4, 4);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 24);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -107,8 +78,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox8);
-            this.splitContainer1.Size = new System.Drawing.Size(869, 455);
-            this.splitContainer1.SplitterDistance = 225;
+            this.splitContainer1.Size = new System.Drawing.Size(917, 516);
+            this.splitContainer1.SplitterDistance = 255;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 11;
             // 
@@ -125,10 +96,10 @@
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox7.Size = new System.Drawing.Size(869, 225);
+            this.groupBox7.Size = new System.Drawing.Size(917, 255);
             this.groupBox7.TabIndex = 1;
             this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "Rules";
+            this.groupBox7.Text = "Appraisal Rules";
             // 
             // buttonAppVariables
             // 
@@ -208,7 +179,7 @@
             this.dataGridViewAppraisalRules.RowHeadersVisible = false;
             this.dataGridViewAppraisalRules.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAppraisalRules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAppraisalRules.Size = new System.Drawing.Size(857, 170);
+            this.dataGridViewAppraisalRules.Size = new System.Drawing.Size(905, 200);
             this.dataGridViewAppraisalRules.TabIndex = 2;
             this.dataGridViewAppraisalRules.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAppraisalRules_CellContentClick);
             this.dataGridViewAppraisalRules.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewAppraisalRules_CellMouseDoubleClick);
@@ -223,7 +194,7 @@
             this.groupBox8.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox8.Size = new System.Drawing.Size(869, 225);
+            this.groupBox8.Size = new System.Drawing.Size(917, 256);
             this.groupBox8.TabIndex = 10;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Rule Conditions";
@@ -234,7 +205,7 @@
             this.conditionSetEditor.Location = new System.Drawing.Point(4, 18);
             this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.conditionSetEditor.Name = "conditionSetEditor";
-            this.conditionSetEditor.Size = new System.Drawing.Size(861, 204);
+            this.conditionSetEditor.Size = new System.Drawing.Size(909, 235);
             this.conditionSetEditor.TabIndex = 0;
             this.conditionSetEditor.View = null;
             this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);
@@ -298,7 +269,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(917, 540);
-            this.Controls.Add(this.dynamicPropertyListing);
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.KeyPreview = true;
@@ -307,8 +278,6 @@
             this.MinimumSize = new System.Drawing.Size(595, 47);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.dynamicPropertyListing.ResumeLayout(false);
-            this.appraisalRulesTagePage.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -327,8 +296,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.TabControl dynamicPropertyListing;
-        private System.Windows.Forms.TabPage appraisalRulesTagePage;
         private System.Windows.Forms.BindingSource mainFormBindingSource;
         private System.Windows.Forms.BindingSource emotionListItemBindingSource;
         private System.Windows.Forms.GroupBox groupBox7;
