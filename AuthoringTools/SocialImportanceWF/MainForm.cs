@@ -19,15 +19,22 @@ namespace SocialImportanceWF
         private AssetStorage _storage;
         private string _currentPath;
 
+
+        public SocialImportanceAsset Asset
+        {
+            get { return _loadedAsset; }
+            set { _loadedAsset = value; OnAssetDataLoaded(); }
+        }
+
         public MainForm()
 		{
 			InitializeComponent();
             _storage = new AssetStorage();
             _loadedAsset = SocialImportanceAsset.CreateInstance(_storage);
-            OnAssetDataLoaded(_loadedAsset);
+            OnAssetDataLoaded();
         }
 
-		protected void OnAssetDataLoaded(SocialImportanceAsset asset)
+		protected void OnAssetDataLoaded()
 		{
             attributionRules = new BindingListView<AttributionRuleDTO>((IList)null);
             dataGridViewAttributionRules.DataSource = this.attributionRules;
@@ -153,7 +160,7 @@ namespace SocialImportanceWF
             _currentPath = null;
             _storage = new AssetStorage();
             _loadedAsset = SocialImportanceAsset.CreateInstance(_storage);
-            OnAssetDataLoaded(_loadedAsset);
+            OnAssetDataLoaded();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -166,7 +173,7 @@ namespace SocialImportanceWF
                     _currentPath = aux;
                     _storage = AssetStorage.FromJson(File.ReadAllText(_currentPath));
                     _loadedAsset = SocialImportanceAsset.CreateInstance(_storage);
-                    OnAssetDataLoaded(_loadedAsset);
+                    OnAssetDataLoaded();
                 }
                 catch (Exception ex)
                 {

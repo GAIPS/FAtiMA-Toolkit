@@ -24,13 +24,20 @@ namespace EmotionalAppraisalWF
             InitializeComponent();
             _storage = new AssetStorage();
             _loadedAsset = EmotionalAppraisalAsset.CreateInstance(_storage);
-            OnAssetDataLoaded(_loadedAsset);
+            OnAssetDataLoaded();
         }
 
-        private void OnAssetDataLoaded(EmotionalAppraisalAsset asset)
+        public EmotionalAppraisalAsset Asset
+        {
+            get { return _loadedAsset; }
+            set { _loadedAsset = value; OnAssetDataLoaded(); }
+        }
+
+
+        private void OnAssetDataLoaded()
         {
             //Appraisal Rule
-            _appraisalRulesVM = new AppraisalRulesVM(asset);
+            _appraisalRulesVM = new AppraisalRulesVM(Asset);
             dataGridViewAppraisalRules.DataSource = _appraisalRulesVM.AppraisalRules;
             EditorTools.HideColumns(dataGridViewAppraisalRules, new[]
             {
@@ -142,7 +149,7 @@ namespace EmotionalAppraisalWF
             _currentFilePath = null;
             _storage = new AssetStorage();
             _loadedAsset = EmotionalAppraisalAsset.CreateInstance(_storage);
-            OnAssetDataLoaded(_loadedAsset);
+            OnAssetDataLoaded();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -153,7 +160,7 @@ namespace EmotionalAppraisalWF
                 _currentFilePath = aux;
                 _storage = AssetStorage.FromJson(File.ReadAllText(_currentFilePath));
                 _loadedAsset = EmotionalAppraisalAsset.CreateInstance(_storage);
-                OnAssetDataLoaded(_loadedAsset);
+                OnAssetDataLoaded();
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using ActionLibrary;
 using AutobiographicMemory.DTOs;
+using CommeillFaut;
 using EmotionalAppraisal;
 using EmotionalDecisionMaking;
 using Equin.ApplicationFramework;
@@ -11,6 +12,7 @@ using KnowledgeBase.DTOs;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using RolePlayCharacter;
+using SocialImportance;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -36,13 +38,9 @@ namespace IntegratedAuthoringToolWF
         private SocialImportanceWF.MainForm _siForm;
         private CommeillFautWF.MainForm _cifForm;
         private RolePlayCharacterWF.MainForm _rpcForm;
-
         
         private IntegratedAuthoringToolAsset _iat;
         private AssetStorage _storage;
-
-        private EmotionalAppraisalAsset _eaAsset;
-        private EmotionalDecisionMakingAsset _edmAsset;
 
         private int currentRPCTabIndex;
 
@@ -56,23 +54,32 @@ namespace IntegratedAuthoringToolWF
             buttonInspect.Enabled = false;
 
             _iat = new IntegratedAuthoringToolAsset();
-            InitializeAssetStorage();
+            _storage = new AssetStorage();
             _webForm = new WebAPIWF.MainForm();
             _eaForm = new EmotionalAppraisalWF.MainForm();
             _edmForm = new EmotionalDecisionMakingWF.MainForm();
             _siForm = new SocialImportanceWF.MainForm();
             _cifForm = new CommeillFautWF.MainForm();
             _rpcForm = new RolePlayCharacterWF.MainForm(_storage);
+            OnAssetStorageChange();
             OnAssetDataLoaded(_iat);
         }
 
 
-        private void InitializeAssetStorage()
+        private void OnAssetStorageChange()
         {
-            _storage = new AssetStorage();
-            _eaAsset = EmotionalAppraisalAsset.CreateInstance(_storage);
-            _edmAsset = EmotionalDecisionMakingAsset.CreateInstance(_storage);
-            
+            _eaForm.Asset = EmotionalAppraisalAsset.CreateInstance(_storage);
+            _edmForm.Asset = EmotionalDecisionMakingAsset.CreateInstance(_storage);
+            _siForm.Asset = SocialImportanceAsset.CreateInstance(_storage);
+            _cifForm.Asset = CommeillFautAsset.CreateInstance(_storage);
+        }
+
+        private void SaveAssetRules()
+        {
+            _edmForm.Asset.Save();
+            _eaForm.Asset.Save();
+            _cifForm.Asset.Save();
+            _siForm.Asset.Save();
         }
 
         private void RefreshDialogs()
@@ -184,20 +191,20 @@ namespace IntegratedAuthoringToolWF
 
         private void dataGridViewCharacters_SelectionChanged(object sender, EventArgs e)
         {
-            /*var rpcSource = EditorTools.GetSelectedDtoFromTable<CharacterSourceDTO>(dataGridViewCharacters);
-            if (rpcSource != null)
+            var selectedRPC = EditorTools.GetSelectedDtoFromTable<CharacterNameAndMoodDTO>(dataGridViewCharacters);
+            if (selectedRPC != null)
             {
-                var rpc = RolePlayCharacterAsset.LoadFromFile(rpcSource.Source);
+                var rpc = _iat.Characters.Where(r => r.CharacterName.ToString() == selectedRPC.Name).FirstOrDefault();
                 var selectedRPCTab = _rpcForm.SelectedTab;
                 _rpcForm.Close();
-                _rpcForm = new RolePlayCharacterWF.MainForm();
-                _rpcForm.LoadedAsset = rpc;
+                _rpcForm = new RolePlayCharacterWF.MainForm(_storage);
+                _rpcForm.Asset = rpc;
                 FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[1], _rpcForm);
                 this.tabControlIAT.SelectTab(1);
                 _rpcForm.SelectedTab = selectedRPCTab;
                 buttonRemoveCharacter.Enabled = true;
                 buttonInspect.Enabled = true;
-            }*/
+            }
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -1415,7 +1422,8 @@ namespace IntegratedAuthoringToolWF
             sfd.Filter = "Asset Storage File (*.json)|*.json|All Files|*.*";
             if (sfd.ShowDialog() == DialogResult.OK)
             {
-                InitializeAssetStorage();
+                _storage = new AssetStorage();
+                OnAssetStorageChange();
                 File.WriteAllText(sfd.FileName, _storage.ToJson());
                 textBoxPathAssetStorage.Text = sfd.FileName;
             }
@@ -1439,12 +1447,14 @@ namespace IntegratedAuthoringToolWF
                 sfd.Filter = "Asset Storage File (*.json)|*.json|All Files|*.*";
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
+                    SaveAssetRules();
                     File.WriteAllText(sfd.FileName, _storage.ToJson());
                     textBoxPathAssetStorage.Text = sfd.FileName;
                 }
             }
             else
             {
+                SaveAssetRules();
                 File.WriteAllText(textBoxPathAssetStorage.Text, _storage.ToJson());
             }
         }

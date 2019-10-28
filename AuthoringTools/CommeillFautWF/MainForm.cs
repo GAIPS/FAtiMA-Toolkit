@@ -19,15 +19,21 @@ namespace CommeillFautWF
         private AssetStorage _storage;
         private string _currentFilePath;
 
+        public CommeillFautAsset Asset
+        {
+            get { return _loadedAsset; }
+            set { _loadedAsset = value; OnAssetDataLoaded(); }
+        }
+
         public MainForm()
         {
             InitializeComponent();
             _storage = new AssetStorage();
             _loadedAsset = CommeillFautAsset.CreateInstance(_storage);
-            OnAssetDataLoaded(_loadedAsset);
+            OnAssetDataLoaded();
         }
 
-        protected void OnAssetDataLoaded(CommeillFautAsset asset)
+        protected void OnAssetDataLoaded()
         {
            this._socialExchangeList = new BindingListView<SocialExchangeDTO>((IList)null);
 			gridSocialExchanges.DataSource = this._socialExchangeList;
@@ -200,7 +206,6 @@ namespace CommeillFautWF
             _currentFilePath = null;
             _storage = new AssetStorage();
             _loadedAsset = CommeillFautAsset.CreateInstance(_storage);
-            OnAssetDataLoaded(_loadedAsset);
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -213,7 +218,6 @@ namespace CommeillFautWF
                     _currentFilePath = aux;
                     _storage = AssetStorage.FromJson(File.ReadAllText(_currentFilePath));
                     _loadedAsset = CommeillFautAsset.CreateInstance(_storage);
-                    OnAssetDataLoaded(_loadedAsset);
                 }
                 catch (Exception ex)
                 {

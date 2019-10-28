@@ -31,25 +31,31 @@ namespace RolePlayCharacterWF
             set { tabSelected = value; tabControl1.SelectedIndex = value; }
         }
 
+        public RolePlayCharacterAsset Asset
+        {
+            get { return _loadedAsset; }
+            set { _loadedAsset = value; OnAssetDataLoaded(); }
+        }
+
         public MainForm(AssetStorage storage)
         {
             InitializeComponent();
             _storage = storage;
             _loadedAsset = new RolePlayCharacterAsset();
             _loadedAsset.LoadAssociatedAssets(storage);
-            OnAssetDataLoaded(_loadedAsset);
+            OnAssetDataLoaded();
         }
 
-        private void OnAssetDataLoaded(RolePlayCharacterAsset asset)
+        private void OnAssetDataLoaded()
         {
-            _emotionalStateVM = new EmotionalStateVM(asset);
-            _autobiographicalMemoryVM = new AutobiographicalMemoryVM(asset);
-            _knowledgeBaseVM = new KnowledgeBaseVM(asset);
+            _emotionalStateVM = new EmotionalStateVM(Asset);
+            _autobiographicalMemoryVM = new AutobiographicalMemoryVM(Asset);
+            _knowledgeBaseVM = new KnowledgeBaseVM(Asset);
 
             
-            textBoxCharacterName.Text = asset.CharacterName == null ? string.Empty : asset.CharacterName.ToString();
-            textBoxCharacterBody.Text = asset.BodyName;
-            textBoxCharacterVoice.Text = asset.VoiceName;
+            textBoxCharacterName.Text = Asset.CharacterName == null ? string.Empty : Asset.CharacterName.ToString();
+            textBoxCharacterBody.Text = Asset.BodyName;
+            textBoxCharacterVoice.Text = Asset.VoiceName;
 
             this.moodValueLabel.Text = Math.Round(_emotionalStateVM.Mood).ToString(MOOD_FORMAT);
             this.moodTrackBar.Value = (int)float.Parse(this.moodValueLabel.Text);
@@ -57,7 +63,7 @@ namespace RolePlayCharacterWF
             this.emotionsDataGridView.DataSource = _emotionalStateVM.Emotions;
             this.dataGridViewAM.DataSource = _autobiographicalMemoryVM.Events;
             this.dataGridViewBeliefs.DataSource = _knowledgeBaseVM.Beliefs;
-            dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(asset.GetAllGoals().ToList());
+            dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(Asset.GetAllGoals().ToList());
         }
 
         private void OnScreenChanged(object sender, EventArgs e)

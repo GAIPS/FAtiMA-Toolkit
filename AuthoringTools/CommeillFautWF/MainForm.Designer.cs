@@ -97,13 +97,14 @@
             this.groupBox7.Size = new System.Drawing.Size(833, 202);
             this.groupBox7.TabIndex = 5;
             this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "Social Exchanges";
             this.groupBox7.Enter += new System.EventHandler(this.groupBox7_Enter);
             // 
             // influenceRules
             // 
             this.influenceRules.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.influenceRules.Location = new System.Drawing.Point(429, 16);
+            this.influenceRules.Location = new System.Drawing.Point(429, 24);
             this.influenceRules.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.influenceRules.Name = "influenceRules";
             this.influenceRules.Size = new System.Drawing.Size(369, 33);
@@ -114,7 +115,7 @@
             // 
             // buttonDuplicateSE
             // 
-            this.buttonDuplicateSE.Location = new System.Drawing.Point(198, 16);
+            this.buttonDuplicateSE.Location = new System.Drawing.Point(198, 24);
             this.buttonDuplicateSE.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonDuplicateSE.Name = "buttonDuplicateSE";
             this.buttonDuplicateSE.Size = new System.Drawing.Size(89, 33);
@@ -125,7 +126,7 @@
             // 
             // buttonEditSE
             // 
-            this.buttonEditSE.Location = new System.Drawing.Point(101, 16);
+            this.buttonEditSE.Location = new System.Drawing.Point(101, 24);
             this.buttonEditSE.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonEditSE.Name = "buttonEditSE";
             this.buttonEditSE.Size = new System.Drawing.Size(89, 33);
@@ -136,7 +137,7 @@
             // 
             // buttonAddSE
             // 
-            this.buttonAddSE.Location = new System.Drawing.Point(19, 16);
+            this.buttonAddSE.Location = new System.Drawing.Point(19, 24);
             this.buttonAddSE.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonAddSE.Name = "buttonAddSE";
             this.buttonAddSE.Size = new System.Drawing.Size(74, 33);
@@ -147,7 +148,7 @@
             // 
             // buttonRemoveSE
             // 
-            this.buttonRemoveSE.Location = new System.Drawing.Point(295, 16);
+            this.buttonRemoveSE.Location = new System.Drawing.Point(295, 24);
             this.buttonRemoveSE.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonRemoveSE.Name = "buttonRemoveSE";
             this.buttonRemoveSE.Size = new System.Drawing.Size(89, 33);

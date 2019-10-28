@@ -27,10 +27,16 @@ namespace EmotionalDecisionMakingWF
 			dataGridViewReactiveActions.DataSource = this.actionRules;
             _storage = new AssetStorage();
             _loadedAsset = EmotionalDecisionMakingAsset.CreateInstance(_storage);
-            OnAssetDataLoaded(_loadedAsset);
+            OnAssetDataLoaded();
 		}
 
-	    protected void OnAssetDataLoaded(EmotionalDecisionMakingAsset asset)
+        public EmotionalDecisionMakingAsset Asset
+        {
+            get { return _loadedAsset; } 
+            set { _loadedAsset = value; OnAssetDataLoaded(); } 
+        }
+
+        public void OnAssetDataLoaded()
 	    {
             conditionSetView = new ConditionSetView();
             conditionSetEditor.View = conditionSetView;
@@ -184,7 +190,7 @@ namespace EmotionalDecisionMakingWF
                     _currentFilePath = aux;
                     _storage = AssetStorage.FromJson(File.ReadAllText(_currentFilePath));
                     _loadedAsset = EmotionalDecisionMakingAsset.CreateInstance(_storage);
-                    OnAssetDataLoaded(_loadedAsset);
+                    OnAssetDataLoaded();
                 }
                 catch(Exception ex)
                 {
@@ -198,7 +204,7 @@ namespace EmotionalDecisionMakingWF
             _currentFilePath = null;
             _storage = new AssetStorage();
             _loadedAsset = EmotionalDecisionMakingAsset.CreateInstance(_storage);
-            OnAssetDataLoaded(_loadedAsset);
+            OnAssetDataLoaded();
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)

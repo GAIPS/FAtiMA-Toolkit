@@ -195,8 +195,6 @@ namespace EmotionalAppraisal
         {
             dataHolder.SetValue("Description", Description);
             dataHolder.SetValue("AppraisalRules", m_appraisalDerivator);
-            dataHolder.SetValue("EmotionDispositions", m_emotionDispositions.Values.Prepend(m_defaultEmotionalDisposition).ToArray());
-            dataHolder.SetValue("Goals", m_goals.Values.ToArray());
         }
 
         /// <summary>
@@ -224,32 +222,10 @@ namespace EmotionalAppraisal
         public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
         {
             Description = dataHolder.GetValue<string>("Description");
-
             m_appraisalDerivator = dataHolder.GetValue<ReactiveAppraisalDerivator>("AppraisalRules");
             m_occAffectDerivator = new OCCAffectDerivationComponent();
-
-            if (m_emotionDispositions == null)
-                m_emotionDispositions = new Dictionary<string, EmotionDisposition>();
-            else
-                m_emotionDispositions.Clear();
-
-            var dispositions = dataHolder.GetValue<EmotionDisposition[]>("EmotionDispositions");
-            EmotionDisposition defaultDisposition = null;
-            foreach (var disposition in dispositions)
-            {
-                if (string.Equals(disposition.Emotion, "*", StringComparison.InvariantCultureIgnoreCase))
-                {
-                    if (defaultDisposition == null)
-                        defaultDisposition = disposition;
-                }
-                else
-                    m_emotionDispositions.Add(disposition.Emotion, disposition);
-            }
-            if (defaultDisposition == null)
-                defaultDisposition = new EmotionDisposition("*", 1, 0);
-            m_defaultEmotionalDisposition = defaultDisposition;
-
-
+            m_emotionDispositions = new Dictionary<string, EmotionDisposition>();
+            m_defaultEmotionalDisposition = new EmotionDisposition("*", 1, 0);
         }
 
         private void UpdateEmotions(IAppraisalFrame frame, Dictionary<string, Goal> goals, IEmotionalState emotionalState, AM am)
