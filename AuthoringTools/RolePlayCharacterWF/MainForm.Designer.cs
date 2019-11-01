@@ -504,6 +504,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel7.Size = new System.Drawing.Size(803, 37);
             this.tableLayoutPanel7.TabIndex = 12;
+            this.tableLayoutPanel7.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel7_Paint);
             // 
             // moodValueLabel
             // 
@@ -519,6 +520,7 @@ namespace RolePlayCharacterWF
             // moodTrackBar
             // 
             this.moodTrackBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.moodTrackBar.LargeChange = 1;
             this.moodTrackBar.Location = new System.Drawing.Point(3, 3);
             this.moodTrackBar.Minimum = -10;
             this.moodTrackBar.Name = "moodTrackBar";
@@ -546,9 +548,9 @@ namespace RolePlayCharacterWF
             // tabPageGoals
             // 
             this.tabPageGoals.Controls.Add(this.groupBox2);
-            this.tabPageGoals.Location = new System.Drawing.Point(4, 28);
+            this.tabPageGoals.Location = new System.Drawing.Point(4, 25);
             this.tabPageGoals.Name = "tabPageGoals";
-            this.tabPageGoals.Size = new System.Drawing.Size(821, 498);
+            this.tabPageGoals.Size = new System.Drawing.Size(821, 501);
             this.tabPageGoals.TabIndex = 5;
             this.tabPageGoals.Text = "Goals";
             this.tabPageGoals.UseVisualStyleBackColor = true;
@@ -564,7 +566,7 @@ namespace RolePlayCharacterWF
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(821, 498);
+            this.groupBox2.Size = new System.Drawing.Size(821, 501);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             // 
@@ -602,7 +604,7 @@ namespace RolePlayCharacterWF
             this.dataGridViewGoals.RowHeadersVisible = false;
             this.dataGridViewGoals.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewGoals.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewGoals.Size = new System.Drawing.Size(806, 441);
+            this.dataGridViewGoals.Size = new System.Drawing.Size(806, 444);
             this.dataGridViewGoals.TabIndex = 2;
             // 
             // buttonAddGoal

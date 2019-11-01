@@ -15,6 +15,7 @@ using RolePlayCharacter;
 using SocialImportance;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -41,11 +42,7 @@ namespace IntegratedAuthoringToolWF
         
         private IntegratedAuthoringToolAsset _iat;
         private AssetStorage _storage;
-
-        private int currentRPCTabIndex;
-
         private string _currentScenarioFilePath;
-        private string _currentRPCName;
 
 
         public MainForm()
@@ -64,6 +61,8 @@ namespace IntegratedAuthoringToolWF
             OnAssetStorageChange();
             OnAssetDataLoaded(_iat);
         }
+
+ 
 
 
         private void OnAssetStorageChange()
@@ -103,12 +102,15 @@ namespace IntegratedAuthoringToolWF
                         }).ToList();
         }
 
+
+
         protected void OnAssetDataLoaded(IntegratedAuthoringToolAsset asset)
         {
             textBoxScenarioName.Text = asset.ScenarioName;
             textBoxScenarioDescription.Text = asset.ScenarioDescription;
             _dialogs = new BindingListView<DialogueStateActionDTO>(new List<DialogueStateActionDTO>());
             _characters = new BindingListView<CharacterNameAndMoodDTO>(new List<CharacterNameAndMoodDTO>());
+            _characters.SuspendAutoFilterAndSort();
             dataGridViewCharacters.DataSource = _characters;
             dataGridViewDialogueActions.DataSource = _dialogs;
 
@@ -166,7 +168,6 @@ namespace IntegratedAuthoringToolWF
                     .Object;
                 charactersToRemove.Add(character.Name);
             }
-
             _iat.RemoveCharacters(charactersToRemove);
             if (!_iat.Characters.Any())
             {
@@ -176,15 +177,19 @@ namespace IntegratedAuthoringToolWF
             RefreshCharacters();
             dataGridViewCharacters.ClearSelection();
             _rpcForm.Close();
+            _rpcForm = null;
         }
 
         private void dataGridViewCharacters_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             var selectedRPC = EditorTools.GetSelectedDtoFromTable<CharacterNameAndMoodDTO>(dataGridViewCharacters);
-            if (_rpcForm != null && _rpcForm.Asset.CharacterName.ToString() == selectedRPC.Name)
+           
+            if (selectedRPC != null && _rpcForm != null && _rpcForm.Asset.CharacterName.ToString() == selectedRPC.Name)
+            {
                 return;
-            
-            if (selectedRPC != null && selectedRPC.Name != _currentRPCName)
+            }
+
+            if (selectedRPC != null)
             {
                 var rpc = _iat.Characters.Where(r => r.CharacterName.ToString() == selectedRPC.Name).FirstOrDefault();
                 int selectedRPCTab = 0;
@@ -194,11 +199,25 @@ namespace IntegratedAuthoringToolWF
                     _rpcForm.Close();
                 }
                 _rpcForm = new RolePlayCharacterWF.MainForm();
+                _rpcForm.OnNameChangeEvent += this.OnRPCNameChange;
+                _rpcForm.OnMoodChangeEvent += this.OnRPCMoodChange;
+
+                _rpcForm.OnAssetDataLoaded();
                 _rpcForm.Asset = rpc;
                 FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[2], _rpcForm);
                 this.tabControlIAT.SelectTab(2);
                 _rpcForm.SelectedTab = selectedRPCTab;
             }
+        }
+
+        private void OnRPCNameChange(string newName)
+        {
+            dataGridViewCharacters.SelectedRows[0].Cells[0].Value = newName;
+        }
+
+        private void OnRPCMoodChange(float newMood)
+        {
+            dataGridViewCharacters.SelectedRows[0].Cells[1].Value = newMood;
         }
 
         #region About
@@ -1491,5 +1510,19 @@ namespace IntegratedAuthoringToolWF
             EditorTools.UpdateFormTitle("FAtiMA Authoring Tool", _currentScenarioFilePath, this);
         }
 
+        private void dataGridViewCharacters_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dataGridViewCharacters_Sorted(object sender, EventArgs e)
+        {
+            dataGridViewCharacters.ClearSelection();
+            if(_rpcForm != null)
+            {
+                _rpcForm.Close();
+                _rpcForm = null;
+            }
+        }
     }
 }

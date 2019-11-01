@@ -16,14 +16,20 @@ namespace RolePlayCharacterWF
 {
     public sealed partial class MainForm : Form
     {
+        public delegate void OnNameChange(string newName);
+        public delegate void OnMoodChange(float newMood);
+
         private const string MOOD_FORMAT = "0.00";
         private EmotionalStateVM _emotionalStateVM;
         private AutobiographicalMemoryVM _autobiographicalMemoryVM;
         private KnowledgeBaseVM _knowledgeBaseVM;
         private RolePlayCharacterAsset _loadedAsset;
-        private AssetStorage _storage;
             
         private int tabSelected;
+
+        public event OnNameChange OnNameChangeEvent;
+        public event OnMoodChange OnMoodChangeEvent;
+
 
         public int SelectedTab
         {
@@ -41,10 +47,9 @@ namespace RolePlayCharacterWF
         {
             InitializeComponent();
             _loadedAsset = new RolePlayCharacterAsset();
-            OnAssetDataLoaded();
         }
 
-        private void OnAssetDataLoaded()
+        public void OnAssetDataLoaded()
         {
             _emotionalStateVM = new EmotionalStateVM(Asset);
             _autobiographicalMemoryVM = new AutobiographicalMemoryVM(Asset);
@@ -79,6 +84,7 @@ namespace RolePlayCharacterWF
                     var newName = (Name)textBoxCharacterName.Text;
                     _loadedAsset.CharacterName = newName;
                     _knowledgeBaseVM.UpdateBeliefList();
+                    OnNameChangeEvent(newName.ToString());
                 }
                 catch (ParsingException ex)
                 {
@@ -157,6 +163,7 @@ namespace RolePlayCharacterWF
         {
             moodValueLabel.Text = moodTrackBar.Value.ToString(MOOD_FORMAT);
             _emotionalStateVM.Mood = moodTrackBar.Value;
+            OnMoodChangeEvent(moodTrackBar.Value);
         }
 
         private void StartTickField_ValueChanged(object sender, EventArgs e)
@@ -363,6 +370,11 @@ namespace RolePlayCharacterWF
             }
             _loadedAsset.RemoveGoals(goalsToRemove);
             dataGridViewGoals.DataSource = new BindingListView<GoalDTO>(_loadedAsset.GetAllGoals().ToList());
+        }
+
+        private void tableLayoutPanel7_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
