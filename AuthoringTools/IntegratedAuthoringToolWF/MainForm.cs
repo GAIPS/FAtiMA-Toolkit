@@ -100,6 +100,12 @@ namespace IntegratedAuthoringToolWF
                             Name = c.CharacterName.ToString(),
                             Mood = c.Mood
                         }).ToList();
+            dataGridViewCharacters.ClearSelection();
+            if(_rpcForm != null)
+            {
+                _rpcForm.Close();
+                _rpcForm = null;
+            }
         }
 
 
@@ -110,9 +116,9 @@ namespace IntegratedAuthoringToolWF
             textBoxScenarioDescription.Text = asset.ScenarioDescription;
             _dialogs = new BindingListView<DialogueStateActionDTO>(new List<DialogueStateActionDTO>());
             _characters = new BindingListView<CharacterNameAndMoodDTO>(new List<CharacterNameAndMoodDTO>());
-            _characters.SuspendAutoFilterAndSort();
             dataGridViewCharacters.DataSource = _characters;
             dataGridViewDialogueActions.DataSource = _dialogs;
+
 
             //ResetSimulator
             richTextBoxChat.Clear();
@@ -135,6 +141,12 @@ namespace IntegratedAuthoringToolWF
             FormHelper.ShowFormInContainerControl(this.tabControlAssetEditor.TabPages[2], _siForm);
             FormHelper.ShowFormInContainerControl(this.tabControlAssetEditor.TabPages[3], _cifForm);
 
+            if(_rpcForm != null)
+            {
+                _rpcForm.Close();
+                _rpcForm = null;
+            }
+
             RefreshDialogs();
             RefreshCharacters();
         }
@@ -146,7 +158,6 @@ namespace IntegratedAuthoringToolWF
             RefreshCharacters();
             buttonRemoveCharacter.Enabled = true;
             buttonInspect.Enabled = true;
-            dataGridViewCharacters.ClearSelection();
         }
 
         private void textBoxScenarioName_TextChanged(object sender, EventArgs e)
@@ -175,7 +186,6 @@ namespace IntegratedAuthoringToolWF
                 buttonInspect.Enabled = false;
             }
             RefreshCharacters();
-            dataGridViewCharacters.ClearSelection();
             _rpcForm.Close();
             _rpcForm = null;
         }
@@ -1391,7 +1401,7 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonOpenAssetStorage_Click(object sender, EventArgs e)
         {
-            var aux = EditorTools.OpenFileDialog();
+            var aux = EditorTools.OpenFileDialog("Asset Storage File (*.json)|*.json|All Files|*.*");
             if (aux != null)
             {
                 _storage = AssetStorage.FromJson(File.ReadAllText(aux));
@@ -1419,6 +1429,26 @@ namespace IntegratedAuthoringToolWF
             }
         }
 
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _iat = new IntegratedAuthoringToolAsset();
+            OnAssetDataLoaded(_iat);
+            EditorTools.UpdateFormTitle("FAtiMA Authoring Tool", string.Empty, this);
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var aux = EditorTools.OpenFileDialog("Scenario File (*.json)|*.json|All Files|*.*");
+            if (aux != null)
+            {
+                _iat = IntegratedAuthoringToolAsset.FromJson(File.ReadAllText(aux),_storage);
+                OnAssetDataLoaded(_iat);
+                EditorTools.UpdateFormTitle("FAtiMA Authoring Tool", aux, this);
+                _currentScenarioFilePath = aux;
+            }
+        }
+
         private void buttonSaveAsAssetStorage_Click(object sender, EventArgs e)
         {
             var sfd = new SaveFileDialog();
@@ -1427,6 +1457,17 @@ namespace IntegratedAuthoringToolWF
             {
                 File.WriteAllText(sfd.FileName, _storage.ToJson());
                 textBoxPathAssetStorage.Text = sfd.FileName;
+            }
+        }
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var sfd = new SaveFileDialog();
+            sfd.Filter = "Scenario File (*.json)|*.json|All Files|*.*";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                File.WriteAllText(sfd.FileName, _iat.ToJson());
+                _currentScenarioFilePath = sfd.FileName;
+                EditorTools.UpdateFormTitle("FAtiMA Authoring Tool", _currentScenarioFilePath, this);
             }
         }
 

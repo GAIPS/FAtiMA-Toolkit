@@ -1106,9 +1106,12 @@ namespace RolePlayCharacter
             m_emotionalState = dataHolder.GetValue<ConcreteEmotionalState>("EmotionalState");
             m_goals = new Dictionary<string, Goal>();
             var goals = dataHolder.GetValue<Goal[]>("Goals");
-            foreach (var g in goals)
+            if (goals != null)
             {
-                m_goals.Add(g.Name.ToString(), g);
+                foreach (var g in goals)
+                {
+                    m_goals.Add(g.Name.ToString(), g);
+                }
             }
             m_am = dataHolder.GetValue<AM>("AutobiographicMemory");
             m_otherAgents = dataHolder.GetValue<Dictionary<Name, AgentEntry>>("OtherAgents");

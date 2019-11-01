@@ -165,7 +165,7 @@ namespace SocialImportanceWF
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var aux = EditorTools.OpenFileDialog();
+            var aux = EditorTools.OpenFileDialog("Asset Storage File (*.json)|*.json|All Files|*.*");
             if (aux != null)
             {
                 try

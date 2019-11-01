@@ -47,7 +47,7 @@ namespace GAIPS.AssetEditorTools
 
         public static void UpdateFormTitle(string asset, string path, Form form)
         {
-            form.Text = (path == null) ?
+            form.Text = (string.IsNullOrEmpty(path)) ?
               form.Text = asset :
               form.Text = asset + " - " + path;
         }
@@ -73,7 +73,7 @@ namespace GAIPS.AssetEditorTools
             return currentFilePath;
         }
 
-        public static string OpenFileDialog()
+        public static string OpenFileDialog(string filter)
         {
             var ofd = new OpenFileDialog();
             ofd.Filter = "Asset Storage File (*.json)|*.json|All Files|*.*";
