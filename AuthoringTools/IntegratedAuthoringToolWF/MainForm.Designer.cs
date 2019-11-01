@@ -33,7 +33,12 @@
             this.buttonNewAssetStorage = new System.Windows.Forms.Button();
             this.tabControlIAT = new System.Windows.Forms.TabControl();
             this.tabPageDialogue = new System.Windows.Forms.TabPage();
+            this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.buttonImportExcel = new System.Windows.Forms.Button();
             this.displayGraph = new System.Windows.Forms.Button();
+            this.buttonExportExcel = new System.Windows.Forms.Button();
+            this.buttonValidate = new System.Windows.Forms.Button();
+            this.buttonTTS = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.searchCheckList = new System.Windows.Forms.CheckedListBox();
@@ -43,11 +48,6 @@
             this.buttonPlayerEditDialogueAction = new System.Windows.Forms.Button();
             this.buttonAddPlayerDialogueAction = new System.Windows.Forms.Button();
             this.buttonPlayerRemoveDialogueAction = new System.Windows.Forms.Button();
-            this.buttonValidate = new System.Windows.Forms.Button();
-            this.buttonTTS = new System.Windows.Forms.Button();
-            this.buttonImportTxt = new System.Windows.Forms.Button();
-            this.buttonImportExcel = new System.Windows.Forms.Button();
-            this.buttonExportExcel = new System.Windows.Forms.Button();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tabControlAssetEditor = new System.Windows.Forms.TabControl();
             this.tabPageEA = new System.Windows.Forms.TabPage();
@@ -108,6 +108,7 @@
             this.groupBox6.SuspendLayout();
             this.tabControlIAT.SuspendLayout();
             this.tabPageDialogue.SuspendLayout();
+            this.groupBox12.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDialogueActions)).BeginInit();
@@ -322,7 +323,7 @@
             this.groupBox6.Size = new System.Drawing.Size(379, 94);
             this.groupBox6.TabIndex = 16;
             this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Asset Rules File";
+            this.groupBox6.Text = "Cognitive Rules File";
             // 
             // buttonSaveAsAssetStorage
             // 
@@ -401,26 +402,48 @@
             // 
             // tabPageDialogue
             // 
-            this.tabPageDialogue.Controls.Add(this.displayGraph);
+            this.tabPageDialogue.Controls.Add(this.groupBox12);
             this.tabPageDialogue.Controls.Add(this.groupBox2);
-            this.tabPageDialogue.Controls.Add(this.buttonValidate);
-            this.tabPageDialogue.Controls.Add(this.buttonTTS);
-            this.tabPageDialogue.Controls.Add(this.buttonImportTxt);
-            this.tabPageDialogue.Controls.Add(this.buttonImportExcel);
-            this.tabPageDialogue.Controls.Add(this.buttonExportExcel);
             this.tabPageDialogue.Location = new System.Drawing.Point(4, 25);
             this.tabPageDialogue.Margin = new System.Windows.Forms.Padding(5);
             this.tabPageDialogue.Name = "tabPageDialogue";
             this.tabPageDialogue.Padding = new System.Windows.Forms.Padding(5);
             this.tabPageDialogue.Size = new System.Drawing.Size(866, 660);
             this.tabPageDialogue.TabIndex = 0;
-            this.tabPageDialogue.Text = "Dialogue Editor";
+            this.tabPageDialogue.Text = "Dialogues";
             this.tabPageDialogue.UseVisualStyleBackColor = true;
+            // 
+            // groupBox12
+            // 
+            this.groupBox12.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox12.Controls.Add(this.buttonImportExcel);
+            this.groupBox12.Controls.Add(this.displayGraph);
+            this.groupBox12.Controls.Add(this.buttonExportExcel);
+            this.groupBox12.Controls.Add(this.buttonValidate);
+            this.groupBox12.Controls.Add(this.buttonTTS);
+            this.groupBox12.Location = new System.Drawing.Point(8, 597);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(849, 55);
+            this.groupBox12.TabIndex = 21;
+            this.groupBox12.TabStop = false;
+            // 
+            // buttonImportExcel
+            // 
+            this.buttonImportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonImportExcel.Location = new System.Drawing.Point(17, 16);
+            this.buttonImportExcel.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonImportExcel.Name = "buttonImportExcel";
+            this.buttonImportExcel.Size = new System.Drawing.Size(101, 30);
+            this.buttonImportExcel.TabIndex = 15;
+            this.buttonImportExcel.Text = "Import Excel";
+            this.buttonImportExcel.UseVisualStyleBackColor = true;
+            this.buttonImportExcel.Click += new System.EventHandler(this.buttonImportExcel_Click);
             // 
             // displayGraph
             // 
             this.displayGraph.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.displayGraph.Location = new System.Drawing.Point(667, 585);
+            this.displayGraph.Location = new System.Drawing.Point(579, 16);
             this.displayGraph.Margin = new System.Windows.Forms.Padding(4);
             this.displayGraph.Name = "displayGraph";
             this.displayGraph.Size = new System.Drawing.Size(138, 30);
@@ -428,6 +451,42 @@
             this.displayGraph.Text = "View Graph";
             this.displayGraph.UseVisualStyleBackColor = true;
             this.displayGraph.Click += new System.EventHandler(this.displayGraph_Click);
+            // 
+            // buttonExportExcel
+            // 
+            this.buttonExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonExportExcel.Location = new System.Drawing.Point(133, 16);
+            this.buttonExportExcel.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonExportExcel.Name = "buttonExportExcel";
+            this.buttonExportExcel.Size = new System.Drawing.Size(107, 30);
+            this.buttonExportExcel.TabIndex = 16;
+            this.buttonExportExcel.Text = "Export Excel";
+            this.buttonExportExcel.UseVisualStyleBackColor = true;
+            this.buttonExportExcel.Click += new System.EventHandler(this.buttonExportExcel_Click);
+            // 
+            // buttonValidate
+            // 
+            this.buttonValidate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonValidate.Location = new System.Drawing.Point(421, 16);
+            this.buttonValidate.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonValidate.Name = "buttonValidate";
+            this.buttonValidate.Size = new System.Drawing.Size(143, 30);
+            this.buttonValidate.TabIndex = 19;
+            this.buttonValidate.Text = "Validate";
+            this.buttonValidate.UseVisualStyleBackColor = true;
+            this.buttonValidate.Click += new System.EventHandler(this.buttonValidate_Click);
+            // 
+            // buttonTTS
+            // 
+            this.buttonTTS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonTTS.Location = new System.Drawing.Point(255, 16);
+            this.buttonTTS.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonTTS.Name = "buttonTTS";
+            this.buttonTTS.Size = new System.Drawing.Size(151, 30);
+            this.buttonTTS.TabIndex = 18;
+            this.buttonTTS.Text = "Text-To-Speech";
+            this.buttonTTS.UseVisualStyleBackColor = true;
+            this.buttonTTS.Click += new System.EventHandler(this.buttonTTS_Click);
             // 
             // groupBox2
             // 
@@ -446,7 +505,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(849, 569);
+            this.groupBox2.Size = new System.Drawing.Size(849, 582);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dialogue Actions";
@@ -474,7 +533,7 @@
             this.searchCheckList.HorizontalScrollbar = true;
             this.searchCheckList.Location = new System.Drawing.Point(625, 14);
             this.searchCheckList.Name = "searchCheckList";
-            this.searchCheckList.Size = new System.Drawing.Size(217, 32);
+            this.searchCheckList.Size = new System.Drawing.Size(217, 46);
             this.searchCheckList.TabIndex = 16;
             // 
             // searchDialogueBox
@@ -509,7 +568,7 @@
             this.dataGridViewDialogueActions.RowHeadersVisible = false;
             this.dataGridViewDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(841, 485);
+            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(841, 498);
             this.dataGridViewDialogueActions.TabIndex = 14;
             this.dataGridViewDialogueActions.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellClick);
             this.dataGridViewDialogueActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellContentClick);
@@ -564,74 +623,14 @@
             this.buttonPlayerRemoveDialogueAction.UseVisualStyleBackColor = true;
             this.buttonPlayerRemoveDialogueAction.Click += new System.EventHandler(this.buttonRemoveDialogueAction_Click);
             // 
-            // buttonValidate
-            // 
-            this.buttonValidate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonValidate.Location = new System.Drawing.Point(516, 585);
-            this.buttonValidate.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonValidate.Name = "buttonValidate";
-            this.buttonValidate.Size = new System.Drawing.Size(143, 30);
-            this.buttonValidate.TabIndex = 19;
-            this.buttonValidate.Text = "Validate";
-            this.buttonValidate.UseVisualStyleBackColor = true;
-            this.buttonValidate.Click += new System.EventHandler(this.buttonValidate_Click);
-            // 
-            // buttonTTS
-            // 
-            this.buttonTTS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonTTS.Location = new System.Drawing.Point(357, 585);
-            this.buttonTTS.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonTTS.Name = "buttonTTS";
-            this.buttonTTS.Size = new System.Drawing.Size(151, 30);
-            this.buttonTTS.TabIndex = 18;
-            this.buttonTTS.Text = "Text-To-Speech";
-            this.buttonTTS.UseVisualStyleBackColor = true;
-            this.buttonTTS.Click += new System.EventHandler(this.buttonTTS_Click);
-            // 
-            // buttonImportTxt
-            // 
-            this.buttonImportTxt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonImportTxt.Location = new System.Drawing.Point(234, 585);
-            this.buttonImportTxt.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonImportTxt.Name = "buttonImportTxt";
-            this.buttonImportTxt.Size = new System.Drawing.Size(115, 30);
-            this.buttonImportTxt.TabIndex = 17;
-            this.buttonImportTxt.Text = "Import Txt";
-            this.buttonImportTxt.UseVisualStyleBackColor = true;
-            this.buttonImportTxt.Click += new System.EventHandler(this.buttonImportTxt_Click);
-            // 
-            // buttonImportExcel
-            // 
-            this.buttonImportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonImportExcel.Location = new System.Drawing.Point(10, 585);
-            this.buttonImportExcel.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonImportExcel.Name = "buttonImportExcel";
-            this.buttonImportExcel.Size = new System.Drawing.Size(101, 30);
-            this.buttonImportExcel.TabIndex = 15;
-            this.buttonImportExcel.Text = "Import Excel";
-            this.buttonImportExcel.UseVisualStyleBackColor = true;
-            this.buttonImportExcel.Click += new System.EventHandler(this.buttonImportExcel_Click);
-            // 
-            // buttonExportExcel
-            // 
-            this.buttonExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonExportExcel.Location = new System.Drawing.Point(119, 585);
-            this.buttonExportExcel.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonExportExcel.Name = "buttonExportExcel";
-            this.buttonExportExcel.Size = new System.Drawing.Size(107, 30);
-            this.buttonExportExcel.TabIndex = 16;
-            this.buttonExportExcel.Text = "Export Excel";
-            this.buttonExportExcel.UseVisualStyleBackColor = true;
-            this.buttonExportExcel.Click += new System.EventHandler(this.buttonExportExcel_Click);
-            // 
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.tabControlAssetEditor);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Location = new System.Drawing.Point(4, 25);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(866, 663);
+            this.tabPage4.Size = new System.Drawing.Size(866, 660);
             this.tabPage4.TabIndex = 5;
-            this.tabPage4.Text = "Rules Editor";
+            this.tabPage4.Text = "Cognitive Rules";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
             // tabControlAssetEditor
@@ -644,7 +643,7 @@
             this.tabControlAssetEditor.Location = new System.Drawing.Point(0, 0);
             this.tabControlAssetEditor.Name = "tabControlAssetEditor";
             this.tabControlAssetEditor.SelectedIndex = 0;
-            this.tabControlAssetEditor.Size = new System.Drawing.Size(866, 663);
+            this.tabControlAssetEditor.Size = new System.Drawing.Size(866, 660);
             this.tabControlAssetEditor.TabIndex = 0;
             // 
             // tabPageEA
@@ -652,7 +651,7 @@
             this.tabPageEA.Location = new System.Drawing.Point(4, 25);
             this.tabPageEA.Name = "tabPageEA";
             this.tabPageEA.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageEA.Size = new System.Drawing.Size(858, 634);
+            this.tabPageEA.Size = new System.Drawing.Size(858, 631);
             this.tabPageEA.TabIndex = 0;
             this.tabPageEA.Text = "Emotional Appraisal";
             this.tabPageEA.UseVisualStyleBackColor = true;
@@ -662,7 +661,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(858, 637);
+            this.tabPage6.Size = new System.Drawing.Size(858, 634);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "Emotional Decision Making";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -671,7 +670,7 @@
             // 
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(858, 637);
+            this.tabPage7.Size = new System.Drawing.Size(858, 634);
             this.tabPage7.TabIndex = 2;
             this.tabPage7.Text = "Social Importance";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -680,20 +679,20 @@
             // 
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(858, 637);
+            this.tabPage8.Size = new System.Drawing.Size(858, 634);
             this.tabPage8.TabIndex = 3;
             this.tabPage8.Text = "CIF-CK";
             this.tabPage8.UseVisualStyleBackColor = true;
             // 
             // tabPage2
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(5);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(5);
-            this.tabPage2.Size = new System.Drawing.Size(866, 663);
+            this.tabPage2.Size = new System.Drawing.Size(866, 660);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Role Play Character Editor";
+            this.tabPage2.Text = "Character";
             this.tabPage2.UseVisualStyleBackColor = true;
             this.tabPage2.Click += new System.EventHandler(this.tabPage2_Click);
             // 
@@ -705,7 +704,7 @@
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage3.Size = new System.Drawing.Size(866, 663);
             this.tabPage3.TabIndex = 3;
-            this.tabPage3.Text = "World Model";
+            this.tabPage3.Text = "World";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // groupBox7
@@ -742,7 +741,7 @@
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.checkBox1);
             this.groupBox3.Controls.Add(this.effectTickBox);
-            this.groupBox3.Location = new System.Drawing.Point(6, 576);
+            this.groupBox3.Location = new System.Drawing.Point(6, 573);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(852, 73);
             this.groupBox3.TabIndex = 10;
@@ -850,7 +849,7 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.groupBox10);
-            this.splitContainer3.Size = new System.Drawing.Size(855, 567);
+            this.splitContainer3.Size = new System.Drawing.Size(855, 564);
             this.splitContainer3.SplitterDistance = 551;
             this.splitContainer3.TabIndex = 11;
             // 
@@ -860,7 +859,7 @@
             this.groupBox9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox9.Location = new System.Drawing.Point(0, 0);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(551, 567);
+            this.groupBox9.Size = new System.Drawing.Size(551, 564);
             this.groupBox9.TabIndex = 0;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Chat";
@@ -879,8 +878,8 @@
             // splitContainer5.Panel2
             // 
             this.splitContainer5.Panel2.Controls.Add(this.splitContainer6);
-            this.splitContainer5.Size = new System.Drawing.Size(545, 546);
-            this.splitContainer5.SplitterDistance = 258;
+            this.splitContainer5.Size = new System.Drawing.Size(545, 543);
+            this.splitContainer5.SplitterDistance = 256;
             this.splitContainer5.TabIndex = 1;
             // 
             // richTextBoxChat
@@ -892,7 +891,7 @@
             this.richTextBoxChat.Location = new System.Drawing.Point(0, 0);
             this.richTextBoxChat.Name = "richTextBoxChat";
             this.richTextBoxChat.ReadOnly = true;
-            this.richTextBoxChat.Size = new System.Drawing.Size(545, 258);
+            this.richTextBoxChat.Size = new System.Drawing.Size(545, 256);
             this.richTextBoxChat.TabIndex = 0;
             this.richTextBoxChat.Text = "";
             // 
@@ -910,8 +909,8 @@
             // splitContainer6.Panel2
             // 
             this.splitContainer6.Panel2.Controls.Add(this.groupBox8);
-            this.splitContainer6.Size = new System.Drawing.Size(545, 284);
-            this.splitContainer6.SplitterDistance = 188;
+            this.splitContainer6.Size = new System.Drawing.Size(545, 283);
+            this.splitContainer6.SplitterDistance = 187;
             this.splitContainer6.TabIndex = 0;
             // 
             // groupBox4
@@ -920,7 +919,7 @@
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(545, 188);
+            this.groupBox4.Size = new System.Drawing.Size(545, 187);
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Select Dialogue:";
@@ -935,7 +934,7 @@
             this.listBoxPlayerDialogues.ItemHeight = 17;
             this.listBoxPlayerDialogues.Location = new System.Drawing.Point(3, 18);
             this.listBoxPlayerDialogues.Name = "listBoxPlayerDialogues";
-            this.listBoxPlayerDialogues.Size = new System.Drawing.Size(539, 167);
+            this.listBoxPlayerDialogues.Size = new System.Drawing.Size(539, 166);
             this.listBoxPlayerDialogues.TabIndex = 2;
             this.listBoxPlayerDialogues.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxPlayerDialogues_MouseDoubleClick);
             // 
@@ -970,7 +969,7 @@
             this.groupBox10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox10.Location = new System.Drawing.Point(0, 0);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(300, 567);
+            this.groupBox10.Size = new System.Drawing.Size(300, 564);
             this.groupBox10.TabIndex = 8;
             this.groupBox10.TabStop = false;
             // 
@@ -991,7 +990,7 @@
             this.groupBox5.Controls.Add(this.comboBoxAgChat);
             this.groupBox5.Location = new System.Drawing.Point(6, 18);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(288, 543);
+            this.groupBox5.Size = new System.Drawing.Size(288, 540);
             this.groupBox5.TabIndex = 7;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Agent Inspector";
@@ -1001,7 +1000,7 @@
             // 
             this.buttonEvalBelief.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonEvalBelief.Enabled = false;
-            this.buttonEvalBelief.Location = new System.Drawing.Point(226, 512);
+            this.buttonEvalBelief.Location = new System.Drawing.Point(226, 509);
             this.buttonEvalBelief.Name = "buttonEvalBelief";
             this.buttonEvalBelief.Size = new System.Drawing.Size(53, 22);
             this.buttonEvalBelief.TabIndex = 10;
@@ -1044,7 +1043,7 @@
             this.groupBox11.Controls.Add(this.dataGridViewAgentInspector);
             this.groupBox11.Location = new System.Drawing.Point(9, 94);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(273, 382);
+            this.groupBox11.Size = new System.Drawing.Size(273, 379);
             this.groupBox11.TabIndex = 10;
             this.groupBox11.TabStop = false;
             // 
@@ -1066,14 +1065,14 @@
             this.dataGridViewAgentInspector.RowHeadersVisible = false;
             this.dataGridViewAgentInspector.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAgentInspector.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAgentInspector.Size = new System.Drawing.Size(267, 361);
+            this.dataGridViewAgentInspector.Size = new System.Drawing.Size(267, 358);
             this.dataGridViewAgentInspector.TabIndex = 9;
             // 
             // label6
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 516);
+            this.label6.Location = new System.Drawing.Point(6, 513);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(30, 16);
             this.label6.TabIndex = 5;
@@ -1083,7 +1082,7 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 487);
+            this.label5.Location = new System.Drawing.Point(6, 484);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(31, 16);
             this.label5.TabIndex = 4;
@@ -1102,7 +1101,7 @@
             // 
             this.textBoxValChat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxValChat.Location = new System.Drawing.Point(45, 512);
+            this.textBoxValChat.Location = new System.Drawing.Point(45, 509);
             this.textBoxValChat.Name = "textBoxValChat";
             this.textBoxValChat.ReadOnly = true;
             this.textBoxValChat.Size = new System.Drawing.Size(175, 22);
@@ -1112,7 +1111,7 @@
             // 
             this.textBoxBelChat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxBelChat.Location = new System.Drawing.Point(46, 484);
+            this.textBoxBelChat.Location = new System.Drawing.Point(46, 481);
             this.textBoxBelChat.Name = "textBoxBelChat";
             this.textBoxBelChat.Size = new System.Drawing.Size(233, 22);
             this.textBoxBelChat.TabIndex = 1;
@@ -1224,6 +1223,7 @@
             this.groupBox6.PerformLayout();
             this.tabControlIAT.ResumeLayout(false);
             this.tabPageDialogue.ResumeLayout(false);
+            this.groupBox12.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -1295,7 +1295,6 @@
         private System.Windows.Forms.Button buttonTTS;
         private System.Windows.Forms.Button buttonExportExcel;
         private System.Windows.Forms.Button buttonValidate;
-        private System.Windows.Forms.Button buttonImportTxt;
         private System.Windows.Forms.TabControl tabControlIAT;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPageDialogue;
@@ -1365,6 +1364,7 @@
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.TabPage tabPage8;
+        private System.Windows.Forms.GroupBox groupBox12;
     }
 }
 

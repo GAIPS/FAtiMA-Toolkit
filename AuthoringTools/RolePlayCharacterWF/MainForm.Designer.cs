@@ -109,10 +109,10 @@ namespace RolePlayCharacterWF
             // tabPage2
             // 
             this.tabPage2.Controls.Add(this.tableLayoutPanel4);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Location = new System.Drawing.Point(4, 28);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(821, 501);
+            this.tabPage2.Size = new System.Drawing.Size(821, 498);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Autobiographical Memory";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -129,7 +129,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 206F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(815, 495);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(815, 492);
             this.tableLayoutPanel4.TabIndex = 0;
             this.tableLayoutPanel4.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel4_Paint);
             // 
@@ -143,7 +143,7 @@ namespace RolePlayCharacterWF
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(3, 63);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(809, 429);
+            this.groupBox4.Size = new System.Drawing.Size(809, 426);
             this.groupBox4.TabIndex = 16;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Event Records";
@@ -179,7 +179,7 @@ namespace RolePlayCharacterWF
             this.dataGridViewAM.RowHeadersVisible = false;
             this.dataGridViewAM.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAM.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAM.Size = new System.Drawing.Size(800, 374);
+            this.dataGridViewAM.Size = new System.Drawing.Size(800, 371);
             this.dataGridViewAM.TabIndex = 10;
             this.dataGridViewAM.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAM_CellContentClick);
             this.dataGridViewAM.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridViewAM_KeyDown);
@@ -271,10 +271,10 @@ namespace RolePlayCharacterWF
             // tabPage5
             // 
             this.tabPage5.Controls.Add(this.groupBox1);
-            this.tabPage5.Location = new System.Drawing.Point(4, 25);
+            this.tabPage5.Location = new System.Drawing.Point(4, 28);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage5.Size = new System.Drawing.Size(821, 501);
+            this.tabPage5.Size = new System.Drawing.Size(821, 498);
             this.tabPage5.TabIndex = 4;
             this.tabPage5.Text = "Knowledge Base";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -285,7 +285,7 @@ namespace RolePlayCharacterWF
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(3, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(815, 495);
+            this.groupBox1.Size = new System.Drawing.Size(815, 492);
             this.groupBox1.TabIndex = 9;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Beliefs";
@@ -302,7 +302,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel8.RowCount = 2;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(809, 474);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(809, 471);
             this.tableLayoutPanel8.TabIndex = 7;
             // 
             // tableLayoutPanel9
@@ -548,9 +548,9 @@ namespace RolePlayCharacterWF
             // tabPageGoals
             // 
             this.tabPageGoals.Controls.Add(this.groupBox2);
-            this.tabPageGoals.Location = new System.Drawing.Point(4, 25);
+            this.tabPageGoals.Location = new System.Drawing.Point(4, 28);
             this.tabPageGoals.Name = "tabPageGoals";
-            this.tabPageGoals.Size = new System.Drawing.Size(821, 501);
+            this.tabPageGoals.Size = new System.Drawing.Size(821, 498);
             this.tabPageGoals.TabIndex = 5;
             this.tabPageGoals.Text = "Goals";
             this.tabPageGoals.UseVisualStyleBackColor = true;
@@ -566,7 +566,7 @@ namespace RolePlayCharacterWF
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(821, 501);
+            this.groupBox2.Size = new System.Drawing.Size(821, 498);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             // 
@@ -604,7 +604,7 @@ namespace RolePlayCharacterWF
             this.dataGridViewGoals.RowHeadersVisible = false;
             this.dataGridViewGoals.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewGoals.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewGoals.Size = new System.Drawing.Size(806, 444);
+            this.dataGridViewGoals.Size = new System.Drawing.Size(806, 441);
             this.dataGridViewGoals.TabIndex = 2;
             // 
             // buttonAddGoal

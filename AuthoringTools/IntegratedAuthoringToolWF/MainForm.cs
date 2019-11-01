@@ -418,67 +418,6 @@ namespace IntegratedAuthoringToolWF
             }
         }
 
-        private void buttonImportTxt_Click(object sender, EventArgs e)
-        {
-            var ofd = new OpenFileDialog();
-            ofd.Filter = "Text File|*.txt";
-            if (ofd.ShowDialog() != DialogResult.OK)
-                return;
-
-            var fileName = new FileInfo(ofd.FileName);
-            File.SetAttributes(fileName.DirectoryName, FileAttributes.Normal);
-
-            _iat.RemoveDialogueActions(_iat.GetAllDialogueActions());
-
-            int stateCounter = 0;
-            var lines = File.ReadAllLines(fileName.FullName);
-            var totalSize = lines.Length;
-
-            foreach (var line in lines)
-            {
-                var add = GenerateDialogueActionFromLine(line, totalSize, ref stateCounter);
-                _iat.AddDialogAction(add);
-            }
-
-            RefreshDialogs();
-        }
-
-        private DialogueStateActionDTO GenerateDialogueActionFromLine(string line, int totalSize, ref int stateCounter)
-        {
-            line = line.Replace("A:", "");
-            char[] delimitedchars = { '\n' };
-            line = line.Trim();
-
-            var result = line.Split(delimitedchars);
-            var currentState = "";
-            var nextState = "";
-
-            if (stateCounter == 0)
-            {
-                currentState = IATConsts.INITIAL_DIALOGUE_STATE;
-                stateCounter += 1;
-                nextState = "S" + stateCounter;
-            }
-            else
-            {
-                currentState = "S" + stateCounter;
-                stateCounter += 1;
-                nextState = "S" + stateCounter;
-            }
-
-            if (stateCounter == totalSize)
-                nextState = "End";
-
-            var add = new DialogueStateActionDTO()
-            {
-                CurrentState = currentState,
-                NextState = nextState,
-                Utterance = result[0],
-            };
-
-            return add;
-        }
-
         private void buttonTTS_Click(object sender, EventArgs e)
         {
             var dialogs = _iat.GetAllDialogueActions().ToArray();
