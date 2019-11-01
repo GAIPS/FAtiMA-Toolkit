@@ -37,12 +37,10 @@ namespace RolePlayCharacterWF
             set { _loadedAsset = value; OnAssetDataLoaded(); }
         }
 
-        public MainForm(AssetStorage storage)
+        public MainForm()
         {
             InitializeComponent();
-            _storage = storage;
             _loadedAsset = new RolePlayCharacterAsset();
-            _loadedAsset.LoadAssociatedAssets(storage);
             OnAssetDataLoaded();
         }
 

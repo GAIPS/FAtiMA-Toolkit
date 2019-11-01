@@ -45,6 +45,7 @@ namespace IntegratedAuthoringToolWF
         private int currentRPCTabIndex;
 
         private string _currentScenarioFilePath;
+        private string _currentRPCName;
 
 
         public MainForm()
@@ -60,7 +61,6 @@ namespace IntegratedAuthoringToolWF
             _edmForm = new EmotionalDecisionMakingWF.MainForm();
             _siForm = new SocialImportanceWF.MainForm();
             _cifForm = new CommeillFautWF.MainForm();
-            _rpcForm = new RolePlayCharacterWF.MainForm(_storage);
             OnAssetStorageChange();
             OnAssetDataLoaded(_iat);
         }
@@ -127,7 +127,6 @@ namespace IntegratedAuthoringToolWF
             _wmForm = new WorldModelWF.MainForm(_iat.WorldModel);
             FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[3], _wmForm);
             FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[5], _webForm);
-            FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[2], _rpcForm);
 
             FormHelper.ShowFormInContainerControl(this.tabControlAssetEditor.TabPages[0], _eaForm);
             FormHelper.ShowFormInContainerControl(this.tabControlAssetEditor.TabPages[1], _edmForm);
@@ -176,6 +175,30 @@ namespace IntegratedAuthoringToolWF
             }
             RefreshCharacters();
             dataGridViewCharacters.ClearSelection();
+            _rpcForm.Close();
+        }
+
+        private void dataGridViewCharacters_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            var selectedRPC = EditorTools.GetSelectedDtoFromTable<CharacterNameAndMoodDTO>(dataGridViewCharacters);
+            if (_rpcForm != null && _rpcForm.Asset.CharacterName.ToString() == selectedRPC.Name)
+                return;
+            
+            if (selectedRPC != null && selectedRPC.Name != _currentRPCName)
+            {
+                var rpc = _iat.Characters.Where(r => r.CharacterName.ToString() == selectedRPC.Name).FirstOrDefault();
+                int selectedRPCTab = 0;
+                if (_rpcForm != null)
+                {
+                    selectedRPCTab = _rpcForm.SelectedTab;
+                    _rpcForm.Close();
+                }
+                _rpcForm = new RolePlayCharacterWF.MainForm();
+                _rpcForm.Asset = rpc;
+                FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[2], _rpcForm);
+                this.tabControlIAT.SelectTab(2);
+                _rpcForm.SelectedTab = selectedRPCTab;
+            }
         }
 
         #region About
@@ -189,29 +212,8 @@ namespace IntegratedAuthoringToolWF
 
         #endregion About
 
-        private void dataGridViewCharacters_SelectionChanged(object sender, EventArgs e)
-        {
-            var selectedRPC = EditorTools.GetSelectedDtoFromTable<CharacterNameAndMoodDTO>(dataGridViewCharacters);
-            if (selectedRPC != null)
-            {
-                var rpc = _iat.Characters.Where(r => r.CharacterName.ToString() == selectedRPC.Name).FirstOrDefault();
-                var selectedRPCTab = _rpcForm.SelectedTab;
-                _rpcForm.Close();
-                _rpcForm = new RolePlayCharacterWF.MainForm(_storage);
-                _rpcForm.Asset = rpc;
-                FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[1], _rpcForm);
-                this.tabControlIAT.SelectTab(1);
-                _rpcForm.SelectedTab = selectedRPCTab;
-                buttonRemoveCharacter.Enabled = true;
-                buttonInspect.Enabled = true;
-            }
-        }
-
+        
         private void MainForm_Load(object sender, EventArgs e)
-        {
-        }
-
-        private void groupBoxDialogueEditor_Enter(object sender, EventArgs e)
         {
         }
 
@@ -1488,5 +1490,6 @@ namespace IntegratedAuthoringToolWF
             }
             EditorTools.UpdateFormTitle("FAtiMA Authoring Tool", _currentScenarioFilePath, this);
         }
+
     }
 }

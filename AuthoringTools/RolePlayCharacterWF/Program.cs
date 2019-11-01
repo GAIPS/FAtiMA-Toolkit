@@ -14,7 +14,7 @@ namespace RolePlayCharacterWF
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			var f = new MainForm(new AssetStorage());
+			var f = new MainForm();
 			Application.Run(f);
 		}
 	}
