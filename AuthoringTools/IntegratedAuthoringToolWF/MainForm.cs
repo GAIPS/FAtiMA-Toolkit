@@ -158,6 +158,8 @@ namespace IntegratedAuthoringToolWF
             RefreshCharacters();
             buttonRemoveCharacter.Enabled = true;
             buttonInspect.Enabled = true;
+            comboBoxPlayerRpc.Items.Clear();
+            comboBoxPlayerRpc.Items.AddRange(_iat.Characters.Select(x => x.CharacterName.ToString()).ToArray());
         }
 
         private void textBoxScenarioName_TextChanged(object sender, EventArgs e)
@@ -188,6 +190,7 @@ namespace IntegratedAuthoringToolWF
             RefreshCharacters();
             _rpcForm.Close();
             _rpcForm = null;
+         
         }
 
         private void dataGridViewCharacters_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -704,25 +707,31 @@ namespace IntegratedAuthoringToolWF
             }*/
         }
 
-
-        private List<RolePlayCharacterAsset> agentsInChat;
-
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            agentsInChat = _iat.Characters.ToList();
-            rpcBox.Items.Clear();
-            rpcBox.Items.AddRange(agentsInChat.Select(x => x.CharacterName.ToString()).ToArray());
+            var agentsInChat = _iat.Characters.ToList();
 
+            foreach(var c in _iat.Characters)
+            {
+                c.LoadAssociatedAssets(_storage);
+            }
+
+            if(agentsInChat.Count == 0)
+            {
+                EditorTools.WriteText(richTextBoxChat, "Error: The character list is empty.", Color.Red, true);
+                return;
+            } 
+              
+
+            
             if (this.playerRPC == null)
             {
-                rpcBox.SelectedItem = agentsInChat.FirstOrDefault().CharacterName.ToString();
+                comboBoxPlayerRpc.SelectedItem = agentsInChat.FirstOrDefault().CharacterName.ToString();
                 this.playerRPC = agentsInChat.FirstOrDefault();
             }
             else
             {
-                rpcBox.SelectedItem = agentsInChat.Find(x => x.CharacterName.ToString() == this.playerRPC.ToString()).ToString(); ;
-
-
+                comboBoxPlayerRpc.SelectedItem = agentsInChat.Find(x => x.CharacterName.ToString() == this.playerRPC.ToString()).ToString(); ;
             }
             richTextBoxChat.Clear();
             listBoxPlayerDialogues.DataSource = new List<string>();
@@ -758,9 +767,9 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonContinue_Click(object sender, EventArgs e)
         {
-            foreach (var ag in agentsInChat)
+            foreach (var ag in _iat.Characters)
             {
-                if (ag.CharacterName == (WellFormedNames.Name.BuildName(rpcBox.SelectedItem))) continue;
+                if (ag.CharacterName == (WellFormedNames.Name.BuildName(comboBoxPlayerRpc.SelectedItem))) continue;
                 var decisions = ag.Decide().Where(a => a.Key.ToString() == IATConsts.DIALOG_ACTION_KEY);
 
                 if (decisions.Any())
@@ -796,7 +805,7 @@ namespace IntegratedAuthoringToolWF
 
             EditorTools.WriteText(richTextBoxChat, "", Color.Black, true);
 
-            this.playerRPC = agentsInChat.Find(x => x.CharacterName.ToString() == rpcBox.SelectedItem.ToString());
+            this.playerRPC = _iat.Characters.First(x => x.CharacterName.ToString() == comboBoxPlayerRpc.SelectedItem.ToString());
 
             if (playerRPC == null)
                 EditorTools.WriteText(richTextBoxChat, " There is no Player RPC, please use the keyword Player in the Character Name field of an RPC", Color.Red, true);
@@ -810,9 +819,9 @@ namespace IntegratedAuthoringToolWF
             playerRPC.Update();
 
             //Assumption: All agents have the same tick
-            textBoxTick.Text = agentsInChat[0].Tick.ToString();
-            if(agentsInChat.Count > 0)
-            comboBoxAgentView_SelectedIndexChanged(sender, e); // update the agent inspector views;
+            textBoxTick.Text = _iat.Characters.ElementAt(0).Tick.ToString();
+            if(_iat.Characters.Count() > 0)
+                comboBoxAgentView_SelectedIndexChanged(sender, e); // update the agent inspector views;
         }
 
         private Dictionary<Name, List<DialogueStateActionDTO>> playerOptions;
@@ -932,7 +941,7 @@ namespace IntegratedAuthoringToolWF
 
         private bool ValidateTarget(IAction action, string actor)
         {
-            var targetAgent = agentsInChat.FirstOrDefault(x => x.CharacterName == action.Target);
+            var targetAgent = _iat.Characters.FirstOrDefault(x => x.CharacterName == action.Target);
             if (targetAgent == null)
             {
                 EditorTools.WriteText(richTextBoxChat,
@@ -944,7 +953,7 @@ namespace IntegratedAuthoringToolWF
 
         private void comboBoxEventType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.playerRPC = agentsInChat.Find(x => x.CharacterName.ToString() == rpcBox.SelectedItem.ToString());
+            this.playerRPC = _iat.Characters.FirstOrDefault(x => x.CharacterName.ToString() == comboBoxPlayerRpc.SelectedItem.ToString());
         }
 
         private void listBoxPlayerDialogues_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -976,7 +985,7 @@ namespace IntegratedAuthoringToolWF
                     EditorTools.WriteText(richTextBoxChat,
                           "Event Registered " + ev + "\n", Color.Brown, true);
 
-                foreach (var a in agentsInChat)
+                foreach (var a in _iat.Characters)
                 {
                     a.Perceive(ev);
                 }
@@ -988,7 +997,7 @@ namespace IntegratedAuthoringToolWF
 
                 foreach (var eff in effects)
                 {
-                    foreach (var a in agentsInChat)
+                    foreach (var a in _iat.Characters)
                     {
                         string newValue = "";
                        
@@ -1024,8 +1033,7 @@ namespace IntegratedAuthoringToolWF
 
                     foreach (var e in o.Value)
                     {
-                        var value = agentsInChat.Find(x => x.CharacterName.ToString() == o.Key).GetBeliefValue(e);
-
+                        var value = _iat.Characters.FirstOrDefault(x => x.CharacterName.ToString() == o.Key).GetBeliefValue(e);
                         toWrite += e + " = " + value + ", ";
                     }
                     toWrite = toWrite.Substring(0, toWrite.Length - 2);
@@ -1072,7 +1080,7 @@ namespace IntegratedAuthoringToolWF
             if (_iat.eventTriggers == null)
                 _iat.eventTriggers = new EventTriggers();
 
-            var events = _iat.eventTriggers.ComputeTriggersList(agentsInChat);
+            var events = _iat.eventTriggers.ComputeTriggersList(_iat.Characters.ToList());
 
             if (events.IsEmpty())
                 return;
@@ -1308,11 +1316,11 @@ namespace IntegratedAuthoringToolWF
 
         private void comboBoxAgentView_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (agentsInChat != null && agentsInChat.Count > 0)
+            if (_iat.Characters != null && _iat.Characters.Count() > 0)
             {
                 var selectedRPCName = (string)comboBoxAgChat.SelectedItem;
 
-                var rpc = agentsInChat.Where(c => c.CharacterName.ToString() == selectedRPCName).FirstOrDefault();
+                var rpc = _iat.Characters.Where(c => c.CharacterName.ToString() == selectedRPCName).FirstOrDefault();
 
                 var selectedView = (string)comboBoxAgentView.SelectedItem;
                 if (selectedView.EqualsIgnoreCase("Knowledge Base"))
@@ -1352,7 +1360,7 @@ namespace IntegratedAuthoringToolWF
                 return;
             }
 
-            var rpc = agentsInChat.Where(c => c.CharacterName.ToString() == selectedRPCName).FirstOrDefault();
+            var rpc = _iat.Characters.Where(c => c.CharacterName.ToString() == selectedRPCName).FirstOrDefault();
             try
             {
                 var name = WellFormedNames.Name.BuildName(textBoxBelChat.Text);
@@ -1502,6 +1510,16 @@ namespace IntegratedAuthoringToolWF
             {
                 _rpcForm.Close();
                 _rpcForm = null;
+            }
+        }
+
+        private void comboBoxPlayerRpc_Click(object sender, EventArgs e)
+        {
+            if(comboBoxPlayerRpc.SelectedItem == null)
+            {
+                comboBoxPlayerRpc.Items.Clear();
+                comboBoxPlayerRpc.Items.AddRange(_iat.Characters.Select(x => x.CharacterName.ToString()).ToArray());
+                return;
             }
         }
     }

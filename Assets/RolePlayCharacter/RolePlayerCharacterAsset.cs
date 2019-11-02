@@ -441,12 +441,10 @@ namespace RolePlayCharacter
         {
             if (this.GetAllActiveEmotions().Any())
             {
-                var em = this.GetAllActiveEmotions().MaxValue<EmotionDTO>(e => e.Intensity);
-
-                
+                var em = this.GetStrongestActiveEmotion();
 
                 return "M: " + this.Mood.ToString("F2") +
-                       " | S. Em: " + em.Type + "(" + em.Intensity.ToString("F2") + ", " + em.Target + ")";
+                       " | S. Em: " + em.EmotionType + "(" + em.Intensity.ToString("F2") + ", " + em.Direction + ")";
             }
             else return "M: " + this.Mood.ToString("F2");
         }

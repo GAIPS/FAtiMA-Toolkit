@@ -284,7 +284,7 @@ namespace Tests.EmotionalAppraisal
 
             asset.AppraiseEvents(new List<Name>() {EventHelper.ActionEnd("Matt", "Speak(*,*,*,*)", "Sarah")},
                 new ConcreteEmotionalState(),
-                new AM(), m_kb);
+                new AM(), m_kb, null);
 
 
             Assert.IsNotNull(asset.DefaultEmotionDisposition);

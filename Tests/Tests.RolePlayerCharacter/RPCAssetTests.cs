@@ -534,27 +534,7 @@ namespace Tests.RolePlayCharacter
                 ea.AddOrUpdateAppraisalRule( appraisalRuleSet[eaSet]);
             }
 
-             ea.AddOrUpdateGoal(new GoalDTO()
-            {
-                Name = "Goal",
-                Significance = 5,
-                Likelihood = 0.5f
-            });
-
-             ea.AddOrUpdateGoal(new GoalDTO()
-            {
-                Name = "GoalNegative",
-                Significance = 5,
-                Likelihood = 0.2f
-            });
-
-              ea.AddOrUpdateGoal(new GoalDTO()
-            {
-                Name = "GoalPositive",
-                Significance = 5,
-                Likelihood = 0.8f
-            });
-
+           
             var rpc = new RolePlayCharacterAsset
             {
                 BodyName = "Male",

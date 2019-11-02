@@ -103,7 +103,6 @@ namespace Tests.SocialImportance
 			};
 			#endregion
 			var si = new SocialImportanceAsset();
-			si.LoadFromDTO(siDTO);
             si.RegisterKnowledgeBase(kb);
 			return si;
 		}
