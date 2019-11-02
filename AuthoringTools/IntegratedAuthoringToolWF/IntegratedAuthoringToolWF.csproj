@@ -252,6 +252,10 @@
       <Project>{bc47528f-fbf6-465e-bb0e-f68f50f31c13}</Project>
       <Name>WellFormedNames</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Utilities\Utilities\Utilities.csproj">
+      <Project>{eb915898-6d95-4631-8364-f281aa9a24e4}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Wrappers\WebServer\WebServer.csproj">
       <Project>{8d2e220b-2764-4798-ac75-e75f4847ccc6}</Project>
       <Name>WebServer</Name>
@@ -319,10 +323,6 @@
     <Reference Include="System.Speech" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
-    <Reference Include="Utilities, Version=1.0.0.19854, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Utilities.1.0.0.19854\lib\net35\Utilities.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\composition.xcf" />

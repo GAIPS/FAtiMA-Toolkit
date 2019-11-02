@@ -13,11 +13,11 @@ using SocialImportance;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Utilities;
 using WellFormedNames;
 using IQueryable = WellFormedNames.IQueryable;
 using System.Text.RegularExpressions;
 using KnowledgeBase.DTOs;
+using Utilities;
 
 namespace RolePlayCharacter
 {

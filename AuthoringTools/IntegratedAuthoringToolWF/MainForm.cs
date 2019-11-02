@@ -910,7 +910,7 @@ namespace IntegratedAuthoringToolWF
             {
                 var diags = _iat.GetDialogueActions(a.Parameters[0], a.Parameters[1], a.Parameters[2], a.Parameters[3]);
 
-                if (diags.IsEmpty())
+                if (diags.Count() == 0)
                 {
                     EditorTools.WriteText(richTextBoxChat, playerRPC.CharacterName.ToString() +
                         " : " + " could not find any matching dialogue for action " + a.Name, Color.Red, true);
@@ -1082,7 +1082,7 @@ namespace IntegratedAuthoringToolWF
 
             var events = _iat.eventTriggers.ComputeTriggersList(_iat.Characters.ToList());
 
-            if (events.IsEmpty())
+            if (events.Count() == 0)
                 return;
 
             var toWrite = "";
