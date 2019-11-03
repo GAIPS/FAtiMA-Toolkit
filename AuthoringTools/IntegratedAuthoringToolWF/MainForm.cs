@@ -44,6 +44,7 @@ namespace IntegratedAuthoringToolWF
         private AssetStorage _storage;
         private string _currentScenarioFilePath;
 
+        private IList<RolePlayCharacterAsset> _agentsInSimulation;
 
         public MainForm()
         {
@@ -52,6 +53,7 @@ namespace IntegratedAuthoringToolWF
             buttonInspect.Enabled = false;
 
             _iat = new IntegratedAuthoringToolAsset();
+            _agentsInSimulation = new List<RolePlayCharacterAsset>();
             _storage = new AssetStorage();
             _webForm = new WebAPIWF.MainForm();
             _eaForm = new EmotionalAppraisalWF.MainForm();
@@ -127,6 +129,7 @@ namespace IntegratedAuthoringToolWF
             comboBoxPlayerRpc.Items.Clear();
             comboBoxPlayerRpc.Items.Add("-");
             comboBoxPlayerRpc.SelectedItem = "-";
+      
 
             searchCheckList.Items.Clear();
             searchCheckList.Items.Add("CurrentState", true);
@@ -716,34 +719,34 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            var agentsInChat = _iat.Characters.ToList();
-
-            foreach (var c in _iat.Characters)
-            {
-                c.LoadAssociatedAssets(_storage);
-            }
-
-            if (agentsInChat.Count == 0)
+            if (_iat.Characters.Count() == 0)
             {
                 EditorTools.WriteText(richTextBoxChat, "Error: The character list is empty.", Color.Red, true);
                 return;
             }
 
+            _agentsInSimulation = _iat.Characters.Select(c => CloneHelper.Clone(c)).ToList();
+            foreach (var c in _agentsInSimulation)
+            {
+                c.LoadAssociatedAssets(_storage);
+                _iat.BindToRegistry(c.DynamicPropertiesRegistry);
+            }
+
             richTextBoxChat.Clear();
             listBoxPlayerDialogues.DataSource = new List<string>();
-            comboBoxAgChat.DataSource = agentsInChat.Select(a => a.CharacterName.ToString()).ToList();
+            comboBoxAgChat.DataSource = _agentsInSimulation.Select(a => a.CharacterName.ToString()).ToList();
             listBoxPlayerActions.DataSource = new List<string>();
             comboBoxAgentView.SelectedIndex = 0;
 
             EditorTools.WriteText(richTextBoxChat, "Characters were loaded with success (" + DateTime.Now + ")",
                 Color.Blue, true);
             var enterEvents = new List<Name>();
-            foreach (var ag in agentsInChat)
+            foreach (var ag in _agentsInSimulation)
             {
                 enterEvents.Add(EventHelper.ActionEnd(ag.CharacterName.ToString(), "Enters", "-"));
             }
 
-            foreach (var ag in agentsInChat)
+            foreach (var ag in _agentsInSimulation)
             {
                 ag.Perceive(enterEvents);
 
@@ -755,16 +758,16 @@ namespace IntegratedAuthoringToolWF
             EditorTools.WriteText(richTextBoxChat, "", Color.Black, true);
 
             buttonContinue.Enabled = true;
-            textBoxTick.Text = agentsInChat[0].Tick.ToString();
+            textBoxTick.Text = _agentsInSimulation.ElementAt(0).Tick.ToString();
             this.buttonContinue_Click(sender, e);
         }
 
         private void buttonContinue_Click(object sender, EventArgs e)
         {
-            foreach (var ag in _iat.Characters)
+            foreach (var ag in _agentsInSimulation)
             {
                 if (ag.CharacterName == (WellFormedNames.Name.BuildName(comboBoxPlayerRpc.SelectedItem))) continue;
-                
+
                 var decisions = ag.Decide();
                 if (decisions.Any())
                 {
@@ -790,7 +793,7 @@ namespace IntegratedAuthoringToolWF
                     }
                     else
                     {
-                        if(action.Target != WellFormedNames.Name.NIL_SYMBOL)
+                        if (action.Target != WellFormedNames.Name.NIL_SYMBOL)
                         {
                             EditorTools.WriteText(richTextBoxChat,
                                 ag.CharacterName + " Performs To " + action.Target + ":" + action, Color.Blue, true);
@@ -804,7 +807,7 @@ namespace IntegratedAuthoringToolWF
                         var ev = EventHelper.ActionEnd(ag.CharacterName, action.Name, action.Target);
                         HandleEffects(new[] { ev });
                     }
-                    EditorTools.WriteText(richTextBoxChat, "" , Color.Black, true);
+                    EditorTools.WriteText(richTextBoxChat, "", Color.Black, true);
                 }
 
                 ag.Update();
@@ -820,8 +823,8 @@ namespace IntegratedAuthoringToolWF
             playerRPC?.Update();
 
             //Assumption: All agents have the same tick
-            textBoxTick.Text = _iat.Characters.ElementAt(0).Tick.ToString();
-            if (_iat.Characters.Count() > 0)
+            textBoxTick.Text = _agentsInSimulation.ElementAt(0).Tick.ToString();
+            if (_agentsInSimulation.Count() > 0)
                 comboBoxAgentView_SelectedIndexChanged(sender, e); // update the agent inspector views;
         }
 
@@ -924,13 +927,10 @@ namespace IntegratedAuthoringToolWF
                 }
                 else if (a.Target != WellFormedNames.Name.NIL_SYMBOL)
                 {
-                    if (this.ValidateTarget(a, playerRPC.CharacterName.ToString()))
+                    foreach (var d in diags)
                     {
-                        foreach (var d in diags)
-                        {
-                            extendedList.Add(a);
-                            result.Add("To " + a.Target + " : \"" + playerRPC.ProcessWithBeliefs(d.Utterance) + "\"");
-                        }
+                        extendedList.Add(a);
+                        result.Add("To " + a.Target + " : \"" + playerRPC.ProcessWithBeliefs(d.Utterance) + "\"");
                     }
                 }
                 else
@@ -947,21 +947,10 @@ namespace IntegratedAuthoringToolWF
             listBoxPlayerDialogues.ClearSelected();
         }
 
-        private bool ValidateTarget(IAction action, string actor)
-        {
-            var targetAgent = _iat.Characters.FirstOrDefault(x => x.CharacterName == action.Target);
-            if (targetAgent == null)
-            {
-                EditorTools.WriteText(richTextBoxChat,
-                    actor + " : Invalid Target '" + action.Target + "' for " + action, Color.Red, true);
-                return false;
-            }
-            else return true;
-        }
 
         private void comboBoxEventType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.playerRPC = _iat.Characters.FirstOrDefault(x => x.CharacterName.ToString() == comboBoxPlayerRpc.SelectedItem.ToString());
+            this.playerRPC = _agentsInSimulation.FirstOrDefault(x => x.CharacterName.ToString() == comboBoxPlayerRpc.SelectedItem.ToString());
         }
 
         private void listBoxPlayerDialogues_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -993,7 +982,7 @@ namespace IntegratedAuthoringToolWF
                     EditorTools.WriteText(richTextBoxChat,
                           "Event Registered " + ev + "\n", Color.Brown, true);
 
-                foreach (var a in _iat.Characters)
+                foreach (var a in _agentsInSimulation)
                 {
                     a.Perceive(ev);
                 }
@@ -1005,7 +994,7 @@ namespace IntegratedAuthoringToolWF
 
                 foreach (var eff in effects)
                 {
-                    foreach (var a in _iat.Characters)
+                    foreach (var a in _agentsInSimulation)
                     {
                         string newValue = "";
 
@@ -1041,7 +1030,7 @@ namespace IntegratedAuthoringToolWF
 
                     foreach (var e in o.Value)
                     {
-                        var value = _iat.Characters.FirstOrDefault(x => x.CharacterName.ToString() == o.Key).GetBeliefValue(e);
+                        var value = _agentsInSimulation.FirstOrDefault(x => x.CharacterName.ToString() == o.Key).GetBeliefValue(e);
                         toWrite += e + " = " + value + ", ";
                     }
                     toWrite = toWrite.Substring(0, toWrite.Length - 2);
@@ -1088,7 +1077,7 @@ namespace IntegratedAuthoringToolWF
             if (_iat.eventTriggers == null)
                 _iat.eventTriggers = new EventTriggers();
 
-            var events = _iat.eventTriggers.ComputeTriggersList(_iat.Characters.ToList());
+            var events = _iat.eventTriggers.ComputeTriggersList(_agentsInSimulation.ToList());
 
             if (events.Count() == 0)
                 return;
@@ -1326,11 +1315,11 @@ namespace IntegratedAuthoringToolWF
 
         private void comboBoxAgentView_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_iat.Characters != null && _iat.Characters.Count() > 0)
+            if (_agentsInSimulation != null && _agentsInSimulation.Count() > 0)
             {
                 var selectedRPCName = (string)comboBoxAgChat.SelectedItem;
 
-                var rpc = _iat.Characters.Where(c => c.CharacterName.ToString() == selectedRPCName).FirstOrDefault();
+                var rpc = _agentsInSimulation.Where(c => c.CharacterName.ToString() == selectedRPCName).FirstOrDefault();
 
                 var selectedView = (string)comboBoxAgentView.SelectedItem;
                 if (selectedView.EqualsIgnoreCase("Knowledge Base"))
@@ -1370,7 +1359,7 @@ namespace IntegratedAuthoringToolWF
                 return;
             }
 
-            var rpc = _iat.Characters.Where(c => c.CharacterName.ToString() == selectedRPCName).FirstOrDefault();
+            var rpc = _agentsInSimulation.Where(c => c.CharacterName.ToString() == selectedRPCName).FirstOrDefault();
             try
             {
                 var name = WellFormedNames.Name.BuildName(textBoxBelChat.Text);
@@ -1422,9 +1411,17 @@ namespace IntegratedAuthoringToolWF
             var aux = EditorTools.OpenFileDialog("Asset Storage File (*.json)|*.json|All Files|*.*");
             if (aux != null)
             {
-                _storage = AssetStorage.FromJson(File.ReadAllText(aux));
-                textBoxPathAssetStorage.Text = aux;
-                OnAssetStorageChange();
+                try
+                {
+                    _storage = AssetStorage.FromJson(File.ReadAllText(aux));
+                    textBoxPathAssetStorage.Text = aux;
+                    OnAssetStorageChange();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
             }
         }
 
@@ -1461,10 +1458,17 @@ namespace IntegratedAuthoringToolWF
             var aux = EditorTools.OpenFileDialog("Scenario File (*.json)|*.json|All Files|*.*");
             if (aux != null)
             {
-                _iat = IntegratedAuthoringToolAsset.FromJson(File.ReadAllText(aux), _storage);
-                OnAssetDataLoaded(_iat);
-                EditorTools.UpdateFormTitle("FAtiMA Authoring Tool", aux, this);
-                _currentScenarioFilePath = aux;
+                try
+                {
+                    _iat = IntegratedAuthoringToolAsset.FromJson(File.ReadAllText(aux), _storage);
+                    OnAssetDataLoaded(_iat);
+                    EditorTools.UpdateFormTitle("FAtiMA Authoring Tool", aux, this);
+                    _currentScenarioFilePath = aux;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
