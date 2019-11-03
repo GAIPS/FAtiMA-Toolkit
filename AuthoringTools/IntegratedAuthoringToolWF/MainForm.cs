@@ -39,7 +39,7 @@ namespace IntegratedAuthoringToolWF
         private SocialImportanceWF.MainForm _siForm;
         private CommeillFautWF.MainForm _cifForm;
         private RolePlayCharacterWF.MainForm _rpcForm;
-        
+
         private IntegratedAuthoringToolAsset _iat;
         private AssetStorage _storage;
         private string _currentScenarioFilePath;
@@ -62,7 +62,7 @@ namespace IntegratedAuthoringToolWF
             OnAssetDataLoaded(_iat);
         }
 
- 
+
 
 
         private void OnAssetStorageChange()
@@ -101,7 +101,7 @@ namespace IntegratedAuthoringToolWF
                             Mood = c.Mood
                         }).ToList();
             dataGridViewCharacters.ClearSelection();
-            if(_rpcForm != null)
+            if (_rpcForm != null)
             {
                 _rpcForm.Close();
                 _rpcForm = null;
@@ -124,6 +124,9 @@ namespace IntegratedAuthoringToolWF
             richTextBoxChat.Clear();
             buttonContinue.Enabled = false;
             textBoxTick.Text = "";
+            comboBoxPlayerRpc.Items.Clear();
+            //comboBoxPlayerRpc.Items.Add("-");
+            //comboBoxPlayerRpc.SelectedItem = "-";
 
             searchCheckList.Items.Clear();
             searchCheckList.Items.Add("CurrentState", true);
@@ -141,7 +144,7 @@ namespace IntegratedAuthoringToolWF
             FormHelper.ShowFormInContainerControl(this.tabControlAssetEditor.TabPages[2], _siForm);
             FormHelper.ShowFormInContainerControl(this.tabControlAssetEditor.TabPages[3], _cifForm);
 
-            if(_rpcForm != null)
+            if (_rpcForm != null)
             {
                 _rpcForm.Close();
                 _rpcForm = null;
@@ -150,7 +153,7 @@ namespace IntegratedAuthoringToolWF
             RefreshDialogs();
             RefreshCharacters();
         }
-     
+
 
         private void buttonAddCharacter_Click(object sender, EventArgs e)
         {
@@ -158,8 +161,6 @@ namespace IntegratedAuthoringToolWF
             RefreshCharacters();
             buttonRemoveCharacter.Enabled = true;
             buttonInspect.Enabled = true;
-            comboBoxPlayerRpc.Items.Clear();
-            comboBoxPlayerRpc.Items.AddRange(_iat.Characters.Select(x => x.CharacterName.ToString()).ToArray());
         }
 
         private void textBoxScenarioName_TextChanged(object sender, EventArgs e)
@@ -187,16 +188,22 @@ namespace IntegratedAuthoringToolWF
                 buttonRemoveCharacter.Enabled = false;
                 buttonInspect.Enabled = false;
             }
+
             RefreshCharacters();
-            _rpcForm.Close();
-            _rpcForm = null;
-         
+
+            if (_rpcForm != null)
+            {
+                _rpcForm.Close();
+                _rpcForm = null;
+            }
+
+            comboBoxPlayerRpc.SelectedItem = null;
         }
 
         private void dataGridViewCharacters_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
             var selectedRPC = EditorTools.GetSelectedDtoFromTable<CharacterNameAndMoodDTO>(dataGridViewCharacters);
-           
+
             if (selectedRPC != null && _rpcForm != null && _rpcForm.Asset.CharacterName.ToString() == selectedRPC.Name)
             {
                 return;
@@ -244,7 +251,7 @@ namespace IntegratedAuthoringToolWF
 
         #endregion About
 
-        
+
         private void MainForm_Load(object sender, EventArgs e)
         {
         }
@@ -701,45 +708,32 @@ namespace IntegratedAuthoringToolWF
         private void buttonInspect_Click(object sender, EventArgs e)
         {
             //var rpcSource = EditorTools.GetSelectedDtoFromTable<CharacterSourceDTO>(dataGridViewCharacters);
-         /*   if (rpcSource != null)
-            {
-                new RPCInspectForm(_iat, rpcSource.Source).Show(this);
-            }*/
+            /*   if (rpcSource != null)
+               {
+                   new RPCInspectForm(_iat, rpcSource.Source).Show(this);
+               }*/
         }
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
             var agentsInChat = _iat.Characters.ToList();
 
-            foreach(var c in _iat.Characters)
+            foreach (var c in _iat.Characters)
             {
                 c.LoadAssociatedAssets(_storage);
             }
 
-            if(agentsInChat.Count == 0)
+            if (agentsInChat.Count == 0)
             {
                 EditorTools.WriteText(richTextBoxChat, "Error: The character list is empty.", Color.Red, true);
                 return;
-            } 
-              
+            }
 
-            
-            if (this.playerRPC == null)
-            {
-                comboBoxPlayerRpc.SelectedItem = agentsInChat.FirstOrDefault().CharacterName.ToString();
-                this.playerRPC = agentsInChat.FirstOrDefault();
-            }
-            else
-            {
-                comboBoxPlayerRpc.SelectedItem = agentsInChat.Find(x => x.CharacterName.ToString() == this.playerRPC.ToString()).ToString(); ;
-            }
             richTextBoxChat.Clear();
             listBoxPlayerDialogues.DataSource = new List<string>();
             comboBoxAgChat.DataSource = agentsInChat.Select(a => a.CharacterName.ToString()).ToList();
-
+            listBoxPlayerActions.DataSource = new List<string>();
             comboBoxAgentView.SelectedIndex = 0;
-
-      
 
             EditorTools.WriteText(richTextBoxChat, "Characters were loaded with success (" + DateTime.Now + ")",
                 Color.Blue, true);
@@ -753,7 +747,7 @@ namespace IntegratedAuthoringToolWF
             {
                 ag.Perceive(enterEvents);
 
-                EditorTools.WriteText(richTextBoxChat, ag.CharacterName + " enters the chat.", Color.Black, false);
+                EditorTools.WriteText(richTextBoxChat, ag.CharacterName + " enters.", Color.Black, false);
                 EditorTools.WriteText(richTextBoxChat,
                     " (" + ag.GetInternalStateString() + " | " + ag.GetSIRelationsString() + ")", Color.DarkRed, true);
             }
@@ -805,10 +799,6 @@ namespace IntegratedAuthoringToolWF
 
             EditorTools.WriteText(richTextBoxChat, "", Color.Black, true);
 
-            this.playerRPC = _iat.Characters.First(x => x.CharacterName.ToString() == comboBoxPlayerRpc.SelectedItem.ToString());
-
-            if (playerRPC == null)
-                EditorTools.WriteText(richTextBoxChat, " There is no Player RPC, please use the keyword Player in the Character Name field of an RPC", Color.Red, true);
 
             //Update the ListBoxes with the new player options
             UpdatePlayerActionOptions();
@@ -816,11 +806,11 @@ namespace IntegratedAuthoringToolWF
             //Event triggers
             HandleEventTriggers();
 
-            playerRPC.Update();
+            playerRPC?.Update();
 
             //Assumption: All agents have the same tick
             textBoxTick.Text = _iat.Characters.ElementAt(0).Tick.ToString();
-            if(_iat.Characters.Count() > 0)
+            if (_iat.Characters.Count() > 0)
                 comboBoxAgentView_SelectedIndexChanged(sender, e); // update the agent inspector views;
         }
 
@@ -833,6 +823,13 @@ namespace IntegratedAuthoringToolWF
 
         private void UpdatePlayerActionOptions()
         {
+            if (playerRPC == null)
+            {
+                listBoxPlayerDialogues.DataSource = new List<string>();
+                listBoxPlayerActions.DataSource = new List<string>();
+                return;
+            }
+
             var allPlayerActionOptions = playerRPC.Decide();
 
             this.playerDialogueOptions = allPlayerActionOptions.Where(a => a.Key.ToString() == IATConsts.DIALOG_ACTION_KEY);
@@ -886,15 +883,15 @@ namespace IntegratedAuthoringToolWF
             foreach (var a in this.playerNotDialogueOptions)
             {
                 aux.Add(a);
-                if(a.Target != WellFormedNames.Name.NIL_SYMBOL)
+                if (a.Target != WellFormedNames.Name.NIL_SYMBOL)
                 {
-                    result.Add("To " + a.Target +" : " + a.Name );
+                    result.Add("To " + a.Target + " : " + a.Name);
                 }
                 else
                 {
-                    result.Add(""+a.Name);
+                    result.Add("" + a.Name);
                 }
-                
+
             }
             listBoxPlayerActions.DataSource = result;
             listBoxPlayerActions.ClearSelected();
@@ -915,9 +912,10 @@ namespace IntegratedAuthoringToolWF
                     EditorTools.WriteText(richTextBoxChat, playerRPC.CharacterName.ToString() +
                         " : " + " could not find any matching dialogue for action " + a.Name, Color.Red, true);
                 }
-                else if(a.Target != WellFormedNames.Name.NIL_SYMBOL)
+                else if (a.Target != WellFormedNames.Name.NIL_SYMBOL)
                 {
-                    if(this.ValidateTarget(a, playerRPC.CharacterName.ToString())){
+                    if (this.ValidateTarget(a, playerRPC.CharacterName.ToString()))
+                    {
                         foreach (var d in diags)
                         {
                             extendedList.Add(a);
@@ -964,8 +962,8 @@ namespace IntegratedAuthoringToolWF
             if (item == null) return;
 
             var action = playerDialogueOptions.ElementAt(idx);
-            EditorTools.WriteText(richTextBoxChat, playerRPC.CharacterName + " Says "+ listBoxPlayerDialogues.SelectedItem.ToString() + "\n", Color.Blue, true);
-            
+            EditorTools.WriteText(richTextBoxChat, playerRPC.CharacterName + " Says " + listBoxPlayerDialogues.SelectedItem.ToString() + "\n", Color.Blue, true);
+
             var ev = EventHelper.ActionEnd(playerRPC.CharacterName.ToString(), action.Name.ToString(), action.Target.ToString());
 
             this.HandleEffects(new[] { ev });
@@ -1000,8 +998,8 @@ namespace IntegratedAuthoringToolWF
                     foreach (var a in _iat.Characters)
                     {
                         string newValue = "";
-                       
-                        
+
+
                         if (eff.ObserverAgent == a.CharacterName || eff.ObserverAgent.ToString() == "*")
                         {
                             if (eff.NewValue.IsComposed) //New Value is a Dynamic Property
@@ -1020,7 +1018,7 @@ namespace IntegratedAuthoringToolWF
                                 observerAgents.Add(a.CharacterName.ToString(), new List<string>() { evt.GetNTerm(3).ToString() });
                             }
                             else observerAgents[a.CharacterName.ToString()].Add(evt.GetNTerm(3).ToString());
-                            
+
                             a.Perceive(evt);
                         }
                     }
@@ -1056,7 +1054,7 @@ namespace IntegratedAuthoringToolWF
 
         private void textBoxBelChat_TextChanged(object sender, EventArgs e)
         {
-            if(textBoxBelChat.Text != string.Empty)
+            if (textBoxBelChat.Text != string.Empty)
             {
                 buttonEvalBelief.Enabled = true;
             }
@@ -1279,7 +1277,7 @@ namespace IntegratedAuthoringToolWF
 
             var chosenAction = playerNotDialogueOptions.ElementAt(idx);
 
-            if(chosenAction.Target != WellFormedNames.Name.NIL_SYMBOL)
+            if (chosenAction.Target != WellFormedNames.Name.NIL_SYMBOL)
             {
                 EditorTools.WriteText(richTextBoxChat,
                 playerRPC.CharacterName.ToString() + " Performs " + listBoxPlayerActions.SelectedItem.ToString() + "\n", Color.Blue, true);
@@ -1289,13 +1287,14 @@ namespace IntegratedAuthoringToolWF
                 EditorTools.WriteText(richTextBoxChat,
                 playerRPC.CharacterName.ToString() + " Performs : " + listBoxPlayerActions.SelectedItem.ToString() + "\n", Color.Blue, true);
             }
-            
+
             var ev = EventHelper.ActionEnd(playerRPC.CharacterName.ToString(), chosenAction.Name.ToString(), chosenAction.Target.ToString());
 
             try
             {
                 this.HandleEffects(new[] { ev });
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -1414,6 +1413,7 @@ namespace IntegratedAuthoringToolWF
             {
                 _storage = AssetStorage.FromJson(File.ReadAllText(aux));
                 textBoxPathAssetStorage.Text = aux;
+                OnAssetStorageChange();
             }
         }
 
@@ -1450,7 +1450,7 @@ namespace IntegratedAuthoringToolWF
             var aux = EditorTools.OpenFileDialog("Scenario File (*.json)|*.json|All Files|*.*");
             if (aux != null)
             {
-                _iat = IntegratedAuthoringToolAsset.FromJson(File.ReadAllText(aux),_storage);
+                _iat = IntegratedAuthoringToolAsset.FromJson(File.ReadAllText(aux), _storage);
                 OnAssetDataLoaded(_iat);
                 EditorTools.UpdateFormTitle("FAtiMA Authoring Tool", aux, this);
                 _currentScenarioFilePath = aux;
@@ -1506,7 +1506,7 @@ namespace IntegratedAuthoringToolWF
         private void dataGridViewCharacters_Sorted(object sender, EventArgs e)
         {
             dataGridViewCharacters.ClearSelection();
-            if(_rpcForm != null)
+            if (_rpcForm != null)
             {
                 _rpcForm.Close();
                 _rpcForm = null;
@@ -1515,12 +1515,17 @@ namespace IntegratedAuthoringToolWF
 
         private void comboBoxPlayerRpc_Click(object sender, EventArgs e)
         {
-            if(comboBoxPlayerRpc.SelectedItem == null)
+            comboBoxPlayerRpc.Items.Clear();
+            if (_iat.Characters.Any())
             {
-                comboBoxPlayerRpc.Items.Clear();
                 comboBoxPlayerRpc.Items.AddRange(_iat.Characters.Select(x => x.CharacterName.ToString()).ToArray());
-                return;
             }
+            comboBoxPlayerRpc.SelectedIndex = 0;
+        }
+
+        private void richTextBoxChat_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
