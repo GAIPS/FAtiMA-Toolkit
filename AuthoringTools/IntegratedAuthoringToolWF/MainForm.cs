@@ -125,8 +125,8 @@ namespace IntegratedAuthoringToolWF
             buttonContinue.Enabled = false;
             textBoxTick.Text = "";
             comboBoxPlayerRpc.Items.Clear();
-            //comboBoxPlayerRpc.Items.Add("-");
-            //comboBoxPlayerRpc.SelectedItem = "-";
+            comboBoxPlayerRpc.Items.Add("-");
+            comboBoxPlayerRpc.SelectedItem = "-";
 
             searchCheckList.Items.Clear();
             searchCheckList.Items.Add("CurrentState", true);
@@ -197,7 +197,7 @@ namespace IntegratedAuthoringToolWF
                 _rpcForm = null;
             }
 
-            comboBoxPlayerRpc.SelectedItem = null;
+            comboBoxPlayerRpc.SelectedItem = "-";
         }
 
         private void dataGridViewCharacters_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -737,7 +737,7 @@ namespace IntegratedAuthoringToolWF
 
             EditorTools.WriteText(richTextBoxChat, "Characters were loaded with success (" + DateTime.Now + ")",
                 Color.Blue, true);
-            var enterEvents = new List<WellFormedNames.Name>();
+            var enterEvents = new List<Name>();
             foreach (var ag in agentsInChat)
             {
                 enterEvents.Add(EventHelper.ActionEnd(ag.CharacterName.ToString(), "Enters", "-"));
@@ -764,40 +764,51 @@ namespace IntegratedAuthoringToolWF
             foreach (var ag in _iat.Characters)
             {
                 if (ag.CharacterName == (WellFormedNames.Name.BuildName(comboBoxPlayerRpc.SelectedItem))) continue;
-                var decisions = ag.Decide().Where(a => a.Key.ToString() == IATConsts.DIALOG_ACTION_KEY);
-
+                
+                var decisions = ag.Decide();
                 if (decisions.Any())
                 {
                     var action = decisions.First();
-                    string error;
-                    var diag = _iat.GetDialogAction(action, out error);
-                    if (error != null)
+                    if (action.Key.ToString() == IATConsts.DIALOG_ACTION_KEY)
                     {
-                        EditorTools.WriteText(richTextBoxChat, ag.CharacterName + " : " + error, Color.Red, true);
-                    }
-                    else if (this.ValidateTarget(action, ag.CharacterName.ToString()))
-                    {
+                        string error;
+                        var diag = _iat.GetDialogAction(action, out error);
+                        if (error != null)
+                        {
+                            EditorTools.WriteText(richTextBoxChat, ag.CharacterName + " : " + error, Color.Red, false);
+                        }
                         EditorTools.WriteText(richTextBoxChat,
-                            ag.CharacterName + " To " + action.Target + " : ", Color.ForestGreen, false);
-
-
+                            ag.CharacterName + " To " + action.Target + " : ", Color.ForestGreen, true);
                         EditorTools.WriteText(richTextBoxChat, ag.ProcessWithBeliefs(diag.Utterance), Color.Black, false);
 
                         EditorTools.WriteText(richTextBoxChat,
                             " (" + ag.GetInternalStateString() + " | " + ag.GetSIRelationsString() + ")" + "\n", Color.DarkRed,
                             true);
-
-
                         var toString = "Speak(" + diag.CurrentState + "," + diag.NextState + "," + diag.Meaning + "," + diag.Style + ")";
                         var ev = EventHelper.ActionEnd(ag.CharacterName.ToString(), toString, action.Target.ToString());
                         HandleEffects(new[] { ev });
                     }
+                    else
+                    {
+                        if(action.Target != WellFormedNames.Name.NIL_SYMBOL)
+                        {
+                            EditorTools.WriteText(richTextBoxChat,
+                                ag.CharacterName + " Performs To " + action.Target + ":" + action, Color.Blue, true);
+                        }
+                        else
+                        {
+                            EditorTools.WriteText(richTextBoxChat,
+                                ag.CharacterName + " Performs: " + action, Color.Blue, true);
+
+                        }
+                        var ev = EventHelper.ActionEnd(ag.CharacterName, action.Name, action.Target);
+                        HandleEffects(new[] { ev });
+                    }
+                    EditorTools.WriteText(richTextBoxChat, "" , Color.Black, true);
                 }
 
                 ag.Update();
             }
-
-            EditorTools.WriteText(richTextBoxChat, "", Color.Black, true);
 
 
             //Update the ListBoxes with the new player options
@@ -814,7 +825,6 @@ namespace IntegratedAuthoringToolWF
                 comboBoxAgentView_SelectedIndexChanged(sender, e); // update the agent inspector views;
         }
 
-        private Dictionary<Name, List<DialogueStateActionDTO>> playerOptions;
         private IEnumerable<IAction> playerDialogueOptions;
         private IEnumerable<IAction> playerNotDialogueOptions;
 
@@ -1269,6 +1279,7 @@ namespace IntegratedAuthoringToolWF
 
         }
 
+
         private void listBoxPlayerActions_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             var idx = listBoxPlayerActions.SelectedIndex;
@@ -1516,6 +1527,7 @@ namespace IntegratedAuthoringToolWF
         private void comboBoxPlayerRpc_Click(object sender, EventArgs e)
         {
             comboBoxPlayerRpc.Items.Clear();
+            comboBoxPlayerRpc.Items.Add("-");
             if (_iat.Characters.Any())
             {
                 comboBoxPlayerRpc.Items.AddRange(_iat.Characters.Select(x => x.CharacterName.ToString()).ToArray());
