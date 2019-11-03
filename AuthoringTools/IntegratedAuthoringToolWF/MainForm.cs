@@ -766,7 +766,11 @@ namespace IntegratedAuthoringToolWF
         {
             foreach (var ag in _agentsInSimulation)
             {
-                if (ag.CharacterName == (WellFormedNames.Name.BuildName(comboBoxPlayerRpc.SelectedItem))) continue;
+                if (ag.CharacterName == (WellFormedNames.Name.BuildName(comboBoxPlayerRpc.SelectedItem)))
+                {
+                    ag.Update();
+                    continue;
+                }
 
                 var decisions = ag.Decide();
                 if (decisions.Any())
@@ -820,8 +824,6 @@ namespace IntegratedAuthoringToolWF
             //Event triggers
             HandleEventTriggers();
 
-            playerRPC?.Update();
-
             //Assumption: All agents have the same tick
             textBoxTick.Text = _agentsInSimulation.ElementAt(0).Tick.ToString();
             if (_agentsInSimulation.Count() > 0)
@@ -831,19 +833,19 @@ namespace IntegratedAuthoringToolWF
         private IEnumerable<IAction> playerDialogueOptions;
         private IEnumerable<IAction> playerNotDialogueOptions;
 
-        private RolePlayCharacterAsset playerRPC;
+        private string playerRPCName;
 
 
         private void UpdatePlayerActionOptions()
         {
-            if (playerRPC == null)
+            if (playerRPCName == WellFormedNames.Name.NIL_STRING)
             {
                 listBoxPlayerDialogues.DataSource = new List<string>();
                 listBoxPlayerActions.DataSource = new List<string>();
                 return;
             }
 
-            var allPlayerActionOptions = playerRPC.Decide();
+            var allPlayerActionOptions = _agentsInSimulation.Where(c => c.CharacterName.ToString() == playerRPCName).First().Decide();
 
             this.playerDialogueOptions = allPlayerActionOptions.Where(a => a.Key.ToString() == IATConsts.DIALOG_ACTION_KEY);
             this.playerNotDialogueOptions = allPlayerActionOptions.Where(a => a.Key.ToString() != IATConsts.DIALOG_ACTION_KEY);
@@ -916,13 +918,14 @@ namespace IntegratedAuthoringToolWF
             List<string> result = new List<string>();
             List<IAction> extendedList = new List<IAction>();
 
+            RolePlayCharacterAsset playerRPC = _agentsInSimulation.Where(c => c.CharacterName.ToString() == comboBoxPlayerRpc.SelectedItem).FirstOrDefault();
             foreach (var a in playerDialogueOptions)
             {
                 var diags = _iat.GetDialogueActions(a.Parameters[0], a.Parameters[1], a.Parameters[2], a.Parameters[3]);
 
                 if (diags.Count() == 0)
                 {
-                    EditorTools.WriteText(richTextBoxChat, playerRPC.CharacterName.ToString() +
+                    EditorTools.WriteText(richTextBoxChat, playerRPCName.ToString() +
                         " : " + " could not find any matching dialogue for action " + a.Name, Color.Red, true);
                 }
                 else if (a.Target != WellFormedNames.Name.NIL_SYMBOL)
@@ -950,7 +953,7 @@ namespace IntegratedAuthoringToolWF
 
         private void comboBoxEventType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.playerRPC = _agentsInSimulation.FirstOrDefault(x => x.CharacterName.ToString() == comboBoxPlayerRpc.SelectedItem.ToString());
+            playerRPCName = comboBoxPlayerRpc.SelectedItem.ToString();
         }
 
         private void listBoxPlayerDialogues_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -961,9 +964,9 @@ namespace IntegratedAuthoringToolWF
             if (item == null) return;
 
             var action = playerDialogueOptions.ElementAt(idx);
-            EditorTools.WriteText(richTextBoxChat, playerRPC.CharacterName + " Says " + listBoxPlayerDialogues.SelectedItem.ToString() + "\n", Color.Blue, true);
+            EditorTools.WriteText(richTextBoxChat, playerRPCName + " Says " + listBoxPlayerDialogues.SelectedItem.ToString() + "\n", Color.Blue, true);
 
-            var ev = EventHelper.ActionEnd(playerRPC.CharacterName.ToString(), action.Name.ToString(), action.Target.ToString());
+            var ev = EventHelper.ActionEnd(playerRPCName, action.Name.ToString(), action.Target.ToString());
 
             this.HandleEffects(new[] { ev });
 
@@ -1280,15 +1283,15 @@ namespace IntegratedAuthoringToolWF
             if (chosenAction.Target != WellFormedNames.Name.NIL_SYMBOL)
             {
                 EditorTools.WriteText(richTextBoxChat,
-                playerRPC.CharacterName.ToString() + " Performs " + listBoxPlayerActions.SelectedItem.ToString() + "\n", Color.Blue, true);
+                playerRPCName + " Performs " + listBoxPlayerActions.SelectedItem.ToString() + "\n", Color.Blue, true);
             }
             else
             {
                 EditorTools.WriteText(richTextBoxChat,
-                playerRPC.CharacterName.ToString() + " Performs : " + listBoxPlayerActions.SelectedItem.ToString() + "\n", Color.Blue, true);
+                playerRPCName + " Performs : " + listBoxPlayerActions.SelectedItem.ToString() + "\n", Color.Blue, true);
             }
 
-            var ev = EventHelper.ActionEnd(playerRPC.CharacterName.ToString(), chosenAction.Name.ToString(), chosenAction.Target.ToString());
+            var ev = EventHelper.ActionEnd(playerRPCName, chosenAction.Name.ToString(), chosenAction.Target.ToString());
 
             try
             {
