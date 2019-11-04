@@ -710,11 +710,11 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonInspect_Click(object sender, EventArgs e)
         {
-            //var rpcSource = EditorTools.GetSelectedDtoFromTable<CharacterSourceDTO>(dataGridViewCharacters);
-            /*   if (rpcSource != null)
-               {
-                   new RPCInspectForm(_iat, rpcSource.Source).Show(this);
-               }*/
+            var rpcSource = EditorTools.GetSelectedDtoFromTable<CharacterNameAndMoodDTO>(dataGridViewCharacters);
+            if (rpcSource != null)
+            {
+               new RPCInspectForm(_iat, _storage, rpcSource.Name).Show(this);
+            }
         }
 
         private void buttonStart_Click(object sender, EventArgs e)

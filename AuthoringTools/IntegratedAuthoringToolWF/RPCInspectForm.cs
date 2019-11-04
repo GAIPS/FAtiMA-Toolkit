@@ -11,27 +11,29 @@ using System.Collections.Generic;
 using WellFormedNames;
 using AutobiographicMemory;
 using EmotionalAppraisal.DTOs;
+using GAIPS.Rage;
 
 namespace IntegratedAuthoringToolWF
 {
     public partial class RPCInspectForm : Form
     {
-        private string rpcSource;
+        private string rpcName;
         private IntegratedAuthoringToolAsset iat;
+        private AssetStorage storage;
 
         private BindingListView<IAction> actions;
         private BindingListView<EmotionDTO> emotions;
 
-        public RPCInspectForm(IntegratedAuthoringToolAsset iatAsset, string rpcSource)
+        public RPCInspectForm(IntegratedAuthoringToolAsset iatAsset, AssetStorage storage, string rpcName)
         {
             InitializeComponent();
-            this.iat = iatAsset;
-            this.rpcSource = rpcSource;
-
+            
             EditorTools.AllowOnlyGroundedLiteralOrUniversal(wfNameActionLayer);
             wfNameActionLayer.Value = WellFormedNames.Name.UNIVERSAL_SYMBOL;
-
-            this.Text += " - " + rpcSource;
+            this.iat = iatAsset;
+            this.storage = storage;
+            this.rpcName = rpcName;
+            this.Text += " - " + rpcName;
 
             actions = new BindingListView<IAction>((IList)null);
             dataGridViewDecisions.DataSource = actions;
@@ -46,10 +48,10 @@ namespace IntegratedAuthoringToolWF
 
         private void buttonTest_Click(object sender, System.EventArgs e)
         {
-            var rpcAsset = new RolePlayCharacterAsset(); //TODO:FIX THS;
-            rpcAsset.LoadAssociatedAssets(new GAIPS.Rage.AssetStorage());
+            var rpcAsset = CloneHelper.Clone(iat.Characters.Where(c => c.CharacterName == (Name)rpcName).First());
+            rpcAsset.LoadAssociatedAssets(storage);
             iat.BindToRegistry(rpcAsset.DynamicPropertiesRegistry);
-
+            
             string[] eventStrings = this.textBoxEvents.Text.Split(
                         new[] { Environment.NewLine },
                         StringSplitOptions.None).Select(s => s.Trim()).ToArray();

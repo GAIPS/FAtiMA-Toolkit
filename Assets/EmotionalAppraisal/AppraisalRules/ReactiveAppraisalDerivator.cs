@@ -27,72 +27,48 @@ namespace EmotionalAppraisal.AppraisalRules
 	{
 		private const short DEFAULT_APPRAISAL_WEIGHT = 1;
 		
-		private NameSearchTree<HashSet<AppraisalRule>> Rules;
+		private List<AppraisalRule> Rules;
 
 		public ReactiveAppraisalDerivator()
 		{
 			this.AppraisalWeight = DEFAULT_APPRAISAL_WEIGHT;
-			this.Rules = new NameSearchTree<HashSet<AppraisalRule>>();
+			this.Rules = new List<AppraisalRule>();
 		}
 		
         
-		public AppraisalRule Evaluate(IBaseEvent evt, IQueryable kb, Name perspective)
+		public IEnumerable<AppraisalRule> Evaluate(IBaseEvent evt, IQueryable kb, Name perspective)
 		{
             var auxEvt = evt.EventName.SwapTerms(perspective, Name.SELF_SYMBOL);
-
-            foreach (var possibleAppraisals in this.Rules.Unify(auxEvt))
+            var result = new List<AppraisalRule>();
+            foreach (var r in this.Rules)
 			{
-                //This next for loop is to prevent a problem with using appraisal rules that contain SELF
-                //This will replace all the subs with SELF with the name of the perspective  
-                foreach (var sub in possibleAppraisals.Item2)
+                var initialSubSet = new SubstitutionSet();
+                initialSubSet.AddSubstitution(Unifier.Unify(r.EventName, auxEvt).First());
+                if (initialSubSet.Any())
                 {
-                    if (sub.SubValue.Value == Name.SELF_SYMBOL)
+                    var finalSubSet = r.Conditions.Unify(kb, perspective, new[] { initialSubSet });
+                    if (finalSubSet != null)
                     {
-                        sub.SubValue = new ComplexValue(perspective);
+                        //TODO: Handle uncertainty in beliefs
+                        foreach(var set in finalSubSet)
+                        {
+                            var a = new AppraisalRule(r);
+                            a.EventName.MakeGround(set);
+                            foreach (var variable in a.getAppraisalVariables())
+                            {
+                                variable.Value = variable.Value.MakeGround(set);
+                                if (variable.Target != null && variable.Target != (Name)"-")
+                                {
+                                    variable.Target = variable.Target.MakeGround(set);
+                                }
+                            }
+                            result.Add(a);
+                        }
                     }
                 }
-				var substitutions = new[] { possibleAppraisals.Item2 }; //this adds the subs found in the eventName
-				foreach (var appRule in possibleAppraisals.Item1)
-				{
-                    var finalSubsList = appRule.Conditions.Unify(kb, Name.SELF_SYMBOL, substitutions);
-
-                    //The appraisal will only consider the substitution set that it has the most certainty in
-                    var mostCertainSubSet = this.DetermineSubstitutionSetWithMostCertainty(finalSubsList);
-                    if (mostCertainSubSet != null)
-                    {
-
-                        foreach(var appVariable in appRule.getAppraisalVariables())
-                        {
-                            appVariable.Value =  appVariable.Value.MakeGround(mostCertainSubSet);
-
-                             var minCertainty = mostCertainSubSet.FindMinimumCertainty();
-
-                            if(appVariable.Target != null && appVariable.Target != (Name)"-")
-                            {
-                                appVariable.Target = appVariable.Target.MakeGround(mostCertainSubSet);
-                            }
-
-                            float f;
-
-                            if (float.TryParse(appVariable.Value.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out f))
-                            {
-
-                                var aux = f * minCertainty;
-                                appVariable.Value = Name.BuildName(aux);
-                            }
-                            else continue;
-
-                        }
-                     
-                        return appRule;
-
-                    }
-						
-				}
 			}
-			return null;
+			return result;
 		}
-
 
 
         private SubstitutionSet DetermineSubstitutionSetWithMostCertainty(IEnumerable<SubstitutionSet> subSets)
@@ -129,54 +105,29 @@ namespace EmotionalAppraisal.AppraisalRules
 		    {
 			    existingRule = new AppraisalRule(emotionalAppraisalRuleDTO);
 		    }
-			AddEmotionalReaction(existingRule);
+			AddAppraisalRule(existingRule);
 		}
 
-        public void AddEmotionalReaction(AppraisalRule appraisalRule)
+        public void AddAppraisalRule(AppraisalRule appraisalRule)
         {
-            var name = appraisalRule.EventName;
-
-            HashSet<AppraisalRule> ruleSet;
-            if (!Rules.TryGetValue(name, out ruleSet))
-            {
-                ruleSet = new HashSet<AppraisalRule>();
-                Rules.Add(name, ruleSet);
-            }
-            ruleSet.Add(appraisalRule);
+            Rules.Add(appraisalRule);
         }
 
 		public void RemoveAppraisalRule(AppraisalRule appraisalRule)
 		{
-			HashSet<AppraisalRule> ruleSet;
-			if (Rules.TryGetValue(appraisalRule.EventName, out ruleSet))
-			{
-				AppraisalRule ruleToRemove = null;
-				foreach (var rule in ruleSet)
-				{
-					if (rule.Id == appraisalRule.Id)
-					{
-						ruleToRemove = rule;
-					}
-				}
-				if (ruleToRemove != null)
-				{
-					ruleSet.Remove(ruleToRemove);
-				}
-			}
+            Rules.Remove(appraisalRule);
 		}
 
 		public AppraisalRule GetAppraisalRule(Guid id)
 		{
-			return Rules.SelectMany(r => r.Value).FirstOrDefault(a => a.Id == id);
+			return Rules.FirstOrDefault(a => a.Id == id);
 		}
 
         public IEnumerable<AppraisalRule> GetAppraisalRules()
 	    {
-	        return Rules.Values.SelectMany(set => set);
+	        return Rules;
 	    }
         
-     
-
 		#region IAppraisalDerivator Implementation
 
 		public short AppraisalWeight
@@ -187,11 +138,10 @@ namespace EmotionalAppraisal.AppraisalRules
 
 		public void Appraisal(KB kb, IBaseEvent evt, IWritableAppraisalFrame frame)
 		{
-			AppraisalRule activeRule = Evaluate(evt, kb, kb.Perspective);
-			if (activeRule != null)
+			IEnumerable<AppraisalRule> activeRules = Evaluate(evt, kb, kb.Perspective);
+            foreach(var rule in activeRules)
 			{
-			    
-                foreach(var appVar in activeRule.getAppraisalVariables())
+                foreach(var appVar in rule.getAppraisalVariables())
                 {
                      float des;
                     if (!float.TryParse(appVar.Value.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out des))
@@ -209,12 +159,7 @@ namespace EmotionalAppraisal.AppraisalRules
                           frame.SetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS + " " + appVar.Target, des);
                    
                     else  frame.SetAppraisalVariable(appVar.Name, des);
-
-                //     if(appVar.Target != null && appVar.Target != (Name)"-" && appVar.Target != (Name)"SELF")
-                //          frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER + "" + appVar.Target, des);
                 }
-                
-               
 			}
 		}
 
@@ -225,24 +170,13 @@ namespace EmotionalAppraisal.AppraisalRules
 		public void GetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			dataHolder.SetValue("AppraisalWeight",AppraisalWeight);
-			dataHolder.SetValue("Rules", GetAppraisalRules());
+			dataHolder.SetValue("Rules", GetAppraisalRules().ToArray());
 		}
 
 		public void SetObjectData(ISerializationData dataHolder, ISerializationContext context)
 		{
 			AppraisalWeight = dataHolder.GetValue<short>("AppraisalWeight");
-            //AppraisalRule[] rules = null; //TODO:FIX THIS dataHolder.GetValue<AppraisalRule[]>("Rules");
-
-			if(Rules==null)
-				Rules = new NameSearchTree<HashSet<AppraisalRule>>();
-			else
-				Rules.Clear();
-
-		    /*foreach (var r in rules)
-		    {
-				r.Id = Guid.NewGuid();
-                AddEmotionalReaction(r);
-            }*/
+            Rules = dataHolder.GetValue<AppraisalRule[]>("Rules").ToList();
 		}
 
 		#endregion
