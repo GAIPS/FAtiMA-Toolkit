@@ -145,6 +145,9 @@ namespace WellFormedNames
 					{
 						if (p.Item1 == p.Item2)
 							continue;
+                        if (p.Item1 == Name.UNIVERSAL_SYMBOL || p.Item2 == Name.UNIVERSAL_SYMBOL)
+                            continue;
+
 						return false;
 					}
 

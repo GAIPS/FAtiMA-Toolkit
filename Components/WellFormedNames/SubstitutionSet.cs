@@ -96,6 +96,8 @@ namespace WellFormedNames
 		public bool AddSubstitution(Substitution substitution)
 		{
 			bool canAdd;
+            if (substitution == null) return false;
+
 			if (m_impl.TestConflict(substitution, this, out canAdd))
 				return false;
 

@@ -42,8 +42,7 @@ namespace EmotionalAppraisal.AppraisalRules
             foreach (var r in this.Rules)
 			{
                 var initialSubSet = new SubstitutionSet();
-                var sub = Unifier.Unify(r.EventName, auxEvt)?.FirstOrDefault();
-                initialSubSet.AddSubstitution(sub);
+                initialSubSet.AddSubstitution(Unifier.Unify(r.EventName, auxEvt)?.FirstOrDefault());
                 if (auxEvt.Match(r.EventName) || initialSubSet.Any())
                 {
                     var finalSubSet = r.Conditions.Unify(kb, perspective, new[] { initialSubSet });
