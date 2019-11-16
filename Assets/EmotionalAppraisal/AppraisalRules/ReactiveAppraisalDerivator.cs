@@ -9,7 +9,6 @@ using EmotionalAppraisal.OCCModel;
 using SerializationUtilities;
 using KnowledgeBase;
 using WellFormedNames;
-using WellFormedNames.Collections;
 using IQueryable = WellFormedNames.IQueryable;
 using System.Globalization;
 
@@ -43,8 +42,9 @@ namespace EmotionalAppraisal.AppraisalRules
             foreach (var r in this.Rules)
 			{
                 var initialSubSet = new SubstitutionSet();
-                initialSubSet.AddSubstitution(Unifier.Unify(r.EventName, auxEvt).First());
-                if (initialSubSet.Any())
+                var sub = Unifier.Unify(r.EventName, auxEvt)?.FirstOrDefault();
+                initialSubSet.AddSubstitution(sub);
+                if (auxEvt.Match(r.EventName) || initialSubSet.Any())
                 {
                     var finalSubSet = r.Conditions.Unify(kb, perspective, new[] { initialSubSet });
                     if (finalSubSet != null)

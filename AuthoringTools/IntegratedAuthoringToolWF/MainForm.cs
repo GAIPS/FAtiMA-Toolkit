@@ -162,8 +162,6 @@ namespace IntegratedAuthoringToolWF
         {
             new AddCharacterForm(_iat).ShowDialog(this);
             RefreshCharacters();
-            buttonRemoveCharacter.Enabled = true;
-            buttonInspect.Enabled = true;
         }
 
         private void textBoxScenarioName_TextChanged(object sender, EventArgs e)
@@ -230,6 +228,8 @@ namespace IntegratedAuthoringToolWF
                 FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[2], _rpcForm);
                 this.tabControlIAT.SelectTab(2);
                 _rpcForm.SelectedTab = selectedRPCTab;
+                buttonInspect.Enabled = true;
+                buttonRemoveCharacter.Enabled = true;
             }
         }
 
@@ -1414,15 +1414,19 @@ namespace IntegratedAuthoringToolWF
             var aux = EditorTools.OpenFileDialog("Asset Storage File (*.json)|*.json|All Files|*.*");
             if (aux != null)
             {
+                AssetStorage storage;
                 try
                 {
                     _storage = AssetStorage.FromJson(File.ReadAllText(aux));
-                    textBoxPathAssetStorage.Text = aux;
                     OnAssetStorageChange();
+                    textBoxPathAssetStorage.Text = aux;
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    _storage = new AssetStorage();
+                    OnAssetStorageChange();
+                    textBoxPathAssetStorage.Text = string.Empty;
                 }
 
             }

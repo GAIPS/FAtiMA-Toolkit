@@ -422,7 +422,7 @@
             this.groupBox12.Controls.Add(this.buttonExportExcel);
             this.groupBox12.Controls.Add(this.buttonValidate);
             this.groupBox12.Controls.Add(this.buttonTTS);
-            this.groupBox12.Location = new System.Drawing.Point(8, 582);
+            this.groupBox12.Location = new System.Drawing.Point(8, 579);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Size = new System.Drawing.Size(849, 55);
             this.groupBox12.TabIndex = 21;
@@ -505,7 +505,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(849, 567);
+            this.groupBox2.Size = new System.Drawing.Size(849, 564);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dialogue Actions";
@@ -568,7 +568,7 @@
             this.dataGridViewDialogueActions.RowHeadersVisible = false;
             this.dataGridViewDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(841, 483);
+            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(841, 480);
             this.dataGridViewDialogueActions.TabIndex = 14;
             this.dataGridViewDialogueActions.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellClick);
             this.dataGridViewDialogueActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellContentClick);
@@ -661,7 +661,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(858, 634);
+            this.tabPage6.Size = new System.Drawing.Size(858, 637);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "Emotional Decision Making";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -670,7 +670,7 @@
             // 
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(858, 634);
+            this.tabPage7.Size = new System.Drawing.Size(858, 637);
             this.tabPage7.TabIndex = 2;
             this.tabPage7.Text = "Social Importance";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -679,7 +679,7 @@
             // 
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(858, 634);
+            this.tabPage8.Size = new System.Drawing.Size(858, 637);
             this.tabPage8.TabIndex = 3;
             this.tabPage8.Text = "CIF-CK";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -741,7 +741,7 @@
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.checkBox1);
             this.groupBox3.Controls.Add(this.effectTickBox);
-            this.groupBox3.Location = new System.Drawing.Point(6, 555);
+            this.groupBox3.Location = new System.Drawing.Point(6, 552);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(852, 73);
             this.groupBox3.TabIndex = 10;
@@ -852,7 +852,7 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.groupBox10);
-            this.splitContainer3.Size = new System.Drawing.Size(855, 546);
+            this.splitContainer3.Size = new System.Drawing.Size(855, 543);
             this.splitContainer3.SplitterDistance = 551;
             this.splitContainer3.TabIndex = 11;
             // 
@@ -870,8 +870,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer2.Size = new System.Drawing.Size(551, 546);
-            this.splitContainer2.SplitterDistance = 338;
+            this.splitContainer2.Size = new System.Drawing.Size(551, 543);
+            this.splitContainer2.SplitterDistance = 336;
             this.splitContainer2.TabIndex = 1;
             // 
             // groupBox13
@@ -880,7 +880,7 @@
             this.groupBox13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox13.Location = new System.Drawing.Point(0, 0);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(551, 338);
+            this.groupBox13.Size = new System.Drawing.Size(551, 336);
             this.groupBox13.TabIndex = 0;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "Simulation";
@@ -894,7 +894,7 @@
             this.richTextBoxChat.Location = new System.Drawing.Point(3, 18);
             this.richTextBoxChat.Name = "richTextBoxChat";
             this.richTextBoxChat.ReadOnly = true;
-            this.richTextBoxChat.Size = new System.Drawing.Size(545, 317);
+            this.richTextBoxChat.Size = new System.Drawing.Size(545, 315);
             this.richTextBoxChat.TabIndex = 0;
             this.richTextBoxChat.Text = "";
             this.richTextBoxChat.TextChanged += new System.EventHandler(this.richTextBoxChat_TextChanged);
@@ -913,8 +913,8 @@
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.groupBox8);
-            this.splitContainer4.Size = new System.Drawing.Size(551, 204);
-            this.splitContainer4.SplitterDistance = 106;
+            this.splitContainer4.Size = new System.Drawing.Size(551, 203);
+            this.splitContainer4.SplitterDistance = 105;
             this.splitContainer4.TabIndex = 0;
             // 
             // groupBox4
@@ -923,7 +923,7 @@
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(551, 106);
+            this.groupBox4.Size = new System.Drawing.Size(551, 105);
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Select Dialogue:";
@@ -938,7 +938,7 @@
             this.listBoxPlayerDialogues.ItemHeight = 17;
             this.listBoxPlayerDialogues.Location = new System.Drawing.Point(3, 18);
             this.listBoxPlayerDialogues.Name = "listBoxPlayerDialogues";
-            this.listBoxPlayerDialogues.Size = new System.Drawing.Size(545, 85);
+            this.listBoxPlayerDialogues.Size = new System.Drawing.Size(545, 84);
             this.listBoxPlayerDialogues.TabIndex = 2;
             this.listBoxPlayerDialogues.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxPlayerDialogues_MouseDoubleClick);
             // 
@@ -973,7 +973,7 @@
             this.groupBox10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox10.Location = new System.Drawing.Point(0, 0);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(300, 546);
+            this.groupBox10.Size = new System.Drawing.Size(300, 543);
             this.groupBox10.TabIndex = 8;
             this.groupBox10.TabStop = false;
             // 
@@ -994,7 +994,7 @@
             this.groupBox5.Controls.Add(this.comboBoxAgChat);
             this.groupBox5.Location = new System.Drawing.Point(6, 18);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(288, 522);
+            this.groupBox5.Size = new System.Drawing.Size(288, 519);
             this.groupBox5.TabIndex = 7;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Agent Inspector";
@@ -1004,7 +1004,7 @@
             // 
             this.buttonEvalBelief.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonEvalBelief.Enabled = false;
-            this.buttonEvalBelief.Location = new System.Drawing.Point(226, 491);
+            this.buttonEvalBelief.Location = new System.Drawing.Point(226, 488);
             this.buttonEvalBelief.Name = "buttonEvalBelief";
             this.buttonEvalBelief.Size = new System.Drawing.Size(53, 22);
             this.buttonEvalBelief.TabIndex = 10;
@@ -1047,7 +1047,7 @@
             this.groupBox11.Controls.Add(this.dataGridViewAgentInspector);
             this.groupBox11.Location = new System.Drawing.Point(9, 94);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(273, 361);
+            this.groupBox11.Size = new System.Drawing.Size(273, 358);
             this.groupBox11.TabIndex = 10;
             this.groupBox11.TabStop = false;
             // 
@@ -1069,14 +1069,14 @@
             this.dataGridViewAgentInspector.RowHeadersVisible = false;
             this.dataGridViewAgentInspector.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAgentInspector.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAgentInspector.Size = new System.Drawing.Size(267, 340);
+            this.dataGridViewAgentInspector.Size = new System.Drawing.Size(267, 337);
             this.dataGridViewAgentInspector.TabIndex = 9;
             // 
             // label6
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 495);
+            this.label6.Location = new System.Drawing.Point(6, 492);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(30, 16);
             this.label6.TabIndex = 5;
@@ -1086,7 +1086,7 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 466);
+            this.label5.Location = new System.Drawing.Point(6, 463);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(31, 16);
             this.label5.TabIndex = 4;
@@ -1105,7 +1105,7 @@
             // 
             this.textBoxValChat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxValChat.Location = new System.Drawing.Point(45, 491);
+            this.textBoxValChat.Location = new System.Drawing.Point(45, 488);
             this.textBoxValChat.Name = "textBoxValChat";
             this.textBoxValChat.ReadOnly = true;
             this.textBoxValChat.Size = new System.Drawing.Size(175, 22);
@@ -1115,7 +1115,7 @@
             // 
             this.textBoxBelChat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxBelChat.Location = new System.Drawing.Point(46, 463);
+            this.textBoxBelChat.Location = new System.Drawing.Point(46, 460);
             this.textBoxBelChat.Name = "textBoxBelChat";
             this.textBoxBelChat.Size = new System.Drawing.Size(233, 22);
             this.textBoxBelChat.TabIndex = 1;
