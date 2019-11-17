@@ -205,7 +205,7 @@ namespace EmotionalAppraisal
         {
             foreach (var appraisalRuleDto in appraisalRules)
             {
-                m_appraisalDerivator.RemoveAppraisalRule(new AppraisalRule(appraisalRuleDto));
+                m_appraisalDerivator.RemoveAppraisalRule(appraisalRuleDto.Id);
             }
         }
 

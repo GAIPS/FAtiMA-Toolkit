@@ -95,7 +95,7 @@ namespace EmotionalAppraisal.AppraisalRules
 			AppraisalRule existingRule = GetAppraisalRule(emotionalAppraisalRuleDTO.Id);
 		    if (existingRule != null)
 		    {
-				RemoveAppraisalRule(existingRule);
+				RemoveAppraisalRule(existingRule.Id);
                 existingRule.EventName = emotionalAppraisalRuleDTO.EventMatchingTemplate;
 				existingRule.Conditions = new ConditionSet(emotionalAppraisalRuleDTO.Conditions);
                 existingRule.AppraisalVariables = emotionalAppraisalRuleDTO.AppraisalVariables;
@@ -112,9 +112,9 @@ namespace EmotionalAppraisal.AppraisalRules
             Rules.Add(appraisalRule);
         }
 
-		public void RemoveAppraisalRule(AppraisalRule appraisalRule)
+		public void RemoveAppraisalRule(Guid id)
 		{
-            Rules.Remove(appraisalRule);
+            Rules.RemoveAll(r => r.Id == id);
 		}
 
 		public AppraisalRule GetAppraisalRule(Guid id)
@@ -176,6 +176,10 @@ namespace EmotionalAppraisal.AppraisalRules
 		{
 			AppraisalWeight = dataHolder.GetValue<short>("AppraisalWeight");
             Rules = dataHolder.GetValue<AppraisalRule[]>("Rules").ToList();
+            foreach(var r in Rules)
+            {
+                r.Id = Guid.NewGuid();
+            }
 		}
 
 		#endregion
