@@ -7,6 +7,6 @@ namespace EmotionalAppraisal.Components
 	{
 		short AppraisalWeight { get; }
 
-		void Appraisal(KB emotionalModule, IBaseEvent e, IWritableAppraisalFrame frame);
+		void Appraisal(KB emotionalModule, IBaseEvent e, IAppraisalFrame frame);
 	}
 }

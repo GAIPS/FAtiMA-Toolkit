@@ -135,7 +135,7 @@ namespace EmotionalAppraisal.AppraisalRules
 			set;
 		}
 
-		public void Appraisal(KB kb, IBaseEvent evt, IWritableAppraisalFrame frame)
+		public void Appraisal(KB kb, IBaseEvent evt, IAppraisalFrame frame)
 		{
 			IEnumerable<AppraisalRule> activeRules = Evaluate(evt, kb, kb.Perspective);
             foreach(var rule in activeRules)

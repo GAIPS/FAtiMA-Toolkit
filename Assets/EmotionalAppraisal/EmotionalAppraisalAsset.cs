@@ -19,13 +19,9 @@ namespace EmotionalAppraisal
     [Serializable]
     public sealed partial class EmotionalAppraisalAsset : Asset<EmotionalAppraisalAsset>, ICustomSerialization
     {
-        [NonSerialized]
-        private long _lastFrameAppraisal = 0;
-
         private ReactiveAppraisalDerivator m_appraisalDerivator;
         private EmotionDisposition m_defaultEmotionalDisposition;
         private Dictionary<string, EmotionDisposition> m_emotionDispositions;
-        private Dictionary<string, Goal> m_goals;
 
         [NonSerialized]
         private OCCAffectDerivationComponent m_occAffectDerivator;
@@ -38,7 +34,6 @@ namespace EmotionalAppraisal
         public EmotionalAppraisalAsset()
         {
             m_emotionDispositions = new Dictionary<string, EmotionDisposition>();
-            m_goals = new Dictionary<string, Goal>();
             m_defaultEmotionalDisposition = new EmotionDisposition("*", 1, 0);
             m_occAffectDerivator = new OCCAffectDerivationComponent();
             m_appraisalDerivator = new ReactiveAppraisalDerivator();
@@ -98,9 +93,6 @@ namespace EmotionalAppraisal
         /// <param name="eventNames">A set of string representation of the events to appraise</param>
         public void AppraiseEvents(IEnumerable<Name> eventNames, Name perspective, IEmotionalState emotionalState, AM am, KB kb, Dictionary<string, Goal> goals)
         {
-            var appraisalFrame = new InternalAppraisalFrame();
-            appraisalFrame.Perspective = kb.Perspective;
-
             foreach (var n in eventNames)
             {
                 var evt = am.RecordEvent(n, am.Tick);
@@ -133,10 +125,10 @@ namespace EmotionalAppraisal
                         else throw new Exception("Multiple possible values for:" + propEvt.NewValue); ;
                     }
                 }
-
-                appraisalFrame.Reset(evt);
-                var componentFrame = appraisalFrame.RequestComponentFrame(m_appraisalDerivator, m_appraisalDerivator.AppraisalWeight);
-                m_appraisalDerivator.Appraisal(kb, evt, componentFrame);
+                var appraisalFrame = new InternalAppraisalFrame();
+                appraisalFrame.Perspective = kb.Perspective;
+                appraisalFrame.AppraisedEvent = evt;
+                m_appraisalDerivator.Appraisal(kb, evt, appraisalFrame);
                 UpdateEmotions(appraisalFrame, goals, emotionalState, am);
             }
         }
@@ -230,11 +222,6 @@ namespace EmotionalAppraisal
 
         private void UpdateEmotions(IAppraisalFrame frame, Dictionary<string, Goal> goals, IEmotionalState emotionalState, AM am)
         {
-            if (_lastFrameAppraisal > frame.LastChange)
-            {
-                return;
-            }
-
             var emotions = m_occAffectDerivator.AffectDerivation(this, goals, frame);
             foreach (var emotion in emotions)
             {
@@ -243,7 +230,6 @@ namespace EmotionalAppraisal
                     continue;
             }
 
-            _lastFrameAppraisal = frame.LastChange;
         }
 
         /// @endcond

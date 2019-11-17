@@ -281,17 +281,6 @@ namespace EmotionalAppraisal.OCCModel
                 }
 
 
-            /*if(frame.ContainsAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS))
-			{
-				float praiseworthiness = frame.GetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS);
-				if (praiseworthiness != 0)
-					yield return OCCAppraisePraiseworthiness(evt, praiseworthiness, frame.Perspective);
-			}*/
-
-
-
-
-
             if (frame.ContainsAppraisalVariable(OCCAppraisalVariables.LIKE))
             {
                 float like = frame.GetAppraisalVariable(OCCAppraisalVariables.LIKE);
@@ -324,83 +313,5 @@ namespace EmotionalAppraisal.OCCModel
             }
         }
 
-
-
-        public short AffectDerivationWeight
-        {
-            get { return 1; }
-        }
-
-        public void InverseAffectDerivation(EmotionalAppraisalAsset emotionalModule, IEmotion emotion, IWritableAppraisalFrame frame)
-        {
-            const float MAGIC_VALUE_FOR_LOVE = 1.43f;
-            //TODO improve this code
-
-            //ignoring mood for now
-
-            EmotionDispositionDTO emotionDisposition = emotionalModule.EmotionDispositions.FirstOrDefault(e => e.Emotion == emotion.EmotionType);
-            if (emotionDisposition == null)
-            {
-                emotionDisposition = emotionalModule.DefaultEmotionDisposition;
-            }
-
-            int threshold = emotionDisposition.Threshold;
-            float potentialValue = emotion.Potential + threshold;
-
-            if (emotion.EmotionType == OCCEmotionType.Love.Name)
-            {
-                frame.SetAppraisalVariable(OCCAppraisalVariables.LIKE, potentialValue * MAGIC_VALUE_FOR_LOVE);
-            }
-            else if (emotion.EmotionType == OCCEmotionType.Hate.Name)
-            {
-                frame.SetAppraisalVariable(OCCAppraisalVariables.LIKE, potentialValue * -MAGIC_VALUE_FOR_LOVE);
-            }
-            else
-            if (emotion.EmotionType == OCCEmotionType.Joy.Name)
-            {
-                frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);
-            }
-            else if (emotion.EmotionType == OCCEmotionType.Distress.Name)
-            {
-                frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, -potentialValue);
-            }
-            else if (emotion.EmotionType == OCCEmotionType.Pride.Name)
-            {
-                frame.SetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS, potentialValue);
-            }
-            else if (emotion.EmotionType == OCCEmotionType.Shame.Name)
-            {
-                frame.SetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS, -potentialValue);
-            }
-            else if (emotion.EmotionType == OCCEmotionType.Gloating.Name)
-            {
-                frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);
-                frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, -potentialValue);
-            }
-            else if (emotion.EmotionType == OCCEmotionType.HappyFor.Name)
-            {
-                frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);
-                frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, potentialValue);
-            }
-            else if (emotion.EmotionType == OCCEmotionType.Pitty.Name)
-            {
-                frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, -potentialValue);
-                frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, -potentialValue);
-            }
-            else if (emotion.EmotionType == OCCEmotionType.Resentment.Name)
-            {
-                frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, potentialValue);
-            }
-            else if (emotion.EmotionType == OCCEmotionType.Gratification.Name)
-            {
-                frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, potentialValue);
-                frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, potentialValue);
-            }
-            else if (emotion.EmotionType == OCCEmotionType.Anger.Name)
-            {
-                frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY, -potentialValue);
-                frame.SetAppraisalVariable(OCCAppraisalVariables.DESIRABILITY_FOR_OTHER, -potentialValue);
-            }
-        }
     }
 }
