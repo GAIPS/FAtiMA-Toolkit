@@ -20,7 +20,7 @@ namespace EmotionalAppraisal
 
 		public uint CauseId { get; protected set; }
 
-		public Name Direction
+		public Name Target
 		{
 			get;
 			protected set;
@@ -84,7 +84,7 @@ namespace EmotionalAppraisal
 			this.Potential = potential;
 
 			this.CauseId = causeId;
-			this.Direction = direction;
+			this.Target = direction;
             this.EventName = eventName;
 			this.InfluenceMood = influencesMood;
             
@@ -107,7 +107,7 @@ namespace EmotionalAppraisal
 			this.Potential = other.Potential;
 			this.InfluenceMood = other.InfluenceMood;
 			this.CauseId = other.CauseId;
-			this.Direction = other.Direction;
+			this.Target = other.Target;
             this.EventName = other.EventName;
 		}
 
@@ -144,8 +144,8 @@ namespace EmotionalAppraisal
 		{
 			StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
 			builder.AppendFormat("{0}: {1}", EmotionType,am.RecallEvent(CauseId).EventName);
-			if (this.Direction != null)
-				builder.AppendFormat(" {0}", this.Direction);
+			if (this.Target != null)
+				builder.AppendFormat(" {0}", this.Target);
             if (this.EventName != null)
                 builder.AppendFormat(" {0}", this.EventName);
 
@@ -161,7 +161,7 @@ namespace EmotionalAppraisal
             {
                 Type = this.EmotionType,
                 Intensity = this.Potential,
-                Target = this.Direction?.ToString(),
+                Target = this.Target?.ToString(),
                 CauseEventId = this.CauseId,
                 CauseEventName = am.RecallEvent(this.CauseId).EventName.ToString()
             };

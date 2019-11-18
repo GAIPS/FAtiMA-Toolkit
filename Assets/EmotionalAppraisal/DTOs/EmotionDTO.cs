@@ -17,7 +17,7 @@ namespace EmotionalAppraisal.DTOs
 		/// </summary>
 		public float Intensity { get; set; }
         /// <summary>
-		/// The current intencity of the emotion
+		/// The target of the emotion
 		/// </summary>
 		public string Target { get; set; }
 		/// <summary>

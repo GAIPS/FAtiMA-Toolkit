@@ -25,9 +25,7 @@ namespace EmotionalAppraisal
         
         public uint CauseId { get; private set; }
 
-		public Name Direction{ get; private set; }
-
-        public string Target { get; private set; }
+		public Name Target{ get; private set; }
 
         public Name EventName
         {
@@ -92,16 +90,14 @@ namespace EmotionalAppraisal
 			this.AppraisalVariables = emotion.AppraisalVariables.ToArray();
 			this.InfluenceMood = emotion.InfluenceMood;
 			this.CauseId = emotion.CauseId;
-			this.Direction = emotion.Direction;
+			this.Target = emotion.Target;
             this.EventName = emotion.EventName;
             this.Threshold = threshold;
 			this.Decay = decay;
 			SetIntensity(potential,tickStamp);
 		}
 
-
-
-        //TODO: Discuss with Pedro this hierarchy. Problem: ActiveEmotion might be a bit too tied to OCCEmotion
+        
         public ActiveEmotion(EmotionDTO emotionDTO, AM am, int threshold, int decay)
 	    {
 	        var occType = OCCEmotionType.Parse(emotionDTO.Type);
@@ -114,8 +110,7 @@ namespace EmotionalAppraisal
 	        this.CauseId = emotionDTO.CauseEventId;
             var causeEvent = am.RecallEvent(this.CauseId);
             this.EventName = causeEvent.EventName;
-            this.Target = emotionDTO.Target;
-	        this.Direction = null; //TODO: handle direction correctly
+            this.Target = (Name)emotionDTO.Target; //TODO: handle direction correctly
 	        this.Threshold = threshold;
 	        this.Decay = decay;
 	        this.Intensity = emotionDTO.Intensity;
@@ -176,8 +171,8 @@ namespace EmotionalAppraisal
 		{
 			StringBuilder builder = ObjectPool<StringBuilder>.GetObject();
 			builder.AppendFormat("{0}: {1}", EmotionType, am.RecallEvent(CauseId).EventName);
-			if (this.Direction != null)
-				builder.AppendFormat(" {0}", this.Direction);
+			if (this.Target != null)
+				builder.AppendFormat(" {0}", this.Target);
             if (this.EventName != null)
                 builder.AppendFormat(" {0}", this.EventName);
             if (this.Target != null)
@@ -195,7 +190,7 @@ namespace EmotionalAppraisal
 	        {
                 Type = this.EmotionType,
                 Intensity = this.Intensity,
-                Target = this.Target,
+                Target = this.Target.ToString(),
                 CauseEventId =  this.CauseId, 
                 CauseEventName = am.RecallEvent(this.CauseId).EventName.ToString(),
 	        };
@@ -208,8 +203,8 @@ namespace EmotionalAppraisal
 			dataHolder.SetValue("Decay", Decay);
 			dataHolder.SetValue("Threshold", Threshold);
 			dataHolder.SetValue("CauseId", CauseId);
-			if (Direction != null)
-				dataHolder.SetValue("Direction", Direction.ToString());
+			if (Target != null)
+				dataHolder.SetValue("Direction", Target.ToString());
             if (EventName != null)
                 dataHolder.SetValue("EventName", EventName.ToString());
             if (Target != null)
@@ -226,12 +221,8 @@ namespace EmotionalAppraisal
 			Decay = dataHolder.GetValue<int>("Decay");
 			Threshold = dataHolder.GetValue<int>("Threshold");
 			CauseId = dataHolder.GetValue<uint>("CauseId");
-
-			var dir = dataHolder.GetValue<string>("Direction");
             var evtName = dataHolder.GetValue<string>("EventName");
-            Target = dataHolder.GetValue<string>("Target");
-
-            Direction = !string.IsNullOrEmpty(dir) ? Name.BuildName(dir) : null;
+            Target = (Name)dataHolder.GetValue<string>("Target");
             EventName = !string.IsNullOrEmpty(evtName) ? Name.BuildName(evtName) : null;
            
             EmotionType = dataHolder.GetValue<string>("EmotionType");

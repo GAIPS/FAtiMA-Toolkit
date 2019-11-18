@@ -444,7 +444,7 @@ namespace RolePlayCharacter
                 var em = this.GetStrongestActiveEmotion();
 
                 return "M: " + this.Mood.ToString("F2") +
-                       " | S. Em: " + em.EmotionType + "(" + em.Intensity.ToString("F2") + ", " + em.Direction + ")";
+                       " | S. Em: " + em.EmotionType + "(" + em.Intensity.ToString("F2") + ", " + em.Target + ")";
             }
             else return "M: " + this.Mood.ToString("F2");
         }

@@ -22,7 +22,7 @@ namespace EmotionalAppraisal
         /// Ex. I am angry thowards John.
         /// Ie. The emotion is <b>Anger</b>. The direction is <b>John</b>
         /// </summary>
-        Name Direction { get; }
+        Name Target { get; }
 
 		/// <summary>
 		/// The potential of this emotion.
