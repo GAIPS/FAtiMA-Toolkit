@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using AssetManagerPackage;
 using GAIPS.AssetEditorTools;
 
 namespace EmotionalAppraisalWF

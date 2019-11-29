@@ -190,7 +190,7 @@ namespace EmotionalAppraisal
 	        {
                 Type = this.EmotionType,
                 Intensity = this.Intensity,
-                Target = this.Target.ToString(),
+                Target = this.Target == null ? Name.NIL_STRING : this.Target.ToString(),
                 CauseEventId =  this.CauseId, 
                 CauseEventName = am.RecallEvent(this.CauseId).EventName.ToString(),
 	        };

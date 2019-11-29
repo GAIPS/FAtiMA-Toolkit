@@ -265,8 +265,6 @@ namespace Tests.EmotionalAppraisal
         {
             var asset = BuildTestAsset();
 
-            var rpc = new RolePlayCharacterAsset();
-
             asset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
             {
                 EventMatchingTemplate = (Name) "Event(Action-End,*,*,*)",

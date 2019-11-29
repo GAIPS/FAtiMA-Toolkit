@@ -21,6 +21,7 @@ namespace WebAPIWF
         private const string UIELEMENT_OUTPUTCONSOLE = "Console";
         private Thread serverThread;
         HTTPFAtiMAServer fatimaServer;
+        public IntegratedAuthoringToolWF.MainForm iat  { get; set; }
 
         public MainForm()
         {
@@ -106,7 +107,7 @@ namespace WebAPIWF
             try
             {
                 fatimaServer?.Close();
-             //   fatimaServer = new HTTPFAtiMAServer() { IatFilePath = LoadedAsset.AssetFilePath, Port = int.Parse(this.textBoxPort.Text) };
+                fatimaServer = new HTTPFAtiMAServer() { IatFilePath = iat._currentScenarioFilePath, AssetFilePath = iat.textBoxPathAssetStorage.Text, Port = int.Parse(this.textBoxPort.Text) };
                 fatimaServer.OnServerEvent += ServerNotificationHandler;
                 fatimaServer.Run();
             }

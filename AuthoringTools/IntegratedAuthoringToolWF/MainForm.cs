@@ -42,7 +42,7 @@ namespace IntegratedAuthoringToolWF
 
         private IntegratedAuthoringToolAsset _iat;
         private AssetStorage _storage;
-        private string _currentScenarioFilePath;
+        public string _currentScenarioFilePath;
 
         private IList<RolePlayCharacterAsset> _agentsInSimulation;
 
@@ -56,6 +56,7 @@ namespace IntegratedAuthoringToolWF
             _agentsInSimulation = new List<RolePlayCharacterAsset>();
             _storage = new AssetStorage();
             _webForm = new WebAPIWF.MainForm();
+            _webForm.iat = this;
             _eaForm = new EmotionalAppraisalWF.MainForm();
             _edmForm = new EmotionalDecisionMakingWF.MainForm();
             _siForm = new SocialImportanceWF.MainForm();

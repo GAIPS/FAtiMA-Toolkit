@@ -75,14 +75,15 @@
             this.dataGridViewDecisions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewDecisions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridViewDecisions.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewDecisions.Location = new System.Drawing.Point(4, 19);
+            this.dataGridViewDecisions.Location = new System.Drawing.Point(4, 23);
             this.dataGridViewDecisions.Margin = new System.Windows.Forms.Padding(5);
             this.dataGridViewDecisions.Name = "dataGridViewDecisions";
             this.dataGridViewDecisions.ReadOnly = true;
             this.dataGridViewDecisions.RowHeadersVisible = false;
+            this.dataGridViewDecisions.RowHeadersWidth = 51;
             this.dataGridViewDecisions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewDecisions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewDecisions.Size = new System.Drawing.Size(765, 154);
+            this.dataGridViewDecisions.Size = new System.Drawing.Size(765, 150);
             this.dataGridViewDecisions.TabIndex = 14;
             // 
             // groupBox2
@@ -100,11 +101,11 @@
             // textBoxEvents
             // 
             this.textBoxEvents.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBoxEvents.Location = new System.Drawing.Point(3, 18);
+            this.textBoxEvents.Location = new System.Drawing.Point(3, 22);
             this.textBoxEvents.Multiline = true;
             this.textBoxEvents.Name = "textBoxEvents";
             this.textBoxEvents.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxEvents.Size = new System.Drawing.Size(763, 136);
+            this.textBoxEvents.Size = new System.Drawing.Size(763, 132);
             this.textBoxEvents.TabIndex = 0;
             // 
             // buttonTest
@@ -142,14 +143,15 @@
             this.dataGridActiveEmotions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridActiveEmotions.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridActiveEmotions.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridActiveEmotions.Location = new System.Drawing.Point(3, 18);
+            this.dataGridActiveEmotions.Location = new System.Drawing.Point(3, 22);
             this.dataGridActiveEmotions.Margin = new System.Windows.Forms.Padding(5);
             this.dataGridActiveEmotions.Name = "dataGridActiveEmotions";
             this.dataGridActiveEmotions.ReadOnly = true;
             this.dataGridActiveEmotions.RowHeadersVisible = false;
+            this.dataGridActiveEmotions.RowHeadersWidth = 51;
             this.dataGridActiveEmotions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridActiveEmotions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridActiveEmotions.Size = new System.Drawing.Size(763, 145);
+            this.dataGridActiveEmotions.Size = new System.Drawing.Size(763, 141);
             this.dataGridActiveEmotions.TabIndex = 15;
             // 
             // label1
@@ -158,7 +160,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(17, 543);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(85, 16);
+            this.label1.Size = new System.Drawing.Size(108, 20);
             this.label1.TabIndex = 4;
             this.label1.Text = "Action Layer:";
             // 
@@ -168,12 +170,13 @@
             this.wfNameActionLayer.AllowLiteral = true;
             this.wfNameActionLayer.AllowNil = true;
             this.wfNameActionLayer.AllowUniversal = true;
+            this.wfNameActionLayer.AllowUniversalLiteral = true;
             this.wfNameActionLayer.AllowVariable = true;
             this.wfNameActionLayer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.wfNameActionLayer.Location = new System.Drawing.Point(108, 540);
             this.wfNameActionLayer.Name = "wfNameActionLayer";
             this.wfNameActionLayer.OnlyIntOrVariable = false;
-            this.wfNameActionLayer.Size = new System.Drawing.Size(152, 22);
+            this.wfNameActionLayer.Size = new System.Drawing.Size(152, 26);
             this.wfNameActionLayer.TabIndex = 3;
             // 
             // label2
@@ -182,7 +185,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(674, 543);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 16);
+            this.label2.Size = new System.Drawing.Size(55, 20);
             this.label2.TabIndex = 5;
             this.label2.Text = "Mood:";
             // 
@@ -192,7 +195,7 @@
             this.textBoxMood.Location = new System.Drawing.Point(726, 540);
             this.textBoxMood.Name = "textBoxMood";
             this.textBoxMood.ReadOnly = true;
-            this.textBoxMood.Size = new System.Drawing.Size(59, 22);
+            this.textBoxMood.Size = new System.Drawing.Size(59, 26);
             this.textBoxMood.TabIndex = 6;
             // 
             // textBoxTick
@@ -201,7 +204,7 @@
             this.textBoxTick.Location = new System.Drawing.Point(609, 540);
             this.textBoxTick.Name = "textBoxTick";
             this.textBoxTick.ReadOnly = true;
-            this.textBoxTick.Size = new System.Drawing.Size(59, 22);
+            this.textBoxTick.Size = new System.Drawing.Size(59, 26);
             this.textBoxTick.TabIndex = 8;
             // 
             // label3
@@ -210,13 +213,13 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(557, 543);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(37, 16);
+            this.label3.Size = new System.Drawing.Size(45, 20);
             this.label3.TabIndex = 7;
             this.label3.Text = "Tick:";
             // 
             // RPCInspectForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(805, 576);
             this.Controls.Add(this.textBoxTick);
