@@ -13,8 +13,6 @@ namespace EmotionalAppraisalWF
 		[STAThread]
 		static void Main()
 		{
-			AssetManager.Instance.Bridge = new ApplicationBridge();
-
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
 

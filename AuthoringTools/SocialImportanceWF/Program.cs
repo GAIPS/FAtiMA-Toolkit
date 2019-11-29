@@ -13,7 +13,6 @@ namespace SocialImportanceWF
 		[STAThread]
 		static void Main()
 		{
-			AssetManager.Instance.Bridge = new ApplicationBridge();
 
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
