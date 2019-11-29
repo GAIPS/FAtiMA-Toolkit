@@ -28,7 +28,7 @@ namespace WebServer
         public static APIMethods EXECUTE = new APIMethods() { Name = "execute", Type = "POST", Description = "Executes a given action and trigger all the effects defined in the World Model." };
         public static APIMethods CREATE = new APIMethods() { Name = "create", Type = "POST", Description = "Creates or resets a new instance of RPCs in the scenario." };
 
-        public static APIMethods[] Methods = { DECIDE, CHARACTERS, ASK, PERCEIVE, UPDATE, EXECUTE, CREATE };
+        public static APIMethods[] Methods = { DECIDE, CHARACTERS, ASK, BELIEFS, AM, PERCEIVE, UPDATE, EXECUTE, CREATE };
 
         public override string ToString()
         {

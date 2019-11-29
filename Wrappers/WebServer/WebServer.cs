@@ -89,14 +89,14 @@ namespace WebServer
 
                     if (apiMethod == APIMethods.DECIDE.ToString())
                     {
-                        var charName = request.QueryString["c"].ToLower();
+                        var charName = request.QueryString["c"]?.ToLower();
                         responseJson = this.HandleDecideRequest(charName, scenarios[instance]);
                     }
                     else if (apiMethod == APIMethods.ASK.ToString())
                     {
-                        var charName = request.QueryString["c"].ToLower();
-                        var beliefHead = request.QueryString["bh"].ToLower();
-                        var beliefBody = request.QueryString["bb"].ToLower();
+                        var charName = request.QueryString["c"]?.ToLower();
+                        var beliefHead = request.QueryString["bh"]?.ToLower();
+                        var beliefBody = request.QueryString["bb"]?.ToLower();
                         var belief = Name.BuildName(beliefHead + "(" + beliefBody + ")");
                         responseJson = this.HandleAskRequest(charName, belief, scenarios[instance]);
                     }
@@ -106,12 +106,12 @@ namespace WebServer
                     }
                     else if (apiMethod == APIMethods.BELIEFS.ToString())
                     {
-                        var charName = request.QueryString["c"].ToLower();
+                        var charName = request.QueryString["c"]?.ToLower();
                         responseJson = this.HandleBeliefsRequest(charName, scenarios[instance]);
                     }
                     else if (apiMethod == APIMethods.AM.ToString())
                     {
-                        var charName = request.QueryString["c"].ToLower();
+                        var charName = request.QueryString["c"]?.ToLower();
                         responseJson = this.HandleAMRequest(charName, scenarios[instance]);
                     }
                     else
@@ -135,7 +135,7 @@ namespace WebServer
                     }
                     if (apiMethod == APIMethods.PERCEIVE.ToString())
                     {
-                        var charName = request.QueryString["c"].ToLower();
+                        var charName = request.QueryString["c"]?.ToLower();
                         responseJson = this.HandlePerceiveRequest(charName, requestBody, scenarios[instance]);
                     }
                     else if (apiMethod == APIMethods.EXECUTE.ToString())

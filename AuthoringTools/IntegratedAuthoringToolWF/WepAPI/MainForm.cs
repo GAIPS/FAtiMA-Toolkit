@@ -8,6 +8,7 @@ using System.Threading;
 using System.Windows.Forms;
 using WebServer;
 
+
 namespace WebAPIWF
 {
     public partial class MainForm : Form
@@ -41,7 +42,7 @@ namespace WebAPIWF
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.textBoxServer.Text = this.serverStatus;
-            this.dataGridApiMethods.DataSource = APIMethod.Methods;
+            this.dataGridApiMethods.DataSource = APIMethods.Methods;
             this.dataGridApiMethods.Refresh();
             this.updateUIDelegate = new UpdateUIDelegate(this.UpdateUI);
         }
