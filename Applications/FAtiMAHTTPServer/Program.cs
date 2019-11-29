@@ -11,8 +11,11 @@ namespace FAtiMAHTTPServer
             try
             {
                 string port = args[0];
-                string file = args[1];
-                server = new HTTPFAtiMAServer() { IatFilePath = file, Port = int.Parse(port) };
+                string scenarioFile = args[1];
+                string storageFile = args[2];
+
+                server = new HTTPFAtiMAServer() { IatFilePath = scenarioFile, AssetFilePath = storageFile, Port = int.Parse(port) };
+
                 server.OnServerEvent += ServerNotificationHandler;
                 server.Run();
             }catch(Exception ex)

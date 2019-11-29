@@ -19,6 +19,8 @@ namespace WebServer
         public static APIMethods DECIDE = new APIMethods() { Name = "decide", Params = "?c='char'", Type = "GET", Description = "Returns the actions decided by the character to execute." };
         public static APIMethods CHARACTERS = new APIMethods() { Name = "characters", Type = "GET", Description = "Returns all loaded characters and their emotional state." };
         public static APIMethods ASK = new APIMethods() { Name = "ask", Params = "?c='character'&bh='belHead'&bb='belBody'", Type = "GET", Description = "Returns the value of a belief for a given character" };
+        public static APIMethods BELIEFS = new APIMethods() { Name = "beliefs", Params = "?c='character", Type = "GET", Description = "Returns the current beliefs for a given character" };
+        public static APIMethods AM = new APIMethods() { Name = "am", Params = "?c='character", Type = "GET", Description = "Returns all the events stored in the agent's Autobiographical Memory" };
 
         //POST METHODS (BODY REQUIRED)
         public static APIMethods PERCEIVE = new APIMethods() { Name = "perceive", Type = "POST", Description = "Makes the characters perceive all the event strings passed in the body." };

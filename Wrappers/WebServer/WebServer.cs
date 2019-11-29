@@ -36,7 +36,7 @@ namespace WebServer
             IntegratedAuthoringToolAsset iat;
             var scenarios = new ConcurrentDictionary<string, IntegratedAuthoringToolAsset>();
             var assetStorage = AssetStorage.FromJson(File.ReadAllText(AssetFilePath));
-            iat = IntegratedAuthoringToolAsset.FromJson(File.ReadAllText(IatFilePath),assetStorage);
+            iat = IntegratedAuthoringToolAsset.FromJson(File.ReadAllText(IatFilePath), assetStorage);
             scenarios[DEFAULT_INSTANCE_ID] = iat;
 
             try
@@ -46,7 +46,7 @@ namespace WebServer
                 server.Start();
                 OnServerEvent(this, new ServerEventArgs
                 {
-                    Message = "Server started on port '" + this.Port + "' on scenario '" + iat.ScenarioName + "'",
+                    Message = "Server started on port '" + this.Port + "' on scenario '" + IatFilePath + "' with configuration '"+ AssetFilePath + "'",
                     Type = MessageTypes.Status
                 });
             }
@@ -103,6 +103,16 @@ namespace WebServer
                     else if (apiMethod == APIMethods.CHARACTERS.ToString())
                     {
                         responseJson = this.HandleCharactersRequest(scenarios[instance]);
+                    }
+                    else if (apiMethod == APIMethods.BELIEFS.ToString())
+                    {
+                        var charName = request.QueryString["c"].ToLower();
+                        responseJson = this.HandleBeliefsRequest(charName, scenarios[instance]);
+                    }
+                    else if (apiMethod == APIMethods.AM.ToString())
+                    {
+                        var charName = request.QueryString["c"].ToLower();
+                        responseJson = this.HandleAMRequest(charName, scenarios[instance]);
                     }
                     else
                     {
@@ -205,6 +215,33 @@ namespace WebServer
             {
                 var rpc = scenario.Characters.Where(r => r.CharacterName.ToString().ToLowerInvariant() == characterName).FirstOrDefault();
                 var beliefResult = rpc.GetBeliefValue(belief.ToString());
+                return JsonConvert.SerializeObject(beliefResult);
+            }
+            catch (Exception)
+            {
+                return JsonConvert.SerializeObject(APIErrors.ERROR_EXCEPTION_ASK);
+            }
+        }
+        private string HandleAMRequest(string charName, IntegratedAuthoringToolAsset scenario)
+        {
+            try
+            {
+                var rpc = scenario.Characters.Where(r => r.CharacterName.ToString().ToLowerInvariant() == charName).FirstOrDefault();
+                var result = rpc.EventRecords;
+                return JsonConvert.SerializeObject(result);
+            }
+            catch (Exception)
+            {
+                return JsonConvert.SerializeObject(APIErrors.ERROR_EXCEPTION_ASK);
+            }
+        }
+
+        private string HandleBeliefsRequest(string charName, IntegratedAuthoringToolAsset scenario)
+        {
+            try
+            {
+                var rpc = scenario.Characters.Where(r => r.CharacterName.ToString().ToLowerInvariant() == charName).FirstOrDefault();
+                var beliefResult = rpc.GetAllBeliefs();
                 return JsonConvert.SerializeObject(beliefResult);
             }
             catch (Exception)
