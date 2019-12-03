@@ -1,52 +1,23 @@
+
+
 @echo off
 
-SET exportBat=export.bat
-SET excludeDirectories=\tools\ \Tests\
-SET pdo2mdbPath=\tools\pdb2mdb\pdb2mdb.exe
-
-IF NOT "%~1" == "debug" (
-	IF NOT "%~1" == "release" (
-		echo First Parameter must contain "debug" or "release" string
-		exit /B
-	)
-)
-
-IF "%~2"=="" (
-	echo Second Parameter does not contain destination path for the export
+IF "%~1"=="" (
+	echo First Parameter does not contain destination path for the export
 	exit /B
 )
 
-SET targetPath=%~f2
-::Set directory to batch file's folder
-pushd %~p0
+SET pdo2mdbPath=\tools\pdb2mdb\pdb2mdb.exe
+echo "Exporting Assets..."
+for /r "Assets" %%i in (*.dll *.pdb) do xcopy "%%~fi" "%~1" /y >nul
+echo "Exporting Components..."
+for /r "Components" %%i in (*.dll *.pdb) do xcopy "%%~fi" "%~1" /y >nul
+echo "Exporting Utilities..."
+for /r "Utilities/SerializationUtilities" %%i in (*.dll *.pdb) do xcopy "%%~fi" "%~1" /y >nul
+for /r "Utilities/Utilities" %%i in (*.dll *.pdb) do xcopy "%%~fi" "%~1" /y >nul
+::echo "Converting pdbs..."
+::for /r "Dlls" %%i in (*.pdb) do ( call "%cd%%pdo2mdbPath%" "%%~i")
 
-IF NOT EXIST "%targetPath%" (
-	echo Target folder "%targetPath%" does not exist
-	exit /B 
-)
 
-FOR /F "delims=" %%i IN ('dir /B /S /A:D ^| findstr /v "%excludeDirectories%"') DO (
-	pushd "%%~fi"
-		IF EXIST %exportBat% (
-			echo Exporting %%i
-			CALL %exportBat% %~1 "%targetPath%"
-		)
-	popd
-)
 
-IF "%~1" == "debug" (
-	echo Converting PDO to MDB...
-	pushd %targetPath%
-	
-	for /r %%i in (*.dll) do (
-		IF EXIST %%~ni.pdb (
-			echo Converting "%%~i"
-			call "%cd%%pdo2mdbPath%" "%%~i"
-		)
-	)
-	
-	popd
-	echo Convertion Completed!
-)
-
-popd
+::ROBOCOPY "C:\Users\Manue\Work\FAtiMA-Toolkit\AffectRecognition" "C:\Users\Manue\Work\FAtiMA-Toolkit\Dlls" *.dll /S 

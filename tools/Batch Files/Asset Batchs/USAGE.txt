@@ -1,6 +1,0 @@
-export.bat
-	- Place this batch file inside the project directory that you wish to export
-
-ImportLibsToUnity.bat
-	- Performs an asset import into Unity's Asset folder.
-	- Specify within the batch which version is required (debug or release), and the location of the project
