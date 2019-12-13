@@ -4,6 +4,7 @@ obj
 *.coverage
 packages/
 /ExportDlls
+/Dlls
 *.user
 TestResults
 /Components/KnowledgeBase/java-files/*.java
