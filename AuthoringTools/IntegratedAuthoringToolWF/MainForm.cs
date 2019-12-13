@@ -61,6 +61,7 @@ namespace IntegratedAuthoringToolWF
             _edmForm = new EmotionalDecisionMakingWF.MainForm();
             _siForm = new SocialImportanceWF.MainForm();
             _cifForm = new CommeillFautWF.MainForm();
+            this.KeyDown += new KeyEventHandler(Form_KeyDown);
             OnAssetStorageChange();
             OnAssetDataLoaded(_iat);
         }
@@ -1458,6 +1459,7 @@ namespace IntegratedAuthoringToolWF
         {
             _iat = new IntegratedAuthoringToolAsset();
             OnAssetDataLoaded(_iat);
+            _currentScenarioFilePath = null;
             EditorTools.UpdateFormTitle("FAtiMA Authoring Tool", string.Empty, this);
         }
 
@@ -1490,6 +1492,46 @@ namespace IntegratedAuthoringToolWF
                 textBoxPathAssetStorage.Text = sfd.FileName;
             }
         }
+
+        void Form_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.S)       // Ctrl-S Save
+            {
+                var sfd = new SaveFileDialog();
+                if (string.IsNullOrEmpty(textBoxPathAssetStorage.Text))
+                {
+                    sfd = new SaveFileDialog();
+                    sfd.Filter = "Asset Storage File (*.json)|*.json|All Files|*.*";
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        SaveAssetRules();
+                        File.WriteAllText(sfd.FileName, _storage.ToJson());
+                        textBoxPathAssetStorage.Text = sfd.FileName;
+                    }
+                }
+                else
+                {
+                    SaveAssetRules();
+                    File.WriteAllText(textBoxPathAssetStorage.Text, _storage.ToJson());
+                }
+
+                sfd.Filter = "Scenario File (*.json)|*.json|All Files|*.*";
+                if (_currentScenarioFilePath != null)
+                {
+                    File.WriteAllText(_currentScenarioFilePath, _iat.ToJson());
+                }
+                else
+                {
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        File.WriteAllText(sfd.FileName, _iat.ToJson());
+                        _currentScenarioFilePath = sfd.FileName;
+                    }
+                }
+                EditorTools.UpdateFormTitle("FAtiMA Authoring Tool", _currentScenarioFilePath, this);
+            }
+        }
+
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var sfd = new SaveFileDialog();
