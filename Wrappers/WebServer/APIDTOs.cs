@@ -12,7 +12,6 @@ namespace WebServer
         public string Name { get; set; }
         public float Mood { get; set; }
         public IEnumerable<EmotionDTO> Emotions { get; set; }
-        public ulong Tick { get; set; }
     }
 
     public class DecisionDTO
@@ -31,4 +30,11 @@ namespace WebServer
 
         public string Target { get; set; }
     }
+    public class CreateScenarioRequestDTO
+    {
+        public string Scenario { get; set; }
+
+        public string Assets { get; set; }
+    }
+
 }

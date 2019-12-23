@@ -1,8 +1,7 @@
 {
   "profiles": {
     "FAtiMAHTTPServer": {
-      "commandName": "Project",
-      "commandLineArgs": "8008 D:\\scenario.json D:\\assets.json"
+      "commandName": "Project"
     },
     "newProfile1": {
       "commandName": "Project"

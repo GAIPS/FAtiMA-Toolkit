@@ -10,11 +10,18 @@ namespace FAtiMAHTTPServer
             HTTPFAtiMAServer server = null;
             try
             {
-                string port = args[0];
-                string scenarioFile = args[1];
-                string storageFile = args[2];
-
-                server = new HTTPFAtiMAServer() { IatFilePath = scenarioFile, AssetFilePath = storageFile, Port = int.Parse(port) };
+                if (args.Length == 1) 
+                { 
+                    string httpPort = args[0];
+                    server = new HTTPFAtiMAServer() { Port = int.Parse(httpPort)};
+                }
+                else if (args.Length == 2)
+                {
+                    string httpPort = args[0];
+                    string httpsPort = args[1];
+                    server = new HTTPFAtiMAServer() { Port = int.Parse(httpPort), HTTPSPort = int.Parse(httpsPort) };
+                }
+                else server = new HTTPFAtiMAServer();
 
                 server.OnServerEvent += ServerNotificationHandler;
                 server.Run();
@@ -31,3 +38,4 @@ namespace FAtiMAHTTPServer
         }
     }
 }
+
