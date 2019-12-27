@@ -326,7 +326,7 @@ namespace RolePlayCharacter
 
         public void Perceive(IEnumerable<Name> events, Name observer)
         {
-            m_socialImportanceAsset.InvalidateCachedSI();
+            m_socialImportanceAsset?.InvalidateCachedSI();
 
             var idx = 0;
             foreach (var e in events)

@@ -3,6 +3,7 @@ using IntegratedAuthoringTool;
 using RolePlayCharacter;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
@@ -42,7 +43,7 @@ namespace WebAPIWF
         private void MainForm_Load(object sender, EventArgs e)
         {
             this.textBoxServer.Text = this.serverStatus;
-            this.dataGridApiMethods.DataSource = APIMethods.Methods;
+            this.dataGridApiMethods.DataSource = APIResource.Set.Select(r => new APIResourceDescriptionDTO {Resource = r.Type.ToString().ToLower(), URL = r.URLFormat, Methods = "[ " + string.Join(",", r.ValidOperations) + " ]" }).ToList();
             this.dataGridApiMethods.Refresh();
             this.updateUIDelegate = new UpdateUIDelegate(this.UpdateUI);
         }

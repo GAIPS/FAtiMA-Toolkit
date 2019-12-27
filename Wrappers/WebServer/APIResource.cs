@@ -6,6 +6,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using Utilities;
 using WellFormedNames;
 using WorldModel.DTOs;
 
@@ -28,8 +29,9 @@ namespace WebServer
     {
         public APIResourceType Type { get; private set; }
         public int URLSegmentSize { get; set; }
-        public string Params { get; private set; }
-        public string Description { get; private set; }
+        public string URLFormat { get; set; }
+        public string[] ValidOperations { get; set; }
+        public string ValidBodyFormat { get; private set; }
         public Func<APIRequest, ConcurrentDictionary<string, IntegratedAuthoringToolAsset[]>, string> Execute { get; private set; }
 
         //scenarios
@@ -37,83 +39,93 @@ namespace WebServer
         {
             Type = APIResourceType.SCENARIOS,
             Execute = HandleScenariosRequest,
+            URLFormat = "/scenarios",
+            ValidOperations = new string[] { "GET", "POST", "DELETE" },
             URLSegmentSize = 1,
-            Description = "(GET) Returns all the available scenarios. (POST) Creates a new scenario."
+            ValidBodyFormat = "{\"scenario\" : \"<scenario.json>\", \"assets\" : \"\"<scenario.json>\"}"
         };
 
-        //scenarios/{scenarioId}/instances
+        //scenarios/{scenarioName}/instances
         public static APIResource INSTANCES = new APIResource()
         {
             Type = APIResourceType.INSTANCES,
             Execute = HandleInstancesRequest,
-            URLSegmentSize = 3,
-            Description = "(GET) Returns all the available instances. (POST) Creates a new instance."
+            URLFormat = "/scenarios/{scenarioName}/instances",
+            ValidOperations = new string[] { "GET", "POST", "DELETE"},
+            URLSegmentSize = 3
         };
 
-        //scenarios/{scenarioId}/instances/{instanceId}/characters/{charName}/decisions
+        //scenarios/{scenarioName}/instances/{instanceId}/characters/{charName}/decisions
         public static APIResource DECISIONS = new APIResource()
         {
             Type = APIResourceType.DECISIONS,
             Execute = HandleDecisionsRequest,
-            URLSegmentSize = 7,
-            Description = "Returns the decisions of the character to execute."
+            URLFormat = "/scenarios/{scenarioName}/instances/{instanceId}/characters/{charName}/decisions",
+            ValidOperations = new string[] { "GET"},
+            URLSegmentSize = 7
         };
 
-        //scenarios/{scenarioId}/instances/{instanceId}/characters
+        //scenarios/{scenarioName}/instances/{instanceId}/characters
         public static APIResource CHARACTERS = new APIResource()
         {
             Type = APIResourceType.CHARACTERS,
             Execute = HandleCharactersRequest,
+            URLFormat = "/scenarios/{scenarioName}/instances/{instanceId}/characters",
             URLSegmentSize = 5,
-            Description = "Returns all loaded characters and their emotional state."
+            ValidOperations = new string[] { "GET" },
         };
 
-        //scenarios/{scenarioId}/instances/{instanceId}/characters/{charName}/beliefs
+        //scenarios/{scenarioName}/instances/{instanceId}/characters/{charName}/beliefs
         public static APIResource BELIEFS = new APIResource()
         {
             Type = APIResourceType.BELIEFS,
             Execute = HandleBeliefsRequest,
+            URLFormat = "/scenarios/{scenarioName}/instances/{instanceId}/characters/{charName}/beliefs",
             URLSegmentSize = 7,
-            Description = "Returns the current beliefs for a given character"
+            ValidOperations = new string[] { "GET" },
         };
 
-        //scenarios/{scenarioId}/instances/{instanceId}/characters/{charName}/memories
+        //scenarios/{scenarioName}/instances/{instanceId}/characters/{charName}/memories
         public static APIResource MEMORIES = new APIResource()
         {
             Type = APIResourceType.MEMORIES,
             Execute = HandleMemoriesRequest,
+            URLFormat = "/scenarios/{scenarioName}/instances/{instanceId}/characters/{charName}/memories",
             URLSegmentSize = 7,
-            Description = "Returns all the events stored in the agent's Autobiographical Memory"
+            ValidOperations = new string[] { "GET" },
         };
 
-        //scenarios/{scenarioId}/instances/{instanceId}/characters/{charName}/perceptions
+        //scenarios/{scenarioName}/instances/{instanceId}/characters/{charName}/perceptions
         public static APIResource PERCEPTIONS = new APIResource()
         {
             Type = APIResourceType.PERCEPTIONS,
             Execute = HandlePerceptionsRequest,
+            URLFormat = "/scenarios/{scenarioName}/instances/{instanceId}/characters/{charName}/perceptions",
             URLSegmentSize = 7,
-            Description = "Makes the characters perceive all the event strings passed in the body."
+            ValidOperations = new string[] { "POST" },
         };
 
-        //scenarios/{scenarioId}/instances/{instanceId}/tick
+        //scenarios/{scenarioName}/instances/{instanceId}/tick
         public static APIResource TICK = new APIResource()
         {
             Type = APIResourceType.TICK,
             Execute = HandleTickRequest,
             URLSegmentSize = 5,
-            Description = "(GET) Returns the current simulation tick. (POST) Updates the characters' internal state for 'x' amount of ticks."
+            URLFormat = "/scenarios/{scenarioName}/instances/{instanceId}/tick",
+            ValidOperations = new string[] { "GET" , "POST" },
         };
 
-        //scenarios/{scenarioId}/instances/{instanceId}/actions
+        //scenarios/{scenarioName}/instances/{instanceId}/actions
         public static APIResource ACTIONS = new APIResource()
         {
             Type = APIResourceType.ACTIONS,
             Execute = HandleActionsRequest,
+            URLFormat = "/scenarios/{scenarioName}/instances/{instanceId}/actions",
             URLSegmentSize = 5,
-            Description = "Executes a given action and trigger all the effects defined in the World Model."
+            ValidOperations = new string[] { "POST" },
         };
 
-        public static APIResource[] Set = { SCENARIOS, INSTANCES, DECISIONS, CHARACTERS, BELIEFS, MEMORIES, PERCEPTIONS, TICK, ACTIONS };
+        public static APIResource[] Set = { SCENARIOS, INSTANCES, TICK, ACTIONS, CHARACTERS, PERCEPTIONS, DECISIONS, BELIEFS, MEMORIES };
 
         public static APIResource FromString(string type)
         {
@@ -136,7 +148,12 @@ namespace WebServer
                         var assetStorage = AssetStorage.FromJson(request.Assets);
                         iat = IntegratedAuthoringToolAsset.FromJson(request.Scenario, assetStorage);
                         scenarios[iat.ScenarioName.ToLower()] = new IntegratedAuthoringToolAsset[HTTPFAtiMAServer.MAX_INSTANCES + 1];
-                        scenarios[iat.ScenarioName.ToLower()][0] = iat; // original is kept at 0 to create instances by cloning;
+                        
+                        //original is kept at 0 and will be left unchanged
+                        scenarios[iat.ScenarioName.ToLower()][0] = IntegratedAuthoringToolAsset.FromJson(request.Scenario, assetStorage); 
+                        
+                        //instance of id 1 is automatically created
+                        scenarios[iat.ScenarioName.ToLower()][1] = IntegratedAuthoringToolAsset.FromJson(request.Scenario, assetStorage);
                     }
                     catch (Exception ex)
                     {
@@ -173,7 +190,8 @@ namespace WebServer
                 {
                     if (scenarios[req.ScenarioName][i] == null)
                     {
-                        scenarios[req.ScenarioName][i] = CloneHelper.Clone(scenarios[req.ScenarioName][0]);
+                        var scenarioJson = scenarios[req.ScenarioName][0].ToJson();
+                        scenarios[req.ScenarioName][i] = IntegratedAuthoringToolAsset.FromJson(scenarioJson, scenarios[req.ScenarioName][0].Assets);
                         return JsonConvert.SerializeObject(i);
                     }
                 }
@@ -195,7 +213,7 @@ namespace WebServer
             List<DecisionDTO> resultDTO = new List<DecisionDTO>();
 
             var scenario = scenarios[req.ScenarioName][req.ScenarioInstance];
-            var rpc = scenario.Characters.Where(r => r.CharacterName.ToString().ToLowerInvariant() == req.CharacterName).FirstOrDefault();
+            var rpc = scenario.Characters.Where(r => r.CharacterName.ToString().EqualsIgnoreCase(req.CharacterName)).FirstOrDefault();
             var decisions = rpc?.Decide();
             if (decisions.Any())
             {
@@ -304,7 +322,7 @@ namespace WebServer
             var scenario = scenarios[req.ScenarioName][req.ScenarioInstance];
             try
             {
-                var rpc = scenario.Characters.Where(r => r.CharacterName.ToString().ToLowerInvariant() == req.CharacterName).FirstOrDefault();
+                var rpc = scenario.Characters.Where(r => r.CharacterName.ToString().EqualsIgnoreCase(req.CharacterName)).FirstOrDefault();
                 var result = rpc.EventRecords;
                 return JsonConvert.SerializeObject(result);
             }
@@ -322,7 +340,7 @@ namespace WebServer
             try
             {
                 var scenario = scenarios[req.ScenarioName][req.ScenarioInstance];
-                var rpc = scenario.Characters.Where(r => r.CharacterName.ToString().ToLowerInvariant() == req.CharacterName).FirstOrDefault();
+                var rpc = scenario.Characters.Where(r => r.CharacterName.ToString().EqualsIgnoreCase(req.CharacterName)).FirstOrDefault();
                 var beliefResult = rpc.GetAllBeliefs();
                 return JsonConvert.SerializeObject(beliefResult);
             }
@@ -352,7 +370,7 @@ namespace WebServer
                     try
                     {
                         evName = WellFormedNames.Name.BuildName(ev);
-                        var rpc = scenario.Characters.Where(r => r.CharacterName.ToString().ToLowerInvariant() == req.CharacterName).FirstOrDefault();
+                        var rpc = scenario.Characters.Where(r => r.CharacterName.ToString().EqualsIgnoreCase(req.CharacterName)).FirstOrDefault();
                         rpc.Perceive(evName);
                     }
                     catch (Exception ex)

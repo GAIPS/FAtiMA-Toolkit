@@ -1,5 +1,6 @@
 ﻿using System;
 using WebServer;
+using System.Linq;
 
 namespace FAtiMAHTTPServer
 {
@@ -24,7 +25,13 @@ namespace FAtiMAHTTPServer
                 else server = new HTTPFAtiMAServer();
 
                 server.OnServerEvent += ServerNotificationHandler;
+                foreach (var r in APIResource.Set)
+                {
+                    Console.WriteLine(r.URLFormat + " | [" + string.Join(",",r.ValidOperations) + "]");
+
+                }
                 server.Run();
+                
             }catch(Exception ex)
             {
                 Console.WriteLine(ex);

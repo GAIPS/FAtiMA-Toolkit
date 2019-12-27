@@ -7,6 +7,13 @@ using System.Threading.Tasks;
 
 namespace WebServer
 {
+    public class APIResourceDescriptionDTO
+    {
+        public string Resource { get; set; }
+        public string URL { get; set; }
+        public string Methods { get; set; }
+    }
+
     public class CharacterDTO
     {
         public string Name { get; set; }

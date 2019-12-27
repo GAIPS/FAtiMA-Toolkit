@@ -119,7 +119,6 @@
     <Compile Include="TTSEngines\L2F\LanguageResources.cs" />
     <Compile Include="TTSEngines\System\SystemTextToSpeechEngine.cs" />
     <Compile Include="TTSEngines\Viseme.cs" />
-    <Compile Include="WepAPI\APIDTOs.cs" />
     <Compile Include="WepAPI\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

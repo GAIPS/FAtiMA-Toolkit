@@ -24,8 +24,9 @@ namespace IntegratedAuthoringTool
     {
         private DialogActionDictionary m_dialogues;
 
-
-        public  EventTriggers eventTriggers;
+        public AssetStorage Assets { get; set; }
+        
+        public EventTriggers eventTriggers;
 
         public  WorldModelAsset WorldModel { get; private set; }
         public IEnumerable<RolePlayCharacterAsset> Characters { get; private set; }
@@ -55,6 +56,7 @@ namespace IntegratedAuthoringTool
                 c.LoadAssociatedAssets(storage);
                 iat.BindToRegistry(c.DynamicPropertiesRegistry);
             }
+            iat.Assets = storage;
             return iat;
         }
 
