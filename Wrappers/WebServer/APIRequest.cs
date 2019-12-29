@@ -20,14 +20,17 @@ namespace WebServer
         public int ScenarioInstance { get; set; }
         public string CharacterName { get; set; }
         public string RequestBody { get; set; }
+        public string Key { get; set; }
 
         public APIRequest(HttpListenerRequest request)
         {
             int requestSize = request.Url.Segments.Length;
 
+            this.Key = request.Headers.Get("key");
+
             if (requestSize == 1)
             {
-                this.ErrorMessage = APIErrors.ERROR_INVALID_FORMAT;
+                this.ErrorMessage = APIErrors.ERROR_INVALID_URL_SIZE;
                 return;
             }
 
@@ -43,12 +46,18 @@ namespace WebServer
             if (this.Method == HTTPMethod.DELETE) requestSize--; //special case
             if (requestSize != this.Resource.URLSegmentSize+1)
             {
-                this.ErrorMessage = APIErrors.ERROR_INVALID_FORMAT;
+                this.ErrorMessage = APIErrors.ERROR_INVALID_URL_SIZE;
                 return;
             }
 
             switch (Resource.Type)
             {
+                case APIResourceType.SCENARIOS:
+                    if (this.Method == HTTPMethod.DELETE) this.ScenarioName = request.Url.Segments[2].ToLower();
+                    break;
+                case APIResourceType.KEY:
+                    this.ScenarioName = request.Url.Segments[2].ToLower().Trim('/');
+                    break;
                 case APIResourceType.INSTANCES:
                     this.ScenarioName = request.Url.Segments[2].ToLower().Trim('/');
                     if (this.Method == HTTPMethod.DELETE) this.ScenarioInstance = int.Parse(request.Url.Segments[4]);

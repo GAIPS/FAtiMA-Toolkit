@@ -28,9 +28,8 @@ namespace WebServer
 
         public void Run()
         {
-            IntegratedAuthoringToolAsset iat;
-            var scenarioInstances = new ConcurrentDictionary<string, IntegratedAuthoringToolAsset[]>();
-
+            ServerState state = new ServerState();
+            
             try
             {
                 server = new HttpListener();
@@ -80,8 +79,14 @@ namespace WebServer
                             Type = MessageTypes.Request
                         });
 
-                        responseJson = rq.Resource.Execute(rq, scenarioInstances);
-
+                        if (!rq.Resource.IsHttpMethodValid(rq))
+                            responseJson = JsonConvert.SerializeObject(APIErrors.ERROR_INVALID_HTTP_METHOD);
+                        else if (!rq.Resource.HasAuthorization(rq.Key, rq.ScenarioName, state))
+                            responseJson = JsonConvert.SerializeObject(APIErrors.ERROR_ACCESS_DENIED);
+                        else
+                        {
+                            responseJson = rq.Resource.Execute(rq, state);
+                        }
                         OnServerEvent(this, new ServerEventArgs
                         {
                             Message = "Result: " + responseJson,

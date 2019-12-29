@@ -3,7 +3,6 @@ using IntegratedAuthoringTool;
 using Newtonsoft.Json;
 using RolePlayCharacter;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using Utilities;
@@ -22,7 +21,9 @@ namespace WebServer
         MEMORIES, 
         PERCEPTIONS, 
         TICK, 
-        ACTIONS
+        ACTIONS,
+        ADMINKEY,
+        KEY
     }
 
     public class APIResource
@@ -32,7 +33,7 @@ namespace WebServer
         public string URLFormat { get; set; }
         public string[] ValidOperations { get; set; }
         public string ValidBodyFormat { get; private set; }
-        public Func<APIRequest, ConcurrentDictionary<string, IntegratedAuthoringToolAsset[]>, string> Execute { get; private set; }
+        public Func<APIRequest, ServerState, string> Execute { get; private set; }
 
         //scenarios
         public static APIResource SCENARIOS = new APIResource()
@@ -125,20 +126,94 @@ namespace WebServer
             ValidOperations = new string[] { "POST" },
         };
 
-        public static APIResource[] Set = { SCENARIOS, INSTANCES, TICK, ACTIONS, CHARACTERS, PERCEPTIONS, DECISIONS, BELIEFS, MEMORIES };
+        //adminkey
+        public static APIResource ADMINKEY = new APIResource()
+        {
+            Type = APIResourceType.ADMINKEY,
+            Execute = HandleAdminKeyRequest,
+            URLFormat = "/adminkey",
+            ValidOperations = new string[] { "POST" },
+            URLSegmentSize = 1
+        };
+
+        //adminkey
+        public static APIResource KEY = new APIResource()
+        {
+            Type = APIResourceType.KEY,
+            Execute = HandleKeyRequest,
+            URLFormat = "/scenarios/{scenarioName}/key",
+            ValidOperations = new string[] { "GET" },
+            URLSegmentSize = 3
+        };
+
+        public static APIResource[] Set = { ADMINKEY, SCENARIOS , KEY, INSTANCES,  TICK, ACTIONS, CHARACTERS, PERCEPTIONS, DECISIONS, BELIEFS, MEMORIES };
 
         public static APIResource FromString(string type)
         {
             return Set.FirstOrDefault(r => r.Type.ToString().ToLower() == type);
         }
 
-        private static string HandleScenariosRequest(APIRequest req, ConcurrentDictionary<string, IntegratedAuthoringToolAsset[]> scenarios)
+        public bool HasAuthorization(string key, string scenarioName, ServerState serverState)
         {
-            if (req.Method == HTTPMethod.GET) return JsonConvert.SerializeObject(scenarios.Keys);
+            if (serverState.AdminKey != null && key == serverState.AdminKey) return true;
+
+            if (scenarioName != null && serverState.ScenarioKeys.ContainsKey(scenarioName))
+            {
+                var scenarioKey = serverState.ScenarioKeys[scenarioName];
+
+                return key == scenarioKey;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public bool IsHttpMethodValid(APIRequest req)
+        {
+            return this.ValidOperations.Any(o => o.EqualsIgnoreCase(req.Method.ToString()));
+        }
+
+        private static string HandleKeyRequest(APIRequest req, ServerState serverState)
+        {
+            return JsonConvert.SerializeObject(serverState.ScenarioKeys[req.ScenarioName]);
+        }
+
+        private static string HandleAdminKeyRequest(APIRequest req, ServerState serverState)
+        {
+            var newKey = req.RequestBody;
+
+            if (string.IsNullOrWhiteSpace(newKey))
+                return JsonConvert.SerializeObject("Error: Request Body is empty!");
+            if (newKey.Equals(Name.NIL_STRING))
+                return JsonConvert.SerializeObject("Error: Key cannot be null (-)!");
+
+            if (!string.IsNullOrEmpty(serverState.AdminKey)) //key already defined
+            {
+                if(serverState.AdminKey == req.Key)
+                {
+                    serverState.AdminKey = newKey;
+                    return JsonConvert.SerializeObject("Admin key has been updated!");
+                }
+                else
+                {
+                    return JsonConvert.SerializeObject(APIErrors.ERROR_ACCESS_DENIED);
+                }
+            }
+            else 
+            {
+                serverState.AdminKey = newKey;
+                return JsonConvert.SerializeObject("Admin key has been defined!");
+            }
+            
+        }
+
+        private static string HandleScenariosRequest(APIRequest req, ServerState serverState)
+        {
+            if (req.Method == HTTPMethod.GET) return JsonConvert.SerializeObject(serverState.Scenarios.Keys);
             
             if (req.Method == HTTPMethod.POST)
             {
-
                 if (!string.IsNullOrEmpty(req.RequestBody))
                 {
                     IntegratedAuthoringToolAsset iat;
@@ -147,19 +222,23 @@ namespace WebServer
                         var request = JsonConvert.DeserializeObject<CreateScenarioRequestDTO>(req.RequestBody);
                         var assetStorage = AssetStorage.FromJson(request.Assets);
                         iat = IntegratedAuthoringToolAsset.FromJson(request.Scenario, assetStorage);
-                        scenarios[iat.ScenarioName.ToLower()] = new IntegratedAuthoringToolAsset[HTTPFAtiMAServer.MAX_INSTANCES + 1];
-                        
+
+                        serverState.Scenarios[iat.ScenarioName.ToLower()] = new IntegratedAuthoringToolAsset[HTTPFAtiMAServer.MAX_INSTANCES + 1];
+
                         //original is kept at 0 and will be left unchanged
-                        scenarios[iat.ScenarioName.ToLower()][0] = IntegratedAuthoringToolAsset.FromJson(request.Scenario, assetStorage); 
+                        serverState.Scenarios[iat.ScenarioName.ToLower()][0] = IntegratedAuthoringToolAsset.FromJson(request.Scenario, assetStorage); 
                         
                         //instance of id 1 is automatically created
-                        scenarios[iat.ScenarioName.ToLower()][1] = IntegratedAuthoringToolAsset.FromJson(request.Scenario, assetStorage);
+                        serverState.Scenarios[iat.ScenarioName.ToLower()][1] = IntegratedAuthoringToolAsset.FromJson(request.Scenario, assetStorage);
+                        if (!string.IsNullOrEmpty(req.Key))
+                        {
+                            serverState.ScenarioKeys[iat.ScenarioName.ToLower()] = req.Key;
+                        }
                     }
                     catch (Exception ex)
                     {
                         return JsonConvert.SerializeObject(ex.Message);
                     }
-
                     return JsonConvert.SerializeObject("Scenario named '" + iat.ScenarioName + "' created containing " +
                         "'" + iat.Characters.Count() + "' characters");
                 }
@@ -168,19 +247,25 @@ namespace WebServer
                     return JsonConvert.SerializeObject("Error: Empty body in a create scenario request!");
                 }
             }
-            return APIErrors.ERROR_INVALID_FORMAT;
+            if (req.Method == HTTPMethod.DELETE)
+            {
+                serverState.Scenarios.TryRemove(req.ScenarioName, out var aux1);
+                serverState.ScenarioKeys.TryRemove(req.ScenarioName, out var aux2);
+                return JsonConvert.SerializeObject("Scenario deleted.");
+            }
+
+            return APIErrors.ERROR_INVALID_HTTP_METHOD;
         }
 
 
-        private static string HandleInstancesRequest(APIRequest req, ConcurrentDictionary<string, IntegratedAuthoringToolAsset[]> scenarios)
+        private static string HandleInstancesRequest(APIRequest req, ServerState serverState)
         {
-
             if (req.Method == HTTPMethod.GET)
             {
                 var result = new List<int>();
                 for (int i = 1; i < HTTPFAtiMAServer.MAX_INSTANCES + 1; i++)
                 {
-                    if (scenarios[req.ScenarioName][i] != null) result.Add(i);
+                    if (serverState.Scenarios[req.ScenarioName][i] != null) result.Add(i);
                 }
                 return JsonConvert.SerializeObject(result);
             }
@@ -188,31 +273,31 @@ namespace WebServer
             {
                 for (int i = 1; i < HTTPFAtiMAServer.MAX_INSTANCES + 1; i++)
                 {
-                    if (scenarios[req.ScenarioName][i] == null)
+                    if (serverState.Scenarios[req.ScenarioName][i] == null)
                     {
-                        var scenarioJson = scenarios[req.ScenarioName][0].ToJson();
-                        scenarios[req.ScenarioName][i] = IntegratedAuthoringToolAsset.FromJson(scenarioJson, scenarios[req.ScenarioName][0].Assets);
+                        var scenarioJson = serverState.Scenarios[req.ScenarioName][0].ToJson();
+                        serverState.Scenarios[req.ScenarioName][i] = IntegratedAuthoringToolAsset.FromJson(scenarioJson, serverState.Scenarios[req.ScenarioName][0].Assets);
                         return JsonConvert.SerializeObject(i);
                     }
                 }
             }
             else if (req.Method == HTTPMethod.DELETE)
             {
-                scenarios[req.ScenarioName][req.ScenarioInstance] = null;
+                serverState.Scenarios[req.ScenarioName][req.ScenarioInstance] = null;
                 return JsonConvert.SerializeObject("Instance deleted.");
             }
              
-            return APIErrors.ERROR_INVALID_FORMAT;
+            return APIErrors.ERROR_INVALID_HTTP_METHOD;
         }
 
-        private static string HandleDecisionsRequest(APIRequest req, ConcurrentDictionary<string, IntegratedAuthoringToolAsset[]> scenarios)
+        private static string HandleDecisionsRequest(APIRequest req, ServerState serverState)
         {
             if (req.Method != HTTPMethod.GET)
                 return JsonConvert.SerializeObject("Error: Invalid operation");
 
             List<DecisionDTO> resultDTO = new List<DecisionDTO>();
 
-            var scenario = scenarios[req.ScenarioName][req.ScenarioInstance];
+            var scenario = serverState.Scenarios[req.ScenarioName][req.ScenarioInstance];
             var rpc = scenario.Characters.Where(r => r.CharacterName.ToString().EqualsIgnoreCase(req.CharacterName)).FirstOrDefault();
             var decisions = rpc?.Decide();
             if (decisions.Any())
@@ -239,14 +324,14 @@ namespace WebServer
         }
 
 
-        private static string HandleCharactersRequest(APIRequest req, ConcurrentDictionary<string, IntegratedAuthoringToolAsset[]> scenarios)
+        private static string HandleCharactersRequest(APIRequest req, ServerState serverState)
         {
             if (req.Method != HTTPMethod.GET)
                 return JsonConvert.SerializeObject("Error: Invalid operation");
 
 
             var result = new List<CharacterDTO>();
-            var scenario = scenarios[req.ScenarioName][req.ScenarioInstance];
+            var scenario = serverState.Scenarios[req.ScenarioName][req.ScenarioInstance];
             foreach (var rpc in scenario.Characters)
             {
                 result.Add(new CharacterDTO { Name = rpc.CharacterName.ToString(), Emotions = rpc.GetAllActiveEmotions(), Mood = rpc.Mood });
@@ -255,14 +340,14 @@ namespace WebServer
         }
 
 
-        private static string HandleActionsRequest(APIRequest req, ConcurrentDictionary<string, IntegratedAuthoringToolAsset[]> scenarios)
+        private static string HandleActionsRequest(APIRequest req, ServerState serverState)
         {
             if (req.Method != HTTPMethod.POST)
                 return JsonConvert.SerializeObject("Error: Invalid operation");
 
             IEnumerable<EffectDTO> eventEffects = null;
 
-            var scenario = scenarios[req.ScenarioName][req.ScenarioInstance];
+            var scenario = serverState.Scenarios[req.ScenarioName][req.ScenarioInstance];
 
             if (!string.IsNullOrEmpty(req.RequestBody))
             {
@@ -314,55 +399,51 @@ namespace WebServer
 
 
 
-        private static string HandleMemoriesRequest(APIRequest req, ConcurrentDictionary<string, IntegratedAuthoringToolAsset[]> scenarios)
+        private static string HandleMemoriesRequest(APIRequest req, ServerState serverState)
         {
             if (req.Method != HTTPMethod.GET)
                 return JsonConvert.SerializeObject("Error: Invalid operation");
 
-            var scenario = scenarios[req.ScenarioName][req.ScenarioInstance];
+            var scenario = serverState.Scenarios[req.ScenarioName][req.ScenarioInstance];
             try
             {
                 var rpc = scenario.Characters.Where(r => r.CharacterName.ToString().EqualsIgnoreCase(req.CharacterName)).FirstOrDefault();
                 var result = rpc.EventRecords;
                 return JsonConvert.SerializeObject(result);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return JsonConvert.SerializeObject(APIErrors.ERROR_EXCEPTION_ASK);
+                return JsonConvert.SerializeObject(string.Format(APIErrors.ERROR_EXCEPTION,ex.Message));
             }
         }
 
-        private static string HandleBeliefsRequest(APIRequest req, ConcurrentDictionary<string, IntegratedAuthoringToolAsset[]> scenarios)
+        private static string HandleBeliefsRequest(APIRequest req, ServerState serverState)
         {
             if (req.Method != HTTPMethod.GET)
                 return JsonConvert.SerializeObject("Error: Invalid operation");
 
             try
             {
-                var scenario = scenarios[req.ScenarioName][req.ScenarioInstance];
+                var scenario = serverState.Scenarios[req.ScenarioName][req.ScenarioInstance];
                 var rpc = scenario.Characters.Where(r => r.CharacterName.ToString().EqualsIgnoreCase(req.CharacterName)).FirstOrDefault();
                 var beliefResult = rpc.GetAllBeliefs();
                 return JsonConvert.SerializeObject(beliefResult);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return JsonConvert.SerializeObject(APIErrors.ERROR_EXCEPTION_ASK);
+                return JsonConvert.SerializeObject(string.Format(APIErrors.ERROR_EXCEPTION, ex.Message));
             }
         }
 
 
-        private static string HandlePerceptionsRequest(APIRequest req, ConcurrentDictionary<string, IntegratedAuthoringToolAsset[]> scenarios)
+        private static string HandlePerceptionsRequest(APIRequest req, ServerState serverState)
         {
-
-            if (req.Method != HTTPMethod.POST)
-                return JsonConvert.SerializeObject("Error: Invalid operation");
-
             string[] events = Array.Empty<string>();
 
 
             if (!string.IsNullOrEmpty(req.RequestBody))
             {
-                var scenario = scenarios[req.ScenarioName][req.ScenarioInstance];
+                var scenario = serverState.Scenarios[req.ScenarioName][req.ScenarioInstance];
                 events = JsonConvert.DeserializeObject<string[]>(req.RequestBody);
                 foreach (var ev in events)
                 {
@@ -386,11 +467,9 @@ namespace WebServer
             return JsonConvert.SerializeObject(string.Format("{0} event(s) perceived by {1}", events.Count(), req.CharacterName));
         }
 
-
-
-        private static string HandleTickRequest(APIRequest req, ConcurrentDictionary<string, IntegratedAuthoringToolAsset[]> scenarios)
+        private static string HandleTickRequest(APIRequest req, ServerState serverState)
         {
-            var scenario = scenarios[req.ScenarioName][req.ScenarioInstance];
+            var scenario = serverState.Scenarios[req.ScenarioName][req.ScenarioInstance];
 
             if (req.Method == HTTPMethod.GET)
             {
