@@ -184,6 +184,7 @@ namespace WebServer
             var newKey = req.RequestBody;
 
             if (string.IsNullOrWhiteSpace(newKey))
+ 
                 return JsonConvert.SerializeObject("Error: Request Body is empty!");
             if (newKey.Equals(Name.NIL_STRING))
                 return JsonConvert.SerializeObject("Error: Key cannot be null (-)!");
@@ -223,7 +224,7 @@ namespace WebServer
                         var assetStorage = AssetStorage.FromJson(request.Assets);
                         iat = IntegratedAuthoringToolAsset.FromJson(request.Scenario, assetStorage);
 
-                        serverState.Scenarios[iat.ScenarioName.ToLower()] = new IntegratedAuthoringToolAsset[HTTPFAtiMAServer.MAX_INSTANCES + 1];
+                        serverState.Scenarios[iat.ScenarioName.ToLower()] = new IntegratedAuthoringToolAsset[HTTPFAtiMAServer.MAX_INSTANCES + 1]; 
 
                         //original is kept at 0 and will be left unchanged
                         serverState.Scenarios[iat.ScenarioName.ToLower()][0] = IntegratedAuthoringToolAsset.FromJson(request.Scenario, assetStorage); 

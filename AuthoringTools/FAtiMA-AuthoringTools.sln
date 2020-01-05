@@ -3,59 +3,59 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29324.140
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommeillFautWF", "AuthoringTools\CommeillFautWF\CommeillFautWF.csproj", "{FD251A80-D5D3-4776-B323-37496FD9C550}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommeillFautWF", "CommeillFautWF\CommeillFautWF.csproj", "{FD251A80-D5D3-4776-B323-37496FD9C550}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalAppraisalWF", "AuthoringTools\EmotionalAppraisalWF\EmotionalAppraisalWF.csproj", "{36EF269C-7AB2-4029-BBF4-18F908AF46F6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalAppraisalWF", "EmotionalAppraisalWF\EmotionalAppraisalWF.csproj", "{36EF269C-7AB2-4029-BBF4-18F908AF46F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalDecisionMakingWF", "AuthoringTools\EmotionalDecisionMakingWF\EmotionalDecisionMakingWF.csproj", "{A1727658-04B9-479A-98DB-F04C897488CC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmotionalDecisionMakingWF", "EmotionalDecisionMakingWF\EmotionalDecisionMakingWF.csproj", "{A1727658-04B9-479A-98DB-F04C897488CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAIPS.AssetEditorTools", "AuthoringTools\GAIPS.AssetEditorTools\GAIPS.AssetEditorTools.csproj", "{C61FB19D-E715-4EB4-AFCA-27FF81A14777}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GAIPS.AssetEditorTools", "GAIPS.AssetEditorTools\GAIPS.AssetEditorTools.csproj", "{C61FB19D-E715-4EB4-AFCA-27FF81A14777}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegratedAuthoringToolWF", "AuthoringTools\IntegratedAuthoringToolWF\IntegratedAuthoringToolWF.csproj", "{5C4CD8BB-DE9C-45A0-ADB3-441D420A7200}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegratedAuthoringToolWF", "IntegratedAuthoringToolWF\IntegratedAuthoringToolWF.csproj", "{5C4CD8BB-DE9C-45A0-ADB3-441D420A7200}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RolePlayCharacterWF", "AuthoringTools\RolePlayCharacterWF\RolePlayCharacterWF.csproj", "{63EC96BC-D3E1-491B-8C55-61A0F5FBA210}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RolePlayCharacterWF", "RolePlayCharacterWF\RolePlayCharacterWF.csproj", "{63EC96BC-D3E1-491B-8C55-61A0F5FBA210}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialImportanceWF", "AuthoringTools\SocialImportanceWF\SocialImportanceWF.csproj", "{8C1BBEDB-3334-4877-84B2-99E4E7C5ABD8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SocialImportanceWF", "SocialImportanceWF\SocialImportanceWF.csproj", "{8C1BBEDB-3334-4877-84B2-99E4E7C5ABD8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DomainModel", "DomainModel", "{0DAE6535-56B2-4249-87A5-D9EF70A41B62}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmotionalAppraisal", "Assets\EmotionalAppraisal\EmotionalAppraisal.csproj", "{0A2A1EE9-BD5D-44AA-A22D-291612488F06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmotionalAppraisal", "..\Assets\EmotionalAppraisal\EmotionalAppraisal.csproj", "{0A2A1EE9-BD5D-44AA-A22D-291612488F06}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assets", "Assets", "{BD644704-5C1E-4E94-9B4D-80F5A3555ED0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Components", "Components", "{4A1D326C-3AC4-4BAB-A979-7DD46699BC1B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutobiographicMemory", "Components\AutobiographicMemory\AutobiographicMemory.csproj", "{C1CC38C5-72F5-4545-B4F7-C65B2883909C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutobiographicMemory", "..\Components\AutobiographicMemory\AutobiographicMemory.csproj", "{C1CC38C5-72F5-4545-B4F7-C65B2883909C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WellFormedNames", "Components\WellFormedNames\WellFormedNames.csproj", "{BC47528F-FBF6-465E-BB0E-F68F50F31C13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WellFormedNames", "..\Components\WellFormedNames\WellFormedNames.csproj", "{BC47528F-FBF6-465E-BB0E-F68F50F31C13}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActionLibrary", "Components\ActionLibrary\ActionLibrary.csproj", "{E011D502-5C0F-4A3F-9F1A-337FF025EB48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActionLibrary", "..\Components\ActionLibrary\ActionLibrary.csproj", "{E011D502-5C0F-4A3F-9F1A-337FF025EB48}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conditions", "Components\Conditions\Conditions.csproj", "{59041269-E52E-4CDD-84E0-92FDCFBF270D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Conditions", "..\Components\Conditions\Conditions.csproj", "{59041269-E52E-4CDD-84E0-92FDCFBF270D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GAIPS.Rage", "Components\GAIPS.Rage\GAIPS.Rage.csproj", "{9FECA6E5-C949-44F1-BE40-D3303AB2EF05}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GAIPS.Rage", "..\Components\GAIPS.Rage\GAIPS.Rage.csproj", "{9FECA6E5-C949-44F1-BE40-D3303AB2EF05}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnowledgeBase", "Components\KnowledgeBase\KnowledgeBase.csproj", "{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KnowledgeBase", "..\Components\KnowledgeBase\KnowledgeBase.csproj", "{A632A90A-0EE6-430F-ACF2-25BB7CED21E7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommeillFaut", "Assets\CommeillFaut\CommeillFaut.csproj", "{BA21951C-1799-4D0F-AA99-62DF857F3B71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommeillFaut", "..\Assets\CommeillFaut\CommeillFaut.csproj", "{BA21951C-1799-4D0F-AA99-62DF857F3B71}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmotionalDecisionMaking", "Assets\EmotionalDecisionMaking\EmotionalDecisionMaking.csproj", "{A1E56F5C-EAAC-43E5-A922-5B244168EA5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmotionalDecisionMaking", "..\Assets\EmotionalDecisionMaking\EmotionalDecisionMaking.csproj", "{A1E56F5C-EAAC-43E5-A922-5B244168EA5C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegratedAuthoringTool", "Assets\IntegratedAuthoringTool\IntegratedAuthoringTool.csproj", "{F6AD95A5-889C-41A4-B613-B81F09A424EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegratedAuthoringTool", "..\Assets\IntegratedAuthoringTool\IntegratedAuthoringTool.csproj", "{F6AD95A5-889C-41A4-B613-B81F09A424EE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RolePlayCharacter", "Assets\RolePlayCharacter\RolePlayCharacter.csproj", "{986EA00A-7AA4-4D9E-B986-E6F290E7AA3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RolePlayCharacter", "..\Assets\RolePlayCharacter\RolePlayCharacter.csproj", "{986EA00A-7AA4-4D9E-B986-E6F290E7AA3F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialImportance", "Assets\SocialImportance\SocialImportance.csproj", "{823E8A41-5231-4B06-BBAB-E62651E15BC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SocialImportance", "..\Assets\SocialImportance\SocialImportance.csproj", "{823E8A41-5231-4B06-BBAB-E62651E15BC7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorldModel", "Assets\WorldModel\WorldModel.csproj", "{C751A38C-44D9-4918-B1F1-55A80147471D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorldModel", "..\Assets\WorldModel\WorldModel.csproj", "{C751A38C-44D9-4918-B1F1-55A80147471D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Wrappers", "Wrappers", "{4B80B9AA-C901-41FD-BDDD-814DEC7306BA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebServer", "Wrappers\WebServer\WebServer.csproj", "{8D2E220B-2764-4798-AC75-E75F4847CCC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebServer", "..\Wrappers\WebServer\WebServer.csproj", "{8D2E220B-2764-4798-AC75-E75F4847CCC6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{7CE3B839-5C48-4DCD-9D26-DFD77C2DB4B7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities", "Utilities\Utilities\Utilities.csproj", "{EB915898-6D95-4631-8364-F281AA9A24E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilities", "..\Utilities\Utilities\Utilities.csproj", "{EB915898-6D95-4631-8364-F281AA9A24E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
