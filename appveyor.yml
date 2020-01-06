@@ -4,7 +4,5 @@ before_build:
 build_script:
   - cmd: dotnet build FAtiMA-Toolkit.sln
 test_script:
-  - cmd: cd Test
   - cmd: nuget install Appveyor.TestLogger -Version 2.0.0
-  - cmd: cd ..
   - cmd: dotnet test --no-build --no-restore --test-adapter-path:. --logger:Appveyor Test
