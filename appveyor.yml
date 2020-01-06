@@ -4,4 +4,5 @@ before_build:
 build_script:
   - cmd: dotnet build FAtiMA-Toolkit.sln
 test_script:
-  - cmd: ls -la 
+  - cmd: cd Tests\Tests.EmotionalAppraisal
+  - cmd: dotnet test Tests.EmotionalAppraisal.csproj
