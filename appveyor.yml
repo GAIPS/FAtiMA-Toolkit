@@ -3,3 +3,6 @@ before_build:
   - nuget restore
 build_script:
   - cmd: dotnet build FAtiMA-Toolkit.sln
+test_script:
+  - cmd: nuget install Appveyor.TestLogger -Version 2.0.0
+  - cmd: dotnet test FAtiMA-Toolkit.sln --no-build --no-restore --test-adapter-path:. --logger:Appveyor Test
