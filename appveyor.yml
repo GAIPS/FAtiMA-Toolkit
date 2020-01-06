@@ -1,3 +1,4 @@
 image: Visual Studio 2019
+solution: FAtiMA-Toolkit.sln
 before_build:
   - nuget restore
