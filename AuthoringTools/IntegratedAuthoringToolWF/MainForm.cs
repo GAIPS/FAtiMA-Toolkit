@@ -1593,5 +1593,42 @@ namespace IntegratedAuthoringToolWF
         {
 
         }
+
+
+        private void MainFormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Determine if text has changed in the textbox by comparing to original text.
+
+            // Display a MsgBox asking the user to save changes or abort.
+            DialogResult = MessageBox.Show("Do you want to save changes?", "FAtiMA Toolkit",
+               MessageBoxButtons.YesNoCancel);
+
+            if (DialogResult == DialogResult.Yes)
+            {
+                // Cancel the Closing event from closing the form.
+                if (_currentScenarioFilePath != null)
+                {
+                    File.WriteAllText(_currentScenarioFilePath, _iat.ToJson());
+                }
+                else
+                {
+                    var sfd = new SaveFileDialog();
+                    sfd.Filter = "Scenario File (*.json)|*.json|All Files|*.*";
+
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        File.WriteAllText(sfd.FileName, _iat.ToJson());
+                        _currentScenarioFilePath = sfd.FileName;
+                    }
+                }
+
+                SaveAssetRules();
+              
+                //e.Cancel = true;
+                // Call method to save file...
+            }
+            else if (DialogResult == DialogResult.Cancel)
+                e.Cancel = true;
+        }
     }
 }

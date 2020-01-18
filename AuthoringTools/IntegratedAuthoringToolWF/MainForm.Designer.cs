@@ -423,7 +423,7 @@
             this.groupBox12.Controls.Add(this.buttonExportExcel);
             this.groupBox12.Controls.Add(this.buttonValidate);
             this.groupBox12.Controls.Add(this.buttonTTS);
-            this.groupBox12.Location = new System.Drawing.Point(8, 573);
+            this.groupBox12.Location = new System.Drawing.Point(8, 569);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Size = new System.Drawing.Size(849, 55);
             this.groupBox12.TabIndex = 21;
@@ -506,7 +506,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(849, 558);
+            this.groupBox2.Size = new System.Drawing.Size(849, 554);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dialogue Actions";
@@ -570,7 +570,7 @@
             this.dataGridViewDialogueActions.RowHeadersWidth = 51;
             this.dataGridViewDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(841, 474);
+            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(841, 470);
             this.dataGridViewDialogueActions.TabIndex = 14;
             this.dataGridViewDialogueActions.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellClick);
             this.dataGridViewDialogueActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellContentClick);
@@ -630,7 +630,7 @@
             this.tabPage4.Controls.Add(this.tabControlAssetEditor);
             this.tabPage4.Location = new System.Drawing.Point(4, 25);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(866, 660);
+            this.tabPage4.Size = new System.Drawing.Size(866, 656);
             this.tabPage4.TabIndex = 5;
             this.tabPage4.Text = "Cognitive Rules";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -645,7 +645,7 @@
             this.tabControlAssetEditor.Location = new System.Drawing.Point(0, 0);
             this.tabControlAssetEditor.Name = "tabControlAssetEditor";
             this.tabControlAssetEditor.SelectedIndex = 0;
-            this.tabControlAssetEditor.Size = new System.Drawing.Size(866, 660);
+            this.tabControlAssetEditor.Size = new System.Drawing.Size(866, 656);
             this.tabControlAssetEditor.TabIndex = 0;
             // 
             // tabPageEA
@@ -653,7 +653,7 @@
             this.tabPageEA.Location = new System.Drawing.Point(4, 27);
             this.tabPageEA.Name = "tabPageEA";
             this.tabPageEA.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageEA.Size = new System.Drawing.Size(858, 629);
+            this.tabPageEA.Size = new System.Drawing.Size(858, 625);
             this.tabPageEA.TabIndex = 0;
             this.tabPageEA.Text = "Emotional Appraisal";
             this.tabPageEA.UseVisualStyleBackColor = true;
@@ -663,7 +663,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 25);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(858, 634);
+            this.tabPage6.Size = new System.Drawing.Size(858, 627);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "Emotional Decision Making";
             this.tabPage6.UseVisualStyleBackColor = true;
@@ -672,7 +672,7 @@
             // 
             this.tabPage7.Location = new System.Drawing.Point(4, 25);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(858, 634);
+            this.tabPage7.Size = new System.Drawing.Size(858, 627);
             this.tabPage7.TabIndex = 2;
             this.tabPage7.Text = "Social Importance";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -681,7 +681,7 @@
             // 
             this.tabPage8.Location = new System.Drawing.Point(4, 25);
             this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(858, 634);
+            this.tabPage8.Size = new System.Drawing.Size(858, 627);
             this.tabPage8.TabIndex = 3;
             this.tabPage8.Text = "CIF-CK";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -692,7 +692,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(5);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(5);
-            this.tabPage2.Size = new System.Drawing.Size(866, 660);
+            this.tabPage2.Size = new System.Drawing.Size(866, 656);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Character";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -704,7 +704,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 25);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(866, 660);
+            this.tabPage3.Size = new System.Drawing.Size(866, 656);
             this.tabPage3.TabIndex = 3;
             this.tabPage3.Text = "World";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -715,7 +715,7 @@
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox7.Location = new System.Drawing.Point(3, 3);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(860, 654);
+            this.groupBox7.Size = new System.Drawing.Size(860, 650);
             this.groupBox7.TabIndex = 16;
             this.groupBox7.TabStop = false;
             // 
@@ -726,7 +726,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(866, 660);
+            this.tabPage1.Size = new System.Drawing.Size(866, 656);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "Simulator";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -1142,7 +1142,7 @@
             this.tabPageWeb.Location = new System.Drawing.Point(4, 25);
             this.tabPageWeb.Name = "tabPageWeb";
             this.tabPageWeb.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageWeb.Size = new System.Drawing.Size(866, 660);
+            this.tabPageWeb.Size = new System.Drawing.Size(866, 656);
             this.tabPageWeb.TabIndex = 4;
             this.tabPageWeb.Text = "Web API";
             this.tabPageWeb.UseVisualStyleBackColor = true;
@@ -1219,6 +1219,7 @@
             this.MinimumSize = new System.Drawing.Size(1315, 752);
             this.Name = "MainForm";
             this.Text = "FAtiMA Authoring Tool";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainFormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyDown);
             this.groupBox1.ResumeLayout(false);
