@@ -36,7 +36,7 @@ With these goals in mind, the toolkit is composed of several assets. Each has a 
 
 - Real Time Emotion Recognition - Able to infer the player's emotional state by combining multiple sources of affective inputs.
 
-### Latest Release: https://github.com/GAIPS-INESC-ID/FAtiMA-Toolkit/releases/tag/v2.5
+### Latest Release: https://github.com/GAIPS-INESC-ID/FAtiMA-Toolkit/releases/tag/4.0
 
 ### Tutorials
 To get started, we recommed that you check the code examples of each asset in the project folder named *Tutorials*
