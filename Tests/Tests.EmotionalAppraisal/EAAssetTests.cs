@@ -80,7 +80,7 @@ namespace Tests.EmotionalAppraisal
                    {
                        Name = OCCAppraisalVariables.DESIRABILITY,
                        Value = (Name)"10"
-                   }
+                   },
                })
                    
             });
@@ -267,7 +267,8 @@ namespace Tests.EmotionalAppraisal
 
             asset.AddOrUpdateAppraisalRule(new AppraisalRuleDTO()
             {
-                EventMatchingTemplate = (Name) "Event(Action-End,*,*,*)",
+                EventMatchingTemplate = (Name)"Event(Action-End,*,*,*)",
+                Conditions = new Conditions.DTOs.ConditionSetDTO(),
                 AppraisalVariables = new AppraisalVariables(new List<AppraisalVariableDTO>()
                {
                    new AppraisalVariableDTO()
@@ -276,11 +277,11 @@ namespace Tests.EmotionalAppraisal
                        Value = (Name)"5"
                    }
                })
-            });
+            }) ;
 
             var m_kb = new KB((Name)"Matt");
 
-            asset.AppraiseEvents(new List<Name>() {EventHelper.ActionEnd("Matt", "Speak(*,*,*,*)", "Sarah")},
+            asset.AppraiseEvents(new List<Name>() {EventHelper.ActionEnd("Matt", "Speak(Start,S1,-,-)", "Sarah")},
                 new ConcreteEmotionalState(),
                 new AM(), m_kb, null);
 

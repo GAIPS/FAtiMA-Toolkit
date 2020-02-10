@@ -28,9 +28,12 @@ namespace Conditions
 
 		public ConditionSet() : this(LogicalQuantifier.Existential,null)
 		{
-		}
 
-		public ConditionSet(IEnumerable<Condition> conditions) : this(LogicalQuantifier.Existential,conditions){}
+				m_conditions = new List<Condition>();
+
+        }
+
+        public ConditionSet(IEnumerable<Condition> conditions) : this(LogicalQuantifier.Existential,conditions){}
 
 		public ConditionSet(LogicalQuantifier quantifier, IEnumerable<Condition> conditions)
 		{

@@ -171,7 +171,7 @@ namespace Tests.EmotionalAppraisal
 	
 			return m_emotionalAppraisalAsset;
 		}
-
+/*
 		[TestCase]
 		public void EmotionalAppraisal_Serialization_Test()
 		{
@@ -200,6 +200,6 @@ namespace Tests.EmotionalAppraisal
 				stream.Seek(0, SeekOrigin.Begin);
 				var obj = formater.Deserialize(stream);
 			}
-		}
+		}*/
 	}
 }

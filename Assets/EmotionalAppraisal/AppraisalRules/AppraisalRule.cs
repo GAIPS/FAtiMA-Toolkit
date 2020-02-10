@@ -37,7 +37,7 @@ namespace EmotionalAppraisal.AppraisalRules
 	        AppraisalVariables = appraisalRuleDTO.AppraisalVariables;
             else 	        AppraisalVariables = new AppraisalVariables();
 
-
+            
 			Conditions = appraisalRuleDTO.Conditions==null ? new ConditionSet() : new ConditionSet(appraisalRuleDTO.Conditions);
 	    }
 
@@ -49,7 +49,9 @@ namespace EmotionalAppraisal.AppraisalRules
 		{
 			m_id = other.m_id;
 			EventName = other.EventName;
-			Conditions = new ConditionSet(other.Conditions);
+            if(other.Conditions==null || other.Conditions.Count == 0)
+                Conditions = new ConditionSet();
+            else Conditions = new ConditionSet(other.Conditions);
 		    AppraisalVariables = other.AppraisalVariables;
 		}
 
