@@ -224,7 +224,7 @@ namespace Tests.EmotionalAppraisal
             var asset = BuildTestAsset();
 
             foreach (var c in asset.GetAllAppraisalRules())
-                Assert.IsNull(c.Conditions.ConditionSet);
+                Assert.IsEmpty(c.Conditions.ConditionSet);
 
             System.Guid id = new Guid();
 
