@@ -201,11 +201,16 @@ namespace CommeillFaut
 
             if(StartingConditions.Count() > 1){
                 int counter = 0;
-            foreach (var c in StartingConditions) // For instance SI([x]) >= 40
+
+                    resultingConstraints = StartingConditions.Unify(m_Kb, m_Kb.Perspective, new[] { constraints }).ToList();
+
+            /*        foreach (var c in StartingConditions) // For instance SI([x]) >= 40
             {
-                    if(counter == 0) continue;
-               resultingConstraints = c.Unify(m_Kb, m_Kb.Perspective, resultingConstraints ).ToList();  // Whats the sub here [x]/John
-                }
+                    counter++;
+                    if(counter == 1) continue;
+                        
+                    resultingConstraints = c.Unify(m_Kb, m_Kb.Perspective, resultingConstraints ).ToList();  // Whats the sub here [x]/John
+                }*/
             }
 
             
