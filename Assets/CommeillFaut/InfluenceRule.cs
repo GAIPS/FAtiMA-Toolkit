@@ -60,13 +60,11 @@ namespace CommeillFaut
         {
             float ret = 0.0f;
 
-            foreach(var c in Rule)
-            {
-                  var resultingConstraints = c.Unify(m_Kb, (Name)"Self", new[] { constraints } ); 
+            var resultingConstraints = Rule.Unify(m_Kb, m_Kb.Perspective, new[] { constraints });
 
                 if(resultingConstraints.Count() > 0)
                     ret = Value;
-            }
+            
 
             
             return ret;
