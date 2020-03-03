@@ -160,6 +160,12 @@ namespace KnowledgeBase
                         if(xSubs.Item1.Value == Name.NIL_SYMBOL || ySubs.Item1.Value == Name.NIL_SYMBOL)
                             throw new Exception("Trying to perform a MATH operation on a Nil value");
 
+                        float i = 0;
+
+                        if(!float.TryParse(xSubs.Item1.Value.ToString(), out i) || !float.TryParse(ySubs.Item1.Value.ToString(), out i))
+                            yield break;
+                        
+
                         var xValue = float.Parse(xSubs.Item1.Value.ToString(), CultureInfo.InvariantCulture);
                         var yValue = float.Parse(ySubs.Item1.Value.ToString(), CultureInfo.InvariantCulture);
 

@@ -37,15 +37,23 @@ namespace EmotionalAppraisal.AppraisalRules
         
 		public IEnumerable<AppraisalRule> Evaluate(IBaseEvent evt, IQueryable kb, Name perspective)
 		{
+            // Switching the SELF term for the correct name withint the event
+
             var auxEvt = evt.EventName.SwapTerms(perspective, Name.SELF_SYMBOL);
             var result = new List<AppraisalRule>();
             foreach (var r in this.Rules)
 			{
-                var initialSubSet = new SubstitutionSet();
-                initialSubSet.AddSubstitution(Unifier.Unify(r.EventName, auxEvt)?.FirstOrDefault());
+                // Trying to find all possible initial substitutions;
+                var initialSubSet = Unifier.Unify(r.EventName, auxEvt);
+           
+
+                if (initialSubSet == null)
+                    initialSubSet = new SubstitutionSet();
+
+
                 if (auxEvt.Match(r.EventName) || initialSubSet.Any())
                 {
-                    var finalSubSet = r.Conditions.Unify(kb, perspective, new[] { initialSubSet });
+                    var finalSubSet = r.Conditions.Unify(kb, perspective, new List<SubstitutionSet>() {new SubstitutionSet(initialSubSet)});
                     if (finalSubSet != null)
                     {
                         //TODO: Handle uncertainty in beliefs
