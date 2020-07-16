@@ -153,7 +153,7 @@ namespace EmotionalAppraisal.AppraisalRules
                      float des;
                     if (!float.TryParse(appVar.Value.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out des))
                     {
-                        throw new ArgumentException(appVar.Name + " can only be a float value");
+                        throw new ArgumentException(appVar.Name + " can only be a float value and it was " + appVar.Value.ToString());
                     }
 
                     else if (appVar.Name == OCCAppraisalVariables.DESIRABILITY_FOR_OTHER)
