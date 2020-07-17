@@ -59,6 +59,7 @@ namespace EmotionalAppraisal.AppraisalRules
                         //TODO: Handle uncertainty in beliefs
                         foreach(var set in finalSubSet)
                         {
+                            //Handling uncertainity in the Appraise Variables
                             var a = new AppraisalRule(r);
                             a.EventName.MakeGround(set);
                             foreach (var variable in a.getAppraisalVariables())

@@ -52,7 +52,24 @@ namespace EmotionalAppraisal.AppraisalRules
             if(other.Conditions==null || other.Conditions.Count == 0)
                 Conditions = new ConditionSet();
             else Conditions = new ConditionSet(other.Conditions);
-		    AppraisalVariables = other.AppraisalVariables;
+
+            var appraisaVariablesList = new List<AppraisalVariableDTO>();
+            foreach(var v in other.AppraisalVariables.appraisalVariables)
+            {
+                appraisaVariablesList.Add(new AppraisalVariableDTO()
+                {
+                    Name = v.Name,
+                    Target = v.Target,
+                    Value = v.Value
+                });
+            }
+
+            AppraisalVariables = new AppraisalVariables()
+            {
+                appraisalVariables = appraisaVariablesList
+            };
+                
+            
 		}
 
 
