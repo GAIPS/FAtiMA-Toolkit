@@ -23,7 +23,11 @@ using System.Windows.Forms;
 using Utilities;
 using Utilities.DataStructures;
 using WellFormedNames;
+using System.Net.Http;
 using WorldModel;
+using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Text;
 
 namespace IntegratedAuthoringToolWF
 {
@@ -1629,6 +1633,241 @@ namespace IntegratedAuthoringToolWF
             }
             else if (DialogResult == DialogResult.Cancel)
                 e.Cancel = true;
+        }
+
+
+        private static readonly HttpClient client = new HttpClient();
+
+
+        private void importStoryButton_Click(object sender, EventArgs e)
+        {
+
+            _ = doPost();
+
+            _ = doGet();
+ 
+
+        }
+
+      
+        private async Task doGet()
+        {
+            var responseBytes = await client.GetByteArrayAsync("http://localhost:8080");
+            
+            string someString = Encoding.Default.GetString(responseBytes);
+
+            ComputeStory(someString);
+        }
+
+        private async Task doPost()
+        {
+            // Testing purposes
+            var sentences = "John loves flowers. \n John likes water.";
+
+            if (textBoxScenarioDescription.Text != null)
+            {
+                sentences = textBoxScenarioDescription.Text;
+
+            }
+           
+            var content = new StringContent(sentences);
+
+            var response = await client.PostAsync("http://localhost:8080", content);
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            
+        }
+
+
+
+        private void ComputeStory(string extrapolations)
+        {
+            char[] stop = new char[] { '{' , '}' };
+
+            var split = extrapolations.Split(stop);
+
+            var DomainKnowledge = split[1];
+
+            var Agents = split[2].Split('\n');
+
+            
+            foreach (var a in Agents){
+
+                if(a.Length < 2)
+                {
+                    continue;
+                }
+
+                var parameterSplit = a.Split('%');
+
+                var name = parameterSplit[0];
+                var actions = parameterSplit[1];
+                var beliefs = parameterSplit[2];
+                var needs = parameterSplit[3];
+
+                _iat.AddNewCharacter((Name)name);
+
+
+                
+
+                var beliefSplit = beliefs.Split('|');
+
+                // Computing beliefs: loves(banana[Object])
+
+                foreach (var b in beliefSplit)
+                {
+                    if (b.Length < 3)
+                        continue;
+
+
+                    var beliefName = b;
+                    beliefName = beliefName.Replace(" ", "");
+                    beliefName = beliefName.Replace("]", "");
+                    beliefName = beliefName.Replace(")", "");
+
+                    // Computing beliefs: loves(banana[Object
+
+                    var beliefSplitAux = beliefName.Split('(', '[');
+
+                    var bNmae = beliefSplitAux[0];
+                    var bValue = beliefSplitAux[1];
+                    
+                    var rpc = _iat.Characters.First(x => x.CharacterName == (Name)name);
+
+                    if (b.Contains('['))
+                    {
+                        var bTarget = beliefSplitAux[2];
+
+                        rpc.UpdateBelief("Is" + "(" + bValue + ")", bTarget);
+                    }
+
+                    
+                    rpc.UpdateBelief(bNmae + "(" + bValue + ")", "True");
+
+                   
+                    
+                }
+
+                var actionSplit = actions.Split('|');
+
+                foreach (var act in actionSplit)
+                {
+                    if (act.Length < 3)
+                        continue;
+
+                    // go(park[Location])
+
+                    // we want a belief and an action: is(Park) = Location and go(park)
+
+
+                    var actName = "";
+                    var targetName = "";
+                    var targetValue = "";
+
+
+
+                    var actionName = act;
+                    actionName = actionName.Replace(" ", "");
+                    actionName = actionName.Replace("]", "");
+                    actionName = actionName.Replace(")", "");
+
+                    // go(park[location
+
+                    actionSplit = actionName.Split('(', '[');
+
+                    actName = actionSplit[0];
+                    targetName = actionSplit[1];
+
+                    if (act.Contains('['))
+                        {
+                            targetValue = actionSplit[2];
+
+                            var rpc = _iat.Characters.First(x => x.CharacterName == (Name)name);
+
+                            rpc.UpdateBelief("Is" + "(" + targetName + ")", targetValue);
+                    }
+                        
+
+                    if (_edmForm == null)
+                        _edmForm = new EmotionalDecisionMakingWF.MainForm();
+                    var edm = _edmForm.Asset;
+
+
+
+                    edm.AddActionRule(new ActionLibrary.DTOs.ActionRuleDTO()
+                    {
+                        Action = (Name)actName,
+                        Target = (Name)targetName
+                    });
+
+                    _edmForm.OnAssetDataLoaded();
+
+                    
+
+
+
+                }
+
+                var needSplit = needs.Split('|');
+
+                foreach (var ned in needSplit)
+                {
+                    if (ned.Length < 3)
+                        continue;
+
+                    // go(park[Location])
+
+                    // we want a belief and an action: is(Park) = Location and go(park)
+
+
+                    var nedName = "";
+                    var targetName = "";
+                    var targetValue = "";
+
+
+
+                    var needName = ned;
+                    needName = needName.Replace(" ", "");
+                    needName = needName.Replace("]", "");
+                    needName = needName.Replace(")", "");
+
+                    // go(park[location
+
+                    var needAuxSplit = needName.Split('(', '[');
+
+                    nedName = needAuxSplit[0];
+                    targetName = needAuxSplit[1];
+
+                    var rpc = _iat.Characters.First(x => x.CharacterName == (Name)name);
+
+                    if (ned.Contains('['))
+                    {
+                        targetValue = actionSplit[2];
+
+                       
+
+                        rpc.UpdateBelief("Is" + "(" + targetName + ")", targetValue);
+                    }
+
+                    rpc.AddOrUpdateGoal(new EmotionalAppraisal.DTOs.GoalDTO()
+                    {
+                        Name = targetName,
+                        Likelihood = 0.5f,
+                        Significance = 1.0f
+                    });
+                    
+
+
+                }
+
+
+
+
+
+            }
+            OnAssetDataLoaded(_iat);
+
         }
     }
 }

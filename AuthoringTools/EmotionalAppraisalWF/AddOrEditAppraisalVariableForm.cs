@@ -64,9 +64,9 @@ namespace EmotionalAppraisalWF
                 float value = 0.0f;
                 if (float.TryParse(appraisalVariableValueTextBox.Value.ToString(), NumberStyles.Any, CultureInfo.InvariantCulture, out value))
                 {
-                    if (value < 0 || value > 1)
+                    if (value < -1 || value > 1)
                     {
-                        MessageBox.Show("Goal Value must be bewteen 0 and 1", Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Goal Value must be between -1 and 1", Resources.ErrorDialogTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                 }
@@ -153,6 +153,8 @@ namespace EmotionalAppraisalWF
             {
                  appraisalVariableTarget.Enabled = true;
                 labelTarget.Text = "Goal Name";
+                valueLabel.Text = "Value added to Likelihood (-1:1)";
+
             }
 
             else    appraisalVariableTarget.Enabled = false;

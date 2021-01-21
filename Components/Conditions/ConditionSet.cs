@@ -133,6 +133,7 @@ namespace Conditions
 			sets.AddRange(constraints.Select(c => new SubstitutionSet(c)));
 			foreach (var c in m_conditions)
 			{
+				
 				aux.AddRange(c.Unify(db,perspective, sets));
 				Util.Swap(ref sets, ref aux);
 				aux.Clear();

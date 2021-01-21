@@ -45,15 +45,26 @@ namespace EmotionalAppraisal.AppraisalRules
 			{
                 // Trying to find all possible initial substitutions;
                 var initialSubSet = Unifier.Unify(r.EventName, auxEvt);
-           
+
+                
 
                 if (initialSubSet == null)
                     initialSubSet = new SubstitutionSet();
 
+                var groundedRuleEventName = r.EventName;
+              
+                // Making sure conditions and event names are in the same page
 
-                if (auxEvt.Match(r.EventName) || initialSubSet.Any())
+                var finalSubSet = r.Conditions.Unify(kb, perspective, new List<SubstitutionSet>() { new SubstitutionSet(initialSubSet) });
+                foreach (var sub in finalSubSet) {                   
+                   groundedRuleEventName = r.EventName.MakeGround(sub);
+                }
+
+                groundedRuleEventName = groundedRuleEventName.SwapTerms(perspective, Name.SELF_SYMBOL);
+
+                if (auxEvt.Match(groundedRuleEventName))
                 {
-                    var finalSubSet = r.Conditions.Unify(kb, perspective, new List<SubstitutionSet>() {new SubstitutionSet(initialSubSet)});
+                  
                     if (finalSubSet != null)
                     {
                         //TODO: Handle uncertainty in beliefs

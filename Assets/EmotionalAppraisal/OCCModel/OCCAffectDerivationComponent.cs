@@ -205,14 +205,27 @@ namespace EmotionalAppraisal.OCCModel
                 string goalName = variable.Substring(OCCAppraisalVariables.GOALSUCCESSPROBABILITY.Length + 1);
 
                 if (goals == null) continue;
-                Goal g = goals[goalName];
-                if (g == null) continue;
-                
-                var previousValue = g.Likelihood;
-                g.Likelihood = goalSuccessProbability;
+                if (goals.ContainsKey(goalName))
+                {
+                    Goal g = goals[goalName];
+                    if (g == null) continue;
 
 
-                yield return AppraiseGoalSuccessProbability(evt, goalSuccessProbability, previousValue, g.Significance);
+                    var previousValue = g.Likelihood;
+                    
+                    g.Likelihood += goalSuccessProbability;
+
+                    if (g.Likelihood < 0)
+                        g.Likelihood = 0;
+
+                    if (g.Likelihood > 1)
+                        g.Likelihood = 1;
+
+                    yield return AppraiseGoalSuccessProbability(evt, g.Likelihood, previousValue, g.Significance);
+
+                }
+              
+
             }
         }
 
