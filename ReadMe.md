@@ -103,7 +103,7 @@ For each asset, there is a pdf document describing its API in the folder named *
 Apache 2.0
 
 ### Contact
-For any questions, suggestions and feedback please contact Samuel Mascarenhas (samuel.mascarenhas@gaips.inesc-id.pt). 
+For any questions, suggestions and feedback please contact Manuel Guimarães (manuel.m.guimaraes@tecnico.ulisboa.pt). 
 
 
 [rage-link]: <http://rageproject.eu//>
