@@ -79,7 +79,7 @@ namespace WorldModel
                         {
                             trueObserverAgentName = ef.ObserverAgent.MakeGround(sub);
                         }
-                    else trueResponsibleAgentName = responsibleAgent;
+                    else trueObserverAgentName = ef.ObserverAgent;
 
                     var trueEffect = new EffectDTO()
                     {

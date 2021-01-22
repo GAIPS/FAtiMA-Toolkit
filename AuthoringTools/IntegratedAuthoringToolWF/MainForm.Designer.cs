@@ -713,10 +713,10 @@
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.groupBox7);
-            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Location = new System.Drawing.Point(4, 27);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(866, 654);
+            this.tabPage3.Size = new System.Drawing.Size(866, 652);
             this.tabPage3.TabIndex = 3;
             this.tabPage3.Text = "World";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -727,7 +727,7 @@
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox7.Location = new System.Drawing.Point(3, 3);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(860, 648);
+            this.groupBox7.Size = new System.Drawing.Size(860, 646);
             this.groupBox7.TabIndex = 16;
             this.groupBox7.TabStop = false;
             // 
