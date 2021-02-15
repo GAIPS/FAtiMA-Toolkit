@@ -10,9 +10,9 @@ namespace EmotionalAppraisal.OCCModel
 {
     public class OCCAffectDerivationComponent : IAffectDerivator
     {
-        private static OCCBaseEmotion OCCAppraiseCompoundEmotions(IBaseEvent evt, float desirability, float praiseworthiness)
+        private static OCCBaseEmotion OCCAppraiseCompoundEmotions(IBaseEvent evt, float desirability, float praiseworthiness, string target)
         {
-            if ((desirability == 0) || (praiseworthiness == 0) || ((desirability > 0) != (praiseworthiness > 0)))
+            if ((desirability == 0) || (praiseworthiness == 0))
                 return null;
 
             float potential = Math.Abs(desirability + praiseworthiness) * 0.5f;
@@ -20,14 +20,14 @@ namespace EmotionalAppraisal.OCCModel
             Name direction;
             OCCEmotionType emoType;
 
-            if (evt.Subject == Name.SELF_SYMBOL)
+            if (target == "" || target == Name.SELF_STRING)
             {
                 direction = Name.SELF_SYMBOL;
                 emoType = (desirability > 0) ? OCCEmotionType.Gratification : OCCEmotionType.Remorse;
             }
             else
             {
-                direction = evt.Subject ?? Name.UNIVERSAL_SYMBOL;
+                direction = Name.BuildName(target);
                 emoType = (desirability > 0) ? OCCEmotionType.Gratitude : OCCEmotionType.Anger;
             }
 
@@ -70,7 +70,7 @@ namespace EmotionalAppraisal.OCCModel
             Name direction;
             OCCEmotionType emoType;
 
-            if (target == "SELF" || target == evt.Subject.ToString())
+            if (target  == "" || target == "SELF" || target == evt.Subject.ToString())
             {
                 direction = Name.SELF_SYMBOL;
                 emoType = (praiseworthiness >= 0) ? OCCEmotionType.Pride : OCCEmotionType.Shame;
@@ -154,12 +154,12 @@ namespace EmotionalAppraisal.OCCModel
                 }
 
 
-                if (frame.ContainsAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS) && !returnedEmotion)
+                foreach (string variable in frame.AppraisalVariables.Where(v => v.StartsWith(OCCAppraisalVariables.PRAISEWORTHINESS)))
                 {
+                    float praiseworthiness = frame.GetAppraisalVariable(variable);
+                    string other = variable.Substring(OCCAppraisalVariables.PRAISEWORTHINESS.Length);
 
-                    float praiseworthiness = frame.GetAppraisalVariable(OCCAppraisalVariables.PRAISEWORTHINESS);
-
-                    var composedEmotion = OCCAppraiseCompoundEmotions(evt, desirability, praiseworthiness);
+                    var composedEmotion = OCCAppraiseCompoundEmotions(evt, desirability, praiseworthiness, other);
                     if (composedEmotion != null)
                     {
                         returnedEmotion = true;
