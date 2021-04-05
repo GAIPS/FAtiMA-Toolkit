@@ -159,6 +159,12 @@ namespace WorldModel
             return actions;
         }
 
+        public List<Effect> GetEventEffects(Name evt)
+        {
+            return actions[evt];
+        }
+
+
         public IEnumerable<Pair<Name, int>> GetAllActions()
         {
             return actions.Keys.Select(x => new Pair<Name, int>(x, priorityRules[x]));

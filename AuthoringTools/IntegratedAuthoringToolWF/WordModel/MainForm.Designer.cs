@@ -135,6 +135,7 @@
             this.dataGridViewEventTemplates.ImeMode = System.Windows.Forms.ImeMode.On;
             this.dataGridViewEventTemplates.Location = new System.Drawing.Point(8, 61);
             this.dataGridViewEventTemplates.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridViewEventTemplates.MultiSelect = false;
             this.dataGridViewEventTemplates.Name = "dataGridViewEventTemplates";
             this.dataGridViewEventTemplates.ReadOnly = true;
             this.dataGridViewEventTemplates.RowHeadersVisible = false;
@@ -145,6 +146,7 @@
             this.dataGridViewEventTemplates.TabIndex = 11;
             this.dataGridViewEventTemplates.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewEventTemplates_CellContentClick);
             this.dataGridViewEventTemplates.SelectionChanged += new System.EventHandler(this.dataGridViewEventTemplates_SelectionChanged);
+            this.dataGridViewEventTemplates.Sorted += new System.EventHandler(this.dataGridViewEventTemplates_Sorted);
             // 
             // groupBox1
             // 
@@ -226,6 +228,7 @@
             this.dataGridViewEffects.ImeMode = System.Windows.Forms.ImeMode.On;
             this.dataGridViewEffects.Location = new System.Drawing.Point(8, 71);
             this.dataGridViewEffects.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridViewEffects.MultiSelect = false;
             this.dataGridViewEffects.Name = "dataGridViewEffects";
             this.dataGridViewEffects.ReadOnly = true;
             this.dataGridViewEffects.RowHeadersVisible = false;

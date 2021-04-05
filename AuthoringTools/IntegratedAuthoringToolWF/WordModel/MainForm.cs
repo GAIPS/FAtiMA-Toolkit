@@ -135,8 +135,10 @@ namespace WorldModelWF
                 addEffectDTO.Enabled = true;
             }
 
-            RefreshEffects();
+            dataGridViewEventTemplates_SelectionChanged(new object(), new EventArgs());
         }
+
+       
 
         private void dataGridViewEventTemplates_SelectionChanged(object sender, EventArgs e)
         {
@@ -144,52 +146,23 @@ namespace WorldModelWF
 
             if (dataGridViewEventTemplates.SelectedRows.Count > 0)
                 index = dataGridViewEventTemplates.SelectedRows[0].Index;
+            else return;
 
+            var ev = dataGridViewEventTemplates.SelectedRows[0].Cells[0].Value.ToString();
+           
             dataGridViewEffects.DataSource = null;
             if (_wmAsset != null)
             {
                 if (_wmAsset.GetAllEventEffects().Count == 0)
                     return;
-                var evt = _wmAsset.GetAllEventEffects().Keys.ElementAt(index);
 
-                if (_wmAsset.GetAllEventEffects()[evt].Count > 0)
+                var keyEvent = _wmAsset.GetAllEventEffects().Keys.First(x=>x.ToString().Contains(ev));
+
+               
+
+                if (_wmAsset.GetAllEventEffects()[keyEvent].Count > 0)
                 {
-                    dataGridViewEffects.DataSource = _wmAsset.GetAllEventEffects().ElementAt(index).Value;
-                    dataGridViewEffects.Columns[0].Visible = false;
-                    dataGridViewEffects.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-                    button1.Enabled = true;
-                    button2.Enabled = true;
-                    button4.Enabled = true;
-                }
-                else
-                {
-                    button1.Enabled = false;
-                    button2.Enabled = false;
-                    button4.Enabled = false;
-                }
-
-                addEffectDTO.Enabled = true;
-            }
-        }
-
-        public void RefreshEffects()
-        {
-            var index = 0;
-
-            if (dataGridViewEventTemplates.SelectedRows.Count > 0)
-                index = dataGridViewEventTemplates.SelectedRows[0].Index;
-
-            dataGridViewEffects.DataSource = null;
-            if (_wmAsset != null)
-            {
-                if (_wmAsset.GetAllEventEffects().Count == 0)
-                    return;
-                var evt = _wmAsset.GetAllEventEffects().Keys.ElementAt(index);
-
-                if (_wmAsset.GetAllEventEffects()[evt].Count > 0)
-                {
-                    dataGridViewEffects.DataSource = _wmAsset.GetAllEventEffects().ElementAt(index).Value;
+                    dataGridViewEffects.DataSource = _wmAsset.GetAllEventEffects()[keyEvent];
                     dataGridViewEffects.Columns[0].Visible = false;
                     dataGridViewEffects.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
@@ -290,6 +263,12 @@ namespace WorldModelWF
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+        }
+
+        private void dataGridViewEventTemplates_Sorted(object sender, EventArgs e)
+        {
+
+            dataGridViewEventTemplates_SelectionChanged(new object(), new EventArgs());
         }
 
         private void button3_Click(object sender, EventArgs e) // Duplicate Action
