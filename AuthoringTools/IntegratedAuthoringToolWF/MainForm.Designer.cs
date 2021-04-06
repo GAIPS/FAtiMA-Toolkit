@@ -25,7 +25,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxScenarioDescription = new System.Windows.Forms.TextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.importStoryButton = new System.Windows.Forms.Button();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.buttonSaveAsAssetStorage = new System.Windows.Forms.Button();
             this.buttonOpenAssetStorage = new System.Windows.Forms.Button();
@@ -98,6 +97,9 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.computeDescriptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadTemplateScenarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCharacters)).BeginInit();
@@ -171,7 +173,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(379, 363);
+            this.groupBox1.Size = new System.Drawing.Size(379, 365);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Characters";
@@ -190,7 +192,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(371, 336);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(371, 338);
             this.tableLayoutPanel1.TabIndex = 15;
             // 
             // dataGridViewCharacters
@@ -212,7 +214,7 @@
             this.dataGridViewCharacters.RowHeadersWidth = 51;
             this.dataGridViewCharacters.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewCharacters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewCharacters.Size = new System.Drawing.Size(365, 284);
+            this.dataGridViewCharacters.Size = new System.Drawing.Size(365, 286);
             this.dataGridViewCharacters.TabIndex = 15;
             this.dataGridViewCharacters.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCharacters_CellContentClick_1);
             this.dataGridViewCharacters.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewCharacters_CellMouseClick);
@@ -289,13 +291,12 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 30);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 28);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.importStoryButton);
             this.splitContainer1.Panel1.Controls.Add(this.groupBox6);
             this.splitContainer1.Panel1.Controls.Add(this.textBoxScenarioName);
             this.splitContainer1.Panel1.Controls.Add(this.groupBox1);
@@ -307,20 +308,10 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControlIAT);
-            this.splitContainer1.Size = new System.Drawing.Size(1299, 683);
+            this.splitContainer1.Size = new System.Drawing.Size(1299, 685);
             this.splitContainer1.SplitterDistance = 420;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 5;
-            // 
-            // importStoryButton
-            // 
-            this.importStoryButton.Location = new System.Drawing.Point(271, 56);
-            this.importStoryButton.Name = "importStoryButton";
-            this.importStoryButton.Size = new System.Drawing.Size(126, 33);
-            this.importStoryButton.TabIndex = 17;
-            this.importStoryButton.Text = "ComputeStory";
-            this.importStoryButton.UseVisualStyleBackColor = true;
-            this.importStoryButton.Click += new System.EventHandler(this.importStoryButton_Click);
             // 
             // groupBox6
             // 
@@ -409,7 +400,7 @@
             this.tabControlIAT.Margin = new System.Windows.Forms.Padding(4);
             this.tabControlIAT.Name = "tabControlIAT";
             this.tabControlIAT.SelectedIndex = 0;
-            this.tabControlIAT.Size = new System.Drawing.Size(874, 683);
+            this.tabControlIAT.Size = new System.Drawing.Size(874, 685);
             this.tabControlIAT.TabIndex = 20;
             this.tabControlIAT.TabStop = false;
             // 
@@ -421,7 +412,7 @@
             this.tabPageDialogue.Margin = new System.Windows.Forms.Padding(5);
             this.tabPageDialogue.Name = "tabPageDialogue";
             this.tabPageDialogue.Padding = new System.Windows.Forms.Padding(5);
-            this.tabPageDialogue.Size = new System.Drawing.Size(866, 652);
+            this.tabPageDialogue.Size = new System.Drawing.Size(866, 654);
             this.tabPageDialogue.TabIndex = 0;
             this.tabPageDialogue.Text = "Dialogues";
             this.tabPageDialogue.UseVisualStyleBackColor = true;
@@ -1164,10 +1155,11 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.aboutToolStripMenuItem});
+            this.aboutToolStripMenuItem,
+            this.toolsToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1299, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(1299, 28);
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -1179,7 +1171,7 @@
             this.saveToolStripMenuItem,
             this.saveAsToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 26);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // newToolStripMenuItem
@@ -1213,9 +1205,32 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(64, 26);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(64, 24);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
+            // toolsToolStripMenuItem
+            // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.computeDescriptionToolStripMenuItem,
+            this.loadTemplateScenarioToolStripMenuItem});
+            this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(58, 24);
+            this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // computeDescriptionToolStripMenuItem
+            // 
+            this.computeDescriptionToolStripMenuItem.Name = "computeDescriptionToolStripMenuItem";
+            this.computeDescriptionToolStripMenuItem.Size = new System.Drawing.Size(233, 26);
+            this.computeDescriptionToolStripMenuItem.Text = "Compute Description";
+            this.computeDescriptionToolStripMenuItem.Click += new System.EventHandler(this.importStoryButton_Click);
+            // 
+            // loadTemplateScenarioToolStripMenuItem
+            // 
+            this.loadTemplateScenarioToolStripMenuItem.Name = "loadTemplateScenarioToolStripMenuItem";
+            this.loadTemplateScenarioToolStripMenuItem.Size = new System.Drawing.Size(252, 26);
+            this.loadTemplateScenarioToolStripMenuItem.Text = "Load Template Scenario";
+            this.loadTemplateScenarioToolStripMenuItem.Click += new System.EventHandler(this.loadTemplateScenarioToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -1389,7 +1404,9 @@
         private System.Windows.Forms.GroupBox groupBox13;
         private System.Windows.Forms.SplitContainer splitContainer4;
         public System.Windows.Forms.TextBox textBoxPathAssetStorage;
-        private System.Windows.Forms.Button importStoryButton;
+        private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem computeDescriptionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadTemplateScenarioToolStripMenuItem;
     }
 }
 
