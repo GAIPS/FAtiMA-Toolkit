@@ -490,14 +490,14 @@ namespace RolePlayCharacter
 
         public void BindToRegistry(IDynamicPropertiesRegistry registry)
         {
-            registry.RegistDynamicProperty(RPCConsts.MOOD_PROPERTY_NAME, "", MoodPropertyCalculator);
-            registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_PROPERTY_NAME, "", StrongestEmotionCalculator);
-            registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_FOR_EVENT_PROPERTY_NAME, "", StrongestEmotionForEventCalculator);
-            registry.RegistDynamicProperty(RPCConsts.STRONGEST_WELL_BEING_EMOTION_PROPERTY_NAME, "",
+            registry.RegistDynamicProperty(RPCConsts.MOOD_PROPERTY_NAME, MOOD_DP_DESC, MoodPropertyCalculator);
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_PROPERTY_NAME, STRONGEST_EMOTION_PROPERTY_DP_DESC, StrongestEmotionCalculator);
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_FOR_EVENT_PROPERTY_NAME, STRONGEST_EMOTION_FOR_EVENT_PROPERTY_DP_DESC, StrongestEmotionForEventCalculator);
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_WELL_BEING_EMOTION_PROPERTY_NAME, STRONGEST_WELL_BEING_EMOTION_PROPERTY_DP_DESC,
                 StrongestWellBeingEmotionCalculator);
-            registry.RegistDynamicProperty(RPCConsts.STRONGEST_ATTRIBUTION_PROPERTY_NAME, "",
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_ATTRIBUTION_PROPERTY_NAME, STRONGEST_ATTRIBUTION_PROPERTY_DP_DESC,
                 StrongestAttributionEmotionCalculator);
-            registry.RegistDynamicProperty(RPCConsts.STRONGEST_COMPOUND_PROPERTY_NAME, "",
+            registry.RegistDynamicProperty(RPCConsts.STRONGEST_COMPOUND_PROPERTY_NAME, STRONGEST_COMPOUND_PROPERTY_DP_DESC,
                 StrongestCompoundEmotionCalculator);
             registry.RegistDynamicProperty(EMOTION_INTENSITY_DP_NAME, EMOTION_INTENSITY_DP_DESC, EmotionIntensityPropertyCalculator);
             registry.RegistDynamicProperty(IS_AGENT_DP_NAME, IS_AGENT_DP_NAME_DESC, IsAgentPropertyCalculator);
@@ -524,8 +524,21 @@ namespace RolePlayCharacter
         #endregion RolePlayCharater Fields
         #region Dynamic Properties
 
+        private static readonly string MOOD_DP_DESC = "Returns the Mood value for character [x]";
+
+        private static readonly string STRONGEST_EMOTION_PROPERTY_DP_DESC = "Returns the name of the strongest emotion for character [x]";
+
+        private static readonly string STRONGEST_EMOTION_FOR_EVENT_PROPERTY_DP_DESC = "Returns the name of the strongest emotion for [cause] for character [x]";
+
+        private static readonly string STRONGEST_WELL_BEING_EMOTION_PROPERTY_DP_DESC = "Returns the name of the strongest well-being emotion for character [x]";
+
+        private static readonly string STRONGEST_ATTRIBUTION_PROPERTY_DP_DESC = "Returns the name of the strongest attribution emotion for character [x]";
+
+        private static readonly string STRONGEST_COMPOUND_PROPERTY_DP_DESC = "Returns the name of the strongest compound emotion for character [x]";
+
+
         private static readonly Name EMOTION_INTENSITY_DP_NAME = (Name)"EmotionIntensity";
-        private static readonly string EMOTION_INTENSITY_DP_DESC = "";
+        private static readonly string EMOTION_INTENSITY_DP_DESC = "Returns the emotion intensity of emotion [y] for character [x]";
 
         private static readonly Name IS_AGENT_DP_NAME = (Name)"IsAgent";
         private static readonly string IS_AGENT_DP_NAME_DESC = "";
@@ -613,7 +626,8 @@ namespace RolePlayCharacter
                     if(gottem.Any())
                         foreach (var c in context.Constraints)
                         {
-                            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(gottem.FirstOrDefault().Intensity)), c);
+
+                            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(gottem.OrderByDescending(i=>i.Intensity).FirstOrDefault().Intensity)), c);
                         }
                 }
             }
