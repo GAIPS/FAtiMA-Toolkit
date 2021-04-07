@@ -173,7 +173,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(379, 365);
+            this.groupBox1.Size = new System.Drawing.Size(379, 363);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Characters";
@@ -192,7 +192,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(371, 338);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(371, 336);
             this.tableLayoutPanel1.TabIndex = 15;
             // 
             // dataGridViewCharacters
@@ -214,7 +214,7 @@
             this.dataGridViewCharacters.RowHeadersWidth = 51;
             this.dataGridViewCharacters.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewCharacters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewCharacters.Size = new System.Drawing.Size(365, 286);
+            this.dataGridViewCharacters.Size = new System.Drawing.Size(365, 284);
             this.dataGridViewCharacters.TabIndex = 15;
             this.dataGridViewCharacters.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCharacters_CellContentClick_1);
             this.dataGridViewCharacters.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewCharacters_CellMouseClick);
@@ -291,7 +291,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 28);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 30);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -308,7 +308,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControlIAT);
-            this.splitContainer1.Size = new System.Drawing.Size(1299, 685);
+            this.splitContainer1.Size = new System.Drawing.Size(1299, 683);
             this.splitContainer1.SplitterDistance = 420;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 5;
@@ -400,7 +400,7 @@
             this.tabControlIAT.Margin = new System.Windows.Forms.Padding(4);
             this.tabControlIAT.Name = "tabControlIAT";
             this.tabControlIAT.SelectedIndex = 0;
-            this.tabControlIAT.Size = new System.Drawing.Size(874, 685);
+            this.tabControlIAT.Size = new System.Drawing.Size(874, 683);
             this.tabControlIAT.TabIndex = 20;
             this.tabControlIAT.TabStop = false;
             // 
@@ -412,7 +412,7 @@
             this.tabPageDialogue.Margin = new System.Windows.Forms.Padding(5);
             this.tabPageDialogue.Name = "tabPageDialogue";
             this.tabPageDialogue.Padding = new System.Windows.Forms.Padding(5);
-            this.tabPageDialogue.Size = new System.Drawing.Size(866, 654);
+            this.tabPageDialogue.Size = new System.Drawing.Size(866, 652);
             this.tabPageDialogue.TabIndex = 0;
             this.tabPageDialogue.Text = "Dialogues";
             this.tabPageDialogue.UseVisualStyleBackColor = true;
@@ -426,7 +426,7 @@
             this.groupBox12.Controls.Add(this.buttonExportExcel);
             this.groupBox12.Controls.Add(this.buttonValidate);
             this.groupBox12.Controls.Add(this.buttonTTS);
-            this.groupBox12.Location = new System.Drawing.Point(8, 555);
+            this.groupBox12.Location = new System.Drawing.Point(8, 553);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Size = new System.Drawing.Size(849, 55);
             this.groupBox12.TabIndex = 21;
@@ -509,7 +509,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(849, 540);
+            this.groupBox2.Size = new System.Drawing.Size(849, 538);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dialogue Actions";
@@ -573,7 +573,7 @@
             this.dataGridViewDialogueActions.RowHeadersWidth = 51;
             this.dataGridViewDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(841, 456);
+            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(841, 454);
             this.dataGridViewDialogueActions.TabIndex = 14;
             this.dataGridViewDialogueActions.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellClick);
             this.dataGridViewDialogueActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellContentClick);
@@ -1155,11 +1155,11 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.aboutToolStripMenuItem,
-            this.toolsToolStripMenuItem});
+            this.toolsToolStripMenuItem,
+            this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1299, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1299, 30);
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
