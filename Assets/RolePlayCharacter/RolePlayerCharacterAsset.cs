@@ -627,7 +627,7 @@ namespace RolePlayCharacter
                         foreach (var c in context.Constraints)
                         {
 
-                            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(gottem.OrderByDescending(i=>i.Intensity).FirstOrDefault().Intensity)), c);
+                            yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(gottem.OrderByDescending(i=>i.CauseEventId).FirstOrDefault().Intensity)), c);
                         }
                 }
             }

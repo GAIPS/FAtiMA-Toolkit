@@ -28,6 +28,8 @@ using WorldModel;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Text;
+using System.Net.NetworkInformation;
+
 
 namespace IntegratedAuthoringToolWF
 {
@@ -1642,9 +1644,29 @@ namespace IntegratedAuthoringToolWF
         private void importStoryButton_Click(object sender, EventArgs e)
         {
 
-            _ = doPost();
+            bool pingable = false;
+            Ping pinger = null;
 
-            _ = doGet();
+            try
+            {
+                pinger = new Ping();
+                PingReply reply = pinger.Send("http://localhost:8080");
+                pingable = reply.Status == IPStatus.Success;
+
+                _ = doPost();
+
+                _ = doGet();
+
+            }
+            catch (PingException)
+            {
+                // Discard PingExceptions and return false;
+
+                MessageBox.Show("Server could not be reached");
+            }
+
+
+        
  
 
         }
