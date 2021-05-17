@@ -16,7 +16,7 @@ namespace IntegratedAuthoringTool
         public Name NextState { get; private set; }
         public Name Meaning { get; private set; }
         public Name Style { get; private set; }
-        public string Utterance { get; private set; }
+        public string Utterance { get; set; }
         public string UtteranceId { get; set;}
 
         /// <summary>

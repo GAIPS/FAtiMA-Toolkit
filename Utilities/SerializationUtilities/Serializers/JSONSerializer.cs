@@ -142,6 +142,7 @@ namespace SerializationUtilities
 
 		public object DeserializeFromJson(JsonObject json, Type returnType)
 		{
+		
 			if (!json.ContainsField(ROOT_FIELD))
 			{
 				var baseJson = new JsonObject();
@@ -156,6 +157,7 @@ namespace SerializationUtilities
 				if (obj.ContainsField("classId"))
 					graph.RegistTypeEntry(returnType, (byte)((JsonNumber)obj["classId"]).Value);
 			}
+
 			
 			DeserializeDataGraphFromJson(json,graph);
 			return graph.DeserializeObject(returnType);
@@ -203,6 +205,7 @@ namespace SerializationUtilities
 					JsonToObjectNode(refEntry, serGraph);
 				}
 			}
+		
 
 			serGraph.Root = ReadNode(json[ROOT_FIELD] as JsonToken, serGraph);
 		}
@@ -230,6 +233,7 @@ namespace SerializationUtilities
 				}
 				else
 				{
+					
 					node[field.Key] = ReadNode(field.Value, parentGraph);
 				}
 			}

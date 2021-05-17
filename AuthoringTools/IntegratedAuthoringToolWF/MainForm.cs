@@ -1640,29 +1640,70 @@ namespace IntegratedAuthoringToolWF
 
         private static readonly HttpClient client = new HttpClient();
 
+    // Server IP
+         private static readonly string IP = "146.193.226.21";
+
+      // Local Host IP
+      // private static readonly string IP = "192.168.1.101";
+        private static readonly string PORT = "8080";
+        private static string iepResult = "";
 
         private void importStoryButton_Click(object sender, EventArgs e)
         {
+            var description = "";
+
+            // This will work as the default but I don't really like, change it in the future
+            if (textBoxScenarioDescription.Text == null)
+            {
+                description = "John loves flowers. \n John likes water.";
+            }
+            else
+            {
+
+                description = textBoxScenarioDescription.Text;
+            }
 
             bool pingable = false;
             Ping pinger = null;
+            pinger = new Ping();
+            PingReply reply = pinger.Send(IP);
+            if (reply.Status == IPStatus.Success)
+                debugLabel.Text = "Server Reached";
+            else {
+                debugLabel.Text = "Server could not be reached";
+                return;
+                    }
 
+            ProcessDescriptionAsync(description).GetAwaiter().GetResult();
+            debugLabel.Text = "Description sent, awaiting response";
+            if (iepResult != "")
+            ComputeStory(iepResult);
+            debugLabel.Text = "Process Concluded";
+        }
+
+
+        static async Task ProcessDescriptionAsync(string description)
+        {
+            client.DefaultRequestHeaders.Add("User-Agent", "Anything");
+            
             try
             {
-                pinger = new Ping();
-                PingReply reply = pinger.Send("http://localhost:8080");
-                pingable = reply.Status == IPStatus.Success;
+              
+                //Send the Story
+                await SendDescriptionAsync(description);
 
-                _ = doPost();
 
-                _ = doGet();
+                //Collect the results
+                await GetScenarioAsync().ConfigureAwait(false);
 
             }
-            catch (PingException)
+            catch (Exception f)
             {
                 // Discard PingExceptions and return false;
 
-                MessageBox.Show("Server could not be reached");
+                MessageBox.Show(f.Message);
+
+
             }
 
 
@@ -1672,33 +1713,41 @@ namespace IntegratedAuthoringToolWF
         }
 
       
-        private async Task doGet()
+        static async Task GetScenarioAsync()
         {
-            var responseBytes = await client.GetByteArrayAsync("http://localhost:8080");
-            
-            string someString = Encoding.Default.GetString(responseBytes);
+            var responseBytes = client.GetByteArrayAsync("http://" + IP + ":" + PORT).Result;
 
-            ComputeStory(someString);
+            iepResult = Encoding.Default.GetString(responseBytes);
+
+           
         }
 
-        private async Task doPost()
+        static async Task<HttpResponseMessage> SendDescriptionAsync(string description)
         {
             // Testing purposes
-            var sentences = "John loves flowers. \n John likes water.";
-
-            if (textBoxScenarioDescription.Text != null)
-            {
-                sentences = textBoxScenarioDescription.Text;
-
-            }
+          
            
-            var content = new StringContent(sentences);
+            var content = new StringContent(description);
 
-            var response = await client.PostAsync("http://localhost:8080", content);
+            //var response = await client.PostAsync("http://" + IP + ":" + PORT, content).ConfigureAwait(false);
 
-            var responseString = await response.Content.ReadAsStringAsync();
-
+            return Task.Run(() => client.PostAsync("http://" + IP + ":" + PORT, content)).Result;
             
+            /*          
+          
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return;
+            }
+
+            else if( response.StatusCode == System.Net.HttpStatusCode.NoContent)
+            {
+                MessageBox.Show("No description available");
+                
+            }
+
+            //response.EnsureSuccessStatusCode();
+            //return response.Headers.Location;*/
         }
 
 
@@ -1728,9 +1777,12 @@ namespace IntegratedAuthoringToolWF
                 var beliefs = parameterSplit[2];
                 var needs = parameterSplit[3];
 
-                _iat.AddNewCharacter((Name)name);
 
+                if (_iat.Characters.Count() == 0)
+                    _iat.AddNewCharacter((Name)name);
 
+                else if (_iat.Characters.ToList().FindIndex(x => name.Contains(x.CharacterName.ToString())) < 0)
+                    _iat.AddNewCharacter((Name)name);
                 
 
                 var beliefSplit = beliefs.Split('|');
@@ -1903,6 +1955,16 @@ namespace IntegratedAuthoringToolWF
             this._iat = IntegratedAuthoringToolAsset.FromJson(scenarioString, _storage);
             OnAssetDataLoaded(_iat);
             OnAssetStorageChange();
+        }
+
+        private void label9_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabPage1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

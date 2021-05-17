@@ -1,5 +1,6 @@
 ﻿using RolePlayCharacter;
 using IntegratedAuthoringTool;
+using GAIPS.Rage;
 using System;
 using System.Linq;
 using System.IO;
@@ -12,8 +13,11 @@ namespace IntegratedAuthoringToolTutorial
         {
             var playerStr = IATConsts.PLAYER;
 
+            var storage = AssetStorage.FromJson(File.ReadAllText("../../../../Examples/IAT-Tutorial/Scenarios/storage.json"));
+             
             //Loading the asset
-            var iat = IntegratedAuthoringToolAsset.FromJson(File.ReadAllText("../../../../Examples/IAT-Tutorial/Scenarios/ForTheRecord.iat"), new GAIPS.Rage.AssetStorage());
+            var iat = IntegratedAuthoringToolAsset.FromJson(File.ReadAllText("../../../../Examples/IAT-Tutorial/Scenarios/scenario.json"), storage);
+            
             var currentState = IATConsts.INITIAL_DIALOGUE_STATE;
             var rpc = iat.Characters.ElementAt(0);
             while (currentState != IATConsts.TERMINAL_DIALOGUE_STATE)

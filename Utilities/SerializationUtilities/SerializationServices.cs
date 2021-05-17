@@ -82,6 +82,7 @@ namespace SerializationUtilities
 			};
 			_assemblyLoader.OnAssemblyLoaded += onAssemblyLoaded;
 
+		
 			while (searchSet.Count>0)
 			{
 				var ass = searchSet.Dequeue();
@@ -110,7 +111,7 @@ namespace SerializationUtilities
 
 			_assemblyLoader.OnAssemblyLoaded -= onAssemblyLoaded;
 
-			RecalcTypeTrees(_surrogateSelector,candidates);
+			RecalcTypeTrees(_surrogateSelector, candidates);
 			RecalcTypeTrees(_formatterSelector, candidates);
 
 			_assemblyLoader.OnAssemblyLoaded += SetDirty;
@@ -119,11 +120,14 @@ namespace SerializationUtilities
 
 		private static void RecalcTypeTrees<T>(TypeSelector<T> selector, Dictionary<Type, List<Pair>> group) where T: class
 		{
+			
 			var validDefaults = group[typeof (T)];
 
 			selector.Clear();
+			
 			foreach (var entry in validDefaults)
 			{
+			
 				var att = entry.Item1;
 				var ist = Activator.CreateInstance(entry.Item2);
 				selector.AddValue(att.AssociatedType,att.UseInChildren,(T)ist);

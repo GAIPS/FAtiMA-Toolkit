@@ -1,0 +1,319 @@
+{
+	"root":
+		{
+			"classId": 0,
+			"ScenarioName": "Sleepy",
+			"Description": "You are a sleep specialist and are about to meet a patient who is referred to you. In particular, this patient has had trouble sleeping recently.",
+			"Dialogues": [
+				{
+					"CurrentState": "Introductions",
+					"NextState": "Greet",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "Hello there",
+					"UtteranceId": "TTS-C6F7C372641DD25E0FDDF0215375561F"
+				}, 
+				{
+					"CurrentState": "Introductions",
+					"NextState": "Specialist",
+					"Meaning": "-",
+					"Style": "Polite",
+					"Utterance": "I'm a specialist and I heard about your sleep difficulties. Is it okay if we talk?",
+					"UtteranceId": "TTS-3D38C923FFFDB7BB39B758DAA1CB3EBF"
+				}, 
+				{
+					"CurrentState": "Introductions",
+					"NextState": "Concern",
+					"Meaning": "-",
+					"Style": "Polite",
+					"Utterance": "What seems to be the concern?",
+					"UtteranceId": "TTS-D0D46914325E5DBDEA541F148172156D"
+				}, 
+				{
+					"CurrentState": "Introductions",
+					"NextState": "Yourself",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "Why don't you tell me a little about yourself",
+					"UtteranceId": "TTS-AC207B73F418BFF40B1C742EB1F6DA75"
+				}, 
+				{
+					"CurrentState": "Yourself",
+					"NextState": "Introductions",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "Okay. Well, I'm 21, and a student. I'm majoring in accounting.",
+					"UtteranceId": "TTS-D06F42174C4ADB625B3EC3D05D21CB91"
+				}, 
+				{
+					"CurrentState": "VisitPurpose",
+					"NextState": "AnythingElse",
+					"Meaning": "NotVisited",
+					"Style": "-",
+					"Utterance": "So you'd like to talk about sleep difficulties. Is there anything else?",
+					"UtteranceId": "TTS-B6784509CEE8210A3A5D96EDAA6FCCB7"
+				}, 
+				{
+					"CurrentState": "AnythingElse",
+					"NextState": "AnythingElse",
+					"Meaning": "NotVisited",
+					"Style": "-",
+					"Utterance": "So you'd like to talk about sleep difficulties. Is there anything else?",
+					"UtteranceId": "TTS-B6784509CEE8210A3A5D96EDAA6FCCB7"
+				}, 
+				{
+					"CurrentState": "VisitPurpose",
+					"NextState": "Reason",
+					"Meaning": "Visited",
+					"Style": "-",
+					"Utterance": "What else brings you in today?",
+					"UtteranceId": "TTS-83A6A3B93636DA3AE768D41F0B6F4636"
+				}, 
+				{
+					"CurrentState": "Concern",
+					"NextState": "Introductions",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "Well, I haven't been able to sleep well the past couple of months.",
+					"UtteranceId": "TTS-904F5BE21B0B5757F4239DDB58C2A241"
+				}, 
+				{
+					"CurrentState": "CoachComesIn2",
+					"NextState": "Introductions",
+					"Meaning": "ChangeTarget(Patient)",
+					"Style": "-",
+					"Utterance": "It really isn't, try again",
+					"UtteranceId": "TTS-92FE26E045C19BAD3DDA66686B8BF3EB"
+				}, 
+				{
+					"CurrentState": "Start",
+					"NextState": "Introductions",
+					"Meaning": "ChangeTarget(Patient)",
+					"Style": "-",
+					"Utterance": "You are a sleep specialist and are about to meet a patient who is referred to you. In particular, this patient has had trouble sleeping recently.",
+					"UtteranceId": "TTS-104D9B448E8C3A5950F1CB9CD29F21D2"
+				}, 
+				{
+					"CurrentState": "Specialist",
+					"NextState": "SpecialistState",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "Sure!",
+					"UtteranceId": "TTS-E288390B82602865BCF18584D891FF7E"
+				}, 
+				{
+					"CurrentState": "CoachComesIn",
+					"NextState": "CoachComesIn2",
+					"Meaning": "ChangeTarget(Pharmacist)",
+					"Style": "-",
+					"Utterance": "Is that okay to say????",
+					"UtteranceId": "TTS-A0E41611659DD6A08C9A051EB1752240"
+				}, 
+				{
+					"CurrentState": "SpecialistState",
+					"NextState": "CoachComesIn",
+					"Meaning": "ChangeTarget(Coach)",
+					"Style": "Rude",
+					"Utterance": "You know what, I don't care! HAHAHA",
+					"UtteranceId": "TTS-1C4522DA3D4B3ADDA9F69C25D96581F7"
+				}, 
+				{
+					"CurrentState": "SpecialistState",
+					"NextState": "Age",
+					"Meaning": "-",
+					"Style": "Polite",
+					"Utterance": "Very well, how old are you?",
+					"UtteranceId": "TTS-6E27185F22A197AA8114B1283FE4D599"
+				}, 
+				{
+					"CurrentState": "Greet",
+					"NextState": "Introductions",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "Doctor Kenobi",
+					"UtteranceId": "TTS-8FAFB70C86319CA1B84D8110549D7DEF"
+				}],
+			"Characters": [
+				{
+					"KnowledgeBase":
+						{
+							"Perspective": "Pharmacist",
+							"Knowledge":
+								{
+
+								}
+						},
+					"BodyName": "Male",
+					"VoiceName": "Male",
+					"EmotionalState":
+						{
+							"Mood": 0,
+							"initialTick": 0,
+							"EmotionalPool": [],
+							"AppraisalConfiguration":
+								{
+									"HalfLifeDecayConstant": 0.5,
+									"EmotionInfluenceOnMoodFactor": 0.3,
+									"MoodInfluenceOnEmotionFactor": 0.3,
+									"MinimumMoodValueForInfluencingEmotions": 0.5,
+									"EmotionalHalfLifeDecayTime": 15,
+									"MoodHalfLifeDecayTime": 60
+								}
+						},
+					"AutobiographicMemory":
+						{
+							"Tick": 0,
+							"records": []
+						},
+					"OtherAgents":
+						{
+							"dictionary": []
+						},
+					"Goals": []
+				}, 
+				{
+					"KnowledgeBase":
+						{
+							"Perspective": "Coach",
+							"Knowledge":
+								{
+									"SELF":
+										{
+											"DialogueState(Pharmacist)": "Start, 1",
+											"Has(Floor)": "Coach, 1"
+										}
+								}
+						},
+					"BodyName": "Male",
+					"VoiceName": "Male",
+					"EmotionalState":
+						{
+							"Mood": 0,
+							"initialTick": 0,
+							"EmotionalPool": [],
+							"AppraisalConfiguration":
+								{
+									"HalfLifeDecayConstant": 0.5,
+									"EmotionInfluenceOnMoodFactor": 0.3,
+									"MoodInfluenceOnEmotionFactor": 0.3,
+									"MinimumMoodValueForInfluencingEmotions": 0.5,
+									"EmotionalHalfLifeDecayTime": 15,
+									"MoodHalfLifeDecayTime": 60
+								}
+						},
+					"AutobiographicMemory":
+						{
+							"Tick": 0,
+							"records": []
+						},
+					"OtherAgents":
+						{
+							"dictionary": []
+						},
+					"Goals": []
+				}, 
+				{
+					"KnowledgeBase":
+						{
+							"Perspective": "Patient",
+							"Knowledge":
+								{
+
+								}
+						},
+					"BodyName": "Female",
+					"VoiceName": "Female",
+					"EmotionalState":
+						{
+							"Mood": 0,
+							"initialTick": 0,
+							"EmotionalPool": [],
+							"AppraisalConfiguration":
+								{
+									"HalfLifeDecayConstant": 0.5,
+									"EmotionInfluenceOnMoodFactor": 0.3,
+									"MoodInfluenceOnEmotionFactor": 0.3,
+									"MinimumMoodValueForInfluencingEmotions": 0.5,
+									"EmotionalHalfLifeDecayTime": 15,
+									"MoodHalfLifeDecayTime": 60
+								}
+						},
+					"AutobiographicMemory":
+						{
+							"Tick": 0,
+							"records": []
+						},
+					"OtherAgents":
+						{
+							"dictionary": []
+						},
+					"Goals": []
+				}],
+			"WorldModel":
+				{
+					"Effects":
+						{
+							"dictionary": [
+								{
+									"key": "Event(Action-End, [s], Speak([cs], [ns], *, *), [t])",
+									"value": [
+										{
+											"PropertyName": "DialogueState([s])",
+											"NewValue": "[ns]",
+											"ObserverAgent": "[t]"
+										}, 
+										{
+											"PropertyName": "Has(Floor)",
+											"NewValue": "[t]",
+											"ObserverAgent": "*"
+										}]
+								}, 
+								{
+									"key": "Event(Action-End, [s], Speak([cs], [ns], ChangeTarget([nt]), *), [t])",
+									"value": [
+										{
+											"PropertyName": "DialogueState([nt])",
+											"NewValue": "[ns]",
+											"ObserverAgent": "[t]"
+										}, 
+										{
+											"PropertyName": "DialogueState([t])",
+											"NewValue": "-",
+											"ObserverAgent": "[s]"
+										}, 
+										{
+											"PropertyName": "Has(Floor)",
+											"NewValue": "[t]",
+											"ObserverAgent": "*"
+										}, 
+										{
+											"PropertyName": "DialogueState([s])",
+											"NewValue": "-",
+											"ObserverAgent": "[t]"
+										}]
+								}]
+						},
+					"Priorities":
+						{
+							"dictionary": [
+								{
+									"key": "Event(Action-End, [s], Speak([cs], [ns], *, *), [t])",
+									"value": 1
+								}, 
+								{
+									"key": "Event(Action-End, [s], DuplicateSpeak([cs], [ns], *, *), [t])",
+									"value": 1
+								}, 
+								{
+									"key": "Event(Action-End, [s], Speak([cs], [ns], ChangeTarget([nt]), *), [t])",
+									"value": 1
+								}]
+						}
+				}
+		},
+	"types": [
+		{
+			"TypeId": 0,
+			"ClassName": "IntegratedAuthoringTool.IntegratedAuthoringToolAsset, IntegratedAuthoringTool, Version=1.7.0.0, Culture=neutral, PublicKeyToken=null"
+		}]
+}

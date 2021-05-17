@@ -94,7 +94,7 @@ namespace KnowledgeBase
         /// <summary>
         /// Indicates the default mapping of "SELF"
         /// </summary>
-        public Name Perspective { get; private set; }
+        public Name Perspective { get; set; }
 
 		private KB()
 		{

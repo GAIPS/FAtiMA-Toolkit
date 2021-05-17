@@ -8,7 +8,7 @@ using WellFormedNames.Collections;
 
 namespace IntegratedAuthoringTool
 {
-	internal class DialogActionDictionary : IEnumerable<DialogStateAction>
+	public class DialogActionDictionary : IEnumerable<DialogStateAction>
 	{
 		private NameSearchTree<HashSet<DialogStateAction>> m_nameToDialogues = new NameSearchTree<HashSet<DialogStateAction>>();
 		private Dictionary<Guid, DialogStateAction> m_dialogDictionary = new Dictionary<Guid, DialogStateAction>();
