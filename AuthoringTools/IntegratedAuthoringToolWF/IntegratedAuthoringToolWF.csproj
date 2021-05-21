@@ -80,6 +80,12 @@
     <Compile Include="AddCharacterForm.Designer.cs">
       <DependentUpon>AddCharacterForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="IEP\computeDescriptionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IEP\computeDescriptionForm.Designer.cs">
+      <DependentUpon>computeDescriptionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="ImageForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -153,6 +159,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddOrEditDialogueActionForm.resx">
       <DependentUpon>AddOrEditDialogueActionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IEP\computeDescriptionForm.resx">
+      <DependentUpon>computeDescriptionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ImageForm.resx">
       <DependentUpon>ImageForm.cs</DependentUpon>
