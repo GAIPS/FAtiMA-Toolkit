@@ -85,6 +85,12 @@
     <Compile Include="AddOrEditGoalForm.Designer.cs">
       <DependentUpon>AddOrEditGoalForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImageForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ImageForm.Designer.cs">
+      <DependentUpon>ImageForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +113,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddOrEditGoalForm.resx">
       <DependentUpon>AddOrEditGoalForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImageForm.resx">
+      <DependentUpon>ImageForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -147,6 +156,10 @@
     <ProjectReference Include="..\..\Assets\EmotionalDecisionMaking\EmotionalDecisionMaking.csproj">
       <Project>{a1e56f5c-eaac-43e5-a922-5b244168ea5c}</Project>
       <Name>EmotionalDecisionMaking</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Assets\IntegratedAuthoringTool\IntegratedAuthoringTool.csproj">
+      <Project>{f6ad95a5-889c-41a4-b613-b81f09a424ee}</Project>
+      <Name>IntegratedAuthoringTool</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Assets\RolePlayCharacter\RolePlayCharacter.csproj">
       <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>

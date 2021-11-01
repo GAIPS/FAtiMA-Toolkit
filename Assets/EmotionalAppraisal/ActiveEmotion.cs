@@ -109,11 +109,12 @@ namespace EmotionalAppraisal
 	        this.InfluenceMood = occType.InfluencesMood;
 	        this.CauseId = emotionDTO.CauseEventId;
             var causeEvent = am.RecallEvent(this.CauseId);
-            this.EventName = causeEvent.EventName;
-            this.Target = (Name)emotionDTO.Target; //TODO: handle direction correctly
-	        this.Threshold = threshold;
-	        this.Decay = decay;
-	        this.Intensity = emotionDTO.Intensity;
+			this.EventName = causeEvent.EventName;
+				this.Target = (Name)emotionDTO.Target; //TODO: handle direction correctly
+				this.Threshold = threshold;
+				this.Decay = decay;
+				this.Intensity = emotionDTO.Intensity;
+			
         }
 
 		/// <summary>

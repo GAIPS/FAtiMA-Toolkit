@@ -89,7 +89,8 @@ namespace KnowledgeBase
 		}
 
 		private NameSearchTree<KnowledgeEntry> m_knowledgeStorage;
- 
+
+		private CommonSense cs;
 
         /// <summary>
         /// Indicates the default mapping of "SELF"
@@ -101,6 +102,8 @@ namespace KnowledgeBase
 			m_knowledgeStorage = new NameSearchTree<KnowledgeEntry>();
             CreateRegistry();
 			BindToRegistry(this);
+			cs = new CommonSense();
+			cs.LoadDefaultKnowledge();
 		}
 
 		public KB(Name perspective) : this()
@@ -108,6 +111,16 @@ namespace KnowledgeBase
 			SetPerspective(perspective);
 		}
 
+		public Dictionary<string, CommonSense.Node> GetCommonSense()
+        {
+			if (cs == null)
+			{
+				cs = new CommonSense();
+				cs.LoadDefaultKnowledge();
+			}
+
+			return this.cs.commonSense;
+        }
 
 		private void BindToRegistry(IDynamicPropertiesRegistry registry)
 		{
@@ -407,7 +420,7 @@ namespace KnowledgeBase
 				return;
 
 			if(GetAllPerspectives().Contains(newPerspective))
-				throw new ArgumentException($"The is already beliefs containing perspectives for {newPerspective}. Changing to the requested perspective would result in belief conflicts.");
+				throw new ArgumentException($"There are already beliefs containing perspectives for {newPerspective}. Changing to the requested perspective would result in belief conflicts.");
 
 			//Modify believes to reflect perspective changes
 			var newStorage = new NameSearchTree<KnowledgeEntry>();
@@ -584,7 +597,15 @@ namespace KnowledgeBase
             Tell(property, value, perspective, 1.0f);
         }
 
-        public void Tell(Name property, Name value, Name perspective, float certainty)
+		public void Tell(IEnumerable<Belief> beliefs)
+		{
+			foreach(var b in beliefs)
+            {
+				this.Tell(b.Name, b.Value, b.Perspective);
+            }
+		}
+
+		public void Tell(Name property, Name value, Name perspective, float certainty)
 		{
 			if (property.IsPrimitive)
 				throw new ArgumentException("The given property name cannot be a primitive value.",nameof(property));
@@ -616,6 +637,7 @@ namespace KnowledgeBase
 			if (entry.IsEmpty())
 				m_knowledgeStorage.Remove(fact);
 		}
+
 
 		private Name RemovePropertyPerspective(Name property, List<Name> ToMList)
 		{
@@ -678,7 +700,33 @@ namespace KnowledgeBase
 			return found ? value : property.ApplyToTerms(p => ApplyDynamic(p,perspective));
 		}
 
-#region Auxiliary Methods
+
+		public void Reason()
+		{
+
+			// Hammered this in order to defend agaisnt previous version scenarios
+			if (cs == null)
+			{
+				cs = new CommonSense();
+				cs.LoadDefaultKnowledge();
+			}
+
+			
+			var newBeliefs = new List<Belief>();
+			var beliefs = this.GetAllBeliefs();
+			if (beliefs == null || beliefs.Count() == 0 || cs == null)
+				return;
+			foreach(var b in beliefs)
+            {
+				newBeliefs.AddRange(cs.CommonSenseReasoner(b));
+				
+            }
+
+			this.Tell(newBeliefs);
+
+		}
+
+		#region Auxiliary Methods
 
 		/// <summary>
 		/// 

@@ -4,6 +4,7 @@ using GAIPS.Rage;
 using System;
 using System.Linq;
 using System.IO;
+using WellFormedNames;
 
 namespace IntegratedAuthoringToolTutorial
 {
@@ -13,13 +14,35 @@ namespace IntegratedAuthoringToolTutorial
         {
             var playerStr = IATConsts.PLAYER;
 
-            var storage = AssetStorage.FromJson(File.ReadAllText("../../../../Examples/IAT-Tutorial/Scenarios/storage.json"));
+            var storage = AssetStorage.FromJson(File.ReadAllText("../../../../Examples/IAT-Tutorial/Scenarios/kbstorage.json"));
              
             //Loading the asset
-            var iat = IntegratedAuthoringToolAsset.FromJson(File.ReadAllText("../../../../Examples/IAT-Tutorial/Scenarios/scenario.json"), storage);
+            var iat = IntegratedAuthoringToolAsset.FromJson(File.ReadAllText("../../../../Examples/IAT-Tutorial/Scenarios/kbscenario.json"), storage);
             
             var currentState = IATConsts.INITIAL_DIALOGUE_STATE;
-            var rpc = iat.Characters.ElementAt(0);
+            //  var rpc = iat.Characters.ElementAt(0);
+
+            /*iat.commonSense.Tell((Name)"is(Animal)", (Name)"Entity");
+
+          
+            foreach (var b in beliefs)
+                Console.WriteLine("IAT Common Sense Belief:" + b.Name + "= " + b.Value);
+
+            iat.SetCulture((Name)"Default", iat.Characters.ElementAt(0).CharacterName);*/
+
+            var rpc = new RolePlayCharacterAsset();
+            rpc.CharacterName = (Name)"Peter";
+            rpc.m_kb.Tell((Name)"is(Orange, fruit)", (Name)"True", rpc.CharacterName);
+            var beliefs = rpc.m_kb.GetAllBeliefs();
+            foreach (var b in beliefs)
+                Console.WriteLine("Character Beliefs:" + b.Name + "= " + b.Value);
+
+            rpc.m_kb.Reason();
+            Console.WriteLine("After reasoning");
+            beliefs = rpc.m_kb.GetAllBeliefs();
+            foreach (var b in beliefs)
+                Console.WriteLine("Character Beliefs:" + b.Name + "= " + b.Value);
+
             while (currentState != IATConsts.TERMINAL_DIALOGUE_STATE)
             {
                 var playerDialogs = iat.GetDialogueActionsByState(currentState);

@@ -27,6 +27,7 @@ namespace RolePlayCharacter
         [NonSerialized]
         private Dictionary<Name, Identity> m_activeIdentities;
 
+        private Name culture;
         public RolePlayCharacterAsset()
         {
             m_activeIdentities = new Dictionary<Name, Identity>();
@@ -36,6 +37,7 @@ namespace RolePlayCharacter
             m_goals = new Dictionary<string, Goal>();
             m_otherAgents = new Dictionary<Name, AgentEntry>();
             BindToRegistry(m_kb);
+            culture = Name.NIL_SYMBOL;
         }
 
         /// <summary>

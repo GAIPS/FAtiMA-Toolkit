@@ -80,11 +80,17 @@
     <Compile Include="AddCharacterForm.Designer.cs">
       <DependentUpon>AddCharacterForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="IEP\computeDescriptionForm.cs">
+    <Compile Include="IEP\ComputeDescriptionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="IEP\computeDescriptionForm.Designer.cs">
-      <DependentUpon>computeDescriptionForm.cs</DependentUpon>
+    <Compile Include="IEP\ComputeDescriptionForm.Designer.cs">
+      <DependentUpon>ComputeDescriptionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IEP\IEPOutputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IEP\IEPOutputForm.Designer.cs">
+      <DependentUpon>IEPOutputForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageForm.cs">
       <SubType>Form</SubType>
@@ -160,8 +166,11 @@
     <EmbeddedResource Include="AddOrEditDialogueActionForm.resx">
       <DependentUpon>AddOrEditDialogueActionForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="IEP\computeDescriptionForm.resx">
-      <DependentUpon>computeDescriptionForm.cs</DependentUpon>
+    <EmbeddedResource Include="IEP\ComputeDescriptionForm.resx">
+      <DependentUpon>ComputeDescriptionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IEP\IEPOutputForm.resx">
+      <DependentUpon>IEPOutputForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ImageForm.resx">
       <DependentUpon>ImageForm.cs</DependentUpon>
@@ -196,6 +205,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\RolePlayCharacter.BeliefDTO.datasource" />
+    <None Include="Properties\DataSources\RolePlayCharacter.EventHelper.datasource" />
+    <None Include="Properties\DataSources\RolePlayCharacter.Identity.datasource" />
+    <None Include="Properties\DataSources\RolePlayCharacter.RolePlayCharacterAsset.datasource" />
+    <None Include="Properties\DataSources\RolePlayCharacter.RPCConsts.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -245,6 +259,10 @@
     <ProjectReference Include="..\..\Components\AutobiographicMemory\AutobiographicMemory.csproj">
       <Project>{c1cc38c5-72f5-4545-b4f7-c65b2883909c}</Project>
       <Name>AutobiographicMemory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Components\Conditions\Conditions.csproj">
+      <Project>{59041269-E52E-4CDD-84E0-92FDCFBF270D}</Project>
+      <Name>Conditions</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Components\GAIPS.Rage\GAIPS.Rage.csproj">
       <Project>{9feca6e5-c949-44f1-be40-d3303ab2ef05}</Project>
@@ -327,6 +345,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Speech" />
@@ -344,6 +363,15 @@
     <None Include="Resources\inescid.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\iconHelp.png" />
+    <None Include="Resources\icons8-help-80.png" />
+    <None Include="Resources\icons8-help-100.png" />
+    <None Include="Resources\icons8-help-96.png" />
+    <None Include="Resources\help.png" />
+    <None Include="Resources\red.png" />
+    <None Include="Resources\green.png" />
+    <None Include="Resources\online.png" />
+    <None Include="Resources\offline.jpg" />
     <None Include="Resources\logo_Final_Horizontal_Black.png" />
     <None Include="Resources\Icon_Final_White.png" />
     <None Include="Resources\0-silence.png" />

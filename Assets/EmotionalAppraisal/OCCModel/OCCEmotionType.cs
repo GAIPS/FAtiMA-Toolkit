@@ -38,7 +38,7 @@ namespace EmotionalAppraisal.OCCModel
 		public static readonly OCCEmotionType Hope = new OCCEmotionType("Hope", EmotionValence.Positive, false, PositiveProspect);
 		public static readonly OCCEmotionType Joy = new OCCEmotionType("Joy", EmotionValence.Positive, true, WellBeing);
 		public static readonly OCCEmotionType Love = new OCCEmotionType("Love", EmotionValence.Positive, true, Attraction);
-		public static readonly OCCEmotionType Pitty = new OCCEmotionType("Pitty", EmotionValence.Negative, true, FortuneOfOthers);
+		public static readonly OCCEmotionType Pity = new OCCEmotionType("Pity", EmotionValence.Negative, true, FortuneOfOthers);
 		public static readonly OCCEmotionType Pride = new OCCEmotionType("Pride", EmotionValence.Positive, true, Attribution);
 		public static readonly OCCEmotionType Relief = new OCCEmotionType("Relief", EmotionValence.Positive, true, NegativeProspect);
 		public static readonly OCCEmotionType Remorse = new OCCEmotionType("Remorse", EmotionValence.Negative, true, Composed);
@@ -61,7 +61,20 @@ namespace EmotionalAppraisal.OCCModel
                 case "Remorse": return Remorse;
                 case "Reproach": return Reproach;
                 case "Shame": return Shame;
-                default: return null;
+				case "Pity": return Pity;
+				case "Disappointment": return Disappointment;
+				case "Satisfaction": return Satisfaction;
+				case "Resentment": return Resentment;
+				case "Love": return Love;
+				case "Hate": return Hate;
+				case "Gloating": return Gloating;
+				case "Fear": return Fear;
+				case "FearsConfirmed": return FearsConfirmed;
+				case "Relief": return Relief;
+				case "Hope": return Hope;
+				case "HappyFor": return HappyFor;
+				case "Gratification": return Gratification;
+				default: return null;
 	        }
 	    }
 
@@ -75,8 +88,22 @@ namespace EmotionalAppraisal.OCCModel
             Joy.Name,
             Pride.Name,
             Reproach.Name,
-            Shame.Name
-        };
+            Shame.Name,
+			Gratification.Name,
+			HappyFor.Name,
+			Hope.Name,
+			Relief.Name,
+			FearsConfirmed.Name,
+			Fear.Name,
+			Gloating.Name,
+			Love.Name,
+			Hate.Name,
+			Resentment.Name,
+			Satisfaction.Name,
+			Disappointment.Name,
+			Pity.Name
+
+		};
 
         
 		#region Class Definition

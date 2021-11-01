@@ -11,6 +11,8 @@ using EmotionalAppraisal.DTOs;
 using GAIPS.Rage;
 using System.Linq;
 using GAIPS.AssetEditorTools;
+using System.Drawing;
+using System.IO;
 
 namespace RolePlayCharacterWF
 {
@@ -376,6 +378,141 @@ namespace RolePlayCharacterWF
         {
 
         }
+
+        private void reasonKB_Click(object sender, EventArgs e)
+        {
+            _loadedAsset.m_kb.Reason();
+            _knowledgeBaseVM.UpdateBeliefList();
+        }
+
+        private void buttonReasonKB_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.Show("Infers new beliefs from is(x,y) statements. \n Example: is(Amy, dog)=True -> is(Amy, mammal)=True -> is(Amy, animal)=True \n Rules of Inference were created according to Wordnet's Hypernim hierarchy", buttonReasonKB);
+        }
+
+        private void addEmotionButton_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.Show("Adds emotions to the Agent's Emotional State", addEmotionButton);
+        }
+
+        private void toolTip1_Draw(object sender, DrawToolTipEventArgs e)
+        {
+            e.DrawBackground();
+            e.DrawBorder();
+            e.DrawText();
+        }
+
+        private void buttonEditEmotion_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.Show("Edits already added emotions", buttonEditEmotion);
+
+        }
+
+        private void addBeliefButton_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.Show("Adds beliefs to the Agent's KB, make sure it contains ()  \n Example:  Likes(Orange)=True | Dialogue(State) = Start", addBeliefButton);
+
+        }
+
+        private void buttonEdit_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.Show("Edits already added beliefs", buttonEdit);
+        }
+
+        private void removeBeliefButton_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.Show("Removes beliefs from the Agent's KB", removeBeliefButton);
+        }
+
+        private void buttonRemoveEmotion_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.Show("Removes emotions from the Agent's Emotional State", buttonRemoveEmotion);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var nodes =_loadedAsset.m_kb.GetCommonSense();
+
+            Dictionary<string, List<string>> states = new Dictionary<string, List<string>>();
+
+
+            foreach (var n in nodes.Keys)
+            {
+
+                List<string> nextStates = new List<string>();
+
+                foreach(var st in nodes[n].childNodes)
+                {
+                    nextStates.Add(st.value);
+                }
+
+                    states.Add(n, nextStates);
+            }
+
+            string writer = "";
+
+            writer += "digraph { \n";
+            writer += "node[fontsize=10, labelloc = \"t\", labeljust = \"l\"]; \n";
+
+            foreach (var s in states.Keys)
+            {
+                foreach (var ns in states[s])
+                {
+                    if (s != "-")
+                        writer += s + "->" + ns + "\n";
+                    else if (ns != "-")
+                        writer += "Any" + "->" + ns + "\n";
+                    else writer += "Any" + "->" + "Any" + "\n";
+                }
+            }
+
+            writer += "}";
+
+            Bitmap bit =  Run(writer);
+            var image = new IntegratedAuthoringToolWF.ImageForm(bit);
+            image.Show();
+        }
+
+        public static Bitmap Run(string dot)
+        {
+            string executable = @".\external\dot.exe";
+            string output = @".\external\tempgraph";
+            File.WriteAllText(output, dot);
+
+            System.Diagnostics.Process process = new System.Diagnostics.Process();
+
+            // Stop the process from opening a new window
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.CreateNoWindow = true;
+
+            // Setup executable and parameters
+            process.StartInfo.FileName = executable;
+            process.StartInfo.Arguments = string.Format(@"{0} -Tjpg -O", output);
+
+            // Go
+            process.Start();
+            // and wait dot.exe to complete and exit
+            process.WaitForExit();
+            Bitmap bitmap = null; ;
+
+            try
+            {
+                using (Stream bmpStream = System.IO.File.Open(output + ".jpg", System.IO.FileMode.Open))
+                {
+                    Image image = Image.FromStream(bmpStream);
+                    bitmap = new Bitmap(image);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Error: " + e.Message);
+            }
+            File.Delete(output);
+            File.Delete(output + ".jpg");
+            return bitmap;
+        }
+
     }
 }
 

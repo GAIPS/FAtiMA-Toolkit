@@ -30,6 +30,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Net.NetworkInformation;
 using IntegratedAuthoringToolWF.IEP;
+using System.Windows;
 
 namespace IntegratedAuthoringToolWF
 {
@@ -51,11 +52,11 @@ namespace IntegratedAuthoringToolWF
         public string _currentScenarioFilePath;
 
         private IList<RolePlayCharacterAsset> _agentsInSimulation;
-
+     
         public MainForm()
         {
             InitializeComponent();
-            
+
             buttonRemoveCharacter.Enabled = false;
             buttonInspect.Enabled = false;
 
@@ -1644,7 +1645,7 @@ namespace IntegratedAuthoringToolWF
 
         private void importStoryButton_Click(object sender, EventArgs e)
         {
-            var story = new computeDescriptionForm(_iat, _storage);
+            var story = new ComputeDescriptionForm(_iat, _storage);
             story.ShowDialog();
             OnAssetDataLoaded(_iat);
             OnAssetStorageChange();
@@ -1696,6 +1697,16 @@ namespace IntegratedAuthoringToolWF
         private void groupBox12_Enter(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonNewAssetStorage_MouseHover(object sender, EventArgs e)
+        {
+            toolTip1.Show("Creates a new Asset Storage. \n This is the file where the cognitive rules of the scenario will be stored in.", buttonNewAssetStorage);
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://fatima-toolkit.eu/2-integrated-authoring-tool/");
         }
     }
 }

@@ -57,7 +57,7 @@ namespace EmotionalAppraisal.OCCModel
             if (desirability >= 0)
                 emoType = (desirabilityForOther >= 0) ? OCCEmotionType.HappyFor : OCCEmotionType.Gloating;
             else
-                emoType = (desirabilityForOther >= 0) ? OCCEmotionType.Resentment : OCCEmotionType.Pitty;
+                emoType = (desirabilityForOther >= 0) ? OCCEmotionType.Resentment : OCCEmotionType.Pity;
 
             return new OCCBaseEmotion(emoType, potential, evt.Id, (Name)target, evt.EventName);
         }

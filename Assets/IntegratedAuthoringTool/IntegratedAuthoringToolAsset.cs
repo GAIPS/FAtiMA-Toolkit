@@ -29,6 +29,7 @@ namespace IntegratedAuthoringTool
         public EventTriggers eventTriggers;
 
         public  WorldModelAsset WorldModel { get; private set; }
+
         public IEnumerable<RolePlayCharacterAsset> Characters { get; private set; }
 
         /// <summary>
