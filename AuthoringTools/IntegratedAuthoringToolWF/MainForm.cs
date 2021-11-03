@@ -1708,5 +1708,10 @@ namespace IntegratedAuthoringToolWF
         {
             System.Diagnostics.Process.Start("https://fatima-toolkit.eu/2-integrated-authoring-tool/");
         }
+
+        private void groupBox10_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }
