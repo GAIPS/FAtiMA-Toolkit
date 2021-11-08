@@ -246,7 +246,8 @@ namespace IntegratedAuthoringToolWF.IEP
 
             foreach(var s in split)
             {
-                if(s.Contains("Agent:"))
+                var component = s.Split(':');
+                if(component[0].Contains("Agent"))
                     try
                     {
                         ComputeAgents(s);
@@ -259,7 +260,7 @@ namespace IntegratedAuthoringToolWF.IEP
                         MessageBox.Show(f.Message);
                         debugLabel.Text = "Error";
                     }
-                else if (s.Contains("Action:"))
+                else if (component[0].Contains("Action"))
                     try
                     {
                         ComputeActions(s);
@@ -272,7 +273,7 @@ namespace IntegratedAuthoringToolWF.IEP
                         MessageBox.Show(f.Message);
                         debugLabel.Text = "Error";
                     }
-                else if (s.Contains("Appraisal Rule:"))
+                else if (component[0].Contains("Appraisal Rule"))
                     try
                     {
                         ComputeEmotions(s);
@@ -285,7 +286,7 @@ namespace IntegratedAuthoringToolWF.IEP
                         MessageBox.Show(f.Message);
                         debugLabel.Text = "Error";
                     }
-                else if (s.Contains("Concept:"))
+                else if (component[0].Contains("Concept"))
                     try
                     {
                         ComputeConcepts(s);
@@ -524,8 +525,7 @@ namespace IntegratedAuthoringToolWF.IEP
                 var action = actionNames.ElementAt(i);
                 var data = Actions.ElementAt(i);
 
-
-                if (action.Length <= 2 || data.Length <= 2)
+                if (action.Length <= 2 || data.Length <= 2 || action.Contains(" be "))
                     continue;
 
                 data = data.Replace(action, "");
@@ -543,49 +543,50 @@ namespace IntegratedAuthoringToolWF.IEP
                         target = p.Replace("Target: ", "");
                     else if (p.Contains("TargetType: "))
                         targetCategory = p.Replace("TargetType: ", "");
-                    else if (p.Contains("Status: "))
+                    else if (p.Contains("Location: "))
                         location = p.Replace("Location: ", "");
                 }
 
-                if (location != "" && location != "default")
-                {
+                // Dealing with the conditions
 
-                    var actionRule = new ActionRule(new ActionLibrary.DTOs.ActionRuleDTO()
-                    {
-                        Action = (Name)action,
-                        Target = (Name)"[t]",
-                        Conditions = new ConditionSetDTO()
-                        {
-                            ConditionSet = new string[]
-                            {
-                            "Is([t]," + targetCategory + ")=True",
-                            "At(SELF," + location +")=True"
-                            }
-                        }
+                ConditionSetDTO Conditions = new ConditionSetDTO();
 
-                    });
-                    edmAux.AddActionRule(actionRule.ToDTO());
-                }
+                if(!targetCategory.Contains("AGENT"))
+                    Conditions.ConditionSet = new string[]
+                   {
+                          "Is([t]," + targetCategory + ")=True"
+                   };
                 else
                 {
+                    Conditions.ConditionSet = new string[]
+                   {
+                          "IsAgent([t])=True",
+                          "[t] != SELF"
+                   };
+                }
+
+
+                if (location != "" && !location.Contains("default"))
+                   
+                {
+                    Conditions.ConditionSet = Conditions.ConditionSet.Append("At(SELF," + location + ")=True").ToArray();
+                }
+
+
                     var actionRule = new ActionRule(new ActionLibrary.DTOs.ActionRuleDTO()
                     {
                         Action = (Name)action,
                         Target = (Name)"[t]",
-                        Conditions = new ConditionSetDTO()
-                        {
-                            ConditionSet = new string[]
-                            {
-                            "Is([t]," + targetCategory + ")=True"
-                            }
-                        }
+                        Conditions = Conditions
 
                     });
 
                     edmAux.AddActionRule(actionRule.ToDTO());
-                }
+                
+                
 
             }
+            
         }
 
         void ComputeConcepts(string concepts)
