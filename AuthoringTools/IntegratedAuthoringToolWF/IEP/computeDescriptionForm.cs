@@ -20,6 +20,7 @@ using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using RolePlayCharacter;
 using AutobiographicMemory.DTOs;
+using IntegratedAuthoringTool.DTOs;
 
 namespace IntegratedAuthoringToolWF.IEP
 {
@@ -290,6 +291,19 @@ namespace IntegratedAuthoringToolWF.IEP
                     try
                     {
                         ComputeConcepts(s);
+
+                    }
+                    catch (Exception f)
+                    {
+                        // Discard PingExceptions and return false;
+
+                        MessageBox.Show(f.Message);
+                        debugLabel.Text = "Error";
+                    }
+                else if (component[0].Contains("Dialogue"))
+                    try
+                    {
+                        ComputeDialogues(s);
 
                     }
                     catch (Exception f)
@@ -577,8 +591,8 @@ namespace IntegratedAuthoringToolWF.IEP
                     {
                         Action = (Name)action,
                         Target = (Name)"[t]",
-                        Conditions = Conditions
-
+                        Conditions = Conditions,
+                        Priority = WellFormedNames.Name.BuildName(1)
                     });
 
                     edmAux.AddActionRule(actionRule.ToDTO());
@@ -699,6 +713,58 @@ namespace IntegratedAuthoringToolWF.IEP
             };
         }
 
+        void ComputeDialogues(string dialogues)
+        {
+            var Dialogues = dialogues.Split(new string[] { "Dialogue:" }, StringSplitOptions.RemoveEmptyEntries);
+
+            var dialogInfo = Dialogues.Select(item => item.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries)[0]);
+
+            List<DialogueStateActionDTO> dialogStates = new List<DialogueStateActionDTO>();
+            var dialogueIndex = 0;
+            
+
+            foreach(var d in dialogInfo)
+            {
+                var newDA = new DialogueStateActionDTO
+                {
+                    CurrentState = "S" + dialogueIndex,
+                    NextState = "S" + (dialogueIndex + 1),
+                    Meaning = "-",
+                    Style = "-",
+                    Utterance = d
+                };
+
+                dialogStates.Add(newDA);
+                _iatAux.AddDialogAction(newDA);
+                dialogueIndex += 1;
+            }
+
+            // Creating a default speak action
+
+            ConditionSetDTO Conditions = new ConditionSetDTO();
+
+            Conditions.ConditionSet = new string[]
+               {
+                          "IsAgent([t]) = True",
+                          "[t] != SELF",
+                          "ValidDialogue([currentState], [nextState], [meaning], [style]) = True"
+               };
+
+            var actionRule = new ActionRule(new ActionLibrary.DTOs.ActionRuleDTO()
+            {
+                Action = (Name)"Speak([currentState], [nextState], [meaning], [style])",
+                Target = (Name)"[t]",
+                Conditions = Conditions,
+                Priority = WellFormedNames.Name.BuildName(1)
+                
+            });
+
+            edmAux.AddActionRule(actionRule.ToDTO());
+
+
+
+
+        }
         private void debugLabel_Click(object sender, EventArgs e)
         {
 
