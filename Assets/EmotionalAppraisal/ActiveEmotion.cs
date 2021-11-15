@@ -225,7 +225,7 @@ namespace EmotionalAppraisal
             var evtName = dataHolder.GetValue<string>("EventName");
             Target = (Name)dataHolder.GetValue<string>("Target");
             EventName = !string.IsNullOrEmpty(evtName) ? Name.BuildName(evtName) : null;
-           
+        
             EmotionType = dataHolder.GetValue<string>("EmotionType");
 			Valence = dataHolder.GetValue<EmotionValence>("Valence");
 			AppraisalVariables = dataHolder.GetValue<string[]>("AppraisalVariables");

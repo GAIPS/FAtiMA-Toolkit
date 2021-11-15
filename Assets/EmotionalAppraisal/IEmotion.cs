@@ -42,7 +42,8 @@ namespace EmotionalAppraisal
 
         IEnumerable<string> AppraisalVariables { get; }
 
-		bool InfluenceMood { get; }
+		bool InfluenceMood
+			{ get; }
 
 		string ToString(AM am);
 

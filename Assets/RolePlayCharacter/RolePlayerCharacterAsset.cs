@@ -493,6 +493,7 @@ namespace RolePlayCharacter
         public void BindToRegistry(IDynamicPropertiesRegistry registry)
         {
             registry.RegistDynamicProperty(RPCConsts.MOOD_PROPERTY_NAME, MOOD_DP_DESC, MoodPropertyCalculator);
+            registry.RegistDynamicProperty(RPCConsts.TICK_PROPERTY_NAME, TICK_DP_DESC, TickPropertyCalculator);
             registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_PROPERTY_NAME, STRONGEST_EMOTION_PROPERTY_DP_DESC, StrongestEmotionCalculator);
             registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_FOR_EVENT_PROPERTY_NAME, STRONGEST_EMOTION_FOR_EVENT_PROPERTY_DP_DESC, StrongestEmotionForEventCalculator);
             registry.RegistDynamicProperty(RPCConsts.STRONGEST_WELL_BEING_EMOTION_PROPERTY_NAME, STRONGEST_WELL_BEING_EMOTION_PROPERTY_DP_DESC,
@@ -527,6 +528,8 @@ namespace RolePlayCharacter
         #region Dynamic Properties
 
         private static readonly string MOOD_DP_DESC = "Returns the Mood value for character [x]";
+
+        private static readonly string TICK_DP_DESC = "Returns the Tick value for character [x]";
 
         private static readonly string STRONGEST_EMOTION_PROPERTY_DP_DESC = "Returns the name of the strongest emotion for character [x]";
 
@@ -751,7 +754,40 @@ namespace RolePlayCharacter
             }
         }
 
-        
+
+        private IEnumerable<DynamicPropertyResult> TickPropertyCalculator(IQueryContext context, Name x)
+
+        // Should only accept SELF, its rpc Name our a variable that should be subbed by its name
+        {
+            if (context.Perspective != Name.SELF_SYMBOL)
+                yield break;
+
+
+            if (x.IsVariable)
+                foreach (var resultPair in context.AskPossibleProperties(x))
+                {
+                    var v = m_am.Tick;
+                    foreach (var c in resultPair.Item2)
+                    {
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(v)), c);
+                    }
+                }
+            else
+            {
+                if (x != Name.SELF_SYMBOL && x != (Name)context.Queryable.Perspective)
+                    yield break;
+
+                var v = m_am.Tick;
+
+                foreach (var c in context.Constraints)
+                {
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(v)), c);
+                }
+
+                if (!context.Constraints.Any())
+                    yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(v)), new SubstitutionSet());
+            }
+        }
 
         private IEnumerable<DynamicPropertyResult> IsSalientPropertyCalculator(IQueryContext context, Name identity)
         {

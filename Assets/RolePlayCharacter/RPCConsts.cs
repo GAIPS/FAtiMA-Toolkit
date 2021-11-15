@@ -19,6 +19,8 @@ namespace RolePlayCharacter
 
         public static readonly Name MOOD_PROPERTY_NAME = (Name)"Mood";
 
+        public static readonly Name TICK_PROPERTY_NAME = (Name)"Tick";
+
         public static readonly Name ACTION_START_EVENT_PROTOTYPE = Name.BuildName(string.Format("{0}({1},*,*,*)",
                                                                             AMConsts.EVENT, AMConsts.ACTION_START));
         public static readonly Name ACTION_END_EVENT_PROTOTYPE = Name.BuildName(string.Format("{0}({1},*,*,*)",
