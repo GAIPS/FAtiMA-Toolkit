@@ -816,7 +816,7 @@ namespace RolePlayCharacter
             var minValue = Convert.ToInt32(min.ToString());
             var maxValue = Convert.ToInt32(max.ToString());
 
-            Random rand = new Random();
+            Random rand = new Random(Guid.NewGuid().GetHashCode());
 
             var toRet = rand.Next(minValue, maxValue);
             
