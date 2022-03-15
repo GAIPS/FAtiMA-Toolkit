@@ -72,6 +72,8 @@ namespace IntegratedAuthoringToolWF
             this.KeyDown += new KeyEventHandler(Form_KeyDown);
             OnAssetStorageChange();
             OnAssetDataLoaded(_iat);
+            tabControlIAT.SelectedIndexChanged += TabIndexChanged_Handler;
+            tabControlAssetEditor.SelectedIndexChanged += TabIndexChanged_Handler;
             debugLabel.Text = "";
         }
 
@@ -92,6 +94,7 @@ namespace IntegratedAuthoringToolWF
             _eaForm.Asset.Save();
             _cifForm.Asset.Save();
             _siForm.Asset.Save();
+         
         }
 
         private void RefreshDialogs()
@@ -119,6 +122,7 @@ namespace IntegratedAuthoringToolWF
                 _rpcForm.Close();
                 _rpcForm = null;
             }
+  
         }
 
 
@@ -166,6 +170,7 @@ namespace IntegratedAuthoringToolWF
 
             RefreshDialogs();
             RefreshCharacters();
+            AssistantHandler();
         }
 
 
@@ -1709,7 +1714,16 @@ namespace IntegratedAuthoringToolWF
             System.Diagnostics.Process.Start("https://fatima-toolkit.eu/2-integrated-authoring-tool/");
         }
 
-        private void groupBox10_Enter(object sender, EventArgs e)
+        private void TabIndexChanged_Handler(object sender, EventArgs e)
+        {
+            AssistantHandler();
+        }
+        private void AssistantHandler()
+        {
+            assistantTextBox.Text = AuthorAssistant.GetTip(tabControlIAT.SelectedIndex, tabControlAssetEditor.SelectedIndex);  
+        }
+
+        private void assistantTextBox_TextChanged(object sender, EventArgs e)
         {
 
         }

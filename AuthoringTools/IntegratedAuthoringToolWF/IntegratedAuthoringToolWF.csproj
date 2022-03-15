@@ -80,6 +80,7 @@
     <Compile Include="AddCharacterForm.Designer.cs">
       <DependentUpon>AddCharacterForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="AuthorAssistant.cs" />
     <Compile Include="IEP\ComputeDescriptionForm.cs">
       <SubType>Form</SubType>
     </Compile>
