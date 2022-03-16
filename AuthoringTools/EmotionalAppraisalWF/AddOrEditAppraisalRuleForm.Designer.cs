@@ -122,6 +122,7 @@
             this.textBoxSubject.AllowLiteral = true;
             this.textBoxSubject.AllowNil = true;
             this.textBoxSubject.AllowUniversal = true;
+            this.textBoxSubject.AllowUniversalLiteral = true;
             this.textBoxSubject.AllowVariable = true;
             this.textBoxSubject.Location = new System.Drawing.Point(43, 145);
             this.textBoxSubject.Name = "textBoxSubject";
@@ -135,6 +136,7 @@
             this.textBoxObject.AllowLiteral = true;
             this.textBoxObject.AllowNil = true;
             this.textBoxObject.AllowUniversal = true;
+            this.textBoxObject.AllowUniversalLiteral = true;
             this.textBoxObject.AllowVariable = true;
             this.textBoxObject.Location = new System.Drawing.Point(43, 230);
             this.textBoxObject.Name = "textBoxObject";
@@ -148,6 +150,7 @@
             this.textBoxTarget.AllowLiteral = true;
             this.textBoxTarget.AllowNil = true;
             this.textBoxTarget.AllowUniversal = true;
+            this.textBoxTarget.AllowUniversalLiteral = true;
             this.textBoxTarget.AllowVariable = true;
             this.textBoxTarget.Location = new System.Drawing.Point(43, 312);
             this.textBoxTarget.Name = "textBoxTarget";
@@ -191,13 +194,13 @@
         private System.Windows.Forms.BindingSource emotionalAppraisalAssetBindingSource;
         private System.Windows.Forms.Button addOrEditButton;
         private System.Windows.Forms.ErrorProvider addBeliefErrorProvider;
-        private System.Windows.Forms.ComboBox comboBoxEventType;
         private System.Windows.Forms.Label labelTarget;
         private System.Windows.Forms.Label labelObject;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label6;
-        private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxSubject;
-        private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxObject;
-        private GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxTarget;
+        public System.Windows.Forms.ComboBox comboBoxEventType;
+        public GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxSubject;
+        public GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxTarget;
+        public GAIPS.AssetEditorTools.TypedTextBoxes.WFNameFieldBox textBoxObject;
     }
 }

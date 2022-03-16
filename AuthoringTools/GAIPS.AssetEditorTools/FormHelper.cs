@@ -15,5 +15,7 @@ namespace GAIPS.AssetEditorTools
             ctl.Controls.Clear();
             ctl.Controls.Add(frm);
         }
+
+    
     }
 }

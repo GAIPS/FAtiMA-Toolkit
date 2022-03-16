@@ -31,6 +31,7 @@ using System.Text;
 using System.Net.NetworkInformation;
 using IntegratedAuthoringToolWF.IEP;
 using System.Windows;
+using ActionLibrary.DTOs;
 
 namespace IntegratedAuthoringToolWF
 {
@@ -67,6 +68,7 @@ namespace IntegratedAuthoringToolWF
             _webForm.iat = this;
             _eaForm = new EmotionalAppraisalWF.MainForm();
             _edmForm = new EmotionalDecisionMakingWF.MainForm();
+            _edmForm.AddedRuleEvent += AddedRule;
             _siForm = new SocialImportanceWF.MainForm();
             _cifForm = new CommeillFautWF.MainForm();
             this.KeyDown += new KeyEventHandler(Form_KeyDown);
@@ -94,7 +96,7 @@ namespace IntegratedAuthoringToolWF
             _eaForm.Asset.Save();
             _cifForm.Asset.Save();
             _siForm.Asset.Save();
-         
+
         }
 
         private void RefreshDialogs()
@@ -171,6 +173,7 @@ namespace IntegratedAuthoringToolWF
             RefreshDialogs();
             RefreshCharacters();
             AssistantHandler();
+
         }
 
 
@@ -1718,14 +1721,38 @@ namespace IntegratedAuthoringToolWF
         {
             AssistantHandler();
         }
-        private void AssistantHandler()
+
+        private void AddedRule(object sender, EventArgs e)
+        {
+            var edmRulesCount = _edmForm.Asset.GetAllActionRules().Count();
+            var eaRulesCount = _eaForm.Asset.GetAllAppraisalRules().Count();
+            ActionLibrary.DTOs.ActionRuleDTO rule = this._edmForm.latestAddedRule;
+
+            if (edmRulesCount > eaRulesCount * 2 + 1)
+               if(new AddEmotionalReactionForm(rule.Action.ToString()).ShowDialog() == DialogResult.Yes)
+                    AddEmotionalReaction(rule);
+
+        }
+
+
+
+        private void AddEmotionalReaction(ActionRuleDTO rule)
+        {
+            tabControlAssetEditor.SelectedIndex = 0;
+
+            _eaForm.buttonAddAppraisalRule_Click(this, rule);
+        }
+        public void AssistantHandler()
         {
             assistantTextBox.Text = AuthorAssistant.GetTip(tabControlIAT.SelectedIndex, tabControlAssetEditor.SelectedIndex);  
         }
+
 
         private void assistantTextBox_TextChanged(object sender, EventArgs e)
         {
 
         }
+
+     
     }
 }

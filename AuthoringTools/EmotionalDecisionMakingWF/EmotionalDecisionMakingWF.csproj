@@ -46,9 +46,6 @@
       <HintPath>..\packages\GAIPS.Serialization.1.5.0\lib\net35\GAIPS.Serialization.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="RageAssetManager">
-      <HintPath>..\..\DllDependencies\RageAssetManager.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="SerializationUtilities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="System" />
@@ -105,6 +102,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Assets\EmotionalAppraisal\EmotionalAppraisal.csproj">
+      <Project>{0A2A1EE9-BD5D-44AA-A22D-291612488F06}</Project>
+      <Name>EmotionalAppraisal</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Assets\EmotionalDecisionMaking\EmotionalDecisionMaking.csproj">
       <Project>{a1e56f5c-eaac-43e5-a922-5b244168ea5c}</Project>
       <Name>EmotionalDecisionMaking</Name>

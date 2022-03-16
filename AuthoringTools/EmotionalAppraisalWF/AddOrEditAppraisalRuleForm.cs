@@ -11,8 +11,8 @@ namespace EmotionalAppraisalWF
 {
     public partial class AddOrEditAppraisalRuleForm : Form
     {
-        private AppraisalRulesVM _appraisalRulesVM;
-        private AppraisalRuleDTO _appraisalRuleToEdit;
+        public AppraisalRulesVM _appraisalRulesVM;
+        public AppraisalRuleDTO _appraisalRuleToEdit;
 
         public AddOrEditAppraisalRuleForm(AppraisalRulesVM ruleVM, AppraisalRuleDTO ruleToEdit = null)
         {

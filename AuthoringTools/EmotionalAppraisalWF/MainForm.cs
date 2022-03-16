@@ -1,4 +1,5 @@
-﻿using EmotionalAppraisal;
+﻿using ActionLibrary.DTOs;
+using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.ViewModels;
 using Equin.ApplicationFramework;
@@ -51,14 +52,26 @@ namespace EmotionalAppraisalWF
 
         private void buttonAddGoal_Click(object sender, EventArgs e)
         {
-            }
+            
+        }
             
 
-        private void buttonAddAppraisalRule_Click(object sender, EventArgs e)
+        public void buttonAddAppraisalRule_Click(object sender, EventArgs e)
         {
             new AddOrEditAppraisalRuleForm(_appraisalRulesVM).ShowDialog();
         }
-         
+        public void buttonAddAppraisalRule_Click(object sender, ActionRuleDTO rule)
+        {
+
+            AppraisalRuleDTO dto = new AppraisalRuleDTO()
+            {
+                EventMatchingTemplate = WellFormedNames.Name.BuildName(rule.Action.ToString()),
+                
+            };
+
+            new AddOrEditAppraisalRuleForm(_appraisalRulesVM, dto).ShowDialog();
+
+        }
 
         private void buttonAppVariables_Click(object sender, EventArgs e)
         {

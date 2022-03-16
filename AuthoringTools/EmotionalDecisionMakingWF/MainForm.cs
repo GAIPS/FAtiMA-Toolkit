@@ -8,6 +8,7 @@ using GAIPS.AssetEditorTools;
 using ActionLibrary.DTOs;
 using GAIPS.Rage;
 using System.IO;
+using EmotionalAppraisal.DTOs;
 
 namespace EmotionalDecisionMakingWF
 {
@@ -19,8 +20,12 @@ namespace EmotionalDecisionMakingWF
         private EmotionalDecisionMakingAsset _loadedAsset;
         private AssetStorage _storage;
         private string _currentFilePath;
-        
-		public MainForm()
+
+        public event EventHandler AddedRuleEvent;
+        public ActionRuleDTO latestAddedRule;
+
+
+        public MainForm()
         {
             InitializeComponent();
 			this.actionRules = new BindingListView<ActionRuleDTO>((IList)null);
@@ -95,7 +100,12 @@ namespace EmotionalDecisionMakingWF
             new AddOrEditReactionForm(_loadedAsset).ShowDialog();
             actionRules.DataSource = _loadedAsset.GetAllActionRules().ToList();
             actionRules.Refresh();
-		}
+            latestAddedRule = _loadedAsset.GetAllActionRules().Last();
+            AddedRuleEvent?.Invoke(this, EventArgs.Empty);
+
+        }
+
+     
 
         private void buttonEditReaction_Click(object sender, EventArgs e)
         {
@@ -142,6 +152,8 @@ namespace EmotionalDecisionMakingWF
                 _loadedAsset.AddActionRule(duplicateAction);
                 actionRules.DataSource = _loadedAsset.GetAllActionRules().ToList();
                 actionRules.Refresh();
+                latestAddedRule = _loadedAsset.GetAllActionRules().Last();
+                AddedRuleEvent?.Invoke(this, EventArgs.Empty);
             }
         }
 
@@ -220,5 +232,16 @@ namespace EmotionalDecisionMakingWF
         {
 
         }
+
+        private void emotionaAppraisalButton_Click(object sender, EventArgs e)
+        {
+           latestAddedRule = ((ObjectView<ActionRuleDTO>)dataGridViewReactiveActions.
+                 SelectedRows[0].DataBoundItem).Object;
+
+            AddedRuleEvent?.Invoke(this, EventArgs.Empty);
+
+        }
+
+     
     }
 }

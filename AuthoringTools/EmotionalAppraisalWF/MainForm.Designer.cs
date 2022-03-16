@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.buttonAppVariables = new System.Windows.Forms.Button();
@@ -38,11 +39,11 @@
             this.dataGridViewAppraisalRules = new System.Windows.Forms.DataGridView();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.conditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
-            this.decayErrorProvider = new System.Windows.Forms.ErrorProvider();
-            this.toolTip = new System.Windows.Forms.ToolTip();
-            this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource();
-            this.timer1 = new System.Windows.Forms.Timer();
-            this.mainFormBindingSource = new System.Windows.Forms.BindingSource();
+            this.decayErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,7 +66,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 48);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 30);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -77,8 +78,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox8);
-            this.splitContainer1.Size = new System.Drawing.Size(1146, 628);
-            this.splitContainer1.SplitterDistance = 310;
+            this.splitContainer1.Size = new System.Drawing.Size(917, 510);
+            this.splitContainer1.SplitterDistance = 251;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 11;
             // 
@@ -95,7 +96,7 @@
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox7.Size = new System.Drawing.Size(1146, 310);
+            this.groupBox7.Size = new System.Drawing.Size(917, 251);
             this.groupBox7.TabIndex = 1;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Appraisal Rules";
@@ -179,7 +180,7 @@
             this.dataGridViewAppraisalRules.RowHeadersWidth = 51;
             this.dataGridViewAppraisalRules.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAppraisalRules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAppraisalRules.Size = new System.Drawing.Size(1134, 235);
+            this.dataGridViewAppraisalRules.Size = new System.Drawing.Size(905, 176);
             this.dataGridViewAppraisalRules.TabIndex = 2;
             this.dataGridViewAppraisalRules.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAppraisalRules_CellContentClick);
             this.dataGridViewAppraisalRules.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewAppraisalRules_CellMouseDoubleClick);
@@ -194,7 +195,7 @@
             this.groupBox8.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox8.Size = new System.Drawing.Size(1146, 313);
+            this.groupBox8.Size = new System.Drawing.Size(917, 254);
             this.groupBox8.TabIndex = 10;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Rule Conditions";
@@ -205,7 +206,7 @@
             this.conditionSetEditor.Location = new System.Drawing.Point(4, 22);
             this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.conditionSetEditor.Name = "conditionSetEditor";
-            this.conditionSetEditor.Size = new System.Drawing.Size(1138, 288);
+            this.conditionSetEditor.Size = new System.Drawing.Size(909, 229);
             this.conditionSetEditor.TabIndex = 0;
             this.conditionSetEditor.View = null;
             this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);
@@ -221,7 +222,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1146, 38);
+            this.menuStrip1.Size = new System.Drawing.Size(917, 30);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -233,7 +234,7 @@
             this.saveToolStripMenuItem,
             this.saveAsToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 34);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
             this.fileToolStripMenuItem.Text = "File";
             this.fileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
             // 

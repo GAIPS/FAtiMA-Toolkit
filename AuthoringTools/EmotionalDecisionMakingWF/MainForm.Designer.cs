@@ -43,6 +43,7 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.emotionaAppraisalButton = new System.Windows.Forms.Button();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactiveActions)).BeginInit();
             this.groupBox8.SuspendLayout();
@@ -55,6 +56,7 @@
             // 
             // groupBox7
             // 
+            this.groupBox7.Controls.Add(this.emotionaAppraisalButton);
             this.groupBox7.Controls.Add(this.buttonDuplicateReaction);
             this.groupBox7.Controls.Add(this.buttonEditReaction);
             this.groupBox7.Controls.Add(this.buttonAddReaction);
@@ -240,6 +242,19 @@
             this.saveAsToolStripMenuItem.Text = "Save As...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
+            // emotionaAppraisalButton
+            // 
+            this.emotionaAppraisalButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.emotionaAppraisalButton.Location = new System.Drawing.Point(602, 23);
+            this.emotionaAppraisalButton.Margin = new System.Windows.Forms.Padding(4);
+            this.emotionaAppraisalButton.Name = "emotionaAppraisalButton";
+            this.emotionaAppraisalButton.Size = new System.Drawing.Size(192, 28);
+            this.emotionaAppraisalButton.TabIndex = 11;
+            this.emotionaAppraisalButton.Text = "Emotional Appraisal";
+            this.emotionaAppraisalButton.UseVisualStyleBackColor = true;
+            this.emotionaAppraisalButton.Click += new System.EventHandler(this.emotionaAppraisalButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -272,7 +287,6 @@
         private System.Windows.Forms.Button buttonEditReaction;
         private System.Windows.Forms.Button buttonAddReaction;
         private System.Windows.Forms.Button buttonRemoveReaction;
-        private System.Windows.Forms.DataGridView dataGridViewReactiveActions;
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.SplitContainer splitContainer1;
 		private GAIPS.AssetEditorTools.ConditionSetEditorControl conditionSetEditor;
@@ -283,6 +297,8 @@
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+        private System.Windows.Forms.Button emotionaAppraisalButton;
+        public System.Windows.Forms.DataGridView dataGridViewReactiveActions;
     }
 }
 
