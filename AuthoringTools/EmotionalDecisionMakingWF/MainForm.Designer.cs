@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.emotionaAppraisalButton = new System.Windows.Forms.Button();
             this.buttonDuplicateReaction = new System.Windows.Forms.Button();
             this.buttonEditReaction = new System.Windows.Forms.Button();
             this.buttonAddReaction = new System.Windows.Forms.Button();
@@ -43,7 +44,6 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.emotionaAppraisalButton = new System.Windows.Forms.Button();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactiveActions)).BeginInit();
             this.groupBox8.SuspendLayout();
@@ -72,6 +72,19 @@
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Action Rules";
             this.groupBox7.Enter += new System.EventHandler(this.groupBox7_Enter);
+            // 
+            // emotionaAppraisalButton
+            // 
+            this.emotionaAppraisalButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.emotionaAppraisalButton.Location = new System.Drawing.Point(602, 23);
+            this.emotionaAppraisalButton.Margin = new System.Windows.Forms.Padding(4);
+            this.emotionaAppraisalButton.Name = "emotionaAppraisalButton";
+            this.emotionaAppraisalButton.Size = new System.Drawing.Size(192, 28);
+            this.emotionaAppraisalButton.TabIndex = 11;
+            this.emotionaAppraisalButton.Text = "Emotional Appraisal";
+            this.emotionaAppraisalButton.UseVisualStyleBackColor = true;
+            this.emotionaAppraisalButton.Click += new System.EventHandler(this.emotionaAppraisalButton_Click);
             // 
             // buttonDuplicateReaction
             // 
@@ -241,19 +254,6 @@
             this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 26);
             this.saveAsToolStripMenuItem.Text = "Save As...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
-            // 
-            // emotionaAppraisalButton
-            // 
-            this.emotionaAppraisalButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.emotionaAppraisalButton.Location = new System.Drawing.Point(602, 23);
-            this.emotionaAppraisalButton.Margin = new System.Windows.Forms.Padding(4);
-            this.emotionaAppraisalButton.Name = "emotionaAppraisalButton";
-            this.emotionaAppraisalButton.Size = new System.Drawing.Size(192, 28);
-            this.emotionaAppraisalButton.TabIndex = 11;
-            this.emotionaAppraisalButton.Text = "Emotional Appraisal";
-            this.emotionaAppraisalButton.UseVisualStyleBackColor = true;
-            this.emotionaAppraisalButton.Click += new System.EventHandler(this.emotionaAppraisalButton_Click);
             // 
             // MainForm
             // 

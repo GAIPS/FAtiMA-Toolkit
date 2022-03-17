@@ -1,4 +1,5 @@
 ﻿using ActionLibrary;
+using ActionLibrary.DTOs;
 using AutobiographicMemory.DTOs;
 using CommeillFaut;
 using EmotionalAppraisal;
@@ -8,6 +9,7 @@ using GAIPS.AssetEditorTools;
 using GAIPS.Rage;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
+using IntegratedAuthoringToolWF.IEP;
 using KnowledgeBase.DTOs;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
@@ -15,7 +17,6 @@ using RolePlayCharacter;
 using SocialImportance;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -23,15 +24,6 @@ using System.Windows.Forms;
 using Utilities;
 using Utilities.DataStructures;
 using WellFormedNames;
-using System.Net.Http;
-using WorldModel;
-using System.Threading.Tasks;
-using System.Diagnostics;
-using System.Text;
-using System.Net.NetworkInformation;
-using IntegratedAuthoringToolWF.IEP;
-using System.Windows;
-using ActionLibrary.DTOs;
 
 namespace IntegratedAuthoringToolWF
 {
@@ -53,7 +45,9 @@ namespace IntegratedAuthoringToolWF
         public string _currentScenarioFilePath;
 
         private IList<RolePlayCharacterAsset> _agentsInSimulation;
-     
+
+        public bool showImbalances = true;
+
         public MainForm()
         {
             InitializeComponent();
@@ -124,7 +118,7 @@ namespace IntegratedAuthoringToolWF
                 _rpcForm.Close();
                 _rpcForm = null;
             }
-  
+
         }
 
 
@@ -146,7 +140,7 @@ namespace IntegratedAuthoringToolWF
             comboBoxPlayerRpc.Items.Clear();
             comboBoxPlayerRpc.Items.Add("-");
             comboBoxPlayerRpc.SelectedItem = "-";
-      
+
 
             searchCheckList.Items.Clear();
             searchCheckList.Items.Add("CurrentState", true);
@@ -732,7 +726,7 @@ namespace IntegratedAuthoringToolWF
             var rpcSource = EditorTools.GetSelectedDtoFromTable<CharacterNameAndMoodDTO>(dataGridViewCharacters);
             if (rpcSource != null)
             {
-               new RPCInspectForm(_iat, _storage, rpcSource.Name).Show(this);
+                new RPCInspectForm(_iat, _storage, rpcSource.Name).Show(this);
             }
         }
 
@@ -1605,7 +1599,7 @@ namespace IntegratedAuthoringToolWF
             }
             comboBoxPlayerRpc.SelectedIndex = 0;
         }
-     
+
         private void richTextBoxChat_TextChanged(object sender, EventArgs e)
         {
 
@@ -1640,7 +1634,7 @@ namespace IntegratedAuthoringToolWF
                 }
 
                 SaveAssetRules();
-              
+
                 //e.Cancel = true;
                 // Call method to save file...
             }
@@ -1649,7 +1643,7 @@ namespace IntegratedAuthoringToolWF
         }
 
 
-      
+
 
         private void importStoryButton_Click(object sender, EventArgs e)
         {
@@ -1724,17 +1718,33 @@ namespace IntegratedAuthoringToolWF
 
         private void AddedRule(object sender, EventArgs e)
         {
+
+            if (!showImbalances)
+                return;
+
             var edmRulesCount = _edmForm.Asset.GetAllActionRules().Count();
             var eaRulesCount = _eaForm.Asset.GetAllAppraisalRules().Count();
             ActionLibrary.DTOs.ActionRuleDTO rule = this._edmForm.latestAddedRule;
 
             if (edmRulesCount > eaRulesCount * 2 + 1)
-               if(new AddEmotionalReactionForm(rule.Action.ToString()).ShowDialog() == DialogResult.Yes)
+            {
+                var addEmotForm = new AddEmotionalReactionForm(rule.Action.ToString());
+
+                var result = addEmotForm.ShowDialog();
+
+                if (result == DialogResult.Yes)
+                {
                     AddEmotionalReaction(rule);
 
+                }
+
+                if (addEmotForm.neverShowAgain)
+                    showImbalances = false;
+
+            }
+
+
         }
-
-
 
         private void AddEmotionalReaction(ActionRuleDTO rule)
         {
@@ -1744,7 +1754,7 @@ namespace IntegratedAuthoringToolWF
         }
         public void AssistantHandler()
         {
-            assistantTextBox.Text = AuthorAssistant.GetTip(tabControlIAT.SelectedIndex, tabControlAssetEditor.SelectedIndex);  
+            assistantTextBox.Text = AuthorAssistant.GetTip(tabControlIAT.SelectedIndex, tabControlAssetEditor.SelectedIndex);
         }
 
 
@@ -1753,6 +1763,35 @@ namespace IntegratedAuthoringToolWF
 
         }
 
-     
+
+        private void PaintBorderlessGroupBox(object sender, PaintEventArgs p)
+        {
+            GroupBox box = (GroupBox)sender;
+            p.Graphics.Clear(SystemColors.Control);
+            p.Graphics.DrawString(box.Text, box.Font, Brushes.Black, 0, 0);
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if(tabControlIAT.SelectedIndex == 0)
+            // Navigate to a URL.
+            System.Diagnostics.Process.Start("https://fatima-toolkit.eu/9-dialogue-manager/");
+
+            else if (tabControlIAT.SelectedIndex == 1 && tabControlAssetEditor.SelectedIndex == 0)
+                // Navigate to a URL.
+                System.Diagnostics.Process.Start("https://fatima-toolkit.eu/5-emotional-appraisal/");
+
+            else if (tabControlIAT.SelectedIndex == 1 && tabControlAssetEditor.SelectedIndex == 1)
+                // Navigate to a URL.
+                System.Diagnostics.Process.Start("https://fatima-toolkit.eu/6-emotional-decision-making/");
+
+
+            else if (tabControlIAT.SelectedIndex > 1)
+                // Navigate to a URL.
+                System.Diagnostics.Process.Start("https://fatima-toolkit.eu/2-integrated-authoring-tool/");
+
+
+
+        }
     }
 }

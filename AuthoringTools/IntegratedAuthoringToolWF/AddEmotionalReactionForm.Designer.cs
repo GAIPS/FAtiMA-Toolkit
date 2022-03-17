@@ -53,7 +53,7 @@ namespace IntegratedAuthoringToolWF
             // 
             this.actionText.AutoSize = true;
             this.actionText.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.actionText.Location = new System.Drawing.Point(86, 46);
+            this.actionText.Location = new System.Drawing.Point(74, 46);
             this.actionText.Name = "actionText";
             this.actionText.Size = new System.Drawing.Size(0, 18);
             this.actionText.TabIndex = 1;
@@ -67,7 +67,7 @@ namespace IntegratedAuthoringToolWF
             this.label3.Size = new System.Drawing.Size(430, 54);
             this.label3.TabIndex = 2;
             this.label3.Text = "Appraisal Rules make characters become emotionally intelligent.\r\n\r\n Would you lik" +
-    "e to add an Appraisal Rule?\r\n";
+    "e to add an Appraisal Rule for this Action?\r\n";
             // 
             // acceptButton
             // 
@@ -93,7 +93,7 @@ namespace IntegratedAuthoringToolWF
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(152, 221);
+            this.checkBox1.Location = new System.Drawing.Point(160, 222);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(196, 21);
             this.checkBox1.TabIndex = 5;
@@ -112,7 +112,7 @@ namespace IntegratedAuthoringToolWF
             this.groupBox1.Controls.Add(this.actionText);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(501, 203);
+            this.groupBox1.Size = new System.Drawing.Size(524, 204);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             // 
@@ -120,7 +120,7 @@ namespace IntegratedAuthoringToolWF
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(525, 243);
+            this.ClientSize = new System.Drawing.Size(549, 249);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.checkBox1);
             this.Name = "AddEmotionalReactionForm";
