@@ -58,6 +58,12 @@
       <DependentUpon>AddOrEditAppraisalVariablesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Emotion.cs" />
+    <Compile Include="OCCModelForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OCCModelForm.Designer.cs">
+      <DependentUpon>OCCModelForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,6 +81,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddOrEditAppraisalVariablesForm.resx">
       <DependentUpon>AddOrEditAppraisalVariablesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OCCModelForm.resx">
+      <DependentUpon>OCCModelForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

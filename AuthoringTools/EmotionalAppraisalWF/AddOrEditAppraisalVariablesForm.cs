@@ -4,6 +4,8 @@ using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using Equin.ApplicationFramework;
 using System.Collections.Generic;
+using EmotionalAppraisal.OCCModel;
+using System;
 
 namespace EmotionalAppraisalWF
 {
@@ -55,7 +57,7 @@ namespace EmotionalAppraisalWF
         }
 
  
-        private void buttonEditAppraisalRule_Click(object sender, System.EventArgs e)
+        public void buttonEditAppraisalRule_Click(object sender, System.EventArgs e)
         {
                if(dataGridViewAppraisalVariables.SelectedRows.Count > 0){
        
@@ -77,9 +79,34 @@ namespace EmotionalAppraisalWF
 
         }
 
-        private void dataGridViewAppraisalVariables_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        public void dataGridViewAppraisalVariables_CellContentClick(object sender, EventArgs e)
         {
+            if (dataGridViewAppraisalVariables.SelectedCells.Count == 0)                return;
 
+            var selectedIndex = dataGridViewAppraisalVariables.SelectedCells[0].RowIndex;
+
+            var appVar = ((AppraisalVariableDTO)this.appraisalVariables[selectedIndex]);
+
+            var value = Int32.Parse(appVar.Value.ToString());
+
+            if (appVar.Name == OCCAppraisalVariables.DESIRABILITY)
+            {
+
+                if(value > 0)
+                {
+                    EmotionsLabel.Text = "Joy";
+                } else if(value < 0)
+                    EmotionsLabel.Text = "Distress";
+
+            } else if(appVar.Name == OCCAppraisalVariables.PRAISEWORTHINESS)
+            {
+                if (value > 0)
+                {
+                    EmotionsLabel.Text = "Pride or Admiration depending on the Target";
+                }
+                else if (value < 0)
+                    EmotionsLabel.Text = "Shame or Reproach depending on the Target";
+            }
         }
 
         
@@ -95,6 +122,28 @@ namespace EmotionalAppraisalWF
             this.appraisalVariables.DataSource = _selectedRule.AppraisalVariables.appraisalVariables;
             this.appraisalVariables.Refresh();
             }
+        }
+
+        private void fatimaLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://fatima-toolkit.eu/5-emotional-appraisal/");
+
+        }
+
+        private void dataGridViewAppraisalVariables_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void imageButton_Click(object sender, EventArgs e)
+        {
+            new OCCModelForm().ShowDialog();
+         
         }
     }
 }
