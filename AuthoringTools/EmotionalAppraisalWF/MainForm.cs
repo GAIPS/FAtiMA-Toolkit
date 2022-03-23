@@ -5,6 +5,7 @@ using EmotionalAppraisalWF.ViewModels;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 using GAIPS.Rage;
+using RolePlayCharacter;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -65,8 +66,11 @@ namespace EmotionalAppraisalWF
 
             AppraisalRuleDTO dto = new AppraisalRuleDTO()
             {
-                EventMatchingTemplate = WellFormedNames.Name.BuildName(rule.Action.ToString()),
+                EventMatchingTemplate = EventHelper.ActionEnd(WellFormedNames.Name.BuildName("Subject"), rule.Action, WellFormedNames.Name.SELF_SYMBOL)
                 
+                
+               // WellFormedNames.Name.BuildName(rule.Action.ToString()),
+               
             };
 
             new AddOrEditAppraisalRuleForm(_appraisalRulesVM, dto).ShowDialog();

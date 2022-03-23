@@ -16,7 +16,7 @@ namespace IntegratedAuthoringToolWF
         public AddEmotionalReactionForm(string actionName)
         {
             InitializeComponent();
-            actionText.Text = actionName;
+            actionText.Text = "Action: " + actionName;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)

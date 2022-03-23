@@ -12,10 +12,10 @@ namespace EmotionalAppraisalWF
     public partial class AddOrEditAppraisalVariablesForm : Form
     {
         AppraisalRulesVM _vm;
-      //  AppraisalVariables _toEdit;
+        //  AppraisalVariables _toEdit;
         AppraisalRuleDTO _selectedRule;
 
-       public BindingListView<AppraisalVariableDTO> appraisalVariables {get; private set; }
+        public BindingListView<AppraisalVariableDTO> appraisalVariables { get; private set; }
 
         public AddOrEditAppraisalVariablesForm(AppraisalRulesVM appRulesVM, AppraisalRuleDTO selectedRule)
         {
@@ -24,17 +24,17 @@ namespace EmotionalAppraisalWF
             this.appraisalVariables = new BindingListView<AppraisalVariableDTO>(new List<AppraisalVariableDTO>());
 
             _vm = appRulesVM;
-           this.dataGridViewAppraisalVariables.AutoGenerateColumns = true; 
+            this.dataGridViewAppraisalVariables.AutoGenerateColumns = true;
             _selectedRule = selectedRule;
-            if(selectedRule == null) return;
-            if(_selectedRule.AppraisalVariables == null) 
+            if (selectedRule == null) return;
+            if (_selectedRule.AppraisalVariables == null)
                 _selectedRule.AppraisalVariables = new AppraisalVariables(new System.Collections.Generic.List<AppraisalVariableDTO>());
 
 
-           this.appraisalVariables.DataSource = null;
+            this.appraisalVariables.DataSource = null;
             this.appraisalVariables.DataSource = selectedRule.AppraisalVariables.appraisalVariables;
 
-            this.dataGridViewAppraisalVariables.DataSource =  this.appraisalVariables;
+            this.dataGridViewAppraisalVariables.DataSource = this.appraisalVariables;
             this.dataGridViewAppraisalVariables.Refresh();
 
         }
@@ -46,67 +46,56 @@ namespace EmotionalAppraisalWF
 
         private void buttonAddAppraisalRule_Click(object sender, System.EventArgs e)
         {
-         
-            
+
+
             new AddOrEditAppraisalVariableForm(_vm, _selectedRule, new AppraisalVariableDTO()).ShowDialog(this);
 
 
-             this.appraisalVariables.DataSource = _selectedRule.AppraisalVariables.appraisalVariables;
+            this.appraisalVariables.DataSource = _selectedRule.AppraisalVariables.appraisalVariables;
             this.appraisalVariables.Refresh();
 
         }
 
- 
+
         public void buttonEditAppraisalRule_Click(object sender, System.EventArgs e)
         {
-               if(dataGridViewAppraisalVariables.SelectedRows.Count > 0){
-       
-                
-            var selectedAppVar = _selectedRule.AppraisalVariables.appraisalVariables.Find(x=>x.Name.ToString() == dataGridViewAppraisalVariables.SelectedRows[0].Cells[0].Value.ToString());
+            if (dataGridViewAppraisalVariables.SelectedRows.Count > 0) {
 
 
-            if(selectedAppVar !=null)
-           
-                new AddOrEditAppraisalVariableForm(_vm, _selectedRule , selectedAppVar).ShowDialog(this);
+                var selectedAppVar = _selectedRule.AppraisalVariables.appraisalVariables.Find(x => x.Name.ToString() == dataGridViewAppraisalVariables.SelectedRows[0].Cells[0].Value.ToString());
+
+
+                if (selectedAppVar != null)
+
+                    new AddOrEditAppraisalVariableForm(_vm, _selectedRule, selectedAppVar).ShowDialog(this);
 
             }
-            else 
+            else
                 new AddOrEditAppraisalVariableForm(_vm, _selectedRule, new AppraisalVariableDTO()).ShowDialog(this);
 
 
-          this.appraisalVariables.DataSource = _selectedRule.AppraisalVariables.appraisalVariables;
+            this.appraisalVariables.DataSource = _selectedRule.AppraisalVariables.appraisalVariables;
             this.appraisalVariables.Refresh();
 
         }
 
         public void dataGridViewAppraisalVariables_CellContentClick(object sender, EventArgs e)
         {
-            if (dataGridViewAppraisalVariables.SelectedCells.Count == 0)                return;
+            if (dataGridViewAppraisalVariables.SelectedCells.Count == 0) return;
 
-            var selectedIndex = dataGridViewAppraisalVariables.SelectedCells[0].RowIndex;
+            var text = "";
+        
+            var emotions = OCCEmotionType.getEmotionsFromRule(_selectedRule);
 
-            var appVar = ((AppraisalVariableDTO)this.appraisalVariables[selectedIndex]);
-
-            var value = Int32.Parse(appVar.Value.ToString());
-
-            if (appVar.Name == OCCAppraisalVariables.DESIRABILITY)
+          
+            foreach(var emo in emotions)
             {
-
-                if(value > 0)
-                {
-                    EmotionsLabel.Text = "Joy";
-                } else if(value < 0)
-                    EmotionsLabel.Text = "Distress";
-
-            } else if(appVar.Name == OCCAppraisalVariables.PRAISEWORTHINESS)
-            {
-                if (value > 0)
-                {
-                    EmotionsLabel.Text = "Pride or Admiration depending on the Target";
-                }
-                else if (value < 0)
-                    EmotionsLabel.Text = "Shame or Reproach depending on the Target";
+                text += emo.Name + " | ";
             }
+
+            EmotionsLabel.Text = text;
+
+
         }
 
         
@@ -144,6 +133,13 @@ namespace EmotionalAppraisalWF
         {
             new OCCModelForm().ShowDialog();
          
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            new OCCSimplex(this._vm, _selectedRule).ShowDialog();
+            this.appraisalVariables.Refresh();
+            dataGridViewAppraisalVariables_CellContentClick(sender, e);
         }
     }
 }

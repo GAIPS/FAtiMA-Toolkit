@@ -54,7 +54,7 @@ namespace EmotionalAppraisalWF
             this.AutoSize = true;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(1030, 634);
+            this.ClientSize = new System.Drawing.Size(1158, 634);
             this.Name = "OCCModelForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "OCC Model Schematic";

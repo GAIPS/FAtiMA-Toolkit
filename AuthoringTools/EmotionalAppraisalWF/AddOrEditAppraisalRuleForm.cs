@@ -37,10 +37,15 @@ namespace EmotionalAppraisalWF
             {
                 this.Text = Resources.EditAppraisalRuleFormTitle;
                 this.addOrEditButton.Text = Resources.UpdateButtonLabel;
-                comboBoxEventType.Text = ruleToEdit.EventMatchingTemplate.GetNTerm(1).ToString();
+
+                comboBoxEventType.Text = ruleToEdit.EventMatchingTemplate.GetNTerm(0).ToString();
+
+                if(ruleToEdit.EventMatchingTemplate.NumberOfTerms > 1)
                 textBoxSubject.Value = ruleToEdit.EventMatchingTemplate.GetNTerm(2);
-                textBoxObject.Value = ruleToEdit.EventMatchingTemplate.GetNTerm(3);
-                textBoxTarget.Value = ruleToEdit.EventMatchingTemplate.GetNTerm(4);
+                if (ruleToEdit.EventMatchingTemplate.NumberOfTerms > 2)
+                    textBoxObject.Value = ruleToEdit.EventMatchingTemplate.GetNTerm(3);
+                if (ruleToEdit.EventMatchingTemplate.NumberOfTerms > 3)
+                    textBoxTarget.Value = ruleToEdit.EventMatchingTemplate.GetNTerm(4);
             }
         }
 

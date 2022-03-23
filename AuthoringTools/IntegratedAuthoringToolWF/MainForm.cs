@@ -1728,7 +1728,9 @@ namespace IntegratedAuthoringToolWF
 
             if (edmRulesCount > eaRulesCount * 2 + 1)
             {
-                var addEmotForm = new AddEmotionalReactionForm(rule.Action.ToString());
+                string actionName = rule.Action.ToString();
+                    //+ " towards " + rule.Target.ToString();
+                var addEmotForm = new AddEmotionalReactionForm(actionName);
 
                 var result = addEmotForm.ShowDialog();
 
