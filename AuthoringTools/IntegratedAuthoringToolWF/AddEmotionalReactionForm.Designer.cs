@@ -34,11 +34,13 @@ namespace IntegratedAuthoringToolWF
             this.acceptButton = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.emotionBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.subjectEmotionBox = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.targetEmotionBox = new System.Windows.Forms.ComboBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // actionText
@@ -68,12 +70,13 @@ namespace IntegratedAuthoringToolWF
             // acceptButton
             // 
             this.acceptButton.DialogResult = System.Windows.Forms.DialogResult.Yes;
-            this.acceptButton.Location = new System.Drawing.Point(193, 330);
+            this.acceptButton.Location = new System.Drawing.Point(194, 318);
             this.acceptButton.Name = "acceptButton";
             this.acceptButton.Size = new System.Drawing.Size(247, 37);
             this.acceptButton.TabIndex = 3;
             this.acceptButton.Text = "Add Appraisal Rule";
             this.acceptButton.UseVisualStyleBackColor = true;
+            this.acceptButton.Click += new System.EventHandler(this.acceptButton_Click);
             // 
             // checkBox1
             // 
@@ -88,63 +91,73 @@ namespace IntegratedAuthoringToolWF
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.comboBox1);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.emotionBox);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.actionText);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(630, 300);
+            this.groupBox1.Size = new System.Drawing.Size(630, 161);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(42, 199);
-            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(302, 20);
-            this.label6.TabIndex = 34;
-            this.label6.Text = "How do you think the target would feel?";
-            // 
-            // emotionBox
-            // 
-            this.emotionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.emotionBox.FormattingEnabled = true;
-            this.emotionBox.Location = new System.Drawing.Point(370, 196);
-            this.emotionBox.Name = "emotionBox";
-            this.emotionBox.Size = new System.Drawing.Size(199, 28);
-            this.emotionBox.TabIndex = 33;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(42, 253);
+            this.label1.Location = new System.Drawing.Point(7, 84);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(313, 20);
+            this.label1.Size = new System.Drawing.Size(387, 20);
             this.label1.TabIndex = 36;
-            this.label1.Text = "How do you think the subject would feel?";
+            this.label1.Text = "What emotion would the Subject of the action feel?\r\n";
             // 
-            // comboBox1
+            // subjectEmotionBox
             // 
-            this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(370, 250);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(199, 28);
-            this.comboBox1.TabIndex = 35;
+            this.subjectEmotionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.subjectEmotionBox.FormattingEnabled = true;
+            this.subjectEmotionBox.Location = new System.Drawing.Point(412, 81);
+            this.subjectEmotionBox.Name = "subjectEmotionBox";
+            this.subjectEmotionBox.Size = new System.Drawing.Size(199, 28);
+            this.subjectEmotionBox.TabIndex = 35;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(7, 38);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(379, 20);
+            this.label6.TabIndex = 34;
+            this.label6.Text = "What emotion would the Target of the action feel?";
+            // 
+            // targetEmotionBox
+            // 
+            this.targetEmotionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.targetEmotionBox.FormattingEnabled = true;
+            this.targetEmotionBox.Location = new System.Drawing.Point(412, 35);
+            this.targetEmotionBox.Name = "targetEmotionBox";
+            this.targetEmotionBox.Size = new System.Drawing.Size(199, 28);
+            this.targetEmotionBox.TabIndex = 33;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.targetEmotionBox);
+            this.groupBox2.Controls.Add(this.subjectEmotionBox);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Location = new System.Drawing.Point(12, 179);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(629, 133);
+            this.groupBox2.TabIndex = 7;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Emotional Response";
             // 
             // AddEmotionalReactionForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(654, 396);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.acceptButton);
@@ -154,6 +167,8 @@ namespace IntegratedAuthoringToolWF
             this.Text = "AddEmotionalReactionForm";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -166,8 +181,9 @@ namespace IntegratedAuthoringToolWF
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox emotionBox;
+        private System.Windows.Forms.GroupBox groupBox2;
+        public System.Windows.Forms.ComboBox subjectEmotionBox;
+        public System.Windows.Forms.ComboBox targetEmotionBox;
     }
 }

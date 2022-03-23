@@ -32,23 +32,7 @@ namespace EmotionalAppraisalWF
 
             var appVars = OCCEmotionType.getVariableFromEmotion(emo);
 
-            List<AppraisalVariableDTO> appVarList = new List<AppraisalVariableDTO>();
-
-            foreach(var appraisalVariable in appVars)
-            {
-               AppraisalVariableDTO dto = new AppraisalVariableDTO()
-                {
-                    Name = appraisalVariable.appraisalVariable,
-                    Value = WellFormedNames.Name.BuildName(appraisalVariable.intensity),
-                    Target = WellFormedNames.Name.BuildName(appraisalVariable.target)
-                };
-
-                appVarList.Add(dto);
-            }
-
-
-
-            appraisalRule.AppraisalVariables.appraisalVariables.AddRange(appVarList);
+            appraisalRule.AppraisalVariables.appraisalVariables.AddRange(appVars);
             ruleVM.AddOrUpdateAppraisalRule(appraisalRule);
             
             Close();

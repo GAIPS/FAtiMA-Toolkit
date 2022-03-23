@@ -1,4 +1,5 @@
 ﻿using ActionLibrary.DTOs;
+using AutobiographicMemory;
 using EmotionalAppraisal;
 using EmotionalAppraisal.DTOs;
 using EmotionalAppraisalWF.ViewModels;
@@ -11,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using WellFormedNames;
 
 namespace EmotionalAppraisalWF
 {
@@ -60,6 +62,53 @@ namespace EmotionalAppraisalWF
         public void buttonAddAppraisalRule_Click(object sender, EventArgs e)
         {
             new AddOrEditAppraisalRuleForm(_appraisalRulesVM).ShowDialog();
+        }
+
+        public void AddAppraisalRulewithEmotions(ActionRuleDTO rule, EmotionalAppraisal.OCCModel.OCCEmotionType targetEmotion,
+            EmotionalAppraisal.OCCModel.OCCEmotionType subjectEmotion)
+        {
+
+            var targetVariables = EmotionalAppraisal.OCCModel.OCCEmotionType.getVariableFromEmotion(targetEmotion.Name);
+
+            AppraisalRuleDTO targetDto = new AppraisalRuleDTO()
+            {
+                EventMatchingTemplate =
+                 WellFormedNames.Name.BuildName(
+                (Name)AMConsts.EVENT,
+                (Name)AMConsts.ACTION_END,
+                WellFormedNames.Name.UNIVERSAL_SYMBOL,
+                rule.Action,
+               WellFormedNames.Name.SELF_SYMBOL),
+                            
+                AppraisalVariables = new AppraisalVariables()
+                {
+                    appraisalVariables = targetVariables 
+                }
+            };
+
+            _appraisalRulesVM.AddOrUpdateAppraisalRule(targetDto);
+
+            var subjectVariables = EmotionalAppraisal.OCCModel.OCCEmotionType.getVariableFromEmotion(subjectEmotion.Name);
+
+            AppraisalRuleDTO subjectDto = new AppraisalRuleDTO()
+            {
+                EventMatchingTemplate =
+                 WellFormedNames.Name.BuildName(
+                (Name)AMConsts.EVENT,
+                (Name)AMConsts.ACTION_END,
+                WellFormedNames.Name.SELF_SYMBOL,
+                rule.Action,
+               WellFormedNames.Name.UNIVERSAL_SYMBOL),
+
+                AppraisalVariables = new AppraisalVariables()
+                {
+                    appraisalVariables = subjectVariables
+                }
+            };
+
+            _appraisalRulesVM.AddOrUpdateAppraisalRule(subjectDto);
+
+
         }
         public void buttonAddAppraisalRule_Click(object sender, ActionRuleDTO rule)
         {

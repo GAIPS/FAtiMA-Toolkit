@@ -1733,11 +1733,13 @@ namespace IntegratedAuthoringToolWF
                 var addEmotForm = new AddEmotionalReactionForm(actionName);
 
                 var result = addEmotForm.ShowDialog();
+               
+
 
                 if (result == DialogResult.Yes)
                 {
-                    AddEmotionalReaction(rule);
-
+                    AddEmotionalReaction(rule, addEmotForm.targetEmotion, addEmotForm.subjectEmotion);
+                   
                 }
 
                 if (addEmotForm.neverShowAgain)
@@ -1748,11 +1750,12 @@ namespace IntegratedAuthoringToolWF
 
         }
 
-        private void AddEmotionalReaction(ActionRuleDTO rule)
+        private void AddEmotionalReaction(ActionRuleDTO rule, EmotionalAppraisal.OCCModel.OCCEmotionType targetEmotion, EmotionalAppraisal.OCCModel.OCCEmotionType subjectEmotion )
         {
             tabControlAssetEditor.SelectedIndex = 0;
 
-            _eaForm.buttonAddAppraisalRule_Click(this, rule);
+            _eaForm.AddAppraisalRulewithEmotions(rule, targetEmotion, subjectEmotion);
+
         }
         public void AssistantHandler()
         {

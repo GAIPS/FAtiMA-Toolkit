@@ -1,9 +1,10 @@
 ﻿using EmotionalAppraisal.DTOs;
 using System.Collections.Generic;
+using WellFormedNames;
 
 namespace EmotionalAppraisal.OCCModel
 {
-	public sealed class OCCEmotionType
+    public sealed class OCCEmotionType
 	{
 		#region internal constants
 
@@ -123,314 +124,306 @@ namespace EmotionalAppraisal.OCCModel
 
 		#endregion
 
-		public struct AppraisalVariableValuePair
-        {
-			public string appraisalVariable;
-			public float intensity;
-			public string target;
-		}
 
-		public static List<AppraisalVariableValuePair> getVariableFromEmotion(string emotion)
+		public static List<AppraisalVariableDTO> getVariableFromEmotion(string emotion)
         {
 
 			switch (emotion)
 			{
 				case nameof(OCCEmotionType.Admiration):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-						new AppraisalVariableValuePair()
+						new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.PRAISEWORTHINESS,
-							intensity = 5,
-							target = "other"
+							Name = OCCAppraisalVariables.PRAISEWORTHINESS,
+							Value = WellFormedNames.Name.BuildName(5),
+							Target = WellFormedNames.Name.BuildName("[target]")
 						}
 					};
 
 				case nameof(OCCEmotionType.Anger):
 
-					return new List<AppraisalVariableValuePair>(){ 
+					return new List<AppraisalVariableDTO>(){ 
 						
-						new AppraisalVariableValuePair()
+						new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.PRAISEWORTHINESS,
-							intensity = -5,
-							target = "Other Agent"
+							Name= OCCAppraisalVariables.PRAISEWORTHINESS,
+							Value = WellFormedNames.Name.BuildName(-5),
+							Target = WellFormedNames.Name.BuildName("[target]")
 						},
-						new AppraisalVariableValuePair()
+						new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.DESIRABILITY,
-							intensity = -5,
-							target = "SELF"
+							Name= OCCAppraisalVariables.DESIRABILITY,
+							Value = WellFormedNames.Name.BuildName(-5),
+							Target = WellFormedNames.Name.NIL_SYMBOL
 						}
 					};
 
 				case nameof(OCCEmotionType.Gratitude):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-						new AppraisalVariableValuePair()
+						new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.PRAISEWORTHINESS,
-							intensity = 5,
-							target = "Other Agent"
+							Name= OCCAppraisalVariables.PRAISEWORTHINESS,
+							Value = WellFormedNames.Name.BuildName(5),
+							Target = WellFormedNames.Name.BuildName("[target]")
 						},
-						new AppraisalVariableValuePair()
+						new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.DESIRABILITY,
-							intensity = 5,
-							target = "SELF"
+							Name= OCCAppraisalVariables.DESIRABILITY,
+							Value = WellFormedNames.Name.BuildName(5),
+							Target = WellFormedNames.Name.NIL_SYMBOL
 						}
 					};
 				case nameof(OCCEmotionType.Distress):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-						new AppraisalVariableValuePair()
+						new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.DESIRABILITY,
-							intensity = -5,
-							target = "SELF"
+							Name= OCCAppraisalVariables.DESIRABILITY,
+							Value = WellFormedNames.Name.BuildName(-5),
+							Target = WellFormedNames.Name.NIL_SYMBOL
 						}
 					};
 
 				case nameof(OCCEmotionType.Gratification):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-						new AppraisalVariableValuePair()
+						new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.PRAISEWORTHINESS,
-							intensity = 5,
-							target = "SELF"
+							Name= OCCAppraisalVariables.PRAISEWORTHINESS,
+							Value = WellFormedNames.Name.BuildName(5),
+							Target = WellFormedNames.Name.SELF_SYMBOL
 						},
-						new AppraisalVariableValuePair()
+						new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.DESIRABILITY,
-							intensity = 5,
-							target = "SELF"
+							Name= OCCAppraisalVariables.DESIRABILITY,
+							Value = WellFormedNames.Name.BuildName(5),
+							Target = WellFormedNames.Name.NIL_SYMBOL
 						}
 					};
 
 				case nameof(OCCEmotionType.Joy):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-						new AppraisalVariableValuePair()
+						new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.DESIRABILITY,
-							intensity = 5,
-							target = "SELF"
+							Name= OCCAppraisalVariables.DESIRABILITY,
+							Value = WellFormedNames.Name.BuildName(5),
+							Target = WellFormedNames.Name.NIL_SYMBOL
 						}
 					};
 
 
 				case nameof(OCCEmotionType.Pride):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-						new AppraisalVariableValuePair()
+						new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.PRAISEWORTHINESS,
-							intensity = 5,
-							target = "SELF"
+							Name= OCCAppraisalVariables.PRAISEWORTHINESS,
+							Value = WellFormedNames.Name.BuildName(5),
+							Target = WellFormedNames.Name.SELF_SYMBOL
 						}
 					};
 
 				case nameof(OCCEmotionType.Shame):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-						new AppraisalVariableValuePair()
+						new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.PRAISEWORTHINESS,
-							intensity = -5,
-							target = "SELF"
+							Name= OCCAppraisalVariables.PRAISEWORTHINESS,
+							Value = WellFormedNames.Name.BuildName(5),
+							Target = WellFormedNames.Name.SELF_SYMBOL
 						}
 					};
 				case nameof(OCCEmotionType.Reproach):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-						new AppraisalVariableValuePair()
+						new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.PRAISEWORTHINESS,
-							intensity = -5,
-							target = "Other"
+							Name= OCCAppraisalVariables.PRAISEWORTHINESS,
+							Value = WellFormedNames.Name.BuildName(5),
+							Target = WellFormedNames.Name.SELF_SYMBOL
 						}
 					};
 				case nameof(OCCEmotionType.HappyFor):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-							new AppraisalVariableValuePair()
+							new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.DESIRABILITY,
-							intensity = 5,
-							target = "SELF"
+							Name= OCCAppraisalVariables.DESIRABILITY,
+							Value = WellFormedNames.Name.BuildName(5),
+							Target = WellFormedNames.Name.NIL_SYMBOL
 						},
-						new AppraisalVariableValuePair()
+						new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.DESIRABILITY_FOR_OTHER,
-							intensity = 5,
-							target = "Other"
+							Name= OCCAppraisalVariables.DESIRABILITY_FOR_OTHER,
+							Value = WellFormedNames.Name.BuildName(5),
+							Target = WellFormedNames.Name.BuildName("[target]")
 						}
 					};
 				case nameof(OCCEmotionType.Resentment):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-							new AppraisalVariableValuePair()
+							new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.DESIRABILITY,
-							intensity = -5,
-							target = "SELF"
+							Name= OCCAppraisalVariables.DESIRABILITY,
+							Value = WellFormedNames.Name.BuildName(-5),
+							Target = WellFormedNames.Name.SELF_SYMBOL
 						},
-						new AppraisalVariableValuePair()
+						new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.DESIRABILITY_FOR_OTHER,
-							intensity = 5,
-							target = "Other"
+							Name= OCCAppraisalVariables.DESIRABILITY_FOR_OTHER,
+							Value = WellFormedNames.Name.BuildName(5),
+							Target = WellFormedNames.Name.BuildName("[target]")
 						}
 					};
 
 				case nameof(OCCEmotionType.Gloating):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-							new AppraisalVariableValuePair()
+							new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.DESIRABILITY,
-							intensity = 5,
-							target = "SELF"
+							Name= OCCAppraisalVariables.DESIRABILITY,
+							Value = WellFormedNames.Name.BuildName(5),
+							Target = WellFormedNames.Name.NIL_SYMBOL
 						},
-						new AppraisalVariableValuePair()
+						new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.DESIRABILITY_FOR_OTHER,
-							intensity = -5,
-							target = "Other"
+							Name= OCCAppraisalVariables.DESIRABILITY_FOR_OTHER,
+							Value = WellFormedNames.Name.BuildName(-5),
+							Target = WellFormedNames.Name.BuildName("[target]")
 						}
 					};
 
 				case nameof(OCCEmotionType.Pity):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-							new AppraisalVariableValuePair()
+							new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.DESIRABILITY,
-							intensity = -5,
-							target = "SELF"
+							Name= OCCAppraisalVariables.DESIRABILITY,
+							Value = WellFormedNames.Name.BuildName(-5),
+							Target = WellFormedNames.Name.NIL_SYMBOL
 						},
-						new AppraisalVariableValuePair()
+						new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.DESIRABILITY_FOR_OTHER,
-							intensity = -5,
-							target = "Other"
+							Name= OCCAppraisalVariables.DESIRABILITY_FOR_OTHER,
+							Value = WellFormedNames.Name.BuildName(-5),
+							Target = WellFormedNames.Name.BuildName("[target]")
 						}
 					};
 
 				case nameof(OCCEmotionType.Hope):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-							new AppraisalVariableValuePair()
+							new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.GOALSUCCESSPROBABILITY,
-							intensity = 0.6F,
-							target = "Goal Name"
+							Name= OCCAppraisalVariables.GOALSUCCESSPROBABILITY,
+							Value = WellFormedNames.Name.BuildName(0.6f),
+							Target = WellFormedNames.Name.BuildName("GoodGoalName")
 						},
 					};
 
 				case nameof(OCCEmotionType.Fear):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-							new AppraisalVariableValuePair()
+							new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.GOALSUCCESSPROBABILITY,
-							intensity = 0.4F,
-							target = "Goal Name"
+							Name= OCCAppraisalVariables.GOALSUCCESSPROBABILITY,
+							Value = WellFormedNames.Name.BuildName(0.4f),
+							Target = WellFormedNames.Name.BuildName("BadGoalName")
 						},
 					};
 
 				case nameof(OCCEmotionType.Satisfaction):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-							new AppraisalVariableValuePair()
+							new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.GOALSUCCESSPROBABILITY,
-							intensity = 1,
-							target = "Good Goal"
+							Name= OCCAppraisalVariables.GOALSUCCESSPROBABILITY,
+							Value = WellFormedNames.Name.BuildName(1),
+							Target = WellFormedNames.Name.BuildName("GoodGoalName")
 						},
 					};
 				case nameof(OCCEmotionType.FearsConfirmed):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-							new AppraisalVariableValuePair()
+							new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.GOALSUCCESSPROBABILITY,
-							intensity = 1,
-							target = "Bad Goal"
+							Name= OCCAppraisalVariables.GOALSUCCESSPROBABILITY,
+							Value = WellFormedNames.Name.BuildName(1),
+							Target = WellFormedNames.Name.BuildName("BadGoalName")
 						},
 					};
 				case nameof(OCCEmotionType.Relief):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-							new AppraisalVariableValuePair()
+							new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.GOALSUCCESSPROBABILITY,
-							intensity = 0,
-							target = "Bad Goal"
+							Name= OCCAppraisalVariables.GOALSUCCESSPROBABILITY,
+							Value = WellFormedNames.Name.BuildName(0),
+							Target = WellFormedNames.Name.BuildName("BadGoalName")
 						},
 					};
 				case nameof(OCCEmotionType.Disappointment):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-							new AppraisalVariableValuePair()
+							new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.GOALSUCCESSPROBABILITY,
-							intensity = 0,
-							target = "Good Goal"
+							Name= OCCAppraisalVariables.GOALSUCCESSPROBABILITY,
+							Value = WellFormedNames.Name.BuildName(0),
+							Target = WellFormedNames.Name.BuildName("GoodGoalName")
 						},
 					};
 				case nameof(OCCEmotionType.Love):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-							new AppraisalVariableValuePair()
+							new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.LIKE,
-							intensity = 5,
-							target = "Target"
+							Name= OCCAppraisalVariables.LIKE,
+							Value = WellFormedNames.Name.BuildName(5),
 						},
 					};
 
 				case nameof(OCCEmotionType.Hate):
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-							new AppraisalVariableValuePair()
+							new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.GOALSUCCESSPROBABILITY,
-							intensity = -5,
-							target = "Target"
+							Name= OCCAppraisalVariables.GOALSUCCESSPROBABILITY,
+							Value = WellFormedNames.Name.BuildName(-5)
 						},
 					};
 
 
 				default:
 
-					return new List<AppraisalVariableValuePair>(){
+					return new List<AppraisalVariableDTO>(){
 
-						new AppraisalVariableValuePair()
+						new AppraisalVariableDTO()
 						{
-							appraisalVariable = OCCAppraisalVariables.DESIRABILITY,
-							intensity = 2
+							Name= OCCAppraisalVariables.DESIRABILITY,
+							Value = WellFormedNames.Name.BuildName(2),
 						}
 					};
 
