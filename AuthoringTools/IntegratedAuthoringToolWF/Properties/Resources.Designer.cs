@@ -342,6 +342,26 @@ namespace IntegratedAuthoringToolWF.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_ajuda_16 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-ajuda-16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_divisa_circulada_à_direita_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-divisa-circulada-à-direita-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_help_100 {
             get {
                 object obj = ResourceManager.GetObject("icons8-help-100", resourceCulture);

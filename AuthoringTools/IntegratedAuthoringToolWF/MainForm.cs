@@ -1776,11 +1776,16 @@ namespace IntegratedAuthoringToolWF
             p.Graphics.DrawString(box.Text, box.Font, Brushes.Black, 0, 0);
         }
 
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+              private void nextPicture_Click(object sender, EventArgs e)
         {
-            if(tabControlIAT.SelectedIndex == 0)
-            // Navigate to a URL.
-            System.Diagnostics.Process.Start("https://fatima-toolkit.eu/9-dialogue-manager/");
+            assistantTextBox.Text = AuthorAssistant.GetTip(tabControlIAT.SelectedIndex, tabControlAssetEditor.SelectedIndex);
+        }
+
+        private void helpPicture_Click_1(object sender, EventArgs e)
+        {
+            if (tabControlIAT.SelectedIndex == 0)
+                // Navigate to a URL.
+                System.Diagnostics.Process.Start("https://fatima-toolkit.eu/9-dialogue-manager/");
 
             else if (tabControlIAT.SelectedIndex == 1 && tabControlAssetEditor.SelectedIndex == 0)
                 // Navigate to a URL.
@@ -1794,14 +1799,8 @@ namespace IntegratedAuthoringToolWF
             else if (tabControlIAT.SelectedIndex > 1)
                 // Navigate to a URL.
                 System.Diagnostics.Process.Start("https://fatima-toolkit.eu/2-integrated-authoring-tool/");
-
-
-
         }
 
-        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
+       
     }
-}
+    }
