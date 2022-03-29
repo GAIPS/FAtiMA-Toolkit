@@ -534,6 +534,9 @@
     </Content>
     <Content Include="fatima-icon.ico" />
     <Content Include="fatima.ico" />
+    <None Include="Resources\assistantbackground.png" />
+    <None Include="Resources\assistantbackground1.png" />
+    <None Include="Resources\assistantbackground2.png" />
     <Content Include="Resources\BubbleIcon.ico" />
   </ItemGroup>
   <ItemGroup>
