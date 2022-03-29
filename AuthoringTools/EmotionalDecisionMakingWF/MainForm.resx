@@ -117,6 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="edmToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>152, 17</value>
+  </metadata>
+  <data name="dataGridViewReactiveActions.ToolTip" xml:space="preserve">
+    <value>Actions are defined by their name, target, layer and priority.
+
+The attribute |action| is a well-formed name that can be either a symbol 
+(e.g. Smile, Eat) or a composed name (e.g. Offer(Gift)) in which the inner symbols are treated as the action's parameters.
+
+ The |target| of the action is the name of the agent or object that the action is aimed at. 
+
+The parameter |conditions| is a list of logical conditions used to check if the action can be executed.
+
+ The |priority| is a numerical value that represents how important it is for the agent to execute the action. 
+
+The |layer| parameter is a symbol that indicates in which layer is the action considered in the decision-making process. 
+</value>
+  </data>
   <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>

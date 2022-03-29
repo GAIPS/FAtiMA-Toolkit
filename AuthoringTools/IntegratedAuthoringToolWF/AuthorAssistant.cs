@@ -1,4 +1,5 @@
-﻿using IntegratedAuthoringTool;
+﻿using EmotionalAppraisalWF;
+using IntegratedAuthoringTool;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -59,6 +60,7 @@ namespace IntegratedAuthoringToolWF
                     switch (assetIndex)
                     {
                         case 0:
+                           
                             return GetTipByKey("Emotional Appraisal");
                         case 1:
                             return GetTipByKey("Emotional Decision Making");

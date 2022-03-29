@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.buttonAppVariables = new System.Windows.Forms.Button();
@@ -50,6 +51,7 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -110,6 +112,7 @@
             this.buttonAppVariables.Size = new System.Drawing.Size(170, 36);
             this.buttonAppVariables.TabIndex = 11;
             this.buttonAppVariables.Text = "Appraisal Variables";
+            this.toolTip1.SetToolTip(this.buttonAppVariables, "Add or Edit the appraisal variables of the selected appraisal rule");
             this.buttonAppVariables.UseVisualStyleBackColor = true;
             this.buttonAppVariables.Click += new System.EventHandler(this.buttonAppVariables_Click);
             // 
@@ -132,6 +135,7 @@
             this.buttonEditAppraisalRule.Size = new System.Drawing.Size(81, 36);
             this.buttonEditAppraisalRule.TabIndex = 9;
             this.buttonEditAppraisalRule.Text = "Edit";
+            this.toolTip1.SetToolTip(this.buttonEditAppraisalRule, "Edit the selected appraisal rule");
             this.buttonEditAppraisalRule.UseVisualStyleBackColor = true;
             this.buttonEditAppraisalRule.Click += new System.EventHandler(this.buttonEditAppraisalRule_Click);
             // 
@@ -143,6 +147,7 @@
             this.buttonAddAppraisalRule.Size = new System.Drawing.Size(85, 36);
             this.buttonAddAppraisalRule.TabIndex = 7;
             this.buttonAddAppraisalRule.Text = "Add";
+            this.toolTip1.SetToolTip(this.buttonAddAppraisalRule, "Add a new appraisal rule");
             this.buttonAddAppraisalRule.UseVisualStyleBackColor = true;
             this.buttonAddAppraisalRule.Click += new System.EventHandler(this.buttonAddAppraisalRule_Click);
             // 
@@ -180,8 +185,10 @@
             this.dataGridViewAppraisalRules.RowHeadersWidth = 51;
             this.dataGridViewAppraisalRules.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAppraisalRules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewAppraisalRules.ShowCellToolTips = false;
             this.dataGridViewAppraisalRules.Size = new System.Drawing.Size(905, 176);
             this.dataGridViewAppraisalRules.TabIndex = 2;
+            this.toolTip1.SetToolTip(this.dataGridViewAppraisalRules, resources.GetString("dataGridViewAppraisalRules.ToolTip"));
             this.dataGridViewAppraisalRules.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAppraisalRules_CellContentClick);
             this.dataGridViewAppraisalRules.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewAppraisalRules_CellMouseDoubleClick);
             this.dataGridViewAppraisalRules.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAppraisalRules_RowEnter);
@@ -234,7 +241,7 @@
             this.saveToolStripMenuItem,
             this.saveAsToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 26);
             this.fileToolStripMenuItem.Text = "File";
             this.fileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
             // 
@@ -265,6 +272,13 @@
             this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 26);
             this.saveAsToolStripMenuItem.Text = "Save As...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.AutomaticDelay = 1000;
+            this.toolTip1.ShowAlways = true;
+            this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.toolTip1.ToolTipTitle = "Emotional Appraisal ToolTip";
             // 
             // MainForm
             // 
@@ -319,6 +333,7 @@
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

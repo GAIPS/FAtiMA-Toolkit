@@ -17,7 +17,7 @@ namespace EmotionalDecisionMakingWF
 		private BindingListView<ActionRuleDTO> actionRules;
 	    private ConditionSetView conditionSetView;
         private Guid selectedActionId;
-        private EmotionalDecisionMakingAsset _loadedAsset;
+        public EmotionalDecisionMakingAsset _loadedAsset;
         private AssetStorage _storage;
         private string _currentFilePath;
 
@@ -25,7 +25,7 @@ namespace EmotionalDecisionMakingWF
         public ActionRuleDTO latestAddedRule;
 
 
-        public MainForm()
+        public MainForm(Form parent)
         {
             InitializeComponent();
 			this.actionRules = new BindingListView<ActionRuleDTO>((IList)null);
@@ -33,7 +33,19 @@ namespace EmotionalDecisionMakingWF
             _storage = new AssetStorage();
             _loadedAsset = EmotionalDecisionMakingAsset.CreateInstance(_storage);
             OnAssetDataLoaded();
+            this.edmToolTip.SetToolTip(parent, "Ayy");
+
 		}
+
+        public MainForm()
+        {
+            InitializeComponent();
+            this.actionRules = new BindingListView<ActionRuleDTO>((IList)null);
+            dataGridViewReactiveActions.DataSource = this.actionRules;
+            _storage = new AssetStorage();
+            _loadedAsset = EmotionalDecisionMakingAsset.CreateInstance(_storage);
+            OnAssetDataLoaded();
+        }
 
         public EmotionalDecisionMakingAsset Asset
         {
@@ -95,13 +107,16 @@ namespace EmotionalDecisionMakingWF
             }
         }
 
-        private void buttonAddReaction_Click(object sender, EventArgs e)
+        public void buttonAddReaction_Click(object sender, EventArgs e)
         {
             new AddOrEditReactionForm(_loadedAsset).ShowDialog();
             actionRules.DataSource = _loadedAsset.GetAllActionRules().ToList();
             actionRules.Refresh();
-            latestAddedRule = _loadedAsset.GetAllActionRules().Last();
-            AddedRuleEvent?.Invoke(this, EventArgs.Empty);
+            if (_loadedAsset.GetAllActionRules().Count() > 0)
+            {
+                latestAddedRule = _loadedAsset.GetAllActionRules().Last();
+                AddedRuleEvent?.Invoke(this, EventArgs.Empty);
+            }
 
         }
 

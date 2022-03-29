@@ -3,7 +3,9 @@ using ActionLibrary.DTOs;
 using AutobiographicMemory.DTOs;
 using CommeillFaut;
 using EmotionalAppraisal;
+using EmotionalAppraisalWF;
 using EmotionalDecisionMaking;
+using EmotionalDecisionMakingWF;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 using GAIPS.Rage;
@@ -14,6 +16,7 @@ using KnowledgeBase.DTOs;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using RolePlayCharacter;
+using RolePlayCharacterWF;
 using SocialImportance;
 using System;
 using System.Collections.Generic;
@@ -47,6 +50,7 @@ namespace IntegratedAuthoringToolWF
         private IList<RolePlayCharacterAsset> _agentsInSimulation;
 
         public bool showImbalances = true;
+        private string tooltip = "";
 
         public MainForm()
         {
@@ -60,8 +64,8 @@ namespace IntegratedAuthoringToolWF
             _storage = new AssetStorage();
             _webForm = new WebAPIWF.MainForm();
             _webForm.iat = this;
-            _eaForm = new EmotionalAppraisalWF.MainForm();
-            _edmForm = new EmotionalDecisionMakingWF.MainForm();
+            _eaForm = new EmotionalAppraisalWF.MainForm(this);
+            _edmForm = new EmotionalDecisionMakingWF.MainForm(this);
             _edmForm.AddedRuleEvent += AddedRule;
             _siForm = new SocialImportanceWF.MainForm();
             _cifForm = new CommeillFautWF.MainForm();
@@ -71,6 +75,7 @@ namespace IntegratedAuthoringToolWF
             tabControlIAT.SelectedIndexChanged += TabIndexChanged_Handler;
             tabControlAssetEditor.SelectedIndexChanged += TabIndexChanged_Handler;
             debugLabel.Text = "";
+           
         }
 
 
@@ -167,6 +172,7 @@ namespace IntegratedAuthoringToolWF
             RefreshDialogs();
             RefreshCharacters();
             AssistantHandler();
+            Evaluator();
 
         }
 
@@ -1759,8 +1765,61 @@ namespace IntegratedAuthoringToolWF
         }
         public void AssistantHandler()
         {
+            
+
+           // button1.Text = "Add Emotional Appraisal Rule";
+
             assistantTextBox.Text = AuthorAssistant.GetTip(tabControlIAT.SelectedIndex, tabControlAssetEditor.SelectedIndex);
+
         }
+
+
+        public void Evaluator()
+        {
+            if(_iat.Characters.Count() == 0)
+            {
+                tooltip = "Character";
+                button1.Text = "Add Character";
+            }
+
+            else if(CalculateAverageBeliefs() < 1)
+            {
+                tooltip = "Beliefs";
+                button1.Text = "Add Beliefs";
+            }
+
+            else if (_edmForm.dataGridViewReactiveActions.Rows.Count < 1)
+            {
+                tooltip = "DecisionMaking";
+                button1.Text = "Add Actions";
+            }
+
+            else if (_iat.GetAllDialogueActions().Count() < 1)
+            {
+                tooltip = "Dialogue";
+                button1.Text = "Add Dialogue";
+            }
+
+            else if (_eaForm._appraisalRulesVM.AppraisalRules.Count() < 1)
+            {
+                tooltip = "AppraisalRule";
+                button1.Text = "Add Appraisal Rule";
+            }
+        }
+
+        public float CalculateAverageBeliefs()
+        {
+            var beliefTotal = 0;
+
+            foreach(var c in _iat.Characters)
+            {
+                beliefTotal += c.GetAllBeliefs().Count();
+            }
+
+            return beliefTotal / _iat.Characters.Count();
+
+        }
+
 
 
         private void assistantTextBox_TextChanged(object sender, EventArgs e)
@@ -1801,6 +1860,90 @@ namespace IntegratedAuthoringToolWF
                 System.Diagnostics.Process.Start("https://fatima-toolkit.eu/2-integrated-authoring-tool/");
         }
 
-       
+        private void Assistant_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolTip1_Popup(object sender, PopupEventArgs e)
+        {
+
+        }
+
+        private void assistantTextBox_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if(tooltip == "Character")
+            {
+                buttonAddCharacter_Click(sender, e);
+                // new AddCharacterForm(_iat).ShowDialog();
+                Evaluator();
+            }
+
+            else if (tooltip == "Beliefs")
+            {
+                if (dataGridViewCharacters.SelectedRows.Count == 0)
+                {
+                    dataGridViewCharacters.Rows[0].Selected = true;
+                //    this.dataGridViewCharacters_CellMouseClick(sender, new DataGridViewCellMouseEventArgs());
+                }
+                dataGridViewCharacters.Rows[0].Selected = true;
+                this._rpcForm.SelectedTab = 0;
+                new AddOrEditBeliefForm(this._rpcForm._knowledgeBaseVM).ShowDialog();
+                Evaluator();
+
+           /*     if (this._rpcForm.SelectedTab == 0)
+                {
+                    new AddOrEditBeliefForm(this._rpcForm._knowledgeBaseVM).ShowDialog();
+                    Evaluator();
+                }*/
+            }
+
+            else if (tooltip == "DecisionMaking")
+            {
+                this.tabControlIAT.SelectedIndex = 1;
+                this.tabControlAssetEditor.SelectedIndex = 1;
+                this._edmForm.buttonAddReaction_Click(sender, e);
+               // new AddOrEditReactionForm(_edmForm._loadedAsset).ShowDialog();
+               // _edmForm.Refresh();
+                Evaluator();
+            }
+
+            else if(tooltip == "AppraisalRule")
+            {
+                this.tabControlIAT.SelectedIndex = 1;
+                this.tabControlAssetEditor.SelectedIndex = 0;
+                this._eaForm.buttonAddAppraisalRule_Click(sender, e);
+                Evaluator();
+            }
+
+            else if (tooltip == "Dialogue")
+            {
+                this.tabControlIAT.SelectedIndex = 0;
+                this.buttonAddDialogueAction_Click_1(sender, e);
+                //new AddOrEditAppraisalRuleForm(_eaForm._appraisalRulesVM).ShowDialog();
+                Evaluator();
+            }
+
+        }
+
+        private void groupBox6_Enter_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox3_Click(object sender, EventArgs e)
+        {
+            Assistant.Hide();
+        }
+
+        private void authoringAssistantToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Assistant.Show();
+        }
     }
     }

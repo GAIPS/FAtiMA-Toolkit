@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.emotionaAppraisalButton = new System.Windows.Forms.Button();
             this.buttonDuplicateReaction = new System.Windows.Forms.Button();
@@ -44,6 +46,7 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.edmToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactiveActions)).BeginInit();
             this.groupBox8.SuspendLayout();
@@ -77,12 +80,12 @@
             // 
             this.emotionaAppraisalButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.emotionaAppraisalButton.Location = new System.Drawing.Point(602, 23);
+            this.emotionaAppraisalButton.Location = new System.Drawing.Point(533, 23);
             this.emotionaAppraisalButton.Margin = new System.Windows.Forms.Padding(4);
             this.emotionaAppraisalButton.Name = "emotionaAppraisalButton";
-            this.emotionaAppraisalButton.Size = new System.Drawing.Size(192, 28);
+            this.emotionaAppraisalButton.Size = new System.Drawing.Size(261, 28);
             this.emotionaAppraisalButton.TabIndex = 11;
-            this.emotionaAppraisalButton.Text = "Emotional Appraisal";
+            this.emotionaAppraisalButton.Text = "Generate Emotional Appraisal";
             this.emotionaAppraisalButton.UseVisualStyleBackColor = true;
             this.emotionaAppraisalButton.Click += new System.EventHandler(this.emotionaAppraisalButton_Click);
             // 
@@ -105,6 +108,7 @@
             this.buttonEditReaction.Size = new System.Drawing.Size(93, 28);
             this.buttonEditReaction.TabIndex = 8;
             this.buttonEditReaction.Text = "Edit";
+            this.edmToolTip.SetToolTip(this.buttonEditReaction, "Edit action rule");
             this.buttonEditReaction.UseVisualStyleBackColor = true;
             this.buttonEditReaction.Click += new System.EventHandler(this.buttonEditReaction_Click);
             // 
@@ -116,6 +120,7 @@
             this.buttonAddReaction.Size = new System.Drawing.Size(72, 28);
             this.buttonAddReaction.TabIndex = 7;
             this.buttonAddReaction.Text = "Add";
+            this.edmToolTip.SetToolTip(this.buttonAddReaction, "Add a new action");
             this.buttonAddReaction.UseVisualStyleBackColor = true;
             this.buttonAddReaction.Click += new System.EventHandler(this.buttonAddReaction_Click);
             // 
@@ -144,16 +149,17 @@
             this.dataGridViewReactiveActions.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.dataGridViewReactiveActions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewReactiveActions.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewReactiveActions.Location = new System.Drawing.Point(8, 66);
+            this.dataGridViewReactiveActions.Location = new System.Drawing.Point(0, 70);
             this.dataGridViewReactiveActions.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewReactiveActions.Name = "dataGridViewReactiveActions";
-            this.dataGridViewReactiveActions.ReadOnly = true;
             this.dataGridViewReactiveActions.RowHeadersVisible = false;
             this.dataGridViewReactiveActions.RowHeadersWidth = 51;
             this.dataGridViewReactiveActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewReactiveActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewReactiveActions.ShowCellToolTips = false;
             this.dataGridViewReactiveActions.Size = new System.Drawing.Size(801, 236);
             this.dataGridViewReactiveActions.TabIndex = 2;
+            this.edmToolTip.SetToolTip(this.dataGridViewReactiveActions, resources.GetString("dataGridViewReactiveActions.ToolTip"));
             this.dataGridViewReactiveActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReactiveActions_CellContentClick);
             this.dataGridViewReactiveActions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewReactiveActions_CellMouseDoubleClick);
             this.dataGridViewReactiveActions.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReactiveActions_RowEnter);
@@ -180,6 +186,7 @@
             this.conditionSetEditor.Name = "conditionSetEditor";
             this.conditionSetEditor.Size = new System.Drawing.Size(809, 357);
             this.conditionSetEditor.TabIndex = 0;
+            this.edmToolTip.SetToolTip(this.conditionSetEditor, "Conditions to add to each action");
             this.conditionSetEditor.View = null;
             this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);
             // 
@@ -255,6 +262,13 @@
             this.saveAsToolStripMenuItem.Text = "Save As...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
+            // edmToolTip
+            // 
+            this.edmToolTip.AutomaticDelay = 1000;
+            this.edmToolTip.ShowAlways = true;
+            this.edmToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.edmToolTip.ToolTipTitle = "EDM Tooltip";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -268,6 +282,8 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "Emotional Decision Making";
+            this.edmToolTip.SetToolTip(this, "Emotional Decision Making component is resposible for the handling of the actions" +
+        "");
             this.groupBox7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactiveActions)).EndInit();
             this.groupBox8.ResumeLayout(false);
@@ -299,6 +315,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
         private System.Windows.Forms.Button emotionaAppraisalButton;
         public System.Windows.Forms.DataGridView dataGridViewReactiveActions;
+        public System.Windows.Forms.ToolTip edmToolTip;
     }
 }
 

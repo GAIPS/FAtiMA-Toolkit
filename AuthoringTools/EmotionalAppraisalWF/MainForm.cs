@@ -20,7 +20,7 @@ namespace EmotionalAppraisalWF
     {
         private AssetStorage _storage;
         private EmotionalAppraisalAsset _loadedAsset;
-        private AppraisalRulesVM _appraisalRulesVM;
+        public AppraisalRulesVM _appraisalRulesVM;
         private string _currentFilePath;
 
         public MainForm()
@@ -29,6 +29,15 @@ namespace EmotionalAppraisalWF
             _storage = new AssetStorage();
             _loadedAsset = EmotionalAppraisalAsset.CreateInstance(_storage);
             OnAssetDataLoaded();
+        }
+
+        public MainForm(Form parent)
+        {
+            InitializeComponent();
+            _storage = new AssetStorage();
+            _loadedAsset = EmotionalAppraisalAsset.CreateInstance(_storage);
+            OnAssetDataLoaded();
+            this.toolTip.SetToolTip(parent, "Ayy");
         }
 
         public EmotionalAppraisalAsset Asset

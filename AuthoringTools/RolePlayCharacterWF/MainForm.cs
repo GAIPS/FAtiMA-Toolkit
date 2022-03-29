@@ -24,8 +24,8 @@ namespace RolePlayCharacterWF
         private const string MOOD_FORMAT = "0.00";
         private EmotionalStateVM _emotionalStateVM;
         private AutobiographicalMemoryVM _autobiographicalMemoryVM;
-        private KnowledgeBaseVM _knowledgeBaseVM;
-        private RolePlayCharacterAsset _loadedAsset;
+        public KnowledgeBaseVM _knowledgeBaseVM;
+        public RolePlayCharacterAsset _loadedAsset;
             
         private int tabSelected;
 
