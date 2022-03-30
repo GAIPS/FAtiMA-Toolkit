@@ -171,7 +171,6 @@ namespace IntegratedAuthoringToolWF
 
             RefreshDialogs();
             RefreshCharacters();
-            AssistantHandler();
             Evaluator();
 
         }
@@ -1877,10 +1876,10 @@ namespace IntegratedAuthoringToolWF
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(tooltip == "Character")
+            if (tooltip == "Character")
             {
                 buttonAddCharacter_Click(sender, e);
-                // new AddCharacterForm(_iat).ShowDialog();
+                this.assistantTextBox.Text = AuthorAssistant.GetTipByKey(tooltip);
                 Evaluator();
             }
 
@@ -1889,18 +1888,14 @@ namespace IntegratedAuthoringToolWF
                 if (dataGridViewCharacters.SelectedRows.Count == 0)
                 {
                     dataGridViewCharacters.Rows[0].Selected = true;
-                //    this.dataGridViewCharacters_CellMouseClick(sender, new DataGridViewCellMouseEventArgs());
                 }
-                dataGridViewCharacters.Rows[0].Selected = true;
-                this._rpcForm.SelectedTab = 0;
-                new AddOrEditBeliefForm(this._rpcForm._knowledgeBaseVM).ShowDialog();
-                Evaluator();
-
-           /*     if (this._rpcForm.SelectedTab == 0)
+                if (this._rpcForm != null)
                 {
+                    this._rpcForm.SelectedTab = 0;
                     new AddOrEditBeliefForm(this._rpcForm._knowledgeBaseVM).ShowDialog();
+                    this.assistantTextBox.Text = AuthorAssistant.GetTipByKey(tooltip);
                     Evaluator();
-                }*/
+                }
             }
 
             else if (tooltip == "DecisionMaking")
@@ -1908,16 +1903,16 @@ namespace IntegratedAuthoringToolWF
                 this.tabControlIAT.SelectedIndex = 1;
                 this.tabControlAssetEditor.SelectedIndex = 1;
                 this._edmForm.buttonAddReaction_Click(sender, e);
-               // new AddOrEditReactionForm(_edmForm._loadedAsset).ShowDialog();
-               // _edmForm.Refresh();
+                this.assistantTextBox.Text = AuthorAssistant.GetTipByKey(tooltip);
                 Evaluator();
             }
 
-            else if(tooltip == "AppraisalRule")
+            else if (tooltip == "AppraisalRule")
             {
                 this.tabControlIAT.SelectedIndex = 1;
                 this.tabControlAssetEditor.SelectedIndex = 0;
                 this._eaForm.buttonAddAppraisalRule_Click(sender, e);
+                this.assistantTextBox.Text = AuthorAssistant.GetTipByKey(tooltip);
                 Evaluator();
             }
 
@@ -1925,7 +1920,7 @@ namespace IntegratedAuthoringToolWF
             {
                 this.tabControlIAT.SelectedIndex = 0;
                 this.buttonAddDialogueAction_Click_1(sender, e);
-                //new AddOrEditAppraisalRuleForm(_eaForm._appraisalRulesVM).ShowDialog();
+                this.assistantTextBox.Text = AuthorAssistant.GetTipByKey(tooltip);
                 Evaluator();
             }
 
