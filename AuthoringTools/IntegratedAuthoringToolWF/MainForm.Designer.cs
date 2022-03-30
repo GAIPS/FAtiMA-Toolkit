@@ -198,7 +198,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1305, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1305, 30);
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -211,7 +211,7 @@
             this.saveToolStripMenuItem,
             this.saveAsToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 26);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // newToolStripMenuItem
@@ -249,7 +249,7 @@
             this.loadTemplateScenarioToolStripMenuItem,
             this.authoringAssistantToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(58, 24);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(58, 26);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
             // computeDescriptionToolStripMenuItem
@@ -276,14 +276,14 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(64, 24);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(64, 26);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 26);
             this.helpToolStripMenuItem.Text = "Help";
             this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
             // 
@@ -364,6 +364,7 @@
             this.buttonAddCharacter.Size = new System.Drawing.Size(93, 30);
             this.buttonAddCharacter.TabIndex = 3;
             this.buttonAddCharacter.Text = "Add";
+            this.toolTip1.SetToolTip(this.buttonAddCharacter, "Add a new Character");
             this.buttonAddCharacter.UseVisualStyleBackColor = true;
             this.buttonAddCharacter.Click += new System.EventHandler(this.buttonAddCharacter_Click);
             // 
@@ -375,6 +376,7 @@
             this.buttonRemoveCharacter.Size = new System.Drawing.Size(93, 30);
             this.buttonRemoveCharacter.TabIndex = 4;
             this.buttonRemoveCharacter.Text = "Remove";
+            this.toolTip1.SetToolTip(this.buttonRemoveCharacter, "Remove the selected character from the scenario");
             this.buttonRemoveCharacter.UseVisualStyleBackColor = true;
             this.buttonRemoveCharacter.Click += new System.EventHandler(this.buttonRemoveCharacter_Click);
             // 
@@ -386,6 +388,7 @@
             this.buttonInspect.Size = new System.Drawing.Size(93, 30);
             this.buttonInspect.TabIndex = 5;
             this.buttonInspect.Text = "Inspect";
+            this.toolTip1.SetToolTip(this.buttonInspect, "Test how the character behaves with certain events");
             this.buttonInspect.UseVisualStyleBackColor = true;
             this.buttonInspect.Click += new System.EventHandler(this.buttonInspect_Click);
             // 
@@ -437,7 +440,7 @@
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox6.Location = new System.Drawing.Point(0, 0);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(448, 99);
+            this.groupBox6.Size = new System.Drawing.Size(448, 98);
             this.groupBox6.TabIndex = 16;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Cognitive Rules File";
@@ -449,11 +452,12 @@
             // 
             this.buttonSaveAsAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.buttonSaveAsAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.buttonSaveAsAssetStorage.Location = new System.Drawing.Point(279, 28);
+            this.buttonSaveAsAssetStorage.Location = new System.Drawing.Point(279, 27);
             this.buttonSaveAsAssetStorage.Name = "buttonSaveAsAssetStorage";
             this.buttonSaveAsAssetStorage.Size = new System.Drawing.Size(85, 30);
             this.buttonSaveAsAssetStorage.TabIndex = 19;
             this.buttonSaveAsAssetStorage.Text = "Save As";
+            this.toolTip1.SetToolTip(this.buttonSaveAsAssetStorage, "Save as a new cognitive rules file");
             this.buttonSaveAsAssetStorage.UseVisualStyleBackColor = true;
             this.buttonSaveAsAssetStorage.Click += new System.EventHandler(this.buttonSaveAsAssetStorage_Click);
             // 
@@ -461,7 +465,7 @@
             // 
             this.buttonOpenAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.buttonOpenAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonOpenAssetStorage.Location = new System.Drawing.Point(97, 28);
+            this.buttonOpenAssetStorage.Location = new System.Drawing.Point(97, 27);
             this.buttonOpenAssetStorage.Name = "buttonOpenAssetStorage";
             this.buttonOpenAssetStorage.Size = new System.Drawing.Size(85, 30);
             this.buttonOpenAssetStorage.TabIndex = 15;
@@ -474,11 +478,12 @@
             // 
             this.saveAssetStorageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.saveAssetStorageButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.saveAssetStorageButton.Location = new System.Drawing.Point(188, 28);
+            this.saveAssetStorageButton.Location = new System.Drawing.Point(188, 27);
             this.saveAssetStorageButton.Name = "saveAssetStorageButton";
             this.saveAssetStorageButton.Size = new System.Drawing.Size(85, 30);
             this.saveAssetStorageButton.TabIndex = 16;
             this.saveAssetStorageButton.Text = "Save";
+            this.toolTip1.SetToolTip(this.saveAssetStorageButton, "Save current cognitive rules files");
             this.saveAssetStorageButton.UseVisualStyleBackColor = true;
             this.saveAssetStorageButton.Click += new System.EventHandler(this.saveAssetStorageButton_Click);
             // 
@@ -496,7 +501,7 @@
             // 
             this.buttonNewAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.buttonNewAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.buttonNewAssetStorage.Location = new System.Drawing.Point(6, 28);
+            this.buttonNewAssetStorage.Location = new System.Drawing.Point(6, 27);
             this.buttonNewAssetStorage.Name = "buttonNewAssetStorage";
             this.buttonNewAssetStorage.Size = new System.Drawing.Size(85, 30);
             this.buttonNewAssetStorage.TabIndex = 18;
@@ -520,7 +525,7 @@
             this.tabControlIAT.Margin = new System.Windows.Forms.Padding(4);
             this.tabControlIAT.Name = "tabControlIAT";
             this.tabControlIAT.SelectedIndex = 0;
-            this.tabControlIAT.Size = new System.Drawing.Size(852, 633);
+            this.tabControlIAT.Size = new System.Drawing.Size(852, 631);
             this.tabControlIAT.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.tabControlIAT.TabIndex = 20;
             this.tabControlIAT.TabStop = false;
@@ -533,7 +538,7 @@
             this.tabPageDialogue.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageDialogue.Name = "tabPageDialogue";
             this.tabPageDialogue.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
-            this.tabPageDialogue.Size = new System.Drawing.Size(844, 605);
+            this.tabPageDialogue.Size = new System.Drawing.Size(844, 603);
             this.tabPageDialogue.TabIndex = 0;
             this.tabPageDialogue.Text = "Dialogues";
             this.tabPageDialogue.UseVisualStyleBackColor = true;
@@ -556,7 +561,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(844, 595);
+            this.groupBox2.Size = new System.Drawing.Size(844, 593);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dialogue Actions";
@@ -570,7 +575,7 @@
             this.groupBox12.Controls.Add(this.buttonValidate);
             this.groupBox12.Controls.Add(this.buttonTTS);
             this.groupBox12.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox12.Location = new System.Drawing.Point(4, 544);
+            this.groupBox12.Location = new System.Drawing.Point(4, 542);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Size = new System.Drawing.Size(836, 47);
             this.groupBox12.TabIndex = 21;
@@ -672,6 +677,7 @@
             this.searchDialogueBox.Name = "searchDialogueBox";
             this.searchDialogueBox.Size = new System.Drawing.Size(180, 26);
             this.searchDialogueBox.TabIndex = 15;
+            this.toolTip1.SetToolTip(this.searchDialogueBox, "Search for any keyword for the type selected in the list on the right");
             this.searchDialogueBox.TextChanged += new System.EventHandler(this.DialogueSearchBox_TextChanged);
             // 
             // dataGridViewDialogueActions
@@ -697,8 +703,9 @@
             this.dataGridViewDialogueActions.RowHeadersWidth = 51;
             this.dataGridViewDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(835, 461);
+            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(835, 459);
             this.dataGridViewDialogueActions.TabIndex = 14;
+            this.toolTip1.SetToolTip(this.dataGridViewDialogueActions, resources.GetString("dataGridViewDialogueActions.ToolTip"));
             this.dataGridViewDialogueActions.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellClick);
             this.dataGridViewDialogueActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellContentClick);
             this.dataGridViewDialogueActions.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellContentDoubleClick);
@@ -716,6 +723,7 @@
             this.buttonPlayerDuplicateDialogueAction.Size = new System.Drawing.Size(93, 30);
             this.buttonPlayerDuplicateDialogueAction.TabIndex = 7;
             this.buttonPlayerDuplicateDialogueAction.Text = "Duplicate";
+            this.toolTip1.SetToolTip(this.buttonPlayerDuplicateDialogueAction, "Duplicates the selected Dialogue Action");
             this.buttonPlayerDuplicateDialogueAction.UseVisualStyleBackColor = true;
             this.buttonPlayerDuplicateDialogueAction.Click += new System.EventHandler(this.buttonDuplicateDialogueAction_Click);
             // 
@@ -727,6 +735,7 @@
             this.buttonPlayerEditDialogueAction.Size = new System.Drawing.Size(72, 30);
             this.buttonPlayerEditDialogueAction.TabIndex = 6;
             this.buttonPlayerEditDialogueAction.Text = "Edit";
+            this.toolTip1.SetToolTip(this.buttonPlayerEditDialogueAction, "Edits the selected Dialogue Action");
             this.buttonPlayerEditDialogueAction.UseVisualStyleBackColor = true;
             this.buttonPlayerEditDialogueAction.Click += new System.EventHandler(this.buttonEditDialogueAction_Click);
             // 
@@ -738,6 +747,7 @@
             this.buttonAddPlayerDialogueAction.Size = new System.Drawing.Size(72, 30);
             this.buttonAddPlayerDialogueAction.TabIndex = 5;
             this.buttonAddPlayerDialogueAction.Text = "Add";
+            this.toolTip1.SetToolTip(this.buttonAddPlayerDialogueAction, "Add a new dialogue action");
             this.buttonAddPlayerDialogueAction.UseVisualStyleBackColor = true;
             this.buttonAddPlayerDialogueAction.Click += new System.EventHandler(this.buttonAddDialogueAction_Click_1);
             // 
@@ -749,6 +759,7 @@
             this.buttonPlayerRemoveDialogueAction.Size = new System.Drawing.Size(93, 30);
             this.buttonPlayerRemoveDialogueAction.TabIndex = 8;
             this.buttonPlayerRemoveDialogueAction.Text = "Remove";
+            this.toolTip1.SetToolTip(this.buttonPlayerRemoveDialogueAction, "Removes the selected Dialogue Action");
             this.buttonPlayerRemoveDialogueAction.UseVisualStyleBackColor = true;
             this.buttonPlayerRemoveDialogueAction.Click += new System.EventHandler(this.buttonRemoveDialogueAction_Click);
             // 
@@ -1294,7 +1305,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 28);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 30);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(1);
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -1312,7 +1323,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.tabControlIAT);
             this.splitContainer1.Panel2.Margin = new System.Windows.Forms.Padding(0, 0, 0, 15);
             this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
-            this.splitContainer1.Size = new System.Drawing.Size(1305, 633);
+            this.splitContainer1.Size = new System.Drawing.Size(1305, 631);
             this.splitContainer1.SplitterDistance = 448;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 5;
@@ -1329,12 +1340,13 @@
             this.splitContainer7.Panel1.Controls.Add(this.label2);
             this.splitContainer7.Panel1.Controls.Add(this.textBoxScenarioDescription);
             this.splitContainer7.Panel1.Controls.Add(this.textBoxScenarioName);
+            this.toolTip1.SetToolTip(this.splitContainer7.Panel1, "The description\'s objective is to help authors remeber their desired scenario");
             // 
             // splitContainer7.Panel2
             // 
             this.splitContainer7.Panel2.Controls.Add(this.splitContainer8);
-            this.splitContainer7.Size = new System.Drawing.Size(448, 633);
-            this.splitContainer7.SplitterDistance = 149;
+            this.splitContainer7.Size = new System.Drawing.Size(448, 631);
+            this.splitContainer7.SplitterDistance = 148;
             this.splitContainer7.SplitterIncrement = 2;
             this.splitContainer7.TabIndex = 19;
             // 
@@ -1352,8 +1364,8 @@
             // splitContainer8.Panel2
             // 
             this.splitContainer8.Panel2.Controls.Add(this.splitContainer9);
-            this.splitContainer8.Size = new System.Drawing.Size(448, 480);
-            this.splitContainer8.SplitterDistance = 99;
+            this.splitContainer8.Size = new System.Drawing.Size(448, 479);
+            this.splitContainer8.SplitterDistance = 98;
             this.splitContainer8.TabIndex = 0;
             // 
             // splitContainer9

@@ -123,6 +123,9 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>152, 17</value>
   </metadata>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>152, 17</value>
+  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -149,6 +152,25 @@
         EmURIstFBElZo9F4mcLcRIAMSaFQcPuVJFcRkMnlctHTF7mLfPw1kcgnmwMZbpnvORgAAAAASUVORK5C
         YII=
 </value>
+  </data>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>152, 17</value>
+  </metadata>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>152, 17</value>
+  </metadata>
+  <data name="dataGridViewDialogueActions.ToolTip" xml:space="preserve">
+    <value>FAtiMA’s approach to dialogue is what we consider to be a hybrid solution.
+It uses both Dialogue Trees and a State Machine.
+
+Each utterance is coded as a dialogue action with the following properties:
+&lt;CurrentState, NextState, Meaning, Style, UtteranceText&gt;
+
+The Current State defines the state of the conversation, 
+the Next State defines where the conversation will move to next, 
+the Meaning and Style fields are used for auxiliary tags, typically we use them to define 
+if a dialogue has a particular personality trait or discusses a particular context but it can 
+be used as a flag for anything the author wants.</value>
   </data>
   <data name="pictureBox2.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -4543,9 +4565,6 @@
         vaWI9F1+aK2bnCxGJiaKC+1LBgAA9Ngnn/wP2G2V+ntmipcAAAAASUVORK5CYII=
 </value>
   </data>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>152, 17</value>
-  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>72</value>
   </metadata>
