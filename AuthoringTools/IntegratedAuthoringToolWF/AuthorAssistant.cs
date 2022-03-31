@@ -61,9 +61,9 @@ namespace IntegratedAuthoringToolWF
                     {
                         case 0:
                            
-                            return GetTipByKey("EmotionalAppraisal");
+                            return GetTipByKey("Emotional Appraisal");
                         case 1:
-                            return GetTipByKey("DecisionMaking");
+                            return GetTipByKey("Emotional Decision Making");
 
                         default:
                             return GetRandomTip();
@@ -77,8 +77,19 @@ namespace IntegratedAuthoringToolWF
             }
           
         }
+        public static string GetTipByKey(int index)
+        {
+            var actualKey = tips.Keys.ToList()[index];
 
-        public static string GetTipByKey(string key)
+            int rand = new Random().Next(0, tips[actualKey].Count);
+
+            return tips[actualKey][rand];
+            
+        }
+
+
+
+            public static string GetTipByKey(string key)
         {
             int rand = 0;
             if (tips.ContainsKey(key))

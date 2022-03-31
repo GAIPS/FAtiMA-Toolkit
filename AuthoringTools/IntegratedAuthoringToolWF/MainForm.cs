@@ -50,15 +50,17 @@ namespace IntegratedAuthoringToolWF
         private IList<RolePlayCharacterAsset> _agentsInSimulation;
 
         public bool showImbalances = true;
-        private string tooltip = "";
+      //  private string tooltip = "";
+        private int step;
+        private int MaxStep = 5;
+        
 
         public MainForm()
         {
             InitializeComponent();
-
             buttonRemoveCharacter.Enabled = false;
             buttonInspect.Enabled = false;
-
+            step = 0;
             _iat = new IntegratedAuthoringToolAsset();
             _agentsInSimulation = new List<RolePlayCharacterAsset>();
             _storage = new AssetStorage();
@@ -1772,38 +1774,71 @@ namespace IntegratedAuthoringToolWF
 
         }
 
+        private void UpdateLabel()
+        {
+            indexLabel.Text = "" + step;
+
+            switch (step)
+            {
+                case 0:
+                    button1.Text = "Add Character";
+                    this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Default");
+                    break;
+                case 1:
+                    button1.Text = "Add Beliefs";
+                    this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Default");
+                    break;
+                case 2:
+                    button1.Text = "Add Actions";
+                    this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Emotional Decision Making");
+                    break;
+                case 3:
+                    button1.Text = "Add Dialogue";
+                    this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Default");
+                    break;
+                case 4:
+                    button1.Text = "Add Appraisal Rule";
+                    this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Emotional Appraisal");
+                    break;
+            }
+
+          
+
+        }
 
         public void Evaluator()
         {
             if(_iat.Characters.Count() == 0)
             {
-                tooltip = "Character";
-                button1.Text = "Add Character";
+                step = 0;
+             
             }
 
             else if(CalculateAverageBeliefs() < 1)
             {
-                tooltip = "Beliefs";
-                button1.Text = "Add Beliefs";
+                step = 1;
+             
             }
 
             else if (_edmForm.dataGridViewReactiveActions.Rows.Count < 1)
             {
-                tooltip = "DecisionMaking";
-                button1.Text = "Add Actions";
+                step = 2;
+              
             }
 
             else if (_iat.GetAllDialogueActions().Count() < 1)
             {
-                tooltip = "Dialogue";
-                button1.Text = "Add Dialogue";
+                step = 3;
+              
             }
 
             else if (_eaForm._appraisalRulesVM.AppraisalRules.Count() < 1)
             {
-                tooltip = "AppraisalRule";
-                button1.Text = "Add Appraisal Rule";
+                step = 4;
+                
             }
+
+            UpdateLabel();
         }
 
         public float CalculateAverageBeliefs()
@@ -1834,28 +1869,32 @@ namespace IntegratedAuthoringToolWF
             p.Graphics.DrawString(box.Text, box.Font, Brushes.Black, 0, 0);
         }
 
-              private void nextPicture_Click(object sender, EventArgs e)
+        private void nextPicture_Click(object sender, EventArgs e)
         {
-            assistantTextBox.Text = AuthorAssistant.GetTip(tabControlIAT.SelectedIndex, tabControlAssetEditor.SelectedIndex);
+            if (this.step < MaxStep - 1)
+                this.step += 1;
+            else this.step = 0;
+
+            UpdateLabel();
+
         }
 
         private void helpPicture_Click_1(object sender, EventArgs e)
         {
-            if (tabControlIAT.SelectedIndex == 0)
+            if (step == 3)
                 // Navigate to a URL.
                 System.Diagnostics.Process.Start("https://fatima-toolkit.eu/9-dialogue-manager/");
 
-            else if (tabControlIAT.SelectedIndex == 1 && tabControlAssetEditor.SelectedIndex == 0)
+            else if (step == 4)
                 // Navigate to a URL.
                 System.Diagnostics.Process.Start("https://fatima-toolkit.eu/5-emotional-appraisal/");
 
-            else if (tabControlIAT.SelectedIndex == 1 && tabControlAssetEditor.SelectedIndex == 1)
+            else if (step == 2)
                 // Navigate to a URL.
                 System.Diagnostics.Process.Start("https://fatima-toolkit.eu/6-emotional-decision-making/");
 
 
-            else if (tabControlIAT.SelectedIndex > 1)
-                // Navigate to a URL.
+            else                // Navigate to a URL.
                 System.Diagnostics.Process.Start("https://fatima-toolkit.eu/2-integrated-authoring-tool/");
         }
 
@@ -1876,53 +1915,54 @@ namespace IntegratedAuthoringToolWF
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (tooltip == "Character")
+            switch (step)
             {
-                buttonAddCharacter_Click(sender, e);
-                this.assistantTextBox.Text = AuthorAssistant.GetTipByKey(tooltip);
-                Evaluator();
+                case 0:  // No characters
+                    buttonAddCharacter_Click(sender, e);
+                    this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Characters");
+                    break;
+
+                case 1: // No beliefs
+
+                    if (dataGridViewCharacters.SelectedRows.Count == 0)
+                    {
+                        dataGridViewCharacters.Rows[0].Selected = true;
+                    }
+                    if (this._rpcForm != null)
+                    {
+                        this._rpcForm.SelectedTab = 0;
+                        new AddOrEditBeliefForm(this._rpcForm._knowledgeBaseVM).ShowDialog();
+                        this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Beliefs");
+                    }
+                    break;
+
+                case 2: // No decision rules
+                    this.tabControlIAT.SelectedIndex = 1;
+                    this.tabControlAssetEditor.SelectedIndex = 1;
+                    this._edmForm.buttonAddReaction_Click(sender, e);
+                    this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("DecisionMaking");
+                    break;
+
+                case 3: // No dialogues
+                    this.tabControlIAT.SelectedIndex = 0;
+                    this.buttonAddDialogueAction_Click_1(sender, e);
+                    this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Dialogues");
+                    break;
+
+                case 4: // No appraisal rules
+                    this.tabControlIAT.SelectedIndex = 1;
+                    this.tabControlAssetEditor.SelectedIndex = 0;
+                    this._eaForm.buttonAddAppraisalRule_Click(sender, e);
+                    this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("AppraisalRules");
+                    break;
+
+                default:
+                    this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Default");
+                    break;
+
             }
 
-            else if (tooltip == "Beliefs")
-            {
-                if (dataGridViewCharacters.SelectedRows.Count == 0)
-                {
-                    dataGridViewCharacters.Rows[0].Selected = true;
-                }
-                if (this._rpcForm != null)
-                {
-                    this._rpcForm.SelectedTab = 0;
-                    new AddOrEditBeliefForm(this._rpcForm._knowledgeBaseVM).ShowDialog();
-                    this.assistantTextBox.Text = AuthorAssistant.GetTipByKey(tooltip);
-                    Evaluator();
-                }
-            }
-
-            else if (tooltip == "DecisionMaking")
-            {
-                this.tabControlIAT.SelectedIndex = 1;
-                this.tabControlAssetEditor.SelectedIndex = 1;
-                this._edmForm.buttonAddReaction_Click(sender, e);
-                this.assistantTextBox.Text = AuthorAssistant.GetTipByKey(tooltip);
-                Evaluator();
-            }
-
-            else if (tooltip == "AppraisalRule")
-            {
-                this.tabControlIAT.SelectedIndex = 1;
-                this.tabControlAssetEditor.SelectedIndex = 0;
-                this._eaForm.buttonAddAppraisalRule_Click(sender, e);
-                this.assistantTextBox.Text = AuthorAssistant.GetTipByKey(tooltip);
-                Evaluator();
-            }
-
-            else if (tooltip == "Dialogue")
-            {
-                this.tabControlIAT.SelectedIndex = 0;
-                this.buttonAddDialogueAction_Click_1(sender, e);
-                this.assistantTextBox.Text = AuthorAssistant.GetTipByKey(tooltip);
-                Evaluator();
-            }
+            Evaluator();
 
         }
 
