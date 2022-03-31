@@ -107,17 +107,18 @@
             this.splitContainer8 = new System.Windows.Forms.SplitContainer();
             this.splitContainer9 = new System.Windows.Forms.SplitContainer();
             this.Assistant = new System.Windows.Forms.GroupBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.helpPicture = new System.Windows.Forms.PictureBox();
             this.nextPicture = new System.Windows.Forms.PictureBox();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
+            this.indexLabel = new System.Windows.Forms.Label();
             this.assistantTextBox = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.indexLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -171,6 +172,7 @@
             this.splitContainer9.Panel2.SuspendLayout();
             this.splitContainer9.SuspendLayout();
             this.Assistant.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.helpPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nextPicture)).BeginInit();
@@ -321,7 +323,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(448, 202);
+            this.groupBox1.Size = new System.Drawing.Size(448, 190);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Characters";
@@ -341,7 +343,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(440, 179);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(440, 167);
             this.tableLayoutPanel1.TabIndex = 15;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
@@ -441,7 +443,7 @@
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox6.Location = new System.Drawing.Point(0, 0);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(448, 99);
+            this.groupBox6.Size = new System.Drawing.Size(448, 98);
             this.groupBox6.TabIndex = 16;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Cognitive Rules File";
@@ -453,7 +455,7 @@
             // 
             this.buttonSaveAsAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.buttonSaveAsAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.buttonSaveAsAssetStorage.Location = new System.Drawing.Point(279, 28);
+            this.buttonSaveAsAssetStorage.Location = new System.Drawing.Point(279, 27);
             this.buttonSaveAsAssetStorage.Name = "buttonSaveAsAssetStorage";
             this.buttonSaveAsAssetStorage.Size = new System.Drawing.Size(85, 30);
             this.buttonSaveAsAssetStorage.TabIndex = 19;
@@ -466,7 +468,7 @@
             // 
             this.buttonOpenAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.buttonOpenAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonOpenAssetStorage.Location = new System.Drawing.Point(97, 28);
+            this.buttonOpenAssetStorage.Location = new System.Drawing.Point(97, 27);
             this.buttonOpenAssetStorage.Name = "buttonOpenAssetStorage";
             this.buttonOpenAssetStorage.Size = new System.Drawing.Size(85, 30);
             this.buttonOpenAssetStorage.TabIndex = 15;
@@ -479,7 +481,7 @@
             // 
             this.saveAssetStorageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.saveAssetStorageButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.saveAssetStorageButton.Location = new System.Drawing.Point(188, 28);
+            this.saveAssetStorageButton.Location = new System.Drawing.Point(188, 27);
             this.saveAssetStorageButton.Name = "saveAssetStorageButton";
             this.saveAssetStorageButton.Size = new System.Drawing.Size(85, 30);
             this.saveAssetStorageButton.TabIndex = 16;
@@ -502,7 +504,7 @@
             // 
             this.buttonNewAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.buttonNewAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.buttonNewAssetStorage.Location = new System.Drawing.Point(6, 28);
+            this.buttonNewAssetStorage.Location = new System.Drawing.Point(6, 27);
             this.buttonNewAssetStorage.Name = "buttonNewAssetStorage";
             this.buttonNewAssetStorage.Size = new System.Drawing.Size(85, 30);
             this.buttonNewAssetStorage.TabIndex = 18;
@@ -769,7 +771,7 @@
             this.tabPage4.Controls.Add(this.tabControlAssetEditor);
             this.tabPage4.Location = new System.Drawing.Point(4, 24);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(844, 603);
+            this.tabPage4.Size = new System.Drawing.Size(844, 609);
             this.tabPage4.TabIndex = 5;
             this.tabPage4.Text = "Cognitive Rules";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -784,7 +786,7 @@
             this.tabControlAssetEditor.Location = new System.Drawing.Point(0, 0);
             this.tabControlAssetEditor.Name = "tabControlAssetEditor";
             this.tabControlAssetEditor.SelectedIndex = 0;
-            this.tabControlAssetEditor.Size = new System.Drawing.Size(844, 603);
+            this.tabControlAssetEditor.Size = new System.Drawing.Size(844, 609);
             this.tabControlAssetEditor.TabIndex = 0;
             // 
             // tabPageEA
@@ -793,7 +795,7 @@
             this.tabPageEA.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.tabPageEA.Name = "tabPageEA";
             this.tabPageEA.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageEA.Size = new System.Drawing.Size(836, 574);
+            this.tabPageEA.Size = new System.Drawing.Size(836, 580);
             this.tabPageEA.TabIndex = 0;
             this.tabPageEA.Text = "Emotional Appraisal";
             this.tabPageEA.UseVisualStyleBackColor = true;
@@ -803,7 +805,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(836, 579);
+            this.tabPage6.Size = new System.Drawing.Size(836, 583);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "Emotional Decision Making";
             this.toolTip1.SetToolTip(this.tabPage6, "The Emotional Decision Making is where you can define which actions agents have");
@@ -813,7 +815,7 @@
             // 
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(836, 579);
+            this.tabPage7.Size = new System.Drawing.Size(836, 583);
             this.tabPage7.TabIndex = 2;
             this.tabPage7.Text = "Social Importance";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -822,7 +824,7 @@
             // 
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(836, 579);
+            this.tabPage8.Size = new System.Drawing.Size(836, 583);
             this.tabPage8.TabIndex = 3;
             this.tabPage8.Text = "CIF-CK";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -833,7 +835,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(5);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(5);
-            this.tabPage2.Size = new System.Drawing.Size(844, 603);
+            this.tabPage2.Size = new System.Drawing.Size(844, 609);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Character";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -845,7 +847,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(844, 603);
+            this.tabPage3.Size = new System.Drawing.Size(844, 609);
             this.tabPage3.TabIndex = 3;
             this.tabPage3.Text = "World";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -856,7 +858,7 @@
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox7.Location = new System.Drawing.Point(3, 3);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(838, 597);
+            this.groupBox7.Size = new System.Drawing.Size(838, 603);
             this.groupBox7.TabIndex = 16;
             this.groupBox7.TabStop = false;
             // 
@@ -867,7 +869,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(844, 603);
+            this.tabPage1.Size = new System.Drawing.Size(844, 609);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "Simulator";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -885,7 +887,7 @@
             this.groupBox3.Controls.Add(this.checkBox1);
             this.groupBox3.Controls.Add(this.effectTickBox);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox3.Location = new System.Drawing.Point(3, 524);
+            this.groupBox3.Location = new System.Drawing.Point(3, 530);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(838, 76);
             this.groupBox3.TabIndex = 10;
@@ -1286,7 +1288,7 @@
             this.tabPageWeb.Location = new System.Drawing.Point(4, 24);
             this.tabPageWeb.Name = "tabPageWeb";
             this.tabPageWeb.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageWeb.Size = new System.Drawing.Size(844, 603);
+            this.tabPageWeb.Size = new System.Drawing.Size(844, 609);
             this.tabPageWeb.TabIndex = 4;
             this.tabPageWeb.Text = "Web API";
             this.tabPageWeb.UseVisualStyleBackColor = true;
@@ -1366,7 +1368,7 @@
             // 
             this.splitContainer8.Panel2.Controls.Add(this.splitContainer9);
             this.splitContainer8.Size = new System.Drawing.Size(448, 484);
-            this.splitContainer8.SplitterDistance = 99;
+            this.splitContainer8.SplitterDistance = 98;
             this.splitContainer8.TabIndex = 0;
             // 
             // splitContainer9
@@ -1384,8 +1386,8 @@
             // 
             this.splitContainer9.Panel2.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.splitContainer9.Panel2.Controls.Add(this.Assistant);
-            this.splitContainer9.Size = new System.Drawing.Size(448, 381);
-            this.splitContainer9.SplitterDistance = 202;
+            this.splitContainer9.Size = new System.Drawing.Size(448, 382);
+            this.splitContainer9.SplitterDistance = 190;
             this.splitContainer9.TabIndex = 0;
             // 
             // Assistant
@@ -1395,6 +1397,7 @@
             this.Assistant.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.Assistant.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.assistantbackground2;
             this.Assistant.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.Assistant.Controls.Add(this.pictureBox4);
             this.Assistant.Controls.Add(this.pictureBox3);
             this.Assistant.Controls.Add(this.helpPicture);
             this.Assistant.Controls.Add(this.nextPicture);
@@ -1408,12 +1411,24 @@
             this.Assistant.Margin = new System.Windows.Forms.Padding(0);
             this.Assistant.Name = "Assistant";
             this.Assistant.Padding = new System.Windows.Forms.Padding(5, 10, 5, 10);
-            this.Assistant.Size = new System.Drawing.Size(448, 175);
+            this.Assistant.Size = new System.Drawing.Size(448, 188);
             this.Assistant.TabIndex = 18;
             this.Assistant.TabStop = false;
             this.Assistant.Text = "Authoring Assistant:";
             this.toolTip1.SetToolTip(this.Assistant, "Authoring Assistant provides tips regarding the use of FAtiMA-Toolkit");
             this.Assistant.Enter += new System.EventHandler(this.Assistant_Enter);
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.left;
+            this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox4.Location = new System.Drawing.Point(344, 6);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(20, 17);
+            this.pictureBox4.TabIndex = 25;
+            this.pictureBox4.TabStop = false;
+            this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
             // 
             // pictureBox3
             // 
@@ -1467,7 +1482,7 @@
             // 
             this.splitContainer5.Panel2.Controls.Add(this.splitContainer6);
             this.splitContainer5.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer5.Size = new System.Drawing.Size(438, 140);
+            this.splitContainer5.Size = new System.Drawing.Size(438, 153);
             this.splitContainer5.SplitterDistance = 107;
             this.splitContainer5.TabIndex = 21;
             // 
@@ -1479,7 +1494,7 @@
             this.pictureBox2.Location = new System.Drawing.Point(0, 0);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Padding = new System.Windows.Forms.Padding(20);
-            this.pictureBox2.Size = new System.Drawing.Size(103, 136);
+            this.pictureBox2.Size = new System.Drawing.Size(103, 149);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox2.TabIndex = 20;
             this.pictureBox2.TabStop = false;
@@ -1500,9 +1515,18 @@
             // 
             this.splitContainer6.Panel2.Controls.Add(this.button1);
             this.splitContainer6.Panel2.Controls.Add(this.label9);
-            this.splitContainer6.Size = new System.Drawing.Size(323, 136);
-            this.splitContainer6.SplitterDistance = 73;
+            this.splitContainer6.Size = new System.Drawing.Size(323, 149);
+            this.splitContainer6.SplitterDistance = 90;
             this.splitContainer6.TabIndex = 19;
+            // 
+            // indexLabel
+            // 
+            this.indexLabel.AutoSize = true;
+            this.indexLabel.Location = new System.Drawing.Point(3, 2);
+            this.indexLabel.Name = "indexLabel";
+            this.indexLabel.Size = new System.Drawing.Size(15, 16);
+            this.indexLabel.TabIndex = 19;
+            this.indexLabel.Text = "1";
             // 
             // assistantTextBox
             // 
@@ -1515,7 +1539,7 @@
             this.assistantTextBox.Margin = new System.Windows.Forms.Padding(3);
             this.assistantTextBox.Name = "assistantTextBox";
             this.assistantTextBox.Padding = new System.Windows.Forms.Padding(3);
-            this.assistantTextBox.Size = new System.Drawing.Size(323, 73);
+            this.assistantTextBox.Size = new System.Drawing.Size(323, 90);
             this.assistantTextBox.TabIndex = 18;
             this.assistantTextBox.Text = "Don\'t forget to save your development using Ctrl+S";
             this.assistantTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1550,15 +1574,6 @@
             this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTip1.ToolTipTitle = "IAT Tooltip";
             this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
-            // 
-            // indexLabel
-            // 
-            this.indexLabel.AutoSize = true;
-            this.indexLabel.Location = new System.Drawing.Point(3, 2);
-            this.indexLabel.Name = "indexLabel";
-            this.indexLabel.Size = new System.Drawing.Size(15, 16);
-            this.indexLabel.TabIndex = 19;
-            this.indexLabel.Text = "1";
             // 
             // MainForm
             // 
@@ -1645,6 +1660,7 @@
             this.splitContainer9.ResumeLayout(false);
             this.Assistant.ResumeLayout(false);
             this.Assistant.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.helpPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nextPicture)).EndInit();
@@ -1788,6 +1804,7 @@
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.ToolStripMenuItem authoringAssistantToolStripMenuItem;
         private System.Windows.Forms.Label indexLabel;
+        private System.Windows.Forms.PictureBox pictureBox4;
     }
 }
 

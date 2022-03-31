@@ -1776,33 +1776,38 @@ namespace IntegratedAuthoringToolWF
 
         private void UpdateLabel()
         {
-            indexLabel.Text = "" + step;
 
             switch (step)
             {
                 case 0:
                     button1.Text = "Add Character";
+                    indexLabel.Text = "Role Play Character";
                     this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Default");
                     break;
                 case 1:
                     button1.Text = "Add Beliefs";
+                    indexLabel.Text = "Internal State of Characters";
                     this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Default");
                     break;
                 case 2:
                     button1.Text = "Add Actions";
+                    indexLabel.Text = "Emotional Decison Making";
                     this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Emotional Decision Making");
                     break;
                 case 3:
                     button1.Text = "Add Dialogue";
+                    indexLabel.Text = "Dialogues";
                     this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Default");
                     break;
                 case 4:
                     button1.Text = "Add Appraisal Rule";
+                    indexLabel.Text = "Emotional Appraisal";
                     this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Emotional Appraisal");
                     break;
             }
+            indexLabel.Text += ":";
 
-          
+
 
         }
 
@@ -1979,6 +1984,15 @@ namespace IntegratedAuthoringToolWF
         private void authoringAssistantToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Assistant.Show();
+        }
+
+        private void pictureBox4_Click(object sender, EventArgs e)
+        {
+            if (this.step > 0)
+                this.step -= 1;
+            else this.step = MaxStep - 1;
+
+            UpdateLabel();
         }
     }
     }

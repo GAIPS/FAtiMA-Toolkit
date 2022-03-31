@@ -373,6 +373,7 @@
     <None Include="Resources\inescid.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\left.png" />
     <None Include="Resources\icons8-ajuda-16.png" />
     <None Include="Resources\icons8-divisa-circulada-à-direita-40.png" />
     <None Include="Resources\iconHelp.png" />
