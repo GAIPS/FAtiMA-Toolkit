@@ -40,6 +40,7 @@ namespace EmotionalDecisionMakingWF
         public MainForm()
         {
             InitializeComponent();
+          
             this.actionRules = new BindingListView<ActionRuleDTO>((IList)null);
             dataGridViewReactiveActions.DataSource = this.actionRules;
             _storage = new AssetStorage();
@@ -71,8 +72,12 @@ namespace EmotionalDecisionMakingWF
 			{
 				var ra = _loadedAsset.GetActionRule(actionRules.First().Id);
 				UpdateConditions(ra);
-			}
+                emotionaAppraisalButton.Enabled = true;
+            }
+            else emotionaAppraisalButton.Enabled = false;
+
             EditorTools.UpdateFormTitle("Emotional Decision Making", _currentFilePath, this);
+           
         }
 		
 		private void conditionSetView_OnDataChanged()
@@ -88,7 +93,8 @@ namespace EmotionalDecisionMakingWF
             selectedActionId = reaction.Id;
 
 	        var ra = _loadedAsset.GetActionRule(selectedActionId);
-			UpdateConditions(ra);
+            emotionaAppraisalButton.Enabled = true;
+            UpdateConditions(ra);
         }
 
         private void buttonRemoveReaction_Click(object sender, EventArgs e)

@@ -39,9 +39,9 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(14, 48);
+            this.label1.Location = new System.Drawing.Point(24, 54);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(58, 20);
+            this.label1.Size = new System.Drawing.Size(48, 16);
             this.label1.TabIndex = 1;
             this.label1.Text = "Name:";
             // 
@@ -52,7 +52,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(132, 31);
             this.button1.TabIndex = 2;
-            this.button1.Text = "Add";
+            this.button1.Text = "Add Character";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -65,28 +65,29 @@
             this.wfNameFieldBoxCharacterName.AllowUniversalLiteral = true;
             this.wfNameFieldBoxCharacterName.AllowVariable = true;
             this.wfNameFieldBoxCharacterName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.wfNameFieldBoxCharacterName.Location = new System.Drawing.Point(78, 48);
+            this.wfNameFieldBoxCharacterName.Location = new System.Drawing.Point(78, 51);
             this.wfNameFieldBoxCharacterName.Name = "wfNameFieldBoxCharacterName";
             this.wfNameFieldBoxCharacterName.OnlyIntOrVariable = false;
-            this.wfNameFieldBoxCharacterName.Size = new System.Drawing.Size(247, 26);
+            this.wfNameFieldBoxCharacterName.Size = new System.Drawing.Size(247, 22);
             this.wfNameFieldBoxCharacterName.TabIndex = 0;
             this.wfNameFieldBoxCharacterName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.AppWorkspace;
-            this.label2.Location = new System.Drawing.Point(167, 24);
+            this.label2.Location = new System.Drawing.Point(203, 29);
             this.label2.Name = "label2";
             this.label2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label2.Size = new System.Drawing.Size(142, 18);
+            this.label2.Size = new System.Drawing.Size(125, 16);
             this.label2.TabIndex = 3;
             this.label2.Text = "John, Sarah, Doctor";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // AddCharacterForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(341, 150);
             this.Controls.Add(this.label2);
