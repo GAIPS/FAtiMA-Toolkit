@@ -49,34 +49,8 @@ namespace IntegratedAuthoringToolWF
         };
 
 
-        public static string GetTip(int tabIndex, int assetIndex)
-        {
-            switch(tabIndex)
-            {
-                case 0:
-                    return GetTipByKey("Default");
-
-                case 1:
-                    switch (assetIndex)
-                    {
-                        case 0:
-                           
-                            return GetTipByKey("Emotional Appraisal");
-                        case 1:
-                            return GetTipByKey("Emotional Decision Making");
-
-                        default:
-                            return GetRandomTip();
-
-                    }
-            
-             
-                default:
-                    return GetTipByKey("Default");
-
-            }
-          
-        }
+        
+        
         public static string GetTipByKey(int index)
         {
             var actualKey = tips.Keys.ToList()[index];
@@ -86,10 +60,7 @@ namespace IntegratedAuthoringToolWF
             return tips[actualKey][rand];
             
         }
-
-
-
-            public static string GetTipByKey(string key)
+        public static string GetTipByKey(string key)
         {
             int rand = 0;
             if (tips.ContainsKey(key))
@@ -112,18 +83,7 @@ namespace IntegratedAuthoringToolWF
             return allTips[rand];
         }
 
-
-
-        public static void CheckForImbalances(EmotionalDecisionMaking.EmotionalDecisionMakingAsset edm, EmotionalAppraisal.EmotionalAppraisalAsset ea)
-        {
-
-            var edmRulesCount = edm.GetAllActionRules().Count();
-            var eaRulesCount = ea.GetAllAppraisalRules().Count();
-
-
-            if (edmRulesCount > eaRulesCount + 1)
-                MessageBox.Show("Would you like to add an emotion effect to this action?");
-        }
+  
 
     }
 }

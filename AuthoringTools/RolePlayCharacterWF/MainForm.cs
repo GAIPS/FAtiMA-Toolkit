@@ -232,7 +232,7 @@ namespace RolePlayCharacterWF
 
         }
 
-        private void addBeliefButton_Click(object sender, EventArgs e)
+        public void addBeliefButton_Click(object sender, EventArgs e)
         {
             var addBeliefForm = new AddOrEditBeliefForm(_knowledgeBaseVM);
             addBeliefForm.ShowDialog(this);

@@ -50,6 +50,7 @@ namespace RolePlayCharacterWF
             this.buttonEdit = new System.Windows.Forms.Button();
             this.addBeliefButton = new System.Windows.Forms.Button();
             this.removeBeliefButton = new System.Windows.Forms.Button();
+            this.showHierarchy = new System.Windows.Forms.Button();
             this.buttonReasonKB = new System.Windows.Forms.Button();
             this.dataGridViewBeliefs = new System.Windows.Forms.DataGridView();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -79,7 +80,6 @@ namespace RolePlayCharacterWF
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.showHierarchy = new System.Windows.Forms.Button();
             this.tabPage2.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -116,7 +116,7 @@ namespace RolePlayCharacterWF
             this.tabPage2.Location = new System.Drawing.Point(4, 28);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(822, 509);
+            this.tabPage2.Size = new System.Drawing.Size(825, 508);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Autobiographical Memory";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -133,7 +133,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 206F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(816, 503);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(819, 502);
             this.tableLayoutPanel4.TabIndex = 0;
             this.tableLayoutPanel4.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel4_Paint);
             // 
@@ -147,7 +147,7 @@ namespace RolePlayCharacterWF
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(3, 63);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(810, 437);
+            this.groupBox4.Size = new System.Drawing.Size(813, 436);
             this.groupBox4.TabIndex = 16;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Event Records";
@@ -184,7 +184,7 @@ namespace RolePlayCharacterWF
             this.dataGridViewAM.RowHeadersWidth = 51;
             this.dataGridViewAM.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAM.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAM.Size = new System.Drawing.Size(801, 382);
+            this.dataGridViewAM.Size = new System.Drawing.Size(804, 381);
             this.dataGridViewAM.TabIndex = 10;
             this.dataGridViewAM.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAM_CellContentClick);
             this.dataGridViewAM.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridViewAM_KeyDown);
@@ -225,7 +225,7 @@ namespace RolePlayCharacterWF
             this.groupBox9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox9.Location = new System.Drawing.Point(3, 3);
             this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(810, 54);
+            this.groupBox9.Size = new System.Drawing.Size(813, 54);
             this.groupBox9.TabIndex = 15;
             this.groupBox9.TabStop = false;
             this.groupBox9.Text = "Time";
@@ -244,7 +244,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(801, 35);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(804, 35);
             this.tableLayoutPanel6.TabIndex = 13;
             // 
             // label4
@@ -374,6 +374,18 @@ namespace RolePlayCharacterWF
             this.removeBeliefButton.Click += new System.EventHandler(this.removeBeliefButton_Click);
             this.removeBeliefButton.MouseHover += new System.EventHandler(this.removeBeliefButton_MouseHover);
             // 
+            // showHierarchy
+            // 
+            this.showHierarchy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.showHierarchy.AutoSize = true;
+            this.showHierarchy.Location = new System.Drawing.Point(666, 3);
+            this.showHierarchy.Name = "showHierarchy";
+            this.showHierarchy.Size = new System.Drawing.Size(138, 25);
+            this.showHierarchy.TabIndex = 12;
+            this.showHierarchy.Text = "Show Hierarchy";
+            this.showHierarchy.UseVisualStyleBackColor = true;
+            this.showHierarchy.Click += new System.EventHandler(this.button1_Click);
+            // 
             // buttonReasonKB
             // 
             this.buttonReasonKB.AutoSize = true;
@@ -419,7 +431,7 @@ namespace RolePlayCharacterWF
             this.tabPage1.Location = new System.Drawing.Point(4, 32);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(822, 505);
+            this.tabPage1.Size = new System.Drawing.Size(825, 504);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Emotional State";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -436,7 +448,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(816, 499);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(819, 498);
             this.tableLayoutPanel3.TabIndex = 2;
             this.tableLayoutPanel3.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel3_Paint);
             // 
@@ -451,7 +463,7 @@ namespace RolePlayCharacterWF
             this.emotionGroupBox.Controls.Add(this.emotionsDataGridView);
             this.emotionGroupBox.Location = new System.Drawing.Point(3, 67);
             this.emotionGroupBox.Name = "emotionGroupBox";
-            this.emotionGroupBox.Size = new System.Drawing.Size(810, 429);
+            this.emotionGroupBox.Size = new System.Drawing.Size(813, 428);
             this.emotionGroupBox.TabIndex = 1;
             this.emotionGroupBox.TabStop = false;
             this.emotionGroupBox.Text = "Emotions";
@@ -510,7 +522,7 @@ namespace RolePlayCharacterWF
             this.emotionsDataGridView.RowHeadersWidth = 51;
             this.emotionsDataGridView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.emotionsDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.emotionsDataGridView.Size = new System.Drawing.Size(798, 375);
+            this.emotionsDataGridView.Size = new System.Drawing.Size(801, 374);
             this.emotionsDataGridView.TabIndex = 2;
             this.emotionsDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.emotionsDataGridView_CellContentClick);
             // 
@@ -520,7 +532,7 @@ namespace RolePlayCharacterWF
             this.moodGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.moodGroupBox.Location = new System.Drawing.Point(3, 3);
             this.moodGroupBox.Name = "moodGroupBox";
-            this.moodGroupBox.Size = new System.Drawing.Size(810, 58);
+            this.moodGroupBox.Size = new System.Drawing.Size(813, 58);
             this.moodGroupBox.TabIndex = 14;
             this.moodGroupBox.TabStop = false;
             this.moodGroupBox.Text = "Mood";
@@ -537,7 +549,7 @@ namespace RolePlayCharacterWF
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
             this.tableLayoutPanel7.RowCount = 1;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(804, 33);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(807, 33);
             this.tableLayoutPanel7.TabIndex = 12;
             this.tableLayoutPanel7.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel7_Paint);
             // 
@@ -545,7 +557,7 @@ namespace RolePlayCharacterWF
             // 
             this.moodValueLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.moodValueLabel.AutoSize = true;
-            this.moodValueLabel.Location = new System.Drawing.Point(757, 6);
+            this.moodValueLabel.Location = new System.Drawing.Point(760, 6);
             this.moodValueLabel.Name = "moodValueLabel";
             this.moodValueLabel.Size = new System.Drawing.Size(44, 20);
             this.moodValueLabel.TabIndex = 5;
@@ -559,7 +571,7 @@ namespace RolePlayCharacterWF
             this.moodTrackBar.Location = new System.Drawing.Point(3, 3);
             this.moodTrackBar.Minimum = -10;
             this.moodTrackBar.Name = "moodTrackBar";
-            this.moodTrackBar.Size = new System.Drawing.Size(748, 27);
+            this.moodTrackBar.Size = new System.Drawing.Size(751, 27);
             this.moodTrackBar.TabIndex = 11;
             this.moodTrackBar.Scroll += new System.EventHandler(this.moodTrackBar_Scroll);
             // 
@@ -585,7 +597,7 @@ namespace RolePlayCharacterWF
             this.tabPageGoals.Controls.Add(this.groupBox2);
             this.tabPageGoals.Location = new System.Drawing.Point(4, 28);
             this.tabPageGoals.Name = "tabPageGoals";
-            this.tabPageGoals.Size = new System.Drawing.Size(822, 509);
+            this.tabPageGoals.Size = new System.Drawing.Size(825, 508);
             this.tabPageGoals.TabIndex = 5;
             this.tabPageGoals.Text = "Goals";
             this.tabPageGoals.UseVisualStyleBackColor = true;
@@ -601,7 +613,7 @@ namespace RolePlayCharacterWF
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(822, 509);
+            this.groupBox2.Size = new System.Drawing.Size(825, 508);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             // 
@@ -640,7 +652,7 @@ namespace RolePlayCharacterWF
             this.dataGridViewGoals.RowHeadersWidth = 51;
             this.dataGridViewGoals.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewGoals.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewGoals.Size = new System.Drawing.Size(807, 452);
+            this.dataGridViewGoals.Size = new System.Drawing.Size(810, 451);
             this.dataGridViewGoals.TabIndex = 2;
             // 
             // buttonAddGoal
@@ -777,18 +789,6 @@ namespace RolePlayCharacterWF
             // toolTip1
             // 
             this.toolTip1.Draw += new System.Windows.Forms.DrawToolTipEventHandler(this.toolTip1_Draw);
-            // 
-            // showHierarchy
-            // 
-            this.showHierarchy.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.showHierarchy.AutoSize = true;
-            this.showHierarchy.Location = new System.Drawing.Point(666, 3);
-            this.showHierarchy.Name = "showHierarchy";
-            this.showHierarchy.Size = new System.Drawing.Size(138, 25);
-            this.showHierarchy.TabIndex = 12;
-            this.showHierarchy.Text = "Show Hierarchy";
-            this.showHierarchy.UseVisualStyleBackColor = true;
-            this.showHierarchy.Click += new System.EventHandler(this.button1_Click);
             // 
             // MainForm
             // 
