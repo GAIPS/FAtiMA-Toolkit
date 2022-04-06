@@ -24,6 +24,12 @@
             this.computeDescriptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadTemplateScenarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.authoringAssistantToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeAssistantLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nonExperiencedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.someExperienceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.expertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
@@ -119,12 +125,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.openToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.changeAssistantLevelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.nonExperiencedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.someExperienceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.expertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -207,7 +207,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1305, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1305, 30);
             this.menuStrip1.TabIndex = 6;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -286,6 +286,52 @@
             this.authoringAssistantToolStripMenuItem.Text = "Authoring Assistant";
             this.authoringAssistantToolStripMenuItem.Click += new System.EventHandler(this.authoringAssistantToolStripMenuItem_Click);
             // 
+            // openToolStripMenuItem1
+            // 
+            this.openToolStripMenuItem1.Name = "openToolStripMenuItem1";
+            this.openToolStripMenuItem1.Size = new System.Drawing.Size(242, 26);
+            this.openToolStripMenuItem1.Text = "Open";
+            // 
+            // changeAssistantLevelToolStripMenuItem
+            // 
+            this.changeAssistantLevelToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.nonExperiencedToolStripMenuItem,
+            this.someExperienceToolStripMenuItem,
+            this.expertToolStripMenuItem});
+            this.changeAssistantLevelToolStripMenuItem.Name = "changeAssistantLevelToolStripMenuItem";
+            this.changeAssistantLevelToolStripMenuItem.Size = new System.Drawing.Size(242, 26);
+            this.changeAssistantLevelToolStripMenuItem.Text = "Change Assistant Level";
+            // 
+            // nonExperiencedToolStripMenuItem
+            // 
+            this.nonExperiencedToolStripMenuItem.Name = "nonExperiencedToolStripMenuItem";
+            this.nonExperiencedToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.nonExperiencedToolStripMenuItem.Text = "1-Novice";
+            this.nonExperiencedToolStripMenuItem.ToolTipText = "I have never used FAtiMA-Toolkit";
+            this.nonExperiencedToolStripMenuItem.Click += new System.EventHandler(this.nonExperiencedToolStripMenuItem_Click);
+            // 
+            // someExperienceToolStripMenuItem
+            // 
+            this.someExperienceToolStripMenuItem.Name = "someExperienceToolStripMenuItem";
+            this.someExperienceToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.someExperienceToolStripMenuItem.Text = "2-Competent";
+            this.someExperienceToolStripMenuItem.ToolTipText = "I have used FAtiMA Toolkit before but I haven\'t mastered it";
+            this.someExperienceToolStripMenuItem.Click += new System.EventHandler(this.someExperienceToolStripMenuItem_Click);
+            // 
+            // expertToolStripMenuItem
+            // 
+            this.expertToolStripMenuItem.Name = "expertToolStripMenuItem";
+            this.expertToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.expertToolStripMenuItem.Text = "3-Expert";
+            this.expertToolStripMenuItem.ToolTipText = "I am an expert at creating scenarios using FAtiMA-Toolkit";
+            this.expertToolStripMenuItem.Click += new System.EventHandler(this.expertToolStripMenuItem_Click);
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(242, 26);
+            this.closeToolStripMenuItem.Text = "Close";
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
@@ -333,7 +379,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(448, 189);
+            this.groupBox1.Size = new System.Drawing.Size(448, 188);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Characters";
@@ -353,7 +399,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(440, 162);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(440, 161);
             this.tableLayoutPanel1.TabIndex = 15;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
@@ -453,7 +499,7 @@
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox6.Location = new System.Drawing.Point(0, 0);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(448, 96);
+            this.groupBox6.Size = new System.Drawing.Size(448, 95);
             this.groupBox6.TabIndex = 16;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Cognitive Rules File";
@@ -538,7 +584,7 @@
             this.tabControlIAT.Margin = new System.Windows.Forms.Padding(4);
             this.tabControlIAT.Name = "tabControlIAT";
             this.tabControlIAT.SelectedIndex = 0;
-            this.tabControlIAT.Size = new System.Drawing.Size(852, 633);
+            this.tabControlIAT.Size = new System.Drawing.Size(852, 631);
             this.tabControlIAT.SizeMode = System.Windows.Forms.TabSizeMode.FillToRight;
             this.tabControlIAT.TabIndex = 20;
             this.tabControlIAT.TabStop = false;
@@ -551,7 +597,7 @@
             this.tabPageDialogue.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageDialogue.Name = "tabPageDialogue";
             this.tabPageDialogue.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
-            this.tabPageDialogue.Size = new System.Drawing.Size(844, 605);
+            this.tabPageDialogue.Size = new System.Drawing.Size(844, 603);
             this.tabPageDialogue.TabIndex = 0;
             this.tabPageDialogue.Text = "Dialogues";
             this.tabPageDialogue.UseVisualStyleBackColor = true;
@@ -574,7 +620,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(844, 595);
+            this.groupBox2.Size = new System.Drawing.Size(844, 593);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dialogue Actions";
@@ -588,7 +634,7 @@
             this.groupBox12.Controls.Add(this.buttonValidate);
             this.groupBox12.Controls.Add(this.buttonTTS);
             this.groupBox12.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox12.Location = new System.Drawing.Point(4, 544);
+            this.groupBox12.Location = new System.Drawing.Point(4, 542);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Size = new System.Drawing.Size(836, 47);
             this.groupBox12.TabIndex = 21;
@@ -716,7 +762,7 @@
             this.dataGridViewDialogueActions.RowHeadersWidth = 51;
             this.dataGridViewDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(835, 461);
+            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(835, 459);
             this.dataGridViewDialogueActions.TabIndex = 14;
             this.toolTip1.SetToolTip(this.dataGridViewDialogueActions, resources.GetString("dataGridViewDialogueActions.ToolTip"));
             this.dataGridViewDialogueActions.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellClick);
@@ -781,7 +827,7 @@
             this.tabPage4.Controls.Add(this.tabControlAssetEditor);
             this.tabPage4.Location = new System.Drawing.Point(4, 24);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(844, 605);
+            this.tabPage4.Size = new System.Drawing.Size(844, 603);
             this.tabPage4.TabIndex = 5;
             this.tabPage4.Text = "Cognitive Rules";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -796,7 +842,7 @@
             this.tabControlAssetEditor.Location = new System.Drawing.Point(0, 0);
             this.tabControlAssetEditor.Name = "tabControlAssetEditor";
             this.tabControlAssetEditor.SelectedIndex = 0;
-            this.tabControlAssetEditor.Size = new System.Drawing.Size(844, 605);
+            this.tabControlAssetEditor.Size = new System.Drawing.Size(844, 603);
             this.tabControlAssetEditor.TabIndex = 0;
             // 
             // tabPageEA
@@ -805,7 +851,7 @@
             this.tabPageEA.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.tabPageEA.Name = "tabPageEA";
             this.tabPageEA.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageEA.Size = new System.Drawing.Size(836, 574);
+            this.tabPageEA.Size = new System.Drawing.Size(836, 572);
             this.tabPageEA.TabIndex = 0;
             this.tabPageEA.Text = "Emotional Appraisal";
             this.tabPageEA.UseVisualStyleBackColor = true;
@@ -815,7 +861,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 25);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(836, 574);
+            this.tabPage6.Size = new System.Drawing.Size(836, 576);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "Emotional Decision Making";
             this.toolTip1.SetToolTip(this.tabPage6, "The Emotional Decision Making is where you can define which actions agents have");
@@ -825,7 +871,7 @@
             // 
             this.tabPage7.Location = new System.Drawing.Point(4, 25);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(836, 574);
+            this.tabPage7.Size = new System.Drawing.Size(836, 576);
             this.tabPage7.TabIndex = 2;
             this.tabPage7.Text = "Social Importance";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -834,7 +880,7 @@
             // 
             this.tabPage8.Location = new System.Drawing.Point(4, 25);
             this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(836, 574);
+            this.tabPage8.Size = new System.Drawing.Size(836, 576);
             this.tabPage8.TabIndex = 3;
             this.tabPage8.Text = "CIF-CK";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -845,7 +891,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(5);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(5);
-            this.tabPage2.Size = new System.Drawing.Size(844, 605);
+            this.tabPage2.Size = new System.Drawing.Size(844, 603);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Character";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -1318,7 +1364,7 @@
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 28);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 30);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(1);
             this.splitContainer1.Name = "splitContainer1";
             // 
@@ -1336,7 +1382,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.tabControlIAT);
             this.splitContainer1.Panel2.Margin = new System.Windows.Forms.Padding(0, 0, 0, 15);
             this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
-            this.splitContainer1.Size = new System.Drawing.Size(1305, 633);
+            this.splitContainer1.Size = new System.Drawing.Size(1305, 631);
             this.splitContainer1.SplitterDistance = 448;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 5;
@@ -1358,8 +1404,8 @@
             // splitContainer7.Panel2
             // 
             this.splitContainer7.Panel2.Controls.Add(this.splitContainer8);
-            this.splitContainer7.Size = new System.Drawing.Size(448, 633);
-            this.splitContainer7.SplitterDistance = 147;
+            this.splitContainer7.Size = new System.Drawing.Size(448, 631);
+            this.splitContainer7.SplitterDistance = 146;
             this.splitContainer7.SplitterIncrement = 2;
             this.splitContainer7.TabIndex = 19;
             // 
@@ -1377,8 +1423,8 @@
             // splitContainer8.Panel2
             // 
             this.splitContainer8.Panel2.Controls.Add(this.splitContainer9);
-            this.splitContainer8.Size = new System.Drawing.Size(448, 482);
-            this.splitContainer8.SplitterDistance = 96;
+            this.splitContainer8.Size = new System.Drawing.Size(448, 481);
+            this.splitContainer8.SplitterDistance = 95;
             this.splitContainer8.TabIndex = 0;
             // 
             // splitContainer9
@@ -1397,7 +1443,7 @@
             this.splitContainer9.Panel2.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.splitContainer9.Panel2.Controls.Add(this.Assistant);
             this.splitContainer9.Size = new System.Drawing.Size(448, 382);
-            this.splitContainer9.SplitterDistance = 189;
+            this.splitContainer9.SplitterDistance = 188;
             this.splitContainer9.TabIndex = 0;
             // 
             // Assistant
@@ -1421,7 +1467,7 @@
             this.Assistant.Margin = new System.Windows.Forms.Padding(0);
             this.Assistant.Name = "Assistant";
             this.Assistant.Padding = new System.Windows.Forms.Padding(5, 10, 5, 10);
-            this.Assistant.Size = new System.Drawing.Size(448, 189);
+            this.Assistant.Size = new System.Drawing.Size(448, 190);
             this.Assistant.TabIndex = 18;
             this.Assistant.TabStop = false;
             this.Assistant.Text = "Authoring Assistant:";
@@ -1435,19 +1481,20 @@
             this.pictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox4.Location = new System.Drawing.Point(344, 6);
             this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(20, 17);
+            this.pictureBox4.Size = new System.Drawing.Size(20, 20);
             this.pictureBox4.TabIndex = 25;
             this.pictureBox4.TabStop = false;
             this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
             // 
             // pictureBox3
             // 
-            this.pictureBox3.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.red;
-            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox3.Image = global::IntegratedAuthoringToolWF.Properties.Resources.PikPng_com_close_icon_png_3024323;
             this.pictureBox3.Location = new System.Drawing.Point(421, 6);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(20, 17);
+            this.pictureBox3.Size = new System.Drawing.Size(20, 20);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox3.TabIndex = 24;
             this.pictureBox3.TabStop = false;
             this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
@@ -1459,7 +1506,7 @@
             this.helpPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.helpPicture.Location = new System.Drawing.Point(398, 6);
             this.helpPicture.Name = "helpPicture";
-            this.helpPicture.Size = new System.Drawing.Size(20, 17);
+            this.helpPicture.Size = new System.Drawing.Size(20, 20);
             this.helpPicture.TabIndex = 23;
             this.helpPicture.TabStop = false;
             this.helpPicture.Click += new System.EventHandler(this.helpPicture_Click_1);
@@ -1471,7 +1518,7 @@
             this.nextPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.nextPicture.Location = new System.Drawing.Point(372, 6);
             this.nextPicture.Name = "nextPicture";
-            this.nextPicture.Size = new System.Drawing.Size(20, 17);
+            this.nextPicture.Size = new System.Drawing.Size(20, 20);
             this.nextPicture.TabIndex = 22;
             this.nextPicture.TabStop = false;
             this.nextPicture.Click += new System.EventHandler(this.nextPicture_Click);
@@ -1492,7 +1539,7 @@
             // 
             this.splitContainer5.Panel2.Controls.Add(this.splitContainer6);
             this.splitContainer5.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer5.Size = new System.Drawing.Size(438, 150);
+            this.splitContainer5.Size = new System.Drawing.Size(438, 151);
             this.splitContainer5.SplitterDistance = 107;
             this.splitContainer5.TabIndex = 21;
             // 
@@ -1504,7 +1551,7 @@
             this.pictureBox2.Location = new System.Drawing.Point(0, 0);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Padding = new System.Windows.Forms.Padding(20);
-            this.pictureBox2.Size = new System.Drawing.Size(103, 146);
+            this.pictureBox2.Size = new System.Drawing.Size(103, 147);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox2.TabIndex = 20;
             this.pictureBox2.TabStop = false;
@@ -1525,8 +1572,8 @@
             // 
             this.splitContainer6.Panel2.Controls.Add(this.button1);
             this.splitContainer6.Panel2.Controls.Add(this.label9);
-            this.splitContainer6.Size = new System.Drawing.Size(323, 146);
-            this.splitContainer6.SplitterDistance = 87;
+            this.splitContainer6.Size = new System.Drawing.Size(323, 147);
+            this.splitContainer6.SplitterDistance = 95;
             this.splitContainer6.TabIndex = 19;
             // 
             // indexLabel
@@ -1549,7 +1596,7 @@
             this.assistantTextBox.Margin = new System.Windows.Forms.Padding(3);
             this.assistantTextBox.Name = "assistantTextBox";
             this.assistantTextBox.Padding = new System.Windows.Forms.Padding(3);
-            this.assistantTextBox.Size = new System.Drawing.Size(323, 87);
+            this.assistantTextBox.Size = new System.Drawing.Size(323, 95);
             this.assistantTextBox.TabIndex = 18;
             this.assistantTextBox.Text = "Don\'t forget to save your development using Ctrl+S";
             this.assistantTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1584,52 +1631,6 @@
             this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTip1.ToolTipTitle = "IAT Tooltip";
             this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
-            // 
-            // openToolStripMenuItem1
-            // 
-            this.openToolStripMenuItem1.Name = "openToolStripMenuItem1";
-            this.openToolStripMenuItem1.Size = new System.Drawing.Size(242, 26);
-            this.openToolStripMenuItem1.Text = "Open";
-            // 
-            // closeToolStripMenuItem
-            // 
-            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(242, 26);
-            this.closeToolStripMenuItem.Text = "Close";
-            // 
-            // changeAssistantLevelToolStripMenuItem
-            // 
-            this.changeAssistantLevelToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.nonExperiencedToolStripMenuItem,
-            this.someExperienceToolStripMenuItem,
-            this.expertToolStripMenuItem});
-            this.changeAssistantLevelToolStripMenuItem.Name = "changeAssistantLevelToolStripMenuItem";
-            this.changeAssistantLevelToolStripMenuItem.Size = new System.Drawing.Size(242, 26);
-            this.changeAssistantLevelToolStripMenuItem.Text = "Change Assistant Level";
-            // 
-            // nonExperiencedToolStripMenuItem
-            // 
-            this.nonExperiencedToolStripMenuItem.Name = "nonExperiencedToolStripMenuItem";
-            this.nonExperiencedToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.nonExperiencedToolStripMenuItem.Text = "1-Novice";
-            this.nonExperiencedToolStripMenuItem.ToolTipText = "I have never used FAtiMA-Toolkit";
-            this.nonExperiencedToolStripMenuItem.Click += new System.EventHandler(this.nonExperiencedToolStripMenuItem_Click);
-            // 
-            // someExperienceToolStripMenuItem
-            // 
-            this.someExperienceToolStripMenuItem.Name = "someExperienceToolStripMenuItem";
-            this.someExperienceToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.someExperienceToolStripMenuItem.Text = "2-Competent";
-            this.someExperienceToolStripMenuItem.ToolTipText = "I have used FAtiMA Toolkit before but I haven\'t mastered it";
-            this.someExperienceToolStripMenuItem.Click += new System.EventHandler(this.someExperienceToolStripMenuItem_Click);
-            // 
-            // expertToolStripMenuItem
-            // 
-            this.expertToolStripMenuItem.Name = "expertToolStripMenuItem";
-            this.expertToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.expertToolStripMenuItem.Text = "3-Expert";
-            this.expertToolStripMenuItem.ToolTipText = "I am an expert at creating scenarios using FAtiMA-Toolkit";
-            this.expertToolStripMenuItem.Click += new System.EventHandler(this.expertToolStripMenuItem_Click);
             // 
             // MainForm
             // 

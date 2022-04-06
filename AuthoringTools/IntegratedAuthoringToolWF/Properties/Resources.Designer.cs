@@ -481,6 +481,16 @@ namespace IntegratedAuthoringToolWF.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap PikPng_com_close_icon_png_3024323 {
+            get {
+                object obj = ResourceManager.GetObject("PikPng.com_close-icon-png_3024323", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap RAGE_logo {
             get {
                 object obj = ResourceManager.GetObject("RAGE_logo", resourceCulture);
