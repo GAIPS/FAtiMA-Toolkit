@@ -65,10 +65,10 @@
             // 
             // addOrEditBeliefButton
             // 
-            this.addOrEditBeliefButton.Location = new System.Drawing.Point(118, 291);
+            this.addOrEditBeliefButton.Location = new System.Drawing.Point(98, 229);
             this.addOrEditBeliefButton.Margin = new System.Windows.Forms.Padding(4);
             this.addOrEditBeliefButton.Name = "addOrEditBeliefButton";
-            this.addOrEditBeliefButton.Size = new System.Drawing.Size(125, 38);
+            this.addOrEditBeliefButton.Size = new System.Drawing.Size(149, 30);
             this.addOrEditBeliefButton.TabIndex = 9;
             this.addOrEditBeliefButton.Text = "Add Belief";
             this.addOrEditBeliefButton.UseVisualStyleBackColor = true;
@@ -77,7 +77,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(26, 177);
+            this.label3.Location = new System.Drawing.Point(28, 132);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(83, 16);
@@ -88,7 +88,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(28, 100);
+            this.label2.Location = new System.Drawing.Point(28, 88);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(83, 16);
@@ -103,7 +103,7 @@
             // labelCertainty
             // 
             this.labelCertainty.AutoSize = true;
-            this.labelCertainty.Location = new System.Drawing.Point(28, 238);
+            this.labelCertainty.Location = new System.Drawing.Point(48, 181);
             this.labelCertainty.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelCertainty.Name = "labelCertainty";
             this.labelCertainty.Size = new System.Drawing.Size(63, 16);
@@ -113,7 +113,7 @@
             // certaintyTextBox
             // 
             this.certaintyTextBox.HasBounds = false;
-            this.certaintyTextBox.Location = new System.Drawing.Point(118, 238);
+            this.certaintyTextBox.Location = new System.Drawing.Point(117, 181);
             this.certaintyTextBox.MaxValue = 0F;
             this.certaintyTextBox.MinValue = 0F;
             this.certaintyTextBox.Name = "certaintyTextBox";
@@ -130,7 +130,7 @@
             this.perspectiveTextBox.AllowUniversal = true;
             this.perspectiveTextBox.AllowUniversalLiteral = true;
             this.perspectiveTextBox.AllowVariable = true;
-            this.perspectiveTextBox.Location = new System.Drawing.Point(118, 171);
+            this.perspectiveTextBox.Location = new System.Drawing.Point(117, 132);
             this.perspectiveTextBox.Name = "perspectiveTextBox";
             this.perspectiveTextBox.OnlyIntOrVariable = false;
             this.perspectiveTextBox.Size = new System.Drawing.Size(192, 22);
@@ -162,7 +162,7 @@
             this.beliefValueTextBox.AllowUniversal = true;
             this.beliefValueTextBox.AllowUniversalLiteral = true;
             this.beliefValueTextBox.AllowVariable = true;
-            this.beliefValueTextBox.Location = new System.Drawing.Point(118, 100);
+            this.beliefValueTextBox.Location = new System.Drawing.Point(118, 85);
             this.beliefValueTextBox.Name = "beliefValueTextBox";
             this.beliefValueTextBox.OnlyIntOrVariable = false;
             this.beliefValueTextBox.Size = new System.Drawing.Size(192, 22);
@@ -175,11 +175,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.ForeColor = System.Drawing.SystemColors.AppWorkspace;
-            this.label4.Location = new System.Drawing.Point(134, 17);
+            this.label4.Location = new System.Drawing.Point(153, 18);
             this.label4.Name = "label4";
             this.label4.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label4.Size = new System.Drawing.Size(176, 16);
+            this.label4.Size = new System.Drawing.Size(157, 15);
             this.label4.TabIndex = 23;
             this.label4.Text = "Has(Money), Loves(Apples)";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -190,11 +191,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.SystemColors.AppWorkspace;
-            this.label5.Location = new System.Drawing.Point(216, 81);
+            this.label5.Location = new System.Drawing.Point(223, 67);
             this.label5.Name = "label5";
             this.label5.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label5.Size = new System.Drawing.Size(94, 16);
+            this.label5.Size = new System.Drawing.Size(87, 15);
             this.label5.TabIndex = 24;
             this.label5.Text = "5 , True, Sarah";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -205,13 +207,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.SystemColors.AppWorkspace;
-            this.label6.Location = new System.Drawing.Point(98, 152);
+            this.label6.Location = new System.Drawing.Point(240, 114);
             this.label6.Name = "label6";
             this.label6.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label6.Size = new System.Drawing.Size(225, 16);
+            this.label6.Size = new System.Drawing.Size(70, 15);
             this.label6.TabIndex = 25;
-            this.label6.Text = "Used for Theory of Mind: SELF, John";
+            this.label6.Text = "SELF, John";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
@@ -221,13 +224,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.SystemColors.AppWorkspace;
-            this.label7.Location = new System.Drawing.Point(98, 219);
+            this.label7.Location = new System.Drawing.Point(277, 163);
             this.label7.Name = "label7";
             this.label7.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label7.Size = new System.Drawing.Size(236, 16);
+            this.label7.Size = new System.Drawing.Size(33, 15);
             this.label7.TabIndex = 26;
-            this.label7.Text = "Degree of confidence in the belief (0-1)";
+            this.label7.Text = "(0-1)";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
@@ -237,7 +241,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(358, 342);
+            this.ClientSize = new System.Drawing.Size(335, 282);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);

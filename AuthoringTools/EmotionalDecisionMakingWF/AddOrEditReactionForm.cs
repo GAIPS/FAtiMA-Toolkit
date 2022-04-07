@@ -11,7 +11,7 @@ namespace EmotionalDecisionMakingWF
         private EmotionalDecisionMakingAsset _edmAsset;
         private ActionRuleDTO _reactionToEdit;
 
-        public AddOrEditReactionForm(EmotionalDecisionMakingAsset edmAsset, ActionRuleDTO reactionToEdit = null)
+        public AddOrEditReactionForm(Form parent, EmotionalDecisionMakingAsset edmAsset, ActionRuleDTO reactionToEdit = null)
         {
             InitializeComponent();
 
@@ -38,6 +38,8 @@ namespace EmotionalDecisionMakingWF
                 textBoxPriority.Value = reactionToEdit.Priority;
                 textBoxLayer.Value = reactionToEdit.Layer;
             }
+
+            this.toolTip1.SetToolTip(parent, "Ayy");
         }
 
 

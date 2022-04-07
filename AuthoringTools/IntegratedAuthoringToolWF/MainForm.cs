@@ -1745,8 +1745,8 @@ namespace IntegratedAuthoringToolWF
 
             // 0 Expertise level, No Characters
             assistantDescription.Add(new Tuple<int, int>(0, 2),
-               "The action space of all the characters can be defined in the Emotional Decision Making component \n" +
-               " A Decision Rule defines the action name, its priority, if it belongs to a particular layer and its target");
+               "Here, the action space of all the characters can be defined \n" +
+               " A Decision Rule defines the Action Name, Priority, an optional Layer and the Target");
 
             // 0 Expertise level, No Characters
             assistantDescription.Add(new Tuple<int, int>(0, 3),

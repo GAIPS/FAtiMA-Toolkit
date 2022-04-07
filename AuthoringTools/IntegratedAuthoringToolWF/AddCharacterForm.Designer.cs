@@ -41,9 +41,9 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(24, 54);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(48, 16);
+            this.label1.Size = new System.Drawing.Size(109, 16);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Name:";
+            this.label1.Text = "Character Name:";
             // 
             // button1
             // 
@@ -64,13 +64,18 @@
             this.wfNameFieldBoxCharacterName.AllowUniversal = true;
             this.wfNameFieldBoxCharacterName.AllowUniversalLiteral = true;
             this.wfNameFieldBoxCharacterName.AllowVariable = true;
+            this.wfNameFieldBoxCharacterName.AutoCompleteCustomSource.AddRange(new string[] {
+            "John",
+            "Sarah",
+            "Doctor"});
+            this.wfNameFieldBoxCharacterName.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.wfNameFieldBoxCharacterName.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.wfNameFieldBoxCharacterName.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.wfNameFieldBoxCharacterName.Location = new System.Drawing.Point(78, 51);
+            this.wfNameFieldBoxCharacterName.Location = new System.Drawing.Point(139, 51);
             this.wfNameFieldBoxCharacterName.Name = "wfNameFieldBoxCharacterName";
             this.wfNameFieldBoxCharacterName.OnlyIntOrVariable = false;
-            this.wfNameFieldBoxCharacterName.Size = new System.Drawing.Size(247, 22);
+            this.wfNameFieldBoxCharacterName.Size = new System.Drawing.Size(186, 22);
             this.wfNameFieldBoxCharacterName.TabIndex = 0;
-            this.wfNameFieldBoxCharacterName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label2
             // 

@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddOrEditReactionForm));
             this.emotionalAppraisalAssetBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.label1 = new System.Windows.Forms.Label();
             this.addOrEditButton = new System.Windows.Forms.Button();
@@ -44,6 +45,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.emotionalAppraisalAssetBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.addBeliefErrorProvider)).BeginInit();
             this.SuspendLayout();
@@ -58,6 +60,8 @@
             this.label1.Size = new System.Drawing.Size(52, 18);
             this.label1.TabIndex = 14;
             this.label1.Text = "Name:";
+            this.toolTip1.SetToolTip(this.label1, "Name of the action, is a well-formed name that can be either a symbol (e.g. Smile" +
+        ", Eat) ");
             // 
             // addOrEditButton
             // 
@@ -79,6 +83,8 @@
             this.label3.Size = new System.Drawing.Size(52, 16);
             this.label3.TabIndex = 16;
             this.label3.Text = "Priority:";
+            this.toolTip1.SetToolTip(this.label3, "The |priority| is a numerical value that represents how important it is for the a" +
+        "gent to execute the action.");
             // 
             // label2
             // 
@@ -89,6 +95,8 @@
             this.label2.Size = new System.Drawing.Size(51, 16);
             this.label2.TabIndex = 15;
             this.label2.Text = "Target:";
+            this.toolTip1.SetToolTip(this.label2, "The Target of the action is the name of the agent or object that the action is ai" +
+        "med at");
             // 
             // addBeliefErrorProvider
             // 
@@ -103,6 +111,7 @@
             this.label4.Size = new System.Drawing.Size(45, 16);
             this.label4.TabIndex = 26;
             this.label4.Text = "Layer:";
+            this.toolTip1.SetToolTip(this.label4, resources.GetString("label4.ToolTip"));
             // 
             // textBoxAction
             // 
@@ -117,7 +126,9 @@
             this.textBoxAction.OnlyIntOrVariable = false;
             this.textBoxAction.Size = new System.Drawing.Size(223, 22);
             this.textBoxAction.TabIndex = 27;
-            this.textBoxAction.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.toolTip1.SetToolTip(this.textBoxAction, "Name of the action, is a well-formed name that can be either a symbol (e.g. Smile" +
+        ", Eat) \r\nor a composed name (e.g. Offer(Gift)) in which the inner symbols are tr" +
+        "eated as the action\'s parameters");
             // 
             // textBoxTarget
             // 
@@ -132,7 +143,8 @@
             this.textBoxTarget.OnlyIntOrVariable = false;
             this.textBoxTarget.Size = new System.Drawing.Size(223, 22);
             this.textBoxTarget.TabIndex = 28;
-            this.textBoxTarget.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.toolTip1.SetToolTip(this.textBoxTarget, "The Target of the action is the name of the agent or object that the action is ai" +
+        "med at");
             // 
             // textBoxPriority
             // 
@@ -147,7 +159,8 @@
             this.textBoxPriority.OnlyIntOrVariable = false;
             this.textBoxPriority.Size = new System.Drawing.Size(223, 22);
             this.textBoxPriority.TabIndex = 29;
-            this.textBoxPriority.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.toolTip1.SetToolTip(this.textBoxPriority, "The |priority| is a numerical value that represents how important it is for the a" +
+        "gent to execute the action.\r\nWe reccomend using a 0-10 range");
             // 
             // textBoxLayer
             // 
@@ -162,15 +175,16 @@
             this.textBoxLayer.OnlyIntOrVariable = false;
             this.textBoxLayer.Size = new System.Drawing.Size(223, 22);
             this.textBoxLayer.TabIndex = 30;
-            this.textBoxLayer.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.toolTip1.SetToolTip(this.textBoxLayer, resources.GetString("textBoxLayer.ToolTip"));
             // 
             // label5
             // 
             this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.label5.Location = new System.Drawing.Point(122, 49);
+            this.label5.Location = new System.Drawing.Point(139, 49);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(154, 16);
+            this.label5.Size = new System.Drawing.Size(137, 15);
             this.label5.TabIndex = 31;
             this.label5.Text = "Walk, Speak, Eat([food])";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -178,10 +192,11 @@
             // label6
             // 
             this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.label6.Location = new System.Drawing.Point(147, 110);
+            this.label6.Location = new System.Drawing.Point(159, 110);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(129, 16);
+            this.label6.Size = new System.Drawing.Size(117, 15);
             this.label6.TabIndex = 32;
             this.label6.Text = "John, beach, [target]";
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -189,10 +204,11 @@
             // label7
             // 
             this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.label7.Location = new System.Drawing.Point(235, 174);
+            this.label7.Location = new System.Drawing.Point(238, 175);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(41, 16);
+            this.label7.Size = new System.Drawing.Size(38, 15);
             this.label7.TabIndex = 33;
             this.label7.Text = "[0-10]";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -200,13 +216,23 @@
             // label8
             // 
             this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.label8.Location = new System.Drawing.Point(170, 242);
+            this.label8.Location = new System.Drawing.Point(182, 242);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(106, 16);
+            this.label8.Size = new System.Drawing.Size(94, 15);
             this.label8.TabIndex = 34;
             this.label8.Text = "Reactive, Social";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.AutoPopDelay = 5000;
+            this.toolTip1.InitialDelay = 200;
+            this.toolTip1.ReshowDelay = 100;
+            this.toolTip1.ShowAlways = true;
+            this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.toolTip1.ToolTipTitle = "Action Rule";
             // 
             // AddOrEditReactionForm
             // 
@@ -261,5 +287,6 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }

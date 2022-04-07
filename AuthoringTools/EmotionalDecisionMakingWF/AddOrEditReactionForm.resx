@@ -120,7 +120,26 @@
   <metadata name="emotionalAppraisalAssetBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>456, 17</value>
+  </metadata>
   <metadata name="addBeliefErrorProvider.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>282, 17</value>
   </metadata>
+  <data name="textBoxLayer.ToolTip" xml:space="preserve">
+    <value>The Layerparameter is a symbol that indicates in which layer is the action considered in the decision-making process. 
+It allows the agent to consider different groups of actions at different time scales. 
+Typically, there is a need for at least two layers when it comes to decision-making, 
+one that is reactive and allows for fast decisions and another that is slower and focused on more strategic decisions.
+
+We reccomend leaving as is</value>
+  </data>
+  <data name="label4.ToolTip" xml:space="preserve">
+    <value>The Layerparameter is a symbol that indicates in which layer is the action considered in the decision-making process. 
+It allows the agent to consider different groups of actions at different time scales. 
+Typically, there is a need for at least two layers when it comes to decision-making, 
+one that is reactive and allows for fast decisions and another that is slower and focused on more strategic decisions.
+
+We reccomend leaving as is</value>
+  </data>
 </root>

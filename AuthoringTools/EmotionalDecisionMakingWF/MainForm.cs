@@ -33,7 +33,7 @@ namespace EmotionalDecisionMakingWF
             _storage = new AssetStorage();
             _loadedAsset = EmotionalDecisionMakingAsset.CreateInstance(_storage);
             OnAssetDataLoaded();
-            this.edmToolTip.SetToolTip(parent, "Ayy");
+            this.edmToolTip.SetToolTip(parent, "FAtiMA-Toolkit");
 
 		}
 
@@ -115,7 +115,7 @@ namespace EmotionalDecisionMakingWF
 
         public void buttonAddReaction_Click(object sender, EventArgs e)
         {
-            new AddOrEditReactionForm(_loadedAsset).ShowDialog();
+            new AddOrEditReactionForm(this, _loadedAsset).ShowDialog();
             actionRules.DataSource = _loadedAsset.GetAllActionRules().ToList();
             actionRules.Refresh();
             if (_loadedAsset.GetAllActionRules().Count() > 0)
@@ -135,7 +135,7 @@ namespace EmotionalDecisionMakingWF
                 var selectedReaction = ((ObjectView<ActionRuleDTO>)dataGridViewReactiveActions.
                    SelectedRows[0].DataBoundItem).Object;
                 
-                new AddOrEditReactionForm(_loadedAsset, selectedReaction).ShowDialog();
+                new AddOrEditReactionForm(this, _loadedAsset, selectedReaction).ShowDialog();
                 actionRules.DataSource = _loadedAsset.GetAllActionRules().ToList();
                  actionRules.Refresh();
             }

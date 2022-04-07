@@ -211,12 +211,12 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label8.AutoSize = true;
             this.label8.ForeColor = System.Drawing.SystemColors.AppWorkspace;
-            this.label8.Location = new System.Drawing.Point(153, 143);
+            this.label8.Location = new System.Drawing.Point(306, 143);
             this.label8.Name = "label8";
             this.label8.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label8.Size = new System.Drawing.Size(443, 16);
+            this.label8.Size = new System.Drawing.Size(287, 16);
             this.label8.TabIndex = 22;
-            this.label8.Text = "Hello, how are you? | You are tearing me apart | What do you want do eat?";
+            this.label8.Text = "Hello, how are you? | What do you want do eat?";
             this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label9
