@@ -234,25 +234,30 @@ namespace IntegratedAuthoringToolWF
 
             if (selectedRPC != null)
             {
-                var rpc = _iat.Characters.Where(r => r.CharacterName.ToString() == selectedRPC.Name).FirstOrDefault();
-                int selectedRPCTab = 0;
-                if (_rpcForm != null)
-                {
-                    selectedRPCTab = _rpcForm.SelectedTab;
-                    _rpcForm.Close();
-                }
-                _rpcForm = new RolePlayCharacterWF.MainForm();
-                _rpcForm.OnNameChangeEvent += this.OnRPCNameChange;
-                _rpcForm.OnMoodChangeEvent += this.OnRPCMoodChange;
-
-                _rpcForm.OnAssetDataLoaded();
-                _rpcForm.Asset = rpc;
-                FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[2], _rpcForm);
-                this.tabControlIAT.SelectTab(2);
-                _rpcForm.SelectedTab = selectedRPCTab;
-                buttonInspect.Enabled = true;
-                buttonRemoveCharacter.Enabled = true;
+                LoadFormForRPC(selectedRPC.Name);
             }
+        }
+
+        private void LoadFormForRPC(string characterName)
+        {
+            var rpc = _iat.Characters.Where(r => r.CharacterName.ToString() == characterName).FirstOrDefault();
+            int selectedRPCTab = 0;
+            if (_rpcForm != null)
+            {
+                selectedRPCTab = _rpcForm.SelectedTab;
+                _rpcForm.Close();
+            }
+            _rpcForm = new RolePlayCharacterWF.MainForm();
+            _rpcForm.OnNameChangeEvent += this.OnRPCNameChange;
+            _rpcForm.OnMoodChangeEvent += this.OnRPCMoodChange;
+
+            _rpcForm.OnAssetDataLoaded();
+            _rpcForm.Asset = rpc;
+            FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[2], _rpcForm);
+            this.tabControlIAT.SelectTab(2);
+            _rpcForm.SelectedTab = selectedRPCTab;
+            buttonInspect.Enabled = true;
+            buttonRemoveCharacter.Enabled = true;
         }
 
         private void OnRPCNameChange(string newName)
@@ -1844,6 +1849,7 @@ namespace IntegratedAuthoringToolWF
                     break;
                 case 1:
                     button1.Text = "Add Beliefs";
+                 
                     indexLabel.Text = "Agent's Internal State";
                     break;
                 case 2:
@@ -1873,6 +1879,19 @@ namespace IntegratedAuthoringToolWF
             }
             else if(CalculateAverageBeliefs() < 1)
             {
+                var selectedRPC = EditorTools.GetSelectedDtoFromTable<CharacterNameAndMoodDTO>(dataGridViewCharacters);
+                if (selectedRPC != null)
+                {
+                    LoadFormForRPC(selectedRPC.Name);
+                }
+                else
+                {
+                    dataGridViewCharacters.Rows[0].Selected = true;
+                    LoadFormForRPC(_iat.Characters.FirstOrDefault().CharacterName.ToString());
+                }
+
+                this.tabControlIAT.SelectedIndex = 3;
+                this._rpcForm.tabControl1.SelectedIndex = 1;
                 step = 1;
             }
             else if (_edmForm.dataGridViewReactiveActions.Rows.Count < 1)
@@ -1934,16 +1953,7 @@ namespace IntegratedAuthoringToolWF
                     break;
 
                 case 1: // No beliefs
-
-                    if (dataGridViewCharacters.SelectedRows.Count == 0)
-                    {
-                        dataGridViewCharacters.Rows[0].Selected = true;
-                    }
-                    if (this._rpcForm != null)
-                    {
-                        this._rpcForm.SelectedTab = 0;
-                        new AddOrEditBeliefForm(this._rpcForm._knowledgeBaseVM).ShowDialog();
-                    }
+                    new AddOrEditBeliefForm(this._rpcForm._knowledgeBaseVM).ShowDialog();
                     break;
 
                 case 2: // No decision rules
@@ -1969,7 +1979,7 @@ namespace IntegratedAuthoringToolWF
 
             }
 
-            //AssistantHandler();
+            AssistantHandler();
 
         }
 
