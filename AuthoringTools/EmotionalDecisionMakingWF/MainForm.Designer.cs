@@ -38,7 +38,6 @@
             this.buttonRemoveReaction = new System.Windows.Forms.Button();
             this.dataGridViewReactiveActions = new System.Windows.Forms.DataGridView();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.conditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,6 +46,7 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.edmToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.conditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactiveActions)).BeginInit();
             this.groupBox8.SuspendLayout();
@@ -80,6 +80,7 @@
             // 
             this.emotionaAppraisalButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.emotionaAppraisalButton.BackColor = System.Drawing.SystemColors.ControlLight;
             this.emotionaAppraisalButton.Location = new System.Drawing.Point(533, 23);
             this.emotionaAppraisalButton.Margin = new System.Windows.Forms.Padding(4);
             this.emotionaAppraisalButton.Name = "emotionaAppraisalButton";
@@ -87,7 +88,7 @@
             this.emotionaAppraisalButton.TabIndex = 11;
             this.emotionaAppraisalButton.Text = "Generate Emotional Appraisal";
             this.edmToolTip.SetToolTip(this.emotionaAppraisalButton, "Add an Appraisal Rule that matches the select action");
-            this.emotionaAppraisalButton.UseVisualStyleBackColor = true;
+            this.emotionaAppraisalButton.UseVisualStyleBackColor = false;
             this.emotionaAppraisalButton.Click += new System.EventHandler(this.emotionaAppraisalButton_Click);
             // 
             // buttonDuplicateReaction
@@ -179,18 +180,6 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Conditions";
             // 
-            // conditionSetEditor
-            // 
-            this.conditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.conditionSetEditor.Location = new System.Drawing.Point(4, 19);
-            this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4);
-            this.conditionSetEditor.Name = "conditionSetEditor";
-            this.conditionSetEditor.Size = new System.Drawing.Size(809, 365);
-            this.conditionSetEditor.TabIndex = 0;
-            this.edmToolTip.SetToolTip(this.conditionSetEditor, "Conditions to add to each action");
-            this.conditionSetEditor.View = null;
-            this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);
-            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -269,6 +258,18 @@
             this.edmToolTip.ShowAlways = true;
             this.edmToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.edmToolTip.ToolTipTitle = "EDM Tooltip";
+            // 
+            // conditionSetEditor
+            // 
+            this.conditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.conditionSetEditor.Location = new System.Drawing.Point(4, 19);
+            this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4);
+            this.conditionSetEditor.Name = "conditionSetEditor";
+            this.conditionSetEditor.Size = new System.Drawing.Size(809, 365);
+            this.conditionSetEditor.TabIndex = 0;
+            this.edmToolTip.SetToolTip(this.conditionSetEditor, "Conditions to add to each action");
+            this.conditionSetEditor.View = null;
+            this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);
             // 
             // MainForm
             // 
