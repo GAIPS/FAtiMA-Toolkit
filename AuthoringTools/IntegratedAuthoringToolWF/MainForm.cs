@@ -251,7 +251,7 @@ namespace IntegratedAuthoringToolWF
                 selectedRPCTab = _rpcForm.SelectedTab;
                 _rpcForm.Close();
             }
-            _rpcForm = new RolePlayCharacterWF.MainForm();
+            _rpcForm = new RolePlayCharacterWF.MainForm(this);
             _rpcForm.OnNameChangeEvent += this.OnRPCNameChange;
             _rpcForm.OnMoodChangeEvent += this.OnRPCMoodChange;
 
@@ -1821,7 +1821,7 @@ namespace IntegratedAuthoringToolWF
             {
                 groupboxHeader = "Dialogue Editor",
                 pressed = false,
-                performActionButtonText = "Add Appraisal Rule",
+                performActionButtonText = "Add Dialogue Action",
                 description = "FAtiMA - Toolkit uses a hybrid approach combining both dialogue trees and dialogue states. \n Using a special Speak action the dialogue manager chooses the applicable dialogue from the pool defined here",
                 index = _index
             };
@@ -1845,7 +1845,7 @@ namespace IntegratedAuthoringToolWF
             // 8
             toAdd = new descriptionObject()
             {
-                groupboxHeader = "Enriching the Scenario",
+                groupboxHeader = "Enriching the Scenario: Emotional Reactions",
                 pressed = false,
                 performActionButtonText = "Add Emotional Reaction",
                 description = "For each different actions there can exist different emotional reactions. \n" +
@@ -1862,7 +1862,6 @@ namespace IntegratedAuthoringToolWF
 
         private void TabIndexChanged_Handler(object sender, EventArgs e)
         {
-            AssistantHandler();
         }
 
 
@@ -1948,6 +1947,7 @@ namespace IntegratedAuthoringToolWF
                 {
                    dataGridViewCharacters.Rows[0].Selected = true;
                    LoadFormForRPC(_iat.Characters.FirstOrDefault().CharacterName.ToString());
+                   
                 }
              
                 var k = assistantDescription.FirstOrDefault(x => x.Value.groupboxHeader == "Internal State").Key;
@@ -1976,6 +1976,8 @@ namespace IntegratedAuthoringToolWF
                 var k = assistantDescription.FirstOrDefault(x => x.Value.groupboxHeader == "Simulator").Key;
                 step = k;
             }
+
+
             UpdateLabel();
 
            // var edmRulesCount = this._edmForm._loadedAsset.GetAllActionRules().Count();
@@ -2002,9 +2004,9 @@ namespace IntegratedAuthoringToolWF
         private void button1_Click(object sender, EventArgs e)
         {
             var descriptionObject = assistantDescription[step];
-            
+
             switch (descriptionObject.groupboxHeader)
-                
+
             {
                 case "FAtiMA-Toolkit":  // Intro
                     step += 1;
@@ -2037,7 +2039,6 @@ namespace IntegratedAuthoringToolWF
                     {
                         ClearLastButton();
                         this._rpcForm.addBeliefButton_Click(sender, e);
-                      //  new AddOrEditBeliefForm(this._rpcForm._knowledgeBaseVM).ShowDialog();
                     }
                     break;
 
@@ -2104,35 +2105,36 @@ namespace IntegratedAuthoringToolWF
                     }
                     break;
 
-                case "Emotional Reaction":  // No Emotional Appraisal Rules compared to Action Rules
+                case "Enriching the Scenario: Emotional Reactions":  // No Emotional Appraisal Rules compared to Action Rules
                     if (!descriptionObject.pressed)
                     {
-                       this.tabControlIAT.SelectedIndex = 1;
+                        this.tabControlIAT.SelectedIndex = 1;
                         this.tabControlAssetEditor.SelectedIndex = 1;
-                        HighlightButton(buttonStart);
+                        HighlightButton(this._edmForm.emotionaAppraisalButton);
                         descriptionObject.pressed = true;
                         assistantDescription[step] = descriptionObject;
                     }
                     else
                     {
                         ClearLastButton();
-                        this.buttonStart_Click(sender, e);
+                        this._edmForm.emotionaAppraisalButton_Click(sender, e);
                     }
+
                     break;
-                   
-                  default:
-                        this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Default");
-                        break;
 
-                }
+                default:
+                    this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Default");
+                    break;
 
-                UpdateLabel();
+            }
+
+            AssistantHandler();
         }
 
 
 
 
-        private void assistantTextBox_TextChanged(object sender, EventArgs e)
+            private void assistantTextBox_TextChanged(object sender, EventArgs e)
         {
 
         }
@@ -2153,15 +2155,15 @@ namespace IntegratedAuthoringToolWF
 
         private void helpPicture_Click_1(object sender, EventArgs e)
         {
-            if (step == 3)
+            if (step == 4)
                 // Navigate to a URL.
                 System.Diagnostics.Process.Start("https://fatima-toolkit.eu/9-dialogue-manager/");
 
-            else if (step == 4)
+            else if (step == 5)
                 // Navigate to a URL.
                 System.Diagnostics.Process.Start("https://fatima-toolkit.eu/5-emotional-appraisal/");
 
-            else if (step == 2)
+            else if (step == 3)
                 // Navigate to a URL.
                 System.Diagnostics.Process.Start("https://fatima-toolkit.eu/6-emotional-decision-making/");
 

@@ -254,7 +254,7 @@ namespace EmotionalDecisionMakingWF
 
         }
 
-        private void emotionaAppraisalButton_Click(object sender, EventArgs e)
+        public void emotionaAppraisalButton_Click(object sender, EventArgs e)
         {
            latestAddedRule = ((ObjectView<ActionRuleDTO>)dataGridViewReactiveActions.
                  SelectedRows[0].DataBoundItem).Object;

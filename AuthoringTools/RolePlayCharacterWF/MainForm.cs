@@ -27,11 +27,12 @@ namespace RolePlayCharacterWF
         public KnowledgeBaseVM _knowledgeBaseVM;
         public RolePlayCharacterAsset _loadedAsset;
             
-        private int tabSelected;
+        public int tabSelected;
+        private Form _parent; 
 
         public event OnNameChange OnNameChangeEvent;
         public event OnMoodChange OnMoodChangeEvent;
-
+        
 
         public int SelectedTab
         {
@@ -49,6 +50,14 @@ namespace RolePlayCharacterWF
         {
             InitializeComponent();
             _loadedAsset = new RolePlayCharacterAsset();
+        }
+
+        public MainForm(Form parent)
+        {
+            InitializeComponent();
+            _parent = parent;
+            _loadedAsset = new RolePlayCharacterAsset();
+            this.toolTip1.SetToolTip(parent, "Ayy");
         }
 
         public void OnAssetDataLoaded()
