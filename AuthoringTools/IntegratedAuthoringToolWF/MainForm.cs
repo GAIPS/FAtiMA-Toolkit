@@ -1764,6 +1764,18 @@ namespace IntegratedAuthoringToolWF
             assistantDescription.Add(_index, toAdd);
             _index += 1;
 
+            toAdd = new descriptionObject()
+            {
+                groupboxHeader = "Authoring Tools",
+                pressed = false,
+                performActionButtonText = "Next",
+                description = "If you have some experience with the Toolkit we reccomend taking a look \n at the Information Extration Pipeline that converts descriptions into scenarios \n" +
+                "Look for it under the \"Tools\" menu",
+                index = _index
+            };
+            assistantDescription.Add(_index, toAdd);
+            _index += 1;
+
             // Second
             toAdd = new descriptionObject()
             {
@@ -1928,7 +1940,7 @@ namespace IntegratedAuthoringToolWF
         // If users have no expertise make sure the tutorial is being followed
         public void ScenarioAnalyser()
         {
-            if (step == 0)
+            if (step < 2)
                 return;
 
             if(_iat.Characters.Count() == 0)
@@ -2010,6 +2022,14 @@ namespace IntegratedAuthoringToolWF
             {
                 case "FAtiMA-Toolkit":  // Intro
                     step += 1;
+                    UpdateLabel();
+                    break;
+
+                case "Authoring Tools":
+                    toolsToolStripMenuItem.ShowDropDown();
+                    assistantDescription[step] = descriptionObject;
+                    step += 1;
+                    UpdateLabel();
                     break;
 
                 case "Characters": // No Characters
@@ -2122,6 +2142,8 @@ namespace IntegratedAuthoringToolWF
 
                     break;
 
+
+
                 default:
                     this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Default");
                     break;
@@ -2213,26 +2235,6 @@ namespace IntegratedAuthoringToolWF
             ClearLastButton();
             UpdateLabel();
         }
-
-        private void nonExperiencedToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            step = 0;
-            AssistantHandler();
-        }
-
-        private void someExperienceToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            step = 0;
-            AssistantHandler();
-            UpdateLabel();
-        }
-
-        private void expertToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            step = 0;
-            AssistantHandler();
-        }
-
         public void HighlightButton(Button but)
         {
             lastButtonUsed = but;
