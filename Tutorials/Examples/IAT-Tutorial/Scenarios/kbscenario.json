@@ -4,6 +4,15 @@
 			"classId": 0,
 			"ScenarioName": "",
 			"Description": "",
+			"Dialogues": [
+				{
+					"CurrentState": "Start",
+					"NextState": "Next",
+					"Meaning": "Var(Likes(Flower), is(Animal))",
+					"Style": "-",
+					"Utterance": "My favorite flowers are [var1] and [var2] !",
+					"UtteranceId": "TTS-42742FF5B869CBBB8A50AA0DDE31C049"
+				}],
 			"Characters": [
 				{
 					"KnowledgeBase":
@@ -13,8 +22,46 @@
 								{
 									"SELF":
 										{
-											"is(Animal)": "Bird, 1"
+											"is(Animal)": "Bird, 1",
+											"Likes(Flower)": "Sunflower, 1"
 										}
+								}
+						},
+					"BodyName": null,
+					"VoiceName": null,
+					"EmotionalState":
+						{
+							"Mood": 0,
+							"initialTick": 0,
+							"EmotionalPool": [],
+							"AppraisalConfiguration":
+								{
+									"HalfLifeDecayConstant": 0.5,
+									"EmotionInfluenceOnMoodFactor": 0.3,
+									"MoodInfluenceOnEmotionFactor": 0.3,
+									"MinimumMoodValueForInfluencingEmotions": 0.5,
+									"EmotionalHalfLifeDecayTime": 15,
+									"MoodHalfLifeDecayTime": 60
+								}
+						},
+					"AutobiographicMemory":
+						{
+							"Tick": 0,
+							"records": []
+						},
+					"OtherAgents":
+						{
+							"dictionary": []
+						},
+					"Goals": []
+				}, 
+				{
+					"KnowledgeBase":
+						{
+							"Perspective": "Nameless",
+							"Knowledge":
+								{
+
 								}
 						},
 					"BodyName": null,

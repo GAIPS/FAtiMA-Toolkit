@@ -12,6 +12,7 @@ using System.Text;
 using System.Security.Cryptography;
 using ActionLibrary;
 using WorldModel;
+using System.Text.RegularExpressions;
 using Utilities.Json;
 
 namespace IntegratedAuthoringTool
@@ -175,6 +176,113 @@ namespace IntegratedAuthoringTool
             return retList;
         }
 
+        // Get Dialogue Action and its Utterance taking into account Substitutions using the RPCs KB
+        public List<DialogueStateActionDTO> GetDialogueActions(Name currentState, Name nextState, Name meaning, Name style, RolePlayCharacterAsset rpc)
+        {
+            var actions = (IEnumerable<DialogStateAction>)m_dialogues.ToList();
+
+            if (currentState.ToString() != Name.UNIVERSAL_STRING)
+            {
+                actions = actions.Where(d => d.CurrentState == currentState);
+            }
+
+            if (nextState.ToString() != Name.UNIVERSAL_STRING)
+            {
+                actions = actions.Where(d => d.NextState == nextState);
+            }
+
+            if (meaning.ToString() != Name.UNIVERSAL_STRING)
+            {
+                actions = actions.Where(d => d.Meaning == meaning);
+            }
+          
+
+            if (style.ToString() != Name.UNIVERSAL_STRING)
+            {
+                actions = actions.Where(d => d.Style == style);
+            }
+
+            // Checking if there are substitutions to be made
+            if (meaning.ToString().Contains("Var(") && meaning.ToString().Contains(")"))
+            {
+
+                // Finding variables and their value in Meaning and Style using REGEX
+                var variablesSplit = Regex.Match(meaning.ToString(), @"(?<=Var).*");  //@"\Var\((.*)");
+
+                // Removing added parenthesis
+                var variableSplitString = variablesSplit.ToString().Substring(1);
+                variableSplitString = variableSplitString.Remove(variableSplitString.Length-1);
+
+
+                var variableList = variableSplitString.ToString().Split(',');
+
+              
+                var beliefValues = new Dictionary<string, string>();
+
+                foreach (var v in variableList)
+                {
+                    // Default value
+                    var belief = Name.BuildName(" - ");
+                    if (v.Contains("))"))
+                    {
+                        // Making sure everyone has their parenthesis
+                        belief = Name.BuildName(v.Replace("))", ")"));
+                    }
+                    else
+                    {
+                        belief = Name.BuildName(v);
+                    }
+                  
+                    if (rpc.m_kb.AskProperty(belief) != null)
+                    {
+                        var value = rpc.GetBeliefValue(belief.ToString());
+                        beliefValues.Add(belief.ToString(), value);
+                    }
+                }
+                
+
+                var retList = new List<DialogueStateActionDTO>();
+
+                foreach (var action in actions)
+                {
+                    var foundVars = Regex.Matches(action.Utterance, @"\[.*?\]");
+                    int index = 0;
+
+                    if (foundVars.Count > 0)
+                    {
+                        foreach (var v in foundVars)
+                        {
+                            var utterance = action.Utterance;
+                            utterance = utterance.Replace(v.ToString(), beliefValues[beliefValues.Keys.ToList()[index]]);
+                            action.Utterance = utterance;
+                           
+                            index += 1;
+                        }
+                    }
+                    retList.Add(action.ToDTO());
+                }
+                
+
+                return retList;
+
+            }
+
+            else
+            {
+                var retList = new List<DialogueStateActionDTO>();
+
+                foreach (var action in actions)
+                {
+                    retList.Add(action.ToDTO());
+                }
+
+                return retList;
+            }
+
+           
+        }
+
+
         public List<DialogueStateActionDTO> GetDialogueActionsByState(string currentState)
         {
             return this.GetDialogueActions(Name.BuildName(currentState), Name.UNIVERSAL_SYMBOL, Name.UNIVERSAL_SYMBOL, Name.UNIVERSAL_SYMBOL);
@@ -193,6 +301,27 @@ namespace IntegratedAuthoringTool
                                                action.Parameters[1],
                                                action.Parameters[2],
                                                action.Parameters[3]).Shuffle().FirstOrDefault();
+            if (diag == null)
+            {
+                error = "ERROR - No dialogue defined for action '" + action + "'\n";
+            }
+
+            return diag;
+        }
+
+        public DialogueStateActionDTO GetDialogAction(IAction action, RolePlayCharacterAsset rpc , out string error)
+        {
+            error = null;
+
+            if (action.Parameters.Count != 4)
+            {
+                error = "ERROR - Speak action does not have four parameters'" + action + "'\n";
+            }
+
+            var diag = this.GetDialogueActions(action.Parameters[0],
+                                               action.Parameters[1],
+                                               action.Parameters[2],
+                                               action.Parameters[3], rpc).Shuffle().FirstOrDefault();
             if (diag == null)
             {
                 error = "ERROR - No dialogue defined for action '" + action + "'\n";

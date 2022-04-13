@@ -810,7 +810,7 @@ namespace IntegratedAuthoringToolWF
                     if (action.Key.ToString() == IATConsts.DIALOG_ACTION_KEY)
                     {
                         string error;
-                        var diag = _iat.GetDialogAction(action, out error);
+                        var diag = _iat.GetDialogAction(action, ag, out error);
                         if (error != null)
                         {
                             EditorTools.WriteText(richTextBoxChat, ag.CharacterName + " : " + error, Color.Red, false);
@@ -952,7 +952,7 @@ namespace IntegratedAuthoringToolWF
             RolePlayCharacterAsset playerRPC = _agentsInSimulation.Where(c => c.CharacterName.ToString() == comboBoxPlayerRpc.SelectedItem).FirstOrDefault();
             foreach (var a in playerDialogueOptions)
             {
-                var diags = _iat.GetDialogueActions(a.Parameters[0], a.Parameters[1], a.Parameters[2], a.Parameters[3]);
+                var diags = _iat.GetDialogueActions(a.Parameters[0], a.Parameters[1], a.Parameters[2], a.Parameters[3], playerRPC);
 
                 if (diags.Count() == 0)
                 {

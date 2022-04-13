@@ -32,6 +32,16 @@
 							"Set": ["is(Entity) = [t]"]
 						},
 					"Priority": 1
+				}, 
+				{
+					"Action": "Speak([cs], [ns], [m], [sty])",
+					"Target": "Nameless",
+					"Layer": "-",
+					"Conditions":
+						{
+							"Set": ["ValidDialogue([cs], [ns], [m], [sty]) = True", "is(Animal) = Bird"]
+						},
+					"Priority": 5
 				}]
 		},
 	"types": [

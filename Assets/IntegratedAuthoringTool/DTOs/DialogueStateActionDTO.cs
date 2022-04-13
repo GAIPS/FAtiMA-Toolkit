@@ -15,5 +15,6 @@ namespace IntegratedAuthoringTool.DTOs
         public string Style { get; set; }
         public string Utterance { get; set; }
 		public string UtteranceId { get; set; }
+
     }
 }
