@@ -8,10 +8,18 @@
 				{
 					"CurrentState": "Start",
 					"NextState": "Next",
-					"Meaning": "Var(Likes(Flower), is(Animal))",
+					"Meaning": "-",
 					"Style": "-",
-					"Utterance": "My favorite flowers are [var1] and [var2] !",
-					"UtteranceId": "TTS-42742FF5B869CBBB8A50AA0DDE31C049"
+					"Utterance": "My favorite flowers are [[Likes(F)]] [v2]",
+					"UtteranceId": "TTS-BF80D2108AE7CB6C36287E8596300EF2"
+				}, 
+				{
+					"CurrentState": "Start",
+					"NextState": "Next",
+					"Meaning": "-",
+					"Style": "-",
+					"Utterance": "My favorite nothuings are are [[Likes(F)]] and [[is(Hate)]]",
+					"UtteranceId": "TTS-3FCA50EAB9731CC08037F4256099FAD2"
 				}],
 			"Characters": [
 				{
@@ -23,7 +31,7 @@
 									"SELF":
 										{
 											"is(Animal)": "Bird, 1",
-											"Likes(Flower)": "Sunflower, 1"
+											"Likes(F)": "Sunflower, 1"
 										}
 								}
 						},

@@ -180,6 +180,7 @@ namespace IntegratedAuthoringTool
         public List<DialogueStateActionDTO> GetDialogueActions(Name currentState, Name nextState, Name meaning, Name style, RolePlayCharacterAsset rpc)
         {
             var actions = (IEnumerable<DialogStateAction>)m_dialogues.ToList();
+            var retList = new List<DialogueStateActionDTO>();
 
             if (currentState.ToString() != Name.UNIVERSAL_STRING)
             {
@@ -202,22 +203,32 @@ namespace IntegratedAuthoringTool
                 actions = actions.Where(d => d.Style == style);
             }
 
-            // Checking if there are substitutions to be made
-            if (meaning.ToString().Contains("Var(") && meaning.ToString().Contains(")"))
-            {
+            if( meaning.ToString().Contains(IATConsts.VAR_PREFIX) || style.ToString().Contains(IATConsts.VAR_PREFIX)) { 
+
+                var beliefValues = new Dictionary<string, string>();
+
+
+                var meaningString = meaning.ToString();
+                var styleString = style.ToString();
 
                 // Finding variables and their value in Meaning and Style using REGEX
-                var variablesSplit = Regex.Match(meaning.ToString(), @"(?<=Var).*");  //@"\Var\((.*)");
+                var meaningMatch = Regex.Match(meaningString.ToString(), @"(?<=" + IATConsts.VAR_PREFIX + ").*");  //@"\Var\((.*)");
+
+                // Finding variables and their value in Meaning and Style using REGEX
+                var styleMatch = Regex.Match(styleString.ToString(), @"(?<=" + IATConsts.VAR_PREFIX + ").*");  //@"\Var\((.*)");
 
                 // Removing added parenthesis
-                var variableSplitString = variablesSplit.ToString().Substring(1);
-                variableSplitString = variableSplitString.Remove(variableSplitString.Length-1);
+                var meaningMatchClean = meaningMatch.ToString().Substring(1);
+                meaningMatchClean = meaningMatchClean.Remove(meaningMatchClean.Length - 1);
+
+                var styleMatchClean = styleMatch.ToString().Substring(1);
+                styleMatchClean = styleMatchClean.Remove(styleMatchClean.Length - 1);
 
 
-                var variableList = variableSplitString.ToString().Split(',');
+                var meaningBeliefList = meaningMatchClean.ToString().Split(',');
+                var styleBeliefList = styleMatchClean.ToString().Split(',');
 
-              
-                var beliefValues = new Dictionary<string, string>();
+                var variableList = meaningBeliefList.Concat(styleBeliefList);
 
                 foreach (var v in variableList)
                 {
@@ -232,34 +243,39 @@ namespace IntegratedAuthoringTool
                     {
                         belief = Name.BuildName(v);
                     }
-                  
-                    if (rpc.m_kb.AskProperty(belief) != null)
+
+                    var result = rpc.m_kb.AskProperty(belief);
+                    if (result.Value != Name.NIL_SYMBOL)
                     {
                         var value = rpc.GetBeliefValue(belief.ToString());
                         beliefValues.Add(belief.ToString(), value);
                     }
                 }
-                
 
-                var retList = new List<DialogueStateActionDTO>();
+            
+
+                retList = new List<DialogueStateActionDTO>();
 
                 foreach (var action in actions)
                 {
                     var foundVars = Regex.Matches(action.Utterance, @"\[.*?\]");
                     int index = 0;
+                    var dialogtoAdd = action.ToDTO();
 
                     if (foundVars.Count > 0)
                     {
                         foreach (var v in foundVars)
                         {
-                            var utterance = action.Utterance;
+                            var utterance = dialogtoAdd.Utterance;
+                            if (beliefValues.Keys.Count <= index)
+                                break;
                             utterance = utterance.Replace(v.ToString(), beliefValues[beliefValues.Keys.ToList()[index]]);
-                            action.Utterance = utterance;
+                            dialogtoAdd.Utterance = utterance;
                            
                             index += 1;
                         }
                     }
-                    retList.Add(action.ToDTO());
+                    retList.Add(dialogtoAdd);
                 }
                 
 
@@ -267,9 +283,8 @@ namespace IntegratedAuthoringTool
 
             }
 
-            else
-            {
-                var retList = new List<DialogueStateActionDTO>();
+           
+                retList = new List<DialogueStateActionDTO>();
 
                 foreach (var action in actions)
                 {
@@ -277,7 +292,7 @@ namespace IntegratedAuthoringTool
                 }
 
                 return retList;
-            }
+            
 
            
         }

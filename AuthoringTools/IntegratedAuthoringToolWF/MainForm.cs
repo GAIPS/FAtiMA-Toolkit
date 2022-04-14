@@ -810,7 +810,7 @@ namespace IntegratedAuthoringToolWF
                     if (action.Key.ToString() == IATConsts.DIALOG_ACTION_KEY)
                     {
                         string error;
-                        var diag = _iat.GetDialogAction(action, ag, out error);
+                        var diag = _iat.GetDialogAction(action, out error);
                         if (error != null)
                         {
                             EditorTools.WriteText(richTextBoxChat, ag.CharacterName + " : " + error, Color.Red, false);

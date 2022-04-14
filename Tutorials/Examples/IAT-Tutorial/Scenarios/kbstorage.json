@@ -39,7 +39,7 @@
 					"Layer": "-",
 					"Conditions":
 						{
-							"Set": ["ValidDialogue([cs], [ns], [m], [sty]) = True", "is(Animal) = Bird"]
+							"Set": ["ValidDialogue([cs], [ns], [m], [sty]) = True"]
 						},
 					"Priority": 5
 				}]
