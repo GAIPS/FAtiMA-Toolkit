@@ -29,7 +29,7 @@
 					"Layer": "-",
 					"Conditions":
 						{
-							"Set": ["is(Entity) = [t]"]
+							"Set": ["is(Animal) = [t]"]
 						},
 					"Priority": 1
 				}, 

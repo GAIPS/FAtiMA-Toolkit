@@ -110,6 +110,10 @@
       <Project>{a1e56f5c-eaac-43e5-a922-5b244168ea5c}</Project>
       <Name>EmotionalDecisionMaking</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Assets\RolePlayCharacter\RolePlayCharacter.csproj">
+      <Project>{986ea00a-7aa4-4d9e-b986-e6f290e7aa3f}</Project>
+      <Name>RolePlayCharacter</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Components\ActionLibrary\ActionLibrary.csproj">
       <Project>{e011d502-5c0f-4a3f-9f1a-337ff025eb48}</Project>
       <Name>ActionLibrary</Name>

@@ -9,6 +9,9 @@ using ActionLibrary.DTOs;
 using GAIPS.Rage;
 using System.IO;
 using EmotionalAppraisal.DTOs;
+using RolePlayCharacter;
+using System.Collections.Generic;
+using ActionLibrary;
 
 namespace EmotionalDecisionMakingWF
 {
@@ -23,7 +26,7 @@ namespace EmotionalDecisionMakingWF
 
         public event EventHandler AddedRuleEvent;
         public ActionRuleDTO latestAddedRule;
-
+        public List<RolePlayCharacterAsset> _characters;
 
         public MainForm(Form parent)
         {
@@ -36,6 +39,20 @@ namespace EmotionalDecisionMakingWF
             this.edmToolTip.SetToolTip(parent, "FAtiMA-Toolkit");
 
 		}
+
+        public MainForm(Form parent, List<RolePlayCharacterAsset> characters)
+        {
+            InitializeComponent();
+            this.actionRules = new BindingListView<ActionRuleDTO>((IList)null);
+            dataGridViewReactiveActions.DataSource = this.actionRules;
+            _storage = new AssetStorage();
+            _loadedAsset = EmotionalDecisionMakingAsset.CreateInstance(_storage);
+            OnAssetDataLoaded();
+            this.edmToolTip.SetToolTip(parent, "FAtiMA-Toolkit");
+            _characters = new List<RolePlayCharacterAsset>();
+            _characters = characters;
+            charactersComboBox.DataSource = _characters.Select(a => a.CharacterName.ToString()).ToList();
+        }
 
         public MainForm()
         {
@@ -57,9 +74,12 @@ namespace EmotionalDecisionMakingWF
         public void OnAssetDataLoaded()
 	    {
             conditionSetView = new ConditionSetView();
+            
             conditionSetEditor.View = conditionSetView;
             conditionSetView.OnDataChanged += conditionSetView_OnDataChanged;
             actionRules.DataSource = _loadedAsset.GetAllActionRules().ToList();
+            if(_characters != null)
+            charactersComboBox.DataSource = this._characters.Select(a => a.CharacterName.ToString()).ToList();
 
             dataGridViewReactiveActions.Columns[PropertyUtil.GetPropertyName<ActionRuleDTO>(dto => dto.Priority)].DisplayIndex = 3;
 
@@ -67,14 +87,18 @@ namespace EmotionalDecisionMakingWF
             {
                 PropertyUtil.GetPropertyName<ActionRuleDTO>( d => d.Id)
             });
-           
+
             if (actionRules.Any())
-			{
-				var ra = _loadedAsset.GetActionRule(actionRules.First().Id);
-				UpdateConditions(ra);
+            {
+                var ra = _loadedAsset.GetActionRule(actionRules.First().Id);
+                UpdateConditions(ra);
                 emotionaAppraisalButton.Enabled = true;
+                testConditions.Enabled = true;
             }
-            else emotionaAppraisalButton.Enabled = false;
+            else {
+                testConditions.Enabled = false;
+                emotionaAppraisalButton.Enabled = false;
+            }
 
             EditorTools.UpdateFormTitle("Emotional Decision Making", _currentFilePath, this);
            
@@ -94,6 +118,7 @@ namespace EmotionalDecisionMakingWF
 
 	        var ra = _loadedAsset.GetActionRule(selectedActionId);
             emotionaAppraisalButton.Enabled = true;
+            testConditions.Enabled = true ;
             UpdateConditions(ra);
         }
 
@@ -263,6 +288,45 @@ namespace EmotionalDecisionMakingWF
 
         }
 
-     
+        private void characterTestConditions_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void testConditions_Click(object sender, EventArgs e)
+        {
+            RolePlayCharacterAsset selectedRPC = _characters[charactersComboBox.SelectedIndex];
+
+            var reaction = ((ObjectView<ActionRuleDTO>)dataGridViewReactiveActions.SelectedRows[0].DataBoundItem).Object;
+            selectedActionId = reaction.Id;
+
+            var selectedActionDTO = _loadedAsset.GetActionRule(selectedActionId);
+
+            ActionRule selectedAction = new ActionRule(selectedActionDTO);
+
+            List<WellFormedNames.SubstitutionSet> subs = new List<WellFormedNames.SubstitutionSet>();
+
+            var result = selectedAction.ActivationConditions.Unify(selectedRPC.m_kb, selectedRPC.m_kb.Perspective, subs);
+
+            string ret = "";
+            if (result.Count() > 0)
+            {
+                ret = "SubSet: ";
+                foreach (var r in result)
+                {
+                    foreach(var v in r)
+                    {
+                        ret += v.Variable.ToString() + "/" + v.SubValue.Value.ToString() + " |";
+                    }
+                  
+                }
+                   
+            }
+            else
+            {
+                ret = "No Substitution Set was found";
+            }
+            resultLabek.Text = ret;
+        }
     }
 }

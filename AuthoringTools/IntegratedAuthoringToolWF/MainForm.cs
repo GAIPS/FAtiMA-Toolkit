@@ -68,7 +68,7 @@ namespace IntegratedAuthoringToolWF
             _webForm = new WebAPIWF.MainForm();
             _webForm.iat = this;
             _eaForm = new EmotionalAppraisalWF.MainForm(this);
-            _edmForm = new EmotionalDecisionMakingWF.MainForm(this);
+            _edmForm = new EmotionalDecisionMakingWF.MainForm(this, _iat.Characters.ToList());
             _edmForm.AddedRuleEvent += AddedRule;
             _siForm = new SocialImportanceWF.MainForm();
             _cifForm = new CommeillFautWF.MainForm();
@@ -122,6 +122,7 @@ namespace IntegratedAuthoringToolWF
                             Mood = c.Mood
                         }).ToList();
             dataGridViewCharacters.ClearSelection();
+            _edmForm._characters = _iat.Characters.ToList();
             if (_rpcForm != null)
             {
                 _rpcForm.Close();
