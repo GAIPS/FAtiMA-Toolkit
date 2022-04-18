@@ -2050,11 +2050,14 @@ namespace IntegratedAuthoringToolWF
                 case "Internal State": // No beliefs
                     if (!descriptionObject.pressed)
                     {
-                        this.tabControlIAT.SelectedIndex = 2;
-                        this._rpcForm.tabControl1.SelectedIndex = 1;
-                        HighlightButton(this._rpcForm.addBeliefButton);
-                        descriptionObject.pressed = true;
-                        assistantDescription[step] = descriptionObject;
+                        if (this._rpcForm != null)
+                        {
+                            this.tabControlIAT.SelectedIndex = 2;
+                            this._rpcForm.tabControl1.SelectedIndex = 1;
+                            HighlightButton(this._rpcForm.addBeliefButton);
+                            descriptionObject.pressed = true;
+                            assistantDescription[step] = descriptionObject;
+                        }
                     }
                     else
                     {

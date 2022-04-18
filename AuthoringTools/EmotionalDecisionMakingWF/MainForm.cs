@@ -92,8 +92,8 @@ namespace EmotionalDecisionMakingWF
             {
                 var ra = _loadedAsset.GetActionRule(actionRules.First().Id);
                 UpdateConditions(ra);
-                emotionaAppraisalButton.Enabled = true;
-                testConditions.Enabled = true;
+              //  emotionaAppraisalButton.Enabled = true;
+              //  testConditions.Enabled = true;
             }
             else {
                 testConditions.Enabled = false;
@@ -281,10 +281,17 @@ namespace EmotionalDecisionMakingWF
 
         public void emotionaAppraisalButton_Click(object sender, EventArgs e)
         {
-           latestAddedRule = ((ObjectView<ActionRuleDTO>)dataGridViewReactiveActions.
-                 SelectedRows[0].DataBoundItem).Object;
+            if (((ObjectView<ActionRuleDTO>)dataGridViewReactiveActions.
+                 SelectedRows[0].DataBoundItem).Object != null)
+            {
+                latestAddedRule = ((ObjectView<ActionRuleDTO>)dataGridViewReactiveActions.
+                      SelectedRows[0].DataBoundItem).Object;
 
-            AddedRuleEvent?.Invoke(this, EventArgs.Empty);
+                AddedRuleEvent?.Invoke(this, EventArgs.Empty);
+            }
+            else emotionaAppraisalButton.Enabled = false;
+
+           
 
         }
 
@@ -297,6 +304,12 @@ namespace EmotionalDecisionMakingWF
         {
             RolePlayCharacterAsset selectedRPC = _characters[charactersComboBox.SelectedIndex];
 
+            if (((ObjectView<ActionRuleDTO>)dataGridViewReactiveActions.SelectedRows[0].DataBoundItem).Object == null)
+            {
+                testConditions.Enabled = false;
+                return;
+            }
+
             var reaction = ((ObjectView<ActionRuleDTO>)dataGridViewReactiveActions.SelectedRows[0].DataBoundItem).Object;
             selectedActionId = reaction.Id;
 
@@ -308,25 +321,53 @@ namespace EmotionalDecisionMakingWF
 
             var result = selectedAction.ActivationConditions.Unify(selectedRPC.m_kb, selectedRPC.m_kb.Perspective, subs);
 
+            if (result.Count() > 3)
+            {
+                testActionRuleResults.Text = "Too many possible subsets";
+                return;
+            }
+
             string ret = "";
+            IAction tempAction = null;
             if (result.Count() > 0)
             {
-                ret = "SubSet: ";
+               
                 foreach (var r in result)
                 {
-                    foreach(var v in r)
+                    // Check if the action was sucessful or not
+                    tempAction = selectedAction.GenerateAction(r);
+                    if(tempAction != null)
                     {
-                        ret += v.Variable.ToString() + "/" + v.SubValue.Value.ToString() + " |";
+                        ret += "Success: ";
+                        testActionRuleResults.BackColor = System.Drawing.Color.DarkSeaGreen;
                     }
-                  
+
+                    else
+                    {
+                        ret += "Failure: ";
+                        testActionRuleResults.BackColor = System.Drawing.Color.LightCoral;
+                    }
+                        
+                    foreach (var v in r)
+                    {
+                        ret += v.Variable.ToString() + "/" + v.SubValue.Value.ToString() + " | ";
+                    }
+                    
                 }
-                   
+                if(ret.Contains("| "))
+                        ret = ret.Substring(0, ret.Length - 2);
+                else
+                {
+                    ret += " No substitution set is needed";
+                }
+              
             }
             else
             {
-                ret = "No Substitution Set was found";
+                ret = "Failed: No Substitution Set was found";
+                testActionRuleResults.BackColor = System.Drawing.Color.LightCoral;
             }
-            resultLabek.Text = ret;
+            testActionRuleResults.Text = ret;
         }
     }
 }
