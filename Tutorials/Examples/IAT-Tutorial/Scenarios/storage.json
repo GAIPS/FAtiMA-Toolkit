@@ -48,6 +48,16 @@
 							"Set": ["DialogueState([x]) = [cs]", "Has(Floor) = SELF", "ValidDialogue([cs], [ns], [meaning], [style]) = True"]
 						},
 					"Priority": 3
+				}, 
+				{
+					"Action": "Eat",
+					"Target": "[x]",
+					"Layer": "-",
+					"Conditions":
+						{
+							"Set": ["is(Food) = [x]"]
+						},
+					"Priority": 3
 				}]
 		},
 	"types": [

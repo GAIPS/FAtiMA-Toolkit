@@ -825,7 +825,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 22);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(836, 579);
+            this.tabPage6.Size = new System.Drawing.Size(836, 583);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "Emotional Decision Making";
             this.toolTip1.SetToolTip(this.tabPage6, "The Emotional Decision Making is where you can define which actions agents have");
@@ -835,7 +835,7 @@
             // 
             this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(836, 579);
+            this.tabPage7.Size = new System.Drawing.Size(836, 583);
             this.tabPage7.TabIndex = 2;
             this.tabPage7.Text = "Social Importance";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -844,7 +844,7 @@
             // 
             this.tabPage8.Location = new System.Drawing.Point(4, 22);
             this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(836, 579);
+            this.tabPage8.Size = new System.Drawing.Size(836, 583);
             this.tabPage8.TabIndex = 3;
             this.tabPage8.Text = "CIF-CK";
             this.tabPage8.UseVisualStyleBackColor = true;
@@ -1734,7 +1734,6 @@
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem computeDescriptionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadTemplateScenarioToolStripMenuItem;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxScenarioDescription;
@@ -1833,6 +1832,7 @@
         private System.Windows.Forms.Button buttonAddCharacter;
         public System.Windows.Forms.Button buttonAddPlayerDialogueAction;
         private System.Windows.Forms.GroupBox assistantTopicGroupBox;
+        public System.Windows.Forms.ToolStripMenuItem computeDescriptionToolStripMenuItem;
     }
 }
 

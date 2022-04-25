@@ -29,19 +29,9 @@
 					"Layer": "-",
 					"Conditions":
 						{
-							"Set": ["is(Animal) = [t]"]
+							"Set": ["is(Animal) = [t]", "is(Agent) = True"]
 						},
 					"Priority": 1
-				}, 
-				{
-					"Action": "Speak([cs], [ns], [m], [sty])",
-					"Target": "Nameless",
-					"Layer": "-",
-					"Conditions":
-						{
-							"Set": ["ValidDialogue([cs], [ns], [m], [sty]) = True"]
-						},
-					"Priority": 5
 				}]
 		},
 	"types": [

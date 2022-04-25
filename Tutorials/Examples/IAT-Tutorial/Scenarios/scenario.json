@@ -140,7 +140,11 @@
 							"Perspective": "Pharmacist",
 							"Knowledge":
 								{
-
+									"SELF":
+										{
+											"Bel(A)": "True, 1",
+											"is(Food)": "Banana, 1"
+										}
 								}
 						},
 					"BodyName": "Male",

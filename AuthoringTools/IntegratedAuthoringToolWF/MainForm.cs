@@ -54,7 +54,8 @@ namespace IntegratedAuthoringToolWF
         private int step;
         private int maxTutorialSteps;
         private Button lastButtonUsed;
-        
+        private ToolStripMenuItem lastMenuItemUsed;
+
 
         public MainForm()
         {
@@ -1770,7 +1771,7 @@ namespace IntegratedAuthoringToolWF
                 groupboxHeader = "Authoring Tools",
                 pressed = false,
                 performActionButtonText = "Next",
-                description = "If you have some experience with the Toolkit we reccomend taking a look \n at the Information Extration Pipeline that converts descriptions into scenarios \n" +
+                description = "If you have some experience with the Toolkit  \n we reccomend taking a look \n at the Information Extration Pipeline that converts descriptions into scenarios \n" +
                 "Look for it under the \"Tools\" menu",
                 index = _index
             };
@@ -2028,6 +2029,7 @@ namespace IntegratedAuthoringToolWF
 
                 case "Authoring Tools":
                     toolsToolStripMenuItem.ShowDropDown();
+                    HighlightMenuItem(computeDescriptionToolStripMenuItem);
                     assistantDescription[step] = descriptionObject;
                     step += 1;
                     UpdateLabel();
@@ -2247,6 +2249,13 @@ namespace IntegratedAuthoringToolWF
             but.FlatStyle = FlatStyle.Flat;
         }
 
+        public void HighlightMenuItem(ToolStripMenuItem item)
+        {
+            item.BackColor = SystemColors.MenuHighlight;
+            item.ForeColor = SystemColors.ButtonHighlight;
+            lastMenuItemUsed = item;
+        }
+
         public void ClearLastButton()
         {
 
@@ -2255,6 +2264,13 @@ namespace IntegratedAuthoringToolWF
                 lastButtonUsed.BackColor = SystemColors.ControlLight;
                 lastButtonUsed.ForeColor = SystemColors.ControlText;
                 lastButtonUsed.FlatStyle = FlatStyle.Standard;
+            }
+
+            if(lastMenuItemUsed != null)
+            {
+                lastMenuItemUsed.BackColor = SystemColors.ControlLight;
+                lastMenuItemUsed.ForeColor = SystemColors.ControlText;
+                lastMenuItemUsed = null;
             }
         }
 

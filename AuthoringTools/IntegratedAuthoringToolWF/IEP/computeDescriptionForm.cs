@@ -810,6 +810,11 @@ namespace IntegratedAuthoringToolWF.IEP
         {
             System.Diagnostics.Process.Start("https://fatima-toolkit.eu/using-the-compute-story-tool/");
         }
+
+        private void panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
         

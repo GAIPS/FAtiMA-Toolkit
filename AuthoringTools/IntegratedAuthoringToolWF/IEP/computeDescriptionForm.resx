@@ -121,13 +121,9 @@
     <value>17, 17</value>
   </metadata>
   <data name="label1.Text" xml:space="preserve">
-    <value>Here you can provide an example of the scenario you want to create  
+    <value>FAtiMA Toolkit will take the story above as input and process it through an Information Extraction and Translation Pipeline.  The output will be the automatic creation of a scenario based on the input provided.  
 
-FAtiMA Toolkit will take the description as input and process it through an Information Extraction and Translation Pipeline. 
-
-The output will be the automatic creation of agents with beliefs, goals and actions from the example you've provided above.
-
-Please use simple sentences separated by periods or newlines.
+Start by connection to the server using the button "Connect to Server". Then, write a description of the intended scenario. Once you are satisfied with it press the "Compute Input" button. 
 
 
 </value>
