@@ -70,7 +70,8 @@ namespace IntegratedAuthoringToolWF
             _webForm.iat = this;
             _eaForm = new EmotionalAppraisalWF.MainForm(this);
             _edmForm = new EmotionalDecisionMakingWF.MainForm(this, _iat.Characters.ToList());
-            _edmForm.AddedRuleEvent += AddedRule;
+            _edmForm.AddedRuleEvent += SuggestAddEmotionalReaction;
+            _edmForm.PressedAddReactionEvent += AddEmotionalReaction;
             _siForm = new SocialImportanceWF.MainForm();
             _cifForm = new CommeillFautWF.MainForm();
             this.KeyDown += new KeyEventHandler(Form_KeyDown);
@@ -1880,7 +1881,7 @@ namespace IntegratedAuthoringToolWF
 
 
         // Add Appraisal Rule to Selected Decision Making Action
-        public void AddedRule(object sender, EventArgs e)
+        public void SuggestAddEmotionalReaction(object sender, EventArgs e)
         {
             if (!showImbalances)
                 return;
@@ -1901,7 +1902,7 @@ namespace IntegratedAuthoringToolWF
 
                 if (result == DialogResult.Yes)
                 {
-                    AddEmotionalReaction(rule, addEmotForm.targetEmotion, addEmotForm.subjectEmotion);
+                    AddAppraisalRuleforAction(rule, addEmotForm.targetEmotion, addEmotForm.subjectEmotion);
                    
                 }
 
@@ -1910,8 +1911,30 @@ namespace IntegratedAuthoringToolWF
             }
         }
 
+        public void AddEmotionalReaction(object sender, EventArgs e)
+        {
+
+            ActionLibrary.DTOs.ActionRuleDTO rule = this._edmForm.latestAddedRule;
+
+            string actionName = rule.Action.ToString();
+
+            var addEmotForm = new AddEmotionalReactionForm(actionName);
+
+            var result = addEmotForm.ShowDialog();
+
+
+
+            if (result == DialogResult.Yes)
+            {
+                AddAppraisalRuleforAction(rule, addEmotForm.targetEmotion, addEmotForm.subjectEmotion);
+
+            }
+
+        }
+        
+
         // Add Appraisal Rule to Selected Decision Making Action
-        private void AddEmotionalReaction(ActionRuleDTO rule, EmotionalAppraisal.OCCModel.OCCEmotionType targetEmotion, EmotionalAppraisal.OCCModel.OCCEmotionType subjectEmotion )
+        private void AddAppraisalRuleforAction(ActionRuleDTO rule, EmotionalAppraisal.OCCModel.OCCEmotionType targetEmotion, EmotionalAppraisal.OCCModel.OCCEmotionType subjectEmotion )
         {
             tabControlAssetEditor.SelectedIndex = 0;
 

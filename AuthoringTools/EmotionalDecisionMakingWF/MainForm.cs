@@ -25,8 +25,10 @@ namespace EmotionalDecisionMakingWF
         private string _currentFilePath;
 
         public event EventHandler AddedRuleEvent;
+        public event EventHandler PressedAddReactionEvent;
         public ActionRuleDTO latestAddedRule;
         public List<RolePlayCharacterAsset> _characters;
+
 
         public MainForm(Form parent)
         {
@@ -284,10 +286,12 @@ namespace EmotionalDecisionMakingWF
             if (((ObjectView<ActionRuleDTO>)dataGridViewReactiveActions.
                  SelectedRows[0].DataBoundItem).Object != null)
             {
+
                 latestAddedRule = ((ObjectView<ActionRuleDTO>)dataGridViewReactiveActions.
                       SelectedRows[0].DataBoundItem).Object;
 
-                AddedRuleEvent?.Invoke(this, EventArgs.Empty);
+                // ParentForm
+                PressedAddReactionEvent?.Invoke(this, EventArgs.Empty);
             }
             else emotionaAppraisalButton.Enabled = false;
 

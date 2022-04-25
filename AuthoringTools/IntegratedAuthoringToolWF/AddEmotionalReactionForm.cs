@@ -20,7 +20,7 @@ namespace IntegratedAuthoringToolWF
             InitializeComponent();
             targetEmotionBox.DataSource = OCCEmotionType.Types.ToList();
             subjectEmotionBox.DataSource = OCCEmotionType.Types.ToList();
-            actionText.Text = "Action: " + actionName;
+            actionText.Text = actionName;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)

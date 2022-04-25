@@ -88,12 +88,12 @@
             this.emotionaAppraisalButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.emotionaAppraisalButton.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.emotionaAppraisalButton.Location = new System.Drawing.Point(566, 23);
+            this.emotionaAppraisalButton.Location = new System.Drawing.Point(625, 23);
             this.emotionaAppraisalButton.Margin = new System.Windows.Forms.Padding(4);
             this.emotionaAppraisalButton.Name = "emotionaAppraisalButton";
-            this.emotionaAppraisalButton.Size = new System.Drawing.Size(238, 28);
+            this.emotionaAppraisalButton.Size = new System.Drawing.Size(179, 28);
             this.emotionaAppraisalButton.TabIndex = 11;
-            this.emotionaAppraisalButton.Text = "Generate Emotional Appraisal";
+            this.emotionaAppraisalButton.Text = "Add Emotional Response";
             this.edmToolTip.SetToolTip(this.emotionaAppraisalButton, "Add an Appraisal Rule that matches the select action");
             this.emotionaAppraisalButton.UseVisualStyleBackColor = false;
             this.emotionaAppraisalButton.Click += new System.EventHandler(this.emotionaAppraisalButton_Click);
