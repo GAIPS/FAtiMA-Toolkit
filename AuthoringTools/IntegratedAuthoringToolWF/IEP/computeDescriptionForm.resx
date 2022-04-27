@@ -123,9 +123,6 @@
   <data name="label1.Text" xml:space="preserve">
     <value>FAtiMA Toolkit will take the story above as input and process it through an Information Extraction and Translation Pipeline.  The output will be the automatic creation of a scenario based on the input provided.  
 
-Start by connection to the server using the button "Connect to Server". Then, write a description of the intended scenario. Once you are satisfied with it press the "Compute Input" button. 
-
-
 </value>
   </data>
   <metadata name="panel2.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

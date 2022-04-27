@@ -1761,7 +1761,8 @@ namespace IntegratedAuthoringToolWF
                 groupboxHeader = "FAtiMA-Toolkit",
                 pressed = false,
                 performActionButtonText = "Get Started",
-                description = " Welcome to FAtiMA-Toolkit, I'll be your assistant",
+                description = "Welcome to FAtiMA-Toolkit ! \n \n I'll be your Assistant \n " +
+                "Here, I'll provide instructions on how to get started and how to enrich your scenario :)",
                 index = _index
             };
             assistantDescription.Add(_index, toAdd);
@@ -1769,11 +1770,37 @@ namespace IntegratedAuthoringToolWF
 
             toAdd = new descriptionObject()
             {
-                groupboxHeader = "Authoring Tools",
+                groupboxHeader = "FAtiMA-Toolkit",
                 pressed = false,
                 performActionButtonText = "Next",
-                description = "If you have some experience with the Toolkit  \n we reccomend taking a look \n at the Information Extration Pipeline that converts descriptions into scenarios \n" +
-                "Look for it under the \"Tools\" menu",
+                description = "This tool uses .json files to store the data. Additionally, there are 2 types of data, the scenario data and the cognitive rules data \n \n" +
+                "Let's start by creating a new scenario under File->New",
+                index = _index
+            };
+
+            assistantDescription.Add(_index, toAdd);
+            _index += 1;
+
+            toAdd = new descriptionObject()
+            {
+                groupboxHeader = "FAtiMA-Toolkit",
+                pressed = false,
+                performActionButtonText = "Next",
+                description = "The Scenario file stores everything related to the elements composing it (characters, beliefs, dialogue...) \n" +
+                "The Cognitive Rules file stores all the rules created in the scenario \n" +
+                "Let's also create a new Rules file by clicking Cognitive Rules->New",
+                index = _index
+            };
+
+            assistantDescription.Add(_index, toAdd);
+            _index += 1;
+
+            toAdd = new descriptionObject()
+            {
+                groupboxHeader = "FAtiMA-Toolkit",
+                pressed = false,
+                performActionButtonText = "Next",
+                description = "The Toolkit has the ability to automatically create a scenario based on a short description provided by you. \n \n If you are interested in using this feature Look for it under Tools->Compute Description ",
                 index = _index
             };
             assistantDescription.Add(_index, toAdd);
@@ -1953,8 +1980,10 @@ namespace IntegratedAuthoringToolWF
         // Update the Text within the reasoner to take into account the current state of the scenario
         private void UpdateLabel()
         {
-           // ClearLastButton();
-            if(!assistantDescription[step].pressed && step > 0)
+            // ClearLastButton();
+            UpdateStep();
+
+            if (!assistantDescription[step].pressed && step > 3)
                 button1.Text = "Take me there";
             else
                 button1.Text = assistantDescription[step].performActionButtonText;
@@ -1965,7 +1994,7 @@ namespace IntegratedAuthoringToolWF
         // If users have no expertise make sure the tutorial is being followed
         public void ScenarioAnalyser()
         {
-            if (step < 2)
+            if (step < 4)
                 return;
 
             if(_iat.Characters.Count() == 0)
@@ -2036,6 +2065,11 @@ namespace IntegratedAuthoringToolWF
 
         }
 
+        private void UpdateStep()
+        {
+            stepLabel.Text = "" + step;
+        }
+
 
         // When the button task button is clicked 
         private void button1_Click(object sender, EventArgs e)
@@ -2047,16 +2081,30 @@ namespace IntegratedAuthoringToolWF
             {
                 case "FAtiMA-Toolkit":  // Intro
                     step += 1;
+                    ClearLastButton();
                     UpdateLabel();
+
+                    if (step == 1)
+                    {
+                        fileToolStripMenuItem.ShowDropDown();
+                        HighlightMenuItem(newToolStripMenuItem);
+                    }
+                    else if (step == 2)
+                    {
+                        
+                        HighlightButton(buttonNewAssetStorage);
+                    }
+
+                    else if(step == 3)
+                    {
+                        toolsToolStripMenuItem.ShowDropDown();
+                        HighlightMenuItem(computeDescriptionToolStripMenuItem);
+                    }
+                        
+                   
                     break;
 
-                case "Authoring Tools":
-                    toolsToolStripMenuItem.ShowDropDown();
-                    HighlightMenuItem(computeDescriptionToolStripMenuItem);
-                    assistantDescription[step] = descriptionObject;
-                    step += 1;
-                    UpdateLabel();
-                    break;
+            
 
                 case "Characters": // No Characters
                     if (!descriptionObject.pressed)

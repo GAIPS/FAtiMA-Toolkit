@@ -148,6 +148,7 @@ namespace IntegratedAuthoringToolWF.IEP
                 {
                     debugLabel.Text = "Ready to Compute";
                     panel4.BackgroundImage = Properties.Resources.green;
+                    descriptionText.ForeColor = SystemColors.WindowText;
                     connectToServer.Enabled = false;
                     computeStoryButton.Enabled = true;
 
@@ -797,9 +798,10 @@ namespace IntegratedAuthoringToolWF.IEP
 
         private void descriptionTextFocus(object sender, EventArgs e)
         {
-            if (descriptionText.Text == "Write your story here...")
-                descriptionText.Text = "";
+           // descriptionText.ForeColor = SystemColors.WindowText;
+               // descriptionText.Text = "";
         }
+
 
         private void descriptionText_TextChanged(object sender, EventArgs e)
         {

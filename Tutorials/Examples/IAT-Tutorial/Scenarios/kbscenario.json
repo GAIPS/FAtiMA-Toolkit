@@ -2,36 +2,132 @@
 	"root":
 		{
 			"classId": 0,
-			"ScenarioName": "",
-			"Description": "",
+			"ScenarioName": "Example",
+			"Description": "A short conversation between the Player and a Character named Charlie. Charlie discovers that there is a major conspiracy within the company he works in. ",
 			"Dialogues": [
 				{
-					"CurrentState": "Start",
-					"NextState": "Next",
+					"CurrentState": "Leave",
+					"NextState": "End",
 					"Meaning": "-",
 					"Style": "-",
-					"Utterance": "My favorite flowers are [[Likes(F)]] [v2]",
-					"UtteranceId": "TTS-BF80D2108AE7CB6C36287E8596300EF2"
+					"Utterance": "Alright, goodbye",
+					"UtteranceId": "TTS-CCF7877090E49659FB15B89D80C365A7"
+				}, 
+				{
+					"CurrentState": "Greeting",
+					"NextState": "Order",
+					"Meaning": "-",
+					"Style": "Polite",
+					"Utterance": "How do you do?",
+					"UtteranceId": "TTS-E191BADF9DAD8B0EDC942E4A6DFC8D64"
+				}, 
+				{
+					"CurrentState": "Greeting",
+					"NextState": "Leave",
+					"Meaning": "-",
+					"Style": "VeryRude",
+					"Utterance": "Not you again",
+					"UtteranceId": "TTS-4DDAA9A4B302A0E4E9DEE292CDB9481D"
+				}, 
+				{
+					"CurrentState": "Order",
+					"NextState": "OrderResponse",
+					"Meaning": "Hamburger",
+					"Style": "-",
+					"Utterance": "Yes, I would like a burger please",
+					"UtteranceId": "TTS-6D501E2FE494013994B75A7225E5FA29"
+				}, 
+				{
+					"CurrentState": "Greeting",
+					"NextState": "Order",
+					"Meaning": "-",
+					"Style": "Polite",
+					"Utterance": "How can I help you?",
+					"UtteranceId": "TTS-C425F01490F94A3080B9922108A78C33"
 				}, 
 				{
 					"CurrentState": "Start",
-					"NextState": "Next",
+					"NextState": "Greeting",
 					"Meaning": "-",
+					"Style": "Rude",
+					"Utterance": "Hey",
+					"UtteranceId": "TTS-6057F13C496ECF7FD777CEB9E79AE285"
+				}, 
+				{
+					"CurrentState": "Start",
+					"NextState": "Greeting",
+					"Meaning": "-",
+					"Style": "Polite",
+					"Utterance": "Good Afternoon",
+					"UtteranceId": "TTS-91145E15F72DF3A48A9E83CAE7E3BED7"
+				}, 
+				{
+					"CurrentState": "Order",
+					"NextState": "OrderResponse",
+					"Meaning": "Pizza",
 					"Style": "-",
-					"Utterance": "My favorite nothuings are are [[Likes(F)]] and [[is(Hate)]]",
-					"UtteranceId": "TTS-3FCA50EAB9731CC08037F4256099FAD2"
+					"Utterance": "Yes, I would like a Pizza please",
+					"UtteranceId": "TTS-E2A8BDFAB9C5D5B8A5CD9A67F8C08155"
 				}],
 			"Characters": [
 				{
 					"KnowledgeBase":
 						{
-							"Perspective": "John",
+							"Perspective": "Charlie",
 							"Knowledge":
 								{
 									"SELF":
 										{
-											"is(Animal)": "Bird, 1",
-											"Likes(F)": "Sunflower, 1"
+											"Has(Floor)": "Charlie, 1",
+											"DialogueState(Player)": "Start, 1",
+											"AM(Charlie)": "True, 1",
+											"CloseFriends(Player)": "False, 1"
+										}
+								}
+						},
+					"BodyName": "Male",
+					"VoiceName": "Male",
+					"EmotionalState":
+						{
+							"Mood": 4,
+							"initialTick": 0,
+							"EmotionalPool": [],
+							"AppraisalConfiguration":
+								{
+									"HalfLifeDecayConstant": 0.5,
+									"EmotionInfluenceOnMoodFactor": 0.3,
+									"MoodInfluenceOnEmotionFactor": 0.3,
+									"MinimumMoodValueForInfluencingEmotions": 0.5,
+									"EmotionalHalfLifeDecayTime": 15,
+									"MoodHalfLifeDecayTime": 60
+								}
+						},
+					"AutobiographicMemory":
+						{
+							"Tick": 0,
+							"records": []
+						},
+					"OtherAgents":
+						{
+							"dictionary": []
+						},
+					"Goals": [
+						{
+							"Name": "Survive",
+							"Significance": 5,
+							"Likelihood": 0.5
+						}]
+				}, 
+				{
+					"KnowledgeBase":
+						{
+							"Perspective": "Player",
+							"Knowledge":
+								{
+									"SELF":
+										{
+											"Has(Floor)": "Charlie, 1",
+											"DialogueState(Charlie)": "Start, 1"
 										}
 								}
 						},
@@ -39,7 +135,7 @@
 					"VoiceName": null,
 					"EmotionalState":
 						{
-							"Mood": 0,
+							"Mood": -3,
 							"initialTick": 0,
 							"EmotionalPool": [],
 							"AppraisalConfiguration":
@@ -61,91 +157,45 @@
 						{
 							"dictionary": []
 						},
-					"Goals": []
-				}, 
-				{
-					"KnowledgeBase":
+					"Goals": [
 						{
-							"Perspective": "Nameless",
-							"Knowledge":
-								{
-
-								}
-						},
-					"BodyName": null,
-					"VoiceName": null,
-					"EmotionalState":
-						{
-							"Mood": 0,
-							"initialTick": 0,
-							"EmotionalPool": [],
-							"AppraisalConfiguration":
-								{
-									"HalfLifeDecayConstant": 0.5,
-									"EmotionInfluenceOnMoodFactor": 0.3,
-									"MoodInfluenceOnEmotionFactor": 0.3,
-									"MinimumMoodValueForInfluencingEmotions": 0.5,
-									"EmotionalHalfLifeDecayTime": 15,
-									"MoodHalfLifeDecayTime": 60
-								}
-						},
-					"AutobiographicMemory":
-						{
-							"Tick": 0,
-							"records": []
-						},
-					"OtherAgents":
-						{
-							"dictionary": []
-						},
-					"Goals": []
-				}, 
-				{
-					"KnowledgeBase":
-						{
-							"Perspective": "ewqd",
-							"Knowledge":
-								{
-
-								}
-						},
-					"BodyName": null,
-					"VoiceName": null,
-					"EmotionalState":
-						{
-							"Mood": 0,
-							"initialTick": 0,
-							"EmotionalPool": [],
-							"AppraisalConfiguration":
-								{
-									"HalfLifeDecayConstant": 0.5,
-									"EmotionInfluenceOnMoodFactor": 0.3,
-									"MoodInfluenceOnEmotionFactor": 0.3,
-									"MinimumMoodValueForInfluencingEmotions": 0.5,
-									"EmotionalHalfLifeDecayTime": 15,
-									"MoodHalfLifeDecayTime": 60
-								}
-						},
-					"AutobiographicMemory":
-						{
-							"Tick": 0,
-							"records": []
-						},
-					"OtherAgents":
-						{
-							"dictionary": []
-						},
-					"Goals": []
+							"Name": "Survive",
+							"Significance": 5,
+							"Likelihood": 0.2
+						}]
 				}],
 			"WorldModel":
 				{
 					"Effects":
 						{
-							"dictionary": []
+							"dictionary": [
+								{
+									"key": "Event(Action-End, [s], Speak(*, [ns], *, *), [t])",
+									"value": [
+										{
+											"PropertyName": "DialogueState([s])",
+											"NewValue": "[ns]",
+											"ObserverAgent": "[t]"
+										}, 
+										{
+											"PropertyName": "Has(Floor)",
+											"NewValue": "[t]",
+											"ObserverAgent": "*"
+										}, 
+										{
+											"PropertyName": "DialogueState([s])",
+											"NewValue": "[ns]",
+											"ObserverAgent": "Player"
+										}]
+								}]
 						},
 					"Priorities":
 						{
-							"dictionary": []
+							"dictionary": [
+								{
+									"key": "Event(Action-End, [s], Speak(*, [ns], *, *), [t])",
+									"value": 1
+								}]
 						}
 				}
 		},

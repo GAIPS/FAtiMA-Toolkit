@@ -121,6 +121,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.stepLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -223,28 +224,28 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.saveAsToolStripMenuItem.Text = "Save As ...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
@@ -342,7 +343,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(448, 188);
+            this.groupBox1.Size = new System.Drawing.Size(448, 150);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Characters";
@@ -362,7 +363,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(440, 165);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(440, 127);
             this.tableLayoutPanel1.TabIndex = 15;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
@@ -435,7 +436,7 @@
             this.dataGridViewCharacters.RowHeadersWidth = 51;
             this.dataGridViewCharacters.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewCharacters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewCharacters.Size = new System.Drawing.Size(434, 108);
+            this.dataGridViewCharacters.Size = new System.Drawing.Size(434, 75);
             this.dataGridViewCharacters.TabIndex = 15;
             this.dataGridViewCharacters.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCharacters_CellContentClick_1);
             this.dataGridViewCharacters.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewCharacters_CellMouseClick);
@@ -463,7 +464,7 @@
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox6.Location = new System.Drawing.Point(0, 0);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(448, 92);
+            this.groupBox6.Size = new System.Drawing.Size(448, 91);
             this.groupBox6.TabIndex = 16;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Cognitive Rules File";
@@ -691,7 +692,7 @@
             this.searchCheckList.HorizontalScrollbar = true;
             this.searchCheckList.Location = new System.Drawing.Point(660, 25);
             this.searchCheckList.Name = "searchCheckList";
-            this.searchCheckList.Size = new System.Drawing.Size(147, 32);
+            this.searchCheckList.Size = new System.Drawing.Size(147, 18);
             this.searchCheckList.TabIndex = 16;
             // 
             // searchDialogueBox
@@ -791,7 +792,7 @@
             this.tabPage4.Controls.Add(this.tabControlAssetEditor);
             this.tabPage4.Location = new System.Drawing.Point(4, 24);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(844, 609);
+            this.tabPage4.Size = new System.Drawing.Size(844, 603);
             this.tabPage4.TabIndex = 5;
             this.tabPage4.Text = "Cognitive Rules";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -806,7 +807,7 @@
             this.tabControlAssetEditor.Location = new System.Drawing.Point(0, 0);
             this.tabControlAssetEditor.Name = "tabControlAssetEditor";
             this.tabControlAssetEditor.SelectedIndex = 0;
-            this.tabControlAssetEditor.Size = new System.Drawing.Size(844, 609);
+            this.tabControlAssetEditor.Size = new System.Drawing.Size(844, 603);
             this.tabControlAssetEditor.TabIndex = 0;
             // 
             // tabPageEA
@@ -815,7 +816,7 @@
             this.tabPageEA.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.tabPageEA.Name = "tabPageEA";
             this.tabPageEA.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageEA.Size = new System.Drawing.Size(836, 580);
+            this.tabPageEA.Size = new System.Drawing.Size(836, 574);
             this.tabPageEA.TabIndex = 0;
             this.tabPageEA.Text = "Emotional Appraisal";
             this.tabPageEA.UseVisualStyleBackColor = true;
@@ -855,7 +856,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(5);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(5);
-            this.tabPage2.Size = new System.Drawing.Size(844, 609);
+            this.tabPage2.Size = new System.Drawing.Size(844, 603);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Character";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -867,7 +868,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(844, 609);
+            this.tabPage3.Size = new System.Drawing.Size(844, 603);
             this.tabPage3.TabIndex = 3;
             this.tabPage3.Text = "World";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -878,7 +879,7 @@
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox7.Location = new System.Drawing.Point(3, 3);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(838, 603);
+            this.groupBox7.Size = new System.Drawing.Size(838, 597);
             this.groupBox7.TabIndex = 16;
             this.groupBox7.TabStop = false;
             // 
@@ -1018,7 +1019,7 @@
             // splitContainer3.Panel2
             // 
             this.splitContainer3.Panel2.Controls.Add(this.groupBox10);
-            this.splitContainer3.Size = new System.Drawing.Size(839, 505);
+            this.splitContainer3.Size = new System.Drawing.Size(839, 511);
             this.splitContainer3.SplitterDistance = 538;
             this.splitContainer3.TabIndex = 11;
             // 
@@ -1036,8 +1037,8 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer4);
-            this.splitContainer2.Size = new System.Drawing.Size(538, 505);
-            this.splitContainer2.SplitterDistance = 267;
+            this.splitContainer2.Size = new System.Drawing.Size(538, 511);
+            this.splitContainer2.SplitterDistance = 270;
             this.splitContainer2.TabIndex = 1;
             // 
             // groupBox13
@@ -1046,7 +1047,7 @@
             this.groupBox13.Dock = System.Windows.Forms.DockStyle.Left;
             this.groupBox13.Location = new System.Drawing.Point(0, 0);
             this.groupBox13.Name = "groupBox13";
-            this.groupBox13.Size = new System.Drawing.Size(527, 267);
+            this.groupBox13.Size = new System.Drawing.Size(527, 270);
             this.groupBox13.TabIndex = 0;
             this.groupBox13.TabStop = false;
             this.groupBox13.Text = "Simulation";
@@ -1060,7 +1061,7 @@
             this.richTextBoxChat.Location = new System.Drawing.Point(3, 18);
             this.richTextBoxChat.Name = "richTextBoxChat";
             this.richTextBoxChat.ReadOnly = true;
-            this.richTextBoxChat.Size = new System.Drawing.Size(518, 246);
+            this.richTextBoxChat.Size = new System.Drawing.Size(518, 249);
             this.richTextBoxChat.TabIndex = 0;
             this.richTextBoxChat.Text = "";
             this.richTextBoxChat.TextChanged += new System.EventHandler(this.richTextBoxChat_TextChanged);
@@ -1079,8 +1080,8 @@
             // splitContainer4.Panel2
             // 
             this.splitContainer4.Panel2.Controls.Add(this.groupBox8);
-            this.splitContainer4.Size = new System.Drawing.Size(538, 234);
-            this.splitContainer4.SplitterDistance = 149;
+            this.splitContainer4.Size = new System.Drawing.Size(538, 237);
+            this.splitContainer4.SplitterDistance = 150;
             this.splitContainer4.TabIndex = 0;
             // 
             // groupBox4
@@ -1089,7 +1090,7 @@
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(538, 149);
+            this.groupBox4.Size = new System.Drawing.Size(538, 150);
             this.groupBox4.TabIndex = 3;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Select Dialogue:";
@@ -1104,7 +1105,7 @@
             this.listBoxPlayerDialogues.ItemHeight = 17;
             this.listBoxPlayerDialogues.Location = new System.Drawing.Point(3, 18);
             this.listBoxPlayerDialogues.Name = "listBoxPlayerDialogues";
-            this.listBoxPlayerDialogues.Size = new System.Drawing.Size(532, 128);
+            this.listBoxPlayerDialogues.Size = new System.Drawing.Size(532, 129);
             this.listBoxPlayerDialogues.TabIndex = 2;
             this.listBoxPlayerDialogues.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxPlayerDialogues_MouseDoubleClick);
             // 
@@ -1116,7 +1117,7 @@
             this.groupBox8.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Padding = new System.Windows.Forms.Padding(1);
-            this.groupBox8.Size = new System.Drawing.Size(538, 81);
+            this.groupBox8.Size = new System.Drawing.Size(538, 83);
             this.groupBox8.TabIndex = 4;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Select Action:";
@@ -1130,7 +1131,7 @@
             this.listBoxPlayerActions.ItemHeight = 17;
             this.listBoxPlayerActions.Location = new System.Drawing.Point(1, 16);
             this.listBoxPlayerActions.Name = "listBoxPlayerActions";
-            this.listBoxPlayerActions.Size = new System.Drawing.Size(536, 64);
+            this.listBoxPlayerActions.Size = new System.Drawing.Size(536, 66);
             this.listBoxPlayerActions.TabIndex = 2;
             this.listBoxPlayerActions.SelectedIndexChanged += new System.EventHandler(this.listBoxPlayerActions_SelectedIndexChanged);
             this.listBoxPlayerActions.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBoxPlayerActions_MouseDoubleClick);
@@ -1142,7 +1143,7 @@
             this.groupBox10.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox10.Location = new System.Drawing.Point(0, 0);
             this.groupBox10.Name = "groupBox10";
-            this.groupBox10.Size = new System.Drawing.Size(297, 505);
+            this.groupBox10.Size = new System.Drawing.Size(297, 511);
             this.groupBox10.TabIndex = 8;
             this.groupBox10.TabStop = false;
             // 
@@ -1162,7 +1163,7 @@
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Right;
             this.groupBox5.Location = new System.Drawing.Point(11, 18);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(283, 484);
+            this.groupBox5.Size = new System.Drawing.Size(283, 490);
             this.groupBox5.TabIndex = 7;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Agent Inspector";
@@ -1172,7 +1173,7 @@
             // 
             this.buttonEvalBelief.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonEvalBelief.Enabled = false;
-            this.buttonEvalBelief.Location = new System.Drawing.Point(221, 453);
+            this.buttonEvalBelief.Location = new System.Drawing.Point(221, 459);
             this.buttonEvalBelief.Name = "buttonEvalBelief";
             this.buttonEvalBelief.Size = new System.Drawing.Size(53, 28);
             this.buttonEvalBelief.TabIndex = 10;
@@ -1215,7 +1216,7 @@
             this.groupBox11.Controls.Add(this.dataGridViewAgentInspector);
             this.groupBox11.Location = new System.Drawing.Point(9, 94);
             this.groupBox11.Name = "groupBox11";
-            this.groupBox11.Size = new System.Drawing.Size(268, 323);
+            this.groupBox11.Size = new System.Drawing.Size(268, 329);
             this.groupBox11.TabIndex = 10;
             this.groupBox11.TabStop = false;
             // 
@@ -1238,14 +1239,14 @@
             this.dataGridViewAgentInspector.RowHeadersWidth = 51;
             this.dataGridViewAgentInspector.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAgentInspector.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAgentInspector.Size = new System.Drawing.Size(262, 302);
+            this.dataGridViewAgentInspector.Size = new System.Drawing.Size(262, 308);
             this.dataGridViewAgentInspector.TabIndex = 9;
             // 
             // label6
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(6, 457);
+            this.label6.Location = new System.Drawing.Point(6, 463);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(30, 16);
             this.label6.TabIndex = 5;
@@ -1255,7 +1256,7 @@
             // 
             this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 428);
+            this.label5.Location = new System.Drawing.Point(6, 434);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(31, 16);
             this.label5.TabIndex = 4;
@@ -1274,7 +1275,7 @@
             // 
             this.textBoxValChat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxValChat.Location = new System.Drawing.Point(45, 453);
+            this.textBoxValChat.Location = new System.Drawing.Point(45, 459);
             this.textBoxValChat.Name = "textBoxValChat";
             this.textBoxValChat.ReadOnly = true;
             this.textBoxValChat.Size = new System.Drawing.Size(170, 22);
@@ -1284,7 +1285,7 @@
             // 
             this.textBoxBelChat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxBelChat.Location = new System.Drawing.Point(46, 425);
+            this.textBoxBelChat.Location = new System.Drawing.Point(46, 431);
             this.textBoxBelChat.Name = "textBoxBelChat";
             this.textBoxBelChat.Size = new System.Drawing.Size(228, 22);
             this.textBoxBelChat.TabIndex = 1;
@@ -1308,7 +1309,7 @@
             this.tabPageWeb.Location = new System.Drawing.Point(4, 24);
             this.tabPageWeb.Name = "tabPageWeb";
             this.tabPageWeb.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageWeb.Size = new System.Drawing.Size(844, 609);
+            this.tabPageWeb.Size = new System.Drawing.Size(844, 603);
             this.tabPageWeb.TabIndex = 4;
             this.tabPageWeb.Text = "Web API";
             this.tabPageWeb.UseVisualStyleBackColor = true;
@@ -1319,7 +1320,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.debugLabel.AutoSize = true;
             this.debugLabel.Font = new System.Drawing.Font("Arial", 10F);
-            this.debugLabel.Location = new System.Drawing.Point(10, 76);
+            this.debugLabel.Location = new System.Drawing.Point(10, 81);
             this.debugLabel.Name = "debugLabel";
             this.debugLabel.Size = new System.Drawing.Size(0, 16);
             this.debugLabel.TabIndex = 17;
@@ -1369,7 +1370,7 @@
             // 
             this.splitContainer7.Panel2.Controls.Add(this.splitContainer8);
             this.splitContainer7.Size = new System.Drawing.Size(448, 637);
-            this.splitContainer7.SplitterDistance = 144;
+            this.splitContainer7.SplitterDistance = 143;
             this.splitContainer7.SplitterIncrement = 2;
             this.splitContainer7.TabIndex = 19;
             // 
@@ -1387,8 +1388,8 @@
             // splitContainer8.Panel2
             // 
             this.splitContainer8.Panel2.Controls.Add(this.splitContainer9);
-            this.splitContainer8.Size = new System.Drawing.Size(448, 489);
-            this.splitContainer8.SplitterDistance = 92;
+            this.splitContainer8.Size = new System.Drawing.Size(448, 490);
+            this.splitContainer8.SplitterDistance = 91;
             this.splitContainer8.TabIndex = 0;
             // 
             // splitContainer9
@@ -1406,8 +1407,8 @@
             // 
             this.splitContainer9.Panel2.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.splitContainer9.Panel2.Controls.Add(this.Assistant);
-            this.splitContainer9.Size = new System.Drawing.Size(448, 393);
-            this.splitContainer9.SplitterDistance = 188;
+            this.splitContainer9.Size = new System.Drawing.Size(448, 395);
+            this.splitContainer9.SplitterDistance = 150;
             this.splitContainer9.TabIndex = 0;
             // 
             // Assistant
@@ -1416,9 +1417,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Assistant.AutoSize = true;
-            this.Assistant.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.Assistant.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.Assistant.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.assistantbackground2;
             this.Assistant.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.Assistant.Controls.Add(this.stepLabel);
             this.Assistant.Controls.Add(this.pictureBox4);
             this.Assistant.Controls.Add(this.pictureBox3);
             this.Assistant.Controls.Add(this.helpPicture);
@@ -1431,8 +1433,8 @@
             this.Assistant.Location = new System.Drawing.Point(0, 0);
             this.Assistant.Margin = new System.Windows.Forms.Padding(0);
             this.Assistant.Name = "Assistant";
-            this.Assistant.Padding = new System.Windows.Forms.Padding(5, 10, 5, 10);
-            this.Assistant.Size = new System.Drawing.Size(449, 201);
+            this.Assistant.Padding = new System.Windows.Forms.Padding(5, 15, 5, 10);
+            this.Assistant.Size = new System.Drawing.Size(452, 241);
             this.Assistant.TabIndex = 18;
             this.Assistant.TabStop = false;
             this.Assistant.Text = "Authoring Assistant:";
@@ -1444,7 +1446,7 @@
             this.pictureBox4.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.left;
             this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox4.Location = new System.Drawing.Point(344, 6);
+            this.pictureBox4.Location = new System.Drawing.Point(313, 9);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(20, 20);
             this.pictureBox4.TabIndex = 25;
@@ -1456,7 +1458,7 @@
             this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox3.Image = global::IntegratedAuthoringToolWF.Properties.Resources.PikPng_com_close_icon_png_3024323;
-            this.pictureBox3.Location = new System.Drawing.Point(421, 6);
+            this.pictureBox3.Location = new System.Drawing.Point(424, 9);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(20, 20);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -1469,7 +1471,7 @@
             this.helpPicture.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_ajuda_16;
             this.helpPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.helpPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.helpPicture.Location = new System.Drawing.Point(398, 6);
+            this.helpPicture.Location = new System.Drawing.Point(398, 9);
             this.helpPicture.Name = "helpPicture";
             this.helpPicture.Size = new System.Drawing.Size(20, 20);
             this.helpPicture.TabIndex = 23;
@@ -1481,7 +1483,7 @@
             this.nextPicture.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_divisa_circulada_à_direita_40;
             this.nextPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.nextPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.nextPicture.Location = new System.Drawing.Point(372, 6);
+            this.nextPicture.Location = new System.Drawing.Point(372, 9);
             this.nextPicture.Name = "nextPicture";
             this.nextPicture.Size = new System.Drawing.Size(20, 20);
             this.nextPicture.TabIndex = 22;
@@ -1492,7 +1494,7 @@
             // 
             this.splitContainer5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.splitContainer5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer5.Location = new System.Drawing.Point(5, 25);
+            this.splitContainer5.Location = new System.Drawing.Point(5, 30);
             this.splitContainer5.Name = "splitContainer5";
             // 
             // splitContainer5.Panel1
@@ -1505,25 +1507,27 @@
             this.splitContainer5.Panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.splitContainer5.Panel2.Controls.Add(this.splitContainer6);
             this.splitContainer5.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer5.Size = new System.Drawing.Size(439, 166);
+            this.splitContainer5.Size = new System.Drawing.Size(442, 201);
             this.splitContainer5.SplitterDistance = 107;
             this.splitContainer5.TabIndex = 21;
             // 
             // pictureBox2
             // 
+            this.pictureBox2.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.pictureBox2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pictureBox2.BackgroundImage")));
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox2.Location = new System.Drawing.Point(0, 0);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Padding = new System.Windows.Forms.Padding(20);
-            this.pictureBox2.Size = new System.Drawing.Size(103, 162);
+            this.pictureBox2.Size = new System.Drawing.Size(103, 197);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox2.TabIndex = 20;
             this.pictureBox2.TabStop = false;
             // 
             // splitContainer6
             // 
+            this.splitContainer6.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer6.Location = new System.Drawing.Point(0, 0);
             this.splitContainer6.Name = "splitContainer6";
@@ -1535,36 +1539,39 @@
             // 
             // splitContainer6.Panel2
             // 
+            this.splitContainer6.Panel2.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.splitContainer6.Panel2.Controls.Add(this.button1);
             this.splitContainer6.Panel2.Controls.Add(this.label9);
-            this.splitContainer6.Size = new System.Drawing.Size(324, 162);
-            this.splitContainer6.SplitterDistance = 100;
+            this.splitContainer6.Size = new System.Drawing.Size(327, 197);
+            this.splitContainer6.SplitterDistance = 138;
             this.splitContainer6.TabIndex = 19;
             // 
             // assistantTopicGroupBox
             // 
             this.assistantTopicGroupBox.AutoSize = true;
+            this.assistantTopicGroupBox.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.assistantTopicGroupBox.Controls.Add(this.assistantTextBox);
             this.assistantTopicGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.assistantTopicGroupBox.Location = new System.Drawing.Point(0, 0);
             this.assistantTopicGroupBox.Name = "assistantTopicGroupBox";
-            this.assistantTopicGroupBox.Size = new System.Drawing.Size(324, 100);
+            this.assistantTopicGroupBox.Size = new System.Drawing.Size(327, 138);
             this.assistantTopicGroupBox.TabIndex = 19;
             this.assistantTopicGroupBox.TabStop = false;
             this.assistantTopicGroupBox.Text = "FAtiMA-Toolkit";
             // 
             // assistantTextBox
             // 
+            this.assistantTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.assistantTextBox.AutoEllipsis = true;
             this.assistantTextBox.BackColor = System.Drawing.Color.Transparent;
-            this.assistantTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.assistantTextBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.assistantTextBox.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.assistantTextBox.Location = new System.Drawing.Point(3, 18);
+            this.assistantTextBox.Font = new System.Drawing.Font("Gadugi", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.assistantTextBox.Location = new System.Drawing.Point(3, 3);
             this.assistantTextBox.Margin = new System.Windows.Forms.Padding(3);
             this.assistantTextBox.Name = "assistantTextBox";
             this.assistantTextBox.Padding = new System.Windows.Forms.Padding(3);
-            this.assistantTextBox.Size = new System.Drawing.Size(318, 79);
+            this.assistantTextBox.Size = new System.Drawing.Size(319, 132);
             this.assistantTextBox.TabIndex = 18;
             this.assistantTextBox.Text = "Don\'t forget to save your development using Ctrl+S";
             this.assistantTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1574,10 +1581,11 @@
             // 
             this.button1.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button1.Font = new System.Drawing.Font("Gadugi", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.button1.Location = new System.Drawing.Point(139, 11);
+            this.button1.Location = new System.Drawing.Point(149, 15);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(161, 35);
+            this.button1.Size = new System.Drawing.Size(161, 29);
             this.button1.TabIndex = 1;
             this.button1.Text = "Add Agent";
             this.button1.UseVisualStyleBackColor = false;
@@ -1586,10 +1594,10 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(7, 17);
+            this.label9.Font = new System.Drawing.Font("Gadugi", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(19, 21);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(105, 15);
+            this.label9.Size = new System.Drawing.Size(113, 16);
             this.label9.TabIndex = 0;
             this.label9.Text = "Suggested Action:";
             // 
@@ -1599,6 +1607,18 @@
             this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTip1.ToolTipTitle = "IAT Tooltip";
             this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
+            // 
+            // stepLabel
+            // 
+            this.stepLabel.BackColor = System.Drawing.SystemColors.InactiveCaption;
+            this.stepLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.stepLabel.Font = new System.Drawing.Font("Gadugi", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.stepLabel.Location = new System.Drawing.Point(339, 8);
+            this.stepLabel.Name = "stepLabel";
+            this.stepLabel.Size = new System.Drawing.Size(27, 21);
+            this.stepLabel.TabIndex = 26;
+            this.stepLabel.Text = "10";
+            this.stepLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainForm
             // 
@@ -1833,6 +1853,7 @@
         public System.Windows.Forms.Button buttonAddPlayerDialogueAction;
         private System.Windows.Forms.GroupBox assistantTopicGroupBox;
         public System.Windows.Forms.ToolStripMenuItem computeDescriptionToolStripMenuItem;
+        private System.Windows.Forms.Label stepLabel;
     }
 }
 

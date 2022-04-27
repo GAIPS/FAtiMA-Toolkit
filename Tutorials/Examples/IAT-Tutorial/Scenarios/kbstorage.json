@@ -8,7 +8,87 @@
 			"AppraisalRules":
 				{
 					"AppraisalWeight": 1,
-					"Rules": []
+					"Rules": [
+						{
+							"EventName": "Event(Action-End, SELF, Speak([cs], [ns], *, *), John)",
+							"Conditions":
+								{
+									"Set": []
+								},
+							"AppraisalVariables":
+								{
+									"AppraisalVariables": [
+										{
+											"Name": "Praiseworthiness",
+											"Value": -5,
+											"Target": "SELF"
+										}]
+								}
+						}, 
+						{
+							"EventName": "Event(Action-End, SELF, Speak([cs], [ns], *, *), Charlie)",
+							"Conditions":
+								{
+									"Set": []
+								},
+							"AppraisalVariables":
+								{
+									"AppraisalVariables": [
+										{
+											"Name": "Praiseworthiness",
+											"Value": -5,
+											"Target": "SELF"
+										}]
+								}
+						}, 
+						{
+							"EventName": "Event(Action-End, SELF, Do, John)",
+							"Conditions":
+								{
+									"Set": []
+								},
+							"AppraisalVariables":
+								{
+									"AppraisalVariables": [
+										{
+											"Name": "Praiseworthiness",
+											"Value": -5,
+											"Target": "John"
+										}]
+								}
+						}, 
+						{
+							"EventName": "Event(Action-End, SELF, Do, Charlie)",
+							"Conditions":
+								{
+									"Set": []
+								},
+							"AppraisalVariables":
+								{
+									"AppraisalVariables": [
+										{
+											"Name": "Praiseworthiness",
+											"Value": -6,
+											"Target": "Chalie"
+										}]
+								}
+						}, 
+						{
+							"EventName": "Event(Property-Change, SELF, Hello(World), [t])",
+							"Conditions":
+								{
+									"Set": []
+								},
+							"AppraisalVariables":
+								{
+									"AppraisalVariables": [
+										{
+											"Name": "Praiseworthiness",
+											"Value": 6,
+											"Target": "[t]"
+										}]
+								}
+						}]
 				}
 		},
 	"types": [
@@ -24,14 +104,34 @@
 			"classId": 0,
 			"ActionTendencies": [
 				{
-					"Action": "Do",
+					"Action": "Speak([cs], [ns], [mean], [style])",
 					"Target": "[t]",
 					"Layer": "-",
 					"Conditions":
 						{
-							"Set": ["is(Animal) = [t]", "is(Agent) = True"]
+							"Set": ["DialogueState([t]) = [cs]", "Has(Floor) = SELF", "ValidDialogue([cs], [ns], [mean], [style]) = True"]
 						},
 					"Priority": 1
+				}, 
+				{
+					"Action": "Speak([cs], [ns], [mean], Rude)",
+					"Target": "[t]",
+					"Layer": "-",
+					"Conditions":
+						{
+							"Set": ["DialogueState([t]) = [cs]", "ValidDialogue([cs], [ns], [mean], Rude) = True", "Has(Floor) = SELF", "Mood(SELF) < 0"]
+						},
+					"Priority": 5
+				}, 
+				{
+					"Action": "Speak([cs], [ns], [mean], Polite)",
+					"Target": "[t]",
+					"Layer": "-",
+					"Conditions":
+						{
+							"Set": ["DialogueState([t]) = [cs]", "ValidDialogue([cs], [ns], [mean], Polite) = True", "Has(Floor) = SELF", "Mood(SELF) < 0"]
+						},
+					"Priority": 5
 				}]
 		},
 	"types": [
@@ -45,7 +145,34 @@
 	"root":
 		{
 			"classId": 0,
-			"AttributionRules": []
+			"AttributionRules": [
+				{
+					"RuleName": "Good Mood",
+					"Target": "[t]",
+					"Value": 10,
+					"Conditions":
+						{
+							"Set": ["Mood(SELF) > 0"]
+						}
+				}, 
+				{
+					"RuleName": "Close Friends",
+					"Target": "[t]",
+					"Value": 20,
+					"Conditions":
+						{
+							"Set": ["CloseFriends([t]) = True"]
+						}
+				}, 
+				{
+					"RuleName": "TalktTo",
+					"Target": "[t]",
+					"Value": 40,
+					"Conditions":
+						{
+							"Set": ["EventId(Action-End, [t], Speak(*, *, *, *), SELF) != -1"]
+						}
+				}]
 		},
 	"types": [
 		{
