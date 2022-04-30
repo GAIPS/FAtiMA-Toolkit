@@ -70,7 +70,7 @@
             this.comboBoxEventType.Location = new System.Drawing.Point(43, 60);
             this.comboBoxEventType.Margin = new System.Windows.Forms.Padding(4);
             this.comboBoxEventType.Name = "comboBoxEventType";
-            this.comboBoxEventType.Size = new System.Drawing.Size(343, 28);
+            this.comboBoxEventType.Size = new System.Drawing.Size(343, 24);
             this.comboBoxEventType.TabIndex = 32;
             this.comboBoxEventType.SelectedIndexChanged += new System.EventHandler(this.comboBoxEventType_SelectedIndexChanged);
             // 
@@ -80,7 +80,7 @@
             this.labelTarget.Location = new System.Drawing.Point(43, 276);
             this.labelTarget.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelTarget.Name = "labelTarget";
-            this.labelTarget.Size = new System.Drawing.Size(156, 20);
+            this.labelTarget.Size = new System.Drawing.Size(125, 16);
             this.labelTarget.TabIndex = 38;
             this.labelTarget.Text = "Target | New Value:";
             // 
@@ -90,7 +90,7 @@
             this.labelObject.Location = new System.Drawing.Point(43, 194);
             this.labelObject.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelObject.Name = "labelObject";
-            this.labelObject.Size = new System.Drawing.Size(138, 20);
+            this.labelObject.Size = new System.Drawing.Size(108, 16);
             this.labelObject.TabIndex = 36;
             this.labelObject.Text = "Action | Property:";
             this.labelObject.Click += new System.EventHandler(this.labelObject_Click);
@@ -101,7 +101,7 @@
             this.label4.Location = new System.Drawing.Point(43, 114);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(70, 20);
+            this.label4.Size = new System.Drawing.Size(56, 16);
             this.label4.TabIndex = 34;
             this.label4.Text = "Subject:";
             this.label4.Click += new System.EventHandler(this.label4_Click);
@@ -112,7 +112,7 @@
             this.label6.Location = new System.Drawing.Point(43, 28);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(50, 20);
+            this.label6.Size = new System.Drawing.Size(43, 16);
             this.label6.TabIndex = 31;
             this.label6.Text = "Type:";
             // 
@@ -127,7 +127,7 @@
             this.textBoxSubject.Location = new System.Drawing.Point(43, 145);
             this.textBoxSubject.Name = "textBoxSubject";
             this.textBoxSubject.OnlyIntOrVariable = false;
-            this.textBoxSubject.Size = new System.Drawing.Size(343, 26);
+            this.textBoxSubject.Size = new System.Drawing.Size(343, 22);
             this.textBoxSubject.TabIndex = 44;
             // 
             // textBoxObject
@@ -141,7 +141,7 @@
             this.textBoxObject.Location = new System.Drawing.Point(43, 230);
             this.textBoxObject.Name = "textBoxObject";
             this.textBoxObject.OnlyIntOrVariable = false;
-            this.textBoxObject.Size = new System.Drawing.Size(344, 26);
+            this.textBoxObject.Size = new System.Drawing.Size(344, 22);
             this.textBoxObject.TabIndex = 45;
             // 
             // textBoxTarget
@@ -155,12 +155,12 @@
             this.textBoxTarget.Location = new System.Drawing.Point(43, 312);
             this.textBoxTarget.Name = "textBoxTarget";
             this.textBoxTarget.OnlyIntOrVariable = false;
-            this.textBoxTarget.Size = new System.Drawing.Size(344, 26);
+            this.textBoxTarget.Size = new System.Drawing.Size(344, 22);
             this.textBoxTarget.TabIndex = 46;
             // 
             // AddOrEditAppraisalRuleForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(427, 429);

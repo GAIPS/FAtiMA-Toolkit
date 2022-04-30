@@ -1957,8 +1957,9 @@ namespace IntegratedAuthoringToolWF
             if (edmRulesCount > eaRulesCount * 2 + 1)
             {
                 string actionName = rule.Action.ToString();
-                    //+ " towards " + rule.Target.ToString();
-                var addEmotForm = new AddEmotionalReactionForm(actionName);
+                //+ " towards " + rule.Target.ToString();
+                var actionNames = _edmForm.Asset.GetAllActionRules().Select(x => x.Action.ToString()).ToList();
+                var addEmotForm = new AddEmotionalReactionForm(actionNames);
 
                 var result = addEmotForm.ShowDialog();
                
@@ -1980,13 +1981,11 @@ namespace IntegratedAuthoringToolWF
 
             ActionLibrary.DTOs.ActionRuleDTO rule = this._edmForm.latestAddedRule;
 
-            string actionName = rule.Action.ToString();
-
-            var addEmotForm = new AddEmotionalReactionForm(actionName);
+           
+            var actionNames = _edmForm.Asset.GetAllActionRules().Select(x => x.Action.ToString()).ToList();
+            var addEmotForm = new AddEmotionalReactionForm(actionNames);
 
             var result = addEmotForm.ShowDialog();
-
-
 
             if (result == DialogResult.Yes)
             {
@@ -2000,6 +1999,10 @@ namespace IntegratedAuthoringToolWF
         // Add Appraisal Rule to Selected Decision Making Action
         private void AddAppraisalRuleforAction(ActionRuleDTO rule, EmotionalAppraisal.OCCModel.OCCEmotionType targetEmotion, EmotionalAppraisal.OCCModel.OCCEmotionType subjectEmotion )
         {
+
+            if (targetEmotion == null && subjectEmotion == null)
+                return;
+
             tabControlAssetEditor.SelectedIndex = 0;
 
             _eaForm.AddAppraisalRulewithEmotions(rule, targetEmotion, subjectEmotion);

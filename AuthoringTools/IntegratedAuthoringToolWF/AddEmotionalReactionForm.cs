@@ -15,12 +15,22 @@ namespace IntegratedAuthoringToolWF
     {
         public bool neverShowAgain;
         public OCCEmotionType targetEmotion, subjectEmotion;
-        public AddEmotionalReactionForm(string actionName)
+       
+        public AddEmotionalReactionForm(List<string> actionNames)
         {
             InitializeComponent();
-            targetEmotionBox.DataSource = OCCEmotionType.Types.ToList();
-            subjectEmotionBox.DataSource = OCCEmotionType.Types.ToList();
-            actionText.Text = actionName;
+            var emotionList = new List<string>();
+            emotionList.Add("None");
+            emotionList.AddRange(OCCEmotionType.Types.ToList());
+
+            var emotionList2 = new List<string>();
+            emotionList2.Add("None");
+            emotionList2.AddRange(OCCEmotionType.Types.ToList());
+
+            // We need to create 2 different objects otherwise they will pair up
+            targetEmotionBox.DataSource = emotionList;
+            subjectEmotionBox.DataSource = emotionList2;
+            this.actionComboBox.DataSource = actionNames;
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -32,11 +42,13 @@ namespace IntegratedAuthoringToolWF
         {
            
 
-            if (targetEmotionBox.SelectedItem != null)
+            if (targetEmotionBox.SelectedItem != null && targetEmotionBox.SelectedItem.ToString() != "None")
                 targetEmotion = OCCEmotionType.Parse((string)targetEmotionBox.SelectedItem);
 
-            if (subjectEmotionBox.SelectedItem != null)
+            if (targetEmotionBox.SelectedItem != null && targetEmotionBox.SelectedItem.ToString() != "None")
                 subjectEmotion = OCCEmotionType.Parse((string)subjectEmotionBox.SelectedItem);
+
+
         }
     }
 }

@@ -30,7 +30,6 @@ namespace IntegratedAuthoringToolWF
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddEmotionalReactionForm));
-            this.actionText = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.acceptButton = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
@@ -42,21 +41,11 @@ namespace IntegratedAuthoringToolWF
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.actionComboBox = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // actionText
-            // 
-            this.actionText.AutoSize = true;
-            this.actionText.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.actionText.Location = new System.Drawing.Point(171, 16);
-            this.actionText.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.actionText.Name = "actionText";
-            this.actionText.Size = new System.Drawing.Size(109, 17);
-            this.actionText.TabIndex = 1;
-            this.actionText.Text = "Action Name: ";
             // 
             // label3
             // 
@@ -166,8 +155,8 @@ namespace IntegratedAuthoringToolWF
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.actionComboBox);
             this.groupBox3.Controls.Add(this.label2);
-            this.groupBox3.Controls.Add(this.actionText);
             this.groupBox3.Location = new System.Drawing.Point(9, 121);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(500, 59);
@@ -185,6 +174,16 @@ namespace IntegratedAuthoringToolWF
             this.label2.Size = new System.Drawing.Size(58, 17);
             this.label2.TabIndex = 2;
             this.label2.Text = "Action:";
+            // 
+            // actionComboBox
+            // 
+            this.actionComboBox.DropDownHeight = 130;
+            this.actionComboBox.FormattingEnabled = true;
+            this.actionComboBox.IntegralHeight = false;
+            this.actionComboBox.Location = new System.Drawing.Point(182, 16);
+            this.actionComboBox.Name = "actionComboBox";
+            this.actionComboBox.Size = new System.Drawing.Size(186, 21);
+            this.actionComboBox.TabIndex = 3;
             // 
             // AddEmotionalReactionForm
             // 
@@ -215,7 +214,6 @@ namespace IntegratedAuthoringToolWF
         }
 
         #endregion
-        private System.Windows.Forms.Label actionText;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button acceptButton;
         private System.Windows.Forms.CheckBox checkBox1;
@@ -227,5 +225,6 @@ namespace IntegratedAuthoringToolWF
         public System.Windows.Forms.ComboBox targetEmotionBox;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox actionComboBox;
     }
 }

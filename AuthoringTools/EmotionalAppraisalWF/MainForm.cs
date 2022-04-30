@@ -77,47 +77,53 @@ namespace EmotionalAppraisalWF
             EmotionalAppraisal.OCCModel.OCCEmotionType subjectEmotion)
         {
 
-            var targetVariables = EmotionalAppraisal.OCCModel.OCCEmotionType.getVariableFromEmotion(targetEmotion.Name);
-
-            AppraisalRuleDTO targetDto = new AppraisalRuleDTO()
+            if (targetEmotion != null)
             {
-                EventMatchingTemplate =
-                 WellFormedNames.Name.BuildName(
-                (Name)AMConsts.EVENT,
-                (Name)AMConsts.ACTION_END,
-                WellFormedNames.Name.UNIVERSAL_SYMBOL,
-                rule.Action,
-               WellFormedNames.Name.SELF_SYMBOL),
-                            
-                AppraisalVariables = new AppraisalVariables()
+                var targetVariables = EmotionalAppraisal.OCCModel.OCCEmotionType.getVariableFromEmotion(targetEmotion.Name);
+
+                AppraisalRuleDTO targetDto = new AppraisalRuleDTO()
                 {
-                    appraisalVariables = targetVariables 
-                }
-            };
+                    EventMatchingTemplate =
+                     WellFormedNames.Name.BuildName(
+                    (Name)AMConsts.EVENT,
+                    (Name)AMConsts.ACTION_END,
+                    WellFormedNames.Name.UNIVERSAL_SYMBOL,
+                    rule.Action,
+                   WellFormedNames.Name.SELF_SYMBOL),
 
-            _appraisalRulesVM.AddOrUpdateAppraisalRule(targetDto);
+                    AppraisalVariables = new AppraisalVariables()
+                    {
+                        appraisalVariables = targetVariables
+                    }
+                };
 
-            var subjectVariables = EmotionalAppraisal.OCCModel.OCCEmotionType.getVariableFromEmotion(subjectEmotion.Name);
+                _appraisalRulesVM.AddOrUpdateAppraisalRule(targetDto);
+            }
 
-            AppraisalRuleDTO subjectDto = new AppraisalRuleDTO()
+            if (subjectEmotion != null)
             {
-                EventMatchingTemplate =
-                 WellFormedNames.Name.BuildName(
-                (Name)AMConsts.EVENT,
-                (Name)AMConsts.ACTION_END,
-                WellFormedNames.Name.SELF_SYMBOL,
-                rule.Action,
-               WellFormedNames.Name.UNIVERSAL_SYMBOL),
 
-                AppraisalVariables = new AppraisalVariables()
+                var subjectVariables = EmotionalAppraisal.OCCModel.OCCEmotionType.getVariableFromEmotion(subjectEmotion.Name);
+
+                AppraisalRuleDTO subjectDto = new AppraisalRuleDTO()
                 {
-                    appraisalVariables = subjectVariables
-                }
-            };
+                    EventMatchingTemplate =
+                     WellFormedNames.Name.BuildName(
+                    (Name)AMConsts.EVENT,
+                    (Name)AMConsts.ACTION_END,
+                    WellFormedNames.Name.SELF_SYMBOL,
+                    rule.Action,
+                   WellFormedNames.Name.UNIVERSAL_SYMBOL),
 
-            _appraisalRulesVM.AddOrUpdateAppraisalRule(subjectDto);
+                    AppraisalVariables = new AppraisalVariables()
+                    {
+                        appraisalVariables = subjectVariables
+                    }
+                };
 
+                _appraisalRulesVM.AddOrUpdateAppraisalRule(subjectDto);
 
+            }
         }
         public void buttonAddAppraisalRule_Click(object sender, ActionRuleDTO rule)
         {
