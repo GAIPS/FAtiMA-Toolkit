@@ -50,12 +50,16 @@ namespace IntegratedAuthoringToolWF
         private IList<RolePlayCharacterAsset> _agentsInSimulation;
 
         public bool showImbalances = true;
-      //  private string tooltip = "";
         private int step;
         private int maxTutorialSteps;
+        
+        // Highlighting Variables
         private Button lastButtonUsed;
         private ToolStripMenuItem lastMenuItemUsed;
+        private GroupBox lastGroupBoxHighlighted;
+        private Panel lastPanelHighlighted;
 
+        
 
         public MainForm()
         {
@@ -1748,13 +1752,20 @@ namespace IntegratedAuthoringToolWF
 
         Dictionary<int, descriptionObject> assistantDescription;
 
+
         // Initialize All things Authoring Assistant
         private void initAssistant()
         {
-            var _index = 0;
-            step = 0;
+            LoadPictures();
+            LoadTips();
+           
+        }
+
+        private void LoadTips() { 
             assistantDescription = new Dictionary<int, descriptionObject>();
             // First Message
+            var _index = 0;
+            step = 0;
 
             var toAdd = new descriptionObject()
             {
@@ -1773,8 +1784,34 @@ namespace IntegratedAuthoringToolWF
                 groupboxHeader = "FAtiMA-Toolkit",
                 pressed = false,
                 performActionButtonText = "Next",
+                description = "FAtiMA-Toolkit is composed by many different components but Fearnot, I will guide you through each one \n \n" +
+                " In addition to this, by hovering different components a tooltip will appear detailing their objectivess",
+                index = _index
+            };
+
+            assistantDescription.Add(_index, toAdd);
+            _index += 1;
+
+            toAdd = new descriptionObject()
+            {
+                groupboxHeader = "FAtiMA-Toolkit",
+                pressed = false,
+                performActionButtonText = "Next",
+                description = "This is the place where authors can write a Description so that it may help them during the authoring process and serve as a reminder of the authorial goals",
+                index = _index
+            };
+
+            assistantDescription.Add(_index, toAdd);
+            _index += 1;
+
+
+            toAdd = new descriptionObject()
+            {
+                groupboxHeader = "FAtiMA-Toolkit",
+                pressed = false,
+                performActionButtonText = "Next",
                 description = "This tool uses .json files to store the data. Additionally, there are 2 types of data, the scenario data and the cognitive rules data \n \n" +
-                "Let's start by creating a new scenario under File->New",
+                "Try creating a new scenario file under File->New",
                 index = _index
             };
 
@@ -1983,7 +2020,7 @@ namespace IntegratedAuthoringToolWF
             // ClearLastButton();
             UpdateStep();
 
-            if (!assistantDescription[step].pressed && step > 3)
+            if (!assistantDescription[step].pressed && step > 5)
                 button1.Text = "Take me there";
             else
                 button1.Text = assistantDescription[step].performActionButtonText;
@@ -1994,7 +2031,7 @@ namespace IntegratedAuthoringToolWF
         // If users have no expertise make sure the tutorial is being followed
         public void ScenarioAnalyser()
         {
-            if (step < 4)
+            if (step < 6)
                 return;
 
             if(_iat.Characters.Count() == 0)
@@ -2067,9 +2104,30 @@ namespace IntegratedAuthoringToolWF
 
         private void UpdateStep()
         {
+            if (Int32.Parse(stepLabel.Text) != step)
+                UpdatePicture();
+
             stepLabel.Text = "" + step;
         }
 
+        List<Image> imageList;
+        private void LoadPictures()
+        {
+            imageList = new List<Image>();
+
+            imageList.Add(Properties.Resources.NormalFace1);
+            imageList.Add(Properties.Resources.Study1);
+            imageList.Add(Properties.Resources.Pagina_Demo_face1);
+        }
+
+        private void UpdatePicture()
+        {
+            var rand = new Random();
+            int index = rand.Next(imageList.Count);
+            pictureBox2.BackgroundImage = imageList[index];
+            pictureBox2.Refresh();
+            pictureBox2.Visible = true;
+        }
 
         // When the button task button is clicked 
         private void button1_Click(object sender, EventArgs e)
@@ -2084,18 +2142,24 @@ namespace IntegratedAuthoringToolWF
                     ClearLastButton();
                     UpdateLabel();
 
-                    if (step == 1)
+                    if (step == 2)
+                    {
+                        
+                        HighlightPanel(splitContainer7.Panel1);
+                    }
+
+                    if (step == 3)
                     {
                         fileToolStripMenuItem.ShowDropDown();
                         HighlightMenuItem(newToolStripMenuItem);
                     }
-                    else if (step == 2)
+                    else if (step == 4)
                     {
                         
                         HighlightButton(buttonNewAssetStorage);
                     }
 
-                    else if(step == 3)
+                    else if(step == 5)
                     {
                         toolsToolStripMenuItem.ShowDropDown();
                         HighlightMenuItem(computeDescriptionToolStripMenuItem);
@@ -2327,6 +2391,20 @@ namespace IntegratedAuthoringToolWF
             lastMenuItemUsed = item;
         }
 
+        public void HighlightGroupBox(GroupBox item)
+        {
+            item.BackColor = SystemColors.MenuHighlight;
+            item.ForeColor = SystemColors.ButtonHighlight;
+            lastGroupBoxHighlighted = item;
+        }
+
+        public void HighlightPanel(Panel item)
+        {
+            item.BackColor = SystemColors.MenuHighlight;
+            item.ForeColor = SystemColors.ButtonHighlight;
+            lastPanelHighlighted = item;
+        }
+
         public void ClearLastButton()
         {
 
@@ -2343,6 +2421,20 @@ namespace IntegratedAuthoringToolWF
                 lastMenuItemUsed.ForeColor = SystemColors.ControlText;
                 lastMenuItemUsed = null;
             }
+
+            if (lastGroupBoxHighlighted != null)
+            {
+                lastGroupBoxHighlighted.BackColor = SystemColors.ControlLight;
+                lastGroupBoxHighlighted.ForeColor = SystemColors.ControlText;
+                lastGroupBoxHighlighted = null;
+            }
+
+            if (lastPanelHighlighted != null)
+            {
+                lastPanelHighlighted.BackColor = SystemColors.ControlLight;
+                lastPanelHighlighted.ForeColor = SystemColors.ControlText;
+                lastPanelHighlighted = null;
+            }
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2350,8 +2442,12 @@ namespace IntegratedAuthoringToolWF
 
         }
 
+
         #endregion Authoring Assistant
 
+        private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
+        {
 
+        }
     }
 }

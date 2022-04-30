@@ -123,6 +123,9 @@
   <metadata name="rPCConstsBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>201, 17</value>
   </metadata>
+  <data name="label1.Text" xml:space="preserve">
+    <value>We reccomend authors go throught the output and manually change what they find to be incorrect. The tool is still in its alpha stages thus we thank you for your patience and for any errors that may occur</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

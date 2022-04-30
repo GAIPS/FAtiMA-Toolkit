@@ -461,6 +461,26 @@ namespace IntegratedAuthoringToolWF.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap NormalFace {
+            get {
+                object obj = ResourceManager.GetObject("NormalFace", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NormalFace1 {
+            get {
+                object obj = ResourceManager.GetObject("NormalFace1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap offline {
             get {
                 object obj = ResourceManager.GetObject("offline", resourceCulture);
@@ -474,6 +494,66 @@ namespace IntegratedAuthoringToolWF.Properties {
         internal static System.Drawing.Bitmap online {
             get {
                 object obj = ResourceManager.GetObject("online", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Pagina_Demo_face {
+            get {
+                object obj = ResourceManager.GetObject("Pagina-Demo-face", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Pagina_Demo_face1 {
+            get {
+                object obj = ResourceManager.GetObject("Pagina-Demo-face1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Pagina_Demo2 {
+            get {
+                object obj = ResourceManager.GetObject("Pagina-Demo2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Pagina_Get_Started {
+            get {
+                object obj = ResourceManager.GetObject("Pagina-Get-Started", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Pagina_Home {
+            get {
+                object obj = ResourceManager.GetObject("Pagina-Home", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Pagina_Publications_300x300 {
+            get {
+                object obj = ResourceManager.GetObject("Pagina-Publications-300x300", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -514,6 +594,26 @@ namespace IntegratedAuthoringToolWF.Properties {
         internal static string RPCLoadingError {
             get {
                 return ResourceManager.GetString("RPCLoadingError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Study {
+            get {
+                object obj = ResourceManager.GetObject("Study", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Study1 {
+            get {
+                object obj = ResourceManager.GetObject("Study1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

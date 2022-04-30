@@ -373,6 +373,16 @@
     <None Include="Resources\inescid.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\NormalFace1.png" />
+    <None Include="Resources\Study1.png" />
+    <None Include="Resources\Study.png" />
+    <None Include="Resources\Pagina-Demo-face1.png" />
+    <None Include="Resources\NormalFace.png" />
+    <None Include="Resources\Pagina-Publications-300x300.png" />
+    <None Include="Resources\Pagina-Home.png" />
+    <None Include="Resources\Pagina-Get-Started.png" />
+    <None Include="Resources\Pagina-Demo-face.png" />
+    <None Include="Resources\Pagina-Demo2.png" />
     <None Include="Resources\PikPng.com_close-icon-png_3024323.png" />
     <None Include="Resources\left.png" />
     <None Include="Resources\icons8-ajuda-16.png" />
