@@ -26,6 +26,7 @@
             this.authoringAssistantToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inspectCharacterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
@@ -122,7 +123,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.inspectCharacterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -190,6 +191,7 @@
             this.splitContainer6.Panel2.SuspendLayout();
             this.splitContainer6.SuspendLayout();
             this.assistantTopicGroupBox.SuspendLayout();
+            this.groupBox9.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -298,6 +300,13 @@
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
+            // inspectCharacterToolStripMenuItem
+            // 
+            this.inspectCharacterToolStripMenuItem.Name = "inspectCharacterToolStripMenuItem";
+            this.inspectCharacterToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.inspectCharacterToolStripMenuItem.Text = "Inspect Character";
+            this.inspectCharacterToolStripMenuItem.Click += new System.EventHandler(this.inspectCharacterToolStripMenuItem_Click);
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
@@ -389,16 +398,16 @@
             this.buttonAddCharacter.Location = new System.Drawing.Point(4, 4);
             this.buttonAddCharacter.Margin = new System.Windows.Forms.Padding(4);
             this.buttonAddCharacter.Name = "buttonAddCharacter";
-            this.buttonAddCharacter.Size = new System.Drawing.Size(93, 30);
+            this.buttonAddCharacter.Size = new System.Drawing.Size(152, 30);
             this.buttonAddCharacter.TabIndex = 3;
-            this.buttonAddCharacter.Text = "Add";
+            this.buttonAddCharacter.Text = "Add Character";
             this.toolTip1.SetToolTip(this.buttonAddCharacter, "Add a new Character");
             this.buttonAddCharacter.UseVisualStyleBackColor = false;
             this.buttonAddCharacter.Click += new System.EventHandler(this.buttonAddCharacter_Click);
             // 
             // buttonRemoveCharacter
             // 
-            this.buttonRemoveCharacter.Location = new System.Drawing.Point(105, 4);
+            this.buttonRemoveCharacter.Location = new System.Drawing.Point(164, 4);
             this.buttonRemoveCharacter.Margin = new System.Windows.Forms.Padding(4);
             this.buttonRemoveCharacter.Name = "buttonRemoveCharacter";
             this.buttonRemoveCharacter.Size = new System.Drawing.Size(93, 30);
@@ -410,7 +419,7 @@
             // 
             // buttonInspect
             // 
-            this.buttonInspect.Location = new System.Drawing.Point(206, 4);
+            this.buttonInspect.Location = new System.Drawing.Point(265, 4);
             this.buttonInspect.Margin = new System.Windows.Forms.Padding(4);
             this.buttonInspect.Name = "buttonInspect";
             this.buttonInspect.Size = new System.Drawing.Size(93, 30);
@@ -576,10 +585,8 @@
             // groupBox2
             // 
             this.groupBox2.AutoSize = true;
+            this.groupBox2.Controls.Add(this.groupBox9);
             this.groupBox2.Controls.Add(this.groupBox12);
-            this.groupBox2.Controls.Add(this.pictureBox1);
-            this.groupBox2.Controls.Add(this.searchCheckList);
-            this.groupBox2.Controls.Add(this.searchDialogueBox);
             this.groupBox2.Controls.Add(this.dataGridViewDialogueActions);
             this.groupBox2.Controls.Add(this.buttonPlayerDuplicateDialogueAction);
             this.groupBox2.Controls.Add(this.buttonPlayerEditDialogueAction);
@@ -681,7 +688,7 @@
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
             this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
-            this.pictureBox1.Location = new System.Drawing.Point(562, 30);
+            this.pictureBox1.Location = new System.Drawing.Point(192, 19);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(27, 25);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
@@ -690,19 +697,20 @@
             // 
             // searchCheckList
             // 
-            this.searchCheckList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.searchCheckList.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.searchCheckList.Font = new System.Drawing.Font("Arial", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.searchCheckList.FormattingEnabled = true;
             this.searchCheckList.HorizontalExtent = 1;
             this.searchCheckList.HorizontalScrollbar = true;
-            this.searchCheckList.Location = new System.Drawing.Point(660, 25);
+            this.searchCheckList.Location = new System.Drawing.Point(234, 15);
             this.searchCheckList.Name = "searchCheckList";
-            this.searchCheckList.Size = new System.Drawing.Size(147, 18);
+            this.searchCheckList.Size = new System.Drawing.Size(147, 32);
             this.searchCheckList.TabIndex = 16;
             // 
             // searchDialogueBox
             // 
-            this.searchDialogueBox.Location = new System.Drawing.Point(376, 30);
+            this.searchDialogueBox.Location = new System.Drawing.Point(6, 22);
             this.searchDialogueBox.Name = "searchDialogueBox";
             this.searchDialogueBox.Size = new System.Drawing.Size(180, 22);
             this.searchDialogueBox.TabIndex = 15;
@@ -1626,12 +1634,17 @@
             this.toolTip1.ToolTipTitle = "IAT Tooltip";
             this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
             // 
-            // inspectCharacterToolStripMenuItem
+            // groupBox9
             // 
-            this.inspectCharacterToolStripMenuItem.Name = "inspectCharacterToolStripMenuItem";
-            this.inspectCharacterToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
-            this.inspectCharacterToolStripMenuItem.Text = "Inspect Character";
-            this.inspectCharacterToolStripMenuItem.Click += new System.EventHandler(this.inspectCharacterToolStripMenuItem_Click);
+            this.groupBox9.Controls.Add(this.searchDialogueBox);
+            this.groupBox9.Controls.Add(this.pictureBox1);
+            this.groupBox9.Controls.Add(this.searchCheckList);
+            this.groupBox9.Location = new System.Drawing.Point(438, 10);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(398, 59);
+            this.groupBox9.TabIndex = 22;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "Search Settings";
             // 
             // MainForm
             // 
@@ -1665,7 +1678,6 @@
             this.tabPageDialogue.ResumeLayout(false);
             this.tabPageDialogue.PerformLayout();
             this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.groupBox12.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDialogueActions)).EndInit();
@@ -1735,6 +1747,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
             this.splitContainer6.ResumeLayout(false);
             this.assistantTopicGroupBox.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1868,6 +1882,7 @@
         public System.Windows.Forms.ToolStripMenuItem computeDescriptionToolStripMenuItem;
         private System.Windows.Forms.Label stepLabel;
         private System.Windows.Forms.ToolStripMenuItem inspectCharacterToolStripMenuItem;
+        private System.Windows.Forms.GroupBox groupBox9;
     }
 }
 
