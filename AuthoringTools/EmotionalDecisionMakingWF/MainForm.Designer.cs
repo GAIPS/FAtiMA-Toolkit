@@ -31,12 +31,15 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.groupBox7 = new System.Windows.Forms.GroupBox();
-            this.emotionaAppraisalButton = new System.Windows.Forms.Button();
             this.buttonDuplicateReaction = new System.Windows.Forms.Button();
             this.buttonEditReaction = new System.Windows.Forms.Button();
             this.buttonAddReaction = new System.Windows.Forms.Button();
             this.buttonRemoveReaction = new System.Windows.Forms.Button();
             this.dataGridViewReactiveActions = new System.Windows.Forms.DataGridView();
+            this.menuStrip2 = new System.Windows.Forms.MenuStrip();
+            this.toolsMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.addDialogueActionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addEmotionalResponseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.debugGroup = new System.Windows.Forms.GroupBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -55,6 +58,7 @@
             this.edmToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactiveActions)).BeginInit();
+            this.menuStrip2.SuspendLayout();
             this.groupBox8.SuspendLayout();
             this.debugGroup.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -66,12 +70,12 @@
             // 
             // groupBox7
             // 
-            this.groupBox7.Controls.Add(this.emotionaAppraisalButton);
             this.groupBox7.Controls.Add(this.buttonDuplicateReaction);
             this.groupBox7.Controls.Add(this.buttonEditReaction);
             this.groupBox7.Controls.Add(this.buttonAddReaction);
             this.groupBox7.Controls.Add(this.buttonRemoveReaction);
             this.groupBox7.Controls.Add(this.dataGridViewReactiveActions);
+            this.groupBox7.Controls.Add(this.menuStrip2);
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox7.Location = new System.Drawing.Point(0, 0);
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
@@ -82,21 +86,6 @@
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Action Rules";
             this.groupBox7.Enter += new System.EventHandler(this.groupBox7_Enter);
-            // 
-            // emotionaAppraisalButton
-            // 
-            this.emotionaAppraisalButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.emotionaAppraisalButton.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.emotionaAppraisalButton.Location = new System.Drawing.Point(625, 23);
-            this.emotionaAppraisalButton.Margin = new System.Windows.Forms.Padding(4);
-            this.emotionaAppraisalButton.Name = "emotionaAppraisalButton";
-            this.emotionaAppraisalButton.Size = new System.Drawing.Size(179, 28);
-            this.emotionaAppraisalButton.TabIndex = 11;
-            this.emotionaAppraisalButton.Text = "Add Emotional Response";
-            this.edmToolTip.SetToolTip(this.emotionaAppraisalButton, "Add an Appraisal Rule that matches the select action");
-            this.emotionaAppraisalButton.UseVisualStyleBackColor = false;
-            this.emotionaAppraisalButton.Click += new System.EventHandler(this.emotionaAppraisalButton_Click);
             // 
             // buttonDuplicateReaction
             // 
@@ -166,13 +155,62 @@
             this.dataGridViewReactiveActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewReactiveActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewReactiveActions.ShowCellToolTips = false;
-            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(811, 169);
+            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(811, 158);
             this.dataGridViewReactiveActions.TabIndex = 2;
             this.edmToolTip.SetToolTip(this.dataGridViewReactiveActions, resources.GetString("dataGridViewReactiveActions.ToolTip"));
             this.dataGridViewReactiveActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReactiveActions_CellContentClick);
             this.dataGridViewReactiveActions.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewReactiveActions_CellMouseDoubleClick);
             this.dataGridViewReactiveActions.RowEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReactiveActions_RowEnter);
             this.dataGridViewReactiveActions.KeyDown += new System.Windows.Forms.KeyEventHandler(this.dataGridViewReactiveActions_KeyDown);
+            // 
+            // menuStrip2
+            // 
+            this.menuStrip2.AutoSize = false;
+            this.menuStrip2.BackColor = System.Drawing.Color.Transparent;
+            this.menuStrip2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.menuStrip2.Dock = System.Windows.Forms.DockStyle.None;
+            this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolsMenu});
+            this.menuStrip2.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            this.menuStrip2.Location = new System.Drawing.Point(654, 19);
+            this.menuStrip2.Name = "menuStrip2";
+            this.menuStrip2.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.menuStrip2.Size = new System.Drawing.Size(157, 35);
+            this.menuStrip2.TabIndex = 12;
+            this.menuStrip2.Text = "menuStrip2";
+            this.menuStrip2.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip2_ItemClicked);
+            // 
+            // toolsMenu
+            // 
+            this.toolsMenu.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.toolsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addDialogueActionToolStripMenuItem,
+            this.addEmotionalResponseToolStripMenuItem});
+            this.toolsMenu.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolsMenu.ImageTransparentColor = System.Drawing.Color.Black;
+            this.toolsMenu.Name = "toolsMenu";
+            this.toolsMenu.Size = new System.Drawing.Size(134, 31);
+            this.toolsMenu.Text = "Action Rule Helpers";
+            // 
+            // addDialogueActionToolStripMenuItem
+            // 
+            this.addDialogueActionToolStripMenuItem.Image = global::EmotionalDecisionMakingWF.Properties.Resources.Pagina_Demo_face;
+            this.addDialogueActionToolStripMenuItem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.addDialogueActionToolStripMenuItem.Name = "addDialogueActionToolStripMenuItem";
+            this.addDialogueActionToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.addDialogueActionToolStripMenuItem.Text = "Add Dialogue Action";
+            this.addDialogueActionToolStripMenuItem.ToolTipText = "Create a new Speak Action from a Template";
+            this.addDialogueActionToolStripMenuItem.Click += new System.EventHandler(this.addDialogueActionToolStripMenuItem_Click);
+            // 
+            // addEmotionalResponseToolStripMenuItem
+            // 
+            this.addEmotionalResponseToolStripMenuItem.Image = global::EmotionalDecisionMakingWF.Properties.Resources.Icon_Final_Black;
+            this.addEmotionalResponseToolStripMenuItem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.addEmotionalResponseToolStripMenuItem.Name = "addEmotionalResponseToolStripMenuItem";
+            this.addEmotionalResponseToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.addEmotionalResponseToolStripMenuItem.Text = "Add Emotional Response";
+            this.addEmotionalResponseToolStripMenuItem.ToolTipText = "Automatically create an appraisal rule for each action rule using this helper";
+            this.addEmotionalResponseToolStripMenuItem.Click += new System.EventHandler(this.addEmotionalResponseToolStripMenuItem_Click);
             // 
             // groupBox8
             // 
@@ -365,6 +403,8 @@
         "");
             this.groupBox7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactiveActions)).EndInit();
+            this.menuStrip2.ResumeLayout(false);
+            this.menuStrip2.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.debugGroup.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -395,13 +435,16 @@
         public System.Windows.Forms.DataGridView dataGridViewReactiveActions;
         public System.Windows.Forms.ToolTip edmToolTip;
         public System.Windows.Forms.Button buttonAddReaction;
-        public System.Windows.Forms.Button emotionaAppraisalButton;
         private System.Windows.Forms.Button testConditions;
         private System.Windows.Forms.ComboBox charactersComboBox;
         private System.Windows.Forms.Label testActionRuleResults;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox debugGroup;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.MenuStrip menuStrip2;
+        private System.Windows.Forms.ToolStripMenuItem addDialogueActionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addEmotionalResponseToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem toolsMenu;
     }
 }
 

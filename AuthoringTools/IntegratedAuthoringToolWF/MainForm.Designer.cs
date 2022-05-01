@@ -122,6 +122,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.inspectCharacterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -254,7 +255,8 @@
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.computeDescriptionToolStripMenuItem,
             this.loadTemplateScenarioToolStripMenuItem,
-            this.authoringAssistantToolStripMenuItem});
+            this.authoringAssistantToolStripMenuItem,
+            this.inspectCharacterToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -416,6 +418,7 @@
             this.buttonInspect.Text = "Inspect";
             this.toolTip1.SetToolTip(this.buttonInspect, "Test how the character behaves with certain events");
             this.buttonInspect.UseVisualStyleBackColor = true;
+            this.buttonInspect.Visible = false;
             this.buttonInspect.Click += new System.EventHandler(this.buttonInspect_Click);
             // 
             // dataGridViewCharacters
@@ -1623,6 +1626,13 @@
             this.toolTip1.ToolTipTitle = "IAT Tooltip";
             this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
             // 
+            // inspectCharacterToolStripMenuItem
+            // 
+            this.inspectCharacterToolStripMenuItem.Name = "inspectCharacterToolStripMenuItem";
+            this.inspectCharacterToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.inspectCharacterToolStripMenuItem.Text = "Inspect Character";
+            this.inspectCharacterToolStripMenuItem.Click += new System.EventHandler(this.inspectCharacterToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1857,6 +1867,7 @@
         private System.Windows.Forms.GroupBox assistantTopicGroupBox;
         public System.Windows.Forms.ToolStripMenuItem computeDescriptionToolStripMenuItem;
         private System.Windows.Forms.Label stepLabel;
+        private System.Windows.Forms.ToolStripMenuItem inspectCharacterToolStripMenuItem;
     }
 }
 

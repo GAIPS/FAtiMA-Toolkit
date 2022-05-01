@@ -2274,7 +2274,7 @@ namespace IntegratedAuthoringToolWF
                     {
                         this.tabControlIAT.SelectedIndex = 1;
                         this.tabControlAssetEditor.SelectedIndex = 1;
-                        HighlightButton(this._edmForm.emotionaAppraisalButton);
+                        HighlightMenuItem(this._edmForm.toolsMenu);
                         descriptionObject.pressed = true;
                         assistantDescription[step] = descriptionObject;
                     }
@@ -2451,6 +2451,15 @@ namespace IntegratedAuthoringToolWF
         private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
         {
 
+        }
+
+        private void inspectCharacterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var rpcSource = EditorTools.GetSelectedDtoFromTable<CharacterNameAndMoodDTO>(dataGridViewCharacters);
+            if (rpcSource != null)
+            {
+                new RPCInspectForm(_iat, _storage, rpcSource.Name).Show(this);
+            }
         }
     }
 }

@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -39,19 +38,19 @@
             this.buttonRemoveAppraisalRule = new System.Windows.Forms.Button();
             this.dataGridViewAppraisalRules = new System.Windows.Forms.DataGridView();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.decayErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
-            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.mainFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.conditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
+            this.decayErrorProvider = new System.Windows.Forms.ErrorProvider();
+            this.toolTip = new System.Windows.Forms.ToolTip();
+            this.emotionListItemBindingSource = new System.Windows.Forms.BindingSource();
+            this.timer1 = new System.Windows.Forms.Timer();
+            this.mainFormBindingSource = new System.Windows.Forms.BindingSource();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.conditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
+            this.toolTip1 = new System.Windows.Forms.ToolTip();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -106,13 +105,13 @@
             // buttonAppVariables
             // 
             this.buttonAppVariables.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAppVariables.Location = new System.Drawing.Point(404, 24);
+            this.buttonAppVariables.Location = new System.Drawing.Point(734, 21);
             this.buttonAppVariables.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonAppVariables.Name = "buttonAppVariables";
             this.buttonAppVariables.Size = new System.Drawing.Size(170, 36);
             this.buttonAppVariables.TabIndex = 11;
             this.buttonAppVariables.Text = "Appraisal Variables";
-            this.toolTip1.SetToolTip(this.buttonAppVariables, "Add or Edit the appraisal variables of the selected appraisal rule");
+            this.toolTip1.SetToolTip(this.buttonAppVariables, "FAtiMA follows the OCC Model, which requires the use of appraisal variables");
             this.buttonAppVariables.UseVisualStyleBackColor = true;
             this.buttonAppVariables.Click += new System.EventHandler(this.buttonAppVariables_Click);
             // 
@@ -207,6 +206,17 @@
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Rule Conditions";
             // 
+            // conditionSetEditor
+            // 
+            this.conditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.conditionSetEditor.Location = new System.Drawing.Point(4, 18);
+            this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.conditionSetEditor.Name = "conditionSetEditor";
+            this.conditionSetEditor.Size = new System.Drawing.Size(909, 238);
+            this.conditionSetEditor.TabIndex = 0;
+            this.conditionSetEditor.View = null;
+            this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);
+            // 
             // decayErrorProvider
             // 
             this.decayErrorProvider.ContainerControl = this;
@@ -268,17 +278,6 @@
             this.toolTip1.ShowAlways = true;
             this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTip1.ToolTipTitle = "Emotional Appraisal ToolTip";
-            // 
-            // conditionSetEditor
-            // 
-            this.conditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.conditionSetEditor.Location = new System.Drawing.Point(4, 18);
-            this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.conditionSetEditor.Name = "conditionSetEditor";
-            this.conditionSetEditor.Size = new System.Drawing.Size(909, 238);
-            this.conditionSetEditor.TabIndex = 0;
-            this.conditionSetEditor.View = null;
-            this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);
             // 
             // MainForm
             // 

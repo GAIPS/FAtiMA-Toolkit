@@ -141,5 +141,27 @@ namespace EmotionalAppraisalWF
             this.appraisalVariables.Refresh();
             dataGridViewAppraisalVariables_CellContentClick(sender, e);
         }
+
+        private void addDialogueActionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void addEmotionalResponseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void oCCModelDiagramToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new OCCModelForm().ShowDialog();
+        }
+
+        private void emotionToAppraisalVariableConverterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new OCCSimplex(this._vm, _selectedRule).ShowDialog();
+            this.appraisalVariables.Refresh();
+            dataGridViewAppraisalVariables_CellContentClick(sender, e);
+        }
     }
 }

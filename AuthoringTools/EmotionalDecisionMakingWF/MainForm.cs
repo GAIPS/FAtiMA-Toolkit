@@ -12,6 +12,7 @@ using EmotionalAppraisal.DTOs;
 using RolePlayCharacter;
 using System.Collections.Generic;
 using ActionLibrary;
+using Conditions.DTOs;
 
 namespace EmotionalDecisionMakingWF
 {
@@ -99,7 +100,7 @@ namespace EmotionalDecisionMakingWF
             }
             else {
                 testConditions.Enabled = false;
-                emotionaAppraisalButton.Enabled = false;
+            
             }
 
             EditorTools.UpdateFormTitle("Emotional Decision Making", _currentFilePath, this);
@@ -119,7 +120,7 @@ namespace EmotionalDecisionMakingWF
             selectedActionId = reaction.Id;
 
 	        var ra = _loadedAsset.GetActionRule(selectedActionId);
-            emotionaAppraisalButton.Enabled = true;
+          
             testConditions.Enabled = true ;
             UpdateConditions(ra);
         }
@@ -283,17 +284,7 @@ namespace EmotionalDecisionMakingWF
 
         public void emotionaAppraisalButton_Click(object sender, EventArgs e)
         {
-            if (((ObjectView<ActionRuleDTO>)dataGridViewReactiveActions.
-                 SelectedRows[0].DataBoundItem).Object != null)
-            {
-
-                latestAddedRule = ((ObjectView<ActionRuleDTO>)dataGridViewReactiveActions.
-                      SelectedRows[0].DataBoundItem).Object;
-
-                // ParentForm
-                PressedAddReactionEvent?.Invoke(this, EventArgs.Empty);
-            }
-            else emotionaAppraisalButton.Enabled = false;
+           
 
            
 
@@ -372,6 +363,61 @@ namespace EmotionalDecisionMakingWF
                 testActionRuleResults.BackColor = System.Drawing.Color.LightCoral;
             }
             testActionRuleResults.Text = ret;
+        }
+
+        private void addEmotionalResponseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           
+            if(_loadedAsset.GetAllActionRules().Count() > 0)
+        
+                PressedAddReactionEvent?.Invoke(this, EventArgs.Empty);
+            
+        }
+
+        private void menuStrip2_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void addDialogueActionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Condition Set:
+                ConditionSetDTO conditionSet = new Conditions.DTOs.ConditionSetDTO()
+                {
+                    ConditionSet = new string[]
+                    {
+                        "Has(Floor) = SELF",
+                        "DialogueState([target])=[currentState]",
+                        "IsAgent([target])=True",
+                        "ValidDialogue([currentState],[nextState],[meaning],[style]) = True"
+                    }
+                };
+
+
+                var newReaction = new ActionRuleDTO
+                {
+                    Action = WellFormedNames.Name.BuildName("Speak([currentState],[nextState],[meaning],[style])"),
+                    Target = WellFormedNames.Name.BuildName("[target]"),
+                    Priority = WellFormedNames.Name.BuildName("1"),
+                    Layer = WellFormedNames.Name.BuildName("-"),
+                    Conditions = conditionSet
+                };
+
+               
+                  this._loadedAsset.AddActionRule(newReaction);
+                actionRules.DataSource = _loadedAsset.GetAllActionRules().ToList();
+                actionRules.Refresh();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+
+
         }
     }
 }

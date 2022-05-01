@@ -70,6 +70,16 @@ namespace EmotionalDecisionMakingWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap assistantbackground2 {
+            get {
+                object obj = ResourceManager.GetObject("assistantbackground2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit Condition.
         /// </summary>
         internal static string EditConditionFormTitle {
@@ -97,11 +107,31 @@ namespace EmotionalDecisionMakingWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Icon_Final_Black {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Final_Black", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Emotional Decision Making.
         /// </summary>
         internal static string MainFormTitle {
             get {
                 return ResourceManager.GetString("MainFormTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Pagina_Demo_face {
+            get {
+                object obj = ResourceManager.GetObject("Pagina-Demo-face", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

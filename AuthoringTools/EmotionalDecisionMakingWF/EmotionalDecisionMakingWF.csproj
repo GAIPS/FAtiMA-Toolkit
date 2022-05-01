@@ -139,6 +139,15 @@
       <Name>GAIPS.AssetEditorTools</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Pagina-Demo-face.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icon_Final_Black.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\assistantbackground2.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
