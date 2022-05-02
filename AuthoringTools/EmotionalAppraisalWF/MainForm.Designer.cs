@@ -108,10 +108,10 @@
             this.buttonAppVariables.AutoEllipsis = true;
             this.buttonAppVariables.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.buttonAppVariables.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAppVariables.Location = new System.Drawing.Point(406, 26);
+            this.buttonAppVariables.Location = new System.Drawing.Point(408, 38);
             this.buttonAppVariables.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonAppVariables.Name = "buttonAppVariables";
-            this.buttonAppVariables.Size = new System.Drawing.Size(187, 34);
+            this.buttonAppVariables.Size = new System.Drawing.Size(187, 25);
             this.buttonAppVariables.TabIndex = 11;
             this.buttonAppVariables.Text = "Appraisal Variable Editor";
             this.toolTip1.SetToolTip(this.buttonAppVariables, "FAtiMA follows the OCC Model, which requires the use of appraisal variables");
@@ -120,10 +120,10 @@
             // 
             // buttonDuplicateAppraisalRule
             // 
-            this.buttonDuplicateAppraisalRule.Location = new System.Drawing.Point(185, 24);
+            this.buttonDuplicateAppraisalRule.Location = new System.Drawing.Point(187, 36);
             this.buttonDuplicateAppraisalRule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonDuplicateAppraisalRule.Name = "buttonDuplicateAppraisalRule";
-            this.buttonDuplicateAppraisalRule.Size = new System.Drawing.Size(96, 36);
+            this.buttonDuplicateAppraisalRule.Size = new System.Drawing.Size(96, 27);
             this.buttonDuplicateAppraisalRule.TabIndex = 10;
             this.buttonDuplicateAppraisalRule.Text = "Duplicate";
             this.buttonDuplicateAppraisalRule.UseVisualStyleBackColor = true;
@@ -131,10 +131,10 @@
             // 
             // buttonEditAppraisalRule
             // 
-            this.buttonEditAppraisalRule.Location = new System.Drawing.Point(98, 24);
+            this.buttonEditAppraisalRule.Location = new System.Drawing.Point(100, 36);
             this.buttonEditAppraisalRule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonEditAppraisalRule.Name = "buttonEditAppraisalRule";
-            this.buttonEditAppraisalRule.Size = new System.Drawing.Size(81, 36);
+            this.buttonEditAppraisalRule.Size = new System.Drawing.Size(81, 27);
             this.buttonEditAppraisalRule.TabIndex = 9;
             this.buttonEditAppraisalRule.Text = "Edit";
             this.toolTip1.SetToolTip(this.buttonEditAppraisalRule, "Edit the selected appraisal rule");
@@ -143,10 +143,10 @@
             // 
             // buttonAddAppraisalRule
             // 
-            this.buttonAddAppraisalRule.Location = new System.Drawing.Point(6, 24);
+            this.buttonAddAppraisalRule.Location = new System.Drawing.Point(8, 36);
             this.buttonAddAppraisalRule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonAddAppraisalRule.Name = "buttonAddAppraisalRule";
-            this.buttonAddAppraisalRule.Size = new System.Drawing.Size(85, 36);
+            this.buttonAddAppraisalRule.Size = new System.Drawing.Size(85, 27);
             this.buttonAddAppraisalRule.TabIndex = 7;
             this.buttonAddAppraisalRule.Text = "Add";
             this.toolTip1.SetToolTip(this.buttonAddAppraisalRule, "Add a new appraisal rule");
@@ -156,10 +156,10 @@
             // buttonRemoveAppraisalRule
             // 
             this.buttonRemoveAppraisalRule.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonRemoveAppraisalRule.Location = new System.Drawing.Point(288, 24);
+            this.buttonRemoveAppraisalRule.Location = new System.Drawing.Point(290, 36);
             this.buttonRemoveAppraisalRule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonRemoveAppraisalRule.Name = "buttonRemoveAppraisalRule";
-            this.buttonRemoveAppraisalRule.Size = new System.Drawing.Size(110, 36);
+            this.buttonRemoveAppraisalRule.Size = new System.Drawing.Size(110, 27);
             this.buttonRemoveAppraisalRule.TabIndex = 8;
             this.buttonRemoveAppraisalRule.Text = "Remove";
             this.toolTip1.SetToolTip(this.buttonRemoveAppraisalRule, "Remove selected Appraisal Rule");

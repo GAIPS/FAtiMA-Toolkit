@@ -60,6 +60,7 @@ namespace EmotionalAppraisalWF
             conditionSetEditor.View = _appraisalRulesVM.CurrentRuleConditions;
 
             EditorTools.UpdateFormTitle("Emotional Appraisal", _currentFilePath, this);
+            UpdateAppraisalRules();
         }
 
         private void buttonAddGoal_Click(object sender, EventArgs e)
@@ -71,6 +72,7 @@ namespace EmotionalAppraisalWF
         public void buttonAddAppraisalRule_Click(object sender, EventArgs e)
         {
             new AddOrEditAppraisalRuleForm(_appraisalRulesVM).ShowDialog();
+            UpdateAppraisalRules();
         }
 
         public void AddAppraisalRulewithEmotions(ActionRuleDTO rule, EmotionalAppraisal.OCCModel.OCCEmotionType targetEmotion,
@@ -138,6 +140,7 @@ namespace EmotionalAppraisalWF
             };
 
             new AddOrEditAppraisalRuleForm(_appraisalRulesVM, dto).ShowDialog();
+            UpdateAppraisalRules();
 
         }
 
@@ -176,10 +179,30 @@ namespace EmotionalAppraisalWF
                 rulesToRemove.Add(rule);
             }
             _appraisalRulesVM.RemoveAppraisalRules(rulesToRemove);
+            UpdateAppraisalRules();
         }
 
         private void conditionSetEditor_Load(object sender, EventArgs e)
         {
+        }
+
+
+        private void UpdateAppraisalRules()
+        {
+            if (_appraisalRulesVM.AppraisalRules.Any())
+            {
+                buttonEditAppraisalRule.Enabled = true;
+                buttonRemoveAppraisalRule.Enabled = true;
+                buttonAppVariables.Enabled = true;
+                buttonDuplicateAppraisalRule.Enabled = true;
+            }
+            else
+            {
+                buttonEditAppraisalRule.Enabled = false;
+                buttonRemoveAppraisalRule.Enabled = false;
+                buttonAppVariables.Enabled = false;
+                buttonDuplicateAppraisalRule.Enabled = false;
+            }
         }
 
         private void dataGridViewAppraisalRules_CellContentClick(object sender, DataGridViewCellEventArgs e)

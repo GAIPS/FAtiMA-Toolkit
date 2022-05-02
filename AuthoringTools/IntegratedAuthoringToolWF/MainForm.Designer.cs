@@ -48,15 +48,16 @@
             this.tabControlIAT = new System.Windows.Forms.TabControl();
             this.tabPageDialogue = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.searchDialogueBox = new System.Windows.Forms.TextBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.searchCheckList = new System.Windows.Forms.CheckedListBox();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
             this.buttonImportExcel = new System.Windows.Forms.Button();
             this.displayGraph = new System.Windows.Forms.Button();
             this.buttonExportExcel = new System.Windows.Forms.Button();
             this.buttonValidate = new System.Windows.Forms.Button();
             this.buttonTTS = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.searchCheckList = new System.Windows.Forms.CheckedListBox();
-            this.searchDialogueBox = new System.Windows.Forms.TextBox();
             this.dataGridViewDialogueActions = new System.Windows.Forms.DataGridView();
             this.buttonPlayerDuplicateDialogueAction = new System.Windows.Forms.Button();
             this.buttonPlayerEditDialogueAction = new System.Windows.Forms.Button();
@@ -64,8 +65,8 @@
             this.buttonPlayerRemoveDialogueAction = new System.Windows.Forms.Button();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tabControlAssetEditor = new System.Windows.Forms.TabControl();
-            this.tabPageEA = new System.Windows.Forms.TabPage();
             this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.tabPageEA = new System.Windows.Forms.TabPage();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.tabPage8 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -123,7 +124,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -133,8 +133,9 @@
             this.tabControlIAT.SuspendLayout();
             this.tabPageDialogue.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            this.groupBox12.SuspendLayout();
+            this.groupBox9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBox12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDialogueActions)).BeginInit();
             this.tabPage4.SuspendLayout();
             this.tabControlAssetEditor.SuspendLayout();
@@ -191,7 +192,6 @@
             this.splitContainer6.Panel2.SuspendLayout();
             this.splitContainer6.SuspendLayout();
             this.assistantTopicGroupBox.SuspendLayout();
-            this.groupBox9.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -551,9 +551,9 @@
             // 
             // tabControlIAT
             // 
-            this.tabControlIAT.Controls.Add(this.tabPageDialogue);
-            this.tabControlIAT.Controls.Add(this.tabPage4);
             this.tabControlIAT.Controls.Add(this.tabPage2);
+            this.tabControlIAT.Controls.Add(this.tabPage4);
+            this.tabControlIAT.Controls.Add(this.tabPageDialogue);
             this.tabControlIAT.Controls.Add(this.tabPage3);
             this.tabControlIAT.Controls.Add(this.tabPage1);
             this.tabControlIAT.Controls.Add(this.tabPageWeb);
@@ -603,85 +603,26 @@
             this.groupBox2.Text = "Dialogue Actions";
             this.groupBox2.Enter += new System.EventHandler(this.groupBox2_Enter);
             // 
-            // groupBox12
+            // groupBox9
             // 
-            this.groupBox12.Controls.Add(this.buttonImportExcel);
-            this.groupBox12.Controls.Add(this.displayGraph);
-            this.groupBox12.Controls.Add(this.buttonExportExcel);
-            this.groupBox12.Controls.Add(this.buttonValidate);
-            this.groupBox12.Controls.Add(this.buttonTTS);
-            this.groupBox12.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox12.Location = new System.Drawing.Point(4, 548);
-            this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(836, 47);
-            this.groupBox12.TabIndex = 21;
-            this.groupBox12.TabStop = false;
-            this.groupBox12.Enter += new System.EventHandler(this.groupBox12_Enter);
+            this.groupBox9.Controls.Add(this.searchDialogueBox);
+            this.groupBox9.Controls.Add(this.pictureBox1);
+            this.groupBox9.Controls.Add(this.searchCheckList);
+            this.groupBox9.Location = new System.Drawing.Point(438, 10);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(398, 59);
+            this.groupBox9.TabIndex = 22;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "Search Settings";
             // 
-            // buttonImportExcel
+            // searchDialogueBox
             // 
-            this.buttonImportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonImportExcel.Location = new System.Drawing.Point(7, 10);
-            this.buttonImportExcel.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonImportExcel.Name = "buttonImportExcel";
-            this.buttonImportExcel.Size = new System.Drawing.Size(101, 30);
-            this.buttonImportExcel.TabIndex = 15;
-            this.buttonImportExcel.Text = "Import Excel";
-            this.toolTip1.SetToolTip(this.buttonImportExcel, "Import from Excel");
-            this.buttonImportExcel.UseVisualStyleBackColor = true;
-            this.buttonImportExcel.Click += new System.EventHandler(this.buttonImportExcel_Click);
-            // 
-            // displayGraph
-            // 
-            this.displayGraph.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.displayGraph.Location = new System.Drawing.Point(569, 10);
-            this.displayGraph.Margin = new System.Windows.Forms.Padding(4);
-            this.displayGraph.Name = "displayGraph";
-            this.displayGraph.Size = new System.Drawing.Size(138, 30);
-            this.displayGraph.TabIndex = 20;
-            this.displayGraph.Text = "View Graph";
-            this.toolTip1.SetToolTip(this.displayGraph, "Generate dialogue tree");
-            this.displayGraph.UseVisualStyleBackColor = true;
-            this.displayGraph.Click += new System.EventHandler(this.displayGraph_Click);
-            // 
-            // buttonExportExcel
-            // 
-            this.buttonExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonExportExcel.Location = new System.Drawing.Point(123, 10);
-            this.buttonExportExcel.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonExportExcel.Name = "buttonExportExcel";
-            this.buttonExportExcel.Size = new System.Drawing.Size(107, 30);
-            this.buttonExportExcel.TabIndex = 16;
-            this.buttonExportExcel.Text = "Export Excel";
-            this.toolTip1.SetToolTip(this.buttonExportExcel, "Export to Excel");
-            this.buttonExportExcel.UseVisualStyleBackColor = true;
-            this.buttonExportExcel.Click += new System.EventHandler(this.buttonExportExcel_Click);
-            // 
-            // buttonValidate
-            // 
-            this.buttonValidate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonValidate.Location = new System.Drawing.Point(411, 10);
-            this.buttonValidate.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonValidate.Name = "buttonValidate";
-            this.buttonValidate.Size = new System.Drawing.Size(143, 30);
-            this.buttonValidate.TabIndex = 19;
-            this.buttonValidate.Text = "Validate";
-            this.toolTip1.SetToolTip(this.buttonValidate, "Run an algorithm to check wich states are reachbel");
-            this.buttonValidate.UseVisualStyleBackColor = true;
-            this.buttonValidate.Click += new System.EventHandler(this.buttonValidate_Click);
-            // 
-            // buttonTTS
-            // 
-            this.buttonTTS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonTTS.Location = new System.Drawing.Point(245, 10);
-            this.buttonTTS.Margin = new System.Windows.Forms.Padding(4);
-            this.buttonTTS.Name = "buttonTTS";
-            this.buttonTTS.Size = new System.Drawing.Size(151, 30);
-            this.buttonTTS.TabIndex = 18;
-            this.buttonTTS.Text = "Text-To-Speech";
-            this.toolTip1.SetToolTip(this.buttonTTS, "Generate Text to Speech Files");
-            this.buttonTTS.UseVisualStyleBackColor = true;
-            this.buttonTTS.Click += new System.EventHandler(this.buttonTTS_Click);
+            this.searchDialogueBox.Location = new System.Drawing.Point(6, 22);
+            this.searchDialogueBox.Name = "searchDialogueBox";
+            this.searchDialogueBox.Size = new System.Drawing.Size(180, 22);
+            this.searchDialogueBox.TabIndex = 15;
+            this.toolTip1.SetToolTip(this.searchDialogueBox, "Search for any keyword for the type selected in the list on the right");
+            this.searchDialogueBox.TextChanged += new System.EventHandler(this.DialogueSearchBox_TextChanged);
             // 
             // pictureBox1
             // 
@@ -708,14 +649,86 @@
             this.searchCheckList.Size = new System.Drawing.Size(147, 32);
             this.searchCheckList.TabIndex = 16;
             // 
-            // searchDialogueBox
+            // groupBox12
             // 
-            this.searchDialogueBox.Location = new System.Drawing.Point(6, 22);
-            this.searchDialogueBox.Name = "searchDialogueBox";
-            this.searchDialogueBox.Size = new System.Drawing.Size(180, 22);
-            this.searchDialogueBox.TabIndex = 15;
-            this.toolTip1.SetToolTip(this.searchDialogueBox, "Search for any keyword for the type selected in the list on the right");
-            this.searchDialogueBox.TextChanged += new System.EventHandler(this.DialogueSearchBox_TextChanged);
+            this.groupBox12.Controls.Add(this.buttonImportExcel);
+            this.groupBox12.Controls.Add(this.displayGraph);
+            this.groupBox12.Controls.Add(this.buttonExportExcel);
+            this.groupBox12.Controls.Add(this.buttonValidate);
+            this.groupBox12.Controls.Add(this.buttonTTS);
+            this.groupBox12.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.groupBox12.Location = new System.Drawing.Point(4, 530);
+            this.groupBox12.Name = "groupBox12";
+            this.groupBox12.Size = new System.Drawing.Size(836, 65);
+            this.groupBox12.TabIndex = 21;
+            this.groupBox12.TabStop = false;
+            this.groupBox12.Text = "Tools";
+            this.groupBox12.Enter += new System.EventHandler(this.groupBox12_Enter);
+            // 
+            // buttonImportExcel
+            // 
+            this.buttonImportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonImportExcel.Location = new System.Drawing.Point(30, 22);
+            this.buttonImportExcel.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonImportExcel.Name = "buttonImportExcel";
+            this.buttonImportExcel.Size = new System.Drawing.Size(101, 30);
+            this.buttonImportExcel.TabIndex = 15;
+            this.buttonImportExcel.Text = "Import Excel";
+            this.toolTip1.SetToolTip(this.buttonImportExcel, "Import from Excel");
+            this.buttonImportExcel.UseVisualStyleBackColor = true;
+            this.buttonImportExcel.Click += new System.EventHandler(this.buttonImportExcel_Click);
+            // 
+            // displayGraph
+            // 
+            this.displayGraph.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.displayGraph.Location = new System.Drawing.Point(592, 22);
+            this.displayGraph.Margin = new System.Windows.Forms.Padding(4);
+            this.displayGraph.Name = "displayGraph";
+            this.displayGraph.Size = new System.Drawing.Size(138, 30);
+            this.displayGraph.TabIndex = 20;
+            this.displayGraph.Text = "View Graph";
+            this.toolTip1.SetToolTip(this.displayGraph, "Generate dialogue tree");
+            this.displayGraph.UseVisualStyleBackColor = true;
+            this.displayGraph.Click += new System.EventHandler(this.displayGraph_Click);
+            // 
+            // buttonExportExcel
+            // 
+            this.buttonExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonExportExcel.Location = new System.Drawing.Point(146, 22);
+            this.buttonExportExcel.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonExportExcel.Name = "buttonExportExcel";
+            this.buttonExportExcel.Size = new System.Drawing.Size(107, 30);
+            this.buttonExportExcel.TabIndex = 16;
+            this.buttonExportExcel.Text = "Export Excel";
+            this.toolTip1.SetToolTip(this.buttonExportExcel, "Export to Excel");
+            this.buttonExportExcel.UseVisualStyleBackColor = true;
+            this.buttonExportExcel.Click += new System.EventHandler(this.buttonExportExcel_Click);
+            // 
+            // buttonValidate
+            // 
+            this.buttonValidate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonValidate.Location = new System.Drawing.Point(434, 22);
+            this.buttonValidate.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonValidate.Name = "buttonValidate";
+            this.buttonValidate.Size = new System.Drawing.Size(143, 30);
+            this.buttonValidate.TabIndex = 19;
+            this.buttonValidate.Text = "Validate";
+            this.toolTip1.SetToolTip(this.buttonValidate, "Run an algorithm to check wich states are reachbel");
+            this.buttonValidate.UseVisualStyleBackColor = true;
+            this.buttonValidate.Click += new System.EventHandler(this.buttonValidate_Click);
+            // 
+            // buttonTTS
+            // 
+            this.buttonTTS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonTTS.Location = new System.Drawing.Point(268, 22);
+            this.buttonTTS.Margin = new System.Windows.Forms.Padding(4);
+            this.buttonTTS.Name = "buttonTTS";
+            this.buttonTTS.Size = new System.Drawing.Size(151, 30);
+            this.buttonTTS.TabIndex = 18;
+            this.buttonTTS.Text = "Text-To-Speech";
+            this.toolTip1.SetToolTip(this.buttonTTS, "Generate Text to Speech Files");
+            this.buttonTTS.UseVisualStyleBackColor = true;
+            this.buttonTTS.Click += new System.EventHandler(this.buttonTTS_Click);
             // 
             // dataGridViewDialogueActions
             // 
@@ -740,7 +753,7 @@
             this.dataGridViewDialogueActions.RowHeadersWidth = 51;
             this.dataGridViewDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(835, 465);
+            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(835, 447);
             this.dataGridViewDialogueActions.TabIndex = 14;
             this.toolTip1.SetToolTip(this.dataGridViewDialogueActions, resources.GetString("dataGridViewDialogueActions.ToolTip"));
             this.dataGridViewDialogueActions.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellClick);
@@ -754,7 +767,7 @@
             // 
             // buttonPlayerDuplicateDialogueAction
             // 
-            this.buttonPlayerDuplicateDialogueAction.Location = new System.Drawing.Point(168, 25);
+            this.buttonPlayerDuplicateDialogueAction.Location = new System.Drawing.Point(182, 25);
             this.buttonPlayerDuplicateDialogueAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonPlayerDuplicateDialogueAction.Name = "buttonPlayerDuplicateDialogueAction";
             this.buttonPlayerDuplicateDialogueAction.Size = new System.Drawing.Size(93, 30);
@@ -766,7 +779,7 @@
             // 
             // buttonPlayerEditDialogueAction
             // 
-            this.buttonPlayerEditDialogueAction.Location = new System.Drawing.Point(88, 25);
+            this.buttonPlayerEditDialogueAction.Location = new System.Drawing.Point(102, 25);
             this.buttonPlayerEditDialogueAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonPlayerEditDialogueAction.Name = "buttonPlayerEditDialogueAction";
             this.buttonPlayerEditDialogueAction.Size = new System.Drawing.Size(72, 30);
@@ -778,7 +791,7 @@
             // 
             // buttonAddPlayerDialogueAction
             // 
-            this.buttonAddPlayerDialogueAction.Location = new System.Drawing.Point(8, 25);
+            this.buttonAddPlayerDialogueAction.Location = new System.Drawing.Point(22, 25);
             this.buttonAddPlayerDialogueAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonAddPlayerDialogueAction.Name = "buttonAddPlayerDialogueAction";
             this.buttonAddPlayerDialogueAction.Size = new System.Drawing.Size(72, 30);
@@ -790,7 +803,7 @@
             // 
             // buttonPlayerRemoveDialogueAction
             // 
-            this.buttonPlayerRemoveDialogueAction.Location = new System.Drawing.Point(269, 25);
+            this.buttonPlayerRemoveDialogueAction.Location = new System.Drawing.Point(283, 25);
             this.buttonPlayerRemoveDialogueAction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonPlayerRemoveDialogueAction.Name = "buttonPlayerRemoveDialogueAction";
             this.buttonPlayerRemoveDialogueAction.Size = new System.Drawing.Size(93, 30);
@@ -812,8 +825,8 @@
             // 
             // tabControlAssetEditor
             // 
-            this.tabControlAssetEditor.Controls.Add(this.tabPageEA);
             this.tabControlAssetEditor.Controls.Add(this.tabPage6);
+            this.tabControlAssetEditor.Controls.Add(this.tabPageEA);
             this.tabControlAssetEditor.Controls.Add(this.tabPage7);
             this.tabControlAssetEditor.Controls.Add(this.tabPage8);
             this.tabControlAssetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -823,27 +836,27 @@
             this.tabControlAssetEditor.Size = new System.Drawing.Size(844, 609);
             this.tabControlAssetEditor.TabIndex = 0;
             // 
-            // tabPageEA
-            // 
-            this.tabPageEA.Location = new System.Drawing.Point(4, 25);
-            this.tabPageEA.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
-            this.tabPageEA.Name = "tabPageEA";
-            this.tabPageEA.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageEA.Size = new System.Drawing.Size(836, 580);
-            this.tabPageEA.TabIndex = 0;
-            this.tabPageEA.Text = "Emotional Appraisal";
-            this.tabPageEA.UseVisualStyleBackColor = true;
-            // 
             // tabPage6
             // 
-            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Location = new System.Drawing.Point(4, 25);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(836, 583);
+            this.tabPage6.Size = new System.Drawing.Size(836, 580);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "Emotional Decision Making";
             this.toolTip1.SetToolTip(this.tabPage6, "The Emotional Decision Making is where you can define which actions agents have");
             this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // tabPageEA
+            // 
+            this.tabPageEA.Location = new System.Drawing.Point(4, 22);
+            this.tabPageEA.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
+            this.tabPageEA.Name = "tabPageEA";
+            this.tabPageEA.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageEA.Size = new System.Drawing.Size(836, 583);
+            this.tabPageEA.TabIndex = 0;
+            this.tabPageEA.Text = "Emotional Appraisal";
+            this.tabPageEA.UseVisualStyleBackColor = true;
             // 
             // tabPage7
             // 
@@ -883,7 +896,7 @@
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage3.Size = new System.Drawing.Size(844, 609);
             this.tabPage3.TabIndex = 3;
-            this.tabPage3.Text = "World";
+            this.tabPage3.Text = "World Model";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // groupBox7
@@ -1630,21 +1643,14 @@
             // toolTip1
             // 
             this.toolTip1.AutomaticDelay = 200;
+            this.toolTip1.AutoPopDelay = 2000;
+            this.toolTip1.InitialDelay = 100;
+            this.toolTip1.ReshowDelay = 40;
+            this.toolTip1.ShowAlways = true;
+            this.toolTip1.StripAmpersands = true;
             this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTip1.ToolTipTitle = "IAT Tooltip";
             this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
-            // 
-            // groupBox9
-            // 
-            this.groupBox9.Controls.Add(this.searchDialogueBox);
-            this.groupBox9.Controls.Add(this.pictureBox1);
-            this.groupBox9.Controls.Add(this.searchCheckList);
-            this.groupBox9.Location = new System.Drawing.Point(438, 10);
-            this.groupBox9.Name = "groupBox9";
-            this.groupBox9.Size = new System.Drawing.Size(398, 59);
-            this.groupBox9.TabIndex = 22;
-            this.groupBox9.TabStop = false;
-            this.groupBox9.Text = "Search Settings";
             // 
             // MainForm
             // 
@@ -1678,8 +1684,10 @@
             this.tabPageDialogue.ResumeLayout(false);
             this.tabPageDialogue.PerformLayout();
             this.groupBox2.ResumeLayout(false);
-            this.groupBox12.ResumeLayout(false);
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.groupBox12.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDialogueActions)).EndInit();
             this.tabPage4.ResumeLayout(false);
             this.tabControlAssetEditor.ResumeLayout(false);
@@ -1747,8 +1755,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
             this.splitContainer6.ResumeLayout(false);
             this.assistantTopicGroupBox.ResumeLayout(false);
-            this.groupBox9.ResumeLayout(false);
-            this.groupBox9.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 

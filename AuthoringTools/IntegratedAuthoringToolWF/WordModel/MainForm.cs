@@ -12,6 +12,7 @@ namespace WorldModelWF
     public partial class MainForm : Form
     {
         private WorldModelAsset _wmAsset;
+        private Form _parent;
 
         public MainForm(WorldModelAsset asset)
         {
@@ -19,6 +20,13 @@ namespace WorldModelWF
             OnAssetDataLoaded(asset);
         }
 
+        public MainForm(Form parent, WorldModelAsset asset)
+        {
+            InitializeComponent();
+            _parent = parent;
+            this.toolTip1.SetToolTip(parent, "Ayy");
+            OnAssetDataLoaded(asset);
+        }
 
         protected void OnAssetDataLoaded(WorldModelAsset asset)
         {

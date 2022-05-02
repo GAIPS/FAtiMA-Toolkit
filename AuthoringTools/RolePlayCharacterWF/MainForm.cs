@@ -246,6 +246,7 @@ namespace RolePlayCharacterWF
             var addBeliefForm = new AddOrEditBeliefForm(_knowledgeBaseVM);
             addBeliefForm.ShowDialog(this);
             _knowledgeBaseVM.UpdateBeliefList();
+            UpdatBeliefs();
         }
 
   
@@ -258,6 +259,7 @@ namespace RolePlayCharacterWF
                 beliefsToRemove.Add(belief);
             }
             _knowledgeBaseVM.RemoveBeliefs(beliefsToRemove);
+            UpdatBeliefs();
         }
 
         private void dataGridViewBeliefs_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
@@ -289,6 +291,22 @@ namespace RolePlayCharacterWF
             }
         }
 
+        private void UpdatBeliefs()
+        {
+            if (_knowledgeBaseVM.Beliefs.Any())
+            {
+                removeBeliefButton.Enabled = true;
+                buttonEdit.Enabled = true;
+                buttonReasonKB.Enabled = true;
+            }
+            else
+            {
+                removeBeliefButton.Enabled = false;
+                buttonEdit.Enabled = false;
+                buttonReasonKB.Enabled = false;
+
+            }
+        }
         private void dataGridViewBeliefs_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)

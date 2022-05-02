@@ -102,7 +102,7 @@ namespace EmotionalDecisionMakingWF
                 testConditions.Enabled = false;
             
             }
-
+            UpdateRules();
             EditorTools.UpdateFormTitle("Emotional Decision Making", _currentFilePath, this);
            
         }
@@ -139,6 +139,7 @@ namespace EmotionalDecisionMakingWF
             {
                 UpdateConditions(null);
             }
+            UpdateRules();
         }
 
         public void buttonAddReaction_Click(object sender, EventArgs e)
@@ -152,6 +153,7 @@ namespace EmotionalDecisionMakingWF
                 AddedRuleEvent?.Invoke(this, EventArgs.Empty);
             }
 
+            UpdateRules();
         }
 
      
@@ -233,6 +235,22 @@ namespace EmotionalDecisionMakingWF
         private void splitContainer1_SplitterMoved(object sender, SplitterEventArgs e)
         {
 
+        }
+
+        public void UpdateRules()
+        {
+            if (_loadedAsset.GetAllActionRules().Any())
+            {
+                buttonEditReaction.Enabled = true;
+                buttonDuplicateReaction.Enabled = true;
+                buttonRemoveReaction.Enabled = true;
+            }
+            else
+            {
+                buttonEditReaction.Enabled = false;
+                buttonDuplicateReaction.Enabled = false;
+                buttonRemoveReaction.Enabled = false;
+            }
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)

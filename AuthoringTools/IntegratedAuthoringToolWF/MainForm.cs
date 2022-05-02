@@ -72,10 +72,10 @@ namespace IntegratedAuthoringToolWF
             _storage = new AssetStorage();
             _webForm = new WebAPIWF.MainForm();
             _webForm.iat = this;
-            _eaForm = new EmotionalAppraisalWF.MainForm(this);
             _edmForm = new EmotionalDecisionMakingWF.MainForm(this, _iat.Characters.ToList());
             _edmForm.AddedRuleEvent += SuggestAddEmotionalReaction;
             _edmForm.PressedAddReactionEvent += AddEmotionalReaction;
+            _eaForm = new EmotionalAppraisalWF.MainForm(this);
             _siForm = new SocialImportanceWF.MainForm();
             _cifForm = new CommeillFautWF.MainForm();
             this.KeyDown += new KeyEventHandler(Form_KeyDown);
@@ -93,8 +93,8 @@ namespace IntegratedAuthoringToolWF
 
         private void OnAssetStorageChange()
         {
-            _eaForm.Asset = EmotionalAppraisalAsset.CreateInstance(_storage);
             _edmForm.Asset = EmotionalDecisionMakingAsset.CreateInstance(_storage);
+            _eaForm.Asset = EmotionalAppraisalAsset.CreateInstance(_storage);
             _siForm.Asset = SocialImportanceAsset.CreateInstance(_storage);
             _cifForm.Asset = CommeillFautAsset.CreateInstance(_storage);
         }
@@ -117,6 +117,30 @@ namespace IntegratedAuthoringToolWF
                     PropertyUtil.GetPropertyName<DialogueStateActionDTO>(d => d.UtteranceId),
                 }
             );
+
+            if (!_iat.GetAllDialogueActions().Any())
+            {
+                buttonPlayerDuplicateDialogueAction.Enabled = false;
+                buttonPlayerEditDialogueAction.Enabled = false;
+                buttonPlayerRemoveDialogueAction.Enabled = false;
+                buttonExportExcel.Enabled = false;
+                buttonValidate.Enabled = false;
+                buttonTTS.Enabled = false;
+                displayGraph.Enabled = false;
+
+
+            }
+
+            else
+            {
+                buttonPlayerDuplicateDialogueAction.Enabled = true;
+                buttonPlayerEditDialogueAction.Enabled = true;
+                buttonPlayerRemoveDialogueAction.Enabled = true;
+                buttonExportExcel.Enabled = true;
+                buttonValidate.Enabled = true;
+                buttonTTS.Enabled = true;
+                displayGraph.Enabled = true;
+            }
         }
 
         public void RefreshCharacters()
@@ -134,6 +158,10 @@ namespace IntegratedAuthoringToolWF
                 _rpcForm.Close();
                 _rpcForm = null;
             }
+
+            if (_iat.Characters.Any())
+                buttonRemoveCharacter.Enabled = true;
+            else buttonRemoveCharacter.Enabled = false;
             AssistantHandler();
 
         }
@@ -170,8 +198,8 @@ namespace IntegratedAuthoringToolWF
             FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[3], _wmForm);
             FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[5], _webForm);
 
-            FormHelper.ShowFormInContainerControl(this.tabControlAssetEditor.TabPages[0], _eaForm);
-            FormHelper.ShowFormInContainerControl(this.tabControlAssetEditor.TabPages[1], _edmForm);
+            FormHelper.ShowFormInContainerControl(this.tabControlAssetEditor.TabPages[0], _edmForm);
+            FormHelper.ShowFormInContainerControl(this.tabControlAssetEditor.TabPages[1], _eaForm);
             FormHelper.ShowFormInContainerControl(this.tabControlAssetEditor.TabPages[2], _siForm);
             FormHelper.ShowFormInContainerControl(this.tabControlAssetEditor.TabPages[3], _cifForm);
 
@@ -192,7 +220,7 @@ namespace IntegratedAuthoringToolWF
         {
             new AddCharacterForm(_iat).ShowDialog(this);
             RefreshCharacters();
-
+           
         }
 
         private void textBoxScenarioName_TextChanged(object sender, EventArgs e)
@@ -264,8 +292,8 @@ namespace IntegratedAuthoringToolWF
 
             _rpcForm.OnAssetDataLoaded();
             _rpcForm.Asset = rpc;
-            FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[2], _rpcForm);
-            this.tabControlIAT.SelectTab(2);
+            FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[0], _rpcForm);
+            this.tabControlIAT.SelectTab(0);
             _rpcForm.SelectedTab = selectedRPCTab;
             buttonInspect.Enabled = true;
             buttonRemoveCharacter.Enabled = true;
@@ -309,6 +337,8 @@ namespace IntegratedAuthoringToolWF
             {
                 this.auxAddOrUpdateItem(rule);
             }
+
+            
         }
 
         private void auxAddOrUpdateItem(DialogueStateActionDTO item)
@@ -321,6 +351,8 @@ namespace IntegratedAuthoringToolWF
                 EditorTools.HighlightItemInGrid<DialogueStateActionDTO>
                     (dataGridViewDialogueActions, diag.UpdatedGuid);
             }
+
+            RefreshDialogs();
         }
 
         private void buttonDuplicateDialogueAction_Click(object sender, EventArgs e)
@@ -1773,7 +1805,7 @@ namespace IntegratedAuthoringToolWF
                 pressed = false,
                 performActionButtonText = "Get Started",
                 description = "Welcome to FAtiMA-Toolkit ! \n \n I'll be your Assistant \n " +
-                "Here, I'll provide instructions on how to get started and how to enrich your scenario :)",
+                "Here, I'll provide a tutorial on how to get started and tips on how to improve your scenario :)",
                 index = _index
             };
             assistantDescription.Add(_index, toAdd);
@@ -1785,7 +1817,7 @@ namespace IntegratedAuthoringToolWF
                 pressed = false,
                 performActionButtonText = "Next",
                 description = "FAtiMA-Toolkit is composed by many different components but Fearnot, I will guide you through each one \n \n" +
-                " In addition to this, by hovering different components a tooltip will appear detailing their objectivess",
+                " In addition to this, by hovering different components a tooltip will appear detailing their objective",
                 index = _index
             };
 
@@ -2003,7 +2035,7 @@ namespace IntegratedAuthoringToolWF
             if (targetEmotion == null && subjectEmotion == null)
                 return;
 
-            tabControlAssetEditor.SelectedIndex = 0;
+            tabControlAssetEditor.SelectedIndex = 1;
 
             _eaForm.AddAppraisalRulewithEmotions(rule, targetEmotion, subjectEmotion);
 
@@ -2192,8 +2224,8 @@ namespace IntegratedAuthoringToolWF
                     {
                         if (this._rpcForm != null)
                         {
-                            this.tabControlIAT.SelectedIndex = 2;
-                            this._rpcForm.tabControl1.SelectedIndex = 1;
+                            this.tabControlIAT.SelectedIndex = 0;
+                            this._rpcForm.tabControl1.SelectedIndex = 0;
                             HighlightButton(this._rpcForm.addBeliefButton);
                             descriptionObject.pressed = true;
                             assistantDescription[step] = descriptionObject;
@@ -2212,7 +2244,7 @@ namespace IntegratedAuthoringToolWF
                     if (!descriptionObject.pressed)
                     {
                         this.tabControlIAT.SelectedIndex = 1;
-                        this.tabControlAssetEditor.SelectedIndex = 1;
+                        this.tabControlAssetEditor.SelectedIndex = 0;
                         HighlightButton(this._edmForm.buttonAddReaction);
                         descriptionObject.pressed = true;
                         assistantDescription[step] = descriptionObject;
@@ -2228,7 +2260,7 @@ namespace IntegratedAuthoringToolWF
                     if (!descriptionObject.pressed)
                     {
                         this.tabControlIAT.SelectedIndex = 1;
-                        this.tabControlAssetEditor.SelectedIndex = 0;
+                        this.tabControlAssetEditor.SelectedIndex = 1;
                         HighlightButton(this._eaForm.buttonAddAppraisalRule);
                         descriptionObject.pressed = true;
                         assistantDescription[step] = descriptionObject;
@@ -2243,7 +2275,7 @@ namespace IntegratedAuthoringToolWF
                 case "Dialogue Editor": // No decision rules
                     if (!descriptionObject.pressed)
                     {
-                        this.tabControlIAT.SelectedIndex = 0;
+                        this.tabControlIAT.SelectedIndex = 2;
                         HighlightButton(buttonAddPlayerDialogueAction);
                         descriptionObject.pressed = true;
                         assistantDescription[step] = descriptionObject;
@@ -2273,7 +2305,7 @@ namespace IntegratedAuthoringToolWF
                     if (!descriptionObject.pressed)
                     {
                         this.tabControlIAT.SelectedIndex = 1;
-                        this.tabControlAssetEditor.SelectedIndex = 1;
+                        this.tabControlAssetEditor.SelectedIndex = 0;
                         HighlightMenuItem(this._edmForm.toolsMenu);
                         descriptionObject.pressed = true;
                         assistantDescription[step] = descriptionObject;

@@ -81,7 +81,7 @@
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox7.Size = new System.Drawing.Size(827, 241);
+            this.groupBox7.Size = new System.Drawing.Size(827, 240);
             this.groupBox7.TabIndex = 3;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Action Rules";
@@ -89,18 +89,19 @@
             // 
             // buttonDuplicateReaction
             // 
-            this.buttonDuplicateReaction.Location = new System.Drawing.Point(189, 23);
+            this.buttonDuplicateReaction.Location = new System.Drawing.Point(200, 34);
             this.buttonDuplicateReaction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonDuplicateReaction.Name = "buttonDuplicateReaction";
             this.buttonDuplicateReaction.Size = new System.Drawing.Size(93, 28);
             this.buttonDuplicateReaction.TabIndex = 9;
             this.buttonDuplicateReaction.Text = "Duplicate";
+            this.edmToolTip.SetToolTip(this.buttonDuplicateReaction, "Duplicate the currently selected action rule");
             this.buttonDuplicateReaction.UseVisualStyleBackColor = true;
             this.buttonDuplicateReaction.Click += new System.EventHandler(this.buttonDuplicateReaction_Click);
             // 
             // buttonEditReaction
             // 
-            this.buttonEditReaction.Location = new System.Drawing.Point(88, 23);
+            this.buttonEditReaction.Location = new System.Drawing.Point(99, 34);
             this.buttonEditReaction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonEditReaction.Name = "buttonEditReaction";
             this.buttonEditReaction.Size = new System.Drawing.Size(93, 28);
@@ -112,24 +113,25 @@
             // 
             // buttonAddReaction
             // 
-            this.buttonAddReaction.Location = new System.Drawing.Point(8, 23);
+            this.buttonAddReaction.Location = new System.Drawing.Point(9, 34);
             this.buttonAddReaction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonAddReaction.Name = "buttonAddReaction";
-            this.buttonAddReaction.Size = new System.Drawing.Size(72, 28);
+            this.buttonAddReaction.Size = new System.Drawing.Size(82, 28);
             this.buttonAddReaction.TabIndex = 7;
             this.buttonAddReaction.Text = "Add";
-            this.edmToolTip.SetToolTip(this.buttonAddReaction, "Add a new action");
+            this.edmToolTip.SetToolTip(this.buttonAddReaction, "Add a new action rule");
             this.buttonAddReaction.UseVisualStyleBackColor = true;
             this.buttonAddReaction.Click += new System.EventHandler(this.buttonAddReaction_Click);
             // 
             // buttonRemoveReaction
             // 
-            this.buttonRemoveReaction.Location = new System.Drawing.Point(291, 23);
+            this.buttonRemoveReaction.Location = new System.Drawing.Point(302, 34);
             this.buttonRemoveReaction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonRemoveReaction.Name = "buttonRemoveReaction";
             this.buttonRemoveReaction.Size = new System.Drawing.Size(93, 28);
             this.buttonRemoveReaction.TabIndex = 10;
             this.buttonRemoveReaction.Text = "Remove";
+            this.edmToolTip.SetToolTip(this.buttonRemoveReaction, "Remove currently selected action rule");
             this.buttonRemoveReaction.UseVisualStyleBackColor = true;
             this.buttonRemoveReaction.Click += new System.EventHandler(this.buttonRemoveReaction_Click);
             // 
@@ -155,7 +157,7 @@
             this.dataGridViewReactiveActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewReactiveActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewReactiveActions.ShowCellToolTips = false;
-            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(811, 158);
+            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(811, 157);
             this.dataGridViewReactiveActions.TabIndex = 2;
             this.edmToolTip.SetToolTip(this.dataGridViewReactiveActions, resources.GetString("dataGridViewReactiveActions.ToolTip"));
             this.dataGridViewReactiveActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReactiveActions_CellContentClick);
@@ -169,13 +171,14 @@
             this.menuStrip2.BackColor = System.Drawing.Color.Transparent;
             this.menuStrip2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.menuStrip2.Dock = System.Windows.Forms.DockStyle.None;
+            this.menuStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolsMenu});
             this.menuStrip2.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.menuStrip2.Location = new System.Drawing.Point(654, 19);
+            this.menuStrip2.Location = new System.Drawing.Point(620, 19);
             this.menuStrip2.Name = "menuStrip2";
             this.menuStrip2.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.menuStrip2.Size = new System.Drawing.Size(157, 35);
+            this.menuStrip2.Size = new System.Drawing.Size(191, 35);
             this.menuStrip2.TabIndex = 12;
             this.menuStrip2.Text = "menuStrip2";
             this.menuStrip2.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip2_ItemClicked);
@@ -197,7 +200,7 @@
             this.addDialogueActionToolStripMenuItem.Image = global::EmotionalDecisionMakingWF.Properties.Resources.Pagina_Demo_face;
             this.addDialogueActionToolStripMenuItem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.addDialogueActionToolStripMenuItem.Name = "addDialogueActionToolStripMenuItem";
-            this.addDialogueActionToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.addDialogueActionToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.addDialogueActionToolStripMenuItem.Text = "Add Dialogue Action";
             this.addDialogueActionToolStripMenuItem.ToolTipText = "Create a new Speak Action from a Template";
             this.addDialogueActionToolStripMenuItem.Click += new System.EventHandler(this.addDialogueActionToolStripMenuItem_Click);
@@ -207,7 +210,7 @@
             this.addEmotionalResponseToolStripMenuItem.Image = global::EmotionalDecisionMakingWF.Properties.Resources.Icon_Final_Black;
             this.addEmotionalResponseToolStripMenuItem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.addEmotionalResponseToolStripMenuItem.Name = "addEmotionalResponseToolStripMenuItem";
-            this.addEmotionalResponseToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.addEmotionalResponseToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.addEmotionalResponseToolStripMenuItem.Text = "Add Emotional Response";
             this.addEmotionalResponseToolStripMenuItem.ToolTipText = "Automatically create an appraisal rule for each action rule using this helper";
             this.addEmotionalResponseToolStripMenuItem.Click += new System.EventHandler(this.addEmotionalResponseToolStripMenuItem_Click);
@@ -221,7 +224,7 @@
             this.groupBox8.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox8.Size = new System.Drawing.Size(827, 318);
+            this.groupBox8.Size = new System.Drawing.Size(827, 319);
             this.groupBox8.TabIndex = 11;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Conditions";
@@ -235,7 +238,7 @@
             this.debugGroup.Controls.Add(this.testConditions);
             this.debugGroup.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.debugGroup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.debugGroup.Location = new System.Drawing.Point(4, 260);
+            this.debugGroup.Location = new System.Drawing.Point(4, 261);
             this.debugGroup.Name = "debugGroup";
             this.debugGroup.Size = new System.Drawing.Size(819, 54);
             this.debugGroup.TabIndex = 5;
@@ -323,7 +326,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox8);
             this.splitContainer1.Size = new System.Drawing.Size(827, 564);
-            this.splitContainer1.SplitterDistance = 241;
+            this.splitContainer1.SplitterDistance = 240;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 17;
             this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
@@ -381,7 +384,7 @@
             // 
             // edmToolTip
             // 
-            this.edmToolTip.AutomaticDelay = 1000;
+            this.edmToolTip.AutomaticDelay = 100;
             this.edmToolTip.ShowAlways = true;
             this.edmToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.edmToolTip.ToolTipTitle = "EDM Tooltip";
@@ -399,8 +402,8 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Text = "Emotional Decision Making";
-            this.edmToolTip.SetToolTip(this, "Emotional Decision Making component is resposible for the handling of the actions" +
-        "");
+            this.edmToolTip.SetToolTip(this, "Emotional Decision Making component is resposible for the creating actions and de" +
+        "termining when they are triggered using their conditions. ");
             this.groupBox7.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactiveActions)).EndInit();
             this.menuStrip2.ResumeLayout(false);
