@@ -117,6 +117,26 @@ namespace EmotionalDecisionMakingWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_chatbot_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-chatbot-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_repository_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-repository-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Emotional Decision Making.
         /// </summary>
         internal static string MainFormTitle {

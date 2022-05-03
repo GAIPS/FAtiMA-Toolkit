@@ -169,6 +169,36 @@ namespace EmotionalAppraisalWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_control_panel_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-control-panel-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_navigation_pane_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-navigation-pane-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_repository_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-repository-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid file.
         /// </summary>
         internal static string InvalidFileError {

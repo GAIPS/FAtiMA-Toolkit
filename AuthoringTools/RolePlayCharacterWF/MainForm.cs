@@ -57,7 +57,7 @@ namespace RolePlayCharacterWF
             InitializeComponent();
             _parent = parent;
             _loadedAsset = new RolePlayCharacterAsset();
-            this.toolTip1.SetToolTip(parent, "Ayy");
+            this.toolTip1.SetToolTip(parent, "FAtiMA-Toolkit");
         }
 
         public void OnAssetDataLoaded()
@@ -146,16 +146,19 @@ namespace RolePlayCharacterWF
 
         private void addEmotionButton_Click_1(object sender, EventArgs e)
         {
-            new AddOrEditEmotionForm(_emotionalStateVM).ShowDialog();
+            List<uint> eventIDs = _loadedAsset.EventRecords.Select(x => x.Id).ToList();
+            new AddOrEditEmotionForm(this, _emotionalStateVM, eventIDs).ShowDialog();
         }
 
         private void buttonEditEmotion_Click(object sender, EventArgs e)
         {
             if (emotionsDataGridView.SelectedRows.Count == 1)
             {
+                List<uint> eventIDs = _loadedAsset.EventRecords.Select(x => x.Id).ToList();
+
                 var selectedEmotion = ((ObjectView<EmotionDTO>)emotionsDataGridView.
                     SelectedRows[0].DataBoundItem).Object;
-                new AddOrEditEmotionForm(_emotionalStateVM, selectedEmotion).ShowDialog();
+                new AddOrEditEmotionForm(this, _emotionalStateVM, eventIDs , selectedEmotion).ShowDialog();
             }
         }
 
@@ -540,6 +543,15 @@ namespace RolePlayCharacterWF
             return bitmap;
         }
 
+        private void addDialogueActionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void addEmotionalResponseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

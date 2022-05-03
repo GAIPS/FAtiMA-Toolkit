@@ -160,8 +160,13 @@ namespace IntegratedAuthoringToolWF
             }
 
             if (_iat.Characters.Any())
+            {
                 buttonRemoveCharacter.Enabled = true;
+                
+                LoadFormForRPC(_iat.Characters.First().CharacterName.ToString());
+            }
             else buttonRemoveCharacter.Enabled = false;
+            
             AssistantHandler();
 
         }
@@ -290,6 +295,8 @@ namespace IntegratedAuthoringToolWF
             _rpcForm.OnNameChangeEvent += this.OnRPCNameChange;
             _rpcForm.OnMoodChangeEvent += this.OnRPCMoodChange;
 
+            _rpcForm.SelectedTab = _iat.Characters.ToList().FindIndex(r => r.CharacterName.ToString() == characterName);
+            dataGridViewCharacters.Rows[_rpcForm.SelectedTab].Selected = true;
             _rpcForm.OnAssetDataLoaded();
             _rpcForm.Asset = rpc;
             FormHelper.ShowFormInContainerControl(this.tabControlIAT.TabPages[0], _rpcForm);
@@ -2491,6 +2498,19 @@ namespace IntegratedAuthoringToolWF
             if (rpcSource != null)
             {
                 new RPCInspectForm(_iat, _storage, rpcSource.Name).Show(this);
+            }
+        }
+
+        private void metaBeliefListToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            if(_iat.Characters.Any())
+                new Metabeliefs.MetaBeliefForm(_iat.Characters.First()).Show();
+
+            else
+            {
+                RolePlayCharacterAsset rpc = new RolePlayCharacterAsset();
+                new Metabeliefs.MetaBeliefForm(rpc).Show();
             }
         }
     }

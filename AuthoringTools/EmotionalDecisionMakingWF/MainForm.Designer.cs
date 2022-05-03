@@ -81,7 +81,7 @@
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox7.Size = new System.Drawing.Size(827, 240);
+            this.groupBox7.Size = new System.Drawing.Size(827, 238);
             this.groupBox7.TabIndex = 3;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Action Rules";
@@ -157,7 +157,7 @@
             this.dataGridViewReactiveActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewReactiveActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewReactiveActions.ShowCellToolTips = false;
-            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(811, 157);
+            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(811, 155);
             this.dataGridViewReactiveActions.TabIndex = 2;
             this.edmToolTip.SetToolTip(this.dataGridViewReactiveActions, resources.GetString("dataGridViewReactiveActions.ToolTip"));
             this.dataGridViewReactiveActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReactiveActions_CellContentClick);
@@ -175,10 +175,10 @@
             this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolsMenu});
             this.menuStrip2.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
-            this.menuStrip2.Location = new System.Drawing.Point(620, 19);
+            this.menuStrip2.Location = new System.Drawing.Point(649, 27);
             this.menuStrip2.Name = "menuStrip2";
             this.menuStrip2.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
-            this.menuStrip2.Size = new System.Drawing.Size(191, 35);
+            this.menuStrip2.Size = new System.Drawing.Size(169, 35);
             this.menuStrip2.TabIndex = 12;
             this.menuStrip2.Text = "menuStrip2";
             this.menuStrip2.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip2_ItemClicked);
@@ -190,14 +190,16 @@
             this.addDialogueActionToolStripMenuItem,
             this.addEmotionalResponseToolStripMenuItem});
             this.toolsMenu.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolsMenu.Image = global::EmotionalDecisionMakingWF.Properties.Resources.icons8_repository_40;
+            this.toolsMenu.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.toolsMenu.ImageTransparentColor = System.Drawing.Color.Black;
             this.toolsMenu.Name = "toolsMenu";
-            this.toolsMenu.Size = new System.Drawing.Size(134, 31);
+            this.toolsMenu.Size = new System.Drawing.Size(154, 31);
             this.toolsMenu.Text = "Action Rule Helpers";
             // 
             // addDialogueActionToolStripMenuItem
             // 
-            this.addDialogueActionToolStripMenuItem.Image = global::EmotionalDecisionMakingWF.Properties.Resources.Pagina_Demo_face;
+            this.addDialogueActionToolStripMenuItem.Image = global::EmotionalDecisionMakingWF.Properties.Resources.icons8_chatbot_40;
             this.addDialogueActionToolStripMenuItem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.addDialogueActionToolStripMenuItem.Name = "addDialogueActionToolStripMenuItem";
             this.addDialogueActionToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
@@ -224,7 +226,7 @@
             this.groupBox8.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox8.Size = new System.Drawing.Size(827, 319);
+            this.groupBox8.Size = new System.Drawing.Size(827, 321);
             this.groupBox8.TabIndex = 11;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Conditions";
@@ -238,7 +240,7 @@
             this.debugGroup.Controls.Add(this.testConditions);
             this.debugGroup.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.debugGroup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.debugGroup.Location = new System.Drawing.Point(4, 261);
+            this.debugGroup.Location = new System.Drawing.Point(4, 263);
             this.debugGroup.Name = "debugGroup";
             this.debugGroup.Size = new System.Drawing.Size(819, 54);
             this.debugGroup.TabIndex = 5;
@@ -326,7 +328,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox8);
             this.splitContainer1.Size = new System.Drawing.Size(827, 564);
-            this.splitContainer1.SplitterDistance = 240;
+            this.splitContainer1.SplitterDistance = 238;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 17;
             this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);

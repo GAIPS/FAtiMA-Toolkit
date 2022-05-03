@@ -148,6 +148,12 @@
   <ItemGroup>
     <None Include="Resources\assistantbackground2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-repository-40.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icons8-chatbot-40.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

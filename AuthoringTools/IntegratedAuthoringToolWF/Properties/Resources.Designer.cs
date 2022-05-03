@@ -382,6 +382,36 @@ namespace IntegratedAuthoringToolWF.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_bot_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-bot-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_close_24 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-close-24", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_close_64 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-close-64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_divisa_circulada_à_direita_40 {
             get {
                 object obj = ResourceManager.GetObject("icons8-divisa-circulada-à-direita-40", resourceCulture);
@@ -402,6 +432,16 @@ namespace IntegratedAuthoringToolWF.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_help_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-help-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_help_80 {
             get {
                 object obj = ResourceManager.GetObject("icons8-help-80", resourceCulture);
@@ -415,6 +455,46 @@ namespace IntegratedAuthoringToolWF.Properties {
         internal static System.Drawing.Bitmap icons8_help_96 {
             get {
                 object obj = ResourceManager.GetObject("icons8-help-96", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_preview_pane_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-preview-pane-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_responsive_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-responsive-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_template_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-template-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_web_design_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-web-design-40", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

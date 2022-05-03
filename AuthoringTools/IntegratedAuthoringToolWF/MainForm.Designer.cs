@@ -27,6 +27,7 @@
             this.openToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inspectCharacterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.metaBeliefListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
@@ -46,6 +47,13 @@
             this.textBoxPathAssetStorage = new System.Windows.Forms.TextBox();
             this.buttonNewAssetStorage = new System.Windows.Forms.Button();
             this.tabControlIAT = new System.Windows.Forms.TabControl();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tabControlAssetEditor = new System.Windows.Forms.TabControl();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.tabPageEA = new System.Windows.Forms.TabPage();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.tabPage8 = new System.Windows.Forms.TabPage();
             this.tabPageDialogue = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
@@ -63,13 +71,6 @@
             this.buttonPlayerEditDialogueAction = new System.Windows.Forms.Button();
             this.buttonAddPlayerDialogueAction = new System.Windows.Forms.Button();
             this.buttonPlayerRemoveDialogueAction = new System.Windows.Forms.Button();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.tabControlAssetEditor = new System.Windows.Forms.TabControl();
-            this.tabPage6 = new System.Windows.Forms.TabPage();
-            this.tabPageEA = new System.Windows.Forms.TabPage();
-            this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.tabPage8 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -131,14 +132,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCharacters)).BeginInit();
             this.groupBox6.SuspendLayout();
             this.tabControlIAT.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.tabControlAssetEditor.SuspendLayout();
             this.tabPageDialogue.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDialogueActions)).BeginInit();
-            this.tabPage4.SuspendLayout();
-            this.tabControlAssetEditor.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -258,23 +259,30 @@
             this.computeDescriptionToolStripMenuItem,
             this.loadTemplateScenarioToolStripMenuItem,
             this.authoringAssistantToolStripMenuItem,
-            this.inspectCharacterToolStripMenuItem});
+            this.inspectCharacterToolStripMenuItem,
+            this.metaBeliefListToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
             // computeDescriptionToolStripMenuItem
             // 
+            this.computeDescriptionToolStripMenuItem.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.computeDescriptionToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_web_design_40;
+            this.computeDescriptionToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Transparent;
             this.computeDescriptionToolStripMenuItem.Name = "computeDescriptionToolStripMenuItem";
-            this.computeDescriptionToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.computeDescriptionToolStripMenuItem.Size = new System.Drawing.Size(203, 26);
             this.computeDescriptionToolStripMenuItem.Text = "Compute Description";
+            this.computeDescriptionToolStripMenuItem.ToolTipText = "Automatically create a scenario out of a textual story";
             this.computeDescriptionToolStripMenuItem.Click += new System.EventHandler(this.importStoryButton_Click);
             // 
             // loadTemplateScenarioToolStripMenuItem
             // 
+            this.loadTemplateScenarioToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_template_40;
             this.loadTemplateScenarioToolStripMenuItem.Name = "loadTemplateScenarioToolStripMenuItem";
-            this.loadTemplateScenarioToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.loadTemplateScenarioToolStripMenuItem.Size = new System.Drawing.Size(203, 26);
             this.loadTemplateScenarioToolStripMenuItem.Text = "Load Template Scenario";
+            this.loadTemplateScenarioToolStripMenuItem.ToolTipText = "Open a templated scenario instead of starting from scratch";
             this.loadTemplateScenarioToolStripMenuItem.Click += new System.EventHandler(this.loadTemplateScenarioToolStripMenuItem_Click);
             // 
             // authoringAssistantToolStripMenuItem
@@ -282,9 +290,11 @@
             this.authoringAssistantToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem1,
             this.closeToolStripMenuItem});
+            this.authoringAssistantToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_bot_40;
             this.authoringAssistantToolStripMenuItem.Name = "authoringAssistantToolStripMenuItem";
-            this.authoringAssistantToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.authoringAssistantToolStripMenuItem.Size = new System.Drawing.Size(203, 26);
             this.authoringAssistantToolStripMenuItem.Text = "Authoring Assistant";
+            this.authoringAssistantToolStripMenuItem.ToolTipText = "Authoring Assistant options";
             this.authoringAssistantToolStripMenuItem.Click += new System.EventHandler(this.authoringAssistantToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem1
@@ -302,10 +312,22 @@
             // 
             // inspectCharacterToolStripMenuItem
             // 
+            this.inspectCharacterToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_preview_pane_40;
             this.inspectCharacterToolStripMenuItem.Name = "inspectCharacterToolStripMenuItem";
-            this.inspectCharacterToolStripMenuItem.Size = new System.Drawing.Size(199, 22);
+            this.inspectCharacterToolStripMenuItem.Size = new System.Drawing.Size(203, 26);
             this.inspectCharacterToolStripMenuItem.Text = "Inspect Character";
+            this.inspectCharacterToolStripMenuItem.ToolTipText = "Inspect a particular character to analyse its response to certain events";
             this.inspectCharacterToolStripMenuItem.Click += new System.EventHandler(this.inspectCharacterToolStripMenuItem_Click);
+            // 
+            // metaBeliefListToolStripMenuItem
+            // 
+            this.metaBeliefListToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_responsive_40;
+            this.metaBeliefListToolStripMenuItem.Name = "metaBeliefListToolStripMenuItem";
+            this.metaBeliefListToolStripMenuItem.Size = new System.Drawing.Size(203, 26);
+            this.metaBeliefListToolStripMenuItem.Text = "Meta-Belief Panel";
+            this.metaBeliefListToolStripMenuItem.ToolTipText = "Meta-Beliefs are beliefs that can be used to make computatiokns on runtime, tipic" +
+    "ally used in the conditions of a Rule";
+            this.metaBeliefListToolStripMenuItem.Click += new System.EventHandler(this.metaBeliefListToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -569,6 +591,81 @@
             this.tabControlIAT.TabStop = false;
             this.toolTip1.SetToolTip(this.tabControlIAT, "This component is in charge of the internal state of each agent");
             // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 24);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(5);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(5);
+            this.tabPage2.Size = new System.Drawing.Size(844, 609);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Character";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabPage2.Click += new System.EventHandler(this.tabPage2_Click);
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.tabControlAssetEditor);
+            this.tabPage4.Location = new System.Drawing.Point(4, 24);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(844, 609);
+            this.tabPage4.TabIndex = 5;
+            this.tabPage4.Text = "Cognitive Rules";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // tabControlAssetEditor
+            // 
+            this.tabControlAssetEditor.Controls.Add(this.tabPage6);
+            this.tabControlAssetEditor.Controls.Add(this.tabPageEA);
+            this.tabControlAssetEditor.Controls.Add(this.tabPage7);
+            this.tabControlAssetEditor.Controls.Add(this.tabPage8);
+            this.tabControlAssetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlAssetEditor.Location = new System.Drawing.Point(0, 0);
+            this.tabControlAssetEditor.Name = "tabControlAssetEditor";
+            this.tabControlAssetEditor.SelectedIndex = 0;
+            this.tabControlAssetEditor.Size = new System.Drawing.Size(844, 609);
+            this.tabControlAssetEditor.TabIndex = 0;
+            // 
+            // tabPage6
+            // 
+            this.tabPage6.Location = new System.Drawing.Point(4, 25);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage6.Size = new System.Drawing.Size(836, 580);
+            this.tabPage6.TabIndex = 1;
+            this.tabPage6.Text = "Emotional Decision Making";
+            this.toolTip1.SetToolTip(this.tabPage6, "The Emotional Decision Making is where you can define which actions agents have");
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // tabPageEA
+            // 
+            this.tabPageEA.Location = new System.Drawing.Point(4, 22);
+            this.tabPageEA.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
+            this.tabPageEA.Name = "tabPageEA";
+            this.tabPageEA.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageEA.Size = new System.Drawing.Size(836, 583);
+            this.tabPageEA.TabIndex = 0;
+            this.tabPageEA.Text = "Emotional Appraisal";
+            this.tabPageEA.UseVisualStyleBackColor = true;
+            // 
+            // tabPage7
+            // 
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Size = new System.Drawing.Size(836, 583);
+            this.tabPage7.TabIndex = 2;
+            this.tabPage7.Text = "Social Importance";
+            this.tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // tabPage8
+            // 
+            this.tabPage8.Location = new System.Drawing.Point(4, 22);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Size = new System.Drawing.Size(836, 583);
+            this.tabPage8.TabIndex = 3;
+            this.tabPage8.Text = "CIF-CK";
+            this.tabPage8.UseVisualStyleBackColor = true;
+            // 
             // tabPageDialogue
             // 
             this.tabPageDialogue.Controls.Add(this.groupBox2);
@@ -812,81 +909,6 @@
             this.toolTip1.SetToolTip(this.buttonPlayerRemoveDialogueAction, "Removes the selected Dialogue Action");
             this.buttonPlayerRemoveDialogueAction.UseVisualStyleBackColor = true;
             this.buttonPlayerRemoveDialogueAction.Click += new System.EventHandler(this.buttonRemoveDialogueAction_Click);
-            // 
-            // tabPage4
-            // 
-            this.tabPage4.Controls.Add(this.tabControlAssetEditor);
-            this.tabPage4.Location = new System.Drawing.Point(4, 24);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(844, 609);
-            this.tabPage4.TabIndex = 5;
-            this.tabPage4.Text = "Cognitive Rules";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // tabControlAssetEditor
-            // 
-            this.tabControlAssetEditor.Controls.Add(this.tabPage6);
-            this.tabControlAssetEditor.Controls.Add(this.tabPageEA);
-            this.tabControlAssetEditor.Controls.Add(this.tabPage7);
-            this.tabControlAssetEditor.Controls.Add(this.tabPage8);
-            this.tabControlAssetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlAssetEditor.Location = new System.Drawing.Point(0, 0);
-            this.tabControlAssetEditor.Name = "tabControlAssetEditor";
-            this.tabControlAssetEditor.SelectedIndex = 0;
-            this.tabControlAssetEditor.Size = new System.Drawing.Size(844, 609);
-            this.tabControlAssetEditor.TabIndex = 0;
-            // 
-            // tabPage6
-            // 
-            this.tabPage6.Location = new System.Drawing.Point(4, 25);
-            this.tabPage6.Name = "tabPage6";
-            this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(836, 580);
-            this.tabPage6.TabIndex = 1;
-            this.tabPage6.Text = "Emotional Decision Making";
-            this.toolTip1.SetToolTip(this.tabPage6, "The Emotional Decision Making is where you can define which actions agents have");
-            this.tabPage6.UseVisualStyleBackColor = true;
-            // 
-            // tabPageEA
-            // 
-            this.tabPageEA.Location = new System.Drawing.Point(4, 22);
-            this.tabPageEA.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
-            this.tabPageEA.Name = "tabPageEA";
-            this.tabPageEA.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageEA.Size = new System.Drawing.Size(836, 583);
-            this.tabPageEA.TabIndex = 0;
-            this.tabPageEA.Text = "Emotional Appraisal";
-            this.tabPageEA.UseVisualStyleBackColor = true;
-            // 
-            // tabPage7
-            // 
-            this.tabPage7.Location = new System.Drawing.Point(4, 22);
-            this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(836, 583);
-            this.tabPage7.TabIndex = 2;
-            this.tabPage7.Text = "Social Importance";
-            this.tabPage7.UseVisualStyleBackColor = true;
-            // 
-            // tabPage8
-            // 
-            this.tabPage8.Location = new System.Drawing.Point(4, 22);
-            this.tabPage8.Name = "tabPage8";
-            this.tabPage8.Size = new System.Drawing.Size(836, 583);
-            this.tabPage8.TabIndex = 3;
-            this.tabPage8.Text = "CIF-CK";
-            this.tabPage8.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(5);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(5);
-            this.tabPage2.Size = new System.Drawing.Size(844, 609);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Character";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            this.tabPage2.Click += new System.EventHandler(this.tabPage2_Click);
             // 
             // tabPage3
             // 
@@ -1495,7 +1517,7 @@
             // 
             this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox3.Image = global::IntegratedAuthoringToolWF.Properties.Resources.PikPng_com_close_icon_png_3024323;
+            this.pictureBox3.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_close_64;
             this.pictureBox3.Location = new System.Drawing.Point(424, 9);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(20, 20);
@@ -1506,7 +1528,7 @@
             // 
             // helpPicture
             // 
-            this.helpPicture.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_ajuda_16;
+            this.helpPicture.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_help_40;
             this.helpPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.helpPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.helpPicture.Location = new System.Drawing.Point(398, 9);
@@ -1681,6 +1703,8 @@
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.tabControlIAT.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
+            this.tabControlAssetEditor.ResumeLayout(false);
             this.tabPageDialogue.ResumeLayout(false);
             this.tabPageDialogue.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -1689,8 +1713,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox12.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDialogueActions)).EndInit();
-            this.tabPage4.ResumeLayout(false);
-            this.tabControlAssetEditor.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
@@ -1889,6 +1911,7 @@
         private System.Windows.Forms.Label stepLabel;
         private System.Windows.Forms.ToolStripMenuItem inspectCharacterToolStripMenuItem;
         private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.ToolStripMenuItem metaBeliefListToolStripMenuItem;
     }
 }
 

@@ -105,6 +105,12 @@
     <Compile Include="ImageForm.Designer.cs">
       <DependentUpon>ImageForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Metabeliefs\MetaBeliefForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Metabeliefs\MetaBeliefForm.Designer.cs">
+      <DependentUpon>MetaBeliefForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -187,6 +193,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Metabeliefs\MetaBeliefForm.resx">
+      <DependentUpon>MetaBeliefForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -373,6 +382,11 @@
     <None Include="Resources\inescid.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\icons8-responsive-40.png" />
+    <None Include="Resources\icons8-preview-pane-40.png" />
+    <None Include="Resources\icons8-bot-40.png" />
+    <None Include="Resources\icons8-template-40.png" />
+    <None Include="Resources\icons8-web-design-40.png" />
     <None Include="Resources\NormalFace1.png" />
     <None Include="Resources\Study1.png" />
     <None Include="Resources\Study.png" />

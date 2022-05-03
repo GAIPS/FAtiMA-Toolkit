@@ -108,7 +108,7 @@
             this.buttonAppVariables.AutoEllipsis = true;
             this.buttonAppVariables.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.buttonAppVariables.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAppVariables.Location = new System.Drawing.Point(408, 38);
+            this.buttonAppVariables.Location = new System.Drawing.Point(477, 38);
             this.buttonAppVariables.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonAppVariables.Name = "buttonAppVariables";
             this.buttonAppVariables.Size = new System.Drawing.Size(187, 25);

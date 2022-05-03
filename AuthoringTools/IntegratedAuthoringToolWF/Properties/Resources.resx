@@ -124,23 +124,23 @@
   <data name="MainFormTitle" xml:space="preserve">
     <value>Integrated Authoring Tool</value>
   </data>
+  <data name="iconHelp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\iconHelp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="offline" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\offline.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="_17_ThDh" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\17-ThDh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="composition" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\composition.xcf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="RAGE_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RAGE-logo-high-res.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="icons8-template-40" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8-template-40.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="assistantbackground1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\assistantbackground1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Study1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Study1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="logo_Final_Horizontal_Black" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\logo_Final_Horizontal_Black.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="icons8-close-24" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8-close-24.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="iat_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\iat-icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -148,14 +148,17 @@
   <data name="Pagina-Demo-face" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Pagina-Demo-face.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="icons8-preview-pane-40" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8-preview-pane-40.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="icons8-divisa-circulada-à-direita-40" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icons8-divisa-circulada-à-direita-40.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="icons8-help-100" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icons8-help-100.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Pagina-Home" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Pagina-Home.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="logo_Final_Horizontal_Black" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\logo_Final_Horizontal_Black.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="_16_ShChJhZh" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\16-ShChJhZh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -169,26 +172,32 @@
   <data name="help" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\help.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_18_FV" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\18-FV.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="composition" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\composition.xcf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="online" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\online.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="left" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="NormalFace" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NormalFace.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="RAGE_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RAGE-logo-high-res.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Pagina-Demo2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Pagina-Demo2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="assistantbackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\assistantbackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_19_DTDxN" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\19-DTDxN.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="gaips_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\gaips.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="NormalFace1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NormalFace1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="NormalFace" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NormalFace.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="UnableToSaveFileError" xml:space="preserve">
+    <value>Unable to save to the chosen file.</value>
+  </data>
+  <data name="Pagina-Home" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pagina-Home.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="_20_KGNg" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\20-KGNg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -199,14 +208,17 @@
   <data name="icons8-help-80" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icons8-help-80.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_19_DTDxN" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\19-DTDxN.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="gaips_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gaips.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="iconHelp" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\iconHelp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="assistantbackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\assistantbackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="UnableToSaveFileError" xml:space="preserve">
-    <value>Unable to save to the chosen file.</value>
+  <data name="Study1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Study1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_21_PBM" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\21-PBM.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="icons8-ajuda-16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icons8-ajuda-16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -226,17 +238,23 @@
   <data name="_2_Aa" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\2-Aa.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="offline" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\offline.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="icons8-web-design-40" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8-web-design-40.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Pagina-Get-Started" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Pagina-Get-Started.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Pagina-Publications-300x300" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Pagina-Publications-300x300.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="icons8-close-64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8-close-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="_4_EyEhAe" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\4-EyEhAe.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_0_silence" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\0-silence.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_18_FV" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\18-FV.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="_13_R" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\13-R.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -250,8 +268,11 @@
   <data name="PikPng.com_close-icon-png_3024323" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PikPng.com_close-icon-png_3024323.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_21_PBM" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\21-PBM.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="icons8-bot-40" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8-bot-40.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_Final_White" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_Final_White.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="_3_Ao" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\3-Ao.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -259,8 +280,8 @@
   <data name="RPCLoadingError" xml:space="preserve">
     <value>An error occurred when trying to load one the characters in the scenario.</value>
   </data>
-  <data name="Icon_Final_White" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Icon_Final_White.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="_9_Aw" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\9-Aw.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Study" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Study.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -274,19 +295,22 @@
   <data name="inescid_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\inescid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Pagina-Get-Started" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Pagina-Get-Started.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="left" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\left.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="_5_Er" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\5-Er.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_9_Aw" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\9-Aw.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="icons8-help-40" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8-help-40.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="_0_silence" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\0-silence.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="_1_11_AxAhUh" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\1+11-AxAhUh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="NormalFace1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NormalFace1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="icons8-responsive-40" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8-responsive-40.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
