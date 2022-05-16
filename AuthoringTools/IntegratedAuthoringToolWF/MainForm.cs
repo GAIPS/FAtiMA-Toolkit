@@ -1788,24 +1788,19 @@ namespace IntegratedAuthoringToolWF
         {
             public string groupboxHeader;
             public string description;
-            public string performActionButtonText;
-            public bool pressed;
-            public int index;
         }
 
         Dictionary<int, descriptionObject> assistantDescription;
-        int initialLocationX;
-        int initialLocationY;
-
+        string assistantMode;
 
         // Initialize All things Authoring Assistant
         private void initAssistant()
         {
-            initialLocationX = Assistant.Location.X;
-            initialLocationY = Assistant.Location.Y;
             LoadPictures();
             LoadTips();
-           
+            assistantMode = "Auto";
+
+
         }
 
         private void LoadTips() { 
@@ -1817,23 +1812,17 @@ namespace IntegratedAuthoringToolWF
             var toAdd = new descriptionObject()
             {
                 groupboxHeader = "FAtiMA-Toolkit",
-                pressed = false,
-                performActionButtonText = "Get Started",
                 description = "Welcome to FAtiMA-Toolkit ! \n \n I will be your Assistant \n \n " +
                 "Here, I'll help you get started and show you tips on how to improve your scenario",
-                index = _index
             };
             assistantDescription.Add(_index, toAdd);
             _index += 1;
 
             toAdd = new descriptionObject()
             {
-                groupboxHeader = "An Integrated Authoring Tool",
-                pressed = false,
-                performActionButtonText = "Next",
+                groupboxHeader = "The Integrated Authoring Tool",
                 description = "FAtiMA-Toolkit is composed by many different components but Fearnot, I will guide you through each one  \n \n" +
-                " In addition to this, by hovering different components a tooltip will appear detailing their objective",
-                index = _index
+                " In addition to this, by hovering different components a tooltip will appear detailing their objective"
             };
 
             assistantDescription.Add(_index, toAdd);
@@ -1855,11 +1844,8 @@ namespace IntegratedAuthoringToolWF
             toAdd = new descriptionObject()
             {
                 groupboxHeader = "File System - Scenario File",
-                pressed = false,
-                performActionButtonText = "Next",
                 description = "This tool uses .json files to store the data. Additionally, there are 2 types of data, the scenario data and the cognitive rules data \n \n" +
-                "Try creating a new scenario file under File->New",
-                index = _index
+                "Try creating a new scenario file under File->New"
             };
 
             assistantDescription.Add(_index, toAdd);
@@ -1867,37 +1853,23 @@ namespace IntegratedAuthoringToolWF
 
             toAdd = new descriptionObject()
             {
-                groupboxHeader = "File System - Cognitive Rules",
-                pressed = false,
-                performActionButtonText = "Next",
+                groupboxHeader = "File System - Cognitive Rules File",
                 description = "The Scenario file stores characters, beliefs and dialogue \n" +
                 "The Cognitive Rules file, on the other hand, stores all the rules. \n \n" +
-                "Let's also create a new Rules file by clicking Cognitive Rules->New",
-                index = _index
+                "Let's also create a new Rules file by clicking Cognitive Rules->New"
             };
 
             assistantDescription.Add(_index, toAdd);
             _index += 1;
 
-            toAdd = new descriptionObject()
-            {
-                groupboxHeader = "Compute Decription Tool",
-                pressed = false,
-                performActionButtonText = "Next",
-                description = "The Toolkit has the ability to automatically create a scenario based on a short description provided by you. \n \n If you are interested in using this feature Look for it under Tools->Compute Description ",
-                index = _index
-            };
-            assistantDescription.Add(_index, toAdd);
-            _index += 1;
+
 
             // Second
             toAdd = new descriptionObject()
             {
-                groupboxHeader = "Characters",
-                pressed = false,
-                performActionButtonText = "Add Character",
-                description = "Let's start by creating a new character \n Characters are agents that have a name, beliefs and actions",
-                index = _index
+                groupboxHeader = "Adding Characters",
+                description = " Characters are agents that have a name, beliefs and actions." +
+                "Let's start by creating a new character \n"
             };
             assistantDescription.Add(_index, toAdd);
             _index += 1;
@@ -1905,26 +1877,32 @@ namespace IntegratedAuthoringToolWF
             // Third
             toAdd = new descriptionObject()
             {
-                groupboxHeader = "Internal State",
-                pressed = false,
-                performActionButtonText = "Add Beliefs",
-                description = "Every character should have beliefs that represent their knowledge regarding the world and themselves \n" +
-               "Is(Hungry)=True , Has(Money)=5 \n",
-                index = _index
+                groupboxHeader = "Internal State: Beliefs",
+                description = "Every character should have beliefs that represent their knowledge regarding the world and themselves, for example: \n" +
+               "Is(Hungry)=True , Has(Money)=5 \n \n" +
+               "There is no mandatory notation for how to define beliefs as long as they are consistent within the scenario"
+            };
+            assistantDescription.Add(_index, toAdd);
+            _index += 1;
+
+          
+            toAdd = new descriptionObject()
+            {
+                groupboxHeader = "Internal State: Goals and Mood",
+                description = "It is also possible to have the character start the scenario with additional traits such has having goals and a particular emotional state \n" +
+               "Married(John) = True, is(Alive) = True \n"
             };
             assistantDescription.Add(_index, toAdd);
             _index += 1;
 
 
-            // Fourth
             toAdd = new descriptionObject()
             {
                 groupboxHeader = "Emotional Decision Making",
-                pressed = false,
-                performActionButtonText = "Add Action Rule",
-                description = "The actions of all the characters can be defined \n" +
-               " A Decision Rule defines the Action Name, Priority, an optional Layer and the Target",
-                index = _index
+                description = "In order to interact with the player, other npcs and the world, characters need actions. \n" +
+                " Actions are defined as Decision Rules that denote what needs to happen for that action to be executed \n" +
+               " A Decision Rule is defined by the Action Name, Priority, an optional Layer and the Target",
+
             };
             assistantDescription.Add(_index, toAdd);
             _index += 1;
@@ -1933,11 +1911,10 @@ namespace IntegratedAuthoringToolWF
             toAdd = new descriptionObject()
             {
                 groupboxHeader = "Emotional Appraisal",
-                pressed = false,
-                performActionButtonText = "Add Appraisal Rule",
+
                 description = "FAtiMA is based on the Ortony, Clore and Collins's (OCC) Model of emotions. \n" +
                "Emotions represented valenced reactions to events in the world. They are generated by an appraisal process.",
-                index = _index
+ 
             };
             assistantDescription.Add(_index, toAdd);
             _index += 1;
@@ -1946,37 +1923,44 @@ namespace IntegratedAuthoringToolWF
             toAdd = new descriptionObject()
             {
                 groupboxHeader = "Dialogue Editor",
-                pressed = false,
-                performActionButtonText = "Add Dialogue Action",
                 description = "FAtiMA - Toolkit uses a hybrid approach combining both dialogue trees and dialogue states. \n Using a special Speak action the dialogue manager chooses the applicable dialogue from the pool defined here",
-                index = _index
             };
             assistantDescription.Add(_index, toAdd);
             _index += 1;
 
 
-            // Seven
+           
             toAdd = new descriptionObject()
             {
-                groupboxHeader = "Simulator",
-                pressed = false,
-                performActionButtonText = "Start Simulation",
+                groupboxHeader = "Using the Simulator",
                 description = "The Simulator component can be used to test the current state of the scenario \n" +
                "It is possible to play as any of the characters and check their internal state at any moment",
-                index = _index
             };
             assistantDescription.Add(_index, toAdd);
             _index += 1;
 
-            // 8
             toAdd = new descriptionObject()
             {
-                groupboxHeader = "Enriching the Scenario: Emotional Reactions",
-                pressed = false,
-                performActionButtonText = "Add Emotional Reaction",
+                groupboxHeader = "Tools: Compute Decription",
+                description = "The Toolkit has the ability to automatically create a scenario based on a short description provided by you. \n \n If you are interested in using this feature Look for it under Tools->Compute Description ",
+            };
+            assistantDescription.Add(_index, toAdd);
+            _index += 1;
+
+            toAdd = new descriptionObject()
+            {
+                groupboxHeader = "Tools: Generate Emotional Reaction",
                 description = "For each different actions there can exist different emotional reactions. \n" +
                "Creating agents with realistic reactions to events/actions in the scenario is reccomended",
-                index = _index
+            };
+            assistantDescription.Add(_index, toAdd);
+            _index += 1;
+
+                toAdd = new descriptionObject()
+            {
+                groupboxHeader = "FAtiMA-Toolkit Tips",
+                description = "For each different actions there can exist different emotional reactions. \n" +
+               "Creating agents with realistic reactions to events/actions in the scenario is reccomended",
             };
             assistantDescription.Add(_index, toAdd);
             _index += 1;
@@ -2059,8 +2043,14 @@ namespace IntegratedAuthoringToolWF
         // Main Handler of the Assistant, if something happens call this function
         public void AssistantHandler()
         {
-            ScenarioAnalyser();
-            
+            if (assistantMode == "Auto")
+                ScenarioAnalyser();
+
+            else if (assistantMode == "Manual")
+                return;
+
+            else if (assistantMode == "Debug")
+                return;
         }
 
 
@@ -2070,10 +2060,13 @@ namespace IntegratedAuthoringToolWF
          
             if (step > 1)
                 button1.Text = "Show Me";
-  //          else
-  //              button1.Text = assistantDescription[step].performActionButtonText;
 
             var currentstepLabel = step + " - " + assistantDescription[step].groupboxHeader + ":";
+
+            if (step==0)
+                currentstepLabel = assistantDescription[step].groupboxHeader + ":";
+
+
             if (assistantTopicGroupBox.Text  != currentstepLabel)
                 UpdatePicture();
 
@@ -2081,11 +2074,9 @@ namespace IntegratedAuthoringToolWF
             this.assistantTextBox.Text = assistantDescription[step].description;
         }
 
-        // If users have no expertise make sure the tutorial is being followed
+        // For users that have experience with the toolkit
         public void ScenarioAnalyser()
-        {
-            if (step < 11)
-                return;
+        { 
 
             if(_iat.Characters.Count() == 0)
             {
@@ -2140,6 +2131,13 @@ namespace IntegratedAuthoringToolWF
            // var eaRulesCount = this._eaForm.Asset.GetAllAppraisalRules().Count();
         }
 
+        // If users have no expertise make sure the tutorial is being followed
+        public void Debugger()
+        {
+
+        }
+
+
 
         // Auxiliary Function to help analyse the scenario
         public float CalculateAverageBeliefs()
@@ -2178,47 +2176,44 @@ namespace IntegratedAuthoringToolWF
         private void button1_Click(object sender, EventArgs e)
         {
             var descriptionObject = assistantDescription[step];
-
-            switch (step)
+            var header = descriptionObject.groupboxHeader;
+            switch (header)
 
             {
-                case 0:  // Welcome
+                case "FAtiMA-Toolkit":  // Welcome
+                    step += 1;
+                    ClearLastButton();
+                    UpdateLabel();
+                    button1.Text = "Next";
+                    break;
+
+                case "The Integrated Authoring Tool":  // Intro
                     step += 1;
                     ClearLastButton();
                     UpdateLabel();
                     break;
 
-                case 1:  // Intro
-                    step += 1;
-                    ClearLastButton();
-                    UpdateLabel();
-                    break;
-
-                case 2:  // File System
+                case "File System - Scenario File":  // File System
                    
                     fileToolStripMenuItem.ShowDropDown();
                     HighlightMenuItem(newToolStripMenuItem);
                     break;
 
-                case 3: // File System Part 2
+                case "File System - Cognitive Rules File": // File System Part 2
                     HighlightButton(buttonNewAssetStorage);
                     break;
 
-                case 4:  // Compute Description
-                    toolsToolStripMenuItem.ShowDropDown();
-                    HighlightMenuItem(computeDescriptionToolStripMenuItem);
-                    break;
+              
 
-                case 5: // Add Character
+                case "Adding Characters": // Add Character
                     ClearLastButton();
                     HighlightButton(this.buttonAddCharacter);
-                    descriptionObject.pressed = true;
                     assistantDescription[step] = descriptionObject;
 
                     // this.buttonAddCharacter_Click(sender, e);
                     break;
 
-                case 6: // Add Belief to Characters 
+                case "Internal State: Beliefs": // Add Belief to Characters 
                     ClearLastButton();
                     if (this._rpcForm != null)
                       {
@@ -2228,9 +2223,26 @@ namespace IntegratedAuthoringToolWF
                            
                             assistantDescription[step] = descriptionObject;
                       }
+
+                    else
+                    {
+                        MessageBox.Show("Please add a Character");
+                    }
                       break;
 
-                case 7: // Add Emotional Decision Making
+                case "Internal State: Goals and Mood": // Add Belief to Characters 
+                    ClearLastButton();
+                    if (this._rpcForm != null)
+                    {
+                        this.tabControlIAT.SelectedIndex = 0;
+                        this._rpcForm.tabControl1.SelectedIndex = 3;
+                        HighlightButton(this._rpcForm.buttonAddGoal);
+
+                        assistantDescription[step] = descriptionObject;
+                    }
+                    break;
+
+                case "Emotional Decision Making": // Add Emotional Decision Making
                     ClearLastButton();
                     this.tabControlIAT.SelectedIndex = 1;
                     this.tabControlAssetEditor.SelectedIndex = 0;
@@ -2238,7 +2250,7 @@ namespace IntegratedAuthoringToolWF
                     assistantDescription[step] = descriptionObject;
                     break;
 
-                case 8:  // Add Emotional Appraisal Making
+                case "Emotional Appraisal":  // Add Emotional Appraisal Making
                     ClearLastButton();
                     this.tabControlIAT.SelectedIndex = 1;
                     this.tabControlAssetEditor.SelectedIndex = 1;
@@ -2246,33 +2258,43 @@ namespace IntegratedAuthoringToolWF
                     assistantDescription[step] = descriptionObject;
                     break;
 
-                case 10: // Add Dialogues 
+                case "Dialogue Editor": // Add Dialogues 
                     ClearLastButton();
                     this.tabControlIAT.SelectedIndex = 2;
                     HighlightButton(buttonAddPlayerDialogueAction);
                     assistantDescription[step] = descriptionObject;
                     break;
 
-                case 9: // Simulator
+                case "Using the Simulator": // Simulator
                     ClearLastButton();
                     this.tabControlIAT.SelectedIndex = 4;
                     HighlightButton(buttonStart);
-                    descriptionObject.pressed = true;
                     assistantDescription[step] = descriptionObject;
                     break;
 
-                case 11:
+                case "Tools: Compute Decription":  // Compute Description
+                    ClearLastButton();
+                    toolsToolStripMenuItem.ShowDropDown();
+                    HighlightMenuItem(computeDescriptionToolStripMenuItem);
+                    break;
+
+                case "Tools: Generating Emotional Reaction":
                     ClearLastButton();
                     this.tabControlIAT.SelectedIndex = 1;
                     this.tabControlAssetEditor.SelectedIndex = 0;
                     HighlightMenuItem(this._edmForm.toolsMenu);
-                    descriptionObject.pressed = true;
                     assistantDescription[step] = descriptionObject;
+                    break;
+
+                case "FAtiMA-Toolkit Tips":
+                    ClearLastButton();
+                    assistantTopicGroupBox.Text = "FAtiMA-Toolkit Tips";
+                    this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Default");
                     break;
 
 
                 default:
-                    assistantTopicGroupBox.Text = step + " - FAtiMA Toolkit Tips";
+                    assistantTopicGroupBox.Text = "FAtiMA-Toolkit Tips";
                     this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Default");
                     break;
 
@@ -2456,35 +2478,42 @@ namespace IntegratedAuthoringToolWF
             new GenerateDialogueActions(this).Show();
         }
 
-        public void AddDialogueActions(string initial, string end, int number)
+        public void AddDialogueActions(string initial, string end, int number, int dialoguesPerState)
         {
 
             for (int i = 0;i < number; i++)
             {
+                List<DialogueStateActionDTO> dialogueList = new List<DialogueStateActionDTO>();
 
-                string currentState = "S" + i;
-                string nextState = "S" + (i + 1);
-
-                if (i == 0)
+                for (int j = 0; j < dialoguesPerState; j++)
                 {
-                    currentState = initial;
+                    string currentState = "S" + i;
+                    string nextState = "S" + (i + 1);
+
+                    if (i == 0)
+                    {
+                        currentState = initial;
+                    }
+
+                    if (i == number - 1)
+                    {
+                        nextState = end;
+                    }
+
+                    var dialogue = new DialogueStateActionDTO()
+                    {
+                        CurrentState = currentState,
+                        NextState = nextState,
+                        Meaning = "-",
+                        Style = "-",
+                        Utterance = "Hello World"
+                    };
+
+                    dialogueList.Add(dialogue);
                 }
 
-                if (i == number - 1)
-                {
-                    nextState = end;
-                }
-
-                var dialogue = new DialogueStateActionDTO()
-                {
-                    CurrentState = currentState,
-                    NextState = nextState,
-                    Meaning = "-",
-                    Style = "-",
-                    Utterance = "Hello World"
-                };
-
-                _iat.AddDialogAction(dialogue);
+                foreach(var d in dialogueList)
+                    _iat.AddDialogAction(d);
             }
 
             this.tabControlIAT.SelectedIndex = 2;
@@ -2494,6 +2523,18 @@ namespace IntegratedAuthoringToolWF
         private void button2_Click(object sender, EventArgs e)
         {
             generateDialogueActionsToolStripMenuItem_Click(sender, e);
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void domainUpDown1_SelectedItemChanged(object sender, EventArgs e)
+        {
+
+            assistantMode = assistantModeDropDown.SelectedItem.ToString();
+            AssistantHandler();
         }
     }
 }

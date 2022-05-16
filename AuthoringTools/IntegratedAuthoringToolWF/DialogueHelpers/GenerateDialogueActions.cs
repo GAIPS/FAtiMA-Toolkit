@@ -18,6 +18,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
         {
             InitializeComponent();
             stateNumberBox.Value = 5;
+            optionsPerStateBox.Value = 1;
             parentForm = parent;
             this.toolTip1.SetToolTip(parent, "FAtiMA-Toolkit");
         }
@@ -28,8 +29,9 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             string initState = initialStateBox.Text;
             string endState = endStateBox.Text;
             int numberOfStates = stateNumberBox.Value;
+            int dialoguesPerState = optionsPerStateBox.Value;
 
-            parentForm.AddDialogueActions(initState, endState, numberOfStates);
+            parentForm.AddDialogueActions(initState, endState, numberOfStates, dialoguesPerState);
 
             this.Close();
         }
