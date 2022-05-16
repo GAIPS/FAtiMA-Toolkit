@@ -1,8 +1,0 @@
-image: Visual Studio 2019
-before_build:
-  - nuget restore
-build_script:
-  - cmd: dotnet build FAtiMA-Toolkit.sln
-test_script:
-  - cmd: cd Tests\Tests.EmotionalAppraisal
-  - cmd: dotnet test Tests.EmotionalAppraisal.csproj
