@@ -28,6 +28,7 @@
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inspectCharacterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.metaBeliefListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generateDialogueActionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
@@ -48,6 +49,7 @@
             this.buttonNewAssetStorage = new System.Windows.Forms.Button();
             this.tabControlIAT = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.tabControlAssetEditor = new System.Windows.Forms.TabControl();
             this.tabPage6 = new System.Windows.Forms.TabPage();
@@ -125,6 +127,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.button2 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -132,6 +135,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCharacters)).BeginInit();
             this.groupBox6.SuspendLayout();
             this.tabControlIAT.SuspendLayout();
+            this.tabPage2.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.tabControlAssetEditor.SuspendLayout();
             this.tabPageDialogue.SuspendLayout();
@@ -260,7 +264,8 @@
             this.loadTemplateScenarioToolStripMenuItem,
             this.authoringAssistantToolStripMenuItem,
             this.inspectCharacterToolStripMenuItem,
-            this.metaBeliefListToolStripMenuItem});
+            this.metaBeliefListToolStripMenuItem,
+            this.generateDialogueActionsToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -271,7 +276,7 @@
             this.computeDescriptionToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_web_design_40;
             this.computeDescriptionToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Transparent;
             this.computeDescriptionToolStripMenuItem.Name = "computeDescriptionToolStripMenuItem";
-            this.computeDescriptionToolStripMenuItem.Size = new System.Drawing.Size(203, 26);
+            this.computeDescriptionToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
             this.computeDescriptionToolStripMenuItem.Text = "Compute Description";
             this.computeDescriptionToolStripMenuItem.ToolTipText = "Automatically create a scenario out of a textual story";
             this.computeDescriptionToolStripMenuItem.Click += new System.EventHandler(this.importStoryButton_Click);
@@ -280,7 +285,7 @@
             // 
             this.loadTemplateScenarioToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_template_40;
             this.loadTemplateScenarioToolStripMenuItem.Name = "loadTemplateScenarioToolStripMenuItem";
-            this.loadTemplateScenarioToolStripMenuItem.Size = new System.Drawing.Size(203, 26);
+            this.loadTemplateScenarioToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
             this.loadTemplateScenarioToolStripMenuItem.Text = "Load Template Scenario";
             this.loadTemplateScenarioToolStripMenuItem.ToolTipText = "Open a templated scenario instead of starting from scratch";
             this.loadTemplateScenarioToolStripMenuItem.Click += new System.EventHandler(this.loadTemplateScenarioToolStripMenuItem_Click);
@@ -292,7 +297,7 @@
             this.closeToolStripMenuItem});
             this.authoringAssistantToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_bot_40;
             this.authoringAssistantToolStripMenuItem.Name = "authoringAssistantToolStripMenuItem";
-            this.authoringAssistantToolStripMenuItem.Size = new System.Drawing.Size(203, 26);
+            this.authoringAssistantToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
             this.authoringAssistantToolStripMenuItem.Text = "Authoring Assistant";
             this.authoringAssistantToolStripMenuItem.ToolTipText = "Authoring Assistant options";
             this.authoringAssistantToolStripMenuItem.Click += new System.EventHandler(this.authoringAssistantToolStripMenuItem_Click);
@@ -314,7 +319,7 @@
             // 
             this.inspectCharacterToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_preview_pane_40;
             this.inspectCharacterToolStripMenuItem.Name = "inspectCharacterToolStripMenuItem";
-            this.inspectCharacterToolStripMenuItem.Size = new System.Drawing.Size(203, 26);
+            this.inspectCharacterToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
             this.inspectCharacterToolStripMenuItem.Text = "Inspect Character";
             this.inspectCharacterToolStripMenuItem.ToolTipText = "Inspect a particular character to analyse its response to certain events";
             this.inspectCharacterToolStripMenuItem.Click += new System.EventHandler(this.inspectCharacterToolStripMenuItem_Click);
@@ -323,11 +328,19 @@
             // 
             this.metaBeliefListToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_responsive_40;
             this.metaBeliefListToolStripMenuItem.Name = "metaBeliefListToolStripMenuItem";
-            this.metaBeliefListToolStripMenuItem.Size = new System.Drawing.Size(203, 26);
-            this.metaBeliefListToolStripMenuItem.Text = "Meta-Belief Panel";
+            this.metaBeliefListToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
+            this.metaBeliefListToolStripMenuItem.Text = "Meta-Beliefs Panel";
             this.metaBeliefListToolStripMenuItem.ToolTipText = "Meta-Beliefs are beliefs that can be used to make computatiokns on runtime, tipic" +
     "ally used in the conditions of a Rule";
             this.metaBeliefListToolStripMenuItem.Click += new System.EventHandler(this.metaBeliefListToolStripMenuItem_Click);
+            // 
+            // generateDialogueActionsToolStripMenuItem
+            // 
+            this.generateDialogueActionsToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_chatbot_40;
+            this.generateDialogueActionsToolStripMenuItem.Name = "generateDialogueActionsToolStripMenuItem";
+            this.generateDialogueActionsToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
+            this.generateDialogueActionsToolStripMenuItem.Text = "Generate Dialogue-Actions";
+            this.generateDialogueActionsToolStripMenuItem.Click += new System.EventHandler(this.generateDialogueActionsToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -593,6 +606,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.richTextBox1);
             this.tabPage2.Location = new System.Drawing.Point(4, 24);
             this.tabPage2.Margin = new System.Windows.Forms.Padding(5);
             this.tabPage2.Name = "tabPage2";
@@ -602,6 +616,15 @@
             this.tabPage2.Text = "Character";
             this.tabPage2.UseVisualStyleBackColor = true;
             this.tabPage2.Click += new System.EventHandler(this.tabPage2_Click);
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.richTextBox1.Location = new System.Drawing.Point(8, 8);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(576, 161);
+            this.richTextBox1.TabIndex = 0;
+            this.richTextBox1.Text = "This form is empty since there are no characters";
             // 
             // tabPage4
             // 
@@ -639,20 +662,20 @@
             // 
             // tabPageEA
             // 
-            this.tabPageEA.Location = new System.Drawing.Point(4, 22);
+            this.tabPageEA.Location = new System.Drawing.Point(4, 25);
             this.tabPageEA.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.tabPageEA.Name = "tabPageEA";
             this.tabPageEA.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageEA.Size = new System.Drawing.Size(836, 583);
+            this.tabPageEA.Size = new System.Drawing.Size(836, 580);
             this.tabPageEA.TabIndex = 0;
             this.tabPageEA.Text = "Emotional Appraisal";
             this.tabPageEA.UseVisualStyleBackColor = true;
             // 
             // tabPage7
             // 
-            this.tabPage7.Location = new System.Drawing.Point(4, 22);
+            this.tabPage7.Location = new System.Drawing.Point(4, 25);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(836, 583);
+            this.tabPage7.Size = new System.Drawing.Size(836, 580);
             this.tabPage7.TabIndex = 2;
             this.tabPage7.Text = "Social Importance";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -748,6 +771,7 @@
             // 
             // groupBox12
             // 
+            this.groupBox12.Controls.Add(this.button2);
             this.groupBox12.Controls.Add(this.buttonImportExcel);
             this.groupBox12.Controls.Add(this.displayGraph);
             this.groupBox12.Controls.Add(this.buttonExportExcel);
@@ -765,7 +789,7 @@
             // buttonImportExcel
             // 
             this.buttonImportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonImportExcel.Location = new System.Drawing.Point(30, 22);
+            this.buttonImportExcel.Location = new System.Drawing.Point(18, 22);
             this.buttonImportExcel.Margin = new System.Windows.Forms.Padding(4);
             this.buttonImportExcel.Name = "buttonImportExcel";
             this.buttonImportExcel.Size = new System.Drawing.Size(101, 30);
@@ -778,7 +802,7 @@
             // displayGraph
             // 
             this.displayGraph.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.displayGraph.Location = new System.Drawing.Point(592, 22);
+            this.displayGraph.Location = new System.Drawing.Point(531, 22);
             this.displayGraph.Margin = new System.Windows.Forms.Padding(4);
             this.displayGraph.Name = "displayGraph";
             this.displayGraph.Size = new System.Drawing.Size(138, 30);
@@ -791,7 +815,7 @@
             // buttonExportExcel
             // 
             this.buttonExportExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonExportExcel.Location = new System.Drawing.Point(146, 22);
+            this.buttonExportExcel.Location = new System.Drawing.Point(127, 22);
             this.buttonExportExcel.Margin = new System.Windows.Forms.Padding(4);
             this.buttonExportExcel.Name = "buttonExportExcel";
             this.buttonExportExcel.Size = new System.Drawing.Size(107, 30);
@@ -804,7 +828,7 @@
             // buttonValidate
             // 
             this.buttonValidate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonValidate.Location = new System.Drawing.Point(434, 22);
+            this.buttonValidate.Location = new System.Drawing.Point(380, 22);
             this.buttonValidate.Margin = new System.Windows.Forms.Padding(4);
             this.buttonValidate.Name = "buttonValidate";
             this.buttonValidate.Size = new System.Drawing.Size(143, 30);
@@ -817,10 +841,10 @@
             // buttonTTS
             // 
             this.buttonTTS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonTTS.Location = new System.Drawing.Point(268, 22);
+            this.buttonTTS.Location = new System.Drawing.Point(242, 22);
             this.buttonTTS.Margin = new System.Windows.Forms.Padding(4);
             this.buttonTTS.Name = "buttonTTS";
-            this.buttonTTS.Size = new System.Drawing.Size(151, 30);
+            this.buttonTTS.Size = new System.Drawing.Size(130, 30);
             this.buttonTTS.TabIndex = 18;
             this.buttonTTS.Text = "Text-To-Speech";
             this.toolTip1.SetToolTip(this.buttonTTS, "Generate Text to Speech Files");
@@ -1462,9 +1486,6 @@
             // 
             // Assistant
             // 
-            this.Assistant.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.Assistant.AutoSize = true;
             this.Assistant.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.Assistant.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
@@ -1475,6 +1496,7 @@
             this.Assistant.Controls.Add(this.nextPicture);
             this.Assistant.Controls.Add(this.splitContainer5);
             this.Assistant.Controls.Add(this.debugLabel);
+            this.Assistant.Dock = System.Windows.Forms.DockStyle.Fill;
             this.Assistant.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Assistant.ForeColor = System.Drawing.SystemColors.InfoText;
             this.Assistant.ImeMode = System.Windows.Forms.ImeMode.NoControl;
@@ -1482,7 +1504,7 @@
             this.Assistant.Margin = new System.Windows.Forms.Padding(0);
             this.Assistant.Name = "Assistant";
             this.Assistant.Padding = new System.Windows.Forms.Padding(5, 15, 5, 10);
-            this.Assistant.Size = new System.Drawing.Size(452, 241);
+            this.Assistant.Size = new System.Drawing.Size(448, 241);
             this.Assistant.TabIndex = 18;
             this.Assistant.TabStop = false;
             this.Assistant.Text = "Authoring Assistant:";
@@ -1567,8 +1589,8 @@
             this.splitContainer5.Panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.splitContainer5.Panel2.Controls.Add(this.splitContainer6);
             this.splitContainer5.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer5.Size = new System.Drawing.Size(442, 201);
-            this.splitContainer5.SplitterDistance = 104;
+            this.splitContainer5.Size = new System.Drawing.Size(438, 201);
+            this.splitContainer5.SplitterDistance = 103;
             this.splitContainer5.TabIndex = 21;
             // 
             // pictureBox2
@@ -1580,7 +1602,7 @@
             this.pictureBox2.Location = new System.Drawing.Point(0, 0);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Padding = new System.Windows.Forms.Padding(20);
-            this.pictureBox2.Size = new System.Drawing.Size(100, 197);
+            this.pictureBox2.Size = new System.Drawing.Size(99, 197);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox2.TabIndex = 20;
             this.pictureBox2.TabStop = false;
@@ -1602,7 +1624,7 @@
             this.splitContainer6.Panel2.BackColor = System.Drawing.Color.Transparent;
             this.splitContainer6.Panel2.Controls.Add(this.button1);
             this.splitContainer6.Panel2.Controls.Add(this.label9);
-            this.splitContainer6.Size = new System.Drawing.Size(330, 197);
+            this.splitContainer6.Size = new System.Drawing.Size(327, 197);
             this.splitContainer6.SplitterDistance = 153;
             this.splitContainer6.TabIndex = 19;
             // 
@@ -1614,15 +1636,13 @@
             this.assistantTopicGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.assistantTopicGroupBox.Location = new System.Drawing.Point(0, 0);
             this.assistantTopicGroupBox.Name = "assistantTopicGroupBox";
-            this.assistantTopicGroupBox.Size = new System.Drawing.Size(330, 153);
+            this.assistantTopicGroupBox.Size = new System.Drawing.Size(327, 153);
             this.assistantTopicGroupBox.TabIndex = 19;
             this.assistantTopicGroupBox.TabStop = false;
             this.assistantTopicGroupBox.Text = "FAtiMA-Toolkit";
             // 
             // assistantTextBox
             // 
-            this.assistantTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.assistantTextBox.AutoEllipsis = true;
             this.assistantTextBox.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.assistantTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -1674,6 +1694,19 @@
             this.toolTip1.ToolTipTitle = "IAT Tooltip";
             this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
             // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button2.Location = new System.Drawing.Point(677, 22);
+            this.button2.Margin = new System.Windows.Forms.Padding(4);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(152, 30);
+            this.button2.TabIndex = 21;
+            this.button2.Text = "Generate D-Actions";
+            this.toolTip1.SetToolTip(this.button2, "Generate dialogue tree");
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1703,6 +1736,7 @@
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.tabControlIAT.ResumeLayout(false);
+            this.tabPage2.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabControlAssetEditor.ResumeLayout(false);
             this.tabPageDialogue.ResumeLayout(false);
@@ -1912,6 +1946,9 @@
         private System.Windows.Forms.ToolStripMenuItem inspectCharacterToolStripMenuItem;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.ToolStripMenuItem metaBeliefListToolStripMenuItem;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.ToolStripMenuItem generateDialogueActionsToolStripMenuItem;
+        private System.Windows.Forms.Button button2;
     }
 }
 

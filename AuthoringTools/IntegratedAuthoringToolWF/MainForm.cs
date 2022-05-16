@@ -11,6 +11,7 @@ using GAIPS.AssetEditorTools;
 using GAIPS.Rage;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
+using IntegratedAuthoringToolWF.DialogueHelpers;
 using IntegratedAuthoringToolWF.IEP;
 using KnowledgeBase.DTOs;
 using OfficeOpenXml;
@@ -1202,7 +1203,11 @@ namespace IntegratedAuthoringToolWF
                 foreach (var ns in states[s])
                 {
                     if (s != "-")
-                        writer += s + "->" + ns + "\n";
+                        if(ns != "-")
+                            writer += s + "->" + ns + "\n";
+                        else 
+                            writer += s + "->" + "None" + "\n";
+
                     else if (ns != "-")
                         writer += "Any" + "->" + ns + "\n";
                     else writer += "Any" + "->" + "Any" + "\n";
@@ -2336,15 +2341,6 @@ namespace IntegratedAuthoringToolWF
             AssistantHandler();
         }
 
-
-
-
-            private void assistantTextBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-      
-
         private void nextPicture_Click(object sender, EventArgs e)
         {
            
@@ -2512,6 +2508,51 @@ namespace IntegratedAuthoringToolWF
                 RolePlayCharacterAsset rpc = new RolePlayCharacterAsset();
                 new Metabeliefs.MetaBeliefForm(rpc).Show();
             }
+        }
+
+        private void generateDialogueActionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new GenerateDialogueActions(this).Show();
+        }
+
+        public void AddDialogueActions(string initial, string end, int number)
+        {
+
+            for (int i = 0;i < number; i++)
+            {
+
+                string currentState = "S" + i;
+                string nextState = "S" + (i + 1);
+
+                if (i == 0)
+                {
+                    currentState = initial;
+                }
+
+                if (i == number - 1)
+                {
+                    nextState = end;
+                }
+
+                var dialogue = new DialogueStateActionDTO()
+                {
+                    CurrentState = currentState,
+                    NextState = nextState,
+                    Meaning = "-",
+                    Style = "-",
+                    Utterance = "Hello World"
+                };
+
+                _iat.AddDialogAction(dialogue);
+            }
+
+            this.tabControlIAT.SelectedIndex = 2;
+            RefreshDialogs();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            generateDialogueActionsToolStripMenuItem_Click(sender, e);
         }
     }
 }

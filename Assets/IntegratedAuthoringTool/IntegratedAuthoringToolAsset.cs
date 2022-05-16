@@ -53,11 +53,14 @@ namespace IntegratedAuthoringTool
             var serializer = new JSONSerializer();
             var aux = (JsonObject)JsonParser.Parse(json);
             var iat = serializer.DeserializeFromJson<IntegratedAuthoringToolAsset>(aux);
-            foreach(var c in iat.Characters)
-            {
-                c.LoadAssociatedAssets(storage);
-                iat.BindToRegistry(c.DynamicPropertiesRegistry);
-            }
+
+            
+                foreach (var c in iat.Characters)
+                {
+                    c.LoadAssociatedAssets(storage);
+                    iat.BindToRegistry(c.DynamicPropertiesRegistry);
+                }
+          
             iat.Assets = storage;
             return iat;
         }

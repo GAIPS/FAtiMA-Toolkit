@@ -87,6 +87,12 @@
       <DependentUpon>AddCharacterForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AuthorAssistant.cs" />
+    <Compile Include="DialogueHelpers\GenerateDialogueActions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogueHelpers\GenerateDialogueActions.Designer.cs">
+      <DependentUpon>GenerateDialogueActions.cs</DependentUpon>
+    </Compile>
     <Compile Include="IEP\ComputeDescriptionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -181,6 +187,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddOrEditDialogueActionForm.resx">
       <DependentUpon>AddOrEditDialogueActionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogueHelpers\GenerateDialogueActions.resx">
+      <DependentUpon>GenerateDialogueActions.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="IEP\ComputeDescriptionForm.resx">
       <DependentUpon>ComputeDescriptionForm.cs</DependentUpon>
@@ -382,6 +391,7 @@
     <None Include="Resources\inescid.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\icons8-chatbot-40.png" />
     <None Include="Resources\icons8-responsive-40.png" />
     <None Include="Resources\icons8-preview-pane-40.png" />
     <None Include="Resources\icons8-bot-40.png" />

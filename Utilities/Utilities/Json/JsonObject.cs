@@ -15,9 +15,18 @@ namespace Utilities.Json
 
 		public JsonToken this[string key]
 		{
-			get
-			{
-				return m_fields[key];
+
+			get {
+                try
+                {
+					return m_fields[key];
+				}
+                catch (Exception e)
+                {
+					throw new ArgumentOutOfRangeException();
+					return null;
+                }
+			
 			}
 			set
 			{
