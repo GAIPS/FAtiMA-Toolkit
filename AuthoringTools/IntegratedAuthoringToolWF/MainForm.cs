@@ -2068,10 +2068,10 @@ namespace IntegratedAuthoringToolWF
         private void UpdateLabel()
         {
          
-            if (!assistantDescription[step].pressed && step > 5)
-                button1.Text = "Take me there";
-            else
-                button1.Text = assistantDescription[step].performActionButtonText;
+            if (step > 1)
+                button1.Text = "Show Me";
+  //          else
+  //              button1.Text = assistantDescription[step].performActionButtonText;
 
             var currentstepLabel = step + " - " + assistantDescription[step].groupboxHeader + ":";
             if (assistantTopicGroupBox.Text  != currentstepLabel)
@@ -2084,7 +2084,7 @@ namespace IntegratedAuthoringToolWF
         // If users have no expertise make sure the tutorial is being followed
         public void ScenarioAnalyser()
         {
-            if (step < 6)
+            if (step < 11)
                 return;
 
             if(_iat.Characters.Count() == 0)
@@ -2195,7 +2195,7 @@ namespace IntegratedAuthoringToolWF
                     break;
 
                 case 2:  // File System
-                    step += 1;
+                   
                     fileToolStripMenuItem.ShowDropDown();
                     HighlightMenuItem(newToolStripMenuItem);
                     break;
@@ -2210,121 +2210,69 @@ namespace IntegratedAuthoringToolWF
                     break;
 
                 case 5: // Add Character
-                    if (!descriptionObject.pressed)
-                    {
-                        HighlightButton(this.buttonAddCharacter);
-                        descriptionObject.pressed = true;
-                        assistantDescription[step] = descriptionObject;
-                    }
-                    else
-                    {
-                        ClearLastButton();
-                        this.buttonAddCharacter_Click(sender, e);
-                    }
+                    ClearLastButton();
+                    HighlightButton(this.buttonAddCharacter);
+                    descriptionObject.pressed = true;
+                    assistantDescription[step] = descriptionObject;
+
+                    // this.buttonAddCharacter_Click(sender, e);
                     break;
 
                 case 6: // Add Belief to Characters 
-                    if (!descriptionObject.pressed)
-                    {
-                        if (this._rpcForm != null)
-                        {
+                    ClearLastButton();
+                    if (this._rpcForm != null)
+                      {
                             this.tabControlIAT.SelectedIndex = 0;
                             this._rpcForm.tabControl1.SelectedIndex = 0;
                             HighlightButton(this._rpcForm.addBeliefButton);
-                            descriptionObject.pressed = true;
+                           
                             assistantDescription[step] = descriptionObject;
-                        }
-                    }
-                    else
-                    {
-                        ClearLastButton();
-                        this._rpcForm.addBeliefButton_Click(sender, e);
-                    }
+                      }
+                      break;
+
+                case 7: // Add Emotional Decision Making
+                    ClearLastButton();
+                    this.tabControlIAT.SelectedIndex = 1;
+                    this.tabControlAssetEditor.SelectedIndex = 0;
+                    HighlightButton(this._edmForm.buttonAddReaction);
+                    assistantDescription[step] = descriptionObject;
                     break;
 
-                case 8:
-
-                    if (!descriptionObject.pressed)
-                    {
-                        this.tabControlIAT.SelectedIndex = 1;
-                        this.tabControlAssetEditor.SelectedIndex = 0;
-                        HighlightButton(this._edmForm.buttonAddReaction);
-                        descriptionObject.pressed = true;
-                        assistantDescription[step] = descriptionObject;
-                    }
-                    else
-                    {
-                        ClearLastButton();
-                        this._edmForm.buttonAddReaction_Click(sender, e);
-                    }
+                case 8:  // Add Emotional Appraisal Making
+                    ClearLastButton();
+                    this.tabControlIAT.SelectedIndex = 1;
+                    this.tabControlAssetEditor.SelectedIndex = 1;
+                    HighlightButton(this._eaForm.buttonAddAppraisalRule);
+                    assistantDescription[step] = descriptionObject;
                     break;
 
-                case 9:
-
-                    if (!descriptionObject.pressed)
-                    {
-                        this.tabControlIAT.SelectedIndex = 1;
-                        this.tabControlAssetEditor.SelectedIndex = 1;
-                        HighlightButton(this._eaForm.buttonAddAppraisalRule);
-                        descriptionObject.pressed = true;
-                        assistantDescription[step] = descriptionObject;
-                    }
-                    else
-                    {
-                        ClearLastButton();
-                        this._eaForm.buttonAddAppraisalRule_Click(sender, e);
-                    }
+                case 10: // Add Dialogues 
+                    ClearLastButton();
+                    this.tabControlIAT.SelectedIndex = 2;
+                    HighlightButton(buttonAddPlayerDialogueAction);
+                    assistantDescription[step] = descriptionObject;
                     break;
 
-                case 10:
-                    if (!descriptionObject.pressed)
-                    {
-                        this.tabControlIAT.SelectedIndex = 2;
-                        HighlightButton(buttonAddPlayerDialogueAction);
-                        descriptionObject.pressed = true;
-                        assistantDescription[step] = descriptionObject;
-                    }
-                    else
-                    {
-                        ClearLastButton();
-                        this.buttonAddDialogueAction_Click_1(sender, e);
-                    }
+                case 9: // Simulator
+                    ClearLastButton();
+                    this.tabControlIAT.SelectedIndex = 4;
+                    HighlightButton(buttonStart);
+                    descriptionObject.pressed = true;
+                    assistantDescription[step] = descriptionObject;
                     break;
 
                 case 11:
-                    if (!descriptionObject.pressed)
-                    {
-                        this.tabControlIAT.SelectedIndex = 4;
-                        HighlightButton(buttonStart);
-                        descriptionObject.pressed = true;
-                        assistantDescription[step] = descriptionObject;
-                    }
-                    else
-                    {
-                        this.buttonStart_Click(sender, e);
-                    }
-                    break;
-
-                case 12:
-
-                    if (!descriptionObject.pressed)
-                    {
-                        this.tabControlIAT.SelectedIndex = 1;
-                        this.tabControlAssetEditor.SelectedIndex = 0;
-                        HighlightMenuItem(this._edmForm.toolsMenu);
-                        descriptionObject.pressed = true;
-                        assistantDescription[step] = descriptionObject;
-                    }
-                    else
-                    {
-                        ClearLastButton();
-                        this._edmForm.emotionaAppraisalButton_Click(sender, e);
-                    }
-
+                    ClearLastButton();
+                    this.tabControlIAT.SelectedIndex = 1;
+                    this.tabControlAssetEditor.SelectedIndex = 0;
+                    HighlightMenuItem(this._edmForm.toolsMenu);
+                    descriptionObject.pressed = true;
+                    assistantDescription[step] = descriptionObject;
                     break;
 
 
                 default:
+                    assistantTopicGroupBox.Text = step + " - FAtiMA Toolkit Tips";
                     this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Default");
                     break;
 
@@ -2336,7 +2284,7 @@ namespace IntegratedAuthoringToolWF
         private void nextPicture_Click(object sender, EventArgs e)
         {
            
-                if (this.step < maxTutorialSteps - 1)
+                if (this.step < maxTutorialSteps)
                     this.step += 1;
                 else this.step = 0;
           
@@ -2408,10 +2356,11 @@ namespace IntegratedAuthoringToolWF
         }
         public void HighlightButton(Button but)
         {
-            lastButtonUsed = but;
+            
             but.BackColor = SystemColors.MenuHighlight;
             but.ForeColor = SystemColors.ButtonHighlight; 
             but.FlatStyle = FlatStyle.Flat;
+            lastButtonUsed = but;
         }
 
         public void HighlightMenuItem(ToolStripMenuItem item)

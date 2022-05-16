@@ -120,9 +120,6 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <data name="emotionGroupBox.ToolTip" xml:space="preserve">
     <value>At the beggining of the scenario, characters might already be feeling certain emotions. Each emotion is the result of an appraisal of a certain event. In order to add emotions it is necessary to create an event</value>
   </data>
