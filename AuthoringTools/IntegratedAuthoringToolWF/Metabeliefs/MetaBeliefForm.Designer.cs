@@ -29,6 +29,7 @@ namespace IntegratedAuthoringToolWF.Metabeliefs
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MetaBeliefForm));
             this.dataGridViewAgentInspector = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewAgentInspector)).BeginInit();
             this.SuspendLayout();
@@ -63,6 +64,7 @@ namespace IntegratedAuthoringToolWF.Metabeliefs
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(650, 320);
             this.Controls.Add(this.dataGridViewAgentInspector);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MetaBeliefForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Meta Belief List";

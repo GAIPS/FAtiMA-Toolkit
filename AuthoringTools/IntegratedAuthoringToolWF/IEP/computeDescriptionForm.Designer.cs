@@ -247,7 +247,7 @@ namespace IntegratedAuthoringToolWF.IEP
             // 
             // groupBox5
             // 
-            this.groupBox5.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox5.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.groupBox5.Controls.Add(this.label6);
             this.groupBox5.Location = new System.Drawing.Point(4, 85);
             this.groupBox5.Name = "groupBox5";

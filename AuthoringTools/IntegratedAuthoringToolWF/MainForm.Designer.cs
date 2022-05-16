@@ -63,6 +63,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.searchCheckList = new System.Windows.Forms.CheckedListBox();
             this.groupBox12 = new System.Windows.Forms.GroupBox();
+            this.button2 = new System.Windows.Forms.Button();
             this.buttonImportExcel = new System.Windows.Forms.Button();
             this.displayGraph = new System.Windows.Forms.Button();
             this.buttonExportExcel = new System.Windows.Forms.Button();
@@ -114,9 +115,7 @@
             this.splitContainer8 = new System.Windows.Forms.SplitContainer();
             this.splitContainer9 = new System.Windows.Forms.SplitContainer();
             this.Assistant = new System.Windows.Forms.GroupBox();
-            this.stepLabel = new System.Windows.Forms.Label();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.helpPicture = new System.Windows.Forms.PictureBox();
             this.nextPicture = new System.Windows.Forms.PictureBox();
             this.splitContainer5 = new System.Windows.Forms.SplitContainer();
@@ -125,9 +124,7 @@
             this.assistantTopicGroupBox = new System.Windows.Forms.GroupBox();
             this.assistantTextBox = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.label9 = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.button2 = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -184,7 +181,6 @@
             this.splitContainer9.SuspendLayout();
             this.Assistant.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.helpPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nextPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).BeginInit();
@@ -359,7 +355,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 10);
+            this.label2.Location = new System.Drawing.Point(5, 4);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(132, 16);
@@ -370,12 +366,12 @@
             // 
             this.textBoxScenarioDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxScenarioDescription.Location = new System.Drawing.Point(4, 33);
+            this.textBoxScenarioDescription.Location = new System.Drawing.Point(3, 22);
             this.textBoxScenarioDescription.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxScenarioDescription.Multiline = true;
             this.textBoxScenarioDescription.Name = "textBoxScenarioDescription";
             this.textBoxScenarioDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxScenarioDescription.Size = new System.Drawing.Size(440, 107);
+            this.textBoxScenarioDescription.Size = new System.Drawing.Size(440, 93);
             this.textBoxScenarioDescription.TabIndex = 1;
             this.toolTip1.SetToolTip(this.textBoxScenarioDescription, "Write a small description of the intended scenario here, so it can help during it" +
         "s development");
@@ -391,7 +387,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(448, 150);
+            this.groupBox1.Size = new System.Drawing.Size(448, 157);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Characters";
@@ -411,7 +407,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(440, 127);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(440, 134);
             this.tableLayoutPanel1.TabIndex = 15;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
@@ -485,7 +481,7 @@
             this.dataGridViewCharacters.RowHeadersWidth = 51;
             this.dataGridViewCharacters.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewCharacters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewCharacters.Size = new System.Drawing.Size(434, 75);
+            this.dataGridViewCharacters.Size = new System.Drawing.Size(434, 82);
             this.dataGridViewCharacters.TabIndex = 15;
             this.dataGridViewCharacters.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCharacters_CellContentClick_1);
             this.dataGridViewCharacters.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewCharacters_CellMouseClick);
@@ -513,7 +509,7 @@
             this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox6.Location = new System.Drawing.Point(0, 0);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(448, 91);
+            this.groupBox6.Size = new System.Drawing.Size(448, 94);
             this.groupBox6.TabIndex = 16;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Cognitive Rules File";
@@ -525,7 +521,7 @@
             // 
             this.buttonSaveAsAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.buttonSaveAsAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.buttonSaveAsAssetStorage.Location = new System.Drawing.Point(279, 24);
+            this.buttonSaveAsAssetStorage.Location = new System.Drawing.Point(279, 25);
             this.buttonSaveAsAssetStorage.Name = "buttonSaveAsAssetStorage";
             this.buttonSaveAsAssetStorage.Size = new System.Drawing.Size(85, 30);
             this.buttonSaveAsAssetStorage.TabIndex = 19;
@@ -538,7 +534,7 @@
             // 
             this.buttonOpenAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.buttonOpenAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonOpenAssetStorage.Location = new System.Drawing.Point(97, 24);
+            this.buttonOpenAssetStorage.Location = new System.Drawing.Point(97, 25);
             this.buttonOpenAssetStorage.Name = "buttonOpenAssetStorage";
             this.buttonOpenAssetStorage.Size = new System.Drawing.Size(85, 30);
             this.buttonOpenAssetStorage.TabIndex = 15;
@@ -551,7 +547,7 @@
             // 
             this.saveAssetStorageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.saveAssetStorageButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.saveAssetStorageButton.Location = new System.Drawing.Point(188, 24);
+            this.saveAssetStorageButton.Location = new System.Drawing.Point(188, 25);
             this.saveAssetStorageButton.Name = "saveAssetStorageButton";
             this.saveAssetStorageButton.Size = new System.Drawing.Size(85, 30);
             this.saveAssetStorageButton.TabIndex = 16;
@@ -574,7 +570,7 @@
             // 
             this.buttonNewAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.buttonNewAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.buttonNewAssetStorage.Location = new System.Drawing.Point(6, 24);
+            this.buttonNewAssetStorage.Location = new System.Drawing.Point(6, 25);
             this.buttonNewAssetStorage.Name = "buttonNewAssetStorage";
             this.buttonNewAssetStorage.Size = new System.Drawing.Size(85, 30);
             this.buttonNewAssetStorage.TabIndex = 18;
@@ -620,18 +616,18 @@
             // richTextBox1
             // 
             this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.richTextBox1.Location = new System.Drawing.Point(8, 8);
+            this.richTextBox1.Location = new System.Drawing.Point(3, 8);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(576, 161);
+            this.richTextBox1.Size = new System.Drawing.Size(576, 39);
             this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "This form is empty since there are no characters";
+            this.richTextBox1.Text = "This form is empty since there are no characters in the loaded scenario";
             // 
             // tabPage4
             // 
             this.tabPage4.Controls.Add(this.tabControlAssetEditor);
             this.tabPage4.Location = new System.Drawing.Point(4, 24);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(844, 609);
+            this.tabPage4.Size = new System.Drawing.Size(844, 605);
             this.tabPage4.TabIndex = 5;
             this.tabPage4.Text = "Cognitive Rules";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -646,7 +642,7 @@
             this.tabControlAssetEditor.Location = new System.Drawing.Point(0, 0);
             this.tabControlAssetEditor.Name = "tabControlAssetEditor";
             this.tabControlAssetEditor.SelectedIndex = 0;
-            this.tabControlAssetEditor.Size = new System.Drawing.Size(844, 609);
+            this.tabControlAssetEditor.Size = new System.Drawing.Size(844, 605);
             this.tabControlAssetEditor.TabIndex = 0;
             // 
             // tabPage6
@@ -654,7 +650,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 25);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(836, 580);
+            this.tabPage6.Size = new System.Drawing.Size(836, 576);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "Emotional Decision Making";
             this.toolTip1.SetToolTip(this.tabPage6, "The Emotional Decision Making is where you can define which actions agents have");
@@ -662,20 +658,20 @@
             // 
             // tabPageEA
             // 
-            this.tabPageEA.Location = new System.Drawing.Point(4, 25);
+            this.tabPageEA.Location = new System.Drawing.Point(4, 22);
             this.tabPageEA.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.tabPageEA.Name = "tabPageEA";
             this.tabPageEA.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageEA.Size = new System.Drawing.Size(836, 580);
+            this.tabPageEA.Size = new System.Drawing.Size(836, 583);
             this.tabPageEA.TabIndex = 0;
             this.tabPageEA.Text = "Emotional Appraisal";
             this.tabPageEA.UseVisualStyleBackColor = true;
             // 
             // tabPage7
             // 
-            this.tabPage7.Location = new System.Drawing.Point(4, 25);
+            this.tabPage7.Location = new System.Drawing.Point(4, 22);
             this.tabPage7.Name = "tabPage7";
-            this.tabPage7.Size = new System.Drawing.Size(836, 580);
+            this.tabPage7.Size = new System.Drawing.Size(836, 583);
             this.tabPage7.TabIndex = 2;
             this.tabPage7.Text = "Social Importance";
             this.tabPage7.UseVisualStyleBackColor = true;
@@ -696,7 +692,7 @@
             this.tabPageDialogue.Margin = new System.Windows.Forms.Padding(0);
             this.tabPageDialogue.Name = "tabPageDialogue";
             this.tabPageDialogue.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
-            this.tabPageDialogue.Size = new System.Drawing.Size(844, 609);
+            this.tabPageDialogue.Size = new System.Drawing.Size(844, 605);
             this.tabPageDialogue.TabIndex = 0;
             this.tabPageDialogue.Text = "Dialogues";
             this.tabPageDialogue.UseVisualStyleBackColor = true;
@@ -717,7 +713,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(844, 599);
+            this.groupBox2.Size = new System.Drawing.Size(844, 595);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dialogue Actions";
@@ -766,7 +762,7 @@
             this.searchCheckList.HorizontalScrollbar = true;
             this.searchCheckList.Location = new System.Drawing.Point(234, 15);
             this.searchCheckList.Name = "searchCheckList";
-            this.searchCheckList.Size = new System.Drawing.Size(147, 32);
+            this.searchCheckList.Size = new System.Drawing.Size(147, 18);
             this.searchCheckList.TabIndex = 16;
             // 
             // groupBox12
@@ -778,13 +774,26 @@
             this.groupBox12.Controls.Add(this.buttonValidate);
             this.groupBox12.Controls.Add(this.buttonTTS);
             this.groupBox12.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox12.Location = new System.Drawing.Point(4, 530);
+            this.groupBox12.Location = new System.Drawing.Point(4, 526);
             this.groupBox12.Name = "groupBox12";
             this.groupBox12.Size = new System.Drawing.Size(836, 65);
             this.groupBox12.TabIndex = 21;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Tools";
             this.groupBox12.Enter += new System.EventHandler(this.groupBox12_Enter);
+            // 
+            // button2
+            // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.button2.Location = new System.Drawing.Point(677, 22);
+            this.button2.Margin = new System.Windows.Forms.Padding(4);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(152, 30);
+            this.button2.TabIndex = 21;
+            this.button2.Text = "Generate D-Actions";
+            this.toolTip1.SetToolTip(this.button2, "Generate dialogue tree");
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // buttonImportExcel
             // 
@@ -874,7 +883,7 @@
             this.dataGridViewDialogueActions.RowHeadersWidth = 51;
             this.dataGridViewDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(835, 447);
+            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(835, 443);
             this.dataGridViewDialogueActions.TabIndex = 14;
             this.toolTip1.SetToolTip(this.dataGridViewDialogueActions, resources.GetString("dataGridViewDialogueActions.ToolTip"));
             this.dataGridViewDialogueActions.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellClick);
@@ -940,7 +949,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(844, 609);
+            this.tabPage3.Size = new System.Drawing.Size(844, 605);
             this.tabPage3.TabIndex = 3;
             this.tabPage3.Text = "World Model";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -951,7 +960,7 @@
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox7.Location = new System.Drawing.Point(3, 3);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(838, 603);
+            this.groupBox7.Size = new System.Drawing.Size(838, 599);
             this.groupBox7.TabIndex = 16;
             this.groupBox7.TabStop = false;
             // 
@@ -962,7 +971,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(844, 609);
+            this.tabPage1.Size = new System.Drawing.Size(844, 605);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "Simulator";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -980,7 +989,7 @@
             this.groupBox3.Controls.Add(this.checkBox1);
             this.groupBox3.Controls.Add(this.effectTickBox);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox3.Location = new System.Drawing.Point(3, 530);
+            this.groupBox3.Location = new System.Drawing.Point(3, 526);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(838, 76);
             this.groupBox3.TabIndex = 10;
@@ -1381,7 +1390,7 @@
             this.tabPageWeb.Location = new System.Drawing.Point(4, 24);
             this.tabPageWeb.Name = "tabPageWeb";
             this.tabPageWeb.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageWeb.Size = new System.Drawing.Size(844, 609);
+            this.tabPageWeb.Size = new System.Drawing.Size(844, 605);
             this.tabPageWeb.TabIndex = 4;
             this.tabPageWeb.Text = "Web API";
             this.tabPageWeb.UseVisualStyleBackColor = true;
@@ -1392,7 +1401,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.debugLabel.AutoSize = true;
             this.debugLabel.Font = new System.Drawing.Font("Arial", 10F);
-            this.debugLabel.Location = new System.Drawing.Point(10, 81);
+            this.debugLabel.Location = new System.Drawing.Point(10, 71);
             this.debugLabel.Name = "debugLabel";
             this.debugLabel.Size = new System.Drawing.Size(0, 16);
             this.debugLabel.TabIndex = 17;
@@ -1443,7 +1452,7 @@
             // 
             this.splitContainer7.Panel2.Controls.Add(this.splitContainer8);
             this.splitContainer7.Size = new System.Drawing.Size(448, 637);
-            this.splitContainer7.SplitterDistance = 143;
+            this.splitContainer7.SplitterDistance = 120;
             this.splitContainer7.SplitterIncrement = 2;
             this.splitContainer7.TabIndex = 19;
             // 
@@ -1461,8 +1470,8 @@
             // splitContainer8.Panel2
             // 
             this.splitContainer8.Panel2.Controls.Add(this.splitContainer9);
-            this.splitContainer8.Size = new System.Drawing.Size(448, 490);
-            this.splitContainer8.SplitterDistance = 91;
+            this.splitContainer8.Size = new System.Drawing.Size(448, 513);
+            this.splitContainer8.SplitterDistance = 94;
             this.splitContainer8.TabIndex = 0;
             // 
             // splitContainer9
@@ -1478,96 +1487,66 @@
             // 
             // splitContainer9.Panel2
             // 
-            this.splitContainer9.Panel2.BackColor = System.Drawing.Color.Transparent;
+            this.splitContainer9.Panel2.BackColor = System.Drawing.Color.Black;
             this.splitContainer9.Panel2.Controls.Add(this.Assistant);
-            this.splitContainer9.Size = new System.Drawing.Size(448, 395);
-            this.splitContainer9.SplitterDistance = 150;
+            this.splitContainer9.Size = new System.Drawing.Size(448, 415);
+            this.splitContainer9.SplitterDistance = 157;
             this.splitContainer9.TabIndex = 0;
             // 
             // Assistant
             // 
             this.Assistant.AutoSize = true;
-            this.Assistant.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.Assistant.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.Assistant.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.Assistant.Controls.Add(this.stepLabel);
-            this.Assistant.Controls.Add(this.pictureBox4);
-            this.Assistant.Controls.Add(this.pictureBox3);
-            this.Assistant.Controls.Add(this.helpPicture);
-            this.Assistant.Controls.Add(this.nextPicture);
             this.Assistant.Controls.Add(this.splitContainer5);
             this.Assistant.Controls.Add(this.debugLabel);
             this.Assistant.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Assistant.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Assistant.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.Assistant.ForeColor = System.Drawing.SystemColors.InfoText;
             this.Assistant.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.Assistant.Location = new System.Drawing.Point(0, 0);
-            this.Assistant.Margin = new System.Windows.Forms.Padding(0);
+            this.Assistant.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
             this.Assistant.Name = "Assistant";
-            this.Assistant.Padding = new System.Windows.Forms.Padding(5, 15, 5, 10);
-            this.Assistant.Size = new System.Drawing.Size(448, 241);
+            this.Assistant.Padding = new System.Windows.Forms.Padding(5);
+            this.Assistant.Size = new System.Drawing.Size(448, 254);
             this.Assistant.TabIndex = 18;
             this.Assistant.TabStop = false;
             this.Assistant.Text = "Authoring Assistant:";
             this.toolTip1.SetToolTip(this.Assistant, "Authoring Assistant provides tips regarding the use of FAtiMA-Toolkit");
             this.Assistant.Enter += new System.EventHandler(this.Assistant_Enter);
             // 
-            // stepLabel
-            // 
-            this.stepLabel.BackColor = System.Drawing.SystemColors.InactiveCaption;
-            this.stepLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.stepLabel.Font = new System.Drawing.Font("Gadugi", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.stepLabel.Location = new System.Drawing.Point(339, 8);
-            this.stepLabel.Name = "stepLabel";
-            this.stepLabel.Size = new System.Drawing.Size(27, 21);
-            this.stepLabel.TabIndex = 26;
-            this.stepLabel.Text = "10";
-            this.stepLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // pictureBox4
             // 
+            this.pictureBox4.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox4.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.left;
             this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox4.Location = new System.Drawing.Point(313, 9);
+            this.pictureBox4.Location = new System.Drawing.Point(59, 7);
             this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(20, 20);
+            this.pictureBox4.Size = new System.Drawing.Size(40, 30);
             this.pictureBox4.TabIndex = 25;
             this.pictureBox4.TabStop = false;
             this.pictureBox4.Click += new System.EventHandler(this.pictureBox4_Click);
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pictureBox3.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_close_64;
-            this.pictureBox3.Location = new System.Drawing.Point(424, 9);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(20, 20);
-            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox3.TabIndex = 24;
-            this.pictureBox3.TabStop = false;
-            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
             // 
             // helpPicture
             // 
             this.helpPicture.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_help_40;
             this.helpPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.helpPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.helpPicture.Location = new System.Drawing.Point(398, 9);
+            this.helpPicture.Location = new System.Drawing.Point(304, 0);
             this.helpPicture.Name = "helpPicture";
-            this.helpPicture.Size = new System.Drawing.Size(20, 20);
+            this.helpPicture.Size = new System.Drawing.Size(23, 21);
             this.helpPicture.TabIndex = 23;
             this.helpPicture.TabStop = false;
             this.helpPicture.Click += new System.EventHandler(this.helpPicture_Click_1);
             // 
             // nextPicture
             // 
+            this.nextPicture.BackColor = System.Drawing.Color.Transparent;
             this.nextPicture.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_divisa_circulada_à_direita_40;
             this.nextPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.nextPicture.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.nextPicture.Location = new System.Drawing.Point(372, 9);
+            this.nextPicture.Location = new System.Drawing.Point(230, 7);
             this.nextPicture.Name = "nextPicture";
-            this.nextPicture.Size = new System.Drawing.Size(20, 20);
+            this.nextPicture.Size = new System.Drawing.Size(41, 30);
             this.nextPicture.TabIndex = 22;
             this.nextPicture.TabStop = false;
             this.nextPicture.Click += new System.EventHandler(this.nextPicture_Click);
@@ -1576,7 +1555,7 @@
             // 
             this.splitContainer5.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.splitContainer5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer5.Location = new System.Drawing.Point(5, 30);
+            this.splitContainer5.Location = new System.Drawing.Point(5, 20);
             this.splitContainer5.Name = "splitContainer5";
             // 
             // splitContainer5.Panel1
@@ -1589,8 +1568,8 @@
             this.splitContainer5.Panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.splitContainer5.Panel2.Controls.Add(this.splitContainer6);
             this.splitContainer5.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer5.Size = new System.Drawing.Size(438, 201);
-            this.splitContainer5.SplitterDistance = 103;
+            this.splitContainer5.Size = new System.Drawing.Size(438, 229);
+            this.splitContainer5.SplitterDistance = 102;
             this.splitContainer5.TabIndex = 21;
             // 
             // pictureBox2
@@ -1602,7 +1581,7 @@
             this.pictureBox2.Location = new System.Drawing.Point(0, 0);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Padding = new System.Windows.Forms.Padding(20);
-            this.pictureBox2.Size = new System.Drawing.Size(99, 197);
+            this.pictureBox2.Size = new System.Drawing.Size(98, 225);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox2.TabIndex = 20;
             this.pictureBox2.TabStop = false;
@@ -1623,20 +1602,23 @@
             // 
             this.splitContainer6.Panel2.BackColor = System.Drawing.Color.Transparent;
             this.splitContainer6.Panel2.Controls.Add(this.button1);
-            this.splitContainer6.Panel2.Controls.Add(this.label9);
-            this.splitContainer6.Size = new System.Drawing.Size(327, 197);
-            this.splitContainer6.SplitterDistance = 153;
+            this.splitContainer6.Panel2.Controls.Add(this.pictureBox4);
+            this.splitContainer6.Panel2.Controls.Add(this.nextPicture);
+            this.splitContainer6.Size = new System.Drawing.Size(328, 225);
+            this.splitContainer6.SplitterDistance = 178;
             this.splitContainer6.TabIndex = 19;
             // 
             // assistantTopicGroupBox
             // 
             this.assistantTopicGroupBox.AutoSize = true;
             this.assistantTopicGroupBox.BackColor = System.Drawing.Color.Transparent;
+            this.assistantTopicGroupBox.Controls.Add(this.helpPicture);
             this.assistantTopicGroupBox.Controls.Add(this.assistantTextBox);
             this.assistantTopicGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.assistantTopicGroupBox.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.assistantTopicGroupBox.Location = new System.Drawing.Point(0, 0);
             this.assistantTopicGroupBox.Name = "assistantTopicGroupBox";
-            this.assistantTopicGroupBox.Size = new System.Drawing.Size(327, 153);
+            this.assistantTopicGroupBox.Size = new System.Drawing.Size(328, 178);
             this.assistantTopicGroupBox.TabIndex = 19;
             this.assistantTopicGroupBox.TabStop = false;
             this.assistantTopicGroupBox.Text = "FAtiMA-Toolkit";
@@ -1644,15 +1626,15 @@
             // assistantTextBox
             // 
             this.assistantTextBox.AutoEllipsis = true;
-            this.assistantTextBox.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.assistantTextBox.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.assistantTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.assistantTextBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.assistantTextBox.Font = new System.Drawing.Font("Gadugi", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.assistantTextBox.Location = new System.Drawing.Point(3, 20);
+            this.assistantTextBox.Location = new System.Drawing.Point(3, 22);
             this.assistantTextBox.Margin = new System.Windows.Forms.Padding(3);
             this.assistantTextBox.Name = "assistantTextBox";
             this.assistantTextBox.Padding = new System.Windows.Forms.Padding(3);
-            this.assistantTextBox.Size = new System.Drawing.Size(324, 130);
+            this.assistantTextBox.Size = new System.Drawing.Size(324, 153);
             this.assistantTextBox.TabIndex = 18;
             this.assistantTextBox.Text = "Don\'t forget to save your development using Ctrl+S";
             this.assistantTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1664,23 +1646,13 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button1.Font = new System.Drawing.Font("Gadugi", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.button1.Location = new System.Drawing.Point(141, 5);
+            this.button1.Location = new System.Drawing.Point(105, 7);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(161, 29);
+            this.button1.Size = new System.Drawing.Size(119, 30);
             this.button1.TabIndex = 1;
-            this.button1.Text = "Add Agent";
+            this.button1.Text = "Show Me";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Gadugi", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(13, 11);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(113, 16);
-            this.label9.TabIndex = 0;
-            this.label9.Text = "Suggested Action:";
             // 
             // toolTip1
             // 
@@ -1693,19 +1665,6 @@
             this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTip1.ToolTipTitle = "IAT Tooltip";
             this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
-            // 
-            // button2
-            // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.button2.Location = new System.Drawing.Point(677, 22);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(152, 30);
-            this.button2.TabIndex = 21;
-            this.button2.Text = "Generate D-Actions";
-            this.toolTip1.SetToolTip(this.button2, "Generate dialogue tree");
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // MainForm
             // 
@@ -1795,7 +1754,6 @@
             this.Assistant.ResumeLayout(false);
             this.Assistant.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.helpPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nextPicture)).EndInit();
             this.splitContainer5.Panel1.ResumeLayout(false);
@@ -1807,7 +1765,6 @@
             this.splitContainer6.Panel1.ResumeLayout(false);
             this.splitContainer6.Panel1.PerformLayout();
             this.splitContainer6.Panel2.ResumeLayout(false);
-            this.splitContainer6.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
             this.splitContainer6.ResumeLayout(false);
             this.assistantTopicGroupBox.ResumeLayout(false);
@@ -1929,11 +1886,9 @@
         public System.Windows.Forms.ToolTip toolTip1;
         private System.Windows.Forms.SplitContainer splitContainer6;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.SplitContainer splitContainer7;
         private System.Windows.Forms.SplitContainer splitContainer8;
         private System.Windows.Forms.SplitContainer splitContainer9;
-        private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.ToolStripMenuItem authoringAssistantToolStripMenuItem;
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem1;
@@ -1942,7 +1897,6 @@
         public System.Windows.Forms.Button buttonAddPlayerDialogueAction;
         private System.Windows.Forms.GroupBox assistantTopicGroupBox;
         public System.Windows.Forms.ToolStripMenuItem computeDescriptionToolStripMenuItem;
-        private System.Windows.Forms.Label stepLabel;
         private System.Windows.Forms.ToolStripMenuItem inspectCharacterToolStripMenuItem;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.ToolStripMenuItem metaBeliefListToolStripMenuItem;

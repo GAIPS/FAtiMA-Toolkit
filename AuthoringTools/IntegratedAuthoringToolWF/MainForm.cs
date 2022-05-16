@@ -1220,7 +1220,6 @@ namespace IntegratedAuthoringToolWF
             var image = new ImageForm(bit);
             image.Show();
 
-            //     Graphics.DrawImage(bit, 60, 10);
         }
 
         public static Bitmap Run(string dot)
@@ -1795,11 +1794,15 @@ namespace IntegratedAuthoringToolWF
         }
 
         Dictionary<int, descriptionObject> assistantDescription;
+        int initialLocationX;
+        int initialLocationY;
 
 
         // Initialize All things Authoring Assistant
         private void initAssistant()
         {
+            initialLocationX = Assistant.Location.X;
+            initialLocationY = Assistant.Location.Y;
             LoadPictures();
             LoadTips();
            
@@ -1816,8 +1819,8 @@ namespace IntegratedAuthoringToolWF
                 groupboxHeader = "FAtiMA-Toolkit",
                 pressed = false,
                 performActionButtonText = "Get Started",
-                description = "Welcome to FAtiMA-Toolkit ! \n \n I'll be your Assistant \n " +
-                "Here, I'll provide a tutorial on how to get started and tips on how to improve your scenario :)",
+                description = "Welcome to FAtiMA-Toolkit ! \n \n I will be your Assistant \n \n " +
+                "Here, I'll help you get started and show you tips on how to improve your scenario",
                 index = _index
             };
             assistantDescription.Add(_index, toAdd);
@@ -1825,10 +1828,10 @@ namespace IntegratedAuthoringToolWF
 
             toAdd = new descriptionObject()
             {
-                groupboxHeader = "FAtiMA-Toolkit",
+                groupboxHeader = "An Integrated Authoring Tool",
                 pressed = false,
                 performActionButtonText = "Next",
-                description = "FAtiMA-Toolkit is composed by many different components but Fearnot, I will guide you through each one \n \n" +
+                description = "FAtiMA-Toolkit is composed by many different components but Fearnot, I will guide you through each one  \n \n" +
                 " In addition to this, by hovering different components a tooltip will appear detailing their objective",
                 index = _index
             };
@@ -1836,7 +1839,7 @@ namespace IntegratedAuthoringToolWF
             assistantDescription.Add(_index, toAdd);
             _index += 1;
 
-            toAdd = new descriptionObject()
+           /* toAdd = new descriptionObject()
             {
                 groupboxHeader = "FAtiMA-Toolkit",
                 pressed = false,
@@ -1847,11 +1850,11 @@ namespace IntegratedAuthoringToolWF
 
             assistantDescription.Add(_index, toAdd);
             _index += 1;
-
+           */
 
             toAdd = new descriptionObject()
             {
-                groupboxHeader = "FAtiMA-Toolkit",
+                groupboxHeader = "File System - Scenario File",
                 pressed = false,
                 performActionButtonText = "Next",
                 description = "This tool uses .json files to store the data. Additionally, there are 2 types of data, the scenario data and the cognitive rules data \n \n" +
@@ -1864,11 +1867,11 @@ namespace IntegratedAuthoringToolWF
 
             toAdd = new descriptionObject()
             {
-                groupboxHeader = "FAtiMA-Toolkit",
+                groupboxHeader = "File System - Cognitive Rules",
                 pressed = false,
                 performActionButtonText = "Next",
-                description = "The Scenario file stores everything related to the elements composing it (characters, beliefs, dialogue...) \n" +
-                "The Cognitive Rules file stores all the rules created in the scenario \n" +
+                description = "The Scenario file stores characters, beliefs and dialogue \n" +
+                "The Cognitive Rules file, on the other hand, stores all the rules. \n \n" +
                 "Let's also create a new Rules file by clicking Cognitive Rules->New",
                 index = _index
             };
@@ -1878,7 +1881,7 @@ namespace IntegratedAuthoringToolWF
 
             toAdd = new descriptionObject()
             {
-                groupboxHeader = "FAtiMA-Toolkit",
+                groupboxHeader = "Compute Decription Tool",
                 pressed = false,
                 performActionButtonText = "Next",
                 description = "The Toolkit has the ability to automatically create a scenario based on a short description provided by you. \n \n If you are interested in using this feature Look for it under Tools->Compute Description ",
@@ -2064,14 +2067,17 @@ namespace IntegratedAuthoringToolWF
         // Update the Text within the reasoner to take into account the current state of the scenario
         private void UpdateLabel()
         {
-            // ClearLastButton();
-            UpdateStep();
-
+         
             if (!assistantDescription[step].pressed && step > 5)
                 button1.Text = "Take me there";
             else
                 button1.Text = assistantDescription[step].performActionButtonText;
-            assistantTopicGroupBox.Text = assistantDescription[step].groupboxHeader + ":";
+
+            var currentstepLabel = step + " - " + assistantDescription[step].groupboxHeader + ":";
+            if (assistantTopicGroupBox.Text  != currentstepLabel)
+                UpdatePicture();
+
+            assistantTopicGroupBox.Text = currentstepLabel;
             this.assistantTextBox.Text = assistantDescription[step].description;
         }
 
@@ -2149,14 +2155,6 @@ namespace IntegratedAuthoringToolWF
 
         }
 
-        private void UpdateStep()
-        {
-            if (Int32.Parse(stepLabel.Text) != step)
-                UpdatePicture();
-
-            stepLabel.Text = "" + step;
-        }
-
         List<Image> imageList;
         private void LoadPictures()
         {
@@ -2181,43 +2179,37 @@ namespace IntegratedAuthoringToolWF
         {
             var descriptionObject = assistantDescription[step];
 
-            switch (descriptionObject.groupboxHeader)
+            switch (step)
 
             {
-                case "FAtiMA-Toolkit":  // Intro
+                case 0:  // Welcome
                     step += 1;
                     ClearLastButton();
                     UpdateLabel();
-
-                    if (step == 2)
-                    {
-                        
-                        HighlightPanel(splitContainer7.Panel1);
-                    }
-
-                    if (step == 3)
-                    {
-                        fileToolStripMenuItem.ShowDropDown();
-                        HighlightMenuItem(newToolStripMenuItem);
-                    }
-                    else if (step == 4)
-                    {
-                        
-                        HighlightButton(buttonNewAssetStorage);
-                    }
-
-                    else if(step == 5)
-                    {
-                        toolsToolStripMenuItem.ShowDropDown();
-                        HighlightMenuItem(computeDescriptionToolStripMenuItem);
-                    }
-                        
-                   
                     break;
 
-            
+                case 1:  // Intro
+                    step += 1;
+                    ClearLastButton();
+                    UpdateLabel();
+                    break;
 
-                case "Characters": // No Characters
+                case 2:  // File System
+                    step += 1;
+                    fileToolStripMenuItem.ShowDropDown();
+                    HighlightMenuItem(newToolStripMenuItem);
+                    break;
+
+                case 3: // File System Part 2
+                    HighlightButton(buttonNewAssetStorage);
+                    break;
+
+                case 4:  // Compute Description
+                    toolsToolStripMenuItem.ShowDropDown();
+                    HighlightMenuItem(computeDescriptionToolStripMenuItem);
+                    break;
+
+                case 5: // Add Character
                     if (!descriptionObject.pressed)
                     {
                         HighlightButton(this.buttonAddCharacter);
@@ -2231,7 +2223,7 @@ namespace IntegratedAuthoringToolWF
                     }
                     break;
 
-                case "Internal State": // No beliefs
+                case 6: // Add Belief to Characters 
                     if (!descriptionObject.pressed)
                     {
                         if (this._rpcForm != null)
@@ -2250,9 +2242,8 @@ namespace IntegratedAuthoringToolWF
                     }
                     break;
 
+                case 8:
 
-
-                case "Emotional Decision Making": // No decision rules
                     if (!descriptionObject.pressed)
                     {
                         this.tabControlIAT.SelectedIndex = 1;
@@ -2268,7 +2259,8 @@ namespace IntegratedAuthoringToolWF
                     }
                     break;
 
-                case "Emotional Appraisal": // No decision rules
+                case 9:
+
                     if (!descriptionObject.pressed)
                     {
                         this.tabControlIAT.SelectedIndex = 1;
@@ -2284,7 +2276,7 @@ namespace IntegratedAuthoringToolWF
                     }
                     break;
 
-                case "Dialogue Editor": // No decision rules
+                case 10:
                     if (!descriptionObject.pressed)
                     {
                         this.tabControlIAT.SelectedIndex = 2;
@@ -2299,7 +2291,7 @@ namespace IntegratedAuthoringToolWF
                     }
                     break;
 
-                case "Simulator": // No decision rules
+                case 11:
                     if (!descriptionObject.pressed)
                     {
                         this.tabControlIAT.SelectedIndex = 4;
@@ -2313,7 +2305,8 @@ namespace IntegratedAuthoringToolWF
                     }
                     break;
 
-                case "Enriching the Scenario: Emotional Reactions":  // No Emotional Appraisal Rules compared to Action Rules
+                case 12:
+
                     if (!descriptionObject.pressed)
                     {
                         this.tabControlIAT.SelectedIndex = 1;
@@ -2329,7 +2322,6 @@ namespace IntegratedAuthoringToolWF
                     }
 
                     break;
-
 
 
                 default:
