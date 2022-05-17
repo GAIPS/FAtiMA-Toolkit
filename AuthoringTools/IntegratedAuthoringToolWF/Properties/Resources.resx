@@ -193,8 +193,8 @@
   <data name="_2_Aa" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\2-Aa.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="assistantbackground1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\assistantbackground1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Study1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Study1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="iconHelp" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\iconHelp.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -205,8 +205,8 @@
   <data name="red" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\red.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="RAGE_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RAGE-logo-high-res.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="assistantbackground1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\assistantbackground1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="_20_KGNg" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\20-KGNg.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -259,14 +259,14 @@
   <data name="inescid_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\inescid.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="offline" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\offline.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="icons8-template-40" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icons8-template-40.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Pagina-Get-Started" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Pagina-Get-Started.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icons8-chatbot-40" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icons8-chatbot-40.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="composition" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\composition.xcf;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -283,14 +283,17 @@
   <data name="_18_FV" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\18-FV.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Study1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Study1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="offline" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\offline.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="icons8-close-64" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\icons8-close-64.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="iat_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\iat-icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RAGE_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RAGE-logo-high-res.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="_21_PBM" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\21-PBM.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -313,7 +316,7 @@
   <data name="assistantbackground2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\assistantbackground2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icons8-chatbot-40" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icons8-chatbot-40.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="right-arrow" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\right-arrow.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

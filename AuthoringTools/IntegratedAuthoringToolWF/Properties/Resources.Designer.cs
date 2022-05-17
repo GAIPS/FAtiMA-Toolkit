@@ -679,6 +679,16 @@ namespace IntegratedAuthoringToolWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap right_arrow {
+            get {
+                object obj = ResourceManager.GetObject("right-arrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occurred when trying to load one the characters in the scenario..
         /// </summary>
         internal static string RPCLoadingError {

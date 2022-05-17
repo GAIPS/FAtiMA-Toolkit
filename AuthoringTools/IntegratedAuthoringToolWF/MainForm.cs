@@ -1970,7 +1970,7 @@ namespace IntegratedAuthoringToolWF
             _index += 1;
 
 
-            maxTutorialSteps = assistantDescription.Count();
+            maxTutorialSteps = assistantDescription.Count() - 4;
             UpdateLabel();
         }
 
@@ -2553,6 +2553,14 @@ namespace IntegratedAuthoringToolWF
         {
 
             assistantMode = assistantModeDropDown.SelectedItem.ToString();
+            AssistantHandler();
+        }
+
+        private void pictureBox3_Click_1(object sender, EventArgs e)
+        {
+            step = maxTutorialSteps - 1;
+            pictureBox3.Visible = false;
+            finishedTutorial = true;
             AssistantHandler();
         }
     }

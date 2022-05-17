@@ -121,6 +121,7 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.assistantTopicGroupBox = new System.Windows.Forms.GroupBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.helpPicture = new System.Windows.Forms.PictureBox();
             this.assistantTextBox = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -192,6 +193,7 @@
             this.splitContainer6.Panel2.SuspendLayout();
             this.splitContainer6.SuspendLayout();
             this.assistantTopicGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.helpPicture)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nextPicture)).BeginInit();
@@ -629,7 +631,7 @@
             this.tabPage4.Controls.Add(this.tabControlAssetEditor);
             this.tabPage4.Location = new System.Drawing.Point(4, 24);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(844, 605);
+            this.tabPage4.Size = new System.Drawing.Size(844, 609);
             this.tabPage4.TabIndex = 5;
             this.tabPage4.Text = "Cognitive Rules";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -644,7 +646,7 @@
             this.tabControlAssetEditor.Location = new System.Drawing.Point(0, 0);
             this.tabControlAssetEditor.Name = "tabControlAssetEditor";
             this.tabControlAssetEditor.SelectedIndex = 0;
-            this.tabControlAssetEditor.Size = new System.Drawing.Size(844, 605);
+            this.tabControlAssetEditor.Size = new System.Drawing.Size(844, 609);
             this.tabControlAssetEditor.TabIndex = 0;
             // 
             // tabPage6
@@ -652,7 +654,7 @@
             this.tabPage6.Location = new System.Drawing.Point(4, 25);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage6.Size = new System.Drawing.Size(836, 576);
+            this.tabPage6.Size = new System.Drawing.Size(836, 580);
             this.tabPage6.TabIndex = 1;
             this.tabPage6.Text = "Emotional Decision Making";
             this.toolTip1.SetToolTip(this.tabPage6, "The Emotional Decision Making is where you can define which actions agents have");
@@ -951,7 +953,7 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 24);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(844, 605);
+            this.tabPage3.Size = new System.Drawing.Size(844, 609);
             this.tabPage3.TabIndex = 3;
             this.tabPage3.Text = "World Model";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -962,7 +964,7 @@
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox7.Location = new System.Drawing.Point(3, 3);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(838, 599);
+            this.groupBox7.Size = new System.Drawing.Size(838, 603);
             this.groupBox7.TabIndex = 16;
             this.groupBox7.TabStop = false;
             // 
@@ -973,7 +975,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(844, 605);
+            this.tabPage1.Size = new System.Drawing.Size(844, 609);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "Simulator";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -991,7 +993,7 @@
             this.groupBox3.Controls.Add(this.checkBox1);
             this.groupBox3.Controls.Add(this.effectTickBox);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox3.Location = new System.Drawing.Point(3, 526);
+            this.groupBox3.Location = new System.Drawing.Point(3, 530);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(838, 76);
             this.groupBox3.TabIndex = 10;
@@ -1392,7 +1394,7 @@
             this.tabPageWeb.Location = new System.Drawing.Point(4, 24);
             this.tabPageWeb.Name = "tabPageWeb";
             this.tabPageWeb.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageWeb.Size = new System.Drawing.Size(844, 605);
+            this.tabPageWeb.Size = new System.Drawing.Size(844, 609);
             this.tabPageWeb.TabIndex = 4;
             this.tabPageWeb.Text = "Web API";
             this.tabPageWeb.UseVisualStyleBackColor = true;
@@ -1573,11 +1575,10 @@
             this.pictureBox2.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox2.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.NormalFace1;
             this.pictureBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox2.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox2.Location = new System.Drawing.Point(-1, -2);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Padding = new System.Windows.Forms.Padding(20);
-            this.pictureBox2.Size = new System.Drawing.Size(98, 231);
+            this.pictureBox2.Size = new System.Drawing.Size(98, 224);
             this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
             this.pictureBox2.TabIndex = 20;
             this.pictureBox2.TabStop = false;
@@ -1597,6 +1598,7 @@
             // splitContainer6.Panel2
             // 
             this.splitContainer6.Panel2.BackColor = System.Drawing.Color.Transparent;
+            this.splitContainer6.Panel2.Controls.Add(this.pictureBox3);
             this.splitContainer6.Panel2.Controls.Add(this.button1);
             this.splitContainer6.Panel2.Controls.Add(this.pictureBox4);
             this.splitContainer6.Panel2.Controls.Add(this.nextPicture);
@@ -1618,6 +1620,19 @@
             this.assistantTopicGroupBox.TabIndex = 19;
             this.assistantTopicGroupBox.TabStop = false;
             this.assistantTopicGroupBox.Text = "FAtiMA-Toolkit";
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pictureBox3.Image = global::IntegratedAuthoringToolWF.Properties.Resources.right_arrow;
+            this.pictureBox3.Location = new System.Drawing.Point(285, 12);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(24, 24);
+            this.pictureBox3.TabIndex = 26;
+            this.pictureBox3.TabStop = false;
+            this.toolTip1.SetToolTip(this.pictureBox3, "Skip Tutorial");
+            this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click_1);
             // 
             // helpPicture
             // 
@@ -1654,7 +1669,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button1.Font = new System.Drawing.Font("Gadugi", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.button1.Location = new System.Drawing.Point(105, 7);
+            this.button1.Location = new System.Drawing.Point(111, 9);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(119, 30);
             this.button1.TabIndex = 1;
@@ -1667,7 +1682,7 @@
             this.pictureBox4.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox4.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.left;
             this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox4.Location = new System.Drawing.Point(59, 7);
+            this.pictureBox4.Location = new System.Drawing.Point(65, 9);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(40, 30);
             this.pictureBox4.TabIndex = 25;
@@ -1679,7 +1694,7 @@
             this.nextPicture.BackColor = System.Drawing.Color.Transparent;
             this.nextPicture.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_divisa_circulada_à_direita_40;
             this.nextPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.nextPicture.Location = new System.Drawing.Point(230, 7);
+            this.nextPicture.Location = new System.Drawing.Point(236, 9);
             this.nextPicture.Name = "nextPicture";
             this.nextPicture.Size = new System.Drawing.Size(41, 30);
             this.nextPicture.TabIndex = 22;
@@ -1797,6 +1812,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
             this.splitContainer6.ResumeLayout(false);
             this.assistantTopicGroupBox.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.helpPicture)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nextPicture)).EndInit();
@@ -1937,6 +1953,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DomainUpDown assistantModeDropDown;
+        private System.Windows.Forms.PictureBox pictureBox3;
     }
 }
 
