@@ -1792,6 +1792,7 @@ namespace IntegratedAuthoringToolWF
 
         Dictionary<int, descriptionObject> assistantDescription;
         string assistantMode;
+        bool finishedTutorial;
 
         // Initialize All things Authoring Assistant
         private void initAssistant()
@@ -1799,6 +1800,7 @@ namespace IntegratedAuthoringToolWF
             LoadPictures();
             LoadTips();
             assistantMode = "Auto";
+            finishedTutorial = false;
 
 
         }
@@ -1814,6 +1816,7 @@ namespace IntegratedAuthoringToolWF
                 groupboxHeader = "FAtiMA-Toolkit",
                 description = "Welcome to FAtiMA-Toolkit ! \n \n I will be your Assistant \n \n " +
                 "Here, I'll help you get started and show you tips on how to improve your scenario",
+               
             };
             assistantDescription.Add(_index, toAdd);
             _index += 1;
@@ -1822,7 +1825,8 @@ namespace IntegratedAuthoringToolWF
             {
                 groupboxHeader = "The Integrated Authoring Tool",
                 description = "FAtiMA-Toolkit is composed by many different components but Fearnot, I will guide you through each one  \n \n" +
-                " In addition to this, by hovering different components a tooltip will appear detailing their objective"
+                " In addition to this, by hovering different components a tooltip will appear detailing their objective",
+               
             };
 
             assistantDescription.Add(_index, toAdd);
@@ -2076,11 +2080,13 @@ namespace IntegratedAuthoringToolWF
 
         // For users that have experience with the toolkit
         public void ScenarioAnalyser()
-        { 
+        {
+            if (!finishedTutorial)
+                return;
 
             if(_iat.Characters.Count() == 0)
             {
-                var k = assistantDescription.FirstOrDefault(x => x.Value.groupboxHeader == "Characters").Key;
+                var k = assistantDescription.FirstOrDefault(x => x.Value.groupboxHeader.Contains("Characters")).Key;
                 step = k;
             }
             else if(CalculateAverageBeliefs() < 1 && _iat.Characters.Count() > 0)
@@ -2097,30 +2103,30 @@ namespace IntegratedAuthoringToolWF
                    
                 }
              
-                var k = assistantDescription.FirstOrDefault(x => x.Value.groupboxHeader == "Internal State").Key;
+                var k = assistantDescription.FirstOrDefault(x => x.Value.groupboxHeader.Contains("Internal State")).Key;
                 step = k;
 
             }
 
             else if (_edmForm.dataGridViewReactiveActions.Rows.Count < 1)
             {
-                var k = assistantDescription.FirstOrDefault(x => x.Value.groupboxHeader == "Emotional Decision Making").Key;
+                var k = assistantDescription.FirstOrDefault(x => x.Value.groupboxHeader.Contains("Emotional Decision Making")).Key;
                 step = k;
             }
             else if (_iat.GetAllDialogueActions().Count() < 1)
             {
-                var k = assistantDescription.FirstOrDefault(x => x.Value.groupboxHeader == "Dialogue Editor").Key;
+                var k = assistantDescription.FirstOrDefault(x => x.Value.groupboxHeader.Contains("Dialogue Editor")).Key;
                 step = k;
             }
             else if (_eaForm._appraisalRulesVM.AppraisalRules.Count() < 1)
             {
-                var k = assistantDescription.FirstOrDefault(x => x.Value.groupboxHeader == "Emotional Appraisal").Key;
+                var k = assistantDescription.FirstOrDefault(x => x.Value.groupboxHeader.Contains("Emotional Appraisal")).Key;
                 step = k;
             }
 
             else
             {
-                var k = assistantDescription.FirstOrDefault(x => x.Value.groupboxHeader == "Simulator").Key;
+                var k = assistantDescription.FirstOrDefault(x => x.Value.groupboxHeader.Contains("Simulator")).Key;
                 step = k;
             }
 
@@ -2240,6 +2246,10 @@ namespace IntegratedAuthoringToolWF
 
                         assistantDescription[step] = descriptionObject;
                     }
+                    else
+                    {
+                        MessageBox.Show("Please add a Character");
+                    }
                     break;
 
                 case "Emotional Decision Making": // Add Emotional Decision Making
@@ -2270,6 +2280,7 @@ namespace IntegratedAuthoringToolWF
                     this.tabControlIAT.SelectedIndex = 4;
                     HighlightButton(buttonStart);
                     assistantDescription[step] = descriptionObject;
+                    
                     break;
 
                 case "Tools: Compute Decription":  // Compute Description
@@ -2284,12 +2295,14 @@ namespace IntegratedAuthoringToolWF
                     this.tabControlAssetEditor.SelectedIndex = 0;
                     HighlightMenuItem(this._edmForm.toolsMenu);
                     assistantDescription[step] = descriptionObject;
+                   
                     break;
 
                 case "FAtiMA-Toolkit Tips":
                     ClearLastButton();
                     assistantTopicGroupBox.Text = "FAtiMA-Toolkit Tips";
                     this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Default");
+                    finishedTutorial = true;
                     break;
 
 

@@ -205,7 +205,7 @@ namespace IntegratedAuthoringToolWF.IEP
             // 
             // panel3
             // 
-            this.panel3.BackColor = System.Drawing.Color.Transparent;
+            this.panel3.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.panel3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel3.Controls.Add(this.panel4);
             this.panel3.Controls.Add(this.debugLabel);
