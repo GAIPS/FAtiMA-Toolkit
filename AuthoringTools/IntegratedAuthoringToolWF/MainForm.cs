@@ -2506,7 +2506,7 @@ namespace IntegratedAuthoringToolWF
                         NextState = nextState,
                         Meaning = "-",
                         Style = "-",
-                        Utterance = "Hello World"
+                        Utterance =  currentState + " to " + nextState
                     };
 
                     dialogueList.Add(dialogue);
