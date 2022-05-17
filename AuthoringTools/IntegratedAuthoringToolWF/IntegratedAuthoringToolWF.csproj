@@ -391,6 +391,10 @@
     <None Include="Resources\inescid.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\icons8-last-401.png" />
+    <None Include="Resources\icons8-skip-48.png" />
+    <None Include="Resources\icons8-last-40.png" />
+    <None Include="Resources\icons8-end-16.png" />
     <None Include="Resources\right-arrow.png" />
     <None Include="Resources\icons8-chatbot-40.png" />
     <None Include="Resources\icons8-responsive-40.png" />

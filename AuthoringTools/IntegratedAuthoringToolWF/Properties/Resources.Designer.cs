@@ -432,6 +432,16 @@ namespace IntegratedAuthoringToolWF.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_end_16 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-end-16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_help_100 {
             get {
                 object obj = ResourceManager.GetObject("icons8-help-100", resourceCulture);
@@ -472,6 +482,26 @@ namespace IntegratedAuthoringToolWF.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_last_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-last-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_last_401 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-last-401", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_preview_pane_40 {
             get {
                 object obj = ResourceManager.GetObject("icons8-preview-pane-40", resourceCulture);
@@ -485,6 +515,16 @@ namespace IntegratedAuthoringToolWF.Properties {
         internal static System.Drawing.Bitmap icons8_responsive_40 {
             get {
                 object obj = ResourceManager.GetObject("icons8-responsive-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_skip_48 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-skip-48", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
