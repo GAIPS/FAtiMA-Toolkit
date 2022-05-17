@@ -1941,7 +1941,7 @@ namespace IntegratedAuthoringToolWF
 
             toAdd = new descriptionObject()
             {
-                groupboxHeader = "Tools: Compute Decription",
+                groupboxHeader = "Tools: Story to Description Wizard",
                 description = "The Toolkit has the ability to automatically create a scenario based on a short description provided by you. \n \n If you are interested in using this feature Look for it under Tools->Compute Description ",
             };
             assistantDescription.Add(_index, toAdd);
@@ -2489,6 +2489,12 @@ namespace IntegratedAuthoringToolWF
                 {
                     string currentState = "S" + i;
                     string nextState = "S" + (i + 1);
+                    string meaning = "-";
+                    string style = "-";
+
+                    string utterance = "Dialogue for " + currentState + " to " + nextState;
+                    if (style == "-")
+                        utterance = style + " dialogue for " + currentState + " to " + nextState;
 
                     if (i == 0)
                     {
@@ -2504,9 +2510,9 @@ namespace IntegratedAuthoringToolWF
                     {
                         CurrentState = currentState,
                         NextState = nextState,
-                        Meaning = "-",
-                        Style = "-",
-                        Utterance =  currentState + " to " + nextState
+                        Meaning = meaning,
+                        Style = style,
+                        Utterance = utterance
                     };
 
                     dialogueList.Add(dialogue);

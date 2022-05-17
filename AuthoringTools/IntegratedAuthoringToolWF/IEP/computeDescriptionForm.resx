@@ -121,7 +121,7 @@
     <value>17, 17</value>
   </metadata>
   <data name="label1.Text" xml:space="preserve">
-    <value>The Compute Story tool will take the input below and process it through an Information Extraction and Translation Pipeline.  The output will be the automatic creation of a scenario based on the input provided.  
+    <value>The Story to Scenario Wizard, will take the input below and process it through an Information Extraction and Translation Pipeline.  The output will be the automatic creation of a scenario based on the input provided.  
 
 </value>
   </data>

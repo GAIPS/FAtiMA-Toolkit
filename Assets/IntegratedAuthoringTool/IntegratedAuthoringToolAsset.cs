@@ -50,8 +50,22 @@ namespace IntegratedAuthoringTool
 
         public static IntegratedAuthoringToolAsset FromJson(string json, AssetStorage storage)
         {
+
+            var aux = new JsonObject();
+
             var serializer = new JSONSerializer();
-            var aux = (JsonObject)JsonParser.Parse(json);
+            try
+            {
+                aux = (JsonObject)JsonParser.Parse(json);
+
+            }
+
+            catch( Exception e)
+            {
+                throw new BadImageFormatException();
+            }
+
+
             var iat = serializer.DeserializeFromJson<IntegratedAuthoringToolAsset>(aux);
 
             
