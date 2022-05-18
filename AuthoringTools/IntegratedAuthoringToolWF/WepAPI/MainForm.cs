@@ -109,7 +109,7 @@ namespace WebAPIWF
             try
             {
                 fatimaServer?.Close();
-                fatimaServer = new HTTPFAtiMAServer() { IatFilePath = iat._currentScenarioFilePath, AssetFilePath = iat.textBoxPathAssetStorage.Text, Port = int.Parse(this.textBoxPort.Text) };
+                fatimaServer = new HTTPFAtiMAServer() { IatFilePath = iat._currentScenarioFilePath, AssetFilePath = iat.textBoxPathAssetStorage.Text, Port = int.Parse(this.textBoxPort.Text), startWithCurrentScenario = checkBox1.Checked };
                 fatimaServer.OnServerEvent += ServerNotificationHandler;
                 fatimaServer.Run();
             }

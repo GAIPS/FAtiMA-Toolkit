@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-
+    <CheckEolTargetFramework>false</CheckEolTargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 

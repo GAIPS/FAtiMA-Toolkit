@@ -120,8 +120,19 @@ namespace SerializationUtilities
 
 		private static void RecalcTypeTrees<T>(TypeSelector<T> selector, Dictionary<Type, List<Pair>> group) where T: class
 		{
-			
-			var validDefaults = group[typeof (T)];
+
+			List<Pair> validDefaults = new List<Pair<DefaultSerializationSystemAttribute, Type>>();
+
+			try
+			{
+				validDefaults = group[typeof(T)];
+			}
+
+			catch(Exception e)
+            {
+				throw new AccessViolationException();
+
+            }
 
 			selector.Clear();
 			

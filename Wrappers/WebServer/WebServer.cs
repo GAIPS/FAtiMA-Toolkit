@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using IntegratedAuthoringTool;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net;
@@ -15,6 +16,8 @@ namespace WebServer
         public int Port { get; set; } = 80;
         public int HTTPSPort { get; set; } = 443;
 
+        public bool startWithCurrentScenario;
+
         public const int MAX_INSTANCES = 100;
         private HttpListener server;
 
@@ -28,7 +31,11 @@ namespace WebServer
         public void Run()
         {
             ServerState state = new ServerState();
-            
+
+            if (AssetFilePath != null && IatFilePath != null && startWithCurrentScenario)
+            {
+                state = this.LoadCurrentScenario(state);
+            }
             try
             {
                 server = new HttpListener();
@@ -93,7 +100,8 @@ namespace WebServer
                         });
 
                     }
-                }catch(Exception ex)
+                }
+                catch (Exception ex)
                 {
                     responseJson = JsonConvert.SerializeObject(ex.Message);
                 }
@@ -106,6 +114,23 @@ namespace WebServer
                 st.Write(buffer, 0, buffer.Length);
                 context.Response.Close();
             }
+        }
+
+        ServerState LoadCurrentScenario(ServerState state)
+        {
+            var storage = GAIPS.Rage.AssetStorage.FromJson(File.ReadAllText(AssetFilePath));
+            var iat = IntegratedAuthoringTool.IntegratedAuthoringToolAsset.FromJson(File.ReadAllText(IatFilePath), storage);
+
+            state.Scenarios[iat.ScenarioName.ToLower()] = new IntegratedAuthoringToolAsset[HTTPFAtiMAServer.MAX_INSTANCES + 1];
+
+            state.Scenarios[iat.ScenarioName.ToLower()][0] = iat;
+
+            state.Scenarios[iat.ScenarioName.ToLower()] = new IntegratedAuthoringToolAsset[HTTPFAtiMAServer.MAX_INSTANCES + 1];
+
+            //instance of id 1 is automatically created
+            state.Scenarios[iat.ScenarioName.ToLower()][1] = iat;
+
+            return state;
         }
     }
 

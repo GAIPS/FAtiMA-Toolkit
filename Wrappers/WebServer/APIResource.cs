@@ -264,7 +264,7 @@ namespace WebServer
             if (req.Method == HTTPMethod.GET)
             {
                 var result = new List<int>();
-                for (int i = 1; i < HTTPFAtiMAServer.MAX_INSTANCES + 1; i++)
+                for (int i = 0; i < HTTPFAtiMAServer.MAX_INSTANCES + 1; i++)
                 {
                     if (serverState.Scenarios[req.ScenarioName][i] != null) result.Add(i);
                 }
@@ -272,7 +272,7 @@ namespace WebServer
             }
             else if (req.Method == HTTPMethod.POST)
             {
-                for (int i = 1; i < HTTPFAtiMAServer.MAX_INSTANCES + 1; i++)
+                for (int i = 0; i < HTTPFAtiMAServer.MAX_INSTANCES + 1; i++)
                 {
                     if (serverState.Scenarios[req.ScenarioName][i] == null)
                     {
