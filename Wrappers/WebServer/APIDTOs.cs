@@ -27,6 +27,7 @@ namespace WebServer
         public string Target { get; set; }
         public string Utterance { get; set; }
         public float Utility { get; set; }
+        public string ID { get; set; }
     }
 
     public class ExecuteRequestDTO

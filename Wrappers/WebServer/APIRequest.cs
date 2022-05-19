@@ -77,6 +77,10 @@ namespace WebServer
                     this.ScenarioInstance = int.Parse(request.Url.Segments[4].Trim('/'));
                     this.CharacterName = request.Url.Segments[6].Trim('/');
                     break;
+                case APIResourceType.WORLDMODEL:
+                    this.ScenarioName = request.Url.Segments[2].ToLower().Trim('/');
+                    this.ScenarioInstance = int.Parse(request.Url.Segments[4].Trim('/'));
+                    break;
             }
 
             if (Method == HTTPMethod.POST && request.HasEntityBody)

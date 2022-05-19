@@ -19,7 +19,8 @@ namespace WebServer
         CHARACTERS, 
         BELIEFS, 
         MEMORIES, 
-        PERCEPTIONS, 
+        PERCEPTIONS,
+        WORLDMODEL,
         TICK, 
         ACTIONS,
         ADMINKEY,
@@ -106,6 +107,16 @@ namespace WebServer
             ValidOperations = new string[] { "POST" },
         };
 
+        //scenarios/{scenarioName}/instances/{instanceId}/worldmodel
+        public static APIResource WORLDMODEL = new APIResource()
+        {
+            Type = APIResourceType.WORLDMODEL,
+            Execute = HandleWorldModelRequest,
+            URLFormat = "/scenarios/{scenarioName}/instances/{instanceId}/worldmodel",
+            URLSegmentSize = 5,
+            ValidOperations = new string[] { "POST" },
+        };
+
         //scenarios/{scenarioName}/instances/{instanceId}/tick
         public static APIResource TICK = new APIResource()
         {
@@ -146,7 +157,7 @@ namespace WebServer
             URLSegmentSize = 3
         };
 
-        public static APIResource[] Set = { ADMINKEY, SCENARIOS , KEY, INSTANCES,  TICK, ACTIONS, CHARACTERS, PERCEPTIONS, DECISIONS, BELIEFS, MEMORIES };
+        public static APIResource[] Set = { ADMINKEY, SCENARIOS , KEY, INSTANCES,  TICK, ACTIONS, CHARACTERS, PERCEPTIONS, DECISIONS, WORLDMODEL, BELIEFS, MEMORIES };
 
         public static APIResource FromString(string type)
         {
@@ -306,11 +317,14 @@ namespace WebServer
                 foreach (var d in decisions)
                 {
                     string utterance = null;
+                    string guid = null;
                     if (string.Equals(d.Key.ToString(), IATConsts.DIALOG_ACTION_KEY, StringComparison.OrdinalIgnoreCase))
                     {
                         try
                         {
-                            utterance = scenario.GetDialogAction(d, out utterance).Utterance;
+                            var dialogAction = scenario.GetDialogAction(d, out utterance);
+                            utterance = dialogAction.Utterance;
+                            guid = dialogAction.UtteranceId;
                         }
                         catch (Exception)
                         {
@@ -318,7 +332,7 @@ namespace WebServer
                         }
                         utterance = rpc.ProcessWithBeliefs(utterance);
                     }
-                    resultDTO.Add(new DecisionDTO { Action = d.Name.ToString(), Target = d.Target.ToString(), Utterance = utterance, Utility = d.Utility });
+                    resultDTO.Add(new DecisionDTO { Action = d.Name.ToString(), Target = d.Target.ToString(), Utterance = utterance, Utility = d.Utility, ID = guid });
                 }
             }
             return JsonConvert.SerializeObject(resultDTO);
@@ -460,6 +474,58 @@ namespace WebServer
                         return JsonConvert.SerializeObject(string.Format(APIErrors.ERROR_EXCEPTION_PERCEIVE, ev, ex.Message));
                     }
                 }
+            }
+            else
+            {
+                return JsonConvert.SerializeObject(APIErrors.ERROR_EMPTY_EVENT_LIST);
+            }
+            return JsonConvert.SerializeObject(string.Format("{0} event(s) perceived by {1}", events.Count(), req.CharacterName));
+        }
+
+        private static string HandleWorldModelRequest(APIRequest req, ServerState serverState)
+        {
+            string[] events = Array.Empty<string>();
+
+
+            if (!string.IsNullOrEmpty(req.RequestBody))
+            {
+                var scenario = serverState.Scenarios[req.ScenarioName][req.ScenarioInstance];
+                events = JsonConvert.DeserializeObject<string[]>(req.RequestBody);
+                List<Name> eventList = new List<Name>();
+                foreach (var ev in events)
+                {
+                    Name evName = null;
+                    try
+                    {
+                        evName = WellFormedNames.Name.BuildName(ev);
+
+                        eventList.Add(evName);
+
+                    }
+                    catch (Exception ex)
+                    {
+                        return JsonConvert.SerializeObject(string.Format(APIErrors.ERROR_EXCEPTION_PERCEIVE, ev, ex.Message));
+                    }
+                }
+
+                    var effects = scenario.WorldModel.Simulate(eventList.ToArray());
+
+                    // For each effect 
+                    foreach (var eff in effects)
+                    {
+
+                        // For each Role Play Character
+                        foreach (var rpc in scenario.Characters)
+                        {
+
+                            //If the "Observer" part of the effect corresponds to the name of the agent or if it is a universal symbol
+                            if (eff.ObserverAgent != rpc.CharacterName && eff.ObserverAgent != (Name)"*") continue;
+                            //Apply that consequence to the agent
+                            rpc.Perceive(EventHelper.PropertyChange(eff.PropertyName, eff.NewValue, rpc.CharacterName));
+
+                        }
+                    }
+                
             }
             else
             {
