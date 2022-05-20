@@ -91,7 +91,13 @@ namespace WebServer
                             responseJson = JsonConvert.SerializeObject(APIErrors.ERROR_ACCESS_DENIED);
                         else
                         {
-                            responseJson = rq.Resource.Execute(rq, state);
+                            if (rq.Method == HTTPMethod.RESET) {
+                                
+                                state = this.LoadCurrentScenario(state);
+                                responseJson = JsonConvert.SerializeObject("Scenario reset.");
+                            }
+                            else
+                                responseJson = rq.Resource.Execute(rq, state);
                         }
                         OnServerEvent(this, new ServerEventArgs
                         {

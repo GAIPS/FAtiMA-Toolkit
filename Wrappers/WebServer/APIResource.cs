@@ -42,7 +42,7 @@ namespace WebServer
             Type = APIResourceType.SCENARIOS,
             Execute = HandleScenariosRequest,
             URLFormat = "/scenarios",
-            ValidOperations = new string[] { "GET", "POST", "DELETE" },
+            ValidOperations = new string[] { "GET", "POST", "DELETE", "RESET" },
             URLSegmentSize = 1,
             ValidBodyFormat = "{\"scenario\" : \"<scenario.json>\", \"assets\" : \"\"<scenario.json>\"}"
         };
@@ -265,6 +265,8 @@ namespace WebServer
                 serverState.ScenarioKeys.TryRemove(req.ScenarioName, out var aux2);
                 return JsonConvert.SerializeObject("Scenario deleted.");
             }
+
+          
 
             return APIErrors.ERROR_INVALID_HTTP_METHOD;
         }

@@ -8,7 +8,8 @@ namespace WebServer
     {
         GET,
         POST,
-        DELETE
+        DELETE,
+        RESET
     }
 
     public class APIRequest
@@ -43,7 +44,8 @@ namespace WebServer
                 return;
             }
 
-            if (this.Method == HTTPMethod.DELETE) requestSize--; //special case
+            if (this.Method == HTTPMethod.DELETE || this.Method == HTTPMethod.RESET) 
+                requestSize--; //special cases
             if (requestSize != this.Resource.URLSegmentSize+1)
             {
                 this.ErrorMessage = APIErrors.ERROR_INVALID_URL_SIZE;
@@ -54,6 +56,7 @@ namespace WebServer
             {
                 case APIResourceType.SCENARIOS:
                     if (this.Method == HTTPMethod.DELETE) this.ScenarioName = request.Url.Segments[2].ToLower();
+                    if (this.Method == HTTPMethod.RESET) this.ScenarioName = request.Url.Segments[2].ToLower();
                     break;
                 case APIResourceType.KEY:
                     this.ScenarioName = request.Url.Segments[2].ToLower().Trim('/');
@@ -102,6 +105,7 @@ namespace WebServer
                 case HTTPMethod.GET:
                 case HTTPMethod.POST: return urlSegments[urlSegments.Length - 1].ToLower();
                 case HTTPMethod.DELETE: return urlSegments[urlSegments.Length - 2].ToLower().Trim('/');
+                case HTTPMethod.RESET: return urlSegments[urlSegments.Length - 2].ToLower().Trim('/');
                 default : return null;
             }
         }
