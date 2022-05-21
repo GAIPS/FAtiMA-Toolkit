@@ -176,13 +176,13 @@ namespace IntegratedAuthoringToolWF
 
         protected void OnAssetDataLoaded(IntegratedAuthoringToolAsset asset)
         {
-            textBoxScenarioName.Text = asset.ScenarioName;
             textBoxScenarioDescription.Text = asset.ScenarioDescription;
             _dialogs = new BindingListView<DialogueStateActionDTO>(new List<DialogueStateActionDTO>());
             _characters = new BindingListView<CharacterNameAndMoodDTO>(new List<CharacterNameAndMoodDTO>());
             dataGridViewCharacters.DataSource = _characters;
             dataGridViewDialogueActions.DataSource = _dialogs;
-
+            scenarioNameTextBox.Text = asset.ScenarioName;
+            //textBoxScenarioName;
 
             //ResetSimulator
             richTextBoxChat.Clear();
@@ -231,7 +231,7 @@ namespace IntegratedAuthoringToolWF
 
         private void textBoxScenarioName_TextChanged(object sender, EventArgs e)
         {
-            _iat.ScenarioName = textBoxScenarioName.Text;
+            _iat.ScenarioName = scenarioNameTextBox.Text;
         }
 
         private void textBoxScenarioDescription_TextChanged(object sender, EventArgs e)

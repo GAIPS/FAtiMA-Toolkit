@@ -3,6 +3,8 @@ using System.Windows.Forms;
 using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
 using GAIPS.AssetEditorTools;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace IntegratedAuthoringToolWF
 {
@@ -21,10 +23,41 @@ namespace IntegratedAuthoringToolWF
             this.dto = dto;
             this.asset = asset;
 
+            // Getting the suggested list
+            List<DialogueStateActionDTO> dialogs = asset.GetAllDialogueActions().ToList();
+
+            var currentStates = dialogs.Select(x => x.CurrentState.ToString()).ToList();
+            var currentStateSource = new AutoCompleteStringCollection();
+            var nextStates = dialogs.Select(x => x.NextState.ToString()).ToList();
+            var nextStatesSource = new AutoCompleteStringCollection();
+
+            currentStateSource.AddRange(currentStates.ToArray());
+            currentStateSource.AddRange(nextStates.ToArray());
+
+            nextStatesSource.AddRange(nextStates.ToArray());
+            nextStatesSource.AddRange(currentStates.ToArray());
+
+
+            var meanings = dialogs.Select(x => x.Meaning.ToString()).ToList();
+            var meaningSource = new AutoCompleteStringCollection();
+            var styles = dialogs.Select(x => x.Style.ToString()).ToList();
+            var styleSource = new AutoCompleteStringCollection();
+
+            meaningSource.AddRange(meanings.ToArray());
+            meaningSource.AddRange(styles.ToArray());
+
+            styleSource.AddRange(meanings.ToArray());
+            styleSource.AddRange(styles.ToArray());
+
+
             textBoxCurrentState.Value = (WellFormedNames.Name)dto.CurrentState;
+            textBoxCurrentState.AutoCompleteCustomSource = currentStateSource;
             textBoxNextState.Value = (WellFormedNames.Name)dto.NextState;
+            textBoxNextState.AutoCompleteCustomSource = nextStatesSource;
             textBoxMeaning.Value = (WellFormedNames.Name)dto.Meaning;
+            textBoxMeaning.AutoCompleteCustomSource = meaningSource;
             textBoxStyle.Value = (WellFormedNames.Name)dto.Style;
+            textBoxStyle.AutoCompleteCustomSource = styleSource;
             textBoxUtterance.Text = dto.Utterance;
 
             //validators

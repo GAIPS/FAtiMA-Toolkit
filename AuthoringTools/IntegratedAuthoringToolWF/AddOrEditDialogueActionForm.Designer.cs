@@ -101,6 +101,7 @@
             // 
             // textBoxUtterance
             // 
+            this.textBoxUtterance.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.textBoxUtterance.Location = new System.Drawing.Point(108, 163);
             this.textBoxUtterance.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.textBoxUtterance.Name = "textBoxUtterance";
@@ -126,6 +127,8 @@
             this.textBoxStyle.AllowUniversal = true;
             this.textBoxStyle.AllowUniversalLiteral = true;
             this.textBoxStyle.AllowVariable = true;
+            this.textBoxStyle.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.textBoxStyle.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.textBoxStyle.Location = new System.Drawing.Point(385, 98);
             this.textBoxStyle.Name = "textBoxStyle";
             this.textBoxStyle.OnlyIntOrVariable = false;
@@ -140,6 +143,8 @@
             this.textBoxMeaning.AllowUniversal = true;
             this.textBoxMeaning.AllowUniversalLiteral = true;
             this.textBoxMeaning.AllowVariable = true;
+            this.textBoxMeaning.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.textBoxMeaning.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.textBoxMeaning.Location = new System.Drawing.Point(108, 98);
             this.textBoxMeaning.Name = "textBoxMeaning";
             this.textBoxMeaning.OnlyIntOrVariable = false;
@@ -154,6 +159,8 @@
             this.textBoxNextState.AllowUniversal = true;
             this.textBoxNextState.AllowUniversalLiteral = true;
             this.textBoxNextState.AllowVariable = true;
+            this.textBoxNextState.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.textBoxNextState.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.textBoxNextState.Location = new System.Drawing.Point(385, 44);
             this.textBoxNextState.Name = "textBoxNextState";
             this.textBoxNextState.OnlyIntOrVariable = false;
@@ -168,6 +175,8 @@
             this.textBoxCurrentState.AllowUniversal = true;
             this.textBoxCurrentState.AllowUniversalLiteral = true;
             this.textBoxCurrentState.AllowVariable = true;
+            this.textBoxCurrentState.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.textBoxCurrentState.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.textBoxCurrentState.Location = new System.Drawing.Point(108, 44);
             this.textBoxCurrentState.Name = "textBoxCurrentState";
             this.textBoxCurrentState.OnlyIntOrVariable = false;
