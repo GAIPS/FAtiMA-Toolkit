@@ -17,6 +17,7 @@ namespace WebServer
         INSTANCES,
         DECISIONS, 
         CHARACTERS, 
+        EMOTIONS,
         BELIEFS, 
         MEMORIES, 
         PERCEPTIONS,
@@ -74,6 +75,16 @@ namespace WebServer
             Execute = HandleCharactersRequest,
             URLFormat = "/scenarios/{scenarioName}/instances/{instanceId}/characters",
             URLSegmentSize = 5,
+            ValidOperations = new string[] { "GET" },
+        };
+
+        //scenarios/{scenarioName}/instances/{instanceId}/characters{characterName}
+        public static APIResource EMOTIONS = new APIResource()
+        {
+            Type = APIResourceType.EMOTIONS,
+            Execute = HandleEmotionRequest,
+            URLFormat = "/scenarios/{scenarioName}/instances/{instanceId}/characters/{characterName}/emotions",
+            URLSegmentSize = 7,
             ValidOperations = new string[] { "GET" },
         };
 
@@ -157,7 +168,7 @@ namespace WebServer
             URLSegmentSize = 3
         };
 
-        public static APIResource[] Set = { ADMINKEY, SCENARIOS , KEY, INSTANCES,  TICK, ACTIONS, CHARACTERS, PERCEPTIONS, DECISIONS, WORLDMODEL, BELIEFS, MEMORIES };
+        public static APIResource[] Set = { ADMINKEY, SCENARIOS , KEY, INSTANCES, TICK, ACTIONS, CHARACTERS, EMOTIONS, PERCEPTIONS, DECISIONS, WORLDMODEL, BELIEFS, MEMORIES };
 
         public static APIResource FromString(string type)
         {
@@ -356,6 +367,17 @@ namespace WebServer
             return JsonConvert.SerializeObject(result);
         }
 
+        private static string HandleEmotionRequest(APIRequest req, ServerState serverState)
+        {
+            if (req.Method != HTTPMethod.GET)
+                return JsonConvert.SerializeObject("Error: Invalid operation");
+          
+            var rpc = serverState.Scenarios[req.ScenarioName][req.ScenarioInstance].Characters.First(x=> x.CharacterName.ToString().ToLower() == req.CharacterName.ToLower());
+               var result = new CharacterDTO { Name = rpc.CharacterName.ToString(), Emotions = rpc.GetAllActiveEmotions(), Mood = rpc.Mood };
+            
+            return JsonConvert.SerializeObject(result);
+        }
+
 
         private static string HandleActionsRequest(APIRequest req, ServerState serverState)
         {
@@ -503,6 +525,8 @@ namespace WebServer
 
                         eventList.Add(evName);
 
+
+
                     }
                     catch (Exception ex)
                     {
@@ -511,6 +535,12 @@ namespace WebServer
                 }
 
                     var effects = scenario.WorldModel.Simulate(eventList.ToArray());
+
+                foreach(var rpc in scenario.Characters)
+                {
+                    foreach (var e in eventList)
+                        rpc.Perceive(e);
+                }
 
                     // For each effect 
                     foreach (var eff in effects)

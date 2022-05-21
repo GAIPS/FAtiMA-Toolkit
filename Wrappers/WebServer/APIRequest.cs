@@ -75,6 +75,7 @@ namespace WebServer
                 case APIResourceType.DECISIONS:
                 case APIResourceType.BELIEFS:
                 case APIResourceType.MEMORIES:
+                case APIResourceType.EMOTIONS:
                 case APIResourceType.PERCEPTIONS:
                     this.ScenarioName = request.Url.Segments[2].ToLower().Trim('/');
                     this.ScenarioInstance = int.Parse(request.Url.Segments[4].Trim('/'));
