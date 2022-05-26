@@ -183,7 +183,7 @@ namespace IntegratedAuthoringToolWF
             dataGridViewDialogueActions.DataSource = _dialogs;
             scenarioNameTextBox.Text = asset.ScenarioName;
             //textBoxScenarioName;
-
+            finishedTutorial = true;
             //ResetSimulator
             richTextBoxChat.Clear();
             buttonContinue.Enabled = false;
@@ -1792,6 +1792,7 @@ namespace IntegratedAuthoringToolWF
 
         Dictionary<int, descriptionObject> assistantDescription;
         string assistantMode;
+        string componentSelected;
         bool finishedTutorial;
 
         // Initialize All things Authoring Assistant
@@ -1800,9 +1801,15 @@ namespace IntegratedAuthoringToolWF
             LoadPictures();
             LoadTips();
             assistantMode = "Auto";
+            componentSelected = "";
             finishedTutorial = false;
 
+        }
 
+        public void UpdateSelectedComponent(string componentName)
+        {
+            componentSelected = componentName;
+            Debugger();
         }
 
         private void LoadTips() { 
@@ -2140,7 +2147,21 @@ namespace IntegratedAuthoringToolWF
         // If users have no expertise make sure the tutorial is being followed
         public void Debugger()
         {
+            // Why isn't the scenario working
 
+            if(componentSelected != "")
+                assistantTopicGroupBox.Text = componentSelected;
+
+            if (componentSelected.Contains("Simulator"))
+            {
+                this.assistantTextBox.Text = "The simulator can be used to play out the scenario \n In the right panel it is possible to check in real time the internal state of the different agents";
+
+            }
+
+         
+
+
+         
         }
 
 
@@ -2507,7 +2528,7 @@ namespace IntegratedAuthoringToolWF
 
                     string utterance = "Dialogue for " + currentState + " to " + nextState;
                     if (style == "-")
-                        utterance = style + " dialogue for " + currentState + " to " + nextState;
+                        utterance = "Dialogue for " + currentState + " to " + nextState +" with style " + style;
 
                     if (i == 0)
                     {
@@ -2562,6 +2583,16 @@ namespace IntegratedAuthoringToolWF
             pictureBox3.Visible = false;
             finishedTutorial = true;
             AssistantHandler();
+        }
+
+        private void tabControlIAT_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.UpdateSelectedComponent(tabControlIAT.SelectedTab.Name);
+        }
+
+        private void tabControlAssetEditor_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.UpdateSelectedComponent(tabControlAssetEditor.SelectedTab.Name);
         }
     }
 }
