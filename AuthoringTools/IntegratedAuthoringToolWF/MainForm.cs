@@ -1715,7 +1715,9 @@ namespace IntegratedAuthoringToolWF
 
         private void importStoryButton_Click(object sender, EventArgs e)
         {
-            var story = new ComputeDescriptionForm(_iat, _storage);
+            string description = textBoxScenarioDescription.Text;
+            var story = new ComputeDescriptionForm(_iat, _storage, description);
+           
             story.ShowDialog();
             OnAssetDataLoaded(_iat);
             OnAssetStorageChange();
@@ -2155,6 +2157,20 @@ namespace IntegratedAuthoringToolWF
             if (componentSelected.Contains("Simulator"))
             {
                 this.assistantTextBox.Text = "The simulator can be used to play out the scenario \n In the right panel it is possible to check in real time the internal state of the different agents";
+
+                if(_iat.Characters.Count() == 0)
+                {
+                    this.assistantTextBox.Text += "\n In order to use the simulator it is necessary to create characters";
+                }
+
+                List<IAction> actions = new List<IAction>();
+                foreach (var rpc in _iat.Characters)
+                    actions.AddRange(rpc.Decide());
+
+                if(actions.Count == 0)
+                {
+                    this.assistantTextBox.Text += "\n The characters are deciding to do nothing. Try to go to the Emotional Decision Making component and use its debugger";
+                }
 
             }
 

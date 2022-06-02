@@ -532,6 +532,26 @@ namespace IntegratedAuthoringToolWF.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_system_information_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-system-information-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_system_report_40 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-system-report-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_template_40 {
             get {
                 object obj = ResourceManager.GetObject("icons8-template-40", resourceCulture);
@@ -729,6 +749,16 @@ namespace IntegratedAuthoringToolWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap right_arrow1 {
+            get {
+                object obj = ResourceManager.GetObject("right-arrow1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occurred when trying to load one the characters in the scenario..
         /// </summary>
         internal static string RPCLoadingError {
@@ -763,6 +793,16 @@ namespace IntegratedAuthoringToolWF.Properties {
         internal static string UnableToSaveFileError {
             get {
                 return ResourceManager.GetString("UnableToSaveFileError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap wizard_hat {
+            get {
+                object obj = ResourceManager.GetObject("wizard-hat", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

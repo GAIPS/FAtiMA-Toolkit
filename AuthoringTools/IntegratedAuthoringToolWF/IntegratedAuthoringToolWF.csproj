@@ -391,6 +391,10 @@
     <None Include="Resources\inescid.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\wizard-hat.png" />
+    <None Include="Resources\icons8-system-report-40.png" />
+    <None Include="Resources\icons8-system-information-40.png" />
+    <None Include="Resources\right-arrow1.png" />
     <None Include="Resources\icons8-last-401.png" />
     <None Include="Resources\icons8-skip-48.png" />
     <None Include="Resources\icons8-last-40.png" />

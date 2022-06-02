@@ -37,12 +37,13 @@ namespace IntegratedAuthoringToolWF.IEP
 
 
         // Default Server IP + PORT
-        private static string IP = "146.193.226.21";
+        private static string IP = "146.193.224.192";
         private static string PORT = "8080";
         private static string iepResult = "";
 
 
-        public ComputeDescriptionForm(IntegratedAuthoringToolAsset iat, AssetStorage storage)
+
+        public ComputeDescriptionForm(IntegratedAuthoringToolAsset iat, AssetStorage storage, string description)
         {
             InitializeComponent();
             _iat = iat;
@@ -54,7 +55,9 @@ namespace IntegratedAuthoringToolWF.IEP
             this.serverIP.Text = IP;
             this.portText.Text = PORT;
             debugLabel.Text = "Waiting for connection";
-            this.descriptionText.Text = "Write your story here...";
+            if (description != "")
+                this.descriptionText.Text = description;
+            else this.descriptionText.Text = "Write your story here...";
             panel4.BackgroundImage = null;
             connectToServer.Enabled = true;
             computeStoryButton.Enabled = false;
@@ -92,7 +95,6 @@ namespace IntegratedAuthoringToolWF.IEP
               
             }
 
-
         }
 
         void PingServer()
@@ -101,7 +103,7 @@ namespace IntegratedAuthoringToolWF.IEP
             PingOptions options = new PingOptions();
             options.DontFragment = true;
             // Create a buffer of 32 bytes of data to be transmitted.
-            string data = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            string data = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
             byte[] buffer = Encoding.ASCII.GetBytes(data);
             int timeout = 60;
             IP = IP.Replace(" ", "");
@@ -224,7 +226,6 @@ namespace IntegratedAuthoringToolWF.IEP
 
         public void AcceptedOutput(string _iepResult)
         {
-            ComputeStory(_iepResult);
             _iat = _iatAux;
             edmAux.Save();
             eaAux.Save();
@@ -232,10 +233,16 @@ namespace IntegratedAuthoringToolWF.IEP
             this.Close();
         }
 
+        public void ComputeOutput(string _iepResult)
+        {
+            ComputeStory(_iepResult);
+            edmAux.Save();
+            eaAux.Save();
+        }
+
         public void RejectedOutput()
         {
             debugLabel.Text = "Let's try again";
-
         }
 
 
@@ -317,7 +324,7 @@ namespace IntegratedAuthoringToolWF.IEP
             }
 
 
-            debugLabel.Text = "Processed Output";
+            //debugLabel.Text = "Processed Output";
 
         }
 
