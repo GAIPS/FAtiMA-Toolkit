@@ -181,5 +181,10 @@ namespace IntegratedAuthoringToolWF.IEP
         {
 
         }
+
+        private void dataGridViewBeliefs_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
