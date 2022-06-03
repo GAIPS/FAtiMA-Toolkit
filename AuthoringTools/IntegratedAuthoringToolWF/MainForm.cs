@@ -2323,7 +2323,7 @@ namespace IntegratedAuthoringToolWF
                 case "Tools: Compute Decription":  // Compute Description
                     ClearLastButton();
                     toolsToolStripMenuItem.ShowDropDown();
-                    HighlightMenuItem(computeDescriptionToolStripMenuItem);
+                    HighlightMenuItem(storyToScenarioWizardToolStripMenuItem);
                     break;
 
                 case "Tools: Generating Emotional Reaction":
@@ -2610,5 +2610,6 @@ namespace IntegratedAuthoringToolWF
         {
             this.UpdateSelectedComponent(tabControlAssetEditor.SelectedTab.Name);
         }
+
     }
 }

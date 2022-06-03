@@ -20,13 +20,21 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cognitiveRulesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.computeDescriptionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadTemplateScenarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.authoringAssistantToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.inspectCharacterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.metaBeliefListToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.generateDialogueActionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scenarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.storyToScenarioWizardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadTemplateScenarioToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.rolePlayCharacterHelperToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.inspectCharacterToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.cognitiveRulesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.metaBeliefsPanelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dialogueHelpersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generateDialogueActionsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
@@ -38,16 +46,16 @@
             this.buttonRemoveCharacter = new System.Windows.Forms.Button();
             this.buttonInspect = new System.Windows.Forms.Button();
             this.dataGridViewCharacters = new System.Windows.Forms.DataGridView();
+            this.tabControlIAT = new System.Windows.Forms.TabControl();
+            this.Characters = new System.Windows.Forms.TabPage();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.CognitiveRules = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.buttonSaveAsAssetStorage = new System.Windows.Forms.Button();
             this.buttonOpenAssetStorage = new System.Windows.Forms.Button();
             this.saveAssetStorageButton = new System.Windows.Forms.Button();
             this.textBoxPathAssetStorage = new System.Windows.Forms.TextBox();
             this.buttonNewAssetStorage = new System.Windows.Forms.Button();
-            this.tabControlIAT = new System.Windows.Forms.TabControl();
-            this.Characters = new System.Windows.Forms.TabPage();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.CognitiveRules = new System.Windows.Forms.TabPage();
             this.tabControlAssetEditor = new System.Windows.Forms.TabControl();
             this.EmotionalDecisionMaking = new System.Windows.Forms.TabPage();
             this.EmotionalAppraisal = new System.Windows.Forms.TabPage();
@@ -133,10 +141,10 @@
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCharacters)).BeginInit();
-            this.groupBox6.SuspendLayout();
             this.tabControlIAT.SuspendLayout();
             this.Characters.SuspendLayout();
             this.CognitiveRules.SuspendLayout();
+            this.groupBox6.SuspendLayout();
             this.tabControlAssetEditor.SuspendLayout();
             this.DialogueEditor.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -176,7 +184,6 @@
             this.splitContainer7.SuspendLayout();
             this.groupBox14.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer8)).BeginInit();
-            this.splitContainer8.Panel1.SuspendLayout();
             this.splitContainer8.Panel2.SuspendLayout();
             this.splitContainer8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer9)).BeginInit();
@@ -225,7 +232,8 @@
             this.newToolStripMenuItem,
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
-            this.saveAsToolStripMenuItem});
+            this.saveAsToolStripMenuItem,
+            this.cognitiveRulesToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -233,99 +241,150 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.saveAsToolStripMenuItem.Text = "Save As ...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            // 
+            // cognitiveRulesToolStripMenuItem
+            // 
+            this.cognitiveRulesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.newToolStripMenuItem1,
+            this.openToolStripMenuItem1,
+            this.saveToolStripMenuItem1,
+            this.saveAsToolStripMenuItem1});
+            this.cognitiveRulesToolStripMenuItem.Name = "cognitiveRulesToolStripMenuItem";
+            this.cognitiveRulesToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.cognitiveRulesToolStripMenuItem.Text = "Cognitive Rules";
+            // 
+            // newToolStripMenuItem1
+            // 
+            this.newToolStripMenuItem1.Name = "newToolStripMenuItem1";
+            this.newToolStripMenuItem1.Size = new System.Drawing.Size(114, 22);
+            this.newToolStripMenuItem1.Text = "New";
+            this.newToolStripMenuItem1.Click += new System.EventHandler(this.buttonNewAssetStorage_Click);
+            // 
+            // openToolStripMenuItem1
+            // 
+            this.openToolStripMenuItem1.Name = "openToolStripMenuItem1";
+            this.openToolStripMenuItem1.Size = new System.Drawing.Size(114, 22);
+            this.openToolStripMenuItem1.Text = "Open";
+            this.openToolStripMenuItem1.Click += new System.EventHandler(this.buttonOpenAssetStorage_Click);
+            // 
+            // saveToolStripMenuItem1
+            // 
+            this.saveToolStripMenuItem1.Name = "saveToolStripMenuItem1";
+            this.saveToolStripMenuItem1.Size = new System.Drawing.Size(114, 22);
+            this.saveToolStripMenuItem1.Text = "Save";
+            this.saveToolStripMenuItem1.Click += new System.EventHandler(this.saveAssetStorageButton_Click);
+            // 
+            // saveAsToolStripMenuItem1
+            // 
+            this.saveAsToolStripMenuItem1.Name = "saveAsToolStripMenuItem1";
+            this.saveAsToolStripMenuItem1.Size = new System.Drawing.Size(114, 22);
+            this.saveAsToolStripMenuItem1.Text = "Save As";
+            this.saveAsToolStripMenuItem1.Click += new System.EventHandler(this.buttonSaveAsAssetStorage_Click);
             // 
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.computeDescriptionToolStripMenuItem,
-            this.loadTemplateScenarioToolStripMenuItem,
-            this.authoringAssistantToolStripMenuItem,
-            this.inspectCharacterToolStripMenuItem,
-            this.metaBeliefListToolStripMenuItem,
-            this.generateDialogueActionsToolStripMenuItem});
+            this.scenarioToolStripMenuItem,
+            this.rolePlayCharacterHelperToolStripMenuItem,
+            this.cognitiveRulesToolStripMenuItem1,
+            this.dialogueHelpersToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
-            // computeDescriptionToolStripMenuItem
+            // scenarioToolStripMenuItem
             // 
-            this.computeDescriptionToolStripMenuItem.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.computeDescriptionToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.wizard_hat;
-            this.computeDescriptionToolStripMenuItem.ImageTransparentColor = System.Drawing.Color.Transparent;
-            this.computeDescriptionToolStripMenuItem.Name = "computeDescriptionToolStripMenuItem";
-            this.computeDescriptionToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
-            this.computeDescriptionToolStripMenuItem.Text = "Story to Scenario Wizard";
-            this.computeDescriptionToolStripMenuItem.ToolTipText = "Automatically create a scenario out of a textual story";
-            this.computeDescriptionToolStripMenuItem.Click += new System.EventHandler(this.importStoryButton_Click);
+            this.scenarioToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.storyToScenarioWizardToolStripMenuItem,
+            this.loadTemplateScenarioToolStripMenuItem1});
+            this.scenarioToolStripMenuItem.Name = "scenarioToolStripMenuItem";
+            this.scenarioToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.scenarioToolStripMenuItem.Text = "Scenario";
             // 
-            // loadTemplateScenarioToolStripMenuItem
+            // storyToScenarioWizardToolStripMenuItem
             // 
-            this.loadTemplateScenarioToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_template_40;
-            this.loadTemplateScenarioToolStripMenuItem.Name = "loadTemplateScenarioToolStripMenuItem";
-            this.loadTemplateScenarioToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
-            this.loadTemplateScenarioToolStripMenuItem.Text = "Load Template Scenario";
-            this.loadTemplateScenarioToolStripMenuItem.ToolTipText = "Open a templated scenario instead of starting from scratch";
-            this.loadTemplateScenarioToolStripMenuItem.Click += new System.EventHandler(this.loadTemplateScenarioToolStripMenuItem_Click);
+            this.storyToScenarioWizardToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.wizard_hat;
+            this.storyToScenarioWizardToolStripMenuItem.Name = "storyToScenarioWizardToolStripMenuItem";
+            this.storyToScenarioWizardToolStripMenuItem.Size = new System.Drawing.Size(206, 26);
+            this.storyToScenarioWizardToolStripMenuItem.Text = "Story to Scenario Wizard";
+            this.storyToScenarioWizardToolStripMenuItem.Click += new System.EventHandler(this.saveAssetStorageButton_Click);
             // 
-            // authoringAssistantToolStripMenuItem
+            // loadTemplateScenarioToolStripMenuItem1
             // 
-            this.authoringAssistantToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_bot_40;
-            this.authoringAssistantToolStripMenuItem.Name = "authoringAssistantToolStripMenuItem";
-            this.authoringAssistantToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
-            this.authoringAssistantToolStripMenuItem.Text = "Authoring Assistant";
-            this.authoringAssistantToolStripMenuItem.ToolTipText = "Authoring Assistant options";
-            this.authoringAssistantToolStripMenuItem.Click += new System.EventHandler(this.authoringAssistantToolStripMenuItem_Click);
+            this.loadTemplateScenarioToolStripMenuItem1.Image = global::IntegratedAuthoringToolWF.Properties.Resources.NormalFace;
+            this.loadTemplateScenarioToolStripMenuItem1.Name = "loadTemplateScenarioToolStripMenuItem1";
+            this.loadTemplateScenarioToolStripMenuItem1.Size = new System.Drawing.Size(206, 26);
+            this.loadTemplateScenarioToolStripMenuItem1.Text = "Load Template Scenario";
+            this.loadTemplateScenarioToolStripMenuItem1.Click += new System.EventHandler(this.loadTemplateScenarioToolStripMenuItem_Click);
             // 
-            // inspectCharacterToolStripMenuItem
+            // rolePlayCharacterHelperToolStripMenuItem
             // 
-            this.inspectCharacterToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_preview_pane_40;
-            this.inspectCharacterToolStripMenuItem.Name = "inspectCharacterToolStripMenuItem";
-            this.inspectCharacterToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
-            this.inspectCharacterToolStripMenuItem.Text = "Inspect Character";
-            this.inspectCharacterToolStripMenuItem.ToolTipText = "Inspect a particular character to analyse its response to certain events";
-            this.inspectCharacterToolStripMenuItem.Click += new System.EventHandler(this.inspectCharacterToolStripMenuItem_Click);
+            this.rolePlayCharacterHelperToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.inspectCharacterToolStripMenuItem1});
+            this.rolePlayCharacterHelperToolStripMenuItem.Name = "rolePlayCharacterHelperToolStripMenuItem";
+            this.rolePlayCharacterHelperToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.rolePlayCharacterHelperToolStripMenuItem.Text = "Characters";
             // 
-            // metaBeliefListToolStripMenuItem
+            // inspectCharacterToolStripMenuItem1
             // 
-            this.metaBeliefListToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_responsive_40;
-            this.metaBeliefListToolStripMenuItem.Name = "metaBeliefListToolStripMenuItem";
-            this.metaBeliefListToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
-            this.metaBeliefListToolStripMenuItem.Text = "Meta-Beliefs Panel";
-            this.metaBeliefListToolStripMenuItem.ToolTipText = "Meta-Beliefs are beliefs that can be used to make computatiokns on runtime, tipic" +
-    "ally used in the conditions of a Rule";
-            this.metaBeliefListToolStripMenuItem.Click += new System.EventHandler(this.metaBeliefListToolStripMenuItem_Click);
+            this.inspectCharacterToolStripMenuItem1.Name = "inspectCharacterToolStripMenuItem1";
+            this.inspectCharacterToolStripMenuItem1.Size = new System.Drawing.Size(166, 22);
+            this.inspectCharacterToolStripMenuItem1.Text = "Inspect Character";
+            this.inspectCharacterToolStripMenuItem1.Click += new System.EventHandler(this.inspectCharacterToolStripMenuItem_Click);
             // 
-            // generateDialogueActionsToolStripMenuItem
+            // cognitiveRulesToolStripMenuItem1
             // 
-            this.generateDialogueActionsToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_chatbot_40;
-            this.generateDialogueActionsToolStripMenuItem.Name = "generateDialogueActionsToolStripMenuItem";
-            this.generateDialogueActionsToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
-            this.generateDialogueActionsToolStripMenuItem.Text = "Generate Dialogue-Actions";
-            this.generateDialogueActionsToolStripMenuItem.Click += new System.EventHandler(this.generateDialogueActionsToolStripMenuItem_Click);
+            this.cognitiveRulesToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.metaBeliefsPanelToolStripMenuItem});
+            this.cognitiveRulesToolStripMenuItem1.Name = "cognitiveRulesToolStripMenuItem1";
+            this.cognitiveRulesToolStripMenuItem1.Size = new System.Drawing.Size(156, 22);
+            this.cognitiveRulesToolStripMenuItem1.Text = "Cognitive Rules";
+            // 
+            // metaBeliefsPanelToolStripMenuItem
+            // 
+            this.metaBeliefsPanelToolStripMenuItem.Name = "metaBeliefsPanelToolStripMenuItem";
+            this.metaBeliefsPanelToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.metaBeliefsPanelToolStripMenuItem.Text = "Meta-Beliefs Panel";
+            this.metaBeliefsPanelToolStripMenuItem.Click += new System.EventHandler(this.metaBeliefListToolStripMenuItem_Click);
+            // 
+            // dialogueHelpersToolStripMenuItem
+            // 
+            this.dialogueHelpersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.generateDialogueActionsToolStripMenuItem1});
+            this.dialogueHelpersToolStripMenuItem.Name = "dialogueHelpersToolStripMenuItem";
+            this.dialogueHelpersToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.dialogueHelpersToolStripMenuItem.Text = "Dialogue";
+            // 
+            // generateDialogueActionsToolStripMenuItem1
+            // 
+            this.generateDialogueActionsToolStripMenuItem1.Name = "generateDialogueActionsToolStripMenuItem1";
+            this.generateDialogueActionsToolStripMenuItem1.Size = new System.Drawing.Size(214, 22);
+            this.generateDialogueActionsToolStripMenuItem1.Text = "Generate Dialogue Actions";
+            this.generateDialogueActionsToolStripMenuItem1.Click += new System.EventHandler(this.generateDialogueActionsToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -344,7 +403,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(5, 39);
+            this.label2.Location = new System.Drawing.Point(5, 59);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(132, 16);
@@ -355,12 +414,12 @@
             // 
             this.textBoxScenarioDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxScenarioDescription.Location = new System.Drawing.Point(7, 59);
+            this.textBoxScenarioDescription.Location = new System.Drawing.Point(7, 79);
             this.textBoxScenarioDescription.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxScenarioDescription.Multiline = true;
             this.textBoxScenarioDescription.Name = "textBoxScenarioDescription";
             this.textBoxScenarioDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBoxScenarioDescription.Size = new System.Drawing.Size(437, 55);
+            this.textBoxScenarioDescription.Size = new System.Drawing.Size(437, 86);
             this.textBoxScenarioDescription.TabIndex = 1;
             this.toolTip1.SetToolTip(this.textBoxScenarioDescription, "Write a small description of the intended scenario here, so it can help during it" +
         "s development");
@@ -376,7 +435,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(448, 155);
+            this.groupBox1.Size = new System.Drawing.Size(448, 167);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Characters";
@@ -396,7 +455,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(440, 132);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(440, 144);
             this.tableLayoutPanel1.TabIndex = 15;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
@@ -470,93 +529,11 @@
             this.dataGridViewCharacters.RowHeadersWidth = 51;
             this.dataGridViewCharacters.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewCharacters.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewCharacters.Size = new System.Drawing.Size(434, 75);
+            this.dataGridViewCharacters.Size = new System.Drawing.Size(434, 92);
             this.dataGridViewCharacters.TabIndex = 15;
             this.dataGridViewCharacters.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCharacters_CellContentClick_1);
             this.dataGridViewCharacters.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewCharacters_CellMouseClick);
             this.dataGridViewCharacters.Sorted += new System.EventHandler(this.dataGridViewCharacters_Sorted);
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.AutoSize = true;
-            this.groupBox6.Controls.Add(this.buttonSaveAsAssetStorage);
-            this.groupBox6.Controls.Add(this.buttonOpenAssetStorage);
-            this.groupBox6.Controls.Add(this.saveAssetStorageButton);
-            this.groupBox6.Controls.Add(this.textBoxPathAssetStorage);
-            this.groupBox6.Controls.Add(this.buttonNewAssetStorage);
-            this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox6.Location = new System.Drawing.Point(0, 0);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(448, 88);
-            this.groupBox6.TabIndex = 16;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Cognitive Rules File";
-            this.toolTip1.SetToolTip(this.groupBox6, "The Cognitive Rules file is where the Cognitive Rules are saved, don\'t forget to " +
-        "save it after editing so that you can test the scenario in the simulator");
-            this.groupBox6.Enter += new System.EventHandler(this.groupBox6_Enter_1);
-            // 
-            // buttonSaveAsAssetStorage
-            // 
-            this.buttonSaveAsAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonSaveAsAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.buttonSaveAsAssetStorage.Location = new System.Drawing.Point(279, 22);
-            this.buttonSaveAsAssetStorage.Name = "buttonSaveAsAssetStorage";
-            this.buttonSaveAsAssetStorage.Size = new System.Drawing.Size(85, 30);
-            this.buttonSaveAsAssetStorage.TabIndex = 19;
-            this.buttonSaveAsAssetStorage.Text = "Save As";
-            this.toolTip1.SetToolTip(this.buttonSaveAsAssetStorage, "Save as a new cognitive rules file");
-            this.buttonSaveAsAssetStorage.UseVisualStyleBackColor = true;
-            this.buttonSaveAsAssetStorage.Click += new System.EventHandler(this.buttonSaveAsAssetStorage_Click);
-            // 
-            // buttonOpenAssetStorage
-            // 
-            this.buttonOpenAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonOpenAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonOpenAssetStorage.Location = new System.Drawing.Point(97, 22);
-            this.buttonOpenAssetStorage.Name = "buttonOpenAssetStorage";
-            this.buttonOpenAssetStorage.Size = new System.Drawing.Size(85, 30);
-            this.buttonOpenAssetStorage.TabIndex = 15;
-            this.buttonOpenAssetStorage.Text = "Open";
-            this.toolTip1.SetToolTip(this.buttonOpenAssetStorage, "Open Congitive Rules json File");
-            this.buttonOpenAssetStorage.UseVisualStyleBackColor = true;
-            this.buttonOpenAssetStorage.Click += new System.EventHandler(this.buttonOpenAssetStorage_Click);
-            // 
-            // saveAssetStorageButton
-            // 
-            this.saveAssetStorageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.saveAssetStorageButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.saveAssetStorageButton.Location = new System.Drawing.Point(188, 22);
-            this.saveAssetStorageButton.Name = "saveAssetStorageButton";
-            this.saveAssetStorageButton.Size = new System.Drawing.Size(85, 30);
-            this.saveAssetStorageButton.TabIndex = 16;
-            this.saveAssetStorageButton.Text = "Save";
-            this.toolTip1.SetToolTip(this.saveAssetStorageButton, "Save current cognitive rules files");
-            this.saveAssetStorageButton.UseVisualStyleBackColor = true;
-            this.saveAssetStorageButton.Click += new System.EventHandler(this.saveAssetStorageButton_Click);
-            // 
-            // textBoxPathAssetStorage
-            // 
-            this.textBoxPathAssetStorage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxPathAssetStorage.Location = new System.Drawing.Point(8, 61);
-            this.textBoxPathAssetStorage.Name = "textBoxPathAssetStorage";
-            this.textBoxPathAssetStorage.ReadOnly = true;
-            this.textBoxPathAssetStorage.Size = new System.Drawing.Size(439, 22);
-            this.textBoxPathAssetStorage.TabIndex = 13;
-            // 
-            // buttonNewAssetStorage
-            // 
-            this.buttonNewAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.buttonNewAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
-            this.buttonNewAssetStorage.Location = new System.Drawing.Point(6, 22);
-            this.buttonNewAssetStorage.Name = "buttonNewAssetStorage";
-            this.buttonNewAssetStorage.Size = new System.Drawing.Size(85, 30);
-            this.buttonNewAssetStorage.TabIndex = 18;
-            this.buttonNewAssetStorage.Text = "New";
-            this.toolTip1.SetToolTip(this.buttonNewAssetStorage, "New Cognitive Rules Json File");
-            this.buttonNewAssetStorage.UseVisualStyleBackColor = true;
-            this.buttonNewAssetStorage.Click += new System.EventHandler(this.buttonNewAssetStorage_Click);
-            this.buttonNewAssetStorage.MouseHover += new System.EventHandler(this.buttonNewAssetStorage_MouseHover);
             // 
             // tabControlIAT
             // 
@@ -603,6 +580,7 @@
             // 
             // CognitiveRules
             // 
+            this.CognitiveRules.Controls.Add(this.groupBox6);
             this.CognitiveRules.Controls.Add(this.tabControlAssetEditor);
             this.CognitiveRules.Location = new System.Drawing.Point(4, 24);
             this.CognitiveRules.Name = "CognitiveRules";
@@ -611,17 +589,100 @@
             this.CognitiveRules.Text = "Cognitive Rules";
             this.CognitiveRules.UseVisualStyleBackColor = true;
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox6.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox6.Controls.Add(this.buttonSaveAsAssetStorage);
+            this.groupBox6.Controls.Add(this.buttonOpenAssetStorage);
+            this.groupBox6.Controls.Add(this.saveAssetStorageButton);
+            this.groupBox6.Controls.Add(this.textBoxPathAssetStorage);
+            this.groupBox6.Controls.Add(this.buttonNewAssetStorage);
+            this.groupBox6.Location = new System.Drawing.Point(4, 7);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Padding = new System.Windows.Forms.Padding(5, 10, 5, 5);
+            this.groupBox6.Size = new System.Drawing.Size(832, 60);
+            this.groupBox6.TabIndex = 17;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Cognitive Rules File";
+            this.toolTip1.SetToolTip(this.groupBox6, "The Cognitive Rules file is where all of the Cognitive Rules are saved. To test t" +
+        "he scenario in the simulator don\'t  forget to save it. \r\nThese rules are applied" +
+        " to all of the agents. ");
+            // 
+            // buttonSaveAsAssetStorage
+            // 
+            this.buttonSaveAsAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonSaveAsAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.buttonSaveAsAssetStorage.Location = new System.Drawing.Point(281, 23);
+            this.buttonSaveAsAssetStorage.Name = "buttonSaveAsAssetStorage";
+            this.buttonSaveAsAssetStorage.Size = new System.Drawing.Size(85, 30);
+            this.buttonSaveAsAssetStorage.TabIndex = 19;
+            this.buttonSaveAsAssetStorage.Text = "Save As";
+            this.toolTip1.SetToolTip(this.buttonSaveAsAssetStorage, "Save as a new cognitive rules file");
+            this.buttonSaveAsAssetStorage.UseVisualStyleBackColor = true;
+            this.buttonSaveAsAssetStorage.Click += new System.EventHandler(this.buttonSaveAsAssetStorage_Click);
+            // 
+            // buttonOpenAssetStorage
+            // 
+            this.buttonOpenAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonOpenAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonOpenAssetStorage.Location = new System.Drawing.Point(99, 22);
+            this.buttonOpenAssetStorage.Name = "buttonOpenAssetStorage";
+            this.buttonOpenAssetStorage.Size = new System.Drawing.Size(85, 30);
+            this.buttonOpenAssetStorage.TabIndex = 15;
+            this.buttonOpenAssetStorage.Text = "Open";
+            this.toolTip1.SetToolTip(this.buttonOpenAssetStorage, "Open Congitive Rules json File");
+            this.buttonOpenAssetStorage.UseVisualStyleBackColor = true;
+            this.buttonOpenAssetStorage.Click += new System.EventHandler(this.buttonOpenAssetStorage_Click);
+            // 
+            // saveAssetStorageButton
+            // 
+            this.saveAssetStorageButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.saveAssetStorageButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.saveAssetStorageButton.Location = new System.Drawing.Point(190, 23);
+            this.saveAssetStorageButton.Name = "saveAssetStorageButton";
+            this.saveAssetStorageButton.Size = new System.Drawing.Size(85, 30);
+            this.saveAssetStorageButton.TabIndex = 16;
+            this.saveAssetStorageButton.Text = "Save";
+            this.toolTip1.SetToolTip(this.saveAssetStorageButton, "Save current cognitive rules files");
+            this.saveAssetStorageButton.UseVisualStyleBackColor = true;
+            this.saveAssetStorageButton.Click += new System.EventHandler(this.saveAssetStorageButton_Click);
+            // 
+            // textBoxPathAssetStorage
+            // 
+            this.textBoxPathAssetStorage.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.textBoxPathAssetStorage.Location = new System.Drawing.Point(382, 28);
+            this.textBoxPathAssetStorage.Name = "textBoxPathAssetStorage";
+            this.textBoxPathAssetStorage.ReadOnly = true;
+            this.textBoxPathAssetStorage.Size = new System.Drawing.Size(442, 22);
+            this.textBoxPathAssetStorage.TabIndex = 13;
+            // 
+            // buttonNewAssetStorage
+            // 
+            this.buttonNewAssetStorage.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.buttonNewAssetStorage.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F);
+            this.buttonNewAssetStorage.Location = new System.Drawing.Point(8, 22);
+            this.buttonNewAssetStorage.Name = "buttonNewAssetStorage";
+            this.buttonNewAssetStorage.Size = new System.Drawing.Size(85, 30);
+            this.buttonNewAssetStorage.TabIndex = 18;
+            this.buttonNewAssetStorage.Text = "New";
+            this.toolTip1.SetToolTip(this.buttonNewAssetStorage, "New Cognitive Rules Json File");
+            this.buttonNewAssetStorage.UseVisualStyleBackColor = true;
+            this.buttonNewAssetStorage.Click += new System.EventHandler(this.buttonNewAssetStorage_Click);
+            // 
             // tabControlAssetEditor
             // 
             this.tabControlAssetEditor.Controls.Add(this.EmotionalDecisionMaking);
             this.tabControlAssetEditor.Controls.Add(this.EmotionalAppraisal);
             this.tabControlAssetEditor.Controls.Add(this.SocialImportance);
             this.tabControlAssetEditor.Controls.Add(this.CIFCK);
-            this.tabControlAssetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControlAssetEditor.Location = new System.Drawing.Point(0, 0);
+            this.tabControlAssetEditor.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tabControlAssetEditor.Location = new System.Drawing.Point(0, 73);
             this.tabControlAssetEditor.Name = "tabControlAssetEditor";
             this.tabControlAssetEditor.SelectedIndex = 0;
-            this.tabControlAssetEditor.Size = new System.Drawing.Size(844, 609);
+            this.tabControlAssetEditor.Size = new System.Drawing.Size(844, 536);
             this.tabControlAssetEditor.TabIndex = 0;
             this.tabControlAssetEditor.SelectedIndexChanged += new System.EventHandler(this.tabControlAssetEditor_SelectedIndexChanged);
             // 
@@ -630,7 +691,7 @@
             this.EmotionalDecisionMaking.Location = new System.Drawing.Point(4, 25);
             this.EmotionalDecisionMaking.Name = "EmotionalDecisionMaking";
             this.EmotionalDecisionMaking.Padding = new System.Windows.Forms.Padding(3);
-            this.EmotionalDecisionMaking.Size = new System.Drawing.Size(836, 580);
+            this.EmotionalDecisionMaking.Size = new System.Drawing.Size(836, 507);
             this.EmotionalDecisionMaking.TabIndex = 1;
             this.EmotionalDecisionMaking.Text = "Emotional Decision Making";
             this.toolTip1.SetToolTip(this.EmotionalDecisionMaking, "The Emotional Decision Making is where you can define which actions agents have");
@@ -642,7 +703,7 @@
             this.EmotionalAppraisal.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.EmotionalAppraisal.Name = "EmotionalAppraisal";
             this.EmotionalAppraisal.Padding = new System.Windows.Forms.Padding(3);
-            this.EmotionalAppraisal.Size = new System.Drawing.Size(836, 577);
+            this.EmotionalAppraisal.Size = new System.Drawing.Size(836, 510);
             this.EmotionalAppraisal.TabIndex = 0;
             this.EmotionalAppraisal.Text = "Emotional Appraisal";
             this.EmotionalAppraisal.UseVisualStyleBackColor = true;
@@ -651,7 +712,7 @@
             // 
             this.SocialImportance.Location = new System.Drawing.Point(4, 22);
             this.SocialImportance.Name = "SocialImportance";
-            this.SocialImportance.Size = new System.Drawing.Size(836, 577);
+            this.SocialImportance.Size = new System.Drawing.Size(836, 510);
             this.SocialImportance.TabIndex = 2;
             this.SocialImportance.Text = "Social Importance";
             this.SocialImportance.UseVisualStyleBackColor = true;
@@ -660,7 +721,7 @@
             // 
             this.CIFCK.Location = new System.Drawing.Point(4, 22);
             this.CIFCK.Name = "CIFCK";
-            this.CIFCK.Size = new System.Drawing.Size(836, 577);
+            this.CIFCK.Size = new System.Drawing.Size(836, 510);
             this.CIFCK.TabIndex = 3;
             this.CIFCK.Text = "CIF-CK";
             this.CIFCK.UseVisualStyleBackColor = true;
@@ -1430,7 +1491,7 @@
             // 
             this.splitContainer7.Panel2.Controls.Add(this.splitContainer8);
             this.splitContainer7.Size = new System.Drawing.Size(448, 637);
-            this.splitContainer7.SplitterDistance = 112;
+            this.splitContainer7.SplitterDistance = 170;
             this.splitContainer7.SplitterIncrement = 2;
             this.splitContainer7.TabIndex = 19;
             // 
@@ -1444,13 +1505,13 @@
             this.groupBox14.Location = new System.Drawing.Point(0, 0);
             this.groupBox14.Name = "groupBox14";
             this.groupBox14.Padding = new System.Windows.Forms.Padding(1);
-            this.groupBox14.Size = new System.Drawing.Size(448, 112);
+            this.groupBox14.Size = new System.Drawing.Size(448, 170);
             this.groupBox14.TabIndex = 5;
             this.groupBox14.TabStop = false;
             // 
             // scenarioNameTextBox
             // 
-            this.scenarioNameTextBox.Location = new System.Drawing.Point(154, 9);
+            this.scenarioNameTextBox.Location = new System.Drawing.Point(154, 21);
             this.scenarioNameTextBox.Name = "scenarioNameTextBox";
             this.scenarioNameTextBox.Size = new System.Drawing.Size(273, 22);
             this.scenarioNameTextBox.TabIndex = 6;
@@ -1461,7 +1522,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(5, 12);
+            this.label9.Location = new System.Drawing.Point(5, 24);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(101, 16);
@@ -1474,15 +1535,12 @@
             this.splitContainer8.Location = new System.Drawing.Point(0, 0);
             this.splitContainer8.Name = "splitContainer8";
             this.splitContainer8.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer8.Panel1
-            // 
-            this.splitContainer8.Panel1.Controls.Add(this.groupBox6);
+            this.splitContainer8.Panel1Collapsed = true;
             // 
             // splitContainer8.Panel2
             // 
             this.splitContainer8.Panel2.Controls.Add(this.splitContainer9);
-            this.splitContainer8.Size = new System.Drawing.Size(448, 521);
+            this.splitContainer8.Size = new System.Drawing.Size(448, 463);
             this.splitContainer8.SplitterDistance = 88;
             this.splitContainer8.TabIndex = 0;
             // 
@@ -1501,8 +1559,8 @@
             // 
             this.splitContainer9.Panel2.BackColor = System.Drawing.Color.Black;
             this.splitContainer9.Panel2.Controls.Add(this.Assistant);
-            this.splitContainer9.Size = new System.Drawing.Size(448, 429);
-            this.splitContainer9.SplitterDistance = 155;
+            this.splitContainer9.Size = new System.Drawing.Size(448, 463);
+            this.splitContainer9.SplitterDistance = 167;
             this.splitContainer9.TabIndex = 0;
             // 
             // Assistant
@@ -1520,7 +1578,7 @@
             this.Assistant.Margin = new System.Windows.Forms.Padding(0);
             this.Assistant.Name = "Assistant";
             this.Assistant.Padding = new System.Windows.Forms.Padding(5);
-            this.Assistant.Size = new System.Drawing.Size(448, 270);
+            this.Assistant.Size = new System.Drawing.Size(448, 292);
             this.Assistant.TabIndex = 18;
             this.Assistant.TabStop = false;
             this.Assistant.Text = "Authoring Assistant:";
@@ -1546,7 +1604,7 @@
             this.splitContainer5.Panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.splitContainer5.Panel2.Controls.Add(this.splitContainer6);
             this.splitContainer5.Panel2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.splitContainer5.Size = new System.Drawing.Size(438, 245);
+            this.splitContainer5.Size = new System.Drawing.Size(438, 267);
             this.splitContainer5.SplitterDistance = 102;
             this.splitContainer5.TabIndex = 21;
             // 
@@ -1555,7 +1613,7 @@
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.label1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(2, 183);
+            this.label1.Location = new System.Drawing.Point(3, 223);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(84, 15);
             this.label1.TabIndex = 23;
@@ -1569,7 +1627,7 @@
             this.assistantModeDropDown.Items.Add("Manual");
             this.assistantModeDropDown.Items.Add("Auto");
             this.assistantModeDropDown.Items.Add("Debug");
-            this.assistantModeDropDown.Location = new System.Drawing.Point(6, 201);
+            this.assistantModeDropDown.Location = new System.Drawing.Point(7, 241);
             this.assistantModeDropDown.Name = "assistantModeDropDown";
             this.assistantModeDropDown.Size = new System.Drawing.Size(89, 22);
             this.assistantModeDropDown.TabIndex = 22;
@@ -1610,8 +1668,8 @@
             this.splitContainer6.Panel2.Controls.Add(this.button1);
             this.splitContainer6.Panel2.Controls.Add(this.pictureBox4);
             this.splitContainer6.Panel2.Controls.Add(this.nextPicture);
-            this.splitContainer6.Size = new System.Drawing.Size(328, 241);
-            this.splitContainer6.SplitterDistance = 186;
+            this.splitContainer6.Size = new System.Drawing.Size(328, 263);
+            this.splitContainer6.SplitterDistance = 202;
             this.splitContainer6.TabIndex = 19;
             // 
             // assistantTopicGroupBox
@@ -1624,7 +1682,7 @@
             this.assistantTopicGroupBox.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.assistantTopicGroupBox.Location = new System.Drawing.Point(0, 0);
             this.assistantTopicGroupBox.Name = "assistantTopicGroupBox";
-            this.assistantTopicGroupBox.Size = new System.Drawing.Size(328, 186);
+            this.assistantTopicGroupBox.Size = new System.Drawing.Size(328, 202);
             this.assistantTopicGroupBox.TabIndex = 19;
             this.assistantTopicGroupBox.TabStop = false;
             this.assistantTopicGroupBox.Text = "FAtiMA-Toolkit";
@@ -1648,11 +1706,11 @@
             this.assistantTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.assistantTextBox.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.assistantTextBox.Font = new System.Drawing.Font("Gadugi", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.assistantTextBox.Location = new System.Drawing.Point(3, 22);
+            this.assistantTextBox.Location = new System.Drawing.Point(1, 27);
             this.assistantTextBox.Margin = new System.Windows.Forms.Padding(3);
             this.assistantTextBox.Name = "assistantTextBox";
             this.assistantTextBox.Padding = new System.Windows.Forms.Padding(3);
-            this.assistantTextBox.Size = new System.Drawing.Size(324, 153);
+            this.assistantTextBox.Size = new System.Drawing.Size(324, 172);
             this.assistantTextBox.TabIndex = 18;
             this.assistantTextBox.Text = "Don\'t forget to save your development using Ctrl+S";
             this.assistantTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1663,7 +1721,7 @@
             this.pictureBox3.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox3.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_last_401;
-            this.pictureBox3.Location = new System.Drawing.Point(273, 9);
+            this.pictureBox3.Location = new System.Drawing.Point(254, 17);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(41, 30);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1678,7 +1736,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button1.Font = new System.Drawing.Font("Gadugi", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.button1.Location = new System.Drawing.Point(111, 9);
+            this.button1.Location = new System.Drawing.Point(92, 17);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(119, 30);
             this.button1.TabIndex = 1;
@@ -1691,7 +1749,7 @@
             this.pictureBox4.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox4.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.left;
             this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox4.Location = new System.Drawing.Point(65, 9);
+            this.pictureBox4.Location = new System.Drawing.Point(46, 17);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(40, 30);
             this.pictureBox4.TabIndex = 25;
@@ -1703,7 +1761,7 @@
             this.nextPicture.BackColor = System.Drawing.Color.Transparent;
             this.nextPicture.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_divisa_circulada_à_direita_40;
             this.nextPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.nextPicture.Location = new System.Drawing.Point(236, 9);
+            this.nextPicture.Location = new System.Drawing.Point(217, 17);
             this.nextPicture.Name = "nextPicture";
             this.nextPicture.Size = new System.Drawing.Size(41, 30);
             this.nextPicture.TabIndex = 22;
@@ -1748,11 +1806,11 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCharacters)).EndInit();
-            this.groupBox6.ResumeLayout(false);
-            this.groupBox6.PerformLayout();
             this.tabControlIAT.ResumeLayout(false);
             this.Characters.ResumeLayout(false);
             this.CognitiveRules.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
             this.tabControlAssetEditor.ResumeLayout(false);
             this.DialogueEditor.ResumeLayout(false);
             this.DialogueEditor.PerformLayout();
@@ -1797,8 +1855,6 @@
             this.splitContainer7.ResumeLayout(false);
             this.groupBox14.ResumeLayout(false);
             this.groupBox14.PerformLayout();
-            this.splitContainer8.Panel1.ResumeLayout(false);
-            this.splitContainer8.Panel1.PerformLayout();
             this.splitContainer8.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer8)).EndInit();
             this.splitContainer8.ResumeLayout(false);
@@ -1858,7 +1914,6 @@
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadTemplateScenarioToolStripMenuItem;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBoxScenarioDescription;
         private System.Windows.Forms.GroupBox groupBox1;
@@ -1867,12 +1922,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button buttonRemoveCharacter;
         private System.Windows.Forms.Button buttonInspect;
-        private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.Button buttonSaveAsAssetStorage;
-        private System.Windows.Forms.Button buttonOpenAssetStorage;
-        private System.Windows.Forms.Button saveAssetStorageButton;
-        public System.Windows.Forms.TextBox textBoxPathAssetStorage;
-        private System.Windows.Forms.Button buttonNewAssetStorage;
         private System.Windows.Forms.TabControl tabControlIAT;
         private System.Windows.Forms.TabPage DialogueEditor;
         private System.Windows.Forms.GroupBox groupBox2;
@@ -1946,17 +1995,12 @@
         private System.Windows.Forms.SplitContainer splitContainer7;
         private System.Windows.Forms.SplitContainer splitContainer8;
         private System.Windows.Forms.SplitContainer splitContainer9;
-        private System.Windows.Forms.ToolStripMenuItem authoringAssistantToolStripMenuItem;
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.Button buttonAddCharacter;
         public System.Windows.Forms.Button buttonAddPlayerDialogueAction;
         private System.Windows.Forms.GroupBox assistantTopicGroupBox;
-        public System.Windows.Forms.ToolStripMenuItem computeDescriptionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem inspectCharacterToolStripMenuItem;
         private System.Windows.Forms.GroupBox groupBox9;
-        private System.Windows.Forms.ToolStripMenuItem metaBeliefListToolStripMenuItem;
         private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.ToolStripMenuItem generateDialogueActionsToolStripMenuItem;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DomainUpDown assistantModeDropDown;
@@ -1964,6 +2008,26 @@
         private System.Windows.Forms.GroupBox groupBox14;
         private System.Windows.Forms.TextBox scenarioNameTextBox;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ToolStripMenuItem cognitiveRulesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem newToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem rolePlayCharacterHelperToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem inspectCharacterToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem dialogueHelpersToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem generateDialogueActionsToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem cognitiveRulesToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem metaBeliefsPanelToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem scenarioToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem storyToScenarioWizardToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadTemplateScenarioToolStripMenuItem1;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.Button buttonSaveAsAssetStorage;
+        private System.Windows.Forms.Button buttonOpenAssetStorage;
+        private System.Windows.Forms.Button saveAssetStorageButton;
+        public System.Windows.Forms.TextBox textBoxPathAssetStorage;
+        private System.Windows.Forms.Button buttonNewAssetStorage;
     }
 }
 
