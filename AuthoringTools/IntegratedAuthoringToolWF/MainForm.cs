@@ -60,7 +60,8 @@ namespace IntegratedAuthoringToolWF
         private GroupBox lastGroupBoxHighlighted;
         private Panel lastPanelHighlighted;
 
-        
+        public ConnectToServerForm server;
+        public OutputManager outputManager;
 
         public MainForm()
         {
@@ -86,7 +87,10 @@ namespace IntegratedAuthoringToolWF
             tabControlIAT.SelectedIndexChanged += TabIndexChanged_Handler;
             tabControlAssetEditor.SelectedIndexChanged += TabIndexChanged_Handler;
             debugLabel.Text = "";
-            
+            server = new ConnectToServerForm();
+            outputManager = new OutputManager(this._iat, this._storage);
+
+
         }
 
 
@@ -1716,9 +1720,9 @@ namespace IntegratedAuthoringToolWF
         private void importStoryButton_Click(object sender, EventArgs e)
         {
             string description = textBoxScenarioDescription.Text;
-            var story = new ComputeDescriptionForm(_iat, _storage, description);
+            var story = new ComputeDescriptionForm(this.outputManager, this.server, description);
            
-            story.ShowDialog();
+           // story.ShowDialog();
             OnAssetDataLoaded(_iat);
             OnAssetStorageChange();
         }
@@ -2611,5 +2615,15 @@ namespace IntegratedAuthoringToolWF
             this.UpdateSelectedComponent(tabControlAssetEditor.SelectedTab.Name);
         }
 
+        private void wizardServerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            server.Show();
+        }
+
+        private void beliefWizarToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           var window = new GenerateBeliefsForm(this.server, outputManager);
+           OnAssetDataLoaded(_iat);
+        }
     }
 }

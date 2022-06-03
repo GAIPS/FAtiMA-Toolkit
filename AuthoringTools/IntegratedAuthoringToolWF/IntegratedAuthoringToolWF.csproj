@@ -99,12 +99,25 @@
     <Compile Include="IEP\ComputeDescriptionForm.Designer.cs">
       <DependentUpon>ComputeDescriptionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="IEP\ConnectToServerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IEP\ConnectToServerForm.Designer.cs">
+      <DependentUpon>ConnectToServerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IEP\GenerateBeliefsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IEP\GenerateBeliefsForm.Designer.cs">
+      <DependentUpon>GenerateBeliefsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="IEP\IEPOutputForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="IEP\IEPOutputForm.Designer.cs">
       <DependentUpon>IEPOutputForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="IEP\OutputManager.cs" />
     <Compile Include="ImageForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -193,6 +206,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="IEP\ComputeDescriptionForm.resx">
       <DependentUpon>ComputeDescriptionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IEP\ConnectToServerForm.resx">
+      <DependentUpon>ConnectToServerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IEP\GenerateBeliefsForm.resx">
+      <DependentUpon>GenerateBeliefsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="IEP\IEPOutputForm.resx">
       <DependentUpon>IEPOutputForm.cs</DependentUpon>
@@ -391,6 +410,13 @@
     <None Include="Resources\inescid.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\enter %281%29.png" />
+    <None Include="Resources\enter.png" />
+    <None Include="Resources\upRight1.png" />
+    <None Include="Resources\downLeft.png" />
+    <None Include="Resources\enter2 - Copy.png" />
+    <None Include="Resources\downRight.png" />
+    <None Include="Resources\upRight.png" />
     <None Include="Resources\wizard-hat.png" />
     <None Include="Resources\icons8-system-report-40.png" />
     <None Include="Resources\icons8-system-information-40.png" />
