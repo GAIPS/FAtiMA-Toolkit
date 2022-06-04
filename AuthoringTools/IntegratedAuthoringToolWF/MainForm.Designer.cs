@@ -31,10 +31,12 @@
             this.loadTemplateScenarioToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.rolePlayCharacterHelperToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.inspectCharacterToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.beliefWizarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cognitiveRulesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.metaBeliefsPanelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dialogueHelpersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateDialogueActionsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.wizardServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
@@ -136,8 +138,6 @@
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.nextPicture = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.wizardServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.beliefWizarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -356,9 +356,17 @@
             // inspectCharacterToolStripMenuItem1
             // 
             this.inspectCharacterToolStripMenuItem1.Name = "inspectCharacterToolStripMenuItem1";
-            this.inspectCharacterToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.inspectCharacterToolStripMenuItem1.Size = new System.Drawing.Size(184, 26);
             this.inspectCharacterToolStripMenuItem1.Text = "Inspect Character";
             this.inspectCharacterToolStripMenuItem1.Click += new System.EventHandler(this.inspectCharacterToolStripMenuItem_Click);
+            // 
+            // beliefWizarToolStripMenuItem
+            // 
+            this.beliefWizarToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.wizard_hat;
+            this.beliefWizarToolStripMenuItem.Name = "beliefWizarToolStripMenuItem";
+            this.beliefWizarToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.beliefWizarToolStripMenuItem.Text = "Text to Belief Wizard";
+            this.beliefWizarToolStripMenuItem.Click += new System.EventHandler(this.beliefWizarToolStripMenuItem_Click);
             // 
             // cognitiveRulesToolStripMenuItem1
             // 
@@ -381,7 +389,7 @@
             this.generateDialogueActionsToolStripMenuItem1});
             this.dialogueHelpersToolStripMenuItem.Name = "dialogueHelpersToolStripMenuItem";
             this.dialogueHelpersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.dialogueHelpersToolStripMenuItem.Text = "Dialogue";
+            this.dialogueHelpersToolStripMenuItem.Text = "Dialogues";
             // 
             // generateDialogueActionsToolStripMenuItem1
             // 
@@ -389,6 +397,13 @@
             this.generateDialogueActionsToolStripMenuItem1.Size = new System.Drawing.Size(214, 22);
             this.generateDialogueActionsToolStripMenuItem1.Text = "Generate Dialogue Actions";
             this.generateDialogueActionsToolStripMenuItem1.Click += new System.EventHandler(this.generateDialogueActionsToolStripMenuItem_Click);
+            // 
+            // wizardServerToolStripMenuItem
+            // 
+            this.wizardServerToolStripMenuItem.Name = "wizardServerToolStripMenuItem";
+            this.wizardServerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.wizardServerToolStripMenuItem.Text = "Wizard Server";
+            this.wizardServerToolStripMenuItem.Click += new System.EventHandler(this.wizardServerToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -1783,21 +1798,6 @@
             this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTip1.ToolTipTitle = "IAT Tooltip";
             this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
-            // 
-            // wizardServerToolStripMenuItem
-            // 
-            this.wizardServerToolStripMenuItem.Name = "wizardServerToolStripMenuItem";
-            this.wizardServerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.wizardServerToolStripMenuItem.Text = "Wizard Server";
-            this.wizardServerToolStripMenuItem.Click += new System.EventHandler(this.wizardServerToolStripMenuItem_Click);
-            // 
-            // beliefWizarToolStripMenuItem
-            // 
-            this.beliefWizarToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.wizard_hat;
-            this.beliefWizarToolStripMenuItem.Name = "beliefWizarToolStripMenuItem";
-            this.beliefWizarToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
-            this.beliefWizarToolStripMenuItem.Text = "Text to Belief Wizard";
-            this.beliefWizarToolStripMenuItem.Click += new System.EventHandler(this.beliefWizarToolStripMenuItem_Click);
             // 
             // MainForm
             // 

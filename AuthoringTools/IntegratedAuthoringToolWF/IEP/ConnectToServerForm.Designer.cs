@@ -108,6 +108,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.portText.Name = "portText";
             this.portText.Size = new System.Drawing.Size(83, 23);
             this.portText.TabIndex = 8;
+            this.portText.TextChanged += new System.EventHandler(this.portText_TextChanged);
             // 
             // serverIP
             // 
@@ -117,6 +118,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.serverIP.Name = "serverIP";
             this.serverIP.Size = new System.Drawing.Size(167, 23);
             this.serverIP.TabIndex = 6;
+            this.serverIP.TextChanged += new System.EventHandler(this.serverIP_TextChanged);
             // 
             // label2
             // 

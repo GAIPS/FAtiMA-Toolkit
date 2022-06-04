@@ -77,19 +77,20 @@ namespace IntegratedAuthoringToolWF.IEP
                 description = descriptionText.Text;
             }
 
-            var iepResult = _server.ProcessDescription(description);
+            _server.ProcessDescription(description, HandleOutput );
 
+        }
 
-            if (iepResult != "")
+        public void HandleOutput() { 
+
+            if (_server.result != "")
             {
 
-                var f = new IEPOutputForm(this, _outputManager, iepResult);
-
+                var f = new IEPOutputForm(this, _outputManager, _server.result);
+                this.Close();
                 f.ShowDialog();
 
             }
-
-
 
         }
         private void debugLabel_Click(object sender, EventArgs e)

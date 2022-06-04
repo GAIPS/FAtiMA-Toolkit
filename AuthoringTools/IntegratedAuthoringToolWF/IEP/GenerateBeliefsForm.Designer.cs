@@ -29,6 +29,9 @@ namespace IntegratedAuthoringToolWF.IEP
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GenerateBeliefsForm));
             this.inputBox = new System.Windows.Forms.GroupBox();
             this.descriptionText = new System.Windows.Forms.RichTextBox();
@@ -36,6 +39,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.scenarioTextBox = new System.Windows.Forms.RichTextBox();
             this.internalCharacterView = new System.Windows.Forms.DataGridView();
             this.resultingScenarioGroupBox = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.dataGridViewGoals = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
@@ -44,7 +48,6 @@ namespace IntegratedAuthoringToolWF.IEP
             this.acceptButton = new System.Windows.Forms.Button();
             this.processInputButton = new System.Windows.Forms.Button();
             this.processOutputButton = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.inputBox.SuspendLayout();
             this.outputBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.internalCharacterView)).BeginInit();
@@ -101,6 +104,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.scenarioTextBox.Location = new System.Drawing.Point(6, 18);
             this.scenarioTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.scenarioTextBox.Name = "scenarioTextBox";
+            this.scenarioTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.scenarioTextBox.Size = new System.Drawing.Size(267, 90);
             this.scenarioTextBox.TabIndex = 2;
             this.scenarioTextBox.Text = "";
@@ -116,6 +120,14 @@ namespace IntegratedAuthoringToolWF.IEP
             | System.Windows.Forms.AnchorStyles.Right)));
             this.internalCharacterView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.internalCharacterView.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.internalCharacterView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.internalCharacterView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.internalCharacterView.ImeMode = System.Windows.Forms.ImeMode.On;
             this.internalCharacterView.Location = new System.Drawing.Point(6, 46);
@@ -125,7 +137,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.internalCharacterView.RowHeadersWidth = 51;
             this.internalCharacterView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.internalCharacterView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.internalCharacterView.Size = new System.Drawing.Size(193, 58);
+            this.internalCharacterView.Size = new System.Drawing.Size(195, 58);
             this.internalCharacterView.TabIndex = 16;
             this.internalCharacterView.SelectionChanged += new System.EventHandler(this.internalCharacterView_SelectionChanged);
             // 
@@ -140,10 +152,19 @@ namespace IntegratedAuthoringToolWF.IEP
             this.resultingScenarioGroupBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.resultingScenarioGroupBox.Location = new System.Drawing.Point(18, 125);
             this.resultingScenarioGroupBox.Name = "resultingScenarioGroupBox";
-            this.resultingScenarioGroupBox.Size = new System.Drawing.Size(477, 164);
+            this.resultingScenarioGroupBox.Size = new System.Drawing.Size(479, 179);
             this.resultingScenarioGroupBox.TabIndex = 18;
             this.resultingScenarioGroupBox.TabStop = false;
             this.resultingScenarioGroupBox.Text = "Resulting Scenario:";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(7, 25);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(76, 16);
+            this.label1.TabIndex = 21;
+            this.label1.Text = "Characters:";
             // 
             // label3
             // 
@@ -165,6 +186,14 @@ namespace IntegratedAuthoringToolWF.IEP
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewGoals.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewGoals.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewGoals.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridViewGoals.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewGoals.ImeMode = System.Windows.Forms.ImeMode.On;
             this.dataGridViewGoals.Location = new System.Drawing.Point(10, 126);
@@ -174,7 +203,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.dataGridViewGoals.RowHeadersWidth = 51;
             this.dataGridViewGoals.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewGoals.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewGoals.Size = new System.Drawing.Size(189, 32);
+            this.dataGridViewGoals.Size = new System.Drawing.Size(191, 47);
             this.dataGridViewGoals.TabIndex = 19;
             // 
             // label2
@@ -197,6 +226,14 @@ namespace IntegratedAuthoringToolWF.IEP
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewBeliefs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewBeliefs.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridViewBeliefs.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridViewBeliefs.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewBeliefs.ImeMode = System.Windows.Forms.ImeMode.On;
             this.dataGridViewBeliefs.Location = new System.Drawing.Point(209, 36);
@@ -206,7 +243,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.dataGridViewBeliefs.RowHeadersWidth = 51;
             this.dataGridViewBeliefs.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewBeliefs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewBeliefs.Size = new System.Drawing.Size(252, 122);
+            this.dataGridViewBeliefs.Size = new System.Drawing.Size(254, 137);
             this.dataGridViewBeliefs.TabIndex = 17;
             // 
             // cancelButton
@@ -280,15 +317,6 @@ namespace IntegratedAuthoringToolWF.IEP
             this.processOutputButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.processOutputButton.UseVisualStyleBackColor = true;
             this.processOutputButton.Click += new System.EventHandler(this.processOutputButton_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 25);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(76, 16);
-            this.label1.TabIndex = 21;
-            this.label1.Text = "Characters:";
             // 
             // GenerateBeliefsForm
             // 

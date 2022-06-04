@@ -22,7 +22,7 @@ namespace IntegratedAuthoringToolWF.IEP
         private static string IP = "146.193.224.192";
         private static string PORT = "8080";
 
-        private string result = "";
+        public string result = "";
         public bool connected = false;
 
         public ConnectToServerForm()
@@ -33,20 +33,9 @@ namespace IntegratedAuthoringToolWF.IEP
             debugLabel.Text = "Waiting for connection";
         }
 
-        internal string ProcessDescription(string description)
+        internal void ProcessDescription(string description, MethodInvoker run)
         {
-            ProcessDescriptionAsync(description, GetScenarioAsync()).GetAwaiter().GetResult();
-
-            if (this.result != "")
-            {
-
-                // Do stuff
-                var ret = result;
-                this.result = "";
-                return ret;
-            }
-
-            else return "";
+            ProcessDescriptionAsync(description, run).GetAwaiter().GetResult();
         }
 
         async Task Handshake()
@@ -105,7 +94,7 @@ namespace IntegratedAuthoringToolWF.IEP
         }
 
 
-        async Task ProcessDescriptionAsync(string _description, Task run)
+        async Task ProcessDescriptionAsync(string _description, MethodInvoker run)
         {
             client.DefaultRequestHeaders.UserAgent.Clear();
             client.DefaultRequestHeaders.UserAgent.TryParseAdd(Environment.MachineName);
@@ -118,7 +107,7 @@ namespace IntegratedAuthoringToolWF.IEP
 
 
                 //Collect the results
-                await run.ConfigureAwait(false);
+                await GetScenarioAsync(run).ConfigureAwait(false);
 
             }
             catch (Exception f)
@@ -132,34 +121,29 @@ namespace IntegratedAuthoringToolWF.IEP
 
         }
 
-        async Task GetScenarioAsync()
+        async Task GetScenarioAsync(MethodInvoker run)
         {
             IP = IP.Replace(" ", "");
             PORT = PORT.Replace(" ", "");
             var responseBytes = client.GetByteArrayAsync("http://" + IP + ":" + PORT).Result;
             result = Encoding.Default.GetString(responseBytes);
-        }
-
-        public string GetScenario(string description)
-        {
             
-            ProcessDescriptionAsync(description, GetScenarioAsync()).GetAwaiter().GetResult();
-
-            if (this.result != "")
-            {
-
-                // Do stuff
-                var ret = result;
-                this.result = "";
-                return ret;
-            }
-
-            else return "";
+            run.Invoke();
         }
 
         private void connectToServer_Click(object sender, EventArgs e)
         {
-            Handshake();
+            Handshake().GetAwaiter().GetResult();
+        }
+
+        private void serverIP_TextChanged(object sender, EventArgs e)
+        {
+            IP = this.serverIP.Text;
+        }
+
+        private void portText_TextChanged(object sender, EventArgs e)
+        {
+            PORT = this.portText.Text;
         }
     }
 

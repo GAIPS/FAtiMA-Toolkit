@@ -24,9 +24,10 @@ namespace IntegratedAuthoringToolWF.IEP
             _server = server;
             _manager = manager;
             resultingScenarioGroupBox.Enabled = false;
-            outputBox.Enabled = false;
+            this.scenarioTextBox.Enabled = false;
             processOutputButton.Enabled = false;
             processInputButton.Enabled = false;
+            InitializePanels();
             if (!_server.connected)
             {
                 MessageBox.Show("Please connect to the Wizard Server");
@@ -37,9 +38,10 @@ namespace IntegratedAuthoringToolWF.IEP
             if(_server.connected)
             {
                 processInputButton.Enabled = true;
+                this.ShowDialog();
             }
 
-            InitializePanels();
+            
         }
 
 
@@ -67,6 +69,7 @@ namespace IntegratedAuthoringToolWF.IEP
         {
             // Characters
             var _characters = new BindingListView<CharacterNameAndMoodDTO>(new List<CharacterNameAndMoodDTO>());
+            resultingScenarioGroupBox.Enabled = true;
 
             _characters.DataSource = _manager._iatAux.Characters.Select(c =>
                         new CharacterNameAndMoodDTO
@@ -79,37 +82,34 @@ namespace IntegratedAuthoringToolWF.IEP
             internalCharacterView.ClearSelection();
             internalCharacterView.Refresh();
             this.internalCharacterView_SelectionChanged(this, new EventArgs());
-
-            resultingScenarioGroupBox.Enabled = true;
+           
         }
 
 
         private void button1_Click(object sender, EventArgs e)
         {
             //Accept Button
-
             _manager.AcceptOutput();
             this.Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            _manager.RejectOutput();
             this.Close();
             //Cancel Button
         }
 
         private void processInputButton_Click(object sender, EventArgs e)
         {
-            var result = this._server.ProcessDescription(this.descriptionText.Text);
-            if (result != "")
-            {
+          _server.ProcessDescription(this.descriptionText.Text, ReceivedInput);
+        }
 
-                scenarioTextBox.Text = result;
-                outputBox.Enabled = true;
+        public void ReceivedInput()
+        {
+           this.scenarioTextBox.Text = _server.result;
+            this.scenarioTextBox.Enabled = true;
+            if (this.scenarioTextBox.Text != "")
                 processOutputButton.Enabled = true;
-            }
-           
         }
 
         private void internalCharacterView_SelectionChanged(object sender, EventArgs e)
@@ -157,7 +157,7 @@ namespace IntegratedAuthoringToolWF.IEP
         private void processOutputButton_Click(object sender, EventArgs e)
         {
            
-            _manager.ComputeStory(outputBox.Text);
+            _manager.ComputeStory(scenarioTextBox.Text);
 
             LoadOutput();
         }
