@@ -303,6 +303,16 @@ namespace IntegratedAuthoringToolWF.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap database {
+            get {
+                object obj = ResourceManager.GetObject("database", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap downLeft {
             get {
                 object obj = ResourceManager.GetObject("downLeft", resourceCulture);
@@ -445,6 +455,16 @@ namespace IntegratedAuthoringToolWF.Properties {
         internal static System.Drawing.Bitmap icons8_chatbot_40 {
             get {
                 object obj = ResourceManager.GetObject("icons8-chatbot-40", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_chatbot_401 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-chatbot-401", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -622,6 +642,16 @@ namespace IntegratedAuthoringToolWF.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_web_design_401 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-web-design-401", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap inescid_logo {
             get {
                 object obj = ResourceManager.GetObject("inescid_logo", resourceCulture);
@@ -645,6 +675,26 @@ namespace IntegratedAuthoringToolWF.Properties {
         internal static System.Drawing.Bitmap logo_Final_Horizontal_Black {
             get {
                 object obj = ResourceManager.GetObject("logo_Final_Horizontal_Black", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap magic_wand {
+            get {
+                object obj = ResourceManager.GetObject("magic-wand", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap magic_wand1 {
+            get {
+                object obj = ResourceManager.GetObject("magic-wand1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -674,6 +724,16 @@ namespace IntegratedAuthoringToolWF.Properties {
         internal static System.Drawing.Bitmap NormalFace1 {
             get {
                 object obj = ResourceManager.GetObject("NormalFace1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap NormalFace2 {
+            get {
+                object obj = ResourceManager.GetObject("NormalFace2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -809,11 +869,51 @@ namespace IntegratedAuthoringToolWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap right_arrow2 {
+            get {
+                object obj = ResourceManager.GetObject("right-arrow2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to An error occurred when trying to load one the characters in the scenario..
         /// </summary>
         internal static string RPCLoadingError {
             get {
                 return ResourceManager.GetString("RPCLoadingError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap rules {
+            get {
+                object obj = ResourceManager.GetObject("rules", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap scenario {
+            get {
+                object obj = ResourceManager.GetObject("scenario", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap scenario1 {
+            get {
+                object obj = ResourceManager.GetObject("scenario1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

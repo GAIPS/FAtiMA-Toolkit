@@ -118,6 +118,12 @@
       <DependentUpon>IEPOutputForm.cs</DependentUpon>
     </Compile>
     <Compile Include="IEP\OutputManager.cs" />
+    <Compile Include="IEP\QuickAddBeliefs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IEP\QuickAddBeliefs.Designer.cs">
+      <DependentUpon>QuickAddBeliefs.cs</DependentUpon>
+    </Compile>
     <Compile Include="ImageForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -215,6 +221,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="IEP\IEPOutputForm.resx">
       <DependentUpon>IEPOutputForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IEP\QuickAddBeliefs.resx">
+      <DependentUpon>QuickAddBeliefs.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ImageForm.resx">
       <DependentUpon>ImageForm.cs</DependentUpon>
@@ -410,6 +419,16 @@
     <None Include="Resources\inescid.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\icons8-chatbot-401.png" />
+    <None Include="Resources\scenario1.png" />
+    <None Include="Resources\scenario.png" />
+    <None Include="Resources\rules.png" />
+    <None Include="Resources\magic-wand1.png" />
+    <None Include="Resources\magic-wand.png" />
+    <None Include="Resources\database.png" />
+    <None Include="Resources\icons8-web-design-401.png" />
+    <None Include="Resources\NormalFace2.png" />
+    <None Include="Resources\right-arrow2.png" />
     <None Include="Resources\enter %281%29.png" />
     <None Include="Resources\enter.png" />
     <None Include="Resources\upRight1.png" />

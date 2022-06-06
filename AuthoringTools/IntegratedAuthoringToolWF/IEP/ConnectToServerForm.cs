@@ -16,7 +16,7 @@ namespace IntegratedAuthoringToolWF.IEP
     {
         private static readonly HttpClient client = new HttpClient();
 
-        public Form currentForm;
+      //  public Form currentForm;
 
         // Default Server IP + PORT
         private static string IP = "146.193.224.192";
@@ -59,16 +59,12 @@ namespace IntegratedAuthoringToolWF.IEP
                     panel4.BackgroundImage = Properties.Resources.green;
                     connected = true;
                     this.Close();
-                    currentForm.ShowDialog();
-
                 }
                 else
                 {
                     debugLabel.Text = "Code: " + r.StatusCode;
                     panel4.BackgroundImage = Properties.Resources.red;
                 }
-                //Collect the results
-
             }
 
             catch (Exception f)

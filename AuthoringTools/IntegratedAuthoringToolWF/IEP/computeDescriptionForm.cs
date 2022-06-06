@@ -45,14 +45,14 @@ namespace IntegratedAuthoringToolWF.IEP
             if (!_server.connected)
             {
                 MessageBox.Show("Please connect to the Wizard Server");
-                _server.currentForm = this;
-                _server.ShowDialog();
+              //  _server.currentForm = this;
+                _server.ShowDialog(this);
             }
 
             if (_server.connected)
             {
                 this.computeStoryButton.Enabled = true;
-                this.ShowDialog();
+                //this.ShowDialog();
             }
 
         }
