@@ -10,13 +10,13 @@ using System.Windows.Forms;
 
 namespace IntegratedAuthoringToolWF.IEP
 {
-    public partial class QuickAddBeliefs : Form
+    public partial class QuickAddWizard : Form
     {
         ConnectToServerForm _server;
         OutputManager _manager;
         string result;
 
-        public QuickAddBeliefs(ConnectToServerForm server, OutputManager manager)
+        public QuickAddWizard(ConnectToServerForm server, OutputManager manager)
         {
             InitializeComponent();
             _server = server;

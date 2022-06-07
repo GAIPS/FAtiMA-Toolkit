@@ -130,7 +130,7 @@ namespace IntegratedAuthoringToolWF.IEP
         private void button3_Click(object sender, EventArgs e)
         {
             _manager.ComputeStory(this.scenarioTextBox.Text);
-            this.LoadOutput();
+            LoadOutput();
         }
 
         private void OutputInformation_Click(object sender, EventArgs e)

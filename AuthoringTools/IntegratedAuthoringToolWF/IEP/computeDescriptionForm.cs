@@ -77,7 +77,7 @@ namespace IntegratedAuthoringToolWF.IEP
                 description = descriptionText.Text;
             }
 
-            _server.ProcessDescription(description, HandleOutput );
+            _server.ProcessDescription(description, this.HandleOutput );
 
         }
 
@@ -85,13 +85,10 @@ namespace IntegratedAuthoringToolWF.IEP
 
             if (_server.result != "")
             {
-
                 var f = new IEPOutputForm(this, _outputManager, _server.result);
-                this.Close();
-                f.ShowDialog();
-
+                f.ShowDialog(this);
+               // this.Close();
             }
-
         }
         private void debugLabel_Click(object sender, EventArgs e)
         {
@@ -127,7 +124,9 @@ namespace IntegratedAuthoringToolWF.IEP
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://fatima-toolkit.eu/using-the-compute-story-tool/");
+            instructionsBox.Visible = true;
+            if(instructionsBox.Visible == true)
+                System.Diagnostics.Process.Start("https://fatima-toolkit.eu/using-the-compute-story-tool/");
         }
 
         private void panel2_Paint(object sender, PaintEventArgs e)

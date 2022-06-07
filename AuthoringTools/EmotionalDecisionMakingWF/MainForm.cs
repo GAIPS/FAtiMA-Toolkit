@@ -437,5 +437,36 @@ namespace EmotionalDecisionMakingWF
 
 
         }
+
+        private void groupBox8_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void conditionTesterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(!debugGroup.Visible)
+                debugGroup.Visible = true;
+
+            else
+            {
+                debugGroup.Visible = false;
+            }
+        }
+
+        private void debugGroup_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void splitContainer1_Panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

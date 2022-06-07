@@ -35,7 +35,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.instructionsBox = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.descriptionText = new System.Windows.Forms.RichTextBox();
@@ -43,7 +43,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel2.SuspendLayout();
-            this.groupBox5.SuspendLayout();
+            this.instructionsBox.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.ServerPanel.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -52,7 +52,7 @@ namespace IntegratedAuthoringToolWF.IEP
             // computeStoryButton
             // 
             this.computeStoryButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.computeStoryButton.Location = new System.Drawing.Point(162, 328);
+            this.computeStoryButton.Location = new System.Drawing.Point(166, 318);
             this.computeStoryButton.Name = "computeStoryButton";
             this.computeStoryButton.Size = new System.Drawing.Size(180, 34);
             this.computeStoryButton.TabIndex = 2;
@@ -71,7 +71,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.label1.Margin = new System.Windows.Forms.Padding(4);
             this.label1.Name = "label1";
             this.label1.Padding = new System.Windows.Forms.Padding(4);
-            this.label1.Size = new System.Drawing.Size(499, 57);
+            this.label1.Size = new System.Drawing.Size(506, 57);
             this.label1.TabIndex = 0;
             this.label1.Text = resources.GetString("label1.Text");
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -81,7 +81,7 @@ namespace IntegratedAuthoringToolWF.IEP
             // 
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Image = global::IntegratedAuthoringToolWF.Properties.Resources.iconHelp;
-            this.pictureBox1.Location = new System.Drawing.Point(477, 331);
+            this.pictureBox1.Location = new System.Drawing.Point(477, 321);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(30, 31);
@@ -93,28 +93,27 @@ namespace IntegratedAuthoringToolWF.IEP
             // panel2
             // 
             this.panel2.AutoSize = true;
-            this.panel2.Controls.Add(this.groupBox5);
-            this.panel2.Controls.Add(this.groupBox3);
-            this.panel2.Controls.Add(this.pictureBox1);
+            this.panel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.panel2.Controls.Add(this.ServerPanel);
-            this.panel2.Controls.Add(this.computeStoryButton);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(518, 372);
+            this.panel2.Size = new System.Drawing.Size(518, 362);
             this.panel2.TabIndex = 3;
             this.panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.panel2_Paint);
             // 
-            // groupBox5
+            // instructionsBox
             // 
-            this.groupBox5.BackColor = System.Drawing.Color.Transparent;
-            this.groupBox5.Controls.Add(this.label6);
-            this.groupBox5.Location = new System.Drawing.Point(4, 85);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(511, 88);
-            this.groupBox5.TabIndex = 5;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Instructions:";
+            this.instructionsBox.BackColor = System.Drawing.Color.Transparent;
+            this.instructionsBox.Controls.Add(this.label6);
+            this.instructionsBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.instructionsBox.Location = new System.Drawing.Point(0, 85);
+            this.instructionsBox.Name = "instructionsBox";
+            this.instructionsBox.Size = new System.Drawing.Size(518, 88);
+            this.instructionsBox.TabIndex = 5;
+            this.instructionsBox.TabStop = false;
+            this.instructionsBox.Text = "Instructions:";
+            this.instructionsBox.Visible = false;
             // 
             // label6
             // 
@@ -129,7 +128,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.label6.Margin = new System.Windows.Forms.Padding(4);
             this.label6.Name = "label6";
             this.label6.Padding = new System.Windows.Forms.Padding(4);
-            this.label6.Size = new System.Drawing.Size(381, 78);
+            this.label6.Size = new System.Drawing.Size(388, 78);
             this.label6.TabIndex = 1;
             this.label6.Text = "1. Connect to the server using the button \"Connect to Server\". \r\n2. Write a descr" +
     "iption of the intended scenario. \r\n3. Press the \"Compute Input\" button. \r\n4. Acc" +
@@ -138,9 +137,12 @@ namespace IntegratedAuthoringToolWF.IEP
             // 
             // groupBox3
             // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox3.Controls.Add(this.descriptionText);
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(4, 179);
+            this.groupBox3.Location = new System.Drawing.Point(3, 179);
             this.groupBox3.MaximumSize = new System.Drawing.Size(511, 136);
             this.groupBox3.MinimumSize = new System.Drawing.Size(511, 136);
             this.groupBox3.Name = "groupBox3";
@@ -171,21 +173,26 @@ namespace IntegratedAuthoringToolWF.IEP
             // ServerPanel
             // 
             this.ServerPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.ServerPanel.Controls.Add(this.computeStoryButton);
+            this.ServerPanel.Controls.Add(this.pictureBox1);
+            this.ServerPanel.Controls.Add(this.groupBox3);
+            this.ServerPanel.Controls.Add(this.instructionsBox);
             this.ServerPanel.Controls.Add(this.groupBox1);
-            this.ServerPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ServerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ServerPanel.Location = new System.Drawing.Point(0, 0);
             this.ServerPanel.Margin = new System.Windows.Forms.Padding(2);
             this.ServerPanel.Name = "ServerPanel";
-            this.ServerPanel.Size = new System.Drawing.Size(518, 80);
+            this.ServerPanel.Size = new System.Drawing.Size(518, 362);
             this.ServerPanel.TabIndex = 1;
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.groupBox1.Location = new System.Drawing.Point(4, 3);
+            this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(511, 77);
+            this.groupBox1.Size = new System.Drawing.Size(518, 85);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tool Description";
@@ -198,7 +205,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
             this.CausesValidation = false;
-            this.ClientSize = new System.Drawing.Size(518, 372);
+            this.ClientSize = new System.Drawing.Size(518, 362);
             this.Controls.Add(this.panel2);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.HelpButton = true;
@@ -212,7 +219,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.Shown += new System.EventHandler(this.ComputeDescriptionForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel2.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
+            this.instructionsBox.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.ServerPanel.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
@@ -231,7 +238,7 @@ namespace IntegratedAuthoringToolWF.IEP
         private System.Windows.Forms.RichTextBox descriptionText;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.GroupBox instructionsBox;
         private System.Windows.Forms.Label label6;
     }
 }

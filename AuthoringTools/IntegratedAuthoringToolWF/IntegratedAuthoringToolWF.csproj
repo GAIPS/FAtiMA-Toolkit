@@ -118,11 +118,11 @@
       <DependentUpon>IEPOutputForm.cs</DependentUpon>
     </Compile>
     <Compile Include="IEP\OutputManager.cs" />
-    <Compile Include="IEP\QuickAddBeliefs.cs">
+    <Compile Include="IEP\QuickAddWizard.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="IEP\QuickAddBeliefs.Designer.cs">
-      <DependentUpon>QuickAddBeliefs.cs</DependentUpon>
+    <Compile Include="IEP\QuickAddWizard.Designer.cs">
+      <DependentUpon>QuickAddWizard.cs</DependentUpon>
     </Compile>
     <Compile Include="ImageForm.cs">
       <SubType>Form</SubType>
@@ -222,8 +222,8 @@
     <EmbeddedResource Include="IEP\IEPOutputForm.resx">
       <DependentUpon>IEPOutputForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="IEP\QuickAddBeliefs.resx">
-      <DependentUpon>QuickAddBeliefs.cs</DependentUpon>
+    <EmbeddedResource Include="IEP\QuickAddWizard.resx">
+      <DependentUpon>QuickAddWizard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ImageForm.resx">
       <DependentUpon>ImageForm.cs</DependentUpon>

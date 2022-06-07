@@ -1721,7 +1721,7 @@ namespace IntegratedAuthoringToolWF
         private void importStoryButton_Click(object sender, EventArgs e)
         {
             string description = textBoxScenarioDescription.Text;
-            var story = new ComputeDescriptionForm(this.outputManager, this.server, description);
+            var story = new ComputeDescriptionForm(this.outputManager, this.server, description).ShowDialog(this);
            
            // story.ShowDialog();
             OnAssetDataLoaded(_iat);
@@ -2266,6 +2266,7 @@ namespace IntegratedAuthoringToolWF
                     break;
 
                 case "File System - Cognitive Rules File": // File System Part 2
+                    this.tabControlIAT.SelectedIndex = 1;
                     HighlightButton(buttonNewAssetStorage);
                     break;
 
@@ -2649,12 +2650,14 @@ namespace IntegratedAuthoringToolWF
         {
            var window = new GenerateBeliefsForm(this.server, outputManager).ShowDialog(this);
            OnAssetDataLoaded(_iat);
+            OnAssetStorageChange();
         }
 
-        private void beliefsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void quickAddToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var window = new QuickAddBeliefs(this.server, outputManager).ShowDialog(this);
+            var window = new QuickAddWizard(this.server, outputManager).ShowDialog(this);
             OnAssetDataLoaded(_iat);
+            OnAssetStorageChange();
         }
     }
 }

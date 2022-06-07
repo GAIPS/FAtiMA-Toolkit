@@ -63,6 +63,7 @@
             // 
             // tableLayoutPanel2
             // 
+            this.tableLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel2.ColumnCount = 5;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
@@ -95,8 +96,10 @@
             // 
             // remove_button
             // 
+            this.remove_button.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.remove_button.Dock = System.Windows.Forms.DockStyle.Fill;
             this.remove_button.Location = new System.Drawing.Point(127, 3);
+            this.remove_button.MinimumSize = new System.Drawing.Size(118, 30);
             this.remove_button.Name = "remove_button";
             this.remove_button.Size = new System.Drawing.Size(118, 30);
             this.remove_button.TabIndex = 2;
@@ -147,10 +150,11 @@
             // 
             this.dataView.AllowUserToAddRows = false;
             this.dataView.AllowUserToDeleteRows = false;
+            this.dataView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.dataView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataView.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.dataView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataView.Location = new System.Drawing.Point(3, 3);
             this.dataView.MultiSelect = false;
             this.dataView.Name = "dataView";
