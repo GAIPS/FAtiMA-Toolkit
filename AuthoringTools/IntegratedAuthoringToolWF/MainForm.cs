@@ -44,8 +44,8 @@ namespace IntegratedAuthoringToolWF
         private CommeillFautWF.MainForm _cifForm;
         private RolePlayCharacterWF.MainForm _rpcForm;
 
-        private IntegratedAuthoringToolAsset _iat;
-        private AssetStorage _storage;
+        public IntegratedAuthoringToolAsset _iat;
+        public AssetStorage _storage;
         public string _currentScenarioFilePath;
 
         private IList<RolePlayCharacterAsset> _agentsInSimulation;
@@ -1722,8 +1722,8 @@ namespace IntegratedAuthoringToolWF
         {
             string description = textBoxScenarioDescription.Text;
             var story = new ComputeDescriptionForm(this.outputManager, this.server, description).ShowDialog(this);
-           
-           // story.ShowDialog();
+            this._iat = outputManager._mainIAT;
+            this._storage = outputManager._mainStorage;
             OnAssetDataLoaded(_iat);
             OnAssetStorageChange();
         }
@@ -2649,13 +2649,17 @@ namespace IntegratedAuthoringToolWF
         private void beliefWizarToolStripMenuItem_Click(object sender, EventArgs e)
         {
            var window = new GenerateBeliefsForm(this.server, outputManager).ShowDialog(this);
-           OnAssetDataLoaded(_iat);
+            this._iat = outputManager._mainIAT;
+            this._storage = outputManager._mainStorage;
+            OnAssetDataLoaded(_iat);
             OnAssetStorageChange();
         }
 
         private void quickAddToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var window = new QuickAddWizard(this.server, outputManager).ShowDialog(this);
+            this._iat = outputManager._mainIAT;
+            this._storage = outputManager._mainStorage;
             OnAssetDataLoaded(_iat);
             OnAssetStorageChange();
         }

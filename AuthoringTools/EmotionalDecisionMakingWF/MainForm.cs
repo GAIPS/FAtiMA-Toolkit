@@ -389,6 +389,11 @@ namespace EmotionalDecisionMakingWF
             if(_loadedAsset.GetAllActionRules().Count() > 0)
         
                 PressedAddReactionEvent?.Invoke(this, EventArgs.Empty);
+
+            else
+            {
+                MessageBox.Show("The scenario contains no Action Rules applicable");
+            }
             
         }
 

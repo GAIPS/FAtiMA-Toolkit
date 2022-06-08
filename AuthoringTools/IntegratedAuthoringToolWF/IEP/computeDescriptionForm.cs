@@ -29,7 +29,7 @@ namespace IntegratedAuthoringToolWF.IEP
 
         private OutputManager _outputManager;
         ConnectToServerForm _server;
-       
+        IEPOutputForm _iepForm;
 
         public ComputeDescriptionForm(OutputManager outputManager, ConnectToServerForm server,string description)
         {
@@ -45,14 +45,12 @@ namespace IntegratedAuthoringToolWF.IEP
             if (!_server.connected)
             {
                 MessageBox.Show("Please connect to the Wizard Server");
-              //  _server.currentForm = this;
                 _server.ShowDialog(this);
             }
 
             if (_server.connected)
             {
                 this.computeStoryButton.Enabled = true;
-                //this.ShowDialog();
             }
 
         }
@@ -81,13 +79,12 @@ namespace IntegratedAuthoringToolWF.IEP
 
         }
 
-        public void HandleOutput() { 
+        public void HandleOutput() {
 
-            if (_server.result != "")
+            if (_server.result != "" && (_iepForm == null || _iepForm.Visible == false))
             {
-                var f = new IEPOutputForm(this, _outputManager, _server.result);
-                f.ShowDialog(this);
-               // this.Close();
+                _iepForm = new IEPOutputForm(this, _outputManager, _server.result);
+                _iepForm.ShowDialog(); ;
             }
         }
         private void debugLabel_Click(object sender, EventArgs e)
@@ -124,9 +121,9 @@ namespace IntegratedAuthoringToolWF.IEP
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            instructionsBox.Visible = true;
-            if(instructionsBox.Visible == true)
-                System.Diagnostics.Process.Start("https://fatima-toolkit.eu/using-the-compute-story-tool/");
+            instructionsBox.Visible = !instructionsBox.Visible;
+            //if(instructionsBox.Visible == true)
+            //    System.Diagnostics.Process.Start("https://fatima-toolkit.eu/using-the-compute-story-tool/");
         }
 
         private void panel2_Paint(object sender, PaintEventArgs e)
@@ -140,6 +137,11 @@ namespace IntegratedAuthoringToolWF.IEP
             {
                 this.computeStoryButton.Enabled = true;
             }
+        }
+
+        private void groupBox3_Enter(object sender, EventArgs e)
+        {
+
         }
     }
 }

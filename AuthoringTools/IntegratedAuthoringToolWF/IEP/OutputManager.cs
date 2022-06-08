@@ -23,8 +23,8 @@ namespace IntegratedAuthoringToolWF.IEP
 {
     public class OutputManager
     {
-        private IntegratedAuthoringToolAsset _iat;
-        private AssetStorage _storage;
+        public IntegratedAuthoringToolAsset _mainIAT;
+        public AssetStorage _mainStorage;
         public IntegratedAuthoringToolAsset _iatAux;
         public AssetStorage _storageAux;
         public EmotionalDecisionMakingAsset edmAux;
@@ -32,17 +32,30 @@ namespace IntegratedAuthoringToolWF.IEP
 
         public OutputManager(IntegratedAuthoringToolAsset iat, AssetStorage storage)
         {
-            _iat = iat;
-            _storage = storage;
-            _iatAux = iat;
-            _storageAux = storage;
+
+            _mainIAT = iat;
+            _mainStorage = storage; 
+
+            //
+            _storageAux = AssetStorage.FromJson(_mainStorage.ToJson());
+            _iatAux = IntegratedAuthoringToolAsset.FromJson(_mainIAT.ToJson(), _storageAux);
             edmAux = EmotionalDecisionMakingAsset.CreateInstance(_storageAux);
             eaAux = EmotionalAppraisalAsset.CreateInstance(_storageAux);
 
         }
 
+        private void ResetScenarios()
+        {
+            _storageAux = AssetStorage.FromJson(_mainStorage.ToJson());
+            _iatAux = IntegratedAuthoringToolAsset.FromJson(_mainIAT.ToJson(), _storageAux);
+            edmAux = EmotionalDecisionMakingAsset.CreateInstance(_storageAux);
+            eaAux = EmotionalAppraisalAsset.CreateInstance(_storageAux);
+        }
+
         public void ComputeStory(string extrapolations)
         {
+            ResetScenarios();
+
             char[] stop = new char[] { '{', '}' };
 
             var split = extrapolations.Split(stop, StringSplitOptions.RemoveEmptyEntries);
@@ -388,8 +401,6 @@ namespace IntegratedAuthoringToolWF.IEP
 
                 edmAux.AddActionRule(actionRule.ToDTO());
 
-
-
             }
 
         }
@@ -551,19 +562,18 @@ namespace IntegratedAuthoringToolWF.IEP
             });
 
             edmAux.AddActionRule(actionRule.ToDTO());
-
-
-
-
         }
 
 
+        // Gotta copy stuff from one place to the other
         public void AcceptOutput()
         {
-            _iat = _iatAux;
+           
             edmAux.Save();
             eaAux.Save();
-            _storage = _storageAux;
+            
+            _mainStorage = AssetStorage.FromJson(_storageAux.ToJson());
+            _mainIAT = IntegratedAuthoringToolAsset.FromJson(_iatAux.ToJson(), _mainStorage);
         }
 
         public void RejectOutput()

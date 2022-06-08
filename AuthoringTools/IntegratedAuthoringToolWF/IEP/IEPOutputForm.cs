@@ -30,8 +30,18 @@ namespace IntegratedAuthoringToolWF.IEP
             InitializeComponent();
             parent = f;
             _manager = manager;
-            this.scenarioTextBox.Text = extrapolations;
-            _manager.ComputeStory(this.scenarioTextBox.Text);
+
+            if (!extrapolations.Contains("Error"))
+            {
+                this.scenarioTextBox.Text = extrapolations;
+
+                _manager.ComputeStory(this.scenarioTextBox.Text);
+            }
+
+            else
+            {
+                this.scenarioTextBox.Text = "Error when processing input \n Please try again";
+            }
 
             // Initalizing Data Grid Views
             var _characters = new BindingListView<CharacterNameAndMoodDTO>(new List<CharacterNameAndMoodDTO>());
@@ -61,8 +71,10 @@ namespace IntegratedAuthoringToolWF.IEP
 
             this.dataGridViewEmotions.Columns["Id"].Visible = false;
 
-
-            LoadOutput();
+            button1.Enabled = false;
+            button2.Enabled = false;
+            groupBox2.Enabled = false;
+            // LoadOutput();
         }
 
         private void outputForm_Load(object sender, EventArgs e)
@@ -119,7 +131,7 @@ namespace IntegratedAuthoringToolWF.IEP
         {
             _manager.RejectOutput();
             this.Close();
-            parent.ShowDialog();
+          //  parent.ShowDialog();
         }
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)
@@ -127,11 +139,6 @@ namespace IntegratedAuthoringToolWF.IEP
 
         }
 
-        private void button3_Click(object sender, EventArgs e)
-        {
-            _manager.ComputeStory(this.scenarioTextBox.Text);
-            LoadOutput();
-        }
 
         private void OutputInformation_Click(object sender, EventArgs e)
         {
@@ -188,6 +195,16 @@ namespace IntegratedAuthoringToolWF.IEP
         private void dataGridViewBeliefs_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void processInputButton_Click(object sender, EventArgs e)
+        {
+            _manager.ComputeStory(this.scenarioTextBox.Text);
+            this.LoadOutput();
+
+            button1.Enabled = true;
+            button2.Enabled = true;
+            groupBox2.Enabled = true;
         }
     }
 }

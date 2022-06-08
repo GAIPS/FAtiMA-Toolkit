@@ -106,10 +106,16 @@ namespace IntegratedAuthoringToolWF.IEP
 
         public void ReceivedInput()
         {
-           this.scenarioTextBox.Text = _server.result;
-            this.scenarioTextBox.Enabled = true;
-            if (this.scenarioTextBox.Text != "")
-                processOutputButton.Enabled = true;
+            if (!_server.result.Contains("Error")){
+                this.scenarioTextBox.Text = _server.result;
+                this.scenarioTextBox.Enabled = true;
+                if (this.scenarioTextBox.Text != "")
+                    processOutputButton.Enabled = true;
+            }
+            else
+            {
+                this.scenarioTextBox.Text = "Error when processing input \n Please try again";
+            }
         }
 
         private void internalCharacterView_SelectionChanged(object sender, EventArgs e)
