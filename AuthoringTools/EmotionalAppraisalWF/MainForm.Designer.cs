@@ -80,8 +80,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox8);
-            this.splitContainer1.Size = new System.Drawing.Size(668, 516);
-            this.splitContainer1.SplitterDistance = 252;
+            this.splitContainer1.Size = new System.Drawing.Size(827, 515);
+            this.splitContainer1.SplitterDistance = 250;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 11;
             // 
@@ -98,7 +98,7 @@
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox7.Size = new System.Drawing.Size(668, 252);
+            this.groupBox7.Size = new System.Drawing.Size(827, 250);
             this.groupBox7.TabIndex = 1;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Appraisal Rules";
@@ -109,7 +109,7 @@
             this.buttonAppVariables.AutoEllipsis = true;
             this.buttonAppVariables.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.buttonAppVariables.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonAppVariables.Location = new System.Drawing.Point(477, 38);
+            this.buttonAppVariables.Location = new System.Drawing.Point(636, 36);
             this.buttonAppVariables.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonAppVariables.Name = "buttonAppVariables";
             this.buttonAppVariables.Size = new System.Drawing.Size(187, 25);
@@ -121,10 +121,10 @@
             // 
             // buttonDuplicateAppraisalRule
             // 
-            this.buttonDuplicateAppraisalRule.Location = new System.Drawing.Point(187, 36);
+            this.buttonDuplicateAppraisalRule.Location = new System.Drawing.Point(193, 36);
             this.buttonDuplicateAppraisalRule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonDuplicateAppraisalRule.Name = "buttonDuplicateAppraisalRule";
-            this.buttonDuplicateAppraisalRule.Size = new System.Drawing.Size(96, 27);
+            this.buttonDuplicateAppraisalRule.Size = new System.Drawing.Size(85, 30);
             this.buttonDuplicateAppraisalRule.TabIndex = 10;
             this.buttonDuplicateAppraisalRule.Text = "Duplicate";
             this.buttonDuplicateAppraisalRule.UseVisualStyleBackColor = true;
@@ -135,7 +135,7 @@
             this.buttonEditAppraisalRule.Location = new System.Drawing.Point(100, 36);
             this.buttonEditAppraisalRule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonEditAppraisalRule.Name = "buttonEditAppraisalRule";
-            this.buttonEditAppraisalRule.Size = new System.Drawing.Size(81, 27);
+            this.buttonEditAppraisalRule.Size = new System.Drawing.Size(85, 30);
             this.buttonEditAppraisalRule.TabIndex = 9;
             this.buttonEditAppraisalRule.Text = "Edit";
             this.toolTip1.SetToolTip(this.buttonEditAppraisalRule, "Edit the selected appraisal rule");
@@ -147,7 +147,7 @@
             this.buttonAddAppraisalRule.Location = new System.Drawing.Point(8, 36);
             this.buttonAddAppraisalRule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonAddAppraisalRule.Name = "buttonAddAppraisalRule";
-            this.buttonAddAppraisalRule.Size = new System.Drawing.Size(85, 27);
+            this.buttonAddAppraisalRule.Size = new System.Drawing.Size(85, 30);
             this.buttonAddAppraisalRule.TabIndex = 7;
             this.buttonAddAppraisalRule.Text = "Add";
             this.toolTip1.SetToolTip(this.buttonAddAppraisalRule, "Add a new appraisal rule");
@@ -157,10 +157,10 @@
             // buttonRemoveAppraisalRule
             // 
             this.buttonRemoveAppraisalRule.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonRemoveAppraisalRule.Location = new System.Drawing.Point(290, 36);
+            this.buttonRemoveAppraisalRule.Location = new System.Drawing.Point(286, 36);
             this.buttonRemoveAppraisalRule.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.buttonRemoveAppraisalRule.Name = "buttonRemoveAppraisalRule";
-            this.buttonRemoveAppraisalRule.Size = new System.Drawing.Size(110, 27);
+            this.buttonRemoveAppraisalRule.Size = new System.Drawing.Size(85, 30);
             this.buttonRemoveAppraisalRule.TabIndex = 8;
             this.buttonRemoveAppraisalRule.Text = "Remove";
             this.toolTip1.SetToolTip(this.buttonRemoveAppraisalRule, "Remove selected Appraisal Rule");
@@ -190,7 +190,7 @@
             this.dataGridViewAppraisalRules.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAppraisalRules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewAppraisalRules.ShowCellToolTips = false;
-            this.dataGridViewAppraisalRules.Size = new System.Drawing.Size(656, 177);
+            this.dataGridViewAppraisalRules.Size = new System.Drawing.Size(815, 175);
             this.dataGridViewAppraisalRules.TabIndex = 2;
             this.toolTip1.SetToolTip(this.dataGridViewAppraisalRules, resources.GetString("dataGridViewAppraisalRules.ToolTip"));
             this.dataGridViewAppraisalRules.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAppraisalRules_CellContentClick);
@@ -206,7 +206,7 @@
             this.groupBox8.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox8.Size = new System.Drawing.Size(668, 259);
+            this.groupBox8.Size = new System.Drawing.Size(827, 260);
             this.groupBox8.TabIndex = 10;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Rule Conditions";
@@ -217,7 +217,7 @@
             this.conditionSetEditor.Location = new System.Drawing.Point(4, 18);
             this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.conditionSetEditor.Name = "conditionSetEditor";
-            this.conditionSetEditor.Size = new System.Drawing.Size(660, 238);
+            this.conditionSetEditor.Size = new System.Drawing.Size(819, 239);
             this.conditionSetEditor.TabIndex = 0;
             this.conditionSetEditor.View = null;
             this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);
@@ -233,7 +233,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(668, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(827, 24);
             this.menuStrip1.TabIndex = 2;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -288,7 +288,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(668, 540);
+            this.ClientSize = new System.Drawing.Size(827, 539);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

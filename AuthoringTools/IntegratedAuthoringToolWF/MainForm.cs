@@ -2663,5 +2663,31 @@ namespace IntegratedAuthoringToolWF
             OnAssetDataLoaded(_iat);
             OnAssetStorageChange();
         }
+
+        private void addEmotionalReactionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(_edmForm != null)
+            {
+                this.AddEmotionalReaction(sender, e);
+            }
+            else
+            {
+                MessageBox.Show("No Emotional Decision Making Asset was found");
+            }
+        }
+
+        private void addDialogueActionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_edmForm != null)
+            {
+                _edmForm.addDialogueActionToolStripMenuItem_Click(sender, e);
+                tabControlIAT.SelectedIndex = 1;
+            }
+            else
+            {
+                MessageBox.Show("No Emotional Decision Making Asset was found");
+            }
+
+        }
     }
 }

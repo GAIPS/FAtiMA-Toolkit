@@ -419,6 +419,8 @@
     <None Include="Resources\inescid.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\dialogue.png" />
+    <None Include="Resources\reaction.png" />
     <None Include="Resources\icons8-chatbot-401.png" />
     <None Include="Resources\scenario1.png" />
     <None Include="Resources\scenario.png" />
@@ -627,6 +629,7 @@
     <None Include="Resources\assistantbackground.png" />
     <None Include="Resources\assistantbackground1.png" />
     <None Include="Resources\assistantbackground2.png" />
+    <None Include="Resources\boticon.png" />
     <Content Include="Resources\BubbleIcon.ico" />
   </ItemGroup>
   <ItemGroup>

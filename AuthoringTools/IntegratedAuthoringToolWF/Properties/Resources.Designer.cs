@@ -291,6 +291,16 @@ namespace IntegratedAuthoringToolWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap boticon {
+            get {
+                object obj = ResourceManager.GetObject("boticon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
         internal static byte[] composition {
@@ -306,6 +316,16 @@ namespace IntegratedAuthoringToolWF.Properties {
         internal static System.Drawing.Bitmap database {
             get {
                 object obj = ResourceManager.GetObject("database", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dialogue {
+            get {
+                object obj = ResourceManager.GetObject("dialogue", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -834,6 +854,16 @@ namespace IntegratedAuthoringToolWF.Properties {
         internal static System.Drawing.Bitmap RAGE_logo {
             get {
                 object obj = ResourceManager.GetObject("RAGE_logo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap reaction {
+            get {
+                object obj = ResourceManager.GetObject("reaction", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

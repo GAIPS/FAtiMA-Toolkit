@@ -34,10 +34,12 @@
             this.beliefWizarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cognitiveRulesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.metaBeliefsPanelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addEmotionalReactionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addDialogueActionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dialogueHelpersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateDialogueActionsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.wizardServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quickAddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wizardServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
@@ -371,12 +373,15 @@
             this.beliefWizarToolStripMenuItem.Name = "beliefWizarToolStripMenuItem";
             this.beliefWizarToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.beliefWizarToolStripMenuItem.Text = "Text to Belief Wizard";
+            this.beliefWizarToolStripMenuItem.Visible = false;
             this.beliefWizarToolStripMenuItem.Click += new System.EventHandler(this.beliefWizarToolStripMenuItem_Click);
             // 
             // cognitiveRulesToolStripMenuItem1
             // 
             this.cognitiveRulesToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.metaBeliefsPanelToolStripMenuItem});
+            this.metaBeliefsPanelToolStripMenuItem,
+            this.addEmotionalReactionToolStripMenuItem,
+            this.addDialogueActionToolStripMenuItem});
             this.cognitiveRulesToolStripMenuItem1.Image = global::IntegratedAuthoringToolWF.Properties.Resources.rules;
             this.cognitiveRulesToolStripMenuItem1.Name = "cognitiveRulesToolStripMenuItem1";
             this.cognitiveRulesToolStripMenuItem1.Size = new System.Drawing.Size(184, 26);
@@ -386,9 +391,25 @@
             // 
             this.metaBeliefsPanelToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_web_design_401;
             this.metaBeliefsPanelToolStripMenuItem.Name = "metaBeliefsPanelToolStripMenuItem";
-            this.metaBeliefsPanelToolStripMenuItem.Size = new System.Drawing.Size(176, 26);
+            this.metaBeliefsPanelToolStripMenuItem.Size = new System.Drawing.Size(206, 26);
             this.metaBeliefsPanelToolStripMenuItem.Text = "Meta-Beliefs Panel";
             this.metaBeliefsPanelToolStripMenuItem.Click += new System.EventHandler(this.metaBeliefListToolStripMenuItem_Click);
+            // 
+            // addEmotionalReactionToolStripMenuItem
+            // 
+            this.addEmotionalReactionToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.reaction;
+            this.addEmotionalReactionToolStripMenuItem.Name = "addEmotionalReactionToolStripMenuItem";
+            this.addEmotionalReactionToolStripMenuItem.Size = new System.Drawing.Size(206, 26);
+            this.addEmotionalReactionToolStripMenuItem.Text = "Add Emotional Reaction";
+            this.addEmotionalReactionToolStripMenuItem.Click += new System.EventHandler(this.addEmotionalReactionToolStripMenuItem_Click);
+            // 
+            // addDialogueActionToolStripMenuItem
+            // 
+            this.addDialogueActionToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.dialogue;
+            this.addDialogueActionToolStripMenuItem.Name = "addDialogueActionToolStripMenuItem";
+            this.addDialogueActionToolStripMenuItem.Size = new System.Drawing.Size(206, 26);
+            this.addDialogueActionToolStripMenuItem.Text = "Add Dialogue Action";
+            this.addDialogueActionToolStripMenuItem.Click += new System.EventHandler(this.addDialogueActionToolStripMenuItem_Click);
             // 
             // dialogueHelpersToolStripMenuItem
             // 
@@ -401,10 +422,20 @@
             // 
             // generateDialogueActionsToolStripMenuItem1
             // 
+            this.generateDialogueActionsToolStripMenuItem1.Image = global::IntegratedAuthoringToolWF.Properties.Resources.boticon;
             this.generateDialogueActionsToolStripMenuItem1.Name = "generateDialogueActionsToolStripMenuItem1";
-            this.generateDialogueActionsToolStripMenuItem1.Size = new System.Drawing.Size(214, 22);
-            this.generateDialogueActionsToolStripMenuItem1.Text = "Generate Dialogue Actions";
+            this.generateDialogueActionsToolStripMenuItem1.Size = new System.Drawing.Size(184, 26);
+            this.generateDialogueActionsToolStripMenuItem1.Text = "Generate Dialogs";
             this.generateDialogueActionsToolStripMenuItem1.Click += new System.EventHandler(this.generateDialogueActionsToolStripMenuItem_Click);
+            // 
+            // quickAddToolStripMenuItem
+            // 
+            this.quickAddToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.magic_wand1;
+            this.quickAddToolStripMenuItem.Name = "quickAddToolStripMenuItem";
+            this.quickAddToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.quickAddToolStripMenuItem.Text = "Quick Add";
+            this.quickAddToolStripMenuItem.Visible = false;
+            this.quickAddToolStripMenuItem.Click += new System.EventHandler(this.quickAddToolStripMenuItem_Click);
             // 
             // wizardServerToolStripMenuItem
             // 
@@ -413,14 +444,6 @@
             this.wizardServerToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.wizardServerToolStripMenuItem.Text = "Wizard Server";
             this.wizardServerToolStripMenuItem.Click += new System.EventHandler(this.wizardServerToolStripMenuItem_Click);
-            // 
-            // quickAddToolStripMenuItem
-            // 
-            this.quickAddToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.magic_wand1;
-            this.quickAddToolStripMenuItem.Name = "quickAddToolStripMenuItem";
-            this.quickAddToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
-            this.quickAddToolStripMenuItem.Text = "Quick Add";
-            this.quickAddToolStripMenuItem.Click += new System.EventHandler(this.quickAddToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -735,11 +758,11 @@
             // 
             // EmotionalAppraisal
             // 
-            this.EmotionalAppraisal.Location = new System.Drawing.Point(4, 25);
+            this.EmotionalAppraisal.Location = new System.Drawing.Point(4, 22);
             this.EmotionalAppraisal.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.EmotionalAppraisal.Name = "EmotionalAppraisal";
             this.EmotionalAppraisal.Padding = new System.Windows.Forms.Padding(3);
-            this.EmotionalAppraisal.Size = new System.Drawing.Size(836, 507);
+            this.EmotionalAppraisal.Size = new System.Drawing.Size(836, 510);
             this.EmotionalAppraisal.TabIndex = 0;
             this.EmotionalAppraisal.Text = "Emotional Appraisal";
             this.EmotionalAppraisal.UseVisualStyleBackColor = true;
@@ -1048,7 +1071,7 @@
             this.Simulator.Location = new System.Drawing.Point(4, 24);
             this.Simulator.Name = "Simulator";
             this.Simulator.Padding = new System.Windows.Forms.Padding(3);
-            this.Simulator.Size = new System.Drawing.Size(844, 603);
+            this.Simulator.Size = new System.Drawing.Size(844, 609);
             this.Simulator.TabIndex = 2;
             this.Simulator.Text = "Simulator";
             this.Simulator.UseVisualStyleBackColor = true;
@@ -1066,7 +1089,7 @@
             this.groupBox3.Controls.Add(this.checkBox1);
             this.groupBox3.Controls.Add(this.effectTickBox);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox3.Location = new System.Drawing.Point(3, 524);
+            this.groupBox3.Location = new System.Drawing.Point(3, 530);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(838, 76);
             this.groupBox3.TabIndex = 10;
@@ -1467,7 +1490,7 @@
             this.WebAPI.Location = new System.Drawing.Point(4, 24);
             this.WebAPI.Name = "WebAPI";
             this.WebAPI.Padding = new System.Windows.Forms.Padding(3);
-            this.WebAPI.Size = new System.Drawing.Size(844, 603);
+            this.WebAPI.Size = new System.Drawing.Size(844, 609);
             this.WebAPI.TabIndex = 4;
             this.WebAPI.Text = "Web API";
             this.WebAPI.UseVisualStyleBackColor = true;
@@ -2067,6 +2090,8 @@
         private System.Windows.Forms.ToolStripMenuItem wizardServerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem beliefWizarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem quickAddToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addEmotionalReactionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addDialogueActionToolStripMenuItem;
     }
 }
 

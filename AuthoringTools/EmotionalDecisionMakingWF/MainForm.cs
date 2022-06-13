@@ -402,7 +402,7 @@ namespace EmotionalDecisionMakingWF
 
         }
 
-        private void addDialogueActionToolStripMenuItem_Click(object sender, EventArgs e)
+        public void addDialogueActionToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -450,13 +450,7 @@ namespace EmotionalDecisionMakingWF
 
         private void conditionTesterToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(!debugGroup.Visible)
-                debugGroup.Visible = true;
-
-            else
-            {
-                debugGroup.Visible = false;
-            }
+            debugGroup.Visible = !debugGroup.Visible;
         }
 
         private void debugGroup_Enter(object sender, EventArgs e)

@@ -165,21 +165,7 @@ namespace SocialImportanceWF
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var aux = EditorTools.OpenFileDialog("Asset Storage File (*.json)|*.json|All Files|*.*");
-            if (aux != null)
-            {
-                try
-                {
-                    _currentPath = aux;
-                    _storage = AssetStorage.FromJson(File.ReadAllText(_currentPath));
-                    _loadedAsset = SocialImportanceAsset.CreateInstance(_storage);
-                    OnAssetDataLoaded();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Exception: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -190,11 +176,7 @@ namespace SocialImportanceWF
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var old = _currentPath;
-            _currentPath = null;
-            _currentPath = EditorTools.SaveFileDialog(_currentPath, _storage, _loadedAsset);
-            if (_currentPath == null) _currentPath = old;
-            EditorTools.UpdateFormTitle("Social Importance", _currentPath, this);
+
         }
     }
 }

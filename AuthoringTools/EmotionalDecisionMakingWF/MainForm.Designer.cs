@@ -42,6 +42,14 @@
             this.addEmotionalResponseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.conditionTesterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.conditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
+            this.debugGroup = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.testActionRuleResults = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.charactersComboBox = new System.Windows.Forms.ComboBox();
+            this.testConditions = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,14 +57,6 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.edmToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.debugGroup = new System.Windows.Forms.GroupBox();
-            this.testConditions = new System.Windows.Forms.Button();
-            this.charactersComboBox = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.testActionRuleResults = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.conditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactiveActions)).BeginInit();
             this.menuStrip2.SuspendLayout();
@@ -64,9 +64,9 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
-            this.debugGroup.SuspendLayout();
             this.groupBox8.SuspendLayout();
+            this.debugGroup.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox7
@@ -83,7 +83,7 @@
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox7.Size = new System.Drawing.Size(827, 243);
+            this.groupBox7.Size = new System.Drawing.Size(827, 241);
             this.groupBox7.TabIndex = 3;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Action Rules";
@@ -91,10 +91,10 @@
             // 
             // buttonDuplicateReaction
             // 
-            this.buttonDuplicateReaction.Location = new System.Drawing.Point(200, 34);
+            this.buttonDuplicateReaction.Location = new System.Drawing.Point(192, 34);
             this.buttonDuplicateReaction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonDuplicateReaction.Name = "buttonDuplicateReaction";
-            this.buttonDuplicateReaction.Size = new System.Drawing.Size(93, 28);
+            this.buttonDuplicateReaction.Size = new System.Drawing.Size(85, 30);
             this.buttonDuplicateReaction.TabIndex = 9;
             this.buttonDuplicateReaction.Text = "Duplicate";
             this.edmToolTip.SetToolTip(this.buttonDuplicateReaction, "Duplicate the currently selected action rule");
@@ -106,7 +106,7 @@
             this.buttonEditReaction.Location = new System.Drawing.Point(99, 34);
             this.buttonEditReaction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonEditReaction.Name = "buttonEditReaction";
-            this.buttonEditReaction.Size = new System.Drawing.Size(93, 28);
+            this.buttonEditReaction.Size = new System.Drawing.Size(85, 30);
             this.buttonEditReaction.TabIndex = 8;
             this.buttonEditReaction.Text = "Edit";
             this.edmToolTip.SetToolTip(this.buttonEditReaction, "Edit action rule");
@@ -118,7 +118,7 @@
             this.buttonAddReaction.Location = new System.Drawing.Point(9, 34);
             this.buttonAddReaction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonAddReaction.Name = "buttonAddReaction";
-            this.buttonAddReaction.Size = new System.Drawing.Size(82, 28);
+            this.buttonAddReaction.Size = new System.Drawing.Size(85, 30);
             this.buttonAddReaction.TabIndex = 7;
             this.buttonAddReaction.Text = "Add";
             this.edmToolTip.SetToolTip(this.buttonAddReaction, "Add a new action rule");
@@ -127,10 +127,10 @@
             // 
             // buttonRemoveReaction
             // 
-            this.buttonRemoveReaction.Location = new System.Drawing.Point(302, 34);
+            this.buttonRemoveReaction.Location = new System.Drawing.Point(285, 34);
             this.buttonRemoveReaction.Margin = new System.Windows.Forms.Padding(4);
             this.buttonRemoveReaction.Name = "buttonRemoveReaction";
-            this.buttonRemoveReaction.Size = new System.Drawing.Size(93, 28);
+            this.buttonRemoveReaction.Size = new System.Drawing.Size(85, 30);
             this.buttonRemoveReaction.TabIndex = 10;
             this.buttonRemoveReaction.Text = "Remove";
             this.edmToolTip.SetToolTip(this.buttonRemoveReaction, "Remove currently selected action rule");
@@ -159,7 +159,7 @@
             this.dataGridViewReactiveActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewReactiveActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewReactiveActions.ShowCellToolTips = false;
-            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(815, 165);
+            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(815, 171);
             this.dataGridViewReactiveActions.TabIndex = 2;
             this.edmToolTip.SetToolTip(this.dataGridViewReactiveActions, resources.GetString("dataGridViewReactiveActions.ToolTip"));
             this.dataGridViewReactiveActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReactiveActions_CellContentClick);
@@ -193,7 +193,7 @@
             this.addEmotionalResponseToolStripMenuItem,
             this.conditionTesterToolStripMenuItem});
             this.toolsMenu.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolsMenu.Image = global::EmotionalDecisionMakingWF.Properties.Resources.icons8_repository_40;
+            this.toolsMenu.Image = global::EmotionalDecisionMakingWF.Properties.Resources.NormalFace;
             this.toolsMenu.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.toolsMenu.ImageTransparentColor = System.Drawing.Color.Black;
             this.toolsMenu.Name = "toolsMenu";
@@ -202,20 +202,20 @@
             // 
             // addDialogueActionToolStripMenuItem
             // 
-            this.addDialogueActionToolStripMenuItem.Image = global::EmotionalDecisionMakingWF.Properties.Resources.icons8_chatbot_40;
+            this.addDialogueActionToolStripMenuItem.Image = global::EmotionalDecisionMakingWF.Properties.Resources.dialogue;
             this.addDialogueActionToolStripMenuItem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.addDialogueActionToolStripMenuItem.Name = "addDialogueActionToolStripMenuItem";
-            this.addDialogueActionToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.addDialogueActionToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.addDialogueActionToolStripMenuItem.Text = "Add Dialogue Action";
             this.addDialogueActionToolStripMenuItem.ToolTipText = "Create a new Speak Action from a Template";
             this.addDialogueActionToolStripMenuItem.Click += new System.EventHandler(this.addDialogueActionToolStripMenuItem_Click);
             // 
             // addEmotionalResponseToolStripMenuItem
             // 
-            this.addEmotionalResponseToolStripMenuItem.Image = global::EmotionalDecisionMakingWF.Properties.Resources.Icon_Final_Black;
+            this.addEmotionalResponseToolStripMenuItem.Image = global::EmotionalDecisionMakingWF.Properties.Resources.reaction;
             this.addEmotionalResponseToolStripMenuItem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.addEmotionalResponseToolStripMenuItem.Name = "addEmotionalResponseToolStripMenuItem";
-            this.addEmotionalResponseToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.addEmotionalResponseToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.addEmotionalResponseToolStripMenuItem.Text = "Add Emotional Response";
             this.addEmotionalResponseToolStripMenuItem.ToolTipText = "Automatically create an appraisal rule for each action rule using this helper";
             this.addEmotionalResponseToolStripMenuItem.Click += new System.EventHandler(this.addEmotionalResponseToolStripMenuItem_Click);
@@ -224,7 +224,7 @@
             // 
             this.conditionTesterToolStripMenuItem.Image = global::EmotionalDecisionMakingWF.Properties.Resources.icons8_system_report_40;
             this.conditionTesterToolStripMenuItem.Name = "conditionTesterToolStripMenuItem";
-            this.conditionTesterToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.conditionTesterToolStripMenuItem.Size = new System.Drawing.Size(227, 26);
             this.conditionTesterToolStripMenuItem.Text = "Condition Tester";
             this.conditionTesterToolStripMenuItem.Click += new System.EventHandler(this.conditionTesterToolStripMenuItem_Click);
             // 
@@ -245,11 +245,111 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox8);
             this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
-            this.splitContainer1.Size = new System.Drawing.Size(827, 550);
-            this.splitContainer1.SplitterDistance = 243;
+            this.splitContainer1.Size = new System.Drawing.Size(827, 442);
+            this.splitContainer1.SplitterDistance = 241;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 17;
             this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
+            // 
+            // groupBox8
+            // 
+            this.groupBox8.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.groupBox8.Controls.Add(this.conditionSetEditor);
+            this.groupBox8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox8.Location = new System.Drawing.Point(0, 0);
+            this.groupBox8.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            this.groupBox8.Size = new System.Drawing.Size(827, 196);
+            this.groupBox8.TabIndex = 11;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Action Conditions";
+            this.groupBox8.Enter += new System.EventHandler(this.groupBox8_Enter);
+            // 
+            // conditionSetEditor
+            // 
+            this.conditionSetEditor.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.conditionSetEditor.Dock = System.Windows.Forms.DockStyle.Top;
+            this.conditionSetEditor.Location = new System.Drawing.Point(4, 18);
+            this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4);
+            this.conditionSetEditor.Name = "conditionSetEditor";
+            this.conditionSetEditor.Size = new System.Drawing.Size(819, 171);
+            this.conditionSetEditor.TabIndex = 0;
+            this.edmToolTip.SetToolTip(this.conditionSetEditor, "Conditions to add to each action");
+            this.conditionSetEditor.View = null;
+            this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);
+            // 
+            // debugGroup
+            // 
+            this.debugGroup.Controls.Add(this.label2);
+            this.debugGroup.Controls.Add(this.testActionRuleResults);
+            this.debugGroup.Controls.Add(this.label1);
+            this.debugGroup.Controls.Add(this.charactersComboBox);
+            this.debugGroup.Controls.Add(this.testConditions);
+            this.debugGroup.Dock = System.Windows.Forms.DockStyle.Top;
+            this.debugGroup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.debugGroup.Location = new System.Drawing.Point(0, 466);
+            this.debugGroup.Name = "debugGroup";
+            this.debugGroup.Size = new System.Drawing.Size(827, 60);
+            this.debugGroup.TabIndex = 5;
+            this.debugGroup.TabStop = false;
+            this.debugGroup.Text = "Debug";
+            this.debugGroup.Visible = false;
+            this.debugGroup.Enter += new System.EventHandler(this.debugGroup_Enter);
+            // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(172, 18);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(65, 24);
+            this.label2.TabIndex = 5;
+            this.label2.Text = "Initiator:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // testActionRuleResults
+            // 
+            this.testActionRuleResults.AutoEllipsis = true;
+            this.testActionRuleResults.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.testActionRuleResults.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.testActionRuleResults.Location = new System.Drawing.Point(441, 12);
+            this.testActionRuleResults.Name = "testActionRuleResults";
+            this.testActionRuleResults.Size = new System.Drawing.Size(370, 37);
+            this.testActionRuleResults.TabIndex = 4;
+            this.testActionRuleResults.Text = "Result:";
+            this.testActionRuleResults.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // label1
+            // 
+            this.label1.Location = new System.Drawing.Point(382, 14);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(66, 33);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Result:";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.edmToolTip.SetToolTip(this.label1, "Substitution Set found by the unification algorithm. The following values were fo" +
+        "und for each variable");
+            // 
+            // charactersComboBox
+            // 
+            this.charactersComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.charactersComboBox.FormattingEnabled = true;
+            this.charactersComboBox.Location = new System.Drawing.Point(243, 19);
+            this.charactersComboBox.Name = "charactersComboBox";
+            this.charactersComboBox.Size = new System.Drawing.Size(114, 24);
+            this.charactersComboBox.TabIndex = 2;
+            // 
+            // testConditions
+            // 
+            this.testConditions.Location = new System.Drawing.Point(18, 21);
+            this.testConditions.Name = "testConditions";
+            this.testConditions.Size = new System.Drawing.Size(131, 24);
+            this.testConditions.TabIndex = 1;
+            this.testConditions.Text = "Test Action Rule";
+            this.edmToolTip.SetToolTip(this.testConditions, "This section allows the author to check if the action rule and its conditions are" +
+        " being validated by the unification algorithm and what type of substitutions are" +
+        " happening behind the cortain ");
+            this.testConditions.UseVisualStyleBackColor = true;
+            this.testConditions.Click += new System.EventHandler(this.testConditions_Click);
             // 
             // menuStrip1
             // 
@@ -309,118 +409,21 @@
             this.edmToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.edmToolTip.ToolTipTitle = "EDM Tooltip";
             // 
-            // debugGroup
-            // 
-            this.debugGroup.Controls.Add(this.label2);
-            this.debugGroup.Controls.Add(this.testActionRuleResults);
-            this.debugGroup.Controls.Add(this.label1);
-            this.debugGroup.Controls.Add(this.charactersComboBox);
-            this.debugGroup.Controls.Add(this.testConditions);
-            this.debugGroup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.debugGroup.Location = new System.Drawing.Point(8, 192);
-            this.debugGroup.Name = "debugGroup";
-            this.debugGroup.Size = new System.Drawing.Size(807, 64);
-            this.debugGroup.TabIndex = 5;
-            this.debugGroup.TabStop = false;
-            this.debugGroup.Text = "Debug";
-            this.debugGroup.Visible = false;
-            this.debugGroup.Enter += new System.EventHandler(this.debugGroup_Enter);
-            // 
-            // testConditions
-            // 
-            this.testConditions.Location = new System.Drawing.Point(18, 21);
-            this.testConditions.Name = "testConditions";
-            this.testConditions.Size = new System.Drawing.Size(131, 24);
-            this.testConditions.TabIndex = 1;
-            this.testConditions.Text = "Test Action Rule";
-            this.edmToolTip.SetToolTip(this.testConditions, "This section allows the author to check if the action rule and its conditions are" +
-        " being validated by the unification algorithm and what type of substitutions are" +
-        " happening behind the cortain ");
-            this.testConditions.UseVisualStyleBackColor = true;
-            this.testConditions.Click += new System.EventHandler(this.testConditions_Click);
-            // 
-            // charactersComboBox
-            // 
-            this.charactersComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.charactersComboBox.FormattingEnabled = true;
-            this.charactersComboBox.Location = new System.Drawing.Point(243, 19);
-            this.charactersComboBox.Name = "charactersComboBox";
-            this.charactersComboBox.Size = new System.Drawing.Size(114, 24);
-            this.charactersComboBox.TabIndex = 2;
-            // 
-            // label1
-            // 
-            this.label1.Location = new System.Drawing.Point(382, 14);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(66, 33);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Result:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.edmToolTip.SetToolTip(this.label1, "Substitution Set found by the unification algorithm. The following values were fo" +
-        "und for each variable");
-            // 
-            // testActionRuleResults
-            // 
-            this.testActionRuleResults.AutoEllipsis = true;
-            this.testActionRuleResults.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.testActionRuleResults.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.testActionRuleResults.Location = new System.Drawing.Point(441, 12);
-            this.testActionRuleResults.Name = "testActionRuleResults";
-            this.testActionRuleResults.Size = new System.Drawing.Size(370, 37);
-            this.testActionRuleResults.TabIndex = 4;
-            this.testActionRuleResults.Text = "Result:";
-            this.testActionRuleResults.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // label2
-            // 
-            this.label2.Location = new System.Drawing.Point(172, 18);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 24);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Initiator:";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // groupBox8
-            // 
-            this.groupBox8.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.groupBox8.Controls.Add(this.debugGroup);
-            this.groupBox8.Controls.Add(this.conditionSetEditor);
-            this.groupBox8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox8.Location = new System.Drawing.Point(0, 0);
-            this.groupBox8.Margin = new System.Windows.Forms.Padding(4);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Padding = new System.Windows.Forms.Padding(10);
-            this.groupBox8.Size = new System.Drawing.Size(827, 302);
-            this.groupBox8.TabIndex = 11;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "Conditions";
-            this.groupBox8.Enter += new System.EventHandler(this.groupBox8_Enter);
-            // 
-            // conditionSetEditor
-            // 
-            this.conditionSetEditor.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.conditionSetEditor.Dock = System.Windows.Forms.DockStyle.Top;
-            this.conditionSetEditor.Location = new System.Drawing.Point(10, 25);
-            this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4);
-            this.conditionSetEditor.Name = "conditionSetEditor";
-            this.conditionSetEditor.Size = new System.Drawing.Size(807, 165);
-            this.conditionSetEditor.TabIndex = 0;
-            this.edmToolTip.SetToolTip(this.conditionSetEditor, "Conditions to add to each action");
-            this.conditionSetEditor.View = null;
-            this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(827, 517);
+            this.ClientSize = new System.Drawing.Size(827, 539);
+            this.Controls.Add(this.debugGroup);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MinimumSize = new System.Drawing.Size(843, 578);
             this.Name = "MainForm";
             this.Text = "Emotional Decision Making";
             this.edmToolTip.SetToolTip(this, "Emotional Decision Making component is resposible for the creating actions and de" +
@@ -433,10 +436,10 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.groupBox8.ResumeLayout(false);
+            this.debugGroup.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.debugGroup.ResumeLayout(false);
-            this.groupBox8.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
