@@ -33,9 +33,15 @@ namespace IntegratedAuthoringToolWF
             this.actionComboBox.DataSource = actionNames;
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+
+        private void pictureBox1_Click(object sender, EventArgs e)
         {
-            neverShowAgain = checkBox1.Checked;
+            groupBox1.Visible = !groupBox1.Visible;
+        }
+
+        private void AddEmotionalReactionForm_Load(object sender, EventArgs e)
+        {
+
         }
 
         private void acceptButton_Click(object sender, EventArgs e)

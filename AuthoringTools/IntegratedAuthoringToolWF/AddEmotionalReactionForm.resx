@@ -118,10 +118,12 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="label3.Text" xml:space="preserve">
-    <value>It is reccomended authors describe how characters react to certain events using Appraisal Rules. Both the initiators, the targets and even the agents observing the action can have an emotional response
-
-In this form it is possible to automatically create an Appraisal Rule for the select action:</value>
+    <value>It is recomended authors describe how characters react to certain events using Appraisal Rules. Both the initiators, the targets and even the agents observing the action can have an emotional response
+In this form it is possible to automatically create an Appraisal Rule for the select action. Authors can specify what each of the action's participants is supposed to feel.</value>
   </data>
+  <metadata name="backgroundWorker1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

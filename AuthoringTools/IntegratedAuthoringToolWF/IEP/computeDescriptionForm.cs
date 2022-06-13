@@ -122,8 +122,7 @@ namespace IntegratedAuthoringToolWF.IEP
         private void pictureBox1_Click(object sender, EventArgs e)
         {
             instructionsBox.Visible = !instructionsBox.Visible;
-            //if(instructionsBox.Visible == true)
-            //    System.Diagnostics.Process.Start("https://fatima-toolkit.eu/using-the-compute-story-tool/");
+      
         }
 
         private void panel2_Paint(object sender, PaintEventArgs e)
@@ -140,6 +139,11 @@ namespace IntegratedAuthoringToolWF.IEP
         }
 
         private void groupBox3_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
         {
 
         }
