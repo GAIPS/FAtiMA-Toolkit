@@ -125,11 +125,9 @@ namespace IntegratedAuthoringToolWF.IEP
             this.label6.Margin = new System.Windows.Forms.Padding(4);
             this.label6.Name = "label6";
             this.label6.Padding = new System.Windows.Forms.Padding(4);
-            this.label6.Size = new System.Drawing.Size(393, 84);
+            this.label6.Size = new System.Drawing.Size(393, 90);
             this.label6.TabIndex = 1;
-            this.label6.Text = "1. Write a description of the intended scenario. \r\n2. Press the \"Compute Input\" b" +
-    "utton: \r\n       \"John loves Sarah. Sarah loves going to the cinema.\"\r\n3. Accept " +
-    "or Edit the resulting output\r\n\r\n\r\n";
+            this.label6.Text = resources.GetString("label6.Text");
             this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // groupBox3
@@ -224,7 +222,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.AutoScroll = true;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.EnableAllowFocusChange;
             this.ClientSize = new System.Drawing.Size(540, 407);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox3);

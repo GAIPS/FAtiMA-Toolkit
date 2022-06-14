@@ -56,8 +56,10 @@ namespace IntegratedAuthoringToolWF.IEP
             this.label4 = new System.Windows.Forms.Label();
             this.dataGridViewReactiveActions = new System.Windows.Forms.DataGridView();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.dataGridViewDialogueActions = new System.Windows.Forms.DataGridView();
             this.processInputButton = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.rPCConstsBindingSource)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -79,6 +81,9 @@ namespace IntegratedAuthoringToolWF.IEP
             this.CogRules.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEmotions)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactiveActions)).BeginInit();
+            this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDialogueActions)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // directorySearcher1
@@ -90,14 +95,14 @@ namespace IntegratedAuthoringToolWF.IEP
             // OutputInformation
             // 
             this.OutputInformation.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OutputInformation.Location = new System.Drawing.Point(3, 16);
+            this.OutputInformation.Location = new System.Drawing.Point(34, 16);
             this.OutputInformation.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.OutputInformation.Name = "OutputInformation";
-            this.OutputInformation.Size = new System.Drawing.Size(893, 38);
+            this.OutputInformation.Size = new System.Drawing.Size(376, 62);
             this.OutputInformation.TabIndex = 19;
             this.OutputInformation.Text = "The resulting output of the Information Extraction Pipeline can be seen below.  T" +
-    "he output is sepperated by \"special symbols\" that we then use to efficiently par" +
-    "se the information.\r\n";
+    "he output is separated by \"special symbols\" that we then use to efficiently pars" +
+    "e the information.\r\n";
             this.OutputInformation.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.OutputInformation.Click += new System.EventHandler(this.OutputInformation_Click);
             // 
@@ -109,7 +114,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_system_information_40;
-            this.button1.Location = new System.Drawing.Point(382, 374);
+            this.button1.Location = new System.Drawing.Point(349, 383);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(224, 43);
@@ -130,7 +135,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(908, 94);
+            this.groupBox1.Size = new System.Drawing.Size(914, 88);
             this.groupBox1.TabIndex = 20;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Description";
@@ -138,20 +143,19 @@ namespace IntegratedAuthoringToolWF.IEP
             // label1
             // 
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(67, 54);
+            this.label1.Location = new System.Drawing.Point(438, 16);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(781, 30);
+            this.label1.Size = new System.Drawing.Size(440, 69);
             this.label1.TabIndex = 20;
             this.label1.Text = resources.GetString("label1.Text");
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(5, 12);
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -162,8 +166,9 @@ namespace IntegratedAuthoringToolWF.IEP
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(908, 356);
-            this.splitContainer1.SplitterDistance = 94;
+            this.splitContainer1.Panel2MinSize = 200;
+            this.splitContainer1.Size = new System.Drawing.Size(914, 362);
+            this.splitContainer1.SplitterDistance = 88;
             this.splitContainer1.TabIndex = 3;
             // 
             // splitContainer2
@@ -179,8 +184,8 @@ namespace IntegratedAuthoringToolWF.IEP
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.groupBox2);
-            this.splitContainer2.Size = new System.Drawing.Size(908, 258);
-            this.splitContainer2.SplitterDistance = 324;
+            this.splitContainer2.Size = new System.Drawing.Size(914, 270);
+            this.splitContainer2.SplitterDistance = 326;
             this.splitContainer2.TabIndex = 0;
             // 
             // groupBox3
@@ -190,7 +195,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.groupBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox3.Location = new System.Drawing.Point(0, 0);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(324, 258);
+            this.groupBox3.Size = new System.Drawing.Size(326, 270);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Output (edit this to your liking)";
@@ -205,7 +210,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.scenarioTextBox.Location = new System.Drawing.Point(6, 18);
             this.scenarioTextBox.Margin = new System.Windows.Forms.Padding(2);
             this.scenarioTextBox.Name = "scenarioTextBox";
-            this.scenarioTextBox.Size = new System.Drawing.Size(309, 230);
+            this.scenarioTextBox.Size = new System.Drawing.Size(311, 235);
             this.scenarioTextBox.TabIndex = 2;
             this.scenarioTextBox.Text = "";
             this.scenarioTextBox.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
@@ -217,7 +222,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.groupBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(580, 258);
+            this.groupBox2.Size = new System.Drawing.Size(584, 270);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Result";
@@ -231,7 +236,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.CharacterTab.Location = new System.Drawing.Point(3, 17);
             this.CharacterTab.Name = "CharacterTab";
             this.CharacterTab.SelectedIndex = 0;
-            this.CharacterTab.Size = new System.Drawing.Size(574, 238);
+            this.CharacterTab.Size = new System.Drawing.Size(578, 250);
             this.CharacterTab.TabIndex = 18;
             // 
             // Characters
@@ -240,7 +245,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.Characters.Location = new System.Drawing.Point(4, 24);
             this.Characters.Name = "Characters";
             this.Characters.Padding = new System.Windows.Forms.Padding(3);
-            this.Characters.Size = new System.Drawing.Size(566, 210);
+            this.Characters.Size = new System.Drawing.Size(570, 222);
             this.Characters.TabIndex = 0;
             this.Characters.Text = "Characters";
             this.Characters.UseVisualStyleBackColor = true;
@@ -255,7 +260,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(3, 3);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(560, 204);
+            this.groupBox4.Size = new System.Drawing.Size(564, 216);
             this.groupBox4.TabIndex = 17;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Characters";
@@ -263,7 +268,7 @@ namespace IntegratedAuthoringToolWF.IEP
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 125);
+            this.label3.Location = new System.Drawing.Point(6, 152);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(42, 15);
             this.label3.TabIndex = 20;
@@ -276,20 +281,21 @@ namespace IntegratedAuthoringToolWF.IEP
             this.dataGridViewGoals.AllowUserToDeleteRows = false;
             this.dataGridViewGoals.AllowUserToOrderColumns = true;
             this.dataGridViewGoals.AllowUserToResizeRows = false;
-            this.dataGridViewGoals.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.dataGridViewGoals.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewGoals.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewGoals.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.dataGridViewGoals.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewGoals.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewGoals.Location = new System.Drawing.Point(6, 141);
+            this.dataGridViewGoals.Location = new System.Drawing.Point(6, 168);
             this.dataGridViewGoals.Name = "dataGridViewGoals";
             this.dataGridViewGoals.ReadOnly = true;
             this.dataGridViewGoals.RowHeadersVisible = false;
             this.dataGridViewGoals.RowHeadersWidth = 51;
             this.dataGridViewGoals.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewGoals.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewGoals.Size = new System.Drawing.Size(209, 59);
+            this.dataGridViewGoals.Size = new System.Drawing.Size(213, 45);
             this.dataGridViewGoals.TabIndex = 19;
             // 
             // label2
@@ -308,7 +314,8 @@ namespace IntegratedAuthoringToolWF.IEP
             this.dataGridViewBeliefs.AllowUserToDeleteRows = false;
             this.dataGridViewBeliefs.AllowUserToOrderColumns = true;
             this.dataGridViewBeliefs.AllowUserToResizeRows = false;
-            this.dataGridViewBeliefs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.dataGridViewBeliefs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewBeliefs.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewBeliefs.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
@@ -321,7 +328,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.dataGridViewBeliefs.RowHeadersWidth = 51;
             this.dataGridViewBeliefs.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewBeliefs.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewBeliefs.Size = new System.Drawing.Size(324, 174);
+            this.dataGridViewBeliefs.Size = new System.Drawing.Size(328, 187);
             this.dataGridViewBeliefs.TabIndex = 17;
             this.dataGridViewBeliefs.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewBeliefs_CellContentClick);
             // 
@@ -332,7 +339,8 @@ namespace IntegratedAuthoringToolWF.IEP
             this.internalCharacterView.AllowUserToDeleteRows = false;
             this.internalCharacterView.AllowUserToOrderColumns = true;
             this.internalCharacterView.AllowUserToResizeRows = false;
-            this.internalCharacterView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.internalCharacterView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.internalCharacterView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.internalCharacterView.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
@@ -345,7 +353,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.internalCharacterView.RowHeadersWidth = 51;
             this.internalCharacterView.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.internalCharacterView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.internalCharacterView.Size = new System.Drawing.Size(209, 103);
+            this.internalCharacterView.Size = new System.Drawing.Size(213, 130);
             this.internalCharacterView.TabIndex = 16;
             this.internalCharacterView.SelectionChanged += new System.EventHandler(this.internalCharacterView_SelectionChanged);
             // 
@@ -355,18 +363,21 @@ namespace IntegratedAuthoringToolWF.IEP
             this.CogRules.Controls.Add(this.dataGridViewEmotions);
             this.CogRules.Controls.Add(this.label4);
             this.CogRules.Controls.Add(this.dataGridViewReactiveActions);
-            this.CogRules.Location = new System.Drawing.Point(4, 22);
+            this.CogRules.Location = new System.Drawing.Point(4, 24);
             this.CogRules.Name = "CogRules";
             this.CogRules.Padding = new System.Windows.Forms.Padding(3);
-            this.CogRules.Size = new System.Drawing.Size(566, 213);
+            this.CogRules.Size = new System.Drawing.Size(570, 222);
             this.CogRules.TabIndex = 1;
             this.CogRules.Text = "Cognitive Rules";
             this.CogRules.UseVisualStyleBackColor = true;
             // 
             // label5
             // 
+            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 99);
+            this.label5.Location = new System.Drawing.Point(3, 106);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(152, 15);
             this.label5.TabIndex = 6;
@@ -387,7 +398,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.dataGridViewEmotions.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.dataGridViewEmotions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewEmotions.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewEmotions.Location = new System.Drawing.Point(7, 116);
+            this.dataGridViewEmotions.Location = new System.Drawing.Point(7, 125);
             this.dataGridViewEmotions.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewEmotions.Name = "dataGridViewEmotions";
             this.dataGridViewEmotions.RowHeadersVisible = false;
@@ -395,11 +406,14 @@ namespace IntegratedAuthoringToolWF.IEP
             this.dataGridViewEmotions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewEmotions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewEmotions.ShowCellToolTips = false;
-            this.dataGridViewEmotions.Size = new System.Drawing.Size(551, 92);
+            this.dataGridViewEmotions.Size = new System.Drawing.Size(555, 95);
             this.dataGridViewEmotions.TabIndex = 5;
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(6, 3);
             this.label4.Name = "label4";
@@ -429,23 +443,48 @@ namespace IntegratedAuthoringToolWF.IEP
             this.dataGridViewReactiveActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewReactiveActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewReactiveActions.ShowCellToolTips = false;
-            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(552, 92);
+            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(556, 82);
             this.dataGridViewReactiveActions.TabIndex = 3;
             // 
             // tabPage1
             // 
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Controls.Add(this.dataGridViewDialogueActions);
+            this.tabPage1.Location = new System.Drawing.Point(4, 24);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Size = new System.Drawing.Size(566, 213);
+            this.tabPage1.Size = new System.Drawing.Size(570, 314);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "Dialogues";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewDialogueActions
+            // 
+            this.dataGridViewDialogueActions.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
+            this.dataGridViewDialogueActions.AllowUserToAddRows = false;
+            this.dataGridViewDialogueActions.AllowUserToDeleteRows = false;
+            this.dataGridViewDialogueActions.AllowUserToOrderColumns = true;
+            this.dataGridViewDialogueActions.AllowUserToResizeRows = false;
+            this.dataGridViewDialogueActions.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewDialogueActions.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
+            this.dataGridViewDialogueActions.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewDialogueActions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridViewDialogueActions.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
+            this.dataGridViewDialogueActions.ImeMode = System.Windows.Forms.ImeMode.On;
+            this.dataGridViewDialogueActions.Location = new System.Drawing.Point(0, 0);
+            this.dataGridViewDialogueActions.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridViewDialogueActions.Name = "dataGridViewDialogueActions";
+            this.dataGridViewDialogueActions.ReadOnly = true;
+            this.dataGridViewDialogueActions.RowHeadersVisible = false;
+            this.dataGridViewDialogueActions.RowHeadersWidth = 51;
+            this.dataGridViewDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridViewDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(570, 314);
+            this.dataGridViewDialogueActions.TabIndex = 15;
             // 
             // processInputButton
             // 
             this.processInputButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.processInputButton.Image = global::IntegratedAuthoringToolWF.Properties.Resources.right_arrow1;
-            this.processInputButton.Location = new System.Drawing.Point(61, 366);
+            this.processInputButton.Location = new System.Drawing.Point(61, 375);
             this.processInputButton.Margin = new System.Windows.Forms.Padding(2);
             this.processInputButton.Name = "processInputButton";
             this.processInputButton.Size = new System.Drawing.Size(189, 51);
@@ -464,7 +503,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button2.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_system_report_40;
-            this.button2.Location = new System.Drawing.Point(648, 374);
+            this.button2.Location = new System.Drawing.Point(614, 383);
             this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(224, 43);
@@ -474,13 +513,29 @@ namespace IntegratedAuthoringToolWF.IEP
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pictureBox1.Image = global::IntegratedAuthoringToolWF.Properties.Resources.iconHelp;
+            this.pictureBox1.Location = new System.Drawing.Point(876, 395);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(30, 31);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 6;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
             // IEPOutputForm
             // 
             this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.CancelButton = this.button2;
-            this.ClientSize = new System.Drawing.Size(914, 427);
+            this.ClientSize = new System.Drawing.Size(914, 437);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.processInputButton);
             this.Controls.Add(this.splitContainer1);
@@ -488,9 +543,8 @@ namespace IntegratedAuthoringToolWF.IEP
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.MinimumSize = new System.Drawing.Size(528, 412);
+            this.MinimumSize = new System.Drawing.Size(528, 312);
             this.Name = "IEPOutputForm";
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Story to Scenario Wizard Output";
             this.Load += new System.EventHandler(this.outputForm_Load);
@@ -517,6 +571,9 @@ namespace IntegratedAuthoringToolWF.IEP
             this.CogRules.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEmotions)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactiveActions)).EndInit();
+            this.tabPage1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewDialogueActions)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -550,5 +607,7 @@ namespace IntegratedAuthoringToolWF.IEP
         private System.Windows.Forms.Label label5;
         public System.Windows.Forms.DataGridView dataGridViewEmotions;
         private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.DataGridView dataGridViewDialogueActions;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

@@ -343,7 +343,7 @@ namespace IntegratedAuthoringToolWF.IEP
                 var action = actionNames.ElementAt(i);
                 var data = Actions.ElementAt(i);
 
-                if (action.Length <= 2 || data.Length <= 2 || action.Contains(" be "))
+                if (action.Length <= 2 || data.Length <= 2 || action.Contains(" be ") || action.Contains("Speak"))
                     continue;
 
                 data = data.Replace(action, "");

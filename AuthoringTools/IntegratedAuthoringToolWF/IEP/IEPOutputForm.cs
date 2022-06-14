@@ -49,12 +49,14 @@ namespace IntegratedAuthoringToolWF.IEP
             var _goals = new BindingListView<GoalDTO>(new List<GoalDTO>());
             var _actions = new BindingListView<ActionRuleDTO>(new List<GoalDTO>());
             var _emotions = new BindingListView<AppraisalRuleDTO>(new List<AppraisalRuleDTO>());
+            var _dialogues = new BindingListView<DialogueStateActionDTO>(new List<DialogueStateActionDTO>());
 
             internalCharacterView.DataSource = _characters;
             dataGridViewBeliefs.DataSource = _beliefs;
             dataGridViewGoals.DataSource = _goals;
             dataGridViewReactiveActions.DataSource = _actions;
             dataGridViewEmotions.DataSource = _emotions;
+            dataGridViewDialogueActions.DataSource = _dialogues;
 
             // Making sure everything doesn't get too crowded
             internalCharacterView.ColumnHeadersVisible = false;
@@ -70,6 +72,9 @@ namespace IntegratedAuthoringToolWF.IEP
             this.dataGridViewReactiveActions.Columns["Id"].Visible = false;
 
             this.dataGridViewEmotions.Columns["Id"].Visible = false;
+
+            this.dataGridViewDialogueActions.Columns["UtteranceId"].Visible = false;
+            this.dataGridViewDialogueActions.Columns["Id"].Visible = false;
 
             button1.Enabled = false;
             button2.Enabled = false;
@@ -118,6 +123,15 @@ namespace IntegratedAuthoringToolWF.IEP
                 this.dataGridViewEmotions.DataSource = _emotions;
                 this.dataGridViewEmotions.Refresh();
             }
+
+            if(_manager._iatAux.GetAllDialogueActions().Count() > 0)
+            {
+                var _dialogues = new BindingListView<DialogueStateActionDTO>(new List<DialogueStateActionDTO>());
+                _dialogues.DataSource = _manager._iatAux.GetAllDialogueActions().ToList();
+
+                this.dataGridViewDialogueActions.DataSource = _dialogues;
+                this.dataGridViewDialogueActions.Refresh();
+            }
         }   
 
 
@@ -125,6 +139,7 @@ namespace IntegratedAuthoringToolWF.IEP
         {
             _manager.AcceptOutput();
             this.Close();
+            parent.Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -205,6 +220,11 @@ namespace IntegratedAuthoringToolWF.IEP
             button1.Enabled = true;
             button2.Enabled = true;
             groupBox2.Enabled = true;
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            splitContainer1.Panel1Collapsed = !splitContainer1.Panel1Collapsed;
         }
     }
 }

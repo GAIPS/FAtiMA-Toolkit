@@ -83,8 +83,15 @@ namespace IntegratedAuthoringToolWF.IEP
 
             if (_server.result != "" && (_iepForm == null || _iepForm.Visible == false))
             {
-                _iepForm = new IEPOutputForm(this, _outputManager, _server.result);
-                _iepForm.ShowDialog(); ;
+                if (_server.result == "{}\n{}\n{}\n{}\n{}")
+                {
+                    MessageBox.Show("No output was generated. \nCould you try again?");
+                }
+                else
+                {
+                    _iepForm = new IEPOutputForm(this, _outputManager, _server.result);
+                    _iepForm.ShowDialog();
+                }
             }
         }
         private void debugLabel_Click(object sender, EventArgs e)
