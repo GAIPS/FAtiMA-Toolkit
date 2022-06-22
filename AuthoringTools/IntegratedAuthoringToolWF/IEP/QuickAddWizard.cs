@@ -48,7 +48,7 @@ namespace IntegratedAuthoringToolWF.IEP
         public void ReceivedInput()
         {
 
-            result = _server.result;
+            result = _server.descriptionResult;
             
            _manager.ComputeStory(result);
 

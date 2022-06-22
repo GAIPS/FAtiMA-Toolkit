@@ -220,6 +220,7 @@ namespace IntegratedAuthoringToolWF
                 _rpcForm = null;
             }
 
+            outputManager = new OutputManager(this._iat, this._storage);
             RefreshDialogs();
             RefreshCharacters();
             AssistantHandler();
@@ -2643,7 +2644,7 @@ namespace IntegratedAuthoringToolWF
 
         private void wizardServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            server.Show();
+            server.ShowDialog();
         }
 
         private void beliefWizarToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2688,6 +2689,13 @@ namespace IntegratedAuthoringToolWF
                 MessageBox.Show("No Emotional Decision Making Asset was found");
             }
 
+        }
+
+        private void toolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            var window = new GenerateDialogue_Wizard(this.server, outputManager).ShowDialog(this);
+            OnAssetDataLoaded(_iat);
+            tabControlIAT.SelectedIndex = 3;
         }
     }
 }

@@ -106,8 +106,8 @@ namespace IntegratedAuthoringToolWF.IEP
 
         public void ReceivedInput()
         {
-            if (!_server.result.Contains("Error")){
-                this.scenarioTextBox.Text = _server.result;
+            if (!_server.descriptionResult.Contains("Error")){
+                this.scenarioTextBox.Text = _server.descriptionResult;
                 this.scenarioTextBox.Enabled = true;
                 if (this.scenarioTextBox.Text != "")
                     processOutputButton.Enabled = true;

@@ -22,7 +22,8 @@ namespace IntegratedAuthoringToolWF.IEP
         private static string IP = "146.193.224.192";
         private static string PORT = "8080";
 
-        public string result = "";
+        public string descriptionResult = "";
+        public string dialogResult = "";
         public bool connected = false;
 
         public ConnectToServerForm()
@@ -36,6 +37,11 @@ namespace IntegratedAuthoringToolWF.IEP
         internal void ProcessDescription(string description, MethodInvoker run)
         {
             ProcessDescriptionAsync(description, run).GetAwaiter().GetResult();
+        }
+
+        internal void ProcessDialogues(string dialogs, MethodInvoker run)
+        {
+            ProcessDialoguesAsync(dialogs, run).GetAwaiter().GetResult();
         }
 
         async Task Handshake()
@@ -81,9 +87,9 @@ namespace IntegratedAuthoringToolWF.IEP
         {
             // Testing purposes
 
-
-            var content = new StringContent(_description);
-
+            string send = "Description: " + _description;
+            var content = new StringContent(send);
+            
             //var response = await client.PostAsync("http://" + IP + ":" + PORT, content).ConfigureAwait(false);
 
             return Task.Run(() => client.PostAsync("http://" + IP + ":" + PORT, content)).Result;
@@ -97,10 +103,8 @@ namespace IntegratedAuthoringToolWF.IEP
 
             try
             {
-
                 //Send the Story
                 await SendDescriptionAsync(_description);
-
 
                 //Collect the results
                 await GetScenarioAsync(run).ConfigureAwait(false);
@@ -109,12 +113,8 @@ namespace IntegratedAuthoringToolWF.IEP
             catch (Exception f)
             {
                 // Discard PingExceptions and return false;
-
                 MessageBox.Show(f.Message);
-
-
             }
-
         }
 
         async Task GetScenarioAsync(MethodInvoker run)
@@ -122,10 +122,49 @@ namespace IntegratedAuthoringToolWF.IEP
             IP = IP.Replace(" ", "");
             PORT = PORT.Replace(" ", "");
             var responseBytes = client.GetByteArrayAsync("http://" + IP + ":" + PORT).Result;
-            result = Encoding.Default.GetString(responseBytes);
-            
+            descriptionResult = Encoding.Default.GetString(responseBytes);
             run.Invoke();
         }
+
+        async Task<HttpResponseMessage> SendDialoguesAsync(string _dialogues)
+        {
+            // Testing purposes
+            string send = "Dialogues: " + _dialogues;
+            var content = new StringContent(send);
+
+           //var response = await client.PostAsync("http://" + IP + ":" + PORT, content).ConfigureAwait(false);
+            return Task.Run(() => client.PostAsync("http://" + IP + ":" + PORT, content)).Result;
+        }
+
+        async Task ProcessDialoguesAsync(string _description, MethodInvoker run)
+        {
+            client.DefaultRequestHeaders.UserAgent.Clear();
+            client.DefaultRequestHeaders.UserAgent.TryParseAdd(Environment.MachineName);
+            try
+            {
+                //Send the Story
+                await SendDialoguesAsync(_description);
+
+                //Collect the results
+                await GetDialoguesAsync(run).ConfigureAwait(false);
+
+            }
+            catch (Exception f)
+            {
+                // Discard PingExceptions and return false;
+                MessageBox.Show(f.Message);
+            }
+        }
+
+        async Task GetDialoguesAsync(MethodInvoker run)
+        {
+            IP = IP.Replace(" ", "");
+            PORT = PORT.Replace(" ", "");
+            var responseBytes = client.GetByteArrayAsync("http://" + IP + ":" + PORT).Result;
+            dialogResult = Encoding.Default.GetString(responseBytes);
+            run.Invoke();
+        }
+
 
         private void connectToServer_Click(object sender, EventArgs e)
         {

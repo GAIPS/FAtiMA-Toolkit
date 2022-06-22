@@ -38,6 +38,7 @@
             this.addDialogueActionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dialogueHelpersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.generateDialogueActionsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.quickAddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.wizardServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -414,7 +415,8 @@
             // dialogueHelpersToolStripMenuItem
             // 
             this.dialogueHelpersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.generateDialogueActionsToolStripMenuItem1});
+            this.generateDialogueActionsToolStripMenuItem1,
+            this.toolStripMenuItem1});
             this.dialogueHelpersToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_chatbot_401;
             this.dialogueHelpersToolStripMenuItem.Name = "dialogueHelpersToolStripMenuItem";
             this.dialogueHelpersToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
@@ -424,9 +426,17 @@
             // 
             this.generateDialogueActionsToolStripMenuItem1.Image = global::IntegratedAuthoringToolWF.Properties.Resources.boticon;
             this.generateDialogueActionsToolStripMenuItem1.Name = "generateDialogueActionsToolStripMenuItem1";
-            this.generateDialogueActionsToolStripMenuItem1.Size = new System.Drawing.Size(184, 26);
-            this.generateDialogueActionsToolStripMenuItem1.Text = "Generate Dialogs";
+            this.generateDialogueActionsToolStripMenuItem1.Size = new System.Drawing.Size(223, 26);
+            this.generateDialogueActionsToolStripMenuItem1.Text = "Generate Dialog Actions";
             this.generateDialogueActionsToolStripMenuItem1.Click += new System.EventHandler(this.generateDialogueActionsToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Image = global::IntegratedAuthoringToolWF.Properties.Resources.wizard_hat;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(223, 26);
+            this.toolStripMenuItem1.Text = "Generate Utterances Wizard";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // quickAddToolStripMenuItem
             // 
@@ -2092,6 +2102,7 @@
         private System.Windows.Forms.ToolStripMenuItem quickAddToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addEmotionalReactionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addDialogueActionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }
 

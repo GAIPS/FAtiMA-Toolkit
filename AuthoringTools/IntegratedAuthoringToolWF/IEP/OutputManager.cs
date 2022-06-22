@@ -564,7 +564,41 @@ namespace IntegratedAuthoringToolWF.IEP
             edmAux.AddActionRule(actionRule.ToDTO());
         }
 
+        public List<DialogueStateActionDTO> ComputeGPTDialogues(string dialogues)
+        {
+            var dialogueList = dialogues.Split(new string[] { "\n"}, StringSplitOptions.RemoveEmptyEntries);
+            List<DialogueStateActionDTO> dialogStates = new List<DialogueStateActionDTO>();
 
+            if (dialogueList.Count() < 1)
+                return dialogStates;
+
+            foreach (var d in dialogueList)
+            {
+                var parameters = d.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
+                if(parameters.Count() == 4)
+                {
+                    var cs = parameters[0];
+                    var ns = parameters[1];
+                    var sty = parameters[2];
+                    var utter = parameters[3];
+
+                    var newD = new DialogueStateActionDTO()
+                    {
+                        CurrentState = cs,
+                        NextState = ns,
+                        Meaning = "-",
+                        Style = sty,
+                        Utterance = utter
+                    };
+                    dialogStates.Add(newD);
+                    //_iatAux.AddDialogAction(newD);
+                }
+            }
+
+            return dialogStates;
+
+
+        }
         // Gotta copy stuff from one place to the other
         public void AcceptOutput()
         {

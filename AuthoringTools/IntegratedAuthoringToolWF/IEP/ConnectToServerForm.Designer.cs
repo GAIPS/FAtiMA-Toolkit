@@ -180,7 +180,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.Controls.Add(this.groupBox4);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ConnectToServerForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Connect to Wizard Server";
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();

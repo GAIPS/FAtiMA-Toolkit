@@ -87,11 +87,23 @@
       <DependentUpon>AddCharacterForm.cs</DependentUpon>
     </Compile>
     <Compile Include="AuthorAssistant.cs" />
+    <Compile Include="DialogueHelpers\GenerateDialogue Wizard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogueHelpers\GenerateDialogue Wizard.Designer.cs">
+      <DependentUpon>GenerateDialogue Wizard.cs</DependentUpon>
+    </Compile>
     <Compile Include="DialogueHelpers\GenerateDialogueActions.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="DialogueHelpers\GenerateDialogueActions.Designer.cs">
       <DependentUpon>GenerateDialogueActions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DialogueHelpers\GPTOutputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DialogueHelpers\GPTOutputForm.Designer.cs">
+      <DependentUpon>GPTOutputForm.cs</DependentUpon>
     </Compile>
     <Compile Include="IEP\ComputeDescriptionForm.cs">
       <SubType>Form</SubType>
@@ -207,8 +219,14 @@
     <EmbeddedResource Include="AddOrEditDialogueActionForm.resx">
       <DependentUpon>AddOrEditDialogueActionForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="DialogueHelpers\GenerateDialogue Wizard.resx">
+      <DependentUpon>GenerateDialogue Wizard.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DialogueHelpers\GenerateDialogueActions.resx">
       <DependentUpon>GenerateDialogueActions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DialogueHelpers\GPTOutputForm.resx">
+      <DependentUpon>GPTOutputForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="IEP\ComputeDescriptionForm.resx">
       <DependentUpon>ComputeDescriptionForm.cs</DependentUpon>
@@ -419,6 +437,7 @@
     <None Include="Resources\inescid.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\down-arrow.png" />
     <None Include="Resources\dialogue.png" />
     <None Include="Resources\reaction.png" />
     <None Include="Resources\icons8-chatbot-401.png" />
