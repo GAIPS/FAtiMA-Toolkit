@@ -2710,7 +2710,7 @@ namespace IntegratedAuthoringToolWF
             {
                 gitVersion = reader.ReadToEnd();
             }
-            MessageBox.Show("Version: " + gitVersion);
+            MessageBox.Show("Version:  " + gitVersion  + "\n \n" + "v1.Release - CommitNumber - CommitID ");
 
 
         }
