@@ -43,6 +43,9 @@
             this.wizardServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.officialWebsiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.videoExamplesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.checkForUpdatesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label2 = new System.Windows.Forms.Label();
             this.textBoxScenarioDescription = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -331,7 +334,7 @@
             this.loadTemplateScenarioToolStripMenuItem1});
             this.scenarioToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.scenario1;
             this.scenarioToolStripMenuItem.Name = "scenarioToolStripMenuItem";
-            this.scenarioToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.scenarioToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
             this.scenarioToolStripMenuItem.Text = "Scenario";
             // 
             // storyToScenarioWizardToolStripMenuItem
@@ -357,7 +360,7 @@
             this.beliefWizarToolStripMenuItem});
             this.rolePlayCharacterHelperToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.NormalFace;
             this.rolePlayCharacterHelperToolStripMenuItem.Name = "rolePlayCharacterHelperToolStripMenuItem";
-            this.rolePlayCharacterHelperToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.rolePlayCharacterHelperToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
             this.rolePlayCharacterHelperToolStripMenuItem.Text = "Characters";
             // 
             // inspectCharacterToolStripMenuItem1
@@ -385,7 +388,7 @@
             this.addDialogueActionToolStripMenuItem});
             this.cognitiveRulesToolStripMenuItem1.Image = global::IntegratedAuthoringToolWF.Properties.Resources.rules;
             this.cognitiveRulesToolStripMenuItem1.Name = "cognitiveRulesToolStripMenuItem1";
-            this.cognitiveRulesToolStripMenuItem1.Size = new System.Drawing.Size(184, 26);
+            this.cognitiveRulesToolStripMenuItem1.Size = new System.Drawing.Size(160, 26);
             this.cognitiveRulesToolStripMenuItem1.Text = "Cognitive Rules";
             // 
             // metaBeliefsPanelToolStripMenuItem
@@ -419,7 +422,7 @@
             this.toolStripMenuItem1});
             this.dialogueHelpersToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_chatbot_401;
             this.dialogueHelpersToolStripMenuItem.Name = "dialogueHelpersToolStripMenuItem";
-            this.dialogueHelpersToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.dialogueHelpersToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
             this.dialogueHelpersToolStripMenuItem.Text = "Dialogues";
             // 
             // generateDialogueActionsToolStripMenuItem1
@@ -442,7 +445,7 @@
             // 
             this.quickAddToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.magic_wand1;
             this.quickAddToolStripMenuItem.Name = "quickAddToolStripMenuItem";
-            this.quickAddToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.quickAddToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
             this.quickAddToolStripMenuItem.Text = "Quick Add";
             this.quickAddToolStripMenuItem.Visible = false;
             this.quickAddToolStripMenuItem.Click += new System.EventHandler(this.quickAddToolStripMenuItem_Click);
@@ -451,7 +454,7 @@
             // 
             this.wizardServerToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.database;
             this.wizardServerToolStripMenuItem.Name = "wizardServerToolStripMenuItem";
-            this.wizardServerToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.wizardServerToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
             this.wizardServerToolStripMenuItem.Text = "Wizard Server";
             this.wizardServerToolStripMenuItem.Click += new System.EventHandler(this.wizardServerToolStripMenuItem_Click);
             // 
@@ -464,10 +467,34 @@
             // 
             // helpToolStripMenuItem
             // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.officialWebsiteToolStripMenuItem,
+            this.videoExamplesToolStripMenuItem,
+            this.checkForUpdatesToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
-            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
+            // 
+            // officialWebsiteToolStripMenuItem
+            // 
+            this.officialWebsiteToolStripMenuItem.Name = "officialWebsiteToolStripMenuItem";
+            this.officialWebsiteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.officialWebsiteToolStripMenuItem.Text = "Official Website";
+            this.officialWebsiteToolStripMenuItem.Click += new System.EventHandler(this.officialWebsiteToolStripMenuItem_Click);
+            // 
+            // videoExamplesToolStripMenuItem
+            // 
+            this.videoExamplesToolStripMenuItem.Name = "videoExamplesToolStripMenuItem";
+            this.videoExamplesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.videoExamplesToolStripMenuItem.Text = "Video Examples";
+            this.videoExamplesToolStripMenuItem.Click += new System.EventHandler(this.videoExamplesToolStripMenuItem_Click);
+            // 
+            // checkForUpdatesToolStripMenuItem
+            // 
+            this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
+            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.checkForUpdatesToolStripMenuItem.Text = "Check for Updates";
+            this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
             // 
             // label2
             // 
@@ -2103,6 +2130,9 @@
         private System.Windows.Forms.ToolStripMenuItem addEmotionalReactionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addDialogueActionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem officialWebsiteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem videoExamplesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem checkForUpdatesToolStripMenuItem;
     }
 }
 

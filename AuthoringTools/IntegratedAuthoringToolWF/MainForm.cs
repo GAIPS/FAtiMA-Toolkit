@@ -24,7 +24,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
+using System.Xml;
 using Utilities;
 using Utilities.DataStructures;
 using WellFormedNames;
@@ -1782,12 +1784,6 @@ namespace IntegratedAuthoringToolWF
             toolTip1.Show("Creates a new Asset Storage. \n This is the file where the cognitive rules of the scenario will be stored in.", buttonNewAssetStorage);
         }
 
-        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://fatima-toolkit.eu/2-integrated-authoring-tool/");
-        }
-
-
 
 
         #region Authoring Assistant
@@ -2696,6 +2692,33 @@ namespace IntegratedAuthoringToolWF
             var window = new GenerateDialogue_Wizard(this.server, outputManager).ShowDialog(this);
             OnAssetDataLoaded(_iat);
             tabControlIAT.SelectedIndex = 2;
+        }
+
+        private void checkForUpdatesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Check4Update();
+        }
+
+        private void Check4Update()
+        {
+            string gitVersion = String.Empty;
+            using (Stream stream = Assembly.GetExecutingAssembly()
+                    .GetManifestResourceStream("TryGitDescribe." + "version.txt"))
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                gitVersion = reader.ReadToEnd();
+            }
+            MessageBox.Show("Version: {0}", gitVersion);
+        }
+
+        private void videoExamplesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://fatima-toolkit.eu/videos-tutorials/");
+        }
+
+        private void officialWebsiteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://fatima-toolkit.eu");
         }
     }
 }
