@@ -2702,13 +2702,17 @@ namespace IntegratedAuthoringToolWF
         private void Check4Update()
         {
             string gitVersion = String.Empty;
+            var assembly = Assembly.GetExecutingAssembly();
+            var manifest = assembly.GetManifestResourceStream("IntegratedAuthoringToolWF." + "version.txt");
             using (Stream stream = Assembly.GetExecutingAssembly()
-                    .GetManifestResourceStream("TryGitDescribe." + "version.txt"))
+                    .GetManifestResourceStream("IntegratedAuthoringToolWF." + "version.txt"))
             using (StreamReader reader = new StreamReader(stream))
             {
                 gitVersion = reader.ReadToEnd();
             }
-            MessageBox.Show("Version: {0}", gitVersion);
+            MessageBox.Show("Version: " + gitVersion);
+
+
         }
 
         private void videoExamplesToolStripMenuItem_Click(object sender, EventArgs e)

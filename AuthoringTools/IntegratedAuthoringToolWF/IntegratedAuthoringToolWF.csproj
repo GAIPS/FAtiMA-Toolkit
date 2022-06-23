@@ -437,6 +437,9 @@
     <None Include="Resources\inescid.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="version.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="Resources\down-arrow.png" />
     <None Include="Resources\dialogue.png" />
     <None Include="Resources\reaction.png" />
