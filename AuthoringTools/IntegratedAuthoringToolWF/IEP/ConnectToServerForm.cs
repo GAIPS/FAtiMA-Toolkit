@@ -19,7 +19,7 @@ namespace IntegratedAuthoringToolWF.IEP
       //  public Form currentForm;
 
         // Default Server IP + PORT
-        private static string IP = "146.193.224.192";
+        private static string IP = "146.193.226.21";
         private static string PORT = "8080";
 
         public string descriptionResult = "";

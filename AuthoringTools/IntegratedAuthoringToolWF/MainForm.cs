@@ -2695,7 +2695,7 @@ namespace IntegratedAuthoringToolWF
         {
             var window = new GenerateDialogue_Wizard(this.server, outputManager).ShowDialog(this);
             OnAssetDataLoaded(_iat);
-            tabControlIAT.SelectedIndex = 3;
+            tabControlIAT.SelectedIndex = 2;
         }
     }
 }
