@@ -50,11 +50,31 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             {
                 // Preparing input
                 var input = "";
+                
+
                 foreach(var d in dialogs)
                 {
-                    input += "|" + d.CurrentState + "|" + d.NextState + "|" + d.Style + "|" + d.Utterance + "| \n";
-                }
 
+                    input = "|";
+                    var currentState = d.CurrentState + "|";
+                    var nextState = "";
+                    var meaning = "";
+                    var style = "";
+                    var utterance = d.Utterance + "|";
+
+
+                    if (nextStateBox.Checked)
+                        nextState = d.NextState + "|";
+
+                    if (meaningBox.Checked)
+                        meaning = d.Meaning + "|";
+
+                    if(styleBox.Checked)
+                        style = d.Style + "|";
+
+                    input += currentState + nextState + meaning + style + utterance + "\n";
+
+                }
                 _server.ProcessDialogues(input, this.HandleOutput);
 
             }
