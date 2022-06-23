@@ -477,22 +477,25 @@
             // 
             // officialWebsiteToolStripMenuItem
             // 
+            this.officialWebsiteToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_help_40;
             this.officialWebsiteToolStripMenuItem.Name = "officialWebsiteToolStripMenuItem";
-            this.officialWebsiteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.officialWebsiteToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.officialWebsiteToolStripMenuItem.Text = "Official Website";
             this.officialWebsiteToolStripMenuItem.Click += new System.EventHandler(this.officialWebsiteToolStripMenuItem_Click);
             // 
             // videoExamplesToolStripMenuItem
             // 
+            this.videoExamplesToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_template_40;
             this.videoExamplesToolStripMenuItem.Name = "videoExamplesToolStripMenuItem";
-            this.videoExamplesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.videoExamplesToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.videoExamplesToolStripMenuItem.Text = "Video Examples";
             this.videoExamplesToolStripMenuItem.Click += new System.EventHandler(this.videoExamplesToolStripMenuItem_Click);
             // 
             // checkForUpdatesToolStripMenuItem
             // 
+            this.checkForUpdatesToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.NormalFace;
             this.checkForUpdatesToolStripMenuItem.Name = "checkForUpdatesToolStripMenuItem";
-            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.checkForUpdatesToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.checkForUpdatesToolStripMenuItem.Text = "Check for Updates";
             this.checkForUpdatesToolStripMenuItem.Click += new System.EventHandler(this.checkForUpdatesToolStripMenuItem_Click);
             // 
