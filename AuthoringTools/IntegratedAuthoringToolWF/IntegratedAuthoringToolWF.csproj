@@ -111,6 +111,12 @@
     <Compile Include="IEP\ComputeDescriptionForm.Designer.cs">
       <DependentUpon>ComputeDescriptionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="IEP\ComputeDescriptionHints.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IEP\ComputeDescriptionHints.Designer.cs">
+      <DependentUpon>ComputeDescriptionHints.cs</DependentUpon>
+    </Compile>
     <Compile Include="IEP\ConnectToServerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -230,6 +236,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="IEP\ComputeDescriptionForm.resx">
       <DependentUpon>ComputeDescriptionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IEP\ComputeDescriptionHints.resx">
+      <DependentUpon>ComputeDescriptionHints.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="IEP\ConnectToServerForm.resx">
       <DependentUpon>ConnectToServerForm.cs</DependentUpon>
@@ -398,6 +407,7 @@
       <HintPath>..\packages\GAIPS.Serialization.1.5.0\lib\net35\GAIPS.Serialization.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="NAudio, Version=1.5.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.5\lib\NAudio.dll</HintPath>
       <Private>True</Private>
@@ -412,6 +422,12 @@
     <Reference Include="NVorbis, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NVorbis.0.8.4.0\lib\NVorbis.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.2.11.0\lib\net46\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.File, Version=5.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.File.5.0.0\lib\net45\Serilog.Sinks.File.dll</HintPath>
     </Reference>
     <Reference Include="SoundTouch.Net, Version=1.9.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SoundTouch.Net.1.9.2.2\lib\net40\SoundTouch.Net.dll</HintPath>
@@ -437,6 +453,7 @@
     <None Include="Resources\inescid.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\idea.png" />
     <EmbeddedResource Include="version.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

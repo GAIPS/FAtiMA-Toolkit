@@ -18,6 +18,7 @@ using IntegratedAuthoringTool;
 using IntegratedAuthoringTool.DTOs;
 using RolePlayCharacter;
 using RolePlayCharacterWF.ViewModels;
+using Serilog;
 
 namespace IntegratedAuthoringToolWF.IEP
 {
@@ -79,6 +80,10 @@ namespace IntegratedAuthoringToolWF.IEP
             button1.Enabled = false;
             button2.Enabled = false;
             groupBox2.Enabled = false;
+
+            Log.Information("Log:IEP_Story_Output_%" + extrapolations + "%");
+
+
             // LoadOutput();
         }
 

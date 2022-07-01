@@ -18,6 +18,7 @@ using RolePlayCharacter;
 using AutobiographicMemory.DTOs;
 using IntegratedAuthoringTool.DTOs;
 using System.Windows.Forms;
+using Serilog;
 
 namespace IntegratedAuthoringToolWF.IEP
 {
@@ -608,6 +609,7 @@ namespace IntegratedAuthoringToolWF.IEP
             
             _mainStorage = AssetStorage.FromJson(_storageAux.ToJson());
             _mainIAT = IntegratedAuthoringToolAsset.FromJson(_iatAux.ToJson(), _mainStorage);
+            Log.Information("Log:IEP_Story_Accepted_");
         }
 
         public void RejectOutput()

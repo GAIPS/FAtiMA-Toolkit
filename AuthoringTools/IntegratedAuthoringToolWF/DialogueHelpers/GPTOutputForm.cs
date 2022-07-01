@@ -1,6 +1,7 @@
 ﻿using Equin.ApplicationFramework;
 using IntegratedAuthoringTool.DTOs;
 using IntegratedAuthoringToolWF.IEP;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -72,6 +73,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
 
         private void processOutputButton_Click(object sender, EventArgs e)
         {
+            Log.Information("Log:IEP_Dialogue_Output_\n%" + gptOutputTextBox.Text + "%");
             dialogueStateActions = _manager.ComputeGPTDialogues(gptOutputTextBox.Text);
             this.LoadOutput();
         }
@@ -80,6 +82,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
         {
             foreach (var d in dialogueStateActions)
                 _manager._mainIAT.AddDialogAction(d);
+            Log.Information("Log:IEP_Dialogue_AcceptedOutput_");
             this.Close();
             _parent.Close();
         }

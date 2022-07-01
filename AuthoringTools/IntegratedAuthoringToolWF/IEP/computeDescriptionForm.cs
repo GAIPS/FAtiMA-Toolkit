@@ -21,6 +21,7 @@ using EmotionalAppraisal.DTOs;
 using RolePlayCharacter;
 using AutobiographicMemory.DTOs;
 using IntegratedAuthoringTool.DTOs;
+using Serilog;
 
 namespace IntegratedAuthoringToolWF.IEP
 {
@@ -74,7 +75,7 @@ namespace IntegratedAuthoringToolWF.IEP
             {
                 description = descriptionText.Text;
             }
-
+            Log.Information("Log:IEP_Story_Input_\n%" + description + "%");
             _server.ProcessDescription(description, this.HandleOutput );
 
         }
@@ -89,6 +90,7 @@ namespace IntegratedAuthoringToolWF.IEP
                 }
                 else
                 {
+                    Log.Information("Log:AA_Clicks_");
                     _iepForm = new IEPOutputForm(this, _outputManager, _server.descriptionResult);
                     _iepForm.ShowDialog();
                 }
@@ -128,8 +130,7 @@ namespace IntegratedAuthoringToolWF.IEP
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            instructionsBox.Visible = !instructionsBox.Visible;
-      
+            new ComputeDescriptionHints().ShowDialog(this);
         }
 
         private void panel2_Paint(object sender, PaintEventArgs e)
@@ -152,6 +153,12 @@ namespace IntegratedAuthoringToolWF.IEP
 
         private void groupBox1_Enter(object sender, EventArgs e)
         {
+
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            instructionsBox.Visible = !instructionsBox.Visible;
 
         }
     }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using EmotionalAppraisal.OCCModel;
+using Serilog;
 
 namespace IntegratedAuthoringToolWF
 {
@@ -46,7 +47,7 @@ namespace IntegratedAuthoringToolWF
 
         private void acceptButton_Click(object sender, EventArgs e)
         {
-           
+            
 
             if (targetEmotionBox.SelectedItem != null && targetEmotionBox.SelectedItem.ToString() != "None")
                 targetEmotion = OCCEmotionType.Parse((string)targetEmotionBox.SelectedItem);
@@ -54,6 +55,8 @@ namespace IntegratedAuthoringToolWF
             if (targetEmotionBox.SelectedItem != null && targetEmotionBox.SelectedItem.ToString() != "None")
                 subjectEmotion = OCCEmotionType.Parse((string)subjectEmotionBox.SelectedItem);
 
+
+            //Missing Code?
 
         }
     }

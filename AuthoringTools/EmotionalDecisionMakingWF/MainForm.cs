@@ -27,6 +27,7 @@ namespace EmotionalDecisionMakingWF
 
         public event EventHandler AddedRuleEvent;
         public event EventHandler PressedAddReactionEvent;
+        public event EventHandler UsedConditionSimulatorEvent;
         public ActionRuleDTO latestAddedRule;
         public List<RolePlayCharacterAsset> _characters;
 
@@ -316,6 +317,8 @@ namespace EmotionalDecisionMakingWF
         private void testConditions_Click(object sender, EventArgs e)
         {
             RolePlayCharacterAsset selectedRPC = _characters[charactersComboBox.SelectedIndex];
+
+            UsedConditionSimulatorEvent?.Invoke(this, EventArgs.Empty);
 
             if (((ObjectView<ActionRuleDTO>)dataGridViewReactiveActions.SelectedRows[0].DataBoundItem).Object == null)
             {

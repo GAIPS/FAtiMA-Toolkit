@@ -18,6 +18,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using RolePlayCharacter;
 using RolePlayCharacterWF;
+using Serilog;
 using SocialImportance;
 using System;
 using System.Collections.Generic;
@@ -78,6 +79,7 @@ namespace IntegratedAuthoringToolWF
             _webForm.iat = this;
             _edmForm = new EmotionalDecisionMakingWF.MainForm(this, _iat.Characters.ToList());
             _edmForm.AddedRuleEvent += SuggestAddEmotionalReaction;
+            _edmForm.UsedConditionSimulatorEvent += UsedConditionSimulator;
             _edmForm.PressedAddReactionEvent += AddEmotionalReaction;
             _eaForm = new EmotionalAppraisalWF.MainForm(this);
             _siForm = new SocialImportanceWF.MainForm();
@@ -92,6 +94,9 @@ namespace IntegratedAuthoringToolWF
             server = new ConnectToServerForm();
             outputManager = new OutputManager(this._iat, this._storage);
 
+            // Logger Configuration
+            Log.Logger = new LoggerConfiguration().WriteTo.File("Logs/log.txt").CreateLogger();
+            Log.Information("Starting Log...");
 
         }
 
@@ -1716,6 +1721,9 @@ namespace IntegratedAuthoringToolWF
             }
             else if (DialogResult == DialogResult.Cancel)
                 e.Cancel = true;
+
+            // Finally, once just before the application exits...
+            Log.CloseAndFlush();
         }
 
 
@@ -2062,6 +2070,7 @@ namespace IntegratedAuthoringToolWF
 
             tabControlAssetEditor.SelectedIndex = 1;
 
+            Log.Information("Log:Helper_EmotionalReaction_%" + rule.ToString() + "%");
             _eaForm.AddAppraisalRulewithEmotions(rule, targetEmotion, subjectEmotion);
 
         }
@@ -2240,6 +2249,7 @@ namespace IntegratedAuthoringToolWF
         {
             var descriptionObject = assistantDescription[step];
             var header = descriptionObject.groupboxHeader;
+            Log.Information("Log:AA_Clicks_");
             switch (header)
 
             {
@@ -2367,6 +2377,7 @@ namespace IntegratedAuthoringToolWF
                     assistantTopicGroupBox.Text = "FAtiMA-Toolkit Tips";
                     this.assistantTextBox.Text = AuthorAssistant.GetTipByKey("Default");
                     finishedTutorial = true;
+                    Log.Information("Log:AA_Tutorial_");
                     break;
 
 
@@ -2382,8 +2393,8 @@ namespace IntegratedAuthoringToolWF
 
         private void nextPicture_Click(object sender, EventArgs e)
         {
-           
-                if (this.step < maxTutorialSteps)
+            Log.Information("Log:AA_Clicks_");
+            if (this.step < maxTutorialSteps)
                     this.step += 1;
                 else this.step = 0;
           
@@ -2444,8 +2455,9 @@ namespace IntegratedAuthoringToolWF
 
         private void pictureBox4_Click(object sender, EventArgs e)
         {
-           
-                if (this.step > 0)
+            Log.Information("Log:AA_Clicks_");
+
+            if (this.step > 0)
                     this.step -= 1;
                 else this.step = maxTutorialSteps - 1;
             
@@ -2723,6 +2735,16 @@ namespace IntegratedAuthoringToolWF
         private void officialWebsiteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start("https://fatima-toolkit.eu");
+        }
+
+        public void UsedConditionSimulator(object sender, EventArgs e)
+        {
+            Log.Information("Log:Helper_Simulator_");
+        }
+
+        private void MainForm_Layout(object sender, LayoutEventArgs e)
+        {
+
         }
     }
 }
