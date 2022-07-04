@@ -66,7 +66,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer1.IsSplitterFixed = true;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -99,7 +99,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.splitContainer2.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer2.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer2.Name = "splitContainer2";
             this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -122,9 +122,9 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             this.groupBox1.Controls.Add(this.nextStateBox);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(356, 80);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
@@ -135,7 +135,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             this.meaningBox.AutoSize = true;
             this.meaningBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.meaningBox.Location = new System.Drawing.Point(134, 28);
-            this.meaningBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.meaningBox.Margin = new System.Windows.Forms.Padding(2);
             this.meaningBox.Name = "meaningBox";
             this.meaningBox.Size = new System.Drawing.Size(81, 21);
             this.meaningBox.TabIndex = 2;
@@ -147,7 +147,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             this.styleBox.AutoSize = true;
             this.styleBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.styleBox.Location = new System.Drawing.Point(238, 28);
-            this.styleBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.styleBox.Margin = new System.Windows.Forms.Padding(2);
             this.styleBox.Name = "styleBox";
             this.styleBox.Size = new System.Drawing.Size(58, 21);
             this.styleBox.TabIndex = 1;
@@ -159,7 +159,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             this.nextStateBox.AutoSize = true;
             this.nextStateBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.nextStateBox.Location = new System.Drawing.Point(25, 28);
-            this.nextStateBox.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.nextStateBox.Margin = new System.Windows.Forms.Padding(2);
             this.nextStateBox.Name = "nextStateBox";
             this.nextStateBox.Size = new System.Drawing.Size(92, 21);
             this.nextStateBox.TabIndex = 0;
@@ -197,8 +197,8 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox meaningBox;
-        private System.Windows.Forms.CheckBox styleBox;
-        private System.Windows.Forms.CheckBox nextStateBox;
+        public System.Windows.Forms.CheckBox meaningBox;
+        public System.Windows.Forms.CheckBox styleBox;
+        public System.Windows.Forms.CheckBox nextStateBox;
     }
 }

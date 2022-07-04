@@ -565,7 +565,7 @@ namespace IntegratedAuthoringToolWF.IEP
             edmAux.AddActionRule(actionRule.ToDTO());
         }
 
-        public List<DialogueStateActionDTO> ComputeGPTDialogues(string dialogues)
+        public List<DialogueStateActionDTO> ComputeGPTDialogues(string dialogues, bool nextState, bool meaning, bool style)
         {
             var dialogueList = dialogues.Split(new string[] { "\n"}, StringSplitOptions.RemoveEmptyEntries);
             List<DialogueStateActionDTO> dialogStates = new List<DialogueStateActionDTO>();
@@ -576,18 +576,96 @@ namespace IntegratedAuthoringToolWF.IEP
             foreach (var d in dialogueList)
             {
                 var parameters = d.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
-                if(parameters.Count() == 4)
+
+                var parameterCount = 2;
+
+                if (nextState)
+                    parameterCount += 1;
+
+                if (meaning)
+                    parameterCount += 1;
+
+                if (style)
+                    parameterCount += 1;
+
+                if(parameters.Count() == parameterCount)
                 {
                     var cs = parameters[0];
-                    var ns = parameters[1];
-                    var sty = parameters[2];
-                    var utter = parameters[3];
+                    var ns = "-";
+                    var sty = "-";
+                    var mean = "-";
+                    var utter = "-";
 
-                    var newD = new DialogueStateActionDTO()
+
+                    if (nextState)
+                    {
+                        ns = parameters[1];
+
+                        if (meaning)
+                        {
+                            mean = parameters[2];
+
+                            if (style)
+                            {
+                                sty = parameters[3];
+                                utter = parameters[4];
+                            }
+                            else
+                            {
+                                utter = parameters[3];
+                            }
+                        }
+
+                        else
+                        {
+                            if (style)
+                            {
+                                sty = parameters[2];
+                                utter = parameters[3];
+                            }
+                            else
+                            {
+                                utter = parameters[2];
+                            }
+                        }
+                    }
+                    else 
+                    {
+                        if (meaning)
+                        {
+                            mean = parameters[1];
+
+                            if (style)
+                            {
+                                sty = parameters[2];
+                                utter = parameters[3];
+                            }
+                            else
+                            {
+                                utter = parameters[2];
+                            }
+                        }
+
+                        else
+                        {
+                            if (style)
+                            {
+                                sty = parameters[1];
+                                utter = parameters[2];
+                            }
+                            else
+                            {
+                                utter = parameters[1];
+                            }
+                        }
+
+                    }
+
+                        var newD = new DialogueStateActionDTO()
                     {
                         CurrentState = cs,
                         NextState = ns,
-                        Meaning = "-",
+                        Meaning = mean,
                         Style = sty,
                         Utterance = utter
                     };

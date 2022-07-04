@@ -74,7 +74,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
         private void processOutputButton_Click(object sender, EventArgs e)
         {
             Log.Information("Log:IEP_Dialogue_Output_\n%" + gptOutputTextBox.Text + "%");
-            dialogueStateActions = _manager.ComputeGPTDialogues(gptOutputTextBox.Text);
+            dialogueStateActions = _manager.ComputeGPTDialogues(gptOutputTextBox.Text, _parent.nextStateBox.Checked, _parent.meaningBox.Checked, _parent.styleBox.Checked);
             this.LoadOutput();
         }
 
