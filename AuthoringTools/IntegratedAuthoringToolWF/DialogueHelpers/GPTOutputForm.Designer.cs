@@ -36,6 +36,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             this.dataGridViewDialogueActions = new System.Windows.Forms.DataGridView();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.button3 = new System.Windows.Forms.Button();
             this.processOutputButton = new System.Windows.Forms.Button();
             this.gptOutputTextBox = new System.Windows.Forms.RichTextBox();
             this.button2 = new System.Windows.Forms.Button();
@@ -129,6 +130,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.button3);
             this.groupBox3.Controls.Add(this.processOutputButton);
             this.groupBox3.Controls.Add(this.gptOutputTextBox);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -140,11 +142,26 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Output (edit this to your liking)";
             // 
+            // button3
+            // 
+            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.Image = global::IntegratedAuthoringToolWF.Properties.Resources.right_arrow;
+            this.button3.Location = new System.Drawing.Point(68, 142);
+            this.button3.Margin = new System.Windows.Forms.Padding(2);
+            this.button3.MaximumSize = new System.Drawing.Size(185, 33);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(185, 33);
+            this.button3.TabIndex = 4;
+            this.button3.Text = "Generate More";
+            this.button3.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // processOutputButton
             // 
             this.processOutputButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.processOutputButton.Image = global::IntegratedAuthoringToolWF.Properties.Resources.down_arrow;
-            this.processOutputButton.Location = new System.Drawing.Point(195, 145);
+            this.processOutputButton.Location = new System.Drawing.Point(365, 142);
             this.processOutputButton.Margin = new System.Windows.Forms.Padding(2);
             this.processOutputButton.Name = "processOutputButton";
             this.processOutputButton.Size = new System.Drawing.Size(147, 33);
@@ -242,5 +259,6 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button processOutputButton;
+        private System.Windows.Forms.Button button3;
     }
 }

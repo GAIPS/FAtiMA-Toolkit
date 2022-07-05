@@ -23,6 +23,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
         public GPTOutputForm(GenerateDialogue_Wizard parent, OutputManager manager, string dialogueOutput)
         {
             InitializeComponent();
+            dialogueStateActions = new List<DialogueStateActionDTO>();
             _parent = parent;
             _manager = manager;
 
@@ -74,7 +75,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
         private void processOutputButton_Click(object sender, EventArgs e)
         {
             Log.Information("Log:IEP_Dialogue_Output_\n%" + gptOutputTextBox.Text + "%");
-            dialogueStateActions = _manager.ComputeGPTDialogues(gptOutputTextBox.Text, _parent.nextStateBox.Checked, _parent.meaningBox.Checked, _parent.styleBox.Checked);
+            dialogueStateActions.AddRange(_manager.ComputeGPTDialogues(gptOutputTextBox.Text, _parent.nextStateBox.Checked, _parent.meaningBox.Checked, _parent.styleBox.Checked));
             this.LoadOutput();
         }
 
@@ -93,5 +94,20 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             //  parent.ShowDialog();
         }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var input = _parent.GetDialogues(this.gptOutputTextBox.Text);
+
+            _parent._server.ProcessDialogues(input, this.HandleOutput);
+        }
+
+        public void HandleOutput()
+        {
+            if (_parent._server.dialogResult != "")
+            {
+                var result = _parent._server.dialogResult;
+                this.gptOutputTextBox.Text += result;
+            }
+        }
     }
 }

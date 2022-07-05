@@ -14,7 +14,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
     public partial class GenerateDialogue_Wizard : Form
     {
         private OutputManager _outputManager;
-        ConnectToServerForm _server;
+        public ConnectToServerForm _server;
         GPTOutputForm outputForm;
 
         public GenerateDialogue_Wizard(ConnectToServerForm server, OutputManager outputManager)
@@ -37,25 +37,31 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
 
         private void button1_Click(object sender, EventArgs e)
         {
-           var dialogs = this._outputManager._mainIAT.GetAllDialogueActions();
+            var input = GetDialogues("");
+
+            _server.ProcessDialogues(input, this.HandleOutput);
+        }
+
+
+        public string GetDialogues(string usedInput)
+        {
+            var dialogs = this._outputManager._mainIAT.GetAllDialogueActions();
 
             if (dialogs.Count() < 2)
             {
-                MessageBox.Show("This feature uses already created Dialog Action to create Utterances. Thus it is hihgly reccomended to add more Dialog Actions.");
-                Close();
-                
+                return "";
             }
 
             else
             {
                 // Preparing input
                 var input = "";
-                
 
-                foreach(var d in dialogs)
+
+                foreach (var d in dialogs)
                 {
 
-                    input = "|";
+                    input += "|";
                     var currentState = d.CurrentState + "|";
                     var nextState = "";
                     var meaning = "";
@@ -69,15 +75,16 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
                     if (meaningBox.Checked)
                         meaning = d.Meaning + "|";
 
-                    if(styleBox.Checked)
+                    if (styleBox.Checked)
                         style = d.Style + "|";
 
                     input += currentState + nextState + meaning + style + utterance + "\n";
 
                 }
-                _server.ProcessDialogues(input, this.HandleOutput);
 
+                return input;
             }
+
         }
 
         public void HandleOutput()

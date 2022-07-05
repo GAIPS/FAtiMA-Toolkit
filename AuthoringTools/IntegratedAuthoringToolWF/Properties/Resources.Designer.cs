@@ -740,6 +740,16 @@ namespace IntegratedAuthoringToolWF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap magic_wand2 {
+            get {
+                object obj = ResourceManager.GetObject("magic-wand2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Integrated Authoring Tool.
         /// </summary>
         internal static string MainFormTitle {
