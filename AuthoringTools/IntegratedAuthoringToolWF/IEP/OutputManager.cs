@@ -663,10 +663,10 @@ namespace IntegratedAuthoringToolWF.IEP
 
                         var newD = new DialogueStateActionDTO()
                     {
-                        CurrentState = cs,
-                        NextState = ns,
-                        Meaning = mean,
-                        Style = sty,
+                        CurrentState = cs.Replace(" ", ""),
+                        NextState = ns.Replace(" ", ""),
+                        Meaning = mean.Replace(" ", ""),
+                        Style = sty.Replace(" ", ""),
                         Utterance = utter
                     };
                     dialogStates.Add(newD);

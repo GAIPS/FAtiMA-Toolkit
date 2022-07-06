@@ -40,6 +40,7 @@ namespace IntegratedAuthoringToolWF.IEP
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.debugLabel = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.groupBox4.SuspendLayout();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
@@ -171,22 +172,34 @@ namespace IntegratedAuthoringToolWF.IEP
             this.debugLabel.Text = "Waiting for connection";
             this.debugLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(9, 117);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(535, 13);
+            this.label1.TabIndex = 13;
+            this.label1.Text = "Note: If server appears to be unavailable please contact current admin: manuel.m." +
+    "guimaraes@tecnico.ulisboa.pt";
+            // 
             // ConnectToServerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.Disable;
-            this.ClientSize = new System.Drawing.Size(553, 126);
+            this.ClientSize = new System.Drawing.Size(553, 137);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox4);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ConnectToServerForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Connect to Wizard Server";
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.panel3.ResumeLayout(false);
             this.panel3.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -202,5 +215,6 @@ namespace IntegratedAuthoringToolWF.IEP
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Label debugLabel;
+        private System.Windows.Forms.Label label1;
     }
 }

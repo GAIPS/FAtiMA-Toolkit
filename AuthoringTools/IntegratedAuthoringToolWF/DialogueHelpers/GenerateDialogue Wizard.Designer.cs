@@ -38,6 +38,8 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             this.meaningBox = new System.Windows.Forms.CheckBox();
             this.styleBox = new System.Windows.Forms.CheckBox();
             this.nextStateBox = new System.Windows.Forms.CheckBox();
+            this.inputExample = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -47,12 +49,13 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(81, 10);
+            this.button1.Location = new System.Drawing.Point(80, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(194, 46);
             this.button1.TabIndex = 0;
@@ -77,7 +80,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.splitContainer2);
-            this.splitContainer1.Size = new System.Drawing.Size(356, 275);
+            this.splitContainer1.Size = new System.Drawing.Size(356, 313);
             this.splitContainer1.SplitterDistance = 121;
             this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 1;
@@ -110,13 +113,14 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.button1);
-            this.splitContainer2.Size = new System.Drawing.Size(356, 151);
-            this.splitContainer2.SplitterDistance = 80;
+            this.splitContainer2.Size = new System.Drawing.Size(356, 189);
+            this.splitContainer2.SplitterDistance = 120;
             this.splitContainer2.SplitterWidth = 3;
             this.splitContainer2.TabIndex = 0;
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.groupBox2);
             this.groupBox1.Controls.Add(this.meaningBox);
             this.groupBox1.Controls.Add(this.styleBox);
             this.groupBox1.Controls.Add(this.nextStateBox);
@@ -125,7 +129,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Size = new System.Drawing.Size(356, 80);
+            this.groupBox1.Size = new System.Drawing.Size(356, 120);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Addtional Parameters (take the following variables into account)";
@@ -141,6 +145,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             this.meaningBox.TabIndex = 2;
             this.meaningBox.Text = "Meaning";
             this.meaningBox.UseVisualStyleBackColor = true;
+            this.meaningBox.CheckedChanged += new System.EventHandler(this.meaningBox_CheckedChanged);
             // 
             // styleBox
             // 
@@ -153,6 +158,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             this.styleBox.TabIndex = 1;
             this.styleBox.Text = "Style";
             this.styleBox.UseVisualStyleBackColor = true;
+            this.styleBox.CheckedChanged += new System.EventHandler(this.styleBox_CheckedChanged);
             // 
             // nextStateBox
             // 
@@ -165,12 +171,34 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             this.nextStateBox.TabIndex = 0;
             this.nextStateBox.Text = "Next State";
             this.nextStateBox.UseVisualStyleBackColor = true;
+            this.nextStateBox.CheckedChanged += new System.EventHandler(this.nextStateBox_CheckedChanged);
+            // 
+            // inputExample
+            // 
+            this.inputExample.AutoSize = true;
+            this.inputExample.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.inputExample.Location = new System.Drawing.Point(20, 22);
+            this.inputExample.Name = "inputExample";
+            this.inputExample.Size = new System.Drawing.Size(95, 16);
+            this.inputExample.TabIndex = 4;
+            this.inputExample.Text = "Input Example:";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.inputExample);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.groupBox2.Location = new System.Drawing.Point(2, 69);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(352, 49);
+            this.groupBox2.TabIndex = 5;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Input Example:";
             // 
             // GenerateDialogue_Wizard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(356, 275);
+            this.ClientSize = new System.Drawing.Size(356, 313);
             this.Controls.Add(this.splitContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "GenerateDialogue_Wizard";
@@ -186,6 +214,8 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             this.splitContainer2.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -200,5 +230,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
         public System.Windows.Forms.CheckBox meaningBox;
         public System.Windows.Forms.CheckBox styleBox;
         public System.Windows.Forms.CheckBox nextStateBox;
+        private System.Windows.Forms.Label inputExample;
+        private System.Windows.Forms.GroupBox groupBox2;
     }
 }

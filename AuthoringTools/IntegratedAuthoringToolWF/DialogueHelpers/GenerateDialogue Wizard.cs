@@ -16,6 +16,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
         private OutputManager _outputManager;
         public ConnectToServerForm _server;
         GPTOutputForm outputForm;
+        string input;
 
         public GenerateDialogue_Wizard(ConnectToServerForm server, OutputManager outputManager)
         {
@@ -33,12 +34,13 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             {
                 this.button1.Enabled = true;
             }
+
+            input = GetDialogues("");
+            inputExample.Text = input.Split('\n')[0];
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var input = GetDialogues("");
-
             _server.ProcessDialogues(input, this.HandleOutput);
         }
 
@@ -82,6 +84,13 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
 
                 }
 
+                if(usedInput.Length > 3)
+                {
+                    input += usedInput;
+                }
+
+               
+
                 return input;
             }
 
@@ -99,6 +108,24 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
             {
                     MessageBox.Show("No output was generated. \nCould you try again?");
             }
+        }
+
+        private void nextStateBox_CheckedChanged(object sender, EventArgs e)
+        {
+            input = GetDialogues("");
+            inputExample.Text = input.Split('\n')[0];
+        }
+
+        private void meaningBox_CheckedChanged(object sender, EventArgs e)
+        {
+            input = GetDialogues("");
+            inputExample.Text = input.Split('\n')[0];
+        }
+
+        private void styleBox_CheckedChanged(object sender, EventArgs e)
+        {
+            input = GetDialogues("");
+            inputExample.Text = input.Split('\n')[0];
         }
     }
 }
