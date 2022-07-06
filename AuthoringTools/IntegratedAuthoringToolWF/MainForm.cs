@@ -2746,5 +2746,27 @@ namespace IntegratedAuthoringToolWF
         {
 
         }
+
+        private void serverToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            server.ShowDialog();
+        }
+
+        private void storyToScenarioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string description = textBoxScenarioDescription.Text;
+            var story = new ComputeDescriptionForm(this.outputManager, this.server, description).ShowDialog(this);
+            this._iat = outputManager._mainIAT;
+            this._storage = outputManager._mainStorage;
+            OnAssetDataLoaded(_iat);
+            OnAssetStorageChange();
+        }
+
+        private void dialogueGeneratorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var window = new GenerateDialogue_Wizard(this.server, outputManager).ShowDialog(this);
+            OnAssetDataLoaded(_iat);
+            tabControlIAT.SelectedIndex = 2;
+        }
     }
 }
