@@ -41,6 +41,10 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.quickAddToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.wizardServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wizardsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.serverToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.storyToScenarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dialogueGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.officialWebsiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -145,10 +149,6 @@
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.nextPicture = new System.Windows.Forms.PictureBox();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.wizardsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.serverToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.storyToScenarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dialogueGeneratorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -339,7 +339,7 @@
             this.loadTemplateScenarioToolStripMenuItem1});
             this.scenarioToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.scenario1;
             this.scenarioToolStripMenuItem.Name = "scenarioToolStripMenuItem";
-            this.scenarioToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.scenarioToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
             this.scenarioToolStripMenuItem.Text = "Scenario";
             // 
             // storyToScenarioWizardToolStripMenuItem
@@ -365,7 +365,7 @@
             this.beliefWizarToolStripMenuItem});
             this.rolePlayCharacterHelperToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.NormalFace;
             this.rolePlayCharacterHelperToolStripMenuItem.Name = "rolePlayCharacterHelperToolStripMenuItem";
-            this.rolePlayCharacterHelperToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.rolePlayCharacterHelperToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
             this.rolePlayCharacterHelperToolStripMenuItem.Text = "Characters";
             this.rolePlayCharacterHelperToolStripMenuItem.Visible = false;
             // 
@@ -394,7 +394,7 @@
             this.addDialogueActionToolStripMenuItem});
             this.cognitiveRulesToolStripMenuItem1.Image = global::IntegratedAuthoringToolWF.Properties.Resources.rules;
             this.cognitiveRulesToolStripMenuItem1.Name = "cognitiveRulesToolStripMenuItem1";
-            this.cognitiveRulesToolStripMenuItem1.Size = new System.Drawing.Size(184, 26);
+            this.cognitiveRulesToolStripMenuItem1.Size = new System.Drawing.Size(160, 26);
             this.cognitiveRulesToolStripMenuItem1.Text = "Cognitive Rules";
             // 
             // metaBeliefsPanelToolStripMenuItem
@@ -428,7 +428,7 @@
             this.toolStripMenuItem1});
             this.dialogueHelpersToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_chatbot_401;
             this.dialogueHelpersToolStripMenuItem.Name = "dialogueHelpersToolStripMenuItem";
-            this.dialogueHelpersToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.dialogueHelpersToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
             this.dialogueHelpersToolStripMenuItem.Text = "Dialogues";
             // 
             // generateDialogueActionsToolStripMenuItem1
@@ -451,7 +451,7 @@
             // 
             this.quickAddToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.magic_wand1;
             this.quickAddToolStripMenuItem.Name = "quickAddToolStripMenuItem";
-            this.quickAddToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.quickAddToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
             this.quickAddToolStripMenuItem.Text = "Quick Add";
             this.quickAddToolStripMenuItem.Visible = false;
             this.quickAddToolStripMenuItem.Click += new System.EventHandler(this.quickAddToolStripMenuItem_Click);
@@ -460,10 +460,45 @@
             // 
             this.wizardServerToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.database;
             this.wizardServerToolStripMenuItem.Name = "wizardServerToolStripMenuItem";
-            this.wizardServerToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.wizardServerToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
             this.wizardServerToolStripMenuItem.Text = "Wizard Server";
             this.wizardServerToolStripMenuItem.Visible = false;
             this.wizardServerToolStripMenuItem.Click += new System.EventHandler(this.wizardServerToolStripMenuItem_Click);
+            // 
+            // wizardsToolStripMenuItem
+            // 
+            this.wizardsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.serverToolStripMenuItem,
+            this.storyToScenarioToolStripMenuItem,
+            this.dialogueGeneratorToolStripMenuItem});
+            this.wizardsToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.magic_wand;
+            this.wizardsToolStripMenuItem.Name = "wizardsToolStripMenuItem";
+            this.wizardsToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
+            this.wizardsToolStripMenuItem.Text = "Wizards";
+            // 
+            // serverToolStripMenuItem
+            // 
+            this.serverToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.database;
+            this.serverToolStripMenuItem.Name = "serverToolStripMenuItem";
+            this.serverToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.serverToolStripMenuItem.Text = "Server";
+            this.serverToolStripMenuItem.Click += new System.EventHandler(this.serverToolStripMenuItem_Click);
+            // 
+            // storyToScenarioToolStripMenuItem
+            // 
+            this.storyToScenarioToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.wizard_hat;
+            this.storyToScenarioToolStripMenuItem.Name = "storyToScenarioToolStripMenuItem";
+            this.storyToScenarioToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.storyToScenarioToolStripMenuItem.Text = "Story to Scenario";
+            this.storyToScenarioToolStripMenuItem.Click += new System.EventHandler(this.storyToScenarioToolStripMenuItem_Click);
+            // 
+            // dialogueGeneratorToolStripMenuItem
+            // 
+            this.dialogueGeneratorToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.wizard_hat;
+            this.dialogueGeneratorToolStripMenuItem.Name = "dialogueGeneratorToolStripMenuItem";
+            this.dialogueGeneratorToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.dialogueGeneratorToolStripMenuItem.Text = "Utterance Generator";
+            this.dialogueGeneratorToolStripMenuItem.Click += new System.EventHandler(this.dialogueGeneratorToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
@@ -690,7 +725,7 @@
             this.CognitiveRules.Controls.Add(this.tabControlAssetEditor);
             this.CognitiveRules.Location = new System.Drawing.Point(4, 24);
             this.CognitiveRules.Name = "CognitiveRules";
-            this.CognitiveRules.Size = new System.Drawing.Size(1059, 751);
+            this.CognitiveRules.Size = new System.Drawing.Size(845, 609);
             this.CognitiveRules.TabIndex = 5;
             this.CognitiveRules.Text = "Cognitive Rules";
             this.CognitiveRules.UseVisualStyleBackColor = true;
@@ -785,10 +820,10 @@
             this.tabControlAssetEditor.Controls.Add(this.SocialImportance);
             this.tabControlAssetEditor.Controls.Add(this.CIFCK);
             this.tabControlAssetEditor.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tabControlAssetEditor.Location = new System.Drawing.Point(0, 215);
+            this.tabControlAssetEditor.Location = new System.Drawing.Point(0, 73);
             this.tabControlAssetEditor.Name = "tabControlAssetEditor";
             this.tabControlAssetEditor.SelectedIndex = 0;
-            this.tabControlAssetEditor.Size = new System.Drawing.Size(1059, 536);
+            this.tabControlAssetEditor.Size = new System.Drawing.Size(845, 536);
             this.tabControlAssetEditor.TabIndex = 0;
             this.tabControlAssetEditor.SelectedIndexChanged += new System.EventHandler(this.tabControlAssetEditor_SelectedIndexChanged);
             // 
@@ -797,7 +832,7 @@
             this.EmotionalDecisionMaking.Location = new System.Drawing.Point(4, 25);
             this.EmotionalDecisionMaking.Name = "EmotionalDecisionMaking";
             this.EmotionalDecisionMaking.Padding = new System.Windows.Forms.Padding(3);
-            this.EmotionalDecisionMaking.Size = new System.Drawing.Size(1051, 507);
+            this.EmotionalDecisionMaking.Size = new System.Drawing.Size(837, 507);
             this.EmotionalDecisionMaking.TabIndex = 1;
             this.EmotionalDecisionMaking.Text = "Emotional Decision Making";
             this.toolTip1.SetToolTip(this.EmotionalDecisionMaking, "The Emotional Decision Making is where you can define which actions agents have");
@@ -809,7 +844,7 @@
             this.EmotionalAppraisal.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.EmotionalAppraisal.Name = "EmotionalAppraisal";
             this.EmotionalAppraisal.Padding = new System.Windows.Forms.Padding(3);
-            this.EmotionalAppraisal.Size = new System.Drawing.Size(836, 510);
+            this.EmotionalAppraisal.Size = new System.Drawing.Size(1051, 510);
             this.EmotionalAppraisal.TabIndex = 0;
             this.EmotionalAppraisal.Text = "Emotional Appraisal";
             this.EmotionalAppraisal.UseVisualStyleBackColor = true;
@@ -818,7 +853,7 @@
             // 
             this.SocialImportance.Location = new System.Drawing.Point(4, 22);
             this.SocialImportance.Name = "SocialImportance";
-            this.SocialImportance.Size = new System.Drawing.Size(836, 510);
+            this.SocialImportance.Size = new System.Drawing.Size(1051, 510);
             this.SocialImportance.TabIndex = 2;
             this.SocialImportance.Text = "Social Importance";
             this.SocialImportance.UseVisualStyleBackColor = true;
@@ -827,7 +862,7 @@
             // 
             this.CIFCK.Location = new System.Drawing.Point(4, 22);
             this.CIFCK.Name = "CIFCK";
-            this.CIFCK.Size = new System.Drawing.Size(836, 510);
+            this.CIFCK.Size = new System.Drawing.Size(1051, 510);
             this.CIFCK.TabIndex = 3;
             this.CIFCK.Text = "CIF-CK";
             this.CIFCK.UseVisualStyleBackColor = true;
@@ -839,7 +874,7 @@
             this.DialogueEditor.Margin = new System.Windows.Forms.Padding(0);
             this.DialogueEditor.Name = "DialogueEditor";
             this.DialogueEditor.Padding = new System.Windows.Forms.Padding(0, 0, 0, 10);
-            this.DialogueEditor.Size = new System.Drawing.Size(1059, 751);
+            this.DialogueEditor.Size = new System.Drawing.Size(845, 609);
             this.DialogueEditor.TabIndex = 0;
             this.DialogueEditor.Text = "Dialogue Editor";
             this.DialogueEditor.UseVisualStyleBackColor = true;
@@ -860,7 +895,7 @@
             this.groupBox2.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox2.Size = new System.Drawing.Size(1059, 741);
+            this.groupBox2.Size = new System.Drawing.Size(845, 599);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dialogue Actions";
@@ -921,9 +956,9 @@
             this.groupBox12.Controls.Add(this.buttonValidate);
             this.groupBox12.Controls.Add(this.buttonTTS);
             this.groupBox12.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox12.Location = new System.Drawing.Point(4, 672);
+            this.groupBox12.Location = new System.Drawing.Point(4, 530);
             this.groupBox12.Name = "groupBox12";
-            this.groupBox12.Size = new System.Drawing.Size(1051, 65);
+            this.groupBox12.Size = new System.Drawing.Size(837, 65);
             this.groupBox12.TabIndex = 21;
             this.groupBox12.TabStop = false;
             this.groupBox12.Text = "Tools";
@@ -1030,7 +1065,7 @@
             this.dataGridViewDialogueActions.RowHeadersWidth = 51;
             this.dataGridViewDialogueActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewDialogueActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(1050, 589);
+            this.dataGridViewDialogueActions.Size = new System.Drawing.Size(836, 447);
             this.dataGridViewDialogueActions.TabIndex = 14;
             this.toolTip1.SetToolTip(this.dataGridViewDialogueActions, resources.GetString("dataGridViewDialogueActions.ToolTip"));
             this.dataGridViewDialogueActions.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewDialogueActions_CellClick);
@@ -1096,7 +1131,7 @@
             this.WorldModel.Location = new System.Drawing.Point(4, 24);
             this.WorldModel.Name = "WorldModel";
             this.WorldModel.Padding = new System.Windows.Forms.Padding(3);
-            this.WorldModel.Size = new System.Drawing.Size(1059, 751);
+            this.WorldModel.Size = new System.Drawing.Size(845, 609);
             this.WorldModel.TabIndex = 3;
             this.WorldModel.Text = "World Model";
             this.WorldModel.UseVisualStyleBackColor = true;
@@ -1107,7 +1142,7 @@
             this.groupBox7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox7.Location = new System.Drawing.Point(3, 3);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(1053, 745);
+            this.groupBox7.Size = new System.Drawing.Size(839, 603);
             this.groupBox7.TabIndex = 16;
             this.groupBox7.TabStop = false;
             // 
@@ -1118,7 +1153,7 @@
             this.Simulator.Location = new System.Drawing.Point(4, 24);
             this.Simulator.Name = "Simulator";
             this.Simulator.Padding = new System.Windows.Forms.Padding(3);
-            this.Simulator.Size = new System.Drawing.Size(1059, 751);
+            this.Simulator.Size = new System.Drawing.Size(845, 609);
             this.Simulator.TabIndex = 2;
             this.Simulator.Text = "Simulator";
             this.Simulator.UseVisualStyleBackColor = true;
@@ -1136,9 +1171,9 @@
             this.groupBox3.Controls.Add(this.checkBox1);
             this.groupBox3.Controls.Add(this.effectTickBox);
             this.groupBox3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox3.Location = new System.Drawing.Point(3, 672);
+            this.groupBox3.Location = new System.Drawing.Point(3, 530);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1053, 76);
+            this.groupBox3.Size = new System.Drawing.Size(839, 76);
             this.groupBox3.TabIndex = 10;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Controls";
@@ -1164,7 +1199,7 @@
             "-"});
             this.comboBoxPlayerRpc.Location = new System.Drawing.Point(445, 28);
             this.comboBoxPlayerRpc.Name = "comboBoxPlayerRpc";
-            this.comboBoxPlayerRpc.Size = new System.Drawing.Size(427, 24);
+            this.comboBoxPlayerRpc.Size = new System.Drawing.Size(213, 24);
             this.comboBoxPlayerRpc.TabIndex = 9;
             this.comboBoxPlayerRpc.SelectedIndexChanged += new System.EventHandler(this.comboBoxEventType_SelectedIndexChanged);
             this.comboBoxPlayerRpc.Click += new System.EventHandler(this.comboBoxPlayerRpc_Click);
@@ -1214,7 +1249,7 @@
             // 
             this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBox1.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox1.Location = new System.Drawing.Point(905, 16);
+            this.checkBox1.Location = new System.Drawing.Point(691, 16);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(110, 23);
             this.checkBox1.TabIndex = 8;
@@ -1225,7 +1260,7 @@
             // 
             this.effectTickBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.effectTickBox.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.effectTickBox.Location = new System.Drawing.Point(905, 45);
+            this.effectTickBox.Location = new System.Drawing.Point(691, 45);
             this.effectTickBox.Name = "effectTickBox";
             this.effectTickBox.Size = new System.Drawing.Size(127, 23);
             this.effectTickBox.TabIndex = 4;
@@ -1537,7 +1572,7 @@
             this.WebAPI.Location = new System.Drawing.Point(4, 24);
             this.WebAPI.Name = "WebAPI";
             this.WebAPI.Padding = new System.Windows.Forms.Padding(3);
-            this.WebAPI.Size = new System.Drawing.Size(1059, 751);
+            this.WebAPI.Size = new System.Drawing.Size(845, 609);
             this.WebAPI.TabIndex = 4;
             this.WebAPI.Text = "Web API";
             this.WebAPI.UseVisualStyleBackColor = true;
@@ -1885,41 +1920,6 @@
             this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.toolTip1.ToolTipTitle = "IAT Tooltip";
             this.toolTip1.Popup += new System.Windows.Forms.PopupEventHandler(this.toolTip1_Popup);
-            // 
-            // wizardsToolStripMenuItem
-            // 
-            this.wizardsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.serverToolStripMenuItem,
-            this.storyToScenarioToolStripMenuItem,
-            this.dialogueGeneratorToolStripMenuItem});
-            this.wizardsToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.magic_wand;
-            this.wizardsToolStripMenuItem.Name = "wizardsToolStripMenuItem";
-            this.wizardsToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
-            this.wizardsToolStripMenuItem.Text = "Wizards";
-            // 
-            // serverToolStripMenuItem
-            // 
-            this.serverToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.database;
-            this.serverToolStripMenuItem.Name = "serverToolStripMenuItem";
-            this.serverToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
-            this.serverToolStripMenuItem.Text = "Server";
-            this.serverToolStripMenuItem.Click += new System.EventHandler(this.serverToolStripMenuItem_Click);
-            // 
-            // storyToScenarioToolStripMenuItem
-            // 
-            this.storyToScenarioToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.wizard_hat;
-            this.storyToScenarioToolStripMenuItem.Name = "storyToScenarioToolStripMenuItem";
-            this.storyToScenarioToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
-            this.storyToScenarioToolStripMenuItem.Text = "Story to Scenario";
-            this.storyToScenarioToolStripMenuItem.Click += new System.EventHandler(this.storyToScenarioToolStripMenuItem_Click);
-            // 
-            // dialogueGeneratorToolStripMenuItem
-            // 
-            this.dialogueGeneratorToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.wizard_hat;
-            this.dialogueGeneratorToolStripMenuItem.Name = "dialogueGeneratorToolStripMenuItem";
-            this.dialogueGeneratorToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
-            this.dialogueGeneratorToolStripMenuItem.Text = "Utterance Generator";
-            this.dialogueGeneratorToolStripMenuItem.Click += new System.EventHandler(this.dialogueGeneratorToolStripMenuItem_Click);
             // 
             // MainForm
             // 
