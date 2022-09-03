@@ -87,12 +87,15 @@ namespace EmotionalAppraisalWF
             AppraisalVariableDTO newVar = new AppraisalVariableDTO();
             try
             {
+                
+
                 newVar = new AppraisalVariableDTO()
                 {
                  Name = appraisalVariableName.SelectedItem.ToString(),
                  Target = appraisalVariableTarget.Value,
                  Value = appraisalVariableValueTextBox.Value
                 };
+
 
 
                 if(newVar.Name == OCCAppraisalVariables.DESIRABILITY_FOR_OTHER && 
@@ -122,14 +125,19 @@ namespace EmotionalAppraisalWF
                     
                     }
                     else {
-                 
+
+                    if (_toEdit != null)
+                        _appraisalRule.AppraisalVariables.appraisalVariables.Remove(_toEdit);
+
+
                     _appraisalRule.AppraisalVariables.appraisalVariables.Add(newVar); 
 
                     }
               
 
-              
-              _appraisalRulesVM.AddOrUpdateAppraisalRule(_appraisalRule);
+             
+
+                _appraisalRulesVM.AddOrUpdateAppraisalRule(_appraisalRule);
 
                 if (noDesirability)
                 MessageBox.Show("According to the OCC Model, the \"Desirability For Others \" appraisal variable requires another Desirability concerning the consequences of the event for agent to also be present in the same rule. \n We have automatically added it, change its values at your will");
