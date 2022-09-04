@@ -321,13 +321,13 @@
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.wizardsToolStripMenuItem,
             this.scenarioToolStripMenuItem,
             this.rolePlayCharacterHelperToolStripMenuItem,
             this.cognitiveRulesToolStripMenuItem1,
             this.dialogueHelpersToolStripMenuItem,
             this.quickAddToolStripMenuItem,
-            this.wizardServerToolStripMenuItem,
-            this.wizardsToolStripMenuItem});
+            this.wizardServerToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -339,7 +339,7 @@
             this.loadTemplateScenarioToolStripMenuItem1});
             this.scenarioToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.scenario1;
             this.scenarioToolStripMenuItem.Name = "scenarioToolStripMenuItem";
-            this.scenarioToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
+            this.scenarioToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.scenarioToolStripMenuItem.Text = "Scenario";
             // 
             // storyToScenarioWizardToolStripMenuItem
@@ -365,7 +365,7 @@
             this.beliefWizarToolStripMenuItem});
             this.rolePlayCharacterHelperToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.NormalFace;
             this.rolePlayCharacterHelperToolStripMenuItem.Name = "rolePlayCharacterHelperToolStripMenuItem";
-            this.rolePlayCharacterHelperToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
+            this.rolePlayCharacterHelperToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.rolePlayCharacterHelperToolStripMenuItem.Text = "Characters";
             this.rolePlayCharacterHelperToolStripMenuItem.Visible = false;
             // 
@@ -394,7 +394,7 @@
             this.addDialogueActionToolStripMenuItem});
             this.cognitiveRulesToolStripMenuItem1.Image = global::IntegratedAuthoringToolWF.Properties.Resources.rules;
             this.cognitiveRulesToolStripMenuItem1.Name = "cognitiveRulesToolStripMenuItem1";
-            this.cognitiveRulesToolStripMenuItem1.Size = new System.Drawing.Size(160, 26);
+            this.cognitiveRulesToolStripMenuItem1.Size = new System.Drawing.Size(184, 26);
             this.cognitiveRulesToolStripMenuItem1.Text = "Cognitive Rules";
             // 
             // metaBeliefsPanelToolStripMenuItem
@@ -428,7 +428,7 @@
             this.toolStripMenuItem1});
             this.dialogueHelpersToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_chatbot_401;
             this.dialogueHelpersToolStripMenuItem.Name = "dialogueHelpersToolStripMenuItem";
-            this.dialogueHelpersToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
+            this.dialogueHelpersToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.dialogueHelpersToolStripMenuItem.Text = "Dialogues";
             // 
             // generateDialogueActionsToolStripMenuItem1
@@ -451,7 +451,7 @@
             // 
             this.quickAddToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.magic_wand1;
             this.quickAddToolStripMenuItem.Name = "quickAddToolStripMenuItem";
-            this.quickAddToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
+            this.quickAddToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.quickAddToolStripMenuItem.Text = "Quick Add";
             this.quickAddToolStripMenuItem.Visible = false;
             this.quickAddToolStripMenuItem.Click += new System.EventHandler(this.quickAddToolStripMenuItem_Click);
@@ -460,7 +460,7 @@
             // 
             this.wizardServerToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.database;
             this.wizardServerToolStripMenuItem.Name = "wizardServerToolStripMenuItem";
-            this.wizardServerToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
+            this.wizardServerToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.wizardServerToolStripMenuItem.Text = "Wizard Server";
             this.wizardServerToolStripMenuItem.Visible = false;
             this.wizardServerToolStripMenuItem.Click += new System.EventHandler(this.wizardServerToolStripMenuItem_Click);
@@ -473,31 +473,31 @@
             this.dialogueGeneratorToolStripMenuItem});
             this.wizardsToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.magic_wand;
             this.wizardsToolStripMenuItem.Name = "wizardsToolStripMenuItem";
-            this.wizardsToolStripMenuItem.Size = new System.Drawing.Size(160, 26);
+            this.wizardsToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
             this.wizardsToolStripMenuItem.Text = "Wizards";
             // 
             // serverToolStripMenuItem
             // 
             this.serverToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.database;
             this.serverToolStripMenuItem.Name = "serverToolStripMenuItem";
-            this.serverToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
-            this.serverToolStripMenuItem.Text = "Server";
+            this.serverToolStripMenuItem.Size = new System.Drawing.Size(218, 26);
+            this.serverToolStripMenuItem.Text = "Connect to Server";
             this.serverToolStripMenuItem.Click += new System.EventHandler(this.serverToolStripMenuItem_Click);
             // 
             // storyToScenarioToolStripMenuItem
             // 
             this.storyToScenarioToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.wizard_hat;
             this.storyToScenarioToolStripMenuItem.Name = "storyToScenarioToolStripMenuItem";
-            this.storyToScenarioToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
-            this.storyToScenarioToolStripMenuItem.Text = "Story to Scenario";
+            this.storyToScenarioToolStripMenuItem.Size = new System.Drawing.Size(218, 26);
+            this.storyToScenarioToolStripMenuItem.Text = "Story to Scenario Wizard";
             this.storyToScenarioToolStripMenuItem.Click += new System.EventHandler(this.storyToScenarioToolStripMenuItem_Click);
             // 
             // dialogueGeneratorToolStripMenuItem
             // 
             this.dialogueGeneratorToolStripMenuItem.Image = global::IntegratedAuthoringToolWF.Properties.Resources.wizard_hat;
             this.dialogueGeneratorToolStripMenuItem.Name = "dialogueGeneratorToolStripMenuItem";
-            this.dialogueGeneratorToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
-            this.dialogueGeneratorToolStripMenuItem.Text = "Utterance Generator";
+            this.dialogueGeneratorToolStripMenuItem.Size = new System.Drawing.Size(218, 26);
+            this.dialogueGeneratorToolStripMenuItem.Text = "Generate Utterance Wizard";
             this.dialogueGeneratorToolStripMenuItem.Click += new System.EventHandler(this.dialogueGeneratorToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
@@ -844,7 +844,7 @@
             this.EmotionalAppraisal.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.EmotionalAppraisal.Name = "EmotionalAppraisal";
             this.EmotionalAppraisal.Padding = new System.Windows.Forms.Padding(3);
-            this.EmotionalAppraisal.Size = new System.Drawing.Size(1051, 510);
+            this.EmotionalAppraisal.Size = new System.Drawing.Size(837, 510);
             this.EmotionalAppraisal.TabIndex = 0;
             this.EmotionalAppraisal.Text = "Emotional Appraisal";
             this.EmotionalAppraisal.UseVisualStyleBackColor = true;
@@ -853,7 +853,7 @@
             // 
             this.SocialImportance.Location = new System.Drawing.Point(4, 22);
             this.SocialImportance.Name = "SocialImportance";
-            this.SocialImportance.Size = new System.Drawing.Size(1051, 510);
+            this.SocialImportance.Size = new System.Drawing.Size(837, 510);
             this.SocialImportance.TabIndex = 2;
             this.SocialImportance.Text = "Social Importance";
             this.SocialImportance.UseVisualStyleBackColor = true;
@@ -862,7 +862,7 @@
             // 
             this.CIFCK.Location = new System.Drawing.Point(4, 22);
             this.CIFCK.Name = "CIFCK";
-            this.CIFCK.Size = new System.Drawing.Size(1051, 510);
+            this.CIFCK.Size = new System.Drawing.Size(837, 510);
             this.CIFCK.TabIndex = 3;
             this.CIFCK.Text = "CIF-CK";
             this.CIFCK.UseVisualStyleBackColor = true;
