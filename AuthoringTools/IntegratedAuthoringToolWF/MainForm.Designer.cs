@@ -840,29 +840,29 @@
             // 
             // EmotionalAppraisal
             // 
-            this.EmotionalAppraisal.Location = new System.Drawing.Point(4, 22);
+            this.EmotionalAppraisal.Location = new System.Drawing.Point(4, 25);
             this.EmotionalAppraisal.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.EmotionalAppraisal.Name = "EmotionalAppraisal";
             this.EmotionalAppraisal.Padding = new System.Windows.Forms.Padding(3);
-            this.EmotionalAppraisal.Size = new System.Drawing.Size(837, 510);
+            this.EmotionalAppraisal.Size = new System.Drawing.Size(837, 507);
             this.EmotionalAppraisal.TabIndex = 0;
             this.EmotionalAppraisal.Text = "Emotional Appraisal";
             this.EmotionalAppraisal.UseVisualStyleBackColor = true;
             // 
             // SocialImportance
             // 
-            this.SocialImportance.Location = new System.Drawing.Point(4, 22);
+            this.SocialImportance.Location = new System.Drawing.Point(4, 25);
             this.SocialImportance.Name = "SocialImportance";
-            this.SocialImportance.Size = new System.Drawing.Size(837, 510);
+            this.SocialImportance.Size = new System.Drawing.Size(837, 507);
             this.SocialImportance.TabIndex = 2;
             this.SocialImportance.Text = "Social Importance";
             this.SocialImportance.UseVisualStyleBackColor = true;
             // 
             // CIFCK
             // 
-            this.CIFCK.Location = new System.Drawing.Point(4, 22);
+            this.CIFCK.Location = new System.Drawing.Point(4, 25);
             this.CIFCK.Name = "CIFCK";
-            this.CIFCK.Size = new System.Drawing.Size(837, 510);
+            this.CIFCK.Size = new System.Drawing.Size(837, 507);
             this.CIFCK.TabIndex = 3;
             this.CIFCK.Text = "CIF-CK";
             this.CIFCK.UseVisualStyleBackColor = true;
@@ -933,6 +933,7 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.pictureBox1.TabIndex = 17;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // searchCheckList
             // 

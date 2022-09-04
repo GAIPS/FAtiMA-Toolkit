@@ -393,6 +393,11 @@ namespace IntegratedAuthoringToolWF
                 };
                 _iat.AddDialogAction(newDialogueAction);
                 RefreshDialogs();
+
+                if(searchDialogueBox.Text.ToString() != "")
+                {
+                    this.DialogueSearchBox_TextChanged(sender, e);
+                }
             }
         }
 
@@ -2767,6 +2772,11 @@ namespace IntegratedAuthoringToolWF
             var window = new GenerateDialogue_Wizard(this.server, outputManager).ShowDialog(this);
             OnAssetDataLoaded(_iat);
             tabControlIAT.SelectedIndex = 2;
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
