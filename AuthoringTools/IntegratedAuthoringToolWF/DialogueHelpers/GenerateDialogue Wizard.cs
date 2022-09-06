@@ -41,6 +41,7 @@ namespace IntegratedAuthoringToolWF.DialogueHelpers
 
         private void button1_Click(object sender, EventArgs e)
         {
+            input = GetDialogues("");
             _server.ProcessDialogues(input, this.HandleOutput);
         }
 
