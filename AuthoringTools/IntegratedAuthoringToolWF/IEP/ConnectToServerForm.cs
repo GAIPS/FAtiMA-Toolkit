@@ -53,7 +53,7 @@ namespace IntegratedAuthoringToolWF.IEP
 
             debugLabel.Text = "Searching for Instance...";
             panel4.BackgroundImage = null;
-            client.DefaultRequestHeaders.Add("User-Agent", "Anything");
+            client.DefaultRequestHeaders.Add("WATTHEHECK", "Anything");
 
             try
             {

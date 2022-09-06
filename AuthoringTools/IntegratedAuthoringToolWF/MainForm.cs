@@ -1109,7 +1109,7 @@ namespace IntegratedAuthoringToolWF
                                 newValue = eff.NewValue.ToString();
                             }
 
-                            var evt = EventHelper.PropertyChange(eff.PropertyName.ToString(), newValue, actor.ToString());
+                            var evt = EventHelper.PropertyChange(eff.PropertyName.ToString(), newValue, a.ToString());
 
                             if (!observerAgents.ContainsKey(a.CharacterName.ToString()))
                             {
