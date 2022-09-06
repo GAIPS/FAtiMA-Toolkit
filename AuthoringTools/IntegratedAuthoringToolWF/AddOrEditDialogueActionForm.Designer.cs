@@ -112,6 +112,8 @@
             // 
             this.buttonAddOrUpdate.Location = new System.Drawing.Point(245, 193);
             this.buttonAddOrUpdate.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.buttonAddOrUpdate.MaximumSize = new System.Drawing.Size(159, 42);
+            this.buttonAddOrUpdate.MinimumSize = new System.Drawing.Size(159, 42);
             this.buttonAddOrUpdate.Name = "buttonAddOrUpdate";
             this.buttonAddOrUpdate.Size = new System.Drawing.Size(159, 42);
             this.buttonAddOrUpdate.TabIndex = 19;
@@ -283,8 +285,10 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
+            this.MaximumSize = new System.Drawing.Size(687, 287);
+            this.MinimumSize = new System.Drawing.Size(687, 287);
             this.Name = "AddOrEditDialogueActionForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Dialogue Action";
             this.Load += new System.EventHandler(this.AddOrEditDialogueActionForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AddOrEditDialogueActionForm_KeyDown);

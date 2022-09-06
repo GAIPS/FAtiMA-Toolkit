@@ -74,6 +74,7 @@
             // 
             // groupBox7
             // 
+            this.groupBox7.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox7.Controls.Add(this.buttonDuplicateAttRule);
             this.groupBox7.Controls.Add(this.buttonEditAttRule);
             this.groupBox7.Controls.Add(this.buttonAddAttRule);
@@ -148,14 +149,14 @@
             this.dataGridViewAttributionRules.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
             this.dataGridViewAttributionRules.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewAttributionRules.ImeMode = System.Windows.Forms.ImeMode.On;
-            this.dataGridViewAttributionRules.Location = new System.Drawing.Point(8, 66);
+            this.dataGridViewAttributionRules.Location = new System.Drawing.Point(16, 59);
             this.dataGridViewAttributionRules.Margin = new System.Windows.Forms.Padding(4);
             this.dataGridViewAttributionRules.Name = "dataGridViewAttributionRules";
             this.dataGridViewAttributionRules.ReadOnly = true;
             this.dataGridViewAttributionRules.RowHeadersVisible = false;
             this.dataGridViewAttributionRules.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAttributionRules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAttributionRules.Size = new System.Drawing.Size(811, 182);
+            this.dataGridViewAttributionRules.Size = new System.Drawing.Size(811, 181);
             this.dataGridViewAttributionRules.TabIndex = 11;
             this.dataGridViewAttributionRules.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAttributionRules_CellContentClick);
             this.dataGridViewAttributionRules.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewAttributionRules_CellMouseDoubleClick);

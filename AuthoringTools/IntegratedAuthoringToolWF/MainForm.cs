@@ -2622,7 +2622,9 @@ namespace IntegratedAuthoringToolWF
 
         private void button2_Click(object sender, EventArgs e)
         {
-            generateDialogueActionsToolStripMenuItem_Click(sender, e);
+            var window = new GenerateDialogue_Wizard(this.server, outputManager).ShowDialog(this);
+            OnAssetDataLoaded(_iat);
+            tabControlIAT.SelectedIndex = 2;
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -2775,6 +2777,21 @@ namespace IntegratedAuthoringToolWF
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void addEmotionalResponseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void conditionTesterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
         }
