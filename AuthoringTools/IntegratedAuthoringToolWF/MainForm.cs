@@ -3,9 +3,7 @@ using ActionLibrary.DTOs;
 using AutobiographicMemory.DTOs;
 using CommeillFaut;
 using EmotionalAppraisal;
-using EmotionalAppraisalWF;
 using EmotionalDecisionMaking;
-using EmotionalDecisionMakingWF;
 using Equin.ApplicationFramework;
 using GAIPS.AssetEditorTools;
 using GAIPS.Rage;
@@ -17,7 +15,6 @@ using KnowledgeBase.DTOs;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using RolePlayCharacter;
-using RolePlayCharacterWF;
 using Serilog;
 using SocialImportance;
 using System;
@@ -27,7 +24,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
-using System.Xml;
 using Utilities;
 using Utilities.DataStructures;
 using WellFormedNames;
@@ -117,6 +113,7 @@ namespace IntegratedAuthoringToolWF
             _eaForm.Asset.Save();
             _cifForm.Asset.Save();
             _siForm.Asset.Save();
+            Log.Information("Log:SaveAssets");
 
         }
 
@@ -1658,6 +1655,7 @@ namespace IntegratedAuthoringToolWF
                 }
             }
             EditorTools.UpdateFormTitle("FAtiMA Authoring Tool", _currentScenarioFilePath, this);
+            Log.Information("Log:SavedScenario");
         }
 
         private void dataGridViewCharacters_CellContentClick_1(object sender, DataGridViewCellEventArgs e)
