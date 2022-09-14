@@ -55,7 +55,8 @@
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Location = new System.Drawing.Point(0, 28);
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -67,8 +68,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox4);
-            this.splitContainer1.Size = new System.Drawing.Size(827, 515);
-            this.splitContainer1.SplitterDistance = 248;
+            this.splitContainer1.Size = new System.Drawing.Size(827, 454);
+            this.splitContainer1.SplitterDistance = 218;
             this.splitContainer1.SplitterWidth = 2;
             this.splitContainer1.TabIndex = 1;
             // 
@@ -85,7 +86,7 @@
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox7.Size = new System.Drawing.Size(827, 248);
+            this.groupBox7.Size = new System.Drawing.Size(827, 218);
             this.groupBox7.TabIndex = 4;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "SI Attribution Rules";
@@ -156,7 +157,7 @@
             this.dataGridViewAttributionRules.RowHeadersVisible = false;
             this.dataGridViewAttributionRules.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewAttributionRules.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridViewAttributionRules.Size = new System.Drawing.Size(811, 181);
+            this.dataGridViewAttributionRules.Size = new System.Drawing.Size(811, 151);
             this.dataGridViewAttributionRules.TabIndex = 11;
             this.dataGridViewAttributionRules.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewAttributionRules_CellContentClick);
             this.dataGridViewAttributionRules.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridViewAttributionRules_CellMouseDoubleClick);
@@ -165,13 +166,14 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox4.Controls.Add(this._attRuleConditionSetEditor);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Location = new System.Drawing.Point(0, 0);
             this.groupBox4.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox4.Size = new System.Drawing.Size(827, 265);
+            this.groupBox4.Size = new System.Drawing.Size(827, 234);
             this.groupBox4.TabIndex = 2;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "SI Rule Conditions";
@@ -182,7 +184,7 @@
             this._attRuleConditionSetEditor.Location = new System.Drawing.Point(4, 19);
             this._attRuleConditionSetEditor.Margin = new System.Windows.Forms.Padding(5);
             this._attRuleConditionSetEditor.Name = "_attRuleConditionSetEditor";
-            this._attRuleConditionSetEditor.Size = new System.Drawing.Size(819, 242);
+            this._attRuleConditionSetEditor.Size = new System.Drawing.Size(819, 211);
             this._attRuleConditionSetEditor.TabIndex = 0;
             this._attRuleConditionSetEditor.View = null;
             this._attRuleConditionSetEditor.Load += new System.EventHandler(this._attRuleConditionSetEditor_Load);
@@ -237,7 +239,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(827, 539);
+            this.ClientSize = new System.Drawing.Size(827, 454);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.splitContainer1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));

@@ -2073,7 +2073,11 @@ namespace IntegratedAuthoringToolWF
 
             tabControlAssetEditor.SelectedIndex = 1;
 
-            Log.Information("Log:Helper_EmotionalReaction_%" + rule.ToString() + "%");
+            if(rule != null)
+                Log.Information("Log:Helper_EmotionalReaction_%" + rule.ToString() + "%");
+
+            Log.Information("Log:Helper_EmotionalReaction_%Attempt%");
+
             _eaForm.AddAppraisalRulewithEmotions(rule, targetEmotion, subjectEmotion);
 
         }

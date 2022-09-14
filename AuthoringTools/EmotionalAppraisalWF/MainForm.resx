@@ -120,12 +120,6 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>152, 56</value>
   </metadata>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>152, 56</value>
-  </metadata>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>152, 56</value>
-  </metadata>
   <data name="dataGridViewAppraisalRules.ToolTip" xml:space="preserve">
     <value>The |type| of the emotion represents its categorical name. In total, the OCC theory proposes 22 emotion types that are psychologically distinct. Examples include Joy, Fear, Distress, Pride, Reproach, among others. 
 
