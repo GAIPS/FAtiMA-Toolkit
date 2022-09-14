@@ -11,7 +11,7 @@ namespace WorldModelWF
         private WorldModelAsset _asset;
         private Name _eventTemplate;
 
-        public AddOrEditActionTemplateForm(WorldModelAsset asset, Name eventTemplate = null, int priority = 0)
+        public AddOrEditActionTemplateForm(WorldModelAsset asset, Name eventTemplate = null, int priority = 1)
         {
             InitializeComponent();
 
@@ -30,7 +30,7 @@ namespace WorldModelWF
         
             if (eventTemplate != null)
             {
-                this.Text = "Update";
+                this.Text = "Update World Model Rule";
                 this.addOrEditButton.Text = "Update";
                 textBoxSubject.Value = eventTemplate.GetNTerm(2);
                 textBoxObject.Value = eventTemplate.GetNTerm(3);
@@ -42,7 +42,7 @@ namespace WorldModelWF
         {
 
 
-            if (this.Text != "Update")
+            if (this.Text != "Update World Model Rule")
             {
 
                 _eventTemplate = WellFormedNames.Name.BuildName(
@@ -107,6 +107,11 @@ namespace WorldModelWF
             {
                 this.Close();
             }
+        }
+
+        private void priorityFieldBox_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

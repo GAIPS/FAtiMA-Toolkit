@@ -97,7 +97,7 @@ namespace IntegratedAuthoringToolWF
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(11, 68);
+            this.label1.Location = new System.Drawing.Point(12, 28);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(303, 16);
             this.label1.TabIndex = 36;
@@ -107,7 +107,7 @@ namespace IntegratedAuthoringToolWF
             // 
             this.subjectEmotionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.subjectEmotionBox.FormattingEnabled = true;
-            this.subjectEmotionBox.Location = new System.Drawing.Point(346, 64);
+            this.subjectEmotionBox.Location = new System.Drawing.Point(347, 24);
             this.subjectEmotionBox.Margin = new System.Windows.Forms.Padding(2);
             this.subjectEmotionBox.Name = "subjectEmotionBox";
             this.subjectEmotionBox.Size = new System.Drawing.Size(150, 25);
@@ -117,7 +117,7 @@ namespace IntegratedAuthoringToolWF
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(12, 32);
+            this.label6.Location = new System.Drawing.Point(13, 66);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(298, 16);
             this.label6.TabIndex = 34;
@@ -127,7 +127,7 @@ namespace IntegratedAuthoringToolWF
             // 
             this.targetEmotionBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.targetEmotionBox.FormattingEnabled = true;
-            this.targetEmotionBox.Location = new System.Drawing.Point(346, 28);
+            this.targetEmotionBox.Location = new System.Drawing.Point(347, 62);
             this.targetEmotionBox.Margin = new System.Windows.Forms.Padding(2);
             this.targetEmotionBox.Name = "targetEmotionBox";
             this.targetEmotionBox.Size = new System.Drawing.Size(150, 25);

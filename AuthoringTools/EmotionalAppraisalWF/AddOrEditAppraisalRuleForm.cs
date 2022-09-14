@@ -82,6 +82,7 @@ namespace EmotionalAppraisalWF
 
         private void comboBoxEventType_SelectedIndexChanged(object sender, EventArgs e)
         {
+            UpdateHelperText();
         }
 
         private void textBoxSubject_TextChanged(object sender, EventArgs e)
@@ -102,12 +103,38 @@ namespace EmotionalAppraisalWF
 
         }
 
+        private void UpdateHelperText()
+        {
+            if(comboBoxEventType.SelectedIndex == 2)
+            {
+
+                labelTarget.Text = "Property:";
+                labelTargetHelper.Text = "Likes(John), Has(Money), *";
+                labelObject.Text = "New Value:";
+                labelObjectHelper.Text = "5, [value], *";
+            }
+            else
+            {
+                labelTarget.Text = "Target:";
+                labelTargetHelper.Text = "John, [subject], * ";
+                labelObject.Text = "Action:";
+                labelObjectHelper.Text = "Eat, GoTo, Speak( * , [ns], * , *), *";
+
+            }
+
+        }
+
         private void AddOrEditAppraisalRuleForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
             {
                 this.Close();
             }
+        }
+
+        private void labelTargetHelper_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
