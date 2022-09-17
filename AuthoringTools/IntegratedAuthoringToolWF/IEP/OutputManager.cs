@@ -577,101 +577,56 @@ namespace IntegratedAuthoringToolWF.IEP
             {
                 var parameters = d.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
 
-                var parameterCount = 2;
+                var cs = "-";
+                var ns = "-";
+                var mn = "-";
+                var sty = "-";
+                var utterance = "-";
 
-                if (nextState)
-                    parameterCount += 1;
-
-                if (meaning)
-                    parameterCount += 1;
-
-                if (style)
-                    parameterCount += 1;
-
-                if(parameters.Count() == parameterCount)
+                if (parameters.Count() < 2)
                 {
-                    var cs = parameters[0];
-                    var ns = "-";
-                    var sty = "-";
-                    var mean = "-";
-                    var utter = "-";
-
-
-                    if (nextState)
-                    {
-                        ns = parameters[1];
-
-                        if (meaning)
-                        {
-                            mean = parameters[2];
-
-                            if (style)
-                            {
-                                sty = parameters[3];
-                                utter = parameters[4];
-                            }
-                            else
-                            {
-                                utter = parameters[3];
-                            }
-                        }
-
-                        else
-                        {
-                            if (style)
-                            {
-                                sty = parameters[2];
-                                utter = parameters[3];
-                            }
-                            else
-                            {
-                                utter = parameters[2];
-                            }
-                        }
-                    }
-                    else 
-                    {
-                        if (meaning)
-                        {
-                            mean = parameters[1];
-
-                            if (style)
-                            {
-                                sty = parameters[2];
-                                utter = parameters[3];
-                            }
-                            else
-                            {
-                                utter = parameters[2];
-                            }
-                        }
-
-                        else
-                        {
-                            if (style)
-                            {
-                                sty = parameters[1];
-                                utter = parameters[2];
-                            }
-                            else
-                            {
-                                utter = parameters[1];
-                            }
-                        }
-
-                    }
-
-                        var newD = new DialogueStateActionDTO()
-                    {
-                        CurrentState = cs.Replace(" ", ""),
-                        NextState = ns.Replace(" ", ""),
-                        Meaning = mean.Replace(" ", ""),
-                        Style = sty.Replace(" ", ""),
-                        Utterance = utter
-                    };
-                    dialogStates.Add(newD);
-                    //_iatAux.AddDialogAction(newD);
+                    continue;
                 }
+                else if (parameters.Count() == 2)
+                {
+                    cs = parameters[0];
+                    utterance = parameters[1];
+                }
+                else if (parameters.Count() == 3)
+                {
+                     cs = parameters[0];
+                     ns = parameters[1];
+                     utterance = parameters[2];
+                }
+                else if (parameters.Count() == 4)
+                {
+                     cs = parameters[0];
+                     ns = parameters[1];
+                     mn = parameters[2];
+                     utterance = parameters[3];
+                }
+
+                else if (parameters.Count() == 5)
+                {
+                     cs = parameters[0];
+                     ns = parameters[1];
+                     mn = parameters[2];
+                     sty = parameters[3];
+                     utterance = parameters[4];
+                }
+
+                var newD = new DialogueStateActionDTO()
+                {
+                    CurrentState = cs.Replace(" ", ""),
+                    NextState = ns.Replace(" ", ""),
+                    Meaning = mn.Replace(" ", ""),
+                    Style = sty.Replace(" ", ""),
+                    Utterance = utterance
+                };
+
+                dialogStates.Add(newD);
+                //_iatAux.AddDialogAction(newD);
+                
             }
 
             return dialogStates;
