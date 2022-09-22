@@ -493,6 +493,7 @@ namespace RolePlayCharacter
         public void BindToRegistry(IDynamicPropertiesRegistry registry)
         {
             registry.RegistDynamicProperty(RPCConsts.MOOD_PROPERTY_NAME, MOOD_DP_DESC, MoodPropertyCalculator);
+            registry.RegistDynamicProperty(RPCConsts.GOAL_PROPERTY_NAME, GOAL_DP_DESC, GoalPropertyCalculator);
             registry.RegistDynamicProperty(RPCConsts.TICK_PROPERTY_NAME, TICK_DP_DESC, TickPropertyCalculator);
             registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_PROPERTY_NAME, STRONGEST_EMOTION_PROPERTY_DP_DESC, StrongestEmotionCalculator);
             registry.RegistDynamicProperty(RPCConsts.STRONGEST_EMOTION_FOR_EVENT_PROPERTY_NAME, STRONGEST_EMOTION_FOR_EVENT_PROPERTY_DP_DESC, StrongestEmotionForEventCalculator);
@@ -528,6 +529,8 @@ namespace RolePlayCharacter
         #region Dynamic Properties
 
         private static readonly string MOOD_DP_DESC = "Returns the Mood value for character [x]";
+
+        private static readonly string GOAL_DP_DESC ="Returns the Goal Probability value of SELF character for goal [x]";
 
         private static readonly string TICK_DP_DESC = "Returns the Tick value for character [x]";
 
@@ -751,6 +754,51 @@ namespace RolePlayCharacter
                 
                 if(!context.Constraints.Any())
                     yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(v)), new SubstitutionSet());
+            }
+        }
+
+        private IEnumerable<DynamicPropertyResult> GoalPropertyCalculator(IQueryContext context, Name x)
+
+        // Should only accept SELF, its rpc Name our a variable that should be subbed by its name
+        {
+            if (context.Perspective != Name.SELF_SYMBOL)
+                yield break;
+
+
+            if (x.IsVariable)
+                foreach (var resultPair in context.AskPossibleProperties(x))
+                {
+                    foreach (var c in resultPair.Item2)
+                    {
+                        if (m_goals.ContainsKey(x.ToString()))
+                        {
+                            var g = m_goals[x.ToString()].Likelihood;
+
+                            foreach (var cc in context.Constraints)
+                            {
+                                yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(g)), cc);
+                            }
+
+                            if (!context.Constraints.Any())
+                                yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(g)), new SubstitutionSet());
+                        }
+                    }
+                }
+            else
+            {
+                if (m_goals.ContainsKey(x.ToString()))
+                {
+                    var g = m_goals[x.ToString()].Likelihood;
+
+                    foreach (var c in context.Constraints)
+                    {
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(g)), c);
+                    }
+
+                    if (!context.Constraints.Any())
+                        yield return new DynamicPropertyResult(new ComplexValue(Name.BuildName(g)), new SubstitutionSet());
+                }
+
             }
         }
 
