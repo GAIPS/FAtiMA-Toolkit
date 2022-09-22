@@ -451,9 +451,14 @@ namespace EmotionalAppraisal.OCCModel
 
 			if (desirability != null & praiseworthiness != null)
 			{
+				int number1;
+				int.TryParse(desirability.Value.ToString(), out number1);
+				int number2;
+				int.TryParse(praiseworthiness.Value.ToString(), out number2);
+
 				if (praiseworthiness.Target == WellFormedNames.Name.SELF_SYMBOL)
 				{
-					if (System.Int32.Parse(desirability.Value.ToString()) > 0)
+					if (number1 > 0)
 					{
 						retList.Add(Gratification);
 						retList.Add(Joy);
@@ -467,7 +472,8 @@ namespace EmotionalAppraisal.OCCModel
 					}
 				} else if (praiseworthiness.Target != WellFormedNames.Name.SELF_SYMBOL)
 				{
-					if (System.Int32.Parse(desirability.Value.ToString()) > 0)
+
+					if (number1 > 0)
 					{
 						retList.Add(Gratitude);
 						retList.Add(Joy);
@@ -487,7 +493,10 @@ namespace EmotionalAppraisal.OCCModel
 			{
 				if (desirability != null)
 				{
-					if (System.Int32.Parse(desirability.Value.ToString()) > 0)
+					int number1;
+					int.TryParse(desirability.Value.ToString(), out number1);
+
+					if (number1 > 0)
 					{
 						retList.Add(Joy);
 					}
@@ -499,9 +508,12 @@ namespace EmotionalAppraisal.OCCModel
 
 				if (praiseworthiness != null)
 				{
+					int number1;
+					int.TryParse(praiseworthiness.Value.ToString(), out number1);
+
 					if (praiseworthiness.Target == WellFormedNames.Name.SELF_SYMBOL)
 					{
-						if (System.Int32.Parse(praiseworthiness.Value.ToString()) > 0)
+						if (number1 > 0)
 						{
 							retList.Add(Pride);
 						}
@@ -511,7 +523,8 @@ namespace EmotionalAppraisal.OCCModel
 						}
 					} else
 					{
-						if (System.Int32.Parse(praiseworthiness.Value.ToString()) > 0)
+
+						if (number1 > 0)
 						{
 							retList.Add(Admiration);
 						}
@@ -526,7 +539,10 @@ namespace EmotionalAppraisal.OCCModel
 
 				if(likes != null)
                 {
-					if(System.Int32.Parse(praiseworthiness.Value.ToString()) > 0)
+				int number1;
+				int.TryParse(likes.Value.ToString(), out number1);
+
+				if (number1 > 0)
                     {
 						retList.Add(Love);
 						
@@ -540,7 +556,13 @@ namespace EmotionalAppraisal.OCCModel
 
 				if (goals != null)
 				{
-					if (System.Int32.Parse(goals.Value.ToString()) > 0 && System.Int32.Parse(goals.Value.ToString()) < 1)
+
+				var g = goals.Value;
+				var s = goals.Value.ToString();
+				int number;
+				int.TryParse(s, out number);
+
+				if (number > 0 && number < 1)
 					{
 						retList.Add(Hope);
 						retList.Add(Fear);
@@ -560,9 +582,15 @@ namespace EmotionalAppraisal.OCCModel
 
 				if(desirability!= null && desirabilityForOthers != null)
                 {
-					if (System.Int32.Parse(desirability.Value.ToString()) > 0)
+
+				int number1;
+				int.TryParse(desirability.Value.ToString(), out number1);
+				int number2;
+				int.TryParse(desirabilityForOthers.Value.ToString(), out number2);
+
+				if (number1 > 0)
 					{
-						if (System.Int32.Parse(desirabilityForOthers.Value.ToString()) > 0)
+						if (number2 > 0)
 						{
 							retList.Add(HappyFor);
 						}
@@ -574,7 +602,7 @@ namespace EmotionalAppraisal.OCCModel
 					}
 					else
 					{
-						if (System.Int32.Parse(desirabilityForOthers.Value.ToString()) > 0)
+						if (number2 > 0)
 						{
 							retList.Add(Resentment);
 						}
