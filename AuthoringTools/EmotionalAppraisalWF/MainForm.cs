@@ -126,6 +126,7 @@ namespace EmotionalAppraisalWF
                 _appraisalRulesVM.AddOrUpdateAppraisalRule(subjectDto);
 
             }
+            UpdateAppraisalRules();
         }
         public void buttonAddAppraisalRule_Click(object sender, ActionRuleDTO rule)
         {

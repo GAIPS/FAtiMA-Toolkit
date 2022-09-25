@@ -46,17 +46,13 @@ namespace IntegratedAuthoringToolWF
         }
 
         private void acceptButton_Click(object sender, EventArgs e)
-        {
-            
+        {          
 
             if (targetEmotionBox.SelectedItem != null && targetEmotionBox.SelectedItem.ToString() != "None")
                 targetEmotion = OCCEmotionType.Parse((string)targetEmotionBox.SelectedItem);
 
-            if (targetEmotionBox.SelectedItem != null && targetEmotionBox.SelectedItem.ToString() != "None")
+            if (subjectEmotionBox.SelectedItem != null && subjectEmotionBox.SelectedItem.ToString() != "None")
                 subjectEmotion = OCCEmotionType.Parse((string)subjectEmotionBox.SelectedItem);
-
-
-            //Missing Code?
 
         }
     }
