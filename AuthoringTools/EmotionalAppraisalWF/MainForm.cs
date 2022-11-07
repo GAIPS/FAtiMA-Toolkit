@@ -83,6 +83,9 @@ namespace EmotionalAppraisalWF
             {
                 var targetVariables = EmotionalAppraisal.OCCModel.OCCEmotionType.getVariableFromEmotion(targetEmotion.Name);
 
+                if (rule == null)
+                    rule = new ActionRuleDTO();
+
                 AppraisalRuleDTO targetDto = new AppraisalRuleDTO()
                 {
                     EventMatchingTemplate =

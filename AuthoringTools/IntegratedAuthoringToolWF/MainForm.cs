@@ -537,7 +537,7 @@ namespace IntegratedAuthoringToolWF
         private void buttonTTS_Click(object sender, EventArgs e)
         {
             var dialogs = _iat.GetAllDialogueActions().ToArray();
-            var t = new TextToSpeechForm(dialogs);
+            var t = new TextToSpeechForm(this, dialogs);
             t.Show(this);
         }
 

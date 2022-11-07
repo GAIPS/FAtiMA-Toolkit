@@ -28,6 +28,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TextToSpeechForm));
             this.textBox1 = new System.Windows.Forms.TextBox();
             this._testSpeechButton = new System.Windows.Forms.Button();
             this._voiceComboBox = new System.Windows.Forms.ComboBox();
@@ -49,6 +51,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this._speachRateSlider)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._pitchSlider)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
@@ -65,14 +68,16 @@
             // 
             this.textBox1.AcceptsReturn = true;
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox1.Location = new System.Drawing.Point(4, 48);
+            this.textBox1.Location = new System.Drawing.Point(4, 44);
             this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(623, 232);
+            this.textBox1.Size = new System.Drawing.Size(623, 136);
             this.textBox1.TabIndex = 0;
             this.textBox1.Text = "Hello, World!";
+            this.toolTip1.SetToolTip(this.textBox1, "In order to add more voices to the list, install a Microsoft Text to Speech packa" +
+        "ge under Settings -> Speech -> Add Voices");
             this.textBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress);
             // 
             // _testSpeechButton
@@ -83,7 +88,7 @@
             this._testSpeechButton.Location = new System.Drawing.Point(4, 4);
             this._testSpeechButton.Margin = new System.Windows.Forms.Padding(4);
             this._testSpeechButton.Name = "_testSpeechButton";
-            this._testSpeechButton.Size = new System.Drawing.Size(109, 30);
+            this._testSpeechButton.Size = new System.Drawing.Size(109, 26);
             this._testSpeechButton.TabIndex = 1;
             this._testSpeechButton.Text = "Test Speech";
             this._testSpeechButton.UseVisualStyleBackColor = true;
@@ -96,7 +101,7 @@
             this._voiceComboBox.Location = new System.Drawing.Point(4, 4);
             this._voiceComboBox.Margin = new System.Windows.Forms.Padding(4);
             this._voiceComboBox.Name = "_voiceComboBox";
-            this._voiceComboBox.Size = new System.Drawing.Size(482, 28);
+            this._voiceComboBox.Size = new System.Drawing.Size(482, 24);
             this._voiceComboBox.TabIndex = 2;
             this._voiceComboBox.SelectionChangeCommitted += new System.EventHandler(this.OnVoiceSelectionChange);
             // 
@@ -120,7 +125,7 @@
             this._pitchValueLabel.Location = new System.Drawing.Point(104, 0);
             this._pitchValueLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this._pitchValueLabel.Name = "_pitchValueLabel";
-            this._pitchValueLabel.Size = new System.Drawing.Size(115, 40);
+            this._pitchValueLabel.Size = new System.Drawing.Size(112, 16);
             this._pitchValueLabel.TabIndex = 6;
             this._pitchValueLabel.Text = "_pitchValueLabel";
             // 
@@ -153,7 +158,7 @@
             this._rateTextBox.Location = new System.Drawing.Point(104, 4);
             this._rateTextBox.Margin = new System.Windows.Forms.Padding(4);
             this._rateTextBox.Name = "_rateTextBox";
-            this._rateTextBox.Size = new System.Drawing.Size(132, 26);
+            this._rateTextBox.Size = new System.Drawing.Size(132, 22);
             this._rateTextBox.TabIndex = 8;
             this._rateTextBox.Validated += new System.EventHandler(this.OnValidatedRateTextBox);
             // 
@@ -161,10 +166,10 @@
             // 
             this._dialogOptions.Dock = System.Windows.Forms.DockStyle.Fill;
             this._dialogOptions.FormattingEnabled = true;
-            this._dialogOptions.Location = new System.Drawing.Point(155, 4);
+            this._dialogOptions.Location = new System.Drawing.Point(130, 4);
             this._dialogOptions.Margin = new System.Windows.Forms.Padding(4);
             this._dialogOptions.Name = "_dialogOptions";
-            this._dialogOptions.Size = new System.Drawing.Size(464, 28);
+            this._dialogOptions.Size = new System.Drawing.Size(489, 24);
             this._dialogOptions.TabIndex = 9;
             this._dialogOptions.SelectedIndexChanged += new System.EventHandler(this._dialogOptions_SelectedIndexChanged);
             this._dialogOptions.SelectionChangeCommitted += new System.EventHandler(this._dialogOptions_SelectionChangeCommitted);
@@ -176,7 +181,7 @@
             this.label1.Location = new System.Drawing.Point(4, 0);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(143, 36);
+            this.label1.Size = new System.Drawing.Size(118, 32);
             this.label1.TabIndex = 10;
             this.label1.Text = "Available Dialogs:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -196,11 +201,12 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(623, 36);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(623, 32);
             this.tableLayoutPanel1.TabIndex = 11;
             // 
             // tableLayoutPanel2
             // 
+            this.tableLayoutPanel2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel2.ColumnCount = 1;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel1, 0, 0);
@@ -214,8 +220,10 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 271F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(631, 555);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(631, 455);
             this.tableLayoutPanel2.TabIndex = 12;
+            this.toolTip1.SetToolTip(this.tableLayoutPanel2, "In order to add more voices to the list, install a Microsoft Text to Speech packa" +
+        "ge under Settings -> Speech -> Add Voices");
             // 
             // tableLayoutPanel3
             // 
@@ -227,7 +235,7 @@
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel5, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel4, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(4, 288);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(4, 188);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(4);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
@@ -261,7 +269,7 @@
             // 
             this._visemeDisplay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)));
             this._visemeDisplay.ErrorImage = global::IntegratedAuthoringToolWF.Properties.Resources._0_silence;
-            this._visemeDisplay.Location = new System.Drawing.Point(5, 46);
+            this._visemeDisplay.Location = new System.Drawing.Point(5, 44);
             this._visemeDisplay.Margin = new System.Windows.Forms.Padding(4);
             this._visemeDisplay.Name = "_visemeDisplay";
             this._visemeDisplay.Size = new System.Drawing.Size(107, 101);
@@ -305,6 +313,8 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(490, 255);
             this.tableLayoutPanel4.TabIndex = 13;
+            this.toolTip1.SetToolTip(this.tableLayoutPanel4, "In order to add more voices to the list, install a Microsoft Text to Speech packa" +
+        "ge under Settings -> Speech -> Add Voices");
             // 
             // tableLayoutPanel7
             // 
@@ -357,19 +367,26 @@
             this.label2.Location = new System.Drawing.Point(4, 4);
             this.label2.Margin = new System.Windows.Forms.Padding(4);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(60, 40);
+            this.label2.Size = new System.Drawing.Size(83, 16);
             this.label2.TabIndex = 9;
             this.label2.Text = "Speak Rate:";
             // 
+            // toolTip1
+            // 
+            this.toolTip1.ShowAlways = true;
+            this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            // 
             // TextToSpeechForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(645, 567);
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new System.Drawing.Size(645, 467);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.MinimumSize = new System.Drawing.Size(661, 606);
+            this.MinimumSize = new System.Drawing.Size(661, 506);
             this.Name = "TextToSpeechForm";
             this.Padding = new System.Windows.Forms.Padding(7, 6, 7, 6);
             this.Text = "Text-To-Speech";
@@ -418,5 +435,6 @@
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
 		private System.Windows.Forms.Label label2;
-	}
+        protected System.Windows.Forms.ToolTip toolTip1;
+    }
 }

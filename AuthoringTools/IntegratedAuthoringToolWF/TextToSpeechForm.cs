@@ -23,7 +23,7 @@ namespace IntegratedAuthoringToolWF
 		private static readonly TextToSpeechEngine[] _ttsEngines =
 		{
 			new SystemTextToSpeechEngine(),
-			new L2FSpeechEngine()
+		//	new L2FSpeechEngine()
 		};
 
 		private readonly DialogueStateActionDTO[] _agentActions;
@@ -32,7 +32,7 @@ namespace IntegratedAuthoringToolWF
 		private IVoice _selectedVoice;
 		private VoicePlayer _activeVoicePlayer;
 
-		public TextToSpeechForm(DialogueStateActionDTO[] agentActions)
+		public TextToSpeechForm(Form parent, DialogueStateActionDTO[] agentActions)
 		{
 			InitializeComponent();
 
@@ -49,6 +49,8 @@ namespace IntegratedAuthoringToolWF
 			UpdateRateLabel();
 			UpdatePitchLabel();
 			SetVisemeDisplay(Viseme.Silence);
+			this.toolTip1.SetToolTip(parent, "Ayy");
+
 		}
 
 		private void _dialogOptions_SelectionChangeCommitted(object sender, EventArgs e)

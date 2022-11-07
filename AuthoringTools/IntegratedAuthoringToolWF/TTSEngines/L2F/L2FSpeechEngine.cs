@@ -24,12 +24,14 @@ namespace IntegratedAuthoringToolWF.TTSEngines.L2F
 
 		public L2FSpeechEngine()
 		{
-			_availableVoices = new[]
+		/*	_availableVoices = new[]
 			{
 				new L2FVoice("Vicent",VoiceGender.Male, VoiceAge.Adult,"pt",this),
 				new L2FVoice("Viriato",VoiceGender.Male, VoiceAge.Adult,"pt",this),
 				new L2FVoice("Violeta",VoiceGender.Female, VoiceAge.Adult,"pt",this)
-			};
+			};*/
+			
+	
 		}
 
 		public override IEnumerable<IVoice> GetAvailableVoices()
@@ -106,6 +108,7 @@ namespace IntegratedAuthoringToolWF.TTSEngines.L2F
 
 		private JsonObject[] RequestTTS(L2FVoice voice, string text)
 		{
+			// What happens if the server is down?
 			using (var client = new HttpClient())
 			{
 				client.Timeout = TimeSpan.FromSeconds(15);
@@ -123,6 +126,8 @@ namespace IntegratedAuthoringToolWF.TTSEngines.L2F
 					throw new Exception("fail");
 
 				var str = response.Content.ReadAsStringAsync().Result;
+				if (str == "")
+					return null;
 				var data = (JsonObject)JsonParser.Parse(str);
 				var array = (JsonArray)data["ttsresults"];
 				if (array.Count == 0)
