@@ -2797,5 +2797,10 @@ namespace IntegratedAuthoringToolWF
         {
 
         }
+
+        private void CognitiveRules_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
