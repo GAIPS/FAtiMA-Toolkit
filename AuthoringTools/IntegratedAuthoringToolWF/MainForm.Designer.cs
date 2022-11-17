@@ -554,6 +554,8 @@
             // 
             // textBoxScenarioDescription
             // 
+            this.textBoxScenarioDescription.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.textBoxScenarioDescription.Location = new System.Drawing.Point(7, 79);
             this.textBoxScenarioDescription.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxScenarioDescription.Multiline = true;
@@ -656,7 +658,8 @@
             this.dataGridViewCharacters.AllowUserToDeleteRows = false;
             this.dataGridViewCharacters.AllowUserToOrderColumns = true;
             this.dataGridViewCharacters.AllowUserToResizeRows = false;
-            this.dataGridViewCharacters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.dataGridViewCharacters.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewCharacters.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridViewCharacters.BackgroundColor = System.Drawing.SystemColors.ControlLightLight;
@@ -843,29 +846,29 @@
             // 
             // EmotionalAppraisal
             // 
-            this.EmotionalAppraisal.Location = new System.Drawing.Point(4, 25);
+            this.EmotionalAppraisal.Location = new System.Drawing.Point(4, 22);
             this.EmotionalAppraisal.Margin = new System.Windows.Forms.Padding(3, 3, 3, 10);
             this.EmotionalAppraisal.Name = "EmotionalAppraisal";
             this.EmotionalAppraisal.Padding = new System.Windows.Forms.Padding(3);
-            this.EmotionalAppraisal.Size = new System.Drawing.Size(837, 515);
+            this.EmotionalAppraisal.Size = new System.Drawing.Size(837, 514);
             this.EmotionalAppraisal.TabIndex = 0;
             this.EmotionalAppraisal.Text = "Emotional Appraisal";
             this.EmotionalAppraisal.UseVisualStyleBackColor = true;
             // 
             // SocialImportance
             // 
-            this.SocialImportance.Location = new System.Drawing.Point(4, 25);
+            this.SocialImportance.Location = new System.Drawing.Point(4, 22);
             this.SocialImportance.Name = "SocialImportance";
-            this.SocialImportance.Size = new System.Drawing.Size(837, 515);
+            this.SocialImportance.Size = new System.Drawing.Size(837, 514);
             this.SocialImportance.TabIndex = 2;
             this.SocialImportance.Text = "Social Importance";
             this.SocialImportance.UseVisualStyleBackColor = true;
             // 
             // CIFCK
             // 
-            this.CIFCK.Location = new System.Drawing.Point(4, 25);
+            this.CIFCK.Location = new System.Drawing.Point(4, 22);
             this.CIFCK.Name = "CIFCK";
-            this.CIFCK.Size = new System.Drawing.Size(837, 515);
+            this.CIFCK.Size = new System.Drawing.Size(837, 514);
             this.CIFCK.TabIndex = 3;
             this.CIFCK.Text = "CIF-CK";
             this.CIFCK.UseVisualStyleBackColor = true;
@@ -1646,16 +1649,16 @@
             // 
             // groupBox14
             // 
-            this.groupBox14.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox14.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox14.Controls.Add(this.scenarioNameTextBox);
             this.groupBox14.Controls.Add(this.label9);
             this.groupBox14.Controls.Add(this.label2);
             this.groupBox14.Controls.Add(this.textBoxScenarioDescription);
+            this.groupBox14.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox14.Location = new System.Drawing.Point(0, 0);
             this.groupBox14.Name = "groupBox14";
             this.groupBox14.Padding = new System.Windows.Forms.Padding(1);
-            this.groupBox14.Size = new System.Drawing.Size(447, 178);
+            this.groupBox14.Size = new System.Drawing.Size(447, 179);
             this.groupBox14.TabIndex = 5;
             this.groupBox14.TabStop = false;
             // 
@@ -1819,7 +1822,7 @@
             this.splitContainer6.Panel2.Controls.Add(this.pictureBox4);
             this.splitContainer6.Panel2.Controls.Add(this.nextPicture);
             this.splitContainer6.Size = new System.Drawing.Size(328, 248);
-            this.splitContainer6.SplitterDistance = 162;
+            this.splitContainer6.SplitterDistance = 190;
             this.splitContainer6.TabIndex = 19;
             // 
             // assistantTopicGroupBox
@@ -1832,7 +1835,7 @@
             this.assistantTopicGroupBox.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.assistantTopicGroupBox.Location = new System.Drawing.Point(0, 0);
             this.assistantTopicGroupBox.Name = "assistantTopicGroupBox";
-            this.assistantTopicGroupBox.Size = new System.Drawing.Size(328, 162);
+            this.assistantTopicGroupBox.Size = new System.Drawing.Size(328, 190);
             this.assistantTopicGroupBox.TabIndex = 19;
             this.assistantTopicGroupBox.TabStop = false;
             this.assistantTopicGroupBox.Text = "FAtiMA-Toolkit";
@@ -1851,6 +1854,8 @@
             // 
             // assistantTextBox
             // 
+            this.assistantTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.assistantTextBox.AutoEllipsis = true;
             this.assistantTextBox.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.assistantTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -1860,7 +1865,7 @@
             this.assistantTextBox.Margin = new System.Windows.Forms.Padding(3);
             this.assistantTextBox.Name = "assistantTextBox";
             this.assistantTextBox.Padding = new System.Windows.Forms.Padding(3);
-            this.assistantTextBox.Size = new System.Drawing.Size(324, 172);
+            this.assistantTextBox.Size = new System.Drawing.Size(324, 160);
             this.assistantTextBox.TabIndex = 18;
             this.assistantTextBox.Text = "Don\'t forget to save your development using Ctrl+S";
             this.assistantTextBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -1871,7 +1876,7 @@
             this.pictureBox3.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.pictureBox3.Image = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_last_401;
-            this.pictureBox3.Location = new System.Drawing.Point(254, 17);
+            this.pictureBox3.Location = new System.Drawing.Point(274, 9);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(41, 30);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -1886,7 +1891,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button1.Font = new System.Drawing.Font("Gadugi", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button1.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.button1.Location = new System.Drawing.Point(92, 17);
+            this.button1.Location = new System.Drawing.Point(88, 9);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(119, 30);
             this.button1.TabIndex = 1;
@@ -1899,7 +1904,7 @@
             this.pictureBox4.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox4.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.left;
             this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.pictureBox4.Location = new System.Drawing.Point(46, 17);
+            this.pictureBox4.Location = new System.Drawing.Point(42, 9);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(40, 30);
             this.pictureBox4.TabIndex = 25;
@@ -1911,7 +1916,7 @@
             this.nextPicture.BackColor = System.Drawing.Color.Transparent;
             this.nextPicture.BackgroundImage = global::IntegratedAuthoringToolWF.Properties.Resources.icons8_divisa_circulada_à_direita_40;
             this.nextPicture.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.nextPicture.Location = new System.Drawing.Point(217, 17);
+            this.nextPicture.Location = new System.Drawing.Point(213, 9);
             this.nextPicture.Name = "nextPicture";
             this.nextPicture.Size = new System.Drawing.Size(41, 30);
             this.nextPicture.TabIndex = 22;
