@@ -16,6 +16,7 @@ namespace IntegratedAuthoringToolWF
     {
         public bool neverShowAgain;
         public OCCEmotionType targetEmotion, subjectEmotion;
+        public string selectedAction;
        
         public AddEmotionalReactionForm(List<string> actionNames)
         {
@@ -45,8 +46,14 @@ namespace IntegratedAuthoringToolWF
 
         }
 
+        private void actionComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
         private void acceptButton_Click(object sender, EventArgs e)
-        {          
+        {
+            selectedAction = actionComboBox.SelectedItem.ToString();
 
             if (targetEmotionBox.SelectedItem != null && targetEmotionBox.SelectedItem.ToString() != "None")
                 targetEmotion = OCCEmotionType.Parse((string)targetEmotionBox.SelectedItem);

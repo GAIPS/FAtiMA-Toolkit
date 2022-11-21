@@ -172,6 +172,7 @@ namespace IntegratedAuthoringToolWF
             this.actionComboBox.Name = "actionComboBox";
             this.actionComboBox.Size = new System.Drawing.Size(186, 21);
             this.actionComboBox.TabIndex = 3;
+            this.actionComboBox.SelectedIndexChanged += new System.EventHandler(this.actionComboBox_SelectedIndexChanged);
             // 
             // label2
             // 

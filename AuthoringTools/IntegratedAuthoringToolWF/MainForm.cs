@@ -2047,16 +2047,20 @@ namespace IntegratedAuthoringToolWF
         public void AddEmotionalReaction(object sender, EventArgs e)
         {
 
-            ActionLibrary.DTOs.ActionRuleDTO rule = this._edmForm.latestAddedRule;
-
-           
+            // Get all rule names
             var actionNames = _edmForm.Asset.GetAllActionRules().Select(x => x.Action.ToString()).ToList();
+
+            //Get Emotional Reaction Form
             var addEmotForm = new AddEmotionalReactionForm(actionNames);
+
 
             var result = addEmotForm.ShowDialog();
 
             if (result == DialogResult.Yes)
             {
+
+                var rule = _edmForm.Asset.GetAllActionRules().First(x => x.Action.ToString() == addEmotForm.selectedAction);
+
                 AddAppraisalRuleforAction(rule, addEmotForm.targetEmotion, addEmotForm.subjectEmotion);
 
             }
