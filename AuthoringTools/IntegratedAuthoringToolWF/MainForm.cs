@@ -2022,7 +2022,7 @@ namespace IntegratedAuthoringToolWF
             var eaRulesCount = _eaForm.Asset.GetAllAppraisalRules().Count();
             ActionLibrary.DTOs.ActionRuleDTO rule = this._edmForm.latestAddedRule;
 
-            if (edmRulesCount > eaRulesCount * 2 + 1)
+            if (edmRulesCount - eaRulesCount >= 2)
             {
                 string actionName = rule.Action.ToString();
                 //+ " towards " + rule.Target.ToString();

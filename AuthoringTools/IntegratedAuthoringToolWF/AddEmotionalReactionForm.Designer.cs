@@ -53,18 +53,19 @@ namespace IntegratedAuthoringToolWF
             // 
             // label3
             // 
-            this.label3.AutoEllipsis = true;
             this.label3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(2, 15);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label3.MinimumSize = new System.Drawing.Size(516, 89);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(516, 89);
             this.label3.TabIndex = 2;
             this.label3.Text = resources.GetString("label3.Text");
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // acceptButton
             // 
@@ -85,13 +86,13 @@ namespace IntegratedAuthoringToolWF
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox1.MinimumSize = new System.Drawing.Size(520, 106);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(520, 106);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Description";
-            this.groupBox1.Visible = false;
             // 
             // label1
             // 
@@ -135,7 +136,6 @@ namespace IntegratedAuthoringToolWF
             // 
             // groupBox4
             // 
-            this.groupBox4.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.groupBox4.Controls.Add(this.label1);
             this.groupBox4.Controls.Add(this.targetEmotionBox);
             this.groupBox4.Controls.Add(this.subjectEmotionBox);
@@ -145,7 +145,7 @@ namespace IntegratedAuthoringToolWF
             this.groupBox4.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox4.Size = new System.Drawing.Size(520, 111);
+            this.groupBox4.Size = new System.Drawing.Size(520, 104);
             this.groupBox4.TabIndex = 9;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Emotional Response";
@@ -155,35 +155,35 @@ namespace IntegratedAuthoringToolWF
             this.groupBox2.Controls.Add(this.actionComboBox);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox2.Location = new System.Drawing.Point(0, 217);
+            this.groupBox2.Location = new System.Drawing.Point(0, 210);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox2.Size = new System.Drawing.Size(520, 77);
+            this.groupBox2.Size = new System.Drawing.Size(520, 71);
             this.groupBox2.TabIndex = 7;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Action Template";
             // 
             // actionComboBox
             // 
             this.actionComboBox.DropDownHeight = 130;
+            this.actionComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.actionComboBox.FormattingEnabled = true;
             this.actionComboBox.IntegralHeight = false;
-            this.actionComboBox.Location = new System.Drawing.Point(175, 35);
+            this.actionComboBox.Location = new System.Drawing.Point(206, 27);
             this.actionComboBox.Name = "actionComboBox";
-            this.actionComboBox.Size = new System.Drawing.Size(186, 21);
+            this.actionComboBox.Size = new System.Drawing.Size(186, 26);
             this.actionComboBox.TabIndex = 3;
             this.actionComboBox.SelectedIndexChanged += new System.EventHandler(this.actionComboBox_SelectedIndexChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(100, 34);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(61, 30);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(58, 17);
+            this.label2.Size = new System.Drawing.Size(134, 18);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Action:";
+            this.label2.Text = "Action Template:";
             // 
             // groupBox5
             // 
@@ -191,9 +191,9 @@ namespace IntegratedAuthoringToolWF
             this.groupBox5.Controls.Add(this.pictureBox1);
             this.groupBox5.Controls.Add(this.acceptButton);
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox5.Location = new System.Drawing.Point(0, 294);
+            this.groupBox5.Location = new System.Drawing.Point(0, 281);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(520, 51);
+            this.groupBox5.Size = new System.Drawing.Size(520, 68);
             this.groupBox5.TabIndex = 10;
             this.groupBox5.TabStop = false;
             // 
@@ -225,7 +225,7 @@ namespace IntegratedAuthoringToolWF
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.MinimumSize = new System.Drawing.Size(536, 263);
+            this.MinimumSize = new System.Drawing.Size(540, 387);
             this.Name = "AddEmotionalReactionForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add Emotional Reaction";

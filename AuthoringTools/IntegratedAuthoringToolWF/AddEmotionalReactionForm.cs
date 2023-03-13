@@ -38,7 +38,7 @@ namespace IntegratedAuthoringToolWF
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
-            groupBox1.Visible = !groupBox1.Visible;
+           // groupBox1.Visible = !groupBox1.Visible;
         }
 
         private void AddEmotionalReactionForm_Load(object sender, EventArgs e)
@@ -47,6 +47,11 @@ namespace IntegratedAuthoringToolWF
         }
 
         private void actionComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
         {
 
         }

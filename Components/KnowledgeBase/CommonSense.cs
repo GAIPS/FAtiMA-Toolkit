@@ -224,19 +224,31 @@ namespace KnowledgeBase
                     // Checking which possible new categories will arise: food
                     var possibleTerms = new List<string>();
                     var auxCategory = category.ToString().ToLower();
-                    while (commonSense.ContainsKey(auxCategory))
+                    if (commonSense.ContainsKey(auxCategory))
                     {
-                        var categories = getCategories(commonSense[auxCategory]);
+                        var cats = getCategories(commonSense[auxCategory]);
+                        foreach(var c in cats)
+                        if (!possibleTerms.Contains(c))
+                            possibleTerms.Add(c);
 
-                        foreach (var v in categories)
+
+                        // let's add a new category then
+                        if(!commonSense.ContainsKey(originalTerm))
+                        if (possibleTerms.Count > 0)
                         {
-                            if (!possibleTerms.Contains(v))
-                                possibleTerms.Add(v);
+                            
+                            commonSense.Add(originalTerm, new Node()
+                            {
+                                childNodes = new List<Node>(),
+                                parent = commonSense[auxCategory],
+                                value = originalTerm
+                            });
+
+                            commonSense[auxCategory].childNodes.Add(commonSense[originalTerm]);
+
                         }
-
-                        auxCategory = categories.FirstOrDefault();
+                      
                     }
-
                     // Creating a new belief based on the information collected
                     foreach (var t in possibleTerms)
                     {

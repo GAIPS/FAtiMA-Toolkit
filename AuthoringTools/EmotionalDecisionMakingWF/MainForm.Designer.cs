@@ -49,6 +49,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.charactersComboBox = new System.Windows.Forms.ComboBox();
             this.testConditions = new System.Windows.Forms.Button();
+            this.conditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,7 +57,6 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.edmToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.conditionSetEditor = new GAIPS.AssetEditorTools.ConditionSetEditorControl();
             this.groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewReactiveActions)).BeginInit();
             this.menuStrip2.SuspendLayout();
@@ -82,7 +82,7 @@
             this.groupBox7.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox7.Name = "groupBox7";
             this.groupBox7.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox7.Size = new System.Drawing.Size(819, 218);
+            this.groupBox7.Size = new System.Drawing.Size(819, 215);
             this.groupBox7.TabIndex = 3;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "Action Rules";
@@ -158,7 +158,7 @@
             this.dataGridViewReactiveActions.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.dataGridViewReactiveActions.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridViewReactiveActions.ShowCellToolTips = false;
-            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(807, 144);
+            this.dataGridViewReactiveActions.Size = new System.Drawing.Size(807, 141);
             this.dataGridViewReactiveActions.TabIndex = 2;
             this.edmToolTip.SetToolTip(this.dataGridViewReactiveActions, resources.GetString("dataGridViewReactiveActions.ToolTip"));
             this.dataGridViewReactiveActions.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewReactiveActions_CellContentClick);
@@ -196,7 +196,7 @@
             this.toolsMenu.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.toolsMenu.ImageTransparentColor = System.Drawing.Color.Black;
             this.toolsMenu.Name = "toolsMenu";
-            this.toolsMenu.Size = new System.Drawing.Size(154, 31);
+            this.toolsMenu.Size = new System.Drawing.Size(193, 31);
             this.toolsMenu.Text = "Action Rule Helpers";
             // 
             // addDialogueActionToolStripMenuItem
@@ -204,7 +204,7 @@
             this.addDialogueActionToolStripMenuItem.Image = global::EmotionalDecisionMakingWF.Properties.Resources.dialogue;
             this.addDialogueActionToolStripMenuItem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.addDialogueActionToolStripMenuItem.Name = "addDialogueActionToolStripMenuItem";
-            this.addDialogueActionToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.addDialogueActionToolStripMenuItem.Size = new System.Drawing.Size(284, 28);
             this.addDialogueActionToolStripMenuItem.Text = "Add Dialogue Action";
             this.addDialogueActionToolStripMenuItem.ToolTipText = "Create a new Speak Action from a Template";
             this.addDialogueActionToolStripMenuItem.Click += new System.EventHandler(this.addDialogueActionToolStripMenuItem_Click);
@@ -214,7 +214,7 @@
             this.addEmotionalResponseToolStripMenuItem.Image = global::EmotionalDecisionMakingWF.Properties.Resources.reaction;
             this.addEmotionalResponseToolStripMenuItem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.addEmotionalResponseToolStripMenuItem.Name = "addEmotionalResponseToolStripMenuItem";
-            this.addEmotionalResponseToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.addEmotionalResponseToolStripMenuItem.Size = new System.Drawing.Size(284, 28);
             this.addEmotionalResponseToolStripMenuItem.Text = "Add Emotional Response";
             this.addEmotionalResponseToolStripMenuItem.ToolTipText = "Automatically create an appraisal rule for each action rule using this helper";
             this.addEmotionalResponseToolStripMenuItem.Click += new System.EventHandler(this.addEmotionalResponseToolStripMenuItem_Click);
@@ -223,14 +223,14 @@
             // 
             this.conditionTesterToolStripMenuItem.Image = global::EmotionalDecisionMakingWF.Properties.Resources.icons8_system_report_40;
             this.conditionTesterToolStripMenuItem.Name = "conditionTesterToolStripMenuItem";
-            this.conditionTesterToolStripMenuItem.Size = new System.Drawing.Size(223, 22);
+            this.conditionTesterToolStripMenuItem.Size = new System.Drawing.Size(284, 28);
             this.conditionTesterToolStripMenuItem.Text = "Condition Tester";
             this.conditionTesterToolStripMenuItem.Click += new System.EventHandler(this.conditionTesterToolStripMenuItem_Click);
             // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(4, 27);
+            this.splitContainer1.Location = new System.Drawing.Point(4, 33);
             this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
@@ -244,8 +244,8 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.groupBox8);
             this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
-            this.splitContainer1.Size = new System.Drawing.Size(819, 457);
-            this.splitContainer1.SplitterDistance = 218;
+            this.splitContainer1.Size = new System.Drawing.Size(819, 451);
+            this.splitContainer1.SplitterDistance = 215;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 17;
             this.splitContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.splitContainer1_SplitterMoved);
@@ -259,7 +259,7 @@
             this.groupBox8.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Padding = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.groupBox8.Size = new System.Drawing.Size(819, 234);
+            this.groupBox8.Size = new System.Drawing.Size(819, 231);
             this.groupBox8.TabIndex = 11;
             this.groupBox8.TabStop = false;
             this.groupBox8.Text = "Action Conditions";
@@ -274,7 +274,7 @@
             this.debugGroup.Controls.Add(this.testConditions);
             this.debugGroup.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.debugGroup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.debugGroup.Location = new System.Drawing.Point(4, 171);
+            this.debugGroup.Location = new System.Drawing.Point(4, 168);
             this.debugGroup.Name = "debugGroup";
             this.debugGroup.Size = new System.Drawing.Size(811, 60);
             this.debugGroup.TabIndex = 5;
@@ -321,7 +321,7 @@
             this.charactersComboBox.FormattingEnabled = true;
             this.charactersComboBox.Location = new System.Drawing.Point(243, 19);
             this.charactersComboBox.Name = "charactersComboBox";
-            this.charactersComboBox.Size = new System.Drawing.Size(114, 24);
+            this.charactersComboBox.Size = new System.Drawing.Size(114, 28);
             this.charactersComboBox.TabIndex = 2;
             // 
             // testConditions
@@ -337,6 +337,18 @@
             this.testConditions.UseVisualStyleBackColor = true;
             this.testConditions.Click += new System.EventHandler(this.testConditions_Click);
             // 
+            // conditionSetEditor
+            // 
+            this.conditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.conditionSetEditor.Location = new System.Drawing.Point(4, 22);
+            this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
+            this.conditionSetEditor.Name = "conditionSetEditor";
+            this.conditionSetEditor.Size = new System.Drawing.Size(811, 206);
+            this.conditionSetEditor.TabIndex = 0;
+            this.edmToolTip.SetToolTip(this.conditionSetEditor, "Conditions to add to each action");
+            this.conditionSetEditor.View = null;
+            this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);
+            // 
             // menuStrip1
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -344,7 +356,7 @@
             this.fileToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(4, 3);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(819, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(819, 30);
             this.menuStrip1.TabIndex = 18;
             this.menuStrip1.Text = "menuStrip1";
             this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
@@ -357,34 +369,34 @@
             this.saveToolStripMenuItem,
             this.saveAsToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 26);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(152, 26);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 26);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 26);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(152, 26);
             this.saveAsToolStripMenuItem.Text = "Save As...";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
@@ -395,21 +407,9 @@
             this.edmToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.edmToolTip.ToolTipTitle = "EDM Tooltip";
             // 
-            // conditionSetEditor
-            // 
-            this.conditionSetEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.conditionSetEditor.Location = new System.Drawing.Point(4, 18);
-            this.conditionSetEditor.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            this.conditionSetEditor.Name = "conditionSetEditor";
-            this.conditionSetEditor.Size = new System.Drawing.Size(811, 213);
-            this.conditionSetEditor.TabIndex = 0;
-            this.edmToolTip.SetToolTip(this.conditionSetEditor, "Conditions to add to each action");
-            this.conditionSetEditor.View = null;
-            this.conditionSetEditor.Load += new System.EventHandler(this.conditionSetEditor_Load);
-            // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(827, 489);
             this.Controls.Add(this.splitContainer1);

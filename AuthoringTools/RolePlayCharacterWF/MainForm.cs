@@ -417,7 +417,7 @@ namespace RolePlayCharacterWF
 
         private void buttonReasonKB_MouseHover(object sender, EventArgs e)
         {
-            toolTip1.Show("Infers new beliefs from is(x,y) statements. \n Example: is(Amy, dog)=True -> is(Amy, mammal)=True -> is(Amy, animal)=True \n Rules of Inference were created according to Wordnet's Hypernim hierarchy", buttonReasonKB);
+            toolTip1.Show("Deducts new beliefs from is(x,y) statements. \n Example: is(Amy, dog)=True -> is(Amy, mammal)=True -> is(Amy, animal)=True \n Rules of Inference were created according to Wordnet's Hypernim hierarchy", buttonReasonKB);
         }
 
         private void addEmotionButton_MouseHover(object sender, EventArgs e)
@@ -500,6 +500,8 @@ namespace RolePlayCharacterWF
 
             Bitmap bit =  Run(writer);
             var image = new IntegratedAuthoringToolWF.ImageForm(bit);
+            image.Name = "Deductive Reason Hierarchy Form";
+            image.Text = "Deductive Reason Hierarchy Form";
             image.Show();
         }
 
@@ -551,6 +553,11 @@ namespace RolePlayCharacterWF
         private void addEmotionalResponseToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void buttonReasonKB_Click(object sender, EventArgs e)
+        {
+          _loadedAsset.m_kb.Reason();
         }
     }
 }
