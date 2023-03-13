@@ -5,7 +5,7 @@
 
 ### Description
 
-FAtiMA Toolkit is a collection of tools/assets designed for the creation of characters with social and emotional intelligence. Currently, the project is actively being developed in the context of the EU-funded project named [RAGE][rage-link]. As implied by its name, the toolkit is a continuation of the work done in developing the [FAtiMA][fatima-link] agent architecture. This architecture was initially released in 2005 and, since then, it has been used to control the behaviour of virtual characters and social robots in several research applications such as:  
+FAtiMA Toolkit is a collection of tools/assets designed for the creation of characters with social and emotional intelligence. The project is the result of the work that was developed under an EU-funded project named [RAGE][rage-link] and an [FCT][fct-link] funded project named [Slice][slice-link]. As implied by its name, the toolkit is a continuation of the work done in developing the [FAtiMA][fatima-link] agent architecture. This architecture was initially released in 2005 and, since then, it has been used to control the behaviour of virtual characters and social robots in several research applications such as:  
 
 - [Traveller][traveller-link] - A serious game for raising intercultural awareness;
 - [SUECA][sueca-link]  - A social robot that plays an augmented reality card game;
@@ -70,3 +70,5 @@ For any questions, suggestions and feedback please contact Manuel Guimarães (ma
 [fear-not]: <https://www.youtube.com/watch?v=x0Hzw4WG4iI>
 [sueca-link]: <https://vimeo.com/153148841>
 [traveller-link]: <http://www.fdg2013.org/program/workshops/papers/IDGEI2013/idgei2013_9.pdf>
+[slice-link]: <https://gaips.inesc-id.pt/slice/team.html>
+[fct-link]: <https://www.fct.pt/en/>
