@@ -42,6 +42,7 @@ Additionally users car check the oficial website's "Get Started" section to lear
 ### Training Materials
 
 - Please check the oficial FAtiMA Website for updated training materials: https://fatima-toolkit.eu/home/get-started/
+- I have also created a Youtube Playlist with all the support videos that were created at the time: https://www.youtube.com/playlist?list=PLOsLH4BpXK2MWpO-vO-elNF3VfwGmZ_Yu
 
 
 ### Unity Demo Repository
